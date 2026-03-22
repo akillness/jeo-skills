@@ -1,24 +1,32 @@
-N:bmad-orchestrator
+N:bmad
 D:Orchestrates BMAD Method workflows (Analysis → Planning → Solutioning → Implementation). Detects project state, routes to the right phase command, and uses plannotator as a phase gate review tool to approve deliverables before phase transitions.
-G:bmad orchestrator workflow planning phase-gate plannotator review implementation
+G:bmad orchestrator workflow planning phase-gate plannotator review implementation tea ssd fabric spec-driven test-architect
 
-U[4]:
+U[7]:
   Initialize BMAD workflow for a new or existing project
   Check current phase status and get recommended next action
   Review phase documents with plannotator before advancing to next phase
   Resume interrupted workflows and track progress across all phases
+  Run TEA (Test Architect) workflows to establish test strategy per phase
+  Create SSD spec-first artifacts (OpenAPI/JSON Schema/BDD) before Architecture
+  Use fabric patterns to analyze and improve BMAD phase documents
 
-S[6]{n,action,details}:
+S[9]{n,action,details}:
   1,Detect,Check bmad/config.yaml — if missing offer /workflow-init to bootstrap
   2,Init,Run /workflow-init → collect project name/type/level(0-4) → create bmad/config.yaml + docs/bmm-workflow-status.yaml
   3,Status,Run /workflow-status → parse YAML → display phase progress with ✓/⚠/→ symbols + recommended next command
   4,Route,Map project level + completed workflows → recommend /product-brief /prd /tech-spec /architecture /sprint-planning /dev-story
   5,Gate,After phase doc created → bash scripts/phase-gate-review.sh <doc> → plannotator opens → Approve or Request Changes
   6,Advance,On approval → update workflow_status YAML with file path + plannotator_review:approved → proceed to next phase
+  7,TEA,At Phase 2+ → run /tea-nfr for NFR assessment; at Phase 3 → /tea-test-design /tea-framework /tea-ci; at Phase 4 → /tea-atdd /tea-automate /tea-review; release → /tea-release-gate
+  8,SSD,At Phase 2 (Level 2+) → run /spec-openapi or /spec-schema → plannotator gate → Architecture references spec; Phase 4 → /spec-bdd per story
+  9,Fabric,Before gate review → pipe phase doc through fabric -p improve_writing → use fabric -p analyze_paper for deep analysis → see resources/fabric-patterns.md
 
-R[5]:
+R[7]:
   Always check project level (0-4) before recommending workflows — level determines required vs optional phases
   Run phase gate review before EVERY phase transition — plannotator approval is the quality gate
   When plannotator returns changes-requested — revise the document and re-submit before advancing
   Keep docs/bmm-workflow-status.yaml updated with output file paths and plannotator_review fields
   Levels 0-1 skip Phase 3 (Architecture); Levels 2+ require Architecture before Implementation
+  TEA risk levels P0-P3 (probability × impact): P0=critical skip nothing, P1=high, P2=medium, P3=low — use /tea-release-gate before production release
+  SSD spec-first rule: for Level 2+ projects, /spec-openapi or /spec-schema must be plannotator-approved before /architecture begins

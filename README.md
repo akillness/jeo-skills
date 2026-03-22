@@ -5,7 +5,7 @@
 [![Skills](https://img.shields.io/badge/Skills-77-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![BMAD](https://img.shields.io/badge/BMAD--SSD-1.3.0-purple?style=for-the-badge)](docs/bmad/README.md)
+[![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
 **77 AI agent skills · TOON Format · Cross-platform**
@@ -70,6 +70,13 @@ graph TD
 
 ---
 
+## 🆕 What's New in v2026-03-22
+
+| Change | Details |
+|--------|---------|
+| **bmad-orchestrator renamed to bmad** | `bmad-orchestrator` skill folder renamed to `bmad`. Simplified to core BMAD workflow orchestration (Analysis → Planning → Solutioning → Implementation). Use keyword `bmad` as before. |
+| **Removed copilot-coding-agent** | `copilot-coding-agent` skill removed. 77 skills total. |
+
 ## 🆕 What's New in v2026-03-19
 
 | Change | Details |
@@ -78,7 +85,6 @@ graph TD
 | **obsidian-plugin: Obsidian plugin development skill** | Build, validate, and publish Obsidian plugins. Covers all 27 `eslint-plugin-obsidianmd` rules, interactive boilerplate generator (`create-plugin.js`), memory management, type safety, accessibility (MANDATORY), CSS variables, vault API, and community submission validation. 75 → **76 skills**. |
 | **jeo v1.6.0: `.jeo` planning ledger flow** | JEO now creates a project-local `.jeo/` folder and uses it as a durable planning/development/QA ledger: `long-term.md`, `short-term.md`, `planned.md`, `progress.md`, `history.md`, plus queued/active task files. Completed task files are summarized into history then removed; follow-up work can be queued without resetting the workflow. |
 | **skill-autoresearch: eval-driven skill optimization** | New skill for improving an existing `SKILL.md` with binary evals, mutation loops, baseline scoring, and dashboard/changelog artifacts. Keeps the original `autoresearch` ML workflow separate. 76 → **77 skills**. |
-| **bmad-orchestrator v1.3.0: SSD + TEA integration** | BMAD now ships with **Structured System Design (SSD)** — TEA (Task-Execute-Architect) cycles embedded in each phase. New `/ssd-cycle`, `/ssd-decompose`, `/ssd-execute`, `/ssd-validate`, `/ssd-advance` commands. Each phase decomposes into agent-routed tasks, executes via `/team`, and validates with `fabric -p bmad_ssd_phase_review` before plannotator human review. Includes `patterns/bmad_ssd_phase_review/` fabric pattern. |
 | **firebase-cli: Firebase CLI skill** | Full Firebase CLI (firebase-tools) coverage — deploy, emulate, import/export, manage users, CI/CD. 74 → **75 skills**. |
 | **google-workspace, langsmith, react-grab added** | 3 new skills: Google Workspace REST API automation, LangSmith LLM observability/evaluation, react-grab React element context capture. 71 → **74 skills**. |
 | **research-paper-writing: ML/CV/NLP paper writing skill** | Academic paper composition for Abstract, Introduction, Method, Experiments, Conclusion. Paragraph flow, claim-evidence alignment, pre-submission review. From Prof. Peng Sida's notes. 70 → **71 skills**. |
@@ -162,7 +168,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `ohmg` | `ohmg` | Gemini | Antigravity multi-agent framework |
 | `ralph` | `ralph`, `ooo` | All | Ouroboros specification-first + persistent completion loop |
 | `ralphmode` | `ralphmode` | All | Automation permission profiles (sandbox-first, repo boundary) |
-| `bmad-orchestrator` | `bmad` | Claude | Structured phase-based AI development with SSD (TEA cycles: Decompose → Execute → Validate per phase) |
+| `bmad` | `bmad` | Claude | Structured phase-based BMAD workflow orchestration (Analysis → Planning → Solutioning → Implementation) |
 | `bmad-gds` | `bmad-gds` | All | BMAD Game Development Studio (Unity · Unreal · Godot) |
 | `bmad-idea` | `bmad-idea` | All | Creative intelligence — 5 specialist ideation agents |
 | `survey` | `survey` | All | Pre-implementation landscape scan |
@@ -279,11 +285,10 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `marketing-automation` | 23 sub-skills: CRO, copywriting, SEO, analytics, growth | All |
 | `marketing-skills-collection` | 23 sub-skills: CRO, copywriting, SEO, analytics, growth | All |
 
-### 🔧 Utilities (10)
+### 🔧 Utilities (9)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `copilot-coding-agent` | GitHub Copilot Coding Agent — issue → Draft PR automation | Claude · Codex |
 | `fabric` | AI prompt patterns — YouTube summaries, document analysis via 200+ Patterns | All |
 | `file-organization` | File and folder organization | All |
 | `git-submodule` | Git submodule management | All |
@@ -376,7 +381,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 76 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 77 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -395,7 +400,7 @@ npx vibe-kanban
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `ralph` | `ralph` | [docs/ralph/README.md](docs/ralph/README.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
-| `bmad-orchestrator` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
+| `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.md](docs/harness/README.md) |
 
 ---

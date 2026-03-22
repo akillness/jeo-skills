@@ -591,3 +591,81 @@ Code Review → Iteration → Done
 | Feature set | 2 | PRD, Architecture, Sprint, Stories | 1-3 weeks |
 | Integration | 3 | Brief, PRD, Architecture, Sprints | 3-8 weeks |
 | Platform | 4 | Brief, Research, PRD, UX, Architecture, Sprints | 2+ months |
+
+---
+
+## TEA Integration per Phase
+
+[fabric](https://github.com/danielmiessler/fabric) and TEA (Test Architect) integrate at each phase gate. See `resources/tea-workflows.md` for full TEA workflow reference and `resources/fabric-patterns.md` for fabric patterns.
+
+### Phase 1: Analysis — Foundation
+
+**TEA activities:** None required (TEA engages from Phase 2)
+**Fabric:** `cat docs/product-brief-*.md | fabric -p analyze_paper --stream`
+
+### Phase 2: Planning — Strategy
+
+**TEA activities (Level 3+ required, 2+ recommended):**
+- `/tea-nfr` — NFR (Non-Functional Requirements) assessment → outputs test strategy doc
+- Defines P0-P3 risk levels for all features
+
+**SSD (Level 2+):**
+- `/spec-openapi` → `docs/spec-openapi-*.yaml`
+- `/spec-schema` → `docs/spec-schema-*.json`
+- Run plannotator gate on spec before Phase 3
+
+**Fabric:** `cat docs/prd-*.md | fabric -p extract_wisdom --stream`
+
+### Phase 3: Solutioning — Design
+
+**TEA activities (Level 2+ recommended):**
+- `/tea-test-design` — Design test strategy aligned with architecture
+- `/tea-framework` — Select and configure test framework
+- `/tea-ci` — CI/CD test pipeline integration
+
+**SSD:**
+- Architecture document must reference OpenAPI/Schema spec from Phase 2
+- `/spec-bdd` scenarios drafted per component boundary
+
+**Fabric:** `cat docs/architecture-*.md | fabric -p create_summary`
+
+### Phase 4: Implementation — Delivery
+
+**TEA activities (Level 2+ required):**
+- `/tea-atdd` — Acceptance Test-Driven Development per epic
+- `/tea-automate` — Test automation implementation
+- `/tea-review` — Test review (Level 2+ required)
+- `/tea-trace` — Requirements tracing (Level 3+ required)
+
+**SSD:**
+- Each dev story implements against `/spec-bdd` scenarios
+- Story blockedBy: spec file must be approved
+
+**Fabric:** `git diff HEAD~1 | fabric -p explain_code`
+
+### Release Gate
+
+**TEA:** `/tea-release-gate` — Go/No-Go decision based on P0/P1 test results
+- P0 failures → No-Go (block release)
+- P1 failures → Conditional (requires sign-off)
+- P2/P3 failures → Go with known issues documented
+
+**Fabric:** `cat test-results/*.xml | fabric -p analyze_logs > docs/release-test-summary.md`
+
+### Risk Prioritization Matrix
+
+| Level | Description | Action |
+|-------|-------------|--------|
+| P0 | Critical — must pass for release | Block release if failing |
+| P1 | High — significant user impact | Require sign-off to release |
+| P2 | Medium — moderate impact | Document, release with tracking |
+| P3 | Low — minimal impact | Log, address in next sprint |
+
+### TEA + SSD + Fabric Combined Flow
+
+```
+Phase 2: PRD → /tea-nfr → /spec-openapi → fabric analyze → plannotator gate
+Phase 3: Architecture (refs spec) → /tea-test-design → /tea-framework → /tea-ci
+Phase 4: Per epic: /tea-atdd → implement → /tea-automate → /tea-review
+Release: /tea-release-gate → fabric analyze_logs → Go/No-Go
+```

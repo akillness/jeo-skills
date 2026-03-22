@@ -1,3 +1,0 @@
-experiment	score	max_score	pass_rate	status	description
-0	1	6	16.67%	baseline	Pre-change JEO preserved gates but lacked a persistent .jeo ledger and completion lifecycle
-1	6	6	100.00%	keep	Added .jeo ledger docs, lifecycle sync script, phase mapping, and completion cleanup rules

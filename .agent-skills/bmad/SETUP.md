@@ -30,7 +30,7 @@ Your AI Agent
 ```
 
 **plannotator** opens a visual browser UI after each phase document is created. You annotate, approve, or request changes — then your agent continues to the next phase.
-Use the same cross-platform control model as JEO: `settings` configure the platform, `rules` prevent invalid phase transitions, and `hooks` enforce them.
+Use the same cross-platform control model as OMG: `settings` configure the platform, `rules` prevent invalid phase transitions, and `hooks` enforce them.
 
 ---
 
@@ -326,8 +326,8 @@ bash scripts/validate-config.sh
 | `plannotator` | Visual plan & diff review | `npx skills add ... --skill plannotator` |
 | `ralph` | Persistence loop until task completes | `npx skills add ... --skill ralph` |
 | `vibe-kanban` | Visual kanban for agent stories | `npx skills add ... --skill vibe-kanban` |
-| `jeo` | Full orchestration: plan → execute → track | `npx skills add ... --skill jeo` |
+| `omg` | Full orchestration: plan → execute → track | `npx skills add ... --skill omg` |
 
 ---
 
-> **Source:** [BMAD Method](https://github.com/bmad-method/bmad) · [plannotator](https://plannotator.ai) · [skills-template](https://github.com/akillness/oh-my-skills)
+> **Source:** [BMAD Method](https://github.com/bmad-method/bmad) · [plannotator](https://plannotator.ai) · [skills-template](https://github.com/supercent-io/skills-template)

@@ -33,7 +33,7 @@ AI agents receiving this file should execute the following steps **in order**.
 Before installation, confirm:
 
 1. **Which AI platform are you using?**
-   - Claude Code → recommend `omc`, `plannotator`, `ralph`, `ralphmode`, `bmad-orchestrator`
+   - Claude Code → recommend `omc`, `plannotator`, `ralph`, `ralphmode`, `bmad`
    - Gemini CLI → recommend `ohmg`, `ralph`, `ralphmode`, `jeo`
    - OpenAI Codex CLI → recommend `omx`, `ralph`, `ralphmode`, `jeo`
    - OpenCode → requires oh-my-opencode installation (see Step 3)
@@ -96,7 +96,7 @@ npx skills add https://github.com/akillness/oh-my-skills \
 **Claude Code only (platform-specific — excludes common core above):**
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
-  --skill omc --skill bmad-orchestrator \
+  --skill omc --skill bmad \
   -g
 ```
 
@@ -131,19 +131,19 @@ fi
 
 ---
 
-### Step 2: Full Installation (78 in-repo skills)
+### Step 2: Full Installation (77 in-repo skills)
 
-> **Installs or overwrites all 78 in-repo skills. Existing skills are updated to the latest version. Skills not in this list are preserved. Step 0 already created directories — no duplicate mkdir needed.**
+> **Installs or overwrites all 77 in-repo skills. Existing skills are updated to the latest version. Skills not in this list are preserved. Step 0 already created directories — no duplicate mkdir needed.**
 
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
   --skill agent-browser --skill agentation --skill api-design \
   --skill api-documentation --skill authentication-setup \
   --skill autoresearch --skill backend-testing \
-  --skill bmad-gds --skill bmad-idea --skill bmad-orchestrator \
+  --skill bmad-gds --skill bmad-idea --skill bmad \
   --skill changelog-maintenance --skill clawteam \
   --skill code-refactoring --skill code-review --skill codebase-search \
-  --skill copilot-coding-agent --skill data-analysis \
+  --skill data-analysis \
   --skill database-schema-design --skill debugging \
   --skill deployment-automation --skill design-system \
   --skill environment-setup --skill fabric \
@@ -219,7 +219,7 @@ npx skills add benjitaylor/agentation -g
 # /agentation  ← auto-launches browser UI, starts annotate watch loop
 ```
 
-> **TOON Format Hook**: If `~/.claude/hooks/toon-inject.mjs` is installed, the skill catalog is automatically injected into every prompt. Configuration details: [bmad-orchestrator SKILL.md — TOON Format Integration](.agent-skills/bmad-orchestrator/SKILL.md)
+> **TOON Format Hook**: If `~/.claude/hooks/toon-inject.mjs` is installed, the skill catalog is automatically injected into every prompt. Configuration details: [bmad SKILL.md — TOON Format Integration](.agent-skills/bmad/SKILL.md)
 
 #### OpenCode — oh-my-opencode
 
@@ -372,7 +372,7 @@ gh auth login && gh api --silent --method PUT /user/starred/akillness/oh-my-skil
 | `plannotator` | `plan` | Plan review + feedback loop |
 | `vibe-kanban` | `kanbanview` | Kanban board |
 | `obsidian-plugin` | `obsidian plugin`, `create obsidian plugin` | Build, validate, and publish Obsidian plugins — 27 eslint-plugin-obsidianmd rules, interactive boilerplate generator, memory management, accessibility (MANDATORY), CSS variables, community submission validation |
-| `bmad-orchestrator` | `bmad` | Structured phase-based development with SSD — TEA cycles (Task→Execute→Architect) per phase, `/ssd-cycle` command, multi-agent execution via `/team`, automated `fabric -p bmad_ssd_phase_review` validation before plannotator human review |
+| `bmad` | `bmad` | Structured phase-based BMAD workflow orchestration — Analysis → Planning → Solutioning → Implementation, multi-agent execution via `/team` |
 | `bmad-gds` | `bmad-gds` | Game Development Studio (Unity/Unreal/Godot) |
 | `bmad-idea` | `bmad-idea` | Creative ideas · design thinking · innovation strategy |
 | `agent-browser` | `agent-browser` | Headless browser automation |

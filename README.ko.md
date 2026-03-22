@@ -5,7 +5,7 @@
 [![Skills](https://img.shields.io/badge/Skills-77-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![BMAD](https://img.shields.io/badge/BMAD--SSD-1.3.0-purple?style=for-the-badge)](docs/bmad/README.md)
+[![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
 **77개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
@@ -70,6 +70,13 @@ graph TD
 
 ---
 
+## 🆕 v2026-03-22 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **bmad-orchestrator → bmad 리네임** | `bmad-orchestrator` 스킬 폴더가 `bmad`로 리네임되었습니다. 핵심 BMAD 워크플로우 오케스트레이션(분석 → 계획 → 솔루션 → 구현)으로 단순화. 키워드 `bmad`는 동일하게 사용 가능합니다. |
+| **copilot-coding-agent 제거** | `copilot-coding-agent` 스킬 제거. 총 77개 스킬. |
+
 ## 🆕 v2026-03-19 업데이트
 
 | 변경 | 내용 |
@@ -78,7 +85,6 @@ graph TD
 | **obsidian-plugin: Obsidian 플러그인 개발 스킬** | Obsidian 플러그인 빌드, 검증, 커뮤니티 디렉토리 제출. `eslint-plugin-obsidianmd` 27개 규칙 전체 커버, 대화형 보일러플레이트 생성기(`create-plugin.js`), 메모리 관리, 타입 안전성, 접근성(MANDATORY), CSS 변수, Vault API, 제출 검증. 75 → **76개** |
 | **jeo v1.6.0: `.jeo` 계획 ledger 플로우** | JEO가 이제 프로젝트 로컬 `.jeo/` 폴더를 만들고 장기계획(`long-term.md`), 단기계획(`short-term.md`), 예정 작업(`planned.md`), 진행상황(`progress.md`), 이력(`history.md`), queued/active 작업 파일을 함께 관리합니다. 완료된 작업 파일은 history에 요약한 뒤 제거하고, follow-up 작업은 workflow를 초기화하지 않고 계속 추가할 수 있습니다. |
 | **skill-autoresearch: eval 기반 스킬 최적화** | 기존 `SKILL.md` 를 바이너리 eval, mutation loop, baseline scoring, dashboard/changelog 산출물로 반복 개선하는 신규 스킬. 기존 ML용 `autoresearch` 와는 별도 용도입니다. 76 → **77개** |
-| **bmad-orchestrator v1.3.0: SSD + TEA 통합** | BMAD에 **구조화 시스템 설계(SSD)** 적용 — 각 단계에 TEA(Task-Execute-Architect) 사이클 내장. `/ssd-cycle`, `/ssd-decompose`, `/ssd-execute`, `/ssd-validate`, `/ssd-advance` 신규 명령 추가. 각 단계별 에이전트 라우팅 태스크 분해 → `/team` 실행 → `fabric -p bmad_ssd_phase_review` 자동 아키텍트 검증 → plannotator 인간 검토 순서로 진행. `patterns/bmad_ssd_phase_review/` fabric 패턴 포함. |
 | **firebase-cli: Firebase CLI 스킬** | Firebase CLI(firebase-tools) 전체 커버리지 — 배포, 에뮬레이터, 데이터 가져오기/내보내기, 사용자 관리, CI/CD. 74 → **75개** |
 | **google-workspace, langsmith, react-grab 추가** | 3개 신규 스킬: Google Workspace REST API 자동화, LangSmith LLM 관측성/평가, react-grab React 엘리먼트 컨텍스트 캡처. 71 → **74개** |
 | **research-paper-writing: ML/CV/NLP 논문 작성 스킬** | Abstract, Introduction, Method, Experiments, Conclusion 섹션별 학술 논문 작성. 문단 흐름, 주장-증거 정합성, 제출 전 셀프 리뷰. Prof. Peng Sida 노트 기반. 70 → **71개** |
@@ -162,7 +168,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `ohmg` | `ohmg` | Gemini | Antigravity 멀티에이전트 프레임워크 |
 | `ralph` | `ralph`, `ooo` | 전체 | Ouroboros 스펙 우선 + 영구 완료 루프 |
 | `ralphmode` | `ralphmode` | 전체 | 자동화 권한 프로파일 (샌드박스 우선, 저장소 경계) |
-| `bmad-orchestrator` | `bmad` | Claude | SSD가 적용된 구조화 단계 기반 AI 개발 (각 단계별 TEA 사이클: Decompose → Execute → Validate) |
+| `bmad` | `bmad` | Claude | 구조화 단계 기반 BMAD 워크플로우 오케스트레이션 (분석 → 계획 → 솔루션 → 구현) |
 | `bmad-gds` | `bmad-gds` | 전체 | BMAD 게임 개발 스튜디오 (Unity · Unreal · Godot) |
 | `bmad-idea` | `bmad-idea` | 전체 | 창의 지능 — 5개 전문 아이디에이션 에이전트 |
 | `survey` | `survey` | 전체 | 사전 구현 문제공간 스캔 |
@@ -279,11 +285,10 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `marketing-automation` | 23개 서브스킬: CRO, 카피라이팅, SEO, 애널리틱스, 그로스 | 전체 |
 | `marketing-skills-collection` | 23개 서브스킬: CRO, 카피라이팅, SEO, 애널리틱스, 그로스 | 전체 |
 
-### 🔧 유틸리티 (10개)
+### 🔧 유틸리티 (9개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `copilot-coding-agent` | GitHub Copilot 코딩 에이전트 — 이슈 → Draft PR 자동화 | Claude · Codex |
 | `fabric` | AI 프롬프트 패턴 — YouTube 요약, 문서 분석 (200+ 패턴) | 전체 |
 | `file-organization` | 파일 및 폴더 구성 | 전체 |
 | `git-submodule` | Git 서브모듈 관리 | 전체 |
@@ -376,7 +381,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 76개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 77개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -395,7 +400,7 @@ npx vibe-kanban
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `ralph` | `ralph` | [docs/ralph/README.md](docs/ralph/README.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
-| `bmad-orchestrator` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
+| `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.ko.md](docs/harness/README.ko.md) |
 
 ---
