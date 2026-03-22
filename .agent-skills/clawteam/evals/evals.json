@@ -1,0 +1,59 @@
+{
+  "skill_name": "clawteam",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to run parallel ML experiments with 4 agents on different hyperparameter configurations",
+      "expected_output": "Uses clawteam spawn to create 4 worker agents, each assigned different hyperparameter configs, with task dependency tracking and clawteam monitor for progress",
+      "assertions": [
+        "clawteam spawn command used",
+        "Multiple workers spawned in parallel",
+        "Tasks assigned to specific workers",
+        "Monitoring command provided"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Spawn a full-stack development team to build a REST API",
+      "expected_output": "Uses clawteam template fullstack or spawns specialized workers: api-designer, backend-dev, frontend-dev, test-engineer with task dependencies",
+      "assertions": [
+        "clawteam template fullstack or manual spawn used",
+        "Specialized agent roles assigned",
+        "Task dependencies set between workers",
+        "clawteam board or monitor for progress tracking"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "How do I check what my ClawTeam agents are working on right now?",
+      "expected_output": "Provides clawteam status and clawteam board commands with team name parameter",
+      "assertions": [
+        "clawteam status command shown",
+        "clawteam board --port option mentioned",
+        "Team name parameter explained"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Set up ClawTeam to analyze TSLA stock with multiple specialist agents",
+      "expected_output": "Uses clawteam template hedge-fund with --ticker TSLA, or manually spawns growth/technical/fundamental/sentiment/risk analyst agents",
+      "assertions": [
+        "hedge-fund template or manual spawn used",
+        "Multiple analyst agent types mentioned",
+        "Synthesis agent included",
+        "Task coordination between analysts explained"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Install and set up ClawTeam for the first time",
+      "expected_output": "pip install clawteam, clawteam doctor to verify setup, explains tmux requirement and compatible agents",
+      "assertions": [
+        "pip install clawteam command provided",
+        "Python 3.10+ requirement mentioned",
+        "tmux requirement mentioned",
+        "clawteam doctor verification step included"
+      ]
+    }
+  ]
+}
