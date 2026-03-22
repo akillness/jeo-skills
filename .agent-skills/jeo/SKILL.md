@@ -3,16 +3,18 @@ name: jeo
 description: >
   Integrated AI agent orchestration skill that combines plannotator, ralphmode,
   team or bmad execution, agent-browser verification, and agentation feedback
-  loops. Use when the user wants an end-to-end multi-agent workflow with plan
-  approval, implementation, UI review, and cleanup. Triggers on: jeo,
-  annotate, ui-review, multi-agent orchestration.
+  loops, while maintaining a project-local `.jeo` ledger for planning,
+  development, and QA. Use when the user wants an end-to-end multi-agent
+  workflow with plan approval, implementation, UI review, cleanup, and durable
+  task history. Triggers on: jeo, annotate, ui-review, multi-agent
+  orchestration.
 compatibility: "Requires git, node>=18, bash. Optional: bun, docker."
 allowed-tools: Read Write Bash Grep Glob Task
 metadata:
   tags: jeo, orchestration, ralph, plannotator, agentation, annotate, agentui, UI-review, team, bmad, omc, omx, ohmg, agent-browser, multi-agent, workflow, worktree-cleanup, browser-verification, ui-feedback
   platforms: Claude, Codex, Gemini, OpenCode
   keyword: jeo
-  version: 1.5.0
+  version: 1.6.0
   source: akillness/oh-my-skills
 ---
 
@@ -21,13 +23,14 @@ metadata:
 
 > Keyword: `jeo` · `annotate` · `UI-review` · `agentui (deprecated)` | Platforms: Claude Code · Codex CLI · Gemini CLI · OpenCode
 >
-> Plan (plannotator) → Execute (team/bmad) → Verify (agent-browser + agentation) → Cleanup (worktree)
+> Planning (plannotator) → Development (team/bmad) → QA (agent-browser + agentation) → Cleanup (worktree) with a persistent `.jeo` project ledger
 
 ## When to use this skill
 
 - Run an end-to-end multi-agent workflow with an explicit planning gate
 - Add a browser-backed UI feedback loop with `annotate` or `ui-review`
 - Coordinate plan approval, execution, verification, and cleanup in one skill
+- Keep long-term rules, short-term system/test plans, active work items, and history in `.jeo/`
 
 ## Rules (always enforced)
 
@@ -66,7 +69,46 @@ python3 scripts/jeo-state-update.py set agentation.active true
 
 ---
 
-## Execution Protocol
+## .jeo Project Ledger
+
+JEO keeps a human-readable project ledger in `.jeo/` and a machine-readable state file in `.omc/state/jeo-state.json`.
+
+| Path | Purpose |
+|------|---------|
+| `.jeo/long-term.md` | Durable product intent, standing rules, validation contract |
+| `.jeo/short-term.md` | Current system slice, unit-test plan, flow-test plan, exit criteria |
+| `.jeo/planned.md` | Planned queue and parking-lot items |
+| `.jeo/progress.md` | Current delivery stage and timestamped updates |
+| `.jeo/history.md` | Append-only completion summaries |
+| `.jeo/tasks/queued/*.md` | Queued work-item files |
+| `.jeo/tasks/active/*.md` | Single active work-item file (removed on completion after history is written) |
+
+Use `scripts/jeo-project-sync.py` to keep the ledger in sync:
+
+```bash
+python3 scripts/jeo-project-sync.py init "<task>"
+python3 scripts/jeo-project-sync.py queue api-contract "Harden API contract validation"
+python3 scripts/jeo-project-sync.py start-next
+python3 scripts/jeo-project-sync.py stage <planning|development|qa|done>
+python3 scripts/jeo-project-sync.py progress "<message>"
+python3 scripts/jeo-project-sync.py complete <slug> "<summary>"
+python3 scripts/jeo-project-sync.py status
+```
+
+### Phase mapping
+
+| JEO phase | Delivery stage | `.jeo` expectation |
+|-----------|----------------|--------------------|
+| `plan` | `planning` | Review `long-term.md`, refine `short-term.md`, confirm the active work item |
+| `execute` | `development` | Update the active task checklist and append implementation notes to `progress.md` |
+| `verify` / `verify_ui` | `qa` | Record unit/flow/browser verification evidence in `short-term.md` and `progress.md` |
+| `cleanup` / `done` | `done` | Append to `history.md`, check off `planned.md`, remove the task file, queue follow-up work if needed |
+
+Detailed ledger rules: [references/DOT_JEO_LEDGER.md](references/DOT_JEO_LEDGER.md)
+
+---
+
+## Instructions
 
 > Execute steps in order. Each step only proceeds after the previous one completes.
 
@@ -75,22 +117,33 @@ python3 scripts/jeo-state-update.py set agentation.active true
 ```bash
 mkdir -p .omc/state .omc/plans .omc/logs
 python3 scripts/jeo-state-update.py init "<detected task>"
+python3 scripts/jeo-project-sync.py init "<detected task>"
+python3 scripts/jeo-project-sync.py start-next
 ```
 
 Notify the user:
-> "JEO activated. Phase: PLAN. Add the `annotate` keyword if a UI feedback loop is needed."
+> "JEO activated. Delivery stage: planning. `.jeo` ledger initialized. Add the `annotate` keyword if a UI feedback loop is needed."
 
 ---
 
-### STEP 1: PLAN (never skip)
+### STEP 1: PLAN / Planning (never skip)
 
 ```bash
 python3 scripts/jeo-state-update.py checkpoint plan
+python3 scripts/jeo-project-sync.py stage planning
+python3 scripts/jeo-project-sync.py progress "Entered planning gate."
 ```
 
-1. Write `plan.md` (include goal, steps, risks, and completion criteria)
+1. Review `.jeo/long-term.md`, `.jeo/short-term.md`, `.jeo/planned.md`, `.jeo/progress.md`, and `.jeo/history.md` before changing scope.
 
-2. **Invoke plannotator** (per platform):
+2. Write `plan.md` (include goal, steps, risks, completion criteria, and the current planning/development/QA expectations from `.jeo/short-term.md`).
+
+3. Update `.jeo/short-term.md` with:
+   - the system slice for this run
+   - the unit-test plan
+   - the flow/browser verification plan
+
+4. **Invoke plannotator** (per platform):
 
    **Claude Code (hook mode — only supported method):**
    - Call `EnterPlanMode` → write plan content → call `ExitPlanMode`
@@ -122,21 +175,25 @@ python3 scripts/jeo-state-update.py checkpoint plan
    bash "${_JEO_SCRIPTS}/plannotator-plan-loop.sh" plan.md "${FEEDBACK_DIR}/plannotator_feedback.txt" 3
    ```
 
-3. **Check result:**
+5. **Check result:**
    - `approved` (exit 0) → set `phase=execute`, `plan_approved=true` → **STEP 2**
    - Feedback (exit 10) → read feedback, revise `plan.md`, repeat step 2
    - Infrastructure blocked (exit 32) → **Conversation Approval Mode**: output plan.md to user, ask "approve" or provide feedback. **WAIT** for user response
    - Session exited 3 times (exit 30/31) → ask user whether to abort
 
+6. When the plan is approved, append a note to `.jeo/progress.md` describing what is ready to build and what QA must prove.
+
 **NEVER:** enter EXECUTE without `approved: true`. **NEVER:** run with `&` background.
 
 ---
 
-### STEP 2: EXECUTE
+### STEP 2: EXECUTE / Development
 
 ```bash
 python3 scripts/jeo-state-update.py checkpoint execute
 python3 scripts/jeo-state-update.py set phase execute
+python3 scripts/jeo-project-sync.py stage development
+python3 scripts/jeo-project-sync.py progress "Development started from the approved plan."
 ```
 
 **Auto-detect team availability:**
@@ -157,15 +214,22 @@ python3 scripts/jeo-state-update.py set team_available $TEAM_AVAILABLE
 | Claude Code without team | **Error** — run `bash scripts/setup-claude.sh`, enable `AGENT_TEAMS=1`, restart |
 | Codex / Gemini / OpenCode | BMAD fallback: `/workflow-init` then `/workflow-status` |
 
+While executing, keep the active `.jeo/tasks/active/*.md` file current:
+- planning checklist → done when the plan and risks are locked
+- development checklist → code, docs, and unit tests updated
+- QA checklist → fill only after STEP 3 evidence exists
+
 **NEVER** fall back to single-agent execution in Claude Code.
 
 ---
 
-### STEP 3: VERIFY
+### STEP 3: VERIFY / QA
 
 ```bash
 python3 scripts/jeo-state-update.py checkpoint verify
 python3 scripts/jeo-state-update.py set phase verify
+python3 scripts/jeo-project-sync.py stage qa
+python3 scripts/jeo-project-sync.py progress "Entered QA verification."
 ```
 
 1. **Browser verification with agent-browser** (when browser UI is present):
@@ -175,6 +239,11 @@ python3 scripts/jeo-state-update.py set phase verify
 
 2. `annotate` keyword detected → **enter STEP 3.1**
 3. Otherwise → **enter STEP 4**
+
+4. Record QA evidence in `.jeo/short-term.md`:
+   - unit tests added or updated
+   - flow/integration coverage
+   - browser or annotation-based verification results
 
 ---
 
@@ -209,6 +278,11 @@ fi
 
 6. `count=0` or timeout → proceed to **STEP 4**
 
+7. If QA discovers follow-up work, add it immediately:
+   ```bash
+   python3 scripts/jeo-project-sync.py queue follow-up "<new work item>"
+   ```
+
 **NEVER:** process draft annotations before submit/onSubmit.
 
 ---
@@ -218,14 +292,23 @@ fi
 ```bash
 python3 scripts/jeo-state-update.py checkpoint cleanup
 python3 scripts/jeo-state-update.py set phase cleanup
+python3 scripts/jeo-project-sync.py stage done
 ```
 
 1. Check for uncommitted changes (warn if present)
-2. Run worktree cleanup:
+2. Complete the active `.jeo` task and write the permanent summary:
+   ```bash
+   python3 scripts/jeo-project-sync.py complete <slug> "<what shipped, what QA proved, what follow-up remains>"
+   ```
+3. If more work is needed, queue it before leaving cleanup:
+   ```bash
+   python3 scripts/jeo-project-sync.py queue next-step "<follow-up work>"
+   ```
+4. Run worktree cleanup:
    ```bash
    bash scripts/worktree-cleanup.sh || git worktree prune
    ```
-3. Set `phase=done`
+5. Set `phase=done`
 
 ---
 
@@ -301,6 +384,7 @@ Path: `{worktree}/.omc/state/jeo-state.json`
 | Field | Values | Description |
 |-------|--------|-------------|
 | `phase` | `plan\|execute\|verify\|verify_ui\|cleanup\|done` | Current workflow phase |
+| `delivery_stage` | `planning\|development\|qa\|done` | Human-readable stage mirrored into `.jeo/progress.md` |
 | `plan_approved` | bool | Whether plan was approved |
 | `plan_gate_status` | `pending\|approved\|feedback_required\|infrastructure_blocked\|manual_approved` | Plan gate result |
 | `plan_current_hash` | sha256 or null | Current plan.md hash |
@@ -310,20 +394,49 @@ Path: `{worktree}/.omc/state/jeo-state.json`
 | `retry_count` | int | Error retry count (ask user at >= 3) |
 | `last_error` | string or null | Most recent error |
 | `checkpoint` | string or null | Last entered phase (for resume) |
+| `jeo.root` | path | Project-local planning ledger root |
+| `jeo.active_task` | string or null | Active `.jeo` work item slug |
+| `jeo.last_sync_at` | ISO 8601 or null | Last `.jeo` sync timestamp |
 | `agentation.active` | bool | Whether VERIFY_UI watch loop is running |
 | `agentation.submit_gate_status` | `idle\|waiting_for_submit\|submitted` | Submit gate state |
 | `agentation.exit_reason` | `all_resolved\|timeout\|user_cancelled\|error\|null` | How watch loop ended |
 
 ---
 
+## Examples
+
+### Example 1: New feature with `.jeo` ledger
+
+```bash
+python3 scripts/jeo-project-sync.py init "Build exportable analytics dashboard"
+python3 scripts/jeo-project-sync.py start-next
+python3 scripts/jeo-project-sync.py stage planning
+```
+
+Then run the normal JEO flow: plan approval → development → QA → cleanup. When done:
+
+```bash
+python3 scripts/jeo-project-sync.py complete 000-primary "Dashboard shipped with unit tests, flow checks, and browser verification."
+```
+
+### Example 2: Add follow-up work discovered during QA
+
+```bash
+python3 scripts/jeo-project-sync.py queue qa-follow-up "Fix chart legend overlap on small screens"
+python3 scripts/jeo-project-sync.py progress "Queued QA follow-up from annotate review."
+```
+
 ## Best practices
 
 1. **Plan first**: always review the plan with ralph+plannotator before executing (catches wrong approaches early)
 2. **Team first**: omc team mode is most efficient in Claude Code
 3. **bmad fallback**: use BMAD in environments without team (Codex, Gemini)
-4. **Worktree cleanup**: run `worktree-cleanup.sh` immediately after work completes (prevents branch pollution)
-5. **State persistence**: use `.omc/state/jeo-state.json` to maintain state across sessions
-6. **annotate**: use the `annotate` keyword to run the agentation watch loop for complex UI changes (precise code changes via CSS selector). `agentui` is a backward-compatible alias.
+4. **Keep `.jeo` honest**: long-term is durable, short-term is current, history is append-only
+5. **One active task file**: keep only one file under `.jeo/tasks/active/` at a time
+6. **Complete means summarize + delete task file**: write history first, then remove the task file
+7. **Worktree cleanup**: run `worktree-cleanup.sh` immediately after work completes (prevents branch pollution)
+8. **State persistence**: use `.omc/state/jeo-state.json` and `.jeo/` together across sessions
+9. **annotate**: use the `annotate` keyword to run the agentation watch loop for complex UI changes (precise code changes via CSS selector). `agentui` is a backward-compatible alias.
 
 ---
 
@@ -338,6 +451,7 @@ Path: `{worktree}/.omc/state/jeo-state.json`
 | team mode not working | Run `bash scripts/setup-claude.sh`, restart Claude Code, verify `AGENT_TEAMS=1` |
 | agentation not opening | Check `curl http://localhost:4747/health` and `/sessions` |
 | annotation not in code | Include `summary` field when calling `agentation_resolve_annotation` |
+| `.jeo` not updating | Run `python3 scripts/jeo-project-sync.py status` and ensure `.jeo/` exists at the git root |
 | worktree conflict | `git worktree prune && git worktree list` |
 
 ---
@@ -349,3 +463,4 @@ Path: `{worktree}/.omc/state/jeo-state.json`
 - [BMAD Method](https://github.com/bmad-dev/BMAD-METHOD) — structured AI development workflow
 - [Agent Skills Spec](https://agentskills.io/specification) — skill format specification
 - [agentation](https://github.com/benjitaylor/agentation) — UI annotation → agent code fix (`annotate`; `agentui` backward compatible)
+- [`.jeo` ledger reference](references/DOT_JEO_LEDGER.md) — project-local planning, development, and QA ledger

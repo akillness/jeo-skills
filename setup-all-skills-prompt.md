@@ -86,8 +86,9 @@ npx skills add https://github.com/akillness/oh-my-skills \
   -g
 ```
 
-> **jeo Agent Protocol**: When jeo runs, it automatically creates `jeo-state.json` and proceeds sequentially through PLAN → EXECUTE → VERIFY → CLEANUP phases.
+> **jeo Agent Protocol**: When jeo runs, it automatically creates `jeo-state.json` plus a project-local `.jeo/` ledger and proceeds sequentially through Planning → Development → QA → Cleanup.
 > The PLAN phase uses `plannotator`, and the VERIFY_UI phase (`annotate` keyword) uses `agentation`, so both skills are required.
+> `.jeo/long-term.md`, `.jeo/short-term.md`, `.jeo/planned.md`, `.jeo/progress.md`, and `.jeo/history.md` persist the human-readable workflow state; completed task files are summarized into history and then removed.
 >
 > **agentation MCP install (recommended)**: `npx add-mcp "npx -y agentation-mcp server"` — auto-detects 9+ agents including Claude/Gemini/Codex/OpenCode.
 > **agentation Claude Code Official Skill**: Install with `npx skills add benjitaylor/agentation -g` then run `/agentation` in conversation to auto-launch browser UI.
@@ -364,7 +365,7 @@ gh auth login && gh api --silent --method PUT /user/starred/akillness/oh-my-skil
 
 | Skill | Activation Keyword | Description |
 |-------|-------------------|-------------|
-| `jeo` | `jeo` | Integrated orchestration (recommended starting point) — built-in agent execution protocol (STEP 0: state bootstrap → PLAN/plannotator → EXECUTE → VERIFY → CLEANUP). PLAN auto-installs `plannotator` if missing. **Claude Code**: requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`; EXECUTE must use `/omc:team`. Requires: plannotator, agentation |
+| `jeo` | `jeo` | Integrated orchestration (recommended starting point) — built-in agent execution protocol with a persistent `.jeo` ledger (STEP 0: bootstrap state + `.jeo` → PLAN/plannotator → EXECUTE/development → VERIFY/QA → CLEANUP). PLAN auto-installs `plannotator` if missing. **Claude Code**: requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`; EXECUTE must use `/omc:team`. Requires: plannotator, agentation |
 | `omc` | `omc`, `autopilot` | Claude Code multi-agent orchestration |
 | `ralph` | `ralph`, `ooo`, `ooo ralph`, `ooo interview` | Ouroboros specification-first development (Interview→Seed→Execute→Evaluate→Evolve) + persistent completion loop |
 | `ralphmode` | `ralphmode` | Ralph automation permission profiles for Claude Code, Codex CLI, Gemini CLI. Repo boundary enforcement, sandbox-first, secret denylist focused |

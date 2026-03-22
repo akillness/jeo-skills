@@ -75,6 +75,7 @@ graph TD
 | Change | Details |
 |--------|---------|
 | **obsidian-plugin: Obsidian plugin development skill** | Build, validate, and publish Obsidian plugins. Covers all 27 `eslint-plugin-obsidianmd` rules, interactive boilerplate generator (`create-plugin.js`), memory management, type safety, accessibility (MANDATORY), CSS variables, vault API, and community submission validation. 75 → **76 skills**. |
+| **jeo v1.6.0: `.jeo` planning ledger flow** | JEO now creates a project-local `.jeo/` folder and uses it as a durable planning/development/QA ledger: `long-term.md`, `short-term.md`, `planned.md`, `progress.md`, `history.md`, plus queued/active task files. Completed task files are summarized into history then removed; follow-up work can be queued without resetting the workflow. |
 | **skill-autoresearch: eval-driven skill optimization** | New skill for improving an existing `SKILL.md` with binary evals, mutation loops, baseline scoring, and dashboard/changelog artifacts. Keeps the original `autoresearch` ML workflow separate. 76 → **77 skills**. |
 | **bmad-orchestrator v1.3.0: SSD + TEA integration** | BMAD now ships with **Structured System Design (SSD)** — TEA (Task-Execute-Architect) cycles embedded in each phase. New `/ssd-cycle`, `/ssd-decompose`, `/ssd-execute`, `/ssd-validate`, `/ssd-advance` commands. Each phase decomposes into agent-routed tasks, executes via `/team`, and validates with `fabric -p bmad_ssd_phase_review` before plannotator human review. Includes `patterns/bmad_ssd_phase_review/` fabric pattern. |
 | **firebase-cli: Firebase CLI skill** | Full Firebase CLI (firebase-tools) coverage — deploy, emulate, import/export, manage users, CI/CD. 74 → **75 skills**. |
@@ -154,7 +155,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
-| `jeo` | `jeo`, `annotate` | All | Integrated orchestration: PLAN→EXECUTE→VERIFY→CLEANUP |
+| `jeo` | `jeo`, `annotate` | All | Integrated orchestration with `.jeo` ledger: Planning→Development→QA→Cleanup |
 | `omc` | `omc`, `autopilot` | Claude | 32-agent orchestration layer with model routing |
 | `omx` | `omx` | Codex | Multi-agent orchestration for Codex CLI |
 | `ohmg` | `ohmg` | Gemini | Antigravity multi-agent framework |
@@ -316,12 +317,13 @@ TOON (Token-Oriented Object Notation) compresses the skill catalog and auto-inje
 
 Complete automated pipeline: Plan (ralph+plannotator) → Execute (team/bmad) → Verify (agent-browser) → UI Feedback (agentation) → Cleanup.
 
+JEO now also maintains a project-local `.jeo/` ledger so the workflow has durable long-term rules, short-term system/test plans, queued work, live progress notes, and append-only history across sessions.
+
 | Phase | Tool | Description |
 |-------|------|-------------|
-| Plan | ralph + plannotator | Visual plan review → Approve/Feedback |
-| Execute | omc team / bmad | Parallel agent execution |
-| Verify | agent-browser | Browser behavior verification |
-| Verify UI | agentation (`annotate`) | UI annotation → fix loop |
+| Plan / Planning | ralph + plannotator + `.jeo/short-term.md` | Visual plan review plus system/unit/flow test planning |
+| Execute / Development | omc team / bmad + `.jeo/tasks/active/*.md` | Parallel agent execution with active work-item tracking |
+| Verify / QA | agent-browser + agentation (`annotate`) | Browser behavior verification, annotation fixes, QA evidence |
 | Cleanup | worktree-cleanup.sh | Auto worktree cleanup |
 
 ### plannotator — Visual Plan Review

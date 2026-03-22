@@ -1,0 +1,35 @@
+{
+  "skill_name": "jeo",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "jeo로 이 기능을 진행하는데 .jeo 폴더에 장기계획, 단기계획, 진행상황, 히스토리를 같이 관리해줘",
+      "expected_output": "The skill creates and maintains a .jeo ledger with long-term, short-term, planned, progress, and history docs.",
+      "assertions": [
+        "The workflow mentions `.jeo/long-term.md`, `.jeo/short-term.md`, `.jeo/planned.md`, `.jeo/progress.md`, and `.jeo/history.md`.",
+        "The workflow includes an initialization command for `.jeo`.",
+        "The workflow explains that completed task files are removed after history is written."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "annotate 포함 jeo 플로우로 UI 기능을 만들건데 기획, 개발, QA 단계를 문서로 같이 추적해줘",
+      "expected_output": "The skill maps JEO phases to planning, development, and QA and updates the .jeo docs during each stage.",
+      "assertions": [
+        "The workflow explicitly maps PLAN to planning, EXECUTE to development, and VERIFY/VERIFY_UI to QA.",
+        "The workflow updates `.jeo/progress.md` or the active task file on each stage transition.",
+        "The workflow still preserves agentation and plannotator gate rules."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "이전에 끝낸 작업을 history로 참고하면서 새 follow-up 작업을 .jeo에 추가해 이어서 진행해줘",
+      "expected_output": "The skill supports appending new queued work and using history as the durable reference after task files are removed.",
+      "assertions": [
+        "The workflow includes a command or step for queueing additional work items.",
+        "The workflow keeps `history.md` append-only.",
+        "The workflow supports starting the next queued item without rebuilding the whole ledger."
+      ]
+    }
+  ]
+}

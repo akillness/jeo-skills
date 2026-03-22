@@ -1,35 +1,118 @@
 {
   "skill": "jeo",
+  "status": "complete",
+  "updated_at": "2026-03-22",
+  "runs_per_experiment": 5,
+  "experiment_interval": "deterministic static-doc eval",
+  "budget_cap": "stop on plateau or 100% pass rate",
+  "test_inputs": [
+    "Start a JEO task and keep long-term and short-term planning notes in sync across planning, development, and QA.",
+    "Resume an in-flight JEO task, check prior progress, and update the active task ledger before continuing.",
+    "Finish a JEO task, mark it done, remove the completed task file, and queue any follow-up work."
+  ],
   "evals": [
-    {"id": 1, "name": "Token Budget", "question": "Is the skill under 6000 tokens?"},
-    {"id": 2, "name": "No Code Duplication", "question": "Are checkpoint/error-recovery snippets deduplicated?"},
-    {"id": 3, "name": "Execution Steps Clear", "question": "Can an agent identify all STEPs and sequence quickly?"},
-    {"id": 4, "name": "Platform Paths Separated", "question": "Are platform paths clearly branched?"},
-    {"id": 5, "name": "NEVER Rules Visible", "question": "Are NEVER rules within 3 lines of where they apply?"},
-    {"id": 6, "name": "Self-Contained", "question": "Can agent execute without reading FLOW.md?"}
+    {
+      "id": "dot_jeo_ledger",
+      "name": ".jeo ledger",
+      "question": "Does the skill define a persistent .jeo folder with long-term, short-term, planned, progress, and history documents?",
+      "pass": "The skill names the .jeo folder and its core files explicitly.",
+      "fail": "The .jeo ledger is missing or only implied."
+    },
+    {
+      "id": "phase_mapping",
+      "name": "Phase mapping",
+      "question": "Does the skill map JEO phases to planning, development, QA, and cleanup clearly enough to operate step by step?",
+      "pass": "The skill shows how plan, execute, verify, and cleanup map onto the delivery stages.",
+      "fail": "The stage mapping is unclear or incomplete."
+    },
+    {
+      "id": "ledger_commands",
+      "name": "Ledger commands",
+      "question": "Does the skill expose concrete commands for initializing, queueing, starting, staging, progressing, completing, and checking status?",
+      "pass": "The skill documents jeo-project-sync.py commands for the full lifecycle.",
+      "fail": "One or more core commands are absent."
+    },
+    {
+      "id": "completion_lifecycle",
+      "name": "Completion lifecycle",
+      "question": "Does the skill explain how completed work is checked off, summarized into history, and removed from task files while allowing follow-up planning?",
+      "pass": "Completion updates planned/history state, removes the task file, and supports queueing new work.",
+      "fail": "The completion lifecycle is incomplete."
+    },
+    {
+      "id": "standardized_shape",
+      "name": "Standardized shape",
+      "question": "Does the skill now satisfy the expected skill-standardization shape, including Instructions and Examples?",
+      "pass": "The validator-relevant sections are present and the skill is structurally complete.",
+      "fail": "The required sections are still missing."
+    },
+    {
+      "id": "gates_preserved",
+      "name": "Existing gates preserved",
+      "question": "Does the skill keep the existing plan, execution, verification, and cleanup gates instead of replacing them with a separate process?",
+      "pass": "The new .jeo workflow layers onto the existing JEO gates.",
+      "fail": "The core orchestration gates are weakened or removed."
+    }
   ],
   "experiments": [
     {
       "id": 0,
+      "status": "baseline",
+      "description": "Fixed 3-scenario baseline; the pre-change JEO skill preserved orchestration gates but did not define a persistent .jeo ledger or a full completion lifecycle.",
       "score": 1,
       "max_score": 6,
-      "pass_rate": "17%",
-      "status": "baseline",
-      "description": "Original SKILL.md — 1178 lines, 14746 tokens, massive duplication",
-      "evals": {"1": false, "2": false, "3": false, "4": true, "5": false, "6": false},
-      "lines": 1178,
-      "tokens_approx": 14746
+      "pass_rate": 0.1667,
+      "per_eval": {
+        "dot_jeo_ledger": false,
+        "phase_mapping": false,
+        "ledger_commands": false,
+        "completion_lifecycle": false,
+        "standardized_shape": false,
+        "gates_preserved": true
+      },
+      "run_samples": [
+        { "run": 1, "score": 1, "max_score": 6, "pass_rate": 0.1667 },
+        { "run": 2, "score": 1, "max_score": 6, "pass_rate": 0.1667 },
+        { "run": 3, "score": 1, "max_score": 6, "pass_rate": 0.1667 },
+        { "run": 4, "score": 1, "max_score": 6, "pass_rate": 0.1667 },
+        { "run": 5, "score": 1, "max_score": 6, "pass_rate": 0.1667 }
+      ],
+      "lines": 351,
+      "tokens_approx": 3484
     },
     {
       "id": 1,
+      "status": "keep",
+      "description": "Added a project-local .jeo ledger, a sync script for task lifecycle updates, explicit planning-development-QA mapping, and completion rules that archive history and remove finished task files.",
       "score": 6,
       "max_score": 6,
-      "pass_rate": "100%",
-      "status": "keep",
-      "description": "Comprehensive restructure: extract checkpoint code to jeo-state-update.py, remove duplication, trim installation/config/troubleshooting to essentials, tighten step boundaries, move NEVER rules near context",
-      "evals": {"1": true, "2": true, "3": true, "4": true, "5": true, "6": true},
-      "lines": 329,
-      "tokens_approx": 3000
+      "pass_rate": 1.0,
+      "per_eval": {
+        "dot_jeo_ledger": true,
+        "phase_mapping": true,
+        "ledger_commands": true,
+        "completion_lifecycle": true,
+        "standardized_shape": true,
+        "gates_preserved": true
+      },
+      "run_samples": [
+        { "run": 1, "score": 6, "max_score": 6, "pass_rate": 1.0 },
+        { "run": 2, "score": 6, "max_score": 6, "pass_rate": 1.0 },
+        { "run": 3, "score": 6, "max_score": 6, "pass_rate": 1.0 },
+        { "run": 4, "score": 6, "max_score": 6, "pass_rate": 1.0 },
+        { "run": 5, "score": 6, "max_score": 6, "pass_rate": 1.0 }
+      ],
+      "lines": 466,
+      "tokens_approx": 5070
     }
-  ]
+  ],
+  "summary": {
+    "baseline_score": 1,
+    "baseline_max_score": 6,
+    "final_score": 6,
+    "final_max_score": 6,
+    "keep_count": 1,
+    "discard_count": 0,
+    "stop_reason": "Reached 100% pass rate on the fixed eval suite."
+  }
 }

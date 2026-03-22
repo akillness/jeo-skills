@@ -43,6 +43,7 @@ def now_iso():
 def init_state(task):
     return {
         "phase": "plan",
+        "delivery_stage": "planning",
         "task": task,
         "plan_approved": False,
         "plan_gate_status": "pending",
@@ -56,6 +57,11 @@ def init_state(task):
         "checkpoint": None,
         "created_at": now_iso(),
         "updated_at": now_iso(),
+        "jeo": {
+            "root": ".jeo",
+            "active_task": None,
+            "last_sync_at": None
+        },
         "agentation": {
             "active": False,
             "session_id": None,

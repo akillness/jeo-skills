@@ -1,17 +1,17 @@
 # JEO Skill Autoresearch Changelog
 
-## Experiment 0 — baseline
+## Experiment 0 - baseline
 
 Score: 1/6
-Change: None (original SKILL.md)
-Reasoning: Establish baseline before mutations
-Result: 1178 lines, ~14746 tokens. Massive Python checkpoint duplication (4x), steps buried in code walls, FLOW.md duplicates 80% of content
-Remaining failures: Token budget, duplication, step clarity, NEVER rule placement, self-containedness
+Change: None. Pre-change `SKILL.md.baseline`
+Reasoning: Establish the fixed baseline before mutating the JEO workflow.
+Result: Existing JEO gates were present, but the skill had no persistent `.jeo` planning ledger, no task lifecycle commands, no completion cleanup flow, and it still failed skill-standardization shape checks.
+Remaining failures: `.jeo` ledger, phase mapping, ledger commands, completion lifecycle, standardized shape
 
-## Experiment 1 — keep
+## Experiment 1 - keep
 
 Score: 6/6
-Change: Comprehensive restructure — extract checkpoint/error/resume code into `scripts/jeo-state-update.py`, remove 4x duplicated Python blocks, trim installation/config/troubleshooting to essentials, tighten step boundaries with clear entry/exit conditions, consolidate NEVER rules at top and inline at each step
-Reasoning: All 5 failing evals stem from the same root cause — the skill tried to be both an execution protocol AND a reference manual. The duplication, bloat, and buried instructions are symptoms of mixing concerns. Fixing token budget requires fixing all of them simultaneously.
-Result: 329 lines (~3000 tokens) — 72% line reduction, 80% token reduction. All 6 evals pass. Steps are scannable, rules are visible, state management is one script call.
-Remaining failures: None — score plateau reached at 100%
+Change: Added a `.jeo` project ledger section, introduced `scripts/jeo-project-sync.py`, mapped JEO onto planning/development/QA stages, documented completion cleanup, and restored missing `Instructions` and `Examples` structure.
+Reasoning: The request was not just to add more prose. It required a durable operating model that can survive long-running work, checkpoints, and follow-up tasks. That means the skill needs both documented artifacts and an explicit sync mechanism.
+Result: The skill now explains how to initialize `.jeo`, keep long-term and short-term plans current, record progress during planning/development/QA, complete work by checking it off and removing the finished task file, and queue new work without breaking the existing JEO gates. The validator passes and the fixed eval suite reaches 6/6.
+Remaining failures: None
