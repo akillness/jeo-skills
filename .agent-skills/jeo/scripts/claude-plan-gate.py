@@ -303,6 +303,18 @@ def main() -> int:
                 "Revise plan.md and re-enter plan mode to reopen plannotator.",
             )
             return 0
+        elif rc == 32:
+            # EADDRINUSE / sandbox blocked — plannotator UI cannot bind a port.
+            # Enter conversation approval mode: emit a clear instruction so the agent
+            # outputs plan.md and waits for explicit user approval before proceeding.
+            emit_hook_decision(
+                "allow",
+                "plannotator UI unavailable (port bind blocked / sandbox). "
+                "CONVERSATION APPROVAL MODE: output plan.md to the user in full, "
+                "ask them to reply 'approve' or provide specific feedback. "
+                "Do NOT proceed to development until explicit approval is received.",
+            )
+            return 0
         else:
             if stderr:
                 print(f"[JEO][PLAN] plannotator stderr: {stderr.strip()}", file=sys.stderr)

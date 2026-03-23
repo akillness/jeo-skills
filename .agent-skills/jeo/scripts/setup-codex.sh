@@ -454,6 +454,7 @@ def main() -> int:
                     stderr=subprocess.STDOUT,
                     text=True,
                     env=get_plannotator_env(cwd),
+                    timeout=1800,  # 30 min guard — prevents infinite block if plannotator UI is never closed
                 )
                 if result.stdout:
                     print(result.stdout.strip())

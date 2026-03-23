@@ -139,9 +139,14 @@ jeo_commands = {
         ),
     },
     "jeo-annotate": {
-        "description": "Process agentation annotations (VERIFY_UI loop)",
+        "description": "Process agentation annotations (VERIFY_UI loop with submit gate)",
         "template": (
-            "Run agentation watch loop: acknowledge, implement fix, resolve, and repeat until pending count is 0."
+            "VERIFY_UI submit-gate protocol: "
+            "1. Set state phase=verify_ui and agentation.submit_gate_status=waiting_for_submit. "
+            "2. WAIT for explicit user submit (Send Annotations / onSubmit). "
+            "   Do NOT poll /pending before submit — draft annotations must not be processed. "
+            "3. After submit, set agentation.submit_gate_status=submitted. "
+            "4. Then run agentation watch loop: GET /pending, acknowledge, implement fix, resolve, repeat until count=0."
         ),
     },
     "jeo-verify": {

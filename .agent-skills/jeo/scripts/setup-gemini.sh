@@ -72,9 +72,11 @@ if [[ "$PHASE" != "plan" ]]; then
 fi
 
 # AfterAgent 이중 실행 방지: 에이전트가 직접 호출한 턴이면 건너뜀
-# Use the same TMPDIR resolution as plannotator-plan-loop.sh so the paths match on macOS
+# Use the same TMPDIR resolution as plannotator-plan-loop.sh so the paths match on macOS.
+# Include a per-project SESSION_KEY so concurrent projects don't share the same lock file.
 _TMPDIR="${TMPDIR:-${TMP:-${TEMP:-/tmp}}}"
-LOCK_FILE="${_TMPDIR}/jeo-plannotator-direct.lock"
+_SESSION_KEY="$(python3 -c "import hashlib,os; print(hashlib.md5(os.getcwd().encode()).hexdigest()[:8])" 2>/dev/null || echo "default")"
+LOCK_FILE="${_TMPDIR}/jeo-plannotator-direct-${_SESSION_KEY}.lock"
 if [[ -f "$LOCK_FILE" ]]; then
   rm -f "$LOCK_FILE"
   exit 0
@@ -110,7 +112,8 @@ if [[ -n "$LOOP_SCRIPT" ]]; then
     echo "[JEO] run PLAN gate in local TTY to use manual fallback approve/feedback." >&2
   fi
 else
-  PLANNOTATOR_RUNTIME_HOME="/tmp/jeo-$(python3 -c "import hashlib,os; print(f'/tmp/jeo-{hashlib.md5(os.getcwd().encode()).hexdigest()[:8]}')")/.plannotator"
+  _SESSION_KEY_RT="$(python3 -c "import hashlib,os; print(hashlib.md5(os.getcwd().encode()).hexdigest()[:8])" 2>/dev/null || echo "default")"
+  PLANNOTATOR_RUNTIME_HOME="${_TMPDIR:-${TMPDIR:-/tmp}}/jeo-${_SESSION_KEY_RT}/.plannotator"
   mkdir -p "$PLANNOTATOR_RUNTIME_HOME"
   python3 -c "
 import json, sys

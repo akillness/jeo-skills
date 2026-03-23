@@ -54,8 +54,8 @@ mkdir -p "$FEEDBACK_DIR" "$RUNTIME_HOME"
 
 # Write the Gemini AfterAgent lock file so the safety-net hook knows plannotator
 # is being managed by this script and skips its own redundant launch.
-# The hook checks for this file and consumes (deletes) it on finding it.
-touch "${_TMPDIR}/jeo-plannotator-direct.lock"
+# Includes SESSION_KEY (project hash) so concurrent projects don't share the file.
+touch "${_TMPDIR}/jeo-plannotator-direct-${SESSION_KEY}.lock"
 
 if [[ -z "$FEEDBACK_FILE" ]]; then
   FEEDBACK_FILE="${FEEDBACK_DIR}/plannotator_feedback.txt"
