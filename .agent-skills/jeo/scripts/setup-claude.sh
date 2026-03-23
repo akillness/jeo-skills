@@ -79,30 +79,29 @@ if plannotator_entry is None:
     changed = True
 
 plan_hooks = plannotator_entry.setdefault("hooks", [])
-existing_plan_hook = next(
-    (
-        h for h in plan_hooks
-        if h.get("command", "").startswith("plannotator")
+
+# Remove ALL plannotator-related hooks (raw binary calls or old gate wrappers)
+# to prevent duplicate entries that cause hook format errors.
+clean_hooks = [
+    h for h in plan_hooks
+    if not (
+        h.get("command", "").strip() == "plannotator"
+        or h.get("command", "").startswith("plannotator ")
         or "claude-plan-gate.py" in h.get("command", "")
-    ),
-    None,
-)
-if existing_plan_hook is None:
-    plan_hooks.append({
-        "type": "command",
-        "command": plan_gate_cmd,
-        "timeout": 1800,
-    })
+    )
+]
+if len(clean_hooks) != len(plan_hooks):
+    plan_hooks[:] = clean_hooks
     changed = True
-    messages.append("✓ JEO plan gate wrapper added to ExitPlanMode")
-else:
-    if existing_plan_hook.get("command") != plan_gate_cmd:
-        existing_plan_hook["command"] = plan_gate_cmd
-        changed = True
-    if existing_plan_hook.get("timeout") != 1800:
-        existing_plan_hook["timeout"] = 1800
-        changed = True
-    messages.append("✓ JEO plan gate wrapper synced")
+
+# Add the single correct gate wrapper
+plan_hooks.append({
+    "type": "command",
+    "command": plan_gate_cmd,
+    "timeout": 1800,
+})
+changed = True
+messages.append("✓ JEO plan gate wrapper set in ExitPlanMode (duplicates removed)")
 
 env = settings.setdefault("env", {})
 if env.get("CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS") != "1":
