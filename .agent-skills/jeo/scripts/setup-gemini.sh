@@ -72,7 +72,9 @@ if [[ "$PHASE" != "plan" ]]; then
 fi
 
 # AfterAgent 이중 실행 방지: 에이전트가 직접 호출한 턴이면 건너뜀
-LOCK_FILE="/tmp/jeo-plannotator-direct.lock"
+# Use the same TMPDIR resolution as plannotator-plan-loop.sh so the paths match on macOS
+_TMPDIR="${TMPDIR:-${TMP:-${TEMP:-/tmp}}}"
+LOCK_FILE="${_TMPDIR}/jeo-plannotator-direct.lock"
 if [[ -f "$LOCK_FILE" ]]; then
   rm -f "$LOCK_FILE"
   exit 0
