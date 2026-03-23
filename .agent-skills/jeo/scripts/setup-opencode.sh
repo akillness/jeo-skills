@@ -56,10 +56,12 @@ else
   mkdir -p "$(dirname "$OPENCODE_JSON")"
   [[ -f "$OPENCODE_JSON" ]] && cp "$OPENCODE_JSON" "${OPENCODE_JSON}.jeo.bak"
 
+  JEO_SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)" \
   OPENCODE_JSON_PATH="$OPENCODE_JSON" python3 - <<'PYEOF'
 import json, os
 
 config_path = os.environ["OPENCODE_JSON_PATH"]
+jeo_skill_dir = os.environ.get("JEO_SKILL_DIR", "")
 try:
     with open(config_path) as f:
         config = json.load(f)
@@ -106,14 +108,25 @@ if isinstance(legacy_instructions, str):
 elif legacy_instructions is not None and not isinstance(legacy_instructions, list):
     config["instructions"] = [str(legacy_instructions)]
 
+# Use absolute paths if JEO_SKILL_DIR is available; fall back to relative paths
+# so the commands work even when launched from the project root.
+_plan_loop = (
+    f"{jeo_skill_dir}/scripts/plannotator-plan-loop.sh"
+    if jeo_skill_dir else ".agent-skills/jeo/scripts/plannotator-plan-loop.sh"
+)
+_worktree_cleanup = (
+    f"{jeo_skill_dir}/scripts/worktree-cleanup.sh"
+    if jeo_skill_dir else ".agent-skills/jeo/scripts/worktree-cleanup.sh"
+)
+
 # Register JEO slash commands in OpenCode's "command" table
 commands = config.setdefault("command", {})
 jeo_commands = {
     "jeo-plan": {
         "description": "JEO planning workflow (ralph + plannotator)",
         "template": (
-            "Write plan.md, then run mandatory PLAN gate: "
-            "bash .agent-skills/jeo/scripts/plannotator-plan-loop.sh plan.md /tmp/plannotator_feedback.txt 3. "
+            f"Write plan.md, then run mandatory PLAN gate: "
+            f"bash {_plan_loop} plan.md /tmp/plannotator_feedback.txt 3. "
             "If plannotator is missing, the PLAN gate auto-installs it first. "
             "This waits for approve/feedback, restarts dead sessions up to 3 times, "
             "and asks whether to stop PLAN after repeated failures."
@@ -137,20 +150,24 @@ jeo_commands = {
     },
     "jeo-cleanup": {
         "description": "Cleanup worktrees after JEO completion",
-        "template": "Run: bash .agent-skills/jeo/scripts/worktree-cleanup.sh",
+        "template": f"Run: bash {_worktree_cleanup}",
     },
 }
 
-added = 0
+added = updated = 0
 for name, spec in jeo_commands.items():
     if name not in commands:
         commands[name] = spec
         added += 1
+    elif commands[name].get("template") != spec.get("template"):
+        # Refresh template so absolute paths stay current after re-running setup
+        commands[name]["template"] = spec["template"]
+        updated += 1
 
-if added:
-    print(f"\u2713 Added {added} JEO command(s) to opencode.json")
+if added or updated:
+    print(f"\u2713 JEO commands: {added} added, {updated} updated in opencode.json")
 else:
-    print("\u2713 JEO commands already present")
+    print("\u2713 JEO commands already up to date")
 
 with open(config_path, "w") as f:
     json.dump(config, f, indent=2)

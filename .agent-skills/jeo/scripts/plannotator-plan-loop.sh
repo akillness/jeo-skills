@@ -52,6 +52,11 @@ FEEDBACK_DIR="${_TMPDIR}/jeo-${SESSION_KEY}"
 RUNTIME_HOME="${FEEDBACK_DIR}/.plannotator"
 mkdir -p "$FEEDBACK_DIR" "$RUNTIME_HOME"
 
+# Write the Gemini AfterAgent lock file so the safety-net hook knows plannotator
+# is being managed by this script and skips its own redundant launch.
+# The hook checks for this file and consumes (deletes) it on finding it.
+touch "${_TMPDIR}/jeo-plannotator-direct.lock"
+
 if [[ -z "$FEEDBACK_FILE" ]]; then
   FEEDBACK_FILE="${FEEDBACK_DIR}/plannotator_feedback.txt"
 else
