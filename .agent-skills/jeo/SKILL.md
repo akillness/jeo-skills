@@ -214,10 +214,17 @@ python3 scripts/jeo-state-update.py set team_available $TEAM_AVAILABLE
 | Claude Code without team | **Error** — run `bash scripts/setup-claude.sh`, enable `AGENT_TEAMS=1`, restart |
 | Codex / Gemini / OpenCode | BMAD fallback: `/workflow-init` then `/workflow-status` |
 
-While executing, keep the active `.jeo/tasks/active/*.md` file current:
-- planning checklist → done when the plan and risks are locked
-- development checklist → code, docs, and unit tests updated
-- QA checklist → fill only after STEP 3 evidence exists
+While executing, keep the active `.jeo/tasks/active/*.md` file current using:
+
+```bash
+# When plan and risks are locked
+python3 scripts/jeo-project-sync.py update-checklist planning "Scope captured in plan.md" --done
+python3 scripts/jeo-project-sync.py update-checklist planning "Risks and completion criteria written" --done
+
+# As code, docs, and tests are completed
+python3 scripts/jeo-project-sync.py update-checklist development "System changes implemented" --done
+python3 scripts/jeo-project-sync.py update-checklist development "Unit tests added or updated" --done
+```
 
 **NEVER** fall back to single-agent execution in Claude Code.
 
@@ -240,10 +247,16 @@ python3 scripts/jeo-project-sync.py progress "Entered QA verification."
 2. `annotate` keyword detected → **enter STEP 3.1**
 3. Otherwise → **enter STEP 4**
 
-4. Record QA evidence in `.jeo/short-term.md`:
-   - unit tests added or updated
-   - flow/integration coverage
-   - browser or annotation-based verification results
+4. Record QA evidence in `.jeo/short-term.md` using:
+
+   ```bash
+   python3 scripts/jeo-project-sync.py record-evidence "unit tests: X passing, Y added"
+   python3 scripts/jeo-project-sync.py record-evidence "flow check: <description>"
+   python3 scripts/jeo-project-sync.py record-evidence "browser verification: <outcome>"
+   # Then mark QA checklist items complete
+   python3 scripts/jeo-project-sync.py update-checklist qa "Flow or integration checks recorded" --done
+   python3 scripts/jeo-project-sync.py update-checklist qa "Browser / annotation verification recorded when applicable" --done
+   ```
 
 ---
 

@@ -9,6 +9,8 @@ Usage:
   python3 scripts/jeo-project-sync.py stage <planning|development|qa|done>
   python3 scripts/jeo-project-sync.py progress "<message>"
   python3 scripts/jeo-project-sync.py complete <slug> "<summary>"
+  python3 scripts/jeo-project-sync.py update-checklist <planning|development|qa> "<item>" [--done]
+  python3 scripts/jeo-project-sync.py record-evidence "<evidence>"
   python3 scripts/jeo-project-sync.py status
 """
 from __future__ import annotations
@@ -66,6 +68,16 @@ def write_text(path: Path, text: str) -> None:
 def ensure_file(path: Path, content: str) -> None:
     if not path.exists():
         write_text(path, content)
+
+
+def read_state() -> dict:
+    """Read the current jeo-state.json; returns {} if missing or invalid."""
+    if not STATE_FILE.exists():
+        return {}
+    try:
+        return json.loads(STATE_FILE.read_text())
+    except Exception:
+        return {}
 
 
 def sync_state(*, stage: str | None = None, active_task: str | None | object = ...):
@@ -270,6 +282,14 @@ def mark_planned_complete(slug: str, title: str) -> None:
 
 
 def set_stage(stage: str) -> None:
+    # Guard: development requires plan_approved=true in state
+    if stage == "development":
+        state = read_state()
+        if state and not state.get("plan_approved", False):
+            raise SystemExit(
+                "ERROR: Cannot enter development — plan_approved is not true in state.\n"
+                "Approve the plan via plannotator before proceeding to development."
+            )
     text = read_text(PROGRESS)
     pattern = re.compile(r"- .+ <!-- jeo-stage -->")
     replacement = f"- {stage} <!-- jeo-stage -->"
@@ -297,6 +317,7 @@ def set_active_task(slug: str | None) -> None:
 def append_progress(message: str) -> None:
     text = read_text(PROGRESS).rstrip() + f"\n- {now_iso()} {message}\n"
     write_text(PROGRESS, text)
+    sync_state()  # keep last_sync_at current after every .jeo write
 
 
 def append_history(slug: str, title: str, summary: str) -> None:
@@ -355,6 +376,15 @@ def start_next() -> None:
 
 
 def complete_task(slug: str, summary: str) -> None:
+    # Guard: verify state active_task matches the slug being completed
+    state = read_state()
+    if state:
+        state_slug = (state.get("jeo") or {}).get("active_task")
+        if state_slug and state_slug != slug:
+            raise SystemExit(
+                f"ERROR: State active_task is '{state_slug}' but completing '{slug}'.\n"
+                "Verify the correct slug before completing to avoid deleting the wrong task file."
+            )
     active_path = slug_file(ACTIVE_DIR, slug)
     queued_path = slug_file(QUEUED_DIR, slug)
     path = active_path if active_path.exists() else queued_path
@@ -367,6 +397,71 @@ def complete_task(slug: str, summary: str) -> None:
     if active_line and active_line.group(1) == slug:
         set_active_task(None)
     append_progress(f"Completed `{slug}` and removed its task file.")
+
+
+def update_checklist(phase: str, item: str, done: bool) -> None:
+    """Mark a checklist item done/undone in the active task file."""
+    active = sorted(ACTIVE_DIR.glob("*.md"))
+    if not active:
+        raise SystemExit("No active task found — cannot update checklist.")
+    path = active[0]
+    text = path.read_text()
+    phase_headers = {
+        "planning": "## Planning checklist",
+        "development": "## Development checklist",
+        "qa": "## QA checklist",
+    }
+    section_header = phase_headers.get(phase)
+    if not section_header:
+        raise SystemExit(f"Unknown phase '{phase}'. Use: planning, development, qa.")
+
+    lines = text.splitlines()
+    in_section = False
+    found = False
+    box = "x" if done else " "
+    for i, line in enumerate(lines):
+        if line.strip() == section_header:
+            in_section = True
+            continue
+        if in_section and line.startswith("## "):
+            break
+        if in_section:
+            m = re.match(r"- \[[ x]\] (.+)", line)
+            if m and item.lower() in m.group(1).lower():
+                lines[i] = f"- [{box}] {m.group(1)}"
+                found = True
+                break
+
+    if not found:
+        # Append new item under the correct section
+        new_lines = []
+        in_section = False
+        inserted = False
+        for line in lines:
+            if line.strip() == section_header:
+                in_section = True
+            elif in_section and line.startswith("## ") and not inserted:
+                new_lines.append(f"- [{box}] {item}")
+                inserted = True
+                in_section = False
+            new_lines.append(line)
+        if not inserted:
+            new_lines.append(f"- [{box}] {item}")
+        lines = new_lines
+
+    write_text(path, "\n".join(lines) + "\n")
+    status_char = "✓" if done else "○"
+    append_progress(f"Checklist ({phase}) {status_char} {item}")
+
+
+def record_evidence(evidence: str) -> None:
+    """Append QA evidence to .jeo/short-term.md and sync state."""
+    text = read_text(SHORT_TERM).rstrip()
+    if "## QA Evidence" not in text:
+        text += "\n\n## QA Evidence\n"
+    text += f"- {now_iso()} {evidence}\n"
+    write_text(SHORT_TERM, text)
+    append_progress(f"QA evidence recorded: {evidence[:80]}")
 
 
 def status() -> None:
@@ -415,6 +510,15 @@ def parse_args() -> argparse.Namespace:
     p_complete.add_argument("slug")
     p_complete.add_argument("summary", nargs="+")
 
+    p_checklist = sub.add_parser("update-checklist")
+    p_checklist.add_argument("phase", choices=["planning", "development", "qa"])
+    p_checklist.add_argument("item", nargs="+")
+    p_checklist.add_argument("--done", action="store_true", default=True)
+    p_checklist.add_argument("--undone", dest="done", action="store_false")
+
+    p_evidence = sub.add_parser("record-evidence")
+    p_evidence.add_argument("evidence", nargs="+")
+
     sub.add_parser("status")
     return parser.parse_args()
 
@@ -436,6 +540,10 @@ def main() -> None:
         append_progress(" ".join(args.message))
     elif args.command == "complete":
         complete_task(args.slug, " ".join(args.summary))
+    elif args.command == "update-checklist":
+        update_checklist(args.phase, " ".join(args.item), args.done)
+    elif args.command == "record-evidence":
+        record_evidence(" ".join(args.evidence))
     elif args.command == "status":
         status()
 
