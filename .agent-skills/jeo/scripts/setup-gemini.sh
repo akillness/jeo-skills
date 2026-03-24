@@ -358,6 +358,27 @@ PYEOF
       echo "$JEO_SECTION" >> "$GEMINI_MD"
       ok "JEO instructions added to ~/.gemini/GEMINI.md"
     fi
+
+    # Fix: patch plannotator section if it instructs /tmp/plan.md (AfterAgent hook needs $PWD/plan.md)
+    if [[ -f "$GEMINI_MD" ]] && grep -q "/tmp/plan.md" "$GEMINI_MD"; then
+      python3 - <<PYEOF
+import re, os
+path = os.path.expanduser("~/.gemini/GEMINI.md")
+text = open(path).read()
+
+# Replace /tmp/plan.md instruction with $PWD/plan.md
+text = text.replace("cat > /tmp/plan.md << PLAN", "cat > plan.md << PLAN  # must be in \$PWD — AfterAgent hook detects \$PWD/plan.md")
+text = re.sub(r"open\(/tmp/plan\.md\)", "open('plan.md')", text)
+# Remove misleading ExitPlanMode reference for Gemini
+text = text.replace(
+    "Run the python3 JSON command above (manual mode) OR let ExitPlanMode hook trigger automatically",
+    "에이전트 턴 종료 시 AfterAgent 훅이 자동으로 plannotator 실행"
+)
+open(path, "w").write(text)
+print("patched plannotator section: /tmp/plan.md → plan.md (\$PWD)")
+PYEOF
+      ok "plannotator section path patched in GEMINI.md"
+    fi
   fi
 fi
 
