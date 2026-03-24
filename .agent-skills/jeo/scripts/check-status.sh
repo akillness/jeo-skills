@@ -61,8 +61,10 @@ info "AI Tool Integrations"
 
 # Claude Code
 if [[ -f "${HOME}/.claude/settings.json" ]]; then
-  if grep -Eq "claude-plan-gate.py|plannotator" "${HOME}/.claude/settings.json" 2>/dev/null; then
-    ok "Claude Code — plannotator hook configured"; ((PASS++)) || true
+  if grep -q "claude-plan-gate.py" "${HOME}/.claude/settings.json" 2>/dev/null; then
+    ok "Claude Code — JEO plan gate hook configured (claude-plan-gate.py)"; ((PASS++)) || true
+  elif grep -q '"plannotator"' "${HOME}/.claude/settings.json" 2>/dev/null; then
+    warn "Claude Code — raw plannotator hook detected (JEO state tracking disabled). Run: bash scripts/setup-claude.sh"; ((WARN++)) || true
   else
     warn "Claude Code — plannotator hook not found in settings.json"; ((WARN++)) || true
   fi

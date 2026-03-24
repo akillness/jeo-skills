@@ -14,7 +14,7 @@ metadata:
   tags: jeo, orchestration, ralph, plannotator, agentation, annotate, agentui, UI-review, team, bmad, omc, omx, ohmg, agent-browser, multi-agent, workflow, worktree-cleanup, browser-verification, ui-feedback
   platforms: Claude, Codex, Gemini, OpenCode
   keyword: jeo
-  version: 1.6.0
+  version: 1.6.1
   source: akillness/oh-my-skills
 ---
 
@@ -119,6 +119,33 @@ mkdir -p .omc/state .omc/plans .omc/logs
 python3 scripts/jeo-state-update.py init "<detected task>"
 python3 scripts/jeo-project-sync.py init "<detected task>"
 python3 scripts/jeo-project-sync.py start-next
+```
+
+**Claude Code only — hook self-check (run inline):**
+
+Verify the `ExitPlanMode` hook is using `claude-plan-gate.py`, not raw `plannotator`. If misconfigured, auto-repair:
+
+```python
+import json, os, subprocess, sys
+
+p = os.path.expanduser("~/.claude/settings.json")
+if os.path.exists(p):
+    s = json.load(open(p))
+    for entry in s.get("hooks", {}).get("PermissionRequest", []):
+        if entry.get("matcher") == "ExitPlanMode":
+            for h in entry.get("hooks", []):
+                cmd = h.get("command", "")
+                if (cmd.strip() == "plannotator" or cmd.startswith("plannotator ")) and "claude-plan-gate" not in cmd:
+                    print("[JEO][WARN] Hook uses raw plannotator — state tracking disabled. Auto-repairing...", file=sys.stderr)
+                    for candidate in [
+                        os.path.join(os.getcwd(), ".agent-skills/jeo/scripts/setup-claude.sh"),
+                        os.path.expanduser("~/.claude/skills/jeo/scripts/setup-claude.sh"),
+                        os.path.expanduser("~/.agent-skills/jeo/scripts/setup-claude.sh"),
+                    ]:
+                        if os.path.exists(candidate):
+                            subprocess.run(["bash", candidate], check=False)
+                            print("[JEO] Hook repaired. Restart Claude Code to apply.", file=sys.stderr)
+                            break
 ```
 
 Notify the user:
