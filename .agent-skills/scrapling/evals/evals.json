@@ -1,0 +1,59 @@
+{
+  "skill_name": "scrapling",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Scrapling으로 정적 사이트에서 글 목록만 빨리 긁고 싶은데 어떤 방식으로 시작해야 해?",
+      "expected_output": "The skill starts with Fetcher or CLI get mode, not browser or stealth by default.",
+      "assertions": [
+        "The response recommends `Fetcher` or `scrapling extract get` first",
+        "The response treats static scraping as the lightest path"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "SPA 대시보드라 JS 렌더링이 필요해. Scrapling에서 뭐를 써야 해?",
+      "expected_output": "The skill switches to DynamicFetcher or CLI fetch and mentions browser waiting controls.",
+      "assertions": [
+        "The response recommends `DynamicFetcher`, `DynamicSession`, or `scrapling extract fetch`",
+        "The response mentions controls such as `network_idle` or `wait_selector`"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Cloudflare Turnstile이 있는 사이트를 Scrapling으로 처리하고 싶어.",
+      "expected_output": "The skill escalates to stealth mode and mentions Cloudflare solving options.",
+      "assertions": [
+        "The response recommends `StealthyFetcher`, `StealthySession`, or `stealthy-fetch`",
+        "The response mentions `solve_cloudflare` or equivalent stealth controls"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "사이트 구조가 바뀌어도 같은 요소를 계속 찾고 싶어. Scrapling adaptive 기능 어떻게 써?",
+      "expected_output": "The skill explains adaptive scraping with save and recovery behavior.",
+      "assertions": [
+        "The response mentions `adaptive=True`",
+        "The response mentions `auto_save=True` or `save`/`retrieve`/`relocate`"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "에이전트가 Scrapling 도구를 MCP로 쓰게 만들고 싶어.",
+      "expected_output": "The skill explains the MCP server command and the basic tool surface.",
+      "assertions": [
+        "The response includes `scrapling mcp` or the wrapper script",
+        "The response mentions MCP tools such as `get`, `fetch`, or `stealthy_fetch`"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "단건 스크래핑이 아니라 사이트 전체를 따라가며 수집해야 해.",
+      "expected_output": "The skill moves from fetchers to spiders and mentions crawl controls.",
+      "assertions": [
+        "The response recommends Scrapling spiders",
+        "The response mentions concurrency, follow-up requests, or `crawldir` checkpointing"
+      ]
+    }
+  ]
+}

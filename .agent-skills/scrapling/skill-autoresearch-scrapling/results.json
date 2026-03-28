@@ -1,0 +1,67 @@
+{
+  "skill_name": "scrapling",
+  "status": "complete",
+  "updated_at": "2026-03-28T05:45:00Z",
+  "evals": [
+    {
+      "id": "fetcher-escalation",
+      "question": "Does the skill start with Fetcher and escalate to DynamicFetcher or StealthyFetcher only when needed?"
+    },
+    {
+      "id": "adaptive-detail",
+      "question": "Does the skill explicitly explain adaptive scraping with `adaptive=True` and either `auto_save=True` or manual save and relocate methods?"
+    },
+    {
+      "id": "cli-coverage",
+      "question": "Does the skill cover CLI extract, shell, and practical output handling for `.md`, `.html`, or `.txt`?"
+    },
+    {
+      "id": "mcp-coverage",
+      "question": "Does the skill explain `scrapling mcp` and the MCP tool surface well enough for agent integration?"
+    },
+    {
+      "id": "spider-guidance",
+      "question": "Does the skill tell the user when to switch from fetchers to spiders and mention concurrency or checkpointing?"
+    },
+    {
+      "id": "reference-support",
+      "question": "Does the skill point to scripts and focused reference files instead of overloading the main SKILL.md?"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment": 0,
+      "score": 4,
+      "max_score": 6,
+      "pass_rate": 0.6667,
+      "status": "baseline",
+      "description": "Initial draft described the broad Scrapling surface but lacked concrete adaptive recovery instructions and operational detail for CLI and escalation decisions.",
+      "kept": true,
+      "per_eval": {
+        "fetcher-escalation": true,
+        "adaptive-detail": false,
+        "cli-coverage": false,
+        "mcp-coverage": true,
+        "spider-guidance": true,
+        "reference-support": true
+      }
+    },
+    {
+      "experiment": 1,
+      "score": 6,
+      "max_score": 6,
+      "pass_rate": 1.0,
+      "status": "keep",
+      "description": "Kept mutation: added fetcher escalation rules, explicit adaptive examples, wrapper scripts, CLI output guidance, and sharper criteria for switching to spiders.",
+      "kept": true,
+      "per_eval": {
+        "fetcher-escalation": true,
+        "adaptive-detail": true,
+        "cli-coverage": true,
+        "mcp-coverage": true,
+        "spider-guidance": true,
+        "reference-support": true
+      }
+    }
+  ]
+}

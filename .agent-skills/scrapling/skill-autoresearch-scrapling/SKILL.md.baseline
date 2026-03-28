@@ -1,0 +1,47 @@
+---
+name: scrapling
+description: >
+  Install and use Scrapling for web scraping through Python code, CLI commands,
+  stealth fetching, adaptive scraping, and spiders.
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+compatibility: Requires Python 3.10+ and browser dependencies for dynamic flows.
+license: BSD-3-Clause
+metadata:
+  version: "baseline"
+---
+
+# scrapling - Baseline Draft
+
+Use Scrapling when the user needs to scrape websites, crawl pages, use dynamic browsers, bypass some protections, or expose scraping tools through MCP.
+
+## When to use this skill
+
+- Install Scrapling
+- Choose fetchers
+- Use CLI extract commands
+- Use MCP
+- Write spiders
+
+## Instructions
+
+### Step 1: Install
+
+Install Scrapling with all extras and run `scrapling install`.
+
+### Step 2: Choose a fetcher
+
+- `Fetcher` for simple HTTP
+- `DynamicFetcher` for JavaScript
+- `StealthyFetcher` for protections
+
+### Step 3: Parse the result
+
+Use CSS, XPath, text selection, and adaptive features.
+
+### Step 4: Operate the CLI
+
+Use `scrapling extract` or `scrapling shell`.
+
+### Step 5: Use MCP or spiders when needed
+
+Use `scrapling mcp` for agent tools and spiders for larger crawls.

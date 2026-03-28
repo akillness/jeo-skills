@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-03-28T03:15:00Z",
-  "skill_count": 78,
+  "generated": "2026-03-28T05:45:00Z",
+  "skill_count": 79,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -22,6 +22,7 @@
       "genkit",
       "looker-studio-bigquery",
       "monitoring-observability",
+      "scrapling",
       "security-best-practices",
       "strix",
       "system-environment-setup",
@@ -678,6 +679,57 @@
         "Write"
       ],
       "commands": []
+    },
+    {
+      "name": "scrapling",
+      "description": "Install, configure, and operate Scrapling for adaptive web scraping with parser-first HTML extraction, fast HTTP fetchers, browser rendering, stealth anti-bot options, CLI extraction, and optional MCP or spider workflows. Use when you need to scrape or crawl websites, choose between static, JavaScript-rendered, or protected targets, parse HTML with CSS or XPath, write Python scrapers, or run Scrapling from the terminal. Triggers on: scrapling, scrape website, crawl site, adaptive scraping, stealthy fetch, cloudflare scraping, mcp scraping server, browser scraping cli, scrapling spider.",
+      "category": "infrastructure",
+      "path": "infrastructure/scrapling/SKILL.md",
+      "tags": [
+        "scrapling",
+        "web-scraping",
+        "crawling",
+        "adaptive-scraping",
+        "mcp",
+        "cli",
+        "playwright",
+        "cloudflare",
+        "spiders",
+        "python"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": [
+        {
+          "command": "bash scripts/install.sh --profile fetchers",
+          "source": "infrastructure/scrapling/SKILL.md"
+        },
+        {
+          "command": "bash scripts/run-extract.sh get \"https://example.com\" content.md --css-selector \"article\"",
+          "source": "infrastructure/scrapling/SKILL.md"
+        },
+        {
+          "command": "bash scripts/run-extract.sh fetch \"https://example.com\" content.md --network-idle",
+          "source": "infrastructure/scrapling/SKILL.md"
+        },
+        {
+          "command": "bash scripts/run-mcp.sh --http --host 127.0.0.1 --port 8000",
+          "source": "infrastructure/scrapling/SKILL.md"
+        }
+      ]
     },
     {
       "name": "security-best-practices",

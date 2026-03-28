@@ -131,9 +131,9 @@ fi
 
 ---
 
-### Step 2: Full Installation (78 in-repo skills)
+### Step 2: Full Installation (79 in-repo skills)
 
-> **Installs or overwrites all 78 in-repo skills. Existing skills are updated to the latest version. Skills not in this list are preserved. Step 0 already created directories — no duplicate mkdir needed.**
+> **Installs or overwrites all 79 in-repo skills. Existing skills are updated to the latest version. Skills not in this list are preserved. Step 0 already created directories — no duplicate mkdir needed.**
 
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
@@ -162,6 +162,7 @@ npx skills add https://github.com/akillness/oh-my-skills \
   --skill ralph --skill ralphmode --skill react-best-practices \
   --skill react-grab --skill remotion-video-production \
   --skill research-paper-writing --skill responsive-design \
+  --skill scrapling \
   --skill security-best-practices --skill skill-autoresearch \
   --skill skill-standardization --skill sprint-retrospective \
   --skill standup-meeting --skill state-management \
@@ -382,6 +383,7 @@ gh auth login && gh api --silent --method PUT /user/starred/akillness/oh-my-skil
 | `skill-autoresearch` | `skill-autoresearch`, `optimize this skill`, `eval my skill` | Eval-driven SKILL.md optimization loop — benchmark a skill, mutate one instruction at a time, keep only score-improving changes |
 | `agentation` | `annotate`, `UI검토`, `agentui` | UI annotation → agent code modification. Install: `npx add-mcp "npx -y agentation-mcp server"` (Universal) or `npx skills add benjitaylor/agentation -g` → `/agentation` (Claude Code Official Skill). Local-first architecture, offline operation, session continuity. |
 | `clawteam` | `clawteam`, `agent swarm`, `spawn agents` | Framework-agnostic multi-agent coordination CLI — file-based state, task queues, inboxes, kanban board |
+| `scrapling` | `scrapling`, `adaptive scraping`, `stealthy fetch` | Adaptive web scraping with parser-first HTML extraction, fetcher escalation (`Fetcher` → `DynamicFetcher` → `StealthyFetcher`), CLI extraction, and optional MCP/spider workflows |
 | `strix` | `strix`, `ai pentest`, `vulnerability scan cli` | Strix CLI operations — Docker preflight, provider config, local/GitHub/live target scans, scan modes, headless CI/CD, internal skill awareness |
 | `research-paper-writing` | `research paper`, `academic paper` | ML/CV/NLP academic paper writing — section structure, paragraph flow, reviewer-facing presentation |
 | `omx` | `omx` | Codex CLI multi-agent orchestration |
