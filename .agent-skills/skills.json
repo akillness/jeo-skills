@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-03-28T05:45:00Z",
-  "skill_count": 79,
+  "generated": "2026-03-28T06:30:00Z",
+  "skill_count": 80,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -78,6 +78,7 @@
       "git-workflow",
       "google-workspace",
       "npm-git-install",
+      "obsidian-cli",
       "obsidian-plugin",
       "opencontext",
       "workflow-automation"
@@ -2462,6 +2463,57 @@
         {
           "command": "git checkout main",
           "source": "utilities/npm-git-install/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "obsidian-cli",
+      "description": "Install, enable, and operate the Obsidian CLI for terminal-driven note management, vault targeting, file and task workflows, plugin and theme control, developer tooling, and TUI exploration. Use when you need to script or automate a running Obsidian app from the command line, open or modify notes, target a specific vault or file, copy command output, reload a plugin under development, or inspect the app UI from the terminal. Triggers on: obsidian cli, obsidian command line, obsidian terminal, obsidian vault command, obsidian daily note cli, obsidian devtools cli, obsidian plugin reload.",
+      "category": "utilities",
+      "path": "utilities/obsidian-cli/SKILL.md",
+      "tags": [
+        "obsidian",
+        "cli",
+        "notes",
+        "vault",
+        "daily-notes",
+        "tasks",
+        "plugins",
+        "themes",
+        "developer-tools",
+        "tui"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": [
+        {
+          "command": "bash scripts/install.sh",
+          "source": "utilities/obsidian-cli/SKILL.md"
+        },
+        {
+          "command": "bash scripts/run-command.sh --vault Notes daily",
+          "source": "utilities/obsidian-cli/SKILL.md"
+        },
+        {
+          "command": "bash scripts/run-command.sh search query=\"meeting notes\" --copy",
+          "source": "utilities/obsidian-cli/SKILL.md"
+        },
+        {
+          "command": "bash scripts/run-command.sh plugin:reload id=my-plugin",
+          "source": "utilities/obsidian-cli/SKILL.md"
         }
       ]
     },

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>obsidian-cli skill autoresearch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #f2f0ff;
+      --panel: #ffffff;
+      --ink: #1c1830;
+      --muted: #6f6a85;
+      --line: #d8d3ee;
+      --keep: #2563eb;
+      --base: #8b5e00;
+    }
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at top right, rgba(100, 116, 255, 0.16), transparent 26%),
+        linear-gradient(180deg, #f6f4ff, var(--bg));
+      color: var(--ink);
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    h1, h2 { margin: 0 0 12px; }
+    p { color: var(--muted); line-height: 1.5; }
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin: 24px 0;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 24px rgba(33, 24, 71, 0.06);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+    th { background: #ece8fb; }
+    .status-keep { color: var(--keep); font-weight: 700; }
+    .status-baseline { color: var(--base); font-weight: 700; }
+    code {
+      background: #ece8fb;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>obsidian-cli skill autoresearch</h1>
+    <p>Baseline versus improved prompt behavior for the local <code>obsidian-cli</code> skill. The kept mutation made desktop registration, vault targeting, URI callbacks, and Headless separation explicit.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Baseline</h2>
+        <p>Experiment 0 scored 4/6 and left vault ordering, callbacks, and Headless boundaries too implicit.</p>
+      </div>
+      <div class="card">
+        <h2>Final</h2>
+        <p>Experiment 1 scored 6/6 after adding exact enablement steps, targeting rules, URI safety, and Linux registration cautions.</p>
+      </div>
+      <div class="card">
+        <h2>Focus</h2>
+        <p>Binary evals tested install flow, targeting, everyday commands, developer tooling, URI callbacks, and the desktop-versus-headless distinction.</p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Experiment</th>
+          <th>Status</th>
+          <th>Score</th>
+          <th>Summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0</td>
+          <td class="status-baseline">baseline</td>
+          <td>4 / 6</td>
+          <td>Baseline established the command surface but under-specified vault targeting, URI callbacks, and safe workflow boundaries.</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td class="status-keep">keep</td>
+          <td>6 / 6</td>
+          <td>Kept mutation made enablement, targeting, developer commands, URI callbacks, and headless cautions operationally explicit.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

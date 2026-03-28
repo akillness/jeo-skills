@@ -1,0 +1,67 @@
+{
+  "skill_name": "obsidian-cli",
+  "status": "complete",
+  "updated_at": "2026-03-28T07:10:00Z",
+  "evals": [
+    {
+      "id": "enablement",
+      "question": "Does the skill explain that Obsidian CLI is enabled from the desktop app and verified from the shell?"
+    },
+    {
+      "id": "vault-and-file-targeting",
+      "question": "Does the skill explain `vault=` ordering and the difference between `file=` and `path=`?"
+    },
+    {
+      "id": "everyday-and-copy",
+      "question": "Does the skill cover everyday commands such as daily, search, or read and mention `--copy`?"
+    },
+    {
+      "id": "developer-commands",
+      "question": "Does the skill include developer commands like `plugin:reload`, `dev:screenshot`, or `eval`?"
+    },
+    {
+      "id": "uri-callbacks",
+      "question": "Does the skill cover `obsidian://` actions, encoding, and callback parameters?"
+    },
+    {
+      "id": "headless-distinction",
+      "question": "Does the skill clearly distinguish desktop CLI automation from Obsidian Headless?"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment": 0,
+      "score": 4,
+      "max_score": 6,
+      "pass_rate": 0.6667,
+      "status": "baseline",
+      "description": "Baseline draft captured the broad Obsidian CLI purpose but did not operationalize vault targeting, callback behavior, or the boundary between CLI and Headless workflows.",
+      "kept": true,
+      "per_eval": {
+        "enablement": true,
+        "vault-and-file-targeting": false,
+        "everyday-and-copy": true,
+        "developer-commands": true,
+        "uri-callbacks": false,
+        "headless-distinction": false
+      }
+    },
+    {
+      "experiment": 1,
+      "score": 6,
+      "max_score": 6,
+      "pass_rate": 1.0,
+      "status": "keep",
+      "description": "Kept mutation: added exact enablement steps, file targeting rules, URI callback coverage, Linux registration cautions, and an explicit Headless distinction.",
+      "kept": true,
+      "per_eval": {
+        "enablement": true,
+        "vault-and-file-targeting": true,
+        "everyday-and-copy": true,
+        "developer-commands": true,
+        "uri-callbacks": true,
+        "headless-distinction": true
+      }
+    }
+  ]
+}

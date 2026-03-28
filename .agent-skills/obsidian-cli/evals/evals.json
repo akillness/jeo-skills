@@ -1,0 +1,59 @@
+{
+  "skill_name": "obsidian-cli",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Obsidian CLI를 처음 쓰려는데 어떻게 켜고 확인해야 해?",
+      "expected_output": "The skill explains that CLI support is enabled from the desktop app and verified from the shell.",
+      "assertions": [
+        "The response mentions enabling Command line interface from Obsidian settings",
+        "The response includes `obsidian help` or `bash scripts/install.sh`"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "특정 vault에서 검색하고 특정 노트를 읽고 싶어. file이랑 path는 뭐가 달라?",
+      "expected_output": "The skill explains vault-first targeting and distinguishes `file=` from `path=`.",
+      "assertions": [
+        "The response states that `vault=` must come before the command",
+        "The response distinguishes wikilink-style `file=` from exact `path=`"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "매일 노트에 할 일 추가하고 결과를 클립보드로 복사하고 싶어.",
+      "expected_output": "The skill uses daily note commands and `--copy` correctly.",
+      "assertions": [
+        "The response mentions `daily:append`",
+        "The response mentions `--copy`"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "내가 개발 중인 Obsidian 플러그인을 CLI로 리로드하고 스크린샷도 찍고 싶어.",
+      "expected_output": "The skill provides the developer command family and treats it as app-stateful tooling.",
+      "assertions": [
+        "The response mentions `plugin:reload`",
+        "The response mentions `dev:screenshot` or `devtools`"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "외부 앱에서 obsidian:// 링크로 노트 열고 새 노트 만들고 싶은데 callback도 가능해?",
+      "expected_output": "The skill explains URI actions, encoding, and callbacks.",
+      "assertions": [
+        "The response mentions `obsidian://open` or `obsidian://new`",
+        "The response mentions URI encoding and `x-success` or `x-error`"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "데스크톱 앱 없이 CLI만으로 sync하고 싶어.",
+      "expected_output": "The skill distinguishes the desktop CLI from Headless workflows.",
+      "assertions": [
+        "The response states that standard CLI targets the desktop app",
+        "The response points the user to Obsidian Headless as the separate workflow"
+      ]
+    }
+  ]
+}

@@ -131,9 +131,9 @@ fi
 
 ---
 
-### Step 2: Full Installation (79 in-repo skills)
+### Step 2: Full Installation (80 in-repo skills)
 
-> **Installs or overwrites all 79 in-repo skills. Existing skills are updated to the latest version. Skills not in this list are preserved. Step 0 already created directories — no duplicate mkdir needed.**
+> **Installs or overwrites all 80 in-repo skills. Existing skills are updated to the latest version. Skills not in this list are preserved. Step 0 already created directories — no duplicate mkdir needed.**
 
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
@@ -155,7 +155,7 @@ npx skills add https://github.com/akillness/oh-my-skills \
   --skill looker-studio-bigquery \
   --skill marketing-automation --skill marketing-skills-collection \
   --skill monitoring-observability --skill npm-git-install \
-  --skill obsidian-plugin --skill ohmg --skill omc --skill omx \
+  --skill obsidian-cli --skill obsidian-plugin --skill ohmg --skill omc --skill omx \
   --skill opencontext --skill pattern-detection \
   --skill performance-optimization --skill plannotator --skill playwriter \
   --skill presentation-builder --skill prompt-repetition \
@@ -373,6 +373,7 @@ gh auth login && gh api --silent --method PUT /user/starred/akillness/oh-my-skil
 | `ralphmode` | `ralphmode` | Ralph automation permission profiles for Claude Code, Codex CLI, Gemini CLI. Repo boundary enforcement, sandbox-first, secret denylist focused |
 | `plannotator` | `plan` | Plan review + feedback loop |
 | `vibe-kanban` | `kanbanview` | Kanban board |
+| `obsidian-cli` | `obsidian cli`, `obsidian terminal`, `obsidian plugin reload` | Operate the official Obsidian CLI — enablement, TUI usage, vault and file targeting, note and task automation, plugin reload, developer commands, platform troubleshooting |
 | `obsidian-plugin` | `obsidian plugin`, `create obsidian plugin` | Build, validate, and publish Obsidian plugins — 27 eslint-plugin-obsidianmd rules, interactive boilerplate generator, memory management, accessibility (MANDATORY), CSS variables, community submission validation |
 | `bmad` | `bmad` | Structured phase-based BMAD workflow orchestration — Analysis → Planning → Solutioning → Implementation, multi-agent execution via `/team` |
 | `bmad-gds` | `bmad-gds` | Game Development Studio (Unity/Unreal/Godot) |

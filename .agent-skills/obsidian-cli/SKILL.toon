@@ -1,0 +1,39 @@
+N:obsidian-cli
+D:[obsidian-cli] Install, enable, and operate Obsidian CLI for terminal-driven note automation against a running Obsidian app. Covers single-command mode, the interactive TUI, vault and file targeting, daily notes, search, developer commands, and obsidian:// URI workflows.
+G:obsidian cli terminal automation vault uri developer-tools notes tui
+
+U[8]:
+  Enable and verify the official Obsidian CLI registration inside the desktop app
+  Run one-shot commands or open the interactive TUI with autocomplete and history
+  Target a specific vault with vault=name or vault=id
+  Target a specific note with file=name or path=exact/path.md
+  Automate daily notes search create read tags tasks and diff workflows
+  Use developer commands such as devtools plugin:reload dev:screenshot and eval
+  Copy output with --copy and use format parameters on listing commands
+  Launch obsidian:// URIs with encoded values paneType and callback parameters
+
+S[6]{n,action,details}:
+  1,Enable,bash scripts/install.sh and confirm Command line interface is enabled in Settings -> General
+  2,Choose mode,use bash scripts/run-command.sh for one-shot commands or no args for the TUI
+  3,Target correctly,put vault= first then use file= for wikilink resolution or path= for exact vault-root paths
+  4,Operate,run daily search read create tags tasks or diff based on the job
+  5,Develop,use plugin:reload devtools dev:screenshot and eval for plugin or theme work
+  6,Integrate,use bash scripts/open-uri.sh with obsidian://open new daily unique or search actions when external apps are involved
+
+R[8]:
+  The CLI is for the desktop app and Headless Sync is a separate workflow
+  The app must be running or the first CLI command will launch it
+  Official docs currently mention the Obsidian 1.12 installer and early access 1.12.x requirements
+  vault= must come before the command when targeting a non-default vault
+  file= uses wikilink-style resolution while path= requires the exact vault-root path
+  --copy is the simplest way to hand output to other tools
+  URI values must be encoded and paneType=window is desktop-only
+  daily and unique URI actions depend on their respective plugins being enabled
+
+E[6]{type,command}:
+  Verify,bash scripts/install.sh
+  TUI,bash scripts/run-command.sh
+  Daily,bash scripts/run-command.sh daily
+  Search,bash scripts/run-command.sh vault="My Vault" search query="meeting notes"
+  Plugin reload,bash scripts/run-command.sh plugin:reload id=my-plugin
+  URI,bash scripts/open-uri.sh 'obsidian://open?vault=my%20vault&file=my%20note'

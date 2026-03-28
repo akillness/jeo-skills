@@ -1,0 +1,40 @@
+---
+name: obsidian-cli
+description: >
+  Use Obsidian CLI from the terminal to automate a running Obsidian app,
+  target vaults and files, use developer commands, and launch obsidian:// URIs.
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+compatibility: Requires the desktop Obsidian app and CLI registration from settings.
+metadata:
+  version: "baseline"
+---
+
+# obsidian-cli - Baseline Draft
+
+Use Obsidian CLI when the user wants command-line control over Obsidian.
+
+## When to use this skill
+
+- Enable the CLI
+- Run commands
+- Target vaults and files
+- Use developer commands
+- Use URIs
+
+## Instructions
+
+### Step 1: Enable the CLI
+
+Turn on Command line interface in Obsidian settings.
+
+### Step 2: Run commands
+
+Use `obsidian help` or open the TUI with `obsidian`.
+
+### Step 3: Target files and vaults
+
+Use `vault=`, `file=`, and `path=`.
+
+### Step 4: Use developer commands or URIs when needed
+
+Use commands like plugin reload and `obsidian://` links for integrations.
