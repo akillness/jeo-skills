@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-03-20T02:38:21Z",
-  "skill_count": 77,
+  "generated": "2026-03-28T03:15:00Z",
+  "skill_count": 78,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -23,6 +23,7 @@
       "looker-studio-bigquery",
       "monitoring-observability",
       "security-best-practices",
+      "strix",
       "system-environment-setup",
       "vercel-deploy"
     ],
@@ -273,7 +274,12 @@
         "stateful",
         "session"
       ],
-      "platforms": [],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
       "allowed_tools": [
         "Read",
         "Write",
@@ -718,6 +724,62 @@
         {
           "command": "SENDGRID_API_KEY=SG.xxx",
           "source": "infrastructure/security-best-practices/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "strix",
+      "description": "Install, configure, and operate Strix for AI-driven application security testing. Use when you need to run authorized vulnerability scans against local codebases, GitHub repositories, staging URLs, domains, or CI pipelines; configure Docker and LLM providers; choose quick, standard, or deep scan depth; or pass authenticated testing instructions to Strix. Triggers on: strix, ai pentest, vulnerability scan cli, appsec scan, bug bounty automation, strix ci, strix docker, strix scan mode, strix instruction file, headless security scan.",
+      "category": "infrastructure",
+      "path": "infrastructure/strix/SKILL.md",
+      "tags": [
+        "strix",
+        "appsec",
+        "pentest",
+        "vulnerability-scan",
+        "ci-cd",
+        "docker",
+        "llm",
+        "security-testing",
+        "bug-bounty",
+        "browser-automation"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "scripts": [
+        {
+          "file": "scripts/install.sh",
+          "description": "Install Strix, verify Docker, and optionally pull the sandbox image"
+        },
+        {
+          "file": "scripts/run-scan.sh",
+          "description": "Wrapper for local, GitHub, live URL, or multi-target Strix scans"
+        },
+        {
+          "file": "scripts/ci-scan.sh",
+          "description": "Minimal headless CI wrapper with Docker and model checks"
+        }
+      ],
+      "commands": [
+        {
+          "command": "bash scripts/install.sh",
+          "source": "infrastructure/strix/scripts/install.sh"
+        },
+        {
+          "command": "bash scripts/run-scan.sh --target ./app --scan-mode quick --non-interactive",
+          "source": "infrastructure/strix/scripts/run-scan.sh"
+        },
+        {
+          "command": "bash scripts/ci-scan.sh ./",
+          "source": "infrastructure/strix/scripts/ci-scan.sh"
         }
       ]
     },

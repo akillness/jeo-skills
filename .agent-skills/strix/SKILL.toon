@@ -1,0 +1,39 @@
+N:strix
+D:[strix] Install, configure, and operate Strix for AI-driven application security testing. Covers local directories, GitHub repositories, live URLs, multi-target scans, LLM provider setup, Docker sandbox preflight, scan modes, headless CI/CD, and Strix internal skill awareness.
+G:strix appsec pentest vulnerability-scan ci-cd docker llm security-testing bug-bounty browser-automation
+
+U[8]:
+  Install Strix and verify Docker plus sandbox readiness
+  Configure STRIX_LLM, LLM_API_KEY, LLM_API_BASE, and optional runtime flags
+  Run white-box scans against local repos or directories
+  Run black-box or grey-box scans against authorized URLs, domains, or IPs
+  Pass credentials and scope using --instruction or --instruction-file
+  Choose quick, standard, or deep based on speed versus coverage
+  Run headless scans in CI/CD and interpret exit codes 0, 1, and 2
+  Explain Strix internal skills and how they differ from oh-my-skills
+
+S[6]{n,action,details}:
+  1,Install,bash scripts/install.sh OR curl -sSL https://strix.ai/install | bash
+  2,Configure,export STRIX_LLM=openai/gpt-5.4 && export LLM_API_KEY=your-api-key
+  3,Target,choose local path GitHub repo URL live URL domain IP or repeated --target entries
+  4,Scan,run strix directly or bash scripts/run-scan.sh with --scan-mode quick|standard|deep
+  5,Review,inspect strix_runs/<run-name> and use exit codes 0=no findings 1=error 2=findings
+  6,Automate,use -n in CI and prefer quick for pull requests with Docker-enabled runners
+
+R[8]:
+  Only test assets you own or are explicitly authorized to assess
+  Docker is mandatory for the local CLI workflow and first run may pull the sandbox image
+  Use --instruction-file for credentials scope exclusions and rules of engagement
+  Default CI scans to quick; reserve standard or deep for scheduled or release gates
+  Keep secrets in env vars or CI secrets instead of scattering them inline
+  Combine source and live targets when you need better remediation context
+  Distinguish this repo's strix skill from Strix internal skills under strix/skills
+  Optional flags worth knowing: PERPLEXITY_API_KEY STRIX_DISABLE_BROWSER STRIX_REASONING_EFFORT STRIX_TELEMETRY
+
+E[6]{type,command}:
+  Install,bash scripts/install.sh
+  Local repo,strix --target ./app --scan-mode standard
+  GitHub repo,strix --target https://github.com/org/repo
+  Authenticated target,strix --target https://staging.example.com --instruction-file ./instruction.md
+  Multi-target,strix -t https://github.com/org/repo -t https://staging.example.com
+  CI quick scan,strix -n --target ./ --scan-mode quick

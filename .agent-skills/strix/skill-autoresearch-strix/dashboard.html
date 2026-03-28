@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strix Skill Autoresearch</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f3ec;
+      --panel: #fffdf9;
+      --ink: #1f1f1f;
+      --muted: #6c665d;
+      --line: #ddd2c2;
+      --accent: #0f766e;
+      --warn: #a16207;
+    }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      background: radial-gradient(circle at top, #fffaf1 0%, var(--bg) 60%);
+      color: var(--ink);
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+    h1, h2 {
+      margin: 0 0 12px;
+    }
+    p {
+      color: var(--muted);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(31, 31, 31, 0.06);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      background: #f2eadf;
+    }
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .keep {
+      background: rgba(15, 118, 110, 0.12);
+      color: var(--accent);
+    }
+    .baseline {
+      background: rgba(161, 98, 7, 0.12);
+      color: var(--warn);
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, monospace;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Strix Skill Autoresearch</h1>
+    <p>Baseline versus final mutation log for <code>.agent-skills/strix/SKILL.md</code>.</p>
+    <div id="summary" class="grid"></div>
+    <h2>Experiments</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Experiment</th>
+          <th>Status</th>
+          <th>Score</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </main>
+  <script type="application/json" id="fallback-data">
+    {
+      "skill_name": "strix",
+      "status": "complete",
+      "updated_at": "2026-03-28T03:15:00Z",
+      "experiments": [
+        {
+          "experiment": 0,
+          "score": 5,
+          "max_score": 6,
+          "pass_rate": 0.8333,
+          "status": "baseline",
+          "description": "Initial draft emphasized install, targets, and scan modes but only implied CI exit-code behavior and internal-skill separation."
+        },
+        {
+          "experiment": 1,
+          "score": 6,
+          "max_score": 6,
+          "pass_rate": 1.0,
+          "status": "keep",
+          "description": "Kept mutation: added explicit exit codes, CI framing, and a dedicated internal-skills step with its own reference file."
+        }
+      ]
+    }
+  </script>
+  <script>
+    const fallback = JSON.parse(document.getElementById("fallback-data").textContent);
+
+    async function loadData() {
+      try {
+        const response = await fetch("results.json", { cache: "no-store" });
+        if (!response.ok) throw new Error("Failed to load results.json");
+        return await response.json();
+      } catch {
+        return fallback;
+      }
+    }
+
+    function metric(label, value) {
+      const el = document.createElement("section");
+      el.className = "card";
+      el.innerHTML = `<strong>${label}</strong><div>${value}</div>`;
+      return el;
+    }
+
+    function render(data) {
+      const summary = document.getElementById("summary");
+      const rows = document.getElementById("rows");
+      const first = data.experiments[0];
+      const last = data.experiments[data.experiments.length - 1];
+
+      summary.append(
+        metric("Skill", data.skill_name),
+        metric("Status", data.status),
+        metric("Baseline", `${first.score}/${first.max_score}`),
+        metric("Final", `${last.score}/${last.max_score}`)
+      );
+
+      for (const exp of data.experiments) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${exp.experiment}</td>
+          <td><span class="pill ${exp.status === "keep" ? "keep" : "baseline"}">${exp.status}</span></td>
+          <td>${exp.score}/${exp.max_score} (${Math.round(exp.pass_rate * 100)}%)</td>
+          <td>${exp.description}</td>
+        `;
+        rows.appendChild(tr);
+      }
+    }
+
+    loadData().then(render);
+  </script>
+</body>
+</html>

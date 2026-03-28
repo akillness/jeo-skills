@@ -1,0 +1,52 @@
+{
+  "skill_name": "strix",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Strix로 우리 로컬 저장소를 빠르게 PR 보안 점검하고 싶어.",
+      "expected_output": "The skill installs or verifies Strix, requires Docker, configures STRIX_LLM, and uses headless quick scan syntax.",
+      "assertions": [
+        "The response includes `strix -n --target ./ --scan-mode quick` or an equivalent quick CI command",
+        "The response requires Docker to be available",
+        "The response mentions `STRIX_LLM` configuration"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "GitHub 리포지토리랑 스테이징 URL을 같이 넣어서 Strix로 검사하고 싶어.",
+      "expected_output": "The skill supports repeated targets and shows a multi-target command with both source and runtime surfaces.",
+      "assertions": [
+        "The response uses repeated `--target` or `-t` arguments",
+        "The response supports both a GitHub repository URL and a live URL in the same workflow"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "인증 필요한 테스트라 계정 정보랑 제외 범위를 Strix에 넘기고 싶어.",
+      "expected_output": "The skill recommends `--instruction` or `--instruction-file` and keeps scope explicit.",
+      "assertions": [
+        "The response mentions `--instruction` or `--instruction-file`",
+        "The response treats credentials and exclusions as explicit scoped input"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "GitHub Actions에서 Strix 돌릴 건데 취약점 나오면 실패하게 하고 싶어.",
+      "expected_output": "The skill explains CI headless mode, exit codes, and provides a GitHub Actions-friendly command.",
+      "assertions": [
+        "The response mentions exit code `2` for findings",
+        "The response uses headless mode with `-n` or `--non-interactive`",
+        "The response is compatible with GitHub Actions or CI runners"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Strix 내부 skill이랑 여기 oh-my-skills의 skill이 같은 개념이야?",
+      "expected_output": "The skill clearly distinguishes Strix internal markdown knowledge packs from this repo's agent skills.",
+      "assertions": [
+        "The response states they are different systems",
+        "The response mentions Strix internal skill categories or examples"
+      ]
+    }
+  ]
+}

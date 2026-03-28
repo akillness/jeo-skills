@@ -1,0 +1,67 @@
+---
+name: strix
+description: >
+  Install and use Strix for AI-driven security scans against local projects,
+  repositories, and authorized web targets. Use when you need Strix setup, scan
+  mode selection, or CI execution guidance. Triggers on: strix, appsec scan,
+  vulnerability scan cli, strix ci, ai pentest.
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+compatibility: Requires Docker access and an LLM provider or compatible endpoint.
+license: Apache-2.0
+metadata:
+  tags: strix, appsec, pentest, vulnerability-scan, ci-cd, docker, llm
+  version: "0.1-baseline"
+  source: https://github.com/usestrix/strix
+---
+
+# strix - AI-Driven Application Security Testing
+
+Only use Strix against systems you own or are explicitly authorized to test.
+
+## When to use this skill
+
+- Install Strix and verify Docker access
+- Configure a model provider for Strix
+- Run scans against local directories, repositories, or URLs
+- Use quick, standard, or deep scan modes
+- Run Strix in CI
+
+## Instructions
+
+1. Install Strix with `bash scripts/install.sh` or `curl -sSL https://strix.ai/install | bash`
+2. Configure `STRIX_LLM` and `LLM_API_KEY`
+3. Run `strix --target ./app`
+4. Use `--scan-mode quick|standard|deep` as needed
+5. Use `-n` for CI/CD
+6. Review results in `strix_runs/<run-name>`
+
+## Examples
+
+### Local scan
+
+```bash
+strix --target ./app
+```
+
+### GitHub repository
+
+```bash
+strix --target https://github.com/org/repo
+```
+
+### CI scan
+
+```bash
+strix -n --target ./ --scan-mode quick
+```
+
+## Best practices
+
+1. Keep Docker running before you start.
+2. Prefer quick scans in CI.
+3. Keep credentials explicit when a target requires authentication.
+
+## References
+
+- [references/commands.md](../references/commands.md)
+- [references/providers-and-config.md](../references/providers-and-config.md)

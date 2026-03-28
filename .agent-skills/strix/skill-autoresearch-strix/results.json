@@ -1,0 +1,67 @@
+{
+  "skill_name": "strix",
+  "status": "complete",
+  "updated_at": "2026-03-28T03:15:00Z",
+  "evals": [
+    {
+      "id": "authorized-use",
+      "question": "Does the skill restrict Strix usage to authorized targets?"
+    },
+    {
+      "id": "docker-and-provider",
+      "question": "Does the skill require Docker and explain provider configuration?"
+    },
+    {
+      "id": "target-coverage",
+      "question": "Does the skill cover local paths, GitHub repositories, live URLs, and multi-target scans?"
+    },
+    {
+      "id": "ci-and-exit-codes",
+      "question": "Does the skill explain headless CI usage and exit codes 0, 1, and 2?"
+    },
+    {
+      "id": "reference-support",
+      "question": "Does the skill point to scripts and detailed references instead of burying everything in one file?"
+    },
+    {
+      "id": "internal-skills-distinction",
+      "question": "Does the skill explain that Strix internal skills are different from oh-my-skills?"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment": 0,
+      "score": 5,
+      "max_score": 6,
+      "pass_rate": 0.8333,
+      "status": "baseline",
+      "description": "Initial draft emphasized install, targets, and scan modes but only implied CI exit-code behavior and internal-skill separation.",
+      "kept": true,
+      "per_eval": {
+        "authorized-use": true,
+        "docker-and-provider": true,
+        "target-coverage": true,
+        "ci-and-exit-codes": false,
+        "reference-support": true,
+        "internal-skills-distinction": true
+      }
+    },
+    {
+      "experiment": 1,
+      "score": 6,
+      "max_score": 6,
+      "pass_rate": 1.0,
+      "status": "keep",
+      "description": "Kept mutation: added explicit exit codes, CI framing, and a dedicated internal-skills step with its own reference file.",
+      "kept": true,
+      "per_eval": {
+        "authorized-use": true,
+        "docker-and-provider": true,
+        "target-coverage": true,
+        "ci-and-exit-codes": true,
+        "reference-support": true,
+        "internal-skills-distinction": true
+      }
+    }
+  ]
+}
