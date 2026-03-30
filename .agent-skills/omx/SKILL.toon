@@ -1,26 +1,26 @@
 N:omx
-D:Multi-agent orchestration layer for Codex CLI. Provides 30 specialized agents, 40+ workflow skills, tmux team mode, persistent MCP servers, and a staged pipeline (plan->prd->exec->verify->fix).
-G:omx multi-agent orchestration codex openai team-mode mcp-servers workflow
-
+D:oh-my-codex (OMX) — multi-agent workflow layer for OpenAI Codex CLI. v0.11.10: 30+ agents, 35+ skills ($plan/$ralph/$team/$deep-interview/$ralplan), tmux team runtime, omx explore, omx sparkshell, cross-model ask-claude/ask-gemini.
+G:omx oh-my-codex codex openai multi-agent orchestration team ralph plan deep-interview ralplan deepsearch ultraqa
 U[5]:
-  Orchestrate complex multi-agent workflows (Codex CLI)
-  Collaborate on large tasks via parallel tmux team workers
-  Use persistent MCP servers for state, memory, and code intelligence
-  Run staged pipeline (plan->prd->exec->verify->fix)
-  Perform specialized work via role-based agent prompts
-S[5]{n,action,details}:
-  1,Install,npm install -g oh-my-codex && omx setup && omx doctor
-  2,Launch,omx --xhigh --madmax (recommended; high reasoning + dangerously-bypass-approvals)
-  3,Role Prompts,/prompts:architect "analyze..." / /prompts:executor "implement..." / /prompts:security-reviewer "audit..."
-  4,Workflow Skills,$plan "$task" / $autopilot "$task" / $team 3:executor "$task" / $ulw (ultrawork)
-  5,Team Mode,omx team 4:executor "$task" -> manage status/resume/shutdown
-R[4]:
-  Run omx doctor first for install/runtime diagnostics
-  Follow staged pipeline order: plan->prd->exec->verify->fix
-  Pre-verify team mode with omx doctor --team
-  Persist state across sessions with MCP server omx_state
-E[4]{desc,in,out}:
-  "Install and initialize","npm install -g oh-my-codex && omx setup && omx doctor","OMX installed; prompts/skills/MCP configured"
-  "Run team mode","omx team 4:executor 'fix all TypeScript errors'","4 parallel executor agents run concurrently in tmux"
-  "Code review","$code-review (inside Codex)","Combined code review report from quality/security/api reviewers"
-  "Autonomous execution","$autopilot 'implement user registration with email verification'","Automatically runs stages through plan->prd->exec->verify"
+1:Stronger Codex sessions with reusable role prompts (/prompts:architect) and workflow skills ($plan/$ralph/$team)
+2:Persistent execution loops until verified complete ($ralph)
+3:Coordinated parallel workers via tmux team runtime (omx team N:role "task")
+4:Socratic requirements clarification before coding ($deep-interview)
+5:Cross-model consultation with Claude and Gemini ($ask-claude/$ask-gemini)
+S[6]{n,action,details}:
+1:install,Install OMX,npm install -g @openai/codex oh-my-codex && omx setup
+2:launch,Recommended launch,omx --madmax --high (bypass sandbox + high reasoning)
+3:plan,Plan before coding,/prompts:architect "analyze X" then $plan "ship Y" inside Codex
+4:ralph,Persistent execution,$ralph "fix all failing tests" — loops execute→verify→fix until done
+5:team,Parallel workers,omx team 3:executor "task" or $team 3:executor "task" inside Codex
+6:deep-interview,Clarify vague requests,$deep-interview "I want X" — one-question-at-a-time before planning
+R[5]:
+1:OMX is a workflow layer around Codex — Codex does the agent work; OMX adds better prompts/workflows/runtime
+2:Default recommended launch: omx --madmax --high (--madmax = bypass approvals, --high = high reasoning effort)
+3:Team mode requires tmux (macOS/Linux) or psmux (Windows native)
+4:$deep-interview gates planning — use for vague greenfield or brownfield before $plan/$ralph/$team
+5:omx explore is read-only repo lookup; omx sparkshell is bounded shell inspection
+E[3]{desc,in,out}:
+1:{Standard session,omx --madmax --high then /prompts:architect "analyze auth flow",Role prompt injects architect context; Codex analyzes boundaries then agent escalates to $plan}
+2:{Persistent fix,$ralph "fix all 12 failing tests",OMX loops execute→verify→fix until all tests pass; state persisted in .omx/}
+3:{Parallel team,omx team 3:executor "refactor API layer with tests",3 executor workers in isolated tmux/worktree sessions with shared task list}

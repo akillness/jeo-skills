@@ -379,7 +379,7 @@ If no → skip silently. Never re-ask.
 | `scrapling` | `scrapling`, `adaptive scraping`, `stealthy fetch` | Adaptive web scraping — parser-first HTML, fetcher escalation, CLI extraction, MCP/spider |
 | `strix` | `strix`, `ai pentest`, `vulnerability scan cli` | AI-driven appsec testing — Docker sandbox, LLM provider, local/GitHub/live scans, CI/CD |
 | `research-paper-writing` | `research paper`, `academic paper` | ML/CV/NLP academic paper — Abstract/Introduction/Method/Experiments/Conclusion |
-| `omx` | `omx` | Codex CLI multi-agent orchestration |
+| `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex CLI multi-agent workflow layer (v0.11.10, 30+ agents) — team runtime, explore, sparkshell |
 | `ohmg` | `ohmg` | Gemini / Antigravity multi-agent framework |
 
 ---

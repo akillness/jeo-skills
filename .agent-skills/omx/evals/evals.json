@@ -1,0 +1,55 @@
+{
+  "skill_name": "omx",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "oh-my-codex 설치하고 싶어. 어떻게 시작해?",
+      "expected_output": "The skill provides installation: npm install -g @openai/codex oh-my-codex, then omx setup, then recommended launch omx --madmax --high",
+      "assertions": [
+        "The response includes npm install -g oh-my-codex",
+        "The response includes omx setup",
+        "The response mentions omx --madmax --high as the recommended launch"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Codex CLI에서 병렬 팀 워커를 실행하고 싶어. 어떻게 해?",
+      "expected_output": "The skill explains omx team N:role 'task' CLI command and $team trigger inside Codex, with tmux/psmux requirement.",
+      "assertions": [
+        "The response includes omx team N:executor or $team syntax",
+        "The response mentions tmux or psmux as a requirement",
+        "The response includes team status/shutdown management commands"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "ralph 모드가 뭐야? omx에서 어떻게 쓰는 거야?",
+      "expected_output": "The skill explains $ralph as persistent execute→verify→fix loop inside Codex, state stored in .omx/.",
+      "assertions": [
+        "The response describes $ralph as a persistent execution loop",
+        "The response mentions execute/verify/fix loop structure",
+        "The response includes $ralph trigger syntax"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "omx explore 랑 omx sparkshell 이 뭐가 달라?",
+      "expected_output": "The skill distinguishes: omx explore is read-only repo lookup (Rust-native); omx sparkshell is bounded shell inspection.",
+      "assertions": [
+        "The response describes omx explore as read-only or repo exploration",
+        "The response describes omx sparkshell as shell inspection or command execution",
+        "The response notes they are different tools with different scopes"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "아이디어가 아직 모호해. 코딩 시작하기 전에 요구사항 명확히 하고 싶어.",
+      "expected_output": "The skill recommends $deep-interview for vague/unclear requests before $plan, $ralph, or $team.",
+      "assertions": [
+        "The response recommends $deep-interview for vague requests",
+        "The response describes the one-question-at-a-time clarification pattern",
+        "The response explains that deep-interview hands off to $plan/$ralph/$team after clarification"
+      ]
+    }
+  ]
+}

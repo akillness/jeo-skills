@@ -1,0 +1,61 @@
+{
+  "skill": "omx",
+  "skill_path": ".agent-skills/omx/SKILL.md",
+  "baseline_score": 5,
+  "final_score": 5,
+  "max_score": 5,
+  "baseline_pass_rate": 1.0,
+  "final_pass_rate": 1.0,
+  "experiments_run": 1,
+  "mutations_applied": 0,
+  "budget_cap": 5,
+  "status": "COMPLETE_NO_MUTATION_NEEDED",
+  "evals": [
+    {
+      "id": 1,
+      "name": "Install path",
+      "input": "oh-my-codex 설치하고 싶어. 어떻게 시작해?",
+      "criteria": "npm install + omx setup + omx --madmax --high recommended launch",
+      "baseline": "PASS",
+      "final": "PASS",
+      "evidence": "Section 1 Quick Start: 'npm install -g @openai/codex oh-my-codex', 'omx setup', 'omx --madmax --high'"
+    },
+    {
+      "id": 2,
+      "name": "Team mode",
+      "input": "Codex CLI에서 병렬 팀 워커를 실행하고 싶어. 어떻게 해?",
+      "criteria": "omx team N:executor syntax + tmux/psmux requirement + management commands",
+      "baseline": "PASS",
+      "final": "PASS",
+      "evidence": "Section 4 Team Runtime: 'omx team 3:executor', platform/dependency table with tmux/psmux, management commands status/resume/shutdown"
+    },
+    {
+      "id": 3,
+      "name": "Ralph described",
+      "input": "ralph 모드가 뭐야? omx에서 어떻게 쓰는 거야?",
+      "criteria": "$ralph syntax + execute->verify->fix loop",
+      "baseline": "PASS",
+      "final": "PASS",
+      "evidence": "Table row: 'ralph | $ralph | Persistent execution loop until verified complete'. Example 2: '$ralph \"fix all failing tests\"' with 'Loop: execute → verify → fix, until all tests pass.'"
+    },
+    {
+      "id": 4,
+      "name": "explore vs sparkshell distinguished",
+      "input": "omx explore 랑 omx sparkshell 이 뭐가 달라?",
+      "criteria": "read-only vs shell inspection distinction",
+      "baseline": "PASS",
+      "final": "PASS",
+      "evidence": "CLI section: 'omx explore --prompt' described as 'Read-only repo lookup'; 'omx sparkshell' as 'Bounded shell inspection'. Best practices: 'omx explore for safe lookups — read-only; won't modify anything'"
+    },
+    {
+      "id": 5,
+      "name": "deep-interview for vague requests",
+      "input": "아이디어가 아직 모호해. 코딩 시작하기 전에 요구사항 명확히 하고 싶어.",
+      "criteria": "$deep-interview + one-question loop + handoff to plan/ralph/team",
+      "baseline": "PASS",
+      "final": "PASS",
+      "evidence": "Workflow table: '$deep-interview | Socratic clarification before planning or execution'. Example 4: '$deep-interview \"I want to add a payment system\"' — 'One-question-at-a-time Socratic loop until intent is clear, then hands off to $plan or $ralph.'"
+    }
+  ],
+  "timestamp": "2026-03-30"
+}

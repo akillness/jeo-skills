@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>omx Skill Autoresearch Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0f1117; color: #e2e8f0; padding: 2rem; }
+  h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.25rem; color: #f8fafc; }
+  .subtitle { color: #94a3b8; font-size: 0.9rem; margin-bottom: 2rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .card { background: #1e2330; border-radius: 10px; padding: 1.25rem; border: 1px solid #2d3748; }
+  .card .label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+  .card .value { font-size: 2rem; font-weight: 700; }
+  .value.green { color: #4ade80; }
+  .value.blue { color: #60a5fa; }
+  .value.yellow { color: #fbbf24; }
+  .section { background: #1e2330; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #2d3748; }
+  .section h2 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: #cbd5e1; border-bottom: 1px solid #2d3748; padding-bottom: 0.5rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  th { text-align: left; padding: 0.5rem 0.75rem; color: #64748b; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid #2d3748; }
+  td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #1a2030; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+  .badge.pass { background: #14532d; color: #4ade80; }
+  .badge.fail { background: #450a0a; color: #f87171; }
+  .progress-bar { background: #2d3748; border-radius: 9999px; height: 10px; overflow: hidden; margin-top: 0.5rem; }
+  .progress-fill { height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #4ade80, #22d3ee); }
+  .evidence { color: #94a3b8; font-size: 0.8rem; margin-top: 0.3rem; }
+  .experiment-row { display: flex; align-items: center; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid #1a2030; }
+  .experiment-row:last-child { border-bottom: none; }
+  .exp-num { background: #2d3748; border-radius: 6px; padding: 0.2rem 0.5rem; font-size: 0.75rem; color: #94a3b8; min-width: 32px; text-align: center; }
+  .exp-desc { flex: 1; font-size: 0.875rem; }
+  .exp-score { font-weight: 700; }
+  footer { color: #475569; font-size: 0.75rem; margin-top: 2rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>omx Skill Autoresearch Dashboard</h1>
+<p class="subtitle">Skill: .agent-skills/omx/SKILL.md &nbsp;|&nbsp; Run: 2026-03-30 &nbsp;|&nbsp; v0.11.10</p>
+
+<div class="grid">
+  <div class="card">
+    <div class="label">Baseline Score</div>
+    <div class="value green">5/5</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+  <div class="card">
+    <div class="label">Final Score</div>
+    <div class="value green">5/5</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+  <div class="card">
+    <div class="label">Pass Rate</div>
+    <div class="value green">100%</div>
+  </div>
+  <div class="card">
+    <div class="label">Experiments Run</div>
+    <div class="value blue">1/5</div>
+  </div>
+  <div class="card">
+    <div class="label">Mutations Applied</div>
+    <div class="value yellow">0</div>
+  </div>
+  <div class="card">
+    <div class="label">Status</div>
+    <div class="value green" style="font-size:1rem;margin-top:0.4rem;">COMPLETE</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Eval Results</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Input</th>
+        <th>Criteria</th>
+        <th>Baseline</th>
+        <th>Final</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Install path</td>
+        <td>oh-my-codex 설치하고 싶어. 어떻게 시작해?</td>
+        <td>npm install + omx setup + omx --madmax --high</td>
+        <td><span class="badge pass">PASS</span></td>
+        <td><span class="badge pass">PASS</span></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="5"><span class="evidence">Evidence: Section 1 Quick Start — "npm install -g @openai/codex oh-my-codex", "omx setup", "omx --madmax --high"</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Team mode</td>
+        <td>Codex CLI에서 병렬 팀 워커를 실행하고 싶어. 어떻게 해?</td>
+        <td>omx team N:executor + tmux/psmux + management cmds</td>
+        <td><span class="badge pass">PASS</span></td>
+        <td><span class="badge pass">PASS</span></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="5"><span class="evidence">Evidence: Section 4 — "omx team 3:executor", platform table with tmux/psmux, status/resume/shutdown commands</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Ralph described</td>
+        <td>ralph 모드가 뭐야? omx에서 어떻게 쓰는 거야?</td>
+        <td>$ralph syntax + execute→verify→fix loop</td>
+        <td><span class="badge pass">PASS</span></td>
+        <td><span class="badge pass">PASS</span></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="5"><span class="evidence">Evidence: Workflow table + Example 2 — "$ralph" trigger, "Loop: execute → verify → fix, until all tests pass."</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>explore vs sparkshell</td>
+        <td>omx explore 랑 omx sparkshell 이 뭐가 달라?</td>
+        <td>read-only vs shell inspection distinction</td>
+        <td><span class="badge pass">PASS</span></td>
+        <td><span class="badge pass">PASS</span></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="5"><span class="evidence">Evidence: CLI section labels explore "Read-only repo lookup" and sparkshell "Bounded shell inspection". Best practices: "omx explore for safe lookups — read-only; won't modify anything"</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>deep-interview</td>
+        <td>아이디어가 아직 모호해. 코딩 시작하기 전에 요구사항 명확히 하고 싶어.</td>
+        <td>$deep-interview + one-question loop + handoff</td>
+        <td><span class="badge pass">PASS</span></td>
+        <td><span class="badge pass">PASS</span></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="5"><span class="evidence">Evidence: Example 4 — "$deep-interview" with "One-question-at-a-time Socratic loop until intent is clear, then hands off to $plan or $ralph."</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Experiments</h2>
+  <div class="experiment-row">
+    <span class="exp-num">E1</span>
+    <span class="exp-desc">Baseline scoring — read SKILL.md and checked all 5 eval criteria directly</span>
+    <span class="exp-score green">5/5</span>
+    <span class="badge pass">PASS</span>
+  </div>
+  <p style="color:#64748b;font-size:0.8rem;margin-top:0.75rem;">Baseline achieved 100% — no further experiments needed. Budget: 1/5 used.</p>
+</div>
+
+<div class="section">
+  <h2>Experiment Log (TSV)</h2>
+  <pre style="color:#94a3b8;font-size:0.8rem;overflow-x:auto;">experiment	score	max_score	pass_rate	status	description
+baseline	5	5	1.00	PASS	All 5 evals pass on baseline SKILL.md — no mutations required</pre>
+</div>
+
+<footer>Generated by skill-autoresearch &nbsp;|&nbsp; omx v0.11.10 &nbsp;|&nbsp; 2026-03-30</footer>
+
+</body>
+</html>
