@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill Autoresearch — omc</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; padding: 2rem; }
+  h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .subtitle { color: #94a3b8; font-size: 0.875rem; margin-bottom: 2rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .card { background: #1e2330; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #2d3448; }
+  .card-label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .card-value { font-size: 2rem; font-weight: 700; }
+  .card-value.green { color: #4ade80; }
+  .card-value.blue { color: #60a5fa; }
+  .card-value.yellow { color: #facc15; }
+  .card-value.gray { color: #94a3b8; }
+  .section-title { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: #cbd5e1; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.875rem; }
+  th { text-align: left; padding: 0.625rem 0.75rem; background: #1e2330; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 1px solid #2d3448; }
+  td { padding: 0.625rem 0.75rem; border-bottom: 1px solid #1e2330; }
+  tr:hover td { background: #1a1f2e; }
+  .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+  .badge-green { background: #14532d; color: #4ade80; }
+  .badge-blue { background: #1e3a5f; color: #60a5fa; }
+  .badge-yellow { background: #422006; color: #facc15; }
+  .badge-red { background: #450a0a; color: #f87171; }
+  .progress-bar { height: 8px; background: #2d3448; border-radius: 4px; overflow: hidden; margin-top: 0.5rem; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #4ade80, #22d3ee); border-radius: 4px; transition: width 0.5s ease; }
+  .eval-grid { display: grid; gap: 0.75rem; margin-bottom: 2rem; }
+  .eval-row { background: #1e2330; border-radius: 0.5rem; padding: 1rem; border: 1px solid #2d3448; display: flex; align-items: flex-start; gap: 1rem; }
+  .eval-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .eval-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+  .eval-evidence { font-size: 0.8rem; color: #94a3b8; line-height: 1.4; }
+  .status-banner { background: #14532d; border: 1px solid #166534; border-radius: 0.75rem; padding: 1rem 1.25rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem; }
+  .status-banner-icon { font-size: 1.5rem; }
+  .status-banner-text { font-weight: 600; color: #4ade80; }
+  .status-banner-sub { font-size: 0.8rem; color: #86efac; margin-top: 0.1rem; }
+  .chart-area { background: #1e2330; border-radius: 0.75rem; padding: 1.25rem; border: 1px solid #2d3448; margin-bottom: 2rem; }
+  .chart-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; font-size: 0.85rem; }
+  .chart-label { width: 100px; color: #94a3b8; flex-shrink: 0; }
+  .chart-bar-wrap { flex: 1; height: 20px; background: #2d3448; border-radius: 4px; overflow: hidden; }
+  .chart-bar { height: 100%; background: linear-gradient(90deg, #4ade80, #22d3ee); border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 0.75rem; font-weight: 600; color: #0f172a; }
+  footer { color: #475569; font-size: 0.75rem; border-top: 1px solid #2d3448; padding-top: 1rem; }
+</style>
+</head>
+<body>
+
+<h1>Skill Autoresearch — <code>omc</code></h1>
+<p class="subtitle">Target: <code>.agent-skills/omc/SKILL.md</code> &nbsp;·&nbsp; Runs/experiment: 3 &nbsp;·&nbsp; Budget cap: 5</p>
+
+<div class="status-banner">
+  <div class="status-banner-icon">✓</div>
+  <div>
+    <div class="status-banner-text">Complete — Baseline at 100%</div>
+    <div class="status-banner-sub">All 5 evals passed on first inspection. No mutations needed. Loop stopped early.</div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="card-label">Baseline Score</div>
+    <div class="card-value green">5/5</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+  <div class="card">
+    <div class="card-label">Final Score</div>
+    <div class="card-value green">5/5</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+  <div class="card">
+    <div class="card-label">Pass Rate</div>
+    <div class="card-value green">100%</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Experiments Run</div>
+    <div class="card-value blue">1</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Mutations Kept</div>
+    <div class="card-value gray">0</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Budget Used</div>
+    <div class="card-value yellow">1/5</div>
+  </div>
+</div>
+
+<div class="section-title">Experiment History</div>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Score</th>
+      <th>Pass Rate</th>
+      <th>Status</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>5 / 5</td>
+      <td>100%</td>
+      <td><span class="badge badge-blue">baseline</span></td>
+      <td>Baseline — all 5 evals pass on content inspection</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="section-title">Score Progression</div>
+<div class="chart-area">
+  <div class="chart-row">
+    <div class="chart-label">Exp 0 (base)</div>
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="width:100%">5/5</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">Eval Results (Experiment 0 — Baseline)</div>
+<div class="eval-grid">
+  <div class="eval-row">
+    <div class="eval-icon">✓</div>
+    <div>
+      <div class="eval-name">EVAL 1: Installation path complete</div>
+      <div class="eval-evidence">
+        <code>/plugin marketplace add URL</code> at line 32 &nbsp;·&nbsp;
+        <code>/oh-my-claudecode:omc-setup</code> at line 37 &nbsp;·&nbsp;
+        <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</code> at line 52
+      </div>
+    </div>
+  </div>
+  <div class="eval-row">
+    <div class="eval-icon">✓</div>
+    <div>
+      <div class="eval-name">EVAL 2: Team mode identified as canonical with 5-stage pipeline</div>
+      <div class="eval-evidence">
+        "Team (canonical)" label at line 62 &nbsp;·&nbsp;
+        <code>team-plan → team-prd → team-exec → team-verify → team-fix</code> at lines 119–128 &nbsp;·&nbsp;
+        <code>/oh-my-claudecode:team</code> command at line 116
+      </div>
+    </div>
+  </div>
+  <div class="eval-row">
+    <div class="eval-icon">✓</div>
+    <div>
+      <div class="eval-name">EVAL 3: Ralph described as persistent loop with ultrawork composition</div>
+      <div class="eval-evidence">
+        "Persistent loop: execute → verify → fix" at line 65 &nbsp;·&nbsp;
+        "composes automatically with ultrawork for parallel+persistent execution" at line 237
+      </div>
+    </div>
+  </div>
+  <div class="eval-row">
+    <div class="eval-icon">✓</div>
+    <div>
+      <div class="eval-name">EVAL 4: CCG expanded as Codex+Gemini+Claude with roles and use case</div>
+      <div class="eval-evidence">
+        "3-model synthesis (Codex + Gemini + Claude)" at line 67 &nbsp;·&nbsp;
+        "backend execution (Codex) + large-context analysis (Gemini) + orchestration (Claude)" at line 238 &nbsp;·&nbsp;
+        use case: "Mixed backend + UI work" at line 67
+      </div>
+    </div>
+  </div>
+  <div class="eval-row">
+    <div class="eval-icon">✓</div>
+    <div>
+      <div class="eval-name">EVAL 5: Full keyword list including cancelomc and ≥3 extended keywords</div>
+      <div class="eval-evidence">
+        Classic: <code>autopilot</code> (97), <code>ralph</code> (98), <code>ulw</code> (99), <code>ccg</code> (100), <code>ralplan</code> (101) &nbsp;·&nbsp;
+        Extended: <code>deepsearch</code> (103), <code>deepanalyze</code>/<code>deep-analyze</code> (104), <code>ultrathink</code> (105), <code>tdd</code> (106), <code>deslop</code>/<code>anti-slop</code> (107) &nbsp;·&nbsp;
+        Cancel: <code>cancelomc</code> (108)
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Generated by skill-autoresearch · omc v4.9.3 · 2026-03-30 · 1 experiment run · SKILL.md unchanged
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "skill_name": "omc",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "oh-my-claudecode 설치하고 싶어. 어떻게 해?",
+      "expected_output": "The skill provides 3-step installation: /plugin marketplace add, /plugin install, /oh-my-claudecode:omc-setup",
+      "assertions": [
+        "The response includes /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode",
+        "The response includes /oh-my-claudecode:omc-setup",
+        "The response mentions CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS or native teams setup"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "여러 에이전트가 동시에 작업하게 하고 싶어. 어떤 모드를 써야 해?",
+      "expected_output": "The skill recommends Team mode as canonical, explains the 5-stage pipeline, and provides the /oh-my-claudecode:team command.",
+      "assertions": [
+        "The response identifies Team mode as canonical or recommended",
+        "The response describes the pipeline: plan → prd → exec → verify → fix",
+        "The response includes the /oh-my-claudecode:team N:executor command syntax"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "작업이 끝날 때까지 멈추지 않게 하고 싶어. ralph 모드가 뭐야?",
+      "expected_output": "The skill explains ralph as a persistent execute→verify→fix loop that guarantees completion, and covers skill layer composition.",
+      "assertions": [
+        "The response describes ralph as a persistent loop that won't stop until verified complete",
+        "The response mentions the execute → verify → fix loop structure",
+        "The response notes that ralph includes ultrawork (parallel execution)"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "CCG 모드는 뭐야? 어떤 상황에서 써야 해?",
+      "expected_output": "The skill explains CCG as Codex+Gemini+Claude 3-model synthesis, best for complex tasks spanning execution, analysis, and orchestration.",
+      "assertions": [
+        "The response expands CCG as Codex + Gemini + Claude",
+        "The response describes what each model contributes (execution/analysis/orchestration)",
+        "The response gives a use case where CCG is appropriate"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "OMC에서 사용할 수 있는 magic keyword 목록 알려줘. cancelomc도 포함해서.",
+      "expected_output": "The skill lists all magic keywords including the v4.9.3 additions: deepsearch, deepanalyze, ultrathink, tdd, deslop, cancelomc.",
+      "assertions": [
+        "The response includes cancelomc or stopomc",
+        "The response includes at least 3 of: deepsearch, deepanalyze, ultrathink, tdd, deslop",
+        "The response includes the classic keywords: autopilot, ralph, ulw, ccg, ralplan"
+      ]
+    }
+  ]
+}

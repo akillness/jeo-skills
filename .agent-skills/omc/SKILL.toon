@@ -1,23 +1,27 @@
 N:omc
-D:oh-my-claudecode — Teams-first multi-agent orchestration for Claude Code. 32 specialized agents, smart model routing, persistent execution loops, zero learning curve. Keyword: omc
-G:omc oh-my-claudecode claude-code multi-agent orchestration team autopilot ralph ultrawork
-U[4]:
-1:Teams-first multi-agent orchestration in Claude Code
-2:Parallel agent execution with verify/fix loops
-3:Guaranteed-completion tasks with architect sign-off
-4:Smart model routing across 32 specialized agents
-S[5]{n,action,details}:
+D:oh-my-claudecode — Teams-first multi-agent orchestration for Claude Code. 29+ specialized agents, smart model routing (Haiku→Opus), persistent execution loops (ralph), skill layers, CCG 3-model synthesis, real-time HUD. Zero learning curve. v4.9.3
+G:omc oh-my-claudecode claude-code multi-agent orchestration team autopilot ralph ultrawork ccg pipeline deep-interview deslop
+U[5]:
+1:Teams-first multi-agent orchestration in Claude Code with zero config
+2:Parallel agent execution with persistent verify/fix loops (ralph)
+3:Guaranteed-completion tasks with Guarantee→Enhancement→Execution skill layers
+4:3-model synthesis with Codex+Gemini+Claude (CCG mode)
+5:Smart model routing across 29+ specialized agents (Haiku→Opus) saves 30-50% tokens
+S[6]{n,action,details}:
 1:install,Add plugin,/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode && /plugin install oh-my-claudecode
-2:setup,Initialize OMC,/omc:omc-setup (run once; re-run after updates)
-3:team-mode,Canonical orchestration,/omc:team 3:executor "task" — staged pipeline: team-plan→team-prd→team-exec→team-verify→team-fix
-4:keywords,Magic keywords,autopilot / ralph / ulw / team / plan — activate modes via natural language
-5:update,Keep current,/plugin marketplace update omc && /omc:omc-setup; on issues: /omc:omc-doctor
-R[5]:
+2:setup,Initialize OMC,/oh-my-claudecode:omc-setup (run once; re-run after updates)
+3:team-mode,Canonical orchestration,/oh-my-claudecode:team 3:executor "task" — pipeline: team-plan→team-prd→team-exec→team-verify→team-fix
+4:keywords,Magic keywords,autopilot/ralph/ulw/ccg/ralplan/deepsearch/ultrathink/tdd/deslop/cancelomc — activate via natural language
+5:ask,Provider advisor,omc ask claude|codex|gemini --prompt "task" — cross-model consultation
+6:update,Keep current,/plugin marketplace update omc && /oh-my-claudecode:omc-setup; issues: /oh-my-claudecode:omc-doctor
+R[6]:
 1:Team is canonical — swarm and ultrapilot are legacy facades that route to Team
 2:Enable CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 in ~/.claude/settings.json for native teams
 3:ralph includes ultrawork — parallel execution is automatic in ralph mode
 4:npm package name is oh-my-claude-sisyphus (not oh-my-claudecode)
-5:Gemini CLI and Codex CLI are optional for cross-validation; OMC works without them
-E[2]{desc,in,out}:
-1:{Team orchestration,/omc:team 3:executor "fix all TypeScript errors",3 executor agents run in parallel on shared task list through team-plan→exec→verify pipeline}
+5:CCG mode synthesizes Codex (execution) + Gemini (analysis) + Claude (orchestration) for complex mixed work
+6:Skill layers compose: ralph(guarantee) wraps ultrawork(enhancement) wraps execution skill
+E[3]{desc,in,out}:
+1:{Team orchestration,/oh-my-claudecode:team 3:executor "fix all TypeScript errors",3 executor agents run in parallel on shared task list through team-plan→exec→verify pipeline}
 2:{Autopilot build,autopilot: build a REST API for managing tasks,Single lead agent autonomously plans designs implements tests and verifies the full API}
+3:{Deep interview,deep interview: I want to build a task management app,Socratic agent clarifies requirements until ambiguity ≤0.2 then hands off to execution}

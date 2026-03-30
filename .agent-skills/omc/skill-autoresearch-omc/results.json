@@ -1,0 +1,62 @@
+{
+  "skill": "omc",
+  "skill_path": "../SKILL.md",
+  "baseline_path": "SKILL.md.baseline",
+  "runs_per_experiment": 3,
+  "budget_cap": 5,
+  "final_status": "complete",
+  "experiments": [
+    {
+      "id": 0,
+      "score": 5,
+      "max_score": 5,
+      "pass_rate": 1.0,
+      "status": "baseline",
+      "description": "Baseline — all 5 evals pass on content inspection",
+      "evals": [
+        {
+          "id": 1,
+          "name": "Installation path complete",
+          "pass": true,
+          "evidence": "Line 32: /plugin marketplace add URL; Line 37: /oh-my-claudecode:omc-setup; Line 52: CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"
+        },
+        {
+          "id": 2,
+          "name": "Team mode identified as canonical",
+          "pass": true,
+          "evidence": "Line 62: 'Team (canonical)' label; Lines 119-128: 5-stage pipeline; Line 116: /oh-my-claudecode:team command"
+        },
+        {
+          "id": 3,
+          "name": "Ralph described as persistent loop",
+          "pass": true,
+          "evidence": "Line 65: 'Persistent loop: execute -> verify -> fix'; Line 237: 'composes automatically with ultrawork'"
+        },
+        {
+          "id": 4,
+          "name": "CCG expanded as Codex+Gemini+Claude",
+          "pass": true,
+          "evidence": "Line 67: '3-model synthesis (Codex + Gemini + Claude)'; Line 238: backend/analysis/orchestration role split"
+        },
+        {
+          "id": 5,
+          "name": "Full keyword list with cancelomc and extended set",
+          "pass": true,
+          "evidence": "Lines 97-109: cancelomc, deepsearch, deepanalyze, ultrathink, tdd, deslop, autopilot, ralph, ulw, ccg, ralplan all present"
+        }
+      ],
+      "mutation": null
+    }
+  ],
+  "summary": {
+    "baseline_score": 5,
+    "baseline_pass_rate": 1.0,
+    "final_score": 5,
+    "final_pass_rate": 1.0,
+    "experiments_run": 1,
+    "kept": 0,
+    "discarded": 0,
+    "top_changes": [],
+    "remaining_failures": []
+  }
+}

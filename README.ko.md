@@ -163,7 +163,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 # oh-my-claudecode
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/omc:omc-setup
+/oh-my-claudecode:omc-setup
 ```
 
 ---
@@ -177,7 +177,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | 스킬 | 키워드 | 플랫폼 | 설명 |
 |------|--------|--------|------|
 | `jeo` | `jeo`, `annotate` | 전체 | `.jeo` ledger 기반 통합 오케스트레이션: 기획→개발→QA→정리 |
-| `omc` | `omc`, `autopilot` | Claude | 32개 에이전트 오케스트레이션 레이어 |
+| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `deep interview`, `deslop`, `cancelomc` | Claude | 29+ 에이전트 오케스트레이션 레이어 (v4.9.3) — Teams/Autopilot/Ralph/Ultrawork/CCG 모드, 스마트 모델 라우팅, 스킬 레이어, 실시간 HUD |
 | `harness` | `harness`, `build a harness` | 전체 | 메타스킬: 도메인 전용 에이전트 팀 설계, `.claude/agents/`·`.claude/skills/` 생성, harness 검증 |
 | `omx` | `omx` | Codex | Codex CLI용 멀티에이전트 오케스트레이션 |
 | `ohmg` | `ohmg` | Gemini | Antigravity 멀티에이전트 프레임워크 |

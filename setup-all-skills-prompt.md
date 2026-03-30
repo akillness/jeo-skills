@@ -191,9 +191,9 @@ fi
 **Claude Code additional setup:**
 
 ```bash
-# oh-my-claudecode plugin (optional — adds /omc:* commands)
+# oh-my-claudecode plugin (optional — adds /oh-my-claudecode:* commands)
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/omc:omc-setup
+/oh-my-claudecode:omc-setup
 
 # agentation Official Skill (recommended for UI annotation)
 npx skills add benjitaylor/agentation -g
@@ -260,7 +260,7 @@ First run after installation:
 
 | Platform | Command |
 |----------|---------|
-| Claude Code | `jeo "task description"` or `/omc:team "task"` |
+| Claude Code | `jeo "task description"` or `/oh-my-claudecode:team "task"` |
 | Gemini CLI | `/jeo "task description"` |
 | Codex CLI | `/jeo "task description"` |
 | OpenCode | `/jeo "task description"` |
@@ -319,7 +319,7 @@ If no → skip silently. Never re-ask.
 | Goal | Command |
 |------|---------|
 | Start any task | `jeo "task description"` |
-| Claude orchestration | `omc "task"` or `/omc:team "task"` |
+| Claude orchestration | `autopilot: task` or `/oh-my-claudecode:team "task"` |
 | Visual plan review | `plan` (plannotator keyword) |
 | Spec-first dev loop | `ralph "build X"` or `ooo interview "X"` |
 | Pre-impl research | `survey "topic"` |
@@ -359,7 +359,7 @@ If no → skip silently. Never re-ask.
 | Skill | Activation Keyword | Description |
 |-------|-------------------|-------------|
 | `jeo` | `jeo` | Integrated orchestration with `.jeo` ledger — Plan→Execute→Verify→Cleanup. Requires `plannotator` + `agentation`. **Claude Code**: requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` |
-| `omc` | `omc`, `autopilot` | Claude Code multi-agent orchestration (32 agents) |
+| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `deep interview`, `deslop`, `cancelomc` | Claude Code multi-agent orchestration (v4.9.3, 29+ agents) — Teams/Autopilot/Ralph/Ultrawork/CCG |
 | `ralph` | `ralph`, `ooo`, `ooo ralph`, `ooo interview` | Ouroboros spec-first development — Interview→Seed→Execute→Evaluate→Evolve + persistent loop |
 | `ralphmode` | `ralphmode` | Automation permission profiles — repo boundary, sandbox-first, secret denylist |
 | `plannotator` | `plan` | Visual browser plan/diff review — approve or send feedback |

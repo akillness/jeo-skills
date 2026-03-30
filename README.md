@@ -163,7 +163,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 # oh-my-claudecode
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/omc:omc-setup
+/oh-my-claudecode:omc-setup
 ```
 
 ---
@@ -177,7 +177,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
 | `jeo` | `jeo`, `annotate` | All | Integrated orchestration with `.jeo` ledger: Planning→Development→QA→Cleanup |
-| `omc` | `omc`, `autopilot` | Claude | 32-agent orchestration layer with model routing |
+| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `deep interview`, `deslop`, `cancelomc` | Claude | 29+ agent orchestration layer (v4.9.3) — Teams/Autopilot/Ralph/Ultrawork/CCG modes, smart model routing, skill layers, real-time HUD |
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
 | `omx` | `omx` | Codex | Multi-agent orchestration for Codex CLI |
 | `ohmg` | `ohmg` | Gemini | Antigravity multi-agent framework |
