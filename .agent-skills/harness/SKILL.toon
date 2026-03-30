@@ -1,0 +1,25 @@
+N:harness
+D:"Design a project-specific harness that defines agent roles, skill packages, orchestration topology, and validation workflow. Use when the user wants to build a harness for a project, design an agent team, scaffold domain skills, or translate a Claude-style team architecture to Codex, Gemini, OpenCode, Antigravity, Pi, or Claw-style runtimes."
+G:harness|agent-team|skill-architect|orchestrator|multi-agent|topology|claude|codex|gemini|opencode|antigravity|pi|claw
+U[5]:
+  Build a neutral harness before writing one-off prompts
+  Choose an architecture pattern that matches the work
+  Translate Claude-native team concepts into adapter mode for other runtimes
+  Scaffold a reusable .harness workspace with bundled script support
+  Validate triggers and with-skill-vs-baseline outcomes
+S[6]{n,action,details}:
+  1,Frame,Extract domain outputs runtime and validation targets before naming agents
+  2,Topology,Choose pipeline fan-out/fan-in producer-reviewer expert-pool supervisor or hybrid
+  3,Mode,Use Claude native mode only when native team primitives exist; otherwise switch to adapter mode
+  4,Scaffold,bash .agent-skills/harness/scripts/bootstrap-harness.sh --root . --platform codex --team-name review-team --mode hybrid
+  5,Artifacts,Define agent roster skill map orchestrator contract and validation plan
+  6,Validate,Use references/validation-playbook.md for trigger checks dry runs and baseline comparisons
+R[4]:
+  Keep neutral artifacts under .harness first, then map outward to platform-specific surfaces
+  Do not claim TeamCreate or teammate messaging on platforms that do not expose them
+  Use references for large pattern detail rather than bloating SKILL.md
+  Validation is part of the harness, not a postscript
+E[3]{desc,in,out}:
+  "Claude harness","Build a harness for this project with analyst builder and QA teammates","Returns a Claude-native team plan plus reusable harness artifacts"
+  "Codex adapter","Translate our Claude harness into a Codex-compatible workflow","Returns neutral artifacts and adapter mapping without fake native-team claims"
+  "Domain skill factory","Design a harness for a legal review workflow","Returns topology skill boundaries validation steps and scaffolded directories"

@@ -9,8 +9,10 @@ description: >
   Triggers on: harness, build a harness, harness engineering, agent team
   architect, scaffold agents, scaffold skills, design an agent team.
 allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: Best native fit is Claude Code Agent Teams. Codex, Gemini, OpenCode, Antigravity, Pi, and Claw-style systems should use adapter-mode guidance from bundled references.
+license: Apache-2.0
 metadata:
-  tags: harness, agent-teams, meta-skill, orchestration, scaffolding, claude, codex, gemini, opencode
+  tags: harness, agent-team, meta-skill, orchestration, scaffolding, claude, codex, gemini, opencode, antigravity, claw, pi
   version: "1.0.0"
   source: revfactory/harness
 ---
@@ -69,7 +71,23 @@ Do not assume every platform has Claude-style `.claude/agents/` and `.claude/ski
 
 When a platform lacks a direct equivalent, translate the intent rather than copying paths blindly.
 
-### Step 4: Define the harness outputs
+### Step 4: Scaffold the artifact layout
+
+Use the bootstrap script when you want a deterministic starting point:
+
+```bash
+bash .agent-skills/harness/scripts/bootstrap-harness.sh \
+  --root . \
+  --platform codex \
+  --team-name review-team \
+  --mode hybrid
+```
+
+This creates a neutral `.harness/` scaffold and a starter manifest before platform-specific mapping.
+
+Use `references/architecture-patterns.md` and `references/platform-adapters.md` when you need a shorter local guide before diving into upstream references.
+
+### Step 5: Define the harness outputs
 
 Produce, at minimum:
 
@@ -93,7 +111,7 @@ For each skill, specify:
 - references it depends on
 - scripts or templates that make repeated work deterministic
 
-### Step 5: Keep the harness lean
+### Step 6: Keep the harness lean
 
 - Prefer 3-5 agents over large rosters by default
 - Prefer a few high-leverage skills over broad catalogs
@@ -101,7 +119,7 @@ For each skill, specify:
 - Move long background material into `references/`
 - Keep the main skill body short enough to read on activation
 
-### Step 6: Validate before calling it done
+### Step 7: Validate before calling it done
 
 Check all of the following:
 
@@ -111,9 +129,9 @@ Check all of the following:
 - the orchestration pattern matches the actual dependency graph
 - the target platform mapping is explicit where filesystem conventions differ
 
-Use `references/upstream/skill-testing-guide.md` and `references/upstream/skill-writing-guide.md` to tighten the result.
+Use `references/validation-playbook.md` for the short validation checklist first, then use `references/upstream/skill-testing-guide.md` and `references/upstream/skill-writing-guide.md` to tighten the result.
 
-### Step 7: Refresh upstream references when needed
+### Step 8: Refresh upstream references when needed
 
 If the upstream repo changed, refresh bundled references:
 
@@ -169,6 +187,9 @@ Output:
 
 ## References
 
+- `references/architecture-patterns.md`
+- `references/platform-adapters.md`
+- `references/validation-playbook.md`
 - `references/platform-adaptation.md`
 - `references/upstream/README.md`
 - `references/upstream/agent-design-patterns.md`

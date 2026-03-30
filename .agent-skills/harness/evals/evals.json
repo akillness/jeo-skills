@@ -1,0 +1,35 @@
+{
+  "skill_name": "harness",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a harness for this SaaS codebase. I need analyst, builder, reviewer, and QA roles plus a validation loop before rollout.",
+      "expected_output": "Produces a topology choice, role boundaries, skill map, orchestrator contract, and validation steps.",
+      "assertions": [
+        "The response chooses a concrete architecture pattern instead of listing random agents.",
+        "The response defines a validation step for the harness itself.",
+        "The response distinguishes role ownership or file boundaries for parallel work."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Translate our current Claude Team workflow into a Codex-compatible harness without claiming Codex has the same native team primitives.",
+      "expected_output": "Keeps the harness portable and maps Claude-native concepts into adapter mode.",
+      "assertions": [
+        "The response explicitly marks Codex as adapter mode rather than native team mode.",
+        "The response preserves a neutral artifact root such as .harness.",
+        "The response avoids claiming shared task list or teammate messaging as native Codex features."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Design a harness for a regulated content workflow with research, legal review, copy editing, and final QA.",
+      "expected_output": "Returns a quality-sensitive topology with review gates and reusable skill/reference structure.",
+      "assertions": [
+        "The response picks a pattern that includes review or verification gates.",
+        "The response separates stable guidance into skills or references rather than one monolithic prompt.",
+        "The response includes a validation or dry-run step before final execution."
+      ]
+    }
+  ]
+}
