@@ -7,7 +7,18 @@
       "version": "1.3.0",
       "keyword": "jeo",
       "description": "통합 AI 에이전트 오케스트레이션. ralph+plannotator 계획→team/bmad 실행→agent-browser 검증→agentation submit-gated UI 피드백→worktree 정리.",
-      "tags": ["jeo", "orchestration", "ralph", "plannotator", "team", "bmad", "agent-browser", "agentation", "submit-gate", "plan-hash"],
+      "tags": [
+        "jeo",
+        "orchestration",
+        "ralph",
+        "plannotator",
+        "team",
+        "bmad",
+        "agent-browser",
+        "agentation",
+        "submit-gate",
+        "plan-hash"
+      ],
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill jeo",
       "addedAt": "2026-03-05T00:00:00Z",
       "updatedAt": "2026-03-10T00:00:00Z",
@@ -40,7 +51,14 @@
       "version": "4.2.15",
       "keyword": "omc",
       "description": "Claude Code용 팀 중심 멀티에이전트 오케스트레이션. JEO의 Claude 실행 백엔드이자 Ralph/Ultrawork 지속 실행을 포함한다.",
-      "tags": ["omc", "claude-code", "team", "autopilot", "ralph", "ultrawork"],
+      "tags": [
+        "omc",
+        "claude-code",
+        "team",
+        "autopilot",
+        "ralph",
+        "ultrawork"
+      ],
       "installCommand": "/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode && /plugin install oh-my-claudecode && /omc:omc-setup",
       "addedAt": "2026-03-05T00:00:00Z",
       "updatedAt": "2026-03-20T00:00:00Z",
@@ -63,7 +81,14 @@
       "version": "3.0.0",
       "keyword": "ralph",
       "description": "Ouroboros 기반의 specification-first persistent completion loop. Socratic clarification, execution, evaluation, and iterative recovery를 한 흐름으로 제공한다.",
-      "tags": ["ralph", "ouroboros", "specification-first", "loop", "verification", "evaluation"],
+      "tags": [
+        "ralph",
+        "ouroboros",
+        "specification-first",
+        "loop",
+        "verification",
+        "evaluation"
+      ],
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill ralph",
       "addedAt": "2026-03-05T00:00:00Z",
       "updatedAt": "2026-03-20T00:00:00Z",
@@ -91,7 +116,15 @@
       "version": "1.0.0",
       "keyword": "compliance",
       "description": "내부 AI 툴 필수 구현 가이드(P0/P1) 기반 컴플라이언스 검증 자동화",
-      "tags": ["compliance", "RBAC", "security", "cost-tracking", "audit-log", "gateway", "deploy-gate"],
+      "tags": [
+        "compliance",
+        "RBAC",
+        "security",
+        "cost-tracking",
+        "audit-log",
+        "gateway",
+        "deploy-gate"
+      ],
       "addedAt": "2026-03-03T00:00:00Z"
     },
     "llm-monitoring-dashboard": {
@@ -100,7 +133,15 @@
       "version": "1.0.0",
       "keyword": "llm-monitoring",
       "description": "PM용 관리자 대시보드에 LLM 사용 모니터링 페이지를 자동 생성. Tokuin CLI 기반 비용/토큰/레이턴시 추적 + PM 인사이트 + 사용자 랭킹",
-      "tags": ["LLM", "monitoring", "dashboard", "tokuin", "pm-insights", "ranking", "cost-tracking"],
+      "tags": [
+        "LLM",
+        "monitoring",
+        "dashboard",
+        "tokuin",
+        "pm-insights",
+        "ranking",
+        "cost-tracking"
+      ],
       "addedAt": "2026-03-03T00:00:00Z"
     },
     "survey": {
@@ -109,10 +150,58 @@
       "version": "1.0.0",
       "keyword": "survey",
       "description": "계획이나 구현 전에 문제공간을 조사하는 전 플랫폼 리서치 스킬. 결과물을 .survey/{slug}/에 저장하고 Claude/Codex/Gemini 차이를 settings/rules/hooks로 정규화.",
-      "tags": ["survey", "research", "landscape-scan", "groundwork", "omc", "omx", "ohmg", "hooks", "rules", "settings"],
+      "tags": [
+        "survey",
+        "research",
+        "landscape-scan",
+        "groundwork",
+        "omc",
+        "omx",
+        "ohmg",
+        "hooks",
+        "rules",
+        "settings"
+      ],
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill survey",
       "addedAt": "2026-03-10T00:00:00Z",
       "updatedAt": "2026-03-10T00:00:00Z"
+    },
+    "harness": {
+      "source": "revfactory/harness",
+      "sourceType": "github",
+      "version": "1.0.1",
+      "keyword": "harness",
+      "description": "revfactory/harness 기반의 cross-platform agent harness architect. 하네스 설계, 에이전트 팀 구성, 스킬 스캐폴딩, 검증 루프 설계에 사용한다.",
+      "tags": [
+        "harness",
+        "agent-teams",
+        "orchestration",
+        "meta-skill",
+        "claude",
+        "codex",
+        "gemini",
+        "opencode"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill harness",
+      "addedAt": "2026-03-30T00:00:00Z",
+      "updatedAt": "2026-03-30T00:00:00Z",
+      "extensions": [
+        {
+          "skill": "survey",
+          "status": "recommended",
+          "reason": "Use survey first when adapting Harness to a new domain or platform."
+        },
+        {
+          "skill": "skill-standardization",
+          "status": "recommended",
+          "reason": "Use skill-standardization after scaffolding new skills from the harness."
+        },
+        {
+          "skill": "playwriter",
+          "status": "optional",
+          "reason": "Use playwriter when Harness outputs need live browser-state verification."
+        }
+      ]
     }
   },
   "dependencies": {
@@ -120,58 +209,98 @@
       "version": "latest",
       "source": "backnotprop/plannotator",
       "installCommand": "bash scripts/install.sh --with-plannotator",
-      "required_by": ["jeo"],
+      "required_by": [
+        "jeo"
+      ],
       "description": "시각적 계획/diff 리뷰 UI. jeo PLAN 단계 blocking 실행에 필수."
     },
     "ralph": {
       "version": "latest",
       "source": "akillness/oh-my-skills",
       "installCommand": "bash scripts/install.sh --with-ralph",
-      "required_by": ["jeo"],
-      "optional_for": ["omc"],
+      "required_by": [
+        "jeo"
+      ],
+      "optional_for": [
+        "omc"
+      ],
       "description": "completion-loop 엔진. jeo PLAN 단계 AfterAgent hook 기반 반복 실행에 필수."
     },
     "omc": {
       "version": "latest",
       "source": "akillness/oh-my-skills",
       "installCommand": "bash scripts/install.sh --with-omc",
-      "required_by": ["jeo"],
+      "required_by": [
+        "jeo"
+      ],
       "description": "Claude Code 네이티브 팀 오케스트레이션. jeo EXECUTE 단계 Claude 플랫폼 primary 실행에 필수."
     },
     "agent-browser": {
       "version": "latest",
       "source": "npm:agent-browser",
       "installCommand": "npm install -g agent-browser",
-      "optional_for": ["jeo", "omc"],
+      "optional_for": [
+        "jeo",
+        "omc"
+      ],
       "description": "AI 에이전트용 헤드리스 브라우저. jeo VERIFY 단계 기본 검증 도구. 브라우저 UI 없는 백엔드/CLI 작업은 건너뜀."
     },
     "agentation": {
       "version": "latest",
       "source": "benjitaylor/agentation",
       "installCommand": "bash scripts/install.sh --with-agentation",
-      "optional_for": ["jeo"],
+      "optional_for": [
+        "jeo"
+      ],
       "description": "UI 어노테이션 → 에이전트 코드 수정 연동. jeo `annotate` 키워드 감지 시에만 VERIFY_UI 단계 활성화."
     },
     "survey": {
       "version": "latest",
       "source": "akillness/oh-my-skills",
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill survey",
-      "optional_for": ["jeo", "omc", "ralph"],
+      "optional_for": [
+        "harness",
+        "jeo",
+        "omc",
+        "ralph"
+      ],
       "description": "계획/구현 전 문제공간 리서치 스킬. 신규 스킬 발굴 및 landscape 분석 시 권장."
     },
     "omx": {
       "version": "latest",
       "source": "akillness/oh-my-skills",
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill omx",
-      "optional_for": ["jeo"],
+      "optional_for": [
+        "jeo"
+      ],
       "description": "OpenAI Codex CLI용 실행 백엔드. jeo EXECUTE 단계를 Codex 환경에 맞게 연결한다."
     },
     "ohmg": {
       "version": "latest",
       "source": "akillness/oh-my-skills",
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill ohmg",
-      "optional_for": ["jeo"],
+      "optional_for": [
+        "jeo"
+      ],
       "description": "Gemini/Antigravity 계열 실행 백엔드. jeo가 멀티-CLI orchestration을 유지할 때 사용한다."
+    },
+    "playwriter": {
+      "version": "latest",
+      "source": "npm:playwriter",
+      "installCommand": "npm install -g playwriter",
+      "optional_for": [
+        "harness"
+      ],
+      "description": "Running-browser Playwright automation. Optional when Harness outputs need authenticated or stateful browser verification."
+    },
+    "skill-standardization": {
+      "version": "latest",
+      "source": "akillness/oh-my-skills",
+      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill skill-standardization",
+      "optional_for": [
+        "harness"
+      ],
+      "description": "Validate and normalize generated SKILL.md files after Harness scaffolds new skills."
     }
   }
 }

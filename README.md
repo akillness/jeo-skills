@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-80-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-81-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**80 AI agent skills · TOON Format · Cross-platform**
+**81 AI agent skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,7 +18,7 @@
 
 ## 💡 What is Agent Skills?
 
-**80 AI agent skills · TOON Format · Cross-platform**
+**81 AI agent skills · TOON Format · Cross-platform**
 
 Agent Skills is a curated collection of 80 AI agent skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
@@ -67,6 +67,14 @@ graph TD
     RALPH["🔄 ralph"] -.-> EXEC
     AUTORESEARCH["🔬 autoresearch"] -.-> EXEC
 ```
+
+---
+
+## 🆕 What's New in v2026-03-30
+
+| Change | Details |
+|--------|---------|
+| **harness: cross-platform agent harness architect** | Added a dedicated `harness` skill based on `revfactory/harness`. Bundles upstream references, ships a refresh script, and adapts harness design across Claude Code, Codex CLI, Gemini / Antigravity, OpenCode, Pi, and Claw-style environments. 80 → **81 skills**. |
 
 ---
 
@@ -164,9 +172,9 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 80 local skill folders = 80 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 81 local skill folders = 81 total installable skills
 
-### 🎯 Core Orchestration (10)
+### 🎯 Core Orchestration (11)
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
@@ -180,6 +188,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `bmad-gds` | `bmad-gds` | All | BMAD Game Development Studio (Unity · Unreal · Godot) |
 | `bmad-idea` | `bmad-idea` | All | Creative intelligence — 5 specialist ideation agents |
 | `survey` | `survey` | All | Pre-implementation landscape scan |
+| `harness` | `harness` | All | Agent team & skill architect — scaffold reusable harnesses across platforms |
 
 ### 📋 Planning & Review (5)
 
@@ -383,8 +392,9 @@ npx vibe-kanban
 | [CrewAI](https://github.com/crewAIInc/crewAI) | 45.7k | Role-playing autonomous AI agent orchestration |
 | [smolagents](https://github.com/huggingface/smolagents) | 25.9k | HuggingFace code-thinking agent library |
 | [agency-agents](https://github.com/msitarzewski/agency-agents) | 21.2k | 61 specialized AI agents across 9 divisions |
+| [revfactory/harness](https://github.com/revfactory/harness) | meta-skill | Agent team & skill architect plugin / scaffold |
 
-> Install & integration notes → [docs/harness/README.md](docs/harness/README.md)
+> Install & integration notes → [docs/harness/README.md](docs/harness/README.md) · packaged skill → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
 
 ---
 
@@ -392,7 +402,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 78 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 81 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -410,6 +420,7 @@ npx vibe-kanban
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `ralph` | `ralph` | [docs/ralph/README.md](docs/ralph/README.md) |
+| `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.md](docs/harness/README.md) |
@@ -427,6 +438,7 @@ npx vibe-kanban
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
+| `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `obsidian-cli` | [Obsidian CLI Help](https://obsidian.md/help/cli) | Proprietary |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |

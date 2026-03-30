@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-80-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-81-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**80개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
+**81개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,7 +18,7 @@
 
 ## 💡 Agent Skills란?
 
-**80개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
+**81개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
 
 Agent Skills는 LLM 기반 개발 워크플로우를 위한 80개 AI 에이전트 스킬 컬렉션입니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
@@ -67,6 +67,14 @@ graph TD
     RALPH["🔄 ralph"] -.-> EXEC
     AUTORESEARCH["🔬 autoresearch"] -.-> EXEC
 ```
+
+---
+
+## 🆕 v2026-03-30 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **harness: 전 플랫폼용 에이전트 하네스 설계 스킬** | `revfactory/harness` 기반 전용 `harness` 스킬을 추가했습니다. upstream reference 번들, refresh script, Claude Code / Codex CLI / Gemini / Antigravity / OpenCode / Pi / Claw 계열 환경으로의 하네스 설계 적응 가이드를 포함합니다. 80 → **81개** |
 
 ---
 
@@ -164,9 +172,9 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 80개 로컬 스킬 폴더 = 총 80개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 81개 로컬 스킬 폴더 = 총 81개 설치 가능 스킬
 
-### 🎯 핵심 오케스트레이션 (10개)
+### 🎯 핵심 오케스트레이션 (11개)
 
 | 스킬 | 키워드 | 플랫폼 | 설명 |
 |------|--------|--------|------|
@@ -180,6 +188,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `bmad-gds` | `bmad-gds` | 전체 | BMAD 게임 개발 스튜디오 (Unity · Unreal · Godot) |
 | `bmad-idea` | `bmad-idea` | 전체 | 창의 지능 — 5개 전문 아이디에이션 에이전트 |
 | `survey` | `survey` | 전체 | 사전 구현 문제공간 스캔 |
+| `harness` | `harness` | 전체 | 전 플랫폼용 에이전트 팀 · 스킬 하네스 설계 메타 스킬 |
 
 ### 📋 계획 및 검토 (5개)
 
@@ -383,8 +392,9 @@ npx vibe-kanban
 | [CrewAI](https://github.com/crewAIInc/crewAI) | 45.7k | 역할 기반 자율 AI 에이전트 오케스트레이션 |
 | [smolagents](https://github.com/huggingface/smolagents) | 25.9k | HuggingFace 코드 사고 경량 에이전트 라이브러리 |
 | [agency-agents](https://github.com/msitarzewski/agency-agents) | 21.2k | 9개 부서의 61개 특화 AI 에이전트 |
+| [revfactory/harness](https://github.com/revfactory/harness) | meta-skill | 에이전트 팀 · 스킬 하네스 설계 플러그인 |
 
-> 설치 및 연동 가이드 → [docs/harness/README.ko.md](docs/harness/README.ko.md)
+> 설치 및 연동 가이드 → [docs/harness/README.ko.md](docs/harness/README.ko.md) · 패키징된 스킬 → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
 
 ---
 
@@ -392,7 +402,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 78개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 81개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -410,6 +420,7 @@ npx vibe-kanban
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `ralph` | `ralph` | [docs/ralph/README.md](docs/ralph/README.md) |
+| `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.ko.md](docs/harness/README.ko.md) |
@@ -427,6 +438,7 @@ npx vibe-kanban
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
+| `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `obsidian-cli` | [Obsidian CLI Help](https://obsidian.md/help/cli) | Proprietary |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |
