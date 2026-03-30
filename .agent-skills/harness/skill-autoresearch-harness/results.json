@@ -1,0 +1,55 @@
+{
+  "skill": "harness",
+  "evals": [
+    {"id": 1, "name": "Architecture pattern named", "description": "Response names one of the 6 defined patterns with justification"},
+    {"id": 2, "name": "Agent file paths generated", "description": "Response provides .claude/agents/{name}.md file paths"},
+    {"id": 3, "name": "File-based agent rule enforced", "description": "Response states agents must be file-based, not inline"},
+    {"id": 4, "name": "Validation step present", "description": "bash scripts/validate-harness.sh or trigger eval mentioned"},
+    {"id": 5, "name": "Env var noted for agent teams", "description": "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 appears when agent team is created"}
+  ],
+  "test_inputs": [
+    "이 프로젝트에 harness 만들어줘. 여러 전문 에이전트로 나눠서 처리하고 싶어.",
+    "리서치 에이전트 팀 설계해줘. 여러 각도에서 동시에 조사하고 결과를 합쳐야 해.",
+    "코드 리뷰 harness 만들어줘. 보안, 성능, 테스트 각각 전문가가 봐야 해."
+  ],
+  "experiments": [
+    {
+      "id": 0,
+      "status": "baseline",
+      "score": 12,
+      "max_score": 15,
+      "pass_rate": 0.80,
+      "description": "Original SKILL.md",
+      "eval_breakdown": {
+        "E1_pattern": {"pass": 3, "fail": 0},
+        "E2_file_paths": {"pass": 3, "fail": 0},
+        "E3_file_based_rule": {"pass": 3, "fail": 0},
+        "E4_validation": {"pass": 3, "fail": 0},
+        "E5_env_var": {"pass": 0, "fail": 3, "note": "Env var only in intro header, absent from step instructions"}
+      }
+    },
+    {
+      "id": 1,
+      "status": "keep",
+      "score": 15,
+      "max_score": 15,
+      "pass_rate": 1.00,
+      "description": "Added CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 to Step 5",
+      "change": "Inserted env var reminder into Step 5 Integration & Orchestration where orchestration workflow is defined",
+      "eval_breakdown": {
+        "E1_pattern": {"pass": 3, "fail": 0},
+        "E2_file_paths": {"pass": 3, "fail": 0},
+        "E3_file_based_rule": {"pass": 3, "fail": 0},
+        "E4_validation": {"pass": 3, "fail": 0},
+        "E5_env_var": {"pass": 3, "fail": 0, "note": "Env var now appears in step instructions"}
+      }
+    }
+  ],
+  "final": {
+    "baseline_pass_rate": 0.80,
+    "final_pass_rate": 1.00,
+    "experiments_run": 1,
+    "kept": 1,
+    "discarded": 0
+  }
+}

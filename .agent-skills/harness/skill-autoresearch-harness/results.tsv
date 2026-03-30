@@ -1,0 +1,3 @@
+experiment	score	max_score	pass_rate	status	description
+0	12	15	80%	baseline	Original SKILL.md — E5 (env var) only in header, missing from step instructions
+1	15	15	100%	keep	Added CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 reminder to Step 5 Integration

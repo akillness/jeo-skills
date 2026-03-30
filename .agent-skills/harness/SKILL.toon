@@ -1,0 +1,37 @@
+N:harness
+D:[harness] Design domain-specific agent teams, define specialized agents, and generate the skills they use. Meta-skill for decomposing complex projects into coordinated multi-agent pipelines. Covers domain analysis, pattern selection (pipeline/fan-out/expert-pool/producer-reviewer/supervisor/hierarchical), .claude/agents/ and .claude/skills/ generation, orchestration, and validation.
+G:harness agent-team multi-agent skill-generation orchestration meta-skill claude-code harness-engineering
+
+U[8]:
+  Decompose a complex project into a coordinated multi-agent team
+  Choose architecture pattern: pipeline, fan-out/fan-in, expert pool, producer-reviewer, supervisor, hierarchical delegation
+  Generate .claude/agents/{name}.md agent definition files
+  Generate .claude/skills/{name}/SKILL.md skill files with scripts and references
+  Define orchestration workflow: phase dependencies, data passing, error handling
+  Validate harness with trigger evals, dry-run, and comparative (with/without) testing
+  Build harnesses for research, coding, content creation, code review, data pipelines
+  Explain agent team vs sub-agent mode tradeoffs
+
+S[6]{n,action,details}:
+  1,Analyze,identify domain sub-tasks and decide agent team vs sub-agent mode
+  2,Design,select architecture pattern and define agent roles
+  3,Generate agents,create .claude/agents/{name}.md with Core Responsibilities + Input/Output Protocol
+  4,Generate skills,create .claude/skills/{name}/SKILL.md under 500 lines with references/ for detail
+  5,Orchestrate,define phase order data paths _workspace/{run-id}/ and error handling
+  6,Validate,bash scripts/validate-harness.sh .claude/agents/ .claude/skills/
+
+R[7]:
+  All agents must be file-based (.claude/agents/{name}.md) — inline embedding prevents session reuse
+  Agent teams are the default; use sub-agents only when no inter-agent communication is needed
+  CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 required for agent team execution
+  Never nest teams beyond 2 levels (team members cannot create their own teams)
+  Use absolute paths anchored to _workspace/ for all intermediate artifacts
+  Write pushy skill descriptions — passive descriptions mean skills never activate
+  Preserve intermediate artifacts for post-execution verification
+
+E[5]{type,command}:
+  Install,bash scripts/install.sh
+  Validate harness,bash scripts/validate-harness.sh .claude/agents/ .claude/skills/
+  Trigger via prompt,"build a harness for this project"
+  Trigger via prompt,"design an agent team for [domain]"
+  Trigger via prompt,"set up a harness"

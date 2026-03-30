@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-80-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-81-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**80개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
+**81개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**80개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
+**81개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 80개 AI 에이전트 스킬 컬렉션입니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 81개 AI 에이전트 스킬 컬렉션입니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 v2026-03-30 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **harness: 에이전트 팀 & 스킬 아키텍트 메타스킬** | 도메인 전용 에이전트 팀을 설계하고 스킬을 생성하는 전용 `harness` 스킬을 추가했습니다. 도메인 분석, 아키텍처 패턴 선택(pipeline, fan-out/fan-in, expert pool, producer-reviewer, supervisor, hierarchical delegation), `.claude/agents/`·`.claude/skills/` 파일 생성, 오케스트레이션 워크플로우 정의, 트리거 eval·드라이런 검증을 포함합니다. `install.sh`, `validate-harness.sh` 스크립트와 참고 문서 5개도 포함됩니다. 80 → **81개** |
 
 ## 🆕 v2026-03-28 업데이트
 
@@ -164,14 +170,15 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 80개 로컬 스킬 폴더 = 총 80개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 81개 로컬 스킬 폴더 = 총 81개 설치 가능 스킬
 
-### 🎯 핵심 오케스트레이션 (10개)
+### 🎯 핵심 오케스트레이션 (11개)
 
 | 스킬 | 키워드 | 플랫폼 | 설명 |
 |------|--------|--------|------|
 | `jeo` | `jeo`, `annotate` | 전체 | `.jeo` ledger 기반 통합 오케스트레이션: 기획→개발→QA→정리 |
 | `omc` | `omc`, `autopilot` | Claude | 32개 에이전트 오케스트레이션 레이어 |
+| `harness` | `harness`, `build a harness` | 전체 | 메타스킬: 도메인 전용 에이전트 팀 설계, `.claude/agents/`·`.claude/skills/` 생성, harness 검증 |
 | `omx` | `omx` | Codex | Codex CLI용 멀티에이전트 오케스트레이션 |
 | `ohmg` | `ohmg` | Gemini | Antigravity 멀티에이전트 프레임워크 |
 | `ralph` | `ralph`, `ooo` | 전체 | Ouroboros 스펙 우선 + 영구 완료 루프 |
@@ -429,6 +436,7 @@ npx vibe-kanban
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
 | `obsidian-cli` | [Obsidian CLI Help](https://obsidian.md/help/cli) | Proprietary |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
+| `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |
 | `autoresearch` | Andrej Karpathy methodology | — |
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |

@@ -150,7 +150,7 @@ npx skills add https://github.com/akillness/oh-my-skills \
   --skill file-organization --skill firebase-ai-logic --skill firebase-cli \
   --skill frontend-design-system --skill genkit \
   --skill git-submodule --skill git-workflow \
-  --skill google-workspace --skill jeo \
+  --skill google-workspace --skill harness --skill jeo \
   --skill langsmith --skill log-analysis \
   --skill looker-studio-bigquery \
   --skill marketing-automation --skill marketing-skills-collection \

@@ -1,0 +1,55 @@
+{
+  "skill_name": "harness",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "이 프로젝트에 harness 만들어줘. 여러 전문 에이전트로 나눠서 처리하고 싶어.",
+      "expected_output": "The skill analyzes the project domain, selects an architecture pattern, and generates .claude/agents/ and .claude/skills/ files.",
+      "assertions": [
+        "The response generates at least one .claude/agents/{name}.md file",
+        "The response selects and names a specific architecture pattern (pipeline, fan-out/fan-in, expert pool, producer-reviewer, supervisor, or hierarchical)",
+        "The response mentions CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "리서치 에이전트 팀 설계해줘. 여러 각도에서 동시에 조사하고 결과를 합쳐야 해.",
+      "expected_output": "The skill designs a fan-out/fan-in research team with parallel specialist agents and a synthesizing orchestrator.",
+      "assertions": [
+        "The response uses fan-out/fan-in or equivalent parallel pattern",
+        "The response defines 3+ parallel researcher agents",
+        "The response includes an orchestrator or synthesizer agent"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "코드 리뷰 harness 만들어줘. 보안, 성능, 테스트 각각 전문가가 봐야 해.",
+      "expected_output": "The skill generates an expert pool or fan-out code review team with security, performance, and testing agents that can cross-communicate.",
+      "assertions": [
+        "The response creates separate security, performance, and testing reviewer agents",
+        "The response enables direct agent-to-agent communication (cross-domain detection)",
+        "The response generates .claude/agents/ definition files"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "harness 에서 에이전트 역할을 Agent 도구 프롬프트에 직접 넣으면 안 돼?",
+      "expected_output": "The skill explains that all agents must be file-based (.claude/agents/) for reusability across sessions, and inline role embedding is prohibited.",
+      "assertions": [
+        "The response states inline embedding is not recommended or prohibited",
+        "The response explains file-based agents enable reuse across sessions",
+        "The response references .claude/agents/{name}.md as the correct approach"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "생성된 harness를 배포 전에 검증하고 싶어. 트리거 조건이 맞는지도 확인해줘.",
+      "expected_output": "The skill runs validate-harness.sh, performs trigger eval with 20 queries, and optionally does a dry-run comparison.",
+      "assertions": [
+        "The response mentions bash scripts/validate-harness.sh",
+        "The response describes trigger validation with should-trigger and should-NOT-trigger queries",
+        "The response includes dry-run or comparative (with/without) testing"
+      ]
+    }
+  ]
+}

@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-80-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-81-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**80 AI agent skills · TOON Format · Cross-platform**
+**81 AI agent skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**80 AI agent skills · TOON Format · Cross-platform**
+**81 AI agent skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection of 80 AI agent skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
+Agent Skills is a curated collection of 81 AI agent skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 What's New in v2026-03-30
+
+| Change | Details |
+|--------|---------|
+| **harness: agent team & skill architect meta-skill** | Added a dedicated `harness` skill for designing domain-specific agent teams and generating the skills they use. Covers domain analysis, architecture pattern selection (pipeline, fan-out/fan-in, expert pool, producer-reviewer, supervisor, hierarchical delegation), `.claude/agents/` and `.claude/skills/` file generation, orchestration workflow definition, and validation with trigger evals and dry-run testing. Includes `install.sh`, `validate-harness.sh` scripts, and 5 reference docs. 80 → **81 skills**. |
 
 ## 🆕 What's New in v2026-03-28
 
@@ -164,14 +170,15 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 80 local skill folders = 80 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 81 local skill folders = 81 total installable skills
 
-### 🎯 Core Orchestration (10)
+### 🎯 Core Orchestration (11)
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
 | `jeo` | `jeo`, `annotate` | All | Integrated orchestration with `.jeo` ledger: Planning→Development→QA→Cleanup |
 | `omc` | `omc`, `autopilot` | Claude | 32-agent orchestration layer with model routing |
+| `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
 | `omx` | `omx` | Codex | Multi-agent orchestration for Codex CLI |
 | `ohmg` | `ohmg` | Gemini | Antigravity multi-agent framework |
 | `ralph` | `ralph`, `ooo` | All | Ouroboros specification-first + persistent completion loop |
@@ -429,6 +436,7 @@ npx vibe-kanban
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
 | `obsidian-cli` | [Obsidian CLI Help](https://obsidian.md/help/cli) | Proprietary |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
+| `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |
 | `autoresearch` | Andrej Karpathy methodology | — |
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |
