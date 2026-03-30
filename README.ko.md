@@ -187,6 +187,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `bmad-gds` | `bmad-gds` | 전체 | BMAD 게임 개발 스튜디오 (Unity · Unreal · Godot) |
 | `bmad-idea` | `bmad-idea` | 전체 | 창의 지능 — 5개 전문 아이디에이션 에이전트 |
 | `survey` | `survey` | 전체 | 사전 구현 문제공간 스캔 |
+| `harness` | `harness` | 전체 | 전 플랫폼용 에이전트 팀 · 스킬 하네스 설계 메타 스킬 |
 
 ### 📋 계획 및 검토 (5개)
 
@@ -390,8 +391,9 @@ npx vibe-kanban
 | [CrewAI](https://github.com/crewAIInc/crewAI) | 45.7k | 역할 기반 자율 AI 에이전트 오케스트레이션 |
 | [smolagents](https://github.com/huggingface/smolagents) | 25.9k | HuggingFace 코드 사고 경량 에이전트 라이브러리 |
 | [agency-agents](https://github.com/msitarzewski/agency-agents) | 21.2k | 9개 부서의 61개 특화 AI 에이전트 |
+| [revfactory/harness](https://github.com/revfactory/harness) | meta-skill | 에이전트 팀 · 스킬 하네스 설계 플러그인 |
 
-> 설치 및 연동 가이드 → [docs/harness/README.ko.md](docs/harness/README.ko.md)
+> 설치 및 연동 가이드 → [docs/harness/README.ko.md](docs/harness/README.ko.md) · 패키징된 스킬 → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
 
 ---
 
@@ -399,7 +401,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 78개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 81개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -417,6 +419,7 @@ npx vibe-kanban
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `ralph` | `ralph` | [docs/ralph/README.md](docs/ralph/README.md) |
+| `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.ko.md](docs/harness/README.ko.md) |
@@ -434,6 +437,7 @@ npx vibe-kanban
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
+| `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `obsidian-cli` | [Obsidian CLI Help](https://obsidian.md/help/cli) | Proprietary |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
 | `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |

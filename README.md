@@ -187,6 +187,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `bmad-gds` | `bmad-gds` | All | BMAD Game Development Studio (Unity · Unreal · Godot) |
 | `bmad-idea` | `bmad-idea` | All | Creative intelligence — 5 specialist ideation agents |
 | `survey` | `survey` | All | Pre-implementation landscape scan |
+| `harness` | `harness` | All | Agent team & skill architect — scaffold reusable harnesses across platforms |
 
 ### 📋 Planning & Review (5)
 
@@ -390,8 +391,9 @@ npx vibe-kanban
 | [CrewAI](https://github.com/crewAIInc/crewAI) | 45.7k | Role-playing autonomous AI agent orchestration |
 | [smolagents](https://github.com/huggingface/smolagents) | 25.9k | HuggingFace code-thinking agent library |
 | [agency-agents](https://github.com/msitarzewski/agency-agents) | 21.2k | 61 specialized AI agents across 9 divisions |
+| [revfactory/harness](https://github.com/revfactory/harness) | meta-skill | Agent team & skill architect plugin / scaffold |
 
-> Install & integration notes → [docs/harness/README.md](docs/harness/README.md)
+> Install & integration notes → [docs/harness/README.md](docs/harness/README.md) · packaged skill → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
 
 ---
 
@@ -399,7 +401,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 78 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 81 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -417,6 +419,7 @@ npx vibe-kanban
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `ralph` | `ralph` | [docs/ralph/README.md](docs/ralph/README.md) |
+| `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.md](docs/harness/README.md) |
@@ -434,9 +437,9 @@ npx vibe-kanban
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
+| `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `obsidian-cli` | [Obsidian CLI Help](https://obsidian.md/help/cli) | Proprietary |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
-| `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |
 | `autoresearch` | Andrej Karpathy methodology | — |
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |

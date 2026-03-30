@@ -380,6 +380,7 @@ gh auth login && gh api --silent --method PUT /user/starred/akillness/oh-my-skil
 | `bmad-idea` | `bmad-idea` | Creative ideas · design thinking · innovation strategy |
 | `agent-browser` | `agent-browser` | Headless browser automation |
 | `survey` | `survey` | Cross-platform landscape scan before planning or implementation |
+| `harness` | `harness`, `build a harness`, `agent team architect` | Cross-platform harness design — scaffold agent teams, specialist roles, skills, and validation loops from a domain |
 | `autoresearch` | `autoresearch`, `autonomous ml experiments`, `val_bpb` | Karpathy autonomous ML experimentation — AI agent runs overnight GPU experiments, ratchets improvements via git |
 | `skill-autoresearch` | `skill-autoresearch`, `optimize this skill`, `eval my skill` | Eval-driven SKILL.md optimization loop — benchmark a skill, mutate one instruction at a time, keep only score-improving changes |
 | `agentation` | `annotate`, `UI검토`, `agentui` | UI annotation → agent code modification. Install: `npx add-mcp "npx -y agentation-mcp server"` (Universal) or `npx skills add benjitaylor/agentation -g` → `/agentation` (Claude Code Official Skill). Local-first architecture, offline operation, session continuity. |
