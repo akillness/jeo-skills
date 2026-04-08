@@ -1,0 +1,59 @@
+{
+  "skill_name": "llm-wiki",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Obsidian으로 llm-wiki를 시작하고 싶은데 어떤 폴더 구조와 핵심 파일이 필요해?",
+      "expected_output": "The response bootstraps a vault with raw sources, wiki folders, index.md, log.md, and a schema file.",
+      "assertions": [
+        "The response mentions `bash scripts/bootstrap-vault.sh` or an equivalent bootstrap step",
+        "The response mentions `raw/`, `wiki/`, `index.md`, `log.md`, and `AGENTS.md` or `CLAUDE.md`"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "웹 아티클 URL 하나를 내 wiki에 넣고 싶어. 어떻게 ingest 하지?",
+      "expected_output": "The response uses the Scrapling-based helper and updates both raw and wiki layers.",
+      "assertions": [
+        "The response mentions `bash scripts/ingest-url.sh` or Scrapling-powered URL ingestion",
+        "The response says ingest updates the raw capture, a source page, `index.md`, and `log.md`"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "SPA 페이지라 JS 렌더링이 필요해. llm-wiki에서도 이걸 처리할 수 있어?",
+      "expected_output": "The response escalates from static capture to dynamic or stealth fetch modes when needed.",
+      "assertions": [
+        "The response mentions `--mode fetch` or a dynamic fetch path",
+        "The response keeps Scrapling escalation optional instead of making stealth the default"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "질문에 대한 좋은 답변을 chat에서 끝내지 않고 wiki에 남기고 싶어.",
+      "expected_output": "The response tells the user to read the index first and file durable answers into queries or reports.",
+      "assertions": [
+        "The response mentions reading `index.md` first",
+        "The response mentions `bash scripts/new-query-note.sh` or filing into `wiki/queries/` or `wiki/reports/`"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "위키가 커졌는데 건강검진은 어떻게 해?",
+      "expected_output": "The response points to the lint script and describes structural plus semantic health checks.",
+      "assertions": [
+        "The response mentions `python3 scripts/lint-wiki.py`",
+        "The response mentions broken links, orphan pages, stale claims, contradictions, or missing pages"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "페이지 수가 많아졌어. 언제 qmd 같은 검색 도구를 붙여야 해?",
+      "expected_output": "The response keeps index and log as the default navigation layer and introduces qmd later.",
+      "assertions": [
+        "The response says `index.md` and `log.md` are enough at small or moderate scale",
+        "The response mentions qmd as optional later-stage search infrastructure"
+      ]
+    }
+  ]
+}

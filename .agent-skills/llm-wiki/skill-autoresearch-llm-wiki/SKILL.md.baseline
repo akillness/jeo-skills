@@ -1,0 +1,40 @@
+---
+name: llm-wiki
+description: >
+  Build a persistent markdown wiki that an LLM maintains on the user's behalf from raw sources,
+  index files, and a schema document. Use when the user wants an Obsidian or markdown knowledge
+  base instead of one-shot retrieval from raw files.
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+license: Idea adapted into repository skill implementation
+metadata:
+  tags: llm-wiki, obsidian, knowledge-base, markdown, research, wiki
+  version: "0.1"
+  source: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
+---
+
+# llm-wiki
+
+Use this skill to turn raw sources into a persistent markdown wiki.
+
+## Core workflow
+
+1. Create a vault with `raw/`, `wiki/`, `index.md`, `log.md`, and `AGENTS.md`
+2. Save raw sources under `raw/`
+3. Create wiki pages under `wiki/`
+4. Update `index.md` and `log.md`
+
+## Ingest
+
+For URLs, capture the page and create a source summary page. Use Scrapling if the source is on the web.
+
+## Query
+
+Answer questions from the wiki and cite relevant pages.
+
+## Lint
+
+Check the wiki for contradictions, stale claims, and orphan pages.
+
+## Notes
+
+Add qmd or other search tooling later if the wiki gets too large for simple navigation.

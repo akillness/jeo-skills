@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-04-08T09:30:00Z",
-  "skill_count": 82,
+  "generated": "2026-04-08T08:00:00Z",
+  "skill_count": 83,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -82,6 +82,7 @@
       "obsidian-cli",
       "obsidian-plugin",
       "opencontext",
+      "llm-wiki",
       "workflow-automation"
     ],
     "frontend": [
@@ -2711,6 +2712,57 @@
         {
           "command": "oc context manifest project-a --limit 10",
           "source": "utilities/opencontext/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "llm-wiki",
+      "description": "Build and maintain a persistent markdown wiki that an LLM updates on the user's behalf, usually inside an Obsidian vault or git-tracked notes repo. Use when raw sources such as web articles, papers, meeting notes, transcripts, screenshots, or past analyses need to be turned into an interlinked knowledge base with immutable source files, LLM-written wiki pages, index.md, log.md, schema rules, source summaries, query notes, and recurring lint passes. Triggers on: llm-wiki, personal wiki, obsidian wiki, research vault, knowledge base, source ingest, persistent notes, wiki maintenance, source summaries, query filing.",
+      "category": "utilities",
+      "path": "utilities/llm-wiki/SKILL.md",
+      "tags": [
+        "llm-wiki",
+        "obsidian",
+        "knowledge-base",
+        "markdown",
+        "research",
+        "synthesis",
+        "scrapling",
+        "qmd",
+        "notes",
+        "wiki"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": [
+        {
+          "command": "bash scripts/bootstrap-vault.sh /path/to/vault",
+          "source": "utilities/llm-wiki/SKILL.md"
+        },
+        {
+          "command": "bash scripts/ingest-url.sh /path/to/vault \"https://example.com/article\"",
+          "source": "utilities/llm-wiki/SKILL.md"
+        },
+        {
+          "command": "bash scripts/new-query-note.sh /path/to/vault \"How does X differ from Y?\"",
+          "source": "utilities/llm-wiki/SKILL.md"
+        },
+        {
+          "command": "python3 scripts/lint-wiki.py /path/to/vault",
+          "source": "utilities/llm-wiki/SKILL.md"
         }
       ]
     },

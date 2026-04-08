@@ -1,0 +1,67 @@
+{
+  "skill_name": "llm-wiki",
+  "status": "complete",
+  "updated_at": "2026-04-08T07:50:00Z",
+  "evals": [
+    {
+      "id": "bootstrap-coverage",
+      "question": "Does the skill operationalize the vault bootstrap with raw and wiki layers, index.md, log.md, and a schema file?"
+    },
+    {
+      "id": "ingest-operations",
+      "question": "Does the skill describe a concrete ingest flow that updates the raw capture, a source page, index.md, and log.md?"
+    },
+    {
+      "id": "scrapling-escalation",
+      "question": "Does the skill explain when to use static versus dynamic or stealth Scrapling ingestion?"
+    },
+    {
+      "id": "query-filing",
+      "question": "Does the skill tell the agent to read index.md first and file durable answers into queries or reports?"
+    },
+    {
+      "id": "lint-tooling",
+      "question": "Does the skill point to a concrete lint command and the kinds of issues it should surface?"
+    },
+    {
+      "id": "reference-support",
+      "question": "Does the skill keep the main SKILL.md focused and push detail into scripts and reference files?"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment": 0,
+      "score": 4,
+      "max_score": 6,
+      "pass_rate": 0.6667,
+      "status": "baseline",
+      "description": "Initial draft conveyed the architecture and the ingest/query/lint idea, but it left filing and lint execution under-specified and did not turn Scrapling usage into a concrete command path.",
+      "kept": true,
+      "per_eval": {
+        "bootstrap-coverage": true,
+        "ingest-operations": true,
+        "scrapling-escalation": true,
+        "query-filing": false,
+        "lint-tooling": false,
+        "reference-support": true
+      }
+    },
+    {
+      "experiment": 1,
+      "score": 6,
+      "max_score": 6,
+      "pass_rate": 1.0,
+      "status": "keep",
+      "description": "Kept mutation: added bootstrap, ingest, query-note, and lint scripts plus focused reference files for schema, ingest, filing, and scaling decisions.",
+      "kept": true,
+      "per_eval": {
+        "bootstrap-coverage": true,
+        "ingest-operations": true,
+        "scrapling-escalation": true,
+        "query-filing": true,
+        "lint-tooling": true,
+        "reference-support": true
+      }
+    }
+  ]
+}

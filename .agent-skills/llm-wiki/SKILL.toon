@@ -1,0 +1,39 @@
+N:llm-wiki
+D:[llm-wiki] Build and maintain a persistent markdown wiki that an LLM updates on the user's behalf from immutable raw sources, wiki pages, index/log files, and a schema document.
+G:llm-wiki obsidian knowledge-base markdown research synthesis scrapling qmd notes wiki
+
+U[8]:
+  Bootstrap a git-tracked or Obsidian vault with raw sources wiki pages index log and schema files
+  Treat AGENTS.md or CLAUDE.md as the operating contract for ingest query and lint workflows
+  Ingest local files or URLs into raw sources and create source summary pages
+  Use Scrapling for URL capture and escalate from static to dynamic to stealth fetch only when needed
+  Read index.md first when answering questions and file durable outputs back into the wiki
+  Create query or report stubs instead of losing good answers in chat history
+  Run lint passes for broken links orphan pages stale claims and missing cross references
+  Add qmd or other search tooling only when index plus log is no longer enough
+
+S[6]{n,action,details}:
+  1,Bootstrap,run bash scripts/bootstrap-vault.sh /path/to/vault to create raw wiki index log and AGENTS.md
+  2,Define schema,keep AGENTS.md or CLAUDE.md as the durable workflow contract for ingest query and lint rules
+  3,Ingest,bash scripts/ingest-url.sh /path/to/vault "https://example.com/article" or place local files under raw/sources then update wiki pages index and log
+  4,Query,read index.md first open relevant wiki pages cite sources and file durable answers with bash scripts/new-query-note.sh
+  5,Lint,run python3 scripts/lint-wiki.py /path/to/vault and repair broken links orphan pages and stale claims
+  6,Scale,add qmd search Obsidian CLI Dataview or other helpers only when the markdown workflow outgrows index plus log
+
+R[8]:
+  Keep raw sources immutable and do not rewrite captured material in place
+  Update index.md and log.md every time the wiki changes in a durable way
+  Prefer one source at a time until the schema and page conventions are stable
+  Source pages should stay grounded while concept and entity pages can synthesize across many sources
+  Read index.md before expensive retrieval or broad grep passes
+  File good answers back into wiki queries or reports instead of leaving them in chat only
+  Use git commits to separate ingest query and lint operations for reviewability
+  Keep the schema small and revise it whenever repeated drift shows up
+
+E[6]{type,command}:
+  Bootstrap,bash scripts/bootstrap-vault.sh ~/vaults/company-research
+  Static ingest,bash scripts/ingest-url.sh ~/vaults/company-research "https://example.com/article"
+  Dynamic ingest,bash scripts/ingest-url.sh ~/vaults/company-research "https://app.example.com/post" --mode fetch --network-idle
+  Query note,bash scripts/new-query-note.sh ~/vaults/company-research "How the market is changing" --question "How is the market changing?"
+  Report,bash scripts/new-query-note.sh ~/vaults/company-research "Q3 diligence memo" --section reports
+  Lint,python3 scripts/lint-wiki.py ~/vaults/company-research --format json

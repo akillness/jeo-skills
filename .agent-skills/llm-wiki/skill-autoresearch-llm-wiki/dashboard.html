@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>llm-wiki skill autoresearch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #f3efe7;
+      --panel: #fffaf4;
+      --ink: #1d1b19;
+      --muted: #655f57;
+      --line: #d8cec0;
+      --keep: #166534;
+      --base: #9a6700;
+    }
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: "Iowan Old Style", "Palatino Linotype", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(94, 133, 132, 0.16), transparent 28%),
+        linear-gradient(180deg, #faf6ef, var(--bg));
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    h1, h2 {
+      margin: 0 0 12px;
+    }
+    p {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin: 24px 0;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 12px 24px rgba(40, 35, 29, 0.06);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+    th {
+      background: #ece2d4;
+    }
+    .status-keep { color: var(--keep); font-weight: 700; }
+    .status-baseline { color: var(--base); font-weight: 700; }
+    code {
+      background: #efe6d9;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>llm-wiki skill autoresearch</h1>
+    <p>Baseline versus improved behavior for the local <code>llm-wiki</code> skill. This run focused on turning the original concept into a concrete Obsidian and markdown workflow.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Baseline</h2>
+        <p>Experiment 0 scored 4/6. The architecture was present, but filing answers back into the wiki and running lint as a real command were still too abstract.</p>
+      </div>
+      <div class="card">
+        <h2>Final</h2>
+        <p>Experiment 1 scored 6/6 after adding concrete scripts for bootstrap, ingest, query filing, and linting plus focused reference documents.</p>
+      </div>
+      <div class="card">
+        <h2>Focus</h2>
+        <p>Binary evals concentrated on bootstrapping, ingest operations, Scrapling escalation, query filing, lint tooling, and reference hygiene.</p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Experiment</th>
+          <th>Status</th>
+          <th>Score</th>
+          <th>Summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0</td>
+          <td class="status-baseline">baseline</td>
+          <td>4 / 6</td>
+          <td>Initial draft described the vault pattern but did not yet operationalize query filing or lint execution.</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td class="status-keep">keep</td>
+          <td>6 / 6</td>
+          <td>Kept mutation added helper scripts, stronger ingest detail, and cleaner separation between the main skill and supporting references.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
