@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>rtk skill autoresearch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #eef5ef;
+      --panel: #fbfefb;
+      --ink: #172218;
+      --muted: #56665a;
+      --line: #bfd2c1;
+      --keep: #166534;
+      --base: #8a5a12;
+    }
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: "IBM Plex Sans", "Helvetica Neue", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(38, 166, 91, 0.13), transparent 30%),
+        linear-gradient(180deg, #f7fbf7, var(--bg));
+      color: var(--ink);
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    h1, h2 {
+      margin: 0 0 12px;
+    }
+    p {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin: 24px 0;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 12px 24px rgba(28, 50, 30, 0.06);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+    th {
+      background: #e4f0e5;
+    }
+    .status-keep { color: var(--keep); font-weight: 700; }
+    .status-baseline { color: var(--base); font-weight: 700; }
+    code {
+      background: #edf5ee;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>rtk skill autoresearch</h1>
+    <p>Baseline versus improved prompt behavior for the local <code>rtk</code> skill. Open alongside <code>results.json</code> for the current experiment log.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Baseline</h2>
+        <p>Experiment 0 scored 4/6. It covered installation and init basics, but not the wrong-package repair path or the built-in-tool fallback.</p>
+      </div>
+      <div class="card">
+        <h2>Final</h2>
+        <p>Experiment 1 scored 6/6 after making `rtk gain` the first decision point and clarifying agent-specific integration boundaries.</p>
+      </div>
+      <div class="card">
+        <h2>Focus</h2>
+        <p>Binary evals concentrated on verification-first behavior, package-collision repair, per-agent init mapping, and direct RTK use when shell hooks do not apply.</p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Experiment</th>
+          <th>Status</th>
+          <th>Score</th>
+          <th>Summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0</td>
+          <td class="status-baseline">baseline</td>
+          <td>4 / 6</td>
+          <td>Initial draft defined RTK at a high level but did not make verification and non-hook tool paths operational enough.</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td class="status-keep">keep</td>
+          <td>6 / 6</td>
+          <td>Kept mutation added the `rtk gain` gate, repair steps, per-agent init wrapper, and direct-command fallback guidance.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

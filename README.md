@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-81-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-82-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**81 AI agent skills · TOON Format · Cross-platform**
+**82 AI agent skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**81 AI agent skills · TOON Format · Cross-platform**
+**82 AI agent skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection of 81 AI agent skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
+Agent Skills is a curated collection of 82 AI agent skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 What's New in v2026-04-08
+
+| Change | Details |
+|--------|---------|
+| **rtk: Rust Token Killer setup and operations skill** | Added a dedicated `rtk` skill for installing, verifying, and initializing Rust Token Killer across Claude Code, Codex, Gemini CLI, Cursor, Copilot, Windsurf, Cline, and OpenCode. The skill starts with `rtk gain` verification, handles the common wrong-package collision, ships install/init/status wrapper scripts, and pushes deeper platform and troubleshooting details into focused reference docs. Includes `evals/` plus `skill-autoresearch-rtk/` baseline, changelog, results, and dashboard artifacts. 81 → **82 skills**. |
 
 ## 🆕 What's New in v2026-03-30
 
@@ -170,7 +176,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 81 local skill folders = 81 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 82 local skill folders = 82 total installable skills
 
 ### 🎯 Core Orchestration (11)
 
@@ -241,7 +247,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `performance-optimization` | Speed, efficiency, scalability optimization | All |
 | `testing-strategies` | Test pyramid, coverage, flaky-test hardening | All |
 
-### 🏗 Infrastructure (12)
+### 🏗 Infrastructure (13)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -253,6 +259,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `looker-studio-bigquery` | Looker Studio + BigQuery dashboards | All |
 | `monitoring-observability` | Health checks, metrics, log aggregation | All |
 | `scrapling` | Adaptive web scraping with parser-first `Selector`, HTTP/browser/stealth fetchers, CLI extraction, and optional MCP/spider workflows | All |
+| `rtk` | Rust Token Killer installation and agent setup - `rtk gain` verification, package-collision repair, agent-specific `rtk init`, and direct compact shell wrappers | All |
 | `security-best-practices` | OWASP Top 10, RBAC, API security | All |
 | `strix` | Strix CLI for AI-driven application security testing - Docker preflight, LLM provider setup, local/GitHub/live target scans, scan modes, and CI/CD usage | All |
 | `system-environment-setup` | Reproducible environment configuration | All |
@@ -401,7 +408,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 81 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 82 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

@@ -1,0 +1,67 @@
+{
+  "skill_name": "rtk",
+  "status": "complete",
+  "updated_at": "2026-04-08T09:30:00Z",
+  "evals": [
+    {
+      "id": "verify-first",
+      "question": "Does the skill check `rtk gain` before reinstalling and use it as the correctness signal?"
+    },
+    {
+      "id": "wrong-package-repair",
+      "question": "Does the skill identify the `cargo install rtk` name collision and provide a repair path?"
+    },
+    {
+      "id": "claude-init",
+      "question": "Does the skill recommend the correct global Claude Code initialization flow and post-init verification?"
+    },
+    {
+      "id": "codex-init",
+      "question": "Does the skill explain Codex setup with `--codex` and clarify that it is not the same transparent hook path as Claude?"
+    },
+    {
+      "id": "other-agents",
+      "question": "Does the skill cover agent-specific setup for Gemini CLI or OpenCode with the correct scope?"
+    },
+    {
+      "id": "direct-command-fallback",
+      "question": "Does the skill explain that built-in file or search tools bypass shell hooks and recommend direct `rtk` commands?"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment": 0,
+      "score": 4,
+      "max_score": 6,
+      "pass_rate": 0.6667,
+      "status": "baseline",
+      "description": "Initial draft established the broad RTK use case but under-specified verification-first behavior, Codex limitations, and built-in tool fallback guidance.",
+      "kept": true,
+      "per_eval": {
+        "verify-first": false,
+        "wrong-package-repair": false,
+        "claude-init": true,
+        "codex-init": true,
+        "other-agents": true,
+        "direct-command-fallback": true
+      }
+    },
+    {
+      "experiment": 1,
+      "score": 6,
+      "max_score": 6,
+      "pass_rate": 1.0,
+      "status": "keep",
+      "description": "Kept mutation: raised `rtk gain` verification to Step 1, added wrong-package repair, clarified Codex and built-in-tool limits, and moved platform specifics into scripts plus references.",
+      "kept": true,
+      "per_eval": {
+        "verify-first": true,
+        "wrong-package-repair": true,
+        "claude-init": true,
+        "codex-init": true,
+        "other-agents": true,
+        "direct-command-fallback": true
+      }
+    }
+  ]
+}

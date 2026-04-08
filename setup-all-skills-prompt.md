@@ -67,7 +67,7 @@ fi
 
 ---
 
-## Step 1 — Install All 81 Skills (Batch)
+## Step 1 — Install All 82 Skills (Batch)
 
 Install all skills to the global location, then link shared skills to all detected agents.
 Re-running this step safely overwrites existing skills (symlinks are updated in place).
@@ -84,7 +84,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 81 skills to global store, link shared skills to all detected agents
+# Install ALL 82 skills to global store, link shared skills to all detected agents
 # Platform-specific skills (omc, ohmg, omx, ralphmode) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
@@ -328,10 +328,11 @@ If no → skip silently. Never re-ask.
 | Kanban board | `kanbanview` (vibe-kanban keyword) |
 | Security scan | `strix --target ./app` |
 | Web scraping | `scrapling "URL"` |
+| Token output optimizer | `rtk gain` |
 
 ---
 
-## Skill Inventory (81 skills)
+## Skill Inventory (82 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
@@ -344,7 +345,7 @@ If no → skip silently. Never re-ask.
 | **Backend** | api-design, api-documentation, authentication-setup, backend-testing, database-schema-design | All (`*`) |
 | **Frontend** | design-system, frontend-design-system, react-best-practices, react-grab, vercel-react-best-practices, responsive-design, state-management, ui-component-patterns, web-accessibility, web-design-guidelines | All (`*`) |
 | **Code Quality** | code-refactoring, code-review, debugging, performance-optimization, testing-strategies | All (`*`) |
-| **Infrastructure** | deployment-automation, environment-setup, firebase-ai-logic, firebase-cli, genkit, looker-studio-bigquery, monitoring-observability, scrapling, security-best-practices, strix, system-environment-setup, vercel-deploy | All (`*`) |
+| **Infrastructure** | deployment-automation, environment-setup, firebase-ai-logic, firebase-cli, genkit, looker-studio-bigquery, monitoring-observability, scrapling, rtk, security-best-practices, strix, system-environment-setup, vercel-deploy | All (`*`) |
 | **Documentation** | changelog-maintenance, presentation-builder, research-paper-writing, technical-writing, user-guide-writing | All (`*`) |
 | **Project Management** | sprint-retrospective, standup-meeting, task-estimation, task-planning | All (`*`) |
 | **Search & Analysis** | autoresearch, codebase-search, data-analysis, langsmith, log-analysis, pattern-detection | All (`*`) |
@@ -377,6 +378,7 @@ If no → skip silently. Never re-ask.
 | `autoresearch` | `autoresearch`, `autonomous ml experiments`, `val_bpb` | Karpathy autonomous ML — overnight GPU experiments, ratchets improvements via git |
 | `skill-autoresearch` | `skill-autoresearch`, `optimize this skill`, `eval my skill` | Eval-driven SKILL.md optimization — benchmark, mutate, keep only score-improving changes |
 | `scrapling` | `scrapling`, `adaptive scraping`, `stealthy fetch` | Adaptive web scraping — parser-first HTML, fetcher escalation, CLI extraction, MCP/spider |
+| `rtk` | `rtk`, `rust token killer`, `rtk init`, `rtk gain` | RTK install and agent integration — verify correct package, choose init mode, and use compact shell wrappers |
 | `strix` | `strix`, `ai pentest`, `vulnerability scan cli` | AI-driven appsec testing — Docker sandbox, LLM provider, local/GitHub/live scans, CI/CD |
 | `research-paper-writing` | `research paper`, `academic paper` | ML/CV/NLP academic paper — Abstract/Introduction/Method/Experiments/Conclusion |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex CLI multi-agent workflow layer (v0.11.10, 30+ agents) — team runtime, explore, sparkshell |

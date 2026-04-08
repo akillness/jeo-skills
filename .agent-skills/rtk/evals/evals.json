@@ -1,0 +1,59 @@
+{
+  "skill_name": "rtk",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "RTK가 이미 깔려있는지 먼저 확인하고 싶은데 뭘 보면 돼?",
+      "expected_output": "The skill checks rtk gain before reinstalling and treats it as the correctness signal.",
+      "assertions": [
+        "The response recommends checking `rtk gain`",
+        "The response says not to reinstall if `rtk gain` already works"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "cargo install rtk 했는데 gain 명령이 없어. 어떻게 고쳐?",
+      "expected_output": "The skill identifies the wrong package collision and repairs it.",
+      "assertions": [
+        "The response explains that the wrong `rtk` package may be installed",
+        "The response recommends uninstalling or reinstalling with a repo-specific method"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Claude Code 전체 프로젝트에 RTK 자동 적용하고 싶어.",
+      "expected_output": "The skill recommends global Claude init and mentions verification.",
+      "assertions": [
+        "The response recommends `rtk init -g` or the wrapper equivalent",
+        "The response mentions `rtk init --show` or equivalent verification"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Codex에서 RTK는 어떻게 붙여? Claude hook처럼 자동이야?",
+      "expected_output": "The skill explains Codex init and clarifies that it is not the same transparent hook path.",
+      "assertions": [
+        "The response recommends `rtk init --codex` or `rtk init -g --codex`",
+        "The response clarifies that Codex is prompt-guided or not the same transparent hook path"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "OpenCode나 Gemini도 RTK 설정할 수 있어?",
+      "expected_output": "The skill covers agent-specific init for OpenCode or Gemini.",
+      "assertions": [
+        "The response includes `--opencode` or `--gemini` init guidance",
+        "The response mentions plugin or hook scope"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Codex Read나 Grep 같은 기본 툴도 RTK가 자동으로 줄여줘?",
+      "expected_output": "The skill explains the built-in tool limitation and direct RTK fallback.",
+      "assertions": [
+        "The response says built-in file or search tools do not automatically pass through shell hooks",
+        "The response recommends direct commands such as `rtk read` or `rtk grep`"
+      ]
+    }
+  ]
+}

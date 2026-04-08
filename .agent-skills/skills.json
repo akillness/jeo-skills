@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-03-28T06:30:00Z",
-  "skill_count": 80,
+  "generated": "2026-04-08T09:30:00Z",
+  "skill_count": 82,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -23,6 +23,7 @@
       "looker-studio-bigquery",
       "monitoring-observability",
       "scrapling",
+      "rtk",
       "security-best-practices",
       "strix",
       "system-environment-setup",
@@ -777,6 +778,57 @@
         {
           "command": "SENDGRID_API_KEY=SG.xxx",
           "source": "infrastructure/security-best-practices/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "rtk",
+      "description": "Install, initialize, verify, and troubleshoot RTK (Rust Token Killer) for AI coding agents. Use when you need to reduce shell-command token output, confirm that the correct `rtk` binary is installed, choose between Homebrew, install.sh, or Cargo installation, wire `rtk init` for Claude Code, Codex, Gemini CLI, Cursor, Copilot, Windsurf, Cline, or OpenCode, or use compact wrappers such as `rtk git status`, `rtk read`, `rtk grep`, `rtk test`, `rtk lint`, and `rtk gain`. Triggers on: rtk, rust token killer, token saver cli, rtk init, rtk gain, codex rtk, gemini rtk, opencode rtk, claude hook token reduction.",
+      "category": "infrastructure",
+      "path": "infrastructure/rtk/SKILL.md",
+      "tags": [
+        "rtk",
+        "rust-token-killer",
+        "token-optimization",
+        "claude-code",
+        "codex",
+        "gemini",
+        "opencode",
+        "cursor",
+        "copilot",
+        "shell-hooks"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini CLI",
+        "Cursor",
+        "GitHub Copilot",
+        "Windsurf",
+        "Cline / Roo Code",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": [
+        {
+          "command": "bash scripts/check-status.sh --show",
+          "source": "infrastructure/rtk/scripts/check-status.sh"
+        },
+        {
+          "command": "bash scripts/install.sh --method script --repo akillness/rtk",
+          "source": "infrastructure/rtk/scripts/install.sh"
+        },
+        {
+          "command": "bash scripts/init-agent.sh --agent claude --global --auto-patch",
+          "source": "infrastructure/rtk/scripts/init-agent.sh"
         }
       ]
     },

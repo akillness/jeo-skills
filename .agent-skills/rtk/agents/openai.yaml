@@ -1,0 +1,4 @@
+interface:
+  display_name: "RTK"
+  short_description: "Install and operate RTK for AI coding agents"
+  default_prompt: "Use $rtk to install, initialize, verify, or troubleshoot Rust Token Killer for my coding agent setup."

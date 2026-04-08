@@ -1,0 +1,39 @@
+N:rtk
+D:[rtk] Install, initialize, verify, and troubleshoot RTK Rust Token Killer for AI coding agents. Covers correct-package verification with rtk gain, Homebrew or install.sh or Cargo installation, agent-specific rtk init flows for Claude Code Codex Gemini Cursor Copilot Windsurf Cline and OpenCode, and direct rtk wrapper commands when built-in tools bypass hooks.
+G:rtk rust-token-killer token-optimization claude-code codex gemini opencode cursor copilot shell-hooks
+
+U[8]:
+  Verify whether the installed rtk is the correct Token Killer package before changing anything
+  Repair the common cargo install name-collision mistake when rtk gain is missing
+  Install RTK with Homebrew the repo install.sh or Cargo depending on environment and user preference
+  Choose the correct rtk init mode for Claude Code Codex Gemini Cursor Copilot Windsurf Cline and OpenCode
+  Use rtk init --show and local status checks to diagnose stale hooks or missing plugin state
+  Use direct rtk wrappers like rtk read rtk grep rtk git status rtk test and rtk lint when hooks do not apply
+  Explain that built-in Read Grep and Glob style tools do not pass through shell-hook rewriting
+  Use RTK_DISABLED=1 and config.toml exclusions when the user needs selective passthrough
+
+S[6]{n,action,details}:
+  1,Check first,run bash scripts/check-status.sh --show and trust rtk gain as the correctness signal
+  2,Install narrowly,use bash scripts/install.sh with auto brew script or cargo instead of reinstalling blindly
+  3,Fix collisions,if rtk exists but gain fails repair the wrong package before continuing
+  4,Initialize agent,run bash scripts/init-agent.sh with the right --agent and scope flags
+  5,Use directly,call rtk read rtk grep rtk git status or rtk test when hook coverage is absent
+  6,Diagnose precisely,separate wrong binary PATH issues hook registration and non-shell tool paths
+
+R[8]:
+  rtk gain is the fastest way to confirm the correct RTK installation
+  cargo install rtk is unsafe unless the user already proved it is the right package
+  Global hook mode is the default for Claude Code Gemini Cursor Copilot OpenCode and usually Codex
+  Windsurf and Cline are rules-file integrations and should stay project-scoped
+  Prompt-only integrations such as Codex still benefit from direct rtk commands but do not rewrite built-in tools
+  After upgrades rerun rtk init or at least rtk init --show because hook artifacts can drift
+  Keep RTK_DISABLED=1 for one-off raw commands instead of uninstalling RTK entirely
+  The akillness fork tracks upstream while the bundled install.sh still downloads upstream release binaries
+
+E[6]{type,command}:
+  Status,bash scripts/check-status.sh --show
+  Install,bash scripts/install.sh --method script --repo akillness/rtk
+  Fix wrong package,bash scripts/install.sh --force-uninstall-wrong --method cargo
+  Claude init,bash scripts/init-agent.sh --agent claude --global --auto-patch
+  Codex init,bash scripts/init-agent.sh --agent codex --global
+  Direct use,rtk read Cargo.toml

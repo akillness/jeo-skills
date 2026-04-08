@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-81-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-82-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**81개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
+**82개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**81개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
+**82개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 81개 AI 에이전트 스킬 컬렉션입니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 82개 AI 에이전트 스킬 컬렉션입니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 v2026-04-08 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **rtk: Rust Token Killer 설치 및 운영 스킬** | Claude Code, Codex, Gemini CLI, Cursor, Copilot, Windsurf, Cline, OpenCode 전반에서 Rust Token Killer를 설치·검증·초기화하는 전용 `rtk` 스킬을 추가했습니다. `rtk gain` 검증을 시작점으로 두고, 잘못 설치된 동명 패키지 충돌을 복구하며, install/init/status 래퍼 스크립트와 플랫폼별 참고 문서로 흐름을 분리했습니다. `evals/`와 `skill-autoresearch-rtk/` baseline, changelog, results, dashboard 산출물도 함께 포함합니다. 81 → **82개** |
 
 ## 🆕 v2026-03-30 업데이트
 
@@ -170,7 +176,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 81개 로컬 스킬 폴더 = 총 81개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 82개 로컬 스킬 폴더 = 총 82개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (11개)
 
@@ -241,7 +247,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `performance-optimization` | 속도, 효율성, 확장성 최적화 | 전체 |
 | `testing-strategies` | 테스트 피라미드, 커버리지, flaky 테스트 강화 | 전체 |
 
-### 🏗 인프라 (12개)
+### 🏗 인프라 (13개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -253,6 +259,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `looker-studio-bigquery` | Looker Studio + BigQuery 대시보드 | 전체 |
 | `monitoring-observability` | 헬스 체크, 메트릭, 로그 집계 | 전체 |
 | `scrapling` | parser-first `Selector`, HTTP/브라우저/stealth fetcher, CLI 추출, 선택적 MCP/spider 워크플로우를 포함한 적응형 웹 스크래핑 | 전체 |
+| `rtk` | Rust Token Killer 설치 및 에이전트 설정 - `rtk gain` 검증, 동명 패키지 충돌 복구, 에이전트별 `rtk init`, 직접 호출용 압축 래퍼 명령 | 전체 |
 | `security-best-practices` | OWASP Top 10, RBAC, API 보안 | 전체 |
 | `strix` | Strix CLI 기반 AI 애플리케이션 보안 테스트 - Docker 프리플라이트, LLM 공급자 설정, 로컬/GitHub/라이브 타깃 스캔, 모드 선택, CI/CD 사용 | 전체 |
 | `system-environment-setup` | 재현 가능한 환경 구성 | 전체 |
@@ -401,7 +408,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 81개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 82개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

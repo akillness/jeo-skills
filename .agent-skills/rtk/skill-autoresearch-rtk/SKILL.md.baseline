@@ -1,0 +1,32 @@
+---
+name: rtk
+description: >
+  Install and use RTK Rust Token Killer for AI coding agents. Use when you need
+  to install RTK, run `rtk init`, or reduce command output tokens for Claude Code,
+  Codex, Gemini, Cursor, Copilot, Windsurf, Cline, or OpenCode.
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+compatibility: Works on common local AI coding environments with RTK-supported agents.
+license: MIT
+metadata:
+  tags: rtk, token-optimization, claude-code, codex, gemini, opencode
+  version: "0.1"
+  source: https://github.com/akillness/rtk
+---
+
+# rtk
+
+RTK compresses shell output before it reaches an AI agent.
+
+## Instructions
+
+1. Install RTK if it is missing.
+2. Run `rtk init` for the user's agent.
+3. Use `rtk` commands for compact output.
+
+## Examples
+
+```bash
+brew install rtk
+rtk init -g
+rtk git status
+```
