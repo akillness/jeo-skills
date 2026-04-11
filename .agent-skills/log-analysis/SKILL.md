@@ -1,6 +1,12 @@
 ---
 name: log-analysis
-description: Analyze application logs to identify errors, performance issues, and security anomalies. Use when debugging issues, monitoring system health, or investigating incidents. Handles various log formats including Apache, Nginx, application logs, and JSON logs.
+description: >
+  Analyze application and infrastructure logs to identify errors, performance
+  issues, and security anomalies. Use when debugging incidents in web apps,
+  APIs, background jobs, operating systems, Apache/Nginx, or JSON/text logs.
+  Triggers on: access.log, nginx error log, server logs, incident log review,
+  suspicious traffic, response-time spikes. Not for engine-specific Unity or
+  Unreal build logs when a dedicated game-dev triage skill is available.
 allowed-tools: Read Grep Glob
 metadata:
   tags: logs, analysis, debugging, monitoring, grep, patterns
