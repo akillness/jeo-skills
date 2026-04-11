@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-04-08T08:00:00Z",
-  "skill_count": 83,
+  "generated": "2026-04-11T04:18:00Z",
+  "skill_count": 84,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -78,6 +78,7 @@
       "git-submodule",
       "git-workflow",
       "google-workspace",
+      "lmstudio-cli",
       "npm-git-install",
       "obsidian-cli",
       "obsidian-plugin",
@@ -3261,6 +3262,63 @@
       ],
       "allowed_tools": [],
       "commands": []
+    },
+    {
+      "name": "lmstudio-cli",
+      "description": "Use LM Studio CLI docs and OpenAI-compatible LM Studio servers to discover models, verify remote availability, and configure downstream tools like Strix. Supports local `lms` CLI flows and remote HTTP endpoint validation.",
+      "category": "utilities",
+      "path": "utilities/lmstudio-cli/SKILL.md",
+      "tags": [
+        "lmstudio",
+        "lm-studio",
+        "lms",
+        "local-llm",
+        "openai-compatible",
+        "strix",
+        "model-server",
+        "inference"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "ChatGPT",
+        "Codex",
+        "Cursor"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "commands": [
+        {
+          "command": "lms --help",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "lms server status --json --quiet",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "lms ls --llm",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "lms load <model_key> --identifier \"my-model\"",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "curl -fsS http://HOST:PORT/v1/models",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "curl -fsS http://HOST:PORT/api/v1/models/load -H \"Content-Type: application/json\" -d '{\"model\":\"MODEL_KEY\",\"context_length\":262144,\"echo_load_config\":true}'",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        }
+      ]
     }
   ]
 }
