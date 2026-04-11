@@ -1,6 +1,13 @@
 ---
 name: marketing-automation
-description: Generate marketing deliverables across CRO, copywriting, SEO, analytics, and growth using 23 specialized sub-skills with clear objectives, constraints, and validation.
+description: >
+  Generate general product and growth marketing deliverables across CRO,
+  copywriting, SEO, analytics, lifecycle messaging, pricing, launches, and
+  experiment planning using 23 specialized sub-skills. Use when the user needs
+  broad marketing help for websites, SaaS, funnels, email, growth, retention,
+  or analytics workflows, even if they ask for a launch plan, onboarding copy,
+  A/B tests, or SEO assets. Prefer more specific skills for niche domains such
+  as Steam game store-page / festival launch ops.
 metadata:
   tags: marketing, cro, copywriting, seo, analytics, growth, automation
   platforms: Claude, ChatGPT, Gemini, Codex
@@ -345,3 +352,10 @@ Include: H1, meta description, comparison table, CTA.
 
 ### Tags
 `#marketing` `#cro` `#copywriting` `#seo` `#analytics` `#growth` `#automation`
+
+---
+
+## References
+- [CXL - Conversion Optimization](https://cxl.com/)
+- [Google Search Central SEO Starter Guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)
+- [Google Analytics Documentation](https://support.google.com/analytics)
