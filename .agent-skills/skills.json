@@ -3251,7 +3251,7 @@
     },
     {
       "name": "standup-meeting",
-      "description": "Conduct effective daily standup meetings for agile teams. Use when facilitating standups, tracking blockers, or improving team synchronization. Handles standup format, time management, and blocker resolution.",
+      "description": "Facilitate useful daily standups, daily scrums, async check-ins, or walk-the-board delivery syncs without turning them into manager-facing status theater. Use when the user needs a short daily coordination ritual, blocker triage, async standup format, remote-team check-in, or help converting a verbose standup into a board-first or blocker-first flow.",
       "category": "project-management",
       "path": "project-management/standup-meeting/SKILL.md",
       "tags": [

@@ -53,3 +53,11 @@
 - Accepted: harden `survey` with an explicit evidence-recovery ladder, add `references/` + `evals/`, and update README / README.ko / setup prompt / `skills.json` / `skills-lock.json` so discovery surfaces reflect the stronger role
 - Rejected: adding another nearby research skill; leaving fallback tactics only in run-specific survey artifacts; broadening the loop beyond `survey`
 - Wiki files created/updated: `concepts/skill-support-coverage.md`, `queries/survey-evidence-recovery-2026-04-12.md`, `index.md`
+
+## [2026-04-12] query | Standup meeting modernization
+- Area researched: modern daily standup / daily scrum practice across board-walking, blocker-first facilitation, async check-ins, and hybrid remote-team coordination
+- Survey files created under `.survey/standup-meeting-modernization-20260412/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `standup-meeting` as a mode-selecting daily coordination skill, add `references/` + `evals/`, and update README / README.ko / `.agent-skills/skills.json` so discovery surfaces reflect the stronger role
+- Rejected: adding a separate async-standup skill; expanding the skill into planning or retrospectives; keeping the legacy template-heavy version
+- Wiki files created/updated: `queries/standup-meeting-modernization-2026-04-12.md`, `concepts/project-management-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`
