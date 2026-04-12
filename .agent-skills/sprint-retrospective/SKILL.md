@@ -1,169 +1,304 @@
 ---
 name: sprint-retrospective
-description: Facilitate effective sprint retrospectives for continuous team improvement. Use when conducting team retrospectives, identifying improvements, or fostering team collaboration. Handles retrospective formats, action items, and facilitation techniques.
+description: >
+  Facilitate sprint retrospectives, milestone postmortems, or iteration reviews that
+  turn completed work into a few owned process improvements instead of another stale
+  template exercise. Use when the user needs a retro format, async or hybrid retro
+  flow, retrospective facilitation script, action-item follow-through, or help
+  reviewing what the team should change after a sprint, release, milestone, or rough
+  delivery cycle. Not for backlog planning, story-point sizing, daily standups, or
+  deep incident root-cause analysis.
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: >
+  Best for software, product, design, and game-delivery teams running sprint,
+  release, milestone, or cross-functional retrospectives. This skill helps structure
+  reflection, theme detection, and action follow-through; it is not the source of
+  truth for project tracking or incident forensics.
 metadata:
-  tags: retrospective, agile, scrum, team-improvement, facilitation
-  platforms: Claude, ChatGPT, Gemini
+  tags: retrospective, sprint-retro, postmortem, async-retro, hybrid-retro, agile, project-management, game-development
+  version: "1.1"
+  source: akillness/oh-my-skills
 ---
-
 
 # Sprint Retrospective
 
+Use this skill to turn a vague “run a retro” request into a **small, honest, action-focused reflection loop**.
+
+The goal is not to dump another list of retrospective templates. The goal is to:
+- review whether previous retro actions actually landed
+- choose the right retro mode for the team shape and delivery cycle
+- separate observations from action proposals
+- keep action counts small enough to survive contact with reality
+- route planning, sizing, and daily-sync work back to the rest of the PM cluster
+
+Read [references/facilitation-modes.md](references/facilitation-modes.md) before unusual cases or when deciding between live, async, hybrid, and milestone/postmortem patterns.
+
+If the user mainly needs:
+- **backlog grooming, scope breakdown, or next-sprint slicing** → route to `task-planning`
+- **story points, t-shirt sizes, or confidence sizing** → route to `task-estimation`
+- **daily coordination, blocker triage, or async check-ins** → route to `standup-meeting`
 
 ## When to use this skill
+- Run a sprint retrospective after a completed sprint, release slice, milestone, or rough iteration
+- Facilitate a retro for a remote, hybrid, or cross-functional team
+- Convert repeated team complaints into a few concrete process experiments
+- Review which retro actions are done, stale, blocked, or worth dropping
+- Pick the right retrospective format instead of reusing a stale template every time
+- Run a software, product, or game-team milestone postmortem that is more about workflow learning than deep technical RCA
 
-- **End of sprint**: at the end of each sprint
-- **Project milestone**: after major releases
-- **Team issues**: when an immediate retrospective is needed
+## When not to use this skill
+- The real task is planning what to do next or splitting work into tasks → use `task-planning`
+- The real task is estimating size, capacity, effort, or confidence → use `task-estimation`
+- The real task is a daily sync, board walk, or blocker-first meeting → use `standup-meeting`
+- The main task is outage forensics, security investigation, or deep incident analysis → use a debugging / incident / launch-specific skill and only pull this skill back in for follow-through changes
 
 ## Instructions
 
-### Step 1: Start-Stop-Continue
+### Step 1: Normalize the retrospective intake
+Classify the request before suggesting a format.
 
-```markdown
-## Retrospective Template: Start-Stop-Continue
-
-### START (Start doing)
-- Make daily standups shorter (within 5 minutes)
-- Use a code review checklist
-- Introduce pair programming
-
-### STOP (Stop doing)
-- Deploying on Friday afternoons (rollback risk)
-- Overusing emergency meetings
-- Adding features without documentation
-
-### CONTINUE (Keep doing)
-- Weekly tech sharing session
-- Automated tests
-- Transparent communication
-
-### Action Items
-1. [ ] Change standup time from 9:00 → 9:30 (Team Lead)
-2. [ ] Write a code review checklist document (Developer A)
-3. [ ] Announce the "no Friday deployments" rule (Team Lead)
+```yaml
+retro_intake:
+  cadence: sprint | release | milestone | project-phase | mixed | unclear
+  team_shape: colocated | hybrid | distributed | cross-functional | unknown
+  current_pain:
+    - stale-format
+    - low-participation
+    - blame-risk
+    - too-many-actions
+    - no-follow-through
+    - remote-friction
+    - weak-evidence
+    - recurring-same-problems
+    - unclear
+  evidence_available:
+    - previous-actions
+    - board-notes
+    - ticket-summary
+    - incident-summary
+    - metrics
+    - customer-feedback
+    - playtest-feedback
+    - none
+  facilitation_need: light | medium | high
+  psychological_safety: low | medium | high | unknown
+  desired_outcome:
+    - identify-themes
+    - choose-experiments
+    - repair-ritual
+    - capture-postmortem-learnings
+    - review-old-actions
 ```
 
-### Step 2: Mad-Sad-Glad
+Then choose exactly one primary mode:
+- `live-facilitated-retro`
+- `async-first-retro`
+- `hybrid-retro`
+- `milestone-postmortem`
+- `action-review-reset`
+
+### Step 2: Choose the mode deliberately
+Use these selection rules:
+
+1. **live-facilitated-retro**
+   - Best when the team can meet synchronously and needs strong facilitation, clustering, and decision-making
+   - Good default when psychological safety is acceptable and the main challenge is turning observations into actions
+
+2. **async-first-retro**
+   - Best for distributed teams, timezone spread, or teams that need writing time before discussion
+   - Use when candid input improves if people can submit notes before the meeting
+
+3. **hybrid-retro**
+   - Best for teams mixing in-room and remote participants
+   - Use when one shared board/doc should anchor both silent writing and a short live synthesis
+
+4. **milestone-postmortem**
+   - Best for product, release, or game-delivery cycles where the unit of reflection is a milestone, demo, launch slice, or vertical slice instead of a strict sprint
+   - Keep the focus on workflow, handoffs, QA, readiness, and process learning rather than full incident RCA
+
+5. **action-review-reset**
+   - Best when the team already knows the same problems but keeps failing to close prior retro actions
+   - Start with the previous action ledger before collecting any new observations
+
+### Step 3: Start with evidence and prior commitments
+Always review what already happened before generating new opinions.
+
+Required checks:
+- previous retro actions: done | stale | blocked | dropped
+- sprint/milestone goal outcome
+- carryover work, blockers, or repeated interruptions
+- notable incidents, QA spikes, launch friction, or customer/player feedback that shaped the cycle
+- repeated themes from the last 2-3 retros if available
+
+Rules:
+- If prior actions are missing, say so explicitly
+- If the team keeps generating many actions but closing none, switch to `action-review-reset`
+- If evidence is thin, do not fake certainty; mark findings as low-confidence observations
+
+### Step 4: Gather observations without turning them into blame theater
+Use a format that matches the mode and the team's energy.
+
+Recommended pattern families:
+- `went-well / didn’t-go-well / change-next`
+- `start / stop / continue`
+- `mad / sad / glad`
+- `4Ls`
+- custom theme prompts tied to delivery risk, quality, communication, handoffs, or decision quality
+
+Guidance:
+- Use the lightest format that still surfaces honest signal
+- For low-trust teams, prefer silent writing or facilitator-mediated note capture before discussion
+- For milestone or game retros, include prompts for pipeline friction, QA timing, asset/content dependency, playtest signal, and release readiness
+- Keep observations separate from solutions until clustering is done
+
+### Step 5: Cluster themes and constrain the action count
+After collecting notes:
+1. merge duplicates
+2. group into 3-5 themes max
+3. decide which themes are controllable by the team
+4. vote or rank the themes
+5. choose **1-3 actions max**
+
+Action rules:
+- every action needs an owner
+- every action needs a due sprint/date/checkpoint
+- every action needs a success signal
+- escalation items should be labeled as escalations, not disguised as team-owned work
+- prefer small experiments over huge “fix the process” declarations
+
+### Step 6: Build the retrospective brief
+Return this exact structure:
 
 ```markdown
-## Retrospective: Mad-Sad-Glad
+# Retrospective Brief
 
-### MAD (What made us mad)
-- Urgent bugs after deployment (twice)
-- Requirements changed frequently
-- Unstable test environment
+## Recommended mode
+- Mode: live-facilitated-retro | async-first-retro | hybrid-retro | milestone-postmortem | action-review-reset
+- Why this mode fits: ...
 
-### SAD (What we wished went better)
-- Not enough time for code reviews
-- Documentation lagged behind
-- Accumulating tech debt
+## Review of previous actions
+| Action | Status | What happened | Keep / close / escalate |
+|--------|--------|---------------|--------------------------|
+| ... | done/stale/blocked/dropped | ... | ... |
 
-### GLAD (What made us glad)
-- New team members onboarded quickly
-- CI/CD pipeline stabilized
-- Positive customer feedback
+## Evidence considered
+- ...
+- ...
 
-### Action Items
-- Strengthen the deployment checklist
-- Improve the requirements change process
-- Reserve documentation time every Friday
+## Top themes
+1. ...
+2. ...
+3. ...
+
+## Facilitation flow
+1. ...
+2. ...
+3. ...
+4. ...
+
+## Prompt set
+```text
+...
 ```
 
-### Step 3: 4Ls (Liked-Learned-Lacked-Longed For)
+## Agreed actions
+| Action | Owner | Due | Success signal |
+|--------|-------|-----|----------------|
+| ... | ... | ... | ... |
 
-```markdown
-## Retrospective: 4Ls
+## Risks / escalations
+- ...
 
-### LIKED (What we liked)
-- Great teamwork
-- Successfully adopted a new tech stack
-
-### LEARNED (What we learned)
-- Standardize the local environment with Docker Compose
-- Improve server state management with React Query
-
-### LACKED (What we lacked)
-- Performance testing
-- Mobile support
-
-### LONGED FOR (What we longed for)
-- Better developer tools
-- External training opportunities
-
-### Action Items
-- Automatically measure performance by introducing Lighthouse CI
-- Write responsive design guidelines
+## Adjacent handoffs
+- Use `task-planning` when ...
+- Use `task-estimation` when ...
+- Use `standup-meeting` when ...
 ```
+
+### Step 7: Tailor the brief to the chosen mode
+**For live-facilitated-retro:**
+- open with previous-action review
+- use silent writing before discussion if a few voices dominate
+- timebox clustering and ranking so the room reaches actions, not just catharsis
+
+**For async-first-retro:**
+- collect notes over a bounded window
+- ask for observations, impact, and proposed experiment separately
+- use the live step only for clarifications, prioritization, and final action choice
+
+**For hybrid-retro:**
+- make the shared board/doc the primary workspace for everyone
+- prevent in-room side conversations from outrunning remote participants
+- use short verbal summaries, not long spoken brainstorms
+
+**For milestone-postmortem:**
+- include quality, handoff, release/readiness, and cross-discipline coordination prompts
+- distinguish controllable process changes from broader strategic constraints
+- keep technical RCA brief unless an incident-specific skill takes over
+
+**For action-review-reset:**
+- spend the first half on prior commitments, not fresh templates
+- cut the action list down ruthlessly
+- identify why previous actions failed: no owner, no date, no authority, no review loop, or too much scope
+
+### Step 8: Route adjacent PM work explicitly
+Before finalizing, state when the user should switch skills:
+- If the team needs to split new work, clarify scope, or prepare the next sprint, recommend `task-planning`
+- If the team is arguing about size, confidence, or capacity for upcoming work, recommend `task-estimation`
+- If repeated retro issues need a lighter daily coordination change, recommend `standup-meeting`
 
 ## Output format
+Always return a compact **Retrospective Brief**, not a generic agile tutorial.
 
-### Retrospective document
-
-```markdown
-# Sprint [N] Retrospective
-**Date**: 2025-01-15
-**Participants**: Team Member A, B, C, D
-**Format**: Start-Stop-Continue
-
-## What Went Well
-- Completed all stories (Velocity: 25 points)
-- 0 bugs
-- Great team morale
-
-## What Didn't Go Well
-- Tech spike took longer than expected
-- Rework due to design changes
-
-## Action Items
-1. [ ] Assign tech spikes to a dedicated sprint (Team Lead, ~01/20)
-2. [ ] Introduce a pre-review process for designs (Designer, ~01/18)
-3. [ ] Share the velocity chart (Scrum Master, weekly)
-
-## Key Metrics
-- Velocity: 25 points
-- Bugs Found: 0
-- Sprint Goal Achievement: 100%
-```
-
-## Constraints
-
-### Required Rules (MUST)
-
-1. **Safe Space**: a blame-free environment
-2. **Action Items**: must be specific and actionable
-3. **Follow-up**: check progress in the next retrospective
-
-### Prohibited (MUST NOT)
-
-1. **Personal attacks**: improve the process, not the person
-2. **Too many actions**: limit to 2-3
-
-## Best practices
-
-1. **Time-box**: within 1 hour
-2. **Rotate Facilitator**: team members take turns facilitating
-3. **Celebrate Wins**: celebrate successes too
-
-## References
-
-- [Retrospective Formats](https://retromat.org/)
-- [Agile Retrospectives](https://www.amazon.com/Agile-Retrospectives-Making-Teams-Great/dp/0977616649)
-
-## Metadata
-
-### Version
-- **Current version**: 1.0.0
-- **Last updated**: 2025-01-01
-- **Supported platforms**: Claude, ChatGPT, Gemini
-
-### Tags
-`#retrospective` `#agile` `#scrum` `#team-improvement` `#project-management`
+Required qualities:
+- choose one primary mode
+- review previous actions before inventing new ones
+- keep themes and actions bounded
+- preserve psychological safety and non-blame framing
+- distinguish team-owned actions from escalations
+- keep routing boundaries to the rest of the PM cluster explicit
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: remote team stuck in stale retros
+**Input**
+> Our sprint retros are the same every two weeks and people barely talk. We’re remote across three time zones.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Output sketch**
+- Mode: `async-first-retro`
+- Silent/async collection window before the meeting
+- Short live clustering and vote
+- 1-2 actions with explicit owner and next-retro review
+
+### Example 2: game milestone postmortem
+**Input**
+> We just finished a demo milestone for our Unity game. QA found issues late, art handoffs slipped, and the team is frustrated.
+
+**Output sketch**
+- Mode: `milestone-postmortem`
+- Prompts include handoffs, asset readiness, QA timing, and cross-discipline blockers
+- Actions split between team-owned workflow experiments and producer escalation items
+
+### Example 3: same action items keep dying
+**Input**
+> Every retro ends with five good ideas and none of them ever happen.
+
+**Output sketch**
+- Mode: `action-review-reset`
+- First section audits prior actions
+- New action count capped at 1-2
+- Notes why prior actions failed and what review hook changes next cycle
+
+## Best practices
+1. **Start with prior commitments** — otherwise the retro becomes performative novelty.
+2. **Choose the lightest format that still surfaces signal** — more templates is not the same as better learning.
+3. **Keep the action count brutally small** — a few owned changes beat a wall of wishes.
+4. **Preserve non-blame framing** — process reflection dies when people feel individually judged.
+5. **Use evidence, not memory theater** — bring in sprint outcomes, support load, QA spikes, or playtest signal when available.
+6. **Route out of the retro when the need changes** — planning, sizing, and daily-sync redesign are adjacent but distinct jobs.
+
+## References
+- Atlassian Team Playbook, *Retrospective* — https://www.atlassian.com/team-playbook/plays/retrospective
+- Scrum.org, *What is a Sprint Retrospective?* — https://www.scrum.org/resources/what-is-a-sprint-retrospective
+- Parabol, *Sprint Retrospective* — https://www.parabol.co/resources/sprint-retrospective/
+- Retromat — https://retromat.org/

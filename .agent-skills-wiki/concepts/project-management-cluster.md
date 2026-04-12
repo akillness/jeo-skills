@@ -15,15 +15,17 @@ The repository's project-management cluster is currently anchored by `task-plann
 - These skills cover adjacent phases of the same operating loop, and the most recent ratchets strengthened that separation instead of adding another overlapping PM skill.
 - `task-planning` now owns decomposition and readiness work.
 - `standup-meeting` now owns daily coordination mode selection: board-walk, blocker-first, async, and hybrid daily syncs.
+- `sprint-retrospective` now owns reflection and follow-through mode selection: live retros, async/hybrid retros, milestone postmortems, and action-review resets.
 - The cluster still benefits more from boundary clarification and support upgrades than from catalog expansion.
 
 ## Implications
 - `task-planning` should handle backlog grooming, sprint-prep slicing, and roadmap-to-delivery decomposition.
 - `task-estimation` should remain sizing-only.
 - `standup-meeting` should handle daily coordination and blocker routing, not planning or retrospective analysis.
-- `sprint-retrospective` should remain the reflection / process-change lane.
+- `sprint-retrospective` should handle process reflection, repeated-theme detection, and a few owned improvement actions, not planning or daily status ritual.
 
 ## Related pages
 - [[skill-support-coverage]]
 - [[task-planning-modernization-2026-04-12]]
 - [[standup-meeting-modernization-2026-04-12]]
+- [[sprint-retrospective-modernization-2026-04-12]]

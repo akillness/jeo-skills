@@ -287,7 +287,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `sprint-retrospective` | 스프린트 회고 진행 | 전체 |
+| `sprint-retrospective` | 스프린트 회고, 마일스톤 포스트모템, 비동기/하이브리드 진행, 액션 후속관리 | 전체 |
 | `standup-meeting` | 일일 스탠드업, 비동기 체크인, 보드 워크, 블로커 트리아지 진행 | 전체 |
 | `task-estimation` | 스토리 포인트, T셔츠 사이징, 플래닝 포커 | 전체 |
 | `task-planning` | 실행 가능한 백로그 정리, 작업 분해, 스프린트 준비 계획 | 전체 |
