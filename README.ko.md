@@ -70,6 +70,12 @@ graph TD
 
 ---
 
+## 🆕 v2026-04-12 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **bmad-gds: 게임 프로듀서/오케스트레이션 재작성** | `bmad-gds`를 단순 단계 목록에서 실제 게임 제작 조정 스킬로 재정의했습니다. 이제 아이디어, GDD, 플레이테스트 메모, 버그/빌드 이슈, 출시 목표가 섞인 입력을 받아 하나의 운영 모드를 선택하고, 다음 마일스톤 중심 조정 브리프를 만든 뒤 필요하면 `game-demo-feedback-triage`, `game-build-log-triage`, `game-performance-profiler`, `steam-store-launch-ops`, `task-planning`, `bmad-idea`로 명시적으로 라우팅합니다. `references/operating-modes.md`, `references/scope-boundaries.md`, `evals/evals.json`도 추가했고 전체 스킬 수는 그대로입니다. |
+
 ## 🆕 v2026-04-08 업데이트
 
 | 변경 | 내용 |
@@ -192,7 +198,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `ralph` | `ralph`, `ooo` | 전체 | Ouroboros 스펙 우선 + 영구 완료 루프 |
 | `ralphmode` | `ralphmode` | 전체 | 자동화 권한 프로파일 (샌드박스 우선, 저장소 경계) |
 | `bmad` | `bmad` | Claude | 구조화 단계 기반 BMAD 워크플로우 오케스트레이션 (분석 → 계획 → 솔루션 → 구현) |
-| `bmad-gds` | `bmad-gds` | 전체 | BMAD 게임 개발 스튜디오 (Unity · Unreal · Godot) |
+| `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |
 | `bmad-idea` | `bmad-idea` | 전체 | 창의 지능 — 5개 전문 아이디에이션 에이전트 |
 | `survey` | `survey` | 전체 | 사전 구현 문제공간 스캔 |
 | `harness` | `harness` | 전체 | 전 플랫폼용 에이전트 팀 · 스킬 하네스 설계 메타 스킬 |

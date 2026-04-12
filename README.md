@@ -70,6 +70,12 @@ graph TD
 
 ---
 
+## 🆕 What's New in v2026-04-12
+
+| Change | Details |
+|--------|---------|
+| **bmad-gds: game producer/orchestration rewrite** | Reframed `bmad-gds` from a generic phase catalog into a practical game-production coordination skill. It now acts as the repo's game-cluster orchestrator: normalizes mixed packets (idea, GDD, playtest notes, bug/build issues, launch targets), chooses one operating mode, produces one milestone-aware coordination brief, and routes detailed work to `game-demo-feedback-triage`, `game-build-log-triage`, `game-performance-profiler`, `steam-store-launch-ops`, `task-planning`, or `bmad-idea` as needed. Added `references/operating-modes.md`, `references/scope-boundaries.md`, and `evals/evals.json` without increasing the skill count. |
+
 ## 🆕 What's New in v2026-04-08
 
 | Change | Details |
@@ -192,7 +198,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `ralph` | `ralph`, `ooo` | All | Ouroboros specification-first + persistent completion loop |
 | `ralphmode` | `ralphmode` | All | Automation permission profiles (sandbox-first, repo boundary) |
 | `bmad` | `bmad` | Claude | Structured phase-based BMAD workflow orchestration (Analysis → Planning → Solutioning → Implementation) |
-| `bmad-gds` | `bmad-gds` | All | BMAD Game Development Studio (Unity · Unreal · Godot) |
+| `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Creative intelligence — 5 specialist ideation agents |
 | `survey` | `survey` | All | Pre-implementation landscape scan |
 | `harness` | `harness` | All | Agent team & skill architect — scaffold reusable harnesses across platforms |
