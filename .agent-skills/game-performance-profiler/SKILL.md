@@ -33,6 +33,8 @@ Read [references/profiling-patterns.md](references/profiling-patterns.md) before
 - Teams asking whether the problem looks CPU-bound, GPU-bound, memory-bound, or loading/streaming-bound
 - Requests for a profiling plan, benchmark pass, or performance handoff brief instead of instant code edits
 
+If performance findings are only one part of a larger demo or playtest feedback packet, use this skill to isolate the bottleneck evidence and then roll the result into `game-demo-feedback-triage` for overall priority ordering.
+
 ## Instructions
 
 ### Step 1: Label the evidence and target

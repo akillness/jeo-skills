@@ -1,0 +1,5 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `game-demo-feedback-triage/SKILL.md` | A dedicated game feedback triage skill will cover a real gap between launch ops, performance, and PM workflows | Created a new skill focused on mixed demo/playtest feedback prioritization with deterministic output structure | Passed skill validator with 0 errors / 0 warnings | Keep | Added references + evals as supporting artifacts |
+| 2 | Adjacent game skills | Small routing notes will reduce overlap and improve trigger clarity | Patched `steam-store-launch-ops` and `game-performance-profiler` to hand off mixed feedback packets to the new skill | Both updated skills passed validator with 0 errors / 0 warnings | Keep | Boundaries stayed clear: page audit and profiling remain specialized |
+| 3 | Validation harness | Spec + eval-ready structure prevents shallow additions | Ran `.agent-skills/skill-standardization/scripts/validate_skill.sh` on all changed skills | `game-demo-feedback-triage`, `steam-store-launch-ops`, and `game-performance-profiler` all clean | Keep | No revert needed |

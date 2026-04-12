@@ -1,0 +1,39 @@
+{
+  "skill_name": "game-demo-feedback-triage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We ran a small playtest on our Next Fest demo. Most people got lost in the first ten minutes, a few streamers said they were not sure what the real hook was, and some Steam Deck testers mentioned hitches. Turn this into priorities.",
+      "expected_output": "A concise Game Demo Feedback Brief that prioritizes onboarding/comprehension first, keeps store/demo messaging and performance as secondary buckets, and recommends a single next artifact rather than a giant redesign.",
+      "assertions": [
+        "Output contains the heading 'Game Demo Feedback Brief'",
+        "Output includes a 'Priority buckets' section",
+        "Output identifies onboarding-comprehension or store-demo-conversion-message as a bucket",
+        "Output includes 'Top 3 fixes before the next beat'",
+        "Output includes a 'Recommended next artifact' section"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Turn these playtest notes into priorities before we send the demo to creators. The combat lands well, but lots of people bounce in the menus and the bug list is noisy.",
+      "expected_output": "A brief that separates representative friction from bug noise, highlights controls/UI/readability or polish as a likely blocker, and avoids treating every bug as equally urgent.",
+      "assertions": [
+        "Output distinguishes strongest signals from lower-priority noise",
+        "Output mentions controls-ui-readability, content-polish-scope, or a similar player-facing bucket",
+        "Output includes an 'Issues to watch, not overreact to' section",
+        "Output includes explicit prioritization language such as fix-before-next-build or watch-next-test"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our Steam Playtest signups are decent, but players either churn after the tutorial or say the page and trailer made them expect a different kind of game. What should we fix first before the next build?",
+      "expected_output": "A launch-aware brief that distinguishes onboarding from expectation-setting, recommends one next artifact, and keeps timing risk visible.",
+      "assertions": [
+        "Output includes the build stage or target constraint context",
+        "Output distinguishes onboarding-comprehension from store-demo-conversion-message",
+        "Output references timing risk, next beat, or a comparable launch constraint",
+        "Output includes a 'What not to do yet' section"
+      ]
+    }
+  ]
+}

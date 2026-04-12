@@ -37,6 +37,8 @@ Read [references/checklists.md](references/checklists.md) before classifying edg
 - Launch-adjacent operating checklists for creator outreach, storefront hygiene, and last-mile prep
 - Publisher/contractor audits where the team needs a short action plan instead of a giant strategy deck
 
+If the team already has a mixed packet of playtest notes, creator reactions, bug/perf notes, or Steam Playtest feedback and needs to decide what to fix first, route that synthesis work to `game-demo-feedback-triage` after or alongside this audit.
+
 ## Instructions
 
 ### Step 1: Identify the review scope
