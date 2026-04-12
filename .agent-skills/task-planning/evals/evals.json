@@ -1,0 +1,39 @@
+{
+  "skill_name": "task-planning",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Break down a new team-invite feature for our SaaS app before sprint planning. We need email invites, acceptance, and admin visibility.",
+      "expected_output": "Returns a planning packet with horizon, work slices, readiness information, blockers, and a recommended next move rather than only generic agile advice.",
+      "assertions": [
+        "Output includes a 'Planning horizon' section",
+        "Output includes a 'Work slices' table",
+        "Output separates at least three distinct slices such as backend, UI, and verification/follow-through",
+        "Output includes blockers or assumptions",
+        "Output recommends a next move"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We have a pile of vague backlog items for onboarding improvements. Clean them up so we can decide what is actually ready next week.",
+      "expected_output": "Identifies backlog-cleanup as the horizon, separates discovery from implementation, and marks not-ready work explicitly.",
+      "assertions": [
+        "Output identifies backlog cleanup or a similar planning horizon",
+        "Output distinguishes ready and not-ready work",
+        "Output calls out missing inputs, scope, or ownership for unclear items",
+        "Output does not focus only on story-point sizing"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Plan the next milestone for our roguelike demo: tutorial polish, controller support, and a streamer-ready build.",
+      "expected_output": "Produces a game-aware milestone planning packet that separates code/system work, content/polish, QA/playtest, and build/distribution concerns.",
+      "assertions": [
+        "Output identifies a milestone or release-oriented planning horizon",
+        "Output contains game-specific slice boundaries or considerations",
+        "Output includes blockers or missing success criteria",
+        "Output keeps planning distinct from standup or retrospective behavior"
+      ]
+    }
+  ]
+}

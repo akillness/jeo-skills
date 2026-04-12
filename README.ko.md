@@ -283,7 +283,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `sprint-retrospective` | 스프린트 회고 진행 | 전체 |
 | `standup-meeting` | 일일 스탠드업 관리 | 전체 |
 | `task-estimation` | 스토리 포인트, T셔츠 사이징, 플래닝 포커 | 전체 |
-| `task-planning` | 작업 분해 및 사용자 스토리 | 전체 |
+| `task-planning` | 실행 가능한 백로그 정리, 작업 분해, 스프린트 준비 계획 | 전체 |
 
 ### 🔭 검색 및 분석 (7개)
 
