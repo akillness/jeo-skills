@@ -1,456 +1,218 @@
 ---
 name: system-environment-setup
-description: Configure development and production environments for consistent and reproducible setups. Use when setting up new projects, Docker environments, or development tooling. Handles Docker Compose, .env configuration, dev containers, and infrastructure as code.
+description: >
+  Build reproducible developer environments for real projects: local toolchains,
+  runtime versions, Docker Compose or dev containers, onboarding flows, local
+  service parity, bootstrap scripts, and environment troubleshooting. Use when the
+  user needs a repo to run consistently across machines, containers, or staged
+  environments, even if they only say setup dev environment, onboarding, Docker,
+  devcontainer, local parity, bootstrap, or make this runnable. This is the
+  canonical broader environment-setup skill. Route narrower `.env` and app-config
+  questions to `environment-setup`.
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: >
+  Best when the task spans toolchains, local services, containers, onboarding,
+  or cross-machine reproducibility. Use alongside `environment-setup` for
+  application env files, env validation, and secret handoff details.
 metadata:
-  tags: environment-setup, Docker-Compose, dev-environment, IaC, configuration
-  platforms: Claude, ChatGPT, Gemini
+  tags: environment-setup, reproducibility, devcontainers, docker-compose, onboarding, toolchains, local-parity
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "1.1"
+  source: akillness/oh-my-skills
 ---
-
 
 # System & Environment Setup
 
+Use this skill as the repository's **canonical broader environment-setup anchor**.
+
+The job is to make a project **runnable and repeatable** across developer machines and environments.
+That usually includes some mix of:
+- runtime/tool version pinning,
+- local services and containers,
+- bootstrapping scripts,
+- onboarding steps,
+- local-prod parity tradeoffs,
+- secrets/config handoff boundaries,
+- setup diagnosis when automation drifts.
+
+Read [references/operating-modes.md](references/operating-modes.md) and [references/scope-boundaries.md](references/scope-boundaries.md) before unusual cases or when deciding whether the task belongs here or in `environment-setup`.
+
+If the user mainly needs:
+- **`.env` structure, env precedence, validation, or framework-specific app config** → route to `environment-setup`
+- **CI/CD pipelines and hosted deployment automation** → route to `deployment-automation` or `vercel-deploy`
+- **security policy and secret-store architecture** → pair with `security-best-practices`
+- **project slicing / onboarding checklist ownership** → pair with `task-planning`
 
 ## When to use this skill
+- Make a repo runnable on a fresh machine with consistent tooling
+- Standardize local dev setup across multiple contributors
+- Choose between local-host, Docker Compose, devcontainers, or hybrid workflows
+- Pin runtime/tool versions and reduce cross-machine drift
+- Set up local supporting services like databases, caches, queues, or search
+- Design bootstrap commands, setup checks, or onboarding flows
+- Diagnose why local setup docs, scripts, containers, and actual runtime behavior have drifted apart
+- Improve local parity without pretending local and production are identical
 
-- **New project**: Initial environment setup
-- **Team onboarding**: Standardizing new developer environments
-- **Multiple services**: Local execution of microservices
-- **Production replication**: Testing production environment locally
+## When not to use this skill
+- The main task is app-level `.env` organization, env schema validation, or framework env rules → use `environment-setup`
+- The main task is production deployment, cloud rollout, or CI orchestration → use `deployment-automation`
+- The main task is hosted infrastructure security review → pair with `security-best-practices`
+- The task is just one package install with no broader environment decision surface → use a narrower install/setup skill when available
 
 ## Instructions
 
-### Step 1: Docker Compose Configuration
+### Step 1: Classify the setup surface
+Normalize the request into this intake first:
 
-**docker-compose.yml**:
 ```yaml
-version: '3.8'
-
-services:
-  # Web Application
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:password@db:5432/myapp
-      - REDIS_URL=redis://redis:6379
-    volumes:
-      - .:/app
-      - /app/node_modules
-    depends_on:
-      - db
-      - redis
-    command: npm run dev
-
-  # PostgreSQL Database
-  db:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: myapp
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-
-  # Redis Cache
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-
-  # Nginx (Reverse Proxy)
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - web
-
-volumes:
-  postgres_data:
-  redis_data:
+environment_intake:
+  primary_goal: runnable-local-repo | standardized-onboarding | local-service-parity | toolchain-reproducibility | setup-diagnosis | hybrid
+  current_state: greenfield | partially-working | drifted | broken-on-new-machine | unknown
+  runtime_shape: single-service | app-plus-services | microservices | unknown
+  host_strategy: host-native | docker-compose | devcontainer | hosted-remote-dev | hybrid | unknown
+  config_strategy: simple-env-files | typed-validation | secret-manager-injection | mixed | unknown
+  main_pain:
+    - missing-prereqs
+    - runtime-version-drift
+    - local-service-startup
+    - secrets-bootstrap
+    - onboarding-doc-rot
+    - cross-platform-differences
+    - local-prod-parity
+    - unclear
+  confidence: high | medium | low
 ```
 
-**Usage**:
+If the request is ambiguous, prefer the broadest **runnable repo** interpretation and state the assumption.
+
+### Step 2: Choose one primary operating mode
+Pick exactly one mode for the run:
+
+1. **bootstrap-and-onboarding**
+   - Use when the repo needs a clean first-run path for contributors.
+2. **toolchain-reproducibility**
+   - Use when runtimes, CLIs, or package versions drift between machines.
+3. **local-services-and-parity**
+   - Use when local DB/cache/queue/search or app-plus-service topology is the main challenge.
+4. **containerized-dev-environment**
+   - Use when Docker Compose, devcontainers, or Codespaces-style flows are the main lever.
+5. **setup-diagnosis-and-hardening**
+   - Use when scripts, docs, containers, and actual behavior have drifted apart.
+
+### Step 3: Pick the smallest reproducibility stack that solves the problem
+Use these rules:
+- Prefer the smallest stack that makes the repo reliably runnable.
+- Use **runtime/version pinning** before introducing heavier containers if the repo is simple.
+- Use **Docker Compose** when supporting services or shared local topology matter.
+- Use **devcontainers** when editor/runtime standardization and onboarding speed matter more than host-native ergonomics.
+- Keep **bootstrap scripts / Makefiles / task runners** as glue, not the only source of truth.
+- Do not pretend local equals production; name the remaining parity gaps explicitly.
+- Route app-level env file design and validation details to `environment-setup` instead of bloating this skill.
+
+### Step 4: Build the environment plan
+Return this exact structure:
+
+```markdown
+# Environment Setup Brief
+
+## Recommended mode
+- Mode: bootstrap-and-onboarding | toolchain-reproducibility | local-services-and-parity | containerized-dev-environment | setup-diagnosis-and-hardening
+- Why this mode fits: ...
+
+## Current setup surface
+- Project shape: ...
+- Host/container strategy: ...
+- Config/secrets strategy: ...
+- Main drift or blocker: ...
+- Confidence: high | medium | low
+
+## Recommended environment stack
+1. ...
+2. ...
+3. ...
+
+## Commands / files to create or verify
 ```bash
-# Start all services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f web
-
-# Restart specific service only
-docker-compose restart web
-
-# Stop and remove
-docker-compose down
-
-# Remove including volumes
-docker-compose down -v
+...
 ```
 
-### Step 2: Environment Variable Management
+## Why this is the right level of setup
+- ...
+- ...
 
-**.env.example**:
-```bash
-# Application
-NODE_ENV=development
-PORT=3000
-APP_URL=http://localhost:3000
+## Parity gaps to acknowledge
+- ...
+- ...
 
-# Database
-DATABASE_URL=postgresql://postgres:password@localhost:5432/myapp
-DATABASE_POOL_SIZE=10
+## Watch-outs
+- ...
+- ...
 
-# Redis
-REDIS_URL=redis://localhost:6379
-
-# JWT
-ACCESS_TOKEN_SECRET=change-me-in-production-min-32-characters
-REFRESH_TOKEN_SECRET=change-me-in-production-min-32-characters
-TOKEN_EXPIRY=15m
-
-# Email
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASSWORD=your-app-password
-
-# External APIs
-STRIPE_SECRET_KEY=sk_test_xxx
-STRIPE_PUBLISHABLE_KEY=pk_test_xxx
-AWS_ACCESS_KEY_ID=AKIAXXXXXXX
-AWS_SECRET_ACCESS_KEY=xxxxxxxx
-AWS_REGION=us-east-1
+## Adjacent handoff
+- Use `environment-setup` for ...
+- Use `deployment-automation` for ...
+- Use `security-best-practices` for ...
 ```
 
-**.env** (local only, add to gitignore):
-```bash
-# .gitignore
-.env
-.env.local
-.env.*.local
-```
-
-**Loading environment variables** (Node.js):
-```typescript
-import dotenv from 'dotenv';
-import path from 'path';
-
-// Load .env file
-dotenv.config();
-
-// Type-safe environment variables
-interface Env {
-  NODE_ENV: 'development' | 'production' | 'test';
-  PORT: number;
-  DATABASE_URL: string;
-  REDIS_URL: string;
-  ACCESS_TOKEN_SECRET: string;
-}
-
-function loadEnv(): Env {
-  const required = ['DATABASE_URL', 'ACCESS_TOKEN_SECRET', 'REDIS_URL'];
-
-  for (const key of required) {
-    if (!process.env[key]) {
-      throw new Error(`Missing required environment variable: ${key}`);
-    }
-  }
-
-  return {
-    NODE_ENV: (process.env.NODE_ENV as any) || 'development',
-    PORT: parseInt(process.env.PORT || '3000'),
-    DATABASE_URL: process.env.DATABASE_URL!,
-    REDIS_URL: process.env.REDIS_URL!,
-    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET!
-  };
-}
-
-export const env = loadEnv();
-```
-
-### Step 3: Dev Container (VS Code)
-
-**.devcontainer/devcontainer.json**:
-```json
-{
-  "name": "Node.js & PostgreSQL",
-  "dockerComposeFile": "../docker-compose.yml",
-  "service": "web",
-  "workspaceFolder": "/app",
-
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "ms-azuretools.vscode-docker",
-        "prisma.prisma"
-      ],
-      "settings": {
-        "editor.formatOnSave": true,
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "eslint.validate": ["javascript", "typescript"]
-      }
-    }
-  },
-
-  "forwardPorts": [3000, 5432, 6379],
-
-  "postCreateCommand": "npm install",
-
-  "remoteUser": "node"
-}
-```
-
-### Step 4: Makefile (Convenience Commands)
-
-**Makefile**:
-```makefile
-.PHONY: help install dev build test clean docker-up docker-down migrate seed
-
-help: ## Show this help
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
-
-install: ## Install dependencies
-	npm install
-
-dev: ## Start development server
-	npm run dev
-
-build: ## Build for production
-	npm run build
-
-test: ## Run tests
-	npm test
-
-test-watch: ## Run tests in watch mode
-	npm test -- --watch
-
-lint: ## Run linter
-	npm run lint
-
-lint-fix: ## Fix linting issues
-	npm run lint -- --fix
-
-docker-up: ## Start Docker services
-	docker-compose up -d
-
-docker-down: ## Stop Docker services
-	docker-compose down
-
-docker-logs: ## View Docker logs
-	docker-compose logs -f
-
-migrate: ## Run database migrations
-	npm run migrate
-
-migrate-create: ## Create new migration
-	@read -p "Migration name: " name; \
-	npm run migrate:create -- $$name
-
-seed: ## Seed database
-	npm run seed
-
-clean: ## Clean build artifacts
-	rm -rf dist node_modules coverage
-
-reset: clean install ## Reset project (clean + install)
-```
-
-**Usage**:
-```bash
-make help         # List of commands
-make install      # Install dependencies
-make dev          # Start dev server
-make docker-up    # Start Docker services
-```
-
-### Step 5: Infrastructure as Code (Terraform)
-
-**main.tf** (AWS example):
-```hcl
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-
-  backend "s3" {
-    bucket = "myapp-terraform-state"
-    key    = "production/terraform.tfstate"
-    region = "us-east-1"
-  }
-}
-
-provider "aws" {
-  region = var.aws_region
-}
-
-# VPC
-resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
-
-  tags = {
-    Name        = "${var.project_name}-vpc"
-    Environment = var.environment
-  }
-}
-
-# RDS (PostgreSQL)
-resource "aws_db_instance" "postgres" {
-  identifier           = "${var.project_name}-db"
-  engine               = "postgres"
-  engine_version       = "15.4"
-  instance_class       = "db.t3.micro"
-  allocated_storage    = 20
-  storage_encrypted    = true
-
-  db_name  = var.db_name
-  username = var.db_username
-  password = var.db_password
-
-  vpc_security_group_ids = [aws_security_group.db.id]
-  db_subnet_group_name   = aws_db_subnet_group.main.name
-
-  backup_retention_period = 7
-  skip_final_snapshot     = false
-  final_snapshot_identifier = "${var.project_name}-final-snapshot"
-
-  tags = {
-    Name        = "${var.project_name}-db"
-    Environment = var.environment
-  }
-}
-
-# ECS (Container Service)
-resource "aws_ecs_cluster" "main" {
-  name = "${var.project_name}-cluster"
-
-  setting {
-    name  = "containerInsights"
-    value = "enabled"
-  }
-}
-
-# Load Balancer
-resource "aws_lb" "main" {
-  name               = "${var.project_name}-alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb.id]
-  subnets            = aws_subnet.public[*].id
-}
-```
-
-**variables.tf**:
-```hcl
-variable "project_name" {
-  description = "Project name"
-  type        = string
-  default     = "myapp"
-}
-
-variable "environment" {
-  description = "Environment (dev, staging, production)"
-  type        = string
-}
-
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-  default     = "us-east-1"
-}
-
-variable "db_username" {
-  description = "Database username"
-  type        = string
-  sensitive   = true
-}
-
-variable "db_password" {
-  description = "Database password"
-  type        = string
-  sensitive   = true
-}
-```
-
-## Output format
-
-### Project Structure
-
-```
-project/
-├── .devcontainer/
-│   └── devcontainer.json
-├── docker-compose.yml
-├── Dockerfile
-├── Makefile
-├── .env.example
-├── .gitignore
-├── terraform/
-│   ├── main.tf
-│   ├── variables.tf
-│   └── outputs.tf
-└── README.md
-```
-
-## Constraints
-
-### Mandatory Rules (MUST)
-
-1. **Provide .env.example**: List of required environment variables
-2. **.gitignore**: Never commit .env files
-3. **README.md**: Document installation and running instructions
-
-### Prohibited (MUST NOT)
-
-1. **No committing secrets**: Never commit .env, credentials files
-2. **No hardcoding**: All configuration via environment variables
-
-## Best practices
-
-1. **Docker Compose**: Use Docker Compose for local development
-2. **Volume Mount**: Instantly reflects code changes
-3. **Health Checks**: Verify service readiness
-
-## References
-
-- [Docker Compose](https://docs.docker.com/compose/)
-- [Dev Containers](https://containers.dev/)
-- [Terraform](https://www.terraform.io/)
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2025-01-01
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Related Skills
-- [deployment](../deployment/SKILL.md)
-- [environment-setup](../../utilities/environment-setup/SKILL.md)
-
-### Tags
-`#environment-setup` `#Docker-Compose` `#dev-environment` `#IaC` `#Terraform` `#infrastructure`
+### Step 5: Apply mode-specific guidance
+
+**For bootstrap-and-onboarding**
+- Define the one clean happy path first.
+- Separate prerequisites, secrets/bootstrap, and verification steps.
+- Prefer a setup check (`make doctor`, `bin/setup --check`, etc.) when possible.
+
+**For toolchain-reproducibility**
+- Pin runtime versions explicitly.
+- Choose one version-management layer per repo when possible.
+- Call out cross-platform differences instead of hiding them.
+
+**For local-services-and-parity**
+- Name which services must run locally and which can stay remote.
+- Prefer Docker Compose for shared service topology.
+- Explain the local-prod gap instead of overselling parity.
+
+**For containerized-dev-environment**
+- Decide whether Compose, devcontainers, or both are necessary.
+- Keep secrets/bootstrap out of committed container config unless clearly safe.
+- State the editor or platform assumptions.
+
+**For setup-diagnosis-and-hardening**
+- Compare docs, bootstrap scripts, env templates, container files, and actual commands.
+- Identify which artifact is authoritative.
+- Reduce duplicate instructions and make verification explicit.
+
+### Step 6: Keep boundaries sharp
+Before finalizing:
+- Do **not** bury `.env` / env validation details here when the real need belongs in `environment-setup`.
+- Do **not** turn setup guidance into a cloud deployment tutorial.
+- Do **not** claim total parity if auth, secrets, or platform quirks remain manual.
+- Do **not** let bootstrap scripts become unexplained magic.
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Fresh repo onboarding
+Input: "Set up this repo so a new developer can run it locally with the right Node version, Postgres, and Redis."
+Output: chooses `bootstrap-and-onboarding`, recommends pinned runtime versions plus Compose for local services, and adds a verification path.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+### Example 2: Containerized local standardization
+Input: "Our team wants a devcontainer because everybody's local machine is different."
+Output: chooses `containerized-dev-environment`, names which tooling should move into the container, and routes env-file details to `environment-setup`.
+
+### Example 3: Drift diagnosis
+Input: "The README says one thing, Docker says another, and new hires still can't run the app."
+Output: chooses `setup-diagnosis-and-hardening`, compares setup artifacts, and identifies the authoritative source plus cleanup steps.
+
+## Best practices
+1. Optimize for a runnable repo, not maximal tooling sophistication.
+2. Pick one canonical reproducibility story and make alternatives explicit.
+3. Keep secrets/config guidance connected but not conflated with machine/runtime setup.
+4. Add a verification step so onboarding is testable.
+5. Name parity gaps instead of pretending containers solve everything.
+6. Route narrower app-config questions to `environment-setup`.
+
+## References
+- [Scope boundaries](references/scope-boundaries.md)
+- [Operating modes](references/operating-modes.md)
+- [Docker Compose docs](https://docs.docker.com/compose/)
+- [VS Code dev containers](https://code.visualstudio.com/docs/devcontainers/containers)
+- [GitHub dev containers intro](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/introduction-to-dev-containers)

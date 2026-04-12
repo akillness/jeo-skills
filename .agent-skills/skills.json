@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-04-12T11:10:19Z",
+  "generated": "2026-04-12T12:15:17Z",
   "skill_count": 85,
   "categories": {
     "planning-review": [
@@ -463,69 +463,35 @@
     },
     {
       "name": "environment-setup",
-      "description": "Configure and manage development, staging, and production environments. Use when setting up environment variables, managing configurations, or separating environments. Handles .env files, config management, and environment-specific settings.",
+      "description": "Organize application environment configuration: `.env` files, env precedence, typed env validation, secret handoff, framework-specific env rules, and config drift between local, staging, CI, and production. Use when the user needs help structuring environment variables, validating required config, separating public/private env values, or cleaning up env-file sprawl. This is the narrower app-config compatibility skill. Route broader runnable-machine, Docker, devcontainer, onboarding, and local-service setup work to `system-environment-setup`.",
       "category": "infrastructure",
       "path": "infrastructure/environment-setup/SKILL.md",
       "tags": [
         "environment",
-        "configuration",
-        "env-variables",
+        "env-files",
         "dotenv",
-        "config-management"
+        "env-validation",
+        "config-management",
+        "secrets-handoff"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
+        "Bash",
         "Read",
         "Write",
         "Edit",
-        "Bash"
+        "Glob",
+        "Grep"
       ],
-      "commands": [
-        {
-          "command": "NODE_ENV=development",
-          "source": "utilities/environment-setup/SKILL.md"
-        },
-        {
-          "command": "PORT=3000",
-          "source": "utilities/environment-setup/SKILL.md"
-        },
-        {
-          "command": "APP_URL=http://localhost:3000",
-          "source": "utilities/environment-setup/SKILL.md"
-        },
-        {
-          "command": "DATABASE_URL=postgresql://user:password@localhost:5432/myapp",
-          "source": "utilities/environment-setup/SKILL.md"
-        },
-        {
-          "command": "DATABASE_POOL_MIN=2",
-          "source": "utilities/environment-setup/SKILL.md"
-        },
-        {
-          "command": "DATABASE_POOL_MAX=10",
-          "source": "utilities/environment-setup/SKILL.md"
-        },
-        {
-          "command": "REDIS_URL=redis://localhost:6379",
-          "source": "utilities/environment-setup/SKILL.md"
-        },
-        {
-          "command": "REDIS_TTL=3600",
-          "source": "utilities/environment-setup/SKILL.md"
-        },
-        {
-          "command": "JWT_ACCESS_SECRET=change-me-in-production-min-32-characters",
-          "source": "utilities/environment-setup/SKILL.md"
-        },
-        {
-          "command": "JWT_REFRESH_SECRET=change-me-in-production-min-32-characters",
-          "source": "utilities/environment-setup/SKILL.md"
-        }
-      ]
+      "commands": [],
+      "compatibility": "Best when the main problem is application configuration rather than whole-machine reproducibility: env files, config layering, schema validation, and secrets handoff boundaries.",
+      "version": "1.1",
+      "source": "akillness/oh-my-skills"
     },
     {
       "name": "firebase-ai-logic",
@@ -893,64 +859,36 @@
     },
     {
       "name": "system-environment-setup",
-      "description": "Configure development and production environments for consistent and reproducible setups. Use when setting up new projects, Docker environments, or development tooling. Handles Docker Compose, .env configuration, dev containers, and infrastructure as code.",
+      "description": "Build reproducible developer environments for real projects: local toolchains, runtime versions, Docker Compose or dev containers, onboarding flows, local service parity, bootstrap scripts, and environment troubleshooting. Use when the user needs a repo to run consistently across machines, containers, or staged environments, even if they only say setup dev environment, onboarding, Docker, devcontainer, local parity, bootstrap, or make this runnable. This is the canonical broader environment-setup skill. Route narrower `.env` and app-config questions to `environment-setup`.",
       "category": "infrastructure",
       "path": "infrastructure/system-environment-setup/SKILL.md",
       "tags": [
         "environment-setup",
-        "Docker-Compose",
-        "dev-environment",
-        "IaC",
-        "configuration"
+        "reproducibility",
+        "devcontainers",
+        "docker-compose",
+        "onboarding",
+        "toolchains",
+        "local-parity"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
-      "allowed_tools": [],
-      "commands": [
-        {
-          "command": "docker-compose up -d",
-          "source": "infrastructure/system-environment-setup/SKILL.md"
-        },
-        {
-          "command": "docker-compose logs -f web",
-          "source": "infrastructure/system-environment-setup/SKILL.md"
-        },
-        {
-          "command": "docker-compose restart web",
-          "source": "infrastructure/system-environment-setup/SKILL.md"
-        },
-        {
-          "command": "docker-compose down",
-          "source": "infrastructure/system-environment-setup/SKILL.md"
-        },
-        {
-          "command": "docker-compose down -v",
-          "source": "infrastructure/system-environment-setup/SKILL.md"
-        },
-        {
-          "command": "NODE_ENV=development",
-          "source": "infrastructure/system-environment-setup/SKILL.md"
-        },
-        {
-          "command": "PORT=3000",
-          "source": "infrastructure/system-environment-setup/SKILL.md"
-        },
-        {
-          "command": "APP_URL=http://localhost:3000",
-          "source": "infrastructure/system-environment-setup/SKILL.md"
-        },
-        {
-          "command": "DATABASE_URL=postgresql://postgres:password@localhost:5432/myapp",
-          "source": "infrastructure/system-environment-setup/SKILL.md"
-        },
-        {
-          "command": "DATABASE_POOL_SIZE=10",
-          "source": "infrastructure/system-environment-setup/SKILL.md"
-        }
-      ]
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": [],
+      "compatibility": "Best when the task spans toolchains, local services, containers, onboarding, or cross-machine reproducibility. Use alongside `environment-setup` for application env files, env validation, and secret handoff details.",
+      "version": "1.1",
+      "source": "akillness/oh-my-skills"
     },
     {
       "name": "vercel-deploy",

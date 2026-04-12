@@ -347,7 +347,7 @@ If no → skip silently. Never re-ask.
 | **Backend** | api-design, api-documentation, authentication-setup, backend-testing, database-schema-design | All (`*`) |
 | **Frontend** | design-system, frontend-design-system *(compatibility alias for design-system)*, react-best-practices, react-grab, vercel-react-best-practices *(compatibility alias for react-best-practices)*, responsive-design, state-management, ui-component-patterns, web-accessibility, web-design-guidelines | All (`*`) |
 | **Code Quality** | code-refactoring, code-review, debugging, performance-optimization, testing-strategies | All (`*`) |
-| **Infrastructure** | deployment-automation, environment-setup, firebase-ai-logic, firebase-cli, genkit, looker-studio-bigquery, monitoring-observability, scrapling, rtk, security-best-practices, strix, system-environment-setup, vercel-deploy | All (`*`) |
+| **Infrastructure** | deployment-automation, environment-setup *(app-config compatibility alias; routes broader runnable-machine setup to system-environment-setup)*, firebase-ai-logic, firebase-cli, genkit, looker-studio-bigquery, monitoring-observability, scrapling, rtk, security-best-practices, strix, system-environment-setup *(canonical broader environment-setup skill)*, vercel-deploy | All (`*`) |
 | **Documentation** | changelog-maintenance, presentation-builder, research-paper-writing, technical-writing, user-guide-writing | All (`*`) |
 | **Project Management** | sprint-retrospective, standup-meeting, task-estimation, task-planning | All (`*`) |
 | **Search & Analysis** | autoresearch, codebase-search, data-analysis, langsmith, log-analysis, pattern-detection | All (`*`) |

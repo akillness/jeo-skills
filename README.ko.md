@@ -260,7 +260,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `deployment-automation` | CI/CD, Docker/Kubernetes, 클라우드 인프라 | 전체 |
-| `environment-setup` | 개발/스테이징/프로덕션 환경 구성 | 전체 |
+| `environment-setup` | `.env` 구조, env 우선순위, 검증, 시크릿 전달을 다루는 앱 구성 호환 스킬이며, 더 넓은 실행 환경 설정은 `system-environment-setup`으로 라우팅 | 전체 |
 | `firebase-ai-logic` | Firebase AI Logic (Gemini) 통합 | Claude · Gemini |
 | `firebase-cli` | Firebase CLI (firebase-tools) — Hosting, Functions, Firestore, Realtime DB, Storage, Extensions, 에뮬레이터 수트 배포 | 전체 |
 | `genkit` | Firebase Genkit AI 플로우 및 RAG 파이프라인 | Claude · Gemini |
@@ -270,7 +270,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `rtk` | Rust Token Killer 설치 및 에이전트 설정 - `rtk gain` 검증, 동명 패키지 충돌 복구, 에이전트별 `rtk init`, 직접 호출용 압축 래퍼 명령 | 전체 |
 | `security-best-practices` | OWASP Top 10, RBAC, API 보안 | 전체 |
 | `strix` | Strix CLI 기반 AI 애플리케이션 보안 테스트 - Docker 프리플라이트, LLM 공급자 설정, 로컬/GitHub/라이브 타깃 스캔, 모드 선택, CI/CD 사용 | 전체 |
-| `system-environment-setup` | 재현 가능한 환경 구성 | 전체 |
+| `system-environment-setup` | 실행 가능한 저장소, 툴체인, Docker/devcontainer, 로컬 서비스, 온보딩, 설정 드리프트 진단을 다루는 정식 환경 설정 스킬 | 전체 |
 | `vercel-deploy` | Vercel 배포 자동화 | 전체 |
 
 ### 📝 문서화 (5개)
