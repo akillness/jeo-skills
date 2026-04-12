@@ -1,0 +1,25 @@
+{
+  "skill_name": "design-system",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design a reusable UI system for our B2B dashboard and marketing site with shared tokens, component primitives, and accessibility rules.",
+      "expected_output": "The canonical design-system skill should activate for general UI-system planning.",
+      "assertions": [
+        "Routes to design-system as the default skill",
+        "Mentions tokens, reusable component rules, or layout hierarchy",
+        "Does not redirect to frontend-design-system unless the alias name is explicitly requested"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We need landing page and dashboard design guidance that stays visually consistent across screens.",
+      "expected_output": "The skill should own the general visual-system job-to-be-done.",
+      "assertions": [
+        "Treats design-system as the canonical entry",
+        "Keeps the focus on UI-system design rather than only responsive tweaks or accessibility remediation",
+        "Can reference nearby skills for boundaries without surrendering the main routing"
+      ]
+    }
+  ]
+}

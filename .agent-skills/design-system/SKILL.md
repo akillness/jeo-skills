@@ -1,21 +1,32 @@
 ---
 name: design-system
-description: Produce production-grade UI designs using clear design tokens, layout rules, motion guidance, and accessibility checks for consistent, scalable frontend development.
+description: >
+  Design or refactor production-grade frontend UI systems using design tokens,
+  component primitives, layout rules, motion guidance, and accessibility checks.
+  Use when the user needs a reusable visual system, landing-page or dashboard UI
+  direction, component-library foundations, or page-level design specs that stay
+  consistent across screens. Route exact legacy-name requests for
+  `frontend-design-system` to that compatibility alias instead. Triggers on:
+  design system, design tokens, UI system, component library, dashboard UI,
+  landing page design, visual language, motion guidelines.
 metadata:
-  tags: frontend, design, ui, ux, typography, animation, design-tokens, accessibility
+  tags: frontend, design, ui, ux, typography, animation, design-tokens, accessibility, canonical
   platforms: Claude, ChatGPT, Gemini, Codex
+  version: "1.1.0"
 ---
 
 
 # Frontend Design System
 
-This is a skill for production-grade UI design. It supports consistent and scalable frontend development through clear design tokens, layout rules, motion guidelines, and accessibility checks.
+This is the canonical frontend UI-system skill for the repository. Use it for production-grade UI design, reusable component-system planning, and page-level visual direction grounded in tokens, layout rules, motion guidance, and accessibility checks.
 
 ## When to use this skill
 
-- **Production-quality UI needed**: Generate high-quality UI from prompts
-- **Consistent design language**: Consistent visual language across screens
-- **Typography/layout/motion guide**: Systematic design system
+- **Production-quality UI needed**: Generate high-quality UI specs or implementation-ready design guidance
+- **Reusable visual system needed**: Define tokens, component primitives, and visual rules that can scale across screens
+- **Landing page, dashboard, or app-shell direction**: Shape page-level hierarchy, CTA structure, and layout behavior
+- **Accessibility-aware design decisions**: Bake contrast, focus states, touch targets, and responsive behavior into the design system
+- **Not for exact legacy-name compatibility**: If a workflow explicitly asks for `frontend-design-system`, use that compatibility alias but route substantive guidance back here
 
 ---
 
@@ -335,10 +346,12 @@ and success confirmation.
 ## Best practices
 
 1. **Start with content hierarchy**: UI follows content priority
-2. **Consistent spacing scale**: 8px-based system, no ad-hoc spacing
-3. **Motion with intent**: Animate only meaningful transitions
-4. **Test on mobile**: Verify layout integrity
-5. **Accessibility first**: Consider accessibility at the design stage
+2. **Define the system before the screen**: lock tokens, primitives, and interaction rules before polishing individual pages
+3. **Consistent spacing scale**: 8px-based system, no ad-hoc spacing
+4. **Motion with intent**: Animate only meaningful transitions
+5. **Test on mobile**: Verify layout integrity
+6. **Accessibility first**: Consider accessibility at the design stage
+7. **Keep the boundary explicit**: use `frontend-design-system` only as a compatibility alias; keep substantive UI-system guidance centralized here
 
 ---
 
@@ -418,17 +431,28 @@ and success confirmation.
 
 ---
 
+## References
+
+- `./references/scope-boundaries.md`
+- `../frontend-design-system/SKILL.md`
+- `../ui-component-patterns/SKILL.md`
+- `../responsive-design/SKILL.md`
+- `../web-accessibility/SKILL.md`
+
+---
+
 ## Metadata
 
 ### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2026-01-21
+- **Current Version**: 1.1.0
+- **Last Updated**: 2026-04-12
 - **Compatible Platforms**: Claude, ChatGPT, Gemini, Codex
 
 ### Related Skills
-- [ui-component-patterns](../ui-component-patterns/SKILL.md)
-- [responsive-design](../responsive-design/SKILL.md)
-- [web-accessibility](../web-accessibility/SKILL.md)
+- [frontend-design-system](../frontend-design-system/SKILL.md) — Compatibility alias for exact-name legacy workflows
+- [ui-component-patterns](../ui-component-patterns/SKILL.md) — Component implementation patterns after the system direction is clear
+- [responsive-design](../responsive-design/SKILL.md) — Breakpoint and device adaptation work after the design system is defined
+- [web-accessibility](../web-accessibility/SKILL.md) — Accessibility remediation and audits beyond visual-system design
 - [image-generation](../../creative-media/image-generation/SKILL.md)
 
 ### Tags

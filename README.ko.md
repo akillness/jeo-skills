@@ -228,8 +228,8 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `design-system` | 디자인 토큰, 레이아웃 규칙, 모션, 접근성 | 전체 |
-| `frontend-design-system` | 디자인 토큰과 접근성 기반 프로덕션 UI | 전체 |
+| `design-system` | 디자인 토큰, 페이지 계층, 모션, 접근성까지 묶어 다루는 기본 프론트엔드 UI 시스템 스킬 | 전체 |
+| `frontend-design-system` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `design-system` 호환 별칭 | 전체 |
 | `react-best-practices` | waterfall, 번들 크기, RSC, hydration, rerender 이슈를 다루는 React & Next.js 성능 진단의 기본 스킬 | 전체 |
 | `react-grab` | 브라우저 UI 엘리먼트에서 React 컴포넌트명·파일경로·HTML을 클립보드로 복사해 AI 에이전트에 전달 | 전체 |
 | `vercel-react-best-practices` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `react-best-practices` 호환 별칭 | Claude · Gemini · Codex |
