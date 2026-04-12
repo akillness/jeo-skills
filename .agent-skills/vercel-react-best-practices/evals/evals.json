@@ -1,0 +1,25 @@
+{
+  "skill_name": "vercel-react-best-practices",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our internal setup script still calls `vercel-react-best-practices`. Keep that name working, but make sure the actual React performance guidance stays canonical.",
+      "expected_output": "Treats the skill as a compatibility alias and redirects the substantive work to `react-best-practices`.",
+      "assertions": [
+        "Output describes `vercel-react-best-practices` as a compatibility alias or wrapper",
+        "Output points to `react-best-practices` as the canonical skill",
+        "Output preserves backward compatibility rather than deleting the name outright"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use `vercel-react-best-practices` to help with our slow Next.js page.",
+      "expected_output": "Acknowledges the alias request but says the real guidance now lives in `react-best-practices`.",
+      "assertions": [
+        "Output acknowledges the explicit alias request",
+        "Output redirects general React/Next.js performance work to `react-best-practices`",
+        "Output does not present the alias as a peer default to the canonical skill"
+      ]
+    }
+  ]
+}

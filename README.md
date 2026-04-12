@@ -230,9 +230,9 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 |-------|-------------|-----------|
 | `design-system` | Design tokens, layout rules, motion, accessibility | All |
 | `frontend-design-system` | Production-grade UI with design tokens and accessibility | All |
-| `react-best-practices` | React & Next.js performance optimization | All |
+| `react-best-practices` | Canonical React & Next.js performance audits for waterfalls, bundle size, RSC, hydration, and rerender issues | All |
 | `react-grab` | Browser element context capture — point at UI element, copy React component name, file path, HTML to clipboard for AI agents | All |
-| `vercel-react-best-practices` | Vercel Engineering React & Next.js guidelines | Claude · Gemini · Codex |
+| `vercel-react-best-practices` | Compatibility alias for `react-best-practices` when legacy tooling or exact-name workflows still expect the Vercel variant | Claude · Gemini · Codex |
 | `responsive-design` | Mobile-first layouts and breakpoints | All |
 | `state-management` | Redux, Context, Zustand patterns | All |
 | `ui-component-patterns` | Reusable component libraries | All |

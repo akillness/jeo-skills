@@ -1,0 +1,37 @@
+{
+  "skill_name": "react-best-practices",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our Next.js app got slower after we moved more logic into server components. We see sequential fetches, some hydration mismatch, and a heavy dashboard bundle. Audit it.",
+      "expected_output": "Routes the task to the canonical React performance skill and prioritizes waterfalls, bundle size, hydration mismatch, and RSC boundary fixes.",
+      "assertions": [
+        "Output identifies Next.js or React performance work as the core task",
+        "Output mentions at least two of: waterfalls, bundle size, hydration mismatch, RSC boundary",
+        "Output does not frame the request as generic state-management or accessibility work",
+        "Output recommends high-impact React/Next.js performance fixes first"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Review this React PR for unnecessary rerenders, slow client components, and data-fetching patterns that are hurting the page.",
+      "expected_output": "Uses the React performance lens rather than generic code review language and includes rerender/data-fetching guidance.",
+      "assertions": [
+        "Output treats rerender churn or fetch patterns as primary concerns",
+        "Output includes React- or Next-specific optimization guidance",
+        "Output keeps the answer focused on performance rather than broad UI design advice"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We have a slow ecommerce category page in Next.js. Images are fine, but the page waits on three independent API calls and ships too much JS. What skill should handle this?",
+      "expected_output": "Clearly selects the canonical React/Next performance skill and classifies the issue as waterfalls plus bundle bloat.",
+      "assertions": [
+        "Output selects `react-best-practices` as the right skill",
+        "Output classifies the problem as sequential fetches or waterfalls",
+        "Output classifies the problem as bundle size or excess JavaScript",
+        "Output does not prefer the compatibility alias unless the exact legacy name is required"
+      ]
+    }
+  ]
+}
