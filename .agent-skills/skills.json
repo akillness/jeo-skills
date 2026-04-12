@@ -2034,45 +2034,55 @@
     },
     {
       "name": "debugging",
-      "description": "Systematically debug code issues using proven methodologies. Use when encountering errors, unexpected behavior, or performance problems. Handles error analysis, root cause identification, debugging strategies, and fix verification.",
+      "description": "Debug code, runtime behavior, regressions, flaky failures, and code-adjacent incidents with a systematic reproduce → isolate → hypothesize → verify loop. Use after symptom triage when the user needs a root-cause workflow, regression isolation, flaky-test investigation, or fix verification rather than raw log-line selection.",
       "category": "code-quality",
       "path": "code-quality/debugging/SKILL.md",
       "tags": [
         "debugging",
-        "troubleshooting",
-        "error-analysis",
-        "bug-fixing",
-        "problem-solving"
+        "regression-isolation",
+        "reproduction",
+        "flaky-tests",
+        "git-bisect",
+        "root-cause"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
         "Read",
         "Grep",
         "Glob",
-        "Bash"
+        "Bash",
+        "Write"
       ],
       "commands": [
         {
-          "command": "git log --oneline -10",
+          "command": "git log --oneline -15",
           "source": "code-quality/debugging/SKILL.md"
         },
         {
-          "command": "git diff HEAD~5",
+          "command": "git diff HEAD~5 -- path/to/suspect",
           "source": "code-quality/debugging/SKILL.md"
         },
         {
-          "command": "npm list --depth=0  # Node.js",
+          "command": "git bisect start",
           "source": "code-quality/debugging/SKILL.md"
         },
         {
-          "command": "pip freeze          # Python",
+          "command": "rg -n \"avatar|null|profile\" src tests",
+          "source": "code-quality/debugging/SKILL.md"
+        },
+        {
+          "command": "pytest tests/test_checkout.py -k coupon --maxfail=1 -vv",
           "source": "code-quality/debugging/SKILL.md"
         }
-      ]
+      ],
+      "compatibility": "Best for code-level and behavior-level debugging across CLI, backend, frontend, fullstack, and CI workflows. Not for observability-platform setup, pure PR review, or broad testing-strategy design.",
+      "version": "2.0",
+      "source": "akillness/oh-my-skills"
     },
     {
       "name": "performance-optimization",

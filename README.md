@@ -251,7 +251,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 |-------|-------------|-----------|
 | `code-refactoring` | Code simplification and refactoring | All |
 | `code-review` | Comprehensive code review with API contracts | All |
-| `debugging` | Root cause analysis, regression isolation | All |
+| `debugging` | Reproduce → isolate → verify debugging for regressions and flaky failures | All |
 | `performance-optimization` | Speed, efficiency, scalability optimization | All |
 | `testing-strategies` | Test pyramid, coverage, flaky-test hardening | All |
 

@@ -117,3 +117,11 @@
 - Accepted: rewrite `log-analysis` as a read-only root-cause triage skill, add `references/` + `evals/`, update README / README.ko / `.agent-skills/skills.json`, and explicitly route Unity/Unreal build/editor/package logs to `game-build-log-triage`
 - Rejected: adding another generic observability/logging wrapper; letting `log-analysis` absorb observability setup or engine-specific build-log work
 - Wiki files created/updated: `queries/log-analysis-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `concepts/game-development-cluster.md`, `index.md`
+
+## [2026-04-13] query | Debugging modernization
+- Area researched: systematic debugging workflow across runtime regressions, flaky CI failures, reproduce/minimize loops, recent-change isolation, and the boundary with log triage and testing-policy work
+- Survey files created under `.survey/debugging-modernization-20260413/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `debugging` as a reproduce → isolate → hypothesize → verify workflow, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and explicitly route symptom-first evidence reduction to `log-analysis`
+- Rejected: adding another generic troubleshooting wrapper; letting `debugging` absorb raw log triage, broad testing-policy design, or preventive PR audit work
+- Wiki files created/updated: `queries/debugging-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`
