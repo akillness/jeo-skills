@@ -2,18 +2,18 @@
 
 ## Scope
 - Path analyzed: `.agent-skills/` plus repository discovery docs
-- Method: custom graphify-style structural graph over skill metadata, support folders, cross-skill mentions, and documentation indexing
-- Total skills: 89
-- Skills with references/: 35
-- Skills with evals/: 34
-- Graph nodes: 184
-- Graph edges: 408
+- Method: custom graphify-style structural graph over skill metadata, cross-skill mentions, and documentation indexing
+- Total skills: 85
+- Skills with references/: 30
+- Skills with evals/: 29
+- Graph nodes: 88
+- Graph edges: 294
 
 ## Strongest structural findings
-1. `system-environment-setup` is now the canonical broader environment-setup anchor: it owns runnable repos, toolchains, Docker/devcontainers, onboarding, local-service parity, and setup-drift diagnosis.
-2. `environment-setup` is now a narrower app-config compatibility skill: it owns `.env` layout, env precedence, validation, secret handoff, and framework-specific config rules while routing broader machine setup outward.
-3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so canonical-vs-alias wording there materially changes how agents discover overlapping skills.
-4. Support coverage improved again in the infrastructure cluster: both environment skills now have `references/` and `evals/`, which raises the floor for a previously weak duplicate pair.
+1. `task-estimation` is now the stronger sizing lane inside the PM cluster: it owns estimation modes, reference-story calibration, confidence/risk framing, split-or-spike decisions, and forecast-safe language.
+2. The PM cluster is cleaner end-to-end: `task-planning` owns decomposition, `task-estimation` owns sizing, `standup-meeting` owns daily coordination, and `sprint-retrospective` owns learning/follow-through.
+3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so small wording changes there still materially influence activation and discoverability.
+4. Support coverage improved again in project management: `task-estimation` now has both `references/` and `evals/`, raising the floor for another high-frequency legacy skill.
 
 ## Community map
 - agent-development
@@ -28,28 +28,27 @@
 - planning-review
 - project-management
 - search-analysis
-- unknown
 - utilities
 
 ## Highest-degree nodes
-- README.ko.md: degree 87
-- README.md: degree 87
-- setup-all-skills-prompt.md: degree 83
-- task-planning: degree 14
-- bmad-gds: degree 12
-- game-demo-feedback-triage: degree 12
-- system-environment-setup: degree 12
-- environment-setup: degree 10
-- omx: degree 10
-- sprint-retrospective: degree 10
+- README.ko.md: degree 84
+- README.md: degree 84
+- setup-all-skills-prompt.md: degree 82
+- task-planning: degree 12
+- sprint-retrospective: degree 9
+- standup-meeting: degree 9
+- system-environment-setup: degree 9
+- task-estimation: degree 9
+- environment-setup: degree 7
+- ralph: degree 7
 
 ## Duplicate / consolidation notes
-- `environment-setup` and `system-environment-setup` now form a canonical-plus-alias pair.
-- `environment-setup` should stay narrow: app config, `.env` structure, validation, secret handoff, and drift cleanup.
-- `system-environment-setup` should stay broad: runnable local environments, containers, toolchains, onboarding, and setup diagnosis.
-- The canonical-vs-alias pattern continues to match prior repo cleanups (`react-best-practices` / `vercel-react-best-practices`, `design-system` / `frontend-design-system`, `marketing-automation` / `marketing-skills-collection`).
+- The PM cluster now has a clearer four-part split: planning (`task-planning`), estimation (`task-estimation`), daily coordination (`standup-meeting`), and reflection (`sprint-retrospective`).
+- `task-estimation` should stay narrow: sizing, uncertainty, forecasting support, and split-or-spike guidance.
+- `task-estimation` should not absorb backlog decomposition, status updates, or retrospective facilitation.
+- The canonical-vs-alias cleanups in other clusters remain intact (`react-best-practices` / `vercel-react-best-practices`, `design-system` / `frontend-design-system`, `marketing-automation` / `marketing-skills-collection`, `system-environment-setup` / `environment-setup`).
 
 ## Recommended maintenance direction
-- Keep strengthening old, high-utility anchors with support files before adding new infrastructure overlap.
-- Re-check README/setup/manifest wording any time the environment/setup boundary shifts again.
-- If future work adds secret-manager or Nix-specific depth, keep that as a sub-pattern under the canonical environment anchor rather than a new vague peer skill.
+- Keep strengthening remaining high-traffic legacy skills with support files before adding new overlap.
+- Use the modern PM cluster as a template for boundary-driven upgrades: define the job, define the handoff, then add evals and references.
+- Re-check README/setup/manifest wording whenever a skill's trigger boundary changes enough to alter discovery behavior.

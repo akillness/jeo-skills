@@ -85,3 +85,11 @@
 - Accepted: rewrite `system-environment-setup` as the canonical broader environment anchor, narrow `environment-setup` into an app-config compatibility skill, add `references/` + `evals/` to both, and update README / README.ko / setup prompt / `.agent-skills/skills.json`
 - Rejected: adding a third environment/setup skill; deleting `environment-setup` in the same run; keeping both skills as generic peers
 - Wiki files created/updated: `concepts/infrastructure-environment-cluster.md`, `queries/environment-skill-canonicalization-2026-04-12.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-12] query | Task estimation modernization
+- Area researched: estimation-mode selection, story points vs forecast language, anchor/reference sizing, discovery spikes, and cross-functional milestone estimation across software, product, and game work
+- Survey files created under `.survey/task-estimation-modernization-20260412/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `task-estimation` into a mode-selecting sizing and forecast-language skill, add `references/` + `evals/`, and update README / README.ko / `.agent-skills/skills.json`
+- Rejected: adding a separate forecasting wrapper; merging estimation into `task-planning`; keeping the legacy generic point-scale skill
+- Wiki files created/updated: `concepts/project-management-cluster.md`, `concepts/skill-support-coverage.md`, `queries/task-estimation-modernization-2026-04-12.md`, `index.md`

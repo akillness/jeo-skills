@@ -3219,7 +3219,7 @@
     },
     {
       "name": "task-estimation",
-      "description": "Estimate software development tasks accurately using various techniques. Use when planning sprints, roadmaps, or project timelines. Handles story points, t-shirt sizing, planning poker, and estimation best practices.",
+      "description": "Turn vague backlog items, stories, bugs, spikes, roadmap slices, or milestone work into practical size signals, uncertainty notes, and forecast-safe estimate packets. Use when the user needs story points, t-shirt sizing, planning-poker prep, reference-story calibration, confidence/risk framing, or a sizing pass for software, product, or game work. Not for backlog decomposition, standups, retrospectives, or hard deadline promises.",
       "category": "project-management",
       "path": "project-management/task-estimation/SKILL.md",
       "tags": [

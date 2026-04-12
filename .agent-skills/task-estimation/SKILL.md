@@ -1,225 +1,278 @@
 ---
 name: task-estimation
-description: Estimate software development tasks accurately using various techniques. Use when planning sprints, roadmaps, or project timelines. Handles story points, t-shirt sizing, planning poker, and estimation best practices.
+description: >
+  Turn vague backlog items, stories, bugs, spikes, roadmap slices, or milestone work
+  into practical size signals, uncertainty notes, and forecast-safe estimate packets.
+  Use when the user needs story points, t-shirt sizing, planning-poker prep,
+  reference-story calibration, confidence/risk framing, or a "how big is this / how
+  risky is this / how should we estimate it?" pass for software, product, or game
+  work. Not for backlog decomposition, standups, retrospectives, or hard deadline
+  promises.
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: >
+  Best for backlog items, specs, issue lists, PRDs, GDDs, roadmap notes, and sprint
+  candidates that need sizing and uncertainty language. Works as an estimation and
+  forecasting-support workflow, not as a commitment engine or executive deadline
+  generator.
 metadata:
-  tags: estimation, agile, sprint-planning, story-points, planning-poker
-  platforms: Claude, ChatGPT, Gemini
+  tags: estimation, agile, story-points, planning-poker, forecasting, capacity-planning, project-management
+  version: "1.1"
+  source: akillness/oh-my-skills
 ---
-
 
 # Task Estimation
 
+Use this skill to turn messy work items into estimates that help teams make decisions without pretending uncertainty is gone.
+
+The goal is not to produce fake precision. The goal is to:
+- pick the right estimation mode for the planning horizon
+- size work relative to comparable work
+- surface risk, uncertainty, and hidden dependencies
+- separate an estimate from a commitment or deadline
+- create estimate packets that neighboring PM skills can actually use
+
+Read [references/estimation-modes.md](references/estimation-modes.md) and [references/boundary-guide.md](references/boundary-guide.md) before handling unusual cases.
+
+If the user mainly needs:
+- **backlog decomposition, acceptance criteria, or sprint-ready slices** → route to `task-planning`
+- **daily execution/status coordination** → route to `standup-meeting`
+- **process reflection or team-health review after the work** → route to `sprint-retrospective`
 
 ## When to use this skill
+- Estimate a story, bug cluster, spike, feature slice, or milestone candidate
+- Run or prepare planning-poker / team sizing conversations
+- Translate vague work into story points, t-shirt sizes, or rough size buckets
+- Add confidence, uncertainty, and dependency language before a sprint or milestone commitment
+- Compare candidate items for sequencing, capacity planning, or roadmap discussion
+- Decide when work is too large or too unknown to estimate cleanly and should be split or treated as discovery first
+- Create estimate packets for software, product, ops, content, or game-development work
 
-- **Sprint Planning**: Decide what work to include in the sprint
-- **Roadmap creation**: Build long-term plans
-- **Resource planning**: Estimate team size and schedule
+## When not to use this skill
+- The main problem is turning broad work into ready tasks, acceptance criteria, or dependency-aware slices → use `task-planning`
+- The main problem is running a daily check-in or blocker review → use `standup-meeting`
+- The main problem is learning from completed work or changing the process → use `sprint-retrospective`
+- The user wants a hard ship date, contractual promise, or executive commitment with no uncertainty language
+- The only honest answer is that there is not enough information yet; in that case estimate the **discovery spike**, not the imagined finished implementation
 
 ## Instructions
 
-### Step 1: Story Points (relative estimation)
+### Step 1: Identify the estimation mode
+Label the request before assigning numbers.
 
-**Fibonacci sequence**: 1, 2, 3, 5, 8, 13, 21
+Possible modes:
+- `coarse-triage` — rough sizing for backlog cleanup, roadmap comparison, or intake triage
+- `sprint-candidate` — relative sizing for work likely to enter the next sprint / milestone
+- `forecast-support` — confidence/risk view for date or scope discussions
+- `discovery-spike` — estimate the investigation/prototype, not the eventual implementation
+- `milestone-cross-functional` — work that spans engineering, design, content, QA, platform, or approvals
+- `unknown-needs-more-input`
 
-```markdown
-## Story Point guidelines
+Record the evidence you actually have:
+- item summary
+- intended outcome / user value
+- current artifacts: issue, spec, PRD, GDD, note dump, bug list, playtest note, roadmap line
+- known systems touched: frontend, backend, infra, analytics, content, QA, store/release, live ops
+- dependencies or approvals
+- novelty level: low | medium | high
+- confidence level: high | medium | low
 
-### 1 Point (Very Small)
-- Example: text change, constant value update
-- Time: 1-2 hours
-- Complexity: very low
-- Risk: none
+If confidence is low, do not force a precise estimate. Mark it clearly and prefer a discovery spike or broader bucket.
 
-### 2 Points (Small)
-- Example: simple bug fix, add logging
-- Time: 2-4 hours
-- Complexity: low
-- Risk: low
+### Step 2: Choose the right estimation unit
+Use the lightest unit that matches the decision.
 
-### 3 Points (Medium)
-- Example: simple CRUD API endpoint
-- Time: 4-8 hours
-- Complexity: medium
-- Risk: low
+Recommended unit selection:
+- **T-shirt / coarse buckets** for early backlog or roadmap comparison
+- **Story points / relative buckets** for sprint-candidate or team sizing conversations
+- **Range + confidence notes** for forecast-support conversations
+- **Discovery spike estimate** when uncertainty is too high for implementation sizing
 
-### 5 Points (Medium-Large)
-- Example: complex form implementation, auth middleware
-- Time: 1-2 days
-- Complexity: medium
-- Risk: medium
+Rules:
+- Do not use hours as the primary estimate unless the user explicitly requires a time-based translation.
+- If stakeholders need time, translate **after** relative sizing and keep the uncertainty visible.
+- If a work item mixes discovery and delivery, estimate them separately.
 
-### 8 Points (Large)
-- Example: new feature (frontend + backend)
-- Time: 2-3 days
-- Complexity: high
-- Risk: medium
+### Step 3: Calibrate against anchors
+Do not estimate in a vacuum.
 
-### 13 Points (Very Large)
-- Example: payment system integration
-- Time: 1 week
-- Complexity: very high
-- Risk: high
-- **Recommended**: Split into smaller tasks
+Use 2-3 anchors:
+- one known small/reference item
+- one medium/typical item
+- one large item that usually should be split
 
-### 21+ Points (Epic)
-- **Required**: Must be split into smaller stories
-```
+For each candidate item, compare:
+- complexity
+- unknowns
+- dependency count
+- cross-functional coordination
+- testing / validation burden
+- rollout / migration / approval cost
 
-### Step 2: Planning Poker
+If no anchor exists, say so. The estimate should become more conservative, not more confident.
 
-**Process**:
-1. Product Owner explains the story
-2. Team asks questions
-3. Everyone picks a card (1, 2, 3, 5, 8, 13)
-4. Reveal simultaneously
-5. Explain highest/lowest scores
-6. Re-vote
-7. Reach consensus
+### Step 4: Size the work
+Use a practical scale and state why.
 
-**Example**:
-```
-Story: "Users can upload a profile photo"
+Suggested relative scale:
+- `1` — tiny, highly familiar, low risk
+- `2` — small, one surface, little coordination
+- `3` — moderate, clear but non-trivial
+- `5` — meaningful slice with multiple steps or modest uncertainty
+- `8` — large slice with several surfaces, higher testing/integration load
+- `13` — too large or too uncertain for one clean delivery slice
+- `21+` — epic / milestone cluster; split before committing
 
-Member A: 3 points (simple frontend)
-Member B: 5 points (image resizing needed)
-Member C: 8 points (S3 upload, security considerations)
+Suggested coarse buckets:
+- `XS` — tiny / trivial follow-through
+- `S` — small, narrow surface
+- `M` — moderate, standard delivery slice
+- `L` — large, likely multiple moving parts
+- `XL` — too large or too fuzzy; split or convert to discovery
 
-Discussion:
-- Use an image processing library
-- S3 is already set up
-- File size validation needed
+Always add the reason:
+- what makes it this size
+- what could move it up or down
+- what needs to be split if it exceeds a clean delivery slice
 
-Re-vote → consensus on 5 points
-```
+### Step 5: Add uncertainty and forecast-safe language
+Every useful estimate packet needs more than one number.
 
-### Step 3: T-Shirt Sizing (quick estimation)
+Capture:
+- `estimate_unit`
+- `estimate_value`
+- `confidence`: high | medium | low
+- `uncertainty drivers`
+- `dependencies / approvals`
+- `split recommendation`: yes | no
+- `forecast note`: how this estimate should and should not be used
 
-```markdown
-## T-Shirt sizes
+Good forecast language:
+- "This is a **relative size signal**, not a delivery promise."
+- "Confidence is low because API behavior and migration scope are still unknown."
+- "Treat this as an `L` until the spike resolves dependency risk."
+- "If you need a date forecast, use historical throughput / capacity after slicing the work."
 
-- **XS**: 1-2 Story Points (within 1 hour)
-- **S**: 2-3 Story Points (half day)
-- **M**: 5 Story Points (1-2 days)
-- **L**: 8 Story Points (1 week)
-- **XL**: 13+ Story Points (needs splitting)
+### Step 6: Handle special cases explicitly
+#### Discovery-heavy work
+- Estimate the spike/prototype/validation activity, not the final feature fantasy.
+- State what question the spike should answer.
+- Re-estimate after the spike if the unknowns shrink.
 
-**When to use**:
-- Initial backlog grooming
-- Rough roadmap planning
-- Quick prioritization
-```
+#### Cross-functional / game / launch work
+- Include content, QA, approvals, store/release, or localization burdens when relevant.
+- Do not hide non-code work inside one engineering number.
+- If coordination dominates the risk, say that explicitly.
 
-### Step 4: Consider risk and uncertainty
+#### Forecast conversion requests
+If asked for time or schedule language:
+1. keep the relative estimate visible
+2. state assumptions (team size, known blockers, comparable past work)
+3. provide a range, not a single-point promise
+4. note that historical throughput/cycle time is better for date forecasting than raw points alone
 
-**Estimation adjustment**:
-```typescript
-interface TaskEstimate {
-  baseEstimate: number;      // base estimate
-  risk: 'low' | 'medium' | 'high';
-  uncertainty: number;        // 0-1
-  finalEstimate: number;      // adjusted estimate
-}
+### Step 7: Trigger split-or-spike decisions
+Recommend splitting when any of these are true:
+- estimate is `13` / `XL` or larger
+- discovery and implementation are mixed together
+- more than one owner/system/approval path is hidden in one item
+- testing, migration, rollout, or platform work is non-trivial
+- the team cannot explain the estimate in one short paragraph
 
-function adjustEstimate(estimate: TaskEstimate): number {
-  let buffer = 1.0;
+Recommend a discovery spike when:
+- key unknowns dominate the estimate
+- external dependencies or vendor behavior are unclear
+- game or product direction is still being validated
+- the estimate would otherwise be a guess dressed up as planning
 
-  // risk buffer
-  if (estimate.risk === 'medium') buffer *= 1.3;
-  if (estimate.risk === 'high') buffer *= 1.5;
-
-  // uncertainty buffer
-  buffer *= (1 + estimate.uncertainty);
-
-  return Math.ceil(estimate.baseEstimate * buffer);
-}
-
-// Example
-const task = {
-  baseEstimate: 5,
-  risk: 'medium',
-  uncertainty: 0.2  // 20% uncertainty
-};
-
-const final = adjustEstimate(task);  // 5 * 1.3 * 1.2 = 7.8 → 8 points
-```
+### Step 8: Preserve boundaries with adjacent PM skills
+- Hand off to `task-planning` if the next need is decomposition into execution-ready slices.
+- Hand off to `standup-meeting` if the next need is daily coordination against the chosen work.
+- Hand off to `sprint-retrospective` if the next need is learning whether the estimation process itself worked.
+- Do not convert this skill into a roadmap commitment or executive status update machine.
 
 ## Output format
 
-### Estimation document template
-
 ```markdown
-## Task: [Task Name]
+## Estimate Packet: [Item Name]
 
-### Description
-[work description]
+### Estimation mode
+- Mode: [coarse-triage | sprint-candidate | forecast-support | discovery-spike | milestone-cross-functional]
+- Primary unit: [story-points | t-shirt | range | spike]
 
-### Acceptance Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
+### Recommended estimate
+- Estimate: [value]
+- Confidence: [high | medium | low]
+- Comparable anchors: [reference items or "none available"]
 
-### Estimation
-- **Story Points**: 5
-- **T-Shirt Size**: M
-- **Estimated Time**: 1-2 days
+### Why this size
+- [2-4 bullets on scope, complexity, unknowns, validation burden]
 
-### Breakdown
-- Frontend UI: 2 points
-- API Endpoint: 2 points
-- Testing: 1 point
+### Uncertainty drivers
+- [bullets]
 
-### Risks
-- Uncertain API response time (medium risk)
-- External library dependency (low risk)
+### Dependencies / approvals
+- [bullets or "none identified"]
 
-### Dependencies
-- User authentication must be completed first
+### Split or spike recommendation
+- [split / keep as-is / estimate the spike first]
+- Reason: [short explanation]
 
-### Notes
-- Need to discuss design with UX team
+### Forecast note
+- [how this estimate should be used]
+- [what it should not be used for]
+
+### Adjacent handoff
+- Next skill/process: [task-planning | standup-meeting | sprint-retrospective | none yet]
 ```
-
-## Constraints
-
-### Required rules (MUST)
-
-1. **Relative estimation**: Relative complexity instead of absolute time
-2. **Team consensus**: Agreement from the whole team, not individuals
-3. **Use historical data**: Plan based on velocity
-
-### Prohibited (MUST NOT)
-
-1. **Pressuring individuals**: Estimates are not promises
-2. **Overly granular estimation**: Split anything 13+ points
-3. **Turning estimates into deadlines**: estimate ≠ commitment
-
-## Best practices
-
-1. **Break Down**: Split big work into smaller pieces
-2. **Reference Stories**: Reference similar past work
-3. **Include buffer**: Prepare for the unexpected
-
-## References
-
-- [Scrum Guide](https://scrumguides.org/)
-- [Planning Poker](https://www.planningpoker.com/)
-- [Story Points](https://www.atlassian.com/agile/project-management/estimation)
-
-## Metadata
-
-### Version
-- **Current version**: 1.0.0
-- **Last updated**: 2025-01-01
-- **Compatible platforms**: Claude, ChatGPT, Gemini
-
-### Tags
-`#estimation` `#agile` `#story-points` `#planning-poker` `#sprint-planning` `#project-management`
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Sprint-candidate backend feature
+Input: "Estimate adding Slack OAuth login plus account-linking for the next sprint."
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+Output shape:
+- Mode: `sprint-candidate`
+- Unit: story points
+- Estimate: `5`
+- Confidence: medium
+- Why: touches auth flow, account-linking logic, error handling, and test coverage, but the OAuth provider and user model already exist
+- Forecast note: useful for sprint capacity comparison; not a promise of a fixed ship day
+- Handoff: `task-planning` to split implementation, migration, and verification slices
+
+### Example 2: Roadmap item with too much uncertainty
+Input: "How big is a full creator-analytics dashboard for Q3?"
+
+Output shape:
+- Mode: `coarse-triage`
+- Unit: t-shirt sizing
+- Estimate: `XL`
+- Confidence: low
+- Why: multiple unknown data sources, reporting needs, role permissions, and unclear stakeholder definitions
+- Split or spike: estimate a discovery spike first
+- Forecast note: not ready for a deadline conversation until discovery narrows the scope
+
+### Example 3: Game milestone task
+Input: "Estimate adding a tutorial checkpoint system before the demo build."
+
+Output shape:
+- Mode: `milestone-cross-functional`
+- Unit: story points or range
+- Estimate: `8`
+- Confidence: medium-low
+- Why: gameplay scripting, save/checkpoint behavior, QA regression, UX messaging, and demo-flow validation all matter
+- Forecast note: include test/polish burden, not only code implementation time
+
+## Best practices
+1. Estimate the decision horizon, not the entire dream scope.
+2. Keep relative sizing separate from hard deadlines.
+3. Use reference anchors whenever possible.
+4. Split discovery from implementation when uncertainty is doing most of the work.
+5. Surface non-code burden: QA, approvals, rollout, migration, content, localization, release tasks.
+6. Prefer ranges and confidence notes over fake precision.
+7. When the item is too large, say so and recommend a split instead of inflating the number.
+
+## References
+- [Scrum Guide](https://scrumguides.org/)
+- [Atlassian: Agile estimation and story points](https://www.atlassian.com/agile/project-management/estimation)
+- [Joel on Software: Evidence-Based Scheduling](https://www.joelonsoftware.com/2007/10/26/evidence-based-scheduling/)
+- [Rami Ismail: Prototypes and Vertical Slice](https://ltpf.ramiismail.com/prototypes-and-vertical-slice/)
