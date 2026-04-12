@@ -67,7 +67,7 @@ fi
 
 ---
 
-## Step 1 — Install All 83 Skills (Batch)
+## Step 1 — Install All 85 Skills (Batch)
 
 Install all skills to the global location, then link shared skills to all detected agents.
 Re-running this step safely overwrites existing skills (symlinks are updated in place).
@@ -84,7 +84,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 83 skills to global store, link shared skills to all detected agents
+# Install ALL 85 skills to global store, link shared skills to all detected agents
 # Platform-specific skills (omc, ohmg, omx, ralphmode) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
@@ -329,11 +329,12 @@ If no → skip silently. Never re-ask.
 | Security scan | `strix --target ./app` |
 | Web scraping | `scrapling "URL"` |
 | Persistent wiki | `llm-wiki "/path/to/vault"` |
+| Repo knowledge graph | `graphify` |
 | Token output optimizer | `rtk gain` |
 
 ---
 
-## Skill Inventory (83 skills)
+## Skill Inventory (85 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
@@ -352,7 +353,7 @@ If no → skip silently. Never re-ask.
 | **Search & Analysis** | autoresearch, codebase-search, data-analysis, langsmith, log-analysis, pattern-detection | All (`*`) |
 | **Creative Media** | remotion-video-production, video-production | All (`*`) |
 | **Marketing** | marketing-automation, marketing-skills-collection | All (`*`) |
-| **Utilities** | clawteam, fabric, file-organization, git-submodule, git-workflow, google-workspace, llm-wiki, npm-git-install, obsidian-cli, obsidian-plugin, opencontext, workflow-automation | All (`*`) |
+| **Utilities** | clawteam, fabric, file-organization, git-submodule, git-workflow, google-workspace, graphify, llm-wiki, npm-git-install, obsidian-cli, obsidian-plugin, opencontext, workflow-automation | All (`*`) |
 
 ---
 
@@ -376,6 +377,7 @@ If no → skip silently. Never re-ask.
 | `obsidian-cli` | `obsidian cli`, `obsidian terminal`, `obsidian plugin reload` | Official Obsidian CLI — TUI, vault/file targeting, note automation, plugin reload |
 | `obsidian-plugin` | `obsidian plugin`, `create obsidian plugin` | Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility |
 | `llm-wiki` | `llm-wiki`, `obsidian wiki`, `research vault` | Persistent markdown wiki maintenance — bootstrap raw/wiki layers, ingest sources, file queries, run lint passes |
+| `graphify` | `graphify`, `knowledge graph`, `codebase graph`, `GRAPH_REPORT` | Build persistent repo/corpus knowledge graphs and query structure via `graph.json` and report artifacts |
 | `clawteam` | `clawteam`, `agent swarm`, `spawn agents` | Framework-agnostic multi-agent CLI — file-based state, task queues, inboxes, kanban |
 | `autoresearch` | `autoresearch`, `autonomous ml experiments`, `val_bpb` | Karpathy autonomous ML — overnight GPU experiments, ratchets improvements via git |
 | `skill-autoresearch` | `skill-autoresearch`, `optimize this skill`, `eval my skill` | Eval-driven SKILL.md optimization — benchmark, mutate, keep only score-improving changes |

@@ -1,0 +1,23 @@
+{
+  "skill_name": "graphify",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "이 레포 구조를 빨리 이해하고 싶은데 graphify로 분석해줘",
+      "expected_output": "The skill installs or verifies graphify, runs it on the repo, and reports the generated outputs and key findings.",
+      "assertions": [
+        "Response uses the graphify workflow rather than generic grep-only inspection",
+        "Response mentions GRAPH_REPORT.md or graph.json as outputs"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "이 폴더를 knowledge graph로 만들고 auth flow를 질의해줘",
+      "expected_output": "The skill builds or updates a graph, then uses graphify query/path commands for follow-up graph-backed answers.",
+      "assertions": [
+        "Response includes a graph build step",
+        "Response includes graphify query, path, or explain usage"
+      ]
+    }
+  ]
+}
