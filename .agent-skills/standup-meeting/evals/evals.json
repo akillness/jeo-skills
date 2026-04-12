@@ -1,0 +1,35 @@
+{
+  "skill_name": "standup-meeting",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run tomorrow's standup as a walk-the-board sync for a sprint team with two blockers and one item waiting for review.",
+      "expected_output": "Returns a Daily Sync Brief that selects board-walk mode, keeps blockers in triage form, and routes deeper work out of the meeting.",
+      "assertions": [
+        "Output names a specific mode such as board-walk or blocker-first",
+        "Output includes a section or content for blocker/risk routing",
+        "Output distinguishes core sync content from follow-up work"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We're remote across California, Europe, and Korea. Should our daily standup be async, and what format should we use?",
+      "expected_output": "Returns a Daily Sync Brief that recommends async-check-in or hybrid-async-plus-live and explains the choice for a distributed team.",
+      "assertions": [
+        "Output recommends async-check-in or hybrid-async-plus-live",
+        "Output includes a short reusable template for updates",
+        "Output mentions an escalation path for blockers or urgent coordination"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our daily scrum feels like reporting to the manager. Fix it without changing our whole process.",
+      "expected_output": "Returns a Daily Sync Brief that calls out status-report theater, recommends a lighter coordination mode, and preserves boundaries to planning and retrospectives.",
+      "assertions": [
+        "Output identifies manager-facing status theater as an anti-pattern",
+        "Output includes anti-patterns to avoid",
+        "Output includes adjacent handoffs to task-planning, task-estimation, or sprint-retrospective"
+      ]
+    }
+  ]
+}

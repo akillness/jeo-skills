@@ -12,15 +12,18 @@ sources: [graphify-out/GRAPH_REPORT.md, .survey/task-planning-modernization/cont
 The repository's project-management cluster is currently anchored by `task-planning`, `task-estimation`, `standup-meeting`, and `sprint-retrospective`.
 
 ## Durable finding
-- These skills cover adjacent phases of the same operating loop, but only `task-planning` was still behaving like a generic legacy skill.
-- The cluster does **not** need another overlapping PM skill right now.
-- The better move is boundary clarification and support upgrades: sharper trigger language, explicit routing to adjacent skills, and eval/reference coverage.
+- These skills cover adjacent phases of the same operating loop, and the most recent ratchets strengthened that separation instead of adding another overlapping PM skill.
+- `task-planning` now owns decomposition and readiness work.
+- `standup-meeting` now owns daily coordination mode selection: board-walk, blocker-first, async, and hybrid daily syncs.
+- The cluster still benefits more from boundary clarification and support upgrades than from catalog expansion.
 
 ## Implications
 - `task-planning` should handle backlog grooming, sprint-prep slicing, and roadmap-to-delivery decomposition.
 - `task-estimation` should remain sizing-only.
-- `standup-meeting` and `sprint-retrospective` should remain cadence/process skills, not decomposition skills.
+- `standup-meeting` should handle daily coordination and blocker routing, not planning or retrospective analysis.
+- `sprint-retrospective` should remain the reflection / process-change lane.
 
 ## Related pages
 - [[skill-support-coverage]]
 - [[task-planning-modernization-2026-04-12]]
+- [[standup-meeting-modernization-2026-04-12]]
