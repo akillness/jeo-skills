@@ -1,0 +1,40 @@
+{
+  "skill_name": "game-ci-cd-pipeline",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our Unity build passes locally but fails in GitHub Actions after package updates. We keep deleting caches and rerunning until it works. Give me a CI/CD hardening brief.",
+      "expected_output": "A Game CI/CD Brief that classifies the issue as dependency/cache policy and reproducibility drift, recommends a pipeline shape, and suggests one concrete next artifact such as a cache-key policy.",
+      "assertions": [
+        "Output contains the heading 'Game CI/CD Brief'",
+        "Output identifies Unity as the engine",
+        "Output includes a 'Primary blocker' section with dependency-cache-policy or reproducibility-drift",
+        "Output includes 'Stage-by-stage checks'",
+        "Output includes a 'Recommended next artifact' section"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We have an Unreal GitHub Action but packaging takes forever and failures show up as one giant log blob. Tell me what to change first.",
+      "expected_output": "A concise pipeline brief that treats stage boundaries and feedback confidence as the main issue, with Unreal-specific checks around UBT/UHT, cook/package, and AutomationTool visibility.",
+      "assertions": [
+        "Output identifies Unreal as the engine",
+        "Output classifies the issue as stage-boundary-blur or feedback-speed-confidence",
+        "Output separates build/compile from cook/package concerns",
+        "Output includes Unreal-specific checks",
+        "Output does not collapse the answer into generic web-app CI advice"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We're still making Windows demo builds by hand for our small studio. Give me a sane pipeline setup plan without overengineering it.",
+      "expected_output": "A pipeline-setup oriented brief that focuses on reproducibility, artifact hygiene, and one next artifact such as a build matrix plan or release artifact checklist.",
+      "assertions": [
+        "Output includes a 'Recommended pipeline shape' section",
+        "Output includes an artifact or release hygiene recommendation",
+        "Output recommends one concrete next artifact",
+        "Output includes a 'What not to do yet' section"
+      ]
+    }
+  ]
+}

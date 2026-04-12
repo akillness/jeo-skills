@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | game-ci-cd-pipeline/SKILL.md | A dedicated game-engine CI/CD skill will close a real gap without duplicating existing triage skills | Created new skill plus references/evals; added a routing note from game-build-log-triage | `validate_skill.sh` passed for both changed skills; eval JSON parses; duplicate review found overlap with `deployment-automation` but no direct duplicate because this skill is game-engine specific and upstream of log triage | Keep | Transferable improvement: complements `game-build-log-triage` instead of cloning it |
