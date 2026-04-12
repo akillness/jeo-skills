@@ -1,23 +1,40 @@
 ---
 name: marketing-skills-collection
-description: Generate marketing deliverables across CRO, copywriting, SEO, analytics, and growth using 23 specialized sub-skills with clear objectives, constraints, and validation.
+description: >
+  Route broad product and growth marketing requests through a reusable 23-sub-skill
+  catalog covering CRO, copywriting, SEO, analytics, lifecycle messaging, pricing,
+  launches, and experiments. Use when the user needs a general marketing brief,
+  deliverable, or KPI-to-channel mapping, especially in environments that still
+  reference the legacy `marketing-skills-collection` name. Prefer `marketing-automation`
+  for canonical general use, and prefer more specific niche skills for domain-heavy
+  workflows such as Steam store-page / Next Fest launch ops.
 allowed-tools: Write Read WebSearch WebFetch Task
 metadata:
   tags: marketing, cro, copywriting, seo, analytics, growth, automation
   platforms: Claude, ChatGPT, Gemini, Codex
+  version: "1.1"
 ---
 
-> **Note:** This skill is a platform-specific variant of `marketing-automation`. Prefer `marketing-automation` for general use; use `marketing-skills-collection` when targeting platform-specific configurations.
+> **Note:** This skill is a platform-specific / legacy-compatible variant of `marketing-automation`. Prefer `marketing-automation` for canonical general use; use `marketing-skills-collection` when the environment, prompt pack, or installed catalog still targets this legacy name.
 
 # Marketing Skills Collection
 
-A collection of 23 sub-skills for marketing deliverables. Generates repeatable, high-quality outputs across CRO, copywriting, SEO, analytics, and growth domains.
+Use this skill to turn a broad marketing request into one clear sub-skill choice, one KPI, and one implementation-ready deliverable.
+
+The goal is not to spray generic growth advice. The goal is to route the request to the right marketing lane, preserve measurement discipline, and avoid swallowing niche workflows that now have better dedicated skills.
 
 ## When to use this skill
 
-- **Marketing deliverables needed**: CRO, copy, SEO, analytics, and growth outputs
-- **Repeatable, high-quality outputs**: Asset generation aligned to a single KPI
-- **Business goal → skill mapping**: Convert objectives into specific marketing sub-skills
+- Broad SaaS, product, web, funnel, lifecycle, SEO, copy, launch, pricing, or analytics marketing requests
+- Legacy environments or prompt packs that explicitly reference `marketing-skills-collection`
+- Requests that need KPI-to-channel mapping before a more specific marketing deliverable is produced
+- Situations where the user wants a reusable marketing brief, not domain-specific operational playbooks
+
+## When not to use this skill
+
+- Steam page, wishlist, capsule, tag, trailer, demo, or Next Fest readiness requests → prefer `steam-store-launch-ops`
+- Narrow platform-specific workflows that already have a dedicated skill
+- Requests that are really product planning, UX research, or technical implementation rather than marketing execution
 
 ---
 
@@ -89,7 +106,9 @@ marketing_brief:
 
 ### Step 2: Select the Sub-Skill
 
-Select the sub-skill that fits the situation:
+Select the sub-skill that fits the situation.
+
+Before routing, check whether the request is actually a better fit for a dedicated niche skill. If the user is asking about Steam pages, wishlists, capsules, trailer hooks, tags, demos, or Next Fest readiness, defer to `steam-store-launch-ops` instead of forcing the work through this general catalog.
 
 ```bash
 # For CRO needs
@@ -262,6 +281,7 @@ Include: H1, meta description, comparison table, CTA.
 2. **Audience specificity**: Use segment-specific needs and terminology
 3. **Instrument measurement**: Set up tracking before launch
 4. **Iterate with data**: Treat outputs as hypotheses
+5. **Defer niche workflows early**: If the request is really Steam/game launch ops or another domain-heavy workflow, route to the dedicated skill instead of stretching this one
 
 ---
 
@@ -336,14 +356,21 @@ Include: H1, meta description, comparison table, CTA.
 ## Metadata
 
 ### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2026-01-21
+- **Current Version**: 1.1.0
+- **Last Updated**: 2026-04-12
 - **Compatible Platforms**: Claude, ChatGPT, Gemini, Codex
 
 ### Related Skills
-- [presentation-builder](../../documentation/presentation-builder/SKILL.md)
-- [frontend-design](../../frontend/design-system/SKILL.md)
-- [image-generation](../../creative-media/image-generation/SKILL.md)
+- [marketing-automation](../marketing-automation/SKILL.md)
+- [steam-store-launch-ops](../steam-store-launch-ops/SKILL.md)
+- [presentation-builder](../presentation-builder/SKILL.md)
 
 ### Tags
 `#marketing` `#cro` `#copywriting` `#seo` `#analytics` `#growth` `#automation`
+
+---
+
+## References
+- [Agent Skills: Optimizing skill descriptions](https://agentskills.io/skill-creation/optimizing-descriptions)
+- [Agent Skills Specification](https://agentskills.io/specification)
+- [Steam Page Optimization Guide [2026] | presskit.gg](https://presskit.gg/field-guides/steam-page-optimization-guide)

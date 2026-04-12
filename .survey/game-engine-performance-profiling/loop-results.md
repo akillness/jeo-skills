@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/game-performance-profiler/SKILL.md` | A cross-engine profiling triage skill will fill a real gap better than a generic optimization encyclopedia or a shallow engine-specific checklist. | Created new `game-performance-profiler` skill plus one reference doc and three eval cases. | `validate_skill.sh` passed with 0 errors / 0 warnings; SKILL.md is 227 lines; eval JSON parses; supporting files exist. | Keep | Transferable across Unity + Unreal and complements existing `game-build-log-triage` + `steam-store-launch-ops` without duplication. |

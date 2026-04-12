@@ -1,0 +1,38 @@
+{
+  "skill_name": "steam-store-launch-ops",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit my Steam page before Next Fest and tell me what to fix first. We have a trailer, screenshots, and a demo, but I'm worried the build is still rough.",
+      "expected_output": "A Steam Launch Ops Brief that classifies the request as demo/fest readiness, identifies demo quality or timing as a likely blocker, and returns concrete priority fixes rather than generic marketing advice.",
+      "assertions": [
+        "Output contains the heading 'Steam Launch Ops Brief'",
+        "Output includes a 'Primary blocker' section",
+        "Output includes 'Priority fixes' with numbered items",
+        "Output references demo or fest readiness explicitly"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our Steam coming-soon page has low wishlists even though some people click through from social posts. Review our capsule, screenshots, short description, and tags.",
+      "expected_output": "A wishlist-funnel or store-page audit that distinguishes page conversion from traffic acquisition and recommends a concrete next artifact.",
+      "assertions": [
+        "Output distinguishes a blocker category such as positioning-message, visual-asset-conversion, or tag-discovery-fit",
+        "Output includes an 'Asset / page checks' section",
+        "Output includes a 'Recommended next artifact' section",
+        "Output does not rely on nonexistent analytics numbers"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Give me a launch readiness checklist for our indie game's Steam release. We already have a page, trailer, capsule art, and a small creator list.",
+      "expected_output": "A launch-checklist oriented brief that covers launch-ops hygiene, creator/press readiness, and timing risks in a concise format.",
+      "assertions": [
+        "Output includes 'Launch / fest ops checks'",
+        "Output includes creator, press, or outreach readiness",
+        "Output includes timing risks or checklist gaps",
+        "Output includes a 'What not to do yet' section"
+      ]
+    }
+  ]
+}
