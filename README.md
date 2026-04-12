@@ -287,7 +287,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `sprint-retrospective` | Sprint retrospective facilitation | All |
+| `sprint-retrospective` | Sprint retros, milestone postmortems, async/hybrid facilitation, and action follow-through | All |
 | `standup-meeting` | Daily standups, async check-ins, walk-the-board syncs, and blocker triage | All |
 | `task-estimation` | Story points, t-shirt sizing, planning poker | All |
 | `task-planning` | Execution-ready backlog grooming, task slicing, and sprint-prep planning | All |

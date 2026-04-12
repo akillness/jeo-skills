@@ -3231,22 +3231,32 @@
     },
     {
       "name": "sprint-retrospective",
-      "description": "Facilitate effective sprint retrospectives for continuous team improvement. Use when conducting team retrospectives, identifying improvements, or fostering team collaboration. Handles retrospective formats, action items, and facilitation techniques.",
+      "description": "Facilitate sprint retrospectives, milestone postmortems, or iteration reviews that turn completed work into a few owned process improvements instead of another stale template exercise. Use when the user needs a retro format, async or hybrid retro flow, retrospective facilitation script, action-item follow-through, or help reviewing what the team should change after a sprint, release, milestone, or rough delivery cycle.",
       "category": "project-management",
       "path": "project-management/sprint-retrospective/SKILL.md",
       "tags": [
         "retrospective",
+        "sprint-retro",
+        "postmortem",
+        "async-retro",
+        "hybrid-retro",
         "agile",
-        "scrum",
-        "team-improvement",
-        "facilitation"
+        "project-management",
+        "game-development"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
         "Gemini"
       ],
-      "allowed_tools": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
       "commands": []
     },
     {

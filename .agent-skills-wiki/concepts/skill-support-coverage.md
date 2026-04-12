@@ -14,8 +14,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
 - 89 total skills
-- 31 skills with `references/`
-- 30 skills with `evals/`
+- 32 skills with `references/`
+- 31 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -24,6 +24,7 @@ Recent ratchets:
 - The marketing canonical/alias pass added the first support bundle for the broad marketing lane while reducing duplicate discovery wording at the same time.
 - The `survey` hardening pass added both `references/` and `evals/`, which matters because it upgrades the evidence-quality gate that every later maintenance run depends on.
 - The `standup-meeting` modernization pass added both `references/` and `evals/`, which matters because the PM cluster now has stronger support for a high-frequency daily coordination ritual instead of only planning-oriented upgrades.
+- The `sprint-retrospective` modernization pass added both `references/` and `evals/`, which matters because the PM cluster now has stronger support for reflection, async/hybrid facilitation, and action follow-through instead of relying on a template-only legacy skill.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
