@@ -1,6 +1,6 @@
 ---
 name: survey
-description: "Cross-platform landscape scan before planning or implementation. Researches context, workarounds, existing solutions, and structural gaps, then writes reusable survey artifacts for OMC, OMX, OHMG, and general agent workflows."
+description: "Research context, workarounds, existing solutions, and structural gaps before planning or implementation, then write reusable `.survey/{slug}/` artifacts for OMC, OMX, OHMG, and general agent workflows. Use when the user asks to survey a space, scan the landscape, research options, or compare platform/tooling patterns before deciding what to build."
 allowed-tools: Read Write Bash Grep Glob WebFetch
 metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
@@ -116,11 +116,30 @@ If a platform-specific specialist does not exist, fall back to a general-purpose
 - Run all 4 research lanes in parallel whenever possible.
 - Keep claims source-backed. Include links for quotes, rankings, and non-obvious claims.
 - Deduplicate tools that appear under multiple names or product tiers.
+- If standard web search/extract tools are unavailable or failing (including auth failures), retry with direct primary-page retrieval before giving up. Use `python3` with `urllib.request` and a browser-like User-Agent to recover the HTML `<title>`, meta description, canonical/redirect target, and exact keyword presence. Record this as `direct page retrieval`, not indexed-snippet evidence.
+- If direct retrieval fails because of SSL/certificate issues, anti-bot noise, or JS-only rendering, do **not** keep grinding on the same fetch path. Escalate to browser-rendered retrieval or indexed-snippet recovery and label the downgrade explicitly.
+- When specific blog/resource URLs 404 or drift, prefer stable vendor/use-case/product pages over stale guessed links. For workflow-intake evidence, a durable official page is often better than a missing blog post.
+- Use RSS/Atom or other structured publication feeds as a machine-readable fallback when a site exposes them; they are especially useful for recovering canonical links, timestamps, and summaries.
+- When only search-result snippets are recoverable, label them as `indexed snippet` or `browser-rendered indexed snippet` and include a confidence note (`high`, `medium`, `low`) instead of treating them as equivalent to the primary page.
+- Distinguish evidence quality in the artifact: `direct page retrieval`, `indexed snippet`, `browser-rendered indexed snippet`, or `unverified prior knowledge`.
 - Do not recommend build/kill/adopt by default. Present the landscape and gaps.
+
+## Evidence Recovery Ladder
+
+Use this recovery order when normal search/extract paths are weak or broken:
+
+1. **Direct primary-page retrieval** — recover title, description, redirects/canonical target, and exact keyword presence.
+2. **Stable official substitution** — if the exact URL drifts, prefer durable vendor/use-case/product pages over stale guessed links.
+3. **Structured feed recovery** — check RSS/Atom or other structured publication feeds when the site exposes them.
+4. **Browser-rendered retrieval** — escalate to a real rendered page when direct fetches are incomplete or JS-heavy.
+5. **Indexed snippet recovery** — use search-result snippets only as explicitly labeled lower-confidence evidence.
+6. **Thin-evidence stop** — if recovery still fails, record the thin evidence and continue without bluffing certainty.
+
+Keep the concise ladder in the main skill and move detailed examples/provenance patterns into `references/evidence-recovery-ladder.md`.
 
 ---
 
-## Workflow
+## Instructions
 
 ### Step 0: Triage
 
@@ -318,6 +337,26 @@ Return a short summary:
 
 Do not move into planning or implementation unless the user asks.
 
+## Examples
+
+### Example 1: Search API failure
+Input: `survey browser automation tools for support teams, but web search is returning 401 errors`
+
+Output: The survey still runs the 4 lanes, falls back to direct primary-page retrieval, labels recovered evidence as `direct page retrieval`, and saves `.survey/{slug}/triage.md`, `context.md`, and `solutions.md`.
+
+### Example 2: Snippet-only recovery
+Input: `survey roadmap communication workflows, but the useful evidence is only visible as search-result snippets in the browser`
+
+Output: The survey records `browser-rendered indexed snippet` evidence with a confidence note, keeps the claim scope narrow, and avoids pretending the original page was fully verified.
+
+## Best practices
+
+1. Preserve the 4-lane structure even when one lane has thinner evidence than the others.
+2. Escalate retrieval cheaply first: direct fetch before full browser work.
+3. Label evidence type and confidence whenever the source is not directly recoverable.
+4. Prefer durable official pages over dead links, but do not hide that a substitution happened.
+5. Update the artifact with thin-evidence notes instead of silently promoting guesses into facts.
+
 ---
 
 ## Quick Reference
@@ -342,4 +381,11 @@ Do not move into planning or implementation unless the user asks.
 - [ ] `solutions.md` saved
 - [ ] `platform-map.md` saved for agent/platform topics
 - [ ] Final user summary is factual, short, and recommendation-free
+
+## References
+
+- `references/evidence-recovery-ladder.md` — detailed fallback ladder, provenance labels, and recovery patterns for broken search/extract runs
+- Python `urllib.request` docs — https://docs.python.org/3/library/urllib.request.html
+- Google Search Central snippets docs — https://developers.google.com/search/docs/appearance/snippet
+- Atom Syndication Format (RFC 4287) — https://datatracker.ietf.org/doc/html/rfc4287
 

@@ -4,45 +4,45 @@
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, support folders, cross-skill mentions, and documentation indexing
 - Total skills: 89
-- Skills with references/: 29
-- Skills with evals/: 28
-- Graph nodes: 92
-- Graph edges: 355
+- Skills with references/: 30
+- Skills with evals/: 29
+- Graph nodes: 94
+- Graph edges: 439
 
 ## Strongest structural findings
-1. The marketing cluster now includes an explicit canonical-vs-alias pair: `marketing-automation` is the general router and `marketing-skills-collection` is the compatibility alias. Discovery wording now matters here just as much as in the React and design-system pairs.
-2. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so short wording changes there materially affect how the catalog is navigated.
-3. Support coverage improved again, but many older generic skills still lack `references/` and `evals/`; upgrading legacy skills remains higher leverage than adding overlap.
-4. The game-development cluster still benefits from the clearer producer-vs-specialist split introduced by the `bmad-gds` modernization pass.
+1. `survey` is now a stronger cross-cluster anchor: it gained both `references/` and `evals/`, so the repo has reusable guidance for evidence recovery instead of burying that behavior only inside past survey artifacts.
+2. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so wording changes there still materially change how the catalog is navigated.
+3. Support coverage improved again, but many older generic skills still lack `references/` and `evals/`; upgrading legacy anchors remains higher leverage than adding overlap.
+4. Canonical-vs-alias pairs remain the clearest consolidation pattern in the repo, while `survey` now acts as the quality gate before those consolidation decisions.
 
 ## Community map
+- web-backend
+- web-frontend
+- game-dev
 - docs
 - project-management
-- game-dev
 - marketing
-- web-frontend
-- web-backend
 
 ## Highest-degree nodes
-- README.ko.md: degree 87
 - README.md: degree 87
+- README.ko.md: degree 87
 - setup-all-skills-prompt.md: degree 83
-- references/: degree 29
-- evals/: degree 28
-- bmad-gds: degree 12
-- game-demo-feedback-triage: degree 12
-- task-planning: degree 10
-- omx: degree 9
-- steam-store-launch-ops: degree 9
+- references/: degree 30
+- evals/: degree 29
+- jeo: degree 17
+- bmad-gds: degree 14
+- game-demo-feedback-triage: degree 14
+- bmad: degree 12
+- debugging: degree 12
 
 ## Duplicate / consolidation notes
 - `react-best-practices` and `vercel-react-best-practices` form a canonical-plus-alias pair.
 - `design-system` and `frontend-design-system` form a canonical-plus-alias pair.
 - `marketing-automation` and `marketing-skills-collection` form a canonical-plus-alias pair.
-- `bmad-gds` remains a coordinating game-production skill rather than a duplicate of the sharper game specialists.
-- `task-planning` stays adjacent to the game and marketing clusters instead of collapsing into them.
+- `survey` is now a stronger research anchor because it has both `references/` and `evals/` support.
+- `bmad-gds` remains a coordinating game-production skill rather than a duplicate of sharper game specialists.
 
 ## Recommended maintenance direction
 - Keep modernizing cluster anchors so they route into sharper specialist skills instead of growing into vague mega-skills.
 - Continue adding `references/` and `evals/` to older generic skills before creating more overlapping entries.
-- Re-check README/setup/manifest wording whenever a skill changes from generic label to clearer routing or canonical role.
+- Re-check README/setup/manifest wording whenever a skill changes in trigger scope, canonical role, or evidence-handling behavior.

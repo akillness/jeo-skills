@@ -367,7 +367,7 @@ If no → skip silently. Never re-ask.
 | `ralphmode` | `ralphmode` | Automation permission profiles — repo boundary, sandbox-first, secret denylist |
 | `plannotator` | `plan` | Visual browser plan/diff review — approve or send feedback |
 | `harness` | `harness`, `build a harness`, `agent team architect` | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/`, validate harness |
-| `survey` | `survey` | Cross-platform landscape scan before planning or implementation |
+| `survey` | `survey` | Cross-platform landscape scan before planning or implementation, with an explicit evidence-recovery ladder for broken search/extract runs |
 | `agentation` | `annotate`, `UI검토`, `agentui` | UI annotation → agent code modification. MCP: `npx add-mcp "npx -y agentation-mcp server"` |
 | `vibe-kanban` | `kanbanview` | Visual Kanban board with git worktree isolation |
 | `bmad` | `bmad` | Structured BMAD workflow — Analysis → Planning → Solutioning → Implementation |
