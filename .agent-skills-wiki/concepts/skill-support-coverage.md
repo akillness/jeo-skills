@@ -13,9 +13,9 @@ sources: [graphify-out/GRAPH_REPORT.md]
 Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
-- 85 total skills
-- 30 skills with `references/`
-- 29 skills with `evals/`
+- 89 total skills
+- 37 skills with `references/`
+- 36 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -28,6 +28,7 @@ Recent ratchets:
 - The `git-workflow` modernization pass added both `references/` and `evals/`, which matters because a high-frequency CLI/developer-workflow anchor now has durable guidance for local collaboration boundaries, push safety, and recovery instead of only a command dump.
 - The environment canonicalization pass added both `references/` and `evals/` to the infrastructure setup pair, which matters because a previously weak duplicate lane now has a clear broader anchor and a narrower config alias.
 - The `task-estimation` modernization pass added both `references/` and `evals/`, which matters because the PM cluster now has a stronger sizing and forecast-language lane instead of routing into a legacy generic estimation skill.
+- The `api-design` modernization pass added both `references/` and `evals/`, which matters because the backend cluster now has a sharper contract-first anchor instead of a broad legacy skill that overlapped with `api-documentation`.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.

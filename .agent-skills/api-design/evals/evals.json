@@ -1,0 +1,38 @@
+{
+  "skill_name": "api-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design a partner-facing REST API for shipment tracking. Partners need stable polling, filtering by updated timestamp, machine-readable errors, and a safe versioning strategy before we implement anything.",
+      "expected_output": "A contract-first REST design packet with operations, filtering/pagination, auth/error/versioning rules, and a handoff to documentation/testing rather than implementation code.",
+      "assertions": [
+        "Output chooses or confirms REST and explains why",
+        "Output defines operations or endpoints with input/output summaries",
+        "Output includes auth, error, and versioning or compatibility rules",
+        "Output includes filtering, pagination, or polling semantics when relevant",
+        "Output hands off to adjacent skills such as api-documentation or backend-testing"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We are redesigning our internal analytics API because the dashboard keeps over-fetching in REST. Should this be GraphQL, and what should the initial contract look like?",
+      "expected_output": "A GraphQL-oriented design packet or a justified style decision that focuses on schema boundaries, query/mutation shape, field-level concerns, and compatibility/risk notes.",
+      "assertions": [
+        "Output evaluates REST vs GraphQL instead of assuming one blindly",
+        "Output defines types, queries, mutations, or equivalent contract structure",
+        "Output includes notes on pagination, authorization, or breaking-change risk",
+        "Output keeps the answer at contract-design level rather than implementation details"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Document our new auth API with Swagger UI and add code examples for frontend developers.",
+      "expected_output": "A boundary-aware response that routes the main request to api-documentation while preserving only the contract-design concerns that matter here.",
+      "assertions": [
+        "Output recognizes that the primary task belongs to api-documentation",
+        "Output does not present Swagger UI setup as the main job of api-design",
+        "Output preserves a contract-design boundary rather than trying to do everything"
+      ]
+    }
+  ]
+}

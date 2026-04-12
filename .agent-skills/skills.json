@@ -911,7 +911,7 @@
     },
     {
       "name": "api-design",
-      "description": "Design RESTful and GraphQL APIs following best practices. Use when creating new APIs, refactoring existing endpoints, or documenting API specifications. Handles OpenAPI, REST, GraphQL, versioning.",
+      "description": "Design or refactor API contracts for REST and GraphQL systems. Use when the user needs resource modeling, endpoint/schema shape, naming, versioning, pagination, filtering, auth/error semantics, backward-compatibility review, or an OpenAPI / GraphQL SDL contract before implementation. Not for publishing docs portals, writing tutorials, or general backend implementation.",
       "category": "backend",
       "path": "backend/api-design/SKILL.md",
       "tags": [

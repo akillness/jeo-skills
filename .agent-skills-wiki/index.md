@@ -1,11 +1,12 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-12 | Total pages: 16
+> Last updated: 2026-04-12 | Total pages: 19
 
 ## Entities
 
 ## Concepts
+- [[backend-api-cluster]] — Boundaries and maintenance direction for the backend API lane, with `api-design` as the contract-first anchor and `api-documentation` as the publishing handoff.
 - [[frontend-skill-canonicalization]] — Canonical-vs-alias guidance for overlapping frontend skills, now including both the React and design-system lanes.
 - [[game-development-cluster]] — Boundaries and maintenance direction for the game-production cluster, with `bmad-gds` as the coordinating layer.
 - [[infrastructure-environment-cluster]] — Canonical-vs-alias guidance for the environment/setup lane, with `system-environment-setup` as the broader anchor.
@@ -16,6 +17,7 @@
 ## Comparisons
 
 ## Queries
+- [[api-design-modernization-2026-04-12]] — Why the best bounded backend-cluster improvement was modernizing `api-design` into a contract-first anchor instead of adding a new overlapping API skill.
 - [[bmad-gds-modernization-2026-04-12]] — Why the best bounded game-cluster fix was modernizing `bmad-gds` into a coordinating producer/orchestrator skill.
 - [[design-system-canonicalization-2026-04-12]] — Why the best bounded fix for the UI-system pair was canonicalizing `design-system` and narrowing `frontend-design-system` into a compatibility alias.
 - [[environment-skill-canonicalization-2026-04-12]] — Why the best bounded infrastructure fix was canonicalizing `system-environment-setup` and narrowing `environment-setup` into an app-config compatibility skill.

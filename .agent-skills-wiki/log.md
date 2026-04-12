@@ -93,3 +93,11 @@
 - Accepted: rewrite `task-estimation` into a mode-selecting sizing and forecast-language skill, add `references/` + `evals/`, and update README / README.ko / `.agent-skills/skills.json`
 - Rejected: adding a separate forecasting wrapper; merging estimation into `task-planning`; keeping the legacy generic point-scale skill
 - Wiki files created/updated: `concepts/project-management-cluster.md`, `concepts/skill-support-coverage.md`, `queries/task-estimation-modernization-2026-04-12.md`, `index.md`
+
+## [2026-04-12] query | API design modernization
+- Area researched: backend contract-first API design, REST vs GraphQL choice, compatibility review, and the repo overlap between `api-design` and `api-documentation`
+- Survey files created under `.survey/api-design-modernization-20260412/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `api-design` as the contract-first backend anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep `api-documentation` as the downstream docs/examples/publishing handoff
+- Rejected: adding a new overlapping backend API skill; merging `api-design` into `api-documentation`; expanding `api-design` into auth implementation or test-planning scope
+- Wiki files created/updated: `concepts/backend-api-cluster.md`, `queries/api-design-modernization-2026-04-12.md`, `concepts/skill-support-coverage.md`, `index.md`
