@@ -141,3 +141,11 @@
 - Accepted: rewrite `code-review` as a workflow-aware diff / PR judgment skill, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the sharper role
 - Rejected: adding another PR-review wrapper; letting `code-review` absorb Git mechanics, debugging, testing-policy design, or pure UI-governance review
 - Wiki files created/updated: `queries/code-review-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-13] query | State management modernization
+- Area researched: React/frontend state-boundary decisions across local vs shared vs URL/form vs server state, plus Context/Zustand/Redux Toolkit/Jotai/TanStack Query choice patterns
+- Survey files created under `.survey/state-management-modernization-20260413/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `state-management` as a decision-first state-boundary skill, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the sharper frontend-architecture role
+- Rejected: adding another overlapping frontend state wrapper; preserving a library-tour format; recommending one universal store for API cache + UI + URL + form state
+- Wiki files created/updated: `queries/state-management-modernization-2026-04-13.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`

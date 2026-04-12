@@ -2928,34 +2928,34 @@
     },
     {
       "name": "state-management",
-      "description": "Implement state management patterns for frontend applications. Use when managing global state, handling complex data flows, or coordinating state across components. Handles React Context, Redux, Zustand, Recoil, and state management best practices.",
+      "description": "Design React state boundaries before picking libraries. Use when deciding whether data should stay local, be shared via Context, move into Zustand / Redux Toolkit / Jotai, live in URL or form state, or stay in a server-state cache such as TanStack Query.",
       "category": "frontend",
       "path": "frontend/state-management/SKILL.md",
       "tags": [
         "state-management",
-        "React",
-        "Redux",
-        "Context",
-        "Zustand",
-        "Recoil",
-        "global-state"
+        "react",
+        "context",
+        "redux-toolkit",
+        "zustand",
+        "jotai",
+        "tanstack-query",
+        "client-state",
+        "server-state"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
-      "allowed_tools": [],
-      "commands": [
-        {
-          "command": "npm install zustand",
-          "source": "frontend/state-management/SKILL.md"
-        },
-        {
-          "command": "npm install @reduxjs/toolkit react-redux",
-          "source": "frontend/state-management/SKILL.md"
-        }
-      ]
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": []
     },
     {
       "name": "ui-component-patterns",

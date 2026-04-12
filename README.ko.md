@@ -240,7 +240,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `react-grab` | 브라우저 UI 엘리먼트에서 React 컴포넌트명·파일경로·HTML을 클립보드로 복사해 AI 에이전트에 전달 | 전체 |
 | `vercel-react-best-practices` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `react-best-practices` 호환 별칭 | Claude · Gemini · Codex |
 | `responsive-design` | 모바일 우선 레이아웃과 브레이크포인트 | 전체 |
-| `state-management` | Redux, Context, Zustand 패턴 | 전체 |
+| `state-management` | Context·Zustand·Redux Toolkit·Jotai·TanStack Query를 나누는 React 상태 경계 결정 | 전체 |
 | `ui-component-patterns` | 재사용 가능한 컴포넌트 라이브러리 | 전체 |
 | `web-accessibility` | WCAG 2.1 준수 | 전체 |
 | `web-design-guidelines` | 웹 인터페이스 가이드라인 준수 검토 | 전체 |
