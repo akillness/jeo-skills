@@ -2959,7 +2959,7 @@
     },
     {
       "name": "ui-component-patterns",
-      "description": "Build reusable, maintainable UI components following modern design patterns. Use when creating component libraries, implementing design systems, or building scalable frontend architectures. Handles React patterns, composition, prop design, TypeScript, and component best practices.",
+      "description": "Design reusable UI primitives and component APIs before duplicating product UI. Use when the user needs help extracting shared components, defining variants, slots, controlled-vs-uncontrolled boundaries, composition patterns, Storybook coverage, or deciding what belongs in a reusable primitive versus app-local UI.",
       "category": "frontend",
       "path": "frontend/ui-component-patterns/SKILL.md",
       "tags": [

@@ -1,529 +1,274 @@
 ---
 name: ui-component-patterns
-description: Build reusable, maintainable UI components following modern design patterns. Use when creating component libraries, implementing design systems, or building scalable frontend architectures. Handles React patterns, composition, prop design, TypeScript, and component best practices.
+description: >
+  Design reusable UI primitives and component APIs before duplicating product UI.
+  Use when the user needs help extracting shared components, defining variants,
+  slots, controlled-vs-uncontrolled boundaries, composition patterns, Storybook
+  coverage, or deciding what belongs in a reusable primitive versus app-local UI.
+  Triggers on: component library, reusable component, button API, modal API,
+  slots, variants, compound component, headless component, controlled vs
+  uncontrolled, design-system primitive, and too many similar components.
+allowed-tools: Read Write Bash Grep Glob
+compatibility: >
+  Best for React, TypeScript, and modern frontend/fullstack repos that need
+  reusable component architecture. Not for broad visual-system direction,
+  accessibility remediation, viewport-only responsive layout work, or React
+  performance tuning.
+license: MIT
 metadata:
-  tags: UI-components, React, design-patterns, composition, TypeScript, reusable
-  platforms: Claude, ChatGPT, Gemini
+  tags: ui-components, react, typescript, composition, variants, slots, reusable, frontend
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0"
+  source: akillness/oh-my-skills
 ---
-
 
 # UI Component Patterns
 
+Use this skill when the main question is **"should this UI be a reusable primitive, what should its API look like, and where should the boundary between shared and product-local code live?"**
+
+The job is not to dump a random React pattern gallery.
+The job is to:
+1. decide whether a shared component is warranted,
+2. define the smallest useful primitive and its API,
+3. separate visual variants, behavior, and composition responsibilities,
+4. keep adjacent concerns routed to the right neighboring skill,
+5. leave behind a concise component brief or implementation plan.
+
+Read [references/component-api-checklist.md](references/component-api-checklist.md) before handling a new primitive or refactoring a duplicated component family.
+Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `ui-component-patterns`, `design-system`, `web-accessibility`, `responsive-design`, `state-management`, or `react-best-practices` should own the next step.
 
 ## When to use this skill
+- Extract duplicated UI into a shared primitive or component family
+- Design button, modal, dropdown, card, table, form-field, or navigation APIs with variants and slots
+- Decide between a headless primitive, a styled wrapper, or a product-local component
+- Choose controlled vs uncontrolled behavior for reusable components
+- Review whether a component API is overfitted, underpowered, or mixing too many responsibilities
+- Turn vague requests like “our components are messy” into a concrete architecture brief
+- Define Storybook/example coverage for states, variants, and edge cases
 
-- **Building Component Libraries**: Creating reusable UI components
-- **Implementing Design Systems**: Applying consistent UI patterns
-- **Complex UI**: Components requiring multiple variants (Button, Modal, Dropdown)
-- **Refactoring**: Extracting duplicate code into components
+## When not to use this skill
+- **The main task is system-wide tokens, visual language, contribution governance, or page-level UI direction** → use `design-system`
+- **The main task is accessibility remediation, keyboard/focus behavior, labels, or manual a11y verification** → use `web-accessibility`
+- **The main task is breakpoints, container queries, responsive media, or viewport adaptation** → use `responsive-design`
+- **The main task is app-level state ownership or client/server state boundaries** → use `state-management`
+- **The main task is React/Next.js performance, hydration, waterfalls, or rerender behavior** → use `react-best-practices`
+- **The task is just implementing a component that already has a settled API**; in that case implement directly instead of reopening the architecture decision
 
 ## Instructions
 
-### Step 1: Props API Design
+### Step 1: Decide whether a reusable primitive is justified
+Do not create a shared component just because two screens look similar.
 
-Design Props that are easy to use and extensible.
+Use this threshold test:
+- **Create or refactor a primitive** when the same interaction or UI shape appears in multiple places, or will clearly recur
+- **Keep it product-local** when the UI is highly specific to one flow and abstraction would mostly add indirection
+- **Promote to design-system work** when the decision affects many component families, tokens, naming rules, or contribution policy
 
-**Principles**:
-- Clear names
-- Reasonable defaults
-- Type definitions with TypeScript
-- Optional Props use optional marker (?)
+Quick framing template:
+```markdown
+Reuse decision:
+- Shared candidate: Button + icon button + loading button
+- Why shared: repeated across settings, billing, onboarding, and dashboard
+- Keep local: one-off onboarding progress illustration
+- Escalate: token naming and spacing scale belong to design-system
+```
 
-**Example** (Button):
+### Step 2: Classify the component role before writing props
+First define what kind of thing you are building.
+
+Use one or more buckets:
+- **Primitive** — button, input, text, stack, surface, dialog shell
+- **Composite pattern** — modal, command palette, form row, filter bar, card with actions
+- **Product-local wrapper** — a domain-specific arrangement built from primitives
+- **Headless behavior layer** — state + interactions without final styling
+- **Styled opinionated wrapper** — packaged presentation around a stable primitive
+
+If the component mixes multiple roles, split the boundary explicitly instead of letting one API own everything.
+
+### Step 3: Define the smallest useful API surface
+A good shared component solves recurring needs without turning into a kitchen sink.
+
+Ask:
+1. What are the required inputs?
+2. Which differences are true variants versus arbitrary styling escape hatches?
+3. Which parts should be slots/children instead of dozens of props?
+4. Which behavior can stay internal, and which must be controlled by the parent?
+5. What should remain product-local rather than being generalized now?
+
+Common design rules:
+- prefer a few meaningful `variant`, `size`, `tone`, or `state` props over many one-off booleans
+- prefer composition/slots when consumers need structured flexibility
+- keep DOM passthroughs intentional; do not blindly expose every internal implementation detail
+- if consumers constantly need `className` plus several “temporary” escape hatches, the primitive boundary is probably wrong
+
+Bad pattern:
 ```tsx
-interface ButtonProps {
-  // Required
-  children: React.ReactNode;
+<Button
+  primary
+  secondary
+  ghost
+  compact
+  isDanger
+  iconLeft={...}
+  iconRight={...}
+  forceMobileLayout
+  customSpacing="12px"
+/>
+```
 
-  // Optional (with defaults)
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
-  disabled?: boolean;
-  isLoading?: boolean;
-
-  // Event handlers
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-
-  // HTML attribute inheritance
-  type?: 'button' | 'submit' | 'reset';
-  className?: string;
-}
-
-function Button({
-  children,
-  variant = 'primary',
-  size = 'md',
-  disabled = false,
-  isLoading = false,
-  onClick,
-  type = 'button',
-  className = '',
-  ...rest
-}: ButtonProps) {
-  const baseClasses = 'btn';
-  const variantClasses = `btn-${variant}`;
-  const sizeClasses = `btn-${size}`;
-  const classes = `${baseClasses} ${variantClasses} ${sizeClasses} ${className}`;
-
-  return (
-    <button
-      type={type}
-      className={classes}
-      disabled={disabled || isLoading}
-      onClick={onClick}
-      {...rest}
-    >
-      {isLoading ? <Spinner /> : children}
-    </button>
-  );
-}
-
-// Usage example
-<Button variant="primary" size="lg" onClick={() => alert('Clicked!')}>
-  Click Me
+Better pattern:
+```tsx
+<Button variant="primary" size="md" tone="default" leadingIcon={<SaveIcon />}>
+  Save
 </Button>
 ```
 
-### Step 2: Composition Pattern
+### Step 4: Choose controlled vs uncontrolled ownership deliberately
+Reusable components become fragile when ownership is unclear.
 
-Combine small components to build complex UI.
+Use **controlled** APIs when:
+- the parent must coordinate state with routing, analytics, forms, or other components
+- the current value/open state is part of a larger workflow
+- external validation or async lifecycle should own transitions
 
-**Example** (Card):
+Use **uncontrolled/internal** ownership when:
+- the component is simple and self-contained
+- external coordination is unnecessary
+- a default value/open state is enough
+
+Healthy pattern:
 ```tsx
-// Card component (Container)
-interface CardProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-function Card({ children, className = '' }: CardProps) {
-  return <div className={`card ${className}`}>{children}</div>;
-}
-
-// Card.Header
-function CardHeader({ children }: { children: React.ReactNode }) {
-  return <div className="card-header">{children}</div>;
-}
-
-// Card.Body
-function CardBody({ children }: { children: React.ReactNode }) {
-  return <div className="card-body">{children}</div>;
-}
-
-// Card.Footer
-function CardFooter({ children }: { children: React.ReactNode }) {
-  return <div className="card-footer">{children}</div>;
-}
-
-// Compound Component pattern
-Card.Header = CardHeader;
-Card.Body = CardBody;
-Card.Footer = CardFooter;
-
-export default Card;
-
-// Usage
-import Card from './Card';
-
-function ProductCard() {
-  return (
-    <Card>
-      <Card.Header>
-        <h3>Product Name</h3>
-      </Card.Header>
-      <Card.Body>
-        <img src="..." alt="Product" />
-        <p>Product description here...</p>
-      </Card.Body>
-      <Card.Footer>
-        <button>Add to Cart</button>
-      </Card.Footer>
-    </Card>
-  );
-}
+<Accordion value={value} onValueChange={setValue} />
+<Accordion defaultValue="shipping" />
 ```
 
-### Step 3: Render Props / Children as Function
+If a component needs both, provide a clear controlled + uncontrolled model instead of a half-controlled hybrid.
 
-A pattern for flexible customization.
+### Step 5: Separate structure, styling, and behavior
+Do not let one component API carry every concern.
 
-**Example** (Dropdown):
-```tsx
-interface DropdownProps<T> {
-  items: T[];
-  renderItem: (item: T, index: number) => React.ReactNode;
-  onSelect: (item: T) => void;
-  placeholder?: string;
-}
+Useful splits:
+- **Behavior primitive** — focus/open/selection/keyboard logic
+- **Structure/composition** — slots, subcomponents, layout skeleton
+- **Styling layer** — variants, tokens, class mapping
+- **Product wrapper** — domain-specific copy, analytics, business rules
 
-function Dropdown<T>({ items, renderItem, onSelect, placeholder }: DropdownProps<T>) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<T | null>(null);
+This is where headless or compound-component patterns often help.
 
-  const handleSelect = (item: T) => {
-    setSelected(item);
-    onSelect(item);
-    setIsOpen(false);
-  };
+Example split:
+```markdown
+Dialog primitive owns:
+- open/close lifecycle
+- focus return
+- overlay semantics
 
-  return (
-    <div className="dropdown">
-      <button onClick={() => setIsOpen(!isOpen)}>
-        {selected ? renderItem(selected, -1) : placeholder || 'Select...'}
-      </button>
-
-      {isOpen && (
-        <ul className="dropdown-menu">
-          {items.map((item, index) => (
-            <li key={index} onClick={() => handleSelect(item)}>
-              {renderItem(item, index)}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-// Usage
-interface User {
-  id: string;
-  name: string;
-  avatar: string;
-}
-
-function UserDropdown() {
-  const users: User[] = [...];
-
-  return (
-    <Dropdown
-      items={users}
-      placeholder="Select a user"
-      renderItem={(user) => (
-        <div className="user-item">
-          <img src={user.avatar} alt={user.name} />
-          <span>{user.name}</span>
-        </div>
-      )}
-      onSelect={(user) => console.log('Selected:', user)}
-    />
-  );
-}
+App wrapper owns:
+- billing copy
+- submit side effects
+- analytics events
+- product-specific button labels
 ```
 
-### Step 4: Separating Logic with Custom Hooks
+### Step 6: Handle common pattern families with the right lens
+#### Buttons and actions
+Prioritize semantic role, variant count, loading/disabled behavior, icon labeling, and consistent affordance.
 
-Separate UI from business logic.
+#### Dialogs, drawers, menus, command palettes
+Prioritize composition boundaries, open-state ownership, close reasons, focus expectations, and slot structure.
 
-**Example** (Modal):
-```tsx
-// hooks/useModal.ts
-function useModal(initialOpen = false) {
-  const [isOpen, setIsOpen] = useState(initialOpen);
+#### Form fields
+Prioritize label/help/error placement, controlled vs uncontrolled data flow, field wrappers versus raw inputs, and extensibility for validation states.
 
-  const open = useCallback(() => setIsOpen(true), []);
-  const close = useCallback(() => setIsOpen(false), []);
-  const toggle = useCallback(() => setIsOpen(prev => !prev), []);
+#### Tables, cards, list items, nav patterns
+Prioritize slot structure, action placement, density variants, and avoiding props that only encode one screen’s layout.
 
-  return { isOpen, open, close, toggle };
-}
+#### Headless primitives
+Use when multiple visual treatments need the same behavior. Do not reach for them if the team cannot maintain the extra composition complexity.
 
-// components/Modal.tsx
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-}
+### Step 7: Capture responsive, accessibility, and state concerns as constraints — not ownership theft
+This skill should acknowledge neighboring concerns without absorbing them.
 
-function Modal({ isOpen, onClose, title, children }: ModalProps) {
-  if (!isOpen) return null;
+Examples:
+- note that a primitive must support keyboard/focus behavior, then route remediation details to `web-accessibility`
+- note that a component needs mobile and desktop adaptations, then route layout strategy to `responsive-design`
+- note that an accordion’s open state may need parent ownership, then route broader app state questions to `state-management`
+- note that token or primitive naming rules should stay consistent with `design-system`
 
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>{title}</h2>
-          <button onClick={onClose} aria-label="Close">×</button>
-        </div>
-        <div className="modal-body">{children}</div>
-      </div>
-    </div>
-  );
-}
+If the main question changes from component API architecture to another concern, hand off explicitly.
 
-// Usage
-function App() {
-  const { isOpen, open, close } = useModal();
+### Step 8: Produce the component architecture packet
+End with a concise artifact that another engineer or agent can execute.
 
-  return (
-    <>
-      <button onClick={open}>Open Modal</button>
-      <Modal isOpen={isOpen} onClose={close} title="My Modal">
-        <p>Modal content here...</p>
-      </Modal>
-    </>
-  );
-}
+Preferred format:
+```markdown
+# Component Architecture Packet
+
+## Component family
+- Name:
+- Role: primitive | composite | wrapper | headless
+- Shared vs local decision:
+
+## API shape
+- Required props:
+- Variants / slots:
+- Controlled vs uncontrolled:
+- Escape hatches allowed:
+
+## Boundaries
+- Keeps:
+- Routes to neighboring skills:
+
+## Examples to implement or document
+1. ...
+2. ...
+3. ...
+
+## Verification
+- States/variants covered:
+- Storybook/examples needed:
+- Accessibility follow-up:
+- Responsive follow-up:
 ```
-
-### Step 5: Performance Optimization
-
-Prevent unnecessary re-renders.
-
-**React.memo**:
-```tsx
-// ❌ Bad: child re-renders every time parent re-renders
-function ExpensiveComponent({ data }) {
-  console.log('Rendering...');
-  return <div>{/* Complex UI */}</div>;
-}
-
-// ✅ Good: re-renders only when props change
-const ExpensiveComponent = React.memo(({ data }) => {
-  console.log('Rendering...');
-  return <div>{/* Complex UI */}</div>;
-});
-```
-
-**useMemo & useCallback**:
-```tsx
-function ProductList({ products, category }: { products: Product[]; category: string }) {
-  // ✅ Memoize filtered results
-  const filteredProducts = useMemo(() => {
-    return products.filter(p => p.category === category);
-  }, [products, category]);
-
-  // ✅ Memoize callback
-  const handleAddToCart = useCallback((productId: string) => {
-    // Add to cart
-    console.log('Adding:', productId);
-  }, []);
-
-  return (
-    <div>
-      {filteredProducts.map(product => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          onAddToCart={handleAddToCart}
-        />
-      ))}
-    </div>
-  );
-}
-
-const ProductCard = React.memo(({ product, onAddToCart }) => {
-  return (
-    <div>
-      <h3>{product.name}</h3>
-      <button onClick={() => onAddToCart(product.id)}>Add to Cart</button>
-    </div>
-  );
-});
-```
-
-## Output format
-
-### Component File Structure
-
-```
-components/
-├── Button/
-│   ├── Button.tsx           # Main component
-│   ├── Button.test.tsx      # Tests
-│   ├── Button.stories.tsx   # Storybook
-│   ├── Button.module.css    # Styles
-│   └── index.ts             # Export
-├── Card/
-│   ├── Card.tsx
-│   ├── CardHeader.tsx
-│   ├── CardBody.tsx
-│   ├── CardFooter.tsx
-│   └── index.ts
-└── Modal/
-    ├── Modal.tsx
-    ├── useModal.ts          # Custom hook
-    └── index.ts
-```
-
-### Component Template
-
-```tsx
-import React from 'react';
-
-export interface ComponentProps {
-  // Props definition
-  children: React.ReactNode;
-  className?: string;
-}
-
-/**
- * Component description
- *
- * @example
- * ```tsx
- * <Component>Hello</Component>
- * ```
- */
-export const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
-  ({ children, className = '', ...rest }, ref) => {
-    return (
-      <div ref={ref} className={`component ${className}`} {...rest}>
-        {children}
-      </div>
-    );
-  }
-);
-
-Component.displayName = 'Component';
-
-export default Component;
-```
-
-## Constraints
-
-### Required Rules (MUST)
-
-1. **Single Responsibility Principle**: One component has one role only
-   - Button handles buttons only, Form handles forms only
-
-2. **Props Type Definition**: TypeScript interface required
-   - Enables auto-completion
-   - Type safety
-
-3. **Accessibility**: aria-*, role, tabindex, etc.
-
-### Prohibited Rules (MUST NOT)
-
-1. **Excessive props drilling**: Prohibited when 5+ levels deep
-   - Use Context or Composition
-
-2. **No Business Logic**: Prohibit API calls and complex calculations in UI components
-   - Separate into custom hooks
-
-3. **Inline objects/functions**: Performance degradation
-   ```tsx
-   // ❌ Bad example
-   <Component style={{ color: 'red' }} onClick={() => handleClick()} />
-
-   // ✅ Good example
-   const style = { color: 'red' };
-   const handleClick = useCallback(() => {...}, []);
-   <Component style={style} onClick={handleClick} />
-   ```
 
 ## Examples
 
-### Example 1: Accordion (Compound Component)
+### Example 1: Button family drift
+**Input:** “We have five button implementations and people keep adding ad hoc props.”
 
-```tsx
-import React, { createContext, useContext, useState } from 'react';
+**Good output direction:**
+- decide there should be one shared action primitive plus a narrower icon-button variant
+- collapse random booleans into a small variant/tone/size set
+- keep analytics and one-off layout wrappers outside the primitive
+- route token naming to `design-system`
 
-// Share state with Context
-const AccordionContext = createContext<{
-  activeIndex: number | null;
-  setActiveIndex: (index: number | null) => void;
-} | null>(null);
+### Example 2: Modal API confusion
+**Input:** “Should our modal manage its own state or always be controlled by the parent?”
 
-function Accordion({ children }: { children: React.ReactNode }) {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+**Good output direction:**
+- classify the modal as a reusable composite pattern
+- recommend controlled ownership when workflow state, routing, or async submit logic matters
+- allow an uncontrolled convenience path for simple confirmations if the API stays clear
+- route keyboard/focus remediation details to `web-accessibility`
 
-  return (
-    <AccordionContext.Provider value={{ activeIndex, setActiveIndex }}>
-      <div className="accordion">{children}</div>
-    </AccordionContext.Provider>
-  );
-}
+### Example 3: Reusable versus local card
+**Input:** “Should this pricing card become a shared component?”
 
-function AccordionItem({ index, title, children }: {
-  index: number;
-  title: string;
-  children: React.ReactNode;
-}) {
-  const context = useContext(AccordionContext);
-  if (!context) throw new Error('AccordionItem must be used within Accordion');
-
-  const { activeIndex, setActiveIndex } = context;
-  const isActive = activeIndex === index;
-
-  return (
-    <div className="accordion-item">
-      <button
-        className="accordion-header"
-        onClick={() => setActiveIndex(isActive ? null : index)}
-        aria-expanded={isActive}
-      >
-        {title}
-      </button>
-      {isActive && <div className="accordion-body">{children}</div>}
-    </div>
-  );
-}
-
-Accordion.Item = AccordionItem;
-export default Accordion;
-
-// Usage
-<Accordion>
-  <Accordion.Item index={0} title="Section 1">
-    Content for section 1
-  </Accordion.Item>
-  <Accordion.Item index={1} title="Section 2">
-    Content for section 2
-  </Accordion.Item>
-</Accordion>
-```
-
-### Example 2: Polymorphic Component (as prop)
-
-```tsx
-type PolymorphicComponentProps<C extends React.ElementType> = {
-  as?: C;
-  children: React.ReactNode;
-} & React.ComponentPropsWithoutRef<C>;
-
-function Text<C extends React.ElementType = 'span'>({
-  as,
-  children,
-  ...rest
-}: PolymorphicComponentProps<C>) {
-  const Component = as || 'span';
-  return <Component {...rest}>{children}</Component>;
-}
-
-// Usage
-<Text>Default span</Text>
-<Text as="h1">Heading 1</Text>
-<Text as="p" style={{ color: 'blue' }}>Paragraph</Text>
-<Text as={Link} href="/about">Link</Text>
-```
+**Good output direction:**
+- keep the domain-specific marketing card local if only one page needs it
+- extract shared sub-primitives only if repeated slots/actions truly recur
+- route page-level visual-system concerns to `design-system`
 
 ## Best practices
-
-1. **Composition over Props**: Leverage children instead of many props
-2. **Controlled vs Uncontrolled**: Choose based on situation
-3. **Default Props**: Provide reasonable defaults
-4. **Storybook**: Component documentation and development
+1. Prefer the smallest reusable primitive that removes repeated work without inventing a framework.
+2. Treat slots/composition as a tool for real flexibility, not an excuse to skip API design.
+3. Keep controlled/uncontrolled behavior explicit; half-controlled components create the worst maintenance burden.
+4. Write down route-outs to `design-system`, `web-accessibility`, `responsive-design`, `state-management`, and `react-best-practices` whenever the boundary is mixed.
+5. Document state, variants, loading/error/empty behavior, and responsive edge cases in examples or Storybook coverage.
+6. Avoid prop explosions that encode one product screen instead of a reusable concept.
+7. Revisit the abstraction when consumers repeatedly need escape hatches or wrappers to use it.
 
 ## References
-
-- [React Patterns](https://reactpatterns.com/)
-- [Compound Components](https://kentcdodds.com/blog/compound-components-with-react-hooks)
-- [Radix UI](https://www.radix-ui.com/) - Accessible components
-- [Chakra UI](https://chakra-ui.com/) - Component library
-- [shadcn/ui](https://ui.shadcn.com/) - Copy-paste components
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2025-01-01
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Related Skills
-- [web-accessibility](../web-accessibility/SKILL.md): Accessible components
-- [state-management](../state-management/SKILL.md): Component state management
-
-### Tags
-`#UI-components` `#React` `#design-patterns` `#composition` `#TypeScript` `#frontend`
+- [React — Thinking in React](https://react.dev/learn/thinking-in-react)
+- [Storybook Docs](https://storybook.js.org/docs)
+- [Brad Frost — Atomic Design](https://bradfrost.com/blog/post/atomic-web-design/)
+- [Radix UI Primitives Overview](https://www.radix-ui.com/primitives/docs/overview/introduction)

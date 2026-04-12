@@ -157,3 +157,11 @@
 - Accepted: rewrite `state-management` as a decision-first state-boundary skill, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the sharper frontend-architecture role
 - Rejected: adding another overlapping frontend state wrapper; preserving a library-tour format; recommending one universal store for API cache + UI + URL + form state
 - Wiki files created/updated: `queries/state-management-modernization-2026-04-13.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-13] query | UI component patterns modernization
+- Area researched: duplicated component families, reusable primitive/API design, controlled-vs-uncontrolled boundaries, and the boundary with `design-system`, `web-accessibility`, `responsive-design`, `state-management`, and `react-best-practices`
+- Survey files created under `.survey/frontend-legacy-anchors-20260413/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `ui-component-patterns` as the reusable primitive / variant / slot API anchor, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the sharper frontend role
+- Rejected: modernizing `responsive-design` in the same run; adding another overlapping frontend wrapper; letting `ui-component-patterns` absorb token governance, accessibility remediation, or viewport-only layout strategy
+- Wiki files created/updated: `queries/ui-component-patterns-modernization-2026-04-13.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`
