@@ -1,12 +1,13 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-13 | Total pages: 21
+> Last updated: 2026-04-13 | Total pages: 22
 
 ## Entities
 
 ## Concepts
 - [[backend-api-cluster]] — Boundaries and maintenance direction for the backend API lane, with `api-design` as the contract-first anchor and `api-documentation` as the publishing handoff.
+- [[code-quality-cluster]] — Boundaries for the code-quality lane, separating validation policy, test implementation, debugging, and reviewer judgment.
 - [[frontend-skill-canonicalization]] — Canonical-vs-alias guidance for overlapping frontend skills, now including both the React and design-system lanes.
 - [[game-development-cluster]] — Boundaries and maintenance direction for the game-production cluster, with `bmad-gds` as the coordinating layer.
 - [[infrastructure-environment-cluster]] — Canonical-vs-alias guidance for the environment/setup lane, with `system-environment-setup` as the broader anchor.
@@ -33,4 +34,5 @@
 - [[log-analysis-modernization-2026-04-13]] — Why the best bounded search-analysis upgrade was rewriting `log-analysis` into a root-cause-first triage skill instead of adding another logging wrapper.
 - [[debugging-modernization-2026-04-13]] — Why the best bounded code-quality upgrade was rewriting `debugging` into a reproduce → isolate → verify workflow instead of adding another generic troubleshooting wrapper.
 - [[code-review-modernization-2026-04-13]] — Why the best bounded code-quality improvement was modernizing `code-review` into a workflow-aware review anchor instead of adding another review-adjacent wrapper.
+- [[testing-strategies-modernization-2026-04-13]] — Why the best bounded testing-policy improvement was rewriting `testing-strategies` into a risk-based validation-policy anchor instead of leaving it as a generic test-pyramid skill.
 

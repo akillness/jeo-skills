@@ -253,7 +253,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `code-review` | 정합성·위험·증거 공백을 보는 워크플로우형 diff / PR 리뷰 | 전체 |
 | `debugging` | 회귀·flaky 실패를 위한 재현 → 격리 → 검증 디버깅 | 전체 |
 | `performance-optimization` | 속도, 효율성, 확장성 최적화 | 전체 |
-| `testing-strategies` | 테스트 피라미드, 커버리지, flaky 테스트 강화 | 전체 |
+| `testing-strategies` | 리스크 기반 검증 정책, 머지/릴리즈 게이트, flaky 스위트 정책 | 전체 |
 
 ### 🏗 인프라 (13개)
 
