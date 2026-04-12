@@ -2938,7 +2938,7 @@
     },
     {
       "name": "react-best-practices",
-      "description": "React and Next.js performance optimization guidelines from Vercel Engineering. Use when writing, reviewing, or refactoring React/Next.js code to ensure optimal performance patterns. Triggers on tasks involving React components, Next.js pages, data fetching, bundle optimization, or performance improvements.",
+      "description": "Audit and improve React and Next.js performance using Vercel-style guidance for waterfalls, bundle size, RSC boundaries, caching, hydration, and rerender behavior. Use when the user needs help with slow React UIs, Next.js data fetching, bundle bloat, hydration mismatch, server/client component boundaries, or frontend performance refactors. Triggers on: React perf, Next.js perf, waterfall, bundle size, RSC, hydration, rerender, slow page.",
       "category": "frontend",
       "path": "frontend/react-best-practices/SKILL.md",
       "tags": [
@@ -3064,7 +3064,7 @@
     },
     {
       "name": "vercel-react-best-practices",
-      "description": "React and Next.js performance optimization guidelines from Vercel Engineering. Use when writing, reviewing, or refactoring React/Next.js code to ensure optimal performance patterns. Triggers on tasks involving React components, Next.js pages, data fetching, bundle optimization, or performance improvements.",
+      "description": "Compatibility alias for `react-best-practices`. Use when an existing workflow, setup script, or user explicitly asks for `vercel-react-best-practices`; route general React and Next.js performance work to `react-best-practices` instead. Triggers on: legacy skill name, Vercel React best practices alias, exact-folder compatibility.",
       "category": "frontend",
       "path": "frontend/vercel-react-best-practices/SKILL.md",
       "tags": [

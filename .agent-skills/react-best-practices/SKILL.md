@@ -1,6 +1,11 @@
 ---
 name: react-best-practices
-description: React and Next.js performance optimization guidelines from Vercel Engineering. Use when writing, reviewing, or refactoring React/Next.js code to ensure optimal performance patterns. Triggers on tasks involving React components, Next.js pages, data fetching, bundle optimization, or performance improvements.
+description: >
+  Audit and improve React and Next.js performance using Vercel-style guidance for waterfalls,
+  bundle size, RSC boundaries, caching, hydration, and rerender behavior. Use when the user
+  needs help with slow React UIs, Next.js data fetching, bundle bloat, hydration mismatch,
+  server/client component boundaries, or frontend performance refactors. Triggers on: React
+  perf, Next.js perf, waterfall, bundle size, RSC, hydration, rerender, slow page.
 license: MIT
 metadata:
   author: vercel
@@ -14,7 +19,7 @@ metadata:
 
 Comprehensive performance optimization guide for React and Next.js applications, maintained by Vercel. Contains 45 rules across 8 categories, prioritized by impact to guide automated refactoring and code generation.
 
-## When to Apply
+## When to use this skill
 
 Reference these guidelines when:
 - Writing new React components or Next.js pages
@@ -107,7 +112,7 @@ Reference these guidelines when:
 - `advanced-event-handler-refs` - Store event handlers in refs
 - `advanced-use-latest` - useLatest for stable callback refs
 
-## How to Use
+## Instructions
 
 For detailed explanations and code examples, read the full compiled document: `AGENTS.md`
 
@@ -117,7 +122,7 @@ Each rule contains:
 - Correct code example with explanation
 - Additional context and references
 
-## Key Examples
+## Examples
 
 ### Promise.all for Independent Operations (CRITICAL)
 
@@ -173,6 +178,14 @@ const addItems = useCallback((newItems) => {
   setItems(curr => [...curr, ...newItems])
 }, [])
 ```
+
+## Best practices
+
+1. Start by classifying the bottleneck: waterfall, bundle size, server/client boundary, rerender churn, or hydration mismatch.
+2. Prefer the highest-impact fixes first: parallelize independent work, cut bundle weight, and reduce unnecessary client rendering before micro-optimizing helpers.
+3. Keep React-specific advice separate from broader frontend concerns: use `state-management` for app-wide state choices and `web-accessibility` for WCAG remediation.
+4. Escalate to the compatibility alias `vercel-react-best-practices` only when an existing workflow explicitly requires that name.
+5. Use the linked `AGENTS.md` as the deep reference instead of copying large chunks into downstream skills or docs.
 
 ## Constraints
 
