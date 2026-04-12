@@ -27,6 +27,8 @@ The goal is not to explain every line. The goal is to find the **first non-casca
 
 Read [references/engine-patterns.md](references/engine-patterns.md) before classifying unfamiliar engine-specific errors.
 
+If the user is not asking about one failing log but about repeated CI instability, cache policy, packaging workflow shape, or release automation for Unity/Unreal projects, route that broader workflow design work to `game-ci-cd-pipeline` after or alongside this triage.
+
 ## When to use this skill
 - Unity build, import, compile, package, or play-mode startup failures
 - Unreal build, UBT/UHT, cook, package, shader, plugin, or module failures
