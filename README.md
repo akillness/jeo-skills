@@ -289,7 +289,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 |-------|-------------|-----------|
 | `sprint-retrospective` | Sprint retros, milestone postmortems, async/hybrid facilitation, and action follow-through | All |
 | `standup-meeting` | Daily standups, async check-ins, walk-the-board syncs, and blocker triage | All |
-| `task-estimation` | Story points, t-shirt sizing, planning poker | All |
+| `task-estimation` | Story points, t-shirt sizing, planning poker prep, and forecast-safe sizing | All |
 | `task-planning` | Execution-ready backlog grooming, task slicing, and sprint-prep planning | All |
 
 ### 🔭 Search & Analysis (7)
