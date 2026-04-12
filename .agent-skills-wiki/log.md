@@ -109,3 +109,11 @@
 - Accepted: rewrite `backend-testing` as a backend coverage-selection skill, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the stronger role
 - Rejected: adding a second backend testing wrapper; broadening the skill into company-wide QA governance; leaving fixture/dependency/CI split guidance implicit
 - Wiki files created/updated: `concepts/backend-api-cluster.md`, `queries/backend-testing-modernization-2026-04-12.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-13] query | Log analysis modernization
+- Area researched: root-cause-first log triage across CLI/dev workflow, web/browser-plus-backend debugging, incident review, and the boundary with Unity/Unreal specialist logs
+- Survey files created under `.survey/log-analysis-modernization-20260413/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `log-analysis` as a read-only root-cause triage skill, add `references/` + `evals/`, update README / README.ko / `.agent-skills/skills.json`, and explicitly route Unity/Unreal build/editor/package logs to `game-build-log-triage`
+- Rejected: adding another generic observability/logging wrapper; letting `log-analysis` absorb observability setup or engine-specific build-log work
+- Wiki files created/updated: `queries/log-analysis-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `concepts/game-development-cluster.md`, `index.md`

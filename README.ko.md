@@ -301,7 +301,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `codebase-search` | 코드베이스 검색 및 탐색 | 전체 |
 | `data-analysis` | 데이터셋 분석, 시각화, 통계 | 전체 |
 | `langsmith` | LangSmith를 통한 LLM 관측성, 트레이싱, 평가, 프롬프트 관리 | 전체 |
-| `log-analysis` | 로그 분석 및 인시던트 디버깅 | 전체 |
+| `log-analysis` | 애플리케이션·인프라·브라우저·CI 로그의 근본 원인 트리아지 | 전체 |
 | `pattern-detection` | 패턴 및 이상 탐지 | 전체 |
 
 ### 🎬 창의 미디어 (2개)

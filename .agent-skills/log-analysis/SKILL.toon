@@ -1,14 +1,18 @@
 N:log-analysis
-D:Analyze application logs to identify errors, performance issues, and security anomalies. Use when...
-G:logs analysis debugging monitoring grep
-U[4]:
-  **Error debugging**: analyze the root cause of application errors
-  **Performance analysis**: analyze response times and throughput
-  **Security audit**: detect anomalous access patterns
-  **Incident response**: investigate the root cause during an outage
-S[5]{n,action}:
-  1,Locate Log Files
-  2,Search for Error Patterns
-  3,Pattern Analysis
-  4,Performance Analysis
-  5,Security Analysis
+D:Triage application, infrastructure, browser, API, CI, and general runtime logs into the first actionable failure, repeated patterns, likely scope, and next read-only checks. Use when the user shares raw log text or asks which lines matter. Not for Unity/Unreal build/editor/package logs when game-build-log-triage is the better specialist.
+G:logs triage incident ci browser kubectl docker jq rg
+U[6]:
+  Application, API, worker, reverse-proxy, or infrastructure log triage
+  CI logs where the user wants the first real blocker
+  Browser console or network failures that need correlation with server logs
+  JSON/text log slices that need grouping or timestamp/request-ID narrowing
+  Incident review with likely root cause and next read-only checks
+  Repeated errors that need a short debugging brief
+S[7]{n,action}:
+  1,Identify the log surface and time window
+  2,Find the first actionable failure
+  3,Narrow the slice before interpreting it
+  4,Correlate across nearby evidence surfaces
+  5,Classify the failure bucket
+  6,Produce the triage brief
+  7,Escalate carefully when evidence is weak

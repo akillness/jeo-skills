@@ -4,51 +4,46 @@
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, cross-skill mentions, and documentation indexing
 - Total skills: 89
-- Skills with references/: 38
-- Skills with evals/: 37
+- Skills with references/: 40
+- Skills with evals/: 38
 - Graph nodes: 92
-- Graph edges: 280
+- Graph edges: 585
 
 ## Strongest structural findings
-1. The backend cluster is cleaner end-to-end: `api-design` owns contract decisions, `backend-testing` now owns verification planning, `authentication-setup` owns implementation, and `api-documentation` owns publishing/examples.
-2. `backend-testing` is now a stronger backend anchor because it has both `references/` and `evals/`, replacing a very long legacy skill that previously had weak boundary control and no support bundle.
-3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so small wording changes there still materially influence activation and discoverability.
-4. The repo continues to improve faster by upgrading high-traffic legacy skills with sharper boundaries and support files than by adding new overlapping wrappers.
+1. `log-analysis` is now a stronger cross-domain anchor: it owns read-only root-cause triage for application, infrastructure, browser, and CI logs while explicitly routing Unity/Unreal specialist work to `game-build-log-triage`.
+2. The repo's most successful maintenance pattern still holds: upgrading a high-traffic legacy skill with sharper boundaries and support files adds more value than introducing another overlapping wrapper.
+3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so even one-line description changes materially affect skill activation.
+4. The game-development cluster remains specialist-first: `game-build-log-triage` keeps engine-specific build/editor/package expertise, while `log-analysis` now covers the general cross-stack log triage lane.
 
 ## Community map
-- agent-development
 - backend
-- code-quality
-- core-orchestration
-- creative-media
-- documentation
 - frontend
+- game-development
 - infrastructure
 - marketing
-- planning-review
 - project-management
 - search-analysis
-- utilities
+- documentation
 
 ## Highest-degree nodes
 - README.ko.md: degree 87
 - README.md: degree 87
-- setup-all-skills-prompt.md: degree 25
-- backend-testing: degree 9
-- bmad-gds: degree 9
-- task-planning: degree 9
-- game-demo-feedback-triage: degree 7
-- jeo: degree 7
-- omx: degree 7
-- ralph: degree 7
+- setup-all-skills-prompt.md: degree 83
+- log-analysis: degree 22
+- ui-component-patterns: degree 21
+- web-accessibility: degree 21
+- survey: degree 20
+- design-system: degree 19
+- bmad-gds: degree 18
+- game-demo-feedback-triage: degree 18
 
 ## Duplicate / consolidation notes
-- The backend cluster split is now cleaner: `api-design` handles contract choices, `backend-testing` handles verification planning, `authentication-setup` handles auth implementation, `api-documentation` handles developer-facing docs, and `database-schema-design` handles storage design.
-- `backend-testing` should stay narrow: backend coverage selection, fixture/data strategy, dependency realism, and CI-vs-local execution.
-- `backend-testing` should not absorb whole-org QA governance (`testing-strategies`), API contract design (`api-design`), or auth implementation (`authentication-setup`).
-- Previously cleaned canonical-vs-alias clusters remain intact in frontend, marketing, and environment lanes.
+- `log-analysis` should stay focused on general root-cause log triage and not absorb observability setup from `monitoring-observability`.
+- `log-analysis` should not absorb code-fix workflows already covered by `debugging`.
+- `log-analysis` should explicitly hand off Unity/Unreal editor/build/package logs to `game-build-log-triage`.
+- The previous canonical-vs-alias cleanups in frontend, marketing, and environment lanes remain intact.
 
 ## Recommended maintenance direction
-- Keep strengthening remaining high-traffic legacy skills with support files before adding new overlap.
-- Use the backend cluster as another template for boundary-driven upgrades: define the job, define the handoff, then add evals and references.
-- Re-check README/setup/manifest wording whenever a skill's trigger boundary changes enough to alter discovery behavior.
+- Continue upgrading remaining legacy high-traffic skills that still lack both `references/` and `evals/`.
+- Prefer cross-surface boundary fixes (source identification, handoff rules, support bundles) over adding new wrappers.
+- Keep re-checking the discovery docs whenever a skill's trigger boundary changes in a user-visible way.
