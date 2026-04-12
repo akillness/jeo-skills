@@ -1,844 +1,254 @@
 ---
 name: backend-testing
-description: Write comprehensive backend tests including unit tests, integration tests, and API tests. Use when testing REST APIs, database operations, authentication flows, or business logic. Handles Jest, Pytest, Mocha, testing strategies, mocking, and test coverage.
+description: >
+  Design and implement backend test coverage for APIs, services, auth flows, data
+  access, and integration boundaries. Use when the user needs unit/service/API /
+  contract coverage, fixture strategy, testcontainers or dependency setup, flaky
+  test triage, CI-vs-local test layering, or regression protection around backend
+  changes. Not for whole-project test-policy design, API contract design, or auth
+  implementation.
+compatibility: >
+  Best for backend-focused work in Node, Python, Java, and similar service stacks
+  where the agent needs to choose the right mix of unit, integration, contract,
+  and smoke coverage before or alongside implementation.
+allowed-tools: Bash Read Write Edit Glob Grep
 metadata:
-  tags: testing, backend, unit-test, integration-test, API-test, Jest, Pytest, TDD
+  tags: testing, backend, api-test, integration-test, contract-test, testcontainers, ci
   platforms: Claude, ChatGPT, Gemini
+  version: "1.1.0"
 ---
-
 
 # Backend Testing
 
+Use this skill to turn a vague “add tests” request into a backend-focused coverage plan that is realistic, maintainable, and fast enough to keep shipping.
+
+The job is not to dump boilerplate for every test runner. The job is to:
+- choose the right backend test layers for the change
+- decide what should be mocked, containerized, or exercised for real
+- protect API, auth, database, and service behavior without bloating end-to-end coverage
+- design fixture / seed / reset strategy so tests stay trustworthy
+- make local-vs-CI execution explicit instead of pretending one suite fits every loop
+
+Read [references/test-layer-matrix.md](references/test-layer-matrix.md) and [references/stability-checklist.md](references/stability-checklist.md) before handling large or flaky backend suites.
+
+If the user mainly needs:
+- **organization-wide test policy, a generic test pyramid, or cross-stack QA strategy** → use `testing-strategies`
+- **API contract design or REST/GraphQL shape decisions** → use `api-design`
+- **published docs or example portals for the API** → use `api-documentation`
+- **auth implementation, token/session setup, or RBAC design** → use `authentication-setup`
+- **database schema / indexing / normalization design** → use `database-schema-design`
 
 ## When to use this skill
+- Add or repair backend coverage for APIs, service objects, repositories, workers, or auth flows
+- Choose the right mix of unit, integration, contract, smoke, or selective end-to-end tests for a backend change
+- Design fixture, factory, seed, or test-data reset strategy for a service
+- Decide whether dependencies should be mocked, stubbed, containerized, or hit for real
+- Add contract checks for REST / GraphQL / event boundaries after the interface is already defined
+- Triage flaky backend tests, CI-only failures, or environment drift between local and CI runs
+- Review whether a backend suite is too broad, too slow, too brittle, or too mock-heavy
 
-Specific situations that should trigger this skill:
-
-- **New feature development**: Write tests first using TDD (Test-Driven Development)
-- **Adding API endpoints**: Test success and failure cases for REST APIs
-- **Bug fixes**: Add tests to prevent regressions
-- **Before refactoring**: Write tests that guarantee existing behavior
-- **CI/CD setup**: Build automated test pipelines
-
-## Input Format
-
-Format and required/optional information to collect from the user:
-
-### Required information
-- **Framework**: Express, Django, FastAPI, Spring Boot, etc.
-- **Test tool**: Jest, Pytest, Mocha/Chai, JUnit, etc.
-- **Test target**: API endpoints, business logic, DB operations, etc.
-
-### Optional information
-- **Database**: PostgreSQL, MySQL, MongoDB (default: in-memory DB)
-- **Mocking library**: jest.mock, sinon, unittest.mock (default: framework built-in)
-- **Coverage target**: 80%, 90%, etc. (default: 80%)
-- **E2E tool**: Supertest, TestClient, RestAssured (optional)
-
-### Input example
-
-```
-Test the user authentication endpoints for an Express.js API:
-- Framework: Express + TypeScript
-- Test tool: Jest + Supertest
-- Target: POST /auth/register, POST /auth/login
-- DB: PostgreSQL (in-memory for tests)
-- Coverage: 90% or above
-```
+## When not to use this skill
+- The main task is inventing a full-company QA policy or broad testing philosophy → use `testing-strategies`
+- The main task is API shape/versioning design before tests can be scoped honestly → use `api-design`
+- The main task is implementing auth features rather than testing them → use `authentication-setup`
+- The task is pure frontend/browser workflow coverage with UI concerns dominating the effort
+- There is no concrete backend behavior, interface, or regression risk to test yet; in that case define the open questions and the minimum verification slice instead of pretending coverage is settled
 
 ## Instructions
 
-Step-by-step task order to follow precisely.
-
-### Step 1: Set up the test environment
-
-Install and configure the test framework and tools.
-
-**Tasks**:
-- Install test libraries
-- Configure test database (in-memory or separate DB)
-- Separate environment variables (.env.test)
-- Configure jest.config.js or pytest.ini
-
-**Example** (Node.js + Jest + Supertest):
-```bash
-npm install --save-dev jest ts-jest @types/jest supertest @types/supertest
-```
-
-**jest.config.js**:
-```javascript
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  roots: ['<rootDir>/src'],
-  testMatch: ['**/__tests__/**/*.test.ts'],
-  collectCoverageFrom: [
-    'src/**/*.ts',
-    '!src/**/*.d.ts',
-    '!src/__tests__/**'
-  ],
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80
-    }
-  },
-  setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts']
-};
-```
-
-**setup.ts** (global test configuration):
-```typescript
-import { db } from '../database';
-
-// Reset DB before each test
-beforeEach(async () => {
-  await db.migrate.latest();
-  await db.seed.run();
-});
-
-// Clean up after each test
-afterEach(async () => {
-  await db.migrate.rollback();
-});
-
-// Close connection after all tests complete
-afterAll(async () => {
-  await db.destroy();
-});
-```
-
-### Step 2: Write Unit Tests (business logic)
-
-Write unit tests for individual functions and classes.
-
-**Tasks**:
-- Test pure functions (no dependencies)
-- Isolate dependencies via mocking
-- Test edge cases (boundary values, exceptions)
-- AAA pattern (Arrange-Act-Assert)
-
-**Decision criteria**:
-- No external dependencies (DB, API) -> pure Unit Test
-- External dependencies present -> use Mock/Stub
-- Complex logic -> test various input cases
-
-**Example** (password validation function):
-```typescript
-// src/utils/password.ts
-export function validatePassword(password: string): { valid: boolean; errors: string[] } {
-  const errors: string[] = [];
-
-  if (password.length < 8) {
-    errors.push('Password must be at least 8 characters');
-  }
-
-  if (!/[A-Z]/.test(password)) {
-    errors.push('Password must contain uppercase letter');
-  }
-
-  if (!/[a-z]/.test(password)) {
-    errors.push('Password must contain lowercase letter');
-  }
-
-  if (!/\d/.test(password)) {
-    errors.push('Password must contain number');
-  }
-
-  if (!/[!@#$%^&*]/.test(password)) {
-    errors.push('Password must contain special character');
-  }
-
-  return { valid: errors.length === 0, errors };
-}
-
-// src/__tests__/utils/password.test.ts
-import { validatePassword } from '../../utils/password';
-
-describe('validatePassword', () => {
-  it('should accept valid password', () => {
-    const result = validatePassword('Password123!');
-    expect(result.valid).toBe(true);
-    expect(result.errors).toHaveLength(0);
-  });
-
-  it('should reject password shorter than 8 characters', () => {
-    const result = validatePassword('Pass1!');
-    expect(result.valid).toBe(false);
-    expect(result.errors).toContain('Password must be at least 8 characters');
-  });
-
-  it('should reject password without uppercase', () => {
-    const result = validatePassword('password123!');
-    expect(result.valid).toBe(false);
-    expect(result.errors).toContain('Password must contain uppercase letter');
-  });
-
-  it('should reject password without lowercase', () => {
-    const result = validatePassword('PASSWORD123!');
-    expect(result.valid).toBe(false);
-    expect(result.errors).toContain('Password must contain lowercase letter');
-  });
-
-  it('should reject password without number', () => {
-    const result = validatePassword('Password!');
-    expect(result.valid).toBe(false);
-    expect(result.errors).toContain('Password must contain number');
-  });
-
-  it('should reject password without special character', () => {
-    const result = validatePassword('Password123');
-    expect(result.valid).toBe(false);
-    expect(result.errors).toContain('Password must contain special character');
-  });
-
-  it('should return multiple errors for invalid password', () => {
-    const result = validatePassword('pass');
-    expect(result.valid).toBe(false);
-    expect(result.errors.length).toBeGreaterThan(1);
-  });
-});
-```
-
-### Step 3: Integration Test (API endpoints)
-
-Write integration tests for API endpoints.
-
-**Tasks**:
-- Test HTTP requests/responses
-- Success cases (200, 201)
-- Failure cases (400, 401, 404, 500)
-- Authentication/authorization tests
-- Input validation tests
-
-**Checklist**:
-- [x] Verify status code
-- [x] Validate response body structure
-- [x] Confirm database state changes
-- [x] Validate error messages
-
-**Example** (Express.js + Supertest):
-```typescript
-// src/__tests__/api/auth.test.ts
-import request from 'supertest';
-import app from '../../app';
-import { db } from '../../database';
-
-describe('POST /auth/register', () => {
-  it('should register new user successfully', async () => {
-    const response = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'test@example.com',
-        username: 'testuser',
-        password: 'Password123!'
-      });
-
-    expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty('user');
-    expect(response.body).toHaveProperty('accessToken');
-    expect(response.body.user.email).toBe('test@example.com');
-
-    // Verify the record was actually saved to DB
-    const user = await db.user.findUnique({ where: { email: 'test@example.com' } });
-    expect(user).toBeTruthy();
-    expect(user.username).toBe('testuser');
-  });
-
-  it('should reject duplicate email', async () => {
-    // Create first user
-    await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'test@example.com',
-        username: 'user1',
-        password: 'Password123!'
-      });
-
-    // Second attempt with same email
-    const response = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'test@example.com',
-        username: 'user2',
-        password: 'Password123!'
-      });
-
-    expect(response.status).toBe(409);
-    expect(response.body.error).toContain('already exists');
-  });
-
-  it('should reject weak password', async () => {
-    const response = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'test@example.com',
-        username: 'testuser',
-        password: 'weak'
-      });
-
-    expect(response.status).toBe(400);
-    expect(response.body.error).toBeDefined();
-  });
-
-  it('should reject missing fields', async () => {
-    const response = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'test@example.com'
-        // username, password omitted
-      });
-
-    expect(response.status).toBe(400);
-  });
-});
-
-describe('POST /auth/login', () => {
-  beforeEach(async () => {
-    // Create test user
-    await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'test@example.com',
-        username: 'testuser',
-        password: 'Password123!'
-      });
-  });
-
-  it('should login with valid credentials', async () => {
-    const response = await request(app)
-      .post('/api/auth/login')
-      .send({
-        email: 'test@example.com',
-        password: 'Password123!'
-      });
-
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('accessToken');
-    expect(response.body).toHaveProperty('refreshToken');
-    expect(response.body.user.email).toBe('test@example.com');
-  });
-
-  it('should reject invalid password', async () => {
-    const response = await request(app)
-      .post('/api/auth/login')
-      .send({
-        email: 'test@example.com',
-        password: 'WrongPassword123!'
-      });
-
-    expect(response.status).toBe(401);
-    expect(response.body.error).toContain('Invalid credentials');
-  });
-
-  it('should reject non-existent user', async () => {
-    const response = await request(app)
-      .post('/api/auth/login')
-      .send({
-        email: 'nonexistent@example.com',
-        password: 'Password123!'
-      });
-
-    expect(response.status).toBe(401);
-  });
-});
-```
-
-### Step 4: Authentication/Authorization Tests
-
-Test JWT tokens and role-based access control.
-
-**Tasks**:
-- Confirm 401 when accessing without a token
-- Confirm successful access with a valid token
-- Test expired token handling
-- Role-based permission tests
-
-**Example**:
-```typescript
-describe('Protected Routes', () => {
-  let accessToken: string;
-  let adminToken: string;
-
-  beforeEach(async () => {
-    // Regular user token
-    const userResponse = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'user@example.com',
-        username: 'user',
-        password: 'Password123!'
-      });
-    accessToken = userResponse.body.accessToken;
-
-    // Admin token
-    const adminResponse = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'admin@example.com',
-        username: 'admin',
-        password: 'Password123!'
-      });
-    // Update role to 'admin' in DB
-    await db.user.update({
-      where: { email: 'admin@example.com' },
-      data: { role: 'admin' }
-    });
-    // Log in again to get a new token
-    const loginResponse = await request(app)
-      .post('/api/auth/login')
-      .send({
-        email: 'admin@example.com',
-        password: 'Password123!'
-      });
-    adminToken = loginResponse.body.accessToken;
-  });
-
-  describe('GET /api/auth/me', () => {
-    it('should return current user with valid token', async () => {
-      const response = await request(app)
-        .get('/api/auth/me')
-        .set('Authorization', `Bearer ${accessToken}`);
-
-      expect(response.status).toBe(200);
-      expect(response.body.user.email).toBe('user@example.com');
-    });
-
-    it('should reject request without token', async () => {
-      const response = await request(app)
-        .get('/api/auth/me');
-
-      expect(response.status).toBe(401);
-    });
-
-    it('should reject request with invalid token', async () => {
-      const response = await request(app)
-        .get('/api/auth/me')
-        .set('Authorization', 'Bearer invalid-token');
-
-      expect(response.status).toBe(403);
-    });
-  });
-
-  describe('DELETE /api/users/:id (Admin only)', () => {
-    it('should allow admin to delete user', async () => {
-      const targetUser = await db.user.findUnique({ where: { email: 'user@example.com' } });
-
-      const response = await request(app)
-        .delete(`/api/users/${targetUser.id}`)
-        .set('Authorization', `Bearer ${adminToken}`);
-
-      expect(response.status).toBe(200);
-    });
-
-    it('should forbid non-admin from deleting user', async () => {
-      const targetUser = await db.user.findUnique({ where: { email: 'user@example.com' } });
-
-      const response = await request(app)
-        .delete(`/api/users/${targetUser.id}`)
-        .set('Authorization', `Bearer ${accessToken}`);
-
-      expect(response.status).toBe(403);
-    });
-  });
-});
-```
-
-### Step 5: Mocking and Test Isolation
-
-Mock external dependencies to isolate tests.
-
-**Tasks**:
-- Mock external APIs
-- Mock email sending
-- Mock file system
-- Mock time-related functions
-
-**Example** (mocking an external API):
-```typescript
-// src/services/emailService.ts
-export async function sendVerificationEmail(email: string, token: string): Promise<void> {
-  const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${process.env.SENDGRID_API_KEY}` },
-    body: JSON.stringify({
-      to: email,
-      subject: 'Verify your email',
-      html: `<a href="https://example.com/verify?token=${token}">Verify</a>`
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to send email');
-  }
-}
-
-// src/__tests__/services/emailService.test.ts
-import { sendVerificationEmail } from '../../services/emailService';
-
-// Mock fetch
-global.fetch = jest.fn();
-
-describe('sendVerificationEmail', () => {
-  beforeEach(() => {
-    (fetch as jest.Mock).mockClear();
-  });
-
-  it('should send email successfully', async () => {
-    (fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      status: 200
-    });
-
-    await expect(sendVerificationEmail('test@example.com', 'token123'))
-      .resolves
-      .toBeUndefined();
-
-    expect(fetch).toHaveBeenCalledWith(
-      'https://api.sendgrid.com/v3/mail/send',
-      expect.objectContaining({
-        method: 'POST'
-      })
-    );
-  });
-
-  it('should throw error if email sending fails', async () => {
-    (fetch as jest.Mock).mockResolvedValueOnce({
-      ok: false,
-      status: 500
-    });
-
-    await expect(sendVerificationEmail('test@example.com', 'token123'))
-      .rejects
-      .toThrow('Failed to send email');
-  });
-});
-```
+### Step 1: Frame the backend test target
+Capture what changed before choosing a test stack.
+
+Record:
+- backend surface being changed: endpoint, service, worker, repository, auth flow, integration, migration, or queue consumer
+- failure modes that matter most: validation, auth, permissions, persistence, retries, idempotency, concurrency, side effects
+- existing coverage already in place
+- external dependencies involved: DB, cache, queue, email, payment, third-party API, identity provider
+- runtime and language stack
+- where the suite must run: local dev loop, PR CI, nightly, release smoke, or incident regression
+
+If the request is vague, define the smallest credible behavior slice to protect first.
+
+### Step 2: Choose the right test layers
+Do not default to “just add more E2E.”
+
+#### Prefer unit / service tests when
+- the behavior is mostly pure logic or orchestration
+- you can isolate dependencies cleanly
+- the fastest feedback loop matters most
+- the main risk is branching logic, validation, or edge-case handling
+
+#### Prefer integration tests when
+- the change depends on a real database, queue, cache, filesystem, or framework wiring
+- repository / transaction / serialization behavior matters
+- auth middleware, request parsing, or dependency wiring is part of the risk
+
+#### Prefer contract or API-level tests when
+- clients depend on response shapes, status codes, schemas, or events
+- multiple services or teams share an interface
+- you need to catch drift without running a full system stack
+
+#### Prefer smoke or selective end-to-end tests when
+- the change crosses several backend boundaries that must work together
+- auth/session/bootstrap setup is part of the real risk
+- a narrow release-critical journey needs proof, but full broad E2E would be wasteful
+
+State which layers are in scope and why. If something is intentionally out of scope, say so.
+
+### Step 3: Decide mock vs real dependency strategy
+Choose realism intentionally.
+
+For each dependency, decide one of:
+- **mock / stub** when the dependency is expensive, unstable, or irrelevant to the change
+- **fake / simulator** when behavior matters but a lightweight substitute is enough
+- **containerized real dependency** when wire behavior, migrations, SQL, message semantics, or cache behavior matter
+- **shared external environment** only when unavoidable; call out the brittleness cost
+
+Good defaults:
+- mock outbound third-party APIs unless the integration contract itself is under test
+- use real DB behavior for repository / migration / query logic when drift would hurt
+- prefer containerized dependencies over hand-wavy in-memory substitutes when production parity matters
+- keep full-stack dependency trees narrow on PR paths; move heavier breadth to scheduled or gated runs
+
+### Step 4: Design fixtures, data, and environment control
+A backend suite fails when setup is sloppy.
+
+Define:
+- fixture or factory strategy
+- seed/reset/rollback plan
+- auth/bootstrap helpers for users, roles, tenants, tokens, or sessions
+- clock / randomness / idempotency control where needed
+- isolation rule: per test, per file, per suite, or per environment
+
+Avoid hidden shared state. If a suite depends on ordering, time, or leftover records, say that it is fragile.
+
+### Step 5: Shape the local and CI workflow separately
+Treat local and CI as related but different loops.
+
+Specify:
+- what developers should run frequently in the local loop
+- what must run on pull requests
+- what can run nightly / scheduled / release-only
+- whether retries/quarantine are temporary operational mitigations
+- how failures should be debugged: logs, traces, request snapshots, seed replay, container logs
+
+If the suite is slow, propose a split instead of pretending it is fine.
+
+### Step 6: Produce the backend test packet
+Pick the lightest artifact that still gives the team a usable test plan.
+
+Recommended formats:
+- **test plan table** for PR-ready implementation work
+- **coverage map + fixture plan** when the suite already exists but needs reshaping
+- **flake triage memo** for CI instability or environment drift
+- **contract coverage outline** when response/event compatibility is the main risk
+
+Minimum packet:
+- change surface and highest-risk behaviors
+- chosen test layers and exclusions
+- dependency strategy (mock / fake / container / real)
+- fixture/data/auth bootstrap plan
+- local-vs-CI execution plan
+- failure-debug notes
+- handoffs to adjacent skills when needed
+
+### Step 7: Review for trustworthiness and scope control
+Before finalizing, check:
+- does the plan protect the real regression risk, not just easy happy paths?
+- are API/auth/error/data edge cases explicit enough?
+- is the suite too broad for the feedback loop it is supposed to serve?
+- did you accidentally turn a backend test task into general QA policy, contract design, or auth implementation?
+- will a future maintainer understand setup, seeding, and dependency choices?
+
+Route next steps clearly:
+- `testing-strategies` for broader organization-wide policy
+- `api-design` for contract shape or compatibility decisions
+- `api-documentation` for published examples/docs
+- `authentication-setup` for auth implementation details
 
 ## Output format
 
-Defines the exact format that outputs must follow.
+```markdown
+## Backend Test Packet: [Change or Surface]
 
-### Basic structure
+### Change framing
+- Surface: [endpoint / service / worker / repository / auth flow / integration]
+- Main risks: [validation / auth / data integrity / retries / compatibility / etc.]
+- Runtime: [Node / Python / Java / other]
 
+### Coverage layers
+| Layer | In scope? | What it protects | Notes |
+|------|-----------|------------------|-------|
+| Unit / service | yes/no | ... | ... |
+| Integration | yes/no | ... | ... |
+| Contract / API | yes/no | ... | ... |
+| Smoke / selective E2E | yes/no | ... | ... |
+
+### Dependency strategy
+| Dependency | Strategy | Why |
+|------------|----------|-----|
+| Database | real container / fake / mock | ... |
+| External API | mock / simulator / real sandbox | ... |
+| Auth provider | helper / fake / real integration | ... |
+
+### Fixtures and environment
+- Seed/reset plan: [...]
+- Auth/bootstrap helpers: [...]
+- Isolation rule: [...]
+- Debug signals: [...]
+
+### Execution plan
+- Local fast path: [...]
+- PR CI path: [...]
+- Nightly / release path: [...]
+
+### Handoffs
+- Contract design: [does `api-design` need to clarify interface rules?]
+- Auth implementation: [does `authentication-setup` need to own setup changes?]
+- Broader test policy: [does `testing-strategies` need to own the bigger redesign?]
 ```
-project/
-├── src/
-│   ├── __tests__/
-│   │   ├── setup.ts                 # Global test configuration
-│   │   ├── utils/
-│   │   │   └── password.test.ts     # Unit tests
-│   │   ├── services/
-│   │   │   └── emailService.test.ts
-│   │   └── api/
-│   │       ├── auth.test.ts         # Integration tests
-│   │       └── users.test.ts
-│   └── ...
-├── jest.config.js
-└── package.json
-```
-
-### Test run scripts (package.json)
-
-```json
-{
-  "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:ci": "jest --ci --coverage --maxWorkers=2"
-  }
-}
-```
-
-### Coverage report
-
-```bash
-$ npm run test:coverage
-
---------------------------|---------|----------|---------|---------|
-File                      | % Stmts | % Branch | % Funcs | % Lines |
---------------------------|---------|----------|---------|---------|
-All files                 |   92.5  |   88.3   |   95.2  |   92.8  |
- auth/                    |   95.0  |   90.0   |  100.0  |   95.0  |
-  middleware.ts           |   95.0  |   90.0   |  100.0  |   95.0  |
-  routes.ts               |   95.0  |   90.0   |  100.0  |   95.0  |
- utils/                   |   90.0  |   85.0   |   90.0  |   90.0  |
-  password.ts             |   90.0  |   85.0   |   90.0  |   90.0  |
---------------------------|---------|----------|---------|---------|
-```
-
-## Constraints
-
-Rules and prohibitions that must be strictly followed.
-
-### Required rules (MUST)
-
-1. **Test isolation**: Each test must be runnable independently
-   - Reset state with beforeEach/afterEach
-   - Do not depend on test execution order
-
-2. **Clear test names**: The name must convey what the test verifies
-   - ✅ 'should reject duplicate email'
-   - ❌ 'test1'
-
-3. **AAA pattern**: Arrange (setup) - Act (execute) - Assert (verify) structure
-   - Improves readability
-   - Clarifies test intent
-
-### Prohibited (MUST NOT)
-
-1. **No production DB**: Tests must use a separate or in-memory DB
-   - Risk of losing real data
-   - Cannot isolate tests
-
-2. **No real external API calls**: Mock all external services
-   - Removes network dependency
-   - Speeds up tests
-   - Reduces costs
-
-3. **No Sleep/Timeout abuse**: Use fake timers for time-based tests
-   - jest.useFakeTimers()
-   - Prevents test slowdowns
-
-### Security rules
-
-- **No hardcoded secrets**: Never hardcode API keys or passwords in test code
-- **Separate environment variables**: Use .env.test file
 
 ## Examples
 
-### Example 1: Python FastAPI tests (Pytest)
+### Example 1: Auth-heavy API change
+**Input:** “We added refresh-token rotation and role-gated admin endpoints in our Express API. I need the right backend tests without making CI miserable.”
 
-**Situation**: Testing a FastAPI REST API
+**Good response shape:**
+- chooses a mix of unit/service tests plus API/integration coverage for token rotation, auth failures, and permission checks
+- uses real DB behavior or containers where token/session persistence matters
+- defines auth/bootstrap helpers instead of repeating login setup everywhere
+- keeps full-stack E2E limited to a narrow smoke path instead of bloating the suite
+- routes auth implementation details to `authentication-setup` if they are still unsettled
 
-**User request**:
-```
-Test the user API built with FastAPI using pytest.
-```
+### Example 2: CI-only flake in a service suite
+**Input:** “Our FastAPI tests pass locally but fail in CI around seeded Postgres state and background jobs. We need a stabilization plan.”
 
-**Final result**:
-```python
-# tests/conftest.py
-import pytest
-from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+**Good response shape:**
+- identifies environment drift, seed/reset, and async timing as the main risks
+- proposes tighter isolation, container readiness checks, and better failure signals/log capture
+- splits local-fast and CI-authoritative coverage clearly
+- avoids pretending more retry loops alone solve the issue
 
-from app.main import app
-from app.database import Base, get_db
+### Example 3: Too-broad testing request
+**Input:** “Design our overall engineering org testing strategy for frontend, backend, mobile, and QA.”
 
-# In-memory SQLite for tests
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-@pytest.fixture(scope="function")
-def db_session():
-    Base.metadata.create_all(bind=engine)
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-        Base.metadata.drop_all(bind=engine)
-
-@pytest.fixture(scope="function")
-def client(db_session):
-    def override_get_db():
-        try:
-            yield db_session
-        finally:
-            db_session.close()
-
-    app.dependency_overrides[get_db] = override_get_db
-    yield TestClient(app)
-    app.dependency_overrides.clear()
-
-# tests/test_auth.py
-def test_register_user_success(client):
-    response = client.post("/auth/register", json={
-        "email": "test@example.com",
-        "username": "testuser",
-        "password": "Password123!"
-    })
-
-    assert response.status_code == 201
-    assert "access_token" in response.json()
-    assert response.json()["user"]["email"] == "test@example.com"
-
-def test_register_duplicate_email(client):
-    # First user
-    client.post("/auth/register", json={
-        "email": "test@example.com",
-        "username": "user1",
-        "password": "Password123!"
-    })
-
-    # Duplicate email
-    response = client.post("/auth/register", json={
-        "email": "test@example.com",
-        "username": "user2",
-        "password": "Password123!"
-    })
-
-    assert response.status_code == 409
-    assert "already exists" in response.json()["detail"]
-
-def test_login_success(client):
-    # Register
-    client.post("/auth/register", json={
-        "email": "test@example.com",
-        "username": "testuser",
-        "password": "Password123!"
-    })
-
-    # Login
-    response = client.post("/auth/login", json={
-        "email": "test@example.com",
-        "password": "Password123!"
-    })
-
-    assert response.status_code == 200
-    assert "access_token" in response.json()
-
-def test_protected_route_without_token(client):
-    response = client.get("/auth/me")
-    assert response.status_code == 401
-
-def test_protected_route_with_token(client):
-    # Register and get token
-    register_response = client.post("/auth/register", json={
-        "email": "test@example.com",
-        "username": "testuser",
-        "password": "Password123!"
-    })
-    token = register_response.json()["access_token"]
-
-    # Access protected route
-    response = client.get("/auth/me", headers={
-        "Authorization": f"Bearer {token}"
-    })
-
-    assert response.status_code == 200
-    assert response.json()["email"] == "test@example.com"
-```
+**Good response shape:**
+- recognizes that the primary task belongs to `testing-strategies`
+- keeps any backend-specific advice scoped as a handoff, not the full answer
+- avoids turning `backend-testing` into a universal QA governance skill
 
 ## Best practices
-
-### Quality improvements
-
-1. **TDD (Test-Driven Development)**: Write tests before writing code
-   - Clarifies requirements
-   - Improves design
-   - Naturally achieves high coverage
-
-2. **Given-When-Then pattern**: Write tests in BDD style
-   ```typescript
-   it('should return 404 when user not found', async () => {
-     // Given: a non-existent user ID
-     const nonExistentId = 'non-existent-uuid';
-
-     // When: attempting to look up that user
-     const response = await request(app).get(`/users/${nonExistentId}`);
-
-     // Then: 404 response
-     expect(response.status).toBe(404);
-   });
-   ```
-
-3. **Test Fixtures**: Reusable test data
-   ```typescript
-   const validUser = {
-     email: 'test@example.com',
-     username: 'testuser',
-     password: 'Password123!'
-   };
-   ```
-
-### Efficiency improvements
-
-- **Parallel execution**: Speed up tests with Jest's `--maxWorkers` option
-- **Snapshot Testing**: Save snapshots of UI components or JSON responses
-- **Coverage thresholds**: Enforce minimum coverage in jest.config.js
-
-## Common Issues
-
-### Issue 1: Test failures caused by shared state between tests
-
-**Symptom**: Passes individually but fails when run together
-
-**Cause**: DB state shared due to missing beforeEach/afterEach
-
-**Fix**:
-```typescript
-beforeEach(async () => {
-  await db.migrate.rollback();
-  await db.migrate.latest();
-});
-```
-
-### Issue 2: "Jest did not exit one second after the test run"
-
-**Symptom**: Process does not exit after tests complete
-
-**Cause**: DB connections, servers, etc. not cleaned up
-
-**Fix**:
-```typescript
-afterAll(async () => {
-  await db.destroy();
-  await server.close();
-});
-```
-
-### Issue 3: Async test timeout
-
-**Symptom**: "Timeout - Async callback was not invoked"
-
-**Cause**: Missing async/await or unhandled Promise
-
-**Fix**:
-```typescript
-// Bad
-it('should work', () => {
-  request(app).get('/users');  // Promise not handled
-});
-
-// Good
-it('should work', async () => {
-  await request(app).get('/users');
-});
-```
+1. Protect the real backend regression risk before chasing coverage percentages.
+2. Prefer layered backend coverage over a giant brittle end-to-end suite.
+3. Make fixture, seed, and auth bootstrap strategy explicit; hidden state is where trust dies.
+4. Separate local-fast, PR, and scheduled coverage lanes on purpose.
+5. Use real dependencies when wire behavior matters, but be honest about the cost.
+6. Treat flaky tests as a trust problem, not just an annoyance.
+7. Hand off contract design, auth implementation, and broad test policy to adjacent skills instead of absorbing them.
 
 ## References
-
-### Official docs
-- [Jest Documentation](https://jestjs.io/docs/getting-started)
-- [Pytest Documentation](https://docs.pytest.org/)
-- [Supertest GitHub](https://github.com/visionmedia/supertest)
-
-### Learning resources
-- [Testing JavaScript with Kent C. Dodds](https://testingjavascript.com/)
-- [Test-Driven Development by Example (Kent Beck)](https://www.amazon.com/Test-Driven-Development-Kent-Beck/dp/0321146530)
-
-### Tools
-- [Istanbul/nyc](https://istanbul.js.org/) - code coverage
-- [nock](https://github.com/nock/nock) - HTTP mocking
-- [faker.js](https://fakerjs.dev/) - test data generation
-
-## Metadata
-
-### Version
-- **Current version**: 1.0.0
-- **Last updated**: 2025-01-01
-- **Compatible platforms**: Claude, ChatGPT, Gemini
-
-### Related skills
-- [api-design](../api-design/SKILL.md): Design APIs alongside tests
-- [authentication-setup](../authentication/SKILL.md): Test authentication systems
-
-### Tags
-`#testing` `#backend` `#Jest` `#Pytest` `#unit-test` `#integration-test` `#TDD` `#API-test`
+- [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html)
+- [GitLab Docs: Unhealthy tests / flaky tests](https://docs.gitlab.com/development/testing_guide/unhealthy_tests/#flaky-tests/)
+- [Testcontainers](https://testcontainers.com/)
+- [Playwright API testing](https://playwright.dev/docs/api-testing)
+- [Schemathesis](https://schemathesis.readthedocs.io/en/stable/)

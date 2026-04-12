@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-04-12T12:15:17Z",
+  "generated": "2026-04-12T15:14:25Z",
   "skill_count": 85,
   "categories": {
     "planning-review": [
@@ -1019,67 +1019,32 @@
     },
     {
       "name": "backend-testing",
-      "description": "Write comprehensive backend tests including unit tests, integration tests, and API tests. Use when testing REST APIs, database operations, authentication flows, or business logic. Handles Jest, Pytest, Mocha, testing strategies, mocking, and test coverage.",
+      "description": "Design and implement backend test coverage for APIs, services, auth flows, data access, and integration boundaries. Use when the user needs unit/service/API/contract coverage, fixture strategy, dependency realism, flaky test triage, or local-vs-CI test layering for backend changes.",
       "category": "backend",
       "path": "backend/backend-testing/SKILL.md",
       "tags": [
         "testing",
         "backend",
-        "unit-test",
+        "api-test",
         "integration-test",
-        "API-test",
-        "Jest",
-        "Pytest",
-        "TDD"
+        "contract-test",
+        "testcontainers",
+        "ci"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
         "Gemini"
       ],
-      "allowed_tools": [],
-      "commands": [
-        {
-          "command": "npm install --save-dev jest ts-jest @types/jest supertest @types/supertest",
-          "source": "backend/backend-testing/SKILL.md"
-        },
-        {
-          "command": "--------------------------|---------|----------|---------|---------|",
-          "source": "backend/backend-testing/SKILL.md"
-        },
-        {
-          "command": "File                      | % Stmts | % Branch | % Funcs | % Lines |",
-          "source": "backend/backend-testing/SKILL.md"
-        },
-        {
-          "command": "--------------------------|---------|----------|---------|---------|",
-          "source": "backend/backend-testing/SKILL.md"
-        },
-        {
-          "command": "All files                 |   92.5  |   88.3   |   95.2  |   92.8  |",
-          "source": "backend/backend-testing/SKILL.md"
-        },
-        {
-          "command": "auth/                    |   95.0  |   90.0   |  100.0  |   95.0  |",
-          "source": "backend/backend-testing/SKILL.md"
-        },
-        {
-          "command": "middleware.ts           |   95.0  |   90.0   |  100.0  |   95.0  |",
-          "source": "backend/backend-testing/SKILL.md"
-        },
-        {
-          "command": "routes.ts               |   95.0  |   90.0   |  100.0  |   95.0  |",
-          "source": "backend/backend-testing/SKILL.md"
-        },
-        {
-          "command": "utils/                   |   90.0  |   85.0   |   90.0  |   90.0  |",
-          "source": "backend/backend-testing/SKILL.md"
-        },
-        {
-          "command": "password.ts             |   90.0  |   85.0   |   90.0  |   90.0  |",
-          "source": "backend/backend-testing/SKILL.md"
-        }
-      ]
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
     },
     {
       "name": "database-schema-design",

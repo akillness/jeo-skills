@@ -1,15 +1,25 @@
 N:backend-testing
-D:Write comprehensive backend tests including unit tests, integration tests, and API tests. Use whe...
-G:testing backend unit-test integration-test API-test
-U[5]:
-  **Developing new features**: Write tests first using Test-Driven Development (TDD)
-  **Adding API endpoints**: Test success/failure cases of REST APIs
-  **Bug fixing**: Add tests to prevent regressions
-  **Before refactoring**: Write tests to ensure existing behavior
-  **CI/CD setup**: Build an automated testing pipeline
-S[5]{n,action}:
-  1,Set up test environment
-  2,Write Unit Tests (business logic)
-  3,Integration Test (API endpoints)
-  4,Authentication/Authorization testing
-  5,Mocking and test isolation
+D:Design and implement backend test coverage for APIs, services, auth flows, data ac...
+G:testing backend api-test integration-test contract-test testcontainers ci
+U[6]:
+  Add or repair backend coverage for APIs, service objects, repositories, workers, or auth flows
+  Choose the right mix of unit, integration, contract, smoke, or selective end-to-end tests
+  Design fixture, factory, seed, or test-data reset strategy for a service
+  Decide whether dependencies should be mocked, stubbed, containerized, or hit for real
+  Triage flaky backend tests, CI-only failures, or environment drift between local and CI runs
+  Review whether a backend suite is too broad, too slow, too brittle, or too mock-heavy
+S[7]{n,action}:
+  1,Frame the backend test target
+  2,Choose the right test layers
+  3,Decide mock vs real dependency strategy
+  4,Design fixtures, data, and environment control
+  5,Shape the local and CI workflow separately
+  6,Produce the backend test packet
+  7,Review for trustworthiness and scope control
+R[6]:
+  Protect real backend regression risk before chasing coverage percentages
+  Prefer layered backend coverage over giant brittle end-to-end suites
+  Make fixture, seed, and auth bootstrap strategy explicit
+  Split local-fast, PR, and scheduled coverage lanes intentionally
+  Use real dependencies when wire behavior matters
+  Hand off broad QA policy, contract design, and auth implementation intentionally
