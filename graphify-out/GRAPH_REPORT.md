@@ -4,18 +4,16 @@
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, support folders, cross-skill mentions, and documentation indexing
 - Total skills: 89
-- Skills with references/: 33
-- Skills with evals/: 32
-- Skills with scripts/: 23
-- Skills with assets/: 0
-- Graph nodes: 180
-- Graph edges: 482
+- Skills with references/: 35
+- Skills with evals/: 34
+- Graph nodes: 184
+- Graph edges: 408
 
 ## Strongest structural findings
-1. `git-workflow` is now a stronger utilities-cluster anchor: it gained both `references/` and `evals/`, sharpened its trigger surface around local Git collaboration, rebase/merge decisions, push safety, and recovery, and now routes clearly away from planning, code review, debugging, and hosted PR administration.
-2. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so wording changes there still materially affect catalog navigation.
-3. Support coverage improved again, but many older generic skills still lack `references/` and `evals/`; upgrading legacy anchors remains higher leverage than adding overlap.
-4. The utilities cluster now has a clearer distinction between local Git workflow hygiene (`git-workflow`), submodule management (`git-submodule`), and broader repo/context tooling such as `graphify`, `llm-wiki`, and `opencontext`.
+1. `system-environment-setup` is now the canonical broader environment-setup anchor: it owns runnable repos, toolchains, Docker/devcontainers, onboarding, local-service parity, and setup-drift diagnosis.
+2. `environment-setup` is now a narrower app-config compatibility skill: it owns `.env` layout, env precedence, validation, secret handoff, and framework-specific config rules while routing broader machine setup outward.
+3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so canonical-vs-alias wording there materially changes how agents discover overlapping skills.
+4. Support coverage improved again in the infrastructure cluster: both environment skills now have `references/` and `evals/`, which raises the floor for a previously weak duplicate pair.
 
 ## Community map
 - agent-development
@@ -30,30 +28,28 @@
 - planning-review
 - project-management
 - search-analysis
-- uncategorized
+- unknown
 - utilities
 
 ## Highest-degree nodes
 - README.ko.md: degree 87
 - README.md: degree 87
 - setup-all-skills-prompt.md: degree 83
-- jeo: degree 18
-- debugging: degree 16
-- bmad-gds: degree 14
-- game-demo-feedback-triage: degree 14
-- bmad: degree 13
-- omx: degree 13
-- task-planning: degree 13
+- task-planning: degree 14
+- bmad-gds: degree 12
+- game-demo-feedback-triage: degree 12
+- system-environment-setup: degree 12
+- environment-setup: degree 10
+- omx: degree 10
+- sprint-retrospective: degree 10
 
 ## Duplicate / consolidation notes
-- `react-best-practices` and `vercel-react-best-practices` form a canonical-plus-alias pair.
-- `design-system` and `frontend-design-system` form a canonical-plus-alias pair.
-- `marketing-automation` and `marketing-skills-collection` form a canonical-plus-alias pair.
-- `survey` remains the research-quality anchor because it has both `references/` and `evals/` support.
-- `bmad-gds` remains a coordinating game-production skill rather than a duplicate of narrower game specialists.
-- `git-workflow` now acts as the local Git collaboration and recovery anchor instead of a vague PR-and-everything cheat sheet.
+- `environment-setup` and `system-environment-setup` now form a canonical-plus-alias pair.
+- `environment-setup` should stay narrow: app config, `.env` structure, validation, secret handoff, and drift cleanup.
+- `system-environment-setup` should stay broad: runnable local environments, containers, toolchains, onboarding, and setup diagnosis.
+- The canonical-vs-alias pattern continues to match prior repo cleanups (`react-best-practices` / `vercel-react-best-practices`, `design-system` / `frontend-design-system`, `marketing-automation` / `marketing-skills-collection`).
 
 ## Recommended maintenance direction
-- Keep modernizing cluster anchors so they route into sharper specialist skills instead of growing into vague mega-skills.
-- Continue adding `references/` and `evals/` to older generic skills before creating more overlapping entries.
-- Re-check README/setup/manifest wording whenever a skill changes in trigger scope, canonical role, or evidence-handling behavior.
+- Keep strengthening old, high-utility anchors with support files before adding new infrastructure overlap.
+- Re-check README/setup/manifest wording any time the environment/setup boundary shifts again.
+- If future work adds secret-manager or Nix-specific depth, keep that as a sub-pattern under the canonical environment anchor rather than a new vague peer skill.

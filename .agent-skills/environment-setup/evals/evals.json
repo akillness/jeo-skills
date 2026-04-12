@@ -1,0 +1,35 @@
+{
+  "skill_name": "environment-setup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Help me organize `.env.example`, `.env.local`, and production config so developers stop guessing which file matters.",
+      "expected_output": "Chooses env-file structure mode and focuses on config layering rather than whole-machine setup.",
+      "assertions": [
+        "Output chooses `env-file-structure` as the main mode.",
+        "Output distinguishes committed templates from local-only overrides.",
+        "Output does not drift into a full Docker/devcontainer setup tutorial."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We keep forgetting required env vars until runtime and it's causing flaky deploy previews.",
+      "expected_output": "Chooses env validation mode, recommends typed validation or fail-fast checks, and keeps the scope on application config.",
+      "assertions": [
+        "Output chooses `env-validation` as the main mode.",
+        "Output mentions schema validation, startup checks, or typed env handling.",
+        "Output keeps the discussion focused on config correctness rather than broad machine setup."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our devcontainer is fine, but secrets and local overrides are still a mess.",
+      "expected_output": "Chooses the secret handoff boundary mode and treats the devcontainer as adjacent context, not the primary scope.",
+      "assertions": [
+        "Output chooses `secret-handoff-boundary` or `drift-cleanup` as the main mode.",
+        "Output names where sensitive values should come from and how local overrides work.",
+        "Output routes broader devcontainer concerns to `system-environment-setup`."
+      ]
+    }
+  ]
+}

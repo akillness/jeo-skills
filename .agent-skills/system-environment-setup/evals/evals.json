@@ -1,0 +1,35 @@
+{
+  "skill_name": "system-environment-setup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up this repo so a new developer can run it locally with the right Node version, Postgres, and Redis.",
+      "expected_output": "Chooses a broader environment-setup mode, includes runtime/tooling plus local services, and does not reduce the task to only env-file structure.",
+      "assertions": [
+        "Output chooses one of the broader setup modes such as `bootstrap-and-onboarding` or `local-services-and-parity`.",
+        "Output mentions runtime/tool version pinning, local services, or container strategy.",
+        "Output routes app-level env-file details to `environment-setup` rather than absorbing everything here."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Everybody's laptop is different. Should we use a devcontainer or just keep fixing local setup docs?",
+      "expected_output": "Chooses the containerized environment mode, names tradeoffs, and avoids pretending containers remove all remaining setup work.",
+      "assertions": [
+        "Output chooses `containerized-dev-environment` as the main mode.",
+        "Output names at least one tradeoff or remaining parity gap.",
+        "Output does not collapse the answer into only `.env` advice."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The README says one thing, Docker says another, and onboarding still breaks for new hires.",
+      "expected_output": "Chooses setup diagnosis, compares setup artifacts, and identifies an authoritative setup story.",
+      "assertions": [
+        "Output chooses `setup-diagnosis-and-hardening` as the main mode.",
+        "Output mentions comparing docs, scripts, or container files against actual commands.",
+        "Output includes a verification or authority step rather than only generic advice."
+      ]
+    }
+  ]
+}

@@ -77,3 +77,11 @@
 - Accepted: rewrite `sprint-retrospective` as a mode-selecting reflection and follow-through skill, add `references/` + `evals/`, and update README / README.ko / `.agent-skills/skills.json` so discovery surfaces reflect the stronger role
 - Rejected: adding a separate async-retro skill; expanding the skill into planning or standup territory; keeping the legacy template-heavy version
 - Wiki files created/updated: `queries/sprint-retrospective-modernization-2026-04-12.md`, `concepts/project-management-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-12] query | Environment skill canonicalization
+- Area researched: environment/app-config overlap across `.env` structure, typed env validation, secret handoff, Docker/devcontainers, onboarding, and runnable-repo setup
+- Survey files created under `.survey/environment-skill-canonicalization-20260412/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `system-environment-setup` as the canonical broader environment anchor, narrow `environment-setup` into an app-config compatibility skill, add `references/` + `evals/` to both, and update README / README.ko / setup prompt / `.agent-skills/skills.json`
+- Rejected: adding a third environment/setup skill; deleting `environment-setup` in the same run; keeping both skills as generic peers
+- Wiki files created/updated: `concepts/infrastructure-environment-cluster.md`, `queries/environment-skill-canonicalization-2026-04-12.md`, `concepts/skill-support-coverage.md`, `index.md`
