@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-13 | Total pages: 20
+> Last updated: 2026-04-13 | Total pages: 21
 
 ## Entities
 
@@ -32,4 +32,5 @@
 - [[task-planning-modernization-2026-04-12]] — Why the best move was upgrading `task-planning` instead of adding another overlapping PM skill.
 - [[log-analysis-modernization-2026-04-13]] — Why the best bounded search-analysis upgrade was rewriting `log-analysis` into a root-cause-first triage skill instead of adding another logging wrapper.
 - [[debugging-modernization-2026-04-13]] — Why the best bounded code-quality upgrade was rewriting `debugging` into a reproduce → isolate → verify workflow instead of adding another generic troubleshooting wrapper.
+- [[code-review-modernization-2026-04-13]] — Why the best bounded code-quality improvement was modernizing `code-review` into a workflow-aware review anchor instead of adding another review-adjacent wrapper.
 

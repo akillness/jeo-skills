@@ -2010,25 +2010,29 @@
     },
     {
       "name": "code-review",
-      "description": "Conduct thorough, constructive code reviews for quality and security. Use when reviewing pull requests, checking code quality, identifying bugs, or auditing security. Handles best practices, SOLID principles, security vulnerabilities, performance analysis, and testing coverage.",
+      "description": "Review diffs, pull requests, merge requests, and patch stacks for correctness, maintainability, security, test gaps, and rollout risk with a workflow-aware review pass. Use when the user wants approve/block guidance, reviewer comments, or pre-merge risk review rather than Git cleanup, debugging, or broad testing-policy design.",
       "category": "code-quality",
       "path": "code-quality/code-review/SKILL.md",
       "tags": [
         "code-review",
         "code-quality",
-        "security",
-        "best-practices",
-        "PR-review"
+        "security-review",
+        "risk-review",
+        "pull-request-review",
+        "diff-review"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
         "Read",
         "Grep",
-        "Glob"
+        "Glob",
+        "Bash",
+        "Write"
       ],
       "commands": []
     },

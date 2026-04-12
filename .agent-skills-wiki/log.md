@@ -125,3 +125,11 @@
 - Accepted: rewrite `debugging` as a reproduce → isolate → hypothesize → verify workflow, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and explicitly route symptom-first evidence reduction to `log-analysis`
 - Rejected: adding another generic troubleshooting wrapper; letting `debugging` absorb raw log triage, broad testing-policy design, or preventive PR audit work
 - Wiki files created/updated: `queries/debugging-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-13] query | Code review modernization
+- Area researched: workflow-aware code review across PR/MR review state, ownership/approval mechanics, missing-evidence handling, frontend preview-heavy review, and the boundary with Git cleanup, debugging, testing strategy, and repo-policy workflows
+- Survey files created under `.survey/code-review-modernization-20260413/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `code-review` as a workflow-aware diff / PR judgment skill, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the sharper role
+- Rejected: adding another PR-review wrapper; letting `code-review` absorb Git mechanics, debugging, testing-policy design, or pure UI-governance review
+- Wiki files created/updated: `queries/code-review-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`
