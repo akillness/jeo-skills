@@ -1,22 +1,21 @@
 N:web-accessibility
-D:Implement web accessibility (a11y) standards following WCAG 2.1 guidelines. Use when building acc...
-G:accessibility a11y WCAG ARIA semantic-HTML
+D:Diagnose and remediate web accessibility issues across semantics, keyboard/focus, labels, ARIA...
+G:accessibility a11y WCAG keyboard focus ARIA screen-reader
 U[5]:
-  **New UI Component Development**: Designing accessible components
-  **Accessibility Audit**: Identifying and fixing accessibility issues in existing sites
-  **Form Implementation**: Writing screen reader-friendly forms
-  **Modals/Dropdowns**: Focus management and keyboard trap prevention
-  **WCAG Compliance**: Meeting legal requirements or standards
+  Accessibility audit with manual follow-up after axe/Lighthouse
+  Keyboard trap / focus return / visible focus remediation
+  Form labels, errors, and live-region announcement fixes
+  Semantic HTML vs ARIA decision-making
+  Accessible modal, form, menu, tab, or toast verification
 S[5]{n,action}:
-  1,Use Semantic HTML
-  2,Implement Keyboard Navigation
-  3,Add ARIA Attributes
-  4,Color Contrast and Visual Accessibility
-  5,Accessibility Testing
-R[6]:
-  `aria-label`
-  `aria-labelledby`
-  `aria-describedby`
-  `aria-live`
-  `aria-hidden`
-  [x] Button purpose is clear (e.g.,
+  1,Frame the accessibility surface
+  2,Separate automated findings from manual follow-up
+  3,Prefer semantic HTML before ARIA
+  4,Fix keyboard and focus behavior first
+  5,Produce the remediation and verification packet
+R[5]:
+  structure and semantics
+  keyboard and focus
+  name role value
+  content and feedback
+  visual perception

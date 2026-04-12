@@ -10,10 +10,11 @@ sources: [.survey/frontend-skill-consolidation-20260412/context.md, .survey/fron
 # Frontend Skill Canonicalization
 
 ## Durable finding
-The frontend cluster now has **two** true canonical-vs-alias pairs and one clearer architecture anchor:
+The frontend cluster now has **two** true canonical-vs-alias pairs plus two clearer anchors:
 - `react-best-practices` owns general React/Next.js performance work, while `vercel-react-best-practices` survives only as a compatibility alias.
 - `design-system` owns general frontend UI-system work, while `frontend-design-system` survives only as a compatibility alias.
 - `state-management` now owns React state-boundary decisions across local, shared, URL/form, server, and long-lived client workflow state instead of remaining a generic library-tour skill.
+- `web-accessibility` now owns accessibility remediation plus manual-vs-automated verification, while `web-design-guidelines` stays the broader UI-review lane and `ui-component-patterns` / `responsive-design` keep component-API and viewport work separate.
 
 ## Why this matters
 - Tier-1 discovery relies heavily on compact skill metadata.
@@ -29,3 +30,4 @@ When two frontend skills compete at the metadata layer but not in long-term user
 - [[react-skill-canonicalization-2026-04-12]]
 - [[design-system-canonicalization-2026-04-12]]
 - [[state-management-modernization-2026-04-13]]
+- [[web-accessibility-modernization-2026-04-13]]

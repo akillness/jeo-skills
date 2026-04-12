@@ -1,0 +1,44 @@
+{
+  "skill_name": "web-accessibility",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this checkout modal for accessibility issues and tell me what to test manually after axe.",
+      "expected_output": "Produces an accessibility audit/remediation packet that distinguishes automated findings from manual follow-up and prioritizes keyboard/focus behavior.",
+      "assertions": [
+        "Output classifies the problem as accessibility remediation or audit work",
+        "Output includes manual verification after automated tooling",
+        "Output mentions focus management or keyboard behavior"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Fix keyboard trap and focus return problems in this React modal.",
+      "expected_output": "Keeps ownership inside web-accessibility, prioritizes keyboard and focus fixes, and does not collapse the answer into generic UI review.",
+      "assertions": [
+        "Output keeps the task in web-accessibility rather than routing it away",
+        "Output prioritizes focus trap or focus return behavior",
+        "Output prefers remediation guidance over generic WCAG summary"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our button primitive API is messy; should this be web-accessibility or ui-component-patterns?",
+      "expected_output": "Splits accessibility remediation from reusable component API ownership and routes the API-design portion to ui-component-patterns.",
+      "assertions": [
+        "Output distinguishes between accessibility fixes and component API architecture",
+        "Output routes API design work to ui-component-patterns",
+        "Output preserves web-accessibility for labels, focus, or accessible-name concerns"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review these UI files against broader design and polish rules, not just WCAG.",
+      "expected_output": "Routes the task to web-design-guidelines instead of over-triggering web-accessibility.",
+      "assertions": [
+        "Output routes broader UI review to web-design-guidelines",
+        "Output explains that web-accessibility is narrower than a full UI/polish review"
+      ]
+    }
+  ]
+}

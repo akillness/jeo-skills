@@ -1,631 +1,290 @@
 ---
 name: web-accessibility
-description: Implement web accessibility (a11y) standards following WCAG 2.1 guidelines. Use when building accessible UIs, fixing accessibility issues, or ensuring compliance with disability standards. Handles ARIA attributes, keyboard navigation, screen readers, semantic HTML, and accessibility testing.
+description: >
+  Diagnose and remediate web accessibility issues across semantic HTML, keyboard
+  support, focus management, labels, ARIA, contrast, motion, and manual-vs-
+  automated verification. Use when the user needs an accessibility audit,
+  accessibility remediation plan, WCAG-oriented implementation guidance, or help
+  deciding what to test manually after tools like axe or Lighthouse. Triggers on:
+  a11y, accessibility audit, keyboard trap, focus return, screen reader issue,
+  aria-label, semantic HTML, color contrast, WCAG, accessible modal, accessible
+  form, and what manual accessibility checks are still required.
+allowed-tools: Read Write Bash Grep Glob
+compatibility: >
+  Best for frontend and fullstack web work where the main problem is
+  accessibility remediation or verification. Not for broad UI polish reviews,
+  pure component API architecture, or viewport-only responsive layout work.
+license: MIT
 metadata:
-  tags: accessibility, a11y, WCAG, ARIA, semantic-HTML, screen-reader
-  platforms: Claude, ChatGPT, Gemini
+  tags: accessibility, a11y, wcag, aria, keyboard-navigation, focus-management, screen-reader, frontend
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0"
+  source: akillness/oh-my-skills
 ---
 
+# Web Accessibility
 
-# Web Accessibility (A11y)
+Use this skill when the main question is **"what accessibility issue is present, how do we fix it, and what still needs manual verification beyond automated scans?"**
 
+The job is not to dump generic WCAG prose or a giant widget cookbook.
+The job is to:
+1. identify the accessibility failure mode,
+2. separate automated findings from manual/assistive-technology follow-up,
+3. fix semantics, labeling, focus, keyboard, feedback, and media behavior at the right layer,
+4. route adjacent design-review or component-architecture work to the right neighboring skill,
+5. leave behind a short remediation and verification packet.
+
+Read [references/audit-remediation-checklist.md](references/audit-remediation-checklist.md) before handling a broad audit or release-critical accessibility pass.
+Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `web-accessibility`, `web-design-guidelines`, `ui-component-patterns`, `responsive-design`, or `design-system` should own the next step.
 
 ## When to use this skill
+- Audit a web flow, page, or component for accessibility issues and decide what to test beyond automated tooling
+- Fix keyboard traps, missing focus return, invisible focus states, or broken tab order
+- Repair labels, instructions, error messages, landmarks, headings, live regions, and form semantics
+- Choose semantic HTML versus ARIA and remove unnecessary role-heavy implementations
+- Review accessibility behavior for modals, menus, tabs, accordions, toasts, dialogs, carousels, and forms
+- Turn vague requests like “make this accessible” into a concrete remediation + verification plan
+- Prepare an accessibility check packet for implementation, QA, or release review
 
-- **New UI Component Development**: Designing accessible components
-- **Accessibility Audit**: Identifying and fixing accessibility issues in existing sites
-- **Form Implementation**: Writing screen reader-friendly forms
-- **Modals/Dropdowns**: Focus management and keyboard trap prevention
-- **WCAG Compliance**: Meeting legal requirements or standards
-
-## Input Format
-
-### Required Information
-- **Framework**: React, Vue, Svelte, Vanilla JS, etc.
-- **Component Type**: Button, Form, Modal, Dropdown, Navigation, etc.
-- **WCAG Level**: A, AA, AAA (default: AA)
-
-### Optional Information
-- **Screen Reader**: NVDA, JAWS, VoiceOver (for testing)
-- **Automated Testing Tool**: axe-core, Pa11y, Lighthouse (default: axe-core)
-- **Browser**: Chrome, Firefox, Safari (default: Chrome)
-
-### Input Example
-
-```
-Make a React modal component accessible:
-- Framework: React + TypeScript
-- WCAG Level: AA
-- Requirements:
-  - Focus trap (focus stays inside the modal)
-  - Close with ESC key
-  - Close by clicking the background
-  - Title/description read by screen readers
-```
+## When not to use this skill
+- **The main task is broad UI polish, copy hierarchy, spacing, consistency, or multi-rule design review** → use `web-design-guidelines`
+- **The main task is reusable primitive/component API design, slot/variant structure, or controlled-vs-uncontrolled component architecture** → use `ui-component-patterns` or `design-system`
+- **The main task is viewport adaptation, mobile layout behavior, breakpoint selection, or responsive media sizing** → use `responsive-design`
+- **The main task is general React performance or rendering behavior** → use `react-best-practices`
+- **The task is only to run one tool and paste raw findings with no remediation judgment**; in that case run the tool directly, then return here to interpret and prioritize
 
 ## Instructions
 
-### Step 1: Use Semantic HTML
+### Step 1: Frame the accessibility surface
+Before suggesting fixes, classify what kind of accessibility surface is failing.
 
-Use meaningful HTML elements to make the structure clear.
+Use one or more of these buckets:
+- **Structure and semantics** — landmarks, headings, lists, tables, button/link semantics, form labels
+- **Keyboard and focus** — tab order, focus visibility, focus trap, focus return, roving tabindex, escape behavior
+- **Name / role / value** — labels, accessible names, state announcements, ARIA relationships
+- **Content and feedback** — error text, instructions, validation timing, live regions, status updates
+- **Visual perception** — color contrast, reduced motion, visible states, zoom/reflow side effects
+- **Media and alternatives** — alt text, captions, transcripts, decorative media handling
 
-**Tasks**:
-- Use semantic tags: `<button>`, `<nav>`, `<main>`, `<header>`, `<footer>`, etc.
-- Avoid overusing `<div>` and `<span>`
-- Use heading hierarchy (`<h1>` ~ `<h6>`) correctly
-- Connect `<label>` with `<input>`
+If multiple buckets are involved, list them explicitly instead of treating the whole issue as a single “a11y bug.”
 
-**Example** (❌ Bad vs ✅ Good):
+Quick frame:
+```markdown
+Accessibility surfaces:
+- Keyboard and focus: modal traps focus but does not restore it on close
+- Name / role / value: icon-only close button has no accessible name
+- Content and feedback: form validation errors are not announced
+```
+
+### Step 2: Separate automated findings from manual follow-up
+Do not pretend an automated scan is the full answer.
+
+Use this split:
+- **Automated-friendly checks** — missing labels, basic ARIA misuse, contrast on simple cases, duplicate IDs, landmark/heading presence
+- **Manual checks required** — logical tab order, focus visibility, keyboard trap behavior, screen-reader announcement quality, alternative-text usefulness, content clarity, timing/motion comfort, realistic task completion
+- **Assistive-technology follow-up** — when a flow is critical, dynamic, widget-heavy, or already known to confuse screen-reader users
+
+Good framing:
+```markdown
+Automated scan can confirm:
+- missing form labels
+- icon button missing accessible name
+- color contrast failures on solid backgrounds
+
+Manual verification still required:
+- opening the modal moves focus to the right element
+- Escape closes it and focus returns logically
+- screen reader announces the dialog title and error summary
+```
+
+If the user mentions axe, Lighthouse, Pa11y, Accessibility Insights, or another scanner, treat that as the **start** of the workflow, not the entire workflow.
+
+### Step 3: Prefer semantic HTML before ARIA
+If native HTML already solves the problem, use it first.
+
+Common rules:
+- use `<button>` for button behavior, not clickable `<div>` or `<span>`
+- use real `<label>` relationships for inputs before adding ARIA labels everywhere
+- use `<nav>`, `<main>`, `<header>`, `<footer>`, `<table>`, `<th>`, and headings correctly before adding roles
+- use ARIA to express missing semantics or state only when native HTML cannot carry them alone
+
+Ask these questions:
+1. Is this element interactive?
+2. Does native HTML already provide the right role and keyboard behavior?
+3. If ARIA is added, does it clarify state, relationship, or announcement rather than patching bad markup?
+
+Bad pattern:
 ```html
-<!-- ❌ Bad example: using only div and span -->
-<div class="header">
-  <span class="title">My App</span>
-  <div class="nav">
-    <div class="nav-item" onclick="navigate()">Home</div>
-    <div class="nav-item" onclick="navigate()">About</div>
-  </div>
-</div>
-
-<!-- ✅ Good example: semantic HTML -->
-<header>
-  <h1>My App</h1>
-  <nav aria-label="Main navigation">
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/about">About</a></li>
-    </ul>
-  </nav>
-</header>
+<div role="button" tabindex="0" onclick="save()">Save</div>
 ```
 
-**Form Example**:
+Better pattern:
 ```html
-<!-- ❌ Bad example: no label -->
-<input type="text" placeholder="Enter your name">
-
-<!-- ✅ Good example: label connected -->
-<label for="name">Name:</label>
-<input type="text" id="name" name="name" required>
-
-<!-- Or wrap with label -->
-<label>
-  Email:
-  <input type="email" name="email" required>
-</label>
+<button type="button" onclick="save()">Save</button>
 ```
 
-### Step 2: Implement Keyboard Navigation
+### Step 4: Fix keyboard and focus behavior first for interactive flows
+When users cannot operate the UI with a keyboard, that is usually a priority issue.
 
-Ensure all features are usable without a mouse.
+Check:
+- every interactive control is reachable without a mouse
+- tab order follows visual/task logic
+- focus state is visible and not removed without replacement
+- opening overlays places focus in the right place
+- closing overlays returns focus logically
+- composite widgets use the correct arrow-key / escape / enter / space behavior
+- trapped focus only exists where it should, such as an active modal dialog
 
-**Tasks**:
-- Move focus with Tab and Shift+Tab
-- Activate buttons with Enter/Space
-- Navigate lists/menus with arrow keys
-- Close modals/dropdowns with ESC
-- Use `tabindex` appropriately
+Typical failure → fix mapping:
+- **keyboard trap with no exit** → ensure Escape and close controls work, and restore focus to the invoking control
+- **focus disappears on route or dialog close** → move focus to main content, heading, or invoker intentionally
+- **custom widget uses click only** → add native semantics or implement full keyboard interaction, not partial `tabindex` hacks
+- **`outline: none` with no replacement** → restore visible `:focus-visible` styling
 
-**Decision Criteria**:
-- Interactive elements → `tabindex="0"` (focusable)
-- Exclude from focus order → `tabindex="-1"` (programmatic focus only)
-- Do not change focus order → avoid using `tabindex="1+"`
+### Step 5: Repair names, labels, instructions, and announcements
+Many accessibility failures are not about widgets being absent; they are about meaning being unclear.
 
-**Example** (React Dropdown):
-```typescript
-import React, { useState, useRef, useEffect } from 'react';
+Audit:
+- icon-only buttons need an accessible name
+- form fields need labels and useful instructions
+- errors should be tied to fields and surfaced in plain language
+- dynamic status updates should be announced appropriately
+- helper text, required state, and validation timing should make sense without vision alone
 
-interface DropdownProps {
-  label: string;
-  options: { value: string; label: string }[];
-  onChange: (value: string) => void;
-}
+Useful fixes:
+- `aria-label` only when visible text is not available and no better labeling relationship exists
+- `aria-describedby` for hint/error text that should be read with a field
+- `aria-live="polite"` for non-blocking async updates such as save confirmations or validation messages
+- explicit error summary + focus management on submit when multiple fields fail
 
-function AccessibleDropdown({ label, options, onChange }: DropdownProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
+Avoid using ARIA to mask unclear copy. Rewrite the user-facing text when that is the real issue.
 
-  // Keyboard handler
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        if (!isOpen) {
-          setIsOpen(true);
-        } else {
-          setSelectedIndex((prev) => (prev + 1) % options.length);
-        }
-        break;
+### Step 6: Handle common component families with the right remediation lens
+Use the failure mode, not the component name alone, to choose the fix.
 
-      case 'ArrowUp':
-        e.preventDefault();
-        if (!isOpen) {
-          setIsOpen(true);
-        } else {
-          setSelectedIndex((prev) => (prev - 1 + options.length) % options.length);
-        }
-        break;
+#### Forms
+Prioritize labels, hints, required-state communication, inline error clarity, and error-summary focus.
 
-      case 'Enter':
-      case ' ':
-        e.preventDefault();
-        if (isOpen) {
-          onChange(options[selectedIndex].value);
-          setIsOpen(false);
-          buttonRef.current?.focus();
-        } else {
-          setIsOpen(true);
-        }
-        break;
+#### Modals / dialogs
+Prioritize initial focus, focus trap only while open, escape/close behavior, background inertness, and logical focus return.
 
-      case 'Escape':
-        e.preventDefault();
-        setIsOpen(false);
-        buttonRef.current?.focus();
-        break;
-    }
-  };
+#### Menus / listboxes / tabs / accordions
+Prioritize correct roles only when needed, arrow-key behavior, selected-state announcement, and avoiding over-complex custom widgets when simpler native controls would work.
 
-  return (
-    <div className="dropdown">
-      <button
-        ref={buttonRef}
-        onClick={() => setIsOpen(!isOpen)}
-        onKeyDown={handleKeyDown}
-        aria-haspopup="listbox"
-        aria-expanded={isOpen}
-        aria-labelledby="dropdown-label"
-      >
-        {label}
-      </button>
+#### Toasts / async validation / status banners
+Prioritize timely announcement without hijacking focus unnecessarily.
 
-      {isOpen && (
-        <ul
-          ref={listRef}
-          role="listbox"
-          aria-labelledby="dropdown-label"
-          onKeyDown={handleKeyDown}
-          tabIndex={-1}
-        >
-          {options.map((option, index) => (
-            <li
-              key={option.value}
-              role="option"
-              aria-selected={index === selectedIndex}
-              onClick={() => {
-                onChange(option.value);
-                setIsOpen(false);
-              }}
-            >
-              {option.label}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
+#### Tables / data-heavy views
+Prioritize header association, caption/summary clarity where needed, sortable-state announcement, and keyboard access to interactive cells.
+
+### Step 7: Route adjacent work correctly
+This skill owns accessibility remediation and verification, not every adjacent frontend concern.
+
+Typical handoffs:
+- **`web-design-guidelines`** — broader UI/design/polish/compliance review across multiple rule families, not just accessibility
+- **`ui-component-patterns`** — reusable primitive APIs, composition, slot/variant design, controlled/uncontrolled boundaries
+- **`design-system`** — system-level token/pattern/primitive decisions before individual accessibility fixes
+- **`responsive-design`** — breakpoint and viewport adaptation when the main bug is layout behavior rather than accessibility semantics
+- **`react-best-practices`** — rendering/performance/hydration issues that only incidentally touch accessibility
+
+If the user asks “is this accessible and how do we fix it?”, stay here.
+If the user asks “how should our button API be designed for all variants?” route to `ui-component-patterns`.
+If the user asks “review this UI against broader design rules and product polish,” route to `web-design-guidelines`.
+
+### Step 8: Produce the remediation + verification packet
+End with a concise artifact someone can act on.
+
+Preferred format:
+```markdown
+# Accessibility Remediation Packet
+
+## Surface
+- Flow/component:
+- Accessibility buckets:
+- Severity / user impact:
+
+## Findings
+1. ...
+2. ...
+3. ...
+
+## Recommended fixes
+- Semantic / markup:
+- Keyboard / focus:
+- Labels / announcements:
+- Visual / motion / contrast:
+
+## Verification
+- Automated:
+- Manual keyboard:
+- Manual screen-reader / AT:
+- Out of scope for now:
+
+## Route-outs
+- `web-design-guidelines` / `ui-component-patterns` / `responsive-design` / other
 ```
 
-### Step 3: Add ARIA Attributes
-
-Provide additional context for screen readers.
-
-**Tasks**:
-- `aria-label`: Define the element's name
-- `aria-labelledby`: Reference another element as a label
-- `aria-describedby`: Provide additional description
-- `aria-live`: Announce dynamic content changes
-- `aria-hidden`: Hide from screen readers
-
-**Checklist**:
-- [x] All interactive elements have clear labels
-- [x] Button purpose is clear (e.g., "Submit form" not "Click")
-- [x] State change announcements (aria-live)
-- [x] Decorative images use alt="" or aria-hidden="true"
-
-**Example** (Modal):
-```tsx
-function AccessibleModal({ isOpen, onClose, title, children }) {
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  // Focus trap when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      modalRef.current?.focus();
-    }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
-      ref={modalRef}
-      tabIndex={-1}
-      onKeyDown={(e) => {
-        if (e.key === 'Escape') {
-          onClose();
-        }
-      }}
-    >
-      <div className="modal-overlay" onClick={onClose} aria-hidden="true" />
-
-      <div className="modal-content">
-        <h2 id="modal-title">{title}</h2>
-        <div id="modal-description">
-          {children}
-        </div>
-
-        <button onClick={onClose} aria-label="Close modal">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-    </div>
-  );
-}
-```
-
-**aria-live Example** (Notifications):
-```tsx
-function Notification({ message, type }: { message: string; type: 'success' | 'error' }) {
-  return (
-    <div
-      role="alert"
-      aria-live="assertive"  // Immediate announcement (error), "polite" announces in turn
-      aria-atomic="true"     // Read the entire content
-      className={`notification notification-${type}`}
-    >
-      {type === 'error' && <span aria-label="Error">⚠️</span>}
-      {type === 'success' && <span aria-label="Success">✅</span>}
-      {message}
-    </div>
-  );
-}
-```
-
-### Step 4: Color Contrast and Visual Accessibility
-
-Ensure sufficient contrast ratios for users with visual impairments.
-
-**Tasks**:
-- WCAG AA: text 4.5:1, large text 3:1
-- WCAG AAA: text 7:1, large text 4.5:1
-- Do not convey information by color alone (use icons, patterns alongside)
-- Clearly indicate focus (outline)
-
-**Example** (CSS):
-```css
-/* ✅ Sufficient contrast (text #000 on #FFF = 21:1) */
-.button {
-  background-color: #0066cc;
-  color: #ffffff;  /* contrast ratio 7.7:1 */
-}
-
-/* ✅ Focus indicator */
-button:focus,
-a:focus {
-  outline: 3px solid #0066cc;
-  outline-offset: 2px;
-}
-
-/* ❌ outline: none is forbidden! */
-button:focus {
-  outline: none;  /* Never use this */
-}
-
-/* ✅ Indicate state with color + icon */
-.error-message {
-  color: #d32f2f;
-  border-left: 4px solid #d32f2f;
-}
-
-.error-message::before {
-  content: '⚠️';
-  margin-right: 8px;
-}
-```
-
-### Step 5: Accessibility Testing
-
-Validate accessibility with automated and manual testing.
-
-**Tasks**:
-- Automated scan with axe DevTools
-- Check Lighthouse Accessibility score
-- Test all features with keyboard only
-- Screen reader testing (NVDA, VoiceOver)
-
-**Example** (Jest + axe-core):
-```typescript
-import { render } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
-import AccessibleButton from './AccessibleButton';
-
-expect.extend(toHaveNoViolations);
-
-describe('AccessibleButton', () => {
-  it('should have no accessibility violations', async () => {
-    const { container } = render(
-      <AccessibleButton onClick={() => {}}>
-        Click Me
-      </AccessibleButton>
-    );
-
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it('should be keyboard accessible', () => {
-    const handleClick = jest.fn();
-    const { getByRole } = render(
-      <AccessibleButton onClick={handleClick}>
-        Click Me
-      </AccessibleButton>
-    );
-
-    const button = getByRole('button');
-
-    // Enter key
-    button.focus();
-    fireEvent.keyDown(button, { key: 'Enter' });
-    expect(handleClick).toHaveBeenCalled();
-
-    // Space key
-    fireEvent.keyDown(button, { key: ' ' });
-    expect(handleClick).toHaveBeenCalledTimes(2);
-  });
-});
-```
+If the right answer is “the automated tool is correct, but the real next step is manual focus and screen-reader verification,” say that explicitly.
 
 ## Output format
+Always return an **accessibility remediation packet**, **accessibility audit summary**, or **manual-vs-automated verification plan**.
 
-### Basic Checklist
-
-```markdown
-## Accessibility Checklist
-
-### Semantic HTML
-- [x] Use semantic HTML tags (`<button>`, `<nav>`, `<main>`, etc.)
-- [x] Heading hierarchy is correct (h1 → h2 → h3)
-- [x] All form labels are connected
-
-### Keyboard Navigation
-- [x] All interactive elements accessible via Tab
-- [x] Buttons activated with Enter/Space
-- [x] Modals/dropdowns closed with ESC
-- [x] Focus indicator is clear (outline)
-
-### ARIA
-- [x] `role` used appropriately
-- [x] `aria-label` or `aria-labelledby` provided
-- [x] `aria-live` used for dynamic content
-- [x] Decorative elements use `aria-hidden="true"`
-
-### Visual
-- [x] Color contrast meets WCAG AA (4.5:1)
-- [x] Information not conveyed by color alone
-- [x] Text size can be adjusted
-- [x] Responsive design
-
-### Testing
-- [x] 0 axe DevTools violations
-- [x] Lighthouse Accessibility score 90+
-- [x] Keyboard test passed
-- [x] Screen reader test completed
-```
-
-## Constraints
-
-### Mandatory Rules (MUST)
-
-1. **Keyboard Accessibility**: All features must be usable without a mouse
-   - Support Tab, Enter, Space, arrow keys, and ESC
-   - Implement focus trap (for modals)
-
-2. **Alternative Text**: All images must have an `alt` attribute
-   - Meaningful images: descriptive alt text
-   - Decorative images: `alt=""` (screen reader ignores)
-
-3. **Clear Labels**: All form inputs must have an associated label
-   - `<label for="...">` or `aria-label`
-   - Do not use placeholder alone as a substitute for a label
-
-### Prohibited Actions (MUST NOT)
-
-1. **Do Not Remove Outline**: Never use `outline: none`
-   - Disastrous for keyboard users
-   - Must provide a custom focus style instead
-
-2. **Do Not Use tabindex > 0**: Avoid changing focus order
-   - Keep DOM order logical
-   - Exception: only when there is a special reason
-
-3. **Do Not Convey Information by Color Alone**: Accompany with icons or text
-   - Consider users with color blindness
-   - e.g., "Click red item" → "Click ⚠️ Error item"
+Required qualities:
+- classify the failing accessibility surface
+- distinguish automated findings from manual or AT follow-up
+- prefer semantic HTML before ARIA-heavy fixes
+- prioritize keyboard/focus issues for interactive flows
+- tie labels, instructions, and announcements to real user tasks
+- route broader design review or component architecture to the correct neighboring skill
 
 ## Examples
 
-### Example 1: Accessible Form
+### Example 1: modal audit after axe
+**Input**
+> Audit this checkout modal for accessibility issues and tell me what to test manually after axe.
 
-```tsx
-function AccessibleContactForm() {
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+**Output sketch**
+- Surface: keyboard/focus + labels/announcements
+- Findings:
+  1. close button missing accessible name
+  2. focus trap exists but focus does not return to the checkout trigger
+  3. coupon validation message is not announced
+- Manual checks:
+  - tab sequence stays inside dialog only while open
+  - Escape closes dialog
+  - screen reader announces title + error text
+- Route-out: none unless broader visual-polish review is also requested
 
-  return (
-    <form onSubmit={handleSubmit} noValidate>
-      <h2 id="form-title">Contact Us</h2>
-      <p id="form-description">Please fill out the form below to get in touch.</p>
+### Example 2: component-boundary confusion
+**Input**
+> Our button primitive API is messy and some variants are not accessible. Is this web-accessibility or ui-component-patterns?
 
-      {/* Name */}
-      <div className="form-group">
-        <label htmlFor="name">
-          Name <span aria-label="required">*</span>
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          aria-required="true"
-          aria-invalid={!!errors.name}
-          aria-describedby={errors.name ? 'name-error' : undefined}
-        />
-        {errors.name && (
-          <span id="name-error" role="alert" className="error">
-            {errors.name}
-          </span>
-        )}
-      </div>
+**Output sketch**
+- Stay in `web-accessibility` for missing names, focus states, and disabled/loading announcements
+- Route to `ui-component-patterns` for variant API design, slot structure, and reusable primitive architecture
+- If both matter, produce a split plan instead of forcing one skill to own everything
 
-      {/* Email */}
-      <div className="form-group">
-        <label htmlFor="email">
-          Email <span aria-label="required">*</span>
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          aria-required="true"
-          aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? 'email-error' : 'email-hint'}
-        />
-        <span id="email-hint" className="hint">
-          We'll never share your email.
-        </span>
-        {errors.email && (
-          <span id="email-error" role="alert" className="error">
-            {errors.email}
-          </span>
-        )}
-      </div>
+### Example 3: manual checks after Lighthouse
+**Input**
+> Lighthouse says contrast is okay now. What should I still test manually?
 
-      {/* Submit button */}
-      <button type="submit" disabled={submitStatus === 'loading'}>
-        {submitStatus === 'loading' ? 'Submitting...' : 'Submit'}
-      </button>
-
-      {/* Success/failure messages */}
-      {submitStatus === 'success' && (
-        <div role="alert" aria-live="polite" className="success">
-          ✅ Form submitted successfully!
-        </div>
-      )}
-
-      {submitStatus === 'error' && (
-        <div role="alert" aria-live="assertive" className="error">
-          ⚠️ An error occurred. Please try again.
-        </div>
-      )}
-    </form>
-  );
-}
-```
-
-### Example 2: Accessible Tab UI
-
-```tsx
-function AccessibleTabs({ tabs }: { tabs: { id: string; label: string; content: React.ReactNode }[] }) {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
-    switch (e.key) {
-      case 'ArrowRight':
-        e.preventDefault();
-        setActiveTab((index + 1) % tabs.length);
-        break;
-      case 'ArrowLeft':
-        e.preventDefault();
-        setActiveTab((index - 1 + tabs.length) % tabs.length);
-        break;
-      case 'Home':
-        e.preventDefault();
-        setActiveTab(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        setActiveTab(tabs.length - 1);
-        break;
-    }
-  };
-
-  return (
-    <div>
-      {/* Tab List */}
-      <div role="tablist" aria-label="Content sections">
-        {tabs.map((tab, index) => (
-          <button
-            key={tab.id}
-            role="tab"
-            id={`tab-${tab.id}`}
-            aria-selected={activeTab === index}
-            aria-controls={`panel-${tab.id}`}
-            tabIndex={activeTab === index ? 0 : -1}
-            onClick={() => setActiveTab(index)}
-            onKeyDown={(e) => handleKeyDown(e, index)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab Panels */}
-      {tabs.map((tab, index) => (
-        <div
-          key={tab.id}
-          role="tabpanel"
-          id={`panel-${tab.id}`}
-          aria-labelledby={`tab-${tab.id}`}
-          hidden={activeTab !== index}
-          tabIndex={0}
-        >
-          {tab.content}
-        </div>
-      ))}
-    </div>
-  );
-}
-```
+**Output sketch**
+- Verify keyboard order and visible focus across the user journey
+- Verify modal open/close and focus return behavior
+- Verify screen-reader announcement quality for status/error updates
+- Verify zoom/reflow and reduced-motion behavior where relevant
 
 ## Best practices
-
-1. **Semantic HTML First**: ARIA is a last resort
-   - Using the correct HTML element makes ARIA unnecessary
-   - e.g., `<button>` vs `<div role="button">`
-
-2. **Focus Management**: Manage focus on page transitions in SPAs
-   - Move focus to main content on new page load
-   - Provide skip links ("Skip to main content")
-
-3. **Error Messages**: Clear and helpful error messages
-   - "Invalid input" ❌ → "Email must be in format: example@domain.com" ✅
+1. Start with the user task, not the rule number.
+2. Treat automated tools as accelerators, not as proof of accessibility completeness.
+3. Prefer native HTML semantics before ARIA patches.
+4. Keep focus behavior intentional for route changes, overlays, and async validation.
+5. Separate remediation work from broader design-review or component-API architecture work.
+6. When unsure, name the manual verification still required instead of pretending the scan is enough.
 
 ## References
-
-- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
-- [MDN ARIA](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
-- [WebAIM](https://webaim.org/)
-- [axe DevTools](https://www.deque.com/axe/devtools/)
-- [A11y Project](https://www.a11yproject.com/)
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2025-01-01
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Related Skills
-- [ui-component-patterns](../ui-component-patterns/SKILL.md): UI component implementation
-- [responsive-design](../responsive-design/SKILL.md): Responsive design
-
-### Tags
-`#accessibility` `#a11y` `#WCAG` `#ARIA` `#screen-reader` `#keyboard-navigation` `#frontend`
+- [W3C: Evaluating Web Accessibility Overview](https://www.w3.org/WAI/test-evaluate/)
+- [web.dev: Automated accessibility testing](https://web.dev/learn/accessibility/test-automated)
+- [web.dev: Manual accessibility testing](https://web.dev/learn/accessibility/test-manual)
+- [MDN: Keyboard accessible](https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Understanding_WCAG/Keyboard)
+- [A11Y Project checklist](https://www.a11yproject.com/checklist/)

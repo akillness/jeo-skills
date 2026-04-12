@@ -3007,7 +3007,7 @@
     },
     {
       "name": "web-accessibility",
-      "description": "Implement web accessibility (a11y) standards following WCAG 2.1 guidelines. Use when building accessible UIs, fixing accessibility issues, or ensuring compliance with disability standards. Handles ARIA attributes, keyboard navigation, screen readers, semantic HTML, and accessibility testing.",
+      "description": "Diagnose and remediate web accessibility issues across semantic HTML, keyboard support, focus management, labels, ARIA, contrast, motion, and manual-vs-automated verification. Use when the user needs an accessibility audit, accessibility remediation plan, WCAG-oriented implementation guidance, or help deciding what to test manually after tools like axe or Lighthouse.",
       "category": "frontend",
       "path": "frontend/web-accessibility/SKILL.md",
       "tags": [
