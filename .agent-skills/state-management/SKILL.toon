@@ -1,17 +1,23 @@
 N:state-management
-D:Implement state management patterns for frontend applications. Use when managing global state, ha...
-G:state-management React Redux Context Zustand
-U[4]:
-  **Global State Required**: Multiple components share the same data
-  **Props Drilling Problem**: Passing props through 5+ levels
-  **Complex State Logic**: Authentication, shopping cart, themes, etc.
-  **State Synchronization**: Sync server data with client state
-S[5]{n,action}:
-  1,Determine State Scope
-  2,React Context API (Simple Global State)
-  3,Zustand (Modern and Concise State Management)
-  4,Redux Toolkit (Large-Scale Apps)
-  5,Server State Management (React Query / TanStack Query)
-R[2]:
-  **Local State**
-  **Global State**
+D:Design React state boundaries before picking libraries. Use when deciding whether data should...
+G:state-management context zustand redux-toolkit server-state client-state tanstack-query
+U[5]:
+  Decide what kind of state a React problem really is
+  Separate server state from client and UI state
+  Choose Context vs Zustand vs Redux Toolkit vs Jotai
+  Fix prop drilling without over-centralizing the app
+  Produce a state-boundary recommendation brief
+S[7]{n,action}:
+  1,Classify the state type before naming any library
+  2,Choose the smallest ownership layer
+  3,Separate server state from client state
+  4,Choose the right client-state tool only after the boundary is clear
+  5,Handle mixed-mode architectures explicitly
+  6,Route adjacent concerns correctly
+  7,Produce the state-boundary brief
+R[5]:
+  react-best-practices
+  api-design
+  debugging
+  ui-component-patterns
+  responsive-design

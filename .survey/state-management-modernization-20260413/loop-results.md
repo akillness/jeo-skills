@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `state-management/SKILL.md` | Reframing the skill as a state-boundary decision workflow will improve trigger precision and practical usefulness more than preserving library-tour examples | Rewrote the skill around state classification, server-vs-client separation, Context/Zustand/Redux Toolkit/Jotai decision criteria, and route-out boundaries | `validate_skill.sh` passed with 0 errors / 0 warnings; supporting references and evals added; discovery docs updated | Keep | Transferable across React, Next.js, frontend, and fullstack state-architecture prompts |
