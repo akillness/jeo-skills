@@ -30,6 +30,14 @@
 - Rejected: hard-deleting the alias; inventing a new frontend split that the current content does not justify
 - Wiki files created/updated: `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `queries/design-system-canonicalization-2026-04-12.md`, `index.md`
 
+## [2026-04-12] query | Marketing skill canonicalization
+- Area researched: general product/growth marketing intake patterns, template/workflow layers, and the repo overlap between `marketing-automation` and `marketing-skills-collection`
+- Survey files created under `.survey/marketing-skill-canonicalization-20260412/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: sharpen `marketing-automation` as the canonical general marketing router, narrow `marketing-skills-collection` into a compatibility alias, add references/evals, and update README/setup/manifest surfaces
+- Rejected: keeping both as peer marketing skills; adding another broad marketing wrapper; hard-deleting the alias in the same run
+- Wiki files created/updated: `concepts/marketing-cluster.md`, `concepts/skill-support-coverage.md`, `queries/marketing-skill-canonicalization-2026-04-12.md`, `index.md`
+
 ## [2026-04-12] query | BMAD-GDS modernization
 - Area researched: AI-assisted indie game-production orchestration, especially how game teams move between concepting, GDD work, milestone planning, playtest synthesis, build triage, and launch pressure
 - Survey files created under `.survey/bmad-gds-modernization-20260412/`

@@ -3,32 +3,22 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "We need a marketing plan for our B2B SaaS relaunch. Help me choose between landing-page CRO, lifecycle email work, and paid ads, then give me one implementation-ready brief.",
-      "expected_output": "The skill should stay in general marketing mode, choose an appropriate sub-skill or sequence, and produce a KPI-aware marketing brief rather than generic brainstorming.",
+      "prompt": "Use marketing-skills-collection to help me decide what to do with our signup funnel and onboarding emails.",
+      "expected_output": "A legacy-safe Marketing Routing Brief that maps the request to marketing-automation and still chooses one primary lane.",
       "assertions": [
-        "Output identifies a single primary objective or KPI",
-        "Output selects or names a relevant marketing sub-skill category",
-        "Output includes an implementation-oriented deliverable or checklist"
+        "Output notes that marketing-skills-collection maps to marketing-automation or is a compatibility alias",
+        "Output includes the heading 'Marketing Routing Brief'",
+        "Output chooses one primary lane rather than listing every marketing sub-skill"
       ]
     },
     {
       "id": 2,
-      "prompt": "Our prompt pack still references marketing-skills-collection. Use it to map this request into the right lane: improve onboarding emails for trial users who sign up but never activate.",
-      "expected_output": "The skill should remain a valid legacy-compatible entry point, route to a lifecycle/email/onboarding lane, and keep the response measurable.",
+      "prompt": "Our team docs still mention marketing-skills-collection. Can you use it for this launch brief?",
+      "expected_output": "A migration-safe response that keeps the legacy reference but prefers forward-looking use of marketing-automation.",
       "assertions": [
-        "Output treats the request as a valid fit for marketing-skills-collection",
-        "Output routes to onboarding, lifecycle, or email-sequence work",
-        "Output mentions a measurement concept such as activation, CTR, or conversion"
-      ]
-    },
-    {
-      "id": 3,
-      "prompt": "Please review our Steam page before Next Fest. Wishlists are weak and I want feedback on our capsule, screenshots, trailer, and demo timing.",
-      "expected_output": "The skill should recognize this as a niche Steam launch-ops request and defer to the dedicated steam-store-launch-ops workflow instead of pretending the general marketing catalog is the best fit.",
-      "assertions": [
-        "Output indicates that a dedicated Steam-specific skill is a better fit",
-        "Output references at least one Steam-native concept such as wishlists, capsule, tags, demo, or Next Fest",
-        "Output does not frame the request as only a generic launch-strategy or paid-ads task"
+        "Output treats the legacy name as valid rather than refusing it",
+        "Output nudges future usage toward marketing-automation",
+        "Output preserves the canonical routing-brief behavior"
       ]
     }
   ]

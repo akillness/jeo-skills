@@ -1,1 +1,238 @@
-<html><head><meta charset="utf-8"><title>graphify-out</title><style>body{font-family:Arial,sans-serif;margin:24px}table{border-collapse:collapse}td,th{border:1px solid #ccc;padding:6px 8px}code{background:#f4f4f4;padding:1px 4px}</style></head><body><h1>Graphify Structural Graph</h1><p>Total skills: <b>89</b> · refs: <b>28</b> · evals: <b>27</b> · edges: <b>620</b></p><h2>Highest-degree nodes</h2><table><tr><th>Node</th><th>Degree</th></tr><tr><td>README.ko.md</td><td>87</td></tr><tr><td>README.md</td><td>87</td></tr><tr><td>setup-all-skills-prompt.md</td><td>83</td></tr><tr><td>jeo</td><td>33</td></tr><tr><td>bmad-gds</td><td>27</td></tr><tr><td>omx</td><td>26</td></tr><tr><td>vercel-react-best-practices</td><td>25</td></tr><tr><td>vibe-kanban</td><td>24</td></tr><tr><td>omc</td><td>23</td></tr><tr><td>react-best-practices</td><td>23</td></tr><tr><td>game-performance-profiler</td><td>22</td></tr><tr><td>ohmg</td><td>22</td></tr><tr><td>survey</td><td>22</td></tr><tr><td>game-demo-feedback-triage</td><td>21</td></tr><tr><td>performance-optimization</td><td>19</td></tr><tr><td>design-system</td><td>18</td></tr><tr><td>game-build-log-triage</td><td>18</td></tr><tr><td>rtk</td><td>18</td></tr><tr><td>ui-component-patterns</td><td>17</td></tr><tr><td>agentation</td><td>16</td></tr></table><h2>Game cluster snapshot</h2><ul><li><code>bmad-gds</code> — refs=true evals=true</li><li><code>game-build-log-triage</code> — refs=true evals=true</li><li><code>game-ci-cd-pipeline</code> — refs=true evals=true</li><li><code>game-demo-feedback-triage</code> — refs=true evals=true</li><li><code>game-performance-profiler</code> — refs=true evals=true</li><li><code>steam-store-launch-ops</code> — refs=true evals=true</li><li><code>task-planning</code> — refs=true evals=true</li></ul></body></html>
+<!doctype html><html><head><meta charset='utf-8'><title>graphify-out</title><style>body{font-family:Arial,sans-serif;margin:24px}pre{background:#111;color:#eee;padding:12px;overflow:auto}.muted{color:#666}</style></head><body><h1>graphify-out</h1><p class='muted'>Structural graph fallback for oh-my-skills.</p><h2>Summary</h2><ul><li>Total skills: 89</li><li>References: 29</li><li>Evals: 28</li><li>Nodes: 92</li><li>Edges: 355</li></ul><h2>Report</h2><pre># GRAPH_REPORT
+
+## Scope
+- Path analyzed: `.agent-skills/` plus repository discovery docs
+- Method: custom graphify-style structural graph over skill metadata, support folders, cross-skill mentions, and documentation indexing
+- Total skills: 89
+- Skills with references/: 29
+- Skills with evals/: 28
+- Graph nodes: 92
+- Graph edges: 355
+
+## Strongest structural findings
+1. The marketing cluster now includes an explicit canonical-vs-alias pair: `marketing-automation` is the general router and `marketing-skills-collection` is the compatibility alias. Discovery wording now matters here just as much as in the React and design-system pairs.
+2. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so short wording changes there materially affect how the catalog is navigated.
+3. Support coverage improved again, but many older generic skills still lack `references/` and `evals/`; upgrading legacy skills remains higher leverage than adding overlap.
+4. The game-development cluster still benefits from the clearer producer-vs-specialist split introduced by the `bmad-gds` modernization pass.
+
+## Community map
+- docs
+- project-management
+- game-dev
+- marketing
+- web-frontend
+- web-backend
+
+## Highest-degree nodes
+- README.ko.md: degree 87
+- README.md: degree 87
+- setup-all-skills-prompt.md: degree 83
+- references/: degree 29
+- evals/: degree 28
+- bmad-gds: degree 12
+- game-demo-feedback-triage: degree 12
+- task-planning: degree 10
+- omx: degree 9
+- steam-store-launch-ops: degree 9
+
+## Duplicate / consolidation notes
+- `react-best-practices` and `vercel-react-best-practices` form a canonical-plus-alias pair.
+- `design-system` and `frontend-design-system` form a canonical-plus-alias pair.
+- `marketing-automation` and `marketing-skills-collection` form a canonical-plus-alias pair.
+- `bmad-gds` remains a coordinating game-production skill rather than a duplicate of the sharper game specialists.
+- `task-planning` stays adjacent to the game and marketing clusters instead of collapsing into them.
+
+## Recommended maintenance direction
+- Keep modernizing cluster anchors so they route into sharper specialist skills instead of growing into vague mega-skills.
+- Continue adding `references/` and `evals/` to older generic skills before creating more overlapping entries.
+- Re-check README/setup/manifest wording whenever a skill changes from generic label to clearer routing or canonical role.
+</pre><h2>Graph JSON preview</h2><pre>{
+  &quot;nodes&quot;: [
+    {
+      &quot;id&quot;: &quot;agent-browser&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;docs&quot;,
+      &quot;has_references&quot;: true,
+      &quot;has_evals&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;agentation&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;docs&quot;,
+      &quot;has_references&quot;: false,
+      &quot;has_evals&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;api-design&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;web-backend&quot;,
+      &quot;has_references&quot;: false,
+      &quot;has_evals&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;api-documentation&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;web-backend&quot;,
+      &quot;has_references&quot;: false,
+      &quot;has_evals&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;authentication-setup&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;web-backend&quot;,
+      &quot;has_references&quot;: false,
+      &quot;has_evals&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;autoresearch&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;docs&quot;,
+      &quot;has_references&quot;: true,
+      &quot;has_evals&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;backend-testing&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;web-backend&quot;,
+      &quot;has_references&quot;: false,
+      &quot;has_evals&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;bmad&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;docs&quot;,
+      &quot;has_references&quot;: false,
+      &quot;has_evals&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;bmad-gds&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;game-dev&quot;,
+      &quot;has_references&quot;: true,
+      &quot;has_evals&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;bmad-idea&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;docs&quot;,
+      &quot;has_references&quot;: false,
+      &quot;has_evals&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;changelog-maintenance&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;docs&quot;,
+      &quot;has_references&quot;: false,
+      &quot;has_evals&quot;: false
+    },
+    {
+      &quot;id&quot;: &quot;clawteam&quot;,
+      &quot;type&quot;: &quot;skill&quot;,
+      &quot;community&quot;: &quot;docs&quot;,
+      &quot;has_references&quot;: true,
+      &quot;has_evals&quot;: true
+    }
+  ],
+  &quot;edges&quot;: [
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;agent-browser&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;agentation&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;api-design&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;api-documentation&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;authentication-setup&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;autoresearch&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;backend-testing&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;bmad&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;bmad-gds&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;bmad-idea&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;changelog-maintenance&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;clawteam&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;code-refactoring&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;code-review&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;codebase-search&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;data-analysis&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;database-schema-design&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;debugging&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;deployment-automation&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    },
+    {
+      &quot;source&quot;: &quot;README.md&quot;,
+      &quot;target&quot;: &quot;design-system&quot;,
+      &quot;type&quot;: &quot;indexes&quot;
+    }
+  ]
+}</pre></body></html>

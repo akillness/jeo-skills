@@ -1,0 +1,37 @@
+{
+  "skill_name": "marketing-automation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We are launching a new SaaS workflow next month and need help with messaging, landing page copy, onboarding emails, and how to measure whether it worked. Use marketing-automation.",
+      "expected_output": "A Marketing Routing Brief that chooses one primary lane, returns a single implementation-ready packet, and includes KPI plus measurement logic.",
+      "assertions": [
+        "Output includes the heading 'Marketing Routing Brief'",
+        "Output includes a 'Chosen lane' section with one primary lane",
+        "Output includes a 'Primary KPI' or equivalent explicit KPI field",
+        "Output includes a 'Measurement checklist' section",
+        "Output does not treat Steam/store-page game launch ops as the chosen lane"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our homepage gets traffic but signups are flat. Help with conversion. Use marketing-automation.",
+      "expected_output": "A CRO-oriented routing brief with a measurement-aware experiment packet.",
+      "assertions": [
+        "Output selects CRO as the primary lane or clearly frames the work as conversion optimization",
+        "Output includes immediate next steps",
+        "Output includes at least one measurement signal such as conversion rate, CTA clicks, or signup completion"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We need Steam capsule copy and Next Fest marketing help for our game demo. Use marketing-automation.",
+      "expected_output": "A brief that defers the task toward steam-store-launch-ops instead of absorbing the whole niche workflow.",
+      "assertions": [
+        "Output references steam-store-launch-ops as the preferred downstream skill or workflow",
+        "Output does not present the task as a normal canonical marketing-automation lane",
+        "Output leaves a short handoff rather than a giant generic marketing plan"
+      ]
+    }
+  ]
+}

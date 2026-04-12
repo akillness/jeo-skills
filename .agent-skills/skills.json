@@ -3182,7 +3182,7 @@
     },
     {
       "name": "marketing-automation",
-      "description": "Generate marketing deliverables across CRO, copywriting, SEO, analytics, and growth using 23 specialized sub-skills with clear objectives, constraints, and validation.",
+      "description": "Canonical general marketing router that turns broad marketing asks into a KPI-aware brief, one chosen lane, and an implementation-ready packet across CRO, copywriting, SEO, analytics, pricing, launch, retention, and growth.",
       "category": "marketing",
       "path": "marketing/marketing-automation/SKILL.md",
       "tags": [
@@ -3205,17 +3205,14 @@
     },
     {
       "name": "marketing-skills-collection",
-      "description": "Generate marketing deliverables across CRO, copywriting, SEO, analytics, and growth using 23 specialized sub-skills with clear objectives, constraints, and validation.",
+      "description": "Compatibility alias for marketing-automation. Use when legacy prompt packs or catalogs still reference the old marketing-skills-collection name for broad marketing routing.",
       "category": "marketing",
       "path": "marketing/marketing-skills-collection/SKILL.md",
       "tags": [
         "marketing",
-        "cro",
-        "copywriting",
-        "seo",
-        "analytics",
-        "growth",
-        "automation"
+        "automation",
+        "alias",
+        "compatibility"
       ],
       "platforms": [
         "Claude",
