@@ -3,15 +3,17 @@ name: skill-standardization
 description: >
   Standardize and validate SKILL.md files against the Agent Skills specification
   (agentskills.io). Use when creating new skills, auditing existing skills for
-  spec compliance, converting legacy skill formats to standard structure, or
-  improving descriptions for reliable triggering. Triggers on: "validate skill",
-  "create SKILL.md", "standardize skill format", "check skill spec", "skill
-  frontmatter", "improve skill description", "add evals to skill".
+  spec compliance, converting legacy skill formats to standard structure,
+  improving descriptions for reliable triggering, or consolidating duplicate
+  skills into a canonical skill plus compatibility alias. Triggers on:
+  "validate skill", "create SKILL.md", "standardize skill format", "check
+  skill spec", "skill frontmatter", "improve skill description", "add evals
+  to skill", "merge duplicate skills", "canonical skill", "compatibility alias".
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: Designed for Claude Code and compatible agent clients with filesystem access
 metadata:
-  tags: skill-management, standardization, validation, agentskills-spec, automation
-  version: "2.0"
+  tags: skill-management, standardization, validation, agentskills-spec, automation, deduplication
+  version: "2.1"
 ---
 
 # Skill Standardization
@@ -192,6 +194,22 @@ Create `evals/evals.json` with 2–5 realistic test prompts:
 
 Good assertions are **verifiable**: file exists, JSON is valid, chart has 3 bars. Avoid vague assertions like "output is good."
 
+### Step 6: Consolidate duplicates with a canonical skill + compatibility alias
+
+When two skills cover the same job closely enough that their `name + description` metadata would compete in the catalog, do **not** keep treating them as peer defaults.
+
+Use this decision rule:
+1. **Pick the canonical skill** — the one that should win general-use activation.
+2. **Sharpen the canonical description** so it clearly owns the default job-to-be-done.
+3. **Convert the overlapping skill into a compatibility alias** when old workflows, exact-name installs, or existing docs still depend on it.
+4. **Keep the alias narrow** — it should say that substantive work routes to the canonical skill.
+5. **Add evals for both sides**:
+   - canonical skill evals should prove it wins ordinary prompts
+   - alias evals should prove it activates only for explicit legacy/exact-name scenarios
+6. **Update discovery surfaces in the same change** — README, setup prompts, manifests, and catalog indexes should reflect canonical-vs-alias status so users do not see two false peers.
+
+Use hard deletion only after a longer deprecation window. In most repositories, a canonical skill plus thin compatibility alias is safer than abruptly removing the old name.
+
 ## Available scripts
 
 - **`scripts/validate_skill.sh`** — Validates a SKILL.md against the Agent Skills spec
@@ -248,6 +266,7 @@ allowed-tools: Bash Read Write  # space-delimited, not a YAML list
 4. **No interactive prompts in scripts** — agents run in non-interactive shells; use `--flag` inputs, never TTY prompts
 5. **Structured output from scripts** — prefer JSON/CSV over free-form text; send data to stdout, diagnostics to stderr
 6. **Add evals before publishing** — at least 2–3 test cases covering core and edge cases
+7. **Canonicalize true duplicates instead of letting them compete** — if two skills have overlapping `name + description` trigger surfaces, prefer one canonical skill plus a thin compatibility alias and update README/setup/manifest surfaces in the same pass
 
 ## References
 
