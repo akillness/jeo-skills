@@ -45,3 +45,11 @@
 - Accepted: rewrite `bmad-gds` as the coordinating game-production skill, add `references/` + `evals/`, and update README / README.ko / setup prompt / `skills.json` so discovery surfaces reflect the stronger role
 - Rejected: adding another overlapping game PM skill; bloating `bmad-gds` into engine-debug or launch-ops detail already owned by narrower skills
 - Wiki files created/updated: `concepts/game-development-cluster.md`, `queries/bmad-gds-modernization-2026-04-12.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-12] query | Survey evidence recovery hardening
+- Area researched: survey robustness under search/extract failure, URL drift, feed fallback, browser-rendered snippets, and cross-platform settings/rules/hooks normalization
+- Survey files created under `.survey/survey-evidence-recovery-20260412/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: harden `survey` with an explicit evidence-recovery ladder, add `references/` + `evals/`, and update README / README.ko / setup prompt / `skills.json` / `skills-lock.json` so discovery surfaces reflect the stronger role
+- Rejected: adding another nearby research skill; leaving fallback tactics only in run-specific survey artifacts; broadening the loop beyond `survey`
+- Wiki files created/updated: `concepts/skill-support-coverage.md`, `queries/survey-evidence-recovery-2026-04-12.md`, `index.md`

@@ -1881,7 +1881,7 @@
     },
     {
       "name": "survey",
-      "description": "Cross-platform landscape scan before planning or implementation. Researches context, workarounds, existing solutions, and structural gaps, then writes reusable survey artifacts for OMC, OMX, OHMG, and general agent workflows.",
+      "description": "Research context, workarounds, existing solutions, and structural gaps before planning or implementation, then write reusable `.survey/{slug}/` artifacts for OMC, OMX, OHMG, and general agent workflows. Use when the user asks to survey a space, scan the landscape, research options, or compare platform/tooling patterns before deciding what to build.",
       "category": "core-orchestration",
       "path": "core-orchestration/survey/SKILL.md",
       "tags": [

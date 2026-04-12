@@ -1,0 +1,35 @@
+{
+  "skill_name": "survey",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "survey this workflow: our normal web search API is returning 401 errors, but we still need a landscape scan of browser automation tools before planning implementation",
+      "expected_output": "The survey flow keeps the 4-lane structure and explicitly falls back from broken search/extract tooling to direct retrieval and evidence labeling instead of stopping.",
+      "assertions": [
+        "Mentions direct primary-page retrieval after search/extract failure",
+        "Preserves the `.survey/{slug}/` artifact structure",
+        "Keeps the task in research mode rather than implementation mode"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "survey solutions for creator onboarding forms, but the exact blog post I wanted now 404s and only the vendor's official product page still exists",
+      "expected_output": "The survey behavior prefers a stable official replacement source, labels the substitution, and continues collecting context/solutions rather than grinding on the dead URL.",
+      "assertions": [
+        "Mentions stable vendor or use-case page substitution when a URL drifts or 404s",
+        "Requires source links and evidence labeling",
+        "Does not claim the dead blog was directly verified"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "survey roadmap communication workflows, but the only recoverable evidence from social platforms is search-result snippet text visible in the browser",
+      "expected_output": "The survey treats snippet evidence as lower confidence, labels it as indexed-snippet evidence, and preserves the distinction between snippet-based and direct-source claims.",
+      "assertions": [
+        "Includes the phrase `indexed snippet` or `browser-rendered indexed snippet`",
+        "Includes a confidence label such as high, medium, or low",
+        "Preserves source-backed reporting without pretending snippet evidence equals the full source"
+      ]
+    }
+  ]
+}
