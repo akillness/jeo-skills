@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-04-12T03:07:21Z",
+  "generated": "2026-04-12T06:10:46Z",
   "skill_count": 85,
   "categories": {
     "planning-review": [
@@ -1479,20 +1479,19 @@
     },
     {
       "name": "bmad-gds",
-      "description": "AI-driven Game Development Studio using BMAD methodology. Routes game projects through Pre-production, Design, Architecture, Production, and Game Testing phases with 6 specialized agents. Supports Unity, Unreal Engine, Godot, and custom engines.",
+      "description": "Orchestrate AI-assisted indie game development across concepting, GDD shaping, milestone planning, playtest synthesis, build triage, and launch-readiness decisions. Use when a solo developer or small game team needs one coordinating skill to turn a mixed packet into the next game-production artifact and route specialist work to the right downstream skill.",
       "category": "core-orchestration",
       "path": "core-orchestration/bmad-gds/SKILL.md",
       "tags": [
         "bmad",
         "gds",
         "game-development",
-        "game-design",
+        "game-production",
         "gdd",
-        "unity",
-        "unreal",
-        "godot",
-        "multi-agent",
-        "workflow"
+        "milestone-planning",
+        "playtesting",
+        "launch-ops",
+        "orchestration"
       ],
       "platforms": [
         "Claude",

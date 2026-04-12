@@ -1,137 +1,230 @@
 ---
 name: bmad-gds
-description: AI-driven Game Development Studio using BMAD methodology. Routes game projects through Pre-production, Design, Architecture, Production, and Game Testing phases with 6 specialized agents. Supports Unity, Unreal Engine, Godot, and custom engines.
+description: >
+  Orchestrate AI-assisted indie game development across concepting, GDD shaping,
+  milestone planning, playtest synthesis, build triage, and launch-readiness
+  decisions. Use when a solo developer or small game team needs one coordinating
+  skill to turn a mixed packet — idea notes, backlog state, playtest feedback,
+  bug/build issues, or a festival/release target — into the next game-production
+  artifact and route specialist work to the right downstream skill. Triggers on:
+  bmad-gds, game studio workflow, game milestone plan, GDD to backlog,
+  playtest-to-priorities, game producer copilot, indie game planning, demo prep.
 allowed-tools: Read Write Bash Grep Glob
+compatibility: >
+  Best for solo developers and small teams working in Unity, Unreal, Godot, or
+  custom-engine projects. This is a coordination and routing skill, not a
+  substitute for engine-specific debugging, detailed profiling, or full launch
+  marketing execution.
 metadata:
-  tags: bmad, gds, game-development, game-design, gdd, unity, unreal, godot, multi-agent, workflow
+  tags: bmad, gds, game-development, game-production, gdd, milestone-planning, playtesting, launch-ops, orchestration
   platforms: Claude, Gemini, Codex, OpenCode
   keyword: bmad-gds
-  version: 0.1.4
-  source: user-installed skill
+  version: "1.0.0"
+  source: akillness/oh-my-skills
 ---
 
+# BMAD Game Development Studio
 
-# bmad-gds - BMAD Game Development Studio
+Use this skill as the **game producer / orchestration layer** for the repository's game-development cluster.
+
+The job is not to do every game task directly. The job is to:
+1. normalize a messy game-production packet,
+2. decide which phase or risk matters most now,
+3. produce the next coordination artifact,
+4. route specialist work to the right downstream skill.
+
+Read [references/operating-modes.md](references/operating-modes.md) for the main entry modes and [references/scope-boundaries.md](references/scope-boundaries.md) before choosing between this skill and the narrower game skills.
 
 ## When to use this skill
+- A game idea, prototype, or existing project needs to be turned into a milestone brief or production plan
+- A small team needs help converting a GDD or design brief into epics, stories, and review checkpoints
+- Playtest notes, bug lists, and milestone pressure need one cross-functional reprioritization pass
+- A public beat such as a demo, festival, playtest, or launch target is forcing design, QA, and production decisions to reconnect
+- The user needs one coordinating artifact first, then wants the skill to point toward the correct specialist follow-up
 
-- Starting a new game project and need a structured concept → production workflow
-- Creating a Game Design Document (GDD), narrative design, or technical architecture
-- Managing sprints and dev stories for a game team
-- Setting up test frameworks for Unity, Unreal Engine, or Godot projects
-- Quick prototyping or rapid feature work without full planning overhead
-- Reviewing code or running retrospectives after development epics
+## When not to use this skill
+- The main issue is a raw Unity or Unreal build/log failure with no broader planning decision → use `game-build-log-triage`
+- The main issue is performance capture and bottleneck diagnosis → use `game-performance-profiler`
+- The main issue is triaging player/demo feedback into weighted priorities → use `game-demo-feedback-triage`
+- The main issue is store-page, wishlist funnel, or launch-page operations → use `steam-store-launch-ops`
+- The user only needs a generic engineering sprint plan with no game-specific context → use `task-planning`
+- The user only needs early ideation / creative expansion before a production framing exists → use `bmad-idea`
 
----
+## Instructions
 
-## Installation
+### Step 1: Capture the production intake brief
+Before proposing a workflow, normalize the packet into this brief:
 
-```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill bmad-gds
+```yaml
+project_brief:
+  game_type: "genre, camera, platform, target audience"
+  team_shape: solo | duo | small-team | unknown
+  engine: Unity | Unreal | Godot | custom | unknown
+  current_stage: concept | prototype | vertical-slice | demo | production | launch-prep | live-ops
+  next_public_beat: none | internal-playtest | steam-playtest | next-fest | demo-drop | launch | patch
+  source_packet:
+    - idea-notes
+    - gdd-or-design-doc
+    - backlog-or-board
+    - playtest-feedback
+    - bug-or-build-issues
+    - launch-or-store-constraints
+  main_constraint: time | scope | quality | performance | unknown
+  main_question: "what decision or artifact is needed next?"
 ```
 
----
+If the packet is incomplete, still proceed with the best visible stage and state the assumptions.
 
-## Supported Engines
+### Step 2: Choose one operating mode
+Pick exactly one primary mode for the current run.
 
-Unity · Unreal Engine · Godot · Custom/Other
+1. **Concept → milestone brief**
+   - Use when the team has an idea, prototype, or vague direction
+   - Goal: define pillars, scope guardrails, first milestone, and risks
 
----
+2. **GDD → backlog slice**
+   - Use when design intent exists but implementation slices are weak
+   - Goal: convert the GDD into epics, stories, acceptance checks, and review gates
 
-## BMAD-GDS Workflow Commands
+3. **Mixed signals → reprioritization**
+   - Use when playtest notes, bug reports, and milestone pressure are colliding
+   - Goal: decide what must happen before the next build or public beat
 
-### Phase 1 — Pre-production
+4. **Build trouble → routing decision**
+   - Use when a build issue is present but the real question is whether it blocks a milestone
+   - Goal: produce the milestone/risk framing, then hand detailed log work to `game-build-log-triage`
 
-| Command | Description |
-|---------|-------------|
-| `bmad-gds-brainstorm-game` | Facilitate a game brainstorming session with game-specific ideation techniques |
-| `bmad-gds-game-brief` | Create an interactive game brief defining concept and core mechanics |
+5. **Public beat → readiness plan**
+   - Use when the team is targeting a demo, festival, playtest, or launch window
+   - Goal: connect design, QA, build stability, and store/demo readiness into one plan
 
-### Phase 2 — Design
+### Step 3: Decide the next artifact, not the whole universe
+Return **one primary artifact** from this list:
+- `milestone-brief`
+- `gdd-to-backlog packet`
+- `reprioritization brief`
+- `specialist-routing brief`
+- `public-beat readiness plan`
 
-| Command | Description |
-|---------|-------------|
-| `bmad-gds-gdd` | Generate a Game Design Document: mechanics, systems, progression, implementation guidance |
-| `bmad-gds-narrative` | Create narrative documentation: story structure, character arcs, world-building |
+Do not flood the team with parallel plans. Choose the single artifact that most reduces ambiguity right now.
 
-### Phase 3 — Technical
+### Step 4: Route specialist work explicitly
+If the intake shows a narrower downstream problem, route out with a short reason:
+- `game-demo-feedback-triage` → clustered player/demo feedback and fix-first recommendations
+- `game-build-log-triage` → build, packaging, CI, signing, cook, compile, or editor-log failures
+- `game-performance-profiler` → frame-time, memory, hitches, GPU/CPU bottleneck, Steam Deck or console perf complaints
+- `steam-store-launch-ops` → store-page, wishlist funnel, launch sequencing, public-facing launch prep
+- `task-planning` → general engineering decomposition after the game-specific milestone decision is made
 
-| Command | Description |
-|---------|-------------|
-| `bmad-gds-project-context` | Generate project-context.md for consistent AI agent coordination |
-| `bmad-gds-game-architecture` | Produce scale-adaptive game architecture: engine, systems, networking, technical design |
-| `bmad-gds-test-framework` | Initialize test framework architecture for Unity, Unreal, or Godot |
-| `bmad-gds-test-design` | Create comprehensive test scenarios covering gameplay, progression, and quality |
+If you route out, still leave the team with a short milestone-aware handoff, not just a tool name.
 
-### Phase 4 — Production
+### Step 5: Produce the coordination artifact
+Use this exact structure:
 
-| Command | Description |
-|---------|-------------|
-| `bmad-gds-sprint-planning` | Generate or update sprint-status.yaml from epic files |
-| `bmad-gds-sprint-status` | View sprint progress, surface risks, get next action recommendation |
-| `bmad-gds-create-story` | Create a dev-ready implementation story |
-| `bmad-gds-dev-story` | Execute a dev story: implement tasks and tests |
-| `bmad-gds-code-review` | QA code review for stories flagged Ready for Review |
-| `bmad-gds-correct-course` | Navigate major in-sprint course corrections |
-| `bmad-gds-retrospective` | Facilitate retrospective after epic completion |
+```markdown
+# Game Production Coordination Brief
 
-### Game Testing
+## Scope
+- Game / build stage: ...
+- Engine / platform context: ...
+- Team shape: ...
+- Next public beat: ...
+- Confidence: high | medium | low
 
-| Command | Description |
-|---------|-------------|
-| `bmad-gds-test-automate` | Generate automated game tests for gameplay systems |
-| `bmad-gds-e2e-scaffold` | Scaffold end-to-end testing infrastructure |
-| `bmad-gds-playtest-plan` | Create a structured playtesting plan for user testing sessions |
-| `bmad-gds-performance-test` | Design a performance testing strategy for profiling and optimization |
-| `bmad-gds-test-review` | Review test quality and coverage gaps |
+## Primary mode
+- concept-to-milestone | gdd-to-backlog | reprioritization | build-trouble-routing | public-beat-readiness
 
-### Quick / Anytime
+## What matters most now
+- 2-4 bullets on the strongest production truths from the packet
 
-| Command | Description |
-|---------|-------------|
-| `bmad-gds-quick-prototype` | Rapid prototyping to validate mechanics without full planning overhead |
-| `bmad-gds-quick-spec` | Quick tech spec for simple, well-defined features or tasks |
-| `bmad-gds-quick-dev` | Flexible rapid implementation for game features |
-| `bmad-gds-document-project` | Analyze and document an existing game project |
+## Recommended next artifact
+- One of: milestone-brief | gdd-to-backlog packet | reprioritization brief | specialist-routing brief | public-beat readiness plan
 
----
+## Priority decisions
+| Decision | Why now | Owner | Risk if delayed |
+|----------|---------|-------|-----------------|
+| ... | ... | ... | ... |
 
-## Specialized Agents
+## Immediate next steps
+1. ...
+2. ...
+3. ...
 
-| Agent | Role |
-|-------|------|
-| `game-designer` | Game concept, mechanics, GDD, narrative design, brainstorming |
-| `game-architect` | Technical architecture, system design, project context |
-| `game-dev` | Implementation, dev stories, code review |
-| `game-scrum-master` | Sprint planning, story management, course corrections, retrospectives |
-| `game-qa` | Test framework, test design, automation, E2E, playtest, performance |
-| `game-solo-dev` | Full-scope solo mode: quick prototype, quick spec, quick dev |
+## Specialist handoffs
+- Skill: ...
+- Why: ...
+- What packet to pass: ...
 
----
+## What not to do yet
+- 1-3 bullets preventing scope drift or the wrong lane
+```
 
-## Typical Workflow
+### Step 6: Keep the milestone thread visible
+Every output must connect work back to the next meaningful beat:
+- internal playtest
+- Steam Playtest
+- Next Fest / public demo
+- launch target
+- major patch or content drop
 
-1. Run `bmad-gds-brainstorm-game` → ideate game concept
-2. Run `bmad-gds-game-brief` → lock in concept and core mechanics
-3. Run `bmad-gds-gdd` → produce full Game Design Document
-4. Run `bmad-gds-game-architecture` → define technical architecture
-5. Run `bmad-gds-sprint-planning` → break work into sprints and stories
-6. Run `bmad-gds-dev-story` per story → implement features
-7. Run `bmad-gds-code-review` → quality gate before merge
-8. Run `bmad-gds-retrospective` → continuous improvement after each epic
+If there is no explicit beat, infer the next milestone from the packet and say so.
 
----
+## Output format
+Always return a **short producer-style coordination brief**.
 
-## Quick Reference
+Required qualities:
+- prefer concrete next artifacts over abstract game-design essays
+- surface the main constraint and tradeoff clearly
+- keep specialist routing explicit
+- preserve cross-functional visibility across design, engineering, QA, and launch timing
+- keep the result under roughly 450-700 words unless the user asks for a larger planning packet
 
-| Action | Command |
-|--------|---------|
-| Brainstorm game concept | `bmad-gds-brainstorm-game` |
-| Create game brief | `bmad-gds-game-brief` |
-| Generate GDD | `bmad-gds-gdd` |
-| Define architecture | `bmad-gds-game-architecture` |
-| Plan sprint | `bmad-gds-sprint-planning` |
-| Check sprint status | `bmad-gds-sprint-status` |
-| Create story | `bmad-gds-create-story` |
-| Develop story | `bmad-gds-dev-story` |
-| Quick prototype | `bmad-gds-quick-prototype` |
+## Examples
+
+### Example 1: concept to Steam demo
+**Input**
+> We are a 3-person Unity team building a co-op survival game. We have rough mechanic notes and a prototype, and we want a Steam demo in 8 weeks. Use bmad-gds.
+
+**Output sketch**
+- Primary mode: `concept-to-milestone`
+- Recommended next artifact: `milestone-brief`
+- Priority decisions cover demo fantasy, scope cuts, one playable loop, and test cadence
+- Specialist handoff may point to `task-planning` only after the milestone brief is locked
+
+### Example 2: mixed playtest plus bugs
+**Input**
+> We have Discord feedback, a bug sheet, and a Next Fest date. Players are confused early, and the latest build also has two packaging issues.
+
+**Output sketch**
+- Primary mode: `reprioritization`
+- Recommended next artifact: `reprioritization brief`
+- `game-demo-feedback-triage` gets the feedback packet
+- `game-build-log-triage` gets the packaging failures
+- The coordination brief keeps both tied to the Next Fest milestone
+
+### Example 3: raw build problem only
+**Input**
+> Our Unreal CI build is failing during packaging. Help.
+
+**Output sketch**
+- Do not stay in `bmad-gds` as the main skill
+- Return a short `specialist-routing brief`
+- Route to `game-build-log-triage` with the exact log/build packet required
+
+## Best practices
+1. **Act like a producer, not a fantasy studio simulator** — convert ambiguity into one useful next artifact.
+2. **Use one primary mode per run** — mixing concepting, launch ops, playtest triage, and log debugging weakens output quality.
+3. **Route aggressively to specialist skills** when the packet is mostly feedback, logs, performance, or launch-page operations.
+4. **Keep scope pressure explicit** — small game teams fail more often from spread than from under-ideation.
+5. **Preserve milestone context** — build issues and design changes matter differently depending on whether the next beat is a demo, festival, or launch.
+6. **Prefer re-entry workflows** — playtests and build failures often push teams back into planning; treat that as normal.
+
+## References
+- [references/operating-modes.md](references/operating-modes.md)
+- [references/scope-boundaries.md](references/scope-boundaries.md)
+- `../bmad-idea/SKILL.md`
+- `../task-planning/SKILL.md`
+- `../game-demo-feedback-triage/SKILL.md`
+- `../game-build-log-triage/SKILL.md`
+- `../game-performance-profiler/SKILL.md`
+- `../steam-store-launch-ops/SKILL.md`

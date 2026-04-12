@@ -371,7 +371,7 @@ If no → skip silently. Never re-ask.
 | `agentation` | `annotate`, `UI검토`, `agentui` | UI annotation → agent code modification. MCP: `npx add-mcp "npx -y agentation-mcp server"` |
 | `vibe-kanban` | `kanbanview` | Visual Kanban board with git worktree isolation |
 | `bmad` | `bmad` | Structured BMAD workflow — Analysis → Planning → Solutioning → Implementation |
-| `bmad-gds` | `bmad-gds` | Game Development Studio (Unity/Unreal/Godot) |
+| `bmad-gds` | `bmad-gds` | Game-production orchestrator for ideas, GDDs, playtest notes, bugs, and launch beats |
 | `bmad-idea` | `bmad-idea` | Creative ideas · design thinking · innovation strategy |
 | `agent-browser` | `agent-browser` | Headless browser automation for AI agents |
 | `obsidian-cli` | `obsidian cli`, `obsidian terminal`, `obsidian plugin reload` | Official Obsidian CLI — TUI, vault/file targeting, note automation, plugin reload |
