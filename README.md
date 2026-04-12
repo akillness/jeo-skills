@@ -241,7 +241,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `vercel-react-best-practices` | Compatibility alias for `react-best-practices` when legacy tooling or exact-name workflows still expect the Vercel variant | Claude · Gemini · Codex |
 | `responsive-design` | Mobile-first layouts and breakpoints | All |
 | `state-management` | React state-boundary decisions across Context, Zustand, Redux Toolkit, Jotai, and TanStack Query | All |
-| `ui-component-patterns` | Reusable component libraries | All |
+| `ui-component-patterns` | Reusable primitive / variant / slot API design for shared frontend components | All |
 | `web-accessibility` | Accessibility audit/remediation plus manual-vs-automated verification guidance | All |
 | `web-design-guidelines` | Web Interface Guidelines compliance review | All |
 

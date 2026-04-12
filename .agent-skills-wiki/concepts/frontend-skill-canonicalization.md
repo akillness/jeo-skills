@@ -4,17 +4,18 @@ created: 2026-04-12
 updated: 2026-04-13
 type: concept
 tags: [skills, consolidation, trigger-design, frontend, docs]
-sources: [.survey/frontend-skill-consolidation-20260412/context.md, .survey/frontend-skill-consolidation-20260412/solutions.md, .survey/frontend-design-system-canonicalization-20260412/context.md, .survey/frontend-design-system-canonicalization-20260412/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/frontend-skill-consolidation-20260412/context.md, .survey/frontend-design-system-canonicalization-20260412/context.md, .survey/frontend-legacy-anchors-20260413/context.md, .survey/frontend-legacy-anchors-20260413/platform-map.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Frontend Skill Canonicalization
 
 ## Durable finding
-The frontend cluster now has **two** true canonical-vs-alias pairs plus two clearer anchors:
+The frontend cluster now has **two** true canonical-vs-alias pairs plus three clearer anchors:
 - `react-best-practices` owns general React/Next.js performance work, while `vercel-react-best-practices` survives only as a compatibility alias.
 - `design-system` owns general frontend UI-system work, while `frontend-design-system` survives only as a compatibility alias.
 - `state-management` now owns React state-boundary decisions across local, shared, URL/form, server, and long-lived client workflow state instead of remaining a generic library-tour skill.
-- `web-accessibility` now owns accessibility remediation plus manual-vs-automated verification, while `web-design-guidelines` stays the broader UI-review lane and `ui-component-patterns` / `responsive-design` keep component-API and viewport work separate.
+- `web-accessibility` now owns accessibility remediation plus manual-vs-automated verification, while `web-design-guidelines` stays the broader UI-review lane.
+- `ui-component-patterns` now owns reusable primitive / variant / slot API design, while `responsive-design` remains the narrower viewport/container adaptation lane rather than a generic shared-component skill.
 
 ## Why this matters
 - Tier-1 discovery relies heavily on compact skill metadata.
@@ -31,3 +32,4 @@ When two frontend skills compete at the metadata layer but not in long-term user
 - [[design-system-canonicalization-2026-04-12]]
 - [[state-management-modernization-2026-04-13]]
 - [[web-accessibility-modernization-2026-04-13]]
+- [[ui-component-patterns-modernization-2026-04-13]]
