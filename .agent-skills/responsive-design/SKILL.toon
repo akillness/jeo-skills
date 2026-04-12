@@ -1,14 +1,14 @@
 N:responsive-design
-D:Create responsive web designs that work across all devices and screen sizes. Use when building mo...
-G:responsive mobile-first CSS Flexbox Grid
+D:Plan mobile-first, container-aware responsive layouts before patching breakpoints everywhere. Use when the user needs help fixing overflow, wrapping, layout collapse, responsive media, breakpoint strategy, container queries, or deciding what should adapt at the viewport level versus inside a component/container.
+G:responsive mobile-first layout container-queries breakpoints overflow reflow frontend css
 U[4]:
-  **New website/app**: Layout design for combined mobile-desktop use
-  **Legacy improvement**: Converting fixed layouts to responsive
-  **Performance optimization**: Image optimization per device
-  **Multiple screens**: Tablet, desktop, and large screen support
+  Fix layouts that overflow, wrap badly, collapse awkwardly, or force horizontal scrolling on smaller screens
+  Plan mobile-first page, dashboard, card-grid, form, nav, table, or media layouts
+  Decide between viewport breakpoints, container queries, intrinsic layout rules, and responsive media behavior
+  Define responsive verification for overflow, wrapping, zoom/reflow, and responsive media
 S[5]{n,action}:
-  1,Mobile-First Approach
-  2,Flexbox/Grid Layout
-  3,Responsive Images
-  4,Responsive Typography
-  5,Container Queries (New Feature)
+  1,Classify the responsive failure before writing CSS
+  2,Choose the adaptation surface deliberately
+  3,Start from a mobile-first baseline
+  4,Use container queries when the component’s parent drives the layout
+  5,Produce the responsive strategy packet

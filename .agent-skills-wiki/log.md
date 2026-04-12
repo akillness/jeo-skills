@@ -165,3 +165,11 @@
 - Accepted: rewrite `ui-component-patterns` as the reusable primitive / variant / slot API anchor, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the sharper frontend role
 - Rejected: modernizing `responsive-design` in the same run; adding another overlapping frontend wrapper; letting `ui-component-patterns` absorb token governance, accessibility remediation, or viewport-only layout strategy
 - Wiki files created/updated: `queries/ui-component-patterns-modernization-2026-04-13.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-13] query | Responsive design modernization
+- Area researched: mobile-first responsive layout strategy, viewport-vs-container adaptation, reflow verification, and the boundary with `ui-component-patterns`, `web-accessibility`, `design-system`, and `web-design-guidelines`
+- Survey files created under `.survey/responsive-design-modernization-20260413/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `responsive-design` as the mobile-first, container-aware layout adaptation + verification anchor, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the sharper frontend role
+- Rejected: adding another overlapping frontend wrapper; letting `responsive-design` absorb reusable component API design, accessibility-heavy remediation, or broad UI review
+- Wiki files created/updated: `queries/responsive-design-modernization-2026-04-13.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`

@@ -37,5 +37,6 @@
 - [[testing-strategies-modernization-2026-04-13]] — Why the best bounded testing-policy improvement was rewriting `testing-strategies` into a risk-based validation-policy anchor instead of leaving it as a generic test-pyramid skill.
 - [[state-management-modernization-2026-04-13]] — Why the best bounded frontend architecture improvement was rewriting `state-management` into a decision-first state-boundary anchor instead of leaving it as a generic library-tour skill.
 - [[ui-component-patterns-modernization-2026-04-13]] — Why the best bounded frontend reusable-component improvement was rewriting `ui-component-patterns` into a reusable primitive / variant / slot API anchor instead of modernizing `responsive-design` first.
+- [[responsive-design-modernization-2026-04-13]] — Why the best bounded next frontend modernization was rewriting `responsive-design` into a mobile-first, container-aware layout adaptation + verification anchor.
 - [[web-accessibility-modernization-2026-04-13]] — Why the best bounded frontend accessibility improvement was rewriting `web-accessibility` into an accessibility remediation + verification anchor instead of leaving it as a generic WCAG/example dump.
 

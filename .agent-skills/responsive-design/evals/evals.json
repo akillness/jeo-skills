@@ -1,0 +1,44 @@
+{
+  "skill_name": "responsive-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our dashboard filter bar and data table force horizontal scrolling on mobile. Help us fix the responsive behavior.",
+      "expected_output": "Keeps ownership in responsive-design, proposes a mobile-first layout strategy, and includes verification for overflow/reflow rather than only adding random breakpoints.",
+      "assertions": [
+        "Output classifies the task as responsive layout or overflow adaptation work",
+        "Output discusses mobile-first, layout strategy, or explicit breakpoint/container decisions",
+        "Output includes verification for overflow, wrapping, or reflow"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The same card lives in a sidebar, a feed, and a 2-column grid. Should we use container queries or more viewport breakpoints?",
+      "expected_output": "Explains when container queries are appropriate and keeps reusable component API questions separate from layout adaptation.",
+      "assertions": [
+        "Output covers container queries or parent-container adaptation",
+        "Output distinguishes responsive layout ownership from ui-component-patterns API ownership",
+        "Output avoids treating viewport breakpoints as the only tool"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our teams all use different breakpoint and spacing rules across products. Is responsive-design the right skill?",
+      "expected_output": "Routes cross-product breakpoint/token governance to design-system instead of over-triggering responsive-design.",
+      "assertions": [
+        "Output routes shared breakpoint or token governance to design-system",
+        "Output explains that responsive-design is narrower than system-level governance"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "This form still breaks at 400% zoom and keyboard users lose context. Should we keep fixing it in responsive-design?",
+      "expected_output": "Distinguishes responsive layout strategy from accessibility remediation and routes the remediation-heavy portion to web-accessibility.",
+      "assertions": [
+        "Output mentions zoom or reflow verification",
+        "Output routes accessibility-heavy remediation to web-accessibility",
+        "Output preserves responsive-design for layout-adaptation concerns if relevant"
+      ]
+    }
+  ]
+}
