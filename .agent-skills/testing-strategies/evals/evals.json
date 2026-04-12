@@ -1,0 +1,38 @@
+{
+  "skill_name": "testing-strategies",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We keep adding flaky Playwright flows for every feature. What testing strategy should this repo adopt?",
+      "expected_output": "A validation strategy brief that narrows browser coverage, separates PR vs scheduled scope, and treats flake as a policy problem.",
+      "assertions": [
+        "Explains that not every feature needs broad browser E2E coverage",
+        "Separates local/PR or PR/scheduled expectations",
+        "Mentions flaky-test policy or quarantine/fix rules",
+        "Routes stack-specific implementation or failure investigation to another skill when appropriate"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "This PR changes an API contract and a DB migration. What validation layers should be required before merge?",
+      "expected_output": "A risk-based coverage recommendation that includes stronger-than-unit evidence and explains why.",
+      "assertions": [
+        "Classifies the change as high risk or equivalent",
+        "Requires integration, contract, migration, or similar stronger-than-unit validation",
+        "Explains why broad browser E2E may be unnecessary if the user flow is unchanged",
+        "Provides a next-owner handoff such as backend-testing"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Should this bugfix get a unit test, integration test, or just manual QA?",
+      "expected_output": "A brief that says the answer depends on risk and the lowest layer that can prove the bug is fixed.",
+      "assertions": [
+        "Does not give a one-size-fits-all answer",
+        "Uses a risk- or change-based decision rule",
+        "Mentions lowest-cost convincing validation",
+        "Can include manual or checklist validation only when it is justified"
+      ]
+    }
+  ]
+}

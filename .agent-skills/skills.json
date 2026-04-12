@@ -2154,7 +2154,7 @@
     },
     {
       "name": "testing-strategies",
-      "description": "Design comprehensive testing strategies for software quality assurance. Use when planning test coverage, implementing test pyramids, or setting up testing infrastructure. Handles unit testing, integration testing, E2E testing, TDD, and testing best practices.",
+      "description": "Design a risk-based validation policy for software changes across unit, integration, contract, smoke, exploratory, and release checks. Use when the user needs to decide what test layers are required, how much evidence is enough before merge or release, how to control flaky or expensive suites, or how to route work between testing policy, backend test implementation, debugging, and code review. Triggers on: test strategy, testing pyramid/trophy, coverage plan, regression policy, flaky suite policy, release confidence, and what should we test for this change.",
       "category": "code-quality",
       "path": "code-quality/testing-strategies/SKILL.md",
       "tags": [

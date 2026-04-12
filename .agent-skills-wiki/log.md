@@ -126,6 +126,14 @@
 - Rejected: adding another generic troubleshooting wrapper; letting `debugging` absorb raw log triage, broad testing-policy design, or preventive PR audit work
 - Wiki files created/updated: `queries/debugging-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`
 
+## [2026-04-13] query | Testing strategies modernization
+- Area researched: risk-based testing policy across test pyramid/trophy guidance, microservice contract coverage, flaky-suite control, merge-vs-release gate selection, and the repo overlap between `testing-strategies`, `backend-testing`, `debugging`, and `code-review`
+- Survey files created under `.survey/testing-strategies-modernization-20260413/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `testing-strategies` as the risk-based validation-policy anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the code-quality cluster boundary in the wiki
+- Rejected: adding another overlapping testing wrapper; leaving `testing-strategies` as a generic test-pyramid skill; letting it absorb backend implementation or debugging work
+- Wiki files created/updated: `concepts/code-quality-cluster.md`, `queries/testing-strategies-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`
+
 ## [2026-04-13] query | Code review modernization
 - Area researched: workflow-aware code review across PR/MR review state, ownership/approval mechanics, missing-evidence handling, frontend preview-heavy review, and the boundary with Git cleanup, debugging, testing strategy, and repo-policy workflows
 - Survey files created under `.survey/code-review-modernization-20260413/`
