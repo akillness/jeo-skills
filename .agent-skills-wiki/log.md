@@ -62,6 +62,14 @@
 - Rejected: adding a separate async-standup skill; expanding the skill into planning or retrospectives; keeping the legacy template-heavy version
 - Wiki files created/updated: `queries/standup-meeting-modernization-2026-04-12.md`, `concepts/project-management-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`
 
+## [2026-04-12] query | Git workflow modernization
+- Area researched: practical local Git collaboration patterns across branch hygiene, commit shaping, rebase/merge choice, conflict handling, lease-safe pushes, and recovery from resets/rebases
+- Survey files created under `.survey/git-workflow-modernization-20260412/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `git-workflow` as the local Git collaboration and recovery anchor, add `references/` + `evals/`, and update README / README.ko / `.agent-skills/skills.json` so discovery surfaces stop advertising it as a vague PR-everything skill
+- Rejected: adding a separate Git recovery skill in this run; pretending hosted PR review and repo administration belong inside the same local Git skill; keeping the legacy command-dump version
+- Wiki files created/updated: `queries/git-workflow-modernization-2026-04-12.md`, `concepts/skill-support-coverage.md`, `index.md`
+
 ## [2026-04-12] query | Sprint retrospective modernization
 - Area researched: modern retrospective and milestone-postmortem practice across live, async, hybrid, and cross-functional delivery teams
 - Survey files created under `.survey/sprint-retrospective-modernization-20260412/`

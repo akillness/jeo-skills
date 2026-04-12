@@ -17,6 +17,7 @@
 ## Queries
 - [[bmad-gds-modernization-2026-04-12]] — Why the best bounded game-cluster fix was modernizing `bmad-gds` into a coordinating producer/orchestrator skill.
 - [[design-system-canonicalization-2026-04-12]] — Why the best bounded fix for the UI-system pair was canonicalizing `design-system` and narrowing `frontend-design-system` into a compatibility alias.
+- [[git-workflow-modernization-2026-04-12]] — Why the best bounded developer-workflow fix was modernizing `git-workflow` into a local collaboration and recovery anchor.
 - [[marketing-skill-canonicalization-2026-04-12]] — Why the best bounded marketing change was canonicalizing `marketing-automation` and narrowing `marketing-skills-collection` into a compatibility alias.
 - [[react-skill-canonicalization-2026-04-12]] — Why the best bounded frontend change was canonicalizing the React pair instead of adding another frontend skill.
 - [[sprint-retrospective-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `sprint-retrospective` into a mode-selecting reflection and follow-through skill.
