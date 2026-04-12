@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-12 | Total pages: 19
+> Last updated: 2026-04-13 | Total pages: 20
 
 ## Entities
 
@@ -30,4 +30,5 @@
 - [[survey-evidence-recovery-2026-04-12]] — Why the best bounded research-layer change was hardening `survey` with an explicit evidence-recovery ladder and support files.
 - [[task-estimation-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `task-estimation` into a sizing and forecast-language anchor.
 - [[task-planning-modernization-2026-04-12]] — Why the best move was upgrading `task-planning` instead of adding another overlapping PM skill.
+- [[log-analysis-modernization-2026-04-13]] — Why the best bounded search-analysis upgrade was rewriting `log-analysis` into a root-cause-first triage skill instead of adding another logging wrapper.
 

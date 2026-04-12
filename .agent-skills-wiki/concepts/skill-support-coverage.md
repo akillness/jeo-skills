@@ -1,7 +1,7 @@
 ---
 title: Skill Support Coverage
 created: 2026-04-12
-updated: 2026-04-12
+updated: 2026-04-13
 type: concept
 tags: [skills, skill-quality, graphify]
 sources: [graphify-out/GRAPH_REPORT.md]
@@ -14,8 +14,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
 - 89 total skills
-- 38 skills with `references/`
-- 37 skills with `evals/`
+- 40 skills with `references/`
+- 38 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -29,6 +29,7 @@ Recent ratchets:
 - The environment canonicalization pass added both `references/` and `evals/` to the infrastructure setup pair, which matters because a previously weak duplicate lane now has a clear broader anchor and a narrower config alias.
 - The `task-estimation` modernization pass added both `references/` and `evals/`, which matters because the PM cluster now has a stronger sizing and forecast-language lane instead of routing into a legacy generic estimation skill.
 - The `api-design` modernization pass added both `references/` and `evals/`, which matters because the backend cluster now has a sharper contract-first anchor instead of a broad legacy skill that overlapped with `api-documentation`.
+- The `log-analysis` modernization pass added both `references/` and `evals/`, which matters because a cross-domain legacy skill now has a cleaner triage role across app, infra, browser, and CI logs without absorbing Unity/Unreal-specific build-log work.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
@@ -49,3 +50,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[design-system-canonicalization-2026-04-12]]
 - [[bmad-gds-modernization-2026-04-12]]
 - [[marketing-skill-canonicalization-2026-04-12]]
+- [[log-analysis-modernization-2026-04-13]]

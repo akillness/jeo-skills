@@ -301,7 +301,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `codebase-search` | Codebase search & navigation | All |
 | `data-analysis` | Dataset analysis, visualizations, statistics | All |
 | `langsmith` | LLM observability, tracing, evaluation, and prompt management via LangSmith | All |
-| `log-analysis` | Log analysis and incident debugging | All |
+| `log-analysis` | Root-cause triage for application, infrastructure, browser, and CI logs | All |
 | `pattern-detection` | Pattern and anomaly detection | All |
 
 ### 🎬 Creative Media (2)
