@@ -1,25 +1,25 @@
 N:api-design
-D:Design RESTful and GraphQL APIs following best practices. Use when creating new APIs, refactoring...
-G:api-design REST GraphQL OpenAPI versioning
+D:Design or refactor API contracts for REST and GraphQL systems. Use when the user needs resou...
+G:api-design REST GraphQL OpenAPI contract-design versioning backend
 U[6]:
-  Designing new REST APIs
-  Creating GraphQL schemas
-  Refactoring API endpoints
-  Documenting API specifications
-  API versioning strategies
-S[8]{n,action}:
-  1,Define API requirements
-  2,Design REST API
-  3,Request/Response format
-  4,Error handling
-  5,Pagination
-  6,Authentication
-  7,Versioning
-  8,Documentation
+  Design a new REST API, GraphQL schema, or internal service contract
+  Refactor an existing API without breaking clients unnecessarily
+  Review naming, resource boundaries, status codes, pagination, filtering, or error models
+  Produce an OpenAPI or GraphQL SDL contract before implementation starts
+  Evaluate versioning and backward-compatibility decisions
+  Prepare an implementation-ready contract packet for backend, frontend, QA, or partner teams
+S[7]{n,action}:
+  1,Frame the contract problem
+  2,Choose the interface style deliberately
+  3,Model resources, operations, and boundaries
+  4,Define the request/response contract
+  5,Design auth, errors, and compatibility rules
+  6,Produce the contract artifact
+  7,Review for breakage and handoff quality
 R[6]:
-  Use nouns, not verbs
-  Use plural names
-  Nest resources logically
-  `GET`
-  `POST`
-  `PUT`
+  Contract-first boundary, not docs publishing
+  REST when resource-centric and conventional HTTP semantics matter
+  GraphQL when flexible client reads and schema-first design matter
+  Make auth/error/versioning explicit
+  Record open questions instead of faking certainty
+  Hand off docs, testing, auth, and storage work intentionally

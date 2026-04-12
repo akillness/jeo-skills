@@ -3,17 +3,17 @@
 ## Scope
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, cross-skill mentions, and documentation indexing
-- Total skills: 85
-- Skills with references/: 30
-- Skills with evals/: 29
-- Graph nodes: 88
-- Graph edges: 294
+- Total skills: 89
+- Skills with references/: 37
+- Skills with evals/: 36
+- Graph nodes: 92
+- Graph edges: 322
 
 ## Strongest structural findings
-1. `task-estimation` is now the stronger sizing lane inside the PM cluster: it owns estimation modes, reference-story calibration, confidence/risk framing, split-or-spike decisions, and forecast-safe language.
-2. The PM cluster is cleaner end-to-end: `task-planning` owns decomposition, `task-estimation` owns sizing, `standup-meeting` owns daily coordination, and `sprint-retrospective` owns learning/follow-through.
-3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so small wording changes there still materially influence activation and discoverability.
-4. Support coverage improved again in project management: `task-estimation` now has both `references/` and `evals/`, raising the floor for another high-frequency legacy skill.
+1. `api-design` is now a stronger backend anchor: it owns contract-first API design, compatibility review, and downstream handoff instead of drifting into docs publishing.
+2. The backend cluster boundary is cleaner: `api-design` owns contract design, `api-documentation` owns published docs/examples, `authentication-setup` owns auth implementation, `backend-testing` owns verification, and `database-schema-design` owns storage-model work.
+3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so wording changes there still materially alter how a skill is found.
+4. Support coverage improved again in a high-utility lane: `api-design` now carries both references and evals.
 
 ## Community map
 - agent-development
@@ -31,24 +31,23 @@
 - utilities
 
 ## Highest-degree nodes
-- README.ko.md: degree 84
-- README.md: degree 84
-- setup-all-skills-prompt.md: degree 82
-- task-planning: degree 12
+- README.md: degree 87
+- README.ko.md: degree 87
+- setup-all-skills-prompt.md: degree 83
+- task-planning: degree 13
+- bmad-gds: degree 10
+- game-demo-feedback-triage: degree 10
+- system-environment-setup: degree 9
 - sprint-retrospective: degree 9
 - standup-meeting: degree 9
-- system-environment-setup: degree 9
 - task-estimation: degree 9
-- environment-setup: degree 7
-- ralph: degree 7
 
 ## Duplicate / consolidation notes
-- The PM cluster now has a clearer four-part split: planning (`task-planning`), estimation (`task-estimation`), daily coordination (`standup-meeting`), and reflection (`sprint-retrospective`).
-- `task-estimation` should stay narrow: sizing, uncertainty, forecasting support, and split-or-spike guidance.
-- `task-estimation` should not absorb backlog decomposition, status updates, or retrospective facilitation.
-- The canonical-vs-alias cleanups in other clusters remain intact (`react-best-practices` / `vercel-react-best-practices`, `design-system` / `frontend-design-system`, `marketing-automation` / `marketing-skills-collection`, `system-environment-setup` / `environment-setup`).
+- `api-design` and `api-documentation` should stay separate but no longer compete for the same primary trigger boundary.
+- `api-design` should stay narrow: contract shape, semantics, compatibility review, and handoff quality.
+- `api-design` should not absorb docs portal setup, tutorial writing, auth implementation, or test planning.
 
 ## Recommended maintenance direction
-- Keep strengthening remaining high-traffic legacy skills with support files before adding new overlap.
-- Use the modern PM cluster as a template for boundary-driven upgrades: define the job, define the handoff, then add evals and references.
-- Re-check README/setup/manifest wording whenever a skill's trigger boundary changes enough to alter discovery behavior.
+- Keep strengthening remaining high-traffic backend and infrastructure legacy skills with support files before adding overlap.
+- Use the `api-design` rewrite as a template for other contract/governance skills: define the boundary, define the handoff, then add evals and references.
+- Re-check README/setup/manifest wording whenever a skill's trigger boundary changes enough to affect discovery.
