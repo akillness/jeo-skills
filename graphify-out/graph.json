@@ -85,7 +85,7 @@
       "id": "bmad",
       "kind": "skill",
       "path": ".agent-skills/bmad",
-      "category": "unknown"
+      "category": "uncategorized"
     },
     {
       "id": "bmad/scripts",
@@ -127,7 +127,7 @@
       "id": "clawteam",
       "kind": "skill",
       "path": ".agent-skills/clawteam",
-      "category": "unknown"
+      "category": "uncategorized"
     },
     {
       "id": "clawteam/references",
@@ -271,7 +271,7 @@
       "id": "game-build-log-triage",
       "kind": "skill",
       "path": ".agent-skills/game-build-log-triage",
-      "category": "unknown"
+      "category": "uncategorized"
     },
     {
       "id": "game-build-log-triage/references",
@@ -289,7 +289,7 @@
       "id": "game-ci-cd-pipeline",
       "kind": "skill",
       "path": ".agent-skills/game-ci-cd-pipeline",
-      "category": "unknown"
+      "category": "uncategorized"
     },
     {
       "id": "game-ci-cd-pipeline/references",
@@ -307,7 +307,7 @@
       "id": "game-demo-feedback-triage",
       "kind": "skill",
       "path": ".agent-skills/game-demo-feedback-triage",
-      "category": "unknown"
+      "category": "uncategorized"
     },
     {
       "id": "game-demo-feedback-triage/references",
@@ -325,7 +325,7 @@
       "id": "game-performance-profiler",
       "kind": "skill",
       "path": ".agent-skills/game-performance-profiler",
-      "category": "unknown"
+      "category": "uncategorized"
     },
     {
       "id": "game-performance-profiler/references",
@@ -358,6 +358,18 @@
       "category": "utilities"
     },
     {
+      "id": "git-workflow/references",
+      "kind": "support",
+      "path": ".agent-skills/git-workflow/references",
+      "support_type": "references"
+    },
+    {
+      "id": "git-workflow/evals",
+      "kind": "support",
+      "path": ".agent-skills/git-workflow/evals",
+      "support_type": "evals"
+    },
+    {
       "id": "google-workspace",
       "kind": "skill",
       "path": ".agent-skills/google-workspace",
@@ -379,7 +391,7 @@
       "id": "harness",
       "kind": "skill",
       "path": ".agent-skills/harness",
-      "category": "unknown"
+      "category": "core-orchestration"
     },
     {
       "id": "harness/references",
@@ -889,7 +901,7 @@
       "id": "steam-store-launch-ops",
       "kind": "skill",
       "path": ".agent-skills/steam-store-launch-ops",
-      "category": "unknown"
+      "category": "uncategorized"
     },
     {
       "id": "steam-store-launch-ops/references",
@@ -1070,1952 +1082,2412 @@
     {
       "source": "agent-browser",
       "target": "agent-browser/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "agentation",
       "target": "agentation/scripts",
-      "relation": "has-support"
-    },
-    {
-      "source": "agentation",
-      "target": "agent-browser",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "autoresearch",
       "target": "autoresearch/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "autoresearch",
       "target": "autoresearch/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "bmad",
       "target": "bmad/scripts",
-      "relation": "has-support"
-    },
-    {
-      "source": "bmad",
-      "target": "ohmg",
-      "relation": "mentions"
-    },
-    {
-      "source": "bmad",
-      "target": "omx",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "bmad-gds",
       "target": "bmad-gds/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "bmad-gds",
       "target": "bmad-gds/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "bmad-gds",
-      "target": "bmad-idea",
-      "relation": "mentions"
-    },
-    {
-      "source": "bmad-gds",
-      "target": "game-build-log-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "bmad-gds",
-      "target": "game-demo-feedback-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "bmad-gds",
-      "target": "game-performance-profiler",
-      "relation": "mentions"
-    },
-    {
-      "source": "bmad-gds",
-      "target": "steam-store-launch-ops",
-      "relation": "mentions"
-    },
-    {
-      "source": "bmad-gds",
-      "target": "task-planning",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "clawteam",
       "target": "clawteam/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "clawteam",
       "target": "clawteam/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "clawteam",
       "target": "clawteam/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "design-system",
       "target": "design-system/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "design-system",
       "target": "design-system/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "design-system",
-      "target": "frontend-design-system",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "firebase-cli",
       "target": "firebase-cli/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "firebase-cli",
       "target": "firebase-cli/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "firebase-cli",
       "target": "firebase-cli/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "frontend-design-system",
       "target": "frontend-design-system/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "frontend-design-system",
-      "target": "design-system",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "game-build-log-triage",
       "target": "game-build-log-triage/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "game-build-log-triage",
       "target": "game-build-log-triage/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "game-build-log-triage",
-      "target": "game-ci-cd-pipeline",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "game-ci-cd-pipeline",
       "target": "game-ci-cd-pipeline/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "game-ci-cd-pipeline",
       "target": "game-ci-cd-pipeline/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "game-ci-cd-pipeline",
-      "target": "game-build-log-triage",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "game-demo-feedback-triage/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "game-demo-feedback-triage/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "game-demo-feedback-triage",
-      "target": "bmad-gds",
-      "relation": "mentions"
-    },
-    {
-      "source": "game-demo-feedback-triage",
-      "target": "game-build-log-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "game-demo-feedback-triage",
-      "target": "game-performance-profiler",
-      "relation": "mentions"
-    },
-    {
-      "source": "game-demo-feedback-triage",
-      "target": "steam-store-launch-ops",
-      "relation": "mentions"
-    },
-    {
-      "source": "game-demo-feedback-triage",
-      "target": "task-planning",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "game-performance-profiler",
       "target": "game-performance-profiler/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "game-performance-profiler",
       "target": "game-performance-profiler/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
-      "source": "game-performance-profiler",
-      "target": "game-demo-feedback-triage",
-      "relation": "mentions"
+      "source": "git-workflow",
+      "target": "git-workflow/references",
+      "kind": "has_support"
+    },
+    {
+      "source": "git-workflow",
+      "target": "git-workflow/evals",
+      "kind": "has_support"
     },
     {
       "source": "google-workspace",
       "target": "google-workspace/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "google-workspace",
       "target": "google-workspace/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "harness",
       "target": "harness/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "harness",
       "target": "harness/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "harness",
       "target": "harness/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "jeo",
       "target": "jeo/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "jeo",
       "target": "jeo/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "jeo",
       "target": "jeo/scripts",
-      "relation": "has-support"
-    },
-    {
-      "source": "jeo",
-      "target": "plannotator",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "langsmith",
       "target": "langsmith/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "langsmith",
       "target": "langsmith/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "llm-wiki",
       "target": "llm-wiki/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "llm-wiki",
       "target": "llm-wiki/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "llm-wiki",
       "target": "llm-wiki/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "marketing-automation",
       "target": "marketing-automation/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "marketing-automation",
       "target": "marketing-automation/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "marketing-automation",
-      "target": "steam-store-launch-ops",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "marketing-skills-collection",
       "target": "marketing-skills-collection/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "marketing-skills-collection",
-      "target": "marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "marketing-skills-collection",
-      "target": "steam-store-launch-ops",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "obsidian-cli",
       "target": "obsidian-cli/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "obsidian-cli",
       "target": "obsidian-cli/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "obsidian-cli",
       "target": "obsidian-cli/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "obsidian-plugin",
       "target": "obsidian-plugin/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "obsidian-plugin",
       "target": "obsidian-plugin/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "obsidian-plugin",
       "target": "obsidian-plugin/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "omc",
       "target": "omc/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "omc",
       "target": "omc/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "omc",
       "target": "omc/scripts",
-      "relation": "has-support"
-    },
-    {
-      "source": "omc",
-      "target": "ralph",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "omx",
       "target": "omx/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "omx",
       "target": "omx/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "omx",
       "target": "omx/scripts",
-      "relation": "has-support"
-    },
-    {
-      "source": "omx",
-      "target": "code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "omx",
-      "target": "ralph",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "plannotator",
       "target": "plannotator/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "ralph",
       "target": "ralph/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "ralph",
       "target": "ralph/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "ralphmode",
       "target": "ralphmode/references",
-      "relation": "has-support"
-    },
-    {
-      "source": "ralphmode",
-      "target": "jeo",
-      "relation": "mentions"
-    },
-    {
-      "source": "ralphmode",
-      "target": "ralph",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "react-best-practices",
       "target": "react-best-practices/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "react-best-practices",
-      "target": "state-management",
-      "relation": "mentions"
-    },
-    {
-      "source": "react-best-practices",
-      "target": "vercel-react-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "react-best-practices",
-      "target": "web-accessibility",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "react-grab",
       "target": "react-grab/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "react-grab",
       "target": "react-grab/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "react-grab",
       "target": "react-grab/scripts",
-      "relation": "has-support"
-    },
-    {
-      "source": "remotion-video-production",
-      "target": "video-production",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "rtk",
       "target": "rtk/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "rtk",
       "target": "rtk/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "rtk",
       "target": "rtk/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "scrapling",
       "target": "scrapling/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "scrapling",
       "target": "scrapling/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "scrapling",
       "target": "scrapling/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "skill-autoresearch",
       "target": "skill-autoresearch/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "skill-standardization",
       "target": "skill-standardization/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "skill-standardization",
       "target": "skill-standardization/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "sprint-retrospective",
       "target": "sprint-retrospective/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "sprint-retrospective",
       "target": "sprint-retrospective/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "sprint-retrospective",
-      "target": "standup-meeting",
-      "relation": "mentions"
-    },
-    {
-      "source": "sprint-retrospective",
-      "target": "task-estimation",
-      "relation": "mentions"
-    },
-    {
-      "source": "sprint-retrospective",
-      "target": "task-planning",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "standup-meeting",
       "target": "standup-meeting/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "standup-meeting",
       "target": "standup-meeting/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "standup-meeting",
-      "target": "sprint-retrospective",
-      "relation": "mentions"
-    },
-    {
-      "source": "standup-meeting",
-      "target": "task-estimation",
-      "relation": "mentions"
-    },
-    {
-      "source": "standup-meeting",
-      "target": "task-planning",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "steam-store-launch-ops",
       "target": "steam-store-launch-ops/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "steam-store-launch-ops",
       "target": "steam-store-launch-ops/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "steam-store-launch-ops",
-      "target": "game-demo-feedback-triage",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "strix",
       "target": "strix/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "strix",
       "target": "strix/evals",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "strix",
       "target": "strix/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "survey",
       "target": "survey/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "survey",
       "target": "survey/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "survey",
-      "target": "jeo",
-      "relation": "mentions"
-    },
-    {
-      "source": "survey",
-      "target": "ralph",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "task-planning",
       "target": "task-planning/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "task-planning",
       "target": "task-planning/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "task-planning",
-      "target": "sprint-retrospective",
-      "relation": "mentions"
-    },
-    {
-      "source": "task-planning",
-      "target": "standup-meeting",
-      "relation": "mentions"
-    },
-    {
-      "source": "task-planning",
-      "target": "task-estimation",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "vercel-deploy",
       "target": "vercel-deploy/scripts",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "vercel-react-best-practices",
       "target": "vercel-react-best-practices/evals",
-      "relation": "has-support"
-    },
-    {
-      "source": "vercel-react-best-practices",
-      "target": "react-best-practices",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "vibe-kanban",
       "target": "vibe-kanban/references",
-      "relation": "has-support"
+      "kind": "has_support"
     },
     {
       "source": "vibe-kanban",
       "target": "vibe-kanban/scripts",
-      "relation": "has-support"
-    },
-    {
-      "source": "vibe-kanban",
-      "target": "ohmg",
-      "relation": "mentions"
-    },
-    {
-      "source": "vibe-kanban",
-      "target": "omx",
-      "relation": "mentions"
+      "kind": "has_support"
     },
     {
       "source": "README.md",
       "target": "agent-browser",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "agentation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "api-design",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "api-documentation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "authentication-setup",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "autoresearch",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "backend-testing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "bmad",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "bmad-gds",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "bmad-idea",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "changelog-maintenance",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "clawteam",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "code-refactoring",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "code-review",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "codebase-search",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "data-analysis",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "database-schema-design",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "debugging",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "deployment-automation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "design-system",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "environment-setup",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "fabric",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "file-organization",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "firebase-ai-logic",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "firebase-cli",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "frontend-design-system",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "game-build-log-triage",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "game-demo-feedback-triage",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "game-performance-profiler",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "genkit",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "git-submodule",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "git-workflow",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "google-workspace",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "harness",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "jeo",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "langsmith",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "llm-wiki",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "log-analysis",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "looker-studio-bigquery",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "marketing-automation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "marketing-skills-collection",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "monitoring-observability",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "npm-git-install",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "obsidian-cli",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "obsidian-plugin",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "ohmg",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "omc",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "omx",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "opencontext",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "pattern-detection",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "performance-optimization",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "plannotator",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "playwriter",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "presentation-builder",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "prompt-repetition",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "ralph",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "ralphmode",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "react-best-practices",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "react-grab",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "remotion-video-production",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "research-paper-writing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "responsive-design",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "rtk",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "scrapling",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "security-best-practices",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "skill-autoresearch",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "skill-standardization",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "sprint-retrospective",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "standup-meeting",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "state-management",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "steam-store-launch-ops",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "strix",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "survey",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "system-environment-setup",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "task-estimation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "task-planning",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "technical-writing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "testing-strategies",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "ui-component-patterns",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "user-guide-writing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "vercel-deploy",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "vercel-react-best-practices",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "vibe-kanban",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "video-production",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "web-accessibility",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "web-design-guidelines",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "workflow-automation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "agent-browser",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "agentation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "api-design",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "api-documentation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "authentication-setup",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "autoresearch",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "backend-testing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "bmad",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "bmad-gds",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "bmad-idea",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "changelog-maintenance",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "clawteam",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "code-refactoring",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "code-review",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "codebase-search",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "data-analysis",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "database-schema-design",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "debugging",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "deployment-automation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "design-system",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "environment-setup",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "fabric",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "file-organization",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "firebase-ai-logic",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "firebase-cli",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "frontend-design-system",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "game-build-log-triage",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "game-demo-feedback-triage",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "game-performance-profiler",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "genkit",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "git-submodule",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "git-workflow",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "google-workspace",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "harness",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "jeo",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "langsmith",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "llm-wiki",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "log-analysis",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "looker-studio-bigquery",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "marketing-automation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "marketing-skills-collection",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "monitoring-observability",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "npm-git-install",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "obsidian-cli",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "obsidian-plugin",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "ohmg",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "omc",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "omx",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "opencontext",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "pattern-detection",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "performance-optimization",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "plannotator",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "playwriter",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "presentation-builder",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "prompt-repetition",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "ralph",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "ralphmode",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "react-best-practices",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "react-grab",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "remotion-video-production",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "research-paper-writing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "responsive-design",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "rtk",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "scrapling",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "security-best-practices",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "skill-autoresearch",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "skill-standardization",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "sprint-retrospective",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "standup-meeting",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "state-management",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "steam-store-launch-ops",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "strix",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "survey",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "system-environment-setup",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "task-estimation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "task-planning",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "technical-writing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "testing-strategies",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "ui-component-patterns",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "user-guide-writing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "vercel-deploy",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "vercel-react-best-practices",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "vibe-kanban",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "video-production",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "web-accessibility",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "web-design-guidelines",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "README.ko.md",
       "target": "workflow-automation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "agent-browser",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "agentation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "api-design",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "api-documentation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "authentication-setup",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "autoresearch",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "backend-testing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "bmad",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "bmad-gds",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "bmad-idea",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "changelog-maintenance",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "clawteam",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "code-refactoring",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "code-review",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "codebase-search",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "data-analysis",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "database-schema-design",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "debugging",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "deployment-automation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "design-system",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "environment-setup",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "fabric",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "file-organization",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "firebase-ai-logic",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "firebase-cli",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "frontend-design-system",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "genkit",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "git-submodule",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "git-workflow",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "google-workspace",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "harness",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "jeo",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "langsmith",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "llm-wiki",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "log-analysis",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "looker-studio-bigquery",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "marketing-automation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "marketing-skills-collection",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "monitoring-observability",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "npm-git-install",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "obsidian-cli",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "obsidian-plugin",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ohmg",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "omc",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "omx",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "opencontext",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "pattern-detection",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "performance-optimization",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "plannotator",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "playwriter",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "presentation-builder",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "prompt-repetition",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ralph",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ralphmode",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "react-best-practices",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "react-grab",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "remotion-video-production",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "research-paper-writing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "responsive-design",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "rtk",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "scrapling",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "security-best-practices",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "skill-autoresearch",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "skill-standardization",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "sprint-retrospective",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "standup-meeting",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "state-management",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "strix",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "survey",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "system-environment-setup",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "task-estimation",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "task-planning",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "technical-writing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "testing-strategies",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ui-component-patterns",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "user-guide-writing",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "vercel-deploy",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "vercel-react-best-practices",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "vibe-kanban",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "video-production",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "web-accessibility",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "web-design-guidelines",
-      "relation": "indexes"
+      "kind": "mentions"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "workflow-automation",
-      "relation": "indexes"
+      "kind": "mentions"
+    },
+    {
+      "source": "agentation",
+      "target": "agent-browser",
+      "kind": "references"
+    },
+    {
+      "source": "agentation",
+      "target": "bmad",
+      "kind": "references"
+    },
+    {
+      "source": "agentation",
+      "target": "jeo",
+      "kind": "references"
+    },
+    {
+      "source": "agentation",
+      "target": "plannotator",
+      "kind": "references"
+    },
+    {
+      "source": "authentication-setup",
+      "target": "api-design",
+      "kind": "references"
+    },
+    {
+      "source": "autoresearch",
+      "target": "harness",
+      "kind": "references"
+    },
+    {
+      "source": "backend-testing",
+      "target": "api-design",
+      "kind": "references"
+    },
+    {
+      "source": "backend-testing",
+      "target": "authentication-setup",
+      "kind": "references"
+    },
+    {
+      "source": "bmad",
+      "target": "fabric",
+      "kind": "references"
+    },
+    {
+      "source": "bmad",
+      "target": "ohmg",
+      "kind": "references"
+    },
+    {
+      "source": "bmad",
+      "target": "omx",
+      "kind": "references"
+    },
+    {
+      "source": "bmad",
+      "target": "plannotator",
+      "kind": "references"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "bmad",
+      "kind": "references"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "bmad-idea",
+      "kind": "references"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "game-build-log-triage",
+      "kind": "references"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "game-demo-feedback-triage",
+      "kind": "references"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "game-performance-profiler",
+      "kind": "references"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "steam-store-launch-ops",
+      "kind": "references"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "task-planning",
+      "kind": "references"
+    },
+    {
+      "source": "bmad-idea",
+      "target": "bmad",
+      "kind": "references"
+    },
+    {
+      "source": "code-refactoring",
+      "target": "backend-testing",
+      "kind": "references"
+    },
+    {
+      "source": "code-refactoring",
+      "target": "code-review",
+      "kind": "references"
+    },
+    {
+      "source": "database-schema-design",
+      "target": "api-design",
+      "kind": "references"
+    },
+    {
+      "source": "database-schema-design",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "database-schema-design",
+      "target": "performance-optimization",
+      "kind": "references"
+    },
+    {
+      "source": "design-system",
+      "target": "frontend-design-system",
+      "kind": "references"
+    },
+    {
+      "source": "design-system",
+      "target": "responsive-design",
+      "kind": "references"
+    },
+    {
+      "source": "design-system",
+      "target": "ui-component-patterns",
+      "kind": "references"
+    },
+    {
+      "source": "design-system",
+      "target": "web-accessibility",
+      "kind": "references"
+    },
+    {
+      "source": "firebase-cli",
+      "target": "genkit",
+      "kind": "references"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "design-system",
+      "kind": "references"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "responsive-design",
+      "kind": "references"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "ui-component-patterns",
+      "kind": "references"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "web-accessibility",
+      "kind": "references"
+    },
+    {
+      "source": "game-build-log-triage",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "game-build-log-triage",
+      "target": "game-ci-cd-pipeline",
+      "kind": "references"
+    },
+    {
+      "source": "game-ci-cd-pipeline",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "game-ci-cd-pipeline",
+      "target": "game-build-log-triage",
+      "kind": "references"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "bmad",
+      "kind": "references"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "bmad-gds",
+      "kind": "references"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "game-build-log-triage",
+      "kind": "references"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "game-performance-profiler",
+      "kind": "references"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "steam-store-launch-ops",
+      "kind": "references"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "survey",
+      "kind": "references"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "task-planning",
+      "kind": "references"
+    },
+    {
+      "source": "game-performance-profiler",
+      "target": "game-demo-feedback-triage",
+      "kind": "references"
+    },
+    {
+      "source": "git-workflow",
+      "target": "code-review",
+      "kind": "references"
+    },
+    {
+      "source": "git-workflow",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "git-workflow",
+      "target": "task-planning",
+      "kind": "references"
+    },
+    {
+      "source": "google-workspace",
+      "target": "survey",
+      "kind": "references"
+    },
+    {
+      "source": "harness",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "harness",
+      "target": "strix",
+      "kind": "references"
+    },
+    {
+      "source": "jeo",
+      "target": "agent-browser",
+      "kind": "references"
+    },
+    {
+      "source": "jeo",
+      "target": "agentation",
+      "kind": "references"
+    },
+    {
+      "source": "jeo",
+      "target": "bmad",
+      "kind": "references"
+    },
+    {
+      "source": "jeo",
+      "target": "ohmg",
+      "kind": "references"
+    },
+    {
+      "source": "jeo",
+      "target": "omc",
+      "kind": "references"
+    },
+    {
+      "source": "jeo",
+      "target": "omx",
+      "kind": "references"
+    },
+    {
+      "source": "jeo",
+      "target": "plannotator",
+      "kind": "references"
+    },
+    {
+      "source": "jeo",
+      "target": "ralph",
+      "kind": "references"
+    },
+    {
+      "source": "jeo",
+      "target": "ralphmode",
+      "kind": "references"
+    },
+    {
+      "source": "langsmith",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "llm-wiki",
+      "target": "scrapling",
+      "kind": "references"
+    },
+    {
+      "source": "lmstudio-cli",
+      "target": "strix",
+      "kind": "references"
+    },
+    {
+      "source": "log-analysis",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "looker-studio-bigquery",
+      "target": "database-schema-design",
+      "kind": "references"
+    },
+    {
+      "source": "looker-studio-bigquery",
+      "target": "monitoring-observability",
+      "kind": "references"
+    },
+    {
+      "source": "marketing-automation",
+      "target": "marketing-skills-collection",
+      "kind": "references"
+    },
+    {
+      "source": "marketing-automation",
+      "target": "steam-store-launch-ops",
+      "kind": "references"
+    },
+    {
+      "source": "marketing-skills-collection",
+      "target": "marketing-automation",
+      "kind": "references"
+    },
+    {
+      "source": "marketing-skills-collection",
+      "target": "steam-store-launch-ops",
+      "kind": "references"
+    },
+    {
+      "source": "npm-git-install",
+      "target": "environment-setup",
+      "kind": "references"
+    },
+    {
+      "source": "npm-git-install",
+      "target": "git-workflow",
+      "kind": "references"
+    },
+    {
+      "source": "obsidian-cli",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "omc",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "omc",
+      "target": "ralph",
+      "kind": "references"
+    },
+    {
+      "source": "omx",
+      "target": "code-review",
+      "kind": "references"
+    },
+    {
+      "source": "omx",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "omx",
+      "target": "ralph",
+      "kind": "references"
+    },
+    {
+      "source": "performance-optimization",
+      "target": "database-schema-design",
+      "kind": "references"
+    },
+    {
+      "source": "performance-optimization",
+      "target": "ui-component-patterns",
+      "kind": "references"
+    },
+    {
+      "source": "plannotator",
+      "target": "code-review",
+      "kind": "references"
+    },
+    {
+      "source": "playwriter",
+      "target": "agent-browser",
+      "kind": "references"
+    },
+    {
+      "source": "ralph",
+      "target": "omc",
+      "kind": "references"
+    },
+    {
+      "source": "ralphmode",
+      "target": "jeo",
+      "kind": "references"
+    },
+    {
+      "source": "ralphmode",
+      "target": "ralph",
+      "kind": "references"
+    },
+    {
+      "source": "react-best-practices",
+      "target": "performance-optimization",
+      "kind": "references"
+    },
+    {
+      "source": "react-best-practices",
+      "target": "state-management",
+      "kind": "references"
+    },
+    {
+      "source": "react-best-practices",
+      "target": "vercel-react-best-practices",
+      "kind": "references"
+    },
+    {
+      "source": "react-best-practices",
+      "target": "web-accessibility",
+      "kind": "references"
+    },
+    {
+      "source": "remotion-video-production",
+      "target": "design-system",
+      "kind": "references"
+    },
+    {
+      "source": "remotion-video-production",
+      "target": "presentation-builder",
+      "kind": "references"
+    },
+    {
+      "source": "remotion-video-production",
+      "target": "video-production",
+      "kind": "references"
+    },
+    {
+      "source": "responsive-design",
+      "target": "ui-component-patterns",
+      "kind": "references"
+    },
+    {
+      "source": "responsive-design",
+      "target": "web-accessibility",
+      "kind": "references"
+    },
+    {
+      "source": "security-best-practices",
+      "target": "authentication-setup",
+      "kind": "references"
+    },
+    {
+      "source": "security-best-practices",
+      "target": "deployment-automation",
+      "kind": "references"
+    },
+    {
+      "source": "skill-autoresearch",
+      "target": "autoresearch",
+      "kind": "references"
+    },
+    {
+      "source": "sprint-retrospective",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "sprint-retrospective",
+      "target": "standup-meeting",
+      "kind": "references"
+    },
+    {
+      "source": "sprint-retrospective",
+      "target": "task-estimation",
+      "kind": "references"
+    },
+    {
+      "source": "sprint-retrospective",
+      "target": "task-planning",
+      "kind": "references"
+    },
+    {
+      "source": "standup-meeting",
+      "target": "debugging",
+      "kind": "references"
+    },
+    {
+      "source": "standup-meeting",
+      "target": "sprint-retrospective",
+      "kind": "references"
+    },
+    {
+      "source": "standup-meeting",
+      "target": "task-estimation",
+      "kind": "references"
+    },
+    {
+      "source": "standup-meeting",
+      "target": "task-planning",
+      "kind": "references"
+    },
+    {
+      "source": "state-management",
+      "target": "backend-testing",
+      "kind": "references"
+    },
+    {
+      "source": "state-management",
+      "target": "ui-component-patterns",
+      "kind": "references"
+    },
+    {
+      "source": "steam-store-launch-ops",
+      "target": "game-demo-feedback-triage",
+      "kind": "references"
+    },
+    {
+      "source": "survey",
+      "target": "jeo",
+      "kind": "references"
+    },
+    {
+      "source": "survey",
+      "target": "ohmg",
+      "kind": "references"
+    },
+    {
+      "source": "survey",
+      "target": "omc",
+      "kind": "references"
+    },
+    {
+      "source": "survey",
+      "target": "omx",
+      "kind": "references"
+    },
+    {
+      "source": "survey",
+      "target": "ralph",
+      "kind": "references"
+    },
+    {
+      "source": "system-environment-setup",
+      "target": "environment-setup",
+      "kind": "references"
+    },
+    {
+      "source": "task-planning",
+      "target": "sprint-retrospective",
+      "kind": "references"
+    },
+    {
+      "source": "task-planning",
+      "target": "standup-meeting",
+      "kind": "references"
+    },
+    {
+      "source": "task-planning",
+      "target": "task-estimation",
+      "kind": "references"
+    },
+    {
+      "source": "testing-strategies",
+      "target": "backend-testing",
+      "kind": "references"
+    },
+    {
+      "source": "testing-strategies",
+      "target": "code-review",
+      "kind": "references"
+    },
+    {
+      "source": "ui-component-patterns",
+      "target": "state-management",
+      "kind": "references"
+    },
+    {
+      "source": "ui-component-patterns",
+      "target": "web-accessibility",
+      "kind": "references"
+    },
+    {
+      "source": "vercel-deploy",
+      "target": "deployment-automation",
+      "kind": "references"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "performance-optimization",
+      "kind": "references"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "react-best-practices",
+      "kind": "references"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "state-management",
+      "kind": "references"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "web-accessibility",
+      "kind": "references"
+    },
+    {
+      "source": "vibe-kanban",
+      "target": "ohmg",
+      "kind": "references"
+    },
+    {
+      "source": "vibe-kanban",
+      "target": "omx",
+      "kind": "references"
+    },
+    {
+      "source": "vibe-kanban",
+      "target": "plannotator",
+      "kind": "references"
+    },
+    {
+      "source": "video-production",
+      "target": "design-system",
+      "kind": "references"
+    },
+    {
+      "source": "video-production",
+      "target": "presentation-builder",
+      "kind": "references"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "responsive-design",
+      "kind": "references"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "ui-component-patterns",
+      "kind": "references"
+    },
+    {
+      "source": "web-design-guidelines",
+      "target": "ui-component-patterns",
+      "kind": "references"
+    },
+    {
+      "source": "web-design-guidelines",
+      "target": "web-accessibility",
+      "kind": "references"
     }
   ]
 }

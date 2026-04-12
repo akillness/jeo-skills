@@ -325,7 +325,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `fabric` | AI 프롬프트 패턴 — YouTube 요약, 문서 분석 (200+ 패턴) | 전체 |
 | `file-organization` | 파일 및 폴더 구성 | 전체 |
 | `git-submodule` | Git 서브모듈 관리 | 전체 |
-| `git-workflow` | 커밋, 브랜치, 머지, PR 워크플로우 | 전체 |
+| `git-workflow` | 로컬 Git 브랜치, 커밋, 리베이스, 충돌 해결, 안전한 푸시, 복구 워크플로우 | 전체 |
 | `google-workspace` | Google Workspace REST API 자동화 — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
 | `graphify` | 저장소/코퍼스 지식 그래프 생성 — `GRAPH_REPORT.md`, `graph.json`, HTML 출력과 graph 기반 질의 워크플로우 | 전체 |

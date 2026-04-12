@@ -1,526 +1,298 @@
 ---
 name: git-workflow
-description: Manage Git workflows including commits, branches, merges, and collaboration. Use when working with Git repositories, creating commits, managing branches, or resolving conflicts.
+description: >
+  Manage local Git collaboration safely: branch creation, staging, commit shaping,
+  rebase/merge decisions, conflict resolution, lease-safe pushes, and recovery from
+  resets or bad history edits. Use when the user needs help preparing a branch,
+  cleaning up commits, rebasing onto an updated base branch, resolving conflicts,
+  pushing rewritten history safely, undoing or recovering Git mistakes, or getting
+  a diff ready for review. Not for hosted PR review, repo administration, or sprint
+  planning.
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: >
+  Best for repositories where Git CLI is available and the main problem is local
+  repository state: branches, commits, history edits, conflict handling, or recovery.
+  This skill is a local Git workflow and recovery guide, not a hosted PR or repo-
+  settings workflow.
 metadata:
-  tags: git, version-control, branching, commits, collaboration
-  platforms: Claude, ChatGPT, Gemini
-allowed-tools: Bash Read Write
+  tags: git, version-control, branching, rebasing, conflict-resolution, recovery, collaboration
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "1.1"
+  source: akillness/oh-my-skills
 ---
-
 
 # Git Workflow
 
+Use this skill as the repository's **local Git collaboration and recovery anchor**.
+
+The job is not to dump every Git command ever made. The job is to:
+- choose the safest local Git move for the current state,
+- keep branches and commits reviewable,
+- handle rebases and conflicts without clobbering teammates,
+- recover cleanly when resets, rebases, or force-pushes go sideways.
+
+Read [references/collaboration-boundaries.md](references/collaboration-boundaries.md) and [references/recovery-patterns.md](references/recovery-patterns.md) before unusual cases or when choosing between merge, rebase, revert, reset, or reflog recovery.
+
+If the user mainly needs:
+- **what work should exist before touching Git** → route to `task-planning`
+- **reviewing a diff for correctness, design, or security** → route to `code-review`
+- **root-cause analysis of a bug or regression** → route to `debugging` (keep `git bisect` here only as the Git mechanic)
+- **hosted PR lifecycle, reviewer assignment, or repo settings** → use a dedicated PR/repo-management workflow instead of this skill
+
 ## When to use this skill
-- Creating meaningful commit messages
-- Managing branches
-- Merging code
-- Resolving conflicts
-- Collaborating with team
-- Git best practices
+- Create or rename a branch and choose a safe branch naming convention
+- Stage changes selectively and shape commits into reviewable units
+- Clean up local history before review with amend, interactive rebase, squash, or fixup
+- Rebase or merge onto an updated base branch and resolve conflicts safely
+- Push a branch, set upstream, or force-push rewritten history with `--force-with-lease`
+- Recover from a bad reset, wrong-branch commit, dropped commit, or broken rebase using `reflog`, revert, restore, or rescue branches
+- Prepare a branch/diff so the next review or PR step is clean and low-surprise
+
+## When not to use this skill
+- The main task is deciding whether the code/design/test approach is good → use `code-review`
+- The main task is planning backlog slices, acceptance criteria, or sequencing → use `task-planning`
+- The main task is reproducing and diagnosing a defect → use `debugging`
+- The main task is GitHub/GitLab PR templates, reviewers, merge queues, branch protections, labels, or repo settings → use a hosted PR/repo-management workflow
+- The user wants a giant Git tutorial instead of the next safe move for the current state
 
 ## Instructions
 
-### Step 1: Branch management
+### Step 1: Classify the local Git situation
+Normalize the request into this intake first:
 
-**Create feature branch**:
-```bash
-# Create and switch to new branch
-git checkout -b feature/feature-name
-
-# Or create from specific commit
-git checkout -b feature/feature-name <commit-hash>
+```yaml
+git_intake:
+  current_goal: branch-setup | commit-shaping | sync-with-base | conflict-resolution | push-safety | undo-recovery | history-inspection | unknown
+  branch_state: clean | has-unstaged-changes | staged-only | ahead-of-origin | behind-origin | diverged | detached-head | unknown
+  collaboration_risk: solo-branch | shared-branch | unknown
+  remote_context: no-remote | origin-only | fork-plus-upstream | unknown
+  trigger_event:
+    - need-clean-commits
+    - rebased-branch
+    - merge-conflict
+    - wrong-branch-commit
+    - accidental-reset
+    - rejected-push
+    - lost-commit
+    - prepare-for-review
+    - sync-main
+    - unclear
+  preferred_history: keep-linear | preserve-merge-context | unknown
+  confidence: high | medium | low
 ```
 
-**Naming conventions**:
-- `feature/description`: New features
-- `bugfix/description`: Bug fixes
-- `hotfix/description`: Urgent fixes
-- `refactor/description`: Code refactoring
-- `docs/description`: Documentation updates
+If the user provides an unclear packet, choose the safest local next move and state the assumptions.
 
-### Step 2: Making changes
+### Step 2: Choose one primary workflow mode
+Pick exactly one mode for the current run:
 
-**Stage changes**:
+1. **branch-and-stage hygiene**
+   - Use when the main need is branch creation, switching, staging, partial staging, or keeping the worktree clean
+
+2. **commit-shaping**
+   - Use when the user needs better commit boundaries, better messages, amend/fixup, or interactive rebase cleanup before review
+
+3. **sync-with-base**
+   - Use when the branch must catch up with `main` / `origin/main` via merge or rebase
+
+4. **conflict-resolution**
+   - Use when a merge or rebase already produced conflicts and the next safe move matters most
+
+5. **push-safety**
+   - Use when the branch is ready but remote collaboration safety matters: upstream, rejected pushes, `--force-with-lease`, fork sync, or diverged branch handling
+
+6. **undo-and-recovery**
+   - Use when a reset, rebase, checkout, amend, or branch deletion went wrong and the user needs rescue steps first
+
+### Step 3: Pick the safest Git move, not the fanciest one
+Use these rules:
+
+- Prefer **`git status` + `git branch --show-current` + `git log --oneline --decorate -5`** before irreversible actions.
+- Prefer **`git add -p`** or explicit file staging when commit boundaries matter.
+- Prefer **`git commit --amend` / interactive rebase** only on local or safely rewritable branches.
+- Prefer **`git pull --rebase` / `git fetch` + `git rebase origin/main`** when the team wants linear history and the branch is not a shared integration branch.
+- Prefer **merge** when preserving integration context or avoiding risky history rewrites matters more than linear history.
+- Prefer **`git push --force-with-lease`**, never raw `--force`, after rebases or amended history that must update a remote branch.
+- Prefer **`git revert`** over `reset --hard` when the bad commit is already shared and the goal is safe collaborative undo.
+- Prefer **`git reflog`** before panic when commits seem lost.
+
+### Step 4: Apply the decision ladder
+Use this ladder when deciding between common alternatives:
+
+#### Merge vs rebase
+- **Use rebase** when:
+  - the branch is primarily yours,
+  - the goal is a cleaner reviewable history,
+  - rewriting the branch will not surprise collaborators,
+  - conflict resolution effort is acceptable.
+- **Use merge** when:
+  - the branch is shared,
+  - preserving branch integration history matters,
+  - rebasing would create confusing rewrite risk,
+  - the team already expects merge commits.
+
+#### Revert vs reset
+- **Use revert** when the bad commit is already pushed/shared.
+- **Use reset** when the history is still local and you intentionally want to rewrite it.
+- **Use restore / checkout of files** when only the worktree/index needs fixing, not the branch history.
+
+#### Force-with-lease vs normal push
+- **Use normal push** when history is unchanged and the remote is simply ahead/behind in a normal way.
+- **Use `--force-with-lease`** only after rebase, amend, squash, or other history rewrite, and only when you are confident about the remote state.
+- If the branch appears shared and you are unsure who else has pushed, stop and call out the collaboration risk.
+
+### Step 5: Build the local Git brief
+Return this exact structure:
+
+```markdown
+# Git Workflow Brief
+
+## Recommended mode
+- Mode: branch-and-stage hygiene | commit-shaping | sync-with-base | conflict-resolution | push-safety | undo-and-recovery
+- Why this mode fits: ...
+
+## Current state
+- Branch: ...
+- Worktree / index state: ...
+- Remote context: ...
+- Collaboration risk: solo-branch | shared-branch | unknown
+- Confidence: high | medium | low
+
+## Safest next move
+1. ...
+2. ...
+3. ...
+
+## Commands
 ```bash
-# Stage specific files
-git add file1.py file2.js
-
-# Stage all changes
-git add .
-
-# Stage with patch mode (interactive)
-git add -p
+...
 ```
 
-**Check status**:
-```bash
-# See what's changed
-git status
+## Why this is the safe path
+- ...
+- ...
 
-# See detailed diff
-git diff
+## Watch-outs
+- ...
+- ...
 
-# See staged diff
-git diff --staged
+## Recovery fallback
+- If this goes wrong, use ...
+
+## Adjacent handoff
+- Use `code-review` when ...
+- Use `debugging` when ...
+- Use `task-planning` when ...
 ```
 
-### Step 3: Committing
+### Step 6: Use these mode-specific patterns
 
-**Write good commit messages**:
-```bash
-git commit -m "type(scope): subject
+**For branch-and-stage hygiene**
+- start with branch name and dirty/clean state
+- use explicit staging or `git add -p`
+- keep unrelated changes out of the same commit
+- call out whether a temporary stash is safer than carrying unrelated changes forward
 
-Detailed description of what changed and why.
+**For commit-shaping**
+- recommend one clean commit per meaningful review unit when possible
+- use `git commit --amend` only before the commit is shared or when shared rewrite is explicitly acceptable
+- use `git rebase -i` for squash/reword/fixup on local branch history
+- prefer conventional or repo-specific commit format when known
 
-- Change 1
-- Change 2
+**For sync-with-base**
+- fetch first
+- decide merge vs rebase explicitly
+- say whether the branch is safe to rewrite
+- if conflicts are likely, point to the fallback before starting
 
-Fixes #123"
-```
+**For conflict-resolution**
+- show the loop clearly: inspect → edit conflict markers or resolve with tool → `git add` → continue/commit
+- remind the user whether they are in merge or rebase state
+- keep the next action mechanical and calm; conflict handling is a sequence, not a philosophy essay
 
-**Commit types**:
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation
-- `style`: Formatting, no code change
-- `refactor`: Code refactoring
-- `test`: Adding tests
-- `chore`: Maintenance
+**For push-safety**
+- state whether upstream exists
+- distinguish normal push, rejected push, and rewritten-history push
+- prefer `--force-with-lease` after rebase/amend, never raw `--force`
+- if the remote branch is shared or policy-protected, say so explicitly
 
-**Example**:
-```bash
-git commit -m "feat(auth): add JWT authentication
+**For undo-and-recovery**
+- identify what was lost or changed: commit, file, branch pointer, worktree contents, or remote state
+- inspect reflog before destructive cleanup
+- create a rescue branch if needed before further edits
+- prefer reversible steps first when confidence is low
 
-- Implement JWT token generation
-- Add token validation middleware
-- Update user model with refresh token
+### Step 7: Keep boundaries sharp
+Before finalizing:
+- Do **not** turn this into a hosted PR tutorial.
+- Do **not** pretend every branch should be rebased; state the tradeoff.
+- Do **not** recommend `reset --hard` casually without naming the data-loss risk.
+- Do **not** bury the shared-vs-solo branch distinction.
+- Do **not** drift into code-review comments, root-cause analysis, or backlog design.
 
-Closes #42"
-```
+## Output format
+Always return a compact **Git Workflow Brief**, not a giant command dump.
 
-### Step 4: Pushing changes
-
-```bash
-# Push to remote
-git push origin feature/feature-name
-
-# Force push (use with caution!)
-git push origin feature/feature-name --force-with-lease
-
-# Set upstream and push
-git push -u origin feature/feature-name
-```
-
-### Step 5: Pulling and updating
-
-```bash
-# Pull latest changes
-git pull origin main
-
-# Pull with rebase (cleaner history)
-git pull --rebase origin main
-
-# Fetch without merging
-git fetch origin
-```
-
-### Step 6: Merging
-
-**Merge feature branch**:
-```bash
-# Switch to main branch
-git checkout main
-
-# Merge feature
-git merge feature/feature-name
-
-# Merge with no fast-forward (creates merge commit)
-git merge --no-ff feature/feature-name
-```
-
-**Rebase instead of merge**:
-```bash
-# On feature branch
-git checkout feature/feature-name
-
-# Rebase onto main
-git rebase main
-
-# Continue after resolving conflicts
-git rebase --continue
-
-# Abort rebase
-git rebase --abort
-```
-
-### Step 7: Resolving conflicts
-
-**When conflicts occur**:
-```bash
-# See conflicted files
-git status
-
-# Open files and resolve conflicts
-# Look for markers:
-<<<<<<< HEAD
-Current branch code
-=======
-Incoming branch code
->>>>>>> feature-branch
-
-# After resolving
-git add <resolved-files>
-git commit  # For merge
-git rebase --continue  # For rebase
-```
-
-### Step 8: Cleaning up
-
-```bash
-# Delete local branch
-git branch -d feature/feature-name
-
-# Force delete
-git branch -D feature/feature-name
-
-# Delete remote branch
-git push origin --delete feature/feature-name
-
-# Clean up stale references
-git fetch --prune
-```
-
-## Advanced workflows
-
-### Interactive rebase
-
-```bash
-# Rebase last 3 commits
-git rebase -i HEAD~3
-
-# Commands in editor:
-# pick: use commit
-# reword: change commit message
-# edit: amend commit
-# squash: combine with previous
-# fixup: like squash, discard message
-# drop: remove commit
-```
-
-### Stashing changes
-
-```bash
-# Stash current changes
-git stash
-
-# Stash with message
-git stash save "Work in progress on feature X"
-
-# List stashes
-git stash list
-
-# Apply most recent stash
-git stash apply
-
-# Apply and remove stash
-git stash pop
-
-# Apply specific stash
-git stash apply stash@{2}
-
-# Drop stash
-git stash drop stash@{0}
-
-# Clear all stashes
-git stash clear
-```
-
-### Cherry-picking
-
-```bash
-# Apply specific commit
-git cherry-pick <commit-hash>
-
-# Cherry-pick multiple commits
-git cherry-pick <hash1> <hash2> <hash3>
-
-# Cherry-pick without committing
-git cherry-pick -n <commit-hash>
-```
-
-### Bisect (finding bugs)
-
-```bash
-# Start bisect
-git bisect start
-
-# Mark current as bad
-git bisect bad
-
-# Mark known good commit
-git bisect good <commit-hash>
-
-# Git will checkout commits to test
-# Test and mark each:
-git bisect good  # if works
-git bisect bad   # if broken
-
-# When found, reset
-git bisect reset
-```
+Required qualities:
+- choose one mode
+- state the collaboration risk
+- prefer the safest reversible path that solves the current problem
+- make rewrite risk explicit
+- include a recovery fallback when the command sequence has teeth
+- keep routing boundaries to review, debugging, planning, and hosted PR workflows visible
 
 ## Examples
 
-### Example 1: Feature development workflow
+### Example 1: rebased branch needs safe push
+**Input**
+> I rebased my feature branch onto main and now I need to push it without overwriting teammates.
 
-```bash
-# 1. Create feature branch
-git checkout main
-git pull origin main
-git checkout -b feature/user-profile
+**Output sketch**
+- Mode: `push-safety`
+- State whether the branch looks solo or shared
+- Recommend `git push --force-with-lease origin <branch>` only if rewrite is expected
+- Watch-out warns against raw `--force`
 
-# 2. Make changes
-# ... edit files ...
+### Example 2: clean up local commits before review
+**Input**
+> Help me turn these messy local commits into something clean before review.
 
-# 3. Commit changes
-git add src/profile/
-git commit -m "feat(profile): add user profile page
+**Output sketch**
+- Mode: `commit-shaping`
+- Suggest explicit staging plus `git rebase -i` or `git commit --amend`
+- Keep the goal focused on reviewable commit units, not review comments themselves
 
-- Create profile component
-- Add profile API endpoints
-- Add profile tests"
+### Example 3: wrong-branch reset panic
+**Input**
+> I think I hard-reset the wrong branch. Can Git recover this?
 
-# 4. Keep up to date with main
-git fetch origin
-git rebase origin/main
+**Output sketch**
+- Mode: `undo-and-recovery`
+- Start with `git reflog`
+- Create a rescue branch from the pre-reset SHA before further cleanup
+- Explain when to stop and avoid more destructive commands
 
-# 5. Push to remote
-git push origin feature/user-profile
+### Example 4: request is really PR review
+**Input**
+> Review this PR and tell me if the architecture is okay.
 
-# 6. Create Pull Request on GitHub/GitLab
-# ... after review and approval ...
-
-# 7. Merge and cleanup
-git checkout main
-git pull origin main
-git branch -d feature/user-profile
-```
-
-### Example 2: Hotfix workflow
-
-```bash
-# 1. Create hotfix branch from production
-git checkout main
-git pull origin main
-git checkout -b hotfix/critical-bug
-
-# 2. Fix the bug
-# ... make fixes ...
-
-# 3. Commit
-git add .
-git commit -m "hotfix: fix critical login bug
-
-Fixes authentication bypass vulnerability
-
-Fixes #999"
-
-# 4. Push and merge immediately
-git push origin hotfix/critical-bug
-
-# After merge:
-# 5. Cleanup
-git checkout main
-git pull origin main
-git branch -d hotfix/critical-bug
-```
-
-### Example 3: Collaborative workflow
-
-```bash
-# 1. Update main branch
-git checkout main
-git pull origin main
-
-# 2. Create feature branch
-git checkout -b feature/new-feature
-
-# 3. Regular updates from main
-git fetch origin
-git rebase origin/main
-
-# 4. Push your work
-git push origin feature/new-feature
-
-# 5. If teammate made changes to your branch
-git pull origin feature/new-feature --rebase
-
-# 6. Resolve any conflicts
-# ... resolve conflicts ...
-git add .
-git rebase --continue
-
-# 7. Force push after rebase
-git push origin feature/new-feature --force-with-lease
-```
+**Output sketch**
+- Route away from `git-workflow`
+- Explain that local Git prep is not the main problem here
+- Hand off to `code-review`
 
 ## Best practices
-
-1. **Commit often**: Small, focused commits
-2. **Meaningful messages**: Explain what and why
-3. **Pull before push**: Stay updated
-4. **Review before commit**: Check what you're committing
-5. **Use branches**: Never commit directly to main
-6. **Keep history clean**: Rebase feature branches
-7. **Test before push**: Run tests locally
-8. **Write descriptive branch names**: Easy to understand
-9. **Delete merged branches**: Keep repository clean
-10. **Use .gitignore**: Don't commit generated files
-
-## Common patterns
-
-### Undo last commit (keep changes)
-
-```bash
-git reset --soft HEAD~1
-```
-
-### Undo last commit (discard changes)
-
-```bash
-git reset --hard HEAD~1
-```
-
-### Amend last commit
-
-```bash
-# Change commit message
-git commit --amend -m "New message"
-
-# Add files to last commit
-git add forgotten-file.txt
-git commit --amend --no-edit
-```
-
-### View history
-
-```bash
-# Detailed log
-git log
-
-# One line per commit
-git log --oneline
-
-# With graph
-git log --oneline --graph --all
-
-# Last 5 commits
-git log -5
-
-# Commits by author
-git log --author="John"
-
-# Commits in date range
-git log --since="2 weeks ago"
-```
-
-### Find commits
-
-```bash
-# Search commit messages
-git log --grep="keyword"
-
-# Search code changes
-git log -S "function_name"
-
-# Show file history
-git log --follow -- path/to/file
-```
-
-## Troubleshooting
-
-### Accidentally committed to wrong branch
-
-```bash
-# 1. Create correct branch from current state
-git branch feature/correct-branch
-
-# 2. Reset current branch
-git reset --hard HEAD~1
-
-# 3. Switch to correct branch
-git checkout feature/correct-branch
-```
-
-### Need to undo a merge
-
-```bash
-# If not pushed yet
-git reset --hard HEAD~1
-
-# If already pushed (creates revert commit)
-git revert -m 1 <merge-commit-hash>
-```
-
-### Recover deleted branch
-
-```bash
-# Find lost commit
-git reflog
-
-# Create branch from lost commit
-git checkout -b recovered-branch <commit-hash>
-```
-
-### Sync fork with upstream
-
-```bash
-# Add upstream remote
-git remote add upstream https://github.com/original/repo.git
-
-# Fetch upstream
-git fetch upstream
-
-# Merge upstream main
-git checkout main
-git merge upstream/main
-
-# Push to your fork
-git push origin main
-```
-
-## Git configuration
-
-### User setup
-
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
-```
-
-### Aliases
-
-```bash
-git config --global alias.co checkout
-git config --global alias.br branch
-git config --global alias.ci commit
-git config --global alias.st status
-git config --global alias.unstage 'reset HEAD --'
-git config --global alias.last 'log -1 HEAD'
-git config --global alias.lg 'log --oneline --graph --all'
-```
-
-### Editor
-
-```bash
-git config --global core.editor "code --wait"  # VS Code
-git config --global core.editor "vim"           # Vim
-```
+1. **Inspect before surgery.** `git status`, branch name, and recent log beat guesswork.
+2. **Prefer reviewable commits over giant snapshots.** Commit shape affects review quality.
+3. **Treat history rewrites as collaboration decisions, not personal preferences.** Shared branches change the answer.
+4. **Use `--force-with-lease`, not raw `--force`.** Rewrite safely or do not rewrite.
+5. **Reach for `reflog` early in recovery.** Lost commits are often only misplaced branch pointers.
+6. **Choose the smallest safe fix.** Not every problem needs rebase, reset, or branch surgery.
+7. **Route out when the problem changes.** Review quality, debugging, and planning are adjacent but distinct jobs.
 
 ## References
-
-- [Pro Git Book](https://git-scm.com/book/en/v2)
-- [Git Cheat Sheet](https://education.github.com/git-cheat-sheet-education.pdf)
-- [Conventional Commits](https://www.conventionalcommits.org/)
-- [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
-- [GitHub Flow](https://guides.github.com/introduction/flow/)
+- [references/collaboration-boundaries.md](references/collaboration-boundaries.md)
+- [references/recovery-patterns.md](references/recovery-patterns.md)
+- Git documentation — https://git-scm.com/docs
+- GitHub Docs, *Resolving merge conflicts after a Git rebase* — https://docs.github.com/en/get-started/using-git/resolving-merge-conflicts-after-a-git-rebase
+- GitLab Docs, *Resolve conflicts from the command line* — https://docs.gitlab.com/topics/git/git_rebase/#resolve-conflicts-from-the-command-line

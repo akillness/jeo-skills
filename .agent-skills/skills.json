@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-04-12T06:10:46Z",
+  "generated": "2026-04-12T11:10:19Z",
   "skill_count": 85,
   "categories": {
     "planning-review": [
@@ -2409,7 +2409,7 @@
     },
     {
       "name": "git-workflow",
-      "description": "Manage Git workflows including commits, branches, merges, and collaboration. Use when working with Git repositories, creating commits, managing branches, or resolving conflicts.",
+      "description": "Manage local Git collaboration safely: branch creation, staging, commit shaping, rebase/merge decisions, conflict resolution, lease-safe pushes, and recovery from resets or bad history edits. Use when the user needs help preparing a branch, cleaning up commits, rebasing onto an updated base branch, resolving conflicts, pushing rewritten history safely, undoing or recovering Git mistakes, or getting a diff ready for review. Not for hosted PR review, repo administration, or sprint planning.",
       "category": "utilities",
       "path": "utilities/git-workflow/SKILL.md",
       "tags": [

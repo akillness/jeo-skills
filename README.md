@@ -325,7 +325,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `fabric` | AI prompt patterns — YouTube summaries, document analysis via 200+ Patterns | All |
 | `file-organization` | File and folder organization | All |
 | `git-submodule` | Git submodule management | All |
-| `git-workflow` | Commit, branch, merge, PR workflows | All |
+| `git-workflow` | Local Git branch, commit, rebase, conflict, push-safety, and recovery workflows | All |
 | `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
 | `graphify` | Build persistent repo/corpus knowledge graphs — `GRAPH_REPORT.md`, `graph.json`, HTML outputs, and graph-backed query workflows | All |
 | `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |
