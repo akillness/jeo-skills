@@ -4,16 +4,16 @@
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, support folders, cross-skill mentions, and documentation indexing
 - Total skills: 89
-- Skills with references/: 28
-- Skills with evals/: 27
+- Skills with references/: 29
+- Skills with evals/: 28
 - Graph nodes: 92
-- Graph edges: 620
+- Graph edges: 355
 
 ## Strongest structural findings
-1. The frontend cluster still contains the two explicit canonical-vs-alias pairs `react-best-practices` / `vercel-react-best-practices` and `design-system` / `frontend-design-system`. Discovery surfaces remain sensitive to how those pairs are described.
-2. The game-development cluster now has a clearer center of gravity: `bmad-gds` has moved closer to a **coordinating producer layer**, while `game-demo-feedback-triage`, `game-build-log-triage`, `game-performance-profiler`, and `steam-store-launch-ops` stay as specialist downstream lanes.
-3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so short wording changes there materially affect how the catalog is navigated.
-4. Support coverage improved again, but many older generic skills still lack `references/` and `evals/`; upgrading legacy skills remains higher leverage than adding overlap.
+1. The marketing cluster now includes an explicit canonical-vs-alias pair: `marketing-automation` is the general router and `marketing-skills-collection` is the compatibility alias. Discovery wording now matters here just as much as in the React and design-system pairs.
+2. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so short wording changes there materially affect how the catalog is navigated.
+3. Support coverage improved again, but many older generic skills still lack `references/` and `evals/`; upgrading legacy skills remains higher leverage than adding overlap.
+4. The game-development cluster still benefits from the clearer producer-vs-specialist split introduced by the `bmad-gds` modernization pass.
 
 ## Community map
 - docs
@@ -27,22 +27,22 @@
 - README.ko.md: degree 87
 - README.md: degree 87
 - setup-all-skills-prompt.md: degree 83
-- jeo: degree 33
-- bmad-gds: degree 27
-- omx: degree 26
-- vercel-react-best-practices: degree 25
-- vibe-kanban: degree 24
-- omc: degree 23
-- react-best-practices: degree 23
-
+- references/: degree 29
+- evals/: degree 28
+- bmad-gds: degree 12
+- game-demo-feedback-triage: degree 12
+- task-planning: degree 10
+- omx: degree 9
+- steam-store-launch-ops: degree 9
 
 ## Duplicate / consolidation notes
-- `react-best-practices` and `vercel-react-best-practices` remain a clean canonical-plus-alias pair.
-- `design-system` and `frontend-design-system` remain a clean canonical-plus-alias pair.
-- `bmad-gds` is now better treated as the coordinating game-production skill, not a peer duplicate of the sharper game specialist skills.
-- `task-planning` and the game specialist skills remain adjacent rather than duplicate because the game cluster carries milestone, playtest, build, and launch context.
+- `react-best-practices` and `vercel-react-best-practices` form a canonical-plus-alias pair.
+- `design-system` and `frontend-design-system` form a canonical-plus-alias pair.
+- `marketing-automation` and `marketing-skills-collection` form a canonical-plus-alias pair.
+- `bmad-gds` remains a coordinating game-production skill rather than a duplicate of the sharper game specialists.
+- `task-planning` stays adjacent to the game and marketing clusters instead of collapsing into them.
 
 ## Recommended maintenance direction
-- Keep modernizing cluster anchors like `bmad-gds` so they route into sharper specialist skills instead of growing into vague mega-skills.
+- Keep modernizing cluster anchors so they route into sharper specialist skills instead of growing into vague mega-skills.
 - Continue adding `references/` and `evals/` to older generic skills before creating more overlapping entries.
 - Re-check README/setup/manifest wording whenever a skill changes from generic label to clearer routing or canonical role.

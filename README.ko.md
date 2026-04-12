@@ -315,8 +315,8 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `marketing-automation` | 23개 서브스킬: CRO, 카피라이팅, SEO, 애널리틱스, 그로스 | 전체 |
-| `marketing-skills-collection` | 23개 서브스킬: CRO, 카피라이팅, SEO, 애널리틱스, 그로스 | 전체 |
+| `marketing-automation` | 대표 일반 마케팅 라우터 — KPI 중심 브리프 + CRO/카피/SEO/애널리틱스/그로스 레인 선택 | 전체 |
+| `marketing-skills-collection` | 레거시 프롬프트팩/카탈로그용 `marketing-automation` 호환 별칭 | 전체 |
 
 ### 🔧 유틸리티 (11개)
 

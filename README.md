@@ -315,8 +315,8 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `marketing-automation` | 23 sub-skills: CRO, copywriting, SEO, analytics, growth | All |
-| `marketing-skills-collection` | 23 sub-skills: CRO, copywriting, SEO, analytics, growth | All |
+| `marketing-automation` | Canonical general marketing router — KPI-aware brief + lane selection across CRO, copy, SEO, analytics, growth | All |
+| `marketing-skills-collection` | Compatibility alias for `marketing-automation` in legacy prompt packs and catalogs | All |
 
 ### 🔧 Utilities (11)
 
