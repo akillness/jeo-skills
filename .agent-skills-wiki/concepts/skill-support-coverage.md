@@ -14,8 +14,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
 - 89 total skills
-- 43 skills with `references/`
-- 42 skills with `evals/`
+- 44 skills with `references/`
+- 43 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -33,6 +33,7 @@ Recent ratchets:
 - The `debugging` modernization pass added both `references/` and `evals/`, which matters because a high-frequency code-quality anchor now owns the reproduce → isolate → verify loop instead of remaining a generic legacy troubleshooting guide.
 - The `code-review` modernization pass added both `references/` and `evals/`, which matters because a second high-frequency code-quality anchor now owns workflow-aware diff / PR judgment, missing-evidence checks, and route-outs instead of relying on a generic static checklist.
 - The `testing-strategies` modernization pass added both `references/` and `evals/`, which matters because the code-quality lane now has a dedicated policy/orchestration anchor for risk-based validation depth, gate selection, and flaky-suite rules instead of a generic test-pyramid skill.
+- The `web-accessibility` modernization pass added both `references/` and `evals/`, which matters because a high-traffic frontend skill now owns accessibility remediation plus manual-vs-automated verification instead of remaining a generic WCAG/example dump.
 - The `state-management` modernization pass added both `references/` and `evals/`, which matters because a legacy frontend skill now owns state-boundary decisions across local, shared, URL/form, server, and long-lived client workflow state instead of remaining a generic library tour.
 
 ## Why it matters

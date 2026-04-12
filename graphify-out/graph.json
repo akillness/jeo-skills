@@ -31,7 +31,7 @@
       "label": "agent-browser",
       "has_references": true,
       "has_evals": false,
-      "desc": "\"Browser automation CLI for AI agents. Use for website interaction, form automation, screenshots, scraping, and web app verification. Prefer snapshot refs (@e1, @e2) for deterministic actions.\""
+      "desc": "Browser automation CLI for AI agents. Use for website interaction, form automation, screenshots, scraping, and web app verification. Prefer snapshot refs (@e1, @e2) for deterministic actions."
     },
     {
       "id": "agent-browser:references",
@@ -44,7 +44,7 @@
       "label": "agentation",
       "has_references": false,
       "has_evals": false,
-      "desc": "Visual UI annotation tool for AI agents. Drop the React toolbar into any app \u2014 humans click elements and leave feedback, agents receive structured CSS selectors, bounding boxes, and React component trees to find exact co"
+      "desc": "Visual UI annotation tool for AI agents. Drop the React toolbar into any app — humans click elements and leave feedback, agents receive structured CSS selectors, bounding boxes, and React component trees to find exact code. Supports MCP wat"
     },
     {
       "id": "api-design",
@@ -52,7 +52,7 @@
       "label": "api-design",
       "has_references": true,
       "has_evals": true,
-      "desc": "Design or refactor API contracts for REST and GraphQL systems. Use when the user needs resource modeling, endpoint/schema shape, naming, versioning, pagination, filtering, auth/error semantics, backward-compatibility rev"
+      "desc": "Design or refactor API contracts for REST and GraphQL systems. Use when the user needs resource modeling, endpoint/schema shape, naming, versioning, pagination, filtering, auth/error semantics, backward-compatibility review, or an OpenAPI /"
     },
     {
       "id": "api-design:references",
@@ -78,7 +78,7 @@
       "label": "authentication-setup",
       "has_references": false,
       "has_evals": false,
-      "desc": "Design and implement authentication and authorization systems. Use when setting up user login, JWT tokens, OAuth, session management, or role-based access control. Handles password security, token management, SSO integra"
+      "desc": "Design and implement authentication and authorization systems. Use when setting up user login, JWT tokens, OAuth, session management, or role-based access control. Handles password security, token management, SSO integration."
     },
     {
       "id": "autoresearch",
@@ -86,7 +86,7 @@
       "label": "autoresearch",
       "has_references": true,
       "has_evals": false,
-      "desc": "Autonomous ML experimentation framework by Andrej Karpathy. AI agent autonomously modifies train.py, runs 5-minute GPU experiments, evaluates with val_bpb, and commits only improvements via git ratcheting \u2014 so you wake u"
+      "desc": "Autonomous ML experimentation framework by Andrej Karpathy. AI agent autonomously modifies train.py, runs 5-minute GPU experiments, evaluates with val_bpb, and commits only improvements via git ratcheting — so you wake up to 100+ experiment"
     },
     {
       "id": "autoresearch:references",
@@ -99,7 +99,7 @@
       "label": "backend-testing",
       "has_references": true,
       "has_evals": true,
-      "desc": "Design and implement backend test coverage for APIs, services, auth flows, data access, and integration boundaries. Use when the user needs unit/service/API / contract coverage, fixture strategy, testcontainers or depend"
+      "desc": "Design and implement backend test coverage for APIs, services, auth flows, data access, and integration boundaries. Use when the user needs unit/service/API / contract coverage, fixture strategy, testcontainers or dependency setup, flaky te"
     },
     {
       "id": "backend-testing:references",
@@ -125,7 +125,7 @@
       "label": "bmad-gds",
       "has_references": true,
       "has_evals": true,
-      "desc": "Orchestrate AI-assisted indie game development across concepting, GDD shaping, milestone planning, playtest synthesis, build triage, and launch-readiness decisions. Use when a solo developer or small game team needs one "
+      "desc": "Orchestrate AI-assisted indie game development across concepting, GDD shaping, milestone planning, playtest synthesis, build triage, and launch-readiness decisions. Use when a solo developer or small game team needs one coordinating skill t"
     },
     {
       "id": "bmad-gds:references",
@@ -143,7 +143,7 @@
       "label": "bmad-idea",
       "has_references": false,
       "has_evals": false,
-      "desc": "Creative Intelligence Suite for AI-driven ideation, design thinking, innovation strategy, problem-solving, and storytelling. 5 named specialist agents with distinct methodologies \u2014 no setup required, all workflows availa"
+      "desc": "Creative Intelligence Suite for AI-driven ideation, design thinking, innovation strategy, problem-solving, and storytelling. 5 named specialist agents with distinct methodologies — no setup required, all workflows available immediately."
     },
     {
       "id": "changelog-maintenance",
@@ -151,7 +151,7 @@
       "label": "changelog-maintenance",
       "has_references": false,
       "has_evals": false,
-      "desc": "Maintain a clear and informative changelog for software releases. Use when documenting version changes, tracking features, or communicating updates to users. Handles semantic versioning, changelog formats, and release no"
+      "desc": "Maintain a clear and informative changelog for software releases. Use when documenting version changes, tracking features, or communicating updates to users. Handles semantic versioning, changelog formats, and release notes."
     },
     {
       "id": "clawteam",
@@ -159,7 +159,7 @@
       "label": "clawteam",
       "has_references": true,
       "has_evals": true,
-      "desc": "Multi-agent swarm orchestration where AI agents spawn, coordinate, and self-organize into collaborative teams. Use when running parallel AI agent tasks, orchestrating multi-agent workflows across Claude Code / Codex / Cu"
+      "desc": "Multi-agent swarm orchestration where AI agents spawn, coordinate, and self-organize into collaborative teams. Use when running parallel AI agent tasks, orchestrating multi-agent workflows across Claude Code / Codex / Cursor / custom agents"
     },
     {
       "id": "clawteam:references",
@@ -177,7 +177,7 @@
       "label": "code-refactoring",
       "has_references": false,
       "has_evals": false,
-      "desc": "Simplify and refactor code while preserving behavior, improving clarity, and reducing complexity. Use when simplifying complex code, removing duplication, or applying design patterns. Handles Extract Method, DRY principl"
+      "desc": "Simplify and refactor code while preserving behavior, improving clarity, and reducing complexity. Use when simplifying complex code, removing duplication, or applying design patterns. Handles Extract Method, DRY principle, SOLID principles,"
     },
     {
       "id": "code-review",
@@ -185,7 +185,7 @@
       "label": "code-review",
       "has_references": true,
       "has_evals": true,
-      "desc": "Review diffs, pull requests, merge requests, and patch stacks for correctness, maintainability, security, test gaps, and rollout risk with a workflow-aware review pass. Use when the user wants to approve, block, or comme"
+      "desc": "Review diffs, pull requests, merge requests, and patch stacks for correctness, maintainability, security, test gaps, and rollout risk with a workflow-aware review pass. Use when the user wants to approve, block, or comment on a code change;"
     },
     {
       "id": "code-review:references",
@@ -211,7 +211,7 @@
       "label": "data-analysis",
       "has_references": false,
       "has_evals": false,
-      "desc": "Analyze datasets to extract insights, identify patterns, and generate reports. Use when exploring data, creating visualizations, or performing statistical analysis. Handles CSV, JSON, SQL queries, and Python pandas opera"
+      "desc": "Analyze datasets to extract insights, identify patterns, and generate reports. Use when exploring data, creating visualizations, or performing statistical analysis. Handles CSV, JSON, SQL queries, and Python pandas operations."
     },
     {
       "id": "database-schema-design",
@@ -219,7 +219,7 @@
       "label": "database-schema-design",
       "has_references": false,
       "has_evals": false,
-      "desc": "Design and optimize database schemas for SQL and NoSQL databases. Use when creating new databases, designing tables, defining relationships, indexing strategies, or database migrations. Handles PostgreSQL, MySQL, MongoDB"
+      "desc": "Design and optimize database schemas for SQL and NoSQL databases. Use when creating new databases, designing tables, defining relationships, indexing strategies, or database migrations. Handles PostgreSQL, MySQL, MongoDB, normalization, and"
     },
     {
       "id": "debugging",
@@ -227,7 +227,7 @@
       "label": "debugging",
       "has_references": true,
       "has_evals": true,
-      "desc": "Debug code, runtime behavior, regressions, flaky failures, and code-adjacent incidents with a systematic reproduce \u2192 isolate \u2192 hypothesize \u2192 verify loop. Use when the user has moved past raw symptom triage and now needs "
+      "desc": "Debug code, runtime behavior, regressions, flaky failures, and code-adjacent incidents with a systematic reproduce → isolate → hypothesize → verify loop. Use when the user has moved past raw symptom triage and now needs to narrow the failin"
     },
     {
       "id": "debugging:references",
@@ -245,7 +245,7 @@
       "label": "deployment-automation",
       "has_references": false,
       "has_evals": false,
-      "desc": "Automate application deployment to cloud platforms and servers. Use when setting up CI/CD pipelines, deploying to Docker/Kubernetes, or configuring cloud infrastructure. Handles GitHub Actions, Docker, Kubernetes, AWS, V"
+      "desc": "Automate application deployment to cloud platforms and servers. Use when setting up CI/CD pipelines, deploying to Docker/Kubernetes, or configuring cloud infrastructure. Handles GitHub Actions, Docker, Kubernetes, AWS, Vercel, and deploymen"
     },
     {
       "id": "design-system",
@@ -253,7 +253,7 @@
       "label": "design-system",
       "has_references": true,
       "has_evals": true,
-      "desc": "Design or refactor production-grade frontend UI systems using design tokens, component primitives, layout rules, motion guidance, and accessibility checks. Use when the user needs a reusable visual system, landing-page o"
+      "desc": "Design or refactor production-grade frontend UI systems using design tokens, component primitives, layout rules, motion guidance, and accessibility checks. Use when the user needs a reusable visual system, landing-page or dashboard UI direc"
     },
     {
       "id": "design-system:references",
@@ -271,7 +271,7 @@
       "label": "environment-setup",
       "has_references": true,
       "has_evals": true,
-      "desc": "Organize application environment configuration: `.env` files, env precedence, typed env validation, secret handoff, framework-specific env rules, and config drift between local, staging, CI, and production. Use when the "
+      "desc": "Organize application environment configuration: `.env` files, env precedence, typed env validation, secret handoff, framework-specific env rules, and config drift between local, staging, CI, and production. Use when the user needs help stru"
     },
     {
       "id": "environment-setup:references",
@@ -289,7 +289,7 @@
       "label": "fabric",
       "has_references": false,
       "has_evals": false,
-      "desc": "AI prompt orchestration CLI using reusable Patterns. Use for YouTube summarization, document analysis, content extraction, code explanation, writing assistance, and any AI task via stdin/stdout piping across 20+ provider"
+      "desc": "AI prompt orchestration CLI using reusable Patterns. Use for YouTube summarization, document analysis, content extraction, code explanation, writing assistance, and any AI task via stdin/stdout piping across 20+ providers."
     },
     {
       "id": "file-organization",
@@ -297,7 +297,7 @@
       "label": "file-organization",
       "has_references": false,
       "has_evals": false,
-      "desc": "Organize project files and folders for maintainability and scalability. Use when structuring new projects, refactoring folder structure, or establishing conventions. Handles project structure, naming conventions, and fil"
+      "desc": "Organize project files and folders for maintainability and scalability. Use when structuring new projects, refactoring folder structure, or establishing conventions. Handles project structure, naming conventions, and file organization best "
     },
     {
       "id": "firebase-ai-logic",
@@ -305,7 +305,7 @@
       "label": "firebase-ai-logic",
       "has_references": false,
       "has_evals": false,
-      "desc": "Integrate Firebase AI Logic (Gemini in Firebase) for intelligent app features. Use when adding AI capabilities to Firebase apps, implementing generative AI features, or setting up Firebase AI SDK. Handles Firebase AI SDK"
+      "desc": "Integrate Firebase AI Logic (Gemini in Firebase) for intelligent app features. Use when adding AI capabilities to Firebase apps, implementing generative AI features, or setting up Firebase AI SDK. Handles Firebase AI SDK setup, prompt engin"
     },
     {
       "id": "firebase-cli",
@@ -313,7 +313,7 @@
       "label": "firebase-cli",
       "has_references": true,
       "has_evals": true,
-      "desc": "Install, configure, and operate the Firebase CLI (firebase-tools) for all Firebase services. Use when you need to deploy to Firebase Hosting, Cloud Functions, Firestore, Realtime Database, Cloud Storage, Extensions, App "
+      "desc": "Install, configure, and operate the Firebase CLI (firebase-tools) for all Firebase services. Use when you need to deploy to Firebase Hosting, Cloud Functions, Firestore, Realtime Database, Cloud Storage, Extensions, App Hosting, or run the "
     },
     {
       "id": "firebase-cli:references",
@@ -331,7 +331,7 @@
       "label": "frontend-design-system",
       "has_references": false,
       "has_evals": true,
-      "desc": "Compatibility alias for `design-system`. Use when an existing workflow, setup script, or user explicitly asks for `frontend-design-system`; route ordinary UI system, design-token, landing-page, dashboard, and component-l"
+      "desc": "Compatibility alias for `design-system`. Use when an existing workflow, setup script, or user explicitly asks for `frontend-design-system`; route ordinary UI system, design-token, landing-page, dashboard, and component-library work to `desi"
     },
     {
       "id": "frontend-design-system:evals",
@@ -344,7 +344,7 @@
       "label": "game-build-log-triage",
       "has_references": true,
       "has_evals": true,
-      "desc": "Triage Unity and Unreal Engine editor, build, package, cook, compile, and CI logs into the first actionable failure, likely subsystem, and next debugging steps. Use when a game project fails to build, cook, package, impo"
+      "desc": "Triage Unity and Unreal Engine editor, build, package, cook, compile, and CI logs into the first actionable failure, likely subsystem, and next debugging steps. Use when a game project fails to build, cook, package, import assets, compile s"
     },
     {
       "id": "game-build-log-triage:references",
@@ -362,7 +362,7 @@
       "label": "game-ci-cd-pipeline",
       "has_references": true,
       "has_evals": true,
-      "desc": "Design, audit, and harden CI/CD pipelines for Unity and Unreal projects, including build matrices, cache strategy, artifact naming, packaging stages, platform SDK/toolchain checks, and smoke-test gates. Use when a game t"
+      "desc": "Design, audit, and harden CI/CD pipelines for Unity and Unreal projects, including build matrices, cache strategy, artifact naming, packaging stages, platform SDK/toolchain checks, and smoke-test gates. Use when a game team needs to set up "
     },
     {
       "id": "game-ci-cd-pipeline:references",
@@ -380,7 +380,7 @@
       "label": "game-demo-feedback-triage",
       "has_references": true,
       "has_evals": true,
-      "desc": "Triage mixed game demo and playtest feedback into a prioritized fix brief, weighted evidence summary, and next artifact recommendation. Use when a team has playtest notes, Steam Playtest responses, creator or streamer de"
+      "desc": "Triage mixed game demo and playtest feedback into a prioritized fix brief, weighted evidence summary, and next artifact recommendation. Use when a team has playtest notes, Steam Playtest responses, creator or streamer demo reactions, survey"
     },
     {
       "id": "game-demo-feedback-triage:references",
@@ -398,7 +398,7 @@
       "label": "game-performance-profiler",
       "has_references": true,
       "has_evals": true,
-      "desc": "Triage Unity and Unreal performance complaints into a profiling plan, likely bottleneck class, evidence checklist, and next optimization artifact. Use when a game has low FPS, frame-time spikes, hitches, GC stalls, GPU b"
+      "desc": "Triage Unity and Unreal performance complaints into a profiling plan, likely bottleneck class, evidence checklist, and next optimization artifact. Use when a game has low FPS, frame-time spikes, hitches, GC stalls, GPU bottlenecks, streamin"
     },
     {
       "id": "game-performance-profiler:references",
@@ -416,7 +416,7 @@
       "label": "genkit",
       "has_references": false,
       "has_evals": false,
-      "desc": "Build production-ready AI workflows using Firebase Genkit. Use when creating flows, tool-calling agents, RAG pipelines, multi-agent systems, or deploying AI to Firebase/Cloud Run. Supports TypeScript, Go, and Python with"
+      "desc": "Build production-ready AI workflows using Firebase Genkit. Use when creating flows, tool-calling agents, RAG pipelines, multi-agent systems, or deploying AI to Firebase/Cloud Run. Supports TypeScript, Go, and Python with Gemini, OpenAI, Ant"
     },
     {
       "id": "git-submodule",
@@ -432,7 +432,7 @@
       "label": "git-workflow",
       "has_references": true,
       "has_evals": true,
-      "desc": "Manage local Git collaboration safely: branch creation, staging, commit shaping, rebase/merge decisions, conflict resolution, lease-safe pushes, and recovery from resets or bad history edits. Use when the user needs help"
+      "desc": "Manage local Git collaboration safely: branch creation, staging, commit shaping, rebase/merge decisions, conflict resolution, lease-safe pushes, and recovery from resets or bad history edits. Use when the user needs help preparing a branch,"
     },
     {
       "id": "git-workflow:references",
@@ -450,7 +450,7 @@
       "label": "google-workspace",
       "has_references": false,
       "has_evals": true,
-      "desc": "Create, read, update, and manage all Google Workspace documents and services via REST APIs. Use when working with Google Docs, Google Sheets, Google Slides, Google Drive, Gmail, Google Calendar, Google Chat, Google Forms"
+      "desc": "Create, read, update, and manage all Google Workspace documents and services via REST APIs. Use when working with Google Docs, Google Sheets, Google Slides, Google Drive, Gmail, Google Calendar, Google Chat, Google Forms, Google Meet, Admin"
     },
     {
       "id": "google-workspace:evals",
@@ -463,7 +463,7 @@
       "label": "harness",
       "has_references": true,
       "has_evals": true,
-      "desc": "Design domain-specific agent teams, define specialized agents, and generate the skills they use. Use when you need to decompose a complex project into coordinated multi-agent teams, choose the right architecture pattern "
+      "desc": "Design domain-specific agent teams, define specialized agents, and generate the skills they use. Use when you need to decompose a complex project into coordinated multi-agent teams, choose the right architecture pattern (pipeline, fan-out/f"
     },
     {
       "id": "harness:references",
@@ -481,7 +481,7 @@
       "label": "jeo",
       "has_references": true,
       "has_evals": true,
-      "desc": "Integrated AI agent orchestration skill that combines plannotator, ralphmode, team or bmad execution, agent-browser verification, and agentation feedback loops, while maintaining a project-local `.jeo` ledger for plannin"
+      "desc": "Integrated AI agent orchestration skill that combines plannotator, ralphmode, team or bmad execution, agent-browser verification, and agentation feedback loops, while maintaining a project-local `.jeo` ledger for planning, development, and "
     },
     {
       "id": "jeo:references",
@@ -499,7 +499,7 @@
       "label": "langsmith",
       "has_references": true,
       "has_evals": false,
-      "desc": "Instrument, trace, evaluate, and monitor LLM applications and AI agents with LangSmith. Use when setting up observability for LLM pipelines, running offline or online evaluations, managing prompts in the Prompt Hub, crea"
+      "desc": "Instrument, trace, evaluate, and monitor LLM applications and AI agents with LangSmith. Use when setting up observability for LLM pipelines, running offline or online evaluations, managing prompts in the Prompt Hub, creating datasets for re"
     },
     {
       "id": "langsmith:references",
@@ -512,7 +512,7 @@
       "label": "llm-wiki",
       "has_references": true,
       "has_evals": true,
-      "desc": "Build and maintain a persistent markdown wiki that an LLM updates on the user's behalf, usually inside an Obsidian vault or git-tracked notes repo. Use when raw sources such as web articles, papers, meeting notes, transc"
+      "desc": "Build and maintain a persistent markdown wiki that an LLM updates on the user's behalf, usually inside an Obsidian vault or git-tracked notes repo. Use when raw sources such as web articles, papers, meeting notes, transcripts, screenshots, "
     },
     {
       "id": "llm-wiki:references",
@@ -530,7 +530,7 @@
       "label": "lmstudio-cli",
       "has_references": false,
       "has_evals": false,
-      "desc": "Use LM Studio CLI docs and OpenAI-compatible LM Studio servers to discover models, verify remote availability, and configure downstream tools like Strix. Supports local `lms` CLI flows and remote HTTP endpoint validation"
+      "desc": "Use LM Studio CLI docs and OpenAI-compatible LM Studio servers to discover models, verify remote availability, and configure downstream tools like Strix. Supports local `lms` CLI flows and remote HTTP endpoint validation."
     },
     {
       "id": "log-analysis",
@@ -538,7 +538,7 @@
       "label": "log-analysis",
       "has_references": true,
       "has_evals": true,
-      "desc": "Triage application, infrastructure, browser, API, CI, and general runtime logs into the first actionable failure, repeated patterns, likely scope, and next read-only checks. Use when the user shares raw log text, access/"
+      "desc": "Triage application, infrastructure, browser, API, CI, and general runtime logs into the first actionable failure, repeated patterns, likely scope, and next read-only checks. Use when the user shares raw log text, access/error logs, JSON log"
     },
     {
       "id": "log-analysis:references",
@@ -556,7 +556,7 @@
       "label": "looker-studio-bigquery",
       "has_references": false,
       "has_evals": false,
-      "desc": "Design and configure Looker Studio dashboards with BigQuery data sources. Use when creating analytics dashboards, connecting BigQuery to visualization tools, or optimizing data pipeline performance. Handles BigQuery conn"
+      "desc": "Design and configure Looker Studio dashboards with BigQuery data sources. Use when creating analytics dashboards, connecting BigQuery to visualization tools, or optimizing data pipeline performance. Handles BigQuery connections, custom SQL "
     },
     {
       "id": "marketing-automation",
@@ -564,7 +564,7 @@
       "label": "marketing-automation",
       "has_references": true,
       "has_evals": true,
-      "desc": "Route broad product and growth marketing requests into one clear deliverable lane across CRO, copywriting, SEO, lifecycle messaging, analytics, pricing, launch, retention, and experiment planning. Use when the user needs"
+      "desc": "Route broad product and growth marketing requests into one clear deliverable lane across CRO, copywriting, SEO, lifecycle messaging, analytics, pricing, launch, retention, and experiment planning. Use when the user needs general marketing h"
     },
     {
       "id": "marketing-automation:references",
@@ -582,7 +582,7 @@
       "label": "marketing-skills-collection",
       "has_references": false,
       "has_evals": true,
-      "desc": "Compatibility alias for `marketing-automation`. Use when an existing prompt, setup surface, workflow, or legacy catalog entry explicitly references `marketing-skills-collection` but the real need is still broad product o"
+      "desc": "Compatibility alias for `marketing-automation`. Use when an existing prompt, setup surface, workflow, or legacy catalog entry explicitly references `marketing-skills-collection` but the real need is still broad product or growth marketing r"
     },
     {
       "id": "marketing-skills-collection:evals",
@@ -595,7 +595,7 @@
       "label": "monitoring-observability",
       "has_references": false,
       "has_evals": false,
-      "desc": "Set up monitoring, logging, and observability for applications and infrastructure. Use when implementing health checks, metrics collection, log aggregation, or alerting systems. Handles Prometheus, Grafana, ELK Stack, Da"
+      "desc": "Set up monitoring, logging, and observability for applications and infrastructure. Use when implementing health checks, metrics collection, log aggregation, or alerting systems. Handles Prometheus, Grafana, ELK Stack, Datadog, and monitorin"
     },
     {
       "id": "npm-git-install",
@@ -611,7 +611,7 @@
       "label": "obsidian-cli",
       "has_references": true,
       "has_evals": true,
-      "desc": "Install, enable, and operate Obsidian CLI for terminal-driven note automation against a running Obsidian app. Use when you need to run Obsidian commands from a shell or TUI, target a specific vault or file, automate dail"
+      "desc": "Install, enable, and operate Obsidian CLI for terminal-driven note automation against a running Obsidian app. Use when you need to run Obsidian commands from a shell or TUI, target a specific vault or file, automate daily notes, search, tag"
     },
     {
       "id": "obsidian-cli:references",
@@ -629,7 +629,7 @@
       "label": "obsidian-plugin",
       "has_references": true,
       "has_evals": true,
-      "desc": "Build, validate, and publish Obsidian plugins following official community submission standards. Use when developing an Obsidian plugin from scratch, reviewing existing plugin code, fixing ESLint violations from eslint-p"
+      "desc": "Build, validate, and publish Obsidian plugins following official community submission standards. Use when developing an Obsidian plugin from scratch, reviewing existing plugin code, fixing ESLint violations from eslint-plugin-obsidianmd, pr"
     },
     {
       "id": "obsidian-plugin:references",
@@ -655,7 +655,7 @@
       "label": "omc",
       "has_references": true,
       "has_evals": true,
-      "desc": "\"Use when you need Teams-first multi-agent orchestration in Claude Code. Triggers on: omc, autopilot, ralph, ulw, ccg, team. 29+ specialized agents, smart model routing (Haiku\u2192Opus), persistent execution loops, skill lay"
+      "desc": "Use when you need Teams-first multi-agent orchestration in Claude Code. Triggers on: omc, autopilot, ralph, ulw, ccg, team. 29+ specialized agents, smart model routing (Haiku→Opus), persistent execution loops, skill layers, real-time HUD."
     },
     {
       "id": "omc:references",
@@ -673,7 +673,7 @@
       "label": "omx",
       "has_references": true,
       "has_evals": true,
-      "desc": "\"Use when you need multi-agent orchestration for OpenAI Codex CLI. Triggers on: omx, $plan, $ralph, $team, $autopilot, $deep-interview. v0.11.10 \u2014 30+ agents, 35+ workflow skills, tmux team runtime, sparkshell, explore, "
+      "desc": "Use when you need multi-agent orchestration for OpenAI Codex CLI. Triggers on: omx, $plan, $ralph, $team, $autopilot, $deep-interview. v0.11.10 — 30+ agents, 35+ workflow skills, tmux team runtime, sparkshell, explore, ralplan."
     },
     {
       "id": "omx:references",
@@ -699,7 +699,7 @@
       "label": "pattern-detection",
       "has_references": false,
       "has_evals": false,
-      "desc": "Detect patterns, anomalies, and trends in code and data. Use when identifying code smells, finding security vulnerabilities, or discovering recurring patterns. Handles regex patterns, AST analysis, and statistical anomal"
+      "desc": "Detect patterns, anomalies, and trends in code and data. Use when identifying code smells, finding security vulnerabilities, or discovering recurring patterns. Handles regex patterns, AST analysis, and statistical anomaly detection."
     },
     {
       "id": "performance-optimization",
@@ -707,7 +707,7 @@
       "label": "performance-optimization",
       "has_references": false,
       "has_evals": false,
-      "desc": "Optimize application performance for speed, efficiency, and scalability. Use when improving page load times, reducing bundle size, optimizing database queries, or fixing performance bottlenecks. Handles React optimizatio"
+      "desc": "Optimize application performance for speed, efficiency, and scalability. Use when improving page load times, reducing bundle size, optimizing database queries, or fixing performance bottlenecks. Handles React optimization, lazy loading, cac"
     },
     {
       "id": "plannotator",
@@ -715,7 +715,7 @@
       "label": "plannotator",
       "has_references": false,
       "has_evals": false,
-      "desc": "Interactive plan and diff review for AI coding agents. Visual browser UI for annotating agent plans \u2014 approve or request changes with structured feedback. Supports code review, image annotation, and auto-save to Obsidian"
+      "desc": "Interactive plan and diff review for AI coding agents. Visual browser UI for annotating agent plans — approve or request changes with structured feedback. Supports code review, image annotation, and auto-save to Obsidian/Bear Notes."
     },
     {
       "id": "playwriter",
@@ -723,7 +723,7 @@
       "label": "playwriter",
       "has_references": false,
       "has_evals": false,
-      "desc": "Playwright-based browser automation via Chrome extension + MCP/CLI. Connects to your RUNNING browser (existing logins, cookies, extensions preserved). Use for authenticated flows, stateful web automation, and AI agent br"
+      "desc": "Playwright-based browser automation via Chrome extension + MCP/CLI. Connects to your RUNNING browser (existing logins, cookies, extensions preserved). Use for authenticated flows, stateful web automation, and AI agent browser control withou"
     },
     {
       "id": "presentation-builder",
@@ -739,7 +739,7 @@
       "label": "prompt-repetition",
       "has_references": false,
       "has_evals": false,
-      "desc": "\"A prompt repetition technique for improving LLM accuracy. Achieves significant performance gains in 67% (47/70) of 70 benchmarks. Automatically applied on lightweight models (haiku, flash, mini).\""
+      "desc": "A prompt repetition technique for improving LLM accuracy. Achieves significant performance gains in 67% (47/70) of 70 benchmarks. Automatically applied on lightweight models (haiku, flash, mini)."
     },
     {
       "id": "ralph",
@@ -747,7 +747,7 @@
       "label": "ralph",
       "has_references": true,
       "has_evals": false,
-      "desc": "\"Ouroboros specification-first AI development \u2014 the complete system. Socratic interviewing crystallizes vague ideas into immutable specs (Ambiguity \u2264 0.2) before any code is written. Nine Minds agents (socratic-interview"
+      "desc": "Ouroboros specification-first AI development — the complete system. Socratic interviewing crystallizes vague ideas into immutable specs (Ambiguity ≤ 0.2) before any code is written. Nine Minds agents (socratic-interviewer, ontologist, seed-"
     },
     {
       "id": "ralph:references",
@@ -773,7 +773,7 @@
       "label": "react-best-practices",
       "has_references": false,
       "has_evals": true,
-      "desc": "Audit and improve React and Next.js performance using Vercel-style guidance for waterfalls, bundle size, RSC boundaries, caching, hydration, and rerender behavior. Use when the user needs help with slow React UIs, Next.j"
+      "desc": "Audit and improve React and Next.js performance using Vercel-style guidance for waterfalls, bundle size, RSC boundaries, caching, hydration, and rerender behavior. Use when the user needs help with slow React UIs, Next.js data fetching, bun"
     },
     {
       "id": "react-best-practices:evals",
@@ -786,7 +786,7 @@
       "label": "react-grab",
       "has_references": true,
       "has_evals": true,
-      "desc": "Install and configure react-grab to capture React component context (file path, component name, HTML markup) from any browser UI element for AI coding agents. Use when you want to point at a UI element in the browser and"
+      "desc": "Install and configure react-grab to capture React component context (file path, component name, HTML markup) from any browser UI element for AI coding agents. Use when you want to point at a UI element in the browser and instantly copy its "
     },
     {
       "id": "react-grab:references",
@@ -812,7 +812,7 @@
       "label": "research-paper-writing",
       "has_references": false,
       "has_evals": false,
-      "desc": "Write and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow. Use when drafting an abstract, introduction, related work, method, experiments, ablations, discussion, or rebuttal; structuring f"
+      "desc": "Write and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow. Use when drafting an abstract, introduction, related work, method, experiments, ablations, discussion, or rebuttal; structuring figures and tables; t"
     },
     {
       "id": "responsive-design",
@@ -820,7 +820,7 @@
       "label": "responsive-design",
       "has_references": false,
       "has_evals": false,
-      "desc": "Create responsive web designs that work across all devices and screen sizes. Use when building mobile-first layouts, implementing breakpoints, or optimizing for different viewports. Handles CSS Grid, Flexbox, media queri"
+      "desc": "Create responsive web designs that work across all devices and screen sizes. Use when building mobile-first layouts, implementing breakpoints, or optimizing for different viewports. Handles CSS Grid, Flexbox, media queries, viewport units, "
     },
     {
       "id": "rtk",
@@ -828,7 +828,7 @@
       "label": "rtk",
       "has_references": true,
       "has_evals": true,
-      "desc": "Install, initialize, verify, and troubleshoot RTK (Rust Token Killer) for AI coding agents. Use when you need to reduce shell-command token output, confirm that the correct `rtk` binary is installed, choose between Homeb"
+      "desc": "Install, initialize, verify, and troubleshoot RTK (Rust Token Killer) for AI coding agents. Use when you need to reduce shell-command token output, confirm that the correct `rtk` binary is installed, choose between Homebrew, install.sh, or "
     },
     {
       "id": "rtk:references",
@@ -846,7 +846,7 @@
       "label": "scrapling",
       "has_references": true,
       "has_evals": true,
-      "desc": "Install, configure, and operate Scrapling for adaptive web scraping with parser-first HTML extraction, fast HTTP fetchers, browser rendering, stealth anti-bot options, CLI extraction, and optional MCP or spider workflows"
+      "desc": "Install, configure, and operate Scrapling for adaptive web scraping with parser-first HTML extraction, fast HTTP fetchers, browser rendering, stealth anti-bot options, CLI extraction, and optional MCP or spider workflows. Use when you need "
     },
     {
       "id": "scrapling:references",
@@ -864,7 +864,7 @@
       "label": "security-best-practices",
       "has_references": false,
       "has_evals": false,
-      "desc": "Implement security best practices for web applications and infrastructure. Use when securing APIs, preventing common vulnerabilities, or implementing security policies. Handles HTTPS, CORS, XSS, SQL Injection, CSRF, rate"
+      "desc": "Implement security best practices for web applications and infrastructure. Use when securing APIs, preventing common vulnerabilities, or implementing security policies. Handles HTTPS, CORS, XSS, SQL Injection, CSRF, rate limiting, and OWASP"
     },
     {
       "id": "skill-autoresearch",
@@ -872,7 +872,7 @@
       "label": "skill-autoresearch",
       "has_references": true,
       "has_evals": false,
-      "desc": "Autonomously optimize an existing AI skill by running it repeatedly against binary evals, mutating one instruction at a time, and keeping only changes that improve pass rate. Based on Karpathy-style autoresearch, but app"
+      "desc": "Autonomously optimize an existing AI skill by running it repeatedly against binary evals, mutating one instruction at a time, and keeping only changes that improve pass rate. Based on Karpathy-style autoresearch, but applied to SKILL.md ite"
     },
     {
       "id": "skill-autoresearch:references",
@@ -885,7 +885,7 @@
       "label": "skill-standardization",
       "has_references": false,
       "has_evals": true,
-      "desc": "Standardize and validate SKILL.md files against the Agent Skills specification (agentskills.io). Use when creating new skills, auditing existing skills for spec compliance, converting legacy skill formats to standard str"
+      "desc": "Standardize and validate SKILL.md files against the Agent Skills specification (agentskills.io). Use when creating new skills, auditing existing skills for spec compliance, converting legacy skill formats to standard structure, improving de"
     },
     {
       "id": "skill-standardization:evals",
@@ -898,7 +898,7 @@
       "label": "sprint-retrospective",
       "has_references": true,
       "has_evals": true,
-      "desc": "Facilitate sprint retrospectives, milestone postmortems, or iteration reviews that turn completed work into a few owned process improvements instead of another stale template exercise. Use when the user needs a retro for"
+      "desc": "Facilitate sprint retrospectives, milestone postmortems, or iteration reviews that turn completed work into a few owned process improvements instead of another stale template exercise. Use when the user needs a retro format, async or hybrid"
     },
     {
       "id": "sprint-retrospective:references",
@@ -916,7 +916,7 @@
       "label": "standup-meeting",
       "has_references": true,
       "has_evals": true,
-      "desc": "Facilitate useful daily standups, daily scrums, async check-ins, or walk-the-board delivery syncs without turning them into manager-facing status theater. Use when the user needs a short daily coordination ritual, blocke"
+      "desc": "Facilitate useful daily standups, daily scrums, async check-ins, or walk-the-board delivery syncs without turning them into manager-facing status theater. Use when the user needs a short daily coordination ritual, blocker triage, async stan"
     },
     {
       "id": "standup-meeting:references",
@@ -934,7 +934,7 @@
       "label": "state-management",
       "has_references": true,
       "has_evals": true,
-      "desc": "Design React state boundaries before picking libraries. Use when the user needs to decide whether data should stay local, be lifted/shared via Context, live in URL or form state, move into a client store like Zustand / R"
+      "desc": "Design React state boundaries before picking libraries. Use when the user needs to decide whether data should stay local, be lifted/shared via Context, live in URL or form state, move into a client store like Zustand / Redux Toolkit / Jotai"
     },
     {
       "id": "state-management:references",
@@ -952,7 +952,7 @@
       "label": "steam-store-launch-ops",
       "has_references": true,
       "has_evals": true,
-      "desc": "Audit and structure Steam store-page optimization, wishlist funnel review, demo / Next Fest readiness, creator-outreach prep, and launch-adjacent operating checklists for indie games. Use when a developer, publisher help"
+      "desc": "Audit and structure Steam store-page optimization, wishlist funnel review, demo / Next Fest readiness, creator-outreach prep, and launch-adjacent operating checklists for indie games. Use when a developer, publisher helper, or small studio "
     },
     {
       "id": "steam-store-launch-ops:references",
@@ -970,7 +970,7 @@
       "label": "strix",
       "has_references": true,
       "has_evals": true,
-      "desc": "Install, configure, and operate Strix for AI-driven application security testing. Use when you need to run authorized vulnerability scans against local codebases, GitHub repositories, staging URLs, domains, or CI pipelin"
+      "desc": "Install, configure, and operate Strix for AI-driven application security testing. Use when you need to run authorized vulnerability scans against local codebases, GitHub repositories, staging URLs, domains, or CI pipelines; configure Docker"
     },
     {
       "id": "strix:references",
@@ -988,7 +988,7 @@
       "label": "survey",
       "has_references": true,
       "has_evals": true,
-      "desc": "\"Research context, workarounds, existing solutions, and structural gaps before planning or implementation, then write reusable `.survey/{slug}/` artifacts for OMC, OMX, OHMG, and general agent workflows. Use when the use"
+      "desc": "Research context, workarounds, existing solutions, and structural gaps before planning or implementation, then write reusable `.survey/{slug}/` artifacts for OMC, OMX, OHMG, and general agent workflows. Use when the user asks to survey a sp"
     },
     {
       "id": "survey:references",
@@ -1006,7 +1006,7 @@
       "label": "system-environment-setup",
       "has_references": true,
       "has_evals": true,
-      "desc": "Build reproducible developer environments for real projects: local toolchains, runtime versions, Docker Compose or dev containers, onboarding flows, local service parity, bootstrap scripts, and environment troubleshootin"
+      "desc": "Build reproducible developer environments for real projects: local toolchains, runtime versions, Docker Compose or dev containers, onboarding flows, local service parity, bootstrap scripts, and environment troubleshooting. Use when the user"
     },
     {
       "id": "system-environment-setup:references",
@@ -1024,7 +1024,7 @@
       "label": "task-estimation",
       "has_references": true,
       "has_evals": true,
-      "desc": "Turn vague backlog items, stories, bugs, spikes, roadmap slices, or milestone work into practical size signals, uncertainty notes, and forecast-safe estimate packets. Use when the user needs story points, t-shirt sizing,"
+      "desc": "Turn vague backlog items, stories, bugs, spikes, roadmap slices, or milestone work into practical size signals, uncertainty notes, and forecast-safe estimate packets. Use when the user needs story points, t-shirt sizing, planning-poker prep"
     },
     {
       "id": "task-estimation:references",
@@ -1042,7 +1042,7 @@
       "label": "task-planning",
       "has_references": true,
       "has_evals": true,
-      "desc": "Turn vague features, bugs, roadmap items, or playtest findings into execution-ready tasks, sprint candidates, and milestone slices with scope boundaries, dependencies, acceptance criteria, and readiness checks. Use when "
+      "desc": "Turn vague features, bugs, roadmap items, or playtest findings into execution-ready tasks, sprint candidates, and milestone slices with scope boundaries, dependencies, acceptance criteria, and readiness checks. Use when the user needs backl"
     },
     {
       "id": "task-planning:references",
@@ -1060,7 +1060,7 @@
       "label": "technical-writing",
       "has_references": false,
       "has_evals": false,
-      "desc": "Write clear, comprehensive technical documentation. Use when creating specs, architecture docs, runbooks, or API documentation. Handles technical specifications, system design docs, operational guides, and developer docu"
+      "desc": "Write clear, comprehensive technical documentation. Use when creating specs, architecture docs, runbooks, or API documentation. Handles technical specifications, system design docs, operational guides, and developer documentation with indus"
     },
     {
       "id": "testing-strategies",
@@ -1068,7 +1068,7 @@
       "label": "testing-strategies",
       "has_references": true,
       "has_evals": true,
-      "desc": "Design a risk-based validation policy for software changes across unit, integration, contract, smoke, exploratory, and release checks. Use when the user needs to decide what test layers are required, how much evidence is"
+      "desc": "Design a risk-based validation policy for software changes across unit, integration, contract, smoke, exploratory, and release checks. Use when the user needs to decide what test layers are required, how much evidence is enough before merge"
     },
     {
       "id": "testing-strategies:references",
@@ -1086,7 +1086,7 @@
       "label": "ui-component-patterns",
       "has_references": false,
       "has_evals": false,
-      "desc": "Build reusable, maintainable UI components following modern design patterns. Use when creating component libraries, implementing design systems, or building scalable frontend architectures. Handles React patterns, compos"
+      "desc": "Build reusable, maintainable UI components following modern design patterns. Use when creating component libraries, implementing design systems, or building scalable frontend architectures. Handles React patterns, composition, prop design, "
     },
     {
       "id": "user-guide-writing",
@@ -1102,7 +1102,7 @@
       "label": "vercel-deploy",
       "has_references": false,
       "has_evals": false,
-      "desc": "\"Deploy applications and websites to Vercel instantly. Use when asked to \\\"Deploy my app\\\", \\\"Deploy this to production\\\", \\\"Create a preview deployment\\\", or \\\"Push this live\\\". No authentication required - returns prev"
+      "desc": "Deploy applications and websites to Vercel instantly. Use when asked to \\\"Deploy my app\\\", \\\"Deploy this to production\\\", \\\"Create a preview deployment\\\", or \\\"Push this live\\\". No authentication required - returns preview URL and claimable"
     },
     {
       "id": "vercel-react-best-practices",
@@ -1110,7 +1110,7 @@
       "label": "vercel-react-best-practices",
       "has_references": false,
       "has_evals": true,
-      "desc": "Compatibility alias for `react-best-practices`. Use when an existing workflow, setup script, or user explicitly asks for `vercel-react-best-practices`; route general React and Next.js performance work to `react-best-prac"
+      "desc": "Compatibility alias for `react-best-practices`. Use when an existing workflow, setup script, or user explicitly asks for `vercel-react-best-practices`; route general React and Next.js performance work to `react-best-practices` instead. Trig"
     },
     {
       "id": "vercel-react-best-practices:evals",
@@ -1123,7 +1123,7 @@
       "label": "vibe-kanban",
       "has_references": true,
       "has_evals": false,
-      "desc": "Manage AI coding agents on a visual Kanban board. Run parallel agents through a To Do\u2192In Progress\u2192Review\u2192Done flow with automatic git worktree isolation and GitHub PR creation."
+      "desc": "Manage AI coding agents on a visual Kanban board. Run parallel agents through a To Do→In Progress→Review→Done flow with automatic git worktree isolation and GitHub PR creation."
     },
     {
       "id": "vibe-kanban:references",
@@ -1142,9 +1142,19 @@
       "id": "web-accessibility",
       "kind": "skill",
       "label": "web-accessibility",
-      "has_references": false,
-      "has_evals": false,
-      "desc": "Implement web accessibility (a11y) standards following WCAG 2.1 guidelines. Use when building accessible UIs, fixing accessibility issues, or ensuring compliance with disability standards. Handles ARIA attributes, keyboa"
+      "has_references": true,
+      "has_evals": true,
+      "desc": "Diagnose and remediate web accessibility issues across semantic HTML, keyboard support, focus management, labels, ARIA, contrast, motion, and manual-vs- automated verification. Use when the user needs an accessibility audit, accessibility r"
+    },
+    {
+      "id": "web-accessibility:references",
+      "kind": "support",
+      "label": "references"
+    },
+    {
+      "id": "web-accessibility:evals",
+      "kind": "support",
+      "label": "evals"
     },
     {
       "id": "web-design-guidelines",
@@ -1152,7 +1162,7 @@
       "label": "web-design-guidelines",
       "has_references": false,
       "has_evals": false,
-      "desc": "\"Review UI code for Web Interface Guidelines compliance. Use when asked to \\\"review my UI\\\", \\\"check accessibility\\\", \\\"audit design\\\", \\\"review UX\\\", or \\\"check my site against best practices\\\". Fetches latest Vercel gu"
+      "desc": "Review UI code for Web Interface Guidelines compliance. Use when asked to \\\"review my UI\\\", \\\"check accessibility\\\", \\\"audit design\\\", \\\"review UX\\\", or \\\"check my site against best practices\\\". Fetches latest Vercel guidelines and checks f"
     },
     {
       "id": "workflow-automation",
@@ -1160,25 +1170,10 @@
       "label": "workflow-automation",
       "has_references": false,
       "has_evals": false,
-      "desc": "Automate repetitive development tasks and workflows. Use when creating build scripts, automating deployments, or setting up development workflows. Handles npm scripts, Makefile, GitHub Actions workflows, and task automat"
+      "desc": "Automate repetitive development tasks and workflows. Use when creating build scripts, automating deployments, or setting up development workflows. Handles npm scripts, Makefile, GitHub Actions workflows, and task automation."
     }
   ],
   "edges": [
-    {
-      "source": "README.md",
-      "target": "agent-browser",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "agent-browser",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "agent-browser",
-      "kind": "mentions"
-    },
     {
       "source": "agent-browser",
       "target": "agent-browser:references",
@@ -1186,37 +1181,42 @@
     },
     {
       "source": "README.md",
+      "target": "agent-browser",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "agent-browser",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "agent-browser",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.md",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "agentation",
       "target": "agent-browser",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "api-design",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "api-design",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "api-design",
+      "source": "agentation",
+      "target": "jeo",
       "kind": "mentions"
     },
     {
@@ -1230,68 +1230,73 @@
       "kind": "has_support"
     },
     {
+      "source": "README.md",
+      "target": "api-design",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "api-design",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "api-design",
+      "kind": "indexes"
+    },
+    {
       "source": "api-design",
       "target": "api-documentation",
-      "kind": "routes_to"
+      "kind": "mentions"
+    },
+    {
+      "source": "api-design",
+      "target": "authentication-setup",
+      "kind": "mentions"
     },
     {
       "source": "api-design",
       "target": "backend-testing",
-      "kind": "routes_to"
-    },
-    {
-      "source": "api-design",
-      "target": "authentication-setup",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "api-design",
       "target": "database-schema-design",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "api-documentation",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "api-documentation",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "api-documentation",
       "kind": "mentions"
     },
     {
       "source": "README.md",
-      "target": "authentication-setup",
-      "kind": "mentions"
+      "target": "api-documentation",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "authentication-setup",
-      "kind": "mentions"
+      "target": "api-documentation",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "authentication-setup",
-      "kind": "mentions"
+      "target": "api-documentation",
+      "kind": "indexes"
     },
     {
       "source": "README.md",
-      "target": "autoresearch",
-      "kind": "mentions"
+      "target": "authentication-setup",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "autoresearch",
-      "kind": "mentions"
+      "target": "authentication-setup",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "autoresearch",
+      "target": "authentication-setup",
+      "kind": "indexes"
+    },
+    {
+      "source": "authentication-setup",
+      "target": "api-design",
       "kind": "mentions"
     },
     {
@@ -1301,18 +1306,18 @@
     },
     {
       "source": "README.md",
-      "target": "backend-testing",
-      "kind": "mentions"
+      "target": "autoresearch",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "backend-testing",
-      "kind": "mentions"
+      "target": "autoresearch",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "backend-testing",
-      "kind": "mentions"
+      "target": "autoresearch",
+      "kind": "indexes"
     },
     {
       "source": "backend-testing",
@@ -1325,68 +1330,68 @@
       "kind": "has_support"
     },
     {
-      "source": "backend-testing",
-      "target": "api-documentation",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "backend-testing",
+      "kind": "indexes"
     },
     {
-      "source": "backend-testing",
-      "target": "testing-strategies",
-      "kind": "routes_to"
+      "source": "README.ko.md",
+      "target": "backend-testing",
+      "kind": "indexes"
     },
     {
-      "source": "backend-testing",
-      "target": "authentication-setup",
-      "kind": "routes_to"
+      "source": "setup-all-skills-prompt.md",
+      "target": "backend-testing",
+      "kind": "indexes"
     },
     {
       "source": "backend-testing",
       "target": "api-design",
-      "kind": "routes_to"
+      "kind": "mentions"
+    },
+    {
+      "source": "backend-testing",
+      "target": "api-documentation",
+      "kind": "mentions"
+    },
+    {
+      "source": "backend-testing",
+      "target": "authentication-setup",
+      "kind": "mentions"
     },
     {
       "source": "backend-testing",
       "target": "database-schema-design",
-      "kind": "routes_to"
+      "kind": "mentions"
+    },
+    {
+      "source": "backend-testing",
+      "target": "testing-strategies",
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "bmad",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "bmad",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "bmad",
+      "kind": "indexes"
+    },
+    {
+      "source": "bmad",
+      "target": "ohmg",
       "kind": "mentions"
     },
     {
       "source": "bmad",
       "target": "omx",
-      "kind": "routes_to"
-    },
-    {
-      "source": "bmad",
-      "target": "ohmg",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "bmad-gds",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "bmad-gds",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "bmad-gds",
       "kind": "mentions"
     },
     {
@@ -1400,79 +1405,79 @@
       "kind": "has_support"
     },
     {
+      "source": "README.md",
+      "target": "bmad-gds",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "bmad-gds",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "bmad-gds",
+      "kind": "indexes"
+    },
+    {
       "source": "bmad-gds",
-      "target": "task-planning",
-      "kind": "routes_to"
+      "target": "bmad-idea",
+      "kind": "mentions"
     },
     {
       "source": "bmad-gds",
       "target": "game-build-log-triage",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "bmad-gds",
       "target": "game-demo-feedback-triage",
-      "kind": "routes_to"
-    },
-    {
-      "source": "bmad-gds",
-      "target": "bmad-idea",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "bmad-gds",
       "target": "game-performance-profiler",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "bmad-gds",
       "target": "steam-store-launch-ops",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "bmad-idea",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "bmad-idea",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "bmad-idea",
+      "source": "bmad-gds",
+      "target": "task-planning",
       "kind": "mentions"
     },
     {
       "source": "README.md",
-      "target": "changelog-maintenance",
-      "kind": "mentions"
+      "target": "bmad-idea",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "changelog-maintenance",
-      "kind": "mentions"
+      "target": "bmad-idea",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "changelog-maintenance",
-      "kind": "mentions"
+      "target": "bmad-idea",
+      "kind": "indexes"
     },
     {
       "source": "README.md",
-      "target": "clawteam",
-      "kind": "mentions"
+      "target": "changelog-maintenance",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "clawteam",
-      "kind": "mentions"
+      "target": "changelog-maintenance",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "clawteam",
-      "kind": "mentions"
+      "target": "changelog-maintenance",
+      "kind": "indexes"
     },
     {
       "source": "clawteam",
@@ -1486,31 +1491,36 @@
     },
     {
       "source": "README.md",
-      "target": "code-refactoring",
-      "kind": "mentions"
+      "target": "clawteam",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "code-refactoring",
-      "kind": "mentions"
+      "target": "clawteam",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "code-refactoring",
-      "kind": "mentions"
+      "target": "clawteam",
+      "kind": "indexes"
     },
     {
       "source": "README.md",
-      "target": "code-review",
-      "kind": "mentions"
+      "target": "code-refactoring",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "code-review",
-      "kind": "mentions"
+      "target": "code-refactoring",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
+      "target": "code-refactoring",
+      "kind": "indexes"
+    },
+    {
+      "source": "code-refactoring",
       "target": "code-review",
       "kind": "mentions"
     },
@@ -1525,93 +1535,98 @@
       "kind": "has_support"
     },
     {
-      "source": "code-review",
-      "target": "testing-strategies",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "code-review",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "code-review",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "code-review",
+      "kind": "indexes"
     },
     {
       "source": "code-review",
-      "target": "web-design-guidelines",
-      "kind": "routes_to"
-    },
-    {
-      "source": "code-review",
-      "target": "web-accessibility",
-      "kind": "routes_to"
+      "target": "debugging",
+      "kind": "mentions"
     },
     {
       "source": "code-review",
       "target": "git-workflow",
-      "kind": "routes_to"
-    },
-    {
-      "source": "code-review",
-      "target": "debugging",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "code-review",
       "target": "performance-optimization",
-      "kind": "routes_to"
+      "kind": "mentions"
+    },
+    {
+      "source": "code-review",
+      "target": "testing-strategies",
+      "kind": "mentions"
+    },
+    {
+      "source": "code-review",
+      "target": "web-accessibility",
+      "kind": "mentions"
+    },
+    {
+      "source": "code-review",
+      "target": "web-design-guidelines",
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.md",
       "target": "data-analysis",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "data-analysis",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "data-analysis",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.md",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
-      "source": "README.md",
-      "target": "debugging",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "debugging",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "debugging",
+      "source": "database-schema-design",
+      "target": "api-design",
       "kind": "mentions"
     },
     {
@@ -1625,64 +1640,64 @@
       "kind": "has_support"
     },
     {
-      "source": "debugging",
-      "target": "testing-strategies",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "debugging",
+      "kind": "indexes"
     },
     {
-      "source": "debugging",
-      "target": "system-environment-setup",
-      "kind": "routes_to"
+      "source": "README.ko.md",
+      "target": "debugging",
+      "kind": "indexes"
     },
     {
-      "source": "debugging",
-      "target": "log-analysis",
-      "kind": "routes_to"
+      "source": "setup-all-skills-prompt.md",
+      "target": "debugging",
+      "kind": "indexes"
     },
     {
       "source": "debugging",
       "target": "code-review",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "debugging",
-      "target": "performance-optimization",
-      "kind": "routes_to"
+      "target": "log-analysis",
+      "kind": "mentions"
     },
     {
       "source": "debugging",
       "target": "monitoring-observability",
-      "kind": "routes_to"
+      "kind": "mentions"
+    },
+    {
+      "source": "debugging",
+      "target": "performance-optimization",
+      "kind": "mentions"
+    },
+    {
+      "source": "debugging",
+      "target": "system-environment-setup",
+      "kind": "mentions"
+    },
+    {
+      "source": "debugging",
+      "target": "testing-strategies",
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "deployment-automation",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.md",
-      "target": "design-system",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "design-system",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "design-system",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "design-system",
@@ -1695,23 +1710,38 @@
       "kind": "has_support"
     },
     {
-      "source": "design-system",
-      "target": "frontend-design-system",
-      "kind": "routes_to"
-    },
-    {
       "source": "README.md",
-      "target": "environment-setup",
-      "kind": "mentions"
+      "target": "design-system",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "environment-setup",
-      "kind": "mentions"
+      "target": "design-system",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "environment-setup",
+      "target": "design-system",
+      "kind": "indexes"
+    },
+    {
+      "source": "design-system",
+      "target": "frontend-design-system",
+      "kind": "mentions"
+    },
+    {
+      "source": "design-system",
+      "target": "responsive-design",
+      "kind": "mentions"
+    },
+    {
+      "source": "design-system",
+      "target": "ui-component-patterns",
+      "kind": "mentions"
+    },
+    {
+      "source": "design-system",
+      "target": "web-accessibility",
       "kind": "mentions"
     },
     {
@@ -1725,79 +1755,79 @@
       "kind": "has_support"
     },
     {
-      "source": "environment-setup",
-      "target": "system-environment-setup",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "environment-setup",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "environment-setup",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "environment-setup",
+      "kind": "indexes"
     },
     {
       "source": "environment-setup",
       "target": "deployment-automation",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "environment-setup",
       "target": "security-best-practices",
-      "kind": "routes_to"
+      "kind": "mentions"
+    },
+    {
+      "source": "environment-setup",
+      "target": "system-environment-setup",
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "fabric",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "fabric",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "fabric",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.md",
       "target": "file-organization",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "file-organization",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "file-organization",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.md",
       "target": "firebase-ai-logic",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "firebase-ai-logic",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "firebase-ai-logic",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.md",
-      "target": "firebase-cli",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "firebase-cli",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "firebase-cli",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "firebase-cli",
@@ -1811,18 +1841,18 @@
     },
     {
       "source": "README.md",
-      "target": "frontend-design-system",
-      "kind": "mentions"
+      "target": "firebase-cli",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "frontend-design-system",
-      "kind": "mentions"
+      "target": "firebase-cli",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "frontend-design-system",
-      "kind": "mentions"
+      "target": "firebase-cli",
+      "kind": "indexes"
     },
     {
       "source": "frontend-design-system",
@@ -1830,18 +1860,38 @@
       "kind": "has_support"
     },
     {
-      "source": "frontend-design-system",
-      "target": "design-system",
-      "kind": "routes_to"
-    },
-    {
       "source": "README.md",
-      "target": "game-build-log-triage",
-      "kind": "mentions"
+      "target": "frontend-design-system",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "game-build-log-triage",
+      "target": "frontend-design-system",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "frontend-design-system",
+      "kind": "indexes"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "design-system",
+      "kind": "mentions"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "responsive-design",
+      "kind": "mentions"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "ui-component-patterns",
+      "kind": "mentions"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "web-accessibility",
       "kind": "mentions"
     },
     {
@@ -1855,9 +1905,19 @@
       "kind": "has_support"
     },
     {
+      "source": "README.md",
+      "target": "game-build-log-triage",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "game-build-log-triage",
+      "kind": "indexes"
+    },
+    {
       "source": "game-build-log-triage",
       "target": "game-ci-cd-pipeline",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "game-ci-cd-pipeline",
@@ -1872,16 +1932,6 @@
     {
       "source": "game-ci-cd-pipeline",
       "target": "game-build-log-triage",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "game-demo-feedback-triage",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "game-demo-feedback-triage",
       "kind": "mentions"
     },
     {
@@ -1895,38 +1945,38 @@
       "kind": "has_support"
     },
     {
-      "source": "game-demo-feedback-triage",
-      "target": "task-planning",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "game-demo-feedback-triage",
+      "kind": "indexes"
     },
     {
-      "source": "game-demo-feedback-triage",
-      "target": "game-build-log-triage",
-      "kind": "routes_to"
+      "source": "README.ko.md",
+      "target": "game-demo-feedback-triage",
+      "kind": "indexes"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "bmad-gds",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "game-demo-feedback-triage",
-      "target": "game-performance-profiler",
-      "kind": "routes_to"
+      "target": "game-build-log-triage",
+      "kind": "mentions"
     },
     {
       "source": "game-demo-feedback-triage",
-      "target": "steam-store-launch-ops",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
       "target": "game-performance-profiler",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "game-performance-profiler",
+      "source": "game-demo-feedback-triage",
+      "target": "steam-store-launch-ops",
+      "kind": "mentions"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "task-planning",
       "kind": "mentions"
     },
     {
@@ -1940,54 +1990,49 @@
       "kind": "has_support"
     },
     {
+      "source": "README.md",
+      "target": "game-performance-profiler",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "game-performance-profiler",
+      "kind": "indexes"
+    },
+    {
       "source": "game-performance-profiler",
       "target": "game-demo-feedback-triage",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "genkit",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "genkit",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "genkit",
       "kind": "mentions"
     },
     {
       "source": "README.md",
-      "target": "git-submodule",
-      "kind": "mentions"
+      "target": "genkit",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "git-submodule",
-      "kind": "mentions"
+      "target": "genkit",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "git-submodule",
-      "kind": "mentions"
+      "target": "genkit",
+      "kind": "indexes"
     },
     {
       "source": "README.md",
-      "target": "git-workflow",
-      "kind": "mentions"
+      "target": "git-submodule",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "git-workflow",
-      "kind": "mentions"
+      "target": "git-submodule",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "git-workflow",
-      "kind": "mentions"
+      "target": "git-submodule",
+      "kind": "indexes"
     },
     {
       "source": "git-workflow",
@@ -2000,33 +2045,33 @@
       "kind": "has_support"
     },
     {
-      "source": "git-workflow",
-      "target": "task-planning",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "git-workflow",
+      "kind": "indexes"
     },
     {
-      "source": "git-workflow",
-      "target": "debugging",
-      "kind": "routes_to"
+      "source": "README.ko.md",
+      "target": "git-workflow",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "git-workflow",
+      "kind": "indexes"
     },
     {
       "source": "git-workflow",
       "target": "code-review",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "google-workspace",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "google-workspace",
+      "source": "git-workflow",
+      "target": "debugging",
       "kind": "mentions"
     },
     {
-      "source": "setup-all-skills-prompt.md",
-      "target": "google-workspace",
+      "source": "git-workflow",
+      "target": "task-planning",
       "kind": "mentions"
     },
     {
@@ -2036,18 +2081,18 @@
     },
     {
       "source": "README.md",
-      "target": "harness",
-      "kind": "mentions"
+      "target": "google-workspace",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "harness",
-      "kind": "mentions"
+      "target": "google-workspace",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "harness",
-      "kind": "mentions"
+      "target": "google-workspace",
+      "kind": "indexes"
     },
     {
       "source": "harness",
@@ -2061,18 +2106,18 @@
     },
     {
       "source": "README.md",
-      "target": "jeo",
-      "kind": "mentions"
+      "target": "harness",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "jeo",
-      "kind": "mentions"
+      "target": "harness",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "jeo",
-      "kind": "mentions"
+      "target": "harness",
+      "kind": "indexes"
     },
     {
       "source": "jeo",
@@ -2085,23 +2130,23 @@
       "kind": "has_support"
     },
     {
-      "source": "jeo",
-      "target": "plannotator",
-      "kind": "routes_to"
-    },
-    {
       "source": "README.md",
-      "target": "langsmith",
-      "kind": "mentions"
+      "target": "jeo",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "langsmith",
-      "kind": "mentions"
+      "target": "jeo",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "langsmith",
+      "target": "jeo",
+      "kind": "indexes"
+    },
+    {
+      "source": "jeo",
+      "target": "plannotator",
       "kind": "mentions"
     },
     {
@@ -2111,18 +2156,18 @@
     },
     {
       "source": "README.md",
-      "target": "llm-wiki",
-      "kind": "mentions"
+      "target": "langsmith",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "llm-wiki",
-      "kind": "mentions"
+      "target": "langsmith",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "llm-wiki",
-      "kind": "mentions"
+      "target": "langsmith",
+      "kind": "indexes"
     },
     {
       "source": "llm-wiki",
@@ -2136,18 +2181,18 @@
     },
     {
       "source": "README.md",
-      "target": "log-analysis",
-      "kind": "mentions"
+      "target": "llm-wiki",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "log-analysis",
-      "kind": "mentions"
+      "target": "llm-wiki",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "log-analysis",
-      "kind": "mentions"
+      "target": "llm-wiki",
+      "kind": "indexes"
     },
     {
       "source": "log-analysis",
@@ -2160,48 +2205,53 @@
       "kind": "has_support"
     },
     {
-      "source": "log-analysis",
-      "target": "game-build-log-triage",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "log-analysis",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "log-analysis",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "log-analysis",
+      "kind": "indexes"
     },
     {
       "source": "log-analysis",
       "target": "debugging",
-      "kind": "routes_to"
+      "kind": "mentions"
+    },
+    {
+      "source": "log-analysis",
+      "target": "game-build-log-triage",
+      "kind": "mentions"
     },
     {
       "source": "log-analysis",
       "target": "monitoring-observability",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "looker-studio-bigquery",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "looker-studio-bigquery",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "looker-studio-bigquery",
       "kind": "mentions"
     },
     {
       "source": "README.md",
-      "target": "marketing-automation",
-      "kind": "mentions"
+      "target": "looker-studio-bigquery",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "marketing-automation",
-      "kind": "mentions"
+      "target": "looker-studio-bigquery",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "marketing-automation",
+      "target": "looker-studio-bigquery",
+      "kind": "indexes"
+    },
+    {
+      "source": "looker-studio-bigquery",
+      "target": "monitoring-observability",
       "kind": "mentions"
     },
     {
@@ -2215,23 +2265,28 @@
       "kind": "has_support"
     },
     {
-      "source": "marketing-automation",
-      "target": "steam-store-launch-ops",
-      "kind": "routes_to"
-    },
-    {
       "source": "README.md",
-      "target": "marketing-skills-collection",
-      "kind": "mentions"
+      "target": "marketing-automation",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
+      "target": "marketing-automation",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "marketing-automation",
+      "kind": "indexes"
+    },
+    {
+      "source": "marketing-automation",
       "target": "marketing-skills-collection",
       "kind": "mentions"
     },
     {
-      "source": "setup-all-skills-prompt.md",
-      "target": "marketing-skills-collection",
+      "source": "marketing-automation",
+      "target": "steam-store-launch-ops",
       "kind": "mentions"
     },
     {
@@ -2240,58 +2295,68 @@
       "kind": "has_support"
     },
     {
+      "source": "README.md",
+      "target": "marketing-skills-collection",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "marketing-skills-collection",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "marketing-skills-collection",
+      "kind": "indexes"
+    },
+    {
       "source": "marketing-skills-collection",
       "target": "marketing-automation",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "marketing-skills-collection",
       "target": "steam-store-launch-ops",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "monitoring-observability",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "monitoring-observability",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "monitoring-observability",
       "kind": "mentions"
     },
     {
       "source": "README.md",
-      "target": "npm-git-install",
-      "kind": "mentions"
+      "target": "monitoring-observability",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "npm-git-install",
-      "kind": "mentions"
+      "target": "monitoring-observability",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "npm-git-install",
-      "kind": "mentions"
+      "target": "monitoring-observability",
+      "kind": "indexes"
     },
     {
       "source": "README.md",
-      "target": "obsidian-cli",
-      "kind": "mentions"
+      "target": "npm-git-install",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "obsidian-cli",
-      "kind": "mentions"
+      "target": "npm-git-install",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "obsidian-cli",
+      "target": "npm-git-install",
+      "kind": "indexes"
+    },
+    {
+      "source": "npm-git-install",
+      "target": "environment-setup",
+      "kind": "mentions"
+    },
+    {
+      "source": "npm-git-install",
+      "target": "git-workflow",
       "kind": "mentions"
     },
     {
@@ -2306,18 +2371,18 @@
     },
     {
       "source": "README.md",
-      "target": "obsidian-plugin",
-      "kind": "mentions"
+      "target": "obsidian-cli",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "obsidian-plugin",
-      "kind": "mentions"
+      "target": "obsidian-cli",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "obsidian-plugin",
-      "kind": "mentions"
+      "target": "obsidian-cli",
+      "kind": "indexes"
     },
     {
       "source": "obsidian-plugin",
@@ -2331,33 +2396,33 @@
     },
     {
       "source": "README.md",
-      "target": "ohmg",
-      "kind": "mentions"
+      "target": "obsidian-plugin",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "ohmg",
-      "kind": "mentions"
+      "target": "obsidian-plugin",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "ohmg",
-      "kind": "mentions"
+      "target": "obsidian-plugin",
+      "kind": "indexes"
     },
     {
       "source": "README.md",
-      "target": "omc",
-      "kind": "mentions"
+      "target": "ohmg",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "omc",
-      "kind": "mentions"
+      "target": "ohmg",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "omc",
-      "kind": "mentions"
+      "target": "ohmg",
+      "kind": "indexes"
     },
     {
       "source": "omc",
@@ -2370,23 +2435,23 @@
       "kind": "has_support"
     },
     {
-      "source": "omc",
-      "target": "ralph",
-      "kind": "routes_to"
-    },
-    {
       "source": "README.md",
-      "target": "omx",
-      "kind": "mentions"
+      "target": "omc",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "omx",
-      "kind": "mentions"
+      "target": "omc",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "omx",
+      "target": "omc",
+      "kind": "indexes"
+    },
+    {
+      "source": "omc",
+      "target": "ralph",
       "kind": "mentions"
     },
     {
@@ -2400,134 +2465,144 @@
       "kind": "has_support"
     },
     {
+      "source": "README.md",
+      "target": "omx",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "omx",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "omx",
+      "kind": "indexes"
+    },
+    {
       "source": "omx",
       "target": "code-review",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "omx",
       "target": "ralph",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "opencontext",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "opencontext",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "opencontext",
       "kind": "mentions"
     },
     {
       "source": "README.md",
+      "target": "opencontext",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "opencontext",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "opencontext",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.md",
       "target": "pattern-detection",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "pattern-detection",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "pattern-detection",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.md",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "performance-optimization",
+      "kind": "indexes"
+    },
+    {
+      "source": "performance-optimization",
+      "target": "database-schema-design",
+      "kind": "mentions"
+    },
+    {
+      "source": "performance-optimization",
+      "target": "ui-component-patterns",
       "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.md",
       "target": "playwriter",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "playwriter",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "playwriter",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.md",
       "target": "presentation-builder",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "presentation-builder",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "presentation-builder",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.md",
       "target": "prompt-repetition",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "prompt-repetition",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "prompt-repetition",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.md",
-      "target": "ralph",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "ralph",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "ralph",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "ralph",
@@ -2536,18 +2611,18 @@
     },
     {
       "source": "README.md",
-      "target": "ralphmode",
-      "kind": "mentions"
+      "target": "ralph",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "ralphmode",
-      "kind": "mentions"
+      "target": "ralph",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "ralphmode",
-      "kind": "mentions"
+      "target": "ralph",
+      "kind": "indexes"
     },
     {
       "source": "ralphmode",
@@ -2555,28 +2630,28 @@
       "kind": "has_support"
     },
     {
+      "source": "README.md",
+      "target": "ralphmode",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "ralphmode",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "ralphmode",
+      "kind": "indexes"
+    },
+    {
       "source": "ralphmode",
       "target": "jeo",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "ralphmode",
       "target": "ralph",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "react-best-practices",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "react-best-practices",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "react-best-practices",
       "kind": "mentions"
     },
     {
@@ -2585,33 +2660,38 @@
       "kind": "has_support"
     },
     {
-      "source": "react-best-practices",
-      "target": "state-management",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "react-best-practices",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "react-best-practices",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "react-best-practices",
+      "kind": "indexes"
     },
     {
       "source": "react-best-practices",
-      "target": "web-accessibility",
-      "kind": "routes_to"
+      "target": "performance-optimization",
+      "kind": "mentions"
+    },
+    {
+      "source": "react-best-practices",
+      "target": "state-management",
+      "kind": "mentions"
     },
     {
       "source": "react-best-practices",
       "target": "vercel-react-best-practices",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "react-grab",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "react-grab",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "react-grab",
+      "source": "react-best-practices",
+      "target": "web-accessibility",
       "kind": "mentions"
     },
     {
@@ -2626,67 +2706,77 @@
     },
     {
       "source": "README.md",
+      "target": "react-grab",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "react-grab",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "react-grab",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.md",
       "target": "remotion-video-production",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "remotion-video-production",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "remotion-video-production",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "remotion-video-production",
       "target": "video-production",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "research-paper-writing",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "research-paper-writing",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "research-paper-writing",
       "kind": "mentions"
     },
     {
       "source": "README.md",
-      "target": "responsive-design",
-      "kind": "mentions"
+      "target": "research-paper-writing",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "responsive-design",
-      "kind": "mentions"
+      "target": "research-paper-writing",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "responsive-design",
-      "kind": "mentions"
+      "target": "research-paper-writing",
+      "kind": "indexes"
     },
     {
       "source": "README.md",
-      "target": "rtk",
-      "kind": "mentions"
+      "target": "responsive-design",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "rtk",
-      "kind": "mentions"
+      "target": "responsive-design",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "rtk",
+      "target": "responsive-design",
+      "kind": "indexes"
+    },
+    {
+      "source": "responsive-design",
+      "target": "ui-component-patterns",
+      "kind": "mentions"
+    },
+    {
+      "source": "responsive-design",
+      "target": "web-accessibility",
       "kind": "mentions"
     },
     {
@@ -2701,18 +2791,18 @@
     },
     {
       "source": "README.md",
-      "target": "scrapling",
-      "kind": "mentions"
+      "target": "rtk",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "scrapling",
-      "kind": "mentions"
+      "target": "rtk",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "scrapling",
-      "kind": "mentions"
+      "target": "rtk",
+      "kind": "indexes"
     },
     {
       "source": "scrapling",
@@ -2726,32 +2816,42 @@
     },
     {
       "source": "README.md",
-      "target": "security-best-practices",
-      "kind": "mentions"
+      "target": "scrapling",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "security-best-practices",
-      "kind": "mentions"
+      "target": "scrapling",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "security-best-practices",
-      "kind": "mentions"
+      "target": "scrapling",
+      "kind": "indexes"
     },
     {
       "source": "README.md",
-      "target": "skill-autoresearch",
-      "kind": "mentions"
+      "target": "security-best-practices",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "skill-autoresearch",
-      "kind": "mentions"
+      "target": "security-best-practices",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "skill-autoresearch",
+      "target": "security-best-practices",
+      "kind": "indexes"
+    },
+    {
+      "source": "security-best-practices",
+      "target": "authentication-setup",
+      "kind": "mentions"
+    },
+    {
+      "source": "security-best-practices",
+      "target": "deployment-automation",
       "kind": "mentions"
     },
     {
@@ -2761,18 +2861,18 @@
     },
     {
       "source": "README.md",
-      "target": "skill-standardization",
-      "kind": "mentions"
+      "target": "skill-autoresearch",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "skill-standardization",
-      "kind": "mentions"
+      "target": "skill-autoresearch",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "skill-standardization",
-      "kind": "mentions"
+      "target": "skill-autoresearch",
+      "kind": "indexes"
     },
     {
       "source": "skill-standardization",
@@ -2781,18 +2881,18 @@
     },
     {
       "source": "README.md",
-      "target": "sprint-retrospective",
-      "kind": "mentions"
+      "target": "skill-standardization",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "sprint-retrospective",
-      "kind": "mentions"
+      "target": "skill-standardization",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "sprint-retrospective",
-      "kind": "mentions"
+      "target": "skill-standardization",
+      "kind": "indexes"
     },
     {
       "source": "sprint-retrospective",
@@ -2805,33 +2905,33 @@
       "kind": "has_support"
     },
     {
-      "source": "sprint-retrospective",
-      "target": "task-planning",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "sprint-retrospective",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "sprint-retrospective",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "sprint-retrospective",
+      "kind": "indexes"
     },
     {
       "source": "sprint-retrospective",
       "target": "standup-meeting",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "sprint-retrospective",
       "target": "task-estimation",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "standup-meeting",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "standup-meeting",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "standup-meeting",
+      "source": "sprint-retrospective",
+      "target": "task-planning",
       "kind": "mentions"
     },
     {
@@ -2845,33 +2945,33 @@
       "kind": "has_support"
     },
     {
-      "source": "standup-meeting",
-      "target": "sprint-retrospective",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "standup-meeting",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "standup-meeting",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "standup-meeting",
+      "kind": "indexes"
     },
     {
       "source": "standup-meeting",
-      "target": "task-planning",
-      "kind": "routes_to"
+      "target": "sprint-retrospective",
+      "kind": "mentions"
     },
     {
       "source": "standup-meeting",
       "target": "task-estimation",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "state-management",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "state-management",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "state-management",
+      "source": "standup-meeting",
+      "target": "task-planning",
       "kind": "mentions"
     },
     {
@@ -2885,43 +2985,48 @@
       "kind": "has_support"
     },
     {
-      "source": "state-management",
-      "target": "react-best-practices",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "state-management",
+      "kind": "indexes"
     },
     {
-      "source": "state-management",
-      "target": "responsive-design",
-      "kind": "routes_to"
+      "source": "README.ko.md",
+      "target": "state-management",
+      "kind": "indexes"
     },
     {
-      "source": "state-management",
-      "target": "debugging",
-      "kind": "routes_to"
+      "source": "setup-all-skills-prompt.md",
+      "target": "state-management",
+      "kind": "indexes"
     },
     {
       "source": "state-management",
       "target": "api-design",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "state-management",
-      "target": "ui-component-patterns",
-      "kind": "routes_to"
+      "target": "debugging",
+      "kind": "mentions"
     },
     {
       "source": "state-management",
       "target": "design-system",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "steam-store-launch-ops",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "steam-store-launch-ops",
+      "source": "state-management",
+      "target": "react-best-practices",
+      "kind": "mentions"
+    },
+    {
+      "source": "state-management",
+      "target": "responsive-design",
+      "kind": "mentions"
+    },
+    {
+      "source": "state-management",
+      "target": "ui-component-patterns",
       "kind": "mentions"
     },
     {
@@ -2935,23 +3040,18 @@
       "kind": "has_support"
     },
     {
-      "source": "steam-store-launch-ops",
-      "target": "game-demo-feedback-triage",
-      "kind": "routes_to"
-    },
-    {
       "source": "README.md",
-      "target": "strix",
-      "kind": "mentions"
+      "target": "steam-store-launch-ops",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "strix",
-      "kind": "mentions"
+      "target": "steam-store-launch-ops",
+      "kind": "indexes"
     },
     {
-      "source": "setup-all-skills-prompt.md",
-      "target": "strix",
+      "source": "steam-store-launch-ops",
+      "target": "game-demo-feedback-triage",
       "kind": "mentions"
     },
     {
@@ -2966,18 +3066,18 @@
     },
     {
       "source": "README.md",
-      "target": "survey",
-      "kind": "mentions"
+      "target": "strix",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "survey",
-      "kind": "mentions"
+      "target": "strix",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "survey",
-      "kind": "mentions"
+      "target": "strix",
+      "kind": "indexes"
     },
     {
       "source": "survey",
@@ -2990,28 +3090,28 @@
       "kind": "has_support"
     },
     {
+      "source": "README.md",
+      "target": "survey",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "survey",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "survey",
+      "kind": "indexes"
+    },
+    {
       "source": "survey",
       "target": "jeo",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "survey",
       "target": "ralph",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "system-environment-setup",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "system-environment-setup",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "system-environment-setup",
       "kind": "mentions"
     },
     {
@@ -3025,43 +3125,43 @@
       "kind": "has_support"
     },
     {
-      "source": "system-environment-setup",
-      "target": "task-planning",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "system-environment-setup",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "system-environment-setup",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "system-environment-setup",
+      "kind": "indexes"
     },
     {
       "source": "system-environment-setup",
       "target": "deployment-automation",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "system-environment-setup",
       "target": "environment-setup",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "system-environment-setup",
       "target": "security-best-practices",
-      "kind": "routes_to"
+      "kind": "mentions"
+    },
+    {
+      "source": "system-environment-setup",
+      "target": "task-planning",
+      "kind": "mentions"
     },
     {
       "source": "system-environment-setup",
       "target": "vercel-deploy",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "task-estimation",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "task-estimation",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "task-estimation",
       "kind": "mentions"
     },
     {
@@ -3075,32 +3175,32 @@
       "kind": "has_support"
     },
     {
-      "source": "task-estimation",
-      "target": "sprint-retrospective",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "task-estimation",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "task-estimation",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "task-estimation",
+      "kind": "indexes"
     },
     {
       "source": "task-estimation",
-      "target": "task-planning",
-      "kind": "routes_to"
+      "target": "sprint-retrospective",
+      "kind": "mentions"
     },
     {
       "source": "task-estimation",
       "target": "standup-meeting",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "task-planning",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "task-planning",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
+      "source": "task-estimation",
       "target": "task-planning",
       "kind": "mentions"
     },
@@ -3115,49 +3215,49 @@
       "kind": "has_support"
     },
     {
-      "source": "task-planning",
-      "target": "task-estimation",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "task-planning",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "task-planning",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "task-planning",
+      "kind": "indexes"
     },
     {
       "source": "task-planning",
       "target": "sprint-retrospective",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "task-planning",
       "target": "standup-meeting",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "technical-writing",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "technical-writing",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "technical-writing",
+      "source": "task-planning",
+      "target": "task-estimation",
       "kind": "mentions"
     },
     {
       "source": "README.md",
-      "target": "testing-strategies",
-      "kind": "mentions"
+      "target": "technical-writing",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "testing-strategies",
-      "kind": "mentions"
+      "target": "technical-writing",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "testing-strategies",
-      "kind": "mentions"
+      "target": "technical-writing",
+      "kind": "indexes"
     },
     {
       "source": "testing-strategies",
@@ -3170,93 +3270,108 @@
       "kind": "has_support"
     },
     {
+      "source": "README.md",
+      "target": "testing-strategies",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "testing-strategies",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "testing-strategies",
+      "kind": "indexes"
+    },
+    {
       "source": "testing-strategies",
       "target": "backend-testing",
-      "kind": "routes_to"
-    },
-    {
-      "source": "testing-strategies",
-      "target": "web-design-guidelines",
-      "kind": "routes_to"
-    },
-    {
-      "source": "testing-strategies",
-      "target": "web-accessibility",
-      "kind": "routes_to"
-    },
-    {
-      "source": "testing-strategies",
-      "target": "debugging",
-      "kind": "routes_to"
+      "kind": "mentions"
     },
     {
       "source": "testing-strategies",
       "target": "code-review",
-      "kind": "routes_to"
+      "kind": "mentions"
+    },
+    {
+      "source": "testing-strategies",
+      "target": "debugging",
+      "kind": "mentions"
     },
     {
       "source": "testing-strategies",
       "target": "performance-optimization",
-      "kind": "routes_to"
+      "kind": "mentions"
+    },
+    {
+      "source": "testing-strategies",
+      "target": "web-accessibility",
+      "kind": "mentions"
+    },
+    {
+      "source": "testing-strategies",
+      "target": "web-design-guidelines",
+      "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ui-component-patterns",
+      "kind": "indexes"
+    },
+    {
+      "source": "ui-component-patterns",
+      "target": "state-management",
+      "kind": "mentions"
+    },
+    {
+      "source": "ui-component-patterns",
+      "target": "web-accessibility",
       "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.md",
       "target": "vercel-deploy",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "vercel-deploy",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "vercel-deploy",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
-      "source": "README.md",
-      "target": "vercel-react-best-practices",
-      "kind": "mentions"
-    },
-    {
-      "source": "README.ko.md",
-      "target": "vercel-react-best-practices",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "vercel-react-best-practices",
+      "source": "vercel-deploy",
+      "target": "deployment-automation",
       "kind": "mentions"
     },
     {
@@ -3265,23 +3380,38 @@
       "kind": "has_support"
     },
     {
-      "source": "vercel-react-best-practices",
-      "target": "react-best-practices",
-      "kind": "routes_to"
-    },
-    {
       "source": "README.md",
-      "target": "vibe-kanban",
-      "kind": "mentions"
+      "target": "vercel-react-best-practices",
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
-      "target": "vibe-kanban",
-      "kind": "mentions"
+      "target": "vercel-react-best-practices",
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
-      "target": "vibe-kanban",
+      "target": "vercel-react-best-practices",
+      "kind": "indexes"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "performance-optimization",
+      "kind": "mentions"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "react-best-practices",
+      "kind": "mentions"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "state-management",
+      "kind": "mentions"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "web-accessibility",
       "kind": "mentions"
     },
     {
@@ -3290,74 +3420,134 @@
       "kind": "has_support"
     },
     {
-      "source": "vibe-kanban",
-      "target": "omx",
-      "kind": "routes_to"
+      "source": "README.md",
+      "target": "vibe-kanban",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "vibe-kanban",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "vibe-kanban",
+      "kind": "indexes"
     },
     {
       "source": "vibe-kanban",
       "target": "ohmg",
-      "kind": "routes_to"
-    },
-    {
-      "source": "README.md",
-      "target": "video-production",
       "kind": "mentions"
     },
     {
-      "source": "README.ko.md",
-      "target": "video-production",
-      "kind": "mentions"
-    },
-    {
-      "source": "setup-all-skills-prompt.md",
-      "target": "video-production",
+      "source": "vibe-kanban",
+      "target": "omx",
       "kind": "mentions"
     },
     {
       "source": "README.md",
+      "target": "video-production",
+      "kind": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "video-production",
+      "kind": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "video-production",
+      "kind": "indexes"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "web-accessibility:references",
+      "kind": "has_support"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "web-accessibility:evals",
+      "kind": "has_support"
+    },
+    {
+      "source": "README.md",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "web-accessibility",
+      "kind": "indexes"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "design-system",
+      "kind": "mentions"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "react-best-practices",
+      "kind": "mentions"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "responsive-design",
+      "kind": "mentions"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "ui-component-patterns",
+      "kind": "mentions"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "web-design-guidelines",
       "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "web-design-guidelines",
+      "kind": "indexes"
+    },
+    {
+      "source": "web-design-guidelines",
+      "target": "ui-component-patterns",
+      "kind": "mentions"
+    },
+    {
+      "source": "web-design-guidelines",
+      "target": "web-accessibility",
       "kind": "mentions"
     },
     {
       "source": "README.md",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "README.ko.md",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "indexes"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "indexes"
     }
   ]
 }

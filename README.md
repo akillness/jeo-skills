@@ -242,7 +242,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `responsive-design` | Mobile-first layouts and breakpoints | All |
 | `state-management` | React state-boundary decisions across Context, Zustand, Redux Toolkit, Jotai, and TanStack Query | All |
 | `ui-component-patterns` | Reusable component libraries | All |
-| `web-accessibility` | WCAG 2.1 compliance | All |
+| `web-accessibility` | Accessibility audit/remediation plus manual-vs-automated verification guidance | All |
 | `web-design-guidelines` | Web Interface Guidelines compliance review | All |
 
 ### 🔍 Code Quality (5)
