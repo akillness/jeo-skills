@@ -284,7 +284,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `sprint-retrospective` | Sprint retrospective facilitation | All |
 | `standup-meeting` | Daily standup management | All |
 | `task-estimation` | Story points, t-shirt sizing, planning poker | All |
-| `task-planning` | Task breakdown and user stories | All |
+| `task-planning` | Execution-ready backlog grooming, task slicing, and sprint-prep planning | All |
 
 ### 🔭 Search & Analysis (7)
 

@@ -1,0 +1,3658 @@
+{
+  "nodes": [
+    {
+      "id": "agent-browser",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "browser-automation",
+        "headless-browser",
+        "ai-agent",
+        "web-testing",
+        "web-scraping",
+        "verification"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "agentation",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": true,
+      "tags": [
+        "ui-feedback",
+        "browser-annotation",
+        "visual-feedback",
+        "mcp",
+        "react",
+        "ai-agent",
+        "design-review",
+        "css-selector"
+      ],
+      "community": "web-frontend"
+    },
+    {
+      "id": "api-design",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "api-design",
+        "REST",
+        "GraphQL",
+        "OpenAPI",
+        "versioning",
+        "backend"
+      ],
+      "community": "web-backend"
+    },
+    {
+      "id": "api-documentation",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "API-documentation",
+        "OpenAPI",
+        "Swagger",
+        "REST",
+        "GraphQL",
+        "developer-docs"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "authentication-setup",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "authentication",
+        "authorization",
+        "security",
+        "JWT",
+        "OAuth",
+        "RBAC"
+      ],
+      "community": "web-backend"
+    },
+    {
+      "id": "autoresearch",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": false,
+      "has_scripts": true,
+      "tags": [
+        "autoresearch",
+        "ml-experiments",
+        "autonomous-research",
+        "karpathy",
+        "gpu",
+        "train",
+        "val-bpb",
+        "overnight",
+        "ratcheting"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "backend-testing",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "testing",
+        "backend",
+        "unit-test",
+        "integration-test",
+        "API-test",
+        "Jest",
+        "Pytest",
+        "TDD"
+      ],
+      "community": "web-backend"
+    },
+    {
+      "id": "bmad",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": true,
+      "tags": [
+        "bmad",
+        "orchestrator",
+        "workflow",
+        "planning",
+        "implementation"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "bmad-gds",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "bmad",
+        "gds",
+        "game-development",
+        "game-design",
+        "gdd",
+        "unity",
+        "unreal",
+        "godot",
+        "multi-agent",
+        "workflow"
+      ],
+      "community": "game-dev"
+    },
+    {
+      "id": "bmad-idea",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "bmad",
+        "cis",
+        "creative",
+        "ideation",
+        "brainstorming",
+        "design-thinking",
+        "innovation",
+        "problem-solving",
+        "storytelling",
+        "multi-agent"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "changelog-maintenance",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "changelog",
+        "release-notes",
+        "versioning",
+        "semantic-versioning",
+        "documentation"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "clawteam",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "clawteam",
+        "multi-agent",
+        "swarm",
+        "orchestration",
+        "tmux",
+        "git-worktree",
+        "autonomous",
+        "python"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "code-refactoring",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "refactoring",
+        "code-quality",
+        "DRY",
+        "SOLID",
+        "design-patterns",
+        "clean-code",
+        "simplification",
+        "behavior-preservation"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "code-review",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "code-review",
+        "code-quality",
+        "security",
+        "best-practices",
+        "PR-review"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "codebase-search",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "codebase-search",
+        "grep",
+        "code-navigation",
+        "pattern-matching"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "data-analysis",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "data",
+        "analysis",
+        "pandas",
+        "statistics",
+        "visualization",
+        "csv",
+        "sql"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "database-schema-design",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "database",
+        "schema",
+        "SQL",
+        "NoSQL",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "migration"
+      ],
+      "community": "web-backend"
+    },
+    {
+      "id": "debugging",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "debugging",
+        "troubleshooting",
+        "error-analysis",
+        "bug-fixing",
+        "problem-solving"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "deployment-automation",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "deployment",
+        "CI/CD",
+        "Docker",
+        "Kubernetes",
+        "AWS",
+        "GitHub-Actions",
+        "automation"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "design-system",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "frontend",
+        "design",
+        "ui",
+        "ux",
+        "typography",
+        "animation",
+        "design-tokens",
+        "accessibility"
+      ],
+      "community": "web-frontend"
+    },
+    {
+      "id": "environment-setup",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "environment",
+        "configuration",
+        "env-variables",
+        "dotenv",
+        "config-management"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "fabric",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "fabric",
+        "patterns",
+        "ai-prompts",
+        "youtube",
+        "summarize",
+        "extract-wisdom",
+        "piping",
+        "cli",
+        "multi-provider",
+        "openai",
+        "claude",
+        "gemini",
+        "ollama"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "file-organization",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "file-organization",
+        "project-structure",
+        "folder-structure",
+        "naming-conventions"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "firebase-ai-logic",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "firebase",
+        "ai",
+        "gemini",
+        "generative-ai",
+        "sdk"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "firebase-cli",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "firebase",
+        "firebase-cli",
+        "firebase-tools",
+        "deploy",
+        "hosting",
+        "functions",
+        "firestore",
+        "database",
+        "emulators",
+        "auth",
+        "remote-config",
+        "app-distribution",
+        "extensions",
+        "apphosting"
+      ],
+      "community": "web-backend"
+    },
+    {
+      "id": "frontend-design-system",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "frontend",
+        "design",
+        "ui",
+        "ux",
+        "typography",
+        "animation",
+        "design-tokens",
+        "accessibility"
+      ],
+      "community": "web-frontend"
+    },
+    {
+      "id": "game-build-log-triage",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": false,
+      "tags": [
+        "game-development",
+        "unity",
+        "unreal",
+        "logs",
+        "debugging",
+        "build-failures",
+        "ci",
+        "triage"
+      ],
+      "community": "game-dev"
+    },
+    {
+      "id": "game-ci-cd-pipeline",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": false,
+      "tags": [
+        "game-development",
+        "unity",
+        "unreal",
+        "ci-cd",
+        "github-actions",
+        "build-pipeline",
+        "release-engineering"
+      ],
+      "community": "game-dev"
+    },
+    {
+      "id": "game-demo-feedback-triage",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": false,
+      "tags": [
+        "game-development",
+        "playtesting",
+        "demo-feedback",
+        "steam-playtest",
+        "next-fest",
+        "prioritization",
+        "ux",
+        "qa",
+        "launch-ops"
+      ],
+      "community": "game-dev"
+    },
+    {
+      "id": "game-performance-profiler",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": false,
+      "tags": [
+        "game-development",
+        "unity",
+        "unreal",
+        "profiling",
+        "performance",
+        "optimization",
+        "frame-time",
+        "steam-deck"
+      ],
+      "community": "game-dev"
+    },
+    {
+      "id": "genkit",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "genkit",
+        "firebase",
+        "ai",
+        "llm",
+        "flows",
+        "agents",
+        "rag",
+        "gemini",
+        "typescript",
+        "google-cloud"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "git-submodule",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "git",
+        "submodule",
+        "dependencies",
+        "version-control",
+        "modular"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "git-workflow",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "git",
+        "version-control",
+        "branching",
+        "commits",
+        "collaboration"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "google-workspace",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "google-workspace",
+        "google-docs",
+        "google-sheets",
+        "google-slides",
+        "google-drive",
+        "gmail",
+        "google-calendar",
+        "google-chat",
+        "google-forms",
+        "admin-sdk",
+        "apps-script",
+        "automation"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "harness",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "harness",
+        "agent-team",
+        "multi-agent",
+        "skill-generation",
+        "orchestration",
+        "meta-skill",
+        "claude-code"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "jeo",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "jeo",
+        "orchestration",
+        "ralph",
+        "plannotator",
+        "agentation",
+        "annotate",
+        "agentui",
+        "UI-review",
+        "team",
+        "bmad",
+        "omc",
+        "omx",
+        "ohmg",
+        "agent-browser",
+        "multi-agent",
+        "workflow",
+        "worktree-cleanup",
+        "browser-verification",
+        "ui-feedback"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "langsmith",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": false,
+      "has_scripts": true,
+      "tags": [
+        "langsmith",
+        "langchain",
+        "tracing",
+        "observability",
+        "evaluation",
+        "llm-monitoring",
+        "prompt-hub",
+        "datasets",
+        "openevals"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "llm-wiki",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "llm-wiki",
+        "obsidian",
+        "knowledge-base",
+        "markdown",
+        "research",
+        "synthesis",
+        "scrapling",
+        "qmd",
+        "notes",
+        "wiki"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "lmstudio-cli",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "lmstudio",
+        "lm-studio",
+        "lms",
+        "local-llm",
+        "openai-compatible",
+        "strix",
+        "model-server",
+        "inference"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "log-analysis",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "logs",
+        "analysis",
+        "debugging",
+        "monitoring",
+        "grep",
+        "patterns"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "looker-studio-bigquery",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "Looker-Studio",
+        "BigQuery",
+        "dashboard",
+        "analytics",
+        "visualization",
+        "GCP",
+        "data-studio",
+        "SQL"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "marketing-automation",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "marketing",
+        "cro",
+        "copywriting",
+        "seo",
+        "analytics",
+        "growth",
+        "automation"
+      ],
+      "community": "marketing"
+    },
+    {
+      "id": "marketing-skills-collection",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": true,
+      "has_scripts": false,
+      "tags": [
+        "marketing",
+        "cro",
+        "copywriting",
+        "seo",
+        "analytics",
+        "growth",
+        "automation"
+      ],
+      "community": "marketing"
+    },
+    {
+      "id": "monitoring-observability",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "monitoring",
+        "observability",
+        "logging",
+        "metrics",
+        "Prometheus",
+        "Grafana",
+        "alerts"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "npm-git-install",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "npm",
+        "git",
+        "github",
+        "install",
+        "package-management",
+        "node"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "obsidian-cli",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "obsidian",
+        "cli",
+        "terminal",
+        "automation",
+        "vault",
+        "uri",
+        "developer-tools",
+        "notes",
+        "tui"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "obsidian-plugin",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "obsidian",
+        "plugin-development",
+        "eslint",
+        "typescript",
+        "boilerplate",
+        "submission",
+        "accessibility"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "ohmg",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "ohmg",
+        "multi-agent",
+        "orchestration",
+        "gemini",
+        "antigravity",
+        "serena-memory",
+        "workflow"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "omc",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "omc",
+        "oh-my-claudecode",
+        "claude-code",
+        "multi-agent",
+        "orchestration",
+        "team",
+        "autopilot",
+        "ralph",
+        "ultrawork",
+        "ccg",
+        "pipeline"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "omx",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "omx",
+        "oh-my-codex",
+        "codex",
+        "openai",
+        "multi-agent",
+        "orchestration",
+        "team",
+        "ralph",
+        "plan",
+        "deep-interview",
+        "ralplan"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "opencontext",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "opencontext",
+        "context-management",
+        "memory",
+        "knowledge-base",
+        "multi-agent"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "pattern-detection",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "patterns",
+        "anomalies",
+        "regex",
+        "code-analysis",
+        "security",
+        "trends"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "performance-optimization",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "performance",
+        "optimization",
+        "React",
+        "lazy-loading",
+        "caching",
+        "profiling",
+        "web-vitals"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "plannotator",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": true,
+      "tags": [
+        "plan",
+        "planning",
+        "planno",
+        "plannotator",
+        "plan-review",
+        "diff-review",
+        "code-review",
+        "claude-code",
+        "opencode",
+        "annotation",
+        "visual-review",
+        "plan-review",
+        "design-review"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "playwriter",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "playwright",
+        "browser-automation",
+        "chrome-extension",
+        "mcp",
+        "authenticated",
+        "stateful",
+        "session"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "presentation-builder",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "presentation",
+        "slides-grab",
+        "pptx",
+        "pdf",
+        "html-slides",
+        "slide-editor",
+        "storytelling"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "prompt-repetition",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "prompt-engineering",
+        "accuracy",
+        "optimization",
+        "lightweight-model",
+        "attention"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "ralph",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": false,
+      "has_scripts": true,
+      "tags": [
+        "ralph",
+        "ouroboros",
+        "specification-first",
+        "socratic",
+        "interview",
+        "seed",
+        "evaluate",
+        "evolve",
+        "loop",
+        "completion",
+        "nine-minds",
+        "double-diamond",
+        "convergence",
+        "drift",
+        "boulder",
+        "ooo",
+        "multi-platform"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "ralphmode",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "ralph",
+        "permissions",
+        "automation",
+        "claude-code",
+        "codex-cli",
+        "gemini-cli",
+        "sandbox",
+        "trusted-folders",
+        "bypass"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "react-best-practices",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "React",
+        "Next.js",
+        "performance",
+        "optimization",
+        "vercel",
+        "waterfalls",
+        "bundle-size",
+        "RSC"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "react-grab",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "react-grab",
+        "grab",
+        "element-context",
+        "ai-agent",
+        "clipboard",
+        "component-inspector",
+        "dev-tools",
+        "react",
+        "browser",
+        "mcp"
+      ],
+      "community": "web-frontend"
+    },
+    {
+      "id": "remotion-video-production",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "video",
+        "remotion",
+        "animation",
+        "storytelling",
+        "automation",
+        "react"
+      ],
+      "community": "web-frontend"
+    },
+    {
+      "id": "research-paper-writing",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "research-paper-writing",
+        "academic-writing",
+        "ml",
+        "cv",
+        "nlp",
+        "experiments",
+        "rebuttal"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "responsive-design",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "responsive",
+        "mobile-first",
+        "CSS",
+        "Flexbox",
+        "Grid",
+        "media-query",
+        "viewport"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "rtk",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "rtk",
+        "rust-token-killer",
+        "token-optimization",
+        "claude-code",
+        "codex",
+        "gemini",
+        "opencode",
+        "cursor",
+        "copilot",
+        "shell-hooks"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "scrapling",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "scrapling",
+        "web-scraping",
+        "crawling",
+        "adaptive-scraping",
+        "mcp",
+        "cli",
+        "playwright",
+        "cloudflare",
+        "spiders",
+        "python"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "security-best-practices",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "security",
+        "HTTPS",
+        "CORS",
+        "XSS",
+        "SQL-injection",
+        "CSRF",
+        "OWASP",
+        "rate-limiting"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "skill-autoresearch",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "skill-autoresearch",
+        "skill-optimization",
+        "evals",
+        "prompt-iteration",
+        "benchmarking",
+        "mutation-loop",
+        "karpathy"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "skill-standardization",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "skill-management",
+        "standardization",
+        "validation",
+        "agentskills-spec",
+        "automation"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "sprint-retrospective",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "retrospective",
+        "agile",
+        "scrum",
+        "team-improvement",
+        "facilitation"
+      ],
+      "community": "project-management"
+    },
+    {
+      "id": "standup-meeting",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "standup",
+        "daily-scrum",
+        "agile",
+        "team-sync",
+        "blockers"
+      ],
+      "community": "project-management"
+    },
+    {
+      "id": "state-management",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "state-management",
+        "React",
+        "Redux",
+        "Context",
+        "Zustand",
+        "Recoil",
+        "global-state"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "steam-store-launch-ops",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": false,
+      "tags": [
+        "steam",
+        "indie-games",
+        "game-marketing",
+        "launch-ops",
+        "next-fest",
+        "wishlists",
+        "store-page",
+        "demos"
+      ],
+      "community": "game-dev"
+    },
+    {
+      "id": "strix",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": true,
+      "tags": [
+        "strix",
+        "appsec",
+        "pentest",
+        "vulnerability-scan",
+        "ci-cd",
+        "docker",
+        "llm",
+        "security-testing",
+        "bug-bounty",
+        "browser-automation"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "survey",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "survey",
+        "landscape-scan",
+        "research",
+        "discovery",
+        "groundwork",
+        "omc",
+        "omx",
+        "ohmg",
+        "claude",
+        "codex",
+        "gemini",
+        "hooks",
+        "rules",
+        "settings"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "system-environment-setup",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "environment-setup",
+        "Docker-Compose",
+        "dev-environment",
+        "IaC",
+        "configuration"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "task-estimation",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "estimation",
+        "agile",
+        "sprint-planning",
+        "story-points",
+        "planning-poker"
+      ],
+      "community": "project-management"
+    },
+    {
+      "id": "task-planning",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": true,
+      "has_scripts": false,
+      "tags": [
+        "task-planning",
+        "backlog-grooming",
+        "sprint-planning",
+        "roadmap-slicing",
+        "feature-breakdown",
+        "game-development",
+        "product-planning"
+      ],
+      "community": "project-management"
+    },
+    {
+      "id": "technical-writing",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "technical-writing",
+        "documentation",
+        "specs",
+        "architecture",
+        "runbooks",
+        "API-docs"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "testing-strategies",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "testing",
+        "test-strategy",
+        "TDD",
+        "unit-test",
+        "integration-test",
+        "E2E",
+        "test-pyramid"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "ui-component-patterns",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "UI-components",
+        "React",
+        "design-patterns",
+        "composition",
+        "TypeScript",
+        "reusable"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "user-guide-writing",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "user-guides",
+        "tutorials",
+        "documentation",
+        "onboarding",
+        "how-to",
+        "FAQ"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "vercel-deploy",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": true,
+      "tags": [
+        "deployment",
+        "vercel",
+        "preview",
+        "production",
+        "hosting",
+        "serverless"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "vercel-react-best-practices",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "React",
+        "Next.js",
+        "performance",
+        "optimization",
+        "vercel",
+        "waterfalls",
+        "bundle-size",
+        "RSC"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "vibe-kanban",
+      "type": "skill",
+      "has_references": true,
+      "has_evals": false,
+      "has_scripts": true,
+      "tags": [
+        "vibe-kanban",
+        "kanban",
+        "kanbanview",
+        "multi-agent",
+        "git-worktree",
+        "github-pr",
+        "task-management",
+        "claude-code",
+        "codex",
+        "gemini",
+        "open-code",
+        "mcp"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "video-production",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "video",
+        "remotion",
+        "animation",
+        "storytelling",
+        "automation",
+        "react"
+      ],
+      "community": "web-frontend"
+    },
+    {
+      "id": "web-accessibility",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "accessibility",
+        "a11y",
+        "WCAG",
+        "ARIA",
+        "semantic-HTML",
+        "screen-reader"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "web-design-guidelines",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "UI",
+        "review",
+        "web-interface",
+        "guidelines",
+        "vercel",
+        "design-audit",
+        "UX"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "workflow-automation",
+      "type": "skill",
+      "has_references": false,
+      "has_evals": false,
+      "has_scripts": false,
+      "tags": [
+        "automation",
+        "scripts",
+        "workflow",
+        "npm-scripts",
+        "Makefile",
+        "task-runner"
+      ],
+      "community": "general"
+    },
+    {
+      "id": "README.md",
+      "type": "doc",
+      "community": "docs"
+    },
+    {
+      "id": "README.ko.md",
+      "type": "doc",
+      "community": "docs"
+    },
+    {
+      "id": "setup-all-skills-prompt.md",
+      "type": "doc",
+      "community": "docs"
+    }
+  ],
+  "edges": [
+    {
+      "source": "README.md",
+      "target": "agent-browser",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "agentation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "api-design",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "api-documentation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "authentication-setup",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "autoresearch",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "backend-testing",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "bmad",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "bmad-gds",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "bmad-idea",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "changelog-maintenance",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "clawteam",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "code-refactoring",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "code-review",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "codebase-search",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "data-analysis",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "database-schema-design",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "debugging",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "deployment-automation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "design-system",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "environment-setup",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "fabric",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "file-organization",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "firebase-ai-logic",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "firebase-cli",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "frontend-design-system",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "genkit",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "git-submodule",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "git-workflow",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "google-workspace",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "harness",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "jeo",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "langsmith",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "llm-wiki",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "log-analysis",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "looker-studio-bigquery",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "marketing-automation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "marketing-skills-collection",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "monitoring-observability",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "npm-git-install",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "obsidian-cli",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "obsidian-plugin",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "ohmg",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "omc",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "omx",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "opencontext",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "pattern-detection",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "performance-optimization",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "plannotator",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "playwriter",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "presentation-builder",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "prompt-repetition",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "ralph",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "ralphmode",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "react-best-practices",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "react-grab",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "remotion-video-production",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "research-paper-writing",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "responsive-design",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "rtk",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "scrapling",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "security-best-practices",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "skill-autoresearch",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "skill-standardization",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "sprint-retrospective",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "standup-meeting",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "state-management",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "strix",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "survey",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "system-environment-setup",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "task-estimation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "task-planning",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "technical-writing",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "testing-strategies",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "ui-component-patterns",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "user-guide-writing",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "vercel-deploy",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "vercel-react-best-practices",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "vibe-kanban",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "video-production",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "web-accessibility",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "web-design-guidelines",
+      "type": "indexes"
+    },
+    {
+      "source": "README.md",
+      "target": "workflow-automation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "agent-browser",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "agentation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "api-design",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "api-documentation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "authentication-setup",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "autoresearch",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "backend-testing",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "bmad",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "bmad-gds",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "bmad-idea",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "changelog-maintenance",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "clawteam",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "code-refactoring",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "code-review",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "codebase-search",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "data-analysis",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "database-schema-design",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "debugging",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "deployment-automation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "design-system",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "environment-setup",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "fabric",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "file-organization",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "firebase-ai-logic",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "firebase-cli",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "frontend-design-system",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "genkit",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "git-submodule",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "git-workflow",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "google-workspace",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "harness",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "jeo",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "langsmith",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "llm-wiki",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "log-analysis",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "looker-studio-bigquery",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "marketing-automation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "marketing-skills-collection",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "monitoring-observability",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "npm-git-install",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "obsidian-cli",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "obsidian-plugin",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "ohmg",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "omc",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "omx",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "opencontext",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "pattern-detection",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "performance-optimization",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "plannotator",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "playwriter",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "presentation-builder",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "prompt-repetition",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "ralph",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "ralphmode",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "react-best-practices",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "react-grab",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "remotion-video-production",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "research-paper-writing",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "responsive-design",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "rtk",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "scrapling",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "security-best-practices",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "skill-autoresearch",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "skill-standardization",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "sprint-retrospective",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "standup-meeting",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "state-management",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "strix",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "survey",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "system-environment-setup",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "task-estimation",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "task-planning",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "technical-writing",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "testing-strategies",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "ui-component-patterns",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "user-guide-writing",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "vercel-deploy",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "vercel-react-best-practices",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "vibe-kanban",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "video-production",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "web-accessibility",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "web-design-guidelines",
+      "type": "indexes"
+    },
+    {
+      "source": "README.ko.md",
+      "target": "workflow-automation",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "agent-browser",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "agentation",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "api-design",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "api-documentation",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "authentication-setup",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "autoresearch",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "backend-testing",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "bmad",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "bmad-gds",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "bmad-idea",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "changelog-maintenance",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "clawteam",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "code-refactoring",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "code-review",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "codebase-search",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "data-analysis",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "database-schema-design",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "debugging",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "deployment-automation",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "design-system",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "environment-setup",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "fabric",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "file-organization",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "firebase-ai-logic",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "firebase-cli",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "frontend-design-system",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "genkit",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "git-submodule",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "git-workflow",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "google-workspace",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "harness",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "jeo",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "langsmith",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "llm-wiki",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "log-analysis",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "looker-studio-bigquery",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "marketing-automation",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "marketing-skills-collection",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "monitoring-observability",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "npm-git-install",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "obsidian-cli",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "obsidian-plugin",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "ohmg",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "omc",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "omx",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "opencontext",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "pattern-detection",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "performance-optimization",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "plannotator",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "playwriter",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "presentation-builder",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "prompt-repetition",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "ralph",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "ralphmode",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "react-best-practices",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "react-grab",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "remotion-video-production",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "research-paper-writing",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "responsive-design",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "rtk",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "scrapling",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "security-best-practices",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "skill-autoresearch",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "skill-standardization",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "sprint-retrospective",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "standup-meeting",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "state-management",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "strix",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "survey",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "system-environment-setup",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "task-estimation",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "task-planning",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "technical-writing",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "testing-strategies",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "ui-component-patterns",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "user-guide-writing",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "vercel-deploy",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "vercel-react-best-practices",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "vibe-kanban",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "video-production",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "web-accessibility",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "web-design-guidelines",
+      "type": "indexes"
+    },
+    {
+      "source": "setup-all-skills-prompt.md",
+      "target": "workflow-automation",
+      "type": "indexes"
+    },
+    {
+      "source": "agentation",
+      "target": "agent-browser",
+      "type": "mentions"
+    },
+    {
+      "source": "agentation",
+      "target": "bmad",
+      "type": "mentions"
+    },
+    {
+      "source": "agentation",
+      "target": "jeo",
+      "type": "mentions"
+    },
+    {
+      "source": "agentation",
+      "target": "plannotator",
+      "type": "mentions"
+    },
+    {
+      "source": "authentication-setup",
+      "target": "api-design",
+      "type": "mentions"
+    },
+    {
+      "source": "autoresearch",
+      "target": "harness",
+      "type": "mentions"
+    },
+    {
+      "source": "backend-testing",
+      "target": "api-design",
+      "type": "mentions"
+    },
+    {
+      "source": "backend-testing",
+      "target": "authentication-setup",
+      "type": "mentions"
+    },
+    {
+      "source": "bmad",
+      "target": "fabric",
+      "type": "mentions"
+    },
+    {
+      "source": "bmad",
+      "target": "ohmg",
+      "type": "mentions"
+    },
+    {
+      "source": "bmad",
+      "target": "omx",
+      "type": "mentions"
+    },
+    {
+      "source": "bmad",
+      "target": "plannotator",
+      "type": "mentions"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "bmad",
+      "type": "mentions"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "code-review",
+      "type": "mentions"
+    },
+    {
+      "source": "bmad-idea",
+      "target": "bmad",
+      "type": "mentions"
+    },
+    {
+      "source": "code-refactoring",
+      "target": "backend-testing",
+      "type": "mentions"
+    },
+    {
+      "source": "code-refactoring",
+      "target": "code-review",
+      "type": "mentions"
+    },
+    {
+      "source": "database-schema-design",
+      "target": "api-design",
+      "type": "mentions"
+    },
+    {
+      "source": "database-schema-design",
+      "target": "debugging",
+      "type": "mentions"
+    },
+    {
+      "source": "database-schema-design",
+      "target": "performance-optimization",
+      "type": "mentions"
+    },
+    {
+      "source": "design-system",
+      "target": "responsive-design",
+      "type": "mentions"
+    },
+    {
+      "source": "design-system",
+      "target": "ui-component-patterns",
+      "type": "mentions"
+    },
+    {
+      "source": "design-system",
+      "target": "web-accessibility",
+      "type": "mentions"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "design-system",
+      "type": "mentions"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "responsive-design",
+      "type": "mentions"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "ui-component-patterns",
+      "type": "mentions"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "web-accessibility",
+      "type": "mentions"
+    },
+    {
+      "source": "game-build-log-triage",
+      "target": "debugging",
+      "type": "mentions"
+    },
+    {
+      "source": "game-build-log-triage",
+      "target": "game-ci-cd-pipeline",
+      "type": "mentions"
+    },
+    {
+      "source": "game-ci-cd-pipeline",
+      "target": "debugging",
+      "type": "mentions"
+    },
+    {
+      "source": "game-ci-cd-pipeline",
+      "target": "game-build-log-triage",
+      "type": "mentions"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "bmad",
+      "type": "mentions"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "bmad-gds",
+      "type": "mentions"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "game-build-log-triage",
+      "type": "mentions"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "game-performance-profiler",
+      "type": "mentions"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "steam-store-launch-ops",
+      "type": "mentions"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "survey",
+      "type": "mentions"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "task-planning",
+      "type": "mentions"
+    },
+    {
+      "source": "game-performance-profiler",
+      "target": "game-demo-feedback-triage",
+      "type": "mentions"
+    },
+    {
+      "source": "google-workspace",
+      "target": "survey",
+      "type": "mentions"
+    },
+    {
+      "source": "harness",
+      "target": "debugging",
+      "type": "mentions"
+    },
+    {
+      "source": "jeo",
+      "target": "agent-browser",
+      "type": "mentions"
+    },
+    {
+      "source": "jeo",
+      "target": "agentation",
+      "type": "mentions"
+    },
+    {
+      "source": "jeo",
+      "target": "bmad",
+      "type": "mentions"
+    },
+    {
+      "source": "jeo",
+      "target": "ohmg",
+      "type": "mentions"
+    },
+    {
+      "source": "jeo",
+      "target": "omc",
+      "type": "mentions"
+    },
+    {
+      "source": "jeo",
+      "target": "omx",
+      "type": "mentions"
+    },
+    {
+      "source": "jeo",
+      "target": "plannotator",
+      "type": "mentions"
+    },
+    {
+      "source": "jeo",
+      "target": "ralph",
+      "type": "mentions"
+    },
+    {
+      "source": "jeo",
+      "target": "ralphmode",
+      "type": "mentions"
+    },
+    {
+      "source": "langsmith",
+      "target": "debugging",
+      "type": "mentions"
+    },
+    {
+      "source": "llm-wiki",
+      "target": "scrapling",
+      "type": "mentions"
+    },
+    {
+      "source": "lmstudio-cli",
+      "target": "strix",
+      "type": "mentions"
+    },
+    {
+      "source": "log-analysis",
+      "target": "debugging",
+      "type": "mentions"
+    },
+    {
+      "source": "looker-studio-bigquery",
+      "target": "database-schema-design",
+      "type": "mentions"
+    },
+    {
+      "source": "looker-studio-bigquery",
+      "target": "monitoring-observability",
+      "type": "mentions"
+    },
+    {
+      "source": "marketing-automation",
+      "target": "design-system",
+      "type": "mentions"
+    },
+    {
+      "source": "marketing-automation",
+      "target": "presentation-builder",
+      "type": "mentions"
+    },
+    {
+      "source": "marketing-skills-collection",
+      "target": "marketing-automation",
+      "type": "mentions"
+    },
+    {
+      "source": "marketing-skills-collection",
+      "target": "presentation-builder",
+      "type": "mentions"
+    },
+    {
+      "source": "marketing-skills-collection",
+      "target": "steam-store-launch-ops",
+      "type": "mentions"
+    },
+    {
+      "source": "npm-git-install",
+      "target": "environment-setup",
+      "type": "mentions"
+    },
+    {
+      "source": "npm-git-install",
+      "target": "git-workflow",
+      "type": "mentions"
+    },
+    {
+      "source": "obsidian-cli",
+      "target": "debugging",
+      "type": "mentions"
+    },
+    {
+      "source": "omc",
+      "target": "ralph",
+      "type": "mentions"
+    },
+    {
+      "source": "omx",
+      "target": "code-review",
+      "type": "mentions"
+    },
+    {
+      "source": "omx",
+      "target": "debugging",
+      "type": "mentions"
+    },
+    {
+      "source": "omx",
+      "target": "ralph",
+      "type": "mentions"
+    },
+    {
+      "source": "performance-optimization",
+      "target": "database-schema-design",
+      "type": "mentions"
+    },
+    {
+      "source": "performance-optimization",
+      "target": "ui-component-patterns",
+      "type": "mentions"
+    },
+    {
+      "source": "plannotator",
+      "target": "code-review",
+      "type": "mentions"
+    },
+    {
+      "source": "playwriter",
+      "target": "agent-browser",
+      "type": "mentions"
+    },
+    {
+      "source": "ralph",
+      "target": "omc",
+      "type": "mentions"
+    },
+    {
+      "source": "ralphmode",
+      "target": "jeo",
+      "type": "mentions"
+    },
+    {
+      "source": "ralphmode",
+      "target": "ralph",
+      "type": "mentions"
+    },
+    {
+      "source": "react-best-practices",
+      "target": "performance-optimization",
+      "type": "mentions"
+    },
+    {
+      "source": "react-best-practices",
+      "target": "state-management",
+      "type": "mentions"
+    },
+    {
+      "source": "remotion-video-production",
+      "target": "design-system",
+      "type": "mentions"
+    },
+    {
+      "source": "remotion-video-production",
+      "target": "presentation-builder",
+      "type": "mentions"
+    },
+    {
+      "source": "remotion-video-production",
+      "target": "video-production",
+      "type": "mentions"
+    },
+    {
+      "source": "responsive-design",
+      "target": "ui-component-patterns",
+      "type": "mentions"
+    },
+    {
+      "source": "responsive-design",
+      "target": "web-accessibility",
+      "type": "mentions"
+    },
+    {
+      "source": "security-best-practices",
+      "target": "authentication-setup",
+      "type": "mentions"
+    },
+    {
+      "source": "security-best-practices",
+      "target": "deployment-automation",
+      "type": "mentions"
+    },
+    {
+      "source": "skill-autoresearch",
+      "target": "autoresearch",
+      "type": "mentions"
+    },
+    {
+      "source": "state-management",
+      "target": "backend-testing",
+      "type": "mentions"
+    },
+    {
+      "source": "state-management",
+      "target": "ui-component-patterns",
+      "type": "mentions"
+    },
+    {
+      "source": "steam-store-launch-ops",
+      "target": "game-demo-feedback-triage",
+      "type": "mentions"
+    },
+    {
+      "source": "survey",
+      "target": "jeo",
+      "type": "mentions"
+    },
+    {
+      "source": "survey",
+      "target": "ohmg",
+      "type": "mentions"
+    },
+    {
+      "source": "survey",
+      "target": "omc",
+      "type": "mentions"
+    },
+    {
+      "source": "survey",
+      "target": "omx",
+      "type": "mentions"
+    },
+    {
+      "source": "survey",
+      "target": "ralph",
+      "type": "mentions"
+    },
+    {
+      "source": "system-environment-setup",
+      "target": "environment-setup",
+      "type": "mentions"
+    },
+    {
+      "source": "task-planning",
+      "target": "sprint-retrospective",
+      "type": "mentions"
+    },
+    {
+      "source": "task-planning",
+      "target": "standup-meeting",
+      "type": "mentions"
+    },
+    {
+      "source": "task-planning",
+      "target": "task-estimation",
+      "type": "mentions"
+    },
+    {
+      "source": "testing-strategies",
+      "target": "backend-testing",
+      "type": "mentions"
+    },
+    {
+      "source": "testing-strategies",
+      "target": "code-review",
+      "type": "mentions"
+    },
+    {
+      "source": "ui-component-patterns",
+      "target": "state-management",
+      "type": "mentions"
+    },
+    {
+      "source": "ui-component-patterns",
+      "target": "web-accessibility",
+      "type": "mentions"
+    },
+    {
+      "source": "vercel-deploy",
+      "target": "deployment-automation",
+      "type": "mentions"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "performance-optimization",
+      "type": "mentions"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "react-best-practices",
+      "type": "mentions"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "state-management",
+      "type": "mentions"
+    },
+    {
+      "source": "vibe-kanban",
+      "target": "ohmg",
+      "type": "mentions"
+    },
+    {
+      "source": "vibe-kanban",
+      "target": "omx",
+      "type": "mentions"
+    },
+    {
+      "source": "vibe-kanban",
+      "target": "plannotator",
+      "type": "mentions"
+    },
+    {
+      "source": "video-production",
+      "target": "design-system",
+      "type": "mentions"
+    },
+    {
+      "source": "video-production",
+      "target": "presentation-builder",
+      "type": "mentions"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "responsive-design",
+      "type": "mentions"
+    },
+    {
+      "source": "web-accessibility",
+      "target": "ui-component-patterns",
+      "type": "mentions"
+    },
+    {
+      "source": "web-design-guidelines",
+      "target": "ui-component-patterns",
+      "type": "mentions"
+    },
+    {
+      "source": "web-design-guidelines",
+      "target": "web-accessibility",
+      "type": "mentions"
+    },
+    {
+      "source": "agent-browser",
+      "target": "agent-browser/references",
+      "type": "has_support"
+    },
+    {
+      "source": "autoresearch",
+      "target": "autoresearch/references",
+      "type": "has_support"
+    },
+    {
+      "source": "clawteam",
+      "target": "clawteam/references",
+      "type": "has_support"
+    },
+    {
+      "source": "clawteam",
+      "target": "clawteam/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "firebase-cli",
+      "target": "firebase-cli/references",
+      "type": "has_support"
+    },
+    {
+      "source": "firebase-cli",
+      "target": "firebase-cli/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "game-build-log-triage",
+      "target": "game-build-log-triage/references",
+      "type": "has_support"
+    },
+    {
+      "source": "game-build-log-triage",
+      "target": "game-build-log-triage/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "game-ci-cd-pipeline",
+      "target": "game-ci-cd-pipeline/references",
+      "type": "has_support"
+    },
+    {
+      "source": "game-ci-cd-pipeline",
+      "target": "game-ci-cd-pipeline/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "game-demo-feedback-triage/references",
+      "type": "has_support"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "game-demo-feedback-triage/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "game-performance-profiler",
+      "target": "game-performance-profiler/references",
+      "type": "has_support"
+    },
+    {
+      "source": "game-performance-profiler",
+      "target": "game-performance-profiler/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "google-workspace",
+      "target": "google-workspace/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "harness",
+      "target": "harness/references",
+      "type": "has_support"
+    },
+    {
+      "source": "harness",
+      "target": "harness/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "jeo",
+      "target": "jeo/references",
+      "type": "has_support"
+    },
+    {
+      "source": "jeo",
+      "target": "jeo/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "langsmith",
+      "target": "langsmith/references",
+      "type": "has_support"
+    },
+    {
+      "source": "llm-wiki",
+      "target": "llm-wiki/references",
+      "type": "has_support"
+    },
+    {
+      "source": "llm-wiki",
+      "target": "llm-wiki/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "marketing-skills-collection",
+      "target": "marketing-skills-collection/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "obsidian-cli",
+      "target": "obsidian-cli/references",
+      "type": "has_support"
+    },
+    {
+      "source": "obsidian-cli",
+      "target": "obsidian-cli/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "obsidian-plugin",
+      "target": "obsidian-plugin/references",
+      "type": "has_support"
+    },
+    {
+      "source": "obsidian-plugin",
+      "target": "obsidian-plugin/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "omc",
+      "target": "omc/references",
+      "type": "has_support"
+    },
+    {
+      "source": "omc",
+      "target": "omc/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "omx",
+      "target": "omx/references",
+      "type": "has_support"
+    },
+    {
+      "source": "omx",
+      "target": "omx/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "ralph",
+      "target": "ralph/references",
+      "type": "has_support"
+    },
+    {
+      "source": "ralphmode",
+      "target": "ralphmode/references",
+      "type": "has_support"
+    },
+    {
+      "source": "react-grab",
+      "target": "react-grab/references",
+      "type": "has_support"
+    },
+    {
+      "source": "react-grab",
+      "target": "react-grab/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "rtk",
+      "target": "rtk/references",
+      "type": "has_support"
+    },
+    {
+      "source": "rtk",
+      "target": "rtk/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "scrapling",
+      "target": "scrapling/references",
+      "type": "has_support"
+    },
+    {
+      "source": "scrapling",
+      "target": "scrapling/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "skill-autoresearch",
+      "target": "skill-autoresearch/references",
+      "type": "has_support"
+    },
+    {
+      "source": "skill-standardization",
+      "target": "skill-standardization/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "steam-store-launch-ops",
+      "target": "steam-store-launch-ops/references",
+      "type": "has_support"
+    },
+    {
+      "source": "steam-store-launch-ops",
+      "target": "steam-store-launch-ops/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "strix",
+      "target": "strix/references",
+      "type": "has_support"
+    },
+    {
+      "source": "strix",
+      "target": "strix/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "task-planning",
+      "target": "task-planning/references",
+      "type": "has_support"
+    },
+    {
+      "source": "task-planning",
+      "target": "task-planning/evals",
+      "type": "has_support"
+    },
+    {
+      "source": "vibe-kanban",
+      "target": "vibe-kanban/references",
+      "type": "has_support"
+    }
+  ],
+  "stats": {
+    "skills": 89,
+    "skills_with_references": 26,
+    "skills_with_evals": 22
+  }
+}
