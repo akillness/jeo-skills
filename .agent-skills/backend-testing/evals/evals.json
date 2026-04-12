@@ -1,0 +1,37 @@
+{
+  "skill_name": "backend-testing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We added refresh-token rotation and new admin-only endpoints to our Express API. I need backend tests that catch auth failures, token replay issues, and DB persistence bugs without turning CI into a giant end-to-end suite.",
+      "expected_output": "A backend test packet that selects unit/service plus integration/API coverage, defines auth/bootstrap and dependency strategy, and keeps smoke coverage narrow.",
+      "assertions": [
+        "Output identifies the main risks as auth, permissions, token/session persistence, or replay behavior",
+        "Output chooses multiple backend test layers instead of defaulting to one giant E2E suite",
+        "Output defines a dependency strategy such as real DB/container plus mocked or helper-based external auth pieces",
+        "Output includes fixture, seed, auth-bootstrap, or reset guidance",
+        "Output distinguishes local and CI execution lanes"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our FastAPI integration tests pass locally but fail in CI around seeded Postgres state and background jobs. Give me a stabilization plan.",
+      "expected_output": "A flake-focused backend testing plan that addresses environment drift, readiness, data isolation, async timing, and debugging signals.",
+      "assertions": [
+        "Output recognizes CI-vs-local drift, data seeding, or async timing as central issues",
+        "Output proposes stronger isolation, reset, readiness, or debugging signals rather than only more retries",
+        "Output keeps the response focused on backend test stabilization rather than general QA philosophy"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Design our company-wide testing strategy across frontend, backend, mobile, and manual QA for the next year.",
+      "expected_output": "A boundary-aware response that routes the primary request to testing-strategies and keeps backend-specific advice scoped as a handoff.",
+      "assertions": [
+        "Output recognizes that the main task belongs to testing-strategies",
+        "Output does not pretend backend-testing should own the whole-company test policy",
+        "Output preserves a backend-focused boundary or explicit handoff"
+      ]
+    }
+  ]
+}

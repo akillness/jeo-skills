@@ -95,9 +95,17 @@
 - Wiki files created/updated: `concepts/project-management-cluster.md`, `concepts/skill-support-coverage.md`, `queries/task-estimation-modernization-2026-04-12.md`, `index.md`
 
 ## [2026-04-12] query | API design modernization
-- Area researched: backend contract-first API design, REST vs GraphQL choice, compatibility review, and the repo overlap between `api-design` and `api-documentation`
+- Area researched: backend API contract work across REST/GraphQL design, compatibility review, OpenAPI usage, and the repo overlap between `api-design` and `api-documentation`
 - Survey files created under `.survey/api-design-modernization-20260412/`
 - Structural graph artifacts refreshed under `graphify-out/`
-- Accepted: rewrite `api-design` as the contract-first backend anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep `api-documentation` as the downstream docs/examples/publishing handoff
-- Rejected: adding a new overlapping backend API skill; merging `api-design` into `api-documentation`; expanding `api-design` into auth implementation or test-planning scope
+- Accepted: rewrite `api-design` as the contract-first backend skill, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the stronger role
+- Rejected: adding another overlapping backend API skill; collapsing docs publishing into `api-design`; leaving `api-design` as a broad legacy skill
 - Wiki files created/updated: `concepts/backend-api-cluster.md`, `queries/api-design-modernization-2026-04-12.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-12] query | Backend testing modernization
+- Area researched: layered backend testing practice across unit/service coverage, API and contract verification, fixture/data strategy, flake handling, and local-vs-CI execution
+- Survey files created under `.survey/backend-testing-modernization-20260413/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `backend-testing` as a backend coverage-selection skill, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the stronger role
+- Rejected: adding a second backend testing wrapper; broadening the skill into company-wide QA governance; leaving fixture/dependency/CI split guidance implicit
+- Wiki files created/updated: `concepts/backend-api-cluster.md`, `queries/backend-testing-modernization-2026-04-12.md`, `concepts/skill-support-coverage.md`, `index.md`

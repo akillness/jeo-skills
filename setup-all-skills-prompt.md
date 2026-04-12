@@ -344,7 +344,7 @@ If no → skip silently. Never re-ask.
 | **Platform Setup** | omx | codex, claude-code, gemini-cli |
 | **Platform Setup** | ralphmode | claude-code, codex, gemini-cli |
 | **Planning & Review** | playwriter, prompt-repetition, skill-standardization, skill-autoresearch | All (`*`) |
-| **Backend** | api-design *(contract-first API design / compatibility review)*, api-documentation *(published docs / examples / portals)*, authentication-setup, backend-testing, database-schema-design | All (`*`) |
+| **Backend** | api-design *(contract-first API design / compatibility review)*, api-documentation *(published docs / examples / portals)*, authentication-setup, backend-testing *(backend coverage planning for API / integration / contract / fixture / CI-vs-local layers)*, database-schema-design | All (`*`) |
 | **Frontend** | design-system, frontend-design-system *(compatibility alias for design-system)*, react-best-practices, react-grab, vercel-react-best-practices *(compatibility alias for react-best-practices)*, responsive-design, state-management, ui-component-patterns, web-accessibility, web-design-guidelines | All (`*`) |
 | **Code Quality** | code-refactoring, code-review, debugging, performance-optimization, testing-strategies | All (`*`) |
 | **Infrastructure** | deployment-automation, environment-setup *(app-config compatibility alias; routes broader runnable-machine setup to system-environment-setup)*, firebase-ai-logic, firebase-cli, genkit, looker-studio-bigquery, monitoring-observability, scrapling, rtk, security-best-practices, strix, system-environment-setup *(canonical broader environment-setup skill)*, vercel-deploy | All (`*`) |

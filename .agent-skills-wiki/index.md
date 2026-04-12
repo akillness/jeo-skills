@@ -18,6 +18,7 @@
 
 ## Queries
 - [[api-design-modernization-2026-04-12]] — Why the best bounded backend-cluster improvement was modernizing `api-design` into a contract-first anchor instead of adding a new overlapping API skill.
+- [[backend-testing-modernization-2026-04-12]] — Why the best bounded backend verification fix was modernizing `backend-testing` into a layer-selecting, fixture-aware coverage skill instead of adding another testing wrapper.
 - [[bmad-gds-modernization-2026-04-12]] — Why the best bounded game-cluster fix was modernizing `bmad-gds` into a coordinating producer/orchestrator skill.
 - [[design-system-canonicalization-2026-04-12]] — Why the best bounded fix for the UI-system pair was canonicalizing `design-system` and narrowing `frontend-design-system` into a compatibility alias.
 - [[environment-skill-canonicalization-2026-04-12]] — Why the best bounded infrastructure fix was canonicalizing `system-environment-setup` and narrowing `environment-setup` into an app-config compatibility skill.
