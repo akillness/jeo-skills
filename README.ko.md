@@ -70,6 +70,12 @@ graph TD
 
 ---
 
+## 🆕 v2026-04-13 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **responsive-design: 레이아웃 적응 재작성** | `responsive-design`를 긴 CSS 예시 모음에서 프론트엔드 클러스터의 모바일 우선·컨테이너 기반 레이아웃 적응 스킬로 재정의했습니다. 이제 viewport-vs-container 실패를 분류하고, breakpoint 추가보다 intrinsic layout을 우선하며, `ui-component-patterns`, `web-accessibility`, `design-system`, `web-design-guidelines`로의 명시적 route-out을 제공합니다. `references/layout-decision-checklist.md`, `references/handoff-boundaries.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
+
 ## 🆕 v2026-04-12 업데이트
 
 | 변경 | 내용 |
@@ -239,7 +245,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `react-best-practices` | waterfall, 번들 크기, RSC, hydration, rerender 이슈를 다루는 React & Next.js 성능 진단의 기본 스킬 | 전체 |
 | `react-grab` | 브라우저 UI 엘리먼트에서 React 컴포넌트명·파일경로·HTML을 클립보드로 복사해 AI 에이전트에 전달 | 전체 |
 | `vercel-react-best-practices` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `react-best-practices` 호환 별칭 | Claude · Gemini · Codex |
-| `responsive-design` | 모바일 우선 레이아웃과 브레이크포인트 | 전체 |
+| `responsive-design` | 모바일 우선·컨테이너 기반 레이아웃 적응과 overflow/reflow 검증 가이드 | 전체 |
 | `state-management` | Context·Zustand·Redux Toolkit·Jotai·TanStack Query를 나누는 React 상태 경계 결정 | 전체 |
 | `ui-component-patterns` | 공유 프론트엔드 컴포넌트를 위한 재사용 primitive·variant·slot API 설계 | 전체 |
 | `web-accessibility` | 접근성 감사·수정과 자동화 이후 수동 검증 가이드 | 전체 |

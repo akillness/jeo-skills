@@ -15,7 +15,7 @@ The frontend cluster now has **two** true canonical-vs-alias pairs plus three cl
 - `design-system` owns general frontend UI-system work, while `frontend-design-system` survives only as a compatibility alias.
 - `state-management` now owns React state-boundary decisions across local, shared, URL/form, server, and long-lived client workflow state instead of remaining a generic library-tour skill.
 - `web-accessibility` now owns accessibility remediation plus manual-vs-automated verification, while `web-design-guidelines` stays the broader UI-review lane.
-- `ui-component-patterns` now owns reusable primitive / variant / slot API design, while `responsive-design` remains the narrower viewport/container adaptation lane rather than a generic shared-component skill.
+- `ui-component-patterns` now owns reusable primitive / variant / slot API design, while `responsive-design` now owns mobile-first, container-aware layout adaptation plus overflow/reflow verification instead of remaining a generic CSS/example dump.
 
 ## Why this matters
 - Tier-1 discovery relies heavily on compact skill metadata.
@@ -33,3 +33,4 @@ When two frontend skills compete at the metadata layer but not in long-term user
 - [[state-management-modernization-2026-04-13]]
 - [[web-accessibility-modernization-2026-04-13]]
 - [[ui-component-patterns-modernization-2026-04-13]]
+- [[responsive-design-modernization-2026-04-13]]

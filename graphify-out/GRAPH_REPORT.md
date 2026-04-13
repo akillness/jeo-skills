@@ -4,44 +4,45 @@
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, cross-skill mentions, and documentation indexing
 - Total skills: 89
-- Skills with references/: 45
-- Skills with evals/: 44
-- Graph nodes: 204
-- Graph edges: 553
+- Skills with references/: 46
+- Skills with evals/: 45
+- Graph nodes: 206
+- Graph edges: 556
 
 ## Strongest structural findings
-1. `.agent-skills` now has a cleaner frontend cluster when `ui-component-patterns` owns reusable primitive / variant / slot API design, while `responsive-design` stays the layout-adaptation lane.
-2. `ui-component-patterns` gained both `references/` and `evals/`, which raises support coverage for a previously legacy frontend anchor without adding another overlapping wrapper skill.
-3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain the highest-degree discovery nodes, so small positioning changes still materially affect skill activation.
-4. The maintenance pattern still holds: upgrading legacy anchors with boundary files and evals produces cleaner graph structure than creating new nearby skills.
+1. `responsive-design` is now a stronger frontend layout anchor: it owns mobile-first, container-aware layout adaptation plus overflow/reflow verification instead of acting like a generic CSS example dump.
+2. The frontend cluster boundary is cleaner: `ui-component-patterns` handles reusable component APIs, `responsive-design` handles layout adaptation, `web-accessibility` handles remediation/verification, and `web-design-guidelines` stays the broad review lane.
+3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so one-line positioning changes still matter for activation.
+4. The repo maintenance pattern still holds: upgrading a high-traffic legacy anchor with references and evals creates more durable value than adding another neighboring wrapper skill.
 
 ## Community map
-- backend
+- skill
 - frontend
-- game-development
 - infrastructure
-- project-management
 - code-quality
-- documentation
+- project-management
+- game-development
+- backend
 
 ## Highest-degree nodes
-- README.ko.md: degree 87
 - README.md: degree 87
+- README.ko.md: degree 87
 - setup-all-skills-prompt.md: degree 83
 - debugging: degree 27
-- code-review: degree 19
 - web-accessibility: degree 19
 - jeo: degree 18
+- code-review: degree 18
 - ui-component-patterns: degree 17
-- design-system: degree 16
-- state-management: degree 15
+- design-system: degree 17
+- task-planning: degree 15
 
 ## Duplicate / consolidation notes
-- `ui-component-patterns` should own reusable primitive/API architecture and not expand into token governance, accessibility remediation, state-boundary architecture, or viewport-only layout strategy.
-- `responsive-design` remains a likely future modernization candidate, but it should stay narrower than component API design and focus on layout adaptation, breakpoints/container queries, and responsive media.
-- Previous frontend canonicalization work around `design-system`/`frontend-design-system`, `react-best-practices`/`vercel-react-best-practices`, `state-management`, and `web-accessibility` remains intact.
+- `responsive-design` should stay focused on layout adaptation and verification rather than absorbing reusable primitive/API architecture already covered by `ui-component-patterns`.
+- `responsive-design` should keep accessibility-heavy reflow/touch-target remediation routed to `web-accessibility`.
+- `responsive-design` should not absorb broader UI-guideline audits already covered by `web-design-guidelines`.
+- Recent canonical-vs-alias cleanups in React, design-system, marketing, and environment lanes remain intact.
 
 ## Recommended maintenance direction
-- Continue upgrading remaining legacy frontend and infrastructure anchors that still lack both `references/` and `evals/`.
-- Prefer support bundles that sharpen route-outs and decision matrices instead of adding neighboring wrapper skills.
+- Continue upgrading remaining legacy anchors that are widely indexed in docs but still lack both `references/` and `evals/`.
+- Prefer support bundles that sharpen boundary decisions and verification heuristics instead of adding overlapping wrapper skills.
 - Keep re-checking discovery docs whenever a skill boundary changes in a user-visible way.

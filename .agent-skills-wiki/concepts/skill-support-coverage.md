@@ -14,8 +14,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
 - 89 total skills
-- 45 skills with `references/`
-- 44 skills with `evals/`
+- 46 skills with `references/`
+- 45 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -36,6 +36,7 @@ Recent ratchets:
 - The `web-accessibility` modernization pass added both `references/` and `evals/`, which matters because a high-traffic frontend skill now owns accessibility remediation plus manual-vs-automated verification instead of remaining a generic WCAG/example dump.
 - The `state-management` modernization pass added both `references/` and `evals/`, which matters because a legacy frontend skill now owns state-boundary decisions across local, shared, URL/form, server, and long-lived client workflow state instead of remaining a generic library tour.
 - The `ui-component-patterns` modernization pass added both `references/` and `evals/`, which matters because another legacy frontend anchor now owns reusable primitive / variant / slot API design instead of remaining a long example dump with weak route-outs.
+- The `responsive-design` modernization pass added both `references/` and `evals/`, which matters because the remaining legacy frontend layout anchor now owns mobile-first, container-aware adaptation plus overflow/reflow verification instead of remaining a generic CSS/example dump.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
@@ -61,3 +62,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[code-review-modernization-2026-04-13]]
 - [[state-management-modernization-2026-04-13]]
 - [[ui-component-patterns-modernization-2026-04-13]]
+- [[responsive-design-modernization-2026-04-13]]

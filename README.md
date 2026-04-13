@@ -70,6 +70,12 @@ graph TD
 
 ---
 
+## 🆕 What's New in v2026-04-13
+
+| Change | Details |
+|--------|---------|
+| **responsive-design: layout-adaptation rewrite** | Reframed `responsive-design` from a long generic CSS example dump into the frontend cluster's mobile-first, container-aware layout adaptation skill. It now classifies viewport-vs-container failures, prioritizes intrinsic layout before breakpoint sprawl, adds explicit route-outs to `ui-component-patterns`, `web-accessibility`, `design-system`, and `web-design-guidelines`, and ships `references/layout-decision-checklist.md`, `references/handoff-boundaries.md`, and `evals/evals.json` without increasing the skill count. |
+
 ## 🆕 What's New in v2026-04-12
 
 | Change | Details |
@@ -239,7 +245,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `react-best-practices` | Canonical React & Next.js performance audits for waterfalls, bundle size, RSC, hydration, and rerender issues | All |
 | `react-grab` | Browser element context capture — point at UI element, copy React component name, file path, HTML to clipboard for AI agents | All |
 | `vercel-react-best-practices` | Compatibility alias for `react-best-practices` when legacy tooling or exact-name workflows still expect the Vercel variant | Claude · Gemini · Codex |
-| `responsive-design` | Mobile-first layouts and breakpoints | All |
+| `responsive-design` | Mobile-first, container-aware layout adaptation plus overflow/reflow verification guidance | All |
 | `state-management` | React state-boundary decisions across Context, Zustand, Redux Toolkit, Jotai, and TanStack Query | All |
 | `ui-component-patterns` | Reusable primitive / variant / slot API design for shared frontend components | All |
 | `web-accessibility` | Accessibility audit/remediation plus manual-vs-automated verification guidance | All |

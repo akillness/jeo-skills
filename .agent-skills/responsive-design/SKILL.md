@@ -1,513 +1,277 @@
 ---
 name: responsive-design
-description: Create responsive web designs that work across all devices and screen sizes. Use when building mobile-first layouts, implementing breakpoints, or optimizing for different viewports. Handles CSS Grid, Flexbox, media queries, viewport units, and responsive images.
+description: >
+  Plan mobile-first, container-aware responsive layouts before patching breakpoints
+  everywhere. Use when the user needs help fixing overflow, wrapping, layout
+  collapse, responsive media, breakpoint strategy, container queries, or deciding
+  what should adapt at the viewport level versus inside a component/container.
+  Triggers on: responsive layout, mobile-first, breakpoint bug, overflow on mobile,
+  card wraps badly, table on small screens, container query, responsive image,
+  layout collapse, and reflow.
+allowed-tools: Read Write Bash Grep Glob
+compatibility: >
+  Best for modern web/frontend/fullstack repos using CSS, utility frameworks, or
+  component libraries. Not for reusable component API design, broad UI-polish
+  audits, or accessibility remediation as the primary task.
+license: MIT
 metadata:
-  tags: responsive, mobile-first, CSS, Flexbox, Grid, media-query, viewport
-  platforms: Claude, ChatGPT, Gemini
+  tags: responsive, mobile-first, layout, container-queries, breakpoints, frontend, css, reflow
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0"
+  source: akillness/oh-my-skills
 ---
-
 
 # Responsive Design
 
+Use this skill when the main question is **"how should this interface adapt across screen sizes or container sizes, and how do we verify it without turning the codebase into breakpoint soup?"**
+
+This skill is not a generic CSS tutorial.
+It should:
+1. classify the responsive problem,
+2. choose the right adaptation surface,
+3. keep viewport and container decisions explicit,
+4. call out verification requirements early,
+5. route neighboring concerns to the right frontend skill.
+
+Read [references/layout-decision-checklist.md](references/layout-decision-checklist.md) before designing or refactoring a responsive layout.
+Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `responsive-design`, `ui-component-patterns`, `web-accessibility`, `design-system`, or `web-design-guidelines` should own the next step.
 
 ## When to use this skill
+- Fix layouts that overflow, wrap badly, collapse awkwardly, or force horizontal scrolling on smaller screens
+- Plan mobile-first page, dashboard, card-grid, form, nav, table, or media layouts
+- Decide whether a change belongs in viewport breakpoints, container queries, intrinsic layout rules, or responsive media behavior
+- Review whether a layout is overfitted to one screen size or relying on too many one-off overrides
+- Turn vague requests like “this page breaks on mobile” into a concrete responsive strategy and verification plan
+- Define responsive test cases for zoom/reflow, content density, and breakpoints
+- Add container-query thinking to reusable UI without turning every problem into a component-API rewrite
 
-- **New website/app**: Layout design for combined mobile-desktop use
-- **Legacy improvement**: Converting fixed layouts to responsive
-- **Performance optimization**: Image optimization per device
-- **Multiple screens**: Tablet, desktop, and large screen support
+## When not to use this skill
+- **The main task is reusable primitive / variant / slot API design** → use `ui-component-patterns`
+- **The main task is keyboard/focus behavior, semantics, labels, contrast, reduced motion, or manual a11y remediation** → use `web-accessibility`
+- **The main task is system-wide tokens, breakpoint policy across many products, naming rules, or contribution governance** → use `design-system`
+- **The main task is broad UI critique, design polish, or interface-guideline review** → use `web-design-guidelines`
+- **The task is mostly React/Next.js performance, hydration, or rerender behavior** → use `react-best-practices`
+- **The layout adaptation rules are already clear and the job is just implementation**; in that case implement directly instead of reopening the architecture decision
 
 ## Instructions
 
-### Step 1: Mobile-First Approach
+### Step 1: Classify the responsive failure before writing CSS
+Do not start with “add another breakpoint.”
 
-Design from small screens and progressively expand.
+First decide which kind of problem you have:
+- **Viewport adaptation** — page/grid/nav/layout changes because the available screen width changes
+- **Container adaptation** — a component needs to behave differently depending on the width of its parent, not the whole viewport
+- **Content-density stress** — real text, tables, cards, filters, or localized strings do not fit the assumed layout
+- **Media adaptation** — images/video/embeds crop, distort, or download the wrong asset size
+- **Verification failure** — the layout might look fine at one browser width but fail under zoom, reflow, or narrower containers
 
-**Example**:
-```css
-/* Default: Mobile (320px~) */
-.container {
-  padding: 1rem;
-  font-size: 14px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-/* Tablet (768px~) */
-@media (min-width: 768px) {
-  .container {
-    padding: 2rem;
-    font-size: 16px;
-  }
-
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-}
-
-/* Desktop (1024px~) */
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 3rem;
-  }
-
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-}
-
-/* Large screen (1440px~) */
-@media (min-width: 1440px) {
-  .grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
+Quick framing template:
+```markdown
+Responsive problem:
+- Surface: dashboard table + filter toolbar
+- Failure mode: horizontal scrolling on mobile and at 400% zoom
+- Likely owner: responsive-design
+- Related handoff: web-accessibility for reflow verification, ui-component-patterns only if the toolbar primitive API is wrong
 ```
 
-### Step 2: Flexbox/Grid Layout
+### Step 2: Choose the adaptation surface deliberately
+Use the smallest surface that actually owns the behavior.
 
-Leverage modern CSS layout systems.
+#### Use viewport rules when
+- the whole page or major layout region changes with screen size
+- navigation, sidebars, page columns, or full-page density shifts are involved
+- the layout decision should be consistent across many containers on the page
 
-**Flexbox** (1-dimensional layout):
+#### Use container rules when
+- a reusable card, panel, or embedded module appears in multiple widths
+- the component should adapt based on the width of its parent, not the browser window
+- the same component can appear in a sidebar, feed, modal, or dashboard slot
+
+#### Use intrinsic/flexible layout first when possible
+Prefer layouts that naturally adapt before adding more conditions:
+- fluid widths
+- `minmax()` / auto-fit grid
+- wrapping flex rows
+- sensible `max-width`
+- text wrapping / line length constraints
+- content-driven sizing
+
+If intrinsic layout solves the problem, do not create a tower of breakpoints.
+
+### Step 3: Start from a mobile-first baseline
+Mobile-first is still the safest default for feature delivery.
+
+Healthy baseline rules:
+- define the smallest-screen/default layout first
+- add complexity only when the space is actually available
+- treat larger layouts as progressive enhancement
+- write breakpoints around layout pressure, not device brand names
+
+Bad pattern:
 ```css
-/* Navigation bar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-/* Card list */
-.card-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-@media (min-width: 768px) {
-  .card-list {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .card {
-    flex: 1 1 calc(50% - 0.5rem);  /* 2 columns */
-  }
-}
-
-@media (min-width: 1024px) {
-  .card {
-    flex: 1 1 calc(33.333% - 0.667rem);  /* 3 columns */
-  }
-}
+@media (max-width: 1024px) { ... }
+@media (max-width: 992px) { ... }
+@media (max-width: 991px) { ... }
+@media (max-width: 768px) { ... }
+@media (max-width: 767px) { ... }
 ```
 
-**CSS Grid** (2-dimensional layout):
+Better pattern:
 ```css
-/* Dashboard layout */
 .dashboard {
   display: grid;
-  grid-template-areas:
-    "header"
-    "sidebar"
-    "main"
-    "footer";
   gap: 1rem;
+  grid-template-columns: 1fr;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .dashboard {
-    grid-template-areas:
-      "header header"
-      "sidebar main"
-      "footer footer";
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 18rem minmax(0, 1fr);
   }
 }
-
-@media (min-width: 1024px) {
-  .dashboard {
-    grid-template-columns: 300px 1fr;
-  }
-}
-
-.header { grid-area: header; }
-.sidebar { grid-area: sidebar; }
-.main { grid-area: main; }
-.footer { grid-area: footer; }
 ```
 
-### Step 3: Responsive Images
+Use fewer breakpoints with clearer reasons.
 
-Provide images suited to the device.
+### Step 4: Use container queries when the component’s parent drives the layout
+Container queries are not for every problem, but they are the clean answer when viewport rules create brittle component reuse.
 
-**Using srcset**:
-```html
-<img
-  src="image-800.jpg"
-  srcset="
-    image-400.jpg 400w,
-    image-800.jpg 800w,
-    image-1200.jpg 1200w,
-    image-1600.jpg 1600w
-  "
-  sizes="
-    (max-width: 600px) 100vw,
-    (max-width: 900px) 50vw,
-    33vw
-  "
-  alt="Responsive image"
-/>
-```
+Use them when:
+- a card or panel is reused in multiple column widths
+- a component should switch density/layout based on the slot it lives in
+- the same module appears in a feed, sidebar, modal, or dashboard area
 
-**picture element** (Art Direction):
-```html
-<picture>
-  <!-- Mobile: portrait image -->
-  <source media="(max-width: 767px)" srcset="portrait.jpg">
-
-  <!-- Tablet: square image -->
-  <source media="(max-width: 1023px)" srcset="square.jpg">
-
-  <!-- Desktop: landscape image -->
-  <img src="landscape.jpg" alt="Art direction example">
-</picture>
-```
-
-**CSS background images**:
+Pattern:
 ```css
-.hero {
-  background-image: url('hero-mobile.jpg');
-}
-
-@media (min-width: 768px) {
-  .hero {
-    background-image: url('hero-tablet.jpg');
-  }
-}
-
-@media (min-width: 1024px) {
-  .hero {
-    background-image: url('hero-desktop.jpg');
-  }
-}
-
-/* Or use image-set() */
-.hero {
-  background-image: image-set(
-    url('hero-1x.jpg') 1x,
-    url('hero-2x.jpg') 2x
-  );
-}
-```
-
-### Step 4: Responsive Typography
-
-Adjust text size based on screen size.
-
-**clamp() function** (fluid sizing):
-```css
-:root {
-  /* min, preferred, max */
-  --font-size-body: clamp(14px, 2.5vw, 18px);
-  --font-size-h1: clamp(24px, 5vw, 48px);
-  --font-size-h2: clamp(20px, 4vw, 36px);
-}
-
-body {
-  font-size: var(--font-size-body);
-}
-
-h1 {
-  font-size: var(--font-size-h1);
-  line-height: 1.2;
-}
-
-h2 {
-  font-size: var(--font-size-h2);
-  line-height: 1.3;
-}
-```
-
-**Media query approach**:
-```css
-body {
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-@media (min-width: 768px) {
-  body { font-size: 16px; }
-}
-
-@media (min-width: 1024px) {
-  body { font-size: 18px; }
-}
-```
-
-### Step 5: Container Queries (New Feature)
-
-Apply styles based on parent container size.
-
-```css
-.card-container {
+.card-shell {
   container-type: inline-size;
-  container-name: card;
 }
 
 .card {
-  padding: 1rem;
+  display: grid;
+  gap: 0.75rem;
 }
 
-.card h2 {
-  font-size: 1.2rem;
-}
-
-/* When container is 400px or wider */
-@container card (min-width: 400px) {
+@container (width > 42rem) {
   .card {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    padding: 1.5rem;
-  }
-
-  .card h2 {
-    font-size: 1.5rem;
-  }
-}
-
-/* When container is 600px or wider */
-@container card (min-width: 600px) {
-  .card {
-    grid-template-columns: 300px 1fr;
-    padding: 2rem;
+    grid-template-columns: 12rem minmax(0, 1fr);
+    align-items: start;
   }
 }
 ```
 
-## Output format
+Do not use container queries to hide a confused component API. If the real issue is primitive structure, route to `ui-component-patterns`.
 
-### Standard Breakpoints
+### Step 5: Plan for common responsive pressure points
+#### Navigation
+Prioritize wrapping, overflow handling, menu trigger behavior, and content hierarchy. Avoid nav bars that only work at one label length.
 
-```css
-/* Mobile (default): 320px ~ 767px */
-/* Tablet: 768px ~ 1023px */
-/* Desktop: 1024px ~ 1439px */
-/* Large: 1440px+ */
+#### Forms and toolbars
+Prioritize field stacking, button grouping, label/help/error space, and real text length under smaller widths.
 
-:root {
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1536px;
-}
+#### Tables and data-heavy views
+Prioritize what must remain tabular versus what can stack, collapse, scroll, summarize, or switch presentation. Reflow exceptions can exist, but make them intentional.
 
-/* Usage example */
-@media (min-width: 768px) { /* Tablet */ }
-@media (min-width: 1024px) { /* Desktop */ }
+#### Cards, grids, and feeds
+Prioritize intrinsic column behavior, readable line lengths, and whether cards should adapt to their container.
+
+#### Media and embeds
+Prioritize aspect ratio, crop strategy, object-fit, `srcset` / `sizes`, and whether the layout depends on art direction.
+
+#### Typography and density
+Prioritize readable line lengths, spacing scale, wrapping, and hierarchy; fluid type can help, but do not let it replace layout thinking.
+
+### Step 6: Treat accessibility and reflow as verification requirements, not afterthoughts
+Responsive design is not just about “looks okay when resized.”
+
+Always check:
+- does content avoid unnecessary two-dimensional scrolling?
+- do long labels, localization, and user zoom break the layout?
+- do controls remain reachable and readable?
+- does the layout still make sense at narrow widths and high zoom?
+
+If the main work becomes semantic remediation, touch-target fixes, keyboard/focus behavior, or manual accessibility verification, route to `web-accessibility`.
+
+### Step 7: Keep neighboring concerns as route-outs, not ownership theft
+This skill should acknowledge nearby work without absorbing it.
+
+Examples:
+- if a responsive problem comes from an overstuffed reusable primitive, route API redesign to `ui-component-patterns`
+- if the team needs one breakpoint/token policy across many apps, route governance to `design-system`
+- if the request is “audit this whole interface,” route broad critique to `web-design-guidelines`
+- if reflow issues become accessibility remediation, route verification/fixes to `web-accessibility`
+
+Mixed requests are normal. Split them explicitly instead of forcing one skill to own everything.
+
+### Step 8: Produce the responsive strategy packet
+End with a concise artifact another engineer or agent can execute.
+
+Preferred format:
+```markdown
+# Responsive Strategy Packet
+
+## Surface
+- Page / component / container:
+- Failure mode:
+- Primary owner:
+
+## Layout strategy
+- Mobile-first baseline:
+- Viewport breakpoints:
+- Container-query usage:
+- Intrinsic layout rules:
+- Media behavior:
+
+## Boundaries
+- Keeps:
+- Routes to neighboring skills:
+
+## Verification
+- Narrow-width checks:
+- Zoom/reflow checks:
+- Overflow/wrapping checks:
+- Responsive media checks:
 ```
-
-## Constraints
-
-### Mandatory Rules (MUST)
-
-1. **Viewport meta tag**: Must be included in HTML
-   ```html
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   ```
-
-2. **Mobile-First**: Mobile default, use min-width media queries
-   - ✅ `@media (min-width: 768px)`
-   - ❌ `@media (max-width: 767px)` (Desktop-first)
-
-3. **Relative units**: Use rem, em, %, vw/vh instead of px
-   - font-size: rem
-   - padding/margin: rem or em
-   - width: % or vw
-
-### Prohibited (MUST NOT)
-
-1. **Fixed width prohibited**: Avoid `width: 1200px`
-   - Use `max-width: 1200px`
-
-2. **Duplicate code**: Avoid repeating same styles across all breakpoints
-   - Common styles as default, only differences in media queries
 
 ## Examples
 
-### Example 1: Responsive Navigation
+### Example 1: Dashboard overflow on mobile
+**Input:** “This analytics dashboard looks fine on desktop but the filter bar and table break on mobile.”
 
-```tsx
-function ResponsiveNav() {
-  const [isOpen, setIsOpen] = useState(false);
+**Good output direction:**
+- classify the problem as page-level layout + data-view adaptation
+- keep a mobile-first single-column baseline
+- decide whether the table needs intentional horizontal scroll, summarization, or a stacked representation
+- include zoom/reflow verification and route semantic remediation to `web-accessibility` if needed
 
-  return (
-    <nav className="navbar">
-      {/* Logo */}
-      <a href="/" className="logo">MyApp</a>
+### Example 2: Reusable card in many widths
+**Input:** “The same product card appears in a sidebar, a 2-column grid, and a full-width feed. Should we keep adding viewport breakpoints?”
 
-      {/* Hamburger button (mobile) */}
-      <button
-        className="menu-toggle"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle menu"
-        aria-expanded={isOpen}
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+**Good output direction:**
+- classify the problem as container-driven adaptation
+- recommend container queries or intrinsic layout rules at the card-shell boundary
+- keep primitive API questions routed to `ui-component-patterns`
+- avoid adding page-level breakpoints when the parent slot is the real driver
 
-      {/* Navigation links */}
-      <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
-        <li><a href="/about">About</a></li>
-        <li><a href="/services">Services</a></li>
-        <li><a href="/contact">Contact</a></li>
-      </ul>
-    </nav>
-  );
-}
-```
+### Example 3: System-wide breakpoint debate
+**Input:** “Our teams all use different breakpoints and spacing rules. Is this a responsive-design issue?”
 
-```css
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-}
-
-/* Hamburger button (mobile only) */
-.menu-toggle {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.nav-links {
-  display: none;
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: white;
-  flex-direction: column;
-}
-
-.nav-links.active {
-  display: flex;
-}
-
-/* Tablet and above: hide hamburger, always show */
-@media (min-width: 768px) {
-  .menu-toggle {
-    display: none;
-  }
-
-  .nav-links {
-    display: flex;
-    position: static;
-    flex-direction: row;
-    gap: 2rem;
-  }
-}
-```
-
-### Example 2: Responsive Grid Card
-
-```tsx
-function ProductGrid({ products }) {
-  return (
-    <div className="product-grid">
-      {products.map(product => (
-        <div key={product.id} className="product-card">
-          <img src={product.image} alt={product.name} />
-          <h3>{product.name}</h3>
-          <p className="price">${product.price}</p>
-          <button>Add to Cart</button>
-        </div>
-      ))}
-    </div>
-  );
-}
-```
-
-```css
-.product-grid {
-  display: grid;
-  grid-template-columns: 1fr;  /* Mobile: 1 column */
-  gap: 1rem;
-  padding: 1rem;
-}
-
-@media (min-width: 640px) {
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);  /* 2 columns */
-  }
-}
-
-@media (min-width: 1024px) {
-  .product-grid {
-    grid-template-columns: repeat(3, 1fr);  /* 3 columns */
-    gap: 1.5rem;
-  }
-}
-
-@media (min-width: 1440px) {
-  .product-grid {
-    grid-template-columns: repeat(4, 1fr);  /* 4 columns */
-    gap: 2rem;
-  }
-}
-
-.product-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-.product-card img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-}
-```
+**Good output direction:**
+- explain that cross-app breakpoint and token policy is broader `design-system` work
+- preserve `responsive-design` for local/page/component adaptation strategy
+- suggest a clean handoff instead of over-triggering this skill
 
 ## Best practices
-
-1. **Container queries first**: Use container queries instead of media queries when possible
-2. **Flexbox vs Grid**: Flexbox for 1-dimensional, Grid for 2-dimensional
-3. **Performance**: Image lazy loading, use WebP format
-4. **Testing**: Chrome DevTools Device Mode, BrowserStack
+1. Prefer intrinsic layout and content-driven sizing before reaching for many breakpoint overrides.
+2. Use mobile-first defaults and add complexity only where space genuinely changes the job to be done.
+3. Use container queries when the component’s parent width matters more than the viewport width.
+4. Write verification steps for overflow, wrapping, zoom/reflow, and responsive media instead of relying on visual guesswork.
+5. Treat tables, nav, forms, and filter bars as high-risk responsive surfaces that need explicit decisions.
+6. Route component API redesign to `ui-component-patterns`, not to more CSS.
+7. Route accessibility-heavy remediation to `web-accessibility`, especially when reflow and usability failures dominate.
 
 ## References
-
-- [MDN Responsive Design](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
-- [CSS Grid Guide](https://css-tricks.com/snippets/css/complete-guide-grid/)
-- [Flexbox Guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
-- [Container Queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries)
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2025-01-01
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Related Skills
-- [ui-component-patterns](../ui-component-patterns/SKILL.md): Responsive components
-- [web-accessibility](../web-accessibility/SKILL.md): Consider alongside accessibility
-
-### Tags
-`#responsive` `#mobile-first` `#CSS` `#Flexbox` `#Grid` `#media-query` `#frontend`
+- [MDN — Responsive web design](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design)
+- [MDN — CSS container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries)
+- [Tailwind CSS — Responsive design](https://tailwindcss.com/docs/responsive-design)
+- [W3C WAI — Understanding SC 1.4.10 Reflow](https://www.w3.org/WAI/WCAG21/Understanding/reflow.html)

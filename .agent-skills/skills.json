@@ -2906,24 +2906,32 @@
     },
     {
       "name": "responsive-design",
-      "description": "Create responsive web designs that work across all devices and screen sizes. Use when building mobile-first layouts, implementing breakpoints, or optimizing for different viewports. Handles CSS Grid, Flexbox, media queries, viewport units, and responsive images.",
+      "description": "Plan mobile-first, container-aware responsive layouts before patching breakpoints everywhere. Use when the user needs help fixing overflow, wrapping, layout collapse, responsive media, breakpoint strategy, container queries, or deciding what should adapt at the viewport level versus inside a component/container.",
       "category": "frontend",
       "path": "frontend/responsive-design/SKILL.md",
       "tags": [
         "responsive",
         "mobile-first",
-        "CSS",
-        "Flexbox",
-        "Grid",
-        "media-query",
-        "viewport"
+        "layout",
+        "container-queries",
+        "breakpoints",
+        "frontend",
+        "css",
+        "reflow"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
-      "allowed_tools": [],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
       "commands": []
     },
     {
