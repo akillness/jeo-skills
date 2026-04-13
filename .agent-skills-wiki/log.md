@@ -213,3 +213,11 @@
 - Accepted: rewrite `api-documentation` as the developer-facing API-docs anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep contract design / internal docs / user-help / auth implementation / changelog route-outs explicit
 - Rejected: adding another portal/docs wrapper; merging `api-documentation` into `technical-writing` or `user-guide-writing`; letting the skill absorb contract design better owned by `api-design`
 - Wiki files created/updated: `queries/api-documentation-modernization-2026-04-13.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-13] query | Deployment automation modernization
+- Area researched: release execution and rollout automation across preview/staging/prod promotion, verification, rollback, hosted platform handoff, plus broad scan context from CLI/dev workflow, web/fullstack delivery, PM/ops adjacent release process, marketing/content automation patterns, and game-dev release parallels to choose the highest-value bounded next modernization
+- Survey files created under `.survey/deployment-automation-modernization-20260413/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `deployment-automation` as the release-execution anchor, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the sharper role
+- Rejected: adding another CI/CD wrapper; letting `deployment-automation` absorb CI workflow authoring, machine/runtime setup, long-lived telemetry architecture, or Vercel-specific operations
+- Wiki files created/updated: `queries/deployment-automation-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
