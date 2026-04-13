@@ -189,3 +189,11 @@
 - Accepted: rewrite `plannotator` as the visual approval gate for concrete plans/diffs, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep planning/orchestration/PR-policy route-outs explicit
 - Rejected: adding another planning-review wrapper; letting `plannotator` absorb plan creation, orchestration state, or broad PR judgment
 - Wiki files created/updated: `queries/plannotator-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-13] query | Technical-writing modernization
+- Area researched: internal technical-documentation workflows across docs-as-code, specs/architecture/ADR patterns, runbooks/migrations, plus domain scans across CLI/dev workflow, web/product/ops, marketing/content, and game-dev lanes to choose the highest-value bounded next modernization
+- Survey files created under `.survey/technical-writing-modernization-20260413/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `technical-writing` as the internal technical-docs anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep API portal / user-help / changelog route-outs explicit
+- Rejected: adding another documentation wrapper; merging `technical-writing` into `api-documentation`, `user-guide-writing`, or `changelog-maintenance`
+- Wiki files created/updated: `concepts/documentation-cluster.md`, `queries/technical-writing-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`

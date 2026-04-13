@@ -1,12 +1,14 @@
 N:technical-writing
-D:Write clear, comprehensive technical documentation. Use when creating specs, architecture docs, r...
-G:technical-writing documentation specs architecture runbooks
-U[8]:
-  Writing technical specifications
-  Creating architecture documentation
-  Documenting system designs
-  Writing runbooks and operational guides
-  Creating developer documentation
-S[2]{n,action}:
-  1,Understand your audience
-  2,Choose the right document type
+D:Write internal technical documentation for engineers and operators: specs, architecture docs, ADRs, runbooks, migration notes, and developer-facing implementation guides. Route API portals to api-documentation, end-user tutorials to user-guide-writing, and release-note hygiene to changelog-maintenance.
+G:technical-writing docs spec architecture adr runbook migration developer-docs
+U[6]:
+  Technical specs before implementation
+  Architecture docs and ADRs
+  Runbooks and incident procedures
+  Migration and rollout guides
+  Internal developer guides
+  Boundary routing across documentation skills
+S[3]{n,action}:
+  1,Classify the document mode
+  2,Gather technical evidence
+  3,Apply the matching structure and review checklist

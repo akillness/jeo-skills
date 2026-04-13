@@ -1892,7 +1892,7 @@
     },
     {
       "name": "technical-writing",
-      "description": "Write clear, comprehensive technical documentation. Use when creating specs, architecture docs, runbooks, or API documentation. Handles technical specifications, system design docs, operational guides, and developer documentation with industry best practices.",
+      "description": "Write internal technical documentation for engineers and operators: specs, architecture docs, ADRs, runbooks, migration notes, and developer-facing implementation guides. Routes published API portals to api-documentation, end-user tutorials to user-guide-writing, and release-note hygiene to changelog-maintenance.",
       "category": "documentation",
       "path": "documentation/technical-writing/SKILL.md",
       "tags": [
@@ -1901,7 +1901,9 @@
         "specs",
         "architecture",
         "runbooks",
-        "API-docs"
+        "adr",
+        "migration",
+        "developer-docs"
       ],
       "platforms": [
         "Claude",
@@ -1915,48 +1917,7 @@
         "Glob",
         "Grep"
       ],
-      "commands": [
-        {
-          "command": "./deploy.sh production",
-          "source": "documentation/technical-writing/SKILL.md"
-        },
-        {
-          "command": "./rollback.sh",
-          "source": "documentation/technical-writing/SKILL.md"
-        },
-        {
-          "command": "kubectl logs -f deployment/service-name",
-          "source": "documentation/technical-writing/SKILL.md"
-        },
-        {
-          "command": "curl https://api/metrics",
-          "source": "documentation/technical-writing/SKILL.md"
-        },
-        {
-          "command": "curl -H \"Authorization: Bearer YOUR_TOKEN\" \\",
-          "source": "documentation/technical-writing/SKILL.md"
-        },
-        {
-          "command": "https://api.example.com/endpoint",
-          "source": "documentation/technical-writing/SKILL.md"
-        },
-        {
-          "command": "curl -X GET \"https://api.example.com/api/v1/users?page=1&limit=20\" \\",
-          "source": "documentation/technical-writing/SKILL.md"
-        },
-        {
-          "command": "-H \"Authorization: Bearer YOUR_TOKEN\"",
-          "source": "documentation/technical-writing/SKILL.md"
-        },
-        {
-          "command": "git clone https://github.com/user/project.git",
-          "source": "documentation/technical-writing/SKILL.md"
-        },
-        {
-          "command": "cd project",
-          "source": "documentation/technical-writing/SKILL.md"
-        }
-      ]
+      "commands": []
     },
     {
       "name": "user-guide-writing",
