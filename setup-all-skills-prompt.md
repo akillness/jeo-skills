@@ -365,7 +365,7 @@ If no → skip silently. Never re-ask.
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `deep interview`, `deslop`, `cancelomc` | Claude Code multi-agent orchestration (v4.9.3, 29+ agents) — Teams/Autopilot/Ralph/Ultrawork/CCG |
 | `ralph` | `ralph`, `ooo`, `ooo ralph`, `ooo interview` | Ouroboros spec-first development — Interview→Seed→Execute→Evaluate→Evolve + persistent loop |
 | `ralphmode` | `ralphmode` | Automation permission profiles — repo boundary, sandbox-first, secret denylist |
-| `plannotator` | `plan` | Visual browser plan/diff review — approve or send feedback |
+| `plannotator` | `plan` | Visual approval gate for agent plans/diffs — annotate, approve, request changes, or save reviewed plans |
 | `harness` | `harness`, `build a harness`, `agent team architect` | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/`, validate harness |
 | `survey` | `survey` | Cross-platform landscape scan before planning or implementation, with an explicit evidence-recovery ladder for broken search/extract runs |
 | `agentation` | `annotate`, `UI검토`, `agentui` | UI annotation → agent code modification. MCP: `npx add-mcp "npx -y agentation-mcp server"` |

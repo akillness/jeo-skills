@@ -213,7 +213,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Keyword | Description |
 |-------|---------|-------------|
-| `plannotator` | `plan` | Visual browser plan/diff review — approve or send feedback |
+| `plannotator` | `plan` | Visual approval gate for agent plans/diffs — annotate, approve, request changes, or save reviewed plans |
 | `agentation` | `annotate` | UI annotation → targeted agent code fixes |
 | `agent-browser` | `agent-browser` | Headless browser verification for AI agents |
 | `playwriter` | `playwriter` | Playwright automation connecting to live browser |

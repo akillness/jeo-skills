@@ -1,474 +1,619 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>graphify-out</title>
-<style>body{font-family:Arial,sans-serif;max-width:1100px;margin:2rem auto;line-height:1.4} code{background:#f3f3f3;padding:2px 4px} .grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}</style></head>
+<html><head><meta charset="utf-8"><title>oh-my-skills graph</title>
+<style>body{font-family:Arial,sans-serif;margin:24px;line-height:1.4}table{border-collapse:collapse;width:100%;margin:16px 0}td,th{border:1px solid #ddd;padding:6px 8px}th{background:#f5f5f5;text-align:left}code{background:#f3f3f3;padding:2px 4px;border-radius:4px}</style></head>
 <body>
-<h1>Graphify Structural Graph</h1>
-<p>Skills: 89 | references: 47 | evals: 46 | nodes: 208 | edges: 565</p>
-<div class="grid"><section><h2>Nodes</h2><ul><li><strong>README.md</strong> <em>(doc)</em></li>
-<li><strong>README.ko.md</strong> <em>(doc)</em></li>
-<li><strong>setup-all-skills-prompt.md</strong> <em>(doc)</em></li>
-<li><strong>agent-browser</strong> <em>(skill)</em></li>
-<li><strong>agent-browser/references</strong> <em>(support)</em></li>
-<li><strong>agentation</strong> <em>(skill)</em></li>
-<li><strong>agentation/scripts</strong> <em>(support)</em></li>
-<li><strong>api-design</strong> <em>(skill)</em></li>
-<li><strong>api-design/references</strong> <em>(support)</em></li>
-<li><strong>api-design/evals</strong> <em>(support)</em></li>
-<li><strong>api-documentation</strong> <em>(skill)</em></li>
-<li><strong>authentication-setup</strong> <em>(skill)</em></li>
-<li><strong>autoresearch</strong> <em>(skill)</em></li>
-<li><strong>autoresearch/references</strong> <em>(support)</em></li>
-<li><strong>autoresearch/scripts</strong> <em>(support)</em></li>
-<li><strong>backend-testing</strong> <em>(skill)</em></li>
-<li><strong>backend-testing/references</strong> <em>(support)</em></li>
-<li><strong>backend-testing/evals</strong> <em>(support)</em></li>
-<li><strong>bmad</strong> <em>(skill)</em></li>
-<li><strong>bmad/scripts</strong> <em>(support)</em></li>
-<li><strong>bmad-gds</strong> <em>(skill)</em></li>
-<li><strong>bmad-gds/references</strong> <em>(support)</em></li>
-<li><strong>bmad-gds/evals</strong> <em>(support)</em></li>
-<li><strong>bmad-idea</strong> <em>(skill)</em></li>
-<li><strong>changelog-maintenance</strong> <em>(skill)</em></li>
-<li><strong>clawteam</strong> <em>(skill)</em></li>
-<li><strong>clawteam/references</strong> <em>(support)</em></li>
-<li><strong>clawteam/evals</strong> <em>(support)</em></li>
-<li><strong>clawteam/scripts</strong> <em>(support)</em></li>
-<li><strong>code-refactoring</strong> <em>(skill)</em></li>
-<li><strong>code-review</strong> <em>(skill)</em></li>
-<li><strong>code-review/references</strong> <em>(support)</em></li>
-<li><strong>code-review/evals</strong> <em>(support)</em></li>
-<li><strong>codebase-search</strong> <em>(skill)</em></li>
-<li><strong>data-analysis</strong> <em>(skill)</em></li>
-<li><strong>database-schema-design</strong> <em>(skill)</em></li>
-<li><strong>debugging</strong> <em>(skill)</em></li>
-<li><strong>debugging/references</strong> <em>(support)</em></li>
-<li><strong>debugging/evals</strong> <em>(support)</em></li>
-<li><strong>deployment-automation</strong> <em>(skill)</em></li>
-<li><strong>design-system</strong> <em>(skill)</em></li>
-<li><strong>design-system/references</strong> <em>(support)</em></li>
-<li><strong>design-system/evals</strong> <em>(support)</em></li>
-<li><strong>environment-setup</strong> <em>(skill)</em></li>
-<li><strong>environment-setup/references</strong> <em>(support)</em></li>
-<li><strong>environment-setup/evals</strong> <em>(support)</em></li>
-<li><strong>fabric</strong> <em>(skill)</em></li>
-<li><strong>file-organization</strong> <em>(skill)</em></li>
-<li><strong>firebase-ai-logic</strong> <em>(skill)</em></li>
-<li><strong>firebase-cli</strong> <em>(skill)</em></li>
-<li><strong>firebase-cli/references</strong> <em>(support)</em></li>
-<li><strong>firebase-cli/evals</strong> <em>(support)</em></li>
-<li><strong>firebase-cli/scripts</strong> <em>(support)</em></li>
-<li><strong>frontend-design-system</strong> <em>(skill)</em></li>
-<li><strong>frontend-design-system/evals</strong> <em>(support)</em></li>
-<li><strong>game-build-log-triage</strong> <em>(skill)</em></li>
-<li><strong>game-build-log-triage/references</strong> <em>(support)</em></li>
-<li><strong>game-build-log-triage/evals</strong> <em>(support)</em></li>
-<li><strong>game-ci-cd-pipeline</strong> <em>(skill)</em></li>
-<li><strong>game-ci-cd-pipeline/references</strong> <em>(support)</em></li>
-<li><strong>game-ci-cd-pipeline/evals</strong> <em>(support)</em></li>
-<li><strong>game-demo-feedback-triage</strong> <em>(skill)</em></li>
-<li><strong>game-demo-feedback-triage/references</strong> <em>(support)</em></li>
-<li><strong>game-demo-feedback-triage/evals</strong> <em>(support)</em></li>
-<li><strong>game-performance-profiler</strong> <em>(skill)</em></li>
-<li><strong>game-performance-profiler/references</strong> <em>(support)</em></li>
-<li><strong>game-performance-profiler/evals</strong> <em>(support)</em></li>
-<li><strong>genkit</strong> <em>(skill)</em></li>
-<li><strong>git-submodule</strong> <em>(skill)</em></li>
-<li><strong>git-workflow</strong> <em>(skill)</em></li>
-<li><strong>git-workflow/references</strong> <em>(support)</em></li>
-<li><strong>git-workflow/evals</strong> <em>(support)</em></li>
-<li><strong>google-workspace</strong> <em>(skill)</em></li>
-<li><strong>google-workspace/evals</strong> <em>(support)</em></li>
-<li><strong>google-workspace/scripts</strong> <em>(support)</em></li>
-<li><strong>harness</strong> <em>(skill)</em></li>
-<li><strong>harness/references</strong> <em>(support)</em></li>
-<li><strong>harness/evals</strong> <em>(support)</em></li>
-<li><strong>harness/scripts</strong> <em>(support)</em></li>
-<li><strong>jeo</strong> <em>(skill)</em></li>
-<li><strong>jeo/references</strong> <em>(support)</em></li>
-<li><strong>jeo/evals</strong> <em>(support)</em></li>
-<li><strong>jeo/scripts</strong> <em>(support)</em></li>
-<li><strong>langsmith</strong> <em>(skill)</em></li>
-<li><strong>langsmith/references</strong> <em>(support)</em></li>
-<li><strong>langsmith/scripts</strong> <em>(support)</em></li>
-<li><strong>llm-wiki</strong> <em>(skill)</em></li>
-<li><strong>llm-wiki/references</strong> <em>(support)</em></li>
-<li><strong>llm-wiki/evals</strong> <em>(support)</em></li>
-<li><strong>llm-wiki/scripts</strong> <em>(support)</em></li>
-<li><strong>lmstudio-cli</strong> <em>(skill)</em></li>
-<li><strong>log-analysis</strong> <em>(skill)</em></li>
-<li><strong>log-analysis/references</strong> <em>(support)</em></li>
-<li><strong>log-analysis/evals</strong> <em>(support)</em></li>
-<li><strong>looker-studio-bigquery</strong> <em>(skill)</em></li>
-<li><strong>marketing-automation</strong> <em>(skill)</em></li>
-<li><strong>marketing-automation/references</strong> <em>(support)</em></li>
-<li><strong>marketing-automation/evals</strong> <em>(support)</em></li>
-<li><strong>marketing-skills-collection</strong> <em>(skill)</em></li>
-<li><strong>marketing-skills-collection/evals</strong> <em>(support)</em></li>
-<li><strong>monitoring-observability</strong> <em>(skill)</em></li>
-<li><strong>npm-git-install</strong> <em>(skill)</em></li>
-<li><strong>obsidian-cli</strong> <em>(skill)</em></li>
-<li><strong>obsidian-cli/references</strong> <em>(support)</em></li>
-<li><strong>obsidian-cli/evals</strong> <em>(support)</em></li>
-<li><strong>obsidian-cli/scripts</strong> <em>(support)</em></li>
-<li><strong>obsidian-plugin</strong> <em>(skill)</em></li>
-<li><strong>obsidian-plugin/references</strong> <em>(support)</em></li>
-<li><strong>obsidian-plugin/evals</strong> <em>(support)</em></li>
-<li><strong>obsidian-plugin/scripts</strong> <em>(support)</em></li>
-<li><strong>ohmg</strong> <em>(skill)</em></li>
-<li><strong>omc</strong> <em>(skill)</em></li>
-<li><strong>omc/references</strong> <em>(support)</em></li>
-<li><strong>omc/evals</strong> <em>(support)</em></li>
-<li><strong>omc/scripts</strong> <em>(support)</em></li>
-<li><strong>omx</strong> <em>(skill)</em></li>
-<li><strong>omx/references</strong> <em>(support)</em></li>
-<li><strong>omx/evals</strong> <em>(support)</em></li>
-<li><strong>omx/scripts</strong> <em>(support)</em></li>
-<li><strong>opencontext</strong> <em>(skill)</em></li>
-<li><strong>pattern-detection</strong> <em>(skill)</em></li>
-<li><strong>performance-optimization</strong> <em>(skill)</em></li>
-<li><strong>plannotator</strong> <em>(skill)</em></li>
-<li><strong>plannotator/scripts</strong> <em>(support)</em></li>
-<li><strong>playwriter</strong> <em>(skill)</em></li>
-<li><strong>presentation-builder</strong> <em>(skill)</em></li>
-<li><strong>prompt-repetition</strong> <em>(skill)</em></li>
-<li><strong>ralph</strong> <em>(skill)</em></li>
-<li><strong>ralph/references</strong> <em>(support)</em></li>
-<li><strong>ralph/scripts</strong> <em>(support)</em></li>
-<li><strong>ralphmode</strong> <em>(skill)</em></li>
-<li><strong>ralphmode/references</strong> <em>(support)</em></li>
-<li><strong>react-best-practices</strong> <em>(skill)</em></li>
-<li><strong>react-best-practices/evals</strong> <em>(support)</em></li>
-<li><strong>react-grab</strong> <em>(skill)</em></li>
-<li><strong>react-grab/references</strong> <em>(support)</em></li>
-<li><strong>react-grab/evals</strong> <em>(support)</em></li>
-<li><strong>react-grab/scripts</strong> <em>(support)</em></li>
-<li><strong>remotion-video-production</strong> <em>(skill)</em></li>
-<li><strong>research-paper-writing</strong> <em>(skill)</em></li>
-<li><strong>responsive-design</strong> <em>(skill)</em></li>
-<li><strong>responsive-design/references</strong> <em>(support)</em></li>
-<li><strong>responsive-design/evals</strong> <em>(support)</em></li>
-<li><strong>rtk</strong> <em>(skill)</em></li>
-<li><strong>rtk/references</strong> <em>(support)</em></li>
-<li><strong>rtk/evals</strong> <em>(support)</em></li>
-<li><strong>rtk/scripts</strong> <em>(support)</em></li>
-<li><strong>scrapling</strong> <em>(skill)</em></li>
-<li><strong>scrapling/references</strong> <em>(support)</em></li>
-<li><strong>scrapling/evals</strong> <em>(support)</em></li>
-<li><strong>scrapling/scripts</strong> <em>(support)</em></li>
-<li><strong>security-best-practices</strong> <em>(skill)</em></li>
-<li><strong>skill-autoresearch</strong> <em>(skill)</em></li>
-<li><strong>skill-autoresearch/references</strong> <em>(support)</em></li>
-<li><strong>skill-standardization</strong> <em>(skill)</em></li>
-<li><strong>skill-standardization/evals</strong> <em>(support)</em></li>
-<li><strong>skill-standardization/scripts</strong> <em>(support)</em></li>
-<li><strong>sprint-retrospective</strong> <em>(skill)</em></li>
-<li><strong>sprint-retrospective/references</strong> <em>(support)</em></li>
-<li><strong>sprint-retrospective/evals</strong> <em>(support)</em></li>
-<li><strong>standup-meeting</strong> <em>(skill)</em></li>
-<li><strong>standup-meeting/references</strong> <em>(support)</em></li>
-<li><strong>standup-meeting/evals</strong> <em>(support)</em></li>
-<li><strong>state-management</strong> <em>(skill)</em></li>
-<li><strong>state-management/references</strong> <em>(support)</em></li>
-<li><strong>state-management/evals</strong> <em>(support)</em></li>
-<li><strong>steam-store-launch-ops</strong> <em>(skill)</em></li>
-<li><strong>steam-store-launch-ops/references</strong> <em>(support)</em></li>
-<li><strong>steam-store-launch-ops/evals</strong> <em>(support)</em></li>
-<li><strong>strix</strong> <em>(skill)</em></li>
-<li><strong>strix/references</strong> <em>(support)</em></li>
-<li><strong>strix/evals</strong> <em>(support)</em></li>
-<li><strong>strix/scripts</strong> <em>(support)</em></li>
-<li><strong>survey</strong> <em>(skill)</em></li>
-<li><strong>survey/references</strong> <em>(support)</em></li>
-<li><strong>survey/evals</strong> <em>(support)</em></li>
-<li><strong>system-environment-setup</strong> <em>(skill)</em></li>
-<li><strong>system-environment-setup/references</strong> <em>(support)</em></li>
-<li><strong>system-environment-setup/evals</strong> <em>(support)</em></li>
-<li><strong>task-estimation</strong> <em>(skill)</em></li>
-<li><strong>task-estimation/references</strong> <em>(support)</em></li>
-<li><strong>task-estimation/evals</strong> <em>(support)</em></li>
-<li><strong>task-planning</strong> <em>(skill)</em></li>
-<li><strong>task-planning/references</strong> <em>(support)</em></li>
-<li><strong>task-planning/evals</strong> <em>(support)</em></li>
-<li><strong>technical-writing</strong> <em>(skill)</em></li>
-<li><strong>testing-strategies</strong> <em>(skill)</em></li>
-<li><strong>testing-strategies/references</strong> <em>(support)</em></li>
-<li><strong>testing-strategies/evals</strong> <em>(support)</em></li>
-<li><strong>ui-component-patterns</strong> <em>(skill)</em></li>
-<li><strong>ui-component-patterns/references</strong> <em>(support)</em></li>
-<li><strong>ui-component-patterns/evals</strong> <em>(support)</em></li>
-<li><strong>user-guide-writing</strong> <em>(skill)</em></li>
-<li><strong>vercel-deploy</strong> <em>(skill)</em></li>
-<li><strong>vercel-deploy/scripts</strong> <em>(support)</em></li>
-<li><strong>vercel-react-best-practices</strong> <em>(skill)</em></li>
-<li><strong>vercel-react-best-practices/evals</strong> <em>(support)</em></li>
-<li><strong>vibe-kanban</strong> <em>(skill)</em></li>
-<li><strong>vibe-kanban/references</strong> <em>(support)</em></li>
-<li><strong>vibe-kanban/scripts</strong> <em>(support)</em></li>
-<li><strong>video-production</strong> <em>(skill)</em></li>
-<li><strong>web-accessibility</strong> <em>(skill)</em></li>
-<li><strong>web-accessibility/references</strong> <em>(support)</em></li>
-<li><strong>web-accessibility/evals</strong> <em>(support)</em></li>
-<li><strong>web-design-guidelines</strong> <em>(skill)</em></li>
-<li><strong>workflow-automation</strong> <em>(skill)</em></li>
-<li><strong>workflow-automation/references</strong> <em>(support)</em></li>
-<li><strong>workflow-automation/evals</strong> <em>(support)</em></li></ul></section><section><h2>Edges</h2><ul><li>agent-browser → agent-browser:references <em>(support)</em></li>
-<li>agentation → agentation:scripts <em>(support)</em></li>
-<li>api-design → api-design:references <em>(support)</em></li>
-<li>api-design → api-design:evals <em>(support)</em></li>
-<li>autoresearch → autoresearch:references <em>(support)</em></li>
-<li>autoresearch → autoresearch:scripts <em>(support)</em></li>
-<li>backend-testing → backend-testing:references <em>(support)</em></li>
-<li>backend-testing → backend-testing:evals <em>(support)</em></li>
-<li>bmad → bmad:scripts <em>(support)</em></li>
-<li>bmad-gds → bmad-gds:references <em>(support)</em></li>
-<li>bmad-gds → bmad-gds:evals <em>(support)</em></li>
-<li>clawteam → clawteam:references <em>(support)</em></li>
-<li>clawteam → clawteam:evals <em>(support)</em></li>
-<li>clawteam → clawteam:scripts <em>(support)</em></li>
-<li>code-review → code-review:references <em>(support)</em></li>
-<li>code-review → code-review:evals <em>(support)</em></li>
-<li>debugging → debugging:references <em>(support)</em></li>
-<li>debugging → debugging:evals <em>(support)</em></li>
-<li>design-system → design-system:references <em>(support)</em></li>
-<li>design-system → design-system:evals <em>(support)</em></li>
-<li>environment-setup → environment-setup:references <em>(support)</em></li>
-<li>environment-setup → environment-setup:evals <em>(support)</em></li>
-<li>firebase-cli → firebase-cli:references <em>(support)</em></li>
-<li>firebase-cli → firebase-cli:evals <em>(support)</em></li>
-<li>firebase-cli → firebase-cli:scripts <em>(support)</em></li>
-<li>frontend-design-system → frontend-design-system:evals <em>(support)</em></li>
-<li>game-build-log-triage → game-build-log-triage:references <em>(support)</em></li>
-<li>game-build-log-triage → game-build-log-triage:evals <em>(support)</em></li>
-<li>game-ci-cd-pipeline → game-ci-cd-pipeline:references <em>(support)</em></li>
-<li>game-ci-cd-pipeline → game-ci-cd-pipeline:evals <em>(support)</em></li>
-<li>game-demo-feedback-triage → game-demo-feedback-triage:references <em>(support)</em></li>
-<li>game-demo-feedback-triage → game-demo-feedback-triage:evals <em>(support)</em></li>
-<li>game-performance-profiler → game-performance-profiler:references <em>(support)</em></li>
-<li>game-performance-profiler → game-performance-profiler:evals <em>(support)</em></li>
-<li>git-workflow → git-workflow:references <em>(support)</em></li>
-<li>git-workflow → git-workflow:evals <em>(support)</em></li>
-<li>google-workspace → google-workspace:evals <em>(support)</em></li>
-<li>google-workspace → google-workspace:scripts <em>(support)</em></li>
-<li>harness → harness:references <em>(support)</em></li>
-<li>harness → harness:evals <em>(support)</em></li>
-<li>harness → harness:scripts <em>(support)</em></li>
-<li>jeo → jeo:references <em>(support)</em></li>
-<li>jeo → jeo:evals <em>(support)</em></li>
-<li>jeo → jeo:scripts <em>(support)</em></li>
-<li>langsmith → langsmith:references <em>(support)</em></li>
-<li>langsmith → langsmith:scripts <em>(support)</em></li>
-<li>llm-wiki → llm-wiki:references <em>(support)</em></li>
-<li>llm-wiki → llm-wiki:evals <em>(support)</em></li>
-<li>llm-wiki → llm-wiki:scripts <em>(support)</em></li>
-<li>log-analysis → log-analysis:references <em>(support)</em></li>
-<li>log-analysis → log-analysis:evals <em>(support)</em></li>
-<li>marketing-automation → marketing-automation:references <em>(support)</em></li>
-<li>marketing-automation → marketing-automation:evals <em>(support)</em></li>
-<li>marketing-skills-collection → marketing-skills-collection:evals <em>(support)</em></li>
-<li>obsidian-cli → obsidian-cli:references <em>(support)</em></li>
-<li>obsidian-cli → obsidian-cli:evals <em>(support)</em></li>
-<li>obsidian-cli → obsidian-cli:scripts <em>(support)</em></li>
-<li>obsidian-plugin → obsidian-plugin:references <em>(support)</em></li>
-<li>obsidian-plugin → obsidian-plugin:evals <em>(support)</em></li>
-<li>obsidian-plugin → obsidian-plugin:scripts <em>(support)</em></li>
-<li>omc → omc:references <em>(support)</em></li>
-<li>omc → omc:evals <em>(support)</em></li>
-<li>omc → omc:scripts <em>(support)</em></li>
-<li>omx → omx:references <em>(support)</em></li>
-<li>omx → omx:evals <em>(support)</em></li>
-<li>omx → omx:scripts <em>(support)</em></li>
-<li>plannotator → plannotator:scripts <em>(support)</em></li>
-<li>ralph → ralph:references <em>(support)</em></li>
-<li>ralph → ralph:scripts <em>(support)</em></li>
-<li>ralphmode → ralphmode:references <em>(support)</em></li>
-<li>react-best-practices → react-best-practices:evals <em>(support)</em></li>
-<li>react-grab → react-grab:references <em>(support)</em></li>
-<li>react-grab → react-grab:evals <em>(support)</em></li>
-<li>react-grab → react-grab:scripts <em>(support)</em></li>
-<li>responsive-design → responsive-design:references <em>(support)</em></li>
-<li>responsive-design → responsive-design:evals <em>(support)</em></li>
-<li>rtk → rtk:references <em>(support)</em></li>
-<li>rtk → rtk:evals <em>(support)</em></li>
-<li>rtk → rtk:scripts <em>(support)</em></li>
-<li>scrapling → scrapling:references <em>(support)</em></li>
-<li>scrapling → scrapling:evals <em>(support)</em></li>
-<li>scrapling → scrapling:scripts <em>(support)</em></li>
-<li>skill-autoresearch → skill-autoresearch:references <em>(support)</em></li>
-<li>skill-standardization → skill-standardization:evals <em>(support)</em></li>
-<li>skill-standardization → skill-standardization:scripts <em>(support)</em></li>
-<li>sprint-retrospective → sprint-retrospective:references <em>(support)</em></li>
-<li>sprint-retrospective → sprint-retrospective:evals <em>(support)</em></li>
-<li>standup-meeting → standup-meeting:references <em>(support)</em></li>
-<li>standup-meeting → standup-meeting:evals <em>(support)</em></li>
-<li>state-management → state-management:references <em>(support)</em></li>
-<li>state-management → state-management:evals <em>(support)</em></li>
-<li>steam-store-launch-ops → steam-store-launch-ops:references <em>(support)</em></li>
-<li>steam-store-launch-ops → steam-store-launch-ops:evals <em>(support)</em></li>
-<li>strix → strix:references <em>(support)</em></li>
-<li>strix → strix:evals <em>(support)</em></li>
-<li>strix → strix:scripts <em>(support)</em></li>
-<li>survey → survey:references <em>(support)</em></li>
-<li>survey → survey:evals <em>(support)</em></li>
-<li>system-environment-setup → system-environment-setup:references <em>(support)</em></li>
-<li>system-environment-setup → system-environment-setup:evals <em>(support)</em></li>
-<li>task-estimation → task-estimation:references <em>(support)</em></li>
-<li>task-estimation → task-estimation:evals <em>(support)</em></li>
-<li>task-planning → task-planning:references <em>(support)</em></li>
-<li>task-planning → task-planning:evals <em>(support)</em></li>
-<li>testing-strategies → testing-strategies:references <em>(support)</em></li>
-<li>testing-strategies → testing-strategies:evals <em>(support)</em></li>
-<li>ui-component-patterns → ui-component-patterns:references <em>(support)</em></li>
-<li>ui-component-patterns → ui-component-patterns:evals <em>(support)</em></li>
-<li>vercel-deploy → vercel-deploy:scripts <em>(support)</em></li>
-<li>vercel-react-best-practices → vercel-react-best-practices:evals <em>(support)</em></li>
-<li>vibe-kanban → vibe-kanban:references <em>(support)</em></li>
-<li>vibe-kanban → vibe-kanban:scripts <em>(support)</em></li>
-<li>web-accessibility → web-accessibility:references <em>(support)</em></li>
-<li>web-accessibility → web-accessibility:evals <em>(support)</em></li>
-<li>workflow-automation → workflow-automation:references <em>(support)</em></li>
-<li>workflow-automation → workflow-automation:evals <em>(support)</em></li>
-<li>README.md → agent-browser <em>(indexed)</em></li>
-<li>README.md → agentation <em>(indexed)</em></li>
-<li>README.md → api-design <em>(indexed)</em></li>
-<li>README.md → api-documentation <em>(indexed)</em></li>
-<li>README.md → authentication-setup <em>(indexed)</em></li>
-<li>README.md → autoresearch <em>(indexed)</em></li>
-<li>README.md → backend-testing <em>(indexed)</em></li>
-<li>README.md → bmad <em>(indexed)</em></li>
-<li>README.md → bmad-gds <em>(indexed)</em></li>
-<li>README.md → bmad-idea <em>(indexed)</em></li>
-<li>README.md → changelog-maintenance <em>(indexed)</em></li>
-<li>README.md → clawteam <em>(indexed)</em></li>
-<li>README.md → code-refactoring <em>(indexed)</em></li>
-<li>README.md → code-review <em>(indexed)</em></li>
-<li>README.md → codebase-search <em>(indexed)</em></li>
-<li>README.md → data-analysis <em>(indexed)</em></li>
-<li>README.md → database-schema-design <em>(indexed)</em></li>
-<li>README.md → debugging <em>(indexed)</em></li>
-<li>README.md → deployment-automation <em>(indexed)</em></li>
-<li>README.md → design-system <em>(indexed)</em></li>
-<li>README.md → environment-setup <em>(indexed)</em></li>
-<li>README.md → fabric <em>(indexed)</em></li>
-<li>README.md → file-organization <em>(indexed)</em></li>
-<li>README.md → firebase-ai-logic <em>(indexed)</em></li>
-<li>README.md → firebase-cli <em>(indexed)</em></li>
-<li>README.md → frontend-design-system <em>(indexed)</em></li>
-<li>README.md → game-build-log-triage <em>(indexed)</em></li>
-<li>README.md → game-demo-feedback-triage <em>(indexed)</em></li>
-<li>README.md → game-performance-profiler <em>(indexed)</em></li>
-<li>README.md → genkit <em>(indexed)</em></li>
-<li>README.md → git-submodule <em>(indexed)</em></li>
-<li>README.md → git-workflow <em>(indexed)</em></li>
-<li>README.md → google-workspace <em>(indexed)</em></li>
-<li>README.md → harness <em>(indexed)</em></li>
-<li>README.md → jeo <em>(indexed)</em></li>
-<li>README.md → langsmith <em>(indexed)</em></li>
-<li>README.md → llm-wiki <em>(indexed)</em></li>
-<li>README.md → log-analysis <em>(indexed)</em></li>
-<li>README.md → looker-studio-bigquery <em>(indexed)</em></li>
-<li>README.md → marketing-automation <em>(indexed)</em></li>
-<li>README.md → marketing-skills-collection <em>(indexed)</em></li>
-<li>README.md → monitoring-observability <em>(indexed)</em></li>
-<li>README.md → npm-git-install <em>(indexed)</em></li>
-<li>README.md → obsidian-cli <em>(indexed)</em></li>
-<li>README.md → obsidian-plugin <em>(indexed)</em></li>
-<li>README.md → ohmg <em>(indexed)</em></li>
-<li>README.md → omc <em>(indexed)</em></li>
-<li>README.md → omx <em>(indexed)</em></li>
-<li>README.md → opencontext <em>(indexed)</em></li>
-<li>README.md → pattern-detection <em>(indexed)</em></li>
-<li>README.md → performance-optimization <em>(indexed)</em></li>
-<li>README.md → plannotator <em>(indexed)</em></li>
-<li>README.md → playwriter <em>(indexed)</em></li>
-<li>README.md → presentation-builder <em>(indexed)</em></li>
-<li>README.md → prompt-repetition <em>(indexed)</em></li>
-<li>README.md → ralph <em>(indexed)</em></li>
-<li>README.md → ralphmode <em>(indexed)</em></li>
-<li>README.md → react-best-practices <em>(indexed)</em></li>
-<li>README.md → react-grab <em>(indexed)</em></li>
-<li>README.md → remotion-video-production <em>(indexed)</em></li>
-<li>README.md → research-paper-writing <em>(indexed)</em></li>
-<li>README.md → responsive-design <em>(indexed)</em></li>
-<li>README.md → rtk <em>(indexed)</em></li>
-<li>README.md → scrapling <em>(indexed)</em></li>
-<li>README.md → security-best-practices <em>(indexed)</em></li>
-<li>README.md → skill-autoresearch <em>(indexed)</em></li>
-<li>README.md → skill-standardization <em>(indexed)</em></li>
-<li>README.md → sprint-retrospective <em>(indexed)</em></li>
-<li>README.md → standup-meeting <em>(indexed)</em></li>
-<li>README.md → state-management <em>(indexed)</em></li>
-<li>README.md → steam-store-launch-ops <em>(indexed)</em></li>
-<li>README.md → strix <em>(indexed)</em></li>
-<li>README.md → survey <em>(indexed)</em></li>
-<li>README.md → system-environment-setup <em>(indexed)</em></li>
-<li>README.md → task-estimation <em>(indexed)</em></li>
-<li>README.md → task-planning <em>(indexed)</em></li>
-<li>README.md → technical-writing <em>(indexed)</em></li>
-<li>README.md → testing-strategies <em>(indexed)</em></li>
-<li>README.md → ui-component-patterns <em>(indexed)</em></li>
-<li>README.md → user-guide-writing <em>(indexed)</em></li>
-<li>README.md → vercel-deploy <em>(indexed)</em></li>
-<li>README.md → vercel-react-best-practices <em>(indexed)</em></li>
-<li>README.md → vibe-kanban <em>(indexed)</em></li>
-<li>README.md → video-production <em>(indexed)</em></li>
-<li>README.md → web-accessibility <em>(indexed)</em></li>
-<li>README.md → web-design-guidelines <em>(indexed)</em></li>
-<li>README.md → workflow-automation <em>(indexed)</em></li>
-<li>README.ko.md → agent-browser <em>(indexed)</em></li>
-<li>README.ko.md → agentation <em>(indexed)</em></li>
-<li>README.ko.md → api-design <em>(indexed)</em></li>
-<li>README.ko.md → api-documentation <em>(indexed)</em></li>
-<li>README.ko.md → authentication-setup <em>(indexed)</em></li>
-<li>README.ko.md → autoresearch <em>(indexed)</em></li>
-<li>README.ko.md → backend-testing <em>(indexed)</em></li>
-<li>README.ko.md → bmad <em>(indexed)</em></li>
-<li>README.ko.md → bmad-gds <em>(indexed)</em></li>
-<li>README.ko.md → bmad-idea <em>(indexed)</em></li>
-<li>README.ko.md → changelog-maintenance <em>(indexed)</em></li>
-<li>README.ko.md → clawteam <em>(indexed)</em></li>
-<li>README.ko.md → code-refactoring <em>(indexed)</em></li>
-<li>README.ko.md → code-review <em>(indexed)</em></li>
-<li>README.ko.md → codebase-search <em>(indexed)</em></li>
-<li>README.ko.md → data-analysis <em>(indexed)</em></li>
-<li>README.ko.md → database-schema-design <em>(indexed)</em></li>
-<li>README.ko.md → debugging <em>(indexed)</em></li>
-<li>README.ko.md → deployment-automation <em>(indexed)</em></li>
-<li>README.ko.md → design-system <em>(indexed)</em></li>
-<li>README.ko.md → environment-setup <em>(indexed)</em></li>
-<li>README.ko.md → fabric <em>(indexed)</em></li>
-<li>README.ko.md → file-organization <em>(indexed)</em></li>
-<li>README.ko.md → firebase-ai-logic <em>(indexed)</em></li>
-<li>README.ko.md → firebase-cli <em>(indexed)</em></li>
-<li>README.ko.md → frontend-design-system <em>(indexed)</em></li>
-<li>README.ko.md → game-build-log-triage <em>(indexed)</em></li>
-<li>README.ko.md → game-demo-feedback-triage <em>(indexed)</em></li>
-<li>README.ko.md → game-performance-profiler <em>(indexed)</em></li>
-<li>README.ko.md → genkit <em>(indexed)</em></li>
-<li>README.ko.md → git-submodule <em>(indexed)</em></li>
-<li>README.ko.md → git-workflow <em>(indexed)</em></li>
-<li>README.ko.md → google-workspace <em>(indexed)</em></li>
-<li>README.ko.md → harness <em>(indexed)</em></li>
-<li>README.ko.md → jeo <em>(indexed)</em></li>
-<li>README.ko.md → langsmith <em>(indexed)</em></li>
-<li>README.ko.md → llm-wiki <em>(indexed)</em></li>
-<li>README.ko.md → log-analysis <em>(indexed)</em></li>
-<li>README.ko.md → looker-studio-bigquery <em>(indexed)</em></li>
-<li>README.ko.md → marketing-automation <em>(indexed)</em></li>
-<li>README.ko.md → marketing-skills-collection <em>(indexed)</em></li>
-<li>README.ko.md → monitoring-observability <em>(indexed)</em></li>
-<li>README.ko.md → npm-git-install <em>(indexed)</em></li>
-<li>README.ko.md → obsidian-cli <em>(indexed)</em></li>
-<li>README.ko.md → obsidian-plugin <em>(indexed)</em></li>
-<li>README.ko.md → ohmg <em>(indexed)</em></li>
-<li>README.ko.md → omc <em>(indexed)</em></li>
-<li>README.ko.md → omx <em>(indexed)</em></li>
-<li>README.ko.md → opencontext <em>(indexed)</em></li>
-<li>README.ko.md → pattern-detection <em>(indexed)</em></li>
-<li>README.ko.md → performance-optimization <em>(indexed)</em></li>
-<li>README.ko.md → plannotator <em>(indexed)</em></li>
-<li>README.ko.md → playwriter <em>(indexed)</em></li>
-<li>README.ko.md → presentation-builder <em>(indexed)</em></li>
-<li>README.ko.md → prompt-repetition <em>(indexed)</em></li>
-<li>README.ko.md → ralph <em>(indexed)</em></li>
-<li>README.ko.md → ralphmode <em>(indexed)</em></li></ul></section></div>
+<h1>oh-my-skills structural graph</h1>
+<p>Total skills: 89 | references/: 48 | evals/: 47 | nodes: 210 | edges: 575</p>
+<h2>Highest-degree nodes</h2>
+<ul><li><code>README.md</code>: degree 87</li><li><code>README.ko.md</code>: degree 87</li><li><code>setup-all-skills-prompt.md</code>: degree 83</li><li><code>debugging</code>: degree 28</li><li><code>jeo</code>: degree 19</li><li><code>plannotator</code>: degree 19</li><li><code>web-accessibility</code>: degree 19</li><li><code>code-review</code>: degree 18</li><li><code>design-system</code>: degree 17</li><li><code>ui-component-patterns</code>: degree 17</li></ul>
+<h2>Nodes</h2><table><tr><th>ID</th><th>Kind</th><th>Degree</th></tr><tr><td>README.ko.md</td><td>discovery-doc</td><td>87</td></tr>
+<tr><td>README.md</td><td>discovery-doc</td><td>87</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>discovery-doc</td><td>83</td></tr>
+<tr><td>agent-browser</td><td>skill</td><td>7</td></tr>
+<tr><td>agentation</td><td>skill</td><td>10</td></tr>
+<tr><td>api-design</td><td>skill</td><td>13</td></tr>
+<tr><td>api-documentation</td><td>skill</td><td>5</td></tr>
+<tr><td>authentication-setup</td><td>skill</td><td>7</td></tr>
+<tr><td>autoresearch</td><td>skill</td><td>7</td></tr>
+<tr><td>backend-testing</td><td>skill</td><td>13</td></tr>
+<tr><td>bmad</td><td>skill</td><td>14</td></tr>
+<tr><td>bmad-gds</td><td>skill</td><td>14</td></tr>
+<tr><td>bmad-idea</td><td>skill</td><td>5</td></tr>
+<tr><td>changelog-maintenance</td><td>skill</td><td>3</td></tr>
+<tr><td>clawteam</td><td>skill</td><td>6</td></tr>
+<tr><td>code-refactoring</td><td>skill</td><td>5</td></tr>
+<tr><td>code-review</td><td>skill</td><td>18</td></tr>
+<tr><td>codebase-search</td><td>skill</td><td>3</td></tr>
+<tr><td>data-analysis</td><td>skill</td><td>3</td></tr>
+<tr><td>database-schema-design</td><td>skill</td><td>10</td></tr>
+<tr><td>debugging</td><td>skill</td><td>28</td></tr>
+<tr><td>deployment-automation</td><td>skill</td><td>8</td></tr>
+<tr><td>design-system</td><td>skill</td><td>17</td></tr>
+<tr><td>environment-setup</td><td>skill</td><td>12</td></tr>
+<tr><td>fabric</td><td>skill</td><td>4</td></tr>
+<tr><td>file-organization</td><td>skill</td><td>3</td></tr>
+<tr><td>firebase-ai-logic</td><td>skill</td><td>3</td></tr>
+<tr><td>firebase-cli</td><td>skill</td><td>6</td></tr>
+<tr><td>frontend-design-system</td><td>skill</td><td>9</td></tr>
+<tr><td>game-build-log-triage</td><td>skill</td><td>10</td></tr>
+<tr><td>game-ci-cd-pipeline</td><td>skill</td><td>5</td></tr>
+<tr><td>game-demo-feedback-triage</td><td>skill</td><td>14</td></tr>
+<tr><td>game-performance-profiler</td><td>skill</td><td>7</td></tr>
+<tr><td>genkit</td><td>skill</td><td>3</td></tr>
+<tr><td>git-submodule</td><td>skill</td><td>3</td></tr>
+<tr><td>git-workflow</td><td>skill</td><td>11</td></tr>
+<tr><td>google-workspace</td><td>skill</td><td>6</td></tr>
+<tr><td>harness</td><td>skill</td><td>8</td></tr>
+<tr><td>jeo</td><td>skill</td><td>19</td></tr>
+<tr><td>langsmith</td><td>skill</td><td>6</td></tr>
+<tr><td>llm-wiki</td><td>skill</td><td>8</td></tr>
+<tr><td>lmstudio-cli</td><td>skill</td><td>1</td></tr>
+<tr><td>log-analysis</td><td>skill</td><td>9</td></tr>
+<tr><td>looker-studio-bigquery</td><td>skill</td><td>5</td></tr>
+<tr><td>marketing-automation</td><td>skill</td><td>8</td></tr>
+<tr><td>marketing-skills-collection</td><td>skill</td><td>7</td></tr>
+<tr><td>monitoring-observability</td><td>skill</td><td>7</td></tr>
+<tr><td>npm-git-install</td><td>skill</td><td>5</td></tr>
+<tr><td>obsidian-cli</td><td>skill</td><td>7</td></tr>
+<tr><td>obsidian-plugin</td><td>skill</td><td>6</td></tr>
+<tr><td>ohmg</td><td>skill</td><td>7</td></tr>
+<tr><td>omc</td><td>skill</td><td>10</td></tr>
+<tr><td>omx</td><td>skill</td><td>13</td></tr>
+<tr><td>opencontext</td><td>skill</td><td>3</td></tr>
+<tr><td>pattern-detection</td><td>skill</td><td>3</td></tr>
+<tr><td>performance-optimization</td><td>skill</td><td>11</td></tr>
+<tr><td>plannotator</td><td>skill</td><td>19</td></tr>
+<tr><td>playwriter</td><td>skill</td><td>4</td></tr>
+<tr><td>presentation-builder</td><td>skill</td><td>5</td></tr>
+<tr><td>prompt-repetition</td><td>skill</td><td>3</td></tr>
+<tr><td>ralph</td><td>skill</td><td>12</td></tr>
+<tr><td>ralphmode</td><td>skill</td><td>7</td></tr>
+<tr><td>react-best-practices</td><td>skill</td><td>13</td></tr>
+<tr><td>react-grab</td><td>skill</td><td>6</td></tr>
+<tr><td>remotion-video-production</td><td>skill</td><td>6</td></tr>
+<tr><td>research-paper-writing</td><td>skill</td><td>3</td></tr>
+<tr><td>responsive-design</td><td>skill</td><td>15</td></tr>
+<tr><td>rtk</td><td>skill</td><td>7</td></tr>
+<tr><td>scrapling</td><td>skill</td><td>7</td></tr>
+<tr><td>security-best-practices</td><td>skill</td><td>7</td></tr>
+<tr><td>skill-autoresearch</td><td>skill</td><td>5</td></tr>
+<tr><td>skill-standardization</td><td>skill</td><td>5</td></tr>
+<tr><td>sprint-retrospective</td><td>skill</td><td>12</td></tr>
+<tr><td>standup-meeting</td><td>skill</td><td>12</td></tr>
+<tr><td>state-management</td><td>skill</td><td>15</td></tr>
+<tr><td>steam-store-launch-ops</td><td>skill</td><td>9</td></tr>
+<tr><td>strix</td><td>skill</td><td>7</td></tr>
+<tr><td>survey</td><td>skill</td><td>12</td></tr>
+<tr><td>system-environment-setup</td><td>skill</td><td>13</td></tr>
+<tr><td>task-estimation</td><td>skill</td><td>11</td></tr>
+<tr><td>task-planning</td><td>skill</td><td>16</td></tr>
+<tr><td>technical-writing</td><td>skill</td><td>3</td></tr>
+<tr><td>testing-strategies</td><td>skill</td><td>15</td></tr>
+<tr><td>ui-component-patterns</td><td>skill</td><td>17</td></tr>
+<tr><td>user-guide-writing</td><td>skill</td><td>3</td></tr>
+<tr><td>vercel-deploy</td><td>skill</td><td>7</td></tr>
+<tr><td>vercel-react-best-practices</td><td>skill</td><td>9</td></tr>
+<tr><td>vibe-kanban</td><td>skill</td><td>9</td></tr>
+<tr><td>video-production</td><td>skill</td><td>6</td></tr>
+<tr><td>web-accessibility</td><td>skill</td><td>19</td></tr>
+<tr><td>web-design-guidelines</td><td>skill</td><td>9</td></tr>
+<tr><td>workflow-automation</td><td>skill</td><td>12</td></tr>
+<tr><td>agent-browser/references</td><td>support</td><td>1</td></tr>
+<tr><td>agentation/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>api-design/evals</td><td>support</td><td>1</td></tr>
+<tr><td>api-design/references</td><td>support</td><td>1</td></tr>
+<tr><td>autoresearch/references</td><td>support</td><td>1</td></tr>
+<tr><td>autoresearch/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>backend-testing/evals</td><td>support</td><td>1</td></tr>
+<tr><td>backend-testing/references</td><td>support</td><td>1</td></tr>
+<tr><td>bmad-gds/evals</td><td>support</td><td>1</td></tr>
+<tr><td>bmad-gds/references</td><td>support</td><td>1</td></tr>
+<tr><td>bmad/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>clawteam/evals</td><td>support</td><td>1</td></tr>
+<tr><td>clawteam/references</td><td>support</td><td>1</td></tr>
+<tr><td>clawteam/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>code-review/evals</td><td>support</td><td>1</td></tr>
+<tr><td>code-review/references</td><td>support</td><td>1</td></tr>
+<tr><td>debugging/evals</td><td>support</td><td>1</td></tr>
+<tr><td>debugging/references</td><td>support</td><td>1</td></tr>
+<tr><td>design-system/evals</td><td>support</td><td>1</td></tr>
+<tr><td>design-system/references</td><td>support</td><td>1</td></tr>
+<tr><td>environment-setup/evals</td><td>support</td><td>1</td></tr>
+<tr><td>environment-setup/references</td><td>support</td><td>1</td></tr>
+<tr><td>firebase-cli/evals</td><td>support</td><td>1</td></tr>
+<tr><td>firebase-cli/references</td><td>support</td><td>1</td></tr>
+<tr><td>firebase-cli/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>frontend-design-system/evals</td><td>support</td><td>1</td></tr>
+<tr><td>game-build-log-triage/evals</td><td>support</td><td>1</td></tr>
+<tr><td>game-build-log-triage/references</td><td>support</td><td>1</td></tr>
+<tr><td>game-ci-cd-pipeline/evals</td><td>support</td><td>1</td></tr>
+<tr><td>game-ci-cd-pipeline/references</td><td>support</td><td>1</td></tr>
+<tr><td>game-demo-feedback-triage/evals</td><td>support</td><td>1</td></tr>
+<tr><td>game-demo-feedback-triage/references</td><td>support</td><td>1</td></tr>
+<tr><td>game-performance-profiler/evals</td><td>support</td><td>1</td></tr>
+<tr><td>game-performance-profiler/references</td><td>support</td><td>1</td></tr>
+<tr><td>git-workflow/evals</td><td>support</td><td>1</td></tr>
+<tr><td>git-workflow/references</td><td>support</td><td>1</td></tr>
+<tr><td>google-workspace/evals</td><td>support</td><td>1</td></tr>
+<tr><td>google-workspace/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>harness/evals</td><td>support</td><td>1</td></tr>
+<tr><td>harness/references</td><td>support</td><td>1</td></tr>
+<tr><td>harness/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>jeo/evals</td><td>support</td><td>1</td></tr>
+<tr><td>jeo/references</td><td>support</td><td>1</td></tr>
+<tr><td>jeo/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>langsmith/references</td><td>support</td><td>1</td></tr>
+<tr><td>langsmith/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>llm-wiki/evals</td><td>support</td><td>1</td></tr>
+<tr><td>llm-wiki/references</td><td>support</td><td>1</td></tr>
+<tr><td>llm-wiki/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>log-analysis/evals</td><td>support</td><td>1</td></tr>
+<tr><td>log-analysis/references</td><td>support</td><td>1</td></tr>
+<tr><td>marketing-automation/evals</td><td>support</td><td>1</td></tr>
+<tr><td>marketing-automation/references</td><td>support</td><td>1</td></tr>
+<tr><td>marketing-skills-collection/evals</td><td>support</td><td>1</td></tr>
+<tr><td>obsidian-cli/evals</td><td>support</td><td>1</td></tr>
+<tr><td>obsidian-cli/references</td><td>support</td><td>1</td></tr>
+<tr><td>obsidian-cli/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>obsidian-plugin/evals</td><td>support</td><td>1</td></tr>
+<tr><td>obsidian-plugin/references</td><td>support</td><td>1</td></tr>
+<tr><td>obsidian-plugin/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>omc/evals</td><td>support</td><td>1</td></tr>
+<tr><td>omc/references</td><td>support</td><td>1</td></tr>
+<tr><td>omc/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>omx/evals</td><td>support</td><td>1</td></tr>
+<tr><td>omx/references</td><td>support</td><td>1</td></tr>
+<tr><td>omx/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>plannotator/evals</td><td>support</td><td>1</td></tr>
+<tr><td>plannotator/references</td><td>support</td><td>1</td></tr>
+<tr><td>plannotator/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>ralph/references</td><td>support</td><td>1</td></tr>
+<tr><td>ralph/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>ralphmode/references</td><td>support</td><td>1</td></tr>
+<tr><td>react-best-practices/evals</td><td>support</td><td>1</td></tr>
+<tr><td>react-grab/evals</td><td>support</td><td>1</td></tr>
+<tr><td>react-grab/references</td><td>support</td><td>1</td></tr>
+<tr><td>react-grab/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>responsive-design/evals</td><td>support</td><td>1</td></tr>
+<tr><td>responsive-design/references</td><td>support</td><td>1</td></tr>
+<tr><td>rtk/evals</td><td>support</td><td>1</td></tr>
+<tr><td>rtk/references</td><td>support</td><td>1</td></tr>
+<tr><td>rtk/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>scrapling/evals</td><td>support</td><td>1</td></tr>
+<tr><td>scrapling/references</td><td>support</td><td>1</td></tr>
+<tr><td>scrapling/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>skill-autoresearch/references</td><td>support</td><td>1</td></tr>
+<tr><td>skill-standardization/evals</td><td>support</td><td>1</td></tr>
+<tr><td>skill-standardization/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>sprint-retrospective/evals</td><td>support</td><td>1</td></tr>
+<tr><td>sprint-retrospective/references</td><td>support</td><td>1</td></tr>
+<tr><td>standup-meeting/evals</td><td>support</td><td>1</td></tr>
+<tr><td>standup-meeting/references</td><td>support</td><td>1</td></tr>
+<tr><td>state-management/evals</td><td>support</td><td>1</td></tr>
+<tr><td>state-management/references</td><td>support</td><td>1</td></tr>
+<tr><td>steam-store-launch-ops/evals</td><td>support</td><td>1</td></tr>
+<tr><td>steam-store-launch-ops/references</td><td>support</td><td>1</td></tr>
+<tr><td>strix/evals</td><td>support</td><td>1</td></tr>
+<tr><td>strix/references</td><td>support</td><td>1</td></tr>
+<tr><td>strix/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>survey/evals</td><td>support</td><td>1</td></tr>
+<tr><td>survey/references</td><td>support</td><td>1</td></tr>
+<tr><td>system-environment-setup/evals</td><td>support</td><td>1</td></tr>
+<tr><td>system-environment-setup/references</td><td>support</td><td>1</td></tr>
+<tr><td>task-estimation/evals</td><td>support</td><td>1</td></tr>
+<tr><td>task-estimation/references</td><td>support</td><td>1</td></tr>
+<tr><td>task-planning/evals</td><td>support</td><td>1</td></tr>
+<tr><td>task-planning/references</td><td>support</td><td>1</td></tr>
+<tr><td>testing-strategies/evals</td><td>support</td><td>1</td></tr>
+<tr><td>testing-strategies/references</td><td>support</td><td>1</td></tr>
+<tr><td>ui-component-patterns/evals</td><td>support</td><td>1</td></tr>
+<tr><td>ui-component-patterns/references</td><td>support</td><td>1</td></tr>
+<tr><td>vercel-deploy/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>vercel-react-best-practices/evals</td><td>support</td><td>1</td></tr>
+<tr><td>vibe-kanban/references</td><td>support</td><td>1</td></tr>
+<tr><td>vibe-kanban/scripts</td><td>support</td><td>1</td></tr>
+<tr><td>web-accessibility/evals</td><td>support</td><td>1</td></tr>
+<tr><td>web-accessibility/references</td><td>support</td><td>1</td></tr>
+<tr><td>workflow-automation/evals</td><td>support</td><td>1</td></tr>
+<tr><td>workflow-automation/references</td><td>support</td><td>1</td></tr></table>
+<h2>Edges (first 400)</h2><table><tr><th>Source</th><th>Target</th><th>Type</th></tr><tr><td>agent-browser</td><td>agent-browser/references</td><td>has-support</td></tr>
+<tr><td>agentation</td><td>agentation/scripts</td><td>has-support</td></tr>
+<tr><td>api-design</td><td>api-design/references</td><td>has-support</td></tr>
+<tr><td>api-design</td><td>api-design/evals</td><td>has-support</td></tr>
+<tr><td>autoresearch</td><td>autoresearch/references</td><td>has-support</td></tr>
+<tr><td>autoresearch</td><td>autoresearch/scripts</td><td>has-support</td></tr>
+<tr><td>backend-testing</td><td>backend-testing/references</td><td>has-support</td></tr>
+<tr><td>backend-testing</td><td>backend-testing/evals</td><td>has-support</td></tr>
+<tr><td>bmad</td><td>bmad/scripts</td><td>has-support</td></tr>
+<tr><td>bmad-gds</td><td>bmad-gds/references</td><td>has-support</td></tr>
+<tr><td>bmad-gds</td><td>bmad-gds/evals</td><td>has-support</td></tr>
+<tr><td>clawteam</td><td>clawteam/references</td><td>has-support</td></tr>
+<tr><td>clawteam</td><td>clawteam/evals</td><td>has-support</td></tr>
+<tr><td>clawteam</td><td>clawteam/scripts</td><td>has-support</td></tr>
+<tr><td>code-review</td><td>code-review/references</td><td>has-support</td></tr>
+<tr><td>code-review</td><td>code-review/evals</td><td>has-support</td></tr>
+<tr><td>debugging</td><td>debugging/references</td><td>has-support</td></tr>
+<tr><td>debugging</td><td>debugging/evals</td><td>has-support</td></tr>
+<tr><td>design-system</td><td>design-system/references</td><td>has-support</td></tr>
+<tr><td>design-system</td><td>design-system/evals</td><td>has-support</td></tr>
+<tr><td>environment-setup</td><td>environment-setup/references</td><td>has-support</td></tr>
+<tr><td>environment-setup</td><td>environment-setup/evals</td><td>has-support</td></tr>
+<tr><td>firebase-cli</td><td>firebase-cli/references</td><td>has-support</td></tr>
+<tr><td>firebase-cli</td><td>firebase-cli/evals</td><td>has-support</td></tr>
+<tr><td>firebase-cli</td><td>firebase-cli/scripts</td><td>has-support</td></tr>
+<tr><td>frontend-design-system</td><td>frontend-design-system/evals</td><td>has-support</td></tr>
+<tr><td>game-build-log-triage</td><td>game-build-log-triage/references</td><td>has-support</td></tr>
+<tr><td>game-build-log-triage</td><td>game-build-log-triage/evals</td><td>has-support</td></tr>
+<tr><td>game-ci-cd-pipeline</td><td>game-ci-cd-pipeline/references</td><td>has-support</td></tr>
+<tr><td>game-ci-cd-pipeline</td><td>game-ci-cd-pipeline/evals</td><td>has-support</td></tr>
+<tr><td>game-demo-feedback-triage</td><td>game-demo-feedback-triage/references</td><td>has-support</td></tr>
+<tr><td>game-demo-feedback-triage</td><td>game-demo-feedback-triage/evals</td><td>has-support</td></tr>
+<tr><td>game-performance-profiler</td><td>game-performance-profiler/references</td><td>has-support</td></tr>
+<tr><td>game-performance-profiler</td><td>game-performance-profiler/evals</td><td>has-support</td></tr>
+<tr><td>git-workflow</td><td>git-workflow/references</td><td>has-support</td></tr>
+<tr><td>git-workflow</td><td>git-workflow/evals</td><td>has-support</td></tr>
+<tr><td>google-workspace</td><td>google-workspace/evals</td><td>has-support</td></tr>
+<tr><td>google-workspace</td><td>google-workspace/scripts</td><td>has-support</td></tr>
+<tr><td>harness</td><td>harness/references</td><td>has-support</td></tr>
+<tr><td>harness</td><td>harness/evals</td><td>has-support</td></tr>
+<tr><td>harness</td><td>harness/scripts</td><td>has-support</td></tr>
+<tr><td>jeo</td><td>jeo/references</td><td>has-support</td></tr>
+<tr><td>jeo</td><td>jeo/evals</td><td>has-support</td></tr>
+<tr><td>jeo</td><td>jeo/scripts</td><td>has-support</td></tr>
+<tr><td>langsmith</td><td>langsmith/references</td><td>has-support</td></tr>
+<tr><td>langsmith</td><td>langsmith/scripts</td><td>has-support</td></tr>
+<tr><td>llm-wiki</td><td>llm-wiki/references</td><td>has-support</td></tr>
+<tr><td>llm-wiki</td><td>llm-wiki/evals</td><td>has-support</td></tr>
+<tr><td>llm-wiki</td><td>llm-wiki/scripts</td><td>has-support</td></tr>
+<tr><td>log-analysis</td><td>log-analysis/references</td><td>has-support</td></tr>
+<tr><td>log-analysis</td><td>log-analysis/evals</td><td>has-support</td></tr>
+<tr><td>marketing-automation</td><td>marketing-automation/references</td><td>has-support</td></tr>
+<tr><td>marketing-automation</td><td>marketing-automation/evals</td><td>has-support</td></tr>
+<tr><td>marketing-skills-collection</td><td>marketing-skills-collection/evals</td><td>has-support</td></tr>
+<tr><td>obsidian-cli</td><td>obsidian-cli/references</td><td>has-support</td></tr>
+<tr><td>obsidian-cli</td><td>obsidian-cli/evals</td><td>has-support</td></tr>
+<tr><td>obsidian-cli</td><td>obsidian-cli/scripts</td><td>has-support</td></tr>
+<tr><td>obsidian-plugin</td><td>obsidian-plugin/references</td><td>has-support</td></tr>
+<tr><td>obsidian-plugin</td><td>obsidian-plugin/evals</td><td>has-support</td></tr>
+<tr><td>obsidian-plugin</td><td>obsidian-plugin/scripts</td><td>has-support</td></tr>
+<tr><td>omc</td><td>omc/references</td><td>has-support</td></tr>
+<tr><td>omc</td><td>omc/evals</td><td>has-support</td></tr>
+<tr><td>omc</td><td>omc/scripts</td><td>has-support</td></tr>
+<tr><td>omx</td><td>omx/references</td><td>has-support</td></tr>
+<tr><td>omx</td><td>omx/evals</td><td>has-support</td></tr>
+<tr><td>omx</td><td>omx/scripts</td><td>has-support</td></tr>
+<tr><td>plannotator</td><td>plannotator/references</td><td>has-support</td></tr>
+<tr><td>plannotator</td><td>plannotator/evals</td><td>has-support</td></tr>
+<tr><td>plannotator</td><td>plannotator/scripts</td><td>has-support</td></tr>
+<tr><td>ralph</td><td>ralph/references</td><td>has-support</td></tr>
+<tr><td>ralph</td><td>ralph/scripts</td><td>has-support</td></tr>
+<tr><td>ralphmode</td><td>ralphmode/references</td><td>has-support</td></tr>
+<tr><td>react-best-practices</td><td>react-best-practices/evals</td><td>has-support</td></tr>
+<tr><td>react-grab</td><td>react-grab/references</td><td>has-support</td></tr>
+<tr><td>react-grab</td><td>react-grab/evals</td><td>has-support</td></tr>
+<tr><td>react-grab</td><td>react-grab/scripts</td><td>has-support</td></tr>
+<tr><td>responsive-design</td><td>responsive-design/references</td><td>has-support</td></tr>
+<tr><td>responsive-design</td><td>responsive-design/evals</td><td>has-support</td></tr>
+<tr><td>rtk</td><td>rtk/references</td><td>has-support</td></tr>
+<tr><td>rtk</td><td>rtk/evals</td><td>has-support</td></tr>
+<tr><td>rtk</td><td>rtk/scripts</td><td>has-support</td></tr>
+<tr><td>scrapling</td><td>scrapling/references</td><td>has-support</td></tr>
+<tr><td>scrapling</td><td>scrapling/evals</td><td>has-support</td></tr>
+<tr><td>scrapling</td><td>scrapling/scripts</td><td>has-support</td></tr>
+<tr><td>skill-autoresearch</td><td>skill-autoresearch/references</td><td>has-support</td></tr>
+<tr><td>skill-standardization</td><td>skill-standardization/evals</td><td>has-support</td></tr>
+<tr><td>skill-standardization</td><td>skill-standardization/scripts</td><td>has-support</td></tr>
+<tr><td>sprint-retrospective</td><td>sprint-retrospective/references</td><td>has-support</td></tr>
+<tr><td>sprint-retrospective</td><td>sprint-retrospective/evals</td><td>has-support</td></tr>
+<tr><td>standup-meeting</td><td>standup-meeting/references</td><td>has-support</td></tr>
+<tr><td>standup-meeting</td><td>standup-meeting/evals</td><td>has-support</td></tr>
+<tr><td>state-management</td><td>state-management/references</td><td>has-support</td></tr>
+<tr><td>state-management</td><td>state-management/evals</td><td>has-support</td></tr>
+<tr><td>steam-store-launch-ops</td><td>steam-store-launch-ops/references</td><td>has-support</td></tr>
+<tr><td>steam-store-launch-ops</td><td>steam-store-launch-ops/evals</td><td>has-support</td></tr>
+<tr><td>strix</td><td>strix/references</td><td>has-support</td></tr>
+<tr><td>strix</td><td>strix/evals</td><td>has-support</td></tr>
+<tr><td>strix</td><td>strix/scripts</td><td>has-support</td></tr>
+<tr><td>survey</td><td>survey/references</td><td>has-support</td></tr>
+<tr><td>survey</td><td>survey/evals</td><td>has-support</td></tr>
+<tr><td>system-environment-setup</td><td>system-environment-setup/references</td><td>has-support</td></tr>
+<tr><td>system-environment-setup</td><td>system-environment-setup/evals</td><td>has-support</td></tr>
+<tr><td>task-estimation</td><td>task-estimation/references</td><td>has-support</td></tr>
+<tr><td>task-estimation</td><td>task-estimation/evals</td><td>has-support</td></tr>
+<tr><td>task-planning</td><td>task-planning/references</td><td>has-support</td></tr>
+<tr><td>task-planning</td><td>task-planning/evals</td><td>has-support</td></tr>
+<tr><td>testing-strategies</td><td>testing-strategies/references</td><td>has-support</td></tr>
+<tr><td>testing-strategies</td><td>testing-strategies/evals</td><td>has-support</td></tr>
+<tr><td>ui-component-patterns</td><td>ui-component-patterns/references</td><td>has-support</td></tr>
+<tr><td>ui-component-patterns</td><td>ui-component-patterns/evals</td><td>has-support</td></tr>
+<tr><td>vercel-deploy</td><td>vercel-deploy/scripts</td><td>has-support</td></tr>
+<tr><td>vercel-react-best-practices</td><td>vercel-react-best-practices/evals</td><td>has-support</td></tr>
+<tr><td>vibe-kanban</td><td>vibe-kanban/references</td><td>has-support</td></tr>
+<tr><td>vibe-kanban</td><td>vibe-kanban/scripts</td><td>has-support</td></tr>
+<tr><td>web-accessibility</td><td>web-accessibility/references</td><td>has-support</td></tr>
+<tr><td>web-accessibility</td><td>web-accessibility/evals</td><td>has-support</td></tr>
+<tr><td>workflow-automation</td><td>workflow-automation/references</td><td>has-support</td></tr>
+<tr><td>workflow-automation</td><td>workflow-automation/evals</td><td>has-support</td></tr>
+<tr><td>README.md</td><td>obsidian-cli</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>react-best-practices</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>deployment-automation</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>agentation</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>standup-meeting</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>skill-standardization</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>clawteam</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>looker-studio-bigquery</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>marketing-automation</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>omx</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>jeo</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>autoresearch</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>git-workflow</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>authentication-setup</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>pattern-detection</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>steam-store-launch-ops</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>genkit</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>firebase-cli</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>testing-strategies</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>performance-optimization</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>remotion-video-production</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>opencontext</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>scrapling</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>user-guide-writing</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>api-design</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>vercel-deploy</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>git-submodule</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>react-grab</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>harness</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>ralph</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>ralphmode</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>plannotator</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>system-environment-setup</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>video-production</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>llm-wiki</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>google-workspace</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>playwriter</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>data-analysis</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>security-best-practices</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>changelog-maintenance</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>debugging</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>rtk</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>agent-browser</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>vibe-kanban</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>codebase-search</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>monitoring-observability</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>ohmg</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>ui-component-patterns</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>game-performance-profiler</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>langsmith</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>state-management</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>api-documentation</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>fabric</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>responsive-design</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>firebase-ai-logic</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>bmad-gds</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>sprint-retrospective</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>technical-writing</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>skill-autoresearch</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>bmad</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>code-review</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>marketing-skills-collection</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>design-system</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>bmad-idea</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>web-design-guidelines</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>strix</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>file-organization</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>frontend-design-system</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>npm-git-install</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>task-planning</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>survey</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>prompt-repetition</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>research-paper-writing</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>obsidian-plugin</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>backend-testing</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>environment-setup</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>log-analysis</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>workflow-automation</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>task-estimation</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>game-demo-feedback-triage</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>web-accessibility</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>database-schema-design</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>code-refactoring</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>presentation-builder</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>vercel-react-best-practices</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>omc</td><td>indexes</td></tr>
+<tr><td>README.md</td><td>game-build-log-triage</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>obsidian-cli</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>react-best-practices</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>deployment-automation</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>agentation</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>standup-meeting</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>skill-standardization</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>clawteam</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>looker-studio-bigquery</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>marketing-automation</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>omx</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>jeo</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>autoresearch</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>git-workflow</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>authentication-setup</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>pattern-detection</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>steam-store-launch-ops</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>genkit</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>firebase-cli</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>testing-strategies</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>performance-optimization</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>remotion-video-production</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>opencontext</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>scrapling</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>user-guide-writing</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>api-design</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>vercel-deploy</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>git-submodule</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>react-grab</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>harness</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>ralph</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>ralphmode</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>plannotator</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>system-environment-setup</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>video-production</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>llm-wiki</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>google-workspace</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>playwriter</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>data-analysis</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>security-best-practices</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>changelog-maintenance</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>debugging</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>rtk</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>agent-browser</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>vibe-kanban</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>codebase-search</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>monitoring-observability</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>ohmg</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>ui-component-patterns</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>game-performance-profiler</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>langsmith</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>state-management</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>api-documentation</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>fabric</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>responsive-design</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>firebase-ai-logic</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>bmad-gds</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>sprint-retrospective</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>technical-writing</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>skill-autoresearch</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>bmad</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>code-review</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>marketing-skills-collection</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>design-system</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>bmad-idea</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>web-design-guidelines</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>strix</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>file-organization</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>frontend-design-system</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>npm-git-install</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>task-planning</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>survey</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>prompt-repetition</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>research-paper-writing</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>obsidian-plugin</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>backend-testing</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>environment-setup</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>log-analysis</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>workflow-automation</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>task-estimation</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>game-demo-feedback-triage</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>web-accessibility</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>database-schema-design</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>code-refactoring</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>presentation-builder</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>vercel-react-best-practices</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>omc</td><td>indexes</td></tr>
+<tr><td>README.ko.md</td><td>game-build-log-triage</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>obsidian-cli</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>react-best-practices</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>deployment-automation</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>agentation</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>standup-meeting</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>skill-standardization</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>clawteam</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>looker-studio-bigquery</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>marketing-automation</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>omx</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>jeo</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>autoresearch</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>git-workflow</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>authentication-setup</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>pattern-detection</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>genkit</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>firebase-cli</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>testing-strategies</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>performance-optimization</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>remotion-video-production</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>opencontext</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>scrapling</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>user-guide-writing</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>api-design</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>vercel-deploy</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>git-submodule</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>react-grab</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>harness</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>ralph</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>ralphmode</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>plannotator</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>system-environment-setup</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>video-production</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>llm-wiki</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>google-workspace</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>playwriter</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>data-analysis</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>security-best-practices</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>changelog-maintenance</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>debugging</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>rtk</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>agent-browser</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>vibe-kanban</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>codebase-search</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>monitoring-observability</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>ohmg</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>ui-component-patterns</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>langsmith</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>state-management</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>api-documentation</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>fabric</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>responsive-design</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>firebase-ai-logic</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>bmad-gds</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>sprint-retrospective</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>technical-writing</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>skill-autoresearch</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>bmad</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>code-review</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>marketing-skills-collection</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>design-system</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>bmad-idea</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>web-design-guidelines</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>strix</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>file-organization</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>frontend-design-system</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>npm-git-install</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>task-planning</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>survey</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>prompt-repetition</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>research-paper-writing</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>obsidian-plugin</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>backend-testing</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>environment-setup</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>log-analysis</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>workflow-automation</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>task-estimation</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>web-accessibility</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>database-schema-design</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>code-refactoring</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>presentation-builder</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>vercel-react-best-practices</td><td>indexes</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>omc</td><td>indexes</td></tr>
+<tr><td>agentation</td><td>jeo</td><td>mentions</td></tr>
+<tr><td>agentation</td><td>plannotator</td><td>mentions</td></tr>
+<tr><td>agentation</td><td>agent-browser</td><td>mentions</td></tr>
+<tr><td>agentation</td><td>bmad</td><td>mentions</td></tr>
+<tr><td>api-design</td><td>authentication-setup</td><td>mentions</td></tr>
+<tr><td>api-design</td><td>api-documentation</td><td>mentions</td></tr>
+<tr><td>api-design</td><td>backend-testing</td><td>mentions</td></tr>
+<tr><td>api-design</td><td>database-schema-design</td><td>mentions</td></tr>
+<tr><td>authentication-setup</td><td>api-design</td><td>mentions</td></tr>
+<tr><td>autoresearch</td><td>harness</td><td>mentions</td></tr>
+<tr><td>backend-testing</td><td>authentication-setup</td><td>mentions</td></tr>
+<tr><td>backend-testing</td><td>testing-strategies</td><td>mentions</td></tr>
+<tr><td>backend-testing</td><td>api-design</td><td>mentions</td></tr>
+<tr><td>backend-testing</td><td>api-documentation</td><td>mentions</td></tr>
+<tr><td>backend-testing</td><td>database-schema-design</td><td>mentions</td></tr>
+<tr><td>bmad</td><td>omx</td><td>mentions</td></tr>
+<tr><td>bmad</td><td>plannotator</td><td>mentions</td></tr>
+<tr><td>bmad</td><td>ohmg</td><td>mentions</td></tr>
+<tr><td>bmad</td><td>fabric</td><td>mentions</td></tr>
+<tr><td>bmad-gds</td><td>steam-store-launch-ops</td><td>mentions</td></tr>
+<tr><td>bmad-gds</td><td>debugging</td><td>mentions</td></tr>
+<tr><td>bmad-gds</td><td>game-performance-profiler</td><td>mentions</td></tr>
+<tr><td>bmad-gds</td><td>bmad</td><td>mentions</td></tr>
+<tr><td>bmad-gds</td><td>bmad-idea</td><td>mentions</td></tr>
+<tr><td>bmad-gds</td><td>task-planning</td><td>mentions</td></tr></table>
 </body></html>
