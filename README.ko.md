@@ -231,7 +231,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `api-design` | 계약 중심 REST/GraphQL API 설계, 호환성 검토, 후속 핸드오프 | 전체 |
-| `api-documentation` | OpenAPI/Swagger 문서 생성, 예시 작성, 퍼블리싱 워크플로 | 전체 |
+| `api-documentation` | 레퍼런스 포털·퀵스타트·SDK/웹훅 가이드·검증된 예시·인증/에러 안내를 다루는 개발자용 API 문서 앵커 | 전체 |
 | `authentication-setup` | JWT, OAuth, 세션 관리 | 전체 |
 | `backend-testing` | API·통합·계약·fixture·로컬/CI 분리를 포함한 백엔드 테스트 커버리지 설계 | 전체 |
 | `database-schema-design` | SQL/NoSQL 스키마 설계 | 전체 |
