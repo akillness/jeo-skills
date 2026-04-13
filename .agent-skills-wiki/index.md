@@ -1,13 +1,14 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-13 | Total pages: 25
+> Last updated: 2026-04-13 | Total pages: 27
 
 ## Entities
 
 ## Concepts
 - [[backend-api-cluster]] — Boundaries and maintenance direction for the backend API lane, with `api-design` as the contract-first anchor and `api-documentation` as the publishing handoff.
 - [[code-quality-cluster]] — Boundaries for the code-quality lane, separating validation policy, test implementation, debugging, and reviewer judgment.
+- [[developer-workflow-cluster]] — Boundaries for the utilities/developer-workflow lane, separating repo automation, Git collaboration, environment setup, and deployment automation.
 - [[frontend-skill-canonicalization]] — Canonical-vs-alias guidance for overlapping frontend skills, now including both the React and design-system lanes.
 - [[game-development-cluster]] — Boundaries and maintenance direction for the game-production cluster, with `bmad-gds` as the coordinating layer.
 - [[infrastructure-environment-cluster]] — Canonical-vs-alias guidance for the environment/setup lane, with `system-environment-setup` as the broader anchor.
@@ -39,4 +40,5 @@
 - [[ui-component-patterns-modernization-2026-04-13]] — Why the best bounded frontend reusable-component improvement was rewriting `ui-component-patterns` into a reusable primitive / variant / slot API anchor instead of modernizing `responsive-design` first.
 - [[responsive-design-modernization-2026-04-13]] — Why the best bounded next frontend modernization was rewriting `responsive-design` into a mobile-first, container-aware layout adaptation + verification anchor.
 - [[web-accessibility-modernization-2026-04-13]] — Why the best bounded frontend accessibility improvement was rewriting `web-accessibility` into an accessibility remediation + verification anchor instead of leaving it as a generic WCAG/example dump.
+- [[workflow-automation-modernization-2026-04-13]] — Why the best bounded utilities/developer-workflow improvement was modernizing `workflow-automation` into a repo-scoped recurring-workflow anchor instead of adding another automation wrapper.
 

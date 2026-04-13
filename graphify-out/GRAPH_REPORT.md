@@ -4,16 +4,16 @@
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, cross-skill mentions, and documentation indexing
 - Total skills: 89
-- Skills with references/: 46
-- Skills with evals/: 45
-- Graph nodes: 206
-- Graph edges: 556
+- Skills with references/: 47
+- Skills with evals/: 46
+- Graph nodes: 208
+- Graph edges: 565
 
 ## Strongest structural findings
-1. `responsive-design` is now a stronger frontend layout anchor: it owns mobile-first, container-aware layout adaptation plus overflow/reflow verification instead of acting like a generic CSS example dump.
-2. The frontend cluster boundary is cleaner: `ui-component-patterns` handles reusable component APIs, `responsive-design` handles layout adaptation, `web-accessibility` handles remediation/verification, and `web-design-guidelines` stays the broad review lane.
+1. `workflow-automation` is now a stronger utilities/developer-workflow anchor: it owns repo-scoped task runners, bootstrap entrypoints, local-CI parity, hook guardrails, and maintenance routines instead of a generic command dump.
+2. The utilities/developer-workflow boundary is cleaner: `workflow-automation` handles recurring repo glue, `git-workflow` handles local collaboration and recovery, `system-environment-setup` handles broader runnable-environment design, and `deployment-automation` stays the hosted rollout lane.
 3. Documentation surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree discovery hubs, so one-line positioning changes still matter for activation.
-4. The repo maintenance pattern still holds: upgrading a high-traffic legacy anchor with references and evals creates more durable value than adding another neighboring wrapper skill.
+4. The maintenance pattern still holds: upgrading an indexed legacy anchor with references and evals creates more durable value than adding another overlapping wrapper skill.
 
 ## Community map
 - skill
@@ -30,16 +30,16 @@
 - setup-all-skills-prompt.md: degree 83
 - debugging: degree 27
 - web-accessibility: degree 19
-- jeo: degree 18
 - code-review: degree 18
-- ui-component-patterns: degree 17
+- jeo: degree 18
 - design-system: degree 17
-- task-planning: degree 15
+- ui-component-patterns: degree 17
+- responsive-design: degree 15
 
 ## Duplicate / consolidation notes
-- `responsive-design` should stay focused on layout adaptation and verification rather than absorbing reusable primitive/API architecture already covered by `ui-component-patterns`.
-- `responsive-design` should keep accessibility-heavy reflow/touch-target remediation routed to `web-accessibility`.
-- `responsive-design` should not absorb broader UI-guideline audits already covered by `web-design-guidelines`.
+- `workflow-automation` should stay focused on repo-scoped recurring workflow glue rather than absorbing environment provisioning already covered by `system-environment-setup`.
+- `workflow-automation` should keep hosted deployment and cloud rollout routed to `deployment-automation`.
+- `workflow-automation` should not absorb local Git history work already owned by `git-workflow`.
 - Recent canonical-vs-alias cleanups in React, design-system, marketing, and environment lanes remain intact.
 
 ## Recommended maintenance direction

@@ -2735,67 +2735,50 @@
     },
     {
       "name": "workflow-automation",
-      "description": "Automate repetitive development tasks and workflows. Use when creating build scripts, automating deployments, or setting up development workflows. Handles npm scripts, Makefile, GitHub Actions workflows, and task automation.",
+      "description": "Design repo-scoped recurring workflow automation: task runners, bootstrap entrypoints, local-CI parity commands, hook guardrails, and maintenance routines that wrap existing tools without bloating into full deployment or environment provisioning. Use when the user needs repeatable commands for setup/build/test/lint/release prep, wants to replace copy-paste shell rituals, or must choose between npm scripts, Make/just/Task, hooks, local CI mirrors, and repo maintenance bots. Triggers on: workflow automation, task runner, make this repeatable, bootstrap script, make/just/taskfile, local CI parity, repo automation, and recurring dev workflow.",
       "category": "utilities",
       "path": "utilities/workflow-automation/SKILL.md",
       "tags": [
         "automation",
-        "scripts",
-        "workflow",
-        "npm-scripts",
-        "Makefile",
-        "task-runner"
+        "task-runner",
+        "bootstrap",
+        "ci-parity",
+        "dev-workflow",
+        "hooks",
+        "repo-maintenance"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
-        "Bash",
         "Read",
         "Write",
-        "Edit"
+        "Bash",
+        "Grep",
+        "Glob"
       ],
       "commands": [
         {
-          "command": "make help        # Show all commands",
+          "command": "make dev",
           "source": "utilities/workflow-automation/SKILL.md"
         },
         {
-          "command": "make dev         # Start development",
+          "command": "just bootstrap",
           "source": "utilities/workflow-automation/SKILL.md"
         },
         {
-          "command": "make ci          # Run full CI locally",
+          "command": "npm run ci",
           "source": "utilities/workflow-automation/SKILL.md"
         },
         {
-          "command": ". \"$(dirname -- \"$0\")/_/husky.sh\"",
+          "command": "pre-commit run --all-files",
           "source": "utilities/workflow-automation/SKILL.md"
         },
         {
-          "command": "echo \"Running pre-commit checks...\"",
-          "source": "utilities/workflow-automation/SKILL.md"
-        },
-        {
-          "command": "npx lint-staged",
-          "source": "utilities/workflow-automation/SKILL.md"
-        },
-        {
-          "command": "npm run type-check",
-          "source": "utilities/workflow-automation/SKILL.md"
-        },
-        {
-          "command": "npm test -- --onlyChanged",
-          "source": "utilities/workflow-automation/SKILL.md"
-        },
-        {
-          "command": "echo \"✅ Pre-commit checks passed!\"",
-          "source": "utilities/workflow-automation/SKILL.md"
-        },
-        {
-          "command": "set -e",
+          "command": "act",
           "source": "utilities/workflow-automation/SKILL.md"
         }
       ]

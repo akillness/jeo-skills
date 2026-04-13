@@ -353,7 +353,7 @@ If no → skip silently. Never re-ask.
 | **Search & Analysis** | autoresearch, codebase-search, data-analysis, langsmith, log-analysis, pattern-detection | All (`*`) |
 | **Creative Media** | remotion-video-production, video-production | All (`*`) |
 | **Marketing** | marketing-automation, marketing-skills-collection *(compatibility alias for marketing-automation)* | All (`*`) |
-| **Utilities** | clawteam, fabric, file-organization, git-submodule, git-workflow, google-workspace, graphify, llm-wiki, npm-git-install, obsidian-cli, obsidian-plugin, opencontext, workflow-automation | All (`*`) |
+| **Utilities** | clawteam, fabric, file-organization, git-submodule, git-workflow, google-workspace, graphify, llm-wiki, npm-git-install, obsidian-cli, obsidian-plugin, opencontext, workflow-automation *(repo task runners / bootstrap / local-CI automation)* | All (`*`) |
 
 ---
 

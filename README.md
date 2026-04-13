@@ -339,7 +339,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `obsidian-cli` | Operate the official Obsidian CLI — enablement, TUI, note and task automation, vault and file targeting, plugin reload, developer commands | All |
 | `obsidian-plugin` | Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility, submission validation | All |
 | `opencontext` | Persistent memory and context management for AI agents | All |
-| `workflow-automation` | Automate repetitive development workflows | All |
+| `workflow-automation` | Repo-scoped recurring workflow automation — task runners, bootstrap entrypoints, local-CI parity, hooks, and maintenance routines | All |
 
 ---
 
