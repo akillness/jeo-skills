@@ -1,9 +1,14 @@
 N:user-guide-writing
-D:Write clear and helpful user guides and tutorials for end users. Use when creating onboarding doc...
-G:user-guides tutorials documentation onboarding how-to
-U[3]:
-  **New Features**: Introduce new features to users
-  **Onboarding**: Train new users
-  **FAQ**: Organize frequently asked questions
-S[1]{n,action}:
-  1,Quick Start Guide
+D:Write user-facing documentation for onboarding, tutorials, how-to guides, FAQs, help-center articles, and release-facing help updates. Route internal technical docs to technical-writing, API portals to api-documentation, and changelog hygiene to changelog-maintenance.
+G:user-guides tutorials documentation onboarding how-to faq help-center customer-docs
+U[6]:
+  Getting-started and onboarding guides
+  Tutorials and guided walkthroughs
+  Task-based how-to articles
+  FAQs and recurring support answers
+  Release-facing help updates after UI/workflow changes
+  Boundary routing across documentation skills
+S[3]{n,action}:
+  1,Classify the user-doc mode
+  2,Gather user-facing evidence and constraints
+  3,Apply the matching guide structure and maintenance checklist

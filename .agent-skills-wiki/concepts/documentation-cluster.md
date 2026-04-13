@@ -4,7 +4,7 @@ created: 2026-04-13
 updated: 2026-04-13
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality, docs, graphify]
-sources: [.survey/technical-writing-modernization-20260413/context.md, .survey/technical-writing-modernization-20260413/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/technical-writing-modernization-20260413/context.md, .survey/technical-writing-modernization-20260413/solutions.md, .survey/user-guide-writing-modernization-20260413/context.md, .survey/user-guide-writing-modernization-20260413/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Documentation Cluster
@@ -29,9 +29,10 @@ Boundary checks:
 4. If the request is about specs, ADRs, architecture docs, runbooks, migration notes, or internal developer guides, keep it in `technical-writing`.
 
 ## Current structural note
-After the `technical-writing` modernization run, support coverage increased to 49 skills with `references/` and 48 with `evals/`. The docs cluster still needs route-out discipline, but no new wrapper skill was justified.
+After the `technical-writing` and `user-guide-writing` modernization runs, support coverage increased to 51 skills with `references/` and 50 with `evals/`. The docs cluster is healthier because it now has a sharper internal-docs anchor and a sharper end-user-docs anchor; route-out discipline still matters more than adding a new wrapper skill.
 
 ## Related pages
 - [[skill-support-coverage]]
 - [[backend-api-cluster]]
 - [[technical-writing-modernization-2026-04-13]]
+- [[user-guide-writing-modernization-2026-04-13]]
