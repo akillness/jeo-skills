@@ -205,3 +205,11 @@
 - Accepted: rewrite `user-guide-writing` as the end-user-docs anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep internal-docs / API-docs / changelog route-outs explicit
 - Rejected: adding a separate help-center wrapper; merging `user-guide-writing` into `technical-writing`; treating API portal or release-note work as part of the same skill
 - Wiki files created/updated: `concepts/documentation-cluster.md`, `queries/user-guide-writing-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-13] query | API documentation modernization
+- Area researched: the next high-value bounded modernization opportunity across CLI/dev workflow, web/product/ops, marketing/content, and game-dev-adjacent release work; then focused on the documentation-cluster boundary between contract design, developer-facing API docs, internal docs, user help, auth setup, and changelog work
+- Survey files created under `.survey/api-documentation-modernization-20260413/` plus the broad triage scan under `.survey/hourly-opportunity-scan-20260413-2/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `api-documentation` as the developer-facing API-docs anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep contract design / internal docs / user-help / auth implementation / changelog route-outs explicit
+- Rejected: adding another portal/docs wrapper; merging `api-documentation` into `technical-writing` or `user-guide-writing`; letting the skill absorb contract design better owned by `api-design`
+- Wiki files created/updated: `queries/api-documentation-modernization-2026-04-13.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

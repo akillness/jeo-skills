@@ -936,7 +936,7 @@
     },
     {
       "name": "api-documentation",
-      "description": "Create comprehensive API documentation for developers. Use when documenting REST APIs, GraphQL schemas, or SDK methods. Handles OpenAPI/Swagger, interactive docs, examples, and API reference guides.",
+      "description": "Write developer-facing API documentation for REST, GraphQL, webhook, and SDK surfaces: reference docs, quickstarts, portal pages, truthful examples, and auth/error guidance. Routes contract design to api-design and internal docs to technical-writing.",
       "category": "backend",
       "path": "backend/api-documentation/SKILL.md",
       "tags": [

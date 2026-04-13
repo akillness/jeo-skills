@@ -29,10 +29,11 @@ Boundary checks:
 4. If the request is about specs, ADRs, architecture docs, runbooks, migration notes, or internal developer guides, keep it in `technical-writing`.
 
 ## Current structural note
-After the `technical-writing` and `user-guide-writing` modernization runs, support coverage increased to 51 skills with `references/` and 50 with `evals/`. The docs cluster is healthier because it now has a sharper internal-docs anchor and a sharper end-user-docs anchor; route-out discipline still matters more than adding a new wrapper skill.
+After the `technical-writing`, `user-guide-writing`, and `api-documentation` modernization runs, the documentation cluster now has sharper anchors for internal docs, developer-facing API docs, and end-user help content. The latest graph-style scan reports 51 skills with `references/` and 50 with `evals/`; route-out discipline still matters more than adding a new wrapper skill.
 
 ## Related pages
 - [[skill-support-coverage]]
 - [[backend-api-cluster]]
 - [[technical-writing-modernization-2026-04-13]]
 - [[user-guide-writing-modernization-2026-04-13]]
+- [[api-documentation-modernization-2026-04-13]]
