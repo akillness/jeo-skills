@@ -396,67 +396,46 @@
     },
     {
       "name": "deployment-automation",
-      "description": "Automate application deployment to cloud platforms and servers. Use when setting up CI/CD pipelines, deploying to Docker/Kubernetes, or configuring cloud infrastructure. Handles GitHub Actions, Docker, Kubernetes, AWS, Vercel, and deployment best practices.",
+      "description": "Plan and execute hosted deployment and rollout automation for web, backend, and fullstack systems: preview/staging/prod promotion, release verification, rollback planning, provider handoff, and deployment runbooks. Use when the main job is shipping a built artifact or service safely to an environment, choosing a rollout strategy, or tightening deploy/release steps around health checks and promotion rules. Route CI workflow authoring to `workflow-automation`, machine/runtime setup to `system-environment-setup`, ongoing dashboards/alerts to `monitoring-observability`, and Vercel-specific operations to `vercel-deploy`.",
       "category": "infrastructure",
       "path": "infrastructure/deployment-automation/SKILL.md",
       "tags": [
         "deployment",
-        "CI/CD",
-        "Docker",
-        "Kubernetes",
-        "AWS",
-        "GitHub-Actions",
-        "automation"
+        "release-rollout",
+        "preview-environments",
+        "rollback",
+        "progressive-delivery",
+        "post-deploy-verification",
+        "devops"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
-        "Bash",
         "Read",
-        "Write"
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
       ],
       "commands": [
         {
-          "command": "docker build -t myapp:latest .",
+          "command": "# classify: preview-release | environment-promotion | container-paas | kubernetes-rollout | rollback-response | release-hardening",
           "source": "infrastructure/deployment-automation/SKILL.md"
         },
         {
-          "command": "docker run -d -p 3000:3000 --name myapp-container myapp:latest",
+          "command": "# identify artifact + target environment + promotion model before prescribing steps",
           "source": "infrastructure/deployment-automation/SKILL.md"
         },
         {
-          "command": "docker logs myapp-container",
+          "command": "# include post-deploy verification and rollback in every deployment packet",
           "source": "infrastructure/deployment-automation/SKILL.md"
         },
         {
-          "command": "docker stop myapp-container",
-          "source": "infrastructure/deployment-automation/SKILL.md"
-        },
-        {
-          "command": "docker rm myapp-container",
-          "source": "infrastructure/deployment-automation/SKILL.md"
-        },
-        {
-          "command": "set -e",
-          "source": "infrastructure/deployment-automation/SKILL.md"
-        },
-        {
-          "command": "NAMESPACE=\"production\"",
-          "source": "infrastructure/deployment-automation/SKILL.md"
-        },
-        {
-          "command": "IMAGE_TAG=\"${1:-latest}\"",
-          "source": "infrastructure/deployment-automation/SKILL.md"
-        },
-        {
-          "command": "echo \"Deploying myapp:${IMAGE_TAG} to ${NAMESPACE}...\"",
-          "source": "infrastructure/deployment-automation/SKILL.md"
-        },
-        {
-          "command": "kubectl apply -f k8s/namespace.yaml",
+          "command": "# route CI workflow authoring to workflow-automation and machine setup to system-environment-setup",
           "source": "infrastructure/deployment-automation/SKILL.md"
         }
       ]

@@ -1,557 +1,408 @@
 ---
 name: deployment-automation
-description: Automate application deployment to cloud platforms and servers. Use when setting up CI/CD pipelines, deploying to Docker/Kubernetes, or configuring cloud infrastructure. Handles GitHub Actions, Docker, Kubernetes, AWS, Vercel, and deployment best practices.
+description: >
+  Plan and execute hosted deployment and rollout automation for web, backend, and
+  fullstack systems: preview/staging/prod promotion, release verification,
+  rollback planning, provider handoff, and deployment runbooks. Use when the main
+  job is shipping a built artifact or service safely to an environment, choosing a
+  rollout strategy, or tightening deploy/release steps around health checks and
+  promotion rules. Triggers on: deployment automation, deploy pipeline, release
+  rollout, staging to prod, preview environment, canary, blue-green, rollback,
+  post-deploy verification, and release promotion. Route CI workflow authoring to
+  `workflow-automation`, machine/runtime setup to `system-environment-setup`,
+  ongoing dashboards/alerts to `monitoring-observability`, and Vercel-specific
+  operations to `vercel-deploy`.
+allowed-tools: Read Write Edit Glob Grep
+compatibility: >
+  Best for repositories or delivery workflows where the system can already build
+  and the main problem is safely promoting, deploying, verifying, or rolling back
+  a release across preview, staging, and production environments.
+license: MIT
 metadata:
-  tags: deployment, CI/CD, Docker, Kubernetes, AWS, GitHub-Actions, automation
-  platforms: Claude, ChatGPT, Gemini
-allowed-tools: Bash Read Write
+  tags: deployment, release-rollout, preview-environments, rollback, progressive-delivery, post-deploy-verification, devops
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0.0"
+  modernization: 2026-04-13
+  source: akillness/oh-my-skills
 ---
-
 
 # Deployment Automation
 
+Use this skill when the main job is **getting an already-buildable system safely into an environment and proving the rollout worked**.
+
+`deployment-automation` is the infrastructure/dev-workflow anchor for:
+- preview, staging, and production deployment flows
+- release promotion and environment gates
+- rollout strategy choice: replace, rolling, blue-green, canary, progressive
+- deployment preflight and post-deploy verification
+- rollback planning and bad-release containment
+- provider handoff across static hosts, container PaaS, Kubernetes, and generic CI-driven deploy paths
+
+Read these support docs before choosing the mode or boundary:
+- [references/deployment-modes-and-boundaries.md](references/deployment-modes-and-boundaries.md)
+- [references/rollout-and-rollback-checklist.md](references/rollout-and-rollback-checklist.md)
+- [references/platform-routing-notes.md](references/platform-routing-notes.md)
 
 ## When to use this skill
+- A team needs a safe deploy/runbook path for preview, staging, or production
+- A release flow needs preflight checks, promotion gates, smoke checks, and rollback rules
+- The question is whether to use direct deploy, rolling, blue-green, canary, or progressive delivery
+- A project already has buildable artifacts, but release execution is still a mix of tribal knowledge and shell history
+- The deploy path needs clearer separation between preview deploys, staging promotion, and production rollout
+- A deployment failed and the next job is to verify, stop, or roll back rather than redesign the whole observability stack
+- The user needs a vendor-neutral release packet before using Vercel, Render, Fly.io, Kubernetes, or a CI-driven provider path
 
-- **New Projects**: Set up automated deployment from scratch
-- **Manual Deployment Improvement**: Automate repetitive manual tasks
-- **Multi-Environment**: Separate dev, staging, and production environments
-- **Scaling**: Introduce Kubernetes to handle traffic growth
+## When not to use this skill
+- **The main job is authoring or refactoring GitHub Actions / GitLab / Jenkins / Buildkite workflows, task runners, or repo-local release glue** → use `workflow-automation`
+- **The main job is installing CLIs, Docker, kubectl, cloud SDKs, auth bootstrap, or making the machine runnable** → use `system-environment-setup`
+- **The main job is long-lived dashboards, alerts, traces, metrics, log pipelines, or incident telemetry architecture** → use `monitoring-observability`
+- **The main job is Vercel-specific project linking, domains, aliases, or Vercel environment settings** → use `vercel-deploy`
+- **The main job is secret rotation, IAM policy, supply-chain hardening, or compliance evidence design** → route to the relevant security skill
+- **The system cannot even build or package successfully yet** → fix build/test/setup problems before reopening deployment automation
 
 ## Instructions
 
-### Step 1: Docker Containerization
+### Step 1: Classify the deployment job before touching commands
+Normalize the request into one primary mode.
 
-Package the application as a Docker image.
-
-**Dockerfile** (Node.js app):
-```dockerfile
-# Multi-stage build for smaller image size
-FROM node:18-alpine AS builder
-
-WORKDIR /app
-
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm ci --only=production
-
-# Copy source code
-COPY . .
-
-# Build application (if needed)
-RUN npm run build
-
-# Production stage
-FROM node:18-alpine
-
-WORKDIR /app
-
-# Copy only necessary files from builder
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package.json ./
-
-# Create non-root user for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
-USER nodejs
-
-# Expose port
-EXPOSE 3000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node healthcheck.js
-
-# Start application
-CMD ["node", "dist/index.js"]
-```
-
-**.dockerignore**:
-```
-node_modules
-npm-debug.log
-.git
-.env
-.env.local
-dist
-build
-coverage
-.DS_Store
-```
-
-**Build and Run**:
-```bash
-# Build image
-docker build -t myapp:latest .
-
-# Run container
-docker run -d -p 3000:3000 --name myapp-container myapp:latest
-
-# Check logs
-docker logs myapp-container
-
-# Stop and remove
-docker stop myapp-container
-docker rm myapp-container
-```
-
-### Step 2: GitHub Actions CI/CD
-
-Automatically runs tests and deploys on code push.
-
-**.github/workflows/deploy.yml**:
 ```yaml
-name: CI/CD Pipeline
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
-
-env:
-  NODE_VERSION: '18'
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run linter
-        run: npm run lint
-
-      - name: Run tests
-        run: npm test -- --coverage
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./coverage/coverage-final.json
-
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=sha,prefix={{branch}}-
-            type=semver,pattern={{version}}
-            latest
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: Deploy to production
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.PROD_HOST }}
-          username: ${{ secrets.PROD_USER }}
-          key: ${{ secrets.PROD_SSH_KEY }}
-          script: |
-            cd /app
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            docker-compose up -d --no-deps --build web
-            docker image prune -f
+deployment_mode:
+  primary_mode: preview-release | environment-promotion | container-paas | kubernetes-rollout | rollback-response | release-hardening
+  runtime_shape: static-frontend | web-app | api-service | worker-job | multi-service | unknown
+  artifact_shape: platform-build | image | build-output | package | unknown
+  target_environment: preview | staging | production | mixed | unknown
+  promotion_model: direct-deploy | same-artifact-promotion | rebuild-per-env | unknown
+  rollout_strategy: replace | rolling | blue-green | canary | progressive | unknown
+  stateful_risk: low | medium | high | unknown
+  verification_depth: health-only | smoke-tests | release-checklist | automated-analysis | unknown
 ```
 
-### Step 3: Kubernetes Deployment
+Choose exactly one primary mode per run:
+- `preview-release` → branch/PR deploys, preview URLs, and pre-merge verification
+- `environment-promotion` → staging → production or multi-env promotion with gates
+- `container-paas` → Render/Fly/railway-style or generic image/container-based releases
+- `kubernetes-rollout` → deployments driven by Helm/Kustomize/Argo/Kubernetes rollout mechanics
+- `rollback-response` → contain a bad deploy, restore service, and document the next safe action
+- `release-hardening` → add missing preflight, approvals, smoke tests, or release packet structure around an existing deploy path
 
-Implement scalable container orchestration.
+### Step 2: Confirm the real source of truth and boundary skills
+Before prescribing steps, answer these questions:
+1. What artifact is actually being shipped: platform build, image, bundle, or unknown?
+2. Which environment is in scope right now: preview, staging, or production?
+3. Is the same artifact promoted across environments, or rebuilt per env?
+4. What is the rollback method: redeploy prior artifact, traffic switchback, platform rollback, or manual recovery?
+5. Which neighboring skill really owns the unsolved part?
 
-**k8s/deployment.yaml**:
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: myapp
-  namespace: production
-  labels:
-    app: myapp
-spec:
-  replicas: 3
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
-  selector:
-    matchLabels:
-      app: myapp
-  template:
-    metadata:
-      labels:
-        app: myapp
-    spec:
-      containers:
-      - name: myapp
-        image: ghcr.io/username/myapp:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3000
-        env:
-        - name: NODE_ENV
-          value: "production"
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: myapp-secrets
-              key: database-url
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /ready
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 5
+Quick route-out table:
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: myapp-service
-  namespace: production
-spec:
-  selector:
-    app: myapp
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3000
-  type: LoadBalancer
+| If the request sounds like... | Use |
+|---|---|
+| "Set up or rewrite the deploy workflow YAML / task runner / release scripts" | `workflow-automation` |
+| "Install Docker / kubectl / cloud CLI / authenticate this machine" | `system-environment-setup` |
+| "Set up dashboards, alerts, traces, or SLOs" | `monitoring-observability` |
+| "Deploy this site/app specifically to Vercel" | `vercel-deploy` |
+| "Handle secret rotation, IAM scopes, signing, or compliance controls" | security skill |
+| "Pick rollout strategy, promotion gates, verification, and rollback plan" | `deployment-automation` |
 
----
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: myapp-hpa
-  namespace: production
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: myapp
-  minReplicas: 2
-  maxReplicas: 10
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: Utilization
-        averageUtilization: 80
+### Step 3: Gather the smallest truthful evidence set
+Do not improvise a production release flow from vibes. Pull the minimum credible facts first:
+- current deploy target and provider/runtime
+- current build artifact or packaging output
+- environment names and promotion order
+- existing deploy command / platform action / release job
+- required secrets/config already expected by the release path
+- health endpoint, smoke checks, or verification commands
+- rollback capability and its limitations
+- whether database/schema changes are part of this release
+
+If these are incomplete, state the gaps and default to the smallest safe interpretation.
+
+### Step 4: Choose the deployment mode packet
+Use the smallest packet that fits the job.
+
+#### A. Preview release
+Use when the main need is shareable verification before prod.
+
+Recommended skeleton:
+```markdown
+# Preview Release Packet
+
+## Target
+- Provider/runtime:
+- URL/output:
+- What reviewers should verify:
+
+## Preconditions
+- Build/test status:
+- Required config present:
+
+## Deploy steps
+1. ...
+2. ...
+3. ...
+
+## Verification
+- Smoke checks:
+- Visual / flow checks:
+- Promote or discard decision:
 ```
 
-**Deployment Script** (deploy.sh):
-```bash
-#!/bin/bash
-set -e
+#### B. Environment promotion
+Use when staging → production is the real job.
 
-# Variables
-NAMESPACE="production"
-IMAGE_TAG="${1:-latest}"
+Recommended skeleton:
+```markdown
+# Environment Promotion Packet
 
-echo "Deploying myapp:${IMAGE_TAG} to ${NAMESPACE}..."
+## Artifact and environments
+- Artifact:
+- Promote from:
+- Promote to:
+- Promotion model:
 
-# Apply Kubernetes manifests
-kubectl apply -f k8s/namespace.yaml
-kubectl apply -f k8s/secrets.yaml
-kubectl apply -f k8s/deployment.yaml
-kubectl apply -f k8s/service.yaml
+## Gates
+- Required approvals:
+- Freeze/change-window notes:
+- Blocking risks:
 
-# Update image
-kubectl set image deployment/myapp myapp=ghcr.io/username/myapp:${IMAGE_TAG} -n ${NAMESPACE}
+## Verification
+- Before promote:
+- After promote:
 
-# Wait for rollout
-kubectl rollout status deployment/myapp -n ${NAMESPACE} --timeout=5m
-
-# Verify
-kubectl get pods -n ${NAMESPACE} -l app=myapp
-
-echo "Deployment completed successfully!"
+## Rollback
+- Immediate rollback path:
+- Data/schema caveats:
 ```
 
-### Step 4: Vercel/Netlify (Frontend)
+#### C. Container/PaaS rollout
+Use for managed app/container platforms.
 
-Simply deploy static sites and Next.js apps.
+Recommended skeleton:
+```markdown
+# Container/PaaS Rollout Packet
 
-**vercel.json**:
-```json
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "env": {
-    "DATABASE_URL": "@database-url",
-    "API_KEY": "@api-key"
-  },
-  "regions": ["sin1", "icn1"],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        }
-      ]
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/old-path",
-      "destination": "/new-path",
-      "permanent": true
-    }
-  ]
-}
+## Runtime
+- Image/build source:
+- Platform:
+- Release command:
+
+## Release plan
+- Direct deploy or staged:
+- Release checks:
+- Rollback path:
+
+## Handoffs
+- Provider-specific follow-up:
+- Adjacent skills if needed:
 ```
 
-**CLI Deployment**:
-```bash
-# Install Vercel CLI
-npm i -g vercel
+#### D. Kubernetes rollout
+Use when rollout strategy and cluster behavior are central.
 
-# Login
-vercel login
+Recommended skeleton:
+```markdown
+# Kubernetes Rollout Packet
 
-# Deploy to preview
-vercel
+## Delivery surface
+- Manifest source:
+- Deployment/controller:
+- Strategy:
 
-# Deploy to production
-vercel --prod
+## Preflight
+- Image/tag:
+- Namespace/env:
+- Migration/secrets assumptions:
 
-# Set environment variable
-vercel env add DATABASE_URL
+## Rollout
+- Apply/promote steps:
+- Health and readiness checks:
+- Stop conditions:
+
+## Rollback
+- Previous ReplicaSet/version:
+- Traffic/data caveats:
 ```
 
-### Step 5: Zero-Downtime Deployment Strategy
+#### E. Rollback response
+Use when something already went wrong.
 
-Deploy new versions without service interruption.
+Recommended skeleton:
+```markdown
+# Rollback Response Packet
 
-**Blue-Green Deployment** (docker-compose):
-```yaml
-version: '3.8'
+## Failure signal
+- What failed:
+- Blast radius:
+- Confidence:
 
-services:
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - app-blue
-      - app-green
+## Immediate containment
+1. ...
+2. ...
+3. ...
 
-  app-blue:
-    image: myapp:blue
-    environment:
-      - NODE_ENV=production
-      - COLOR=blue
+## Recovery path
+- Redeploy previous artifact / switch traffic / disable flag:
+- Data/schema caveats:
 
-  app-green:
-    image: myapp:green
-    environment:
-      - NODE_ENV=production
-      - COLOR=green
+## Verification after recovery
+- Health:
+- Smoke:
+- Follow-up hardening:
 ```
 
-**switch.sh** (Blue/Green Switch):
-```bash
-#!/bin/bash
+### Step 5: Apply release-execution rules instead of generic DevOps advice
+Use these rules aggressively:
+- **Separate build from release.** The job is not done because a build passed.
+- **Separate deploy from release.** Feature flags, traffic shifts, and staged exposure are often safer than one big launch.
+- **Separate app rollback from data/schema rollback.** Never imply they are the same.
+- **Prefer the smallest rollout strategy that matches risk.** Do not prescribe canary/progressive delivery if the team lacks verification maturity.
+- **Prefer same-artifact promotion when reproducibility matters.** If the system rebuilds per env, call out the risk explicitly.
+- **Treat verification as mandatory.** A deploy without health/smoke checks is not complete.
+- **Treat rollback as a real workflow, not a slogan.** Name the exact path and its caveats.
+- **Prefer existing project commands and platform entrypoints over invented shell theater.**
 
-CURRENT_COLOR=$(cat current_color.txt)
-NEW_COLOR=$([[ "$CURRENT_COLOR" == "blue" ]] && echo "green" || echo "blue")
+### Step 6: Choose the right strategy
+Use this ladder:
 
-# Deploy new version to inactive environment
-docker-compose up -d app-${NEW_COLOR}
+#### Use direct replace when
+- the system is low-risk or non-critical
+- rollback is easy
+- downtime or small blast radius is acceptable
 
-# Wait for health check
-sleep 10
+#### Use rolling updates when
+- the runtime supports gradual replacement
+- health/readiness checks are credible
+- the goal is zero-downtime replacement without dual-stack complexity
 
-# Health check
-if curl -f http://localhost:8080/health; then
-  # Update nginx to point to new environment
-  sed -i "s/${CURRENT_COLOR}/${NEW_COLOR}/g" nginx.conf
-  docker-compose exec nginx nginx -s reload
+#### Use blue/green when
+- traffic switching between old/new versions is possible
+- fast rollback via traffic reversal matters
+- infra cost and environment duplication are acceptable
 
-  # Update current color
-  echo ${NEW_COLOR} > current_color.txt
+#### Use canary/progressive delivery when
+- the release is high-risk
+- the team has trustworthy metrics or smoke checks
+- stop conditions and rollback ownership are explicit
 
-  # Stop old environment after 5 minutes (rollback window)
-  sleep 300
-  docker-compose stop app-${CURRENT_COLOR}
+#### Use feature-flag-assisted release when
+- deployment and user-visible exposure should be decoupled
+- the code can ship dark before broad release
+- rollback by flag disable is safer than full app rollback
 
-  echo "Deployment successful! Switched to ${NEW_COLOR}"
-else
-  echo "Health check failed! Keeping ${CURRENT_COLOR}"
-  docker-compose stop app-${NEW_COLOR}
-  exit 1
-fi
+### Step 7: Keep deployment honest about adjacent concerns
+A strong deployment packet says what it does **not** own.
+
+Examples:
+- if the pain is creating the GitHub Actions job, route to `workflow-automation`
+- if the pain is missing CLIs/auth/local Docker setup, route to `system-environment-setup`
+- if the pain is lacking dashboards or alerts to verify rollout health, route to `monitoring-observability`
+- if the task is provider-specific Vercel operations, route to `vercel-deploy`
+- if the task is secrets/IAM/compliance, route to security-specific skills
+
+Mixed requests are common. Split them explicitly instead of letting one skill become “all DevOps.”
+
+### Step 8: Produce the deployment automation packet
+Always return a packet another engineer or agent can execute or review.
+
+Preferred format:
+```markdown
+# Deployment Automation Packet
+
+## Mode
+- Primary mode:
+- Why this mode fits:
+
+## Target and artifact
+- Runtime/provider:
+- Environment(s):
+- Artifact/build source:
+- Promotion model:
+
+## Preconditions
+- Build/test status:
+- Required config/auth already present:
+- Blocking risks:
+
+## Rollout steps
+1. ...
+2. ...
+3. ...
+
+## Verification
+- Health checks:
+- Smoke checks:
+- Manual sign-off if needed:
+
+## Rollback
+- Immediate rollback path:
+- Data/schema caveats:
+
+## Handoffs
+- Route to neighboring skills:
+- Remaining risks:
 ```
+
+### Step 9: Prefer hardening over platform sprawl
+When modernizing an existing deploy flow:
+- add missing preflight and verification before switching platforms
+- simplify environment naming and promotion order before adding more tools
+- make rollback explicit before adding progressive-delivery buzzwords
+- keep provider-specific steps in support docs or neighboring skills, not the core description
+- preserve transferable logic that works across frontend, backend, and fullstack release flows
 
 ## Output format
+Always return a **deployment automation packet**, **rollout hardening brief**, or **rollback response packet**.
 
-### Deployment Checklist
-
-```markdown
-## Deployment Checklist
-
-### Pre-Deployment
-- [ ] All tests passing (unit, integration, E2E)
-- [ ] Code review approved
-- [ ] Environment variables configured
-- [ ] Database migrations ready
-- [ ] Rollback plan documented
-
-### Deployment
-- [ ] Docker image built and tagged
-- [ ] Image pushed to container registry
-- [ ] Kubernetes manifests applied
-- [ ] Rolling update started
-- [ ] Pods healthy and ready
-
-### Post-Deployment
-- [ ] Health check endpoint responding
-- [ ] Metrics/logs monitoring active
-- [ ] Performance baseline established
-- [ ] Old pods terminated (after grace period)
-- [ ] Deployment documented in changelog
-```
-
-## Constraints
-
-### Required Rules (MUST)
-
-1. **Health Checks**: Health check endpoint for all services
-   ```typescript
-   app.get('/health', (req, res) => {
-     res.status(200).json({ status: 'ok' });
-   });
-   ```
-
-2. **Graceful Shutdown**: Handle SIGTERM signal
-   ```javascript
-   process.on('SIGTERM', async () => {
-     console.log('SIGTERM received, shutting down gracefully');
-     await server.close();
-     await db.close();
-     process.exit(0);
-   });
-   ```
-
-3. **Environment Variable Separation**: No hardcoding; use .env files
-
-### Prohibited Rules (MUST NOT)
-
-1. **No Committing Secrets**: Never commit API keys or passwords to Git
-2. **No Debug Mode in Production**: `NODE_ENV=production` is required
-3. **Avoid latest tag only**: Use version tags (v1.0.0, sha-abc123)
-
-## Best practices
-
-1. **Multi-stage Docker builds**: Minimize image size
-2. **Immutable infrastructure**: Redeploy instead of modifying servers
-3. **Blue-Green deployment**: Zero-downtime deployment and easy rollback
-4. **Monitoring required**: Prometheus, Grafana, Datadog
-
-## References
-
-- [Docker Docs](https://docs.docker.com/)
-- [Kubernetes Docs](https://kubernetes.io/docs/)
-- [GitHub Actions](https://docs.github.com/en/actions)
-- [Vercel](https://vercel.com/docs)
-- [12 Factor App](https://12factor.net/)
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2025-01-01
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Related Skills
-- [monitoring](../monitoring/SKILL.md): Post-deployment monitoring
-- [security](../security/SKILL.md): Deployment security
-
-### Tags
-`#deployment` `#CI/CD` `#Docker` `#Kubernetes` `#automation` `#infrastructure`
+Required qualities:
+- classify the deployment job before prescribing tools
+- name the runtime/provider and environment model explicitly
+- separate build, promotion, verification, and rollback
+- call out route-outs and scope boundaries
+- identify whether the same artifact is promoted or rebuilt per environment
+- treat verification and rollback as first-class, not optional notes
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Staging to production promotion
+**Input**
+> We can already deploy to staging, but production releases are still a manual checklist in Slack. What should we automate first?
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good output direction**
+- mode: `environment-promotion`
+- keep existing build artifact, add explicit preflight and post-deploy verification
+- require approval + production health checks
+- name rollback path and data caveats
+- route workflow-YAML refactors to `workflow-automation`
+
+### Example 2: Preview env confusion
+**Input**
+> Every PR creates a preview site, but no one knows what to verify before merge.
+
+**Good output direction**
+- mode: `preview-release`
+- define what preview proves and what still requires staging/prod verification
+- add a reviewer checklist and discard/promotion rule
+- route provider-specific details to `vercel-deploy` or the relevant platform skill
+
+### Example 3: Failed production rollout
+**Input**
+> The new release is timing out in production. We need the safest rollback plan.
+
+**Good output direction**
+- mode: `rollback-response`
+- identify failure signal and blast radius
+- contain first, then restore last known good version or traffic path
+- separate app rollback from data/schema recovery
+- include post-recovery verification and hardening follow-up
+
+## Best practices
+1. Prefer release-execution clarity over giant provider-specific command dumps.
+2. Keep deployment, promotion, verification, and rollback as separate named stages.
+3. Avoid pretending every team needs canary/progressive delivery; match strategy to verification maturity.
+4. Treat stateful changes, migrations, and schema compatibility as explicit risk multipliers.
+5. Route setup, CI authoring, monitoring architecture, and security governance outward instead of bloating this skill.
+
+## References
+- [references/deployment-modes-and-boundaries.md](references/deployment-modes-and-boundaries.md)
+- [references/rollout-and-rollback-checklist.md](references/rollout-and-rollback-checklist.md)
+- [references/platform-routing-notes.md](references/platform-routing-notes.md)

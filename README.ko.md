@@ -265,7 +265,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `deployment-automation` | CI/CD, Docker/Kubernetes, 클라우드 인프라 | 전체 |
+| `deployment-automation` | 프리뷰/스테이징/프로덕션 승격, 롤아웃 전략, 배포 후 검증, 롤백 계획을 다루는 릴리즈 실행 앵커이며, CI 작성은 `workflow-automation`, 머신 설정은 `system-environment-setup`으로 라우팅 | 전체 |
 | `environment-setup` | `.env` 구조, env 우선순위, 검증, 시크릿 전달을 다루는 앱 구성 호환 스킬이며, 더 넓은 실행 환경 설정은 `system-environment-setup`으로 라우팅 | 전체 |
 | `firebase-ai-logic` | Firebase AI Logic (Gemini) 통합 | Claude · Gemini |
 | `firebase-cli` | Firebase CLI (firebase-tools) — Hosting, Functions, Firestore, Realtime DB, Storage, Extensions, 에뮬레이터 수트 배포 | 전체 |

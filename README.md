@@ -265,7 +265,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `deployment-automation` | CI/CD, Docker/Kubernetes, cloud infrastructure | All |
+| `deployment-automation` | Release-execution anchor for preview/staging/prod promotion, rollout strategy, post-deploy verification, and rollback planning; routes CI authoring to `workflow-automation` and machine setup to `system-environment-setup` | All |
 | `environment-setup` | App-config compatibility skill for `.env` layout, env precedence, validation, and secret handoff; routes broader runnable-machine setup to `system-environment-setup` | All |
 | `firebase-ai-logic` | Firebase AI Logic (Gemini) integration | Claude · Gemini |
 | `firebase-cli` | Firebase CLI (firebase-tools) — deploy Hosting, Functions, Firestore, Realtime DB, Storage, Extensions, Emulator Suite | All |
