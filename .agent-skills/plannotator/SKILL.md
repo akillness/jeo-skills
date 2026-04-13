@@ -1,600 +1,266 @@
 ---
 name: plannotator
-description: Interactive plan and diff review for AI coding agents. Visual browser UI for annotating agent plans — approve or request changes with structured feedback. Supports code review, image annotation, and auto-save to Obsidian/Bear Notes.
+description: >
+  Review and annotate AI agent plans or diffs in a visual browser UI, then approve,
+  request changes, or archive the result with structured feedback. Use when a human
+  needs a plan-review gate before implementation, wants visual diff review after
+  coding, or needs to save reviewed plans to Obsidian/Bear. Triggers on: plan
+  review, diff review, approve plan, request changes, visual code review,
+  plannotator, planno, annotate plan, review agent plan, and save reviewed plans.
 allowed-tools: Read Bash Write
+compatibility: >
+  Best for Claude Code, Codex CLI, Gemini CLI, OpenCode, and orchestration flows
+  like JEO where an agent already produced a plan or diff and a human wants a
+  browser-based approval loop. Not for creating the plan itself or for broad code
+  review policy.
+license: MIT
 metadata:
-  tags: plan, planning, planno, plannotator, plan-review, diff-review, code-review, claude-code, opencode, annotation, visual-review, plan-review, design-review
+  tags: plan, planning, planno, plannotator, plan-review, diff-review, code-review, claude-code, opencode, codex, gemini, annotation, visual-review, obsidian, bear-notes
   platforms: Claude, OpenCode, Codex, Gemini
   keyword: plan
-  version: 0.9.2
+  version: "1.0.0"
   source: backnotprop/plannotator
 ---
 
+# plannotator
 
-# plannotator — Interactive Plan & Diff Review
+Use this skill when the main job is **reviewing an agent-produced plan or diff in a visual UI before work proceeds**.
 
-> Keyword: `plan` | Source: https://github.com/backnotprop/plannotator
->
-> Annotate and review AI coding agent plans visually, share with your team, send feedback with one click.
-> Works with **Claude Code**, **OpenCode**, **Gemini CLI**, and **Codex CLI**.
+`plannotator` is the **human approval gate**, not the planner itself.
+It sits between:
+- plan/spec creation (`task-planning`, `ralph`)
+- execution orchestration (`jeo`, `vibe-kanban`, `bmad`)
+- downstream code/UI feedback (`code-review`, `agentation`)
+
+Read these support docs before making setup or routing decisions:
+- [references/review-modes-and-boundaries.md](references/review-modes-and-boundaries.md)
+- [references/platform-setup.md](references/platform-setup.md)
+- [references/notes-and-troubleshooting.md](references/notes-and-troubleshooting.md)
 
 ## When to use this skill
+- A coding agent already produced an implementation plan and a human must approve or request changes before coding starts
+- You want to review a git diff visually after implementation and send targeted feedback
+- You need a browser-based annotation loop instead of a long chat reply
+- You want to save reviewed plans to Obsidian or Bear after approval or for team reference
+- You need a clear install / integration path for Claude Code, Codex CLI, Gemini CLI, or OpenCode
 
-- You want to review an AI agent's implementation plan BEFORE it starts coding
-- You want to annotate a git diff after the agent makes changes
-- You need a feedback loop: visually mark up what to change, then send structured feedback back
-- You want to share plan reviews with teammates via a link
-- You want to auto-save approved plans to Obsidian or Bear Notes
+## When not to use this skill
+- **The main job is creating or improving the plan itself** → use `task-planning`, `ralph`, or another planning/spec skill first
+- **The main job is broad PR judgment, policy review, or risk-based approval criteria** → use `code-review`
+- **The main job is UI screenshot annotation that should drive code fixes** → use `agentation`
+- **The main job is orchestration, kanban movement, or multi-agent execution state** → use `jeo` or `vibe-kanban`
+- **The main job is generic note-taking or wiki curation** → use `obsidian` / `llm-wiki`
 
----
+## Instructions
 
-## Scripts (Automated Patterns)
+### Step 1: Classify the review mode
+Normalize the request into one primary mode:
 
-All patterns have a corresponding script in `scripts/`. Run them directly or let the agent call them.
-
-| Script | Pattern | Usage |
-|--------|---------|-------|
-| `scripts/install.sh` | CLI Install | One-command install; `--all` sets up every AI tool |
-| `scripts/setup-hook.sh` | Claude Code Hook | Configure Claude Code ExitPlanMode hook |
-| `scripts/setup-gemini-hook.sh` | Gemini CLI Hook | Configure Gemini CLI ExitPlanMode hook + GEMINI.md |
-| `scripts/setup-codex-hook.sh` | Codex CLI Setup | Configure Codex CLI developer_instructions + prompt |
-| `scripts/setup-opencode-plugin.sh` | OpenCode Plugin | Register plugin + slash commands |
-| `scripts/check-status.sh` | Status Check | Verify all integrations and configuration |
-| `scripts/configure-remote.sh` | Remote Mode | SSH / devcontainer / WSL configuration |
-| `scripts/review.sh` | Code Review | Launch diff review UI |
-
----
-
-## Pattern 1: Install
-
-```bash
-# Install CLI only (macOS / Linux / WSL)
-bash scripts/install.sh
-
-# Install CLI and get Claude Code plugin commands
-bash scripts/install.sh --with-plugin
-
-# Install CLI + configure Gemini CLI
-bash scripts/install.sh --with-gemini
-
-# Install CLI + configure Codex CLI
-bash scripts/install.sh --with-codex
-
-# Install CLI + register OpenCode plugin
-bash scripts/install.sh --with-opencode
-
-# Install CLI + all AI tool integrations at once
-bash scripts/install.sh --all
+```yaml
+plannotator_mode:
+  primary_mode: plan-review | diff-review | note-export | platform-setup | troubleshooting
+  artifact_ready: yes | no
+  platform: claude | codex | gemini | opencode | unknown
+  feedback_goal: approve | request-changes | archive | unknown
+  repo_context: git-repo | markdown-only | remote-container | unknown
 ```
 
-What it does:
-- Detects OS (macOS / Linux / WSL / Windows)
-- Checks for Obsidian and shows install link if missing: https://obsidian.md/download
-- Installs via `https://plannotator.ai/install.sh`
-- Verifies install and PATH
-- Optionally runs integration scripts for each AI tool
-- On Windows: prints PowerShell / CMD commands to run manually
+Use one primary mode per run. If the user is vague, default to the smallest obvious interpretation:
+- existing plan to review → `plan-review`
+- existing code changes to inspect → `diff-review`
+- save reviewed plan → `note-export`
+- install/integrate plannotator → `platform-setup`
 
----
+### Step 2: Verify the artifact exists before opening review
+`plannotator` is only useful once something concrete exists.
 
-## Pattern 2: Hook Setup (Plan Review trigger)
+Checklist:
+1. A plan, diff, or markdown file already exists.
+2. The user wants human review, not plan generation.
+3. For diff review, a git repo or commit range is available.
+4. For note export, plannotator is running in the right mode and saving is configured.
 
+If the artifact is missing, route out instead of forcing the review tool.
+
+### Step 3: Choose the smallest review path
+
+#### A. Plan review
+Use when a plan exists and the human wants to approve or request changes before execution.
+
+Typical flow:
+1. Ensure plannotator is installed and integrated for the current platform.
+2. Trigger the plan-review UI from the platform’s normal plan/hook flow.
+3. Annotate with one concrete intent at a time:
+   - `delete`
+   - `insert`
+   - `replace`
+   - `comment`
+4. End in one explicit outcome:
+   - **Approve** → implementation can proceed
+   - **Request changes** → agent replans with structured feedback
+   - **Archive / save** → store the plan without advancing work
+
+#### B. Diff review
+Use when the code already changed and the human wants visual line-level review.
+
+Typical flow:
 ```bash
-# Add hook to ~/.claude/settings.json
-bash scripts/setup-hook.sh
-
-# Preview what would change (no writes)
-bash scripts/setup-hook.sh --dry-run
-```
-
-What it does:
-- Checks plannotator CLI is installed
-- Merges `ExitPlanMode` hook into `~/.claude/settings.json` safely (backs up first)
-- Skips if hook already configured
-- **Restart Claude Code after running this**
-
-### Alternative: Claude Code Plugin (no manual hook needed)
-
-Run inside Claude Code:
-
-```bash
-/plugin marketplace add backnotprop/plannotator
-/plugin install plannotator@plannotator
-# IMPORTANT: Restart Claude Code after plugin install
-```
-
----
-
-## Pattern 3: Plan Review (Before Coding)
-
-> Triggered automatically via hook when Claude Code exits plan mode.
-
-When your agent finishes planning (Claude Code: `Shift+Tab×2` to enter plan mode), plannotator opens automatically:
-
-1. **View** the agent's plan in the visual UI
-2. **Annotate** with clear intent:
-   - `delete` — remove risky or unnecessary step
-   - `insert` — add missing step
-   - `replace` — revise incorrect approach
-   - `comment` — clarify constraints or acceptance criteria
-3. **Submit** one outcome:
-   - **Approve** → agent proceeds with implementation
-   - **Request changes** → your annotations are sent back as structured feedback for replanning
-
----
-
-## Pattern 4: Code Review (After Coding)
-
-```bash
-# Review all uncommitted changes
+# current working tree
 bash scripts/review.sh
 
-# Review a specific commit
+# specific commit
 bash scripts/review.sh HEAD~1
 
-# Review branch diff
+# branch diff
 bash scripts/review.sh main...HEAD
 ```
 
-What it does:
-- Checks CLI and git repo state
-- Shows diff summary before opening
-- Launches `plannotator review` UI
-- In the UI: select line numbers to annotate, switch unified/split views, attach images
+Use diff review when the code exists. If the user is still deciding the approach, route back to plan review first.
 
----
+#### C. Note export
+Use when the review result should be saved to Obsidian or Bear.
 
-## Pattern 4.1: Known Limitations & Verified Workarounds
+Use this only after confirming the relevant save path is configured. Keep note export secondary to the review decision; it is not the main trigger for the skill.
 
-- Manual `plannotator review` or `bash scripts/review.sh` opens the review UI, but **Send Feedback does not automatically reach the active agent session**. Use hook-driven plan review when you need a live feedback loop, or export/copy the annotations and paste them back into the agent chat manually.
-- Code Review requires a git repo. For a one-off markdown or text file, create a temp repo first:
+#### D. Platform setup
+Use when the user needs plannotator installed or connected to Claude / Codex / Gemini / OpenCode.
 
+Start with:
 ```bash
-cd /tmp && mkdir -p planno-tmp && cd planno-tmp
-git init -q && git config user.email "x@x" && git config user.name "x"
-git commit --allow-empty -m "init" -q
-cp /path/to/file-to-review.md .
-git add . && git commit -m "review" -q
-plannotator review HEAD
-```
-
-- If multiple local runs leave you on the wrong browser tab or stale port, reset the old process and pin a fixed port before retrying:
-
-```bash
-pkill plannotator 2>/dev/null; sleep 1
-export PLANNOTATOR_PORT=19432
-plannotator review
-```
-
----
-
-## Pattern 5: Remote / Devcontainer Mode
-
-```bash
-# Interactive setup (SSH, devcontainer, WSL)
-bash scripts/configure-remote.sh
-
-# View current configuration
-bash scripts/configure-remote.sh --show
-
-# Set port directly
-bash scripts/configure-remote.sh --port 9999
-```
-
-What it does:
-- Detects shell profile (`.zshrc`, `.bashrc`, `.profile`)
-- Writes `PLANNOTATOR_REMOTE=1` and `PLANNOTATOR_PORT` to shell profile
-- Shows SSH and VS Code port-forwarding instructions
-- Optionally sets custom browser or share URL
-
-Manual environment variables:
-
-```bash
-export PLANNOTATOR_REMOTE=1    # No auto browser open
-export PLANNOTATOR_PORT=9999   # Fixed port for forwarding
-```
-
-| Variable | Description |
-|----------|-------------|
-| `PLANNOTATOR_REMOTE` | Remote mode (no auto browser open) |
-| `PLANNOTATOR_PORT` | Fixed local/forwarded port |
-| `PLANNOTATOR_BROWSER` | Custom browser path/app |
-| `PLANNOTATOR_SHARE_URL` | Custom share portal URL |
-
----
-
-## Pattern 6: Status Check
-
-```bash
+bash scripts/install.sh
 bash scripts/check-status.sh
 ```
 
-Checks all of:
-- CLI installed and version
-- Claude Code hook in `~/.claude/settings.json` (or plugin detected)
-- Gemini CLI hook in `~/.gemini/settings.json`
-- Codex CLI `~/.codex/config.toml` developer_instructions
-- OpenCode plugin in `opencode.json` + slash commands
-- Obsidian installation
-- Environment variables configured
-- Git repo available for diff review
+Then choose the platform-specific setup from [references/platform-setup.md](references/platform-setup.md).
 
----
+### Step 4: Keep boundaries explicit
+Use these route-outs aggressively:
+- **Need the plan written or refined?** → `task-planning`, `ralph`
+- **Need a broader approval / risk / correctness review of code changes?** → `code-review`
+- **Need UI screenshot markup that should turn into code fixes?** → `agentation`
+- **Need orchestration state, ledger updates, or multi-agent gating?** → `jeo`, `vibe-kanban`
+- **Need note-system management beyond reviewed plan export?** → `obsidian`, `llm-wiki`
 
-## Pattern 7: Gemini CLI Integration
+### Step 5: Prefer structured, low-ambiguity annotations
+Good annotations are:
+- narrow
+- tied to one issue
+- actionable
+- anchored to a specific plan step or diff line range
+- explicit about expected acceptance criteria
 
-```bash
-# Configure Gemini CLI (hook + GEMINI.md instructions)
-bash scripts/setup-gemini-hook.sh
+Bad annotations are:
+- vague (“this feels wrong”)
+- multi-issue bundles
+- generic style commentary with no requested change
+- hidden planning work that should have happened before review
 
-# Preview what would change (no writes)
-bash scripts/setup-gemini-hook.sh --dry-run
+### Step 6: Use the script bundle instead of ad hoc commands
+Available scripts:
+- `scripts/install.sh` — install CLI and optional integrations
+- `scripts/setup-hook.sh` — Claude Code hook setup
+- `scripts/setup-gemini-hook.sh` — Gemini setup
+- `scripts/setup-codex-hook.sh` — Codex setup
+- `scripts/setup-opencode-plugin.sh` — OpenCode setup
+- `scripts/check-status.sh` — integration/status verification
+- `scripts/configure-remote.sh` — remote/devcontainer/WSL setup
+- `scripts/review.sh` — diff review launcher
 
-# Only update settings.json hook (skip GEMINI.md)
-bash scripts/setup-gemini-hook.sh --hook-only
+If you need the exact per-platform commands, caveats, or remote-mode notes, read the support references instead of bloating the main flow.
 
-# Only update GEMINI.md (skip settings.json)
-bash scripts/setup-gemini-hook.sh --md-only
+### Step 7: Return one of these output shapes
+Preferred outputs:
+
+```markdown
+# plannotator Review Brief
+
+## Mode
+- Primary mode:
+- Why it fits:
+
+## Artifact
+- What is being reviewed:
+- Review surface:
+- Platform:
+
+## Next action
+1. command / trigger
+2. review action
+3. outcome decision
+
+## Route-outs
+- Neighboring skills to use before/after this step:
+
+## Risks / caveats
+- Setup prerequisites:
+- Known limitations:
 ```
 
-What it does:
-- Checks plannotator CLI is installed
-- Merges `ExitPlanMode` hook into `~/.gemini/settings.json` (same format as Claude Code)
-- Appends plannotator usage instructions to `~/.gemini/GEMINI.md`
-- Backs up existing files before modifying
+Or:
 
-Usage in Gemini CLI after setup:
+```markdown
+# plannotator Setup Brief
 
-```bash
-# Enter planning mode (hook fires when you exit)
-gemini --approval-mode plan
+## Platform
+- Claude / Codex / Gemini / OpenCode
 
-# Manual plan review (validated format)
-python3 -c "
-import json
-plan = open('plan.md').read()
-print(json.dumps({'tool_input': {'plan': plan, 'permission_mode': 'acceptEdits'}}))
-" | plannotator > /tmp/plannotator_feedback.txt 2>&1 &
+## Install
+- exact commands
 
-# Code review after implementation
-plannotator review
+## Verification
+- status checks
+- how to trigger review
+
+## Caveats
+- remote mode / note export / known limitations
 ```
 
-> **Note:** Gemini CLI supports `gemini hooks migrate --from-claude` to auto-migrate existing Claude Code hooks.
-
----
-
-## Pattern 8: Codex CLI Integration
-
-```bash
-# Configure Codex CLI (developer_instructions + prompt file)
-bash scripts/setup-codex-hook.sh
-
-# Preview what would change (no writes)
-bash scripts/setup-codex-hook.sh --dry-run
-```
-
-What it does:
-- Adds plannotator instruction to `developer_instructions` in `~/.codex/config.toml`
-- Creates `~/.codex/prompts/plannotator.md` (invoke with `/prompts:plannotator`)
-- Backs up existing config before modifying
-
-Usage in Codex CLI after setup:
-
-```bash
-# Use the plannotator agent prompt
-/prompts:plannotator
-
-# Manual plan review (validated format)
-python3 -c "
-import json
-plan = open('plan.md').read()
-print(json.dumps({'tool_input': {'plan': plan, 'permission_mode': 'acceptEdits'}}))
-" | plannotator > /tmp/plannotator_feedback.txt 2>&1 &
-
-# Code review after implementation
-plannotator review HEAD~1
-```
-
-> Note: `plannotator plan -` with heredoc/echo can fail with `Failed to parse hook event from stdin`. Use the python3 JSON format above.
-
----
-
-## Pattern 10: Manual Save via Export → Notes Tab
-
-Save the current plan to Obsidian or Bear Notes at any time — without approving or denying.
-
-### How to access
-
-1. Click **Export** button in the plannotator UI toolbar
-2. Click the **Notes** tab (not Share or Annotations)
-3. You see:
-   - **Obsidian** row with configured vault path and **Save** button
-   - **Bear** row with **Save** button
-   - **Save All** button to save both at once
-4. A green dot next to each row means that integration is configured
-5. Clicking **Save** shows **Saved** when complete
-
-### When to use
-
-- Save work-in-progress plans without committing to Approve/Deny
-- Quick archive after reviewing without final decision
-- Save annotated plans for team reference
-
-### Requirements
-
-- plannotator must be running in **hook mode** (normal Claude Code ExitPlanMode hook invocation = hook mode)
-- Obsidian/Bear must be configured in Settings (⚙️) → Saving tab
-- Settings are stored in **cookies** (not localStorage) and persist across restarts
-
-> **Note:** The Notes tab uses `POST /api/save-notes` which writes directly to the vault filesystem (Obsidian) or calls `bear://x-callback-url/create` (Bear). This endpoint is only available in hook mode.
-
----
-
-## Recommended Workflow
-
-### Quick Start (all AI tools)
-
-```bash
-# 1. Install CLI + configure all AI tool integrations at once
-bash scripts/install.sh --all
-
-# 2. Verify everything
-bash scripts/check-status.sh
-
-# 3. Restart your AI tools (Claude Code, Gemini CLI, OpenCode, Codex)
-```
-
-### Claude Code (manual)
-
-```
-1. bash scripts/install.sh --with-plugin
-   └─ Installs CLI + shows plugin install commands
-
-2. bash scripts/setup-hook.sh          ← skip if using plugin
-   └─ Configures automatic plan review trigger
-
-3. bash scripts/check-status.sh
-   └─ Confirm everything is ready
-
-4. [Code with agent in plan mode → Shift+Tab×2]
-   └─ plannotator opens automatically
-
-5. bash scripts/review.sh              ← after agent finishes coding
-   └─ Opens visual diff review
-```
-
-### Gemini CLI (manual)
-
-```
-1. bash scripts/install.sh
-2. bash scripts/setup-gemini-hook.sh
-3. gemini --approval-mode plan          ← work in plan mode
-   └─ plannotator fires on exit
-```
-
-### Codex CLI (manual)
-
-```
-1. bash scripts/install.sh
-2. bash scripts/setup-codex-hook.sh
-3. /prompts:plannotator                 ← inside Codex session
-```
-
----
-
-## OpenCode Setup
-
-```bash
-# Automated (recommended)
-bash scripts/setup-opencode-plugin.sh
-
-# Or add manually to opencode.json:
-```
-
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "plugin": ["@plannotator/opencode@latest"]
-}
-```
-
-After setup, restart OpenCode. Available slash commands:
-- `/plannotator-review` — open code review UI for current git diff
-- `/plannotator-annotate <file.md>` — annotate a markdown file
-
-The `submit_plan` tool is automatically available to the agent for plan submission.
-
----
-
-## Pattern 9: Obsidian Integration Setup
-
-Auto-save approved plans to your Obsidian vault with YAML frontmatter and tags.
-
-### Prerequisites
-
-1. **Install Obsidian**: https://obsidian.md/download
-2. **Create a Vault**: Open Obsidian → Create new vault → Choose location
-   - Example: `~/Documents/Obsidian/MyVault`
-3. **Verify Vault Exists**: Obsidian creates `obsidian.json` config after first vault creation
-
-```bash
-# Check Obsidian installation (macOS)
-ls /Applications/Obsidian.app
-
-# Check Obsidian config exists (vault detection depends on this)
-# macOS
-cat ~/Library/Application\ Support/obsidian/obsidian.json
-# Linux
-cat ~/.config/obsidian/obsidian.json
-# Windows
-cat %APPDATA%/obsidian/obsidian.json
-```
-
-### Step-by-Step Setup
-
-```bash
-# Step 1: Verify Obsidian is installed and has at least one vault
-bash scripts/check-status.sh
-
-# Step 2: Trigger a plan review (any method)
-# Claude Code: Shift+Tab×2 → plan mode → exit plan mode
-# Gemini CLI: gemini --approval-mode plan
-# OpenCode: Agent creates a plan
-
-# Step 3: In the plannotator UI:
-#   1. Click ⚙️ (Settings gear icon)
-#   2. Go to "Saving" tab
-#   3. Toggle ON "Obsidian Integration"
-#   4. Select your vault from dropdown (auto-detected)
-#      - Or enter custom path if vault not detected
-#   5. Set folder name (default: "plannotator")
-
-# Step 4: Approve a plan to test the integration
-#   - Click "Approve" in the plannotator UI
-#   - Check your vault for the saved file
-```
-
-### Obsidian Configuration Options
-
-| Setting | Description | Default |
-|---------|-------------|---------|
-| **Vault** | Path to Obsidian vault | Auto-detected |
-| **Folder** | Subfolder in vault for plans | `plannotator` |
-| **Custom Path** | Manual path if auto-detect fails | - |
-
-### Saved File Format
-
-Files are saved with human-readable names and YAML frontmatter:
-
-```
-Filename: {Title} - {Month} {Day}, {Year} {Hour}-{Minute}{am/pm}.md
-Example:  User Authentication - Feb 22, 2026 10-45pm.md
-```
-
-```yaml
----
-created: 2026-02-22T22:45:30.000Z
-source: plannotator
-tags: [plannotator, project-name, typescript, ...]
----
-
-[[Plannotator Plans]]
-
-# Original plan content...
-```
-
-**Tag extraction:**
-- `plannotator` — always included
-- Project name — from git repo or directory
-- Title words — first 3 meaningful words from H1 heading
-- Languages — from code blocks (```typescript → typescript)
-
-### Folder Organization
-
-Organize plans within the vault using subfolders:
-
-```
-vault/plannotator/
-├── approved/          ← approved plans
-├── denied/            ← rejected plans
-└── 2026-02/           ← monthly archive
-```
-
-Create subfolders manually (Obsidian detects them automatically):
-
-```bash
-mkdir -p ~/path/to/vault/plannotator/approved
-mkdir -p ~/path/to/vault/plannotator/denied
-mkdir -p ~/path/to/vault/plannotator/2026-02
-```
-
-Or write directly to any subfolder:
-
-```bash
-cp ~/.plannotator/plans/<name>-approved.md ~/path/to/vault/plannotator/approved/
-```
-
-### Bear Notes (Alternative)
-
-If you prefer Bear Notes over Obsidian:
-
-1. Toggle ON "Bear Notes" in Settings → Saving tab
-2. Plans are saved via `bear://x-callback-url/create`
-3. Tags are appended as hashtags
-4. Validate callback from terminal:
-
-```bash
-open "bear://x-callback-url/create?title=Plannotator%20Check&text=Bear%20callback%20OK"
-```
-
-| Feature | Obsidian | Bear |
-|---------|----------|------|
-| Storage | File system | x-callback-url |
-| Frontmatter | YAML | None (hashtags) |
-| Platforms | macOS/Win/Linux | macOS/iOS |
-
-### Troubleshooting
-
-**Vault not detected:**
-
-```bash
-# 1. Check Obsidian config exists
-ls ~/Library/Application\ Support/obsidian/obsidian.json  # macOS
-
-# 2. If missing, open Obsidian and create a vault first
-open /Applications/Obsidian.app
-
-# 3. After creating vault, restart plannotator
-```
-
-**Plans not saving:**
-
-```bash
-# Check write permissions on vault folder
-ls -la ~/path/to/vault/plannotator/
-
-# Check browser console for errors (F12 → Console)
-```
-
-**Export → Notes tab Save buttons require hook mode:**
-- Export → Notes tab Save buttons require plannotator running in **hook mode** (stdin JSON input). In CLI `review`/`annotate` modes, the `/api/save-notes` endpoint is not active. Normal Claude Code hook invocation (ExitPlanMode hook) always runs in hook mode.
-
-**Settings not visible in automated/headless browsers:**
-- Obsidian Integration settings must be configured in the **system browser** that plannotator auto-opens. Settings are stored in cookies (not localStorage). Automated/headless browser profiles (Playwright, Puppeteer) use isolated cookie jars and will not see these settings.
-
-**Bear export not working:**
-- Confirm Bear app is installed and opened at least once
-- Confirm `open "bear://x-callback-url/create?..."` works from terminal
-- Use system browser session for plannotator settings; automated/headless sessions can block custom URI handlers
-
-**Settings not persisting:**
-- Settings are stored in cookies (not localStorage)
-- Ensure cookies are enabled for localhost
-- Settings persist across different ports
-
----
-
-## Auto-save (Summary)
-
-> Obsidian integration is **optional** — plans can still be reviewed and approved without it.
-
----
-
-## Best Practices
-
-1. Use plan review BEFORE the agent starts coding — catch wrong approaches early
-2. Keep each annotation tied to one concrete, actionable change
-3. Include acceptance criteria in "request changes" feedback
-4. For diff review, annotate exact line ranges tied to expected behavior changes
-5. Use image annotation for UI/UX feedback where text is insufficient
-
----
+## Examples
+
+### Example 1: Plan approval gate
+**Input**
+> The agent proposed a 6-step implementation plan. I want to inspect it visually and either approve it or send corrections back before coding starts.
+
+**Good output direction**
+- mode: `plan-review`
+- verify the plan already exists
+- trigger plannotator through the platform’s normal plan-review flow
+- annotate one issue per change
+- finish with approve vs request-changes
+- route plan-creation work back to `task-planning` if the plan is missing or too immature
+
+### Example 2: Review a recent code diff
+**Input**
+> The agent already changed three files. Open the visual diff review and let me mark up the changes.
+
+**Good output direction**
+- mode: `diff-review`
+- verify git repo / diff range
+- use `bash scripts/review.sh` with the right target
+- keep broader approval-policy questions routed to `code-review`
+
+### Example 3: Save reviewed plans to notes
+**Input**
+> I want reviewed plans saved to Obsidian so my team can revisit them later.
+
+**Good output direction**
+- mode: `note-export`
+- verify save integration prerequisites and hook-mode caveat
+- explain how review output gets saved
+- route broader vault-management work to note-taking skills
+
+## Best practices
+1. Treat `plannotator` as the visual approval gate, not the planning engine.
+2. Review one concrete artifact at a time.
+3. Use one annotation per issue whenever possible.
+4. Keep the final outcome explicit: approve, request changes, or archive.
+5. Use `scripts/check-status.sh` before debugging cross-platform integration issues.
+6. Move platform/setup specifics into references so the core skill stays short and trigger-friendly.
+7. When in doubt, route planning/spec generation and orchestration state to neighboring skills instead of stretching this one.
 
 ## References
-
 - [GitHub: backnotprop/plannotator](https://github.com/backnotprop/plannotator)
 - [Official site: plannotator.ai](https://plannotator.ai)
-- [Obsidian download](https://obsidian.md/download)
-- [Hook README: apps/hook/README.md](https://github.com/backnotprop/plannotator/blob/main/apps/hook/README.md)
-- [OpenCode plugin: apps/opencode-plugin/README.md](https://github.com/backnotprop/plannotator/blob/main/apps/opencode-plugin/README.md)
+- [references/review-modes-and-boundaries.md](references/review-modes-and-boundaries.md)
+- [references/platform-setup.md](references/platform-setup.md)
+- [references/notes-and-troubleshooting.md](references/notes-and-troubleshooting.md)

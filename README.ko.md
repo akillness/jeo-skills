@@ -213,7 +213,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | 스킬 | 키워드 | 설명 |
 |------|--------|------|
-| `plannotator` | `plan` | 시각적 브라우저 계획/diff 검토 — 승인 또는 피드백 |
+| `plannotator` | `plan` | 에이전트 계획/diff용 시각적 승인 게이트 — 주석, 승인, 수정 요청, 검토 결과 저장 |
 | `agentation` | `annotate` | UI 어노테이션 → 에이전트 코드 수정 |
 | `agent-browser` | `agent-browser` | AI 에이전트용 헤드리스 브라우저 검증 |
 | `playwriter` | `playwriter` | 실행 중인 브라우저에 연결하는 Playwright 자동화 |

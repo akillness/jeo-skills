@@ -14,8 +14,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
 - 89 total skills
-- 47 skills with `references/`
-- 46 skills with `evals/`
+- 48 skills with `references/`
+- 47 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -38,6 +38,7 @@ Recent ratchets:
 - The `ui-component-patterns` modernization pass added both `references/` and `evals/`, which matters because another legacy frontend anchor now owns reusable primitive / variant / slot API design instead of remaining a long example dump with weak route-outs.
 - The `workflow-automation` modernization pass added both `references/` and `evals/`, which matters because the utilities/developer-workflow lane now has a sharper repo-scoped automation anchor instead of a legacy generic command dump that overlapped with environment setup and deployment concerns.
 - The `responsive-design` modernization pass added both `references/` and `evals/`, which matters because the remaining legacy frontend layout anchor now owns mobile-first, container-aware adaptation plus overflow/reflow verification instead of remaining a generic CSS/example dump.
+- The `plannotator` modernization pass added both `references/` and `evals/`, which matters because a highly indexed planning-review anchor now behaves like a clear visual approval gate with explicit route-outs instead of a 600-line mixed install/setup/review dump.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
@@ -65,3 +66,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[ui-component-patterns-modernization-2026-04-13]]
 - [[workflow-automation-modernization-2026-04-13]]
 - [[responsive-design-modernization-2026-04-13]]
+- [[plannotator-modernization-2026-04-13]]

@@ -1,0 +1,35 @@
+{
+  "skill_name": "plannotator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The agent already proposed a plan. I want to inspect it visually, mark up two risky steps, and either approve it or send the corrections back before implementation starts.",
+      "expected_output": "The skill activates in plan-review mode, verifies the plan already exists, and describes an approve vs request-changes flow with structured annotations.",
+      "assertions": [
+        "Response identifies plan-review as the primary mode or equivalent",
+        "Response requires a concrete existing plan before opening review",
+        "Response ends with an explicit approve vs request-changes outcome"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The agent already changed three files. Open the visual diff review for main...HEAD and help me leave targeted feedback.",
+      "expected_output": "The skill activates in diff-review mode, uses the diff review launcher, and keeps broader PR-review policy routed away.",
+      "assertions": [
+        "Response identifies diff-review as the primary mode or equivalent",
+        "Response uses or recommends `bash scripts/review.sh main...HEAD` or an equivalent targeted diff review command",
+        "Response routes broad approval-policy work to `code-review` rather than absorbing it into plannotator"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want reviewed plans saved to Obsidian, but if the real issue is vault organization or wiki structure I do not want this skill to pretend it owns that work.",
+      "expected_output": "The skill activates in note-export mode, confirms save prerequisites, and routes broader note-system management to Obsidian/wiki skills.",
+      "assertions": [
+        "Response identifies note-export as the primary mode or equivalent",
+        "Response treats save integration as a prerequisite-driven secondary flow",
+        "Response routes broader note/vault/wiki management to `obsidian` or `llm-wiki`"
+      ]
+    }
+  ]
+}
