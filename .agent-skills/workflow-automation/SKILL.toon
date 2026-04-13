@@ -1,20 +1,29 @@
 N:workflow-automation
-D:Automate repetitive development tasks and workflows. Use when creating build scripts, automating ...
-G:automation scripts workflow npm-scripts Makefile
-U[3]:
-  **Repetitive tasks**: running the same commands every time
-  **Complex builds**: multi-step build processes
-  **Team onboarding**: a consistent development environment
-S[5]{n,action}:
-  1,npm scripts
-  2,Makefile
-  3,Husky + lint-staged (Git Hooks)
-  4,Task Runner scripts
-  5,GitHub Actions workflow automation
-R[6]:
+D:Design repo-scoped recurring workflow automation: task runners, bootstrap entrypoints, local-CI parity commands, hook guardrails, and maintenance routines that wrap existing tools without bloating into deployment or environment provisioning.
+G:automation task-runner bootstrap ci-parity dev-workflow hooks repo-maintenance
+U[7]:
+  thin entrypoint layer for recurring repo commands
+  bootstrap and onboarding automation
+  local CI parity wrappers
+  hook guardrails for fast checks
+  repo maintenance automation
+  workflow diagnosis and dedupe
+  route-outs to environment setup and deployment
+S[8]{n,action}:
+  1,classify the recurring workflow
+  2,choose one primary automation mode
+  3,pick the smallest automation surface
+  4,apply the task-runner vs bootstrap vs hook vs CI decision ladder
+  5,enforce idempotent and non-interactive guardrails
+  6,keep route-outs explicit
+  7,produce a workflow automation packet
+  8,simplify before adding another wrapper
+R[8]:
   uses
-  name
-  name
-  name
-  name
-  name
+  references/automation-modes.md
+  references/handoff-boundaries.md
+  task-entrypoints
+  bootstrap-onboarding
+  local-ci-parity
+  hook-guardrails
+  repo-maintenance

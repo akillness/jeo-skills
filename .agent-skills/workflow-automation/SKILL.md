@@ -1,323 +1,273 @@
 ---
 name: workflow-automation
-description: Automate repetitive development tasks and workflows. Use when creating build scripts, automating deployments, or setting up development workflows. Handles npm scripts, Makefile, GitHub Actions workflows, and task automation.
+description: >
+  Design repo-scoped recurring workflow automation: task runners, bootstrap
+  entrypoints, local-CI parity commands, hook guardrails, and maintenance
+  routines that wrap existing tools without bloating into full deployment or
+  environment provisioning. Use when the user needs repeatable commands for
+  setup/build/test/lint/release prep, wants to replace copy-paste shell rituals,
+  or must choose between npm scripts, Make/just/Task, hooks, local CI mirrors,
+  and repo maintenance bots. Triggers on: workflow automation, task runner,
+  make this repeatable, bootstrap script, make/just/taskfile, local CI parity,
+  repo automation, and recurring dev workflow.
+allowed-tools: Read Write Bash Grep Glob
+compatibility: >
+  Best for CLI/dev workflow, backend, frontend, and fullstack repositories where
+  the problem is recurring repo-local workflows or repo-plus-CI command
+  orchestration. Not for cloud deployment architecture, broad machine
+  provisioning, or local Git history management.
+license: MIT
 metadata:
-  tags: automation, scripts, workflow, npm-scripts, Makefile, task-runner
-  platforms: Claude, ChatGPT, Gemini
-allowed-tools: Bash Read Write Edit
+  tags: automation, task-runner, bootstrap, ci-parity, dev-workflow, hooks, repo-maintenance
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0"
+  source: akillness/oh-my-skills
 ---
-
 
 # Workflow Automation
 
+Use this skill when the main question is **"what is the smallest repeatable automation layer this repo needs, and how should it wrap the tools we already have?"**
+
+The job is not to dump a giant Makefile, ten shell scripts, and a random GitHub Actions example.
+The job is to:
+1. classify the recurring workflow,
+2. choose the right automation surface,
+3. keep repo-local glue separate from environment provisioning and deployment,
+4. make automation idempotent and non-interactive,
+5. return a workflow packet another engineer or agent can apply immediately.
+
+Read [references/automation-modes.md](references/automation-modes.md) before designing or refactoring a workflow layer.
+Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `workflow-automation`, `system-environment-setup`, `deployment-automation`, `git-workflow`, `testing-strategies`, or `monitoring-observability` should own the next step.
 
 ## When to use this skill
+- Turn repeated repo commands into one stable entrypoint instead of copy-paste shell history
+- Choose between `npm scripts`, Make, `just`, Task, shell scripts, hooks, or CI wrappers
+- Design or refactor bootstrap flows like `make setup`, `just bootstrap`, `npm run ci`, or `scripts/bootstrap.sh`
+- Reduce drift between local commands, docs, and CI expectations
+- Decide what belongs in task runners versus hooks versus hosted CI
+- Add repo-maintenance automation like dependency update bots or scheduled housekeeping without confusing that with deployment
+- Diagnose why a workflow layer has become brittle, interactive, duplicated, or impossible to onboard with
 
-- **Repetitive tasks**: running the same commands every time
-- **Complex builds**: multi-step build processes
-- **Team onboarding**: a consistent development environment
+## When not to use this skill
+- **The main task is runtime/toolchain installation, Docker Compose topology, devcontainers, or making a repo runnable across machines** → use `system-environment-setup`
+- **The main task is cloud/server deployment, release rollout, Docker/Kubernetes delivery, or hosted CI/CD architecture** → use `deployment-automation` or `vercel-deploy`
+- **The main task is local branch/commit/rebase/recovery workflow** → use `git-workflow`
+- **The main task is deciding risk-based test depth or merge/release evidence policy** → use `testing-strategies`
+- **The main task is production alerting, telemetry, or dashboards** → use `monitoring-observability`
+- **The commands are already clear and the only job is trivial implementation**; in that case implement directly instead of reopening the automation design
 
 ## Instructions
 
-### Step 1: npm scripts
+### Step 1: Classify the recurring workflow before choosing tools
+Normalize the request into this intake first:
 
-**package.json**:
-```json
-{
-  "scripts": {
-    "dev": "nodemon src/index.ts",
-    "build": "tsc && vite build",
-    "test": "jest --coverage",
-    "test:watch": "jest --watch",
-    "lint": "eslint src --ext .ts,.tsx",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,json}\"",
-    "type-check": "tsc --noEmit",
-    "pre-commit": "lint-staged",
-    "prepare": "husky install",
-    "clean": "rm -rf dist node_modules",
-    "reset": "npm run clean && npm install",
-    "docker:build": "docker build -t myapp .",
-    "docker:run": "docker run -p 3000:3000 myapp"
-  }
-}
-```
-
-### Step 2: Makefile
-
-**Makefile**:
-```makefile
-.PHONY: help install dev build test clean docker
-
-.DEFAULT_GOAL := help
-
-help: ## Show this help
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
-
-install: ## Install dependencies
-	npm install
-
-dev: ## Start development server
-	npm run dev
-
-build: ## Build for production
-	npm run build
-
-test: ## Run all tests
-	npm test
-
-lint: ## Run linter
-	npm run lint
-
-lint-fix: ## Fix linting issues
-	npm run lint:fix
-
-clean: ## Clean build artifacts
-	rm -rf dist coverage
-
-docker-build: ## Build Docker image
-	docker build -t myapp:latest .
-
-docker-run: ## Run Docker container
-	docker run -d -p 3000:3000 --name myapp myapp:latest
-
-deploy: build ## Deploy to production
-	@echo "Deploying to production..."
-	./scripts/deploy.sh production
-
-ci: lint test build ## Run CI pipeline locally
-	@echo "✅ CI pipeline passed!"
-```
-
-**Usage**:
-```bash
-make help        # Show all commands
-make dev         # Start development
-make ci          # Run full CI locally
-```
-
-### Step 3: Husky + lint-staged (Git Hooks)
-
-**package.json**:
-```json
-{
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md}": [
-      "prettier --write"
-    ]
-  }
-}
-```
-
-**.husky/pre-commit**:
-```bash
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-echo "Running pre-commit checks..."
-
-# Lint staged files
-npx lint-staged
-
-# Type check
-npm run type-check
-
-# Run tests related to changed files
-npm test -- --onlyChanged
-
-echo "✅ Pre-commit checks passed!"
-```
-
-### Step 4: Task Runner scripts
-
-**scripts/dev-setup.sh**:
-```bash
-#!/bin/bash
-set -e
-
-echo "🚀 Setting up development environment..."
-
-# Check prerequisites
-if ! command -v node &> /dev/null; then
-    echo "❌ Node.js is not installed"
-    exit 1
-fi
-
-if ! command -v docker &> /dev/null; then
-    echo "❌ Docker is not installed"
-    exit 1
-fi
-
-# Install dependencies
-echo "📦 Installing dependencies..."
-npm install
-
-# Copy environment file
-if [ ! -f .env ]; then
-    echo "📄 Creating .env file..."
-    cp .env.example .env
-    echo "⚠️ Please update .env with your configuration"
-fi
-
-# Start Docker services
-echo "🐳 Starting Docker services..."
-docker-compose up -d
-
-# Wait for database
-echo "⏳ Waiting for database..."
-./scripts/wait-for-it.sh localhost:5432 --timeout=30
-
-# Run migrations
-echo "🗄️ Running database migrations..."
-npm run migrate
-
-# Seed data (optional)
-read -p "Seed database with sample data? (y/n) " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    npm run seed
-fi
-
-echo "✅ Development environment ready!"
-echo "Run 'make dev' to start the development server"
-```
-
-**scripts/deploy.sh**:
-```bash
-#!/bin/bash
-set -e
-
-ENV=$1
-
-if [ -z "$ENV" ]; then
-    echo "Usage: ./deploy.sh [staging|production]"
-    exit 1
-fi
-
-echo "🚀 Deploying to $ENV..."
-
-# Build
-echo "📦 Building application..."
-npm run build
-
-# Run tests
-echo "🧪 Running tests..."
-npm test
-
-# Deploy based on environment
-if [ "$ENV" == "production" ]; then
-    echo "🌍 Deploying to production..."
-    # Production deployment logic
-    ssh production "cd /app && git pull && npm install && npm run build && pm2 restart all"
-elif [ "$ENV" == "staging" ]; then
-    echo "🧪 Deploying to staging..."
-    # Staging deployment logic
-    ssh staging "cd /app && git pull && npm install && npm run build && pm2 restart all"
-fi
-
-echo "✅ Deployment to $ENV completed!"
-```
-
-### Step 5: GitHub Actions workflow automation
-
-**.github/workflows/ci.yml**:
 ```yaml
-name: CI
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run linter
-        run: npm run lint
-
-      - name: Type check
-        run: npm run type-check
-
-      - name: Run tests
-        run: npm test -- --coverage
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
+workflow_intake:
+  primary_goal: task-entrypoints | bootstrap-onboarding | local-ci-parity | hook-guardrails | repo-maintenance | workflow-diagnosis | hybrid
+  repo_shape: single-app | app-plus-services | monorepo | library-cli | docs-content | unknown
+  current_surface: package-scripts | make-just-task | shell-scripts | ci-workflows | hooks | mixed | none | unknown
+  main_pain:
+    - command-sprawl
+    - onboarding-drift
+    - local-vs-ci-mismatch
+    - interactive-script
+    - cross-platform-friction
+    - duplicated-logic
+    - hidden-maintenance-chores
+    - unclear-owner
+    - unknown
+  blast_radius: local-dev-loop | repo-plus-ci | multi-team-repo | unknown
+  confidence: high | medium | low
 ```
+
+If the user is vague, prefer the smallest obvious **repo-local recurring workflow** interpretation and state the assumption.
+
+### Step 2: Choose one primary automation mode
+Pick exactly one mode for the current run:
+
+1. **task-entrypoints**
+   - Use when the repo needs stable command names for build/test/lint/dev/format/package tasks.
+2. **bootstrap-onboarding**
+   - Use when first-run setup or contributor onboarding is the main pain.
+3. **local-ci-parity**
+   - Use when the team needs a fast local command that mirrors CI expectations without pretending it is identical to hosted CI.
+4. **hook-guardrails**
+   - Use when the main need is fast local policy enforcement before commit or push.
+5. **repo-maintenance**
+   - Use when the recurring work is dependency updates, scheduled cleanup, or routine repo housekeeping.
+6. **workflow-diagnosis**
+   - Use when scripts/docs/CI have drifted and the main job is to simplify, dedupe, and reassign ownership.
+
+### Step 3: Choose the smallest automation surface that solves the problem
+Use these rules:
+
+- Prefer a **thin entrypoint layer** over a giant automation platform when the workflow is repo-scoped.
+- Prefer **package scripts / Make / just / Task** for human-invoked recurring commands.
+- Prefer **hooks** for fast local guardrails only; do not hide slow or flaky workflows there.
+- Prefer **hosted CI** for branch/release enforcement, cross-platform matrices, or scheduled automation that must run without a developer laptop.
+- Prefer **local CI mirror commands** (`make ci`, `npm run ci`, `act`) when the problem is feedback speed, not platform replacement.
+- Keep **bootstrap scripts idempotent and non-interactive**; prompt-free scripts age better in CI, containers, and automated agents.
+- Do not let repo automation silently absorb broader system provisioning or deployment architecture.
+
+### Step 4: Apply the decision ladder
+Use this ladder when multiple automation surfaces compete:
+
+#### Use task runners when
+- the workflow is developer-invoked and happens often
+- the team needs memorable commands like `make dev`, `just test`, or `npm run ci`
+- the underlying tools already exist and only need a stable wrapper
+- the repo needs one discoverable command surface more than a new platform
+
+#### Use bootstrap scripts when
+- first-run setup, seed data, codegen, or repeated initialization steps are the main pain
+- the workflow must perform checks before acting
+- the command should be safe to re-run after partial failure or branch switches
+
+#### Use hooks when
+- the checks are fast, deterministic, and tightly tied to commit/push hygiene
+- the team wants fast feedback for lint/format/secret scanning/basic tests
+- the same rule is also mirrored in CI so local bypass does not become policy drift
+
+#### Use local-CI wrappers when
+- developers need pre-push confidence or faster iteration on CI failures
+- the workflow should mirror core CI commands without copying every hosted-runner detail
+- the team benefits from `make ci` / `task ci` / `act` as a repo-local feedback loop
+
+#### Use maintenance automation when
+- the repeated work is dependency updates, release notes prep, stale-issue cleanup, or scheduled housekeeping
+- the work benefits from bots or scheduled jobs more than human-invoked commands
+- the repo needs an owner and review policy for the automation outputs
+
+### Step 5: Keep automation honest about boundaries
+A strong workflow layer says what it does **not** own.
+
+Examples:
+- if the real pain is machine provisioning, runtime pinning, local services, or devcontainers, route to `system-environment-setup`
+- if the real pain is deployment rollout or hosted CI/CD topology, route to `deployment-automation`
+- if the real pain is deciding test depth or flaky-suite policy, route to `testing-strategies`
+- if the real pain is Git history shaping or push safety, route to `git-workflow`
+
+Mixed requests are common. Split them explicitly instead of pretending one skill should own the entire developer platform.
+
+### Step 6: Enforce reusable automation guardrails
+Any recommended workflow automation should satisfy these rules:
+
+- **Idempotent** — safe to re-run after partial success or interrupted setup
+- **Non-interactive by default** — use flags/env/config instead of prompts whenever possible
+- **Discoverable** — one obvious entrypoint and consistent names
+- **Thin** — wrap existing tools instead of re-implementing every build/test/deploy detail
+- **Documented** — command purpose, prerequisites, and route-outs are clear
+- **Verifiable** — easy to prove locally or in CI that the automation still works
+
+Bad smells:
+- shell prompts inside bootstrap scripts
+- duplicate command logic spread across README, Makefile, CI YAML, and ad hoc scripts
+- hooks running slow/flaky suites that developers immediately bypass
+- task runners that secretly own cloud deployment or local machine provisioning
+
+### Step 7: Produce the workflow automation packet
+Return a concise artifact someone can act on immediately.
+
+Preferred format:
+```markdown
+# Workflow Automation Packet
+
+## Mode
+- Primary mode:
+- Why this mode fits:
+
+## Recommended surfaces
+- Human entrypoint:
+- Supporting scripts / hooks / CI jobs:
+- What stays out of scope:
+
+## Command map
+1. command → purpose
+2. command → purpose
+3. command → purpose
+
+## Guardrails
+- Idempotency:
+- Non-interactive behavior:
+- Docs/source-of-truth rules:
+- Verification:
+
+## Handoffs
+- Route to neighboring skills:
+- Remaining risks or follow-up work:
+```
+
+### Step 8: Prefer simplification over automation sprawl
+When modernizing an existing workflow layer:
+- collapse duplicate commands that do the same thing under different names
+- keep a thin wrapper around real tools instead of embedding giant scripts inline
+- name where CI and local commands intentionally differ
+- reduce magic and hidden state before adding more automation
+- preserve transferable patterns that work across CLI, backend, frontend, and fullstack repos
 
 ## Output format
+Always return a **workflow automation packet**, **repo command map**, or **automation hardening brief**.
 
-```
-project/
-├── scripts/
-│   ├── dev-setup.sh
-│   ├── deploy.sh
-│   ├── test.sh
-│   └── cleanup.sh
-├── Makefile
-├── package.json
-└── .husky/
-    ├── pre-commit
-    └── pre-push
-```
-
-## Constraints
-
-### Required rules (MUST)
-
-1. **Idempotency**: safe to run scripts multiple times
-2. **Error handling**: clear messages on failure
-3. **Documentation**: comments on how to use the scripts
-
-### Prohibited items (MUST NOT)
-
-1. **Hardcoded secrets**: do not include passwords or API keys in scripts
-2. **Destructive commands**: do not run rm -rf without confirmation
-
-## Best practices
-
-1. **Use Make**: platform-agnostic interface
-2. **Git Hooks**: automated quality checks
-3. **CI/CD**: automated with GitHub Actions
-
-## References
-
-- [npm scripts](https://docs.npmjs.com/cli/v9/using-npm/scripts)
-- [Make Tutorial](https://makefiletutorial.com/)
-- [Husky](https://typicode.github.io/husky/)
-
-## Metadata
-
-### Version
--- **Current version**: 1.0.0
--- **Last updated**: 2025-01-01
--- **Compatible platforms**: Claude, ChatGPT, Gemini
-
-### Tags
-`#automation` `#scripts` `#workflow` `#npm-scripts` `#Makefile` `#utilities`
+Required qualities:
+- classify the workflow before prescribing tools
+- choose one primary automation mode
+- recommend the smallest useful surface
+- name route-outs and boundaries explicitly
+- include idempotency and non-interactive guardrails
+- separate local command layers from hosted CI, deployment, and environment provisioning
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Too many repo commands
+**Input**
+> This repo has README commands, a half-used Makefile, and random `scripts/*.sh`. How should we clean this up?
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good output direction**
+- mode: `workflow-diagnosis`
+- keep one human-facing entrypoint layer (`make` or `just`)
+- move imperative logic into a few named scripts only where reuse matters
+- define one source of truth for what local, hook, and CI commands call
+- route machine provisioning concerns to `system-environment-setup`
+
+### Example 2: Local CI parity
+**Input**
+> Developers keep pushing just to see CI fail. What should our workflow automation look like?
+
+**Good output direction**
+- mode: `local-ci-parity`
+- add one `ci` entrypoint that runs the critical local checks
+- keep hosted CI as the enforcement layer
+- call out where local parity stops because secrets, images, or service topology differ
+- route test-depth policy questions to `testing-strategies`
+
+### Example 3: Bootstrap pain for contributors
+**Input**
+> New contributors need five manual setup steps, seed data, and a local service before they can run tests.
+
+**Good output direction**
+- mode: `bootstrap-onboarding`
+- recommend one idempotent bootstrap entrypoint plus prerequisite checks
+- keep prompts out of the default path
+- route service topology/runtime provisioning to `system-environment-setup` if it becomes the main problem
+- define a short verification command so onboarding can prove success
+
+## Best practices
+1. Start from the repeated workflow, not from a favorite automation tool.
+2. Prefer the smallest repo-scoped layer that removes copy-paste rituals.
+3. Keep command names memorable and consistent across docs and CI.
+4. Treat interactive prompts as a last resort; they break automation quickly.
+5. Hooks should be fast guardrails, not hidden integration test suites.
+6. If local and CI differ, name the difference instead of pretending parity is perfect.
+7. Automation that nobody can discover or verify is just hidden toil.
+8. When in doubt, simplify and dedupe before adding another wrapper.
+9. Route environment provisioning and deployment architecture to their own skills.
+10. A short command map plus explicit boundaries beats a giant kitchen-sink automation tutorial.
+
+## References
+- [Task: The Modern Task Runner](https://taskfile.dev/)
+- [Just Programmer's Manual](https://just.systems/man/en/)
+- [mise tasks](https://mise.jdx.dev/tasks/)
+- [pre-commit](https://pre-commit.com/)
+- [GitHub Actions documentation](https://docs.github.com/en/actions)
+- [act documentation](https://nektosact.com/)
+- [Development containers](https://containers.dev/)
