@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-13 | Total pages: 28
+> Last updated: 2026-04-13 | Total pages: 30
 
 ## Entities
 
@@ -9,6 +9,7 @@
 - [[backend-api-cluster]] — Boundaries and maintenance direction for the backend API lane, with `api-design` as the contract-first anchor and `api-documentation` as the publishing handoff.
 - [[code-quality-cluster]] — Boundaries for the code-quality lane, separating validation policy, test implementation, debugging, and reviewer judgment.
 - [[developer-workflow-cluster]] — Boundaries for the utilities/developer-workflow lane, separating repo automation, Git collaboration, environment setup, and deployment automation.
+- [[documentation-cluster]] — Boundaries for the documentation lane, keeping internal technical docs separate from API portals, end-user help, and changelog hygiene.
 - [[frontend-skill-canonicalization]] — Canonical-vs-alias guidance for overlapping frontend skills, now including both the React and design-system lanes.
 - [[game-development-cluster]] — Boundaries and maintenance direction for the game-production cluster, with `bmad-gds` as the coordinating layer.
 - [[infrastructure-environment-cluster]] — Canonical-vs-alias guidance for the environment/setup lane, with `system-environment-setup` as the broader anchor.
@@ -42,4 +43,5 @@
 - [[web-accessibility-modernization-2026-04-13]] — Why the best bounded frontend accessibility improvement was rewriting `web-accessibility` into an accessibility remediation + verification anchor instead of leaving it as a generic WCAG/example dump.
 - [[workflow-automation-modernization-2026-04-13]] — Why the best bounded utilities/developer-workflow improvement was modernizing `workflow-automation` into a repo-scoped recurring-workflow anchor instead of adding another automation wrapper.
 - [[plannotator-modernization-2026-04-13]] — Why the best bounded planning-review improvement was modernizing `plannotator` into a visual approval gate instead of adding another wrapper around planning or orchestration flows.
+- [[technical-writing-modernization-2026-04-13]] — Why the best bounded documentation-cluster improvement was modernizing `technical-writing` into the internal technical-docs anchor instead of adding another generic docs wrapper.
 
