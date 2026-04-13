@@ -1921,7 +1921,7 @@
     },
     {
       "name": "user-guide-writing",
-      "description": "Write clear and helpful user guides and tutorials for end users. Use when creating onboarding docs, how-to guides, or FAQ pages. Handles user-focused documentation, screenshots, step-by-step instructions.",
+      "description": "Write user-facing documentation for onboarding, tutorials, how-to guides, FAQs, help-center articles, and release-facing help updates. Use when the main job is helping end users or admins complete product tasks; routes internal technical docs to technical-writing, API portals to api-documentation, and release-note hygiene to changelog-maintenance.",
       "category": "documentation",
       "path": "documentation/user-guide-writing/SKILL.md",
       "tags": [

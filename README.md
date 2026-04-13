@@ -287,7 +287,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `presentation-builder` | HTML slides with slides-grab, PPTX/PDF export | All |
 | `research-paper-writing` | ML/CV/NLP academic paper writing — Abstract, Introduction, Method, Experiments, Conclusion; claim-evidence alignment, pre-submission review | All |
 | `technical-writing` | Internal technical docs anchor for specs, architecture docs, ADRs, runbooks, migration guides, and developer-facing implementation notes | All |
-| `user-guide-writing` | User guides and tutorials | All |
+| `user-guide-writing` | User-facing docs anchor for onboarding guides, tutorials, how-to articles, FAQs, help-center content, and release-facing help updates | All |
 
 ### 📊 Project Management (4)
 

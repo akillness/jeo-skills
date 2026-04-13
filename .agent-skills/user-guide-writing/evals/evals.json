@@ -1,0 +1,47 @@
+{
+  "skill_name": "user-guide-writing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write a getting-started guide for new workspace admins inviting their team and creating the first project.",
+      "expected_output": "The skill activates in user-guide-writing mode, chooses a getting-started structure, and includes prerequisites, steps, success check, and next steps rather than internal implementation detail.",
+      "assertions": [
+        "Response uses getting-started, onboarding, or first-success framing",
+        "Response includes prerequisites or assumptions before major steps",
+        "Response includes a success check or first-success state",
+        "Response does not route the task to technical-writing or api-documentation"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Update our help-center article for exporting reports because the Export button moved into the Reports header and only admins can choose XLSX now.",
+      "expected_output": "The skill activates as a release-help or how-to refresh, calls out changed UI, role differences, and screenshot refresh needs, and treats the task as customer-facing documentation maintenance.",
+      "assertions": [
+        "Response mentions changed UI or stale-doc update work",
+        "Response mentions role, permission, or plan assumptions",
+        "Response includes screenshot refresh notes or UI callout guidance",
+        "Response keeps release-note hygiene separate from the user article"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Turn these repeated billing support replies into a short FAQ for workspace owners.",
+      "expected_output": "The skill activates in FAQ mode, clusters recurring questions, keeps answers concise, and links to deeper task guides when needed.",
+      "assertions": [
+        "Response chooses FAQ mode or equivalent repeated-question structure",
+        "Response keeps answers short and scannable",
+        "Response mentions linking to deeper how-to guides for longer tasks"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Write the architecture document for our new billing export pipeline and capture rollback steps for operators.",
+      "expected_output": "The skill should identify that this is not a user-guide-writing task and route it to technical-writing.",
+      "assertions": [
+        "Response routes the request to technical-writing",
+        "Response explains that the audience is builders/operators rather than end users",
+        "Response does not treat the request as a tutorial or help-center article"
+      ]
+    }
+  ]
+}

@@ -13,9 +13,9 @@ sources: [graphify-out/GRAPH_REPORT.md]
 Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
-- 89 total skills
-- 49 skills with `references/`
-- 48 skills with `evals/`
+- 90 total skills
+- 51 skills with `references/`
+- 50 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -40,6 +40,7 @@ Recent ratchets:
 - The `responsive-design` modernization pass added both `references/` and `evals/`, which matters because the remaining legacy frontend layout anchor now owns mobile-first, container-aware adaptation plus overflow/reflow verification instead of remaining a generic CSS/example dump.
 - The `plannotator` modernization pass added both `references/` and `evals/`, which matters because a highly indexed planning-review anchor now behaves like a clear visual approval gate with explicit route-outs instead of a 600-line mixed install/setup/review dump.
 - The `technical-writing` modernization pass added both `references/` and `evals/`, which matters because the documentation cluster now has a sharper internal-docs anchor for specs, ADRs, architecture docs, runbooks, and migration guides instead of a catch-all skill that overlapped with API docs, user guides, and changelog hygiene.
+- The `user-guide-writing` modernization pass added both `references/` and `evals/`, which matters because the documentation cluster now has a sharper end-user-docs anchor for onboarding guides, tutorials, help-center articles, FAQs, and release-facing help updates instead of a legacy example dump with weak trigger boundaries.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
@@ -70,3 +71,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[plannotator-modernization-2026-04-13]]
 - [[documentation-cluster]]
 - [[technical-writing-modernization-2026-04-13]]
+- [[user-guide-writing-modernization-2026-04-13]]

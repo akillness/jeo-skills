@@ -197,3 +197,11 @@
 - Accepted: rewrite `technical-writing` as the internal technical-docs anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep API portal / user-help / changelog route-outs explicit
 - Rejected: adding another documentation wrapper; merging `technical-writing` into `api-documentation`, `user-guide-writing`, or `changelog-maintenance`
 - Wiki files created/updated: `concepts/documentation-cluster.md`, `queries/technical-writing-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-13] query | User-guide-writing modernization
+- Area researched: user-facing onboarding / tutorial / help-center / FAQ writing practice, maintenance loops, and the documentation-cluster boundary with internal docs, API docs, and changelog work
+- Reused survey files under `.survey/user-guide-writing-modernization-20260413/` and kept the existing loop charter as the frozen evaluation harness
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `user-guide-writing` as the end-user-docs anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep internal-docs / API-docs / changelog route-outs explicit
+- Rejected: adding a separate help-center wrapper; merging `user-guide-writing` into `technical-writing`; treating API portal or release-note work as part of the same skill
+- Wiki files created/updated: `concepts/documentation-cluster.md`, `queries/user-guide-writing-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
