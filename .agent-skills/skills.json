@@ -1972,7 +1972,7 @@
     },
     {
       "name": "pattern-detection",
-      "description": "Detect patterns, anomalies, and trends in code and data. Use when identifying code smells, finding security vulnerabilities, or discovering recurring patterns. Handles regex patterns, AST analysis, and statistical anomaly detection.",
+      "description": "Mode-selecting pattern and anomaly hunting across code, logs, telemetry, and datasets. Use for reusable rule scans, suspicious repeated shapes, and first-pass outlier triage; routes deep log forensics to log-analysis, business explanation to data-analysis, and remediation to specialist skills.",
       "category": "search-analysis",
       "path": "pattern-detection/SKILL.md",
       "tags": [

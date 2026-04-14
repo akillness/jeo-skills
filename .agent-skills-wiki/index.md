@@ -38,6 +38,7 @@
 - [[react-skill-canonicalization-2026-04-12]] — Why the best bounded frontend change was canonicalizing the React pair instead of adding another frontend skill.
 - [[codebase-search-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `codebase-search` into an evidence-first repo-navigation anchor instead of adding another search wrapper.
 - [[data-analysis-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `data-analysis` into the decision-first dataset-reasoning anchor instead of adding another analytics wrapper.
+- [[pattern-detection-modernization-2026-04-14]] — Why the best bounded next search-analysis improvement was modernizing `pattern-detection` into the repeatable rule/anomaly-hunting anchor instead of adding another overlapping wrapper.
 - [[sprint-retrospective-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `sprint-retrospective` into a mode-selecting reflection and follow-through skill.
 - [[standup-meeting-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `standup-meeting` into a mode-selecting daily coordination skill.
 - [[survey-evidence-recovery-2026-04-12]] — Why the best bounded research-layer change was hardening `survey` with an explicit evidence-recovery ladder and support files.

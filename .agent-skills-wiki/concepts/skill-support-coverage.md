@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 60 skills with `references/`
-- 59 skills with `evals/`
+- 61 skills with `references/`
+- 60 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -52,6 +52,7 @@ Recent ratchets:
 - The `performance-optimization` modernization pass added both `references/` and `evals/`, which matters because the code-quality cluster now has a sharper measurement-led tuning anchor for frontend, API, DB, capacity, memory, and runtime bottlenecks instead of a generic React/database optimization dump.
 - The `codebase-search` modernization pass added both `references/` and `evals/`, which matters because the search-analysis lane now has a sharper repo-navigation / impact-mapping anchor instead of a giant command catalog that blurred the boundary with debugging, refactoring, and graph-based architecture analysis.
 - The `data-analysis` modernization pass added both `references/` and `evals/`, which matters because another high-utility search-analysis anchor now owns decision-first dataset reasoning across exports, experiments, telemetry, and KPI explanation instead of a generic pandas/SQL snippet dump.
+- The `pattern-detection` modernization pass added both `references/` and `evals/`, which matters because the search-analysis lane now has a clearer repeatable rule/anomaly-hunting anchor with mode selection, confidence notes, and explicit route-outs instead of a regex-heavy catch-all.
 - The catalog-sync hardening pass added a new `references/` doc and `scripts/validate_catalog_sync.py` to `skill-standardization`, which matters because the repo now validates discovery-surface drift explicitly instead of only linting individual `SKILL.md` files.
 
 ## Why it matters
@@ -89,3 +90,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[changelog-maintenance-modernization-2026-04-14]]
 - [[code-refactoring-modernization-2026-04-14]]
 - [[performance-optimization-modernization-2026-04-14]]
+- [[pattern-detection-modernization-2026-04-14]]
