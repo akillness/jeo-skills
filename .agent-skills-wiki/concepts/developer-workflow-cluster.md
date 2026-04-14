@@ -13,6 +13,7 @@ sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey
 The developer-workflow lane is cleaner when repo-scoped recurring workflow glue and local Git collaboration are treated as separate anchors instead of both being described as generic "workflow" skills.
 
 Current cluster shape:
+- `file-organization` = repo-structure boundary choice: decide between feature folders, shared layers, framework-colocated routes, and workspace packages, then plan the migration safely
 - `workflow-automation` = recurring repo glue: task runners, bootstrap entrypoints, local-CI parity, hook guardrails, and maintenance routines
 - `git-workflow` = local collaboration and recovery: branch hygiene, commit shaping, sync, conflict handling, push safety, and rescue patterns
 - `npm-git-install` = Git-based package delivery choice: decide between Git refs, SHA pins, private auth, tarballs, workspace/file links, and publish-first registry paths
@@ -25,6 +26,7 @@ Current cluster shape:
 - Discovery docs are enough to steer activation, but only if the utility-layer one-line descriptions state the boundary clearly.
 
 ## Boundary rules
+- If the question is **"where should this code live, and should the repo be organized by feature, shared layer, route segment, or package?"** → `file-organization`
 - If the question is **"how do we make recurring repo commands repeatable?"** → `workflow-automation`
 - If the question is **"how do we shape, sync, or recover local Git history?"** → `git-workflow`
 - If the question is **"how should we consume this Node package: Git ref, tarball, workspace, or publish-first?"** → `npm-git-install`

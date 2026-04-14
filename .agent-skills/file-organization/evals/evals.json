@@ -1,0 +1,35 @@
+{
+  "skill_name": "file-organization",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our React app has top-level components, hooks, utils, and store folders. Every checkout change touches four directories. How should we reorganize this without overengineering it?",
+      "expected_output": "The skill activates in feature modularization mode, recommends feature boundaries with a governed shared layer, and avoids treating the answer as a static universal tree.",
+      "assertions": [
+        "Response classifies the structure problem before prescribing folders",
+        "Response recommends feature-based boundaries or equivalent as the primary organizing unit",
+        "Response includes a migration or staged move plan"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We use Next.js App Router and our app directory is becoming a mess. I need a structure that respects route files and layouts but keeps business logic sane.",
+      "expected_output": "The skill activates in framework colocation mode and distinguishes route-segment placement from reusable feature/shared code.",
+      "assertions": [
+        "Response names framework/route-aware organization as the main mode or equivalent",
+        "Response keeps special route files where the framework expects them",
+        "Response distinguishes route-local organization from broader feature or shared boundaries"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We now have a web app, a worker, and a shared UI library. Should this repo become apps/packages, or do we just need better folders?",
+      "expected_output": "The skill activates in workspace split mode only if runnable targets and reusable libraries justify package boundaries, and it explains why.",
+      "assertions": [
+        "Response evaluates whether a workspace/package split is justified instead of assuming it",
+        "Response recommends apps/packages or equivalent only when runtime or reusable-library boundaries exist",
+        "Response includes verification or migration cautions for the split"
+      ]
+    }
+  ]
+}

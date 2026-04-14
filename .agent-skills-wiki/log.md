@@ -374,3 +374,12 @@
 - Accepted: rewrite `bmad-idea` as the pre-planning idea router, add `references/` + `evals/`, refresh `SKILL.toon` / `REFERENCE.md`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the durable rationale in the wiki
 - Rejected: adding another creativity wrapper; keeping `bmad-idea` as a legacy command/persona catalog; letting the skill overlap heavily with `bmad`, `marketing-automation`, or `bmad-gds`
 - Wiki files created/updated: `queries/bmad-idea-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | File organization modernization
+- Area researched: repo-structure decisions across feature-first organization, framework-native colocation, workspace/package splits, naming/import guardrails, and migration planning; plus the broad hourly opportunity scan that selected the next bounded utility/developer-workflow modernization target
+- Survey files created under `.survey/file-organization-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `file-organization` as the repo-structure boundary + migration-planning anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the durable rationale in the wiki
+- Rejected: adding another frontend-architecture or monorepo wrapper; keeping the legacy static folder-tree dump; folding component-API, state-boundary, environment-setup, or automation concerns into the same skill
+- Wiki files created/updated: `queries/file-organization-modernization-2026-04-15.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+

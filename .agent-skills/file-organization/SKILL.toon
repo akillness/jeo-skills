@@ -1,13 +1,13 @@
 N:file-organization
-D:Organize project files and folders for maintainability and scalability. Use when structuring new ...
-G:file-organization project-structure folder-structure naming-conventions
+D:Choose the right repo structure boundary: feature, shared layer, route segment, or workspace package. Use for folder-structure refactors, project-layout decisions, naming/import conventions, and staged migrations when a repo feels scattered or a team needs to know where code should live.
+G:file-organization project-structure folder-structure feature-folders shared-vs-feature apps-packages naming-conventions
 U[3]:
-  **New Projects**: Initial folder structure design
-  **Project Growth**: Refactoring when complexity increases
-  **Team Standardization**: Establish consistent structure
+  Starter-tree cleanup before a small app calcifies into scattered technical folders
+  Feature/shared/route/package boundary decisions for growing repos
+  Migration audits for risky reorganizations, import cleanup, and staged moves
 S[5]{n,action}:
-  1,React/Next.js Project Structure
-  2,Node.js/Express Backend Structure
-  3,Feature-Based Structure (Large-Scale Apps)
-  4,Naming Conventions
-  5,index.ts Barrel Files
+  1,Classify the structure pressure and choose one primary organization mode
+  2,Pick the smallest boundary unit that solves the problem
+  3,Define naming, import, and public-API guardrails
+  4,Plan a staged migration with verification steps
+  5,Return a file-organization brief with route-outs

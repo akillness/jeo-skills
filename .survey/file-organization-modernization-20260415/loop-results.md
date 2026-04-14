@@ -1,0 +1,4 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `file-organization/SKILL.md` | A decision-first boundary/router rewrite with route-outs will outperform the legacy static folder dump. | Rewrote `SKILL.md` around structure modes, boundary choices, naming/import guardrails, and migration briefs. | `validate_skill.sh` pass; stronger trigger clarity and route-outs. | Keep | Solves the highest-value bounded gap from the survey. |
+| 2 | `references/` + `evals/` + discovery docs | Support files plus synced discovery surfaces will make the modernization transferable and discoverable. | Added three reference docs, `evals/evals.json`, refreshed `SKILL.toon`, manifests, README, README.ko, setup prompt, graph outputs, and wiki notes. | `validate_catalog_sync.py` pass; graph snapshot now shows 71 skills with references and 70 with evals. | Keep | Transferable improvement across future maintenance loops. |
