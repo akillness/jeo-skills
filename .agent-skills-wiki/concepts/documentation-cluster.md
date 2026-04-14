@@ -1,7 +1,7 @@
 ---
 title: Documentation Cluster
 created: 2026-04-13
-updated: 2026-04-13
+updated: 2026-04-14
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality, docs, graphify]
 sources: [.survey/technical-writing-modernization-20260413/context.md, .survey/technical-writing-modernization-20260413/solutions.md, .survey/user-guide-writing-modernization-20260413/context.md, .survey/user-guide-writing-modernization-20260413/solutions.md, graphify-out/GRAPH_REPORT.md]
@@ -13,7 +13,7 @@ sources: [.survey/technical-writing-modernization-20260413/context.md, .survey/t
 - `technical-writing` — internal technical-docs anchor for specs, architecture docs, ADRs, runbooks, migration guides, and internal developer guides
 - `api-documentation` — published API / SDK / portal docs and developer-facing contract presentation
 - `user-guide-writing` — end-user onboarding, tutorials, screenshots, FAQs, and help-center content
-- `changelog-maintenance` — release-note hygiene, semver communication, and `CHANGELOG.md` upkeep
+- `changelog-maintenance` — release-history / release-notes anchor for `CHANGELOG.md`, migration/deprecation updates, customer/developer release summaries, and lightweight game patch notes
 - `research-paper-writing` / `presentation-builder` — specialized publishing formats that should not absorb general documentation requests
 
 ## Why it matters
@@ -29,7 +29,7 @@ Boundary checks:
 4. If the request is about specs, ADRs, architecture docs, runbooks, migration notes, or internal developer guides, keep it in `technical-writing`.
 
 ## Current structural note
-After the `technical-writing`, `user-guide-writing`, and `api-documentation` modernization runs, the documentation cluster now has sharper anchors for internal docs, developer-facing API docs, and end-user help content. The latest graph-style scan reports 51 skills with `references/` and 50 with `evals/`; route-out discipline still matters more than adding a new wrapper skill.
+After the `technical-writing`, `user-guide-writing`, `api-documentation`, and `changelog-maintenance` modernization runs, the documentation cluster now has sharper anchors for internal docs, developer-facing API docs, end-user help content, and release-history / release-summary work. The latest graph-style scan reports 55 skills with `references/` and 54 with `evals/`; route-out discipline still matters more than adding a new wrapper skill.
 
 ## Related pages
 - [[skill-support-coverage]]
@@ -37,3 +37,4 @@ After the `technical-writing`, `user-guide-writing`, and `api-documentation` mod
 - [[technical-writing-modernization-2026-04-13]]
 - [[user-guide-writing-modernization-2026-04-13]]
 - [[api-documentation-modernization-2026-04-13]]
+- [[changelog-maintenance-modernization-2026-04-14]]

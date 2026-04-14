@@ -283,7 +283,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `changelog-maintenance` | Changelog management and versioning | All |
+| `changelog-maintenance` | Release-history + release-notes anchor for changelogs, migration updates, and patch notes | All |
 | `presentation-builder` | HTML slides with slides-grab, PPTX/PDF export | All |
 | `research-paper-writing` | ML/CV/NLP academic paper writing — Abstract, Introduction, Method, Experiments, Conclusion; claim-evidence alignment, pre-submission review | All |
 | `technical-writing` | Internal technical docs anchor for specs, architecture docs, ADRs, runbooks, migration guides, and developer-facing implementation notes | All |
