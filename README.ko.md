@@ -74,6 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **npm-git-install: Git 의존성 결정 재작성** | `npm-git-install`를 낡은 npm 전용 명령 모음에서 결정-우선 Node 패키지 전달 스킬로 재정의했습니다. 이제 direct Git install, SHA 고정 브리지 설치, private Git auth, tarball / `npm pack` 아티팩트, workspace / `file:` 링크, publish-first 레지스트리 경로 사이에서 하나를 고르고, npm·pnpm·Yarn·Bun 차이를 워크플로 수준에서 설명합니다. 또한 auth/build/reproducibility 가드레일과 `git-workflow`, `github-repo-management`, `workflow-automation`, `system-environment-setup`로의 route-out을 추가했고, `references/delivery-decision-matrix.md`, `references/package-manager-behavior.md`, `references/private-auth-and-ci.md`, `evals/evals.json`도 함께 추가했으며 전체 스킬 수는 그대로입니다. |
 | **web-design-guidelines: UI 감사 재작성** | `web-design-guidelines`를 얇은 Vercel 규칙 fetcher에서 프론트엔드 클러스터의 broad interface audit 앵커로 재정의했습니다. 이제 launch-readiness, polish/consistency, flow-friction, heuristic, rule-overlay 리뷰 모드를 고르고, hierarchy, clarity, states, responsiveness basics, accessibility basics, performance/trust signals를 분류하며, `web-accessibility`, `responsive-design`, `ui-component-patterns`, `design-system`, `react-best-practices`로의 명시적 route-out을 제공합니다. `references/review-modes-and-categories.md`, `references/handoff-boundaries.md`, `references/ui-audit-packet-template.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
 | **monitoring-observability: 텔레메트리 리뷰 재작성** | `monitoring-observability`를 일반적인 Prometheus/로깅 예시 덤프에서 서비스 신뢰성, 텔레메트리 기반, 데이터/마케팅 파이프라인 헬스, 게임 live-ops 가시성, 스택 리뷰 감사까지 고르는 mode-selecting observability 앵커로 재정의했습니다. 이제 symptom-first alerting, 명시적인 dashboard/ownership 점검, `log-analysis`, `debugging`, `performance-optimization`, `langsmith`, `deployment-automation`, `game-performance-profiler`로의 route-out을 제공하며, `references/modes-and-boundaries.md`, `references/alert-dashboard-checklist.md`, `references/telemetry-rollout-matrix.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
 | **performance-optimization: 병목 워크플로우 재작성** | `performance-optimization`를 일반적인 React/DB 최적화 예시 모음에서 코드-퀄리티 클러스터의 측정 중심 튜닝 앵커로 재정의했습니다. 이제 interaction, page-load, API, DB, capacity, memory, runtime 병목 모드를 분류하고, 수정 제안 전에 맞는 증거 소스를 고르며, `monitoring-observability`, `debugging`, `code-refactoring`, `testing-strategies`, `game-performance-profiler`로의 route-out을 제공합니다. `references/tuning-modes.md`, `references/handoff-boundaries.md`, `references/measurement-checklist.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
@@ -354,7 +355,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `git-workflow` | 로컬 Git 브랜치, 커밋, 리베이스, 충돌 해결, 안전한 푸시, 복구 워크플로우 | 전체 |
 | `google-workspace` | Google Workspace REST API 자동화 — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
-| `npm-git-install` | GitHub에서 npm 패키지 설치 | 전체 |
+| `npm-git-install` | npm / pnpm / Yarn / Bun용 결정-우선 Git 의존성 워크플로 — Git ref, tarball, workspace, publish-first 경로를 안전하게 선택 | 전체 |
 | `obsidian-cli` | 공식 Obsidian CLI 운영 — 활성화, TUI, 노트/작업 자동화, vault·file 타기팅, plugin reload, 개발자 명령 | 전체 |
 | `obsidian-plugin` | Obsidian 플러그인 개발 — 27개 ESLint 규칙, 보일러플레이트 생성기, 접근성, 커뮤니티 제출 검증 | 전체 |
 | `opencontext` | AI 에이전트용 영구 메모리 및 컨텍스트 관리 | 전체 |

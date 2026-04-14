@@ -350,3 +350,11 @@
 - Accepted: rewrite `bmad` as the portable level/phase/next-artifact router, add `references/` + `evals/`, update README / README.ko / setup prompt / `docs/bmad/README.md` / `.agent-skills/skills.json`, and record the durable rationale in the wiki
 - Rejected: adding another BMAD-adjacent wrapper; keeping runtime-specific setup, TEA depth, or review-gate detail inside the main `bmad` trigger surface
 - Wiki files created/updated: `queries/bmad-modernization-2026-04-15.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | npm-git-install modernization
+- Area researched: Git-based Node package delivery across npm / pnpm / Yarn / Bun, especially branch/tag/SHA installs, private-repo auth, lifecycle/build behavior, tarball alternatives, and when publish-first is the safer path
+- Survey files created under `.survey/npm-git-install-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `npm-git-install` as the Git-based package-delivery decision anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `SKILL.toon`, and record the utility-lane boundary in the wiki
+- Rejected: adding another install helper; keeping the legacy npm-only command dump; pretending direct Git install is the right long-term default for shared dependencies
+- Wiki files created/updated: `queries/npm-git-install-modernization-2026-04-15.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
