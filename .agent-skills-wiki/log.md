@@ -229,3 +229,11 @@
 - Accepted: rewrite `authentication-setup` as the product-auth setup router, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep hardening / contract / docs / testing route-outs explicit
 - Rejected: adding another auth or authorization wrapper; keeping the legacy JWT/OAuth code dump; folding `security-best-practices` hardening work into the same skill
 - Wiki files created/updated: `queries/authentication-setup-modernization-2026-04-14.md`, `concepts/backend-api-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Changelog maintenance modernization
+- Area researched: release-history / release-note workflows across CLI/dev releases, web/fullstack product updates, PM/ops and marketing-facing release communication, and Steam-style game patch notes to choose the highest-value bounded next documentation-cluster modernization
+- Survey files created under `.survey/changelog-maintenance-modernization-20260414/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `changelog-maintenance` as the release-history / release-notes anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep internal-docs / API-docs / user-help / deployment / launch route-outs explicit
+- Rejected: adding another release-note wrapper; leaving the legacy semver/example dump; folding rollout execution or launch campaign work into the same skill
+- Wiki files created/updated: `queries/changelog-maintenance-modernization-2026-04-14.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

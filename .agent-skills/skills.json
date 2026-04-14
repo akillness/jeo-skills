@@ -1772,7 +1772,7 @@
     },
     {
       "name": "changelog-maintenance",
-      "description": "Maintain a clear and informative changelog for software releases. Use when documenting version changes, tracking features, or communicating updates to users. Handles semantic versioning, changelog formats, and release notes.",
+      "description": "Maintain release history and release communication across CHANGELOG.md, migration updates, developer/customer release notes, and lightweight game patch notes. Use when the main job is turning shipped changes into a durable changelog or audience-appropriate release summary; routes internal specs/runbooks to technical-writing, API portals to api-documentation, end-user tutorials to user-guide-writing, rollout execution to deployment-automation, and launch messaging to marketing-automation.",
       "category": "documentation",
       "path": "documentation/changelog-maintenance/SKILL.md",
       "tags": [

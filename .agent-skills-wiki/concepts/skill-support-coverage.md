@@ -14,8 +14,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
 - 90 total skills
-- 54 skills with `references/`
-- 53 skills with `evals/`
+- 55 skills with `references/`
+- 54 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -44,6 +44,7 @@ Recent ratchets:
 - The `api-documentation` modernization pass added both `references/` and `evals/`, which matters because the documentation/backend boundary now has a sharper developer-facing API-docs anchor for reference portals, quickstarts, SDK/webhook guidance, truthful examples, and auth/error guidance instead of a legacy OpenAPI-heavy example dump.
 - The `deployment-automation` modernization pass added both `references/` and `evals/`, which matters because the infrastructure lane now has a sharper release-execution anchor for preview/staging/prod promotion, rollout strategy, post-deploy verification, and rollback planning instead of a legacy CI/CD + Docker/Kubernetes command dump.
 - The `authentication-setup` modernization pass added both `references/` and `evals/`, which matters because the backend lane now has a sharper product-auth setup router for hosted/framework-native/platform-native choices, session boundaries, org data ownership, and enterprise SSO handoff instead of a 600-line JWT/OAuth catch-all.
+- The `changelog-maintenance` modernization pass added both `references/` and `evals/`, which matters because the documentation cluster now has a sharper release-history / release-notes anchor for changelogs, migration updates, and lightweight patch notes instead of a generic semver/example dump.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
@@ -77,3 +78,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[user-guide-writing-modernization-2026-04-13]]
 - [[api-documentation-modernization-2026-04-13]]
 - [[deployment-automation-modernization-2026-04-13]]
+- [[changelog-maintenance-modernization-2026-04-14]]
