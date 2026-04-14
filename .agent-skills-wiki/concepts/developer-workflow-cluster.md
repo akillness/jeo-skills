@@ -1,10 +1,10 @@
 ---
 title: Developer Workflow Cluster
 created: 2026-04-13
-updated: 2026-04-13
+updated: 2026-04-15
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
-sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Developer Workflow Cluster
@@ -15,6 +15,7 @@ The developer-workflow lane is cleaner when repo-scoped recurring workflow glue 
 Current cluster shape:
 - `workflow-automation` = recurring repo glue: task runners, bootstrap entrypoints, local-CI parity, hook guardrails, and maintenance routines
 - `git-workflow` = local collaboration and recovery: branch hygiene, commit shaping, sync, conflict handling, push safety, and rescue patterns
+- `npm-git-install` = Git-based package delivery choice: decide between Git refs, SHA pins, private auth, tarballs, workspace/file links, and publish-first registry paths
 - `system-environment-setup` = broader runnable-environment design when toolchains, services, or devcontainers are the real problem
 - `deployment-automation` = hosted delivery and rollout automation once the workflow stops being repo-local
 
@@ -26,14 +27,16 @@ Current cluster shape:
 ## Boundary rules
 - If the question is **"how do we make recurring repo commands repeatable?"** → `workflow-automation`
 - If the question is **"how do we shape, sync, or recover local Git history?"** → `git-workflow`
+- If the question is **"how should we consume this Node package: Git ref, tarball, workspace, or publish-first?"** → `npm-git-install`
 - If the question is **"how do we make this repo runnable across machines/services/containers?"** → `system-environment-setup`
 - If the question is **"how do we deploy or automate hosted CI/CD rollout?"** → `deployment-automation`
 
 ## Structural note
-The graph refresh after the `workflow-automation` modernization reinforced the same repo pattern seen in other clusters: upgrading an indexed legacy anchor with support files is more valuable than adding another overlapping wrapper skill in the utilities/developer-workflow lane.
+The graph refresh after the `npm-git-install` modernization reinforced the same repo pattern seen in other clusters: upgrading an indexed legacy anchor with support files and a clearer boundary is more valuable than adding another overlapping wrapper skill in the utilities/developer-workflow lane.
 
 ## Related pages
 - [[skill-support-coverage]]
 - [[git-workflow-modernization-2026-04-12]]
+- [[npm-git-install-modernization-2026-04-15]]
 - [[workflow-automation-modernization-2026-04-13]]
 - [[environment-skill-canonicalization-2026-04-12]]

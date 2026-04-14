@@ -13,10 +13,10 @@ sources: [graphify-out/GRAPH_REPORT.md]
 Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
-- 90 filesystem skills with `SKILL.md`
-- 90 manifest entries in `.agent-skills/skills.json`
-- 68 skills with `references/`
-- 67 skills with `evals/`
+- 89 filesystem skills with `SKILL.md`
+- 89 manifest entries in `.agent-skills/skills.json`
+- 69 skills with `references/`
+- 68 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -28,6 +28,7 @@ Recent ratchets:
 - The `standup-meeting` modernization pass added both `references/` and `evals/`, which matters because the PM cluster now has stronger support for a high-frequency daily coordination ritual instead of only planning-oriented upgrades.
 - The `sprint-retrospective` modernization pass added both `references/` and `evals/`, which matters because the PM cluster now has stronger support for reflection, async/hybrid facilitation, and action follow-through instead of relying on a template-only legacy skill.
 - The `git-workflow` modernization pass added both `references/` and `evals/`, which matters because a high-frequency CLI/developer-workflow anchor now has durable guidance for local collaboration boundaries, push safety, and recovery instead of only a command dump.
+- The `npm-git-install` modernization pass added both `references/` and `evals/`, which matters because another high-utility developer-workflow skill now owns Git-based package delivery choice across npm / pnpm / Yarn / Bun instead of remaining a stale npm-only command dump with no auth, lifecycle, or exit-strategy guidance.
 - The environment canonicalization pass added both `references/` and `evals/` to the infrastructure setup pair, which matters because a previously weak duplicate lane now has a clear broader anchor and a narrower config alias.
 - The `task-estimation` modernization pass added both `references/` and `evals/`, which matters because the PM cluster now has a stronger sizing and forecast-language lane instead of routing into a legacy generic estimation skill.
 - The `api-design` modernization pass added both `references/` and `evals/`, which matters because the backend cluster now has a sharper contract-first anchor instead of a broad legacy skill that overlapped with `api-documentation`.
