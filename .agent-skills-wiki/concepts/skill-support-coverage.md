@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 61 skills with `references/`
-- 60 skills with `evals/`
+- 62 skills with `references/`
+- 61 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -53,6 +53,7 @@ Recent ratchets:
 - The `codebase-search` modernization pass added both `references/` and `evals/`, which matters because the search-analysis lane now has a sharper repo-navigation / impact-mapping anchor instead of a giant command catalog that blurred the boundary with debugging, refactoring, and graph-based architecture analysis.
 - The `data-analysis` modernization pass added both `references/` and `evals/`, which matters because another high-utility search-analysis anchor now owns decision-first dataset reasoning across exports, experiments, telemetry, and KPI explanation instead of a generic pandas/SQL snippet dump.
 - The `pattern-detection` modernization pass added both `references/` and `evals/`, which matters because the search-analysis lane now has a clearer repeatable rule/anomaly-hunting anchor with mode selection, confidence notes, and explicit route-outs instead of a regex-heavy catch-all.
+- The `database-schema-design` modernization pass added both `references/` and `evals/`, which matters because the backend cluster now has a sharper storage-model and staged-migration anchor instead of a generic SQL/NoSQL example dump.
 - The catalog-sync hardening pass added a new `references/` doc and `scripts/validate_catalog_sync.py` to `skill-standardization`, which matters because the repo now validates discovery-surface drift explicitly instead of only linting individual `SKILL.md` files.
 
 ## Why it matters

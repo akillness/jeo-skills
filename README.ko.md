@@ -241,7 +241,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `api-documentation` | 레퍼런스 포털·퀵스타트·SDK/웹훅 가이드·검증된 예시·인증/에러 안내를 다루는 개발자용 API 문서 앵커 | 전체 |
 | `authentication-setup` | hosted/framework-native/platform-native 인증 선택, 세션/JWT 경계, 조직 데이터, 엔터프라이즈 SSO 핸드오프를 다루는 제품 인증 설정 라우터 | 전체 |
 | `backend-testing` | API·통합·계약·fixture·로컬/CI 분리를 포함한 백엔드 테스트 커버리지 설계 | 전체 |
-| `database-schema-design` | SQL/NoSQL 스키마 설계 | 전체 |
+| `database-schema-design` | 관계형/문서형 스키마, 제약조건, 인덱스, 단계적 스키마 변경을 다루는 스토리지 모델 및 마이그레이션 안전성 설계 | 전체 |
 
 ### 🎨 프론트엔드 (10개)
 

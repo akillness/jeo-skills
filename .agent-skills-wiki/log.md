@@ -294,3 +294,11 @@
 - Accepted: rewrite `pattern-detection` as the mode-selecting pattern/rule/anomaly-hunting anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the sharper search-analysis boundary in the wiki
 - Rejected: adding another anomaly-detection wrapper; folding root-cause log forensics, business explanation, or full remediation into the same skill
 - Wiki files created/updated: `queries/pattern-detection-modernization-2026-04-14.md`, `concepts/search-analysis-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Database schema design modernization
+- Area researched: storage-model and staged-schema-evolution workflows across backend/fullstack delivery, including relational-vs-document lane choice, integrity/index design, ORM/migration reality, and the best bounded remaining backend modernization target
+- Survey files created under `.survey/database-schema-design-modernization-20260414/`; direct primary-page retrieval was used because `web_search` / `web_extract` returned `401 Invalid API key` in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `database-schema-design` as the storage-model and migration-safety anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and sharpen backend/support-coverage notes in the wiki
+- Rejected: adding another broad schema/migration wrapper; letting the skill absorb API contract design, auth-provider setup, or backend verification planning
+- Wiki files created/updated: `queries/database-schema-design-modernization-2026-04-14.md`, `concepts/backend-api-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

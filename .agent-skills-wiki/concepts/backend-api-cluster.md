@@ -17,7 +17,7 @@ Canonical split:
 - `backend-testing` — backend verification planning across unit, integration, contract/API, fixture strategy, dependency realism, and CI-vs-local execution
 - `api-documentation` — published docs, examples, tutorials, portals, and developer-facing presentation of the contract
 - `authentication-setup` — product-auth setup routing across hosted/framework-native/platform-native choices, session boundaries, app-owned user/org data, and enterprise SSO handoff
-- `database-schema-design` — storage-model design
+- `database-schema-design` — storage-model and migration-safety design: entity boundaries, cardinality, constraints, indexes, lifecycle rules, and staged schema evolution
 - `security-best-practices` — hardening work such as cookie flags, CSRF, rate limiting, secret handling, and OWASP controls that should not be buried inside auth setup
 
 ## Why it matters
