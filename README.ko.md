@@ -70,6 +70,13 @@ graph TD
 
 ---
 
+## 🆕 v2026-04-14 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **code-refactoring: 동작 보존 중심 재작성** | `code-refactoring`를 긴 교과서식 패턴 나열에서 코드-퀄리티 클러스터의 구조 개선 앵커로 재정의했습니다. 이제 로컬 안전 리팩터링, behavior-freeze-first 정리, 반복 마이그레이션 / codemod 모드를 고르고, 테스트·검색·reviewable slice를 명시하며, `debugging`, `code-review`, `testing-strategies`, `performance-optimization`, `codebase-search`로의 route-out을 제공합니다. `references/refactor-modes.md`, `references/handoff-boundaries.md`, `references/safe-refactor-checklist.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
+| **changelog-maintenance: 릴리스 히스토리 재작성** | `changelog-maintenance`를 일반적인 semver/example 덤프에서 문서화 클러스터의 release-history / release-notes 앵커로 재정의했습니다. 이제 changelog, release-notes, migration-update, game-patch-note 모드를 고르고, `technical-writing`, `api-documentation`, `user-guide-writing`, `deployment-automation`, `marketing-automation`으로의 route-out을 제공합니다. `references/automation-and-source-of-truth.md`, `references/modes-and-boundaries.md`, `references/release-note-quality-checklist.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
+
 ## 🆕 v2026-04-13 업데이트
 
 | 변경 | 내용 |
@@ -255,7 +262,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `code-refactoring` | 코드 단순화 및 리팩토링 | 전체 |
+| `code-refactoring` | 동작 보존 중심 구조 정리, 분해, 중복 제거, codemod 계획 | 전체 |
 | `code-review` | 정합성·위험·증거 공백을 보는 워크플로우형 diff / PR 리뷰 | 전체 |
 | `debugging` | 회귀·flaky 실패를 위한 재현 → 격리 → 검증 디버깅 | 전체 |
 | `performance-optimization` | 속도, 효율성, 확장성 최적화 | 전체 |

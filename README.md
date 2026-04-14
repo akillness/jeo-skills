@@ -70,6 +70,13 @@ graph TD
 
 ---
 
+## 🆕 What's New in v2026-04-14
+
+| Change | Details |
+|--------|---------|
+| **code-refactoring: behavior-preserving rewrite** | Reframed `code-refactoring` from a long textbook pattern dump into the code-quality cluster's structure-improvement anchor. It now chooses between local safe refactors, behavior-freeze-first cleanup, and repetitive migration / codemod work; keeps tests, search, and reviewable slices explicit; adds route-outs to `debugging`, `code-review`, `testing-strategies`, `performance-optimization`, and `codebase-search`; and ships `references/refactor-modes.md`, `references/handoff-boundaries.md`, `references/safe-refactor-checklist.md`, and `evals/evals.json` without increasing the skill count. |
+| **changelog-maintenance: release-history rewrite** | Reframed `changelog-maintenance` from a generic semver/example dump into the documentation cluster's release-history / release-notes anchor. It now selects among changelog, release-notes, migration-update, and game-patch-note workflows; adds route-outs to `technical-writing`, `api-documentation`, `user-guide-writing`, `deployment-automation`, and `marketing-automation`; and ships `references/automation-and-source-of-truth.md`, `references/modes-and-boundaries.md`, `references/release-note-quality-checklist.md`, and `evals/evals.json` without increasing the skill count. |
+
 ## 🆕 What's New in v2026-04-13
 
 | Change | Details |
@@ -255,7 +262,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `code-refactoring` | Code simplification and refactoring | All |
+| `code-refactoring` | Behavior-preserving structural cleanup, decomposition, duplication removal, and codemod planning | All |
 | `code-review` | Workflow-aware diff / PR review for correctness, risk, and missing evidence | All |
 | `debugging` | Reproduce → isolate → verify debugging for regressions and flaky failures | All |
 | `performance-optimization` | Speed, efficiency, scalability optimization | All |

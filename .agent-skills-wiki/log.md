@@ -237,3 +237,11 @@
 - Accepted: rewrite `changelog-maintenance` as the release-history / release-notes anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep internal-docs / API-docs / user-help / deployment / launch route-outs explicit
 - Rejected: adding another release-note wrapper; leaving the legacy semver/example dump; folding rollout execution or launch campaign work into the same skill
 - Wiki files created/updated: `queries/changelog-maintenance-modernization-2026-04-14.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Code refactoring modernization
+- Area researched: practical refactoring workflows across CLI/dev, backend, frontend/fullstack, and game-programming codebases, plus broad opportunity scanning across the required domains to choose the highest-value bounded next modernization target
+- Survey files created under `.survey/code-refactoring-modernization-20260414/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `code-refactoring` as the behavior-preserving structural-cleanup anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and sharpen code-quality cluster boundaries in the wiki
+- Rejected: adding another generic cleanup wrapper; leaving the legacy pattern catalog; folding debugging, review judgment, testing policy, or profiling into the same skill
+- Wiki files created/updated: `queries/code-refactoring-modernization-2026-04-14.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
