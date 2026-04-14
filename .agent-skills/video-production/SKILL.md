@@ -1,283 +1,225 @@
 ---
 name: video-production
-description: Produce programmable videos with Remotion using scene planning, asset orchestration, and validation gates for automated, brand-consistent video content.
+description: >
+  Plan and route programmable or automated video production across code-first,
+  template-first, and hybrid content pipelines. Use when the user needs repeatable
+  video generation, branded short-form content, personalized videos, social clip
+  batches, captioned/localized variants, video APIs, or video creation from data
+  and templates — even if they only say video production. Triggers on: Remotion,
+  programmatic video, automated video creation, video API, personalized video,
+  batch-create shorts, render videos from code, repurpose content into clips.
+allowed-tools: Write Read WebSearch WebFetch Task
+compatibility: >
+  Canonical programmable-video / automated-video skill for the repo. Use this as
+  the main entry point; `remotion-video-production` is the compatibility alias for
+  legacy or explicitly Remotion-named requests.
 metadata:
-  tags: video, remotion, animation, storytelling, automation, react
+  tags: video, automation, remotion, short-form, content-ops, templates, react
   platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0"
 ---
 
+# Video Production
 
-# Remotion Video Production
+Use this skill as the **canonical programmable-video and automated-video production anchor** for the repository.
 
-Programmable video production skill using Remotion. Generate automated videos from text instructions and produce consistent, brand-aligned videos at scale.
+The job is not to dump a generic storyboard or act like a manual editor tutorial. The job is to:
+1. normalize the production request,
+2. choose the best production mode,
+3. return one implementation-ready packet,
+4. leave explicit asset, QA, and handoff guidance.
+
+Read [references/production-modes.md](references/production-modes.md), [references/asset-and-qa-checklist.md](references/asset-and-qa-checklist.md), and [references/handoff-boundaries.md](references/handoff-boundaries.md) before routing broad requests.
 
 ## When to use this skill
+- The user wants automated, repeatable, or template-driven video production
+- The request involves short-form content ops, campaign variants, personalized videos, localized versions, or batched social assets
+- The user mentions Remotion, rendering from code, video APIs, templates, or connecting app/product data into video output
+- The workflow needs a production plan that can span generation, asset prep, QA, and a publishing handoff
 
-- **Automated video generation**: Generate videos from text instructions
-- **Brand video production**: High-volume videos with consistent style
-- **Programmable content**: Combine narration, visuals, and animation
-- **Marketing content**: Product intros, onboarding, promo videos
+## When not to use this skill
+- The job is purely a one-off manual edit in Premiere / After Effects / CapCut with no automation or repeatability goal
+- The task is only final creative polish, color, taste-based pacing, or bespoke motion-design critique
+- The user needs only transcript cleanup, clip selection, or direct publishing with no template/render layer
+- The request is really an ad-strategy, content-strategy, or product-launch brief rather than a video-production workflow
 
----
+## Supported production modes
+Use these as routing targets inside the skill:
+
+### 1) Code-first programmable video
+- Best when the user explicitly wants Remotion, React-based composition, dynamic data injection, or custom product-integrated rendering
+- Default stack: `Remotion`
+
+### 2) Template/API automation
+- Best when the user needs speed, bulk generation, localization, or personalized variants without owning a full rendering codebase
+- Typical comparators: Shotstack, Creatomate, Bannerbear
+
+### 3) Hybrid clip / repurposing pipeline
+- Best when the source material is long-form audio/video and the main problem is extracting, captioning, resizing, and packaging clips at volume
+- Common workflow shape: transcript or clip-selection tool + template/render layer + manual QA
+
+### 4) Manual-finish hybrid
+- Best when automated generation exists but editorial polish, captions, timing, or final approvals still need a human pass
+- Use this when the right answer is not “fully automate everything” but “automate the repeatable 80%, then define the last-mile edit pass"
 
 ## Instructions
 
-### Step 1: Define the Video Spec
+### Step 1: Normalize the production brief
+Capture the request in this form before choosing a mode:
 
 ```yaml
-video_spec:
-  audience: [target audience]
-  goal: [video objective]
-  duration: [total length - 30s, 60s, 90s]
-  aspect_ratio: "16:9" | "1:1" | "9:16"
-  tone: "fast" | "calm" | "cinematic"
-  voice:
-    style: [narration style]
-    language: [language]
+video_brief:
+  objective: launch | onboarding | social-clips | personalization | recap | education | ads | unknown
+  primary_output: mp4 | shorts | reels | stories | multiple
+  audience:
+    segment: "who will watch this"
+    stage: unaware | evaluating | customer | community | mixed | unknown
+  source_material:
+    type: script | existing-video | screenshots | product-data | slides | mixed | unknown
+    assets_available:
+      - logo
+      - footage
+      - screenshots
+      - captions
+      - brand-guidelines
+  scale:
+    volume: one-off | recurring | batch | personalized
+    variants:
+      - language
+      - aspect-ratio
+      - audience-segment
+  constraints:
+    stack_preference: remotion | api-platform | mixed | unknown
+    timeline: immediate | this-week | this-month | longer
+    quality_bar: draft-fast | production-ready | polished-final
+  main_question: "what does the user need next?"
 ```
 
-### Step 2: Outline Scenes
+If the brief is incomplete, continue with explicit assumptions rather than stalling.
 
-Scene structuring template:
+### Step 2: Pick exactly one primary production mode
+Choose the single mode that reduces ambiguity fastest.
+
+- **Code-first programmable video** when the user explicitly wants Remotion, full code control, or deep app/data integration
+- **Template/API automation** when speed, scale, or no-code / low-code batch generation matters most
+- **Hybrid clip / repurposing pipeline** when the source is existing long-form media and the main job is repeatable short-form extraction
+- **Manual-finish hybrid** when automation is useful but the real risk sits in last-mile captions, timing, approval, or platform-native polish
+
+If more than one mode fits, choose the mode that best defines the next artifact and name the secondary handoff.
+
+### Step 3: Return one implementation-ready packet
+Return one of these packet types:
+- `video-production brief`
+- `render-stack recommendation`
+- `asset + template packet`
+- `repurposing workflow packet`
+- `QA + handoff checklist`
+
+Do not emit multiple half-built plans. Choose the single most useful packet for the ask.
+
+### Step 4: Add explicit asset, QA, and handoff logic
+Every output must include:
+- the chosen production mode,
+- the recommended stack or workflow shape,
+- the minimum required assets,
+- the main QA risks,
+- the next handoff after generation (manual polish, approval, publishing, analytics, etc.).
+
+### Step 5: Handle Remotion explicitly when relevant
+If the user names Remotion or clearly needs code-first composition:
+- say that the request fits the **code-first programmable video** mode,
+- structure the output around Remotion scenes/templates/components/rendering,
+- optionally note that `remotion-video-production` is the compatibility alias for the same lane.
+
+### Step 6: Use this output structure
 
 ```markdown
-## Scene Plan
+# Video Production Brief
 
-### Scene 1: Hook (0:00 - 0:05)
-- **Visual**: Product logo fade-in
-- **Audio**: Upbeat intro
-- **Text**: "Transform Your Workflow"
-- **Transition**: Fade → Scene 2
+## Scope
+- Objective: ...
+- Primary output: ...
+- Audience: ...
+- Source material: ...
+- Confidence: high | medium | low
 
-### Scene 2: Problem (0:05 - 0:15)
-- **Visual**: Problem-state illustration
-- **Audio**: Narration starts
-- **Text**: Key message overlay
-- **Transition**: Slide left
+## Chosen mode
+- Code-first programmable video | Template/API automation | Hybrid clip / repurposing pipeline | Manual-finish hybrid
 
-### Scene 3: Solution (0:15 - 0:30)
-...
+## Recommended workflow
+- Stack / workflow shape: ...
+- Why this mode fits: ...
+- What to avoid: ...
+
+## Minimum asset packet
+| Asset | Required | Notes |
+|-------|----------|-------|
+| ... | yes/no | ... |
+
+## Build plan
+1. ...
+2. ...
+3. ...
+
+## QA risks
+- ...
+- ...
+
+## Handoffs
+- Next owner / tool / workflow: ...
+- Why: ...
+
+## Success check
+- Render / approval / publishing signal: ...
 ```
 
-### Step 3: Prepare Assets
+## Output format
+Always return a **short operator-style video production brief**.
 
-```bash
-# Asset checklist
-assets/
-├── logos/
-│   ├── logo-main.svg
-│   └── logo-white.svg
-├── screenshots/
-│   ├── dashboard.png
-│   └── feature-1.png
-├── audio/
-│   ├── bgm.mp3
-│   └── narration.mp3
-└── fonts/
-    └── brand-font.woff2
-```
-
-**Asset prep rules**:
-- Logo: SVG or high-resolution PNG
-- Screenshots: Normalize to the target aspect ratio
-- Audio: MP3 or WAV; normalize volume
-- Fonts: Webfont or local font files
-
-### Step 4: Implement Remotion Composition
-
-```tsx
-// src/Video.tsx
-import { Composition } from 'remotion';
-import { IntroScene } from './scenes/IntroScene';
-import { ProblemScene } from './scenes/ProblemScene';
-import { SolutionScene } from './scenes/SolutionScene';
-import { CTAScene } from './scenes/CTAScene';
-
-export const RemotionVideo: React.FC = () => {
-  return (
-    <>
-      <Composition
-        id="ProductIntro"
-        component={ProductIntro}
-        durationInFrames={1800} // 60s at 30fps
-        fps={30}
-        width={1920}
-        height={1080}
-      />
-    </>
-  );
-};
-
-// Scene Component Example
-const IntroScene: React.FC<{ frame: number }> = ({ frame }) => {
-  const opacity = interpolate(frame, [0, 30], [0, 1]);
-
-  return (
-    <AbsoluteFill style={{ opacity }}>
-      <Logo />
-      <Title>Transform Your Workflow</Title>
-    </AbsoluteFill>
-  );
-};
-```
-
-### Step 5: Render and QA
-
-```bash
-# 1. Preview render (low quality)
-npx remotion preview src/Video.tsx
-
-# 2. QA checks
-- [ ] Timing
-- [ ] Audio sync
-- [ ] Text readability
-- [ ] Smooth transitions
-
-# 3. Final render
-npx remotion render src/Video.tsx ProductIntro out/video.mp4
-```
-
----
+Required qualities:
+- one primary production mode,
+- clear asset minimums,
+- explicit QA / last-mile risks,
+- concrete next artifact and handoff,
+- assumptions called out when context is missing.
 
 ## Examples
 
-### Example 1: Product Intro Video
+### Example 1: personalized campaign videos
+**Input**
+> We need to generate personalized customer recap videos from product data and render hundreds every week.
 
-**Prompt**:
-```
-Create a 60s product intro video with 6 scenes,
-upbeat tone, and 16:9 output. Include a CTA at the end.
-```
+**Output sketch**
+- Primary mode: `Template/API automation`
+- Packet: `render-stack recommendation`
+- Notes dynamic data, template ownership, localization/QA, and publishing handoff
 
-**Expected output**:
-```markdown
-## Scene Breakdown
-1. Hook (0:00-0:05): Logo + tagline
-2. Problem (0:05-0:15): Pain point visualization
-3. Solution (0:15-0:30): Product demo
-4. Features (0:30-0:45): Key benefits (3 items)
-5. Social Proof (0:45-0:55): Testimonial/stats
-6. CTA (0:55-1:00): Call to action + contact
+### Example 2: explicit Remotion ask
+**Input**
+> Build a Remotion workflow for a branded onboarding video with screenshots, captions, and 16:9 + 9:16 variants.
 
-## Remotion Structure
-- src/scenes/HookScene.tsx
-- src/scenes/ProblemScene.tsx
-- src/scenes/SolutionScene.tsx
-- src/scenes/FeaturesScene.tsx
-- src/scenes/SocialProofScene.tsx
-- src/scenes/CTAScene.tsx
-```
+**Output sketch**
+- Primary mode: `Code-first programmable video`
+- Packet: `asset + template packet`
+- Uses scenes/components/rendering language and mentions variant strategy
 
-### Example 2: Onboarding Walkthrough
+### Example 3: repurposing long-form content
+**Input**
+> Turn our webinar recordings into short captioned clips for Shorts and Reels every week.
 
-**Prompt**:
-```
-Generate a 45s onboarding walkthrough using screenshots,
-with callouts and 9:16 format for mobile.
-```
-
-**Expected output**:
-- Scene plan with 5 steps
-- Asset list (screenshots, callout arrows)
-- Text overlays and transitions
-- Mobile-safe margins applied
-
----
+**Output sketch**
+- Primary mode: `Hybrid clip / repurposing pipeline`
+- Packet: `repurposing workflow packet`
+- Names transcript/clip selection, caption QA, safe-area checks, and final publish handoff
 
 ## Best practices
+1. Separate the scalable generation layer from the last-mile editorial polish layer.
+2. Treat captions, safe areas, and aspect-ratio variants as first-class planning items, not afterthoughts.
+3. Choose the simplest stack that meets the repeatability requirement.
+4. Preserve a reusable asset/template packet so future variants are cheaper.
+5. Make the QA checklist explicit whenever short-form/social distribution is involved.
 
-1. **Short scenes**: Keep each scene clear at 5-10 seconds
-2. **Consistent typography**: Define a typography scale
-3. **Audio sync**: Align narration cues with visuals
-4. **Template reuse**: Save reusable compositions
-5. **Safe zones**: Reserve margins for mobile aspect ratios
-
----
-
-## Common pitfalls
-
-- **Text overload**: Limit the amount of text per scene
-- **Ignoring mobile safe zones**: Check edges for 9:16 outputs
-- **Final render before QA**: Always verify in preview first
-
----
-
-## Troubleshooting
-
-### Issue: Audio and visuals out of sync
-**Cause**: Frame timing mismatch
-**Solution**: Recalculate frames and align timestamps
-
-### Issue: Render is slow or fails
-**Cause**: Heavy assets or effects
-**Solution**: Compress assets and simplify animations
-
-### Issue: Text unreadable
-**Cause**: Font size too small or insufficient contrast
-**Solution**: Use at least 24px fonts and high-contrast colors
-
----
-
-## Output format
-
-```markdown
-## Video Production Report
-
-### Spec
-- Duration: 60s
-- Aspect Ratio: 16:9
-- FPS: 30
-
-### Scene Plan
-| Scene | Duration | Visual | Audio | Transition |
-|-------|----------|--------|-------|------------|
-| Hook  | 0:00-0:05 | Logo fade | BGM start | Fade |
-| ...   | ...      | ...    | ...   | ...  |
-
-### Assets
-- [ ] logo.svg
-- [ ] screenshots (3)
-- [ ] bgm.mp3
-- [ ] narration.mp3
-
-### Render Checklist
-- [ ] Preview QA passed
-- [ ] Audio sync verified
-- [ ] Safe zones checked
-- [ ] Final render complete
-```
-
----
-
-## Multi-Agent Workflow
-
-### Validation & Retrospectives
-
-- **Round 1 (Orchestrator)**: Spec completeness, scene coverage
-- **Round 2 (Analyst)**: Narrative consistency, pacing review
-- **Round 3 (Executor)**: Validate render-readiness checklist
-
-### Agent Roles
-
-| Agent | Role |
-|-------|------|
-| Claude | Scene planning, script writing |
-| Gemini | Asset analysis, optimization suggestions |
-| Codex | Generate Remotion code, run renders |
-
----
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2026-01-21
-- **Compatible Platforms**: Claude, ChatGPT, Gemini, Codex
-
-### Related Skills
-- [image-generation](../image-generation/SKILL.md)
-- [presentation-builder](../../documentation/presentation-builder/SKILL.md)
-- [frontend-design](../../frontend/design-system/SKILL.md)
-
-### Tags
-`#video` `#remotion` `#animation` `#storytelling` `#automation` `#react`
+## References
+- [references/production-modes.md](references/production-modes.md)
+- [references/asset-and-qa-checklist.md](references/asset-and-qa-checklist.md)
+- [references/handoff-boundaries.md](references/handoff-boundaries.md)

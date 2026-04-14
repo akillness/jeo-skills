@@ -253,3 +253,11 @@
 - Accepted: rewrite `performance-optimization` as the measurement-led bottleneck-analysis anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and sharpen code-quality cluster boundaries in the wiki
 - Rejected: adding another generic performance wrapper; folding telemetry setup, correctness debugging, generic refactoring, or engine-specific capture interpretation into the same skill
 - Wiki files created/updated: `queries/performance-optimization-modernization-2026-04-14.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Video production canonicalization
+- Area researched: programmable / automated video workflows across Remotion, template/API video platforms, social clip repurposing, and manual-finish hybrid pipelines to choose the highest-value bounded creative-media improvement
+- Survey files created under `.survey/video-production-canonicalization-20260414/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `video-production` as the canonical programmable-video anchor, narrow `remotion-video-production` into a compatibility alias, add support bundles, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces stop presenting two equal Remotion peers
+- Rejected: keeping both skills as equal clones; adding a third media wrapper; pretending the lane is only about Remotion and not broader automation / repurposing workflows
+- Wiki files created/updated: `queries/video-production-canonicalization-2026-04-14.md`, `concepts/creative-media-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
