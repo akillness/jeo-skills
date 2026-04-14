@@ -245,3 +245,11 @@
 - Accepted: rewrite `code-refactoring` as the behavior-preserving structural-cleanup anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and sharpen code-quality cluster boundaries in the wiki
 - Rejected: adding another generic cleanup wrapper; leaving the legacy pattern catalog; folding debugging, review judgment, testing policy, or profiling into the same skill
 - Wiki files created/updated: `queries/code-refactoring-modernization-2026-04-14.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Performance optimization modernization
+- Area researched: measurement-led performance tuning across frontend interaction/page-load work, backend/API hot paths, database query plans, load/capacity checks, and game/runtime-adjacent profiling to choose the highest-value bounded next code-quality modernization
+- Survey files created under `.survey/performance-optimization-modernization-20260414/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `performance-optimization` as the measurement-led bottleneck-analysis anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and sharpen code-quality cluster boundaries in the wiki
+- Rejected: adding another generic performance wrapper; folding telemetry setup, correctness debugging, generic refactoring, or engine-specific capture interpretation into the same skill
+- Wiki files created/updated: `queries/performance-optimization-modernization-2026-04-14.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

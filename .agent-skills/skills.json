@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "generated": "2026-04-12T15:14:25Z",
+  "generated": "2026-04-14T05:11:15Z",
   "skill_count": 85,
   "categories": {
     "planning-review": [
@@ -2000,67 +2000,53 @@
     },
     {
       "name": "performance-optimization",
-      "description": "Optimize application performance for speed, efficiency, and scalability. Use when improving page load times, reducing bundle size, optimizing database queries, or fixing performance bottlenecks. Handles React optimization, lazy loading, caching, code splitting, and profiling.",
+      "description": "Run measurement-led performance tuning across frontend, backend, database, cache, and runtime bottlenecks. Use when the main job is locating the tightest latency, throughput, memory, bundle-size, or frame-time constraint; choosing the right profiling evidence; staging one or two high-leverage optimizations; and verifying before/after impact. Route telemetry setup to monitoring-observability, failure diagnosis to debugging, behavior-preserving cleanup to code-refactoring, validation policy to testing-strategies, and Unity/Unreal capture interpretation to game-performance-profiler.",
       "category": "code-quality",
       "path": "code-quality/performance-optimization/SKILL.md",
       "tags": [
         "performance",
-        "optimization",
-        "React",
-        "lazy-loading",
-        "caching",
         "profiling",
-        "web-vitals"
+        "bottleneck-analysis",
+        "latency",
+        "throughput",
+        "memory",
+        "bundle-size",
+        "query-plans"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
         "Read",
-        "Edit",
+        "Grep",
+        "Glob",
         "Bash",
         "Write"
       ],
       "commands": [
         {
-          "command": "npm install -g lighthouse",
+          "command": "# classify: interaction-and-rendering | page-load-and-bundle | api-latency-and-hot-paths | database-plan-and-data-access | throughput-and-capacity | memory-and-allocation | runtime-frame-budget",
           "source": "code-quality/performance-optimization/SKILL.md"
         },
         {
-          "command": "lighthouse https://example.com --view",
+          "command": "# choose the primary evidence source before proposing fixes: trace | flame graph | query plan | load test | heap/profile | frame capture",
           "source": "code-quality/performance-optimization/SKILL.md"
         },
         {
-          "command": "lighthouse https://example.com --output=json --output-path=./report.json",
+          "command": "# name one primary bottleneck and recommend at most two high-leverage changes",
           "source": "code-quality/performance-optimization/SKILL.md"
         },
         {
-          "command": "npm install --save-dev webpack-bundle-analyzer",
-          "source": "code-quality/performance-optimization/SKILL.md"
-        },
-        {
-          "command": "{",
-          "source": "code-quality/performance-optimization/SKILL.md"
-        },
-        {
-          "command": "\"scripts\": {",
-          "source": "code-quality/performance-optimization/SKILL.md"
-        },
-        {
-          "command": "\"analyze\": \"webpack-bundle-analyzer build/stats.json\"",
-          "source": "code-quality/performance-optimization/SKILL.md"
-        },
-        {
-          "command": "}",
-          "source": "code-quality/performance-optimization/SKILL.md"
-        },
-        {
-          "command": "}",
+          "command": "# include before/after verification and route-outs to monitoring-observability, debugging, testing-strategies, code-refactoring, or game-performance-profiler as needed",
           "source": "code-quality/performance-optimization/SKILL.md"
         }
-      ]
+      ],
+      "compatibility": "Best for repositories, traces, benchmarks, query plans, flame graphs, browser profiles, load-test outputs, and runtime notes where the main decision is what to measure, what to tune first, and how to prove improvement. Not for observability platform setup, generic refactoring, or correctness-bug debugging.",
+      "version": "2.0",
+      "source": "akillness/oh-my-skills"
     },
     {
       "name": "testing-strategies",

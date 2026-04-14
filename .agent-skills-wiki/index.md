@@ -27,7 +27,9 @@
 - [[deployment-automation-modernization-2026-04-13]] — Why the best bounded infrastructure/developer-workflow improvement was modernizing `deployment-automation` into the release-execution anchor instead of adding another CI/CD or rollout wrapper.
 - [[backend-testing-modernization-2026-04-12]] — Why the best bounded backend verification fix was modernizing `backend-testing` into a layer-selecting, fixture-aware coverage skill instead of adding another testing wrapper.
 - [[bmad-gds-modernization-2026-04-12]] — Why the best bounded game-cluster fix was modernizing `bmad-gds` into a coordinating producer/orchestrator skill.
+- [[code-refactoring-modernization-2026-04-14]] — Why the best bounded fix for the code-quality pair was modernizing `code-refactoring` into a behavior-preserving structural-cleanup anchor instead of adding another refactoring wrapper.
 - [[design-system-canonicalization-2026-04-12]] — Why the best bounded fix for the UI-system pair was canonicalizing `design-system` and narrowing `frontend-design-system` into a compatibility alias.
+- [[performance-optimization-modernization-2026-04-14]] — Why the best bounded next code-quality improvement was modernizing `performance-optimization` into the measurement-led bottleneck-analysis anchor instead of adding another performance wrapper.
 - [[environment-skill-canonicalization-2026-04-12]] — Why the best bounded infrastructure fix was canonicalizing `system-environment-setup` and narrowing `environment-setup` into an app-config compatibility skill.
 - [[git-workflow-modernization-2026-04-12]] — Why the best bounded developer-workflow fix was modernizing `git-workflow` into a local collaboration and recovery anchor.
 - [[marketing-skill-canonicalization-2026-04-12]] — Why the best bounded marketing change was canonicalizing `marketing-automation` and narrowing `marketing-skills-collection` into a compatibility alias.
