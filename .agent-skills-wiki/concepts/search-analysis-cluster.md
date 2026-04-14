@@ -14,7 +14,7 @@ The search-analysis lane works best when each skill owns a different stage of th
 - `codebase-search` = repo navigation, call-site tracing, entry-point/config hunting, and impact mapping before edits
 - `log-analysis` = signal extraction and root-cause-oriented triage from logs
 - `data-analysis` = decision-first dataset reasoning across exports, experiments, KPI drops, cohort/funnel work, and telemetry summaries rather than source-code navigation or BI build-out
-- `pattern-detection` = repeated pattern/anomaly detection across code or data, not routine repo wayfinding or ordinary metrics explanation
+- `pattern-detection` = mode-selecting repeated pattern/rule/anomaly hunting across code, logs/events, telemetry, and metrics, with confidence labels and explicit route-outs instead of a regex-heavy catch-all
 
 ## Boundary that matters
 `codebase-search` should stay discovery-first.
@@ -30,8 +30,9 @@ It becomes weak when it tries to absorb:
 ## Recommended maintenance direction
 - Keep `codebase-search` as the repo-navigation anchor.
 - Keep `data-analysis` as the dataset-reasoning anchor; route repeated anomaly work to `pattern-detection` and BI/reporting build-out to `looker-studio-bigquery`.
+- Keep `pattern-detection` focused on mode selection, confidence labeling, and repeatable rule/anomaly hunting; route root-cause forensics to `log-analysis` and remediation/reporting to adjacent specialist skills.
 - Prefer support bundles that teach search-mode choice and evidence-map output, not giant command catalogs.
-- Re-check discovery wording in README/setup surfaces whenever `codebase-search` or `data-analysis` is materially repositioned.
+- Re-check discovery wording in README/setup surfaces whenever `codebase-search`, `data-analysis`, or `pattern-detection` is materially repositioned.
 
 ## Related pages
 - [[code-quality-cluster]]
@@ -39,3 +40,4 @@ It becomes weak when it tries to absorb:
 - [[code-refactoring-modernization-2026-04-14]]
 - [[log-analysis-modernization-2026-04-13]]
 - [[codebase-search-modernization-2026-04-14]]
+- [[pattern-detection-modernization-2026-04-14]]

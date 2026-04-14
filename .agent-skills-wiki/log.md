@@ -286,3 +286,11 @@
 - Accepted: rewrite `data-analysis` as the decision-first dataset-reasoning anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and sharpen search-analysis cluster boundaries in the wiki
 - Rejected: adding another broad analytics wrapper; folding repeated anomaly hunting into `data-analysis`; turning the skill into a BI-dashboard or vendor-specific tutorial
 - Wiki files created/updated: `queries/data-analysis-modernization-2026-04-14.md`, `concepts/search-analysis-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Pattern detection modernization
+- Area researched: repeated pattern/rule/anomaly hunting across CLI/dev workflow, web/fullstack issue grouping, PM/ops/marketing KPI anomalies, and game telemetry; plus the broad hourly opportunity scan that selected the next bounded search-analysis modernization target
+- Survey files created under `.survey/pattern-detection-modernization-20260414/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `pattern-detection` as the mode-selecting pattern/rule/anomaly-hunting anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the sharper search-analysis boundary in the wiki
+- Rejected: adding another anomaly-detection wrapper; folding root-cause log forensics, business explanation, or full remediation into the same skill
+- Wiki files created/updated: `queries/pattern-detection-modernization-2026-04-14.md`, `concepts/search-analysis-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

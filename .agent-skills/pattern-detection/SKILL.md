@@ -1,230 +1,259 @@
 ---
 name: pattern-detection
-description: Detect patterns, anomalies, and trends in code and data. Use when identifying code smells, finding security vulnerabilities, or discovering recurring patterns. Handles regex patterns, AST analysis, and statistical anomaly detection.
-allowed-tools: Read Grep Glob
+description: >
+  Hunt for repeated rules, suspicious shapes, and anomalies across code, logs,
+  telemetry, and structured datasets. Use when the user wants reusable pattern
+  scans, outlier triage, or recurring-issue detection — even if they ask in
+  domain language like smell, anti-pattern, suspicious spike, repeated bug,
+  odd cohort, noisy event, fraud signal, duplicate shape, or anomaly. Choose
+  the right mode (text prefilter, structural code rule, log/event pattern, or
+  metric anomaly), label confidence and false-positive risk, and route deep log
+  forensics, stakeholder analysis, or full security remediation to adjacent
+  specialist skills.
+allowed-tools: Read Grep Glob Bash
 metadata:
-  tags: patterns, anomalies, regex, code-analysis, security, trends
-  platforms: Claude, ChatGPT, Gemini
+  tags: patterns, anomalies, outliers, structural-search, telemetry, detection
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0"
 ---
-
 
 # Pattern Detection
 
-
 ## When to use this skill
+- The user needs to **find recurring shapes or suspicious repeats**, not just inspect one isolated incident.
+- The task is to **scan code for repeatable risky structures**, migration candidates, duplicate logic, or reusable query/rule ideas.
+- The task is to **spot anomalies in logs, telemetry, or tabular data** before deeper diagnosis or reporting.
+- The user wants a **detection workflow with confidence notes and false-positive handling**, not a pile of raw regex snippets.
+- The request mentions **patterns, anomalies, outliers, repeated failures, suspicious spikes, odd cohorts, rule packs, signatures, code smells, or recurring event shapes**.
 
-- **Code review**: Proactively detect problematic patterns
-- **Security review**: Scan for vulnerability patterns
-- **Refactoring**: Identify duplicate code
-- **Monitoring**: Alert on anomalies
+Do **not** use this skill as the main workflow when:
+- The real job is **root-cause log triage** for a concrete incident → use `log-analysis`.
+- The real job is **decision-ready dataset explanation, KPI storytelling, experiment analysis, or stakeholder reporting** → use `data-analysis`.
+- The real job is **repo navigation / call-site tracing / metric-definition lookup** → use `codebase-search`.
+- The real job is **security hardening, policy design, or full vulnerability remediation** → use `security-best-practices` or `code-review`.
+
+## Core idea
+Pattern detection is a **mode-selection problem** before it is a tooling problem.
+
+Use the cheapest reliable detection mode that matches the unit of evidence:
+1. **Text prefilter** — fast grep/regex/glob pass to narrow the search space
+2. **Structural code rule** — AST/query/pattern rule when text matching becomes brittle
+3. **Log / event pattern** — repeated error shape, noisy event cluster, parser-aware field checks
+4. **Metric anomaly** — outlier, spike, drift, cohort irregularity, seasonal deviation
+
+The skill succeeds when it surfaces a **small set of explainable candidates** with confidence, false-positive risk, and the next handoff.
 
 ## Instructions
 
-### Step 1: Detect code smell patterns
+### Step 1: Frame the detection job
+Before scanning, define:
+- **Object of detection** — code blocks, log lines, event records, rows, metrics, cohorts, sessions, builds
+- **Pattern type** — repeated structure, forbidden shape, anomaly, outlier, drift, cluster, signature
+- **Why it matters** — correctness, security, reliability, cost, player experience, growth, fraud, migration effort
+- **Expected output** — ranked candidates, counts, suspicious segments, reusable rule draft, or triage shortlist
+- **Acceptance threshold** — what would count as interesting enough to escalate?
 
-**Detect long functions**:
-```bash
-# Find functions with 50+ lines
-grep -n "function\|def\|func " **/*.{js,ts,py,go} | \
-  while read line; do
-    file=$(echo $line | cut -d: -f1)
-    linenum=$(echo $line | cut -d: -f2)
-    # Function length calculation logic
-  done
-```
+Restate the task in one line:
+> "We need to detect [pattern/anomaly] across [scope] so we can [decision/action]."
 
-**Duplicate code patterns**:
-```bash
-# Search for similar code blocks
-grep -rn "if.*==.*null" --include="*.ts" .
-grep -rn "try\s*{" --include="*.java" . | wc -l
-```
+### Step 2: Run a trust and scope check
+Always inspect the evidence source before claiming a pattern.
 
-**Magic numbers**:
-```bash
-# Search for hard-coded numbers
-grep -rn "[^a-zA-Z][0-9]{2,}[^a-zA-Z]" --include="*.{js,ts}" .
-```
+#### Minimum checks
+- coverage of files / logs / rows / time window
+- whether the data is complete enough for comparison
+- schema or field availability
+- obvious parser / instrumentation issues
+- sample size or count context
+- whether seasonality, deploy timing, or environment split could explain the signal
 
-### Step 2: Security vulnerability patterns
+If trust is low, switch the deliverable from **pattern found** to **candidate signal with caveats**.
 
-**SQL Injection risks**:
-```bash
-# SQL query built via string concatenation
-grep -rn "query.*+.*\$\|execute.*%s\|query.*f\"" --include="*.py" .
-grep -rn "SELECT.*\+.*\|\|" --include="*.{js,ts}" .
-```
+### Step 3: Choose the right detection mode
 
-**Hard-coded secrets**:
-```bash
-# Password, API key patterns
-grep -riE "(password|secret|api_key|apikey)\s*=\s*['\"][^'\"]+['\"]" --include="*.{js,ts,py,java}" .
+| Mode | Use when | Typical evidence | Good tools / tactics | Output |
+|---|---|---|---|---|
+| Text prefilter | You need a cheap first pass | source files, configs, logs | grep / ripgrep / globs / regex | shortlist of files or lines worth deeper inspection |
+| Structural code rule | The pattern is code-shaped and syntax matters | functions, AST nodes, call shapes, API misuse | AST-aware search, code-query rules, structured search | reusable rule idea + prioritized matches |
+| Log / event pattern | The issue is repeated across logs, traces, or events | error lines, event names, payload fields, browser/build splits | parsing, field grouping, regex where appropriate, windowing | grouped suspicious clusters with counts and context |
+| Metric anomaly | The signal is in rates, volumes, cohorts, or time series | KPI tables, retention, funnels, spend, telemetry metrics | SQL/statistics/notebook checks, rolling baselines, segmentation | suspicious segments or windows with confidence notes |
 
-# AWS key patterns
-grep -rE "AKIA[0-9A-Z]{16}" .
-```
+If more than one mode is needed, use them in order:
+1. prefilter
+2. structured/grouped detection
+3. quantify the suspicious subset
 
-**Dangerous function usage**:
-```bash
-# eval, exec usage
-grep -rn "eval\(.*\)\|exec\(.*\)" --include="*.{py,js}" .
+### Step 4: Apply the mode-specific workflow
 
-# innerHTML usage
-grep -rn "innerHTML\s*=" --include="*.{js,ts}" .
-```
+#### Mode A — Text prefilter
+Use for broad narrowing only.
 
-### Step 3: Code structure patterns
+Checklist:
+1. define file/time/path scope
+2. search for the cheapest candidate signature first
+3. capture counts and representative examples
+4. note why text matching may over-match or under-match
+5. escalate if syntax or field structure matters
 
-**Import analysis**:
-```bash
-# Candidates for unused imports
-grep -rn "^import\|^from.*import" --include="*.py" . | \
-  awk -F: '{print $3}' | sort | uniq -c | sort -rn
-```
+Good use cases:
+- repeated error string families
+- TODO/FIXME/HACK clusters
+- suspicious hard-coded values or feature flags
+- initial narrowing before AST or parser-aware work
 
-**TODO/FIXME patterns**:
-```bash
-# Find unfinished code
-grep -rn "TODO\|FIXME\|HACK\|XXX" --include="*.{js,ts,py}" .
-```
+#### Mode B — Structural code rule
+Use when plain text matching is too noisy.
 
-**Error handling patterns**:
-```bash
-# Empty catch blocks
-grep -rn "catch.*{[\s]*}" --include="*.{js,ts,java}" .
+Checklist:
+1. describe the code shape in words before writing any rule
+2. identify the required structure and allowed variants
+3. note likely false positives and safe exclusions
+4. group matches by pattern family, not just raw file list
+5. decide whether the next step is review, refactor, or security escalation
 
-# Ignored errors
-grep -rn "except:\s*pass" --include="*.py" .
-```
+Good use cases:
+- repeated unsafe call shapes
+- duplicate branching/error-handling structures
+- legacy API migration candidates
+- anti-pattern families that need a reusable rule
 
-### Step 4: Data anomaly patterns
+#### Mode C — Log / event pattern
+Use when repeated signals show up in logs or telemetry records.
 
-**Regex patterns**:
-```python
-import re
+Checklist:
+1. normalize the unit of grouping (message family, event name, exception class, browser, build, region, feature flag)
+2. separate volume from spread (one noisy source vs many sources)
+3. compare across environments / cohorts / time windows
+4. flag parser or instrumentation drift explicitly
+5. hand off root-cause reconstruction to `log-analysis` if the task becomes incident diagnosis
 
-patterns = {
-    'email': r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}',
-    'phone': r'\d{3}[-.\s]?\d{4}[-.\s]?\d{4}',
-    'ip_address': r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}',
-    'credit_card': r'\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}',
-    'ssn': r'\d{3}-\d{2}-\d{4}',
-}
+Good use cases:
+- repeated browser/version crash signatures
+- noisy retry/error families
+- suspicious event spam after a release
+- gameplay telemetry clusters by build or player segment
 
-def detect_sensitive_data(text):
-    found = {}
-    for name, pattern in patterns.items():
-        matches = re.findall(pattern, text)
-        if matches:
-            found[name] = len(matches)
-    return found
-```
+#### Mode D — Metric anomaly
+Use when the pattern is in aggregates rather than raw lines.
 
-**Statistical anomaly detection**:
-```python
-import numpy as np
-from scipy import stats
+Checklist:
+1. define baseline and comparison window
+2. compare absolute change, relative change, and denominator context
+3. segment by the strongest likely drivers
+4. test whether the anomaly is broad or concentrated
+5. distinguish data-quality issues from genuine behavior change
+6. hand off deeper explanation and recommendation writing to `data-analysis` if needed
 
-def detect_anomalies_zscore(data, threshold=3):
-    """Z-score-based outlier detection"""
-    z_scores = np.abs(stats.zscore(data))
-    return np.where(z_scores > threshold)[0]
+Good use cases:
+- KPI spikes/drops
+- retention or funnel anomalies
+- suspicious spend / conversion swings
+- telemetry economy or progression outliers
 
-def detect_anomalies_iqr(data, k=1.5):
-    """IQR-based outlier detection"""
-    q1, q3 = np.percentile(data, [25, 75])
-    iqr = q3 - q1
-    lower = q1 - k * iqr
-    upper = q3 + k * iqr
-    return np.where((data < lower) | (data > upper))[0]
-```
+### Step 5: Label confidence and false-positive risk
+For every finding, include:
+- **Confidence:** high / medium / low
+- **Why:** evidence quality, sample size, structural specificity, or consistency across segments
+- **False-positive risk:** what could make this signal misleading?
+- **Next best check:** the fastest way to validate or falsify the finding
 
-### Step 5: Trend analysis
+Default heuristics:
+- **High confidence** — repeated signal, good coverage, strong grouping/structure, low ambiguity
+- **Medium confidence** — plausible signal but one major caveat remains
+- **Low confidence** — thin data, broad regex, weak baseline, or likely parser/instrumentation drift
 
-```python
-import pandas as pd
+### Step 6: Keep detection separate from remediation
+Return three layers:
+1. **Detected pattern / anomaly** — what repeated shape or irregularity you found
+2. **Why it is interesting** — risk, cost, severity, or likely impact
+3. **What should happen next** — validate, inspect, route to another skill, or promote to a reusable rule
 
-def analyze_trend(df, date_col, value_col):
-    """Time-series trend analysis"""
-    df[date_col] = pd.to_datetime(df[date_col])
-    df = df.sort_values(date_col)
+Do **not** silently turn detection into a full diagnosis, code rewrite, or stakeholder memo.
 
-    # Moving averages
-    df['ma_7'] = df[value_col].rolling(window=7).mean()
-    df['ma_30'] = df[value_col].rolling(window=30).mean()
-
-    # Growth rate
-    df['growth'] = df[value_col].pct_change() * 100
-
-    # Trend direction
-    recent_trend = df['ma_7'].iloc[-1] > df['ma_30'].iloc[-1]
-
-    return {
-        'trend_direction': 'up' if recent_trend else 'down',
-        'avg_growth': df['growth'].mean(),
-        'volatility': df[value_col].std()
-    }
-```
-
-## Output format
-
-### Pattern detection report
-
-```markdown
-# Pattern Detection Report
-
-## Summary
-- Files scanned: XXX
-- Patterns detected: XX
-- High severity: X
-- Medium severity: X
-- Low severity: X
-
-## Detected patterns
-
-### Security vulnerabilities (HIGH)
-| File | Line | Pattern | Description |
-|------|------|------|------|
-| file.js | 42 | hardcoded-secret | Hard-coded API key |
-
-### Code smells (MEDIUM)
-| File | Line | Pattern | Description |
-|------|------|------|------|
-| util.py | 100 | long-function | Function length: 150 lines |
-
-## Recommended actions
-1. [Action 1]
-2. [Action 2]
-```
-
-## Best practices
-
-1. **Incremental analysis**: Start with simple patterns
-2. **Minimize false positives**: Use precise regex
-3. **Check context**: Understand the context around a match
-4. **Prioritize**: Sort by severity
-
-## Constraints
-
-### Required rules (MUST)
-1. Read-only operation
-2. Perform result verification
-3. State the possibility of false positives
-
-### Prohibited (MUST NOT)
-1. Do not auto-modify code
-2. Do not log sensitive information
-
-## References
-
-- [Regex101](https://regex101.com/)
-- [OWASP Cheat Sheet](https://cheatsheetseries.owasp.org/)
-- [Code Smell Catalog](https://refactoring.guru/refactoring/smells)
+### Step 7: Route out when another job starts
+Hand off when detection is no longer the bottleneck:
+- **Root-cause incident reconstruction** → `log-analysis`
+- **Stakeholder-ready KPI explanation / experiments / business narrative** → `data-analysis`
+- **Repo tracing / ownership / instrumentation lookup** → `codebase-search`
+- **Security hardening or remediation plan** → `security-best-practices`
+- **Judgment-heavy review of a concrete diff or patch** → `code-review`
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Repeated risky code shape
+**Prompt:**
+> Scan this repo for repeated risky error-handling patterns and tell me what to inspect first.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good response shape:**
+- choose text prefilter + structural code rule
+- group matches by pattern family
+- explain likely false positives
+- recommend review or refactor handoff, not automatic remediation
+
+### Example 2: KPI spike triage
+**Prompt:**
+> We have a KPI spike in a CSV export. Is this pattern-detection or data-analysis?
+
+**Good response shape:**
+- use metric anomaly mode for first-pass detection
+- check baseline, coverage, and denominator context
+- if the user needs explanation/recommendations, route to `data-analysis`
+
+### Example 3: Gameplay telemetry outliers
+**Prompt:**
+> Look for suspicious gameplay telemetry outliers after yesterday's update.
+
+**Good response shape:**
+- choose log/event or metric anomaly mode depending on the data
+- segment by build, player cohort, region, or item/class
+- call out instrumentation caveats and follow-up validation
+
+### Example 4: Reusable rule hunting
+**Prompt:**
+> I need reusable rules for finding unsafe code shapes, not a full security audit.
+
+**Good response shape:**
+- define the unsafe structure in words first
+- propose a structural rule direction
+- report likely match families and false-positive controls
+- route remediation to `security-best-practices` only if the user wants the hardening plan
+
+## Best practices
+1. Start with the **unit of evidence** (code shape, log family, metric series), not the tool name.
+2. Use the **cheapest reliable mode** before escalating to heavier analysis.
+3. Always include **confidence and false-positive risk**.
+4. Group findings into **pattern families**, not just raw hit lists.
+5. Distinguish **detection** from **diagnosis, remediation, and reporting**.
+6. Treat parser, instrumentation, and baseline problems as first-class caveats.
+7. Prefer reusable rule thinking when the same pattern is likely to recur.
+
+## References
+- [ripgrep guide](https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md)
+- [ast-grep introduction](https://ast-grep.github.io/guide/introduction.html)
+- [Semgrep pattern syntax](https://semgrep.dev/docs/writing-rules/pattern-syntax)
+- [CodeQL overview](https://codeql.github.com/docs/codeql-overview/about-codeql/)
+- [Datadog regex/grok parsing guide](https://docs.datadoghq.com/logs/guide/regex_log_parsing/)
+- [OpenSearch anomaly dashboards](https://docs.opensearch.org/latest/observing-your-data/ad/dashboards-anomaly-detection/)
+- [scikit-learn outlier detection](https://scikit-learn.org/stable/modules/outlier_detection.html)
+
+## Output format
+Use a concise detection brief:
+
+```markdown
+## Detection brief
+- Goal: [pattern/anomaly to detect]
+- Scope: [files / logs / rows / metrics / time window]
+- Mode used: text prefilter | structural code rule | log/event pattern | metric anomaly
+- Trust level: high | medium | low
+
+## Candidate findings
+1. [pattern family or anomaly] — confidence: high/medium/low
+2. [pattern family or anomaly] — confidence: high/medium/low
+
+## False-positive risks
+- [risk]
+- [risk]
+
+## Next checks / handoff
+- [validate / inspect / route to adjacent skill]
+```

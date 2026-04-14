@@ -315,7 +315,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `data-analysis` | Decision-first dataset analysis for exports, experiments, telemetry, and KPI explanation | All |
 | `langsmith` | LLM observability, tracing, evaluation, and prompt management via LangSmith | All |
 | `log-analysis` | Root-cause triage for application, infrastructure, browser, and CI logs | All |
-| `pattern-detection` | Pattern and anomaly detection | All |
+| `pattern-detection` | Mode-selecting pattern/rule hunting for code, logs, telemetry, and metric anomalies | All |
 
 ### 🎬 Creative Media (2)
 
