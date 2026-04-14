@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 69 skills with `references/`
-- 68 skills with `evals/`
+- 70 skills with `references/`
+- 69 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -60,6 +60,7 @@ Recent ratchets:
 - The `web-design-guidelines` modernization pass added three `references/` docs and `evals/evals.json`, which matters because the last weak high-visibility frontend review anchor now owns a broad interface-audit packet instead of a thin vendor-rules fetcher.
 - The `vercel-deploy` modernization pass added three `references/` docs and `evals/evals.json`, which matters because a stale provider-specific deployment skill now owns preview/prod promotion, alias/domain, env-sync, and rollback operations instead of a legacy claimable-preview shortcut.
 - The `ohmg` modernization pass added `references/` and `evals/`, which matters because a fast-moving platform anchor now explains `oh-my-agent` / `oma`, `.agents` as the source of truth, Gemini-vs-Antigravity capability differences, and route-outs to `omc` / `omx` instead of a stale Gemini-only wrapper.
+- The `bmad-idea` modernization pass added both `references/` and `evals/`, which matters because a high-visibility pre-planning anchor now owns concept framing and downstream handoff choice instead of remaining a stale command/persona catalog with no reusable artifact model.
 - The catalog-sync hardening pass added a new `references/` doc and `scripts/validate_catalog_sync.py` to `skill-standardization`, which matters because the repo now validates discovery-surface drift explicitly instead of only linting individual `SKILL.md` files.
 - The compact-variant sync follow-up ratcheted `skill-standardization` again so the same maintenance loop now treats `SKILL.toon` / `SKILL.compact.md` as derived discovery artifacts that must stay aligned with material `SKILL.md` rewrites, instead of leaving that duty to per-run memory.
 

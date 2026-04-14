@@ -366,3 +366,11 @@
 - Accepted: update `skill-standardization` to cover compact-variant drift, refresh `SKILL.toon` + repo-level `skills.toon`, extend the catalog-sync checklist and evals, update README / README.ko / `.agent-skills/skills.json`, and record the durable rationale in the wiki
 - Rejected: adding another maintenance meta-skill; treating compact variants as new source-of-truth files; expanding `validate_catalog_sync.py` into a brittle compact-file diff checker in the same bounded run
 - Wiki files created/updated: `queries/skill-standardization-variant-sync-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | bmad-idea modernization
+- Area researched: pre-planning ideation and concept-framing workflows across product discovery, GTM/positioning, consulting briefs, and game concepting
+- Survey files created under `.survey/bmad-idea-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `bmad-idea` as the pre-planning idea router, add `references/` + `evals/`, refresh `SKILL.toon` / `REFERENCE.md`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the durable rationale in the wiki
+- Rejected: adding another creativity wrapper; keeping `bmad-idea` as a legacy command/persona catalog; letting the skill overlap heavily with `bmad`, `marketing-automation`, or `bmad-gds`
+- Wiki files created/updated: `queries/bmad-idea-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

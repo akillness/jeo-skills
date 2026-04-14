@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-15 | Total pages: 49
+> Last updated: 2026-04-15 | Total pages: 50
 
 ## Entities
 
@@ -69,4 +69,5 @@
 - [[vercel-deploy-modernization-2026-04-15]] — Why the best bounded infrastructure/provider-specific deployment improvement was modernizing `vercel-deploy` into the Vercel operations anchor instead of leaving it as a claimable deploy shortcut or adding another Vercel wrapper.
 - [[ohmg-modernization-2026-04-15]] — Why the best bounded orchestration-platform improvement was modernizing `ohmg` into the Gemini / Antigravity entrypoint for the portable `oh-my-agent` harness instead of adding another platform wrapper.
 - [[bmad-modernization-2026-04-15]] — Why the best bounded core-BMAD improvement was modernizing `bmad` into the level/phase/next-artifact router instead of keeping a giant command dump or adding another BMAD wrapper.
+- [[bmad-idea-modernization-2026-04-15]] — Why the best bounded pre-planning creativity improvement was modernizing `bmad-idea` into the concept-routing anchor instead of leaving it as a command/persona catalog or adding another ideation wrapper.
 
