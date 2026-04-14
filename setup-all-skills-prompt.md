@@ -390,7 +390,7 @@ If no → skip silently. Never re-ask.
 | `strix` | `strix`, `ai pentest`, `vulnerability scan cli` | AI-driven appsec testing — Docker sandbox, LLM provider, local/GitHub/live scans, CI/CD |
 | `research-paper-writing` | `research paper`, `academic paper` | ML/CV/NLP academic paper — Abstract/Introduction/Method/Experiments/Conclusion |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex CLI multi-agent workflow layer (v0.11.10, 30+ agents) — team runtime, explore, sparkshell |
-| `ohmg` | `ohmg` | Gemini / Antigravity multi-agent framework |
+| `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini / Antigravity entry for the portable `oh-my-agent` harness |
 
 ---
 

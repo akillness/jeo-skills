@@ -1,0 +1,56 @@
+{
+  "skill_name": "ohmg",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up oh-my-agent for Gemini CLI.",
+      "expected_output": "The skill gives a current oh-my-agent / oma install path, keeps .agents as the source of truth, and mentions oma doctor or oma link.",
+      "assertions": [
+        "The response includes oh-my-agent or oma naming rather than only oh-my-ag",
+        "The response includes an install path such as curl install.sh, bunx oh-my-agent@latest, or bun install --global oh-my-agent",
+        "The response mentions .agents as the source of truth",
+        "The response includes oma doctor or oma link"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I want Antigravity to use the same multi-agent setup as Gemini.",
+      "expected_output": "The skill explains that Antigravity can consume the portable harness but does not support custom subagent spawning the same way Gemini-native runtimes do.",
+      "assertions": [
+        "The response states that Antigravity can use the same .agents-based harness",
+        "The response explicitly notes the custom subagent spawning limitation",
+        "The response does not claim Antigravity is identical to Gemini-native execution"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I need Gemini-native agents now, but later I may route work to Claude or Codex.",
+      "expected_output": "The skill keeps ohmg as the portable harness anchor, explains generated vendor views, and routes Claude/Codex runtime depth to omc/omx as needed.",
+      "assertions": [
+        "The response mentions generated Gemini, Claude, or Codex agent surfaces from the same canonical source",
+        "The response keeps .agents or the portable harness as the anchor",
+        "The response mentions routing Claude-first runtime questions to omc and Codex-first runtime questions to omx"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Should I use ohmg, omc, or omx?",
+      "expected_output": "The skill clearly distinguishes portable Gemini/Antigravity adoption from Claude-first and Codex-first runtime overlays.",
+      "assertions": [
+        "The response describes ohmg as the Gemini or Antigravity facing portable harness lane",
+        "The response describes omc as Claude-first runtime orchestration",
+        "The response describes omx as Codex-first runtime orchestration"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "My ohmg docs still say oh-my-ag and .agent paths. What should I trust?",
+      "expected_output": "The skill explains that current upstream uses oh-my-agent / oma and .agents as the canonical layout, with regenerated vendor-specific views.",
+      "assertions": [
+        "The response says oh-my-agent or oma is the current upstream identity",
+        "The response says .agents is canonical instead of .agent",
+        "The response mentions regenerating vendor views via oma link or equivalent"
+      ]
+    }
+  ]
+}
