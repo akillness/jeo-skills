@@ -1,7 +1,7 @@
 ---
 title: Skill Support Coverage
 created: 2026-04-12
-updated: 2026-04-14
+updated: 2026-04-15
 type: concept
 tags: [skills, skill-quality, graphify]
 sources: [graphify-out/GRAPH_REPORT.md]
@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 90 filesystem skills with `SKILL.md`
 - 90 manifest entries in `.agent-skills/skills.json`
-- 66 skills with `references/`
-- 65 skills with `evals/`
+- 67 skills with `references/`
+- 66 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -57,6 +57,7 @@ Recent ratchets:
 - The `monitoring-observability` modernization pass added both `references/` and `evals/`, which matters because the infrastructure lane now has a sharper telemetry design/review anchor for service reliability, data/pipeline observability, and game live-ops visibility instead of a generic Prometheus/logging snippet dump.
 - The `security-best-practices` modernization pass added both `references/` and `evals/`, which matters because a high-traffic web/app hardening anchor now owns layered security classification and honest route-outs instead of a stale Express-only OWASP snippet dump.
 - The `web-design-guidelines` modernization pass added three `references/` docs and `evals/evals.json`, which matters because the last weak high-visibility frontend review anchor now owns a broad interface-audit packet instead of a thin vendor-rules fetcher.
+- The `vercel-deploy` modernization pass added three `references/` docs and `evals/evals.json`, which matters because a stale provider-specific deployment skill now owns preview/prod promotion, alias/domain, env-sync, and rollback operations instead of a legacy claimable-preview shortcut.
 - The catalog-sync hardening pass added a new `references/` doc and `scripts/validate_catalog_sync.py` to `skill-standardization`, which matters because the repo now validates discovery-surface drift explicitly instead of only linting individual `SKILL.md` files.
 
 ## Why it matters
@@ -96,3 +97,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[performance-optimization-modernization-2026-04-14]]
 - [[pattern-detection-modernization-2026-04-14]]
 - [[web-design-guidelines-modernization-2026-04-14]]
+- [[vercel-deploy-modernization-2026-04-15]]

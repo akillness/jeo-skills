@@ -326,3 +326,11 @@
 - Accepted: rewrite `web-design-guidelines` as the broad interface-audit anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the durable rationale in the wiki
 - Rejected: leaving the skill as a thin vendor-rules fetcher; folding broad UI review into `web-accessibility`; adding another generic UI audit wrapper
 - Wiki files created/updated: `queries/web-design-guidelines-modernization-2026-04-14.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | Vercel deploy modernization
+- Area researched: Vercel-specific deploy operations across preview deploys, preview-to-production promotion, stable preview aliases, domain handling, environment-variable scope, and rollback caveats
+- Survey files created under `.survey/vercel-deploy-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts not refreshed this run; the existing structural scan was sufficient to confirm the provider boundary and the higher-value work was updating the skill plus wiki memory layer
+- Accepted: rewrite `vercel-deploy` as the Vercel-specific operations anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the durable rationale in the wiki
+- Rejected: adding another Vercel wrapper; keeping the skill centered on a claimable anonymous deploy shortcut; absorbing generic release strategy or CI authoring into the provider skill
+- Wiki files created/updated: `queries/vercel-deploy-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

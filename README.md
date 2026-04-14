@@ -286,7 +286,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `security-best-practices` | Layered web/API hardening for headers, CSP, cookies/CSRF, abuse controls, secrets, and verification handoffs | All |
 | `strix` | Strix CLI for AI-driven application security testing - Docker preflight, LLM provider setup, local/GitHub/live target scans, scan modes, and CI/CD usage | All |
 | `system-environment-setup` | Canonical broader environment-setup skill for runnable repos, toolchains, Docker/devcontainers, local services, onboarding, and setup drift diagnosis | All |
-| `vercel-deploy` | Vercel deployment automation | All |
+| `vercel-deploy` | Vercel-specific deploy operations for preview/prod deploys, preview promotion, aliases/domains, env sync, and rollback checks | All |
 
 ### 📝 Documentation (5)
 

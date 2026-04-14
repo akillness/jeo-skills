@@ -3038,21 +3038,33 @@
     },
     {
       "name": "vercel-deploy",
-      "description": "Deploy applications and websites to Vercel instantly. Use when asked to \\\"Deploy my app\\\", \\\"Deploy this to production\\\", \\\"Create a preview deployment\\\", or \\\"Push this live\\\". No authentication required - returns preview URL and claimable deployment link.",
+      "description": "Handle Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, production deploys, preview-to-production promotion, stable preview aliases, domain assignment, environment-variable sync, and rollback checks. Use when the request is specifically about deploying on Vercel, promoting a Vercel preview build, fixing Vercel env/domain/alias workflow problems, or rolling back a Vercel deployment. Triggers on: Vercel deploy, Vercel preview URL, Vercel alias, vercel promote, Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route provider-neutral release strategy to `deployment-automation`, CI YAML authoring to `workflow-automation`, and machine/bootstrap issues to `system-environment-setup`.",
       "category": "infrastructure",
       "path": "vercel-deploy/SKILL.md",
       "tags": [
-        "deployment",
         "vercel",
+        "deployment",
         "preview",
         "production",
-        "hosting",
-        "serverless"
+        "alias",
+        "domains",
+        "environment-variables",
+        "rollback"
       ],
       "platforms": [
-        "Claude"
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
       ],
-      "allowed_tools": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
       "commands": []
     },
     {
