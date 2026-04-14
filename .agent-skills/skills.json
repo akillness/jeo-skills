@@ -2175,7 +2175,7 @@
     },
     {
       "name": "playwriter",
-      "description": "Playwright-based browser automation via Chrome extension + MCP/CLI. Connects to your RUNNING browser (existing logins, cookies, extensions preserved). Use for authenticated flows, stateful web automation, and AI agent browser control without re-logging in.",
+      "description": "Reuse a running Chrome session for browser automation via Playwriter CLI + MCP. Use when the task depends on the browser the user already has open — existing logins, cookies, extensions, passkey-friendly flows, or live-tab continuity. Route repeatable fresh-browser or CI-style checks to `agent-browser` instead.",
       "category": "planning-review",
       "path": "playwriter/SKILL.md",
       "tags": [

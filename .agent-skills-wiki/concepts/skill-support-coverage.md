@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 70 skills with `references/`
-- 69 skills with `evals/`
+- 71 skills with `references/`
+- 70 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -63,6 +63,7 @@ Recent ratchets:
 - The `bmad-idea` modernization pass added both `references/` and `evals/`, which matters because a high-visibility pre-planning anchor now owns concept framing and downstream handoff choice instead of remaining a stale command/persona catalog with no reusable artifact model.
 - The catalog-sync hardening pass added a new `references/` doc and `scripts/validate_catalog_sync.py` to `skill-standardization`, which matters because the repo now validates discovery-surface drift explicitly instead of only linting individual `SKILL.md` files.
 - The compact-variant sync follow-up ratcheted `skill-standardization` again so the same maintenance loop now treats `SKILL.toon` / `SKILL.compact.md` as derived discovery artifacts that must stay aligned with material `SKILL.md` rewrites, instead of leaving that duty to per-run memory.
+- The `playwriter` modernization pass added both `references/` and `evals/`, which matters because a high-visibility browser skill now clearly owns running-browser / authenticated-session reuse instead of remaining a generic Playwright/MCP command dump that blurred the boundary with `agent-browser`.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
@@ -104,3 +105,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[vercel-deploy-modernization-2026-04-15]]
 - [[core-orchestration-platform-cluster]]
 - [[ohmg-modernization-2026-04-15]]
+- [[playwriter-modernization-2026-04-15]]

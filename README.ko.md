@@ -233,7 +233,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `plannotator` | `plan` | 에이전트 계획/diff용 시각적 승인 게이트 — 주석, 승인, 수정 요청, 검토 결과 저장 |
 | `agentation` | `annotate` | UI 어노테이션 → 에이전트 코드 수정 |
 | `agent-browser` | `agent-browser` | AI 에이전트용 헤드리스 브라우저 검증 |
-| `playwriter` | `playwriter` | 실행 중인 브라우저에 연결하는 Playwright 자동화 |
+| `playwriter` | `playwriter` | 인증된 Chrome 세션과 MCP 재사용을 위한 실행 중 브라우저 자동화 |
 | `vibe-kanban` | `kanbanview` | git worktree 격리가 있는 시각적 칸반 보드 |
 
 ### 🤖 에이전트 개발 (2개)
