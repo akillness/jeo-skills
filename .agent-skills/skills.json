@@ -2558,18 +2558,19 @@
     },
     {
       "name": "security-best-practices",
-      "description": "Implement security best practices for web applications and infrastructure. Use when securing APIs, preventing common vulnerabilities, or implementing security policies. Handles HTTPS, CORS, XSS, SQL Injection, CSRF, rate limiting, and OWASP Top 10.",
+      "description": "Design or review web-application and API hardening: headers/CSP/HTTPS, session and cookie safety, CSRF, abuse controls, validation and output encoding, secret handling, and verification handoffs. Use when the main job is deciding which security layer is missing, auditing whether current controls are enough, or turning vague OWASP/security requests into a concrete hardening brief before or alongside implementation. Route product-auth architecture to `authentication-setup`, schema design to `database-schema-design`, and backend security test planning to `backend-testing`.",
       "category": "infrastructure",
       "path": "security-best-practices/SKILL.md",
       "tags": [
-        "security",
-        "HTTPS",
-        "CORS",
-        "XSS",
-        "SQL-injection",
-        "CSRF",
-        "OWASP",
-        "rate-limiting"
+        "security-best-practices",
+        "owasp",
+        "appsec",
+        "csp",
+        "csrf",
+        "secrets",
+        "rate-limiting",
+        "web-security",
+        "api-security"
       ],
       "platforms": [
         "Claude",
@@ -2577,32 +2578,14 @@
         "Gemini"
       ],
       "allowed_tools": [
+        "Bash",
         "Read",
         "Write",
-        "Edit"
+        "Edit",
+        "Glob",
+        "Grep"
       ],
-      "commands": [
-        {
-          "command": "DATABASE_URL=postgresql://user:password@localhost:5432/mydb",
-          "source": "infrastructure/security-best-practices/SKILL.md"
-        },
-        {
-          "command": "ACCESS_TOKEN_SECRET=your-super-secret-access-token-key-min-32-chars",
-          "source": "infrastructure/security-best-practices/SKILL.md"
-        },
-        {
-          "command": "REFRESH_TOKEN_SECRET=your-super-secret-refresh-token-key-min-32-chars",
-          "source": "infrastructure/security-best-practices/SKILL.md"
-        },
-        {
-          "command": "STRIPE_SECRET_KEY=sk_test_xxx",
-          "source": "infrastructure/security-best-practices/SKILL.md"
-        },
-        {
-          "command": "SENDGRID_API_KEY=SG.xxx",
-          "source": "infrastructure/security-best-practices/SKILL.md"
-        }
-      ]
+      "commands": []
     },
     {
       "name": "skill-autoresearch",

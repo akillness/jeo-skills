@@ -282,7 +282,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `monitoring-observability` | 서비스·파이프라인·alerts·dashboards·live-ops 가시성을 위한 텔레메트리 설계/리뷰 | 전체 |
 | `scrapling` | parser-first `Selector`, HTTP/브라우저/stealth fetcher, CLI 추출, 선택적 MCP/spider 워크플로우를 포함한 적응형 웹 스크래핑 | 전체 |
 | `rtk` | Rust Token Killer 설치 및 에이전트 설정 - `rtk gain` 검증, 동명 패키지 충돌 복구, 에이전트별 `rtk init`, 직접 호출용 압축 래퍼 명령 | 전체 |
-| `security-best-practices` | OWASP Top 10, RBAC, API 보안 | 전체 |
+| `security-best-practices` | 헤더·CSP·쿠키/CSRF·abuse control·시크릿·검증 handoff를 다루는 계층형 웹/API 보안 강화 | 전체 |
 | `strix` | Strix CLI 기반 AI 애플리케이션 보안 테스트 - Docker 프리플라이트, LLM 공급자 설정, 로컬/GitHub/라이브 타깃 스캔, 모드 선택, CI/CD 사용 | 전체 |
 | `system-environment-setup` | 실행 가능한 저장소, 툴체인, Docker/devcontainer, 로컬 서비스, 온보딩, 설정 드리프트 진단을 다루는 정식 환경 설정 스킬 | 전체 |
 | `vercel-deploy` | Vercel 배포 자동화 | 전체 |
