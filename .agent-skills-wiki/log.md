@@ -310,3 +310,11 @@
 - Accepted: rewrite `monitoring-observability` as the telemetry design/review anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the durable rationale in the wiki
 - Rejected: adding another alerting-only, dashboard-only, or vendor-specific observability wrapper; folding log root-cause analysis or engine-only profiling into the same skill
 - Wiki files created/updated: `queries/monitoring-observability-modernization-2026-04-14.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Security best practices modernization
+- Area researched: layered web/app/API hardening across CSP/security headers, session-cookie/CSRF safety, abuse/rate limiting, validation/injection controls, secrets/config hygiene, and verification handoffs; plus indexed discussion snippets about real rollout pain
+- Survey files created under `.survey/security-best-practices-modernization-20260414/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `security-best-practices` as the layered hardening anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the durable rationale in the wiki
+- Rejected: adding another generic OWASP/appsec wrapper; folding auth-stack choice into the same skill; keeping the legacy Express-only middleware dump
+- Wiki files created/updated: `queries/security-best-practices-modernization-2026-04-14.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
