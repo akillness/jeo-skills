@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `codebase-search/SKILL.md` | Replacing the command catalog with a search-mode router plus support bundles will improve trigger precision and handoff quality. | Rewrote `SKILL.md`, added `references/` + `evals/`, updated discovery surfaces, refreshed wiki + graph artifacts. | `validate_skill.sh` passed; `evals/evals.json` and `skills.json` both parsed successfully. | Keep | Stronger route-outs to `debugging`, `code-refactoring`, `code-review`, and `graphify`; separate manifest drift captured as follow-up instead of broadening the run. |

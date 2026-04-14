@@ -254,6 +254,15 @@
 - Rejected: adding another generic performance wrapper; folding telemetry setup, correctness debugging, generic refactoring, or engine-specific capture interpretation into the same skill
 - Wiki files created/updated: `queries/performance-optimization-modernization-2026-04-14.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
 
+## [2026-04-14] query | Codebase search modernization
+- Area researched: repo-navigation / call-site tracing / impact-mapping workflows across CLI/dev, web/fullstack, PM-ops automation repos, marketing-content automation repos, and game-development codebases; plus the broad hourly opportunity scan that selected the next bounded high-value legacy anchor
+- Survey files created under `.survey/codebase-search-modernization-20260414/`; direct page retrieval was used for primary docs because `web_search` / `web_extract` returned `401 Invalid API key` in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `codebase-search` as the evidence-first repo-navigation anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the search-analysis cluster boundary in the wiki
+- Rejected: adding another overlapping search wrapper; letting `codebase-search` absorb debugging, refactoring, or graph-memory work
+- Structural note: filesystem skill count (89) does not currently match `.agent-skills/skills.json` (85); treated as a separate maintenance signal instead of broadening this run
+- Wiki files created/updated: `SCHEMA.md`, `concepts/search-analysis-cluster.md`, `concepts/skill-support-coverage.md`, `queries/codebase-search-modernization-2026-04-14.md`, `index.md`, `log.md`
+
 ## [2026-04-14] query | Video production canonicalization
 - Area researched: programmable / automated video workflows across Remotion, template/API video platforms, social clip repurposing, and manual-finish hybrid pipelines to choose the highest-value bounded creative-media improvement
 - Survey files created under `.survey/video-production-canonicalization-20260414/` and the loop charter stayed fixed for the run

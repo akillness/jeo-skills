@@ -13,9 +13,10 @@ sources: [graphify-out/GRAPH_REPORT.md]
 Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
-- 89 total skills
-- 57 skills with `references/`
-- 57 skills with `evals/`
+- 89 filesystem skills with `SKILL.md`
+- 85 manifest entries in `.agent-skills/skills.json` (mismatch noted separately)
+- 58 skills with `references/`
+- 58 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -48,6 +49,7 @@ Recent ratchets:
 - The `code-refactoring` modernization pass added both `references/` and `evals/`, which matters because the code-quality cluster now has a sharper structural-cleanup anchor for decomposition, behavior-preserving cleanup, and codemod planning instead of a generic pattern catalog.
 - The `video-production` canonicalization pass added support bundles and narrowed `remotion-video-production` into a compatibility alias, which matters because the creative-media lane now has a clearer programmable-video anchor instead of two equal Remotion clones with duplicate discovery wording.
 - The `performance-optimization` modernization pass added both `references/` and `evals/`, which matters because the code-quality cluster now has a sharper measurement-led tuning anchor for frontend, API, DB, capacity, memory, and runtime bottlenecks instead of a generic React/database optimization dump.
+- The `codebase-search` modernization pass added both `references/` and `evals/`, which matters because the search-analysis lane now has a sharper repo-navigation / impact-mapping anchor instead of a giant command catalog that blurred the boundary with debugging, refactoring, and graph-based architecture analysis.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
