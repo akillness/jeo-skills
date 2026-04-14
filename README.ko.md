@@ -74,6 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **monitoring-observability: 텔레메트리 리뷰 재작성** | `monitoring-observability`를 일반적인 Prometheus/로깅 예시 덤프에서 서비스 신뢰성, 텔레메트리 기반, 데이터/마케팅 파이프라인 헬스, 게임 live-ops 가시성, 스택 리뷰 감사까지 고르는 mode-selecting observability 앵커로 재정의했습니다. 이제 symptom-first alerting, 명시적인 dashboard/ownership 점검, `log-analysis`, `debugging`, `performance-optimization`, `langsmith`, `deployment-automation`, `game-performance-profiler`로의 route-out을 제공하며, `references/modes-and-boundaries.md`, `references/alert-dashboard-checklist.md`, `references/telemetry-rollout-matrix.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
 | **performance-optimization: 병목 워크플로우 재작성** | `performance-optimization`를 일반적인 React/DB 최적화 예시 모음에서 코드-퀄리티 클러스터의 측정 중심 튜닝 앵커로 재정의했습니다. 이제 interaction, page-load, API, DB, capacity, memory, runtime 병목 모드를 분류하고, 수정 제안 전에 맞는 증거 소스를 고르며, `monitoring-observability`, `debugging`, `code-refactoring`, `testing-strategies`, `game-performance-profiler`로의 route-out을 제공합니다. `references/tuning-modes.md`, `references/handoff-boundaries.md`, `references/measurement-checklist.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
 | **code-refactoring: 동작 보존 중심 재작성** | `code-refactoring`를 긴 교과서식 패턴 나열에서 코드-퀄리티 클러스터의 구조 개선 앵커로 재정의했습니다. 이제 로컬 안전 리팩터링, behavior-freeze-first 정리, 반복 마이그레이션 / codemod 모드를 고르고, 테스트·검색·reviewable slice를 명시하며, `debugging`, `code-review`, `testing-strategies`, `performance-optimization`, `codebase-search`로의 route-out을 제공합니다. `references/refactor-modes.md`, `references/handoff-boundaries.md`, `references/safe-refactor-checklist.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
 | **changelog-maintenance: 릴리스 히스토리 재작성** | `changelog-maintenance`를 일반적인 semver/example 덤프에서 문서화 클러스터의 release-history / release-notes 앵커로 재정의했습니다. 이제 changelog, release-notes, migration-update, game-patch-note 모드를 고르고, `technical-writing`, `api-documentation`, `user-guide-writing`, `deployment-automation`, `marketing-automation`으로의 route-out을 제공합니다. `references/automation-and-source-of-truth.md`, `references/modes-and-boundaries.md`, `references/release-note-quality-checklist.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
@@ -278,7 +279,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `firebase-cli` | Firebase CLI (firebase-tools) — Hosting, Functions, Firestore, Realtime DB, Storage, Extensions, 에뮬레이터 수트 배포 | 전체 |
 | `genkit` | Firebase Genkit AI 플로우 및 RAG 파이프라인 | Claude · Gemini |
 | `looker-studio-bigquery` | Looker Studio + BigQuery 대시보드 | 전체 |
-| `monitoring-observability` | 헬스 체크, 메트릭, 로그 집계 | 전체 |
+| `monitoring-observability` | 서비스·파이프라인·alerts·dashboards·live-ops 가시성을 위한 텔레메트리 설계/리뷰 | 전체 |
 | `scrapling` | parser-first `Selector`, HTTP/브라우저/stealth fetcher, CLI 추출, 선택적 MCP/spider 워크플로우를 포함한 적응형 웹 스크래핑 | 전체 |
 | `rtk` | Rust Token Killer 설치 및 에이전트 설정 - `rtk gain` 검증, 동명 패키지 충돌 복구, 에이전트별 `rtk init`, 직접 호출용 압축 래퍼 명령 | 전체 |
 | `security-best-practices` | OWASP Top 10, RBAC, API 보안 | 전체 |

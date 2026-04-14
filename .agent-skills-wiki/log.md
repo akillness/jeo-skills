@@ -302,3 +302,11 @@
 - Accepted: rewrite `database-schema-design` as the storage-model and migration-safety anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and sharpen backend/support-coverage notes in the wiki
 - Rejected: adding another broad schema/migration wrapper; letting the skill absorb API contract design, auth-provider setup, or backend verification planning
 - Wiki files created/updated: `queries/database-schema-design-modernization-2026-04-14.md`, `concepts/backend-api-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Monitoring observability modernization
+- Area researched: service reliability / SLO-alert design, vendor-neutral telemetry foundations, data/marketing pipeline observability, and game live-ops crash/session visibility to choose the highest-value bounded infrastructure modernization target
+- Survey files created under `.survey/monitoring-observability-modernization-20260414/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `monitoring-observability` as the telemetry design/review anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the durable rationale in the wiki
+- Rejected: adding another alerting-only, dashboard-only, or vendor-specific observability wrapper; folding log root-cause analysis or engine-only profiling into the same skill
+- Wiki files created/updated: `queries/monitoring-observability-modernization-2026-04-14.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

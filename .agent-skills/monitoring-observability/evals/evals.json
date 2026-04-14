@@ -1,0 +1,44 @@
+{
+  "skill_name": "monitoring-observability",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up observability for a new backend API before launch. We need to know what to instrument and what should page us.",
+      "expected_output": "Chooses service reliability as the main mode, includes metrics/logs/traces/health checks, and defines symptom-first alert policy with a first implementation slice.",
+      "assertions": [
+        "Output identifies service reliability or equivalent as the primary mode.",
+        "Output distinguishes page-now alerts from non-paging checks.",
+        "Output includes route-outs or ownership notes instead of turning into generic debugging advice."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our Monday morning growth dashboard is stale again. We need observability for freshness, schema drift, and downstream ownership — not another spreadsheet workaround.",
+      "expected_output": "Chooses data/pipeline observability mode and covers freshness, schema, volume, lineage, and owners.",
+      "assertions": [
+        "Output identifies data or pipeline observability as the primary mode.",
+        "Output mentions freshness and schema drift explicitly.",
+        "Output assigns ownership or handoff by pipeline/job/dashboard layer."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We need crash alerts and session visibility for our Unity launch weekend, but this is not a frame-time profiler question yet.",
+      "expected_output": "Chooses game/live-ops visibility mode, covers crash context and launch-event telemetry, and routes frame-time work to the profiler skill.",
+      "assertions": [
+        "Output identifies game/live-ops visibility as the primary mode.",
+        "Output includes build/platform/session or crash-context fields.",
+        "Output routes engine-only performance diagnosis to game-performance-profiler."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Here are the outage logs. Find the root cause.",
+      "expected_output": "Refuses to use monitoring-observability as the main workflow and routes to log-analysis.",
+      "assertions": [
+        "Output routes the task to log-analysis or says this is not the primary skill.",
+        "Output does not present a full observability implementation plan as the first response."
+      ]
+    }
+  ]
+}

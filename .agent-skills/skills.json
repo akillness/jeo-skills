@@ -1635,7 +1635,7 @@
     },
     {
       "name": "monitoring-observability",
-      "description": "Set up monitoring, logging, and observability for applications and infrastructure. Use when implementing health checks, metrics collection, log aggregation, or alerting systems. Handles Prometheus, Grafana, ELK Stack, Datadog, and monitoring best practices.",
+      "description": "Design or review observability for services, pipelines, and live operations: instrumentation, health signals, dashboards, alerting, retention, and ownership handoffs. Use when the main job is deciding what telemetry to emit, which symptoms deserve alerts, how to review dashboard/alert coverage, how to make data or marketing pipelines observable, or how to add crash/session visibility for game or multi-service systems. Route root-cause log triage to `log-analysis`, code-level fixing to `debugging`, LLM-specific tracing to `langsmith`, and engine-only frame-time diagnosis to `game-performance-profiler`.",
       "category": "infrastructure",
       "path": "monitoring-observability/SKILL.md",
       "tags": [
