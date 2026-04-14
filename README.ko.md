@@ -90,6 +90,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **bmad: 코어 BMAD 라우터 현대화** | `bmad`를 휴대형 BMAD/BMM 코어 라우터로 재구성했습니다. 이제 프로젝트 레벨을 고르고, 현재 단계를 식별하고, 다음 산출물 하나를 추천한 뒤, 런타임/전문화된 세부 작업은 `plannotator`, `task-planning`, `omc`, `omx`, `ohmg`, `bmad-gds`로 넘깁니다. 거대한 명령 모음 대신 `references/core-routing.md`, `references/status-and-review.md`, `references/runtime-and-module-boundaries.md`, `evals/evals.json`을 추가했고 기존 helper script는 유지했습니다. |
 | **bmad-gds: 게임 프로듀서/오케스트레이션 재작성** | `bmad-gds`를 단순 단계 목록에서 실제 게임 제작 조정 스킬로 재정의했습니다. 이제 아이디어, GDD, 플레이테스트 메모, 버그/빌드 이슈, 출시 목표가 섞인 입력을 받아 하나의 운영 모드를 선택하고, 다음 마일스톤 중심 조정 브리프를 만든 뒤 필요하면 `game-demo-feedback-triage`, `game-build-log-triage`, `game-performance-profiler`, `steam-store-launch-ops`, `task-planning`, `bmad-idea`로 명시적으로 라우팅합니다. `references/operating-modes.md`, `references/scope-boundaries.md`, `evals/evals.json`도 추가했고 전체 스킬 수는 그대로입니다. |
 
 ## 🆕 v2026-04-08 업데이트
@@ -213,7 +214,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | 휴대형 `oh-my-agent` 하네스용 Gemini / Antigravity 진입 스킬 (`.agents` 소스 오브 트루스, Gemini 네이티브 투영, 크로스벤더 확장 가능) |
 | `ralph` | `ralph`, `ooo` | 전체 | Ouroboros 스펙 우선 + 영구 완료 루프 |
 | `ralphmode` | `ralphmode` | 전체 | 자동화 권한 프로파일 (샌드박스 우선, 저장소 경계) |
-| `bmad` | `bmad` | Claude | 구조화 단계 기반 BMAD 워크플로우 오케스트레이션 (분석 → 계획 → 솔루션 → 구현) |
+| `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | 휴대형 BMAD/BMM 코어 라우터 — 프로젝트 레벨과 현재 단계를 정하고, 다음 산출물을 추천한 뒤 런타임별 세부 작업을 바깥으로 라우팅 |
 | `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |
 | `bmad-idea` | `bmad-idea` | 전체 | 창의 지능 — 5개 전문 아이디에이션 에이전트 |
 | `survey` | `survey` | 전체 | 사전 구현 문제공간 스캔 |
@@ -442,7 +443,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 83개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 90개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

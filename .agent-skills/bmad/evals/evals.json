@@ -1,0 +1,35 @@
+{
+  "skill_name": "bmad",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use bmad. We have a vague SaaS feature idea for team billing and audit logs, but no PRD yet. What should come next?",
+      "expected_output": "Chooses a project level, identifies the likely current phase as planning or pre-planning, recommends one next artifact such as a PRD, and routes deeper follow-up rather than dumping every BMAD command.",
+      "assertions": [
+        "Output identifies exactly one primary next artifact",
+        "Output makes a level assumption explicit",
+        "Output includes at least one route-out or boundary note"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We already finished an architecture doc for our backend migration. Use bmad to tell us what to do next.",
+      "expected_output": "Recognizes that the project is in solutioning or at the solutioning-to-implementation boundary, keeps review-gate visibility, and recommends either plannotator review or a sprint-plan/story-packet handoff.",
+      "assertions": [
+        "Output references current phase or boundary explicitly",
+        "Output does not jump backwards to a vague ideation artifact without justification",
+        "Output mentions review-gate logic or plannotator when appropriate"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want BMAD for Codex CLI. Should I use bmad or omx?",
+      "expected_output": "Keeps bmad as the core phase router while routing Codex-first runtime specifics to omx.",
+      "assertions": [
+        "Output preserves bmad as the common-layer BMAD router",
+        "Output routes Codex runtime details to omx",
+        "Output avoids presenting bmad as a Claude-only skill"
+      ]
+    }
+  ]
+}

@@ -342,3 +342,11 @@
 - Accepted: rewrite `ohmg` as the Gemini / Antigravity entrypoint for the portable `oh-my-agent` harness, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the orchestration-platform boundary in the wiki
 - Rejected: adding another orchestration wrapper; copying the full `omc` / `omx` mode catalogs into `ohmg`; pretending Antigravity and Gemini have identical custom subagent behavior
 - Wiki files created/updated: `concepts/core-orchestration-platform-cluster.md`, `queries/ohmg-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | bmad modernization
+- Area researched: core BMAD/BMM phase routing, upstream BMAD direction, runtime-overlay boundaries, review-gate placement, and the repo gap left by a legacy command-dense `bmad` skill
+- Survey files created under `.survey/bmad-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts not refreshed this run; the existing graph and local support scan were sufficient to identify the central core-orchestration gap, and the bounded improvement set focused on skill/docs/wiki ratcheting
+- Accepted: rewrite `bmad` as the portable level/phase/next-artifact router, add `references/` + `evals/`, update README / README.ko / setup prompt / `docs/bmad/README.md` / `.agent-skills/skills.json`, and record the durable rationale in the wiki
+- Rejected: adding another BMAD-adjacent wrapper; keeping runtime-specific setup, TEA depth, or review-gate detail inside the main `bmad` trigger surface
+- Wiki files created/updated: `queries/bmad-modernization-2026-04-15.md`, `index.md`, `log.md`

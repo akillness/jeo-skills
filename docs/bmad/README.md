@@ -1,10 +1,10 @@
-# bmad-orchestrator — Claude Code Harness
+# bmad — BMAD Core Workflow Router
 
-> **bmad-orchestrator** is a structured AI-driven development harness for Claude Code. It routes work across four phases — Analysis → Planning → Solutioning → Implementation — keeping your project on track from idea to shipped code.
+> **bmad** is the repository's portable BMAD/BMM core router. It helps you choose project level, identify the current phase, select the next artifact, and hand runtime-specific or specialist depth to the right neighboring skill.
 
 [![GitHub Releases](https://img.shields.io/badge/GitHub-Releases-blue)](https://github.com/akillness/oh-my-skills/releases)
 [![Release Notes](https://img.shields.io/badge/release-notes-blue)](https://github.com/akillness/oh-my-skills/releases)
-[![BMAD Deploy Version](https://img.shields.io/badge/BMAD-1.0.0-brightgreen)](../../.agent-skills/bmad-orchestrator/SKILL.md)
+[![BMAD Deploy Version](https://img.shields.io/badge/BMAD-2.0.0-brightgreen)](../../.agent-skills/bmad/SKILL.md)
 
 ![Agent Skills Installer](../../AgentSkills.png)
 
@@ -23,34 +23,34 @@ Phase 4: Implementation → Build, test, ship
 
 ---
 
-## Quick Start (3 Commands)
+## Quick Start (3 Steps)
 
-Deploy target: use GitHub Releases for stable rollout tracking, then run the commands below.
+Deploy target: use the repo release or install directly from `akillness/oh-my-skills`, then start from the core routing workflow.
 
 **Step 1: Install the skill**
 
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill bmad-orchestrator
+npx skills add https://github.com/akillness/oh-my-skills --skill bmad
 ```
 
-**Step 2: Activate in Claude Code**
+**Step 2: Activate the skill**
 
 ```text
-bmad 스킬을 설정하고 사용해줘. 기억해.
+Use the bmad skill and remember it.
 ```
 
-**Step 3: Initialize your project**
+**Step 3: Ask for the current BMAD route**
 
 ```text
-/workflow-init
+Use bmad. What phase are we in, and what artifact should we create next?
 ```
 
-That's it. BMAD will ask you about your project, pick the right level, and guide you through the appropriate phases.
+The modern `bmad` flow is level-first and artifact-first: it picks the likely BMAD phase, recommends one next artifact, and routes review/runtime detail to the correct neighboring skill.
 
 ## Codex 사용성
 
-`bmad-orchestrator`는 기본적으로 Claude Code에서 안정적으로 동작하는 설계입니다.  
-Codex에서 동일한 `bmad` 명령을 그대로 쓰려면 `omx`/`ohmg` 같은 상위 오케스트레이션 계층을 함께 사용해야 합니다.
+`bmad`는 코어 BMAD 라우터로 동작하며 특정 런타임에 묶이지 않습니다.  
+Codex에서는 실행/오케스트레이션 세부를 `omx`로, Gemini·Antigravity 쪽은 `ohmg`로, Claude 런타임 세부는 `omc`로 넘기는 식으로 사용하는 것이 좋습니다.
 
 권장 흐름:
 

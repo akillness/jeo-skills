@@ -321,7 +321,7 @@
     },
     {
       "name": "bmad",
-      "description": "Orchestrates BMAD workflows for structured AI-driven development. Routes work across Analysis, Planning, Solutioning, and Implementation phases.",
+      "description": "Route BMAD/BMM phase-based development by choosing project level, identifying the current phase, selecting the next artifact, and handing detailed work to the right downstream skill. Use when the user wants a structured BMAD workflow, asks what phase comes next, or needs a portable BMAD entrypoint across Claude, Codex, Gemini, or OpenCode.",
       "path": "bmad/SKILL.md",
       "tags": [
         "bmad",
