@@ -6,16 +6,18 @@ description: >
   spec compliance, converting legacy skill formats to standard structure,
   improving descriptions for reliable triggering, consolidating duplicate
   skills into a canonical skill plus compatibility alias, or repairing
-  discovery/catalog drift between live skill folders and shipped indexes.
+  discovery/catalog drift between live skill folders, shipped indexes, and
+  token-optimized variants such as `SKILL.toon` or `SKILL.compact.md`.
   Triggers on: "validate skill", "create SKILL.md", "standardize skill format",
   "check skill spec", "skill frontmatter", "improve skill description",
   "add evals to skill", "merge duplicate skills", "canonical skill",
-  "compatibility alias", "skills.json drift", "catalog sync", "skill inventory mismatch".
+  "compatibility alias", "skills.json drift", "catalog sync", "SKILL.toon drift",
+  "compact skill drift", "skill inventory mismatch".
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: Designed for Claude Code and compatible agent clients with filesystem access
 metadata:
   tags: skill-management, standardization, validation, agentskills-spec, automation, deduplication
-  version: "2.1"
+  version: "2.2"
 ---
 
 # Skill Standardization
@@ -28,6 +30,7 @@ metadata:
 - Improving skill descriptions to trigger more reliably on relevant prompts
 - Adding evaluation test cases (`evals/evals.json`) to a skill
 - Batch-validating all skills in a directory for consistency
+- Auditing `SKILL.toon` / `SKILL.compact.md` drift after material skill rewrites
 
 ## Agent Skills Specification Reference
 
@@ -227,10 +230,11 @@ When a skill is added, renamed, removed, or materially repositioned, do not stop
 1. **Filesystem is the source of truth** — start from live `./.agent-skills/<name>/SKILL.md` folders.
 2. **Check the manifest** — verify `skills.json` includes every live skill, removes stale names, and points to the right `SKILL.md` paths.
 3. **Check README/setup surfaces** — counts, inventory rows, and compatibility-alias wording should match the live repo.
-4. **Check runtime discovery** — query/list tooling should still find live skills even if a manifest entry is stale.
-5. **Record the change in the same PR** — catalog drift compounds when docs/manifests are deferred.
+4. **Check token-optimized discovery variants** — if the repo ships `SKILL.toon` or `SKILL.compact.md`, refresh them when the description, trigger surface, or supported use-cases changed materially. Otherwise the runtime may keep advertising stale intent even when `SKILL.md` is correct.
+5. **Check runtime discovery** — query/list tooling should still find live skills even if a manifest entry is stale.
+6. **Record the change in the same PR** — catalog drift compounds when docs/manifests are deferred.
 
-Use `references/catalog-sync-checklist.md` as the reusable checklist and `scripts/validate_catalog_sync.py` as the quick verifier.
+Use `references/catalog-sync-checklist.md` as the reusable checklist and `scripts/validate_catalog_sync.py` as the quick verifier, but remember that generated discovery variants such as `SKILL.toon` may still need a manual sync step.
 
 ## Available scripts
 
@@ -268,13 +272,13 @@ bash scripts/validate_skill.sh --all .agent-skills/
 ```
 
 
-### Example 4: Check manifest and README/setup drift after a rename
+### Example 4: Check manifest, README/setup, and compact-variant drift after a rename
 
 ```bash
 python3 scripts/validate_catalog_sync.py --repo-root /path/to/repo
 ```
 
-Use this after adding, renaming, removing, or canonicalizing a skill so stale manifest entries and wrong inventory counts do not linger.
+Use this after adding, renaming, removing, or canonicalizing a skill so stale manifest entries, wrong inventory counts, and forgotten compact-surface refreshes do not linger.
 
 ### Example 3: Fix common frontmatter issues
 
@@ -300,6 +304,7 @@ allowed-tools: Bash Read Write  # space-delimited, not a YAML list
 6. **Add evals before publishing** — at least 2–3 test cases covering core and edge cases
 7. **Canonicalize true duplicates instead of letting them compete** — if two skills have overlapping `name + description` trigger surfaces, prefer one canonical skill plus a thin compatibility alias and update README/setup/manifest surfaces in the same pass
 8. **Validate catalog surfaces after structural changes** — additions, removals, renames, and aliasing should trigger a `skills.json` + README/setup sync check, not just a SKILL.md lint pass
+9. **Treat compact discovery files as derived artifacts** — when `SKILL.md` changes the trigger surface or supported use-cases materially, refresh `SKILL.toon` / `SKILL.compact.md` too or explicitly document why no compact update was needed
 
 ## References
 

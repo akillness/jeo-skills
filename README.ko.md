@@ -235,7 +235,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `prompt-repetition` | 프롬프트 반복 기법으로 LLM 정확도 향상 | 전체 |
-| `skill-standardization` | Agent Skills 스펙 대비 SKILL.md 검증 | 전체 |
+| `skill-standardization` | Agent Skills 스펙 기준 SKILL.md 검증, 중복 canonical화, 카탈로그/compact 발견면 동기화 | 전체 |
 
 ### ⚙️ 백엔드 (5개)
 

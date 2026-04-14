@@ -235,7 +235,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `prompt-repetition` | LLM accuracy via prompt repetition technique | All |
-| `skill-standardization` | SKILL.md validation against Agent Skills spec | All |
+| `skill-standardization` | Validate SKILL.md, canonicalize duplicates, and keep catalog + compact discovery surfaces in sync | All |
 
 ### ⚙️ Backend (5)
 

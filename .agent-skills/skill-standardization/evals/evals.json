@@ -59,6 +59,17 @@
         "The output flags stale manifest-only names or missing live skills",
         "The output treats catalog sync as part of the standardization workflow"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "I rewrote a skill's SKILL.md description and route-outs, but I also ship SKILL.toon for runtime discovery. What should I validate before I call the standardization pass done?",
+      "expected_output": "A response that treats SKILL.toon / SKILL.compact.md as derived discovery surfaces, checks whether compact variants need refresh after material trigger-surface changes, and keeps catalog/runtime sync in scope.",
+      "assertions": [
+        "The output mentions refreshing or reviewing SKILL.toon or SKILL.compact.md after material rewrites",
+        "The output distinguishes compact-variant sync from only checking skills.json and README/setup counts",
+        "The output keeps runtime discovery or query/list tooling in scope",
+        "The output frames compact files as derived artifacts, not independent source of truth"
+      ]
     }
   ]
 }
