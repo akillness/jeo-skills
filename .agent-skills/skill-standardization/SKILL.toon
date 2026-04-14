@@ -1,7 +1,7 @@
 N:skill-standardization
-D:Standardize and validate SKILL.md files against the Agent Skills specification (agentskills.io). Use when creating new skills, auditing existing skills for spec compliance, improving trigger descriptions, consolidating duplicates, or checking catalog drift between live skill folders and shipped discovery surfaces. Triggers on: validate skill, create SKILL.md, standardize skill format, check skill spec, improve skill description, catalog sync, skills.json drift.
+D:Standardize and validate SKILL.md files against the Agent Skills specification (agentskills.io). Use when creating new skills, auditing existing skills for spec compliance, improving trigger descriptions, consolidating duplicates, or checking drift between live skill folders, shipped discovery surfaces, and compact variants like SKILL.toon / SKILL.compact.md. Triggers on: validate skill, create SKILL.md, standardize skill format, check skill spec, improve skill description, catalog sync, skills.json drift, SKILL.toon drift.
 G:skill-management standardization validation agentskills-spec automation description-optimization
-U[7]:
+U[8]:
   Creating a new SKILL.md from scratch
   Auditing existing skills for spec compliance
   Converting legacy skill formats to standard structure
@@ -9,8 +9,9 @@ U[7]:
   Adding evaluation test cases (evals/evals.json)
   Batch-validating all skills in a directory
   Auditing skills.json / README / setup inventory drift against live folders
+  Auditing SKILL.toon / SKILL.compact.md drift after material rewrites
 S[4]{n,action}:
   1,Validate SKILL.md with scripts/validate_skill.sh
-  2,Check catalog drift with scripts/validate_catalog_sync.py
+  2,Check catalog drift with scripts/validate_catalog_sync.py and review compact variants
   3,Create or fix SKILL.md frontmatter and sections
   4,Write effective description with imperative phrasing and trigger keywords

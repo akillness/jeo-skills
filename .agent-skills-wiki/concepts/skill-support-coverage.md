@@ -61,6 +61,7 @@ Recent ratchets:
 - The `vercel-deploy` modernization pass added three `references/` docs and `evals/evals.json`, which matters because a stale provider-specific deployment skill now owns preview/prod promotion, alias/domain, env-sync, and rollback operations instead of a legacy claimable-preview shortcut.
 - The `ohmg` modernization pass added `references/` and `evals/`, which matters because a fast-moving platform anchor now explains `oh-my-agent` / `oma`, `.agents` as the source of truth, Gemini-vs-Antigravity capability differences, and route-outs to `omc` / `omx` instead of a stale Gemini-only wrapper.
 - The catalog-sync hardening pass added a new `references/` doc and `scripts/validate_catalog_sync.py` to `skill-standardization`, which matters because the repo now validates discovery-surface drift explicitly instead of only linting individual `SKILL.md` files.
+- The compact-variant sync follow-up ratcheted `skill-standardization` again so the same maintenance loop now treats `SKILL.toon` / `SKILL.compact.md` as derived discovery artifacts that must stay aligned with material `SKILL.md` rewrites, instead of leaving that duty to per-run memory.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.

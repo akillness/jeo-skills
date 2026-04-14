@@ -358,3 +358,11 @@
 - Accepted: rewrite `npm-git-install` as the Git-based package-delivery decision anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `SKILL.toon`, and record the utility-lane boundary in the wiki
 - Rejected: adding another install helper; keeping the legacy npm-only command dump; pretending direct Git install is the right long-term default for shared dependencies
 - Wiki files created/updated: `queries/npm-git-install-modernization-2026-04-15.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | skill-standardization variant sync
+- Area researched: Agent Skills progressive disclosure, trigger-description/eval guidance, repo-local catalog sync, and the gap around compact discovery variants such as `SKILL.toon` / `SKILL.compact.md`
+- Survey files created under `.survey/skill-standardization-variant-sync-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts not refreshed this run; the existing graph and runtime-file evidence were sufficient, and the bounded improvement set focused on standardization/docs/wiki ratcheting rather than a structural-cluster change
+- Accepted: update `skill-standardization` to cover compact-variant drift, refresh `SKILL.toon` + repo-level `skills.toon`, extend the catalog-sync checklist and evals, update README / README.ko / `.agent-skills/skills.json`, and record the durable rationale in the wiki
+- Rejected: adding another maintenance meta-skill; treating compact variants as new source-of-truth files; expanding `validate_catalog_sync.py` into a brittle compact-file diff checker in the same bounded run
+- Wiki files created/updated: `queries/skill-standardization-variant-sync-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

@@ -12,6 +12,7 @@ Use this checklist whenever a skill is added, renamed, removed, or materially re
 - `README.md`
 - `README.ko.md`
 - `setup-all-skills-prompt.md`
+- token-optimized discovery variants such as `SKILL.toon` or `SKILL.compact.md` when the repo/runtime ships them
 - any query or list tooling that loads the catalog (for this repo, `skill-query-handler.py`)
 
 ## What to check
@@ -30,7 +31,12 @@ Use this checklist whenever a skill is added, renamed, removed, or materially re
 - inventories include newly added specialist clusters when they materially affect discovery
 - setup prompts do not advertise removed skills
 
-### 4. Runtime behavior
+### 4. Compact discovery variants
+- if `SKILL.md` changed the trigger surface or supported use-cases materially, refresh `SKILL.toon` / `SKILL.compact.md`
+- compact variants should preserve the current default job-to-be-done and major route-outs, not stale legacy wording
+- if no compact variant update was needed, be able to explain why the rewrite was non-material for runtime discovery
+
+### 5. Runtime behavior
 - query/list tooling should still find live skills even if the manifest is stale
 - manifest metadata can enrich search terms, but it should not hide filesystem skills
 
