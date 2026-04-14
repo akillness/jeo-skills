@@ -1079,19 +1079,23 @@
     },
     {
       "name": "codebase-search",
-      "description": "Search and navigate large codebases efficiently. Use when finding specific code patterns, tracing function calls, understanding code structure, or locating bugs. Handles semantic search, grep patterns, AST analysis.",
+      "description": "Search and navigate codebases with an evidence-first workflow. Use when the user needs repo navigation, call-site tracing, code archaeology, ownership discovery, impact analysis, entry-point mapping, config hunting, or pre-change discovery. Choose between exact-text search, symbol/indexed search, structural search, and file discovery, then hand off cleanly to debugging, refactoring, review, or graph-based architecture analysis.",
       "category": "search-analysis",
       "path": "search-analysis/codebase-search/SKILL.md",
       "tags": [
         "codebase-search",
-        "grep",
         "code-navigation",
-        "pattern-matching"
+        "repo-triage",
+        "impact-analysis",
+        "grep",
+        "ripgrep",
+        "ast-grep"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
         "Read",
@@ -1101,43 +1105,15 @@
       ],
       "commands": [
         {
-          "command": "grep -n \"def function_name\" --type py",
+          "command": "rg -n --hidden --glob '!node_modules' --glob '!dist' 'search_term' .",
           "source": "search-analysis/codebase-search/SKILL.md"
         },
         {
-          "command": "grep -n \"function functionName\" --type js",
+          "command": "Use repository-native symbol/indexed search when the job is definitions, references, or cross-repo symbol navigation.",
           "source": "search-analysis/codebase-search/SKILL.md"
         },
         {
-          "command": "grep -n \"const functionName = \" --type js",
-          "source": "search-analysis/codebase-search/SKILL.md"
-        },
-        {
-          "command": "grep -n \"function functionName\" --type ts",
-          "source": "search-analysis/codebase-search/SKILL.md"
-        },
-        {
-          "command": "grep -n \"export const functionName\" --type ts",
-          "source": "search-analysis/codebase-search/SKILL.md"
-        },
-        {
-          "command": "grep -n \"func functionName\" --type go",
-          "source": "search-analysis/codebase-search/SKILL.md"
-        },
-        {
-          "command": "grep -n \"public.*functionName\" --type java",
-          "source": "search-analysis/codebase-search/SKILL.md"
-        },
-        {
-          "command": "grep -n \"class ClassName\" --type py",
-          "source": "search-analysis/codebase-search/SKILL.md"
-        },
-        {
-          "command": "grep -n \"class ClassName\" --type js,ts",
-          "source": "search-analysis/codebase-search/SKILL.md"
-        },
-        {
-          "command": "grep -n \"public class ClassName\" --type java",
+          "command": "Use ast-grep or another AST-aware tool when syntax shape matters more than exact text.",
           "source": "search-analysis/codebase-search/SKILL.md"
         }
       ]

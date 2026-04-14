@@ -1,0 +1,45 @@
+{
+  "skill_name": "codebase-search",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Find where auth is implemented in this repo and what files I should inspect before changing it.",
+      "expected_output": "A search brief that identifies entry points, important files, key evidence, and a next route-out.",
+      "assertions": [
+        "Response classifies the request as repo navigation / pre-change discovery rather than debugging.",
+        "Response identifies at least two file roles such as entry point, config, consumer, or test.",
+        "Response includes a compact evidence-map-style summary instead of raw unstructured search output."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Trace all call sites of calculatePrice() and summarize the impact before refactoring.",
+      "expected_output": "A symbol/call-site oriented search summary with must-update vs maybe-affected guidance and a handoff to refactoring.",
+      "assertions": [
+        "Response chooses symbol/indexed or exact-text call-site tracing instead of generic architecture advice.",
+        "Response distinguishes impact mapping from actual refactoring execution.",
+        "Response routes the next change-planning step to code-refactoring."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Search this monorepo for config ownership and entry points for S3 uploads.",
+      "expected_output": "A scoped search plan that looks for loaders, schemas, runtime consumers, and deployment/env surfaces.",
+      "assertions": [
+        "Response includes scope narrowing by package, path, or file type.",
+        "Response looks for config loading and validation, not only string matches.",
+        "Response summarizes likely ownership or subsystem boundaries."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I need syntax-aware matching for all React effects missing cleanup, not plain grep.",
+      "expected_output": "A structural-search workflow that prefers AST-aware matching and labels confidence if forced to fall back.",
+      "assertions": [
+        "Response chooses structural search instead of plain exact-text search as the primary lane.",
+        "Response mentions AST-aware tooling such as ast-grep or explicitly labels regex fallback limits.",
+        "Response keeps the task in discovery mode rather than turning it into a refactor plan."
+      ]
+    }
+  ]
+}

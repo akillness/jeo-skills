@@ -30,6 +30,7 @@ sources: [repo paths or survey files]
 - `skill-quality` — references/evals/support-file coverage
 - `graphify` — structural graph findings
 - `survey` — survey-driven research artifacts
+- `search-analysis` — repo navigation, log triage, data/pattern analysis cluster notes
 - `frontend` — frontend/web skill clusters
 - `game-dev` — game-related skill clusters
 - `project-management` — PM/process skill clusters

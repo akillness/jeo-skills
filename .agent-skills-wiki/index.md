@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-14 | Total pages: 38
+> Last updated: 2026-04-14 | Total pages: 40
 
 ## Entities
 
@@ -16,6 +16,7 @@
 - [[infrastructure-environment-cluster]] — Canonical-vs-alias guidance for the environment/setup lane, with `system-environment-setup` as the broader anchor.
 - [[marketing-cluster]] — Boundaries and maintenance direction for the broad marketing lane, with `marketing-automation` as the canonical router.
 - [[project-management-cluster]] — Boundaries and maintenance direction for the PM skill cluster.
+- [[search-analysis-cluster]] — Boundaries for the search-analysis lane, keeping repo navigation, log triage, data analysis, and pattern detection in separate roles.
 - [[skill-support-coverage]] — Snapshot of reference/eval coverage and why legacy support upgrades matter.
 
 ## Comparisons
@@ -35,6 +36,7 @@
 - [[git-workflow-modernization-2026-04-12]] — Why the best bounded developer-workflow fix was modernizing `git-workflow` into a local collaboration and recovery anchor.
 - [[marketing-skill-canonicalization-2026-04-12]] — Why the best bounded marketing change was canonicalizing `marketing-automation` and narrowing `marketing-skills-collection` into a compatibility alias.
 - [[react-skill-canonicalization-2026-04-12]] — Why the best bounded frontend change was canonicalizing the React pair instead of adding another frontend skill.
+- [[codebase-search-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `codebase-search` into an evidence-first repo-navigation anchor instead of adding another search wrapper.
 - [[sprint-retrospective-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `sprint-retrospective` into a mode-selecting reflection and follow-through skill.
 - [[standup-meeting-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `standup-meeting` into a mode-selecting daily coordination skill.
 - [[survey-evidence-recovery-2026-04-12]] — Why the best bounded research-layer change was hardening `survey` with an explicit evidence-recovery ladder and support files.
