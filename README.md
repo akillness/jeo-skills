@@ -74,6 +74,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
+| **git-submodule: submodule-operator rewrite** | Reframed `git-submodule` from a legacy command catalog into the utilities lane's decision-first submodule anchor. It now decides between submodule vs subtree/vendoring/package delivery first; chooses one workflow mode (`boundary decision`, `add-and-pin`, `bootstrap-and-clone`, `sync-to-pinned-commit`, `advance-tracked-branch`, `edit-inside-submodule`, `remove-and-cleanup`, or `ci-checkout`); makes detached-HEAD, pointer, and CI/auth consequences explicit; routes generic history cleanup to `git-workflow` and package delivery to `npm-git-install`; and ships `references/decision-matrix.md`, `references/update-and-detached-head.md`, `references/ci-and-automation.md`, and `evals/evals.json` without increasing the skill count. |
 | **bmad-idea: pre-planning concept-router rewrite** | Reframed `bmad-idea` from a legacy BMAD-CIS command/persona catalog into the repository's pre-planning idea router. It now normalizes early-stage product, GTM, consulting, and game packets; chooses one framing mode (`problem framing`, `audience and value framing`, `concept shaping`, `game concept framing`, or `story packaging`); produces one reusable concept artifact; routes cleanly to `bmad`, `task-planning`, `marketing-automation`, or `bmad-gds`; and ships `references/operating-modes.md`, `references/handoff-boundaries.md`, `references/concept-packet-template.md`, and `evals/evals.json` without increasing the skill count. |
 
 ## 🆕 What's New in v2026-04-14
@@ -357,7 +358,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 |-------|-------------|-----------|
 | `fabric` | AI prompt patterns — YouTube summaries, document analysis via 200+ Patterns | All |
 | `file-organization` | File and folder organization | All |
-| `git-submodule` | Git submodule management | All |
+| `git-submodule` | Decision-first Git submodule workflow — choose submodule vs subtree/vendor, bootstrap recursively, advance pointers safely, and wire CI checkout/auth | All |
 | `git-workflow` | Local Git branch, commit, rebase, conflict, push-safety, and recovery workflows | All |
 | `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
 | `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |

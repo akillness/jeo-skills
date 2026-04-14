@@ -64,6 +64,7 @@ Recent ratchets:
 - The catalog-sync hardening pass added a new `references/` doc and `scripts/validate_catalog_sync.py` to `skill-standardization`, which matters because the repo now validates discovery-surface drift explicitly instead of only linting individual `SKILL.md` files.
 - The compact-variant sync follow-up ratcheted `skill-standardization` again so the same maintenance loop now treats `SKILL.toon` / `SKILL.compact.md` as derived discovery artifacts that must stay aligned with material `SKILL.md` rewrites, instead of leaving that duty to per-run memory.
 - The `playwriter` modernization pass added both `references/` and `evals/`, which matters because a high-visibility browser skill now clearly owns running-browser / authenticated-session reuse instead of remaining a generic Playwright/MCP command dump that blurred the boundary with `agent-browser`.
+- The `git-submodule` modernization pass added both `references/` and `evals/`, which matters because another high-utility developer-workflow anchor now owns submodule-vs-subtree choice, recursive bootstrap, pointer updates, detached-HEAD handling, and CI checkout/auth instead of remaining a long command catalog with weak boundaries.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.

@@ -15,6 +15,7 @@ The developer-workflow lane is cleaner when repo-scoped recurring workflow glue 
 Current cluster shape:
 - `workflow-automation` = recurring repo glue: task runners, bootstrap entrypoints, local-CI parity, hook guardrails, and maintenance routines
 - `git-workflow` = local collaboration and recovery: branch hygiene, commit shaping, sync, conflict handling, push safety, and rescue patterns
+- `git-submodule` = external-repo boundary choice and operator flow: submodule-vs-subtree/vendor choice, recursive bootstrap, pointer updates, detached-HEAD handling, removal, and CI checkout/auth
 - `npm-git-install` = Git-based package delivery choice: decide between Git refs, SHA pins, private auth, tarballs, workspace/file links, and publish-first registry paths
 - `system-environment-setup` = broader runnable-environment design when toolchains, services, or devcontainers are the real problem
 - `deployment-automation` = hosted delivery and rollout automation once the workflow stops being repo-local
@@ -27,6 +28,7 @@ Current cluster shape:
 ## Boundary rules
 - If the question is **"how do we make recurring repo commands repeatable?"** → `workflow-automation`
 - If the question is **"how do we shape, sync, or recover local Git history?"** → `git-workflow`
+- If the question is **"how should we embed or update another repository inside this repo: submodule, subtree, vendor copy, recursive bootstrap, or CI checkout?"** → `git-submodule`
 - If the question is **"how should we consume this Node package: Git ref, tarball, workspace, or publish-first?"** → `npm-git-install`
 - If the question is **"how do we make this repo runnable across machines/services/containers?"** → `system-environment-setup`
 - If the question is **"how do we deploy or automate hosted CI/CD rollout?"** → `deployment-automation`

@@ -1092,20 +1092,24 @@
     },
     {
       "name": "git-submodule",
-      "description": "Manage Git submodules for including external repositories within a main repository. Use when working with external libraries, shared modules, or managing dependencies as separate Git repositories.",
+      "description": "Decide when Git submodules are the right dependency boundary, then operate them safely: add, bootstrap recursively, update pointers, handle detached HEAD, remove cleanly, or configure CI checkout.",
       "category": "utilities",
       "path": "git-submodule/SKILL.md",
       "tags": [
         "git",
         "submodule",
+        "subtree",
         "dependencies",
         "version-control",
-        "modular"
+        "ci",
+        "repo-structure"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex",
+        "OpenCode"
       ],
       "allowed_tools": [],
       "commands": [

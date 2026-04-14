@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-15 | Total pages: 51
+> Last updated: 2026-04-15 | Total pages: 52
 
 ## Entities
 
@@ -38,6 +38,7 @@
 - [[performance-optimization-modernization-2026-04-14]] — Why the best bounded next code-quality improvement was modernizing `performance-optimization` into the measurement-led bottleneck-analysis anchor instead of adding another performance wrapper.
 - [[environment-skill-canonicalization-2026-04-12]] — Why the best bounded infrastructure fix was canonicalizing `system-environment-setup` and narrowing `environment-setup` into an app-config compatibility skill.
 - [[git-workflow-modernization-2026-04-12]] — Why the best bounded developer-workflow fix was modernizing `git-workflow` into a local collaboration and recovery anchor.
+- [[git-submodule-modernization-2026-04-15]] — Why the best bounded next utilities/developer-workflow improvement was modernizing `git-submodule` into the external-repo boundary and operator-flow anchor instead of leaving a command catalog or adding another Git dependency wrapper.
 - [[npm-git-install-modernization-2026-04-15]] — Why the best bounded next utility/developer-workflow improvement was modernizing `npm-git-install` into the Git-based package-delivery decision anchor instead of adding another install helper.
 - [[marketing-skill-canonicalization-2026-04-12]] — Why the best bounded marketing change was canonicalizing `marketing-automation` and narrowing `marketing-skills-collection` into a compatibility alias.
 - [[react-skill-canonicalization-2026-04-12]] — Why the best bounded frontend change was canonicalizing the React pair instead of adding another frontend skill.

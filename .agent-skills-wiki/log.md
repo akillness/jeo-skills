@@ -375,6 +375,14 @@
 - Rejected: adding another creativity wrapper; keeping `bmad-idea` as a legacy command/persona catalog; letting the skill overlap heavily with `bmad`, `marketing-automation`, or `bmad-gds`
 - Wiki files created/updated: `queries/bmad-idea-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
 
+## [2026-04-15] query | Git submodule modernization
+- Area researched: Git submodule boundary choice and operator workflows across submodule-vs-subtree/vendor/package delivery, recursive clone/bootstrap, detached-HEAD handling, tracked-branch pointer updates, and CI checkout/auth for public/private submodules
+- Survey files created under `.survey/git-submodule-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `git-submodule` as the external-repo boundary and operator-flow anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the utilities-lane boundary in the wiki
+- Rejected: adding another Git dependency wrapper; letting `git-submodule` absorb generic branch/history cleanup already owned by `git-workflow`; treating package-manager delivery as part of the submodule skill instead of routing to `npm-git-install`
+- Wiki files created/updated: `queries/git-submodule-modernization-2026-04-15.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
 ## [2026-04-15] query | playwriter modernization
 - Area researched: running-browser / authenticated-session browser automation, upstream `playwriter` workflow details, MCP integration boundaries, and the repo boundary between `playwriter` and `agent-browser`
 - Survey files created under `.survey/playwriter-modernization-20260415/` and the loop charter stayed fixed for the run
