@@ -5,55 +5,39 @@
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, cross-skill mentions, and documentation indexing
 - Total skills: 89
 - Manifest skills in `.agent-skills/skills.json`: 89
-- Skills with references/: 62
-- Skills with evals/: 61
+- Skills with references/: 63
+- Skills with evals/: 62
 - Skills with scripts/: 23
-- Graph nodes: 238
-- Graph edges: 923
+- Graph nodes: 240
+- Graph edges: 606
 
 ## Strongest structural findings
-1. `database-schema-design` is now a stronger backend anchor because it owns storage-model decisions, integrity rules, and staged schema evolution instead of a generic SQL/NoSQL example dump.
-2. The backend cluster is sharper when `database-schema-design` handles storage boundaries while `api-design`, `authentication-setup`, and `backend-testing` own interface, auth setup, and verification handoffs.
-3. Discovery docs (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree nodes, so existing-skill repositioning still needs top-level wording updates.
-4. Support coverage improved again without adding a new overlapping backend skill: the better move was modernizing the remaining legacy backend anchor.
-5. The repo still gains more from upgrading weak anchors with support bundles than from adding another broad wrapper in already-covered clusters.
-
-## Community map
-- agent-development
-- backend
-- code-quality
-- core-orchestration
-- creative-media
-- documentation
-- frontend
-- infrastructure
-- marketing
-- planning-review
-- project-management
-- search-analysis
-- uncategorized
-- utilities
+1. `monitoring-observability` is now a stronger infrastructure anchor because it selects between service reliability, telemetry foundation, data/pipeline observability, game live-ops visibility, and review/audit work instead of defaulting to a generic Prometheus/logging example dump.
+2. The infrastructure/code-quality boundary is cleaner when observability setup routes log forensics to `log-analysis`, code-level fixing to `debugging`, bottleneck work to `performance-optimization`, and engine-only profiling to `game-performance-profiler`.
+3. Discovery docs (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree nodes, so repositioning an existing anchor still requires top-level wording changes.
+4. Support coverage improved again without adding a new overlapping infrastructure skill: the better move was upgrading the legacy observability anchor and adding reusable references/evals.
+5. The repo still benefits more from modernizing weak anchors with support bundles than from growing another broad wrapper in an already-covered area.
 
 ## Highest-degree nodes
-- README.ko.md: degree 177
-- README.md: degree 177
-- setup-all-skills-prompt.md: degree 177
-- debugging: degree 32
-- code-review: degree 23
-- performance-optimization: degree 23
-- jeo: degree 22
-- plannotator: degree 22
-- web-accessibility: degree 22
-- api-documentation: degree 20
+- README.md: degree 88
+- README.ko.md: degree 88
+- setup-all-skills-prompt.md: degree 88
+- debugging: degree 20
+- code-review: degree 19
+- performance-optimization: degree 19
+- api-documentation: degree 17
+- task-planning: degree 17
+- testing-strategies: degree 17
+- monitoring-observability: degree 16
 
 ## Duplicate / consolidation notes
-- `database-schema-design` should stay the backend storage-model anchor rather than splitting into another broad data-model or migration wrapper.
-- `api-design` remains the better home for interface contracts and compatibility semantics.
-- `authentication-setup` remains the better home for auth-provider/session/user-org ownership setup.
-- `backend-testing` remains the better home for migration/repository/API verification planning.
-- Discovery wording in README/setup surfaces still matters because top-level docs connect to every shipped skill.
+- `monitoring-observability` should stay the general telemetry design/review anchor rather than splitting into another dashboard-only, alerting-only, or APM-vendor wrapper.
+- `log-analysis` remains the better home for root-cause log triage once evidence already exists.
+- `performance-optimization` remains the better home for measurement-led tuning after observability identifies the bottleneck.
+- `langsmith` remains the better home for LLM-specific tracing/evaluation rather than general system observability.
+- `game-performance-profiler` remains the better home for Unity/Unreal frame-time capture interpretation.
 
 ## Recommended maintenance direction
-- Keep upgrading high-visibility legacy anchors with support bundles before adding new overlapping backend or infrastructure skills.
-- Re-check backend-cluster boundary wording whenever `database-schema-design`, `api-design`, `authentication-setup`, or `backend-testing` is materially edited.
-- Keep catalog/discovery surfaces synchronized when an existing skill is repositioned, not only when a new skill is added.
+- Keep upgrading high-visibility legacy anchors with support bundles before adding overlapping infrastructure or observability-adjacent wrappers.
+- Re-check route-outs whenever `monitoring-observability`, `performance-optimization`, `log-analysis`, `langsmith`, or `game-performance-profiler` changes materially.
+- Keep discovery surfaces synchronized when an existing skill is repositioned, not only when a new skill is added.
