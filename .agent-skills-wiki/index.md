@@ -1,13 +1,14 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-14 | Total pages: 36
+> Last updated: 2026-04-14 | Total pages: 38
 
 ## Entities
 
 ## Concepts
 - [[backend-api-cluster]] — Boundaries and maintenance direction for the backend API lane, with `api-design` as the contract-first anchor and `api-documentation` as the publishing handoff.
 - [[code-quality-cluster]] — Boundaries for the code-quality lane, separating validation policy, test implementation, debugging, and reviewer judgment.
+- [[creative-media-cluster]] — Boundaries for the creative-media lane, keeping programmable / automated video as the canonical anchor and Remotion naming as a compatibility alias.
 - [[developer-workflow-cluster]] — Boundaries for the utilities/developer-workflow lane, separating repo automation, Git collaboration, environment setup, and deployment automation.
 - [[documentation-cluster]] — Boundaries for the documentation lane, keeping internal technical docs separate from API portals, end-user help, and changelog hygiene.
 - [[frontend-skill-canonicalization]] — Canonical-vs-alias guidance for overlapping frontend skills, now including both the React and design-system lanes.
@@ -44,6 +45,7 @@
 - [[code-review-modernization-2026-04-13]] — Why the best bounded code-quality improvement was modernizing `code-review` into a workflow-aware review anchor instead of adding another review-adjacent wrapper.
 - [[testing-strategies-modernization-2026-04-13]] — Why the best bounded testing-policy improvement was rewriting `testing-strategies` into a risk-based validation-policy anchor instead of leaving it as a generic test-pyramid skill.
 - [[code-refactoring-modernization-2026-04-14]] — Why the best bounded next code-quality improvement was rewriting `code-refactoring` into the behavior-preserving structural-cleanup anchor instead of adding another cleanup wrapper.
+- [[video-production-canonicalization-2026-04-14]] — Why the best bounded creative-media improvement was canonicalizing `video-production` and narrowing `remotion-video-production` into a compatibility alias instead of keeping two equal Remotion clones.
 - [[state-management-modernization-2026-04-13]] — Why the best bounded frontend architecture improvement was rewriting `state-management` into a decision-first state-boundary anchor instead of leaving it as a generic library-tour skill.
 - [[ui-component-patterns-modernization-2026-04-13]] — Why the best bounded frontend reusable-component improvement was rewriting `ui-component-patterns` into a reusable primitive / variant / slot API anchor instead of modernizing `responsive-design` first.
 - [[responsive-design-modernization-2026-04-13]] — Why the best bounded next frontend modernization was rewriting `responsive-design` into a mobile-first, container-aware layout adaptation + verification anchor.

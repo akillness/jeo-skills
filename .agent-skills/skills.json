@@ -2937,15 +2937,43 @@
     },
     {
       "name": "remotion-video-production",
-      "description": "Produce programmable videos with Remotion using scene planning, asset orchestration, and validation gates for automated, brand-consistent video content.",
+      "description": "Compatibility alias for `video-production` when a prompt, setup surface, or legacy workflow explicitly asks for Remotion video production.",
       "category": "creative-media",
       "path": "creative-media/remotion-video-production/SKILL.md",
       "tags": [
         "video",
         "remotion",
-        "animation",
-        "storytelling",
+        "alias",
+        "compatibility",
+        "automation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Write",
+        "Read",
+        "WebSearch",
+        "WebFetch",
+        "Task"
+      ],
+      "commands": []
+    },
+    {
+      "name": "video-production",
+      "description": "Canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs.",
+      "category": "creative-media",
+      "path": "creative-media/video-production/SKILL.md",
+      "tags": [
+        "video",
         "automation",
+        "remotion",
+        "short-form",
+        "content-ops",
+        "templates",
         "react"
       ],
       "platforms": [
@@ -2955,33 +2983,12 @@
         "Codex"
       ],
       "allowed_tools": [
-        "Bash",
         "Write",
         "Read",
+        "WebSearch",
+        "WebFetch",
         "Task"
       ],
-      "commands": []
-    },
-    {
-      "name": "video-production",
-      "description": "Produce programmable videos with Remotion using scene planning, asset orchestration, and validation gates for automated, brand-consistent video content.",
-      "category": "creative-media",
-      "path": "creative-media/video-production/SKILL.md",
-      "tags": [
-        "video",
-        "remotion",
-        "animation",
-        "storytelling",
-        "automation",
-        "react"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [],
       "commands": []
     },
     {

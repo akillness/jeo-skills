@@ -13,9 +13,9 @@ sources: [graphify-out/GRAPH_REPORT.md]
 Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
-- 90 total skills
+- 89 total skills
 - 57 skills with `references/`
-- 56 skills with `evals/`
+- 57 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -46,6 +46,7 @@ Recent ratchets:
 - The `authentication-setup` modernization pass added both `references/` and `evals/`, which matters because the backend lane now has a sharper product-auth setup router for hosted/framework-native/platform-native choices, session boundaries, org data ownership, and enterprise SSO handoff instead of a 600-line JWT/OAuth catch-all.
 - The `changelog-maintenance` modernization pass added both `references/` and `evals/`, which matters because the documentation cluster now has a sharper release-history / release-notes anchor for changelogs, migration updates, and lightweight patch notes instead of a generic semver/example dump.
 - The `code-refactoring` modernization pass added both `references/` and `evals/`, which matters because the code-quality cluster now has a sharper structural-cleanup anchor for decomposition, behavior-preserving cleanup, and codemod planning instead of a generic pattern catalog.
+- The `video-production` canonicalization pass added support bundles and narrowed `remotion-video-production` into a compatibility alias, which matters because the creative-media lane now has a clearer programmable-video anchor instead of two equal Remotion clones with duplicate discovery wording.
 - The `performance-optimization` modernization pass added both `references/` and `evals/`, which matters because the code-quality cluster now has a sharper measurement-led tuning anchor for frontend, API, DB, capacity, memory, and runtime bottlenecks instead of a generic React/database optimization dump.
 
 ## Why it matters
