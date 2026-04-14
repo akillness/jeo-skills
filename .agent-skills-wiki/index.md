@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-13 | Total pages: 33
+> Last updated: 2026-04-14 | Total pages: 34
 
 ## Entities
 
@@ -21,7 +21,8 @@
 
 ## Queries
 - [[api-design-modernization-2026-04-12]] — Why the best bounded backend-cluster improvement was modernizing `api-design` into a contract-first anchor instead of adding a new overlapping API skill.
-- [[api-documentation-modernization-2026-04-13]] — Why the best bounded next documentation-cluster improvement was modernizing `api-documentation` into the developer-facing API-docs anchor instead of adding another portal/docs wrapper.
+- [[api-documentation-modernization-2026-04-13]] — Why the best bounded documentation-cluster improvement was modernizing `api-documentation` into the developer-facing API-docs anchor instead of adding another portal/docs wrapper.
+- [[authentication-setup-modernization-2026-04-14]] — Why the best bounded backend-cluster improvement was modernizing `authentication-setup` into the product-auth setup router instead of leaving a JWT/OAuth catch-all or adding another auth wrapper.
 - [[deployment-automation-modernization-2026-04-13]] — Why the best bounded infrastructure/developer-workflow improvement was modernizing `deployment-automation` into the release-execution anchor instead of adding another CI/CD or rollout wrapper.
 - [[backend-testing-modernization-2026-04-12]] — Why the best bounded backend verification fix was modernizing `backend-testing` into a layer-selecting, fixture-aware coverage skill instead of adding another testing wrapper.
 - [[bmad-gds-modernization-2026-04-12]] — Why the best bounded game-cluster fix was modernizing `bmad-gds` into a coordinating producer/orchestrator skill.

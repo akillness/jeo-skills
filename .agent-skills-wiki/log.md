@@ -221,3 +221,11 @@
 - Accepted: rewrite `deployment-automation` as the release-execution anchor, add `references/` + `evals/`, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces reflect the sharper role
 - Rejected: adding another CI/CD wrapper; letting `deployment-automation` absorb CI workflow authoring, machine/runtime setup, long-lived telemetry architecture, or Vercel-specific operations
 - Wiki files created/updated: `queries/deployment-automation-modernization-2026-04-13.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Authentication setup modernization
+- Area researched: practical product-auth setup across hosted/framework-native/platform-native/self-hosted lanes, session-vs-JWT boundaries, org/member data ownership, enterprise SSO/SCIM expansion, plus broad scan context from CLI/dev workflow, web/fullstack delivery, PM/ops, marketing/content, and game-dev-adjacent workflows to choose the highest-value bounded next modernization
+- Reused and completed survey files under `.survey/authentication-setup-modernization-20260413/` and kept the loop charter as the frozen evaluation harness for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `authentication-setup` as the product-auth setup router, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and keep hardening / contract / docs / testing route-outs explicit
+- Rejected: adding another auth or authorization wrapper; keeping the legacy JWT/OAuth code dump; folding `security-best-practices` hardening work into the same skill
+- Wiki files created/updated: `queries/authentication-setup-modernization-2026-04-14.md`, `concepts/backend-api-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

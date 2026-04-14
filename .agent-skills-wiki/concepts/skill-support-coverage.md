@@ -1,7 +1,7 @@
 ---
 title: Skill Support Coverage
 created: 2026-04-12
-updated: 2026-04-13
+updated: 2026-04-14
 type: concept
 tags: [skills, skill-quality, graphify]
 sources: [graphify-out/GRAPH_REPORT.md]
@@ -14,8 +14,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
 - 90 total skills
-- 53 skills with `references/`
-- 52 skills with `evals/`
+- 54 skills with `references/`
+- 53 skills with `evals/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -43,6 +43,7 @@ Recent ratchets:
 - The `user-guide-writing` modernization pass added both `references/` and `evals/`, which matters because the documentation cluster now has a sharper end-user-docs anchor for onboarding guides, tutorials, help-center articles, FAQs, and release-facing help updates instead of a legacy example dump with weak trigger boundaries.
 - The `api-documentation` modernization pass added both `references/` and `evals/`, which matters because the documentation/backend boundary now has a sharper developer-facing API-docs anchor for reference portals, quickstarts, SDK/webhook guidance, truthful examples, and auth/error guidance instead of a legacy OpenAPI-heavy example dump.
 - The `deployment-automation` modernization pass added both `references/` and `evals/`, which matters because the infrastructure lane now has a sharper release-execution anchor for preview/staging/prod promotion, rollout strategy, post-deploy verification, and rollback planning instead of a legacy CI/CD + Docker/Kubernetes command dump.
+- The `authentication-setup` modernization pass added both `references/` and `evals/`, which matters because the backend lane now has a sharper product-auth setup router for hosted/framework-native/platform-native choices, session boundaries, org data ownership, and enterprise SSO handoff instead of a 600-line JWT/OAuth catch-all.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.

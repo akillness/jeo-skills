@@ -1,18 +1,20 @@
 N:authentication-setup
-D:Design and implement authentication and authorization systems. Use when setting up user login, JW...
-G:authentication authorization security JWT OAuth
-U[5]:
-  **User Login System**: When adding user authentication to a new application
-  **API Security**: When adding an authentication layer to a REST or GraphQL API
-  **Permission Management**: When role-based access control is needed
-  **Authentication Migration**: When migrating an existing auth system to JWT or OAuth
-  **SSO Integration**: When integrating social login with Google, GitHub, Microsoft, etc.
+D:Design or refactor product authentication setup for web apps and APIs. Use when choosing hosted/framework-native/platform-native/self-hosted auth, sessions vs JWTs, OAuth/social login, passkeys, org/member models, enterprise SSO/SCIM handoff, or callback/cookie environment setup.
+G:authentication auth sessions JWT OAuth passkeys SSO SCIM product-auth backend
+U[4]:
+  Choose the right auth lane before implementation
+  Define provider-vs-app ownership for users, orgs, roles, and sync points
+  Decide session/token strategy and environment rollout constraints
+  Route security hardening, API docs/design, testing, and DB-heavy work to neighboring skills
 S[5]{n,action}:
-  1,Design the Data Model
-  2,Implement Password Security
-  3,Generate and Verify JWT Tokens
-  4,Implement Authentication Middleware
-  5,Implement Authentication API Endpoints
-R[2]:
-  Access Token (short expiry
-  Refresh Token (long expiry
+  1,Classify the auth setup job and lane
+  2,Pick the auth stack and session model deliberately
+  3,Draw the provider/app ownership boundary
+  4,Model app-owned users, orgs, memberships, and rollout notes
+  5,Hand off adjacent work to security-best-practices, api-design, api-documentation, backend-testing, or database-schema-design
+R[5]:
+  security-best-practices
+  api-design
+  api-documentation
+  backend-testing
+  database-schema-design
