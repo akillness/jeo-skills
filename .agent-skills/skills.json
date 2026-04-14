@@ -624,7 +624,7 @@
     },
     {
       "name": "database-schema-design",
-      "description": "Design and optimize database schemas for SQL and NoSQL databases. Use when creating new databases, designing tables, defining relationships, indexing strategies, or database migrations. Handles PostgreSQL, MySQL, MongoDB, normalization, and performance optimization.",
+      "description": "Design or refactor application data models and schema evolution plans for relational and document databases. Use when the user needs entity boundaries, constraints, indexes, cardinality, lifecycle rules, or staged migration safety before or alongside backend implementation.",
       "category": "backend",
       "path": "database-schema-design/SKILL.md",
       "tags": [

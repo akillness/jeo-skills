@@ -241,7 +241,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `api-documentation` | Developer-facing API docs anchor for reference portals, quickstarts, SDK/webhook guides, truthful examples, and auth/error guidance | All |
 | `authentication-setup` | Product-auth setup routing across hosted/framework-native/platform-native auth, sessions/JWTs, org data, and enterprise SSO handoff | All |
 | `backend-testing` | Backend coverage planning for API, integration, contract, fixture, and CI-vs-local test layers | All |
-| `database-schema-design` | SQL/NoSQL schema design | All |
+| `database-schema-design` | Storage-model and migration-safety design for relational/document schemas, constraints, indexes, and staged schema evolution | All |
 
 ### 🎨 Frontend (10)
 
