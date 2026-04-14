@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-14 | Total pages: 44
+> Last updated: 2026-04-14 | Total pages: 45
 
 ## Entities
 
@@ -62,4 +62,5 @@
 - [[plannotator-modernization-2026-04-13]] — Why the best bounded planning-review improvement was modernizing `plannotator` into a visual approval gate instead of adding another wrapper around planning or orchestration flows.
 - [[technical-writing-modernization-2026-04-13]] — Why the best bounded documentation-cluster improvement was modernizing `technical-writing` into the internal technical-docs anchor instead of adding another generic docs wrapper.
 - [[user-guide-writing-modernization-2026-04-13]] — Why the best bounded next documentation-cluster improvement was modernizing `user-guide-writing` into the end-user-docs anchor instead of adding another help-center wrapper.
+- [[web-design-guidelines-modernization-2026-04-14]] — Why the best bounded remaining frontend review improvement was modernizing `web-design-guidelines` into the broad interface-audit anchor instead of leaving it as a thin vendor-rules fetcher or adding another generic UI audit wrapper.
 

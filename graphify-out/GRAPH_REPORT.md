@@ -3,41 +3,41 @@
 ## Scope
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, cross-skill mentions, and documentation indexing
-- Total skills: 89
-- Manifest skills in `.agent-skills/skills.json`: 89
-- Skills with references/: 64
-- Skills with evals/: 63
+- Total skills: 90
+- Manifest skills in `.agent-skills/skills.json`: 90
+- Skills with references/: 66
+- Skills with evals/: 65
 - Skills with scripts/: 23
-- Graph nodes: 242
-- Graph edges: 616
+- Graph nodes: 247
+- Graph edges: 689
 
 ## Strongest structural findings
-1. `security-best-practices` is now a stronger web/app hardening anchor because it selects between perimeter/browser policy, session-cookie/CSRF safety, abuse controls, validation risk, secrets/config, and review/verification instead of defaulting to Express-only snippets.
-2. The web-security boundary is cleaner when `security-best-practices` routes auth-stack choice to `authentication-setup`, schema work to `database-schema-design`, API contracts to `api-design`, backend test layering to `backend-testing`, and specific code fixes to `debugging` / `code-review`.
-3. Discovery docs (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree nodes, so repositioning an existing security anchor still requires top-level wording changes.
-4. Support coverage improved again without adding a new overlapping security skill: the better move was upgrading the legacy hardening anchor and adding reusable references/evals.
-5. The repo still benefits more from modernizing weak anchors with explicit route-outs than from growing additional broad wrapper skills.
+1. `web-design-guidelines` is now a stronger frontend anchor because it owns broad interface audits instead of pretending a single vendor rule file is the whole workflow.
+2. The frontend boundary is cleaner when `web-design-guidelines` keeps broad hierarchy/clarity/consistency review while routing accessibility remediation to `web-accessibility`, layout adaptation to `responsive-design`, component API redesign to `ui-component-patterns`, token governance to `design-system`, and React/runtime behavior to `react-best-practices`.
+3. Discovery docs (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree nodes, so repositioning a high-visibility frontend anchor still requires top-level wording changes.
+4. Support coverage improved again without adding a new overlapping frontend skill: the better move was upgrading the weak anchor and adding reusable references/evals.
+5. The repo still benefits more from modernizing legacy anchors with explicit route-outs than from adding adjacent wrapper skills.
 
 ## Highest-degree nodes
-- README.ko.md: degree 88
-- README.md: degree 88
+- README.md: degree 89
+- README.ko.md: degree 89
 - setup-all-skills-prompt.md: degree 88
-- debugging: degree 21
-- code-review: degree 20
-- performance-optimization: degree 19
+- debugging: degree 33
+- performance-optimization: degree 22
+- code-review: degree 21
+- web-accessibility: degree 19
+- plannotator: degree 19
+- jeo: degree 19
 - security-best-practices: degree 18
-- api-documentation: degree 17
-- task-planning: degree 17
-- testing-strategies: degree 17
 
 ## Duplicate / consolidation notes
-- `security-best-practices` should stay the general web/app hardening anchor rather than splitting into another OWASP-checklist-only, middleware-only, or auth-adjacent wrapper.
-- `authentication-setup` remains the better home for auth-stack selection and hosted/framework-native choice.
-- `database-schema-design` remains the better home for storage-model and migration-safe schema changes.
-- `backend-testing` remains the better home for regression test layering and security/auth verification strategy.
-- `code-review` / `debugging` remain the better homes for specific vulnerability fixes in code.
+- `web-design-guidelines` should stay the broad interface-audit anchor while `web-accessibility` remains the specialist accessibility lane.
+- `web-design-guidelines` should stay the broad interface-audit anchor while `responsive-design` remains the layout adaptation lane.
+- `web-design-guidelines` should stay the broad interface-audit anchor while `ui-component-patterns` remains the component API lane.
+- `web-design-guidelines` should stay the broad interface-audit anchor while `design-system` remains the system-governance lane.
+- `web-design-guidelines` should stay the broad interface-audit anchor while `react-best-practices` remains the React/runtime behavior lane.
 
 ## Recommended maintenance direction
-- Keep upgrading high-visibility legacy anchors that adjacent skills already route into.
-- Re-check route-outs whenever `security-best-practices`, `authentication-setup`, `backend-testing`, or `database-schema-design` changes materially.
-- Keep discovery surfaces synchronized when an existing skill is repositioned, not only when a new skill is added.
+- Keep upgrading high-visibility anchors whose discovery metadata still underspecifies their real role.
+- Re-check frontend boundary docs whenever `web-design-guidelines`, `web-accessibility`, `responsive-design`, `ui-component-patterns`, or `design-system` changes materially.
+- Keep discovery surfaces synchronized whenever a skill is repositioned, not only when a new skill is added.

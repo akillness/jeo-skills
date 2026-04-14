@@ -3168,24 +3168,32 @@
     },
     {
       "name": "web-design-guidelines",
-      "description": "Review UI code for Web Interface Guidelines compliance. Use when asked to \\\"review my UI\\\", \\\"check accessibility\\\", \\\"audit design\\\", \\\"review UX\\\", or \\\"check my site against best practices\\\". Fetches latest Vercel guidelines and checks files against all rules.",
+      "description": "Run a broad web UI review for pages, flows, or component surfaces using audit categories such as layout hierarchy, content clarity, CTA emphasis, visual consistency, interaction states, responsiveness basics, performance signals, and accessibility basics. Use when the user asks to review a UI, audit a page, critique UX polish, check interface quality before launch, or turn vague design-feedback requests into a structured audit packet. Not for accessibility-only remediation, reusable component API design, system-level token governance, or React/runtime performance debugging. Triggers on: UI audit, design review, UX review, interface critique, polish review, landing-page review, dashboard review, usability review, visual consistency, CTA clarity.",
       "category": "frontend",
       "path": "web-design-guidelines/SKILL.md",
       "tags": [
-        "UI",
-        "review",
-        "web-interface",
-        "guidelines",
-        "vercel",
+        "frontend",
+        "ui-review",
+        "ux",
+        "usability",
         "design-audit",
-        "UX"
+        "heuristics",
+        "accessibility-basics",
+        "responsive-basics"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
-      "allowed_tools": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Grep",
+        "Glob"
+      ],
       "commands": []
     },
     {
