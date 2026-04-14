@@ -1891,7 +1891,7 @@
     },
     {
       "name": "code-refactoring",
-      "description": "Simplify and refactor code while preserving behavior, improving clarity, and reducing complexity. Use when simplifying complex code, removing duplication, or applying design patterns. Handles Extract Method, DRY principle, SOLID principles, behavior validation, and refactoring patterns.",
+      "description": "Refactor code safely with a behavior-preserving workflow for decomposition, duplication removal, naming cleanup, module splits, and repeated API migrations. Use when the user wants to simplify messy code, shrink an oversized function or component, make a diff more reviewable, or plan a codemod-style cleanup without changing intended behavior.",
       "category": "code-quality",
       "path": "code-quality/code-refactoring/SKILL.md",
       "tags": [
