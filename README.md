@@ -198,7 +198,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 85 local skill folders = 85 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 89 local skill folders = 89 total installable skills
 
 ### 🎯 Core Orchestration (11)
 
@@ -215,7 +215,6 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Creative intelligence — 5 specialist ideation agents |
 | `survey` | `survey` | All | Pre-implementation landscape scan |
-| `harness` | `harness` | All | Agent team & skill architect — scaffold reusable harnesses across platforms |
 
 ### 📋 Planning & Review (5)
 
@@ -332,6 +331,16 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `marketing-automation` | Canonical general marketing router — KPI-aware brief + lane selection across CRO, copy, SEO, analytics, growth | All |
 | `marketing-skills-collection` | Compatibility alias for `marketing-automation` in legacy prompt packs and catalogs | All |
 
+### 🎮 Game Development (5)
+
+| Skill | Description | Platforms |
+|-------|-------------|-----------|
+| `game-build-log-triage` | Unity/Unreal build, cook, package, editor, signing, and CI log triage — isolate the first actionable engine/build failure | All |
+| `game-ci-cd-pipeline` | Game CI/CD design and hardening — build matrices, artifact flow, cache policy, packaging stages, and release gates | All |
+| `game-demo-feedback-triage` | Turn playtest/demo/community feedback into weighted themes, fix-first priorities, and explicit handoffs | All |
+| `game-performance-profiler` | Frame-time / hitch / memory / CPU-GPU bottleneck triage for Unity and Unreal evidence packets | All |
+| `steam-store-launch-ops` | Steam store-page, festival, demo, wishlist, and launch-readiness operations | All |
+
 ### 🔧 Utilities (11)
 
 | Skill | Description | Platforms |
@@ -341,7 +350,6 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `git-submodule` | Git submodule management | All |
 | `git-workflow` | Local Git branch, commit, rebase, conflict, push-safety, and recovery workflows | All |
 | `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
-| `graphify` | Build persistent repo/corpus knowledge graphs — `GRAPH_REPORT.md`, `graph.json`, HTML outputs, and graph-backed query workflows | All |
 | `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |
 | `npm-git-install` | Install npm packages from GitHub | All |
 | `obsidian-cli` | Operate the official Obsidian CLI — enablement, TUI, note and task automation, vault and file targeting, plugin reload, developer commands | All |
@@ -432,7 +440,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 83 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 89 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

@@ -14,9 +14,10 @@ Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
-- 85 manifest entries in `.agent-skills/skills.json` (mismatch noted separately)
-- 58 skills with `references/`
+- 89 manifest entries in `.agent-skills/skills.json`
+- 59 skills with `references/`
 - 58 skills with `evals/`
+- 23 skills with `scripts/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -50,6 +51,7 @@ Recent ratchets:
 - The `video-production` canonicalization pass added support bundles and narrowed `remotion-video-production` into a compatibility alias, which matters because the creative-media lane now has a clearer programmable-video anchor instead of two equal Remotion clones with duplicate discovery wording.
 - The `performance-optimization` modernization pass added both `references/` and `evals/`, which matters because the code-quality cluster now has a sharper measurement-led tuning anchor for frontend, API, DB, capacity, memory, and runtime bottlenecks instead of a generic React/database optimization dump.
 - The `codebase-search` modernization pass added both `references/` and `evals/`, which matters because the search-analysis lane now has a sharper repo-navigation / impact-mapping anchor instead of a giant command catalog that blurred the boundary with debugging, refactoring, and graph-based architecture analysis.
+- The catalog-sync hardening pass added a new `references/` doc and `scripts/validate_catalog_sync.py` to `skill-standardization`, which matters because the repo now validates discovery-surface drift explicitly instead of only linting individual `SKILL.md` files.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.

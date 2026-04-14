@@ -270,3 +270,11 @@
 - Accepted: rewrite `video-production` as the canonical programmable-video anchor, narrow `remotion-video-production` into a compatibility alias, add support bundles, and update README / README.ko / setup prompt / `.agent-skills/skills.json` so discovery surfaces stop presenting two equal Remotion peers
 - Rejected: keeping both skills as equal clones; adding a third media wrapper; pretending the lane is only about Remotion and not broader automation / repurposing workflows
 - Wiki files created/updated: `queries/video-production-canonicalization-2026-04-14.md`, `concepts/creative-media-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Skill catalog sync hardening
+- Area researched: catalog/manifest/discovery-surface drift across live skill folders, `skills.json`, `skill-query-handler.py`, README / README.ko, and `setup-all-skills-prompt.md`, plus external collection/registry patterns that favor filesystem- or schema-derived catalogs
+- Survey files created under `.survey/skill-catalog-sync-hardening-20260414/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: make `skill-query-handler.py` filesystem-first with manifest overlay, upgrade `skill-standardization` to cover catalog sync, add `scripts/validate_catalog_sync.py` + `references/catalog-sync-checklist.md`, repair `.agent-skills/skills.json` membership/count drift, and surface the game-development specialist lane in README / README.ko / setup inventory surfaces
+- Rejected: adding another broad maintenance/meta skill; leaving runtime discovery manifest-first; deferring game-lane visibility after fixing only counts
+- Wiki files created/updated: `queries/skill-catalog-sync-hardening-2026-04-14.md`, `concepts/skill-support-coverage.md`, `concepts/game-development-cluster.md`, `index.md`, `log.md`

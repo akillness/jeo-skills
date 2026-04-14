@@ -48,6 +48,17 @@
         "The output distinguishes between errors and warnings",
         "The output includes a total or summary count"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "We renamed one skill, removed another, and added a new game skill. Check whether skills.json and the README/setup inventory are still in sync with the .agent-skills folders.",
+      "expected_output": "A response that validates catalog/discovery surfaces, compares live folders against skills.json and README/setup counts, and identifies stale or missing entries.",
+      "assertions": [
+        "The output checks live skill folders against skills.json",
+        "The output checks README or setup inventory counts after structural changes",
+        "The output flags stale manifest-only names or missing live skills",
+        "The output treats catalog sync as part of the standardization workflow"
+      ]
     }
   ]
 }

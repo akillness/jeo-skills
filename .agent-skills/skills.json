@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "generated": "2026-04-14T05:11:15Z",
-  "skill_count": 85,
+  "generated": "2026-04-14T08:19:32Z",
+  "skill_count": 89,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -46,9 +46,9 @@
       "pattern-detection"
     ],
     "core-orchestration": [
+      "bmad",
       "bmad-gds",
       "bmad-idea",
-      "bmad-orchestrator",
       "jeo",
       "ohmg",
       "omc",
@@ -72,19 +72,18 @@
       "testing-strategies"
     ],
     "utilities": [
-      "copilot-coding-agent",
+      "clawteam",
       "fabric",
       "file-organization",
       "git-submodule",
       "git-workflow",
       "google-workspace",
+      "llm-wiki",
       "lmstudio-cli",
       "npm-git-install",
       "obsidian-cli",
       "obsidian-plugin",
       "opencontext",
-      "graphify",
-      "llm-wiki",
       "workflow-automation"
     ],
     "frontend": [
@@ -112,6 +111,13 @@
       "standup-meeting",
       "task-estimation",
       "task-planning"
+    ],
+    "game-development": [
+      "game-build-log-triage",
+      "game-ci-cd-pipeline",
+      "game-demo-feedback-triage",
+      "game-performance-profiler",
+      "steam-store-launch-ops"
     ]
   },
   "skills": [
@@ -119,7 +125,7 @@
       "name": "agent-browser",
       "description": "Browser automation CLI for AI agents. Use for website interaction, form automation, screenshots, scraping, and web app verification. Prefer snapshot refs (@e1, @e2) for deterministic actions.",
       "category": "planning-review",
-      "path": "planning-review/agent-browser/SKILL.md",
+      "path": "agent-browser/SKILL.md",
       "tags": [
         "browser-automation",
         "headless-browser",
@@ -147,7 +153,7 @@
       "name": "agentation",
       "description": "Visual UI annotation tool for AI agents. Drop the React toolbar into any app — humans click elements and leave feedback, agents receive structured CSS selectors, bounding boxes, and React component trees to find exact code. Supports MCP watch-loop, platform-specific hooks (Claude Code / Codex / Gemini CLI / OpenCode), webhook delivery, and autonomous self-driving critique with agent-browser.",
       "category": "planning-review",
-      "path": "planning-review/agentation/SKILL.md",
+      "path": "agentation/SKILL.md",
       "tags": [
         "ui-feedback",
         "browser-annotation",
@@ -179,10 +185,1912 @@
       "commands": []
     },
     {
+      "name": "api-design",
+      "description": "Design or refactor API contracts for REST and GraphQL systems. Use when the user needs resource modeling, endpoint/schema shape, naming, versioning, pagination, filtering, auth/error semantics, backward-compatibility review, or an OpenAPI / GraphQL SDL contract before implementation. Not for publishing docs portals, writing tutorials, or general backend implementation.",
+      "category": "backend",
+      "path": "api-design/SKILL.md",
+      "tags": [
+        "api-design",
+        "REST",
+        "GraphQL",
+        "OpenAPI",
+        "versioning",
+        "backend"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit"
+      ],
+      "commands": []
+    },
+    {
+      "name": "api-documentation",
+      "description": "Write developer-facing API documentation for REST, GraphQL, webhook, and SDK surfaces: reference docs, quickstarts, portal pages, truthful examples, and auth/error guidance. Routes contract design to api-design and internal docs to technical-writing.",
+      "category": "backend",
+      "path": "api-documentation/SKILL.md",
+      "tags": [
+        "API-documentation",
+        "OpenAPI",
+        "Swagger",
+        "REST",
+        "GraphQL",
+        "developer-docs"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "authentication-setup",
+      "description": "Design or refactor product authentication setup for web apps and APIs. Use when the user needs to choose or wire hosted auth, framework-native auth, platform-native auth, sessions vs JWTs, OAuth/social login, passkeys, org/member models, enterprise SSO/SCIM handoff, or callback/cookie environment setup before or alongside implementation. Not for deep authorization policy, general security hardening, API contract design, or backend test planning.",
+      "category": "backend",
+      "path": "authentication-setup/SKILL.md",
+      "tags": [
+        "authentication-setup",
+        "auth",
+        "sessions",
+        "jwt",
+        "oauth",
+        "passkeys",
+        "sso",
+        "scim",
+        "product-auth",
+        "backend"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
+    },
+    {
+      "name": "autoresearch",
+      "description": "Autonomous ML experimentation framework by Andrej Karpathy. AI agent autonomously modifies train.py, runs 5-minute GPU experiments, evaluates with val_bpb, and commits only improvements via git ratcheting — so you wake up to 100+ experiments and a better model. Use when setting up autoresearch, writing program.md directives, interpreting results, configuring hardware, or running overnight autonomous ML experiments. Triggers on: autoresearch, autonomous ml experiments, overnight gpu experiments, karpathy autoresearch, train.py experiments, val_bpb, program.md research directives, ai runs experiments.",
+      "category": "search-analysis",
+      "path": "autoresearch/SKILL.md",
+      "tags": [
+        "autoresearch",
+        "ml-experiments",
+        "autonomous-research",
+        "karpathy",
+        "gpu",
+        "train",
+        "val-bpb",
+        "overnight",
+        "ratcheting"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": []
+    },
+    {
+      "name": "backend-testing",
+      "description": "Design and implement backend test coverage for APIs, services, auth flows, data access, and integration boundaries. Use when the user needs unit/service/API/contract coverage, fixture strategy, dependency realism, flaky test triage, or local-vs-CI test layering for backend changes.",
+      "category": "backend",
+      "path": "backend-testing/SKILL.md",
+      "tags": [
+        "testing",
+        "backend",
+        "api-test",
+        "integration-test",
+        "contract-test",
+        "testcontainers",
+        "ci"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
+    },
+    {
+      "name": "bmad",
+      "description": "Orchestrates BMAD workflows for structured AI-driven development. Routes work across Analysis, Planning, Solutioning, and Implementation phases.",
+      "path": "bmad/SKILL.md",
+      "tags": [
+        "bmad",
+        "orchestrator",
+        "workflow",
+        "planning",
+        "implementation"
+      ],
+      "keywords": [
+        "bmad",
+        "bmad"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": []
+    },
+    {
+      "name": "bmad-gds",
+      "description": "Orchestrate AI-assisted indie game development across concepting, GDD shaping, milestone planning, playtest synthesis, build triage, and launch-readiness decisions. Use when a solo developer or small game team needs one coordinating skill to turn a mixed packet into the next game-production artifact and route specialist work to the right downstream skill.",
+      "category": "core-orchestration",
+      "path": "bmad-gds/SKILL.md",
+      "tags": [
+        "bmad",
+        "gds",
+        "game-development",
+        "game-production",
+        "gdd",
+        "milestone-planning",
+        "playtesting",
+        "launch-ops",
+        "orchestration"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": [
+        {
+          "command": "bmad-gds-game-brief",
+          "source": "bmad-gds/SKILL.md"
+        },
+        {
+          "command": "bmad-gds-gdd",
+          "source": "bmad-gds/SKILL.md"
+        },
+        {
+          "command": "bmad-gds-game-architecture",
+          "source": "bmad-gds/SKILL.md"
+        },
+        {
+          "command": "bmad-gds-sprint-planning",
+          "source": "bmad-gds/SKILL.md"
+        },
+        {
+          "command": "bmad-gds-dev-story",
+          "source": "bmad-gds/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "bmad-idea",
+      "description": "Creative Intelligence Suite for AI-driven ideation, design thinking, innovation strategy, problem-solving, and storytelling. 5 named specialist agents with distinct methodologies — no setup required, all workflows available immediately.",
+      "category": "core-orchestration",
+      "path": "bmad-idea/SKILL.md",
+      "tags": [
+        "bmad",
+        "cis",
+        "creative",
+        "ideation",
+        "brainstorming",
+        "design-thinking",
+        "innovation",
+        "problem-solving",
+        "storytelling",
+        "multi-agent"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": [
+        {
+          "command": "bmad-cis-brainstorming",
+          "source": "bmad-idea/SKILL.md"
+        },
+        {
+          "command": "bmad-cis-design-thinking",
+          "source": "bmad-idea/SKILL.md"
+        },
+        {
+          "command": "bmad-cis-innovation-strategy",
+          "source": "bmad-idea/SKILL.md"
+        },
+        {
+          "command": "bmad-cis-problem-solving",
+          "source": "bmad-idea/SKILL.md"
+        },
+        {
+          "command": "bmad-cis-storytelling",
+          "source": "bmad-idea/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "changelog-maintenance",
+      "description": "Maintain release history and release communication across CHANGELOG.md, migration updates, developer/customer release notes, and lightweight game patch notes. Use when the main job is turning shipped changes into a durable changelog or audience-appropriate release summary; routes internal specs/runbooks to technical-writing, API portals to api-documentation, end-user tutorials to user-guide-writing, rollout execution to deployment-automation, and launch messaging to marketing-automation.",
+      "category": "documentation",
+      "path": "changelog-maintenance/SKILL.md",
+      "tags": [
+        "changelog",
+        "release-notes",
+        "versioning",
+        "semantic-versioning",
+        "documentation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "clawteam",
+      "description": "Multi-agent swarm orchestration where AI agents spawn, coordinate, and self-organize into collaborative teams. Use when running parallel AI agent tasks, orchestrating multi-agent workflows across Claude Code / Codex / Cursor / custom agents, isolating agent workspaces via git worktrees, tracking task dependencies across agents, or running autonomous experiments. Triggers on: clawteam, agent swarm, spawn agents, multi-agent team, agent orchestration, parallel agents, agent coordination, swarm intelligence, agent spawn, clawteam spawn, agent worktree, agentic team, ml agent experiments, autonomous agents, agent team.",
+      "path": "clawteam/SKILL.md",
+      "tags": [
+        "clawteam",
+        "multi-agent",
+        "swarm",
+        "orchestration",
+        "tmux",
+        "git-worktree",
+        "autonomous",
+        "python"
+      ],
+      "keywords": [
+        "clawteam",
+        "clawteam"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": []
+    },
+    {
+      "name": "code-refactoring",
+      "description": "Refactor code safely with a behavior-preserving workflow for decomposition, duplication removal, naming cleanup, module splits, and repeated API migrations. Use when the user wants to simplify messy code, shrink an oversized function or component, make a diff more reviewable, or plan a codemod-style cleanup without changing intended behavior.",
+      "category": "code-quality",
+      "path": "code-refactoring/SKILL.md",
+      "tags": [
+        "refactoring",
+        "code-quality",
+        "DRY",
+        "SOLID",
+        "design-patterns",
+        "clean-code",
+        "simplification",
+        "behavior-preservation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Edit",
+        "Write",
+        "Bash"
+      ],
+      "commands": []
+    },
+    {
+      "name": "code-review",
+      "description": "Review diffs, pull requests, merge requests, and patch stacks for correctness, maintainability, security, test gaps, and rollout risk with a workflow-aware review pass. Use when the user wants approve/block guidance, reviewer comments, or pre-merge risk review rather than Git cleanup, debugging, or broad testing-policy design.",
+      "category": "code-quality",
+      "path": "code-review/SKILL.md",
+      "tags": [
+        "code-review",
+        "code-quality",
+        "security-review",
+        "risk-review",
+        "pull-request-review",
+        "diff-review"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write"
+      ],
+      "commands": []
+    },
+    {
+      "name": "codebase-search",
+      "description": "Search and navigate codebases with an evidence-first workflow. Use when the user needs repo navigation, call-site tracing, code archaeology, ownership discovery, impact analysis, entry-point mapping, config hunting, or pre-change discovery. Choose between exact-text search, symbol/indexed search, structural search, and file discovery, then hand off cleanly to debugging, refactoring, review, or graph-based architecture analysis.",
+      "category": "search-analysis",
+      "path": "codebase-search/SKILL.md",
+      "tags": [
+        "codebase-search",
+        "code-navigation",
+        "repo-triage",
+        "impact-analysis",
+        "grep",
+        "ripgrep",
+        "ast-grep"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash"
+      ],
+      "commands": [
+        {
+          "command": "rg -n --hidden --glob '!node_modules' --glob '!dist' 'search_term' .",
+          "source": "search-analysis/codebase-search/SKILL.md"
+        },
+        {
+          "command": "Use repository-native symbol/indexed search when the job is definitions, references, or cross-repo symbol navigation.",
+          "source": "search-analysis/codebase-search/SKILL.md"
+        },
+        {
+          "command": "Use ast-grep or another AST-aware tool when syntax shape matters more than exact text.",
+          "source": "search-analysis/codebase-search/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "data-analysis",
+      "description": "Analyze datasets to extract insights, identify patterns, and generate reports. Use when exploring data, creating visualizations, or performing statistical analysis. Handles CSV, JSON, SQL queries, and Python pandas operations.",
+      "category": "search-analysis",
+      "path": "data-analysis/SKILL.md",
+      "tags": [
+        "data",
+        "analysis",
+        "pandas",
+        "statistics",
+        "visualization",
+        "csv",
+        "sql"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash"
+      ],
+      "commands": []
+    },
+    {
+      "name": "database-schema-design",
+      "description": "Design and optimize database schemas for SQL and NoSQL databases. Use when creating new databases, designing tables, defining relationships, indexing strategies, or database migrations. Handles PostgreSQL, MySQL, MongoDB, normalization, and performance optimization.",
+      "category": "backend",
+      "path": "database-schema-design/SKILL.md",
+      "tags": [
+        "database",
+        "schema",
+        "SQL",
+        "NoSQL",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "migration"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "debugging",
+      "description": "Debug code, runtime behavior, regressions, flaky failures, and code-adjacent incidents with a systematic reproduce → isolate → hypothesize → verify loop. Use after symptom triage when the user needs a root-cause workflow, regression isolation, flaky-test investigation, or fix verification rather than raw log-line selection.",
+      "category": "code-quality",
+      "path": "debugging/SKILL.md",
+      "tags": [
+        "debugging",
+        "regression-isolation",
+        "reproduction",
+        "flaky-tests",
+        "git-bisect",
+        "root-cause"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write"
+      ],
+      "commands": [
+        {
+          "command": "git log --oneline -15",
+          "source": "code-quality/debugging/SKILL.md"
+        },
+        {
+          "command": "git diff HEAD~5 -- path/to/suspect",
+          "source": "code-quality/debugging/SKILL.md"
+        },
+        {
+          "command": "git bisect start",
+          "source": "code-quality/debugging/SKILL.md"
+        },
+        {
+          "command": "rg -n \"avatar|null|profile\" src tests",
+          "source": "code-quality/debugging/SKILL.md"
+        },
+        {
+          "command": "pytest tests/test_checkout.py -k coupon --maxfail=1 -vv",
+          "source": "code-quality/debugging/SKILL.md"
+        }
+      ],
+      "compatibility": "Best for code-level and behavior-level debugging across CLI, backend, frontend, fullstack, and CI workflows. Not for observability-platform setup, pure PR review, or broad testing-strategy design.",
+      "version": "2.0",
+      "source": "akillness/oh-my-skills"
+    },
+    {
+      "name": "deployment-automation",
+      "description": "Plan and execute hosted deployment and rollout automation for web, backend, and fullstack systems: preview/staging/prod promotion, release verification, rollback planning, provider handoff, and deployment runbooks. Use when the main job is shipping a built artifact or service safely to an environment, choosing a rollout strategy, or tightening deploy/release steps around health checks and promotion rules. Route CI workflow authoring to `workflow-automation`, machine/runtime setup to `system-environment-setup`, ongoing dashboards/alerts to `monitoring-observability`, and Vercel-specific operations to `vercel-deploy`.",
+      "category": "infrastructure",
+      "path": "deployment-automation/SKILL.md",
+      "tags": [
+        "deployment",
+        "release-rollout",
+        "preview-environments",
+        "rollback",
+        "progressive-delivery",
+        "post-deploy-verification",
+        "devops"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": [
+        {
+          "command": "# classify: preview-release | environment-promotion | container-paas | kubernetes-rollout | rollback-response | release-hardening",
+          "source": "infrastructure/deployment-automation/SKILL.md"
+        },
+        {
+          "command": "# identify artifact + target environment + promotion model before prescribing steps",
+          "source": "infrastructure/deployment-automation/SKILL.md"
+        },
+        {
+          "command": "# include post-deploy verification and rollback in every deployment packet",
+          "source": "infrastructure/deployment-automation/SKILL.md"
+        },
+        {
+          "command": "# route CI workflow authoring to workflow-automation and machine setup to system-environment-setup",
+          "source": "infrastructure/deployment-automation/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "design-system",
+      "description": "Design or refactor production-grade frontend UI systems using design tokens, component primitives, layout rules, motion guidance, and accessibility checks. Use when the user needs a reusable visual system, landing-page or dashboard UI direction, component-library foundations, or page-level design specs that stay consistent across screens.",
+      "category": "frontend",
+      "path": "design-system/SKILL.md",
+      "tags": [
+        "frontend",
+        "design",
+        "ui",
+        "ux",
+        "typography",
+        "animation",
+        "design-tokens",
+        "accessibility"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "environment-setup",
+      "description": "Organize application environment configuration: `.env` files, env precedence, typed env validation, secret handoff, framework-specific env rules, and config drift between local, staging, CI, and production. Use when the user needs help structuring environment variables, validating required config, separating public/private env values, or cleaning up env-file sprawl. This is the narrower app-config compatibility skill. Route broader runnable-machine, Docker, devcontainer, onboarding, and local-service setup work to `system-environment-setup`.",
+      "category": "infrastructure",
+      "path": "environment-setup/SKILL.md",
+      "tags": [
+        "environment",
+        "env-files",
+        "dotenv",
+        "env-validation",
+        "config-management",
+        "secrets-handoff"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": [],
+      "compatibility": "Best when the main problem is application configuration rather than whole-machine reproducibility: env files, config layering, schema validation, and secrets handoff boundaries.",
+      "version": "1.1",
+      "source": "akillness/oh-my-skills"
+    },
+    {
+      "name": "fabric",
+      "description": "AI prompt orchestration CLI using reusable Patterns. Use for YouTube summarization, document analysis, content extraction, code explanation, writing assistance, and any AI task via stdin/stdout piping across 20+ providers.",
+      "category": "utilities",
+      "path": "fabric/SKILL.md",
+      "tags": [
+        "fabric",
+        "patterns",
+        "ai-prompts",
+        "youtube",
+        "summarize",
+        "extract-wisdom",
+        "piping",
+        "cli",
+        "multi-provider",
+        "openai",
+        "claude",
+        "gemini",
+        "ollama"
+      ],
+      "platforms": [
+        "All platforms"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": []
+    },
+    {
+      "name": "file-organization",
+      "description": "Organize project files and folders for maintainability and scalability. Use when structuring new projects, refactoring folder structure, or establishing conventions. Handles project structure, naming conventions, and file organization best practices.",
+      "category": "utilities",
+      "path": "file-organization/SKILL.md",
+      "tags": [
+        "file-organization",
+        "project-structure",
+        "folder-structure",
+        "naming-conventions"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Glob",
+        "Bash"
+      ],
+      "commands": []
+    },
+    {
+      "name": "firebase-ai-logic",
+      "description": "Integrate Firebase AI Logic (Gemini in Firebase) for intelligent app features. Use when adding AI capabilities to Firebase apps, implementing generative AI features, or setting up Firebase AI SDK. Handles Firebase AI SDK setup, prompt engineering, and AI-powered features.",
+      "category": "infrastructure",
+      "path": "firebase-ai-logic/SKILL.md",
+      "tags": [
+        "firebase",
+        "ai",
+        "gemini",
+        "generative-ai",
+        "sdk"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [],
+      "commands": [
+        {
+          "command": "npm install -g firebase-tools",
+          "source": "infrastructure/firebase-ai-logic/SKILL.md"
+        },
+        {
+          "command": "firebase login",
+          "source": "infrastructure/firebase-ai-logic/SKILL.md"
+        },
+        {
+          "command": "firebase init",
+          "source": "infrastructure/firebase-ai-logic/SKILL.md"
+        },
+        {
+          "command": "npm install firebase @anthropic-ai/sdk",
+          "source": "infrastructure/firebase-ai-logic/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "firebase-cli",
+      "description": "Install, configure, and operate the Firebase CLI (firebase-tools) for all Firebase services. Use when you need to deploy to Firebase Hosting, Cloud Functions, Firestore, Realtime Database, Cloud Storage, Extensions, App Hosting, or run the Firebase Emulator Suite. Triggers on: firebase deploy, firebase init, firebase emulators, firebase hosting, firebase functions, firebase firestore, firebase database, firebase auth import, firebase remote config, firebase app distribution, firebase extensions, firebase apphosting, firebase cli, firebase-tools, deploy firebase, firebase preview channel, firebase login, firebase serve.",
+      "category": "infrastructure",
+      "path": "firebase-cli/SKILL.md",
+      "tags": [
+        "firebase",
+        "firebase-cli",
+        "firebase-tools",
+        "deploy",
+        "hosting",
+        "functions",
+        "firestore",
+        "database",
+        "emulators",
+        "auth",
+        "remote-config",
+        "app-distribution",
+        "extensions",
+        "apphosting"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": []
+    },
+    {
+      "name": "frontend-design-system",
+      "description": "Compatibility alias for `design-system`. Use when an existing workflow, setup script, or user explicitly asks for `frontend-design-system`; route ordinary UI system, design-token, landing-page, dashboard, and component-library work to `design-system` instead.",
+      "category": "frontend",
+      "path": "frontend-design-system/SKILL.md",
+      "tags": [
+        "frontend",
+        "design",
+        "ui",
+        "ux",
+        "typography",
+        "animation",
+        "design-tokens",
+        "accessibility"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Write",
+        "Read",
+        "Task"
+      ],
+      "commands": []
+    },
+    {
+      "name": "game-build-log-triage",
+      "description": "Triage Unity and Unreal Engine editor, build, package, cook, compile, and CI logs into the first actionable failure, likely subsystem, and next debugging steps. Use when a game project fails to build, cook, package, import assets, compile scripts/code, or throws noisy editor/runtime errors, even if the user only shares raw log text or says \"Unity build failed\", \"Unreal cook error\", \"Editor.log\", \"UHT/UBT failed\", or \"packaging started breaking after asset moves\".",
+      "path": "game-build-log-triage/SKILL.md",
+      "tags": [
+        "game-development",
+        "unity",
+        "unreal",
+        "logs",
+        "debugging",
+        "build-failures",
+        "ci",
+        "triage"
+      ],
+      "keywords": [
+        "game-build-log-triage",
+        "game build log triage"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
+    },
+    {
+      "name": "game-ci-cd-pipeline",
+      "description": "Design, audit, and harden CI/CD pipelines for Unity and Unreal projects, including build matrices, cache strategy, artifact naming, packaging stages, platform SDK/toolchain checks, and smoke-test gates. Use when a game team needs to set up or repair GitHub Actions or other CI for engine builds, even if they only say \"our Unity cloud/GitHub build keeps breaking\", \"help with Unreal packaging CI\", \"make our game builds reproducible\", \"speed up cook / package jobs\", or \"turn this manual release process into a pipeline\".",
+      "path": "game-ci-cd-pipeline/SKILL.md",
+      "tags": [
+        "game-development",
+        "unity",
+        "unreal",
+        "ci-cd",
+        "github-actions",
+        "build-pipeline",
+        "release-engineering"
+      ],
+      "keywords": [
+        "game-ci-cd-pipeline",
+        "game ci cd pipeline"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
+    },
+    {
+      "name": "game-demo-feedback-triage",
+      "description": "Triage mixed game demo and playtest feedback into a prioritized fix brief, weighted evidence summary, and next artifact recommendation. Use when a team has playtest notes, Steam Playtest responses, creator or streamer demo reactions, survey comments, wishlist/context signals, bug lists, or performance findings and needs to decide what to fix first before the next build, festival, or launch beat, even if they only say \"sort our playtest feedback\", \"what should we fix before Next Fest\", \"players are confused\", \"streamers bounced off the demo\", or \"turn these demo notes into priorities\".",
+      "path": "game-demo-feedback-triage/SKILL.md",
+      "tags": [
+        "game-development",
+        "playtesting",
+        "demo-feedback",
+        "steam-playtest",
+        "next-fest",
+        "prioritization",
+        "ux",
+        "qa",
+        "launch-ops"
+      ],
+      "keywords": [
+        "game-demo-feedback-triage",
+        "game demo feedback triage"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
+    },
+    {
+      "name": "game-performance-profiler",
+      "description": "Triage Unity and Unreal performance complaints into a profiling plan, likely bottleneck class, evidence checklist, and next optimization artifact. Use when a game has low FPS, frame-time spikes, hitches, GC stalls, GPU bottlenecks, streaming problems, Steam Deck/mobile/per-platform performance regressions, or profiler screenshots that need interpretation, even if the user only says \"Unity is stuttering\", \"Unreal frame time is bad\", \"GPU or CPU bottleneck?\", \"Steam Deck performance\", or \"help read this profiler capture\".",
+      "path": "game-performance-profiler/SKILL.md",
+      "tags": [
+        "game-development",
+        "unity",
+        "unreal",
+        "profiling",
+        "performance",
+        "optimization",
+        "frame-time",
+        "steam-deck"
+      ],
+      "keywords": [
+        "game-performance-profiler",
+        "game performance profiler"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
+    },
+    {
+      "name": "genkit",
+      "description": "Build production-ready AI workflows using Firebase Genkit. Use when creating flows, tool-calling agents, RAG pipelines, multi-agent systems, or deploying AI to Firebase/Cloud Run. Supports TypeScript, Go, and Python with Gemini, OpenAI, Anthropic, Ollama, and Vertex AI plugins.",
+      "category": "infrastructure",
+      "path": "genkit/SKILL.md",
+      "tags": [
+        "genkit",
+        "firebase",
+        "ai",
+        "llm",
+        "flows",
+        "agents",
+        "rag",
+        "gemini",
+        "typescript",
+        "google-cloud"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "git-submodule",
+      "description": "Manage Git submodules for including external repositories within a main repository. Use when working with external libraries, shared modules, or managing dependencies as separate Git repositories.",
+      "category": "utilities",
+      "path": "git-submodule/SKILL.md",
+      "tags": [
+        "git",
+        "submodule",
+        "dependencies",
+        "version-control",
+        "modular"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [],
+      "commands": [
+        {
+          "command": "git submodule add <repository-url> <path>",
+          "source": "utilities/git-submodule/SKILL.md"
+        },
+        {
+          "command": "git submodule add https://github.com/example/lib.git libs/lib",
+          "source": "utilities/git-submodule/SKILL.md"
+        },
+        {
+          "command": "git submodule add -b main https://github.com/example/lib.git libs/lib",
+          "source": "utilities/git-submodule/SKILL.md"
+        },
+        {
+          "command": "git add .gitmodules libs/lib",
+          "source": "utilities/git-submodule/SKILL.md"
+        },
+        {
+          "command": "git commit -m \"feat: add lib as submodule\"",
+          "source": "utilities/git-submodule/SKILL.md"
+        },
+        {
+          "command": "git clone --recursive <repository-url>",
+          "source": "utilities/git-submodule/SKILL.md"
+        },
+        {
+          "command": "git clone <repository-url>",
+          "source": "utilities/git-submodule/SKILL.md"
+        },
+        {
+          "command": "cd <repository>",
+          "source": "utilities/git-submodule/SKILL.md"
+        },
+        {
+          "command": "git submodule init",
+          "source": "utilities/git-submodule/SKILL.md"
+        },
+        {
+          "command": "git submodule update",
+          "source": "utilities/git-submodule/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "git-workflow",
+      "description": "Manage local Git collaboration safely: branch creation, staging, commit shaping, rebase/merge decisions, conflict resolution, lease-safe pushes, and recovery from resets or bad history edits. Use when the user needs help preparing a branch, cleaning up commits, rebasing onto an updated base branch, resolving conflicts, pushing rewritten history safely, undoing or recovering Git mistakes, or getting a diff ready for review. Not for hosted PR review, repo administration, or sprint planning.",
+      "category": "utilities",
+      "path": "git-workflow/SKILL.md",
+      "tags": [
+        "git",
+        "version-control",
+        "branching",
+        "commits",
+        "collaboration"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write"
+      ],
+      "commands": [
+        {
+          "command": "git checkout -b feature/feature-name",
+          "source": "utilities/git-workflow/SKILL.md"
+        },
+        {
+          "command": "git checkout -b feature/feature-name <commit-hash>",
+          "source": "utilities/git-workflow/SKILL.md"
+        },
+        {
+          "command": "git add file1.py file2.js",
+          "source": "utilities/git-workflow/SKILL.md"
+        },
+        {
+          "command": "git add .",
+          "source": "utilities/git-workflow/SKILL.md"
+        },
+        {
+          "command": "git add -p",
+          "source": "utilities/git-workflow/SKILL.md"
+        },
+        {
+          "command": "git status",
+          "source": "utilities/git-workflow/SKILL.md"
+        },
+        {
+          "command": "git diff",
+          "source": "utilities/git-workflow/SKILL.md"
+        },
+        {
+          "command": "git diff --staged",
+          "source": "utilities/git-workflow/SKILL.md"
+        },
+        {
+          "command": "git commit -m \"type(scope): subject",
+          "source": "utilities/git-workflow/SKILL.md"
+        },
+        {
+          "command": "Detailed description of what changed and why.",
+          "source": "utilities/git-workflow/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "google-workspace",
+      "description": "Create, read, update, and manage all Google Workspace documents and services via REST APIs. Use when working with Google Docs, Google Sheets, Google Slides, Google Drive, Gmail, Google Calendar, Google Chat, Google Forms, Google Meet, Admin SDK, or Apps Script. Triggers on: \"Google Doc\", \"Google Sheet\", \"spreadsheet\", \"Google Slides\", \"presentation\", \"Google Drive\", \"Drive folder\", \"Gmail\", \"send email\", \"Google Calendar\", \"calendar event\", \"schedule meeting\", \"Google Chat\", \"Google Forms\", \"survey form\", \"Google Meet\", \"Workspace user\", \"Apps Script\", \"구글 문서\", \"구글 시트\", \"스프레드시트\", \"구글 슬라이드\", \"프레젠테이션\", \"구글 드라이브\", \"지메일\", \"이메일 보내기\", \"구글 캘린더\", \"일정 추가\", \"회의 예약\", \"구글 챗\", \"구글 폼\", \"설문지\", \"워크스페이스 사용자\".",
+      "category": "utilities",
+      "path": "google-workspace/SKILL.md",
+      "tags": [
+        "google-workspace",
+        "google-docs",
+        "google-sheets",
+        "google-slides",
+        "google-drive",
+        "gmail",
+        "google-calendar",
+        "google-chat",
+        "google-forms",
+        "admin-sdk",
+        "apps-script",
+        "automation"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
+    },
+    {
+      "name": "harness",
+      "description": "Design domain-specific agent teams, define specialized agents, and generate the skills they use. Meta-skill for decomposing complex projects into coordinated multi-agent pipelines. Use when you need to design an agent team architecture, generate .claude/agents/ and .claude/skills/ files, choose between pipeline/fan-out/expert-pool/producer-reviewer/supervisor/hierarchical patterns, or validate a generated harness. Triggers on: harness, build a harness, design agent team, agent team architecture, multi-agent skill generation, set up harness, harness engineering.",
+      "category": "core-orchestration",
+      "path": "harness/SKILL.md",
+      "tags": [
+        "harness",
+        "agent-team",
+        "multi-agent",
+        "skill-generation",
+        "orchestration",
+        "meta-skill",
+        "claude-code"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Agent"
+      ],
+      "scripts": [
+        {
+          "file": "scripts/install.sh",
+          "description": "Install harness plugin into Claude Code"
+        },
+        {
+          "file": "scripts/validate-harness.sh",
+          "description": "Validate agent definitions and skill files generated by harness"
+        }
+      ],
+      "commands": [
+        {
+          "command": "bash scripts/install.sh",
+          "source": "core-orchestration/harness/scripts/install.sh"
+        },
+        {
+          "command": "bash scripts/validate-harness.sh .claude/agents/ .claude/skills/",
+          "source": "core-orchestration/harness/scripts/validate-harness.sh"
+        }
+      ]
+    },
+    {
+      "name": "jeo",
+      "description": "JEO — Integrated AI agent orchestration skill. Plan with plannotator (approval triggers ralphmode), execute with ralphmode/team/bmad, verify browser behavior with agent-browser, apply UI feedback with agentation(annotate), auto-cleanup worktrees after completion. Supports Claude, Codex, Gemini CLI, and OpenCode. Install: ralph, omc, omx, ohmg, bmad, plannotator, agent-browser, agentation.",
+      "category": "core-orchestration",
+      "path": "jeo/SKILL.md",
+      "tags": [
+        "jeo",
+        "orchestration",
+        "ralph",
+        "plannotator",
+        "agentation",
+        "annotate",
+        "agentui",
+        "UI-review",
+        "team",
+        "bmad",
+        "omc",
+        "omx",
+        "ohmg",
+        "agent-browser",
+        "multi-agent",
+        "workflow",
+        "worktree-cleanup",
+        "browser-verification",
+        "ui-feedback"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "Task"
+      ],
+      "keyword": "jeo",
+      "version": "1.3.0",
+      "commands": []
+    },
+    {
+      "name": "langsmith",
+      "description": "Instrument, trace, evaluate, and monitor LLM applications and AI agents with LangSmith. Use when setting up observability for LLM pipelines, running offline or online evaluations, managing prompts in the Prompt Hub, creating datasets for regression testing, or deploying agent servers. Triggers on: langsmith, langchain tracing, llm tracing, llm observability, llm evaluation, trace llm calls, @traceable, wrap_openai, langsmith evaluate, langsmith dataset, langsmith feedback, langsmith prompt hub, langsmith project, llm monitoring, llm debugging, llm quality, openevals, langsmith cli, langsmith experiment, annotate llm, llm judge.",
+      "category": "search-analysis",
+      "path": "langsmith/SKILL.md",
+      "tags": [
+        "langsmith",
+        "langchain",
+        "tracing",
+        "observability",
+        "evaluation",
+        "llm-monitoring",
+        "prompt-hub",
+        "datasets",
+        "openevals"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": []
+    },
+    {
+      "name": "llm-wiki",
+      "description": "Build and maintain a persistent markdown wiki that an LLM updates on the user's behalf, usually inside an Obsidian vault or git-tracked notes repo. Use when raw sources such as web articles, papers, meeting notes, transcripts, screenshots, or past analyses need to be turned into an interlinked knowledge base with immutable source files, LLM-written wiki pages, index.md, log.md, schema rules, source summaries, query notes, and recurring lint passes. Triggers on: llm-wiki, personal wiki, obsidian wiki, research vault, knowledge base, source ingest, persistent notes, wiki maintenance, source summaries, query filing.",
+      "category": "utilities",
+      "path": "llm-wiki/SKILL.md",
+      "tags": [
+        "llm-wiki",
+        "obsidian",
+        "knowledge-base",
+        "markdown",
+        "research",
+        "synthesis",
+        "scrapling",
+        "qmd",
+        "notes",
+        "wiki"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": [
+        {
+          "command": "bash scripts/bootstrap-vault.sh /path/to/vault",
+          "source": "utilities/llm-wiki/SKILL.md"
+        },
+        {
+          "command": "bash scripts/ingest-url.sh /path/to/vault \"https://example.com/article\"",
+          "source": "utilities/llm-wiki/SKILL.md"
+        },
+        {
+          "command": "bash scripts/new-query-note.sh /path/to/vault \"How does X differ from Y?\"",
+          "source": "utilities/llm-wiki/SKILL.md"
+        },
+        {
+          "command": "python3 scripts/lint-wiki.py /path/to/vault",
+          "source": "utilities/llm-wiki/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "lmstudio-cli",
+      "description": "Use LM Studio CLI docs and OpenAI-compatible LM Studio servers to discover models, verify remote availability, and configure downstream tools like Strix. Supports local `lms` CLI flows and remote HTTP endpoint validation.",
+      "category": "utilities",
+      "path": "lmstudio-cli/SKILL.md",
+      "tags": [
+        "lmstudio",
+        "lm-studio",
+        "lms",
+        "local-llm",
+        "openai-compatible",
+        "strix",
+        "model-server",
+        "inference"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "ChatGPT",
+        "Codex",
+        "Cursor"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "commands": [
+        {
+          "command": "lms --help",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "lms server status --json --quiet",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "lms ls --llm",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "lms load <model_key> --identifier \"my-model\"",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "curl -fsS http://HOST:PORT/v1/models",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "curl -fsS http://HOST:PORT/api/v1/models/load -H \"Content-Type: application/json\" -d '{\"model\":\"MODEL_KEY\",\"context_length\":262144,\"echo_load_config\":true}'",
+          "source": "utilities/lmstudio-cli/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "log-analysis",
+      "description": "Triage application, infrastructure, browser, API, CI, and general runtime logs into the first actionable failure, repeated patterns, likely scope, and next read-only checks. Use when the user shares raw log text, access/error logs, JSON logs, stack traces, pod/container output, browser console or network errors, or asks which lines actually matter.",
+      "category": "search-analysis",
+      "path": "log-analysis/SKILL.md",
+      "tags": [
+        "logs",
+        "analysis",
+        "debugging",
+        "monitoring",
+        "grep",
+        "patterns"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "commands": [
+        {
+          "command": "/var/log/                    # 시스템 로그",
+          "source": "search-analysis/log-analysis/SKILL.md"
+        },
+        {
+          "command": "/var/log/nginx/              # Nginx 로그",
+          "source": "search-analysis/log-analysis/SKILL.md"
+        },
+        {
+          "command": "/var/log/apache2/            # Apache 로그",
+          "source": "search-analysis/log-analysis/SKILL.md"
+        },
+        {
+          "command": "./logs/                      # 애플리케이션 로그",
+          "source": "search-analysis/log-analysis/SKILL.md"
+        },
+        {
+          "command": "grep -i \"error\\|exception\\|fail\" application.log",
+          "source": "search-analysis/log-analysis/SKILL.md"
+        },
+        {
+          "command": "tail -100 application.log | grep -i error",
+          "source": "search-analysis/log-analysis/SKILL.md"
+        },
+        {
+          "command": "grep -E \"^\\[.*ERROR\" application.log",
+          "source": "search-analysis/log-analysis/SKILL.md"
+        },
+        {
+          "command": "grep -E \"HTTP/[0-9.]+ 5[0-9]{2}\" access.log",
+          "source": "search-analysis/log-analysis/SKILL.md"
+        },
+        {
+          "command": "grep -E \"HTTP/[0-9.]+ 4[0-9]{2}\" access.log",
+          "source": "search-analysis/log-analysis/SKILL.md"
+        },
+        {
+          "command": "grep \"HTTP/1.1\\\" 500\" access.log",
+          "source": "search-analysis/log-analysis/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "looker-studio-bigquery",
+      "description": "Design and configure Looker Studio dashboards with BigQuery data sources. Use when creating analytics dashboards, connecting BigQuery to visualization tools, or optimizing data pipeline performance. Handles BigQuery connections, custom SQL queries, scheduled queries, dashboard design, and performance optimization.",
+      "category": "infrastructure",
+      "path": "looker-studio-bigquery/SKILL.md",
+      "tags": [
+        "Looker-Studio",
+        "BigQuery",
+        "dashboard",
+        "analytics",
+        "visualization",
+        "GCP",
+        "data-studio",
+        "SQL"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [],
+      "commands": [
+        {
+          "command": "gcloud projects create my-analytics-project",
+          "source": "infrastructure/looker-studio-bigquery/SKILL.md"
+        },
+        {
+          "command": "gcloud config set project my-analytics-project",
+          "source": "infrastructure/looker-studio-bigquery/SKILL.md"
+        },
+        {
+          "command": "gcloud services enable bigquery.googleapis.com",
+          "source": "infrastructure/looker-studio-bigquery/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "marketing-automation",
+      "description": "Canonical general marketing router that turns broad marketing asks into a KPI-aware brief, one chosen lane, and an implementation-ready packet across CRO, copywriting, SEO, analytics, pricing, launch, retention, and growth.",
+      "category": "marketing",
+      "path": "marketing-automation/SKILL.md",
+      "tags": [
+        "marketing",
+        "cro",
+        "copywriting",
+        "seo",
+        "analytics",
+        "growth",
+        "automation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "marketing-skills-collection",
+      "description": "Compatibility alias for marketing-automation. Use when legacy prompt packs or catalogs still reference the old marketing-skills-collection name for broad marketing routing.",
+      "category": "marketing",
+      "path": "marketing-skills-collection/SKILL.md",
+      "tags": [
+        "marketing",
+        "automation",
+        "alias",
+        "compatibility"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Write",
+        "Read",
+        "WebSearch",
+        "WebFetch",
+        "Task"
+      ],
+      "commands": []
+    },
+    {
+      "name": "monitoring-observability",
+      "description": "Set up monitoring, logging, and observability for applications and infrastructure. Use when implementing health checks, metrics collection, log aggregation, or alerting systems. Handles Prometheus, Grafana, ELK Stack, Datadog, and monitoring best practices.",
+      "category": "infrastructure",
+      "path": "monitoring-observability/SKILL.md",
+      "tags": [
+        "monitoring",
+        "observability",
+        "logging",
+        "metrics",
+        "Prometheus",
+        "Grafana",
+        "alerts"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write"
+      ],
+      "commands": []
+    },
+    {
+      "name": "npm-git-install",
+      "description": "Install npm packages directly from GitHub repositories using git URLs. Use when installing packages from private repos, specific branches, or unreleased versions not yet on npm registry.",
+      "category": "utilities",
+      "path": "npm-git-install/SKILL.md",
+      "tags": [
+        "npm",
+        "git",
+        "github",
+        "install",
+        "package-management",
+        "node"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Opencode"
+      ],
+      "allowed_tools": [],
+      "commands": [
+        {
+          "command": "npm install git+https://github.com/<owner>/<repo>.git#<branch|tag|commit>",
+          "source": "utilities/npm-git-install/SKILL.md"
+        },
+        {
+          "command": "npm install -g git+https://github.com/JEO-tech-ai/supercode.git#main",
+          "source": "utilities/npm-git-install/SKILL.md"
+        },
+        {
+          "command": "npm install git+https://github.com/owner/repo.git#v1.0.0",
+          "source": "utilities/npm-git-install/SKILL.md"
+        },
+        {
+          "command": "npm install git+https://github.com/owner/repo.git#abc1234",
+          "source": "utilities/npm-git-install/SKILL.md"
+        },
+        {
+          "command": "npm install git+https://github.com/owner/repo.git",
+          "source": "utilities/npm-git-install/SKILL.md"
+        },
+        {
+          "command": "npm install -g git+ssh://git@github.com:JEO-tech-ai/supercode.git#main",
+          "source": "utilities/npm-git-install/SKILL.md"
+        },
+        {
+          "command": "npm install -g git+https://github.com/JEO-tech-ai/supercode.git#main --verbose",
+          "source": "utilities/npm-git-install/SKILL.md"
+        },
+        {
+          "command": "git clone https://github.com/owner/repo.git /tmp/npm-xxx",
+          "source": "utilities/npm-git-install/SKILL.md"
+        },
+        {
+          "command": "cd /tmp/npm-xxx",
+          "source": "utilities/npm-git-install/SKILL.md"
+        },
+        {
+          "command": "git checkout main",
+          "source": "utilities/npm-git-install/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "obsidian-cli",
+      "description": "Install, enable, and operate the Obsidian CLI for terminal-driven note management, vault targeting, file and task workflows, plugin and theme control, developer tooling, and TUI exploration. Use when you need to script or automate a running Obsidian app from the command line, open or modify notes, target a specific vault or file, copy command output, reload a plugin under development, or inspect the app UI from the terminal. Triggers on: obsidian cli, obsidian command line, obsidian terminal, obsidian vault command, obsidian daily note cli, obsidian devtools cli, obsidian plugin reload.",
+      "category": "utilities",
+      "path": "obsidian-cli/SKILL.md",
+      "tags": [
+        "obsidian",
+        "cli",
+        "notes",
+        "vault",
+        "daily-notes",
+        "tasks",
+        "plugins",
+        "themes",
+        "developer-tools",
+        "tui"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": [
+        {
+          "command": "bash scripts/install.sh",
+          "source": "utilities/obsidian-cli/SKILL.md"
+        },
+        {
+          "command": "bash scripts/run-command.sh --vault Notes daily",
+          "source": "utilities/obsidian-cli/SKILL.md"
+        },
+        {
+          "command": "bash scripts/run-command.sh search query=\"meeting notes\" --copy",
+          "source": "utilities/obsidian-cli/SKILL.md"
+        },
+        {
+          "command": "bash scripts/run-command.sh plugin:reload id=my-plugin",
+          "source": "utilities/obsidian-cli/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "obsidian-plugin",
+      "description": "Build, validate, and publish Obsidian plugins following official community submission standards. Use when developing an Obsidian plugin from scratch, reviewing existing plugin code, fixing ESLint violations from eslint-plugin-obsidianmd, preparing a plugin for community directory submission, or applying Obsidian-specific best practices (memory management, type safety, accessibility, CSS variables, vault API). Triggers on: obsidian plugin, obsidian development, obsidian-plugin, create obsidian plugin, obsidian eslint, obsidian submission, obsidian community plugin, obsidian API, plugin boilerplate, obsidian typescript, obsidian vault, obsidian settings, obsidian commands.",
+      "category": "utilities",
+      "path": "obsidian-plugin/SKILL.md",
+      "tags": [
+        "obsidian",
+        "plugin-development",
+        "eslint",
+        "typescript",
+        "boilerplate",
+        "submission",
+        "accessibility"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "commands": []
+    },
+    {
+      "name": "ohmg",
+      "description": "Ultimate multi-agent framework for Google Antigravity. Orchestrates specialized domain agents (PM, Frontend, Backend, Mobile, QA, Debug) via Serena Memory.",
+      "category": "core-orchestration",
+      "path": "ohmg/SKILL.md",
+      "tags": [
+        "ohmg",
+        "multi-agent",
+        "orchestration",
+        "gemini",
+        "antigravity",
+        "serena-memory",
+        "workflow"
+      ],
+      "platforms": [
+        "Gemini",
+        "Claude",
+        "Codex",
+        "Antigravity"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": []
+    },
+    {
+      "name": "omc",
+      "description": "oh-my-claudecode — Teams-first multi-agent orchestration layer for Claude Code. 32 specialized agents, smart model routing, persistent execution loops, and real-time HUD visibility. Zero learning curve.",
+      "category": "core-orchestration",
+      "tags": [
+        "omc",
+        "oh-my-claudecode",
+        "claude-code",
+        "multi-agent",
+        "orchestration",
+        "team",
+        "autopilot",
+        "ralph",
+        "ultrawork"
+      ],
+      "platforms": [
+        "Claude Code"
+      ],
+      "keyword": "omc",
+      "path": "omc/SKILL.md",
+      "install_commands": [
+        {
+          "command": "/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode",
+          "source": "utilities/omc/SKILL.md"
+        },
+        {
+          "command": "/plugin install oh-my-claudecode",
+          "source": "utilities/omc/SKILL.md"
+        },
+        {
+          "command": "/omc:omc-setup",
+          "source": "utilities/omc/SKILL.md"
+        }
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "Edit"
+      ],
+      "commands": []
+    },
+    {
+      "name": "omx",
+      "description": "Multi-agent orchestration layer for OpenAI Codex CLI. Provides 30 specialized agents, 40+ workflow skills, team orchestration in tmux, persistent MCP servers, and staged pipeline execution.",
+      "category": "core-orchestration",
+      "path": "omx/SKILL.md",
+      "tags": [
+        "omx",
+        "multi-agent",
+        "orchestration",
+        "codex",
+        "openai",
+        "team-mode",
+        "mcp-servers",
+        "workflow"
+      ],
+      "platforms": [
+        "Codex",
+        "Claude",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": []
+    },
+    {
+      "name": "opencontext",
+      "description": "Persistent memory and context management for AI agents using OpenContext. Keep context across sessions/repos/dates, store conclusions, and provide document search workflows.",
+      "category": "utilities",
+      "path": "opencontext/SKILL.md",
+      "tags": [
+        "opencontext",
+        "context-management",
+        "memory",
+        "knowledge-base",
+        "multi-agent"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "ChatGPT",
+        "Codex",
+        "Cursor"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": [
+        {
+          "command": "npm install -g @aicontextlab/cli",
+          "source": "utilities/opencontext/SKILL.md"
+        },
+        {
+          "command": "npx @aicontextlab/cli <command>",
+          "source": "utilities/opencontext/SKILL.md"
+        },
+        {
+          "command": "cd your-project",
+          "source": "utilities/opencontext/SKILL.md"
+        },
+        {
+          "command": "oc init",
+          "source": "utilities/opencontext/SKILL.md"
+        },
+        {
+          "command": "oc folder ls --all",
+          "source": "utilities/opencontext/SKILL.md"
+        },
+        {
+          "command": "oc folder create project-a -d \"My project\"",
+          "source": "utilities/opencontext/SKILL.md"
+        },
+        {
+          "command": "oc doc create project-a design.md -d \"Design doc\"",
+          "source": "utilities/opencontext/SKILL.md"
+        },
+        {
+          "command": "oc doc ls project-a",
+          "source": "utilities/opencontext/SKILL.md"
+        },
+        {
+          "command": "oc search \"your query\" --mode keyword --format json",
+          "source": "utilities/opencontext/SKILL.md"
+        },
+        {
+          "command": "oc context manifest project-a --limit 10",
+          "source": "utilities/opencontext/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "pattern-detection",
+      "description": "Detect patterns, anomalies, and trends in code and data. Use when identifying code smells, finding security vulnerabilities, or discovering recurring patterns. Handles regex patterns, AST analysis, and statistical anomaly detection.",
+      "category": "search-analysis",
+      "path": "pattern-detection/SKILL.md",
+      "tags": [
+        "patterns",
+        "anomalies",
+        "regex",
+        "code-analysis",
+        "security",
+        "trends"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "commands": [
+        {
+          "command": "grep -n \"function\\|def\\|func \" **/*.{js,ts,py,go} | \\",
+          "source": "search-analysis/pattern-detection/SKILL.md"
+        },
+        {
+          "command": "while read line; do",
+          "source": "search-analysis/pattern-detection/SKILL.md"
+        },
+        {
+          "command": "file=$(echo $line | cut -d: -f1)",
+          "source": "search-analysis/pattern-detection/SKILL.md"
+        },
+        {
+          "command": "linenum=$(echo $line | cut -d: -f2)",
+          "source": "search-analysis/pattern-detection/SKILL.md"
+        },
+        {
+          "command": "done",
+          "source": "search-analysis/pattern-detection/SKILL.md"
+        },
+        {
+          "command": "grep -rn \"if.*==.*null\" --include=\"*.ts\" .",
+          "source": "search-analysis/pattern-detection/SKILL.md"
+        },
+        {
+          "command": "grep -rn \"try\\s*{\" --include=\"*.java\" . | wc -l",
+          "source": "search-analysis/pattern-detection/SKILL.md"
+        },
+        {
+          "command": "grep -rn \"[^a-zA-Z][0-9]{2,}[^a-zA-Z]\" --include=\"*.{js,ts}\" .",
+          "source": "search-analysis/pattern-detection/SKILL.md"
+        },
+        {
+          "command": "grep -rn \"query.*+.*\\$\\|execute.*%s\\|query.*f\\\"\" --include=\"*.py\" .",
+          "source": "search-analysis/pattern-detection/SKILL.md"
+        },
+        {
+          "command": "grep -rn \"SELECT.*\\+.*\\|\\|\" --include=\"*.{js,ts}\" .",
+          "source": "search-analysis/pattern-detection/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "performance-optimization",
+      "description": "Run measurement-led performance tuning across frontend, backend, database, cache, and runtime bottlenecks. Use when the main job is locating the tightest latency, throughput, memory, bundle-size, or frame-time constraint; choosing the right profiling evidence; staging one or two high-leverage optimizations; and verifying before/after impact. Route telemetry setup to monitoring-observability, failure diagnosis to debugging, behavior-preserving cleanup to code-refactoring, validation policy to testing-strategies, and Unity/Unreal capture interpretation to game-performance-profiler.",
+      "category": "code-quality",
+      "path": "performance-optimization/SKILL.md",
+      "tags": [
+        "performance",
+        "profiling",
+        "bottleneck-analysis",
+        "latency",
+        "throughput",
+        "memory",
+        "bundle-size",
+        "query-plans"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write"
+      ],
+      "commands": [
+        {
+          "command": "# classify: interaction-and-rendering | page-load-and-bundle | api-latency-and-hot-paths | database-plan-and-data-access | throughput-and-capacity | memory-and-allocation | runtime-frame-budget",
+          "source": "code-quality/performance-optimization/SKILL.md"
+        },
+        {
+          "command": "# choose the primary evidence source before proposing fixes: trace | flame graph | query plan | load test | heap/profile | frame capture",
+          "source": "code-quality/performance-optimization/SKILL.md"
+        },
+        {
+          "command": "# name one primary bottleneck and recommend at most two high-leverage changes",
+          "source": "code-quality/performance-optimization/SKILL.md"
+        },
+        {
+          "command": "# include before/after verification and route-outs to monitoring-observability, debugging, testing-strategies, code-refactoring, or game-performance-profiler as needed",
+          "source": "code-quality/performance-optimization/SKILL.md"
+        }
+      ],
+      "compatibility": "Best for repositories, traces, benchmarks, query plans, flame graphs, browser profiles, load-test outputs, and runtime notes where the main decision is what to measure, what to tune first, and how to prove improvement. Not for observability platform setup, generic refactoring, or correctness-bug debugging.",
+      "version": "2.0",
+      "source": "akillness/oh-my-skills"
+    },
+    {
       "name": "plannotator",
       "description": "Visual approval gate for AI agent plans and diffs. Review in a browser UI, annotate specific issues, approve or request changes, and optionally save reviewed plans to Obsidian/Bear.",
       "category": "planning-review",
-      "path": "planning-review/plannotator/SKILL.md",
+      "path": "plannotator/SKILL.md",
       "tags": [
         "plan",
         "planning",
@@ -270,7 +2178,7 @@
       "name": "playwriter",
       "description": "Playwright-based browser automation via Chrome extension + MCP/CLI. Connects to your RUNNING browser (existing logins, cookies, extensions preserved). Use for authenticated flows, stateful web automation, and AI agent browser control without re-logging in.",
       "category": "planning-review",
-      "path": "planning-review/playwriter/SKILL.md",
+      "path": "playwriter/SKILL.md",
       "tags": [
         "playwright",
         "browser-automation",
@@ -296,44 +2204,33 @@
       "commands": []
     },
     {
-      "name": "vibe-kanban",
-      "description": "Manage AI coding agents on a visual Kanban board. Run parallel agents through a To Do→In Progress→Review→Done flow with automatic git worktree isolation and GitHub PR creation.",
-      "category": "planning-review",
-      "path": "planning-review/vibe-kanban/SKILL.md",
+      "name": "presentation-builder",
+      "description": "Build editable presentations with slides-grab. Use when creating slide decks as HTML slides, iterating visually in a browser, and exporting approved decks to PPTX or PDF.",
+      "category": "documentation",
+      "path": "presentation-builder/SKILL.md",
       "tags": [
-        "vibe-kanban",
-        "kanban",
-        "kanbanview",
-        "multi-agent",
-        "git-worktree",
-        "github-pr",
-        "task-management",
-        "claude-code",
-        "codex",
-        "gemini",
-        "open-code",
-        "mcp"
+        "presentation",
+        "slides-grab",
+        "pptx",
+        "pdf",
+        "html-slides",
+        "slide-editor",
+        "storytelling"
       ],
       "platforms": [
         "Claude",
-        "Codex",
+        "ChatGPT",
         "Gemini",
-        "OpenCode"
+        "Codex"
       ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
+      "allowed_tools": [],
       "commands": []
     },
     {
       "name": "prompt-repetition",
       "description": "A prompt repetition technique for improving LLM accuracy. Achieves significant performance gains in 67% (47/70) of 70 benchmarks. Automatically applied on lightweight models (haiku, flash, mini).",
       "category": "agent-development",
-      "path": "agent-development/prompt-repetition/SKILL.md",
+      "path": "prompt-repetition/SKILL.md",
       "tags": [
         "prompt-engineering",
         "accuracy",
@@ -351,138 +2248,91 @@
       "commands": []
     },
     {
-      "name": "skill-standardization",
-      "description": "Standardize and validate SKILL.md files against the Agent Skills specification (agentskills.io). Use when creating new skills, auditing existing skills for spec compliance, converting legacy skill formats to standard structure, or improving descriptions for reliable triggering. Triggers on: \"validate skill\", \"create SKILL.md\", \"standardize skill format\", \"check skill spec\", \"skill frontmatter\", \"improve skill description\", \"add evals to skill\".",
-      "category": "agent-development",
-      "path": "agent-development/skill-standardization/SKILL.md",
+      "name": "ralph",
+      "description": "Specification-first AI development powered by Ouroboros. Socratic questioning exposes hidden assumptions before writing code. Evolutionary loop (Interview → Seed → Execute → Evaluate → Evolve) runs until ontology converges. Ralph mode persists until verification passes — the boulder never stops. Use when user says \\\"ralph\\\", \\\"ooo\\\", \\\"don't stop\\\", \\\"must complete\\\", \\\"until it works\\\", \\\"keep going\\\", \\\"interview me\\\", or \\\"stop prompting\\\".",
+      "category": "core-orchestration",
+      "path": "ralph/SKILL.md",
       "tags": [
-        "skill-management",
-        "standardization",
-        "validation",
-        "agentskills-spec",
-        "automation"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "commands": [
-        {
-          "command": "cd /path/to/.agent-skills",
-          "source": "utilities/skill-standardization/SKILL.md"
-        },
-        {
-          "command": "python3 scripts/convert_skills.py",
-          "source": "utilities/skill-standardization/SKILL.md"
-        },
-        {
-          "command": "python3 scripts/remove_duplicates.py",
-          "source": "utilities/skill-standardization/SKILL.md"
-        },
-        {
-          "command": "python3 scripts/final_cleanup.py",
-          "source": "utilities/skill-standardization/SKILL.md"
-        },
-        {
-          "command": "grep -E \"^## (When to use|Instructions|Examples|Best practices|References)\" SKILL.md",
-          "source": "utilities/skill-standardization/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "deployment-automation",
-      "description": "Plan and execute hosted deployment and rollout automation for web, backend, and fullstack systems: preview/staging/prod promotion, release verification, rollback planning, provider handoff, and deployment runbooks. Use when the main job is shipping a built artifact or service safely to an environment, choosing a rollout strategy, or tightening deploy/release steps around health checks and promotion rules. Route CI workflow authoring to `workflow-automation`, machine/runtime setup to `system-environment-setup`, ongoing dashboards/alerts to `monitoring-observability`, and Vercel-specific operations to `vercel-deploy`.",
-      "category": "infrastructure",
-      "path": "infrastructure/deployment-automation/SKILL.md",
-      "tags": [
-        "deployment",
-        "release-rollout",
-        "preview-environments",
-        "rollback",
-        "progressive-delivery",
-        "post-deploy-verification",
-        "devops"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "commands": [
-        {
-          "command": "# classify: preview-release | environment-promotion | container-paas | kubernetes-rollout | rollback-response | release-hardening",
-          "source": "infrastructure/deployment-automation/SKILL.md"
-        },
-        {
-          "command": "# identify artifact + target environment + promotion model before prescribing steps",
-          "source": "infrastructure/deployment-automation/SKILL.md"
-        },
-        {
-          "command": "# include post-deploy verification and rollback in every deployment packet",
-          "source": "infrastructure/deployment-automation/SKILL.md"
-        },
-        {
-          "command": "# route CI workflow authoring to workflow-automation and machine setup to system-environment-setup",
-          "source": "infrastructure/deployment-automation/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "environment-setup",
-      "description": "Organize application environment configuration: `.env` files, env precedence, typed env validation, secret handoff, framework-specific env rules, and config drift between local, staging, CI, and production. Use when the user needs help structuring environment variables, validating required config, separating public/private env values, or cleaning up env-file sprawl. This is the narrower app-config compatibility skill. Route broader runnable-machine, Docker, devcontainer, onboarding, and local-service setup work to `system-environment-setup`.",
-      "category": "infrastructure",
-      "path": "infrastructure/environment-setup/SKILL.md",
-      "tags": [
-        "environment",
-        "env-files",
-        "dotenv",
-        "env-validation",
-        "config-management",
-        "secrets-handoff"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "commands": [],
-      "compatibility": "Best when the main problem is application configuration rather than whole-machine reproducibility: env files, config layering, schema validation, and secrets handoff boundaries.",
-      "version": "1.1",
-      "source": "akillness/oh-my-skills"
-    },
-    {
-      "name": "firebase-ai-logic",
-      "description": "Integrate Firebase AI Logic (Gemini in Firebase) for intelligent app features. Use when adding AI capabilities to Firebase apps, implementing generative AI features, or setting up Firebase AI SDK. Handles Firebase AI SDK setup, prompt engineering, and AI-powered features.",
-      "category": "infrastructure",
-      "path": "infrastructure/firebase-ai-logic/SKILL.md",
-      "tags": [
-        "firebase",
-        "ai",
+        "ralph",
+        "ouroboros",
+        "specification-first",
+        "socratic",
+        "interview",
+        "seed",
+        "evaluate",
+        "evolve",
+        "loop",
+        "completion",
+        "self-referential",
+        "multi-platform",
+        "claude",
+        "codex",
         "gemini",
-        "generative-ai",
-        "sdk"
+        "boulder",
+        "ooo"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini-CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "commands": []
+    },
+    {
+      "name": "ralphmode",
+      "description": "Configure Claude Code, Codex CLI, and Gemini CLI for Ralph-style automation with fewer approval prompts while keeping project boundaries, secret denylists, and sandbox-first safety rules intact.",
+      "category": "core-orchestration",
+      "path": "ralphmode/SKILL.md",
+      "tags": [
+        "ralph",
+        "permissions",
+        "automation",
+        "claude-code",
+        "codex-cli",
+        "gemini-cli",
+        "sandbox",
+        "trusted-folders",
+        "bypass"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "ralphmode",
+      "version": "0.1.0",
+      "commands": []
+    },
+    {
+      "name": "react-best-practices",
+      "description": "Audit and improve React and Next.js performance using Vercel-style guidance for waterfalls, bundle size, RSC boundaries, caching, hydration, and rerender behavior. Use when the user needs help with slow React UIs, Next.js data fetching, bundle bloat, hydration mismatch, server/client component boundaries, or frontend performance refactors. Triggers on: React perf, Next.js perf, waterfall, bundle size, RSC, hydration, rerender, slow page.",
+      "category": "frontend",
+      "path": "react-best-practices/SKILL.md",
+      "tags": [
+        "React",
+        "Next.js",
+        "performance",
+        "optimization",
+        "vercel",
+        "waterfalls",
+        "bundle-size",
+        "RSC"
       ],
       "platforms": [
         "Claude",
@@ -490,45 +2340,24 @@
         "Gemini"
       ],
       "allowed_tools": [],
-      "commands": [
-        {
-          "command": "npm install -g firebase-tools",
-          "source": "infrastructure/firebase-ai-logic/SKILL.md"
-        },
-        {
-          "command": "firebase login",
-          "source": "infrastructure/firebase-ai-logic/SKILL.md"
-        },
-        {
-          "command": "firebase init",
-          "source": "infrastructure/firebase-ai-logic/SKILL.md"
-        },
-        {
-          "command": "npm install firebase @anthropic-ai/sdk",
-          "source": "infrastructure/firebase-ai-logic/SKILL.md"
-        }
-      ]
+      "commands": []
     },
     {
-      "name": "firebase-cli",
-      "description": "Install, configure, and operate the Firebase CLI (firebase-tools) for all Firebase services. Use when you need to deploy to Firebase Hosting, Cloud Functions, Firestore, Realtime Database, Cloud Storage, Extensions, App Hosting, or run the Firebase Emulator Suite. Triggers on: firebase deploy, firebase init, firebase emulators, firebase hosting, firebase functions, firebase firestore, firebase database, firebase auth import, firebase remote config, firebase app distribution, firebase extensions, firebase apphosting, firebase cli, firebase-tools, deploy firebase, firebase preview channel, firebase login, firebase serve.",
-      "category": "infrastructure",
-      "path": "infrastructure/firebase-cli/SKILL.md",
+      "name": "react-grab",
+      "description": "Install and configure react-grab to capture React component context (file path, component name, HTML markup) from any browser UI element for AI coding agents. Use when you want to point at a UI element in the browser and instantly copy its React component name, source file path, and HTML to clipboard for Claude Code, Cursor, Copilot, Gemini, or Codex. Triggers on: react-grab, grab, grab element context, copy component to ai, point and copy to claude, ui context clipboard, element to ai agent, click component copy, grab ui component, react component inspector, browser element context, component source file, copy element context, feed element to ai, element picker, grab react component, inspect element ai, component to clipboard, react devtools ai.",
+      "category": "frontend",
+      "path": "react-grab/SKILL.md",
       "tags": [
-        "firebase",
-        "firebase-cli",
-        "firebase-tools",
-        "deploy",
-        "hosting",
-        "functions",
-        "firestore",
-        "database",
-        "emulators",
-        "auth",
-        "remote-config",
-        "app-distribution",
-        "extensions",
-        "apphosting"
+        "react-grab",
+        "grab",
+        "element-context",
+        "ai-agent",
+        "clipboard",
+        "component-inspector",
+        "dev-tools",
+        "react",
+        "browser",
+        "mcp"
       ],
       "platforms": [],
       "allowed_tools": [
@@ -543,21 +2372,16 @@
       "commands": []
     },
     {
-      "name": "genkit",
-      "description": "Build production-ready AI workflows using Firebase Genkit. Use when creating flows, tool-calling agents, RAG pipelines, multi-agent systems, or deploying AI to Firebase/Cloud Run. Supports TypeScript, Go, and Python with Gemini, OpenAI, Anthropic, Ollama, and Vertex AI plugins.",
-      "category": "infrastructure",
-      "path": "infrastructure/genkit/SKILL.md",
+      "name": "remotion-video-production",
+      "description": "Compatibility alias for `video-production` when a prompt, setup surface, or legacy workflow explicitly asks for Remotion video production.",
+      "category": "creative-media",
+      "path": "remotion-video-production/SKILL.md",
       "tags": [
-        "genkit",
-        "firebase",
-        "ai",
-        "llm",
-        "flows",
-        "agents",
-        "rag",
-        "gemini",
-        "typescript",
-        "google-cloud"
+        "video",
+        "remotion",
+        "alias",
+        "compatibility",
+        "automation"
       ],
       "platforms": [
         "Claude",
@@ -565,76 +2389,127 @@
         "Gemini",
         "Codex"
       ],
-      "allowed_tools": [],
+      "allowed_tools": [
+        "Write",
+        "Read",
+        "WebSearch",
+        "WebFetch",
+        "Task"
+      ],
       "commands": []
     },
     {
-      "name": "looker-studio-bigquery",
-      "description": "Design and configure Looker Studio dashboards with BigQuery data sources. Use when creating analytics dashboards, connecting BigQuery to visualization tools, or optimizing data pipeline performance. Handles BigQuery connections, custom SQL queries, scheduled queries, dashboard design, and performance optimization.",
-      "category": "infrastructure",
-      "path": "infrastructure/looker-studio-bigquery/SKILL.md",
+      "name": "research-paper-writing",
+      "description": "Write and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow. Use when drafting an abstract, introduction, related work, method, experiments, ablations, discussion, or rebuttal; structuring figures and tables; tightening reviewer-facing logic; or preparing a paper for submission. Triggers on: research paper, paper writing, academic writing, ML paper, CVPR paper, NeurIPS paper, ICLR paper, experiments section, rebuttal, abstract rewrite, contribution framing, reviewer response.",
+      "category": "documentation",
+      "path": "research-paper-writing/SKILL.md",
       "tags": [
-        "Looker-Studio",
-        "BigQuery",
-        "dashboard",
-        "analytics",
-        "visualization",
-        "GCP",
-        "data-studio",
-        "SQL"
+        "research-paper-writing",
+        "academic-writing",
+        "ml",
+        "cv",
+        "nlp",
+        "experiments",
+        "rebuttal"
       ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
       ],
-      "allowed_tools": [],
-      "commands": [
-        {
-          "command": "gcloud projects create my-analytics-project",
-          "source": "infrastructure/looker-studio-bigquery/SKILL.md"
-        },
-        {
-          "command": "gcloud config set project my-analytics-project",
-          "source": "infrastructure/looker-studio-bigquery/SKILL.md"
-        },
-        {
-          "command": "gcloud services enable bigquery.googleapis.com",
-          "source": "infrastructure/looker-studio-bigquery/SKILL.md"
-        }
-      ]
+      "commands": []
     },
     {
-      "name": "monitoring-observability",
-      "description": "Set up monitoring, logging, and observability for applications and infrastructure. Use when implementing health checks, metrics collection, log aggregation, or alerting systems. Handles Prometheus, Grafana, ELK Stack, Datadog, and monitoring best practices.",
-      "category": "infrastructure",
-      "path": "infrastructure/monitoring-observability/SKILL.md",
+      "name": "responsive-design",
+      "description": "Plan mobile-first, container-aware responsive layouts before patching breakpoints everywhere. Use when the user needs help fixing overflow, wrapping, layout collapse, responsive media, breakpoint strategy, container queries, or deciding what should adapt at the viewport level versus inside a component/container.",
+      "category": "frontend",
+      "path": "responsive-design/SKILL.md",
       "tags": [
-        "monitoring",
-        "observability",
-        "logging",
-        "metrics",
-        "Prometheus",
-        "Grafana",
-        "alerts"
+        "responsive",
+        "mobile-first",
+        "layout",
+        "container-queries",
+        "breakpoints",
+        "frontend",
+        "css",
+        "reflow"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": []
+    },
+    {
+      "name": "rtk",
+      "description": "Install, initialize, verify, and troubleshoot RTK (Rust Token Killer) for AI coding agents. Use when you need to reduce shell-command token output, confirm that the correct `rtk` binary is installed, choose between Homebrew, install.sh, or Cargo installation, wire `rtk init` for Claude Code, Codex, Gemini CLI, Cursor, Copilot, Windsurf, Cline, or OpenCode, or use compact wrappers such as `rtk git status`, `rtk read`, `rtk grep`, `rtk test`, `rtk lint`, and `rtk gain`. Triggers on: rtk, rust token killer, token saver cli, rtk init, rtk gain, codex rtk, gemini rtk, opencode rtk, claude hook token reduction.",
+      "category": "infrastructure",
+      "path": "rtk/SKILL.md",
+      "tags": [
+        "rtk",
+        "rust-token-killer",
+        "token-optimization",
+        "claude-code",
+        "codex",
+        "gemini",
+        "opencode",
+        "cursor",
+        "copilot",
+        "shell-hooks"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini CLI",
+        "Cursor",
+        "GitHub Copilot",
+        "Windsurf",
+        "Cline / Roo Code",
+        "OpenCode"
       ],
       "allowed_tools": [
         "Bash",
         "Read",
-        "Write"
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
       ],
-      "commands": []
+      "commands": [
+        {
+          "command": "bash scripts/check-status.sh --show",
+          "source": "infrastructure/rtk/scripts/check-status.sh"
+        },
+        {
+          "command": "bash scripts/install.sh --method script --repo akillness/rtk",
+          "source": "infrastructure/rtk/scripts/install.sh"
+        },
+        {
+          "command": "bash scripts/init-agent.sh --agent claude --global --auto-patch",
+          "source": "infrastructure/rtk/scripts/init-agent.sh"
+        }
+      ]
     },
     {
       "name": "scrapling",
       "description": "Install, configure, and operate Scrapling for adaptive web scraping with parser-first HTML extraction, fast HTTP fetchers, browser rendering, stealth anti-bot options, CLI extraction, and optional MCP or spider workflows. Use when you need to scrape or crawl websites, choose between static, JavaScript-rendered, or protected targets, parse HTML with CSS or XPath, write Python scrapers, or run Scrapling from the terminal. Triggers on: scrapling, scrape website, crawl site, adaptive scraping, stealthy fetch, cloudflare scraping, mcp scraping server, browser scraping cli, scrapling spider.",
       "category": "infrastructure",
-      "path": "infrastructure/scrapling/SKILL.md",
+      "path": "scrapling/SKILL.md",
       "tags": [
         "scrapling",
         "web-scraping",
@@ -685,7 +2560,7 @@
       "name": "security-best-practices",
       "description": "Implement security best practices for web applications and infrastructure. Use when securing APIs, preventing common vulnerabilities, or implementing security policies. Handles HTTPS, CORS, XSS, SQL Injection, CSRF, rate limiting, and OWASP Top 10.",
       "category": "infrastructure",
-      "path": "infrastructure/security-best-practices/SKILL.md",
+      "path": "security-best-practices/SKILL.md",
       "tags": [
         "security",
         "HTTPS",
@@ -730,31 +2605,24 @@
       ]
     },
     {
-      "name": "rtk",
-      "description": "Install, initialize, verify, and troubleshoot RTK (Rust Token Killer) for AI coding agents. Use when you need to reduce shell-command token output, confirm that the correct `rtk` binary is installed, choose between Homebrew, install.sh, or Cargo installation, wire `rtk init` for Claude Code, Codex, Gemini CLI, Cursor, Copilot, Windsurf, Cline, or OpenCode, or use compact wrappers such as `rtk git status`, `rtk read`, `rtk grep`, `rtk test`, `rtk lint`, and `rtk gain`. Triggers on: rtk, rust token killer, token saver cli, rtk init, rtk gain, codex rtk, gemini rtk, opencode rtk, claude hook token reduction.",
-      "category": "infrastructure",
-      "path": "infrastructure/rtk/SKILL.md",
+      "name": "skill-autoresearch",
+      "description": "Autonomously optimize an existing AI skill by running it repeatedly against binary evals, mutating one instruction at a time, and keeping only changes that improve pass rate. Based on Karpathy-style autoresearch, but applied to SKILL.md iteration instead of ML training. Use when optimizing a skill, benchmarking prompt quality, building evals for a skill, or running self-improvement loops on reusable agent instructions. Triggers on: skill-autoresearch, optimize this skill, improve this skill, benchmark this skill, eval my skill, run autoresearch on this skill, self-improve skill.",
+      "category": "search-analysis",
+      "path": "skill-autoresearch/SKILL.md",
       "tags": [
-        "rtk",
-        "rust-token-killer",
-        "token-optimization",
-        "claude-code",
-        "codex",
-        "gemini",
-        "opencode",
-        "cursor",
-        "copilot",
-        "shell-hooks"
+        "skill-autoresearch",
+        "skill-optimization",
+        "evals",
+        "prompt-iteration",
+        "benchmarking",
+        "mutation-loop",
+        "karpathy"
       ],
       "platforms": [
-        "Claude Code",
-        "Codex",
-        "Gemini CLI",
-        "Cursor",
-        "GitHub Copilot",
-        "Windsurf",
-        "Cline / Roo Code",
-        "OpenCode"
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
         "Bash",
@@ -765,26 +2633,166 @@
         "Grep",
         "WebFetch"
       ],
+      "commands": []
+    },
+    {
+      "name": "skill-standardization",
+      "description": "Standardize and validate SKILL.md files against the Agent Skills specification (agentskills.io). Use when creating new skills, auditing existing skills for spec compliance, converting legacy skill formats to standard structure, or improving descriptions for reliable triggering. Triggers on: \"validate skill\", \"create SKILL.md\", \"standardize skill format\", \"check skill spec\", \"skill frontmatter\", \"improve skill description\", \"add evals to skill\".",
+      "category": "agent-development",
+      "path": "skill-standardization/SKILL.md",
+      "tags": [
+        "skill-management",
+        "standardization",
+        "validation",
+        "agentskills-spec",
+        "automation"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
       "commands": [
         {
-          "command": "bash scripts/check-status.sh --show",
-          "source": "infrastructure/rtk/scripts/check-status.sh"
+          "command": "cd /path/to/.agent-skills",
+          "source": "utilities/skill-standardization/SKILL.md"
         },
         {
-          "command": "bash scripts/install.sh --method script --repo akillness/rtk",
-          "source": "infrastructure/rtk/scripts/install.sh"
+          "command": "python3 scripts/convert_skills.py",
+          "source": "utilities/skill-standardization/SKILL.md"
         },
         {
-          "command": "bash scripts/init-agent.sh --agent claude --global --auto-patch",
-          "source": "infrastructure/rtk/scripts/init-agent.sh"
+          "command": "python3 scripts/remove_duplicates.py",
+          "source": "utilities/skill-standardization/SKILL.md"
+        },
+        {
+          "command": "python3 scripts/final_cleanup.py",
+          "source": "utilities/skill-standardization/SKILL.md"
+        },
+        {
+          "command": "grep -E \"^## (When to use|Instructions|Examples|Best practices|References)\" SKILL.md",
+          "source": "utilities/skill-standardization/SKILL.md"
         }
       ]
+    },
+    {
+      "name": "sprint-retrospective",
+      "description": "Facilitate sprint retrospectives, milestone postmortems, or iteration reviews that turn completed work into a few owned process improvements instead of another stale template exercise. Use when the user needs a retro format, async or hybrid retro flow, retrospective facilitation script, action-item follow-through, or help reviewing what the team should change after a sprint, release, milestone, or rough delivery cycle.",
+      "category": "project-management",
+      "path": "sprint-retrospective/SKILL.md",
+      "tags": [
+        "retrospective",
+        "sprint-retro",
+        "postmortem",
+        "async-retro",
+        "hybrid-retro",
+        "agile",
+        "project-management",
+        "game-development"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
+    },
+    {
+      "name": "standup-meeting",
+      "description": "Facilitate useful daily standups, daily scrums, async check-ins, or walk-the-board delivery syncs without turning them into manager-facing status theater. Use when the user needs a short daily coordination ritual, blocker triage, async standup format, remote-team check-in, or help converting a verbose standup into a board-first or blocker-first flow.",
+      "category": "project-management",
+      "path": "standup-meeting/SKILL.md",
+      "tags": [
+        "standup",
+        "daily-scrum",
+        "agile",
+        "team-sync",
+        "blockers"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "state-management",
+      "description": "Design React state boundaries before picking libraries. Use when deciding whether data should stay local, be shared via Context, move into Zustand / Redux Toolkit / Jotai, live in URL or form state, or stay in a server-state cache such as TanStack Query.",
+      "category": "frontend",
+      "path": "state-management/SKILL.md",
+      "tags": [
+        "state-management",
+        "react",
+        "context",
+        "redux-toolkit",
+        "zustand",
+        "jotai",
+        "tanstack-query",
+        "client-state",
+        "server-state"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": []
+    },
+    {
+      "name": "steam-store-launch-ops",
+      "description": "Audit and structure Steam store-page optimization, wishlist funnel review, demo / Next Fest readiness, creator-outreach prep, and launch-adjacent operating checklists for indie games. Use when a developer, publisher helper, or small studio needs to review a Steam page, coming-soon page, capsule art, trailer, tags, demo timing, launch checklist, or fest readiness, even if they only say \"help my Steam page\", \"wishlists are weak\", \"are we ready for Next Fest\", \"review our capsule/trailer/tags\", or \"give me a launch readiness checklist\".",
+      "path": "steam-store-launch-ops/SKILL.md",
+      "tags": [
+        "steam",
+        "indie-games",
+        "game-marketing",
+        "launch-ops",
+        "next-fest",
+        "wishlists",
+        "store-page",
+        "demos"
+      ],
+      "keywords": [
+        "steam-store-launch-ops",
+        "steam store launch ops"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
     },
     {
       "name": "strix",
       "description": "Install, configure, and operate Strix for AI-driven application security testing. Use when you need to run authorized vulnerability scans against local codebases, GitHub repositories, staging URLs, domains, or CI pipelines; configure Docker and LLM providers; choose quick, standard, or deep scan depth; or pass authenticated testing instructions to Strix. Triggers on: strix, ai pentest, vulnerability scan cli, appsec scan, bug bounty automation, strix ci, strix docker, strix scan mode, strix instruction file, headless security scan.",
       "category": "infrastructure",
-      "path": "infrastructure/strix/SKILL.md",
+      "path": "strix/SKILL.md",
       "tags": [
         "strix",
         "appsec",
@@ -837,881 +2845,10 @@
       ]
     },
     {
-      "name": "system-environment-setup",
-      "description": "Build reproducible developer environments for real projects: local toolchains, runtime versions, Docker Compose or dev containers, onboarding flows, local service parity, bootstrap scripts, and environment troubleshooting. Use when the user needs a repo to run consistently across machines, containers, or staged environments, even if they only say setup dev environment, onboarding, Docker, devcontainer, local parity, bootstrap, or make this runnable. This is the canonical broader environment-setup skill. Route narrower `.env` and app-config questions to `environment-setup`.",
-      "category": "infrastructure",
-      "path": "infrastructure/system-environment-setup/SKILL.md",
-      "tags": [
-        "environment-setup",
-        "reproducibility",
-        "devcontainers",
-        "docker-compose",
-        "onboarding",
-        "toolchains",
-        "local-parity"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "commands": [],
-      "compatibility": "Best when the task spans toolchains, local services, containers, onboarding, or cross-machine reproducibility. Use alongside `environment-setup` for application env files, env validation, and secret handoff details.",
-      "version": "1.1",
-      "source": "akillness/oh-my-skills"
-    },
-    {
-      "name": "vercel-deploy",
-      "description": "Deploy applications and websites to Vercel instantly. Use when asked to \\\"Deploy my app\\\", \\\"Deploy this to production\\\", \\\"Create a preview deployment\\\", or \\\"Push this live\\\". No authentication required - returns preview URL and claimable deployment link.",
-      "category": "infrastructure",
-      "path": "infrastructure/vercel-deploy/SKILL.md",
-      "tags": [
-        "deployment",
-        "vercel",
-        "preview",
-        "production",
-        "hosting",
-        "serverless"
-      ],
-      "platforms": [
-        "Claude"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "api-design",
-      "description": "Design or refactor API contracts for REST and GraphQL systems. Use when the user needs resource modeling, endpoint/schema shape, naming, versioning, pagination, filtering, auth/error semantics, backward-compatibility review, or an OpenAPI / GraphQL SDL contract before implementation. Not for publishing docs portals, writing tutorials, or general backend implementation.",
-      "category": "backend",
-      "path": "backend/api-design/SKILL.md",
-      "tags": [
-        "api-design",
-        "REST",
-        "GraphQL",
-        "OpenAPI",
-        "versioning",
-        "backend"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Edit"
-      ],
-      "commands": []
-    },
-    {
-      "name": "api-documentation",
-      "description": "Write developer-facing API documentation for REST, GraphQL, webhook, and SDK surfaces: reference docs, quickstarts, portal pages, truthful examples, and auth/error guidance. Routes contract design to api-design and internal docs to technical-writing.",
-      "category": "backend",
-      "path": "backend/api-documentation/SKILL.md",
-      "tags": [
-        "API-documentation",
-        "OpenAPI",
-        "Swagger",
-        "REST",
-        "GraphQL",
-        "developer-docs"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "authentication-setup",
-      "description": "Design or refactor product authentication setup for web apps and APIs. Use when the user needs to choose or wire hosted auth, framework-native auth, platform-native auth, sessions vs JWTs, OAuth/social login, passkeys, org/member models, enterprise SSO/SCIM handoff, or callback/cookie environment setup before or alongside implementation. Not for deep authorization policy, general security hardening, API contract design, or backend test planning.",
-      "category": "backend",
-      "path": "backend/authentication-setup/SKILL.md",
-      "tags": [
-        "authentication-setup",
-        "auth",
-        "sessions",
-        "jwt",
-        "oauth",
-        "passkeys",
-        "sso",
-        "scim",
-        "product-auth",
-        "backend"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "commands": []
-    },
-    {
-      "name": "backend-testing",
-      "description": "Design and implement backend test coverage for APIs, services, auth flows, data access, and integration boundaries. Use when the user needs unit/service/API/contract coverage, fixture strategy, dependency realism, flaky test triage, or local-vs-CI test layering for backend changes.",
-      "category": "backend",
-      "path": "backend/backend-testing/SKILL.md",
-      "tags": [
-        "testing",
-        "backend",
-        "api-test",
-        "integration-test",
-        "contract-test",
-        "testcontainers",
-        "ci"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "commands": []
-    },
-    {
-      "name": "database-schema-design",
-      "description": "Design and optimize database schemas for SQL and NoSQL databases. Use when creating new databases, designing tables, defining relationships, indexing strategies, or database migrations. Handles PostgreSQL, MySQL, MongoDB, normalization, and performance optimization.",
-      "category": "backend",
-      "path": "backend/database-schema-design/SKILL.md",
-      "tags": [
-        "database",
-        "schema",
-        "SQL",
-        "NoSQL",
-        "PostgreSQL",
-        "MySQL",
-        "MongoDB",
-        "migration"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "autoresearch",
-      "description": "Autonomous ML experimentation framework by Andrej Karpathy. AI agent autonomously modifies train.py, runs 5-minute GPU experiments, evaluates with val_bpb, and commits only improvements via git ratcheting — so you wake up to 100+ experiments and a better model. Use when setting up autoresearch, writing program.md directives, interpreting results, configuring hardware, or running overnight autonomous ML experiments. Triggers on: autoresearch, autonomous ml experiments, overnight gpu experiments, karpathy autoresearch, train.py experiments, val_bpb, program.md research directives, ai runs experiments.",
-      "category": "search-analysis",
-      "path": "search-analysis/autoresearch/SKILL.md",
-      "tags": [
-        "autoresearch",
-        "ml-experiments",
-        "autonomous-research",
-        "karpathy",
-        "gpu",
-        "train",
-        "val-bpb",
-        "overnight",
-        "ratcheting"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "commands": []
-    },
-    {
-      "name": "skill-autoresearch",
-      "description": "Autonomously optimize an existing AI skill by running it repeatedly against binary evals, mutating one instruction at a time, and keeping only changes that improve pass rate. Based on Karpathy-style autoresearch, but applied to SKILL.md iteration instead of ML training. Use when optimizing a skill, benchmarking prompt quality, building evals for a skill, or running self-improvement loops on reusable agent instructions. Triggers on: skill-autoresearch, optimize this skill, improve this skill, benchmark this skill, eval my skill, run autoresearch on this skill, self-improve skill.",
-      "category": "search-analysis",
-      "path": "search-analysis/skill-autoresearch/SKILL.md",
-      "tags": [
-        "skill-autoresearch",
-        "skill-optimization",
-        "evals",
-        "prompt-iteration",
-        "benchmarking",
-        "mutation-loop",
-        "karpathy"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "commands": []
-    },
-    {
-      "name": "codebase-search",
-      "description": "Search and navigate codebases with an evidence-first workflow. Use when the user needs repo navigation, call-site tracing, code archaeology, ownership discovery, impact analysis, entry-point mapping, config hunting, or pre-change discovery. Choose between exact-text search, symbol/indexed search, structural search, and file discovery, then hand off cleanly to debugging, refactoring, review, or graph-based architecture analysis.",
-      "category": "search-analysis",
-      "path": "search-analysis/codebase-search/SKILL.md",
-      "tags": [
-        "codebase-search",
-        "code-navigation",
-        "repo-triage",
-        "impact-analysis",
-        "grep",
-        "ripgrep",
-        "ast-grep"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash"
-      ],
-      "commands": [
-        {
-          "command": "rg -n --hidden --glob '!node_modules' --glob '!dist' 'search_term' .",
-          "source": "search-analysis/codebase-search/SKILL.md"
-        },
-        {
-          "command": "Use repository-native symbol/indexed search when the job is definitions, references, or cross-repo symbol navigation.",
-          "source": "search-analysis/codebase-search/SKILL.md"
-        },
-        {
-          "command": "Use ast-grep or another AST-aware tool when syntax shape matters more than exact text.",
-          "source": "search-analysis/codebase-search/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "data-analysis",
-      "description": "Analyze datasets to extract insights, identify patterns, and generate reports. Use when exploring data, creating visualizations, or performing statistical analysis. Handles CSV, JSON, SQL queries, and Python pandas operations.",
-      "category": "search-analysis",
-      "path": "search-analysis/data-analysis/SKILL.md",
-      "tags": [
-        "data",
-        "analysis",
-        "pandas",
-        "statistics",
-        "visualization",
-        "csv",
-        "sql"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash"
-      ],
-      "commands": []
-    },
-    {
-      "name": "langsmith",
-      "description": "Instrument, trace, evaluate, and monitor LLM applications and AI agents with LangSmith. Use when setting up observability for LLM pipelines, running offline or online evaluations, managing prompts in the Prompt Hub, creating datasets for regression testing, or deploying agent servers. Triggers on: langsmith, langchain tracing, llm tracing, llm observability, llm evaluation, trace llm calls, @traceable, wrap_openai, langsmith evaluate, langsmith dataset, langsmith feedback, langsmith prompt hub, langsmith project, llm monitoring, llm debugging, llm quality, openevals, langsmith cli, langsmith experiment, annotate llm, llm judge.",
-      "category": "search-analysis",
-      "path": "search-analysis/langsmith/SKILL.md",
-      "tags": [
-        "langsmith",
-        "langchain",
-        "tracing",
-        "observability",
-        "evaluation",
-        "llm-monitoring",
-        "prompt-hub",
-        "datasets",
-        "openevals"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "commands": []
-    },
-    {
-      "name": "log-analysis",
-      "description": "Triage application, infrastructure, browser, API, CI, and general runtime logs into the first actionable failure, repeated patterns, likely scope, and next read-only checks. Use when the user shares raw log text, access/error logs, JSON logs, stack traces, pod/container output, browser console or network errors, or asks which lines actually matter.",
-      "category": "search-analysis",
-      "path": "search-analysis/log-analysis/SKILL.md",
-      "tags": [
-        "logs",
-        "analysis",
-        "debugging",
-        "monitoring",
-        "grep",
-        "patterns"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob"
-      ],
-      "commands": [
-        {
-          "command": "/var/log/                    # 시스템 로그",
-          "source": "search-analysis/log-analysis/SKILL.md"
-        },
-        {
-          "command": "/var/log/nginx/              # Nginx 로그",
-          "source": "search-analysis/log-analysis/SKILL.md"
-        },
-        {
-          "command": "/var/log/apache2/            # Apache 로그",
-          "source": "search-analysis/log-analysis/SKILL.md"
-        },
-        {
-          "command": "./logs/                      # 애플리케이션 로그",
-          "source": "search-analysis/log-analysis/SKILL.md"
-        },
-        {
-          "command": "grep -i \"error\\|exception\\|fail\" application.log",
-          "source": "search-analysis/log-analysis/SKILL.md"
-        },
-        {
-          "command": "tail -100 application.log | grep -i error",
-          "source": "search-analysis/log-analysis/SKILL.md"
-        },
-        {
-          "command": "grep -E \"^\\[.*ERROR\" application.log",
-          "source": "search-analysis/log-analysis/SKILL.md"
-        },
-        {
-          "command": "grep -E \"HTTP/[0-9.]+ 5[0-9]{2}\" access.log",
-          "source": "search-analysis/log-analysis/SKILL.md"
-        },
-        {
-          "command": "grep -E \"HTTP/[0-9.]+ 4[0-9]{2}\" access.log",
-          "source": "search-analysis/log-analysis/SKILL.md"
-        },
-        {
-          "command": "grep \"HTTP/1.1\\\" 500\" access.log",
-          "source": "search-analysis/log-analysis/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "pattern-detection",
-      "description": "Detect patterns, anomalies, and trends in code and data. Use when identifying code smells, finding security vulnerabilities, or discovering recurring patterns. Handles regex patterns, AST analysis, and statistical anomaly detection.",
-      "category": "search-analysis",
-      "path": "search-analysis/pattern-detection/SKILL.md",
-      "tags": [
-        "patterns",
-        "anomalies",
-        "regex",
-        "code-analysis",
-        "security",
-        "trends"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob"
-      ],
-      "commands": [
-        {
-          "command": "grep -n \"function\\|def\\|func \" **/*.{js,ts,py,go} | \\",
-          "source": "search-analysis/pattern-detection/SKILL.md"
-        },
-        {
-          "command": "while read line; do",
-          "source": "search-analysis/pattern-detection/SKILL.md"
-        },
-        {
-          "command": "file=$(echo $line | cut -d: -f1)",
-          "source": "search-analysis/pattern-detection/SKILL.md"
-        },
-        {
-          "command": "linenum=$(echo $line | cut -d: -f2)",
-          "source": "search-analysis/pattern-detection/SKILL.md"
-        },
-        {
-          "command": "done",
-          "source": "search-analysis/pattern-detection/SKILL.md"
-        },
-        {
-          "command": "grep -rn \"if.*==.*null\" --include=\"*.ts\" .",
-          "source": "search-analysis/pattern-detection/SKILL.md"
-        },
-        {
-          "command": "grep -rn \"try\\s*{\" --include=\"*.java\" . | wc -l",
-          "source": "search-analysis/pattern-detection/SKILL.md"
-        },
-        {
-          "command": "grep -rn \"[^a-zA-Z][0-9]{2,}[^a-zA-Z]\" --include=\"*.{js,ts}\" .",
-          "source": "search-analysis/pattern-detection/SKILL.md"
-        },
-        {
-          "command": "grep -rn \"query.*+.*\\$\\|execute.*%s\\|query.*f\\\"\" --include=\"*.py\" .",
-          "source": "search-analysis/pattern-detection/SKILL.md"
-        },
-        {
-          "command": "grep -rn \"SELECT.*\\+.*\\|\\|\" --include=\"*.{js,ts}\" .",
-          "source": "search-analysis/pattern-detection/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "bmad-gds",
-      "description": "Orchestrate AI-assisted indie game development across concepting, GDD shaping, milestone planning, playtest synthesis, build triage, and launch-readiness decisions. Use when a solo developer or small game team needs one coordinating skill to turn a mixed packet into the next game-production artifact and route specialist work to the right downstream skill.",
-      "category": "core-orchestration",
-      "path": "core-orchestration/bmad-gds/SKILL.md",
-      "tags": [
-        "bmad",
-        "gds",
-        "game-development",
-        "game-production",
-        "gdd",
-        "milestone-planning",
-        "playtesting",
-        "launch-ops",
-        "orchestration"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "Codex",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "commands": [
-        {
-          "command": "bmad-gds-game-brief",
-          "source": "bmad-gds/SKILL.md"
-        },
-        {
-          "command": "bmad-gds-gdd",
-          "source": "bmad-gds/SKILL.md"
-        },
-        {
-          "command": "bmad-gds-game-architecture",
-          "source": "bmad-gds/SKILL.md"
-        },
-        {
-          "command": "bmad-gds-sprint-planning",
-          "source": "bmad-gds/SKILL.md"
-        },
-        {
-          "command": "bmad-gds-dev-story",
-          "source": "bmad-gds/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "bmad-idea",
-      "description": "Creative Intelligence Suite for AI-driven ideation, design thinking, innovation strategy, problem-solving, and storytelling. 5 named specialist agents with distinct methodologies — no setup required, all workflows available immediately.",
-      "category": "core-orchestration",
-      "path": "core-orchestration/bmad-idea/SKILL.md",
-      "tags": [
-        "bmad",
-        "cis",
-        "creative",
-        "ideation",
-        "brainstorming",
-        "design-thinking",
-        "innovation",
-        "problem-solving",
-        "storytelling",
-        "multi-agent"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "Codex",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "commands": [
-        {
-          "command": "bmad-cis-brainstorming",
-          "source": "bmad-idea/SKILL.md"
-        },
-        {
-          "command": "bmad-cis-design-thinking",
-          "source": "bmad-idea/SKILL.md"
-        },
-        {
-          "command": "bmad-cis-innovation-strategy",
-          "source": "bmad-idea/SKILL.md"
-        },
-        {
-          "command": "bmad-cis-problem-solving",
-          "source": "bmad-idea/SKILL.md"
-        },
-        {
-          "command": "bmad-cis-storytelling",
-          "source": "bmad-idea/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "bmad-orchestrator",
-      "description": "Orchestrates BMAD workflows for structured AI-driven development. Routes work across Analysis, Planning, Solutioning, and Implementation phases with TEA (Task-Execute-Architect) cycles for structured execution.",
-      "category": "core-orchestration",
-      "path": "core-orchestration/bmad-orchestrator/SKILL.md",
-      "tags": [
-        "bmad",
-        "orchestrator",
-        "workflow",
-        "planning",
-        "implementation",
-        "tea",
-        "ssd"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "Codex",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "commands": []
-    },
-    {
-      "name": "jeo",
-      "description": "JEO — Integrated AI agent orchestration skill. Plan with plannotator (approval triggers ralphmode), execute with ralphmode/team/bmad, verify browser behavior with agent-browser, apply UI feedback with agentation(annotate), auto-cleanup worktrees after completion. Supports Claude, Codex, Gemini CLI, and OpenCode. Install: ralph, omc, omx, ohmg, bmad, plannotator, agent-browser, agentation.",
-      "category": "core-orchestration",
-      "path": "core-orchestration/jeo/SKILL.md",
-      "tags": [
-        "jeo",
-        "orchestration",
-        "ralph",
-        "plannotator",
-        "agentation",
-        "annotate",
-        "agentui",
-        "UI-review",
-        "team",
-        "bmad",
-        "omc",
-        "omx",
-        "ohmg",
-        "agent-browser",
-        "multi-agent",
-        "workflow",
-        "worktree-cleanup",
-        "browser-verification",
-        "ui-feedback"
-      ],
-      "platforms": [
-        "Claude",
-        "Codex",
-        "Gemini",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob",
-        "Task"
-      ],
-      "keyword": "jeo",
-      "version": "1.3.0",
-      "commands": []
-    },
-    {
-      "name": "ohmg",
-      "description": "Ultimate multi-agent framework for Google Antigravity. Orchestrates specialized domain agents (PM, Frontend, Backend, Mobile, QA, Debug) via Serena Memory.",
-      "category": "core-orchestration",
-      "path": "core-orchestration/ohmg/SKILL.md",
-      "tags": [
-        "ohmg",
-        "multi-agent",
-        "orchestration",
-        "gemini",
-        "antigravity",
-        "serena-memory",
-        "workflow"
-      ],
-      "platforms": [
-        "Gemini",
-        "Claude",
-        "Codex",
-        "Antigravity"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "commands": []
-    },
-    {
-      "name": "omc",
-      "description": "oh-my-claudecode — Teams-first multi-agent orchestration layer for Claude Code. 32 specialized agents, smart model routing, persistent execution loops, and real-time HUD visibility. Zero learning curve.",
-      "category": "core-orchestration",
-      "tags": [
-        "omc",
-        "oh-my-claudecode",
-        "claude-code",
-        "multi-agent",
-        "orchestration",
-        "team",
-        "autopilot",
-        "ralph",
-        "ultrawork"
-      ],
-      "platforms": [
-        "Claude Code"
-      ],
-      "keyword": "omc",
-      "path": "core-orchestration/omc/SKILL.md",
-      "install_commands": [
-        {
-          "command": "/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode",
-          "source": "utilities/omc/SKILL.md"
-        },
-        {
-          "command": "/plugin install oh-my-claudecode",
-          "source": "utilities/omc/SKILL.md"
-        },
-        {
-          "command": "/omc:omc-setup",
-          "source": "utilities/omc/SKILL.md"
-        }
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob",
-        "Edit"
-      ],
-      "commands": []
-    },
-    {
-      "name": "harness",
-      "description": "Design domain-specific agent teams, define specialized agents, and generate the skills they use. Meta-skill for decomposing complex projects into coordinated multi-agent pipelines. Use when you need to design an agent team architecture, generate .claude/agents/ and .claude/skills/ files, choose between pipeline/fan-out/expert-pool/producer-reviewer/supervisor/hierarchical patterns, or validate a generated harness. Triggers on: harness, build a harness, design agent team, agent team architecture, multi-agent skill generation, set up harness, harness engineering.",
-      "category": "core-orchestration",
-      "path": "core-orchestration/harness/SKILL.md",
-      "tags": [
-        "harness",
-        "agent-team",
-        "multi-agent",
-        "skill-generation",
-        "orchestration",
-        "meta-skill",
-        "claude-code"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "Codex",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "Agent"
-      ],
-      "scripts": [
-        {
-          "file": "scripts/install.sh",
-          "description": "Install harness plugin into Claude Code"
-        },
-        {
-          "file": "scripts/validate-harness.sh",
-          "description": "Validate agent definitions and skill files generated by harness"
-        }
-      ],
-      "commands": [
-        {
-          "command": "bash scripts/install.sh",
-          "source": "core-orchestration/harness/scripts/install.sh"
-        },
-        {
-          "command": "bash scripts/validate-harness.sh .claude/agents/ .claude/skills/",
-          "source": "core-orchestration/harness/scripts/validate-harness.sh"
-        }
-      ]
-    },
-    {
-      "name": "omx",
-      "description": "Multi-agent orchestration layer for OpenAI Codex CLI. Provides 30 specialized agents, 40+ workflow skills, team orchestration in tmux, persistent MCP servers, and staged pipeline execution.",
-      "category": "core-orchestration",
-      "path": "core-orchestration/omx/SKILL.md",
-      "tags": [
-        "omx",
-        "multi-agent",
-        "orchestration",
-        "codex",
-        "openai",
-        "team-mode",
-        "mcp-servers",
-        "workflow"
-      ],
-      "platforms": [
-        "Codex",
-        "Claude",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "commands": []
-    },
-    {
-      "name": "ralph",
-      "description": "Specification-first AI development powered by Ouroboros. Socratic questioning exposes hidden assumptions before writing code. Evolutionary loop (Interview → Seed → Execute → Evaluate → Evolve) runs until ontology converges. Ralph mode persists until verification passes — the boulder never stops. Use when user says \\\"ralph\\\", \\\"ooo\\\", \\\"don't stop\\\", \\\"must complete\\\", \\\"until it works\\\", \\\"keep going\\\", \\\"interview me\\\", or \\\"stop prompting\\\".",
-      "category": "core-orchestration",
-      "path": "core-orchestration/ralph/SKILL.md",
-      "tags": [
-        "ralph",
-        "ouroboros",
-        "specification-first",
-        "socratic",
-        "interview",
-        "seed",
-        "evaluate",
-        "evolve",
-        "loop",
-        "completion",
-        "self-referential",
-        "multi-platform",
-        "claude",
-        "codex",
-        "gemini",
-        "boulder",
-        "ooo"
-      ],
-      "platforms": [
-        "Claude Code",
-        "Codex",
-        "Gemini-CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob",
-        "WebFetch"
-      ],
-      "commands": []
-    },
-    {
-      "name": "ralphmode",
-      "description": "Configure Claude Code, Codex CLI, and Gemini CLI for Ralph-style automation with fewer approval prompts while keeping project boundaries, secret denylists, and sandbox-first safety rules intact.",
-      "category": "core-orchestration",
-      "path": "core-orchestration/ralphmode/SKILL.md",
-      "tags": [
-        "ralph",
-        "permissions",
-        "automation",
-        "claude-code",
-        "codex-cli",
-        "gemini-cli",
-        "sandbox",
-        "trusted-folders",
-        "bypass"
-      ],
-      "platforms": [
-        "Claude Code",
-        "Codex CLI",
-        "Gemini CLI"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "ralphmode",
-      "version": "0.1.0",
-      "commands": []
-    },
-    {
       "name": "survey",
       "description": "Research context, workarounds, existing solutions, and structural gaps before planning or implementation, then write reusable `.survey/{slug}/` artifacts for OMC, OMX, OHMG, and general agent workflows. Use when the user asks to survey a space, scan the landscape, research options, or compare platform/tooling patterns before deciding what to build.",
       "category": "core-orchestration",
-      "path": "core-orchestration/survey/SKILL.md",
+      "path": "survey/SKILL.md",
       "tags": [
         "survey",
         "landscape-scan",
@@ -1747,16 +2884,49 @@
       "commands": []
     },
     {
-      "name": "changelog-maintenance",
-      "description": "Maintain release history and release communication across CHANGELOG.md, migration updates, developer/customer release notes, and lightweight game patch notes. Use when the main job is turning shipped changes into a durable changelog or audience-appropriate release summary; routes internal specs/runbooks to technical-writing, API portals to api-documentation, end-user tutorials to user-guide-writing, rollout execution to deployment-automation, and launch messaging to marketing-automation.",
-      "category": "documentation",
-      "path": "documentation/changelog-maintenance/SKILL.md",
+      "name": "system-environment-setup",
+      "description": "Build reproducible developer environments for real projects: local toolchains, runtime versions, Docker Compose or dev containers, onboarding flows, local service parity, bootstrap scripts, and environment troubleshooting. Use when the user needs a repo to run consistently across machines, containers, or staged environments, even if they only say setup dev environment, onboarding, Docker, devcontainer, local parity, bootstrap, or make this runnable. This is the canonical broader environment-setup skill. Route narrower `.env` and app-config questions to `environment-setup`.",
+      "category": "infrastructure",
+      "path": "system-environment-setup/SKILL.md",
       "tags": [
-        "changelog",
-        "release-notes",
-        "versioning",
-        "semantic-versioning",
-        "documentation"
+        "environment-setup",
+        "reproducibility",
+        "devcontainers",
+        "docker-compose",
+        "onboarding",
+        "toolchains",
+        "local-parity"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": [],
+      "compatibility": "Best when the task spans toolchains, local services, containers, onboarding, or cross-machine reproducibility. Use alongside `environment-setup` for application env files, env validation, and secret handoff details.",
+      "version": "1.1",
+      "source": "akillness/oh-my-skills"
+    },
+    {
+      "name": "task-estimation",
+      "description": "Turn vague backlog items, stories, bugs, spikes, roadmap slices, or milestone work into practical size signals, uncertainty notes, and forecast-safe estimate packets. Use when the user needs story points, t-shirt sizing, planning-poker prep, reference-story calibration, confidence/risk framing, or a sizing pass for software, product, or game work. Not for backlog decomposition, standups, retrospectives, or hard deadline promises.",
+      "category": "project-management",
+      "path": "task-estimation/SKILL.md",
+      "tags": [
+        "estimation",
+        "agile",
+        "sprint-planning",
+        "story-points",
+        "planning-poker"
       ],
       "platforms": [
         "Claude",
@@ -1767,59 +2937,30 @@
       "commands": []
     },
     {
-      "name": "presentation-builder",
-      "description": "Build editable presentations with slides-grab. Use when creating slide decks as HTML slides, iterating visually in a browser, and exporting approved decks to PPTX or PDF.",
-      "category": "documentation",
-      "path": "documentation/presentation-builder/SKILL.md",
+      "name": "task-planning",
+      "description": "Plan and organize software development tasks effectively. Use when breaking down features, creating user stories, or planning sprints. Handles task breakdown, user stories, acceptance criteria, and backlog management.",
+      "category": "project-management",
+      "path": "task-planning/SKILL.md",
       "tags": [
-        "presentation",
-        "slides-grab",
-        "pptx",
-        "pdf",
-        "html-slides",
-        "slide-editor",
-        "storytelling"
+        "task-planning",
+        "user-stories",
+        "backlog",
+        "sprint-planning",
+        "agile"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini",
-        "Codex"
+        "Gemini"
       ],
       "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "research-paper-writing",
-      "description": "Write and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow. Use when drafting an abstract, introduction, related work, method, experiments, ablations, discussion, or rebuttal; structuring figures and tables; tightening reviewer-facing logic; or preparing a paper for submission. Triggers on: research paper, paper writing, academic writing, ML paper, CVPR paper, NeurIPS paper, ICLR paper, experiments section, rebuttal, abstract rewrite, contribution framing, reviewer response.",
-      "category": "documentation",
-      "path": "documentation/research-paper-writing/SKILL.md",
-      "tags": [
-        "research-paper-writing",
-        "academic-writing",
-        "ml",
-        "cv",
-        "nlp",
-        "experiments",
-        "rebuttal"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
       "commands": []
     },
     {
       "name": "technical-writing",
       "description": "Write internal technical documentation for engineers and operators: specs, architecture docs, ADRs, runbooks, migration notes, and developer-facing implementation guides. Routes published API portals to api-documentation, end-user tutorials to user-guide-writing, and release-note hygiene to changelog-maintenance.",
       "category": "documentation",
-      "path": "documentation/technical-writing/SKILL.md",
+      "path": "technical-writing/SKILL.md",
       "tags": [
         "technical-writing",
         "documentation",
@@ -1845,190 +2986,10 @@
       "commands": []
     },
     {
-      "name": "user-guide-writing",
-      "description": "Write user-facing documentation for onboarding, tutorials, how-to guides, FAQs, help-center articles, and release-facing help updates. Use when the main job is helping end users or admins complete product tasks; routes internal technical docs to technical-writing, API portals to api-documentation, and release-note hygiene to changelog-maintenance.",
-      "category": "documentation",
-      "path": "documentation/user-guide-writing/SKILL.md",
-      "tags": [
-        "user-guides",
-        "tutorials",
-        "documentation",
-        "onboarding",
-        "how-to",
-        "FAQ"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "code-refactoring",
-      "description": "Refactor code safely with a behavior-preserving workflow for decomposition, duplication removal, naming cleanup, module splits, and repeated API migrations. Use when the user wants to simplify messy code, shrink an oversized function or component, make a diff more reviewable, or plan a codemod-style cleanup without changing intended behavior.",
-      "category": "code-quality",
-      "path": "code-quality/code-refactoring/SKILL.md",
-      "tags": [
-        "refactoring",
-        "code-quality",
-        "DRY",
-        "SOLID",
-        "design-patterns",
-        "clean-code",
-        "simplification",
-        "behavior-preservation"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Edit",
-        "Write",
-        "Bash"
-      ],
-      "commands": []
-    },
-    {
-      "name": "code-review",
-      "description": "Review diffs, pull requests, merge requests, and patch stacks for correctness, maintainability, security, test gaps, and rollout risk with a workflow-aware review pass. Use when the user wants approve/block guidance, reviewer comments, or pre-merge risk review rather than Git cleanup, debugging, or broad testing-policy design.",
-      "category": "code-quality",
-      "path": "code-quality/code-review/SKILL.md",
-      "tags": [
-        "code-review",
-        "code-quality",
-        "security-review",
-        "risk-review",
-        "pull-request-review",
-        "diff-review"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash",
-        "Write"
-      ],
-      "commands": []
-    },
-    {
-      "name": "debugging",
-      "description": "Debug code, runtime behavior, regressions, flaky failures, and code-adjacent incidents with a systematic reproduce → isolate → hypothesize → verify loop. Use after symptom triage when the user needs a root-cause workflow, regression isolation, flaky-test investigation, or fix verification rather than raw log-line selection.",
-      "category": "code-quality",
-      "path": "code-quality/debugging/SKILL.md",
-      "tags": [
-        "debugging",
-        "regression-isolation",
-        "reproduction",
-        "flaky-tests",
-        "git-bisect",
-        "root-cause"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash",
-        "Write"
-      ],
-      "commands": [
-        {
-          "command": "git log --oneline -15",
-          "source": "code-quality/debugging/SKILL.md"
-        },
-        {
-          "command": "git diff HEAD~5 -- path/to/suspect",
-          "source": "code-quality/debugging/SKILL.md"
-        },
-        {
-          "command": "git bisect start",
-          "source": "code-quality/debugging/SKILL.md"
-        },
-        {
-          "command": "rg -n \"avatar|null|profile\" src tests",
-          "source": "code-quality/debugging/SKILL.md"
-        },
-        {
-          "command": "pytest tests/test_checkout.py -k coupon --maxfail=1 -vv",
-          "source": "code-quality/debugging/SKILL.md"
-        }
-      ],
-      "compatibility": "Best for code-level and behavior-level debugging across CLI, backend, frontend, fullstack, and CI workflows. Not for observability-platform setup, pure PR review, or broad testing-strategy design.",
-      "version": "2.0",
-      "source": "akillness/oh-my-skills"
-    },
-    {
-      "name": "performance-optimization",
-      "description": "Run measurement-led performance tuning across frontend, backend, database, cache, and runtime bottlenecks. Use when the main job is locating the tightest latency, throughput, memory, bundle-size, or frame-time constraint; choosing the right profiling evidence; staging one or two high-leverage optimizations; and verifying before/after impact. Route telemetry setup to monitoring-observability, failure diagnosis to debugging, behavior-preserving cleanup to code-refactoring, validation policy to testing-strategies, and Unity/Unreal capture interpretation to game-performance-profiler.",
-      "category": "code-quality",
-      "path": "code-quality/performance-optimization/SKILL.md",
-      "tags": [
-        "performance",
-        "profiling",
-        "bottleneck-analysis",
-        "latency",
-        "throughput",
-        "memory",
-        "bundle-size",
-        "query-plans"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash",
-        "Write"
-      ],
-      "commands": [
-        {
-          "command": "# classify: interaction-and-rendering | page-load-and-bundle | api-latency-and-hot-paths | database-plan-and-data-access | throughput-and-capacity | memory-and-allocation | runtime-frame-budget",
-          "source": "code-quality/performance-optimization/SKILL.md"
-        },
-        {
-          "command": "# choose the primary evidence source before proposing fixes: trace | flame graph | query plan | load test | heap/profile | frame capture",
-          "source": "code-quality/performance-optimization/SKILL.md"
-        },
-        {
-          "command": "# name one primary bottleneck and recommend at most two high-leverage changes",
-          "source": "code-quality/performance-optimization/SKILL.md"
-        },
-        {
-          "command": "# include before/after verification and route-outs to monitoring-observability, debugging, testing-strategies, code-refactoring, or game-performance-profiler as needed",
-          "source": "code-quality/performance-optimization/SKILL.md"
-        }
-      ],
-      "compatibility": "Best for repositories, traces, benchmarks, query plans, flame graphs, browser profiles, load-test outputs, and runtime notes where the main decision is what to measure, what to tune first, and how to prove improvement. Not for observability platform setup, generic refactoring, or correctness-bug debugging.",
-      "version": "2.0",
-      "source": "akillness/oh-my-skills"
-    },
-    {
       "name": "testing-strategies",
       "description": "Design a risk-based validation policy for software changes across unit, integration, contract, smoke, exploratory, and release checks. Use when the user needs to decide what test layers are required, how much evidence is enough before merge or release, how to control flaky or expensive suites, or how to route work between testing policy, backend test implementation, debugging, and code review. Triggers on: test strategy, testing pyramid/trophy, coverage plan, regression policy, flaky suite policy, release confidence, and what should we test for this change.",
       "category": "code-quality",
-      "path": "code-quality/testing-strategies/SKILL.md",
+      "path": "testing-strategies/SKILL.md",
       "tags": [
         "testing",
         "test-strategy",
@@ -2051,56 +3012,117 @@
       "commands": []
     },
     {
-      "name": "copilot-coding-agent",
-      "description": "GitHub Copilot Coding Agent automation. Apply the ai-copilot label to an issue → GitHub Actions auto-assigns Copilot via GraphQL → Copilot creates a Draft PR. One-click issue-to-PR pipeline.",
-      "category": "utilities",
-      "path": "utilities/copilot-coding-agent/SKILL.md",
+      "name": "ui-component-patterns",
+      "description": "Design reusable UI primitives and component APIs before duplicating product UI. Use when the user needs help extracting shared components, defining variants, slots, controlled-vs-uncontrolled boundaries, composition patterns, Storybook coverage, or deciding what belongs in a reusable primitive versus app-local UI.",
+      "category": "frontend",
+      "path": "ui-component-patterns/SKILL.md",
       "tags": [
-        "copilot",
-        "copilotview",
-        "github-actions",
-        "issue-to-pr",
-        "draft-pr",
-        "graphql",
-        "automation",
-        "ai-agent"
+        "UI-components",
+        "React",
+        "design-patterns",
+        "composition",
+        "TypeScript",
+        "reusable"
       ],
       "platforms": [
         "Claude",
-        "Codex",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "user-guide-writing",
+      "description": "Write user-facing documentation for onboarding, tutorials, how-to guides, FAQs, help-center articles, and release-facing help updates. Use when the main job is helping end users or admins complete product tasks; routes internal technical docs to technical-writing, API portals to api-documentation, and release-note hygiene to changelog-maintenance.",
+      "category": "documentation",
+      "path": "user-guide-writing/SKILL.md",
+      "tags": [
+        "user-guides",
+        "tutorials",
+        "documentation",
+        "onboarding",
+        "how-to",
+        "FAQ"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini"
+      ],
+      "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "vercel-deploy",
+      "description": "Deploy applications and websites to Vercel instantly. Use when asked to \\\"Deploy my app\\\", \\\"Deploy this to production\\\", \\\"Create a preview deployment\\\", or \\\"Push this live\\\". No authentication required - returns preview URL and claimable deployment link.",
+      "category": "infrastructure",
+      "path": "vercel-deploy/SKILL.md",
+      "tags": [
+        "deployment",
+        "vercel",
+        "preview",
+        "production",
+        "hosting",
+        "serverless"
+      ],
+      "platforms": [
+        "Claude"
+      ],
+      "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "vercel-react-best-practices",
+      "description": "Compatibility alias for `react-best-practices`. Use when an existing workflow, setup script, or user explicitly asks for `vercel-react-best-practices`; route general React and Next.js performance work to `react-best-practices` instead. Triggers on: legacy skill name, Vercel React best practices alias, exact-folder compatibility.",
+      "category": "frontend",
+      "path": "vercel-react-best-practices/SKILL.md",
+      "tags": [
+        "React",
+        "Next.js",
+        "performance",
+        "optimization",
+        "vercel",
+        "waterfalls",
+        "bundle-size",
+        "RSC"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
         "Gemini"
       ],
       "allowed_tools": [
         "Read",
         "Write",
-        "Bash",
-        "Grep",
-        "Glob"
+        "Edit"
       ],
       "commands": []
     },
     {
-      "name": "fabric",
-      "description": "AI prompt orchestration CLI using reusable Patterns. Use for YouTube summarization, document analysis, content extraction, code explanation, writing assistance, and any AI task via stdin/stdout piping across 20+ providers.",
-      "category": "utilities",
-      "path": "utilities/fabric/SKILL.md",
+      "name": "vibe-kanban",
+      "description": "Manage AI coding agents on a visual Kanban board. Run parallel agents through a To Do→In Progress→Review→Done flow with automatic git worktree isolation and GitHub PR creation.",
+      "category": "planning-review",
+      "path": "vibe-kanban/SKILL.md",
       "tags": [
-        "fabric",
-        "patterns",
-        "ai-prompts",
-        "youtube",
-        "summarize",
-        "extract-wisdom",
-        "piping",
-        "cli",
-        "multi-provider",
-        "openai",
-        "claude",
+        "vibe-kanban",
+        "kanban",
+        "kanbanview",
+        "multi-agent",
+        "git-worktree",
+        "github-pr",
+        "task-management",
+        "claude-code",
+        "codex",
         "gemini",
-        "ollama"
+        "open-code",
+        "mcp"
       ],
       "platforms": [
-        "All platforms"
+        "Claude",
+        "Codex",
+        "Gemini",
+        "OpenCode"
       ],
       "allowed_tools": [
         "Read",
@@ -2112,40 +3134,46 @@
       "commands": []
     },
     {
-      "name": "file-organization",
-      "description": "Organize project files and folders for maintainability and scalability. Use when structuring new projects, refactoring folder structure, or establishing conventions. Handles project structure, naming conventions, and file organization best practices.",
-      "category": "utilities",
-      "path": "utilities/file-organization/SKILL.md",
+      "name": "video-production",
+      "description": "Canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs.",
+      "category": "creative-media",
+      "path": "video-production/SKILL.md",
       "tags": [
-        "file-organization",
-        "project-structure",
-        "folder-structure",
-        "naming-conventions"
+        "video",
+        "automation",
+        "remotion",
+        "short-form",
+        "content-ops",
+        "templates",
+        "react"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
-        "Read",
         "Write",
-        "Glob",
-        "Bash"
+        "Read",
+        "WebSearch",
+        "WebFetch",
+        "Task"
       ],
       "commands": []
     },
     {
-      "name": "git-submodule",
-      "description": "Manage Git submodules for including external repositories within a main repository. Use when working with external libraries, shared modules, or managing dependencies as separate Git repositories.",
-      "category": "utilities",
-      "path": "utilities/git-submodule/SKILL.md",
+      "name": "web-accessibility",
+      "description": "Diagnose and remediate web accessibility issues across semantic HTML, keyboard support, focus management, labels, ARIA, contrast, motion, and manual-vs-automated verification. Use when the user needs an accessibility audit, accessibility remediation plan, WCAG-oriented implementation guidance, or help deciding what to test manually after tools like axe or Lighthouse.",
+      "category": "frontend",
+      "path": "web-accessibility/SKILL.md",
       "tags": [
-        "git",
-        "submodule",
-        "dependencies",
-        "version-control",
-        "modular"
+        "accessibility",
+        "a11y",
+        "WCAG",
+        "ARIA",
+        "semantic-HTML",
+        "screen-reader"
       ],
       "platforms": [
         "Claude",
@@ -2153,463 +3181,35 @@
         "Gemini"
       ],
       "allowed_tools": [],
-      "commands": [
-        {
-          "command": "git submodule add <repository-url> <path>",
-          "source": "utilities/git-submodule/SKILL.md"
-        },
-        {
-          "command": "git submodule add https://github.com/example/lib.git libs/lib",
-          "source": "utilities/git-submodule/SKILL.md"
-        },
-        {
-          "command": "git submodule add -b main https://github.com/example/lib.git libs/lib",
-          "source": "utilities/git-submodule/SKILL.md"
-        },
-        {
-          "command": "git add .gitmodules libs/lib",
-          "source": "utilities/git-submodule/SKILL.md"
-        },
-        {
-          "command": "git commit -m \"feat: add lib as submodule\"",
-          "source": "utilities/git-submodule/SKILL.md"
-        },
-        {
-          "command": "git clone --recursive <repository-url>",
-          "source": "utilities/git-submodule/SKILL.md"
-        },
-        {
-          "command": "git clone <repository-url>",
-          "source": "utilities/git-submodule/SKILL.md"
-        },
-        {
-          "command": "cd <repository>",
-          "source": "utilities/git-submodule/SKILL.md"
-        },
-        {
-          "command": "git submodule init",
-          "source": "utilities/git-submodule/SKILL.md"
-        },
-        {
-          "command": "git submodule update",
-          "source": "utilities/git-submodule/SKILL.md"
-        }
-      ]
+      "commands": []
     },
     {
-      "name": "git-workflow",
-      "description": "Manage local Git collaboration safely: branch creation, staging, commit shaping, rebase/merge decisions, conflict resolution, lease-safe pushes, and recovery from resets or bad history edits. Use when the user needs help preparing a branch, cleaning up commits, rebasing onto an updated base branch, resolving conflicts, pushing rewritten history safely, undoing or recovering Git mistakes, or getting a diff ready for review. Not for hosted PR review, repo administration, or sprint planning.",
-      "category": "utilities",
-      "path": "utilities/git-workflow/SKILL.md",
+      "name": "web-design-guidelines",
+      "description": "Review UI code for Web Interface Guidelines compliance. Use when asked to \\\"review my UI\\\", \\\"check accessibility\\\", \\\"audit design\\\", \\\"review UX\\\", or \\\"check my site against best practices\\\". Fetches latest Vercel guidelines and checks files against all rules.",
+      "category": "frontend",
+      "path": "web-design-guidelines/SKILL.md",
       "tags": [
-        "git",
-        "version-control",
-        "branching",
-        "commits",
-        "collaboration"
+        "UI",
+        "review",
+        "web-interface",
+        "guidelines",
+        "vercel",
+        "design-audit",
+        "UX"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
         "Gemini"
       ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write"
-      ],
-      "commands": [
-        {
-          "command": "git checkout -b feature/feature-name",
-          "source": "utilities/git-workflow/SKILL.md"
-        },
-        {
-          "command": "git checkout -b feature/feature-name <commit-hash>",
-          "source": "utilities/git-workflow/SKILL.md"
-        },
-        {
-          "command": "git add file1.py file2.js",
-          "source": "utilities/git-workflow/SKILL.md"
-        },
-        {
-          "command": "git add .",
-          "source": "utilities/git-workflow/SKILL.md"
-        },
-        {
-          "command": "git add -p",
-          "source": "utilities/git-workflow/SKILL.md"
-        },
-        {
-          "command": "git status",
-          "source": "utilities/git-workflow/SKILL.md"
-        },
-        {
-          "command": "git diff",
-          "source": "utilities/git-workflow/SKILL.md"
-        },
-        {
-          "command": "git diff --staged",
-          "source": "utilities/git-workflow/SKILL.md"
-        },
-        {
-          "command": "git commit -m \"type(scope): subject",
-          "source": "utilities/git-workflow/SKILL.md"
-        },
-        {
-          "command": "Detailed description of what changed and why.",
-          "source": "utilities/git-workflow/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "google-workspace",
-      "description": "Create, read, update, and manage all Google Workspace documents and services via REST APIs. Use when working with Google Docs, Google Sheets, Google Slides, Google Drive, Gmail, Google Calendar, Google Chat, Google Forms, Google Meet, Admin SDK, or Apps Script. Triggers on: \"Google Doc\", \"Google Sheet\", \"spreadsheet\", \"Google Slides\", \"presentation\", \"Google Drive\", \"Drive folder\", \"Gmail\", \"send email\", \"Google Calendar\", \"calendar event\", \"schedule meeting\", \"Google Chat\", \"Google Forms\", \"survey form\", \"Google Meet\", \"Workspace user\", \"Apps Script\", \"구글 문서\", \"구글 시트\", \"스프레드시트\", \"구글 슬라이드\", \"프레젠테이션\", \"구글 드라이브\", \"지메일\", \"이메일 보내기\", \"구글 캘린더\", \"일정 추가\", \"회의 예약\", \"구글 챗\", \"구글 폼\", \"설문지\", \"워크스페이스 사용자\".",
-      "category": "utilities",
-      "path": "utilities/google-workspace/SKILL.md",
-      "tags": [
-        "google-workspace",
-        "google-docs",
-        "google-sheets",
-        "google-slides",
-        "google-drive",
-        "gmail",
-        "google-calendar",
-        "google-chat",
-        "google-forms",
-        "admin-sdk",
-        "apps-script",
-        "automation"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "Codex",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "commands": []
-    },
-    {
-      "name": "npm-git-install",
-      "description": "Install npm packages directly from GitHub repositories using git URLs. Use when installing packages from private repos, specific branches, or unreleased versions not yet on npm registry.",
-      "category": "utilities",
-      "path": "utilities/npm-git-install/SKILL.md",
-      "tags": [
-        "npm",
-        "git",
-        "github",
-        "install",
-        "package-management",
-        "node"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Opencode"
-      ],
       "allowed_tools": [],
-      "commands": [
-        {
-          "command": "npm install git+https://github.com/<owner>/<repo>.git#<branch|tag|commit>",
-          "source": "utilities/npm-git-install/SKILL.md"
-        },
-        {
-          "command": "npm install -g git+https://github.com/JEO-tech-ai/supercode.git#main",
-          "source": "utilities/npm-git-install/SKILL.md"
-        },
-        {
-          "command": "npm install git+https://github.com/owner/repo.git#v1.0.0",
-          "source": "utilities/npm-git-install/SKILL.md"
-        },
-        {
-          "command": "npm install git+https://github.com/owner/repo.git#abc1234",
-          "source": "utilities/npm-git-install/SKILL.md"
-        },
-        {
-          "command": "npm install git+https://github.com/owner/repo.git",
-          "source": "utilities/npm-git-install/SKILL.md"
-        },
-        {
-          "command": "npm install -g git+ssh://git@github.com:JEO-tech-ai/supercode.git#main",
-          "source": "utilities/npm-git-install/SKILL.md"
-        },
-        {
-          "command": "npm install -g git+https://github.com/JEO-tech-ai/supercode.git#main --verbose",
-          "source": "utilities/npm-git-install/SKILL.md"
-        },
-        {
-          "command": "git clone https://github.com/owner/repo.git /tmp/npm-xxx",
-          "source": "utilities/npm-git-install/SKILL.md"
-        },
-        {
-          "command": "cd /tmp/npm-xxx",
-          "source": "utilities/npm-git-install/SKILL.md"
-        },
-        {
-          "command": "git checkout main",
-          "source": "utilities/npm-git-install/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "obsidian-cli",
-      "description": "Install, enable, and operate the Obsidian CLI for terminal-driven note management, vault targeting, file and task workflows, plugin and theme control, developer tooling, and TUI exploration. Use when you need to script or automate a running Obsidian app from the command line, open or modify notes, target a specific vault or file, copy command output, reload a plugin under development, or inspect the app UI from the terminal. Triggers on: obsidian cli, obsidian command line, obsidian terminal, obsidian vault command, obsidian daily note cli, obsidian devtools cli, obsidian plugin reload.",
-      "category": "utilities",
-      "path": "utilities/obsidian-cli/SKILL.md",
-      "tags": [
-        "obsidian",
-        "cli",
-        "notes",
-        "vault",
-        "daily-notes",
-        "tasks",
-        "plugins",
-        "themes",
-        "developer-tools",
-        "tui"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "Codex",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "commands": [
-        {
-          "command": "bash scripts/install.sh",
-          "source": "utilities/obsidian-cli/SKILL.md"
-        },
-        {
-          "command": "bash scripts/run-command.sh --vault Notes daily",
-          "source": "utilities/obsidian-cli/SKILL.md"
-        },
-        {
-          "command": "bash scripts/run-command.sh search query=\"meeting notes\" --copy",
-          "source": "utilities/obsidian-cli/SKILL.md"
-        },
-        {
-          "command": "bash scripts/run-command.sh plugin:reload id=my-plugin",
-          "source": "utilities/obsidian-cli/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "obsidian-plugin",
-      "description": "Build, validate, and publish Obsidian plugins following official community submission standards. Use when developing an Obsidian plugin from scratch, reviewing existing plugin code, fixing ESLint violations from eslint-plugin-obsidianmd, preparing a plugin for community directory submission, or applying Obsidian-specific best practices (memory management, type safety, accessibility, CSS variables, vault API). Triggers on: obsidian plugin, obsidian development, obsidian-plugin, create obsidian plugin, obsidian eslint, obsidian submission, obsidian community plugin, obsidian API, plugin boilerplate, obsidian typescript, obsidian vault, obsidian settings, obsidian commands.",
-      "category": "utilities",
-      "path": "utilities/obsidian-plugin/SKILL.md",
-      "tags": [
-        "obsidian",
-        "plugin-development",
-        "eslint",
-        "typescript",
-        "boilerplate",
-        "submission",
-        "accessibility"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
       "commands": []
-    },
-    {
-      "name": "opencontext",
-      "description": "Persistent memory and context management for AI agents using OpenContext. Keep context across sessions/repos/dates, store conclusions, and provide document search workflows.",
-      "category": "utilities",
-      "path": "utilities/opencontext/SKILL.md",
-      "tags": [
-        "opencontext",
-        "context-management",
-        "memory",
-        "knowledge-base",
-        "multi-agent"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "ChatGPT",
-        "Codex",
-        "Cursor"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "commands": [
-        {
-          "command": "npm install -g @aicontextlab/cli",
-          "source": "utilities/opencontext/SKILL.md"
-        },
-        {
-          "command": "npx @aicontextlab/cli <command>",
-          "source": "utilities/opencontext/SKILL.md"
-        },
-        {
-          "command": "cd your-project",
-          "source": "utilities/opencontext/SKILL.md"
-        },
-        {
-          "command": "oc init",
-          "source": "utilities/opencontext/SKILL.md"
-        },
-        {
-          "command": "oc folder ls --all",
-          "source": "utilities/opencontext/SKILL.md"
-        },
-        {
-          "command": "oc folder create project-a -d \"My project\"",
-          "source": "utilities/opencontext/SKILL.md"
-        },
-        {
-          "command": "oc doc create project-a design.md -d \"Design doc\"",
-          "source": "utilities/opencontext/SKILL.md"
-        },
-        {
-          "command": "oc doc ls project-a",
-          "source": "utilities/opencontext/SKILL.md"
-        },
-        {
-          "command": "oc search \"your query\" --mode keyword --format json",
-          "source": "utilities/opencontext/SKILL.md"
-        },
-        {
-          "command": "oc context manifest project-a --limit 10",
-          "source": "utilities/opencontext/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "graphify",
-      "description": "Turn a codebase or mixed corpus into a persistent knowledge graph with GRAPH_REPORT.md, graph.json, and HTML visualization. Use when the user wants faster codebase understanding, architecture discovery, graph-backed corpus analysis, relationship tracing, or graph querying across raw project files. Triggers on: graphify, knowledge graph, codebase graph, architecture graph, graph.json, GRAPH_REPORT, understand this repo, map this codebase, query the graph, shortest path between concepts, or turn raw files into a graph.",
-      "category": "utilities",
-      "path": "utilities/graphify/SKILL.md",
-      "tags": [
-        "graphify",
-        "knowledge-graph",
-        "codebase-analysis",
-        "graphrag",
-        "architecture",
-        "corpus-analysis"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "Codex",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Grep",
-        "Glob"
-      ],
-      "commands": [
-        {
-          "command": "python3 -m pip install graphifyy",
-          "source": "utilities/graphify/SKILL.md"
-        },
-        {
-          "command": "graphify query \"show the auth flow\" --graph graphify-out/graph.json",
-          "source": "utilities/graphify/SKILL.md"
-        },
-        {
-          "command": "graphify path \"DigestAuth\" \"Response\"",
-          "source": "utilities/graphify/SKILL.md"
-        },
-        {
-          "command": "graphify explain \"SwinTransformer\"",
-          "source": "utilities/graphify/SKILL.md"
-        },
-        {
-          "command": "graphify claude install",
-          "source": "utilities/graphify/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "llm-wiki",
-      "description": "Build and maintain a persistent markdown wiki that an LLM updates on the user's behalf, usually inside an Obsidian vault or git-tracked notes repo. Use when raw sources such as web articles, papers, meeting notes, transcripts, screenshots, or past analyses need to be turned into an interlinked knowledge base with immutable source files, LLM-written wiki pages, index.md, log.md, schema rules, source summaries, query notes, and recurring lint passes. Triggers on: llm-wiki, personal wiki, obsidian wiki, research vault, knowledge base, source ingest, persistent notes, wiki maintenance, source summaries, query filing.",
-      "category": "utilities",
-      "path": "utilities/llm-wiki/SKILL.md",
-      "tags": [
-        "llm-wiki",
-        "obsidian",
-        "knowledge-base",
-        "markdown",
-        "research",
-        "synthesis",
-        "scrapling",
-        "qmd",
-        "notes",
-        "wiki"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "Codex",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "commands": [
-        {
-          "command": "bash scripts/bootstrap-vault.sh /path/to/vault",
-          "source": "utilities/llm-wiki/SKILL.md"
-        },
-        {
-          "command": "bash scripts/ingest-url.sh /path/to/vault \"https://example.com/article\"",
-          "source": "utilities/llm-wiki/SKILL.md"
-        },
-        {
-          "command": "bash scripts/new-query-note.sh /path/to/vault \"How does X differ from Y?\"",
-          "source": "utilities/llm-wiki/SKILL.md"
-        },
-        {
-          "command": "python3 scripts/lint-wiki.py /path/to/vault",
-          "source": "utilities/llm-wiki/SKILL.md"
-        }
-      ]
     },
     {
       "name": "workflow-automation",
       "description": "Design repo-scoped recurring workflow automation: task runners, bootstrap entrypoints, local-CI parity commands, hook guardrails, and maintenance routines that wrap existing tools without bloating into full deployment or environment provisioning. Use when the user needs repeatable commands for setup/build/test/lint/release prep, wants to replace copy-paste shell rituals, or must choose between npm scripts, Make/just/Task, hooks, local CI mirrors, and repo maintenance bots. Triggers on: workflow automation, task runner, make this repeatable, bootstrap script, make/just/taskfile, local CI parity, repo automation, and recurring dev workflow.",
       "category": "utilities",
-      "path": "utilities/workflow-automation/SKILL.md",
+      "path": "workflow-automation/SKILL.md",
       "tags": [
         "automation",
         "task-runner",
@@ -2652,514 +3252,6 @@
         {
           "command": "act",
           "source": "utilities/workflow-automation/SKILL.md"
-        }
-      ]
-    },
-    {
-      "name": "design-system",
-      "description": "Design or refactor production-grade frontend UI systems using design tokens, component primitives, layout rules, motion guidance, and accessibility checks. Use when the user needs a reusable visual system, landing-page or dashboard UI direction, component-library foundations, or page-level design specs that stay consistent across screens.",
-      "category": "frontend",
-      "path": "frontend/design-system/SKILL.md",
-      "tags": [
-        "frontend",
-        "design",
-        "ui",
-        "ux",
-        "typography",
-        "animation",
-        "design-tokens",
-        "accessibility"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "frontend-design-system",
-      "description": "Compatibility alias for `design-system`. Use when an existing workflow, setup script, or user explicitly asks for `frontend-design-system`; route ordinary UI system, design-token, landing-page, dashboard, and component-library work to `design-system` instead.",
-      "category": "frontend",
-      "path": "frontend/frontend-design-system/SKILL.md",
-      "tags": [
-        "frontend",
-        "design",
-        "ui",
-        "ux",
-        "typography",
-        "animation",
-        "design-tokens",
-        "accessibility"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Write",
-        "Read",
-        "Task"
-      ],
-      "commands": []
-    },
-    {
-      "name": "react-best-practices",
-      "description": "Audit and improve React and Next.js performance using Vercel-style guidance for waterfalls, bundle size, RSC boundaries, caching, hydration, and rerender behavior. Use when the user needs help with slow React UIs, Next.js data fetching, bundle bloat, hydration mismatch, server/client component boundaries, or frontend performance refactors. Triggers on: React perf, Next.js perf, waterfall, bundle size, RSC, hydration, rerender, slow page.",
-      "category": "frontend",
-      "path": "frontend/react-best-practices/SKILL.md",
-      "tags": [
-        "React",
-        "Next.js",
-        "performance",
-        "optimization",
-        "vercel",
-        "waterfalls",
-        "bundle-size",
-        "RSC"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "react-grab",
-      "description": "Install and configure react-grab to capture React component context (file path, component name, HTML markup) from any browser UI element for AI coding agents. Use when you want to point at a UI element in the browser and instantly copy its React component name, source file path, and HTML to clipboard for Claude Code, Cursor, Copilot, Gemini, or Codex. Triggers on: react-grab, grab, grab element context, copy component to ai, point and copy to claude, ui context clipboard, element to ai agent, click component copy, grab ui component, react component inspector, browser element context, component source file, copy element context, feed element to ai, element picker, grab react component, inspect element ai, component to clipboard, react devtools ai.",
-      "category": "frontend",
-      "path": "frontend/react-grab/SKILL.md",
-      "tags": [
-        "react-grab",
-        "grab",
-        "element-context",
-        "ai-agent",
-        "clipboard",
-        "component-inspector",
-        "dev-tools",
-        "react",
-        "browser",
-        "mcp"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "commands": []
-    },
-    {
-      "name": "responsive-design",
-      "description": "Plan mobile-first, container-aware responsive layouts before patching breakpoints everywhere. Use when the user needs help fixing overflow, wrapping, layout collapse, responsive media, breakpoint strategy, container queries, or deciding what should adapt at the viewport level versus inside a component/container.",
-      "category": "frontend",
-      "path": "frontend/responsive-design/SKILL.md",
-      "tags": [
-        "responsive",
-        "mobile-first",
-        "layout",
-        "container-queries",
-        "breakpoints",
-        "frontend",
-        "css",
-        "reflow"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "commands": []
-    },
-    {
-      "name": "state-management",
-      "description": "Design React state boundaries before picking libraries. Use when deciding whether data should stay local, be shared via Context, move into Zustand / Redux Toolkit / Jotai, live in URL or form state, or stay in a server-state cache such as TanStack Query.",
-      "category": "frontend",
-      "path": "frontend/state-management/SKILL.md",
-      "tags": [
-        "state-management",
-        "react",
-        "context",
-        "redux-toolkit",
-        "zustand",
-        "jotai",
-        "tanstack-query",
-        "client-state",
-        "server-state"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "commands": []
-    },
-    {
-      "name": "ui-component-patterns",
-      "description": "Design reusable UI primitives and component APIs before duplicating product UI. Use when the user needs help extracting shared components, defining variants, slots, controlled-vs-uncontrolled boundaries, composition patterns, Storybook coverage, or deciding what belongs in a reusable primitive versus app-local UI.",
-      "category": "frontend",
-      "path": "frontend/ui-component-patterns/SKILL.md",
-      "tags": [
-        "UI-components",
-        "React",
-        "design-patterns",
-        "composition",
-        "TypeScript",
-        "reusable"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "vercel-react-best-practices",
-      "description": "Compatibility alias for `react-best-practices`. Use when an existing workflow, setup script, or user explicitly asks for `vercel-react-best-practices`; route general React and Next.js performance work to `react-best-practices` instead. Triggers on: legacy skill name, Vercel React best practices alias, exact-folder compatibility.",
-      "category": "frontend",
-      "path": "frontend/vercel-react-best-practices/SKILL.md",
-      "tags": [
-        "React",
-        "Next.js",
-        "performance",
-        "optimization",
-        "vercel",
-        "waterfalls",
-        "bundle-size",
-        "RSC"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Edit"
-      ],
-      "commands": []
-    },
-    {
-      "name": "web-accessibility",
-      "description": "Diagnose and remediate web accessibility issues across semantic HTML, keyboard support, focus management, labels, ARIA, contrast, motion, and manual-vs-automated verification. Use when the user needs an accessibility audit, accessibility remediation plan, WCAG-oriented implementation guidance, or help deciding what to test manually after tools like axe or Lighthouse.",
-      "category": "frontend",
-      "path": "frontend/web-accessibility/SKILL.md",
-      "tags": [
-        "accessibility",
-        "a11y",
-        "WCAG",
-        "ARIA",
-        "semantic-HTML",
-        "screen-reader"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "web-design-guidelines",
-      "description": "Review UI code for Web Interface Guidelines compliance. Use when asked to \\\"review my UI\\\", \\\"check accessibility\\\", \\\"audit design\\\", \\\"review UX\\\", or \\\"check my site against best practices\\\". Fetches latest Vercel guidelines and checks files against all rules.",
-      "category": "frontend",
-      "path": "frontend/web-design-guidelines/SKILL.md",
-      "tags": [
-        "UI",
-        "review",
-        "web-interface",
-        "guidelines",
-        "vercel",
-        "design-audit",
-        "UX"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "remotion-video-production",
-      "description": "Compatibility alias for `video-production` when a prompt, setup surface, or legacy workflow explicitly asks for Remotion video production.",
-      "category": "creative-media",
-      "path": "creative-media/remotion-video-production/SKILL.md",
-      "tags": [
-        "video",
-        "remotion",
-        "alias",
-        "compatibility",
-        "automation"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Write",
-        "Read",
-        "WebSearch",
-        "WebFetch",
-        "Task"
-      ],
-      "commands": []
-    },
-    {
-      "name": "video-production",
-      "description": "Canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs.",
-      "category": "creative-media",
-      "path": "creative-media/video-production/SKILL.md",
-      "tags": [
-        "video",
-        "automation",
-        "remotion",
-        "short-form",
-        "content-ops",
-        "templates",
-        "react"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Write",
-        "Read",
-        "WebSearch",
-        "WebFetch",
-        "Task"
-      ],
-      "commands": []
-    },
-    {
-      "name": "marketing-automation",
-      "description": "Canonical general marketing router that turns broad marketing asks into a KPI-aware brief, one chosen lane, and an implementation-ready packet across CRO, copywriting, SEO, analytics, pricing, launch, retention, and growth.",
-      "category": "marketing",
-      "path": "marketing/marketing-automation/SKILL.md",
-      "tags": [
-        "marketing",
-        "cro",
-        "copywriting",
-        "seo",
-        "analytics",
-        "growth",
-        "automation"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "marketing-skills-collection",
-      "description": "Compatibility alias for marketing-automation. Use when legacy prompt packs or catalogs still reference the old marketing-skills-collection name for broad marketing routing.",
-      "category": "marketing",
-      "path": "marketing/marketing-skills-collection/SKILL.md",
-      "tags": [
-        "marketing",
-        "automation",
-        "alias",
-        "compatibility"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Write",
-        "Read",
-        "WebSearch",
-        "WebFetch",
-        "Task"
-      ],
-      "commands": []
-    },
-    {
-      "name": "sprint-retrospective",
-      "description": "Facilitate sprint retrospectives, milestone postmortems, or iteration reviews that turn completed work into a few owned process improvements instead of another stale template exercise. Use when the user needs a retro format, async or hybrid retro flow, retrospective facilitation script, action-item follow-through, or help reviewing what the team should change after a sprint, release, milestone, or rough delivery cycle.",
-      "category": "project-management",
-      "path": "project-management/sprint-retrospective/SKILL.md",
-      "tags": [
-        "retrospective",
-        "sprint-retro",
-        "postmortem",
-        "async-retro",
-        "hybrid-retro",
-        "agile",
-        "project-management",
-        "game-development"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "commands": []
-    },
-    {
-      "name": "standup-meeting",
-      "description": "Facilitate useful daily standups, daily scrums, async check-ins, or walk-the-board delivery syncs without turning them into manager-facing status theater. Use when the user needs a short daily coordination ritual, blocker triage, async standup format, remote-team check-in, or help converting a verbose standup into a board-first or blocker-first flow.",
-      "category": "project-management",
-      "path": "project-management/standup-meeting/SKILL.md",
-      "tags": [
-        "standup",
-        "daily-scrum",
-        "agile",
-        "team-sync",
-        "blockers"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "task-estimation",
-      "description": "Turn vague backlog items, stories, bugs, spikes, roadmap slices, or milestone work into practical size signals, uncertainty notes, and forecast-safe estimate packets. Use when the user needs story points, t-shirt sizing, planning-poker prep, reference-story calibration, confidence/risk framing, or a sizing pass for software, product, or game work. Not for backlog decomposition, standups, retrospectives, or hard deadline promises.",
-      "category": "project-management",
-      "path": "project-management/task-estimation/SKILL.md",
-      "tags": [
-        "estimation",
-        "agile",
-        "sprint-planning",
-        "story-points",
-        "planning-poker"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "task-planning",
-      "description": "Plan and organize software development tasks effectively. Use when breaking down features, creating user stories, or planning sprints. Handles task breakdown, user stories, acceptance criteria, and backlog management.",
-      "category": "project-management",
-      "path": "project-management/task-planning/SKILL.md",
-      "tags": [
-        "task-planning",
-        "user-stories",
-        "backlog",
-        "sprint-planning",
-        "agile"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [],
-      "commands": []
-    },
-    {
-      "name": "lmstudio-cli",
-      "description": "Use LM Studio CLI docs and OpenAI-compatible LM Studio servers to discover models, verify remote availability, and configure downstream tools like Strix. Supports local `lms` CLI flows and remote HTTP endpoint validation.",
-      "category": "utilities",
-      "path": "utilities/lmstudio-cli/SKILL.md",
-      "tags": [
-        "lmstudio",
-        "lm-studio",
-        "lms",
-        "local-llm",
-        "openai-compatible",
-        "strix",
-        "model-server",
-        "inference"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "ChatGPT",
-        "Codex",
-        "Cursor"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Grep",
-        "Glob",
-        "WebFetch"
-      ],
-      "commands": [
-        {
-          "command": "lms --help",
-          "source": "utilities/lmstudio-cli/SKILL.md"
-        },
-        {
-          "command": "lms server status --json --quiet",
-          "source": "utilities/lmstudio-cli/SKILL.md"
-        },
-        {
-          "command": "lms ls --llm",
-          "source": "utilities/lmstudio-cli/SKILL.md"
-        },
-        {
-          "command": "lms load <model_key> --identifier \"my-model\"",
-          "source": "utilities/lmstudio-cli/SKILL.md"
-        },
-        {
-          "command": "curl -fsS http://HOST:PORT/v1/models",
-          "source": "utilities/lmstudio-cli/SKILL.md"
-        },
-        {
-          "command": "curl -fsS http://HOST:PORT/api/v1/models/load -H \"Content-Type: application/json\" -d '{\"model\":\"MODEL_KEY\",\"context_length\":262144,\"echo_load_config\":true}'",
-          "source": "utilities/lmstudio-cli/SKILL.md"
         }
       ]
     }

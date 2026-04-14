@@ -3,58 +3,57 @@
 ## Scope
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, cross-skill mentions, and documentation indexing
-- Filesystem skills with `SKILL.md`: 89
-- Manifest skills in `.agent-skills/skills.json`: 85
-- Manifest `skill_count`: 85
-- Skills with references/: 58
+- Total skills: 89
+- Manifest skills in `.agent-skills/skills.json`: 89
+- Skills with references/: 59
 - Skills with evals/: 58
 - Skills with scripts/: 23
-- Graph nodes: 231
-- Graph edges: 637
+- Graph nodes: 232
+- Graph edges: 644
 
 ## Strongest structural findings
-1. codebase-search now reads as the search-analysis lane's evidence-first repo-navigation and impact-mapping anchor instead of a giant command catalog, which sharpens the boundary between discovery, diagnosis, refactoring, and graph-backed architecture work.
-2. Discovery docs (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree nodes, so one-line positioning still materially affects activation.
-3. Support coverage improved again by modernizing a README-visible legacy anchor with both `references/` and `evals/` instead of adding another overlapping wrapper.
-4. The search-analysis cluster is healthier when `codebase-search`, `log-analysis`, `data-analysis`, and `pattern-detection` stay separated by discovery mode rather than generic “analysis” wording.
-5. Manifest drift is currently visible: filesystem skills=89 vs `.agent-skills/skills.json` entries=85; treat manifest-only structural summaries as incomplete until the mismatch is repaired.
+1. Catalog drift is currently repaired: filesystem skills and `.agent-skills/skills.json` both resolve to 89 entries, and top-level README/setup count surfaces were refreshed in the same pass.
+2. The game-development lane is now visible in shipped discovery surfaces instead of living only as cross-links inside other skills.
+3. `skill-standardization` is now a stronger maintenance anchor because it covers both SKILL.md quality and catalog/discovery sync checks.
+4. Discovery docs (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree nodes, so repo-level inventory wording still materially affects activation.
+5. The repo still gains more from upgrading high-visibility maintenance anchors than from adding overlapping wrappers in already-covered clusters.
 
 ## Community map
-- agent-development: 2
-- backend: 5
-- code-quality: 5
-- core-orchestration: 10
-- creative-media: 2
-- documentation: 5
-- filesystem-only: 7
-- frontend: 10
-- infrastructure: 13
-- marketing: 2
-- planning-review: 5
-- project-management: 4
-- search-analysis: 7
-- utilities: 12
+- agent-development
+- backend
+- code-quality
+- core-orchestration
+- creative-media
+- documentation
+- frontend
+- game-development
+- infrastructure
+- marketing
+- planning-review
+- project-management
+- search-analysis
+- uncategorized
+- utilities
 
 ## Highest-degree nodes
-- README.md: degree 87
-- README.ko.md: degree 87
-- setup-all-skills-prompt.md: degree 84
+- README.ko.md: degree 88
+- README.md: degree 88
+- setup-all-skills-prompt.md: degree 88
 - debugging: degree 27
-- performance-optimization: degree 16
-- jeo: degree 16
 - code-review: degree 16
+- jeo: degree 16
+- performance-optimization: degree 16
 - plannotator: degree 15
-- web-accessibility: degree 14
+- state-management: degree 14
 - task-planning: degree 14
 
 ## Duplicate / consolidation notes
-- `codebase-search` and `log-analysis` should stay separated by keep repo navigation distinct from log-first symptom triage.
-- `codebase-search` and `code-refactoring` should stay separated by keep discovery / impact mapping distinct from behavior-preserving structural cleanup.
-- `codebase-search` and `graphify` should stay separated by keep ad hoc repo search distinct from persistent graph-backed architecture memory.
-- `deployment-automation` and `workflow-automation` should stay separated by keep release execution distinct from recurring job automation.
-- `authentication-setup` and `security-best-practices` should stay separated by keep product-auth setup distinct from broad hardening work.
+- `video-production` and `remotion-video-production` stay healthiest as canonical skill + compatibility alias.
+- `design-system` and `frontend-design-system` stay healthiest as canonical skill + compatibility alias.
+- `marketing-automation` and `marketing-skills-collection` stay healthiest as canonical skill + compatibility alias.
+- `skill-standardization` now owns catalog-sync validation in addition to SKILL.md linting, which reduces repo-wide discovery drift.
 
 ## Recommended maintenance direction
-- Continue upgrading remaining README-visible legacy anchors that still lack both `references/` and `evals/`.
-- Treat `codebase-search` as the search-analysis anchor for repo discovery and impact mapping; route diagnosis, cleanup, and persistent graphing to the neighboring specialists.
-- Repair manifest drift in a separate bounded pass: missing from manifest = bmad, clawteam, game-build-log-triage, game-ci-cd-pipeline, game-demo-feedback-triage, game-performance-profiler, steam-store-launch-ops; manifest-only extras = bmad-orchestrator, copilot-coding-agent, graphify.
+- Keep runtime discovery filesystem-first, with manifest metadata acting as an overlay rather than a hard gate.
+- Run the catalog-sync validator whenever a skill is added, renamed, removed, or canonicalized into an alias.
+- Keep README / README.ko / setup prompt inventory surfaces in sync with the live folder set, especially for specialist game-dev lanes.
