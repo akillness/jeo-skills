@@ -374,3 +374,11 @@
 - Accepted: rewrite `bmad-idea` as the pre-planning idea router, add `references/` + `evals/`, refresh `SKILL.toon` / `REFERENCE.md`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the durable rationale in the wiki
 - Rejected: adding another creativity wrapper; keeping `bmad-idea` as a legacy command/persona catalog; letting the skill overlap heavily with `bmad`, `marketing-automation`, or `bmad-gds`
 - Wiki files created/updated: `queries/bmad-idea-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | playwriter modernization
+- Area researched: running-browser / authenticated-session browser automation, upstream `playwriter` workflow details, MCP integration boundaries, and the repo boundary between `playwriter` and `agent-browser`
+- Survey files created under `.survey/playwriter-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `playwriter` as the running-browser / authenticated-session reuse anchor, add `references/` + `evals/`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the durable rationale in the wiki
+- Rejected: adding another authenticated-browser wrapper; keeping `playwriter` as a generic Playwright/MCP command dump; letting it compete directly with `agent-browser` as the default browser skill
+- Wiki files created/updated: `queries/playwriter-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

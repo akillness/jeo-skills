@@ -1,119 +1,159 @@
 ---
 name: playwriter
-description: Playwright-based browser automation via Chrome extension + MCP/CLI. Connects to your RUNNING browser (existing logins, cookies, extensions preserved). Use for authenticated flows, stateful web automation, and AI agent browser control without re-logging in.
+description: "Reuse a running Chrome session for browser automation via Playwriter CLI + MCP. Use when the task depends on the browser the user already has open — existing logins, cookies, extensions, passkey-friendly flows, or live-tab continuity. Route repeatable fresh-browser or CI-style checks to `agent-browser` instead."
 license: MIT
-compatibility: Requires Chrome browser + Playwriter Chrome extension (Web Store) + npm install -g playwriter. MCP integration works with Claude Desktop, Codex CLI, Gemini CLI. localhost:19988 WebSocket relay server.
+compatibility: Requires Chrome/Chromium plus the Playwriter extension and CLI (`npm install -g playwriter` or `npx playwriter@latest`). Works best for local headed browser workflows where reusing the current browser session matters more than CI-grade determinism.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   source: remorses/playwriter
-  tags: playwright, browser-automation, chrome-extension, mcp, authenticated, stateful, session
+  tags: playwriter, playwright, browser-automation, chrome-extension, mcp, authenticated, stateful, session-reuse
 allowed-tools: Read Write Bash Grep Glob
 ---
 
-# playwriter - Playwright Browser Automation for AI Agents
+# playwriter
 
-Playwriter connects AI agents to your **running Chrome browser** instead of spawning a new headless instance. Your existing logins, cookies, extensions, and tab state are all preserved.
+Playwriter is the **running-browser** browser-automation skill. It connects an agent to Chrome/Chromium that is already part of the user’s real workflow instead of spawning a clean disposable browser. That makes it useful for authenticated flows, extension-dependent pages, and long-lived tab context — but less reproducible than a fresh-session browser tool.
 
 ## When to use this skill
 
-- Automate sites that require login (Gmail, GitHub, internal tools) without re-authenticating
-- Control your real browser tab with full Playwright API access
-- Run stateful automation that spans multiple steps (shopping carts, multi-step forms)
-- Use MCP integration for Claude Desktop / AI agent browser control
-- Record browser sessions or debug with CDP inspection
-- Remote browser automation via tunnels
+Use `playwriter` when the task needs one or more of these:
 
-**vs. agent-browser**: agent-browser spawns a fresh headless browser (isolated, CI-friendly). playwriter connects to your existing Chrome session (authenticated, stateful, with your extensions).
+- the browser the user already has open
+- existing logins, cookies, or trusted-device state
+- extension-dependent workflows
+- passkey / SSO / MFA-heavy flows where manual login handoff is realistic
+- live-tab continuity with a human and agent sharing the same browser
+- MCP-based browser control for Claude / Codex / Gemini using the running browser
 
-## Installation
+Do **not** use `playwriter` by default for:
 
-### Step 1: Install Chrome Extension
+- CI-style repeatable browser checks
+- fresh-session verification that should not touch the user’s real browser profile
+- simple scraping or deterministic form checks that fit `agent-browser`
+- tasks that need the strongest isolation or the least user-state coupling
 
-Install the **Playwriter** Chrome extension from the Web Store (search "Playwriter MCP" or use extension ID `jfeammnjpkecdekppnclgkkffahnhfhe`).
+## Quick routing rule
 
-After installing, click the extension icon on any tab you want to allow automation on. The icon turns **green** when a tab is enabled for control.
+| If the job needs... | Use |
+|---|---|
+| The browser the user already has open | `playwriter` |
+| Existing logins / cookies / extensions | `playwriter` |
+| A clean, reproducible, disposable session | `agent-browser` |
+| Headless verification / screenshot diffs / isolated checks | `agent-browser` |
+| Hosted or cloud browser infrastructure | a provider-specific or cloud-browser skill |
 
-### Step 2: Install CLI
+## Instructions
+
+### Step 1: Pick the right browser runtime
+
+Use `playwriter` only when running-browser reuse is the requirement. If the task is really about a clean disposable browser or CI-style reproducibility, route to `agent-browser` instead.
+
+### Step 2: Follow the core workflow
+
+Always follow the same loop:
+
+1. **Prepare the running-browser bridge**
+2. **Create or select a session**
+3. **Observe first** with `snapshot({ page })`
+4. **Act once**
+5. **Observe again** before the next action
+
+### Step 1: Install the extension and CLI
 
 ```bash
+# install the CLI
 npm install -g playwriter
-# or run without installing:
+# or use it without global install
 npx playwriter@latest --help
 ```
 
-The extension auto-starts a WebSocket relay server at `localhost:19988`.
+Install the **Playwriter** Chrome extension, then click the extension icon on the tab you want to control. The tab should show the connected/green state before you assume automation is available.
 
-## Core workflow
+### Step 2: Start browser support and create a session
 
-Always follow the Observe → Act → Observe pattern:
+Use the upstream browser/session flow, not a vague “extension auto-starts everything” assumption:
 
 ```bash
-# 1. Create a session
+# start the managed browser/runtime if needed
+playwriter browser start
+
+# create a stateful sandbox session
 playwriter session new
 
-# 2. Navigate and observe
-playwriter -s 1 -e 'await page.goto("https://example.com")'
-playwriter -s 1 -e 'await snapshot({ page })'
+# inspect current sessions
+playwriter session list
+```
 
-# 3. Interact based on snapshot output
+Notes:
+- `playwriter browser start` can launch Chrome for Testing / Chromium with the Playwriter extension available.
+- `playwriter session new` creates a **stateful sandbox** and returns a session id.
+- Browser tabs are shared, but session state is isolated.
+
+### Step 3: Observe → act → observe
+
+```bash
+# navigate
+playwriter -s 1 -e 'await page.goto("https://example.com")'
+
+# observe current page state
+playwriter -s 1 -e 'console.log(await snapshot({ page }))'
+
+# act using a fresh aria-ref from the snapshot
 playwriter -s 1 -e 'await page.locator("aria-ref=e5").click()'
 
-# 4. Re-observe after action
-playwriter -s 1 -e 'await snapshot({ page })'
+# observe again after the action
+playwriter -s 1 -e 'console.log(await snapshot({ page }))'
 ```
 
-## Session management
+Rules:
+- Never keep using old `aria-ref` values after navigation or major DOM changes.
+- Prefer `snapshot({ page })` over screenshots when text structure is enough.
+- Use screenshots or recordings only when visual evidence matters.
+
+## High-value command patterns
+
+### Navigation and state
 
 ```bash
-# Create a new isolated stateful session
+playwriter browser start
 playwriter session new
-
-# List all active sessions (shows browser, profile, state info)
 playwriter session list
-
-# Delete a session and clear its state
-playwriter session delete <sessionId>
-
-# Reset the CDP connection and clear execution environment
-playwriter session reset <sessionId>
+playwriter session reset 1
+playwriter session delete 1
 ```
 
-## The -e / --eval flag
-
-Execute arbitrary Playwright code in a session:
+### Execute Playwright code in a session
 
 ```bash
-# Navigate to a URL
+# basic navigation
 playwriter -s 1 -e 'await page.goto("https://github.com")'
 
-# Fill a form field
+# fill + submit
 playwriter -s 1 -e 'await page.fill("#search", "playwriter"); await page.keyboard.press("Enter")'
 
-# Get accessibility snapshot (preferred over screenshots for text content)
-playwriter -s 1 -e 'await snapshot({ page })'
-
-# Take screenshot with visual accessibility labels (color-coded by element type)
-playwriter -s 1 -e 'await screenshotWithAccessibilityLabels({ page })'
-
-# Store state between calls (state object persists within session)
-playwriter -s 1 -e 'state.url = page.url(); state.title = await page.title()'
-playwriter -s 1 -e 'console.log(state.url, state.title)'
+# save reusable state between calls
+playwriter -s 1 -e 'state.lastUrl = page.url(); state.heading = await page.textContent("h1")'
+playwriter -s 1 -e 'console.log(state.lastUrl, state.heading)'
 ```
 
-**Quoting rules**: Wrap code in single quotes. For multiline code, use heredoc:
+### Multiline code safely
 
 ```bash
 playwriter -s 1 -e "$(cat <<'EOF'
-const text = await page.textContent('h1');
-state.heading = text;
-await snapshot({ page });
+const title = await page.title();
+state.title = title;
+console.log(await snapshot({ page }));
 EOF
 )"
 ```
 
-## MCP Integration
+Use heredocs when the JavaScript would become fragile with quoting.
 
-### Claude Desktop config (`~/.claude/settings.json` or Claude Desktop MCP settings)
+## MCP integration
+
+Use Playwriter when a model client needs browser tooling **for the running browser**, not when it simply needs any browser tool.
+
+### Example MCP config
 
 ```json
 {
@@ -126,114 +166,71 @@ EOF
 }
 ```
 
-### Remote relay server
+Common uses:
+- Claude / Codex / Gemini can call into Playwriter through MCP.
+- MCP gives the agent a transport layer; Playwriter still owns the browser/session behavior.
+- Session reuse, browser visibility, and tab consent remain Playwriter concerns, not MCP concerns.
 
-```json
-{
-  "mcpServers": {
-    "playwriter": {
-      "command": "npx",
-      "args": ["-y", "playwriter@latest"],
-      "env": {
-        "PLAYWRITER_HOST": "your-relay-host",
-        "PLAYWRITER_TOKEN": "your-secret-token",
-        "PLAYWRITER_SESSION": "1"
-      }
-    }
-  }
-}
-```
+## Safety and expectations
 
-### MCP tools exposed
-
-| Tool | Description |
-|------|-------------|
-| `execute` | Run arbitrary JavaScript Playwright code (`code`, `timeout` params) |
-| `reset` | Recreate CDP connection, clear state — use after connection failures |
-
-## Built-in globals (in execute sandbox)
-
-| Global | Description |
-|--------|-------------|
-| `page` | Current Playwright page |
-| `context` | Browser context |
-| `state` | Persistent object — survives multiple `-e` calls in same session |
-| `snapshot({ page })` | Accessibility tree as text (token-efficient) |
-| `screenshotWithAccessibilityLabels({ page })` | Screenshot with color-coded element markers |
-| `getPageMarkdown()` | Article text via Mozilla Readability |
-| `waitForPageLoad()` | Smart load detection |
-| `getLatestLogs()` | Browser console errors/logs |
-| `getCleanHTML()` | Cleaned DOM HTML |
-| `getLocatorStringForElement()` | Get selector for a DOM element |
-| `getReactSource()` | React component source tree |
-
-## Accessibility labeling
-
-`screenshotWithAccessibilityLabels({ page })` overlays color-coded markers on interactive elements:
-
-| Color | Element type |
-|-------|-------------|
-| Yellow | Links |
-| Orange | Buttons |
-| Coral | Inputs |
-| Pink | Checkboxes |
-| Peach | Sliders |
-
-Click a labeled element using `aria-ref`:
-```bash
-playwriter -s 1 -e 'await page.locator("aria-ref=e5").click()'
-```
-
-## Network interception and state persistence
-
-```bash
-# Intercept network requests
-playwriter -s 1 -e 'state.requests = []; page.on("request", r => state.requests.push(r.url()))'
-
-# Check collected requests later
-playwriter -s 1 -e 'console.log(state.requests.slice(-5).join("\n"))'
-
-# Screen recording
-playwriter -s 1 -e 'await recording.start()'
-# ... do actions ...
-playwriter -s 1 -e 'const video = await recording.stop(); state.video = video'
-```
-
-## Remote access
-
-Control Chrome on a remote machine via tunnel:
-
-```bash
-# On the machine with Chrome:
-playwriter serve --token my-secret --replace
-
-# From agent machine:
-playwriter --host <ip-or-hostname> --token my-secret -s 1 -e 'await page.goto("https://example.com")'
-```
-
-## Best practices
-
-- **Observe → Act → Observe**: always call `snapshot({ page })` before and after each action
-- **Prefer `snapshot()` over screenshots** for text inspection (fewer tokens, faster)
-- **Never chain actions blindly** — verify state between steps
-- **Use stable selectors**: prefer `aria-ref`, `data-testid`, or accessible roles
-- **Store context in `state`**: avoid repeated navigation by persisting page references
-- **Use `reset` on failures**: CDP disconnects recover cleanly with `playwriter session reset`
+- `playwriter` is **privileged mode** because it can touch the user’s real browser session.
+- Prefer it only when session reuse is genuinely required.
+- Expect lower reproducibility than a clean isolated browser because tabs, extensions, and humans can mutate state.
+- Manual login / MFA / CAPTCHA handoff is normal in this lane; don’t pretend full autonomy is guaranteed.
+- Detach or reset cleanly; do not assume it is safe to kill the user’s browser.
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| Extension not connecting | Click extension icon on the tab; icon must be green |
-| `connection refused :19988` | Extension auto-starts server; check Chrome is running with extension installed |
-| Code execution timeout | Increase with `--timeout 30000` flag |
-| Click fails silently | Use `snapshot({ page })` — a modal likely intercepts the click |
-| Stale session | Run `playwriter session reset <id>` to restore CDP connection |
-| Remote access failing | Confirm `playwriter serve` is running and token matches |
+| Issue | What to check |
+|---|---|
+| Nothing responds | Confirm the extension is installed and enabled on the target tab |
+| Wrong tab/page state | Re-run `snapshot({ page })` and confirm you are on the expected tab before clicking |
+| Stale / broken session | `playwriter session reset <id>` |
+| Quoting breaks JavaScript | Use a heredoc for `-e` input |
+| Need repeatable isolated automation | Route to `agent-browser` instead |
+| Browser state is too messy / human interference | Start a fresh session or use a fresh-session browser tool |
+
+## Examples
+
+### Example 1: Logged-in SaaS workflow
+- Prompt: "Use my already logged-in Chrome to update a Jira ticket without re-authenticating."
+- Expected skill behavior: choose `playwriter`, mention running-browser reuse, create a session, observe first, then act.
+
+### Example 2: Clean browser verification
+- Prompt: "Run a repeatable headless checkout test in CI and compare screenshots."
+- Expected skill behavior: route away from `playwriter` to `agent-browser` or another fresh-session tool because isolation matters more than session reuse.
+
+### Example 3: MCP browser bridge
+- Prompt: "Connect Codex or Claude to the browser I already have open so it can use my current tabs and cookies."
+- Expected skill behavior: choose `playwriter`, explain MCP config, and make the running-browser assumption explicit.
+
+## Best practices
+
+1. Choose `playwriter` because the browser state matters, not because the word “browser” appears.
+2. Start with `snapshot({ page })` before any action that could hit the wrong tab or stale UI state.
+3. Re-snapshot after each meaningful action; live browser state drifts faster than isolated automation state.
+4. Use heredocs for non-trivial JavaScript to avoid shell-quoting bugs.
+5. Treat manual login / MFA / CAPTCHA handoff as normal in this lane.
+6. Report why a running browser was necessary and when a fresh-session tool would have been safer.
 
 ## References
 
-- [GitHub: remorses/playwriter](https://github.com/remorses/playwriter)
-- [Chrome Extension Web Store](https://chromewebstore.google.com/detail/playwriter-mcp/jfeammnjpkecdekppnclgkkffahnhfhe)
-- `playwriter skill` — print full usage guide from CLI
-- `playwriter logfile` — view relay server + CDP log paths
+Deep-dive docs in this skill:
+- [modes-and-routing](./references/modes-and-routing.md)
+- [session-workflow](./references/session-workflow.md)
+- [mcp-integration](./references/mcp-integration.md)
+
+Primary sources:
+- https://raw.githubusercontent.com/remorses/playwriter/main/README.md
+- https://playwright.dev/docs/auth
+- https://playwright.dev/docs/api/class-browsertype#browser-type-connect-over-cdp
+- https://modelcontextprotocol.io/introduction
+
+## Output expectations
+
+When using this skill, report:
+- why `playwriter` was chosen instead of a fresh-session browser tool
+- session/runtime assumptions
+- key actions taken
+- evidence captured (`snapshot`, screenshot, recording, logs)
+- any manual handoff or auth-related limitation encountered

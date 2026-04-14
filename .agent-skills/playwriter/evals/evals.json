@@ -1,0 +1,35 @@
+{
+  "skill_name": "playwriter",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use my already logged-in Chrome to automate a Jira workflow and keep the same browser session.",
+      "expected_output": "The skill activates and chooses Playwriter because the running browser, login state, and live session continuity are required.",
+      "assertions": [
+        "Response explicitly prefers playwriter for the running-browser lane",
+        "Response mentions existing logins/cookies/extensions or live browser context",
+        "Response includes an observe-act-observe or snapshot-first workflow"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Run a repeatable headless checkout verification in CI and compare screenshots from a clean browser state.",
+      "expected_output": "The skill should not claim Playwriter is the best default; it should route the user to a fresh-session browser tool such as agent-browser.",
+      "assertions": [
+        "Response says playwriter is not the default for clean repeatable CI checks",
+        "Response routes to agent-browser or another fresh-session browser tool",
+        "Response explains that reproducibility/isolation matter more than session reuse here"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Connect Claude or Codex to the browser I already have open so it can use my current tabs and cookies.",
+      "expected_output": "The skill activates and explains MCP integration plus the constraint that Playwriter is for a running browser, not generic browser automation.",
+      "assertions": [
+        "Response mentions MCP integration",
+        "Response mentions the running browser or current Chrome session",
+        "Response does not frame Playwriter as the default for every browser task"
+      ]
+    }
+  ]
+}

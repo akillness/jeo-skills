@@ -233,7 +233,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `plannotator` | `plan` | Visual approval gate for agent plans/diffs — annotate, approve, request changes, or save reviewed plans |
 | `agentation` | `annotate` | UI annotation → targeted agent code fixes |
 | `agent-browser` | `agent-browser` | Headless browser verification for AI agents |
-| `playwriter` | `playwriter` | Playwright automation connecting to live browser |
+| `playwriter` | `playwriter` | Running-browser automation for authenticated Chrome sessions and MCP browser reuse |
 | `vibe-kanban` | `kanbanview` | Visual Kanban board with git worktree isolation |
 
 ### 🤖 Agent Development (2)
