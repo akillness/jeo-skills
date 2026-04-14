@@ -14,7 +14,7 @@ The frontend cluster now has **two** true canonical-vs-alias pairs plus three cl
 - `react-best-practices` owns general React/Next.js performance work, while `vercel-react-best-practices` survives only as a compatibility alias.
 - `design-system` owns general frontend UI-system work, while `frontend-design-system` survives only as a compatibility alias.
 - `state-management` now owns React state-boundary decisions across local, shared, URL/form, server, and long-lived client workflow state instead of remaining a generic library-tour skill.
-- `web-accessibility` now owns accessibility remediation plus manual-vs-automated verification, while `web-design-guidelines` stays the broader UI-review lane.
+- `web-accessibility` now owns accessibility remediation plus manual-vs-automated verification, while `web-design-guidelines` now owns the broad interface-audit lane for hierarchy, clarity, consistency, interaction-state quality, responsiveness basics, accessibility basics, and launch-readiness review.
 - `ui-component-patterns` now owns reusable primitive / variant / slot API design, while `responsive-design` now owns mobile-first, container-aware layout adaptation plus overflow/reflow verification instead of remaining a generic CSS/example dump.
 
 ## Why this matters

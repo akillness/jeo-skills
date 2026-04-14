@@ -74,6 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **web-design-guidelines: UI 감사 재작성** | `web-design-guidelines`를 얇은 Vercel 규칙 fetcher에서 프론트엔드 클러스터의 broad interface audit 앵커로 재정의했습니다. 이제 launch-readiness, polish/consistency, flow-friction, heuristic, rule-overlay 리뷰 모드를 고르고, hierarchy, clarity, states, responsiveness basics, accessibility basics, performance/trust signals를 분류하며, `web-accessibility`, `responsive-design`, `ui-component-patterns`, `design-system`, `react-best-practices`로의 명시적 route-out을 제공합니다. `references/review-modes-and-categories.md`, `references/handoff-boundaries.md`, `references/ui-audit-packet-template.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
 | **monitoring-observability: 텔레메트리 리뷰 재작성** | `monitoring-observability`를 일반적인 Prometheus/로깅 예시 덤프에서 서비스 신뢰성, 텔레메트리 기반, 데이터/마케팅 파이프라인 헬스, 게임 live-ops 가시성, 스택 리뷰 감사까지 고르는 mode-selecting observability 앵커로 재정의했습니다. 이제 symptom-first alerting, 명시적인 dashboard/ownership 점검, `log-analysis`, `debugging`, `performance-optimization`, `langsmith`, `deployment-automation`, `game-performance-profiler`로의 route-out을 제공하며, `references/modes-and-boundaries.md`, `references/alert-dashboard-checklist.md`, `references/telemetry-rollout-matrix.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
 | **performance-optimization: 병목 워크플로우 재작성** | `performance-optimization`를 일반적인 React/DB 최적화 예시 모음에서 코드-퀄리티 클러스터의 측정 중심 튜닝 앵커로 재정의했습니다. 이제 interaction, page-load, API, DB, capacity, memory, runtime 병목 모드를 분류하고, 수정 제안 전에 맞는 증거 소스를 고르며, `monitoring-observability`, `debugging`, `code-refactoring`, `testing-strategies`, `game-performance-profiler`로의 route-out을 제공합니다. `references/tuning-modes.md`, `references/handoff-boundaries.md`, `references/measurement-checklist.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
 | **code-refactoring: 동작 보존 중심 재작성** | `code-refactoring`를 긴 교과서식 패턴 나열에서 코드-퀄리티 클러스터의 구조 개선 앵커로 재정의했습니다. 이제 로컬 안전 리팩터링, behavior-freeze-first 정리, 반복 마이그레이션 / codemod 모드를 고르고, 테스트·검색·reviewable slice를 명시하며, `debugging`, `code-review`, `testing-strategies`, `performance-optimization`, `codebase-search`로의 route-out을 제공합니다. `references/refactor-modes.md`, `references/handoff-boundaries.md`, `references/safe-refactor-checklist.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
@@ -257,7 +258,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `state-management` | Context·Zustand·Redux Toolkit·Jotai·TanStack Query를 나누는 React 상태 경계 결정 | 전체 |
 | `ui-component-patterns` | 공유 프론트엔드 컴포넌트를 위한 재사용 primitive·variant·slot API 설계 | 전체 |
 | `web-accessibility` | 접근성 감사·수정과 자동화 이후 수동 검증 가이드 | 전체 |
-| `web-design-guidelines` | 웹 인터페이스 가이드라인 준수 검토 | 전체 |
+| `web-design-guidelines` | hierarchy, clarity, consistency, state, responsiveness/accessibility basics를 보는 broad 웹 UI 감사 | 전체 |
 
 ### 🔍 코드 품질 (5개)
 

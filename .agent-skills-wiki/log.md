@@ -318,3 +318,11 @@
 - Accepted: rewrite `security-best-practices` as the layered hardening anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the durable rationale in the wiki
 - Rejected: adding another generic OWASP/appsec wrapper; folding auth-stack choice into the same skill; keeping the legacy Express-only middleware dump
 - Wiki files created/updated: `queries/security-best-practices-modernization-2026-04-14.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Web design guidelines modernization
+- Area researched: broad interface-audit workflows across launch-readiness, polish/consistency, heuristic review, rule overlays, responsiveness/accessibility basics, and the repo boundary with `web-accessibility`, `responsive-design`, `ui-component-patterns`, `design-system`, and `react-best-practices`
+- Survey files created under `.survey/web-design-guidelines-modernization-20260414/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `web-design-guidelines` as the broad interface-audit anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the durable rationale in the wiki
+- Rejected: leaving the skill as a thin vendor-rules fetcher; folding broad UI review into `web-accessibility`; adding another generic UI audit wrapper
+- Wiki files created/updated: `queries/web-design-guidelines-modernization-2026-04-14.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

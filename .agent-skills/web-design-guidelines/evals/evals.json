@@ -1,0 +1,38 @@
+{
+  "skill_name": "web-design-guidelines",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this signup flow UI before launch. I need broad feedback on hierarchy, CTA clarity, error states, mobile sanity, and whether anything should be routed to an accessibility-specific follow-up.",
+      "expected_output": "A broad UI audit packet with categorized findings, prioritization, and an explicit route-out to web-accessibility only for specialist remediation.",
+      "assertions": [
+        "Activates web-design-guidelines rather than treating the request as accessibility-only",
+        "Classifies findings into stable UI review categories",
+        "Includes severity or prioritization language",
+        "Mentions route-outs when accessibility issues dominate a subset of findings"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Audit this dashboard UI for consistency. Buttons, badges, empty states, loading states, and navigation all feel uneven. I want one concise UI audit packet, not a redesign system from scratch.",
+      "expected_output": "A polish/consistency audit that stays in broad UI review mode and does not drift into design-system ownership.",
+      "assertions": [
+        "Selects an appropriate review mode such as polish or consistency audit",
+        "Flags component/state consistency and wayfinding issues",
+        "Avoids reframing the task as token governance or full design-system work",
+        "Produces one concise audit packet"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Please check this settings page against broader web interface guidelines. I care about usability, visual hierarchy, responsiveness basics, and accessibility basics, but the main goal is a broad release-readiness review.",
+      "expected_output": "A launch-readiness or rule-overlay audit that uses external guidelines as an overlay and keeps the review broader than WCAG-only findings.",
+      "assertions": [
+        "Uses a broad release-readiness or rule-overlay framing",
+        "Treats accessibility as one category, not the whole workflow",
+        "Includes responsiveness basics and hierarchy review",
+        "Produces explicit next moves or route-outs"
+      ]
+    }
+  ]
+}
