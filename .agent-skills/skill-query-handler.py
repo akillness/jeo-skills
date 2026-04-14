@@ -100,6 +100,8 @@ class SkillQueryHandler:
         ]
 
     def _load_skill_catalog(self) -> Dict[str, Dict]:
+        catalog = self._catalog_from_filesystem()
+        manifest_overlay_applied = False
         for manifest_path in self._candidate_manifest_paths():
             if not manifest_path.exists():
                 continue
@@ -107,10 +109,33 @@ class SkillQueryHandler:
                 data = json.loads(manifest_path.read_text(encoding="utf-8"))
             except json.JSONDecodeError:
                 continue
-            catalog = self._catalog_from_manifest(data)
             if catalog:
-                return catalog
-        return self._catalog_from_filesystem()
+                catalog = self._merge_manifest_overlay(catalog, data)
+                manifest_overlay_applied = True
+            else:
+                manifest_catalog = self._catalog_from_manifest(data)
+                if manifest_catalog:
+                    catalog = manifest_catalog
+                    manifest_overlay_applied = True
+        return catalog if catalog or manifest_overlay_applied else {}
+
+    def _merge_manifest_overlay(self, catalog: Dict[str, Dict], data: Dict) -> Dict[str, Dict]:
+        for entry in data.get("skills", []):
+            name = str(entry.get("name", "")).strip()
+            if not name or name not in catalog:
+                continue
+            description = str(entry.get("description", "")).strip()
+            tags = [str(tag).strip() for tag in entry.get("tags", []) if str(tag).strip()]
+            search_terms = set(catalog[name].get("search_terms", []))
+            search_terms.update(self._build_search_terms(name, description or catalog[name].get("description", ""), tags, entry))
+            catalog[name]["tags"] = sorted({*catalog[name].get("tags", []), *tags})
+            if not catalog[name].get("description") and description:
+                catalog[name]["description"] = description
+            catalog[name]["search_terms"] = sorted(term for term in search_terms if term)
+            catalog[name]["description_tokens"] = set(
+                tok for tok in tokenize(catalog[name].get("description", "")) if tok not in STOPWORDS
+            )
+        return catalog
 
     def _catalog_from_manifest(self, data: Dict) -> Dict[str, Dict]:
         catalog: Dict[str, Dict] = {}

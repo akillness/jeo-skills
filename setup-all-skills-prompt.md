@@ -84,7 +84,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 85 skills to global store, link shared skills to all detected agents
+# Install ALL 89 skills to global store, link shared skills to all detected agents
 # Platform-specific skills (omc, ohmg, omx, ralphmode) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
@@ -329,12 +329,11 @@ If no → skip silently. Never re-ask.
 | Security scan | `strix --target ./app` |
 | Web scraping | `scrapling "URL"` |
 | Persistent wiki | `llm-wiki "/path/to/vault"` |
-| Repo knowledge graph | `graphify` |
 | Token output optimizer | `rtk gain` |
 
 ---
 
-## Skill Inventory (85 skills)
+## Skill Inventory (89 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
@@ -353,7 +352,8 @@ If no → skip silently. Never re-ask.
 | **Search & Analysis** | autoresearch, codebase-search *(evidence-first repo navigation / call-site tracing / impact analysis before debugging or refactoring)*, data-analysis, langsmith, log-analysis, pattern-detection | All (`*`) |
 | **Creative Media** | remotion-video-production *(compatibility alias for video-production when legacy tooling or explicit Remotion naming still expects the old skill)*, video-production *(canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs)* | All (`*`) |
 | **Marketing** | marketing-automation, marketing-skills-collection *(compatibility alias for marketing-automation)* | All (`*`) |
-| **Utilities** | clawteam, fabric, file-organization, git-submodule, git-workflow, google-workspace, graphify, llm-wiki, npm-git-install, obsidian-cli, obsidian-plugin, opencontext, workflow-automation *(repo task runners / bootstrap / local-CI automation)* | All (`*`) |
+| **Game Development** | game-build-log-triage *(Unity/Unreal build-log triage)*, game-ci-cd-pipeline *(game build/release pipeline design)*, game-demo-feedback-triage *(demo/playtest feedback synthesis)*, game-performance-profiler *(Unity/Unreal performance evidence triage)*, steam-store-launch-ops *(Steam store/festival/wishlist/launch operations)* | All (`*`) |
+| **Utilities** | clawteam, fabric, file-organization, git-submodule, git-workflow, google-workspace, llm-wiki, npm-git-install, obsidian-cli, obsidian-plugin, opencontext, workflow-automation *(repo task runners / bootstrap / local-CI automation)* | All (`*`) |
 
 ---
 
@@ -377,7 +377,11 @@ If no → skip silently. Never re-ask.
 | `obsidian-cli` | `obsidian cli`, `obsidian terminal`, `obsidian plugin reload` | Official Obsidian CLI — TUI, vault/file targeting, note automation, plugin reload |
 | `obsidian-plugin` | `obsidian plugin`, `create obsidian plugin` | Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility |
 | `llm-wiki` | `llm-wiki`, `obsidian wiki`, `research vault` | Persistent markdown wiki maintenance — bootstrap raw/wiki layers, ingest sources, file queries, run lint passes |
-| `graphify` | `graphify`, `knowledge graph`, `codebase graph`, `GRAPH_REPORT` | Build persistent repo/corpus knowledge graphs and query structure via `graph.json` and report artifacts |
+| `game-build-log-triage` | `game build log`, `unity build failed`, `unreal packaging error` | Unity/Unreal build/editor/package log triage — isolate the first actionable engine/build failure |
+| `game-ci-cd-pipeline` | `game ci`, `unity build pipeline`, `unreal release pipeline` | Game CI/CD architecture — build matrices, artifacts, cache policy, packaging stages, and release gates |
+| `game-demo-feedback-triage` | `playtest feedback`, `demo feedback`, `steam feedback triage` | Cluster demo/playtest/community feedback into fix-first priorities and explicit handoffs |
+| `game-performance-profiler` | `frame time`, `unity profiler`, `unreal insights` | Interpret Unity/Unreal performance evidence and produce bottleneck-first next actions |
+| `steam-store-launch-ops` | `steam launch`, `steam page`, `wishlist funnel` | Steam store-page, festival, demo, and launch-readiness operations |
 | `clawteam` | `clawteam`, `agent swarm`, `spawn agents` | Framework-agnostic multi-agent CLI — file-based state, task queues, inboxes, kanban |
 | `autoresearch` | `autoresearch`, `autonomous ml experiments`, `val_bpb` | Karpathy autonomous ML — overnight GPU experiments, ratchets improvements via git |
 | `skill-autoresearch` | `skill-autoresearch`, `optimize this skill`, `eval my skill` | Eval-driven SKILL.md optimization — benchmark, mutate, keep only score-improving changes |

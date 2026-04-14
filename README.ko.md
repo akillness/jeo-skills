@@ -198,7 +198,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 85개 로컬 스킬 폴더 = 총 85개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 89개 로컬 스킬 폴더 = 총 89개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (11개)
 
@@ -215,7 +215,6 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |
 | `bmad-idea` | `bmad-idea` | 전체 | 창의 지능 — 5개 전문 아이디에이션 에이전트 |
 | `survey` | `survey` | 전체 | 사전 구현 문제공간 스캔 |
-| `harness` | `harness` | 전체 | 전 플랫폼용 에이전트 팀 · 스킬 하네스 설계 메타 스킬 |
 
 ### 📋 계획 및 검토 (5개)
 
@@ -332,6 +331,16 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `marketing-automation` | 대표 일반 마케팅 라우터 — KPI 중심 브리프 + CRO/카피/SEO/애널리틱스/그로스 레인 선택 | 전체 |
 | `marketing-skills-collection` | 레거시 프롬프트팩/카탈로그용 `marketing-automation` 호환 별칭 | 전체 |
 
+### 🎮 게임 개발 (5개)
+
+| 스킬 | 설명 | 플랫폼 |
+|------|------|--------|
+| `game-build-log-triage` | Unity/Unreal 빌드, cook, package, editor, signing, CI 로그에서 첫 번째 실행 가능한 실패를 분리하는 전문 triage | 전체 |
+| `game-ci-cd-pipeline` | 게임 빌드/릴리즈 파이프라인 설계 및 강화 — matrix, artifact 흐름, cache 정책, packaging 단계, release gate | 전체 |
+| `game-demo-feedback-triage` | 플레이테스트/데모/커뮤니티 피드백을 가중치 테마와 fix-first 우선순위로 정리 | 전체 |
+| `game-performance-profiler` | Unity/Unreal frame-time, hitch, memory, CPU/GPU 병목 증거 해석 | 전체 |
+| `steam-store-launch-ops` | Steam 상점 페이지, 페스티벌, 데모, 위시리스트, 출시 준비 운영 | 전체 |
+
 ### 🔧 유틸리티 (11개)
 
 | 스킬 | 설명 | 플랫폼 |
@@ -342,7 +351,6 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `git-workflow` | 로컬 Git 브랜치, 커밋, 리베이스, 충돌 해결, 안전한 푸시, 복구 워크플로우 | 전체 |
 | `google-workspace` | Google Workspace REST API 자동화 — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
-| `graphify` | 저장소/코퍼스 지식 그래프 생성 — `GRAPH_REPORT.md`, `graph.json`, HTML 출력과 graph 기반 질의 워크플로우 | 전체 |
 | `npm-git-install` | GitHub에서 npm 패키지 설치 | 전체 |
 | `obsidian-cli` | 공식 Obsidian CLI 운영 — 활성화, TUI, 노트/작업 자동화, vault·file 타기팅, plugin reload, 개발자 명령 | 전체 |
 | `obsidian-plugin` | Obsidian 플러그인 개발 — 27개 ESLint 규칙, 보일러플레이트 생성기, 접근성, 커뮤니티 제출 검증 | 전체 |
