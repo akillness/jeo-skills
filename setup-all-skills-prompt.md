@@ -370,7 +370,7 @@ If no → skip silently. Never re-ask.
 | `survey` | `survey` | Cross-platform landscape scan before planning or implementation, with an explicit evidence-recovery ladder for broken search/extract runs |
 | `agentation` | `annotate`, `UI검토`, `agentui` | UI annotation → agent code modification. MCP: `npx add-mcp "npx -y agentation-mcp server"` |
 | `vibe-kanban` | `kanbanview` | Visual Kanban board with git worktree isolation |
-| `bmad` | `bmad` | Structured BMAD workflow — Analysis → Planning → Solutioning → Implementation |
+| `bmad` | `bmad`, `workflow-init`, `workflow-status` | Portable BMAD/BMM core router — choose project level, identify the current phase, recommend the next artifact, and route runtime-specific depth outward |
 | `bmad-gds` | `bmad-gds` | Game-production orchestrator for ideas, GDDs, playtest notes, bugs, and launch beats |
 | `bmad-idea` | `bmad-idea` | Creative ideas · design thinking · innovation strategy |
 | `agent-browser` | `agent-browser` | Headless browser automation for AI agents |

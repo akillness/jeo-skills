@@ -90,6 +90,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
+| **bmad: core BMAD router modernization** | Reframed `bmad` into the portable BMAD/BMM core router: it now chooses project level, identifies the current phase, recommends one next artifact, and routes runtime-specific or specialist depth to `plannotator`, `task-planning`, `omc`, `omx`, `ohmg`, or `bmad-gds` instead of acting like a giant command dump. Added `references/core-routing.md`, `references/status-and-review.md`, `references/runtime-and-module-boundaries.md`, and `evals/evals.json`, while keeping the existing helper scripts. |
 | **bmad-gds: game producer/orchestration rewrite** | Reframed `bmad-gds` from a generic phase catalog into a practical game-production coordination skill. It now acts as the repo's game-cluster orchestrator: normalizes mixed packets (idea, GDD, playtest notes, bug/build issues, launch targets), chooses one operating mode, produces one milestone-aware coordination brief, and routes detailed work to `game-demo-feedback-triage`, `game-build-log-triage`, `game-performance-profiler`, `steam-store-launch-ops`, `task-planning`, or `bmad-idea` as needed. Added `references/operating-modes.md`, `references/scope-boundaries.md`, and `evals/evals.json` without increasing the skill count. |
 
 ## 🆕 What's New in v2026-04-08
@@ -213,7 +214,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | Gemini / Antigravity entry for the portable `oh-my-agent` harness (`.agents` source of truth, native Gemini projection, cross-vendor-ready layout) |
 | `ralph` | `ralph`, `ooo` | All | Ouroboros specification-first + persistent completion loop |
 | `ralphmode` | `ralphmode` | All | Automation permission profiles (sandbox-first, repo boundary) |
-| `bmad` | `bmad` | Claude | Structured phase-based BMAD workflow orchestration (Analysis → Planning → Solutioning → Implementation) |
+| `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Portable BMAD/BMM core router — choose project level, identify the current phase, recommend the next artifact, and route runtime-specific depth outward |
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Creative intelligence — 5 specialist ideation agents |
 | `survey` | `survey` | All | Pre-implementation landscape scan |
