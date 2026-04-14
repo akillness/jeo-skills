@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 90 filesystem skills with `SKILL.md`
 - 90 manifest entries in `.agent-skills/skills.json`
-- 67 skills with `references/`
-- 66 skills with `evals/`
+- 68 skills with `references/`
+- 67 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -58,6 +58,7 @@ Recent ratchets:
 - The `security-best-practices` modernization pass added both `references/` and `evals/`, which matters because a high-traffic web/app hardening anchor now owns layered security classification and honest route-outs instead of a stale Express-only OWASP snippet dump.
 - The `web-design-guidelines` modernization pass added three `references/` docs and `evals/evals.json`, which matters because the last weak high-visibility frontend review anchor now owns a broad interface-audit packet instead of a thin vendor-rules fetcher.
 - The `vercel-deploy` modernization pass added three `references/` docs and `evals/evals.json`, which matters because a stale provider-specific deployment skill now owns preview/prod promotion, alias/domain, env-sync, and rollback operations instead of a legacy claimable-preview shortcut.
+- The `ohmg` modernization pass added `references/` and `evals/`, which matters because a fast-moving platform anchor now explains `oh-my-agent` / `oma`, `.agents` as the source of truth, Gemini-vs-Antigravity capability differences, and route-outs to `omc` / `omx` instead of a stale Gemini-only wrapper.
 - The catalog-sync hardening pass added a new `references/` doc and `scripts/validate_catalog_sync.py` to `skill-standardization`, which matters because the repo now validates discovery-surface drift explicitly instead of only linting individual `SKILL.md` files.
 
 ## Why it matters
@@ -98,3 +99,5 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[pattern-detection-modernization-2026-04-14]]
 - [[web-design-guidelines-modernization-2026-04-14]]
 - [[vercel-deploy-modernization-2026-04-15]]
+- [[core-orchestration-platform-cluster]]
+- [[ohmg-modernization-2026-04-15]]

@@ -210,7 +210,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `deep interview`, `deslop`, `cancelomc` | Claude | 29+ agent orchestration layer (v4.9.3) — Teams/Autopilot/Ralph/Ultrawork/CCG modes, smart model routing, skill layers, real-time HUD |
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Multi-agent workflow layer for Codex CLI (v0.11.10) — 30+ agents, 35+ skills, tmux team runtime, omx explore/sparkshell |
-| `ohmg` | `ohmg` | Gemini | Antigravity multi-agent framework |
+| `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | Gemini / Antigravity entry for the portable `oh-my-agent` harness (`.agents` source of truth, native Gemini projection, cross-vendor-ready layout) |
 | `ralph` | `ralph`, `ooo` | All | Ouroboros specification-first + persistent completion loop |
 | `ralphmode` | `ralphmode` | All | Automation permission profiles (sandbox-first, repo boundary) |
 | `bmad` | `bmad` | Claude | Structured phase-based BMAD workflow orchestration (Analysis → Planning → Solutioning → Implementation) |

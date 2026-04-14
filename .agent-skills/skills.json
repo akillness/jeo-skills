@@ -1801,22 +1801,22 @@
     },
     {
       "name": "ohmg",
-      "description": "Ultimate multi-agent framework for Google Antigravity. Orchestrates specialized domain agents (PM, Frontend, Backend, Mobile, QA, Debug) via Serena Memory.",
+      "description": "Adopt `oh-my-agent` from a Gemini CLI or Antigravity workflow. Use when the user wants a portable multi-agent harness with `.agents` as the source of truth, Gemini-native generated agents, Antigravity compatibility, or cross-vendor-ready orchestration that can later route work to Claude or Codex.",
       "category": "core-orchestration",
       "path": "ohmg/SKILL.md",
       "tags": [
         "ohmg",
+        "oh-my-agent",
+        "oma",
         "multi-agent",
         "orchestration",
-        "gemini",
+        "gemini-cli",
         "antigravity",
-        "serena-memory",
-        "workflow"
+        "portable-harness",
+        "dot-agents"
       ],
       "platforms": [
         "Gemini",
-        "Claude",
-        "Codex",
         "Antigravity"
       ],
       "allowed_tools": [

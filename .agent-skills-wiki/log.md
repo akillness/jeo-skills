@@ -334,3 +334,11 @@
 - Accepted: rewrite `vercel-deploy` as the Vercel-specific operations anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the durable rationale in the wiki
 - Rejected: adding another Vercel wrapper; keeping the skill centered on a claimable anonymous deploy shortcut; absorbing generic release strategy or CI authoring into the provider skill
 - Wiki files created/updated: `queries/vercel-deploy-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | OHMG modernization
+- Area researched: Gemini CLI / Antigravity portable-harness workflows, upstream `oh-my-agent` naming/layout changes, native-vs-fallback dispatch, and the repo boundary between `ohmg`, `omc`, and `omx`
+- Survey files created under `.survey/ohmg-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `ohmg` as the Gemini / Antigravity entrypoint for the portable `oh-my-agent` harness, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the orchestration-platform boundary in the wiki
+- Rejected: adding another orchestration wrapper; copying the full `omc` / `omx` mode catalogs into `ohmg`; pretending Antigravity and Gemini have identical custom subagent behavior
+- Wiki files created/updated: `concepts/core-orchestration-platform-cluster.md`, `queries/ohmg-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

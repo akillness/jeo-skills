@@ -5,39 +5,37 @@
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, cross-skill mentions, and documentation indexing
 - Total skills: 90
 - Manifest skills in `.agent-skills/skills.json`: 90
-- Skills with references/: 66
-- Skills with evals/: 65
+- Skills with references/: 68
+- Skills with evals/: 67
 - Skills with scripts/: 23
-- Graph nodes: 247
-- Graph edges: 689
+- Graph nodes: 251
+- Graph edges: 703
 
 ## Strongest structural findings
-1. `web-design-guidelines` is now a stronger frontend anchor because it owns broad interface audits instead of pretending a single vendor rule file is the whole workflow.
-2. The frontend boundary is cleaner when `web-design-guidelines` keeps broad hierarchy/clarity/consistency review while routing accessibility remediation to `web-accessibility`, layout adaptation to `responsive-design`, component API redesign to `ui-component-patterns`, token governance to `design-system`, and React/runtime behavior to `react-best-practices`.
-3. Discovery docs (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree nodes, so repositioning a high-visibility frontend anchor still requires top-level wording changes.
-4. Support coverage improved again without adding a new overlapping frontend skill: the better move was upgrading the weak anchor and adding reusable references/evals.
-5. The repo still benefits more from modernizing legacy anchors with explicit route-outs than from adding adjacent wrapper skills.
+1. `ohmg` is now a stronger platform-specific anchor because it owns the Gemini / Antigravity entry path for the portable `oh-my-agent` harness instead of pretending to be a stale Gemini-only framework wrapper.
+2. The platform-runtime boundary is cleaner when `ohmg` teaches `.agents` as the portable source of truth, then routes Claude-first runtime depth to `omc` and Codex-first runtime depth to `omx`.
+3. Discovery docs (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree nodes, so changing a platform skill's positioning still requires top-level wording updates in the same run.
+4. `ohmg` now has support coverage (references, evals), which reduces drift risk in a fast-moving upstream project where naming, layout, and workflow surfaces have already changed materially.
+5. The orchestration lane benefits more from sharper platform boundaries and support files than from adding another overlapping wrapper skill.
 
 ## Highest-degree nodes
-- README.md: degree 89
 - README.ko.md: degree 89
+- README.md: degree 89
 - setup-all-skills-prompt.md: degree 88
-- debugging: degree 33
+- debugging: degree 35
 - performance-optimization: degree 22
 - code-review: degree 21
-- web-accessibility: degree 19
-- plannotator: degree 19
 - jeo: degree 19
-- security-best-practices: degree 18
+- plannotator: degree 19
+- web-accessibility: degree 19
+- monitoring-observability: degree 18
 
 ## Duplicate / consolidation notes
-- `web-design-guidelines` should stay the broad interface-audit anchor while `web-accessibility` remains the specialist accessibility lane.
-- `web-design-guidelines` should stay the broad interface-audit anchor while `responsive-design` remains the layout adaptation lane.
-- `web-design-guidelines` should stay the broad interface-audit anchor while `ui-component-patterns` remains the component API lane.
-- `web-design-guidelines` should stay the broad interface-audit anchor while `design-system` remains the system-governance lane.
-- `web-design-guidelines` should stay the broad interface-audit anchor while `react-best-practices` remains the React/runtime behavior lane.
+- `ohmg` should stay the Gemini / Antigravity-facing portable-harness anchor while `omc` remains the Claude-first runtime overlay.
+- `ohmg` should stay the Gemini / Antigravity-facing portable-harness anchor while `omx` remains the Codex-first runtime overlay.
+- `ohmg` should explain `.agents` and generated vendor views rather than duplicating the full mode catalogs from `omc` or `omx`.
 
 ## Recommended maintenance direction
-- Keep upgrading high-visibility anchors whose discovery metadata still underspecifies their real role.
-- Re-check frontend boundary docs whenever `web-design-guidelines`, `web-accessibility`, `responsive-design`, `ui-component-patterns`, or `design-system` changes materially.
-- Keep discovery surfaces synchronized whenever a skill is repositioned, not only when a new skill is added.
+- Keep upgrading high-visibility platform anchors whose upstream products are evolving quickly.
+- Re-check top-level discovery docs whenever `ohmg`, `omc`, or `omx` changes materially.
+- Prefer support-file ratchets (`references/`, `evals/`) for fast-moving orchestration skills so boundary drift gets caught earlier.

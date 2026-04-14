@@ -1,13 +1,14 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-15 | Total pages: 46
+> Last updated: 2026-04-15 | Total pages: 47
 
 ## Entities
 
 ## Concepts
 - [[backend-api-cluster]] — Boundaries and maintenance direction for the backend API lane, with `api-design` as the contract-first anchor and `api-documentation` as the publishing handoff.
 - [[code-quality-cluster]] — Boundaries for the code-quality lane, separating validation policy, test implementation, debugging, and reviewer judgment.
+- [[core-orchestration-platform-cluster]] — Boundaries for the platform orchestration lane, separating Gemini / Antigravity portable-harness adoption from Claude-first and Codex-first runtime overlays.
 - [[creative-media-cluster]] — Boundaries for the creative-media lane, keeping programmable / automated video as the canonical anchor and Remotion naming as a compatibility alias.
 - [[developer-workflow-cluster]] — Boundaries for the utilities/developer-workflow lane, separating repo automation, Git collaboration, environment setup, and deployment automation.
 - [[documentation-cluster]] — Boundaries for the documentation lane, keeping internal technical docs separate from API portals, end-user help, and changelog hygiene.
@@ -64,4 +65,5 @@
 - [[user-guide-writing-modernization-2026-04-13]] — Why the best bounded next documentation-cluster improvement was modernizing `user-guide-writing` into the end-user-docs anchor instead of adding another help-center wrapper.
 - [[web-design-guidelines-modernization-2026-04-14]] — Why the best bounded remaining frontend review improvement was modernizing `web-design-guidelines` into the broad interface-audit anchor instead of leaving it as a thin vendor-rules fetcher or adding another generic UI audit wrapper.
 - [[vercel-deploy-modernization-2026-04-15]] — Why the best bounded infrastructure/provider-specific deployment improvement was modernizing `vercel-deploy` into the Vercel operations anchor instead of leaving it as a claimable deploy shortcut or adding another Vercel wrapper.
+- [[ohmg-modernization-2026-04-15]] — Why the best bounded orchestration-platform improvement was modernizing `ohmg` into the Gemini / Antigravity entrypoint for the portable `oh-my-agent` harness instead of adding another platform wrapper.
 
