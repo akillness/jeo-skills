@@ -4,7 +4,7 @@ created: 2026-04-13
 updated: 2026-04-14
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
-sources: [.survey/testing-strategies-modernization-20260413/context.md, .survey/testing-strategies-modernization-20260413/solutions.md, .survey/code-refactoring-modernization-20260414/context.md, .survey/code-refactoring-modernization-20260414/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/testing-strategies-modernization-20260413/context.md, .survey/testing-strategies-modernization-20260413/solutions.md, .survey/code-refactoring-modernization-20260414/context.md, .survey/code-refactoring-modernization-20260414/solutions.md, .survey/performance-optimization-modernization-20260414/context.md, .survey/performance-optimization-modernization-20260414/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Code Quality Cluster
@@ -18,7 +18,7 @@ Current cluster shape:
 - `backend-testing` = implementation: write or repair API/service/database/fixture/contract coverage
 - `debugging` = diagnosis: reproduce, isolate, and verify failures or flake causes
 - `code-review` = judgment: assess whether a specific diff is safe, convincing, and ready
-- `performance-optimization` = measurement-led tuning when speed, throughput, or resource usage is the main driver
+- `performance-optimization` = measurement-led tuning: classify the bottleneck mode, choose the right evidence source, recommend one or two high-leverage changes, and verify before/after impact
 
 ## Why it matters
 - Trigger precision improves when policy, implementation, diagnosis, and review are not collapsed into one generic testing/debugging skill.
@@ -34,7 +34,7 @@ Current cluster shape:
 - If the question is **"where is the bottleneck and what should we tune?"** → `performance-optimization`
 
 ## Structural note
-The latest graph refresh strengthened the same pattern already visible after `debugging`, `code-review`, and `testing-strategies`: improving a legacy anchor with support files is more valuable than creating another wrapper skill in the code-quality lane. `code-refactoring` now fills the structural-cleanup role, which makes the cluster read more cleanly as cleanup → policy → implementation → diagnosis → judgment → tuning.
+The latest graph refresh strengthened the same pattern already visible after `debugging`, `code-review`, and `testing-strategies`: improving a legacy anchor with support files is more valuable than creating another wrapper skill in the code-quality lane. `code-refactoring` now fills the structural-cleanup role and `performance-optimization` now fills the measurement-led tuning role, which makes the cluster read more cleanly as cleanup → policy → implementation → diagnosis → judgment → tuning.
 
 ## Related pages
 - [[skill-support-coverage]]
@@ -43,3 +43,4 @@ The latest graph refresh strengthened the same pattern already visible after `de
 - [[code-review-modernization-2026-04-13]]
 - [[testing-strategies-modernization-2026-04-13]]
 - [[code-refactoring-modernization-2026-04-14]]
+- [[performance-optimization-modernization-2026-04-14]]
