@@ -1,0 +1,35 @@
+{
+  "skill_name": "bmad-idea",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use bmad-idea. We think there is an opportunity around AI-assisted handoff notes for product teams, but the problem and user are still fuzzy. Help us clarify what artifact we need before planning.",
+      "expected_output": "A short idea routing brief that chooses problem framing and returns one reusable artifact before handing off to planning.",
+      "assertions": [
+        "Output chooses exactly one primary mode and names it explicitly.",
+        "Output recommends exactly one artifact such as a problem brief or concept brief.",
+        "Output includes a route-out section that mentions what packet should be passed forward to bmad or task-planning."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We built a workflow product, but our messaging is generic and we don't know which audience to lead with. Use bmad-idea before we jump into launch planning.",
+      "expected_output": "A positioning-oriented routing brief that focuses on audience and value framing rather than generic brainstorming.",
+      "assertions": [
+        "Output chooses audience-and-value-framing instead of dumping multiple creativity modes.",
+        "Output identifies the artifact as a positioning brief or equivalent single concept packet.",
+        "Output routes later execution toward marketing-automation rather than trying to do full launch planning inline."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Help us shape a cozy automation game idea before we write a real GDD. We need pillars, audience, and a clear hook.",
+      "expected_output": "A game concept packet with explicit route-out to bmad-gds for later production planning.",
+      "assertions": [
+        "Output chooses game-concept-framing and produces a game concept packet.",
+        "Output includes pillars, hook or player fantasy, and first-playable or next-step guidance.",
+        "Output routes downstream work to bmad-gds with a concrete handoff packet."
+      ]
+    }
+  ]
+}

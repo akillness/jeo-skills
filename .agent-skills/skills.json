@@ -397,20 +397,19 @@
     },
     {
       "name": "bmad-idea",
-      "description": "Creative Intelligence Suite for AI-driven ideation, design thinking, innovation strategy, problem-solving, and storytelling. 5 named specialist agents with distinct methodologies — no setup required, all workflows available immediately.",
+      "description": "Turn raw ideas into one clear pre-planning concept artifact by choosing the right creative framing mode: problem framing, audience and value framing, concept shaping, game concept framing, or story packaging. Use when the user needs the next artifact before PRDs, sprint plans, launch execution, or game-production routing.",
       "category": "core-orchestration",
       "path": "bmad-idea/SKILL.md",
       "tags": [
         "bmad",
-        "cis",
-        "creative",
         "ideation",
-        "brainstorming",
-        "design-thinking",
-        "innovation",
-        "problem-solving",
+        "concept-design",
+        "problem-framing",
+        "positioning",
         "storytelling",
-        "multi-agent"
+        "product-discovery",
+        "game-concept",
+        "creative-routing"
       ],
       "platforms": [
         "Claude",

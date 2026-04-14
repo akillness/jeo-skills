@@ -372,7 +372,7 @@ If no → skip silently. Never re-ask.
 | `vibe-kanban` | `kanbanview` | Visual Kanban board with git worktree isolation |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | Portable BMAD/BMM core router — choose project level, identify the current phase, recommend the next artifact, and route runtime-specific depth outward |
 | `bmad-gds` | `bmad-gds` | Game-production orchestrator for ideas, GDDs, playtest notes, bugs, and launch beats |
-| `bmad-idea` | `bmad-idea` | Creative ideas · design thinking · innovation strategy |
+| `bmad-idea` | `bmad-idea` | Pre-planning idea router for product, GTM, consulting, and game concepts → choose one framing mode and one concept artifact |
 | `agent-browser` | `agent-browser` | Headless browser automation for AI agents |
 | `obsidian-cli` | `obsidian cli`, `obsidian terminal`, `obsidian plugin reload` | Official Obsidian CLI — TUI, vault/file targeting, note automation, plugin reload |
 | `obsidian-plugin` | `obsidian plugin`, `create obsidian plugin` | Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility |
