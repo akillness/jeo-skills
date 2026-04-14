@@ -278,3 +278,11 @@
 - Accepted: make `skill-query-handler.py` filesystem-first with manifest overlay, upgrade `skill-standardization` to cover catalog sync, add `scripts/validate_catalog_sync.py` + `references/catalog-sync-checklist.md`, repair `.agent-skills/skills.json` membership/count drift, and surface the game-development specialist lane in README / README.ko / setup inventory surfaces
 - Rejected: adding another broad maintenance/meta skill; leaving runtime discovery manifest-first; deferring game-lane visibility after fixing only counts
 - Wiki files created/updated: `queries/skill-catalog-sync-hardening-2026-04-14.md`, `concepts/skill-support-coverage.md`, `concepts/game-development-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-14] query | Data analysis modernization
+- Area researched: dataset-analysis workflows across product analytics, marketing ops, developer-workflow exports, and game telemetry; with emphasis on notebook/SQL/spreadsheet/dashboard handoff patterns and the best bounded next search-analysis modernization target
+- Survey files created under `.survey/data-analysis-modernization-20260414/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `data-analysis` as the decision-first dataset-reasoning anchor, add `references/` + `evals/`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and sharpen search-analysis cluster boundaries in the wiki
+- Rejected: adding another broad analytics wrapper; folding repeated anomaly hunting into `data-analysis`; turning the skill into a BI-dashboard or vendor-specific tutorial
+- Wiki files created/updated: `queries/data-analysis-modernization-2026-04-14.md`, `concepts/search-analysis-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
