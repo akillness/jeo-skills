@@ -936,65 +936,35 @@
     },
     {
       "name": "authentication-setup",
-      "description": "Design and implement authentication and authorization systems. Use when setting up user login, JWT tokens, OAuth, session management, or role-based access control. Handles password security, token management, SSO integration.",
+      "description": "Design or refactor product authentication setup for web apps and APIs. Use when the user needs to choose or wire hosted auth, framework-native auth, platform-native auth, sessions vs JWTs, OAuth/social login, passkeys, org/member models, enterprise SSO/SCIM handoff, or callback/cookie environment setup before or alongside implementation. Not for deep authorization policy, general security hardening, API contract design, or backend test planning.",
       "category": "backend",
       "path": "backend/authentication-setup/SKILL.md",
       "tags": [
-        "authentication",
-        "authorization",
-        "security",
-        "JWT",
-        "OAuth",
-        "RBAC"
+        "authentication-setup",
+        "auth",
+        "sessions",
+        "jwt",
+        "oauth",
+        "passkeys",
+        "sso",
+        "scim",
+        "product-auth",
+        "backend"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
         "Gemini"
       ],
-      "allowed_tools": [],
-      "commands": [
-        {
-          "command": "ACCESS_TOKEN_SECRET=your-access-token-secret-min-32-characters",
-          "source": "backend/authentication-setup/SKILL.md"
-        },
-        {
-          "command": "REFRESH_TOKEN_SECRET=your-refresh-token-secret-min-32-characters",
-          "source": "backend/authentication-setup/SKILL.md"
-        },
-        {
-          "command": "DATABASE_URL=postgresql://user:password@localhost:5432/myapp",
-          "source": "backend/authentication-setup/SKILL.md"
-        },
-        {
-          "command": "GOOGLE_CLIENT_ID=your-google-client-id",
-          "source": "backend/authentication-setup/SKILL.md"
-        },
-        {
-          "command": "GOOGLE_CLIENT_SECRET=your-google-client-secret",
-          "source": "backend/authentication-setup/SKILL.md"
-        },
-        {
-          "command": "GITHUB_CLIENT_ID=your-github-client-id",
-          "source": "backend/authentication-setup/SKILL.md"
-        },
-        {
-          "command": "GITHUB_CLIENT_SECRET=your-github-client-secret",
-          "source": "backend/authentication-setup/SKILL.md"
-        },
-        {
-          "command": "npm install jsonwebtoken bcrypt pg",
-          "source": "backend/authentication-setup/SKILL.md"
-        },
-        {
-          "command": "npm install --save-dev @types/jsonwebtoken @types/bcrypt",
-          "source": "backend/authentication-setup/SKILL.md"
-        },
-        {
-          "command": "ACCESS_TOKEN_SECRET=$(openssl rand -base64 32)",
-          "source": "backend/authentication-setup/SKILL.md"
-        }
-      ]
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
     },
     {
       "name": "backend-testing",

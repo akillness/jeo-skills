@@ -1,666 +1,337 @@
 ---
 name: authentication-setup
-description: Design and implement authentication and authorization systems. Use when setting up user login, JWT tokens, OAuth, session management, or role-based access control. Handles password security, token management, SSO integration.
+description: >
+  Design or refactor product authentication setup for web apps and APIs. Use when
+  the user needs to choose or wire hosted auth, framework-native auth, platform-
+  native auth, sessions vs JWTs, OAuth/social login, passkeys, org/member models,
+  enterprise SSO/SCIM handoff, callback/cookie environment setup, or auth rollout
+  boundaries before or alongside implementation. Not for deep authorization policy,
+  general security hardening, API contract design, or backend test planning.
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: >
+  Best for SaaS, internal tools, B2B web apps, APIs, and fullstack frameworks such
+  as Next.js, React, Node, Python, and Postgres/Supabase-style stacks where auth
+  setup decisions cross frontend, backend, data, and deployment boundaries.
+license: MIT
 metadata:
-  tags: authentication, authorization, security, JWT, OAuth, RBAC
+  version: "2.0.0"
+  modernization: 2026-04-14
+  tags: authentication-setup, auth, sessions, jwt, oauth, passkeys, sso, scim, product-auth, backend
   platforms: Claude, ChatGPT, Gemini
 ---
 
-
 # Authentication Setup
 
+Use this skill when the main job is **choosing and structuring product authentication for a real app**, not dumping generic JWT snippets.
+
+`authentication-setup` owns the setup layer for:
+- choosing hosted vs framework-native vs platform-native vs self-hosted auth
+- deciding session/cookie vs token boundaries
+- wiring login methods: email/password, magic links, social OAuth, passkeys
+- defining what user/profile/org/membership data lives in the app database
+- planning enterprise add-ons such as SSO and SCIM without pretending they are the same as basic login
+- handling callback URLs, cookie domains, preview/staging/prod env drift, and rollout boundaries
+
+Read these support docs before choosing the lane or handoff:
+- [references/auth-decision-matrix.md](references/auth-decision-matrix.md)
+- [references/boundary-checklist.md](references/boundary-checklist.md)
+- [references/session-and-deployment-notes.md](references/session-and-deployment-notes.md)
 
 ## When to use this skill
+- Set up auth for a new web app, SaaS product, admin app, or API-backed product
+- Decide between Clerk, Auth.js, Supabase Auth, Firebase Auth, Cognito, Keycloak, or similar options
+- Add or refactor sessions, cookies, refresh-token strategy, or OAuth provider setup
+- Plan app-owned user/profile/org tables around a hosted or framework-native auth system
+- Add organizations, invites, roles, enterprise SSO, or SCIM as a next auth milestone
+- Untangle auth boundaries across frontend routes, middleware, backend APIs, and database policy layers
+- Review whether the current auth stack is too vendor-coupled, too DIY, or too vague to maintain safely
 
-Lists specific situations where this skill should be triggered:
-
-- **User Login System**: When adding user authentication to a new application
-- **API Security**: When adding an authentication layer to a REST or GraphQL API
-- **Permission Management**: When role-based access control is needed
-- **Authentication Migration**: When migrating an existing auth system to JWT or OAuth
-- **SSO Integration**: When integrating social login with Google, GitHub, Microsoft, etc.
-
-## Input Format
-
-The required and optional input information to collect from the user:
-
-### Required Information
-- **Authentication Method**: Choose from JWT, Session, or OAuth 2.0
-- **Backend Framework**: Express, Django, FastAPI, Spring Boot, etc.
-- **Database**: PostgreSQL, MySQL, MongoDB, etc.
-- **Security Requirements**: Password policy, token expiry times, etc.
-
-### Optional Information
-- **MFA Support**: Whether to enable 2FA/MFA (default: false)
-- **Social Login**: OAuth providers (Google, GitHub, etc.)
-- **Session Storage**: Redis, in-memory, etc. (if using sessions)
-- **Refresh Token**: Whether to use (default: true)
-
-### Input Example
-
-```
-Build a user authentication system:
-- Auth method: JWT
-- Framework: Express.js + TypeScript
-- Database: PostgreSQL
-- MFA: Google Authenticator support
-- Social login: Google, GitHub
-- Refresh Token: enabled
-```
+## When not to use this skill
+- **The main job is deeper authorization policy design, permission inheritance, or ABAC/ReBAC modeling** → use `api-design` for contract semantics or treat it as a dedicated authorization design problem
+- **The main job is cookie flags, CSRF, rate limiting, secret handling, OWASP hardening, or general vulnerability prevention** → use `security-best-practices`
+- **The main job is API contract/interface design before auth is slotted into the API honestly** → use `api-design`
+- **The main job is developer-facing reference docs, quickstarts, or API auth docs for consumers** → use `api-documentation`
+- **The main job is backend regression coverage, auth-flow testing, fixture design, or CI-vs-local test layering** → use `backend-testing`
+- **The main job is database normalization/indexing rather than auth-owned tables and identity boundaries** → use `database-schema-design`
+- There is no product context yet; in that case define the open questions and choose the smallest credible auth lane instead of pretending the implementation is settled
 
 ## Instructions
 
-Specifies the step-by-step task sequence to follow precisely.
+### Step 1: Classify the auth setup job
+Normalize the request before naming vendors or libraries.
 
-### Step 1: Design the Data Model
-
-Design the database schema for users and authentication.
-
-**Tasks**:
-- Design the User table (id, email, password_hash, role, created_at, updated_at)
-- RefreshToken table (optional)
-- OAuthProvider table (if using social login)
-- Never store passwords in plaintext (bcrypt/argon2 hashing is mandatory)
-
-**Example** (PostgreSQL):
-```sql
-CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255),  -- NULL if OAuth only
-    role VARCHAR(50) DEFAULT 'user',
-    is_verified BOOLEAN DEFAULT false,
-    mfa_secret VARCHAR(255),
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE TABLE refresh_tokens (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    token VARCHAR(500) UNIQUE NOT NULL,
-    expires_at TIMESTAMP NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_refresh_tokens_user_id ON refresh_tokens(user_id);
+```yaml
+auth_setup_profile:
+  app_type: saas | internal-tool | marketplace | consumer-app | api-only | mixed | unknown
+  auth_lane: hosted | framework-native | platform-native | self-hosted | enterprise-add-on | unknown
+  runtimes: browser | server | edge | mobile | api | mixed
+  login_methods: password | magic-link | social-oauth | passkeys | sso | mixed | unknown
+  identity_scope: single-user | teams-orgs | b2b-enterprise | mixed | unknown
+  session_model: server-session | stateless-jwt | hybrid | unknown
+  data_ownership: vendor-owned | app-owned | hybrid | unknown
+  rollout_stage: greenfield | mvp | scale-up | migration | enterprise-expansion
 ```
 
-### Step 2: Implement Password Security
+Ask or infer:
+1. What frameworks, runtimes, and deployment surfaces already exist?
+2. Is the team optimizing for fastest safe launch, deeper control, enterprise support, or self-hosting?
+3. Does the app only need sign-in, or also orgs, invites, roles, admin access, and customer SSO?
+4. Which auth/data pieces are already fixed by the stack choice?
 
-Implement password hashing and verification logic.
+### Step 2: Choose the auth lane deliberately
+Do not start with code snippets.
 
-**Tasks**:
-- Use bcrypt (Node.js) or argon2 (Python)
-- Set salt rounds to a minimum of 10
-- Password strength validation (minimum 8 chars, upper/lowercase, numbers, special characters)
+#### A. Hosted auth
+Use when:
+- speed and prebuilt UX matter most
+- the team wants social login, MFA, or passkeys quickly
+- the team does not want to own identity infrastructure first
 
-**Decision Criteria**:
-- Node.js projects → use the bcrypt library
-- Python projects → use argon2-cffi or passlib
-- Performance-critical cases → choose bcrypt
-- Cases requiring maximum security → choose argon2
+Common options:
+- Clerk
+- Auth0
+- Firebase Authentication
+- Amazon Cognito
 
-**Example** (Node.js + TypeScript):
-```typescript
-import bcrypt from 'bcrypt';
+Watch for:
+- vendor lock-in
+- pricing/enterprise feature cliffs
+- the need for app-owned org/membership/entitlement tables anyway
 
-const SALT_ROUNDS = 12;
+#### B. Framework-native auth
+Use when:
+- the team wants auth mostly inside app code
+- framework ergonomics matter more than a hosted identity product
+- the app already owns its database and server runtime
 
-export async function hashPassword(password: string): Promise<string> {
-    // Validate password strength
-    if (password.length < 8) {
-        throw new Error('Password must be at least 8 characters');
-    }
+Common options:
+- Auth.js
+- Better Auth
+- Lucia
+- Passport.js for legacy compatibility, not as the default modern path
 
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+Watch for:
+- more assembly work around sessions, adapters, email, and authz
+- runtime-specific SSR/middleware/callback behavior
 
-    if (!hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecial) {
-        throw new Error('Password must contain uppercase, lowercase, number, and special character');
-    }
+#### C. Platform-native auth
+Use when:
+- the backend platform is already chosen
+- auth should align with the same DB/platform primitives
 
-    return await bcrypt.hash(password, SALT_ROUNDS);
-}
+Common options:
+- Supabase Auth
+- Firebase Auth
+- Appwrite Auth
 
-export async function verifyPassword(password: string, hash: string): Promise<boolean> {
-    return await bcrypt.compare(password, hash);
-}
-```
+Watch for:
+- tighter architectural coupling
+- the split between platform identity and app-specific authorization still remaining
 
-### Step 3: Generate and Verify JWT Tokens
+#### D. Enterprise add-on lane
+Use when the request mentions:
+- SAML, OIDC enterprise SSO, SCIM, Azure AD / Entra, Okta, WorkOS
+- directory sync, customer-managed identity, or domain verification
 
-Implement a token system for JWT-based authentication.
+Treat this as a distinct branch, not just “another provider.”
 
-**Tasks**:
-- Access Token (short expiry: 15 minutes)
-- Refresh Token (long expiry: 7–30 days)
-- Use a strong SECRET key for JWT signing (manage via environment variables)
-- Include only the minimum necessary information in the token payload (user_id, role)
+Watch for:
+- account linking and org mapping
+- provisioning/deprovisioning expectations
+- support and rollout processes per customer
 
-**Example** (Node.js):
-```typescript
-import jwt from 'jsonwebtoken';
+#### E. Self-hosted auth
+Use when:
+- SaaS auth vendors are disallowed
+- on-prem, air-gapped, or sovereignty requirements dominate
 
-const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET!;
-const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET!;
-const ACCESS_TOKEN_EXPIRY = '15m';
-const REFRESH_TOKEN_EXPIRY = '7d';
+Common options:
+- Keycloak
+- Authentik
+- Zitadel / Ory-class alternatives
 
-interface TokenPayload {
-    userId: string;
-    email: string;
-    role: string;
-}
+Watch for:
+- operational overhead
+- admin complexity
+- migration and backup expectations
 
-export function generateAccessToken(payload: TokenPayload): string {
-    return jwt.sign(payload, ACCESS_TOKEN_SECRET, {
-        expiresIn: ACCESS_TOKEN_EXPIRY,
-        issuer: 'your-app-name',
-        audience: 'your-app-users'
-    });
-}
+### Step 3: Draw the ownership boundary
+Before implementation, write down who owns what.
 
-export function generateRefreshToken(payload: TokenPayload): string {
-    return jwt.sign(payload, REFRESH_TOKEN_SECRET, {
-        expiresIn: REFRESH_TOKEN_EXPIRY,
-        issuer: 'your-app-name',
-        audience: 'your-app-users'
-    });
-}
+Minimum boundary packet:
+- **Identity provider owns:** sign-in methods, password reset/email verification, MFA/passkey ceremony, token/session issuance, enterprise federation where applicable
+- **Application owns:** local user/profile records, org/workspace membership, roles/entitlements, billing-linked access, admin/support exceptions, domain-specific authorization
+- **Shared edge:** claims/roles copied into tokens or sessions, webhook/user sync, callback URLs, middleware, cookie config, audit/event visibility
 
-export function verifyAccessToken(token: string): TokenPayload {
-    return jwt.verify(token, ACCESS_TOKEN_SECRET, {
-        issuer: 'your-app-name',
-        audience: 'your-app-users'
-    }) as TokenPayload;
-}
+If the request blurs auth and authz, say so explicitly.
 
-export function verifyRefreshToken(token: string): TokenPayload {
-    return jwt.verify(token, REFRESH_TOKEN_SECRET, {
-        issuer: 'your-app-name',
-        audience: 'your-app-users'
-    }) as TokenPayload;
-}
-```
+### Step 4: Choose the session and token model
+Pick the transport that matches the product surface.
 
-### Step 4: Implement Authentication Middleware
+#### Prefer server sessions or signed cookies when
+- the app is browser-heavy
+- SSR/server actions/middleware need easy access to auth state
+- revocation and cookie security are easier than client-stored JWT logic
 
-Write authentication middleware to protect API requests.
+#### Prefer stateless JWTs when
+- clients are API-heavy and cross-service token verification matters
+- the team already has a credible token lifecycle story
+- short-lived access tokens plus refresh/session rotation are understood
 
-**Checklist**:
-- [x] Extract Bearer token from the Authorization header
-- [x] Verify token and check expiry
-- [x] Attach user info to req.user for valid tokens
-- [x] Error handling (401 Unauthorized)
+#### Prefer hybrid when
+- browser sessions are needed for the product UI
+- API tokens or machine tokens are also required for integrations or service calls
 
-**Example** (Express.js):
-```typescript
-import { Request, Response, NextFunction } from 'express';
-import { verifyAccessToken } from './jwt';
+Always capture:
+- token/session lifetime
+- refresh/rotation strategy
+- logout/revocation expectations
+- cookie domain / subdomain behavior
+- local dev vs preview vs prod callback/cookie differences
 
-export interface AuthRequest extends Request {
-    user?: {
-        userId: string;
-        email: string;
-        role: string;
-    };
-}
+### Step 5: Define the auth methods and migration path
+Choose the minimum set that fits the product now.
 
-export function authenticateToken(req: AuthRequest, res: Response, next: NextFunction) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+Common branches:
+- email/password
+- magic link / OTP
+- social OAuth
+- passkeys/WebAuthn
+- enterprise SSO
 
-    if (!token) {
-        return res.status(401).json({ error: 'Access token required' });
-    }
+For each chosen method, note:
+- why it is needed now
+- fallback and recovery path
+- whether user identity links across providers
+- what the next likely milestone is (for example org roles or enterprise SSO after MVP)
 
-    try {
-        const payload = verifyAccessToken(token);
-        req.user = payload;
-        next();
-    } catch (error) {
-        if (error.name === 'TokenExpiredError') {
-            return res.status(401).json({ error: 'Token expired' });
-        }
-        return res.status(403).json({ error: 'Invalid token' });
-    }
-}
+Do not force passkeys, SSO, or SCIM into the first version unless the product actually needs them.
 
-// Role-based authorization middleware
-export function requireRole(...roles: string[]) {
-    return (req: AuthRequest, res: Response, next: NextFunction) => {
-        if (!req.user) {
-            return res.status(401).json({ error: 'Authentication required' });
-        }
+### Step 6: Model app-owned auth data
+Even hosted auth rarely removes the need for local tables.
 
-        if (!roles.includes(req.user.role)) {
-            return res.status(403).json({ error: 'Insufficient permissions' });
-        }
+Usually define at least:
+- `users` or `profiles`
+- `organizations` / `workspaces` if multi-tenant
+- `memberships` / `roles`
+- invitation or provisioning state if teams are invited/admin-managed
 
-        next();
-    };
-}
-```
+Record:
+- the stable user identifier used across auth provider and app DB
+- which fields stay vendor-owned vs mirrored locally
+- how webhook or sync failures are detected and repaired
+- whether permissions live in claims, local tables, or both
 
-### Step 5: Implement Authentication API Endpoints
+If the request slides into broader schema design, route deeper modeling to `database-schema-design`.
 
-Write APIs for registration, login, token refresh, etc.
+### Step 7: Separate auth setup from adjacent work
+Use this handoff table so the skill stays sharp.
 
-**Tasks**:
-- POST /auth/register - registration
-- POST /auth/login - login
-- POST /auth/refresh - token refresh
-- POST /auth/logout - logout
-- GET /auth/me - current user info
+| If the request becomes mainly about... | Route to |
+|---|---|
+| API auth semantics, scopes, or endpoint contract design | `api-design` |
+| Published auth docs, developer quickstarts, or consumer examples | `api-documentation` |
+| CSRF, rate limiting, cookie flags, secret handling, or OWASP controls | `security-best-practices` |
+| Regression tests for login, callbacks, middleware, or permission paths | `backend-testing` |
+| Deeper DB normalization/indexing beyond auth-owned tables | `database-schema-design` |
 
-**Example**:
-```typescript
-import express from 'express';
-import { hashPassword, verifyPassword } from './password';
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from './jwt';
-import { authenticateToken } from './middleware';
+### Step 8: Produce an auth setup packet
+The output should help the next implementation step succeed.
 
-const router = express.Router();
-
-// Registration
-router.post('/register', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // Check for duplicate email
-        const existingUser = await db.user.findUnique({ where: { email } });
-        if (existingUser) {
-            return res.status(409).json({ error: 'Email already exists' });
-        }
-
-        // Hash the password
-        const passwordHash = await hashPassword(password);
-
-        // Create the user
-        const user = await db.user.create({
-            data: { email, password_hash: passwordHash, role: 'user' }
-        });
-
-        // Generate tokens
-        const accessToken = generateAccessToken({
-            userId: user.id,
-            email: user.email,
-            role: user.role
-        });
-        const refreshToken = generateRefreshToken({
-            userId: user.id,
-            email: user.email,
-            role: user.role
-        });
-
-        // Store Refresh token in DB
-        await db.refreshToken.create({
-            data: {
-                user_id: user.id,
-                token: refreshToken,
-                expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
-            }
-        });
-
-        res.status(201).json({
-            user: { id: user.id, email: user.email, role: user.role },
-            accessToken,
-            refreshToken
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Login
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // Find the user
-        const user = await db.user.findUnique({ where: { email } });
-        if (!user || !user.password_hash) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-
-        // Verify the password
-        const isValid = await verifyPassword(password, user.password_hash);
-        if (!isValid) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-
-        // Generate tokens
-        const accessToken = generateAccessToken({
-            userId: user.id,
-            email: user.email,
-            role: user.role
-        });
-        const refreshToken = generateRefreshToken({
-            userId: user.id,
-            email: user.email,
-            role: user.role
-        });
-
-        // Store Refresh token
-        await db.refreshToken.create({
-            data: {
-                user_id: user.id,
-                token: refreshToken,
-                expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-            }
-        });
-
-        res.json({
-            user: { id: user.id, email: user.email, role: user.role },
-            accessToken,
-            refreshToken
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Token refresh
-router.post('/refresh', async (req, res) => {
-    try {
-        const { refreshToken } = req.body;
-
-        if (!refreshToken) {
-            return res.status(401).json({ error: 'Refresh token required' });
-        }
-
-        // Verify Refresh token
-        const payload = verifyRefreshToken(refreshToken);
-
-        // Check token in DB
-        const storedToken = await db.refreshToken.findUnique({
-            where: { token: refreshToken }
-        });
-
-        if (!storedToken || storedToken.expires_at < new Date()) {
-            return res.status(403).json({ error: 'Invalid or expired refresh token' });
-        }
-
-        // Generate new Access token
-        const accessToken = generateAccessToken({
-            userId: payload.userId,
-            email: payload.email,
-            role: payload.role
-        });
-
-        res.json({ accessToken });
-    } catch (error) {
-        res.status(403).json({ error: 'Invalid refresh token' });
-    }
-});
-
-// Current user info
-router.get('/me', authenticateToken, async (req: AuthRequest, res) => {
-    try {
-        const user = await db.user.findUnique({
-            where: { id: req.user!.userId },
-            select: { id: true, email: true, role: true, created_at: true }
-        });
-
-        res.json({ user });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-export default router;
-```
+Preferred packet:
+1. **Chosen auth lane** and why
+2. **Recommended stack or candidate options** (1–3, not a random catalog)
+3. **Ownership boundary** between provider, app DB, and authorization layer
+4. **Session/token strategy** with runtime/deployment caveats
+5. **User/org/membership data model outline**
+6. **Environment checklist**: callback URLs, cookie domains, secrets, preview/staging/prod differences
+7. **Next handoffs** to adjacent skills (`security-best-practices`, `backend-testing`, etc.)
+8. **Open risks / migration notes**
 
 ## Output format
+Use this structure unless the user requests another format:
 
-Defines the exact format that deliverables should follow.
+```markdown
+# Authentication Setup Plan
 
-### Basic Structure
+## Auth lane
+- hosted | framework-native | platform-native | self-hosted | enterprise-add-on
+- why this lane fits
 
+## Recommended stack
+- primary option
+- fallback option(s)
+- tradeoffs
+
+## Ownership boundary
+- provider owns
+- app owns
+- shared edge / sync points
+
+## Session + login model
+- sessions vs JWT vs hybrid
+- chosen login methods
+- token/cookie/callback notes
+
+## App-owned data model
+- users/profiles
+- orgs/memberships/roles
+- sync strategy
+
+## Environment + rollout checklist
+- local
+- preview/staging
+- production
+- migration notes
+
+## Route-outs
+- adjacent skills and why
 ```
-Project directory/
-├── src/
-│   ├── auth/
-│   │   ├── password.ts          # password hashing/verification
-│   │   ├── jwt.ts                # JWT token generation/verification
-│   │   ├── middleware.ts         # authentication middleware
-│   │   └── routes.ts             # authentication API endpoints
-│   ├── models/
-│   │   └── User.ts               # user model
-│   └── database/
-│       └── schema.sql            # database schema
-├── .env.example                  # environment variable template
-└── README.md                     # authentication system documentation
-```
-
-### Environment Variable File (.env.example)
-
-```bash
-# JWT Secrets (MUST change in production)
-ACCESS_TOKEN_SECRET=your-access-token-secret-min-32-characters
-REFRESH_TOKEN_SECRET=your-refresh-token-secret-min-32-characters
-
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/myapp
-
-# OAuth (Optional)
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
-```
-
-## Constraints
-
-Specifies mandatory rules and prohibited actions.
-
-### Mandatory Rules (MUST)
-
-1. **Password Security**: Never store passwords in plaintext
-   - Use a proven hashing algorithm such as bcrypt or argon2
-   - Salt rounds minimum of 10
-
-2. **Environment Variable Management**: Manage all secret keys via environment variables
-   - Add .env files to .gitignore
-   - Provide a list of required variables via .env.example
-
-3. **Token Expiry**: Access Tokens should be short-lived (15 min), Refresh Tokens appropriately longer (7 days)
-   - Balance security and user experience
-   - Store Refresh Tokens in the DB to enable revocation
-
-### Prohibited Actions (MUST NOT)
-
-1. **Plaintext Passwords**: Never store passwords in plaintext or print them to logs
-   - Serious security risk
-   - Legal liability issues
-
-2. **Hardcoding JWT SECRET**: Do not write SECRET keys directly in code
-   - Risk of being exposed on GitHub
-   - Production security vulnerability
-
-3. **Sensitive Data in Tokens**: Do not include passwords, card numbers, or other sensitive data in JWT payloads
-   - JWT can be decoded (it is not encrypted)
-   - Include only the minimum information (user_id, role)
-
-### Security Rules
-
-- **Rate Limiting**: Apply rate limiting to the login API (prevents brute-force attacks)
-- **HTTPS Required**: Use HTTPS only in production environments
-- **CORS Configuration**: Allow only approved domains to access the API
-- **Input Validation**: Validate all user input (prevents SQL Injection and XSS)
 
 ## Examples
 
-Demonstrates how to apply the skill through real-world use cases.
+### Example 1: Next.js SaaS with product auth
+Input:
+> Set up auth for a Next.js SaaS app with email login, Google OAuth, org roles, and an admin panel.
 
-### Example 1: Express.js + PostgreSQL JWT Authentication
+Expected handling:
+- classify as browser/server mixed SaaS with teams/orgs
+- compare hosted vs framework-native paths instead of jumping straight into JWT snippets
+- define app-owned org/membership tables
+- note SSR/middleware/cookie boundaries
+- route security hardening and auth-flow testing to neighboring skills
 
-**Situation**: Adding JWT-based user authentication to a Node.js Express app
+### Example 2: Supabase-first app
+Input:
+> We already use Supabase. Decide what auth should live in Supabase vs our app DB, and how roles should work.
 
-**User Request**:
-```
-Add JWT authentication to an Express.js app using PostgreSQL,
-with access token expiry of 15 minutes and refresh token expiry of 7 days.
-```
+Expected handling:
+- choose platform-native lane first
+- keep provider identity separate from app-owned entitlements
+- call out RLS/authz follow-through as an adjacent design/testing concern
 
-**Skill Application Process**:
+### Example 3: Enterprise expansion
+Input:
+> We already have login. Now add enterprise SSO and SCIM for B2B customers.
 
-1. Install packages:
-   ```bash
-   npm install jsonwebtoken bcrypt pg
-   npm install --save-dev @types/jsonwebtoken @types/bcrypt
-   ```
-
-2. Create the database schema (use the SQL above)
-
-3. Set environment variables:
-   ```bash
-   ACCESS_TOKEN_SECRET=$(openssl rand -base64 32)
-   REFRESH_TOKEN_SECRET=$(openssl rand -base64 32)
-   ```
-
-4. Implement auth modules (use the code examples above)
-
-5. Connect API routes:
-   ```typescript
-   import authRoutes from './auth/routes';
-   app.use('/api/auth', authRoutes);
-   ```
-
-**Final Result**: JWT-based authentication system complete, registration/login/token-refresh APIs working
-
-### Example 2: Role-Based Access Control (RBAC)
-
-**Situation**: A permission system that distinguishes administrators from regular users
-
-**User Request**:
-```
-Create an API accessible only to administrators.
-Regular users should receive a 403 error.
-```
-
-**Final Result**:
-```typescript
-// Admin-only API
-router.delete('/users/:id',
-    authenticateToken,           // verify authentication
-    requireRole('admin'),         // verify role
-    async (req, res) => {
-        // user deletion logic
-        await db.user.delete({ where: { id: req.params.id } });
-        res.json({ message: 'User deleted' });
-    }
-);
-
-// Usage example
-// Regular user (role: 'user') request → 403 Forbidden
-// Admin (role: 'admin') request → 200 OK
-```
+Expected handling:
+- classify as enterprise-add-on, not “basic auth setup”
+- cover account mapping, org/domain verification, and provisioning boundaries
+- avoid pretending SSO/SCIM is the same job as social login or password auth
 
 ## Best practices
-
-Recommendations for using this skill effectively.
-
-### Quality Improvement
-
-1. **Password Rotation Policy**: Recommend periodic password changes
-   - Change notification every 90 days
-   - Prevent reuse of the last 5 passwords
-   - Balance user experience and security
-
-2. **Multi-Factor Authentication (MFA)**: Apply 2FA to important accounts
-   - Use TOTP apps such as Google Authenticator or Authy
-   - SMS is less secure (risk of SIM swapping)
-   - Provide backup codes
-
-3. **Audit Logging**: Log all authentication events
-   - Record login success/failure, IP address, and User Agent
-   - Anomaly detection and post-incident analysis
-   - GDPR compliance (exclude sensitive data)
-
-### Efficiency Improvements
-
-- **Token Blacklist**: Revoke Refresh Tokens on logout
-- **Redis Caching**: Cache frequently used user data
-- **Database Indexing**: Add indexes on email and refresh_token
-
-## Common Issues
-
-Common problems and their solutions.
-
-### Issue 1: "JsonWebTokenError: invalid signature"
-
-**Symptom**:
-- Error occurs during token verification
-- Login succeeds but authenticated API calls fail
-
-**Cause**:
-The SECRET keys for Access Token and Refresh Token are different,
-but the same key is being used to verify both.
-
-**Solution**:
-1. Check environment variables: `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`
-2. Use the correct SECRET for each token type
-3. Verify that environment variables load correctly (initialize `dotenv`)
-
-### Issue 2: Frontend Cannot Log In Due to CORS Error
-
-**Symptom**: "CORS policy" error in the browser console
-
-**Cause**: Missing CORS configuration on the Express server
-
-**Solution**:
-```typescript
-import cors from 'cors';
-
-app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true
-}));
-```
-
-### Issue 3: Refresh Token Keeps Expiring
-
-**Symptom**: Users are frequently logged out
-
-**Cause**: Refresh Token is not properly managed in the DB
-
-**Solution**:
-1. Confirm Refresh Token is saved to DB upon creation
-2. Set an appropriate expiry time (minimum 7 days)
-3. Add a cron job to regularly clean up expired tokens
+1. Start with the auth lane and ownership boundary, not code snippets.
+2. Keep authentication setup separate from deeper authorization policy and general security hardening.
+3. Assume most products still need app-owned user/org/membership tables even with hosted auth.
+4. Treat enterprise SSO/SCIM as a distinct branch once B2B requirements appear.
+5. Record environment-specific callback, cookie, and preview-deployment behavior early.
+6. Prefer one clear primary recommendation with a fallback, not a giant vendor list.
+7. Route adjacent work explicitly so `authentication-setup` stays reusable instead of becoming another backend catch-all.
 
 ## References
-
-### Official Documentation
-- [JWT.io - JSON Web Token Introduction](https://jwt.io/introduction)
-- [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
-- [OAuth 2.0 RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749)
-
-### Libraries
-- [jsonwebtoken (Node.js)](https://github.com/auth0/node-jsonwebtoken)
-- [bcrypt (Node.js)](https://github.com/kelektiv/node.bcrypt.js)
-- [Passport.js](http://www.passportjs.org/) - multiple authentication strategies
-- [NextAuth.js](https://next-auth.js.org/) - Next.js authentication
-
-### Security Guides
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [NIST Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2025-01-01
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Related Skills
-- [api-design](../api-design/SKILL.md): API endpoint design
-- [security](../../infrastructure/security/SKILL.md): Security best practices
-
-### Tags
-`#authentication` `#authorization` `#JWT` `#OAuth` `#security` `#backend`
+- [Next.js Authentication](https://nextjs.org/docs/app/building-your-application/authentication)
+- [Auth.js](https://authjs.dev/)
+- [Clerk Docs](https://clerk.com/docs)
+- [Supabase Auth Docs](https://supabase.com/docs/guides/auth)
+- [Auth0 Docs](https://auth0.com/docs)
+- [WorkOS Docs](https://workos.com/docs)
