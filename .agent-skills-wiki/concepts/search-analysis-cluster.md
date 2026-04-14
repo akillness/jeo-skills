@@ -13,8 +13,8 @@ sources: [.survey/codebase-search-modernization-20260414/context.md, .survey/cod
 The search-analysis lane works best when each skill owns a different stage of the discovery loop:
 - `codebase-search` = repo navigation, call-site tracing, entry-point/config hunting, and impact mapping before edits
 - `log-analysis` = signal extraction and root-cause-oriented triage from logs
-- `data-analysis` = dataset/statistical analysis rather than source-code navigation
-- `pattern-detection` = repeated pattern/anomaly detection across code or data, not routine repo wayfinding
+- `data-analysis` = decision-first dataset reasoning across exports, experiments, KPI drops, cohort/funnel work, and telemetry summaries rather than source-code navigation or BI build-out
+- `pattern-detection` = repeated pattern/anomaly detection across code or data, not routine repo wayfinding or ordinary metrics explanation
 
 ## Boundary that matters
 `codebase-search` should stay discovery-first.
@@ -29,8 +29,9 @@ It becomes weak when it tries to absorb:
 
 ## Recommended maintenance direction
 - Keep `codebase-search` as the repo-navigation anchor.
+- Keep `data-analysis` as the dataset-reasoning anchor; route repeated anomaly work to `pattern-detection` and BI/reporting build-out to `looker-studio-bigquery`.
 - Prefer support bundles that teach search-mode choice and evidence-map output, not giant command catalogs.
-- Re-check discovery wording in README/setup surfaces whenever `codebase-search` is materially repositioned.
+- Re-check discovery wording in README/setup surfaces whenever `codebase-search` or `data-analysis` is materially repositioned.
 
 ## Related pages
 - [[code-quality-cluster]]

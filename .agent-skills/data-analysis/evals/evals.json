@@ -1,0 +1,45 @@
+{
+  "skill_name": "data-analysis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Analyze this CSV export and tell me what changed after the pricing experiment.",
+      "expected_output": "A change-analysis workflow with baseline vs comparison framing, data-trust checks, segment breakdowns, and evidence-backed findings.",
+      "assertions": [
+        "Response frames the task as a decision question before jumping into code or charts.",
+        "Response includes data-quality / trust checks before conclusions.",
+        "Response separates observed change from interpretation or caveats."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We have app event logs and marketing spend by channel; find the main retention and CAC patterns.",
+      "expected_output": "A mixed product + marketing analysis plan that compares segments, rate vs volume, and attribution caveats.",
+      "assertions": [
+        "Response distinguishes acquisition metrics from retention metrics instead of flattening them into one KPI blob.",
+        "Response mentions sample size, denominators, cohort windows, or attribution/trust limits.",
+        "Response keeps dashboard-building as a downstream handoff rather than the main workflow."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review this gameplay telemetry extract and summarize balance issues and suspicious outliers.",
+      "expected_output": "A telemetry analysis workflow that maps events to derived metrics, compares segments, and routes repeated anomaly hunting appropriately.",
+      "assertions": [
+        "Response treats telemetry analysis as data reasoning rather than a vendor-specific ingestion tutorial.",
+        "Response separates broad balance findings from suspicious outliers.",
+        "Response routes persistent anomaly-detection work to pattern-detection when it becomes the real task."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I exported a dashboard to CSV; help me explain the KPI drop for leadership.",
+      "expected_output": "A leadership-ready decision brief with trust level, key findings, evidence, and caveats from the export.",
+      "assertions": [
+        "Response starts with export trust checks such as schema, timeframe, missing segments, or duplicate risks.",
+        "Response produces a findings-first summary instead of only code snippets.",
+        "Response includes caveats or confidence notes before recommendations."
+      ]
+    }
+  ]
+}

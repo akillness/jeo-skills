@@ -5,24 +5,22 @@
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, cross-skill mentions, and documentation indexing
 - Total skills: 89
 - Manifest skills in `.agent-skills/skills.json`: 89
-- Skills with references/: 59
-- Skills with evals/: 58
+- Skills with references/: 60
+- Skills with evals/: 59
 - Skills with scripts/: 23
-- Graph nodes: 232
-- Graph edges: 644
+- Graph nodes: 234
+- Graph edges: 653
 
 ## Strongest structural findings
-1. Catalog drift is currently repaired: filesystem skills and `.agent-skills/skills.json` both resolve to 89 entries, and top-level README/setup count surfaces were refreshed in the same pass.
-2. The game-development lane is now visible in shipped discovery surfaces instead of living only as cross-links inside other skills.
-3. `skill-standardization` is now a stronger maintenance anchor because it covers both SKILL.md quality and catalog/discovery sync checks.
-4. Discovery docs (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree nodes, so repo-level inventory wording still materially affects activation.
-5. The repo still gains more from upgrading high-visibility maintenance anchors than from adding overlapping wrappers in already-covered clusters.
+1. `data-analysis` is now a stronger search-analysis anchor because it has a workflow-first rewrite plus new `references/` and `evals/` support.
+2. Search-analysis boundaries are sharper when `data-analysis` owns dataset reasoning, `pattern-detection` owns repeated anomaly hunting, and BI build-out routes to `looker-studio-bigquery`.
+3. Discovery docs (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`) remain high-degree nodes, so even existing-skill repositioning should update top-level inventory wording.
+4. The repo still benefits more from upgrading legacy anchors with support bundles than from adding overlapping wrapper skills in already-covered clusters.
+5. Support coverage improved again in a high-utility cross-domain lane without creating new catalog noise.
 
 ## Community map
-- agent-development
 - backend
 - code-quality
-- core-orchestration
 - creative-media
 - documentation
 - frontend
@@ -36,24 +34,24 @@
 - utilities
 
 ## Highest-degree nodes
-- README.ko.md: degree 88
-- README.md: degree 88
-- setup-all-skills-prompt.md: degree 88
-- debugging: degree 27
-- code-review: degree 16
-- jeo: degree 16
-- performance-optimization: degree 16
-- plannotator: degree 15
-- state-management: degree 14
-- task-planning: degree 14
+- README.ko.md: degree 89
+- README.md: degree 89
+- setup-all-skills-prompt.md: degree 89
+- debugging: degree 31
+- performance-optimization: degree 21
+- code-review: degree 19
+- jeo: degree 19
+- plannotator: degree 19
+- web-accessibility: degree 19
+- task-planning: degree 17
 
 ## Duplicate / consolidation notes
-- `video-production` and `remotion-video-production` stay healthiest as canonical skill + compatibility alias.
-- `design-system` and `frontend-design-system` stay healthiest as canonical skill + compatibility alias.
-- `marketing-automation` and `marketing-skills-collection` stay healthiest as canonical skill + compatibility alias.
-- `skill-standardization` now owns catalog-sync validation in addition to SKILL.md linting, which reduces repo-wide discovery drift.
+- `data-analysis` should stay the generic dataset-reasoning anchor rather than splitting into another broad analytics wrapper.
+- `pattern-detection` remains the better home for repeated anomaly/rule-based scanning once detection becomes the main job.
+- `looker-studio-bigquery` remains the better home for dashboard construction and BigQuery-connected reporting workflows.
+- Discovery wording in README/setup surfaces still matters because top-level docs connect to every shipped skill.
 
 ## Recommended maintenance direction
-- Keep runtime discovery filesystem-first, with manifest metadata acting as an overlay rather than a hard gate.
-- Run the catalog-sync validator whenever a skill is added, renamed, removed, or canonicalized into an alias.
-- Keep README / README.ko / setup prompt inventory surfaces in sync with the live folder set, especially for specialist game-dev lanes.
+- Keep upgrading legacy high-utility anchors with support bundles before adding new analytics-adjacent skills.
+- Re-check search-analysis boundary wording whenever `data-analysis`, `pattern-detection`, or BI/reporting skills are materially edited.
+- Keep catalog/discovery surfaces synchronized when an existing skill is repositioned, not only when a new skill is added.
