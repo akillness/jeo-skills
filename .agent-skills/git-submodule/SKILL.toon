@@ -1,18 +1,18 @@
 N:git-submodule
-D:Manage Git submodules for including external repositories within a main repository. Use when work...
-G:git submodule dependencies version-control modular
-U[7]:
-  Including external Git repositories within your main project
-  Managing shared libraries or modules across multiple project
-  Locking external dependencies to specific versions
-  Working with monorepo-style architectures with independent c
-  Cloning repositories that contain submodules
+D:Decide when Git submodules are the right dependency boundary, then operate them safely: add, bootstrap recursively, update pointers, handle detached HEAD, remove cleanly, or configure CI checkout. Use for `.gitmodules`, `git submodule`, recursive clone/setup, pointer updates, private submodules in CI, or submodule-vs-subtree decisions.
+G:git submodule subtree dependencies version-control ci repo-structure
+U[5]:
+  Add an external repository as a pinned submodule
+  Bootstrap or clone a repo with existing submodules
+  Advance a tracked branch and commit the pointer update
+  Work inside a submodule without detached HEAD confusion
+  Configure CI checkout for public or private submodules
 S[8]{n,action}:
-  1,Understanding submodules
-  2,Adding submodules
-  3,Cloning with submodules
-  4,Updating submodules
-  5,Working inside submodules
-  6,Batch operations
-  7,Removing submodules
-  8,Checking submodule status
+  1,Normalize the submodule request
+  2,Decide whether submodule is the right tool
+  3,Choose one workflow mode
+  4,Apply the decision ladder
+  5,Build the submodule brief
+  6,Use mode-specific patterns
+  7,Keep operator rules visible
+  8,Route adjacent problems to the right skill

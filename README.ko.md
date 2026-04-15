@@ -74,6 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **git-submodule: 서브모듈 운영 앵커 재작성** | `git-submodule`을 오래된 명령 카탈로그에서 유틸리티 레인의 결정-우선 서브모듈 앵커로 재구성했습니다. 이제 먼저 submodule vs subtree/vendoring/package delivery를 판단하고, `boundary decision`, `add-and-pin`, `bootstrap-and-clone`, `sync-to-pinned-commit`, `advance-tracked-branch`, `edit-inside-submodule`, `remove-and-cleanup`, `ci-checkout` 중 하나의 워크플로 모드를 선택합니다. 또한 detached HEAD, 포인터 변경, CI/auth 결과를 명시하고, 일반 Git 히스토리 정리는 `git-workflow`, 패키지 전달 판단은 `npm-git-install`로 라우팅하며, 스킬 수 증가 없이 `references/decision-matrix.md`, `references/update-and-detached-head.md`, `references/ci-and-automation.md`, `evals/evals.json`을 제공합니다. |
 | **bmad-idea: 사전 기획 컨셉 라우터 재작성** | `bmad-idea`를 기존 BMAD-CIS 명령/페르소나 카탈로그에서 저장소의 사전 기획 아이디어 라우터로 재구성했습니다. 이제 초기 제품/GTM/컨설팅/게임 입력을 정규화하고, `problem framing`, `audience and value framing`, `concept shaping`, `game concept framing`, `story packaging` 중 하나를 선택해 재사용 가능한 컨셉 산출물 하나를 만들며, 다음 단계는 `bmad`, `task-planning`, `marketing-automation`, `bmad-gds`로 명확히 넘깁니다. 또한 `references/operating-modes.md`, `references/handoff-boundaries.md`, `references/concept-packet-template.md`, `evals/evals.json`을 추가했고 스킬 수는 늘리지 않았습니다. |
 
 ## 🆕 v2026-04-14 업데이트
@@ -357,7 +358,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 |------|------|--------|
 | `fabric` | AI 프롬프트 패턴 — YouTube 요약, 문서 분석 (200+ 패턴) | 전체 |
 | `file-organization` | 파일 및 폴더 구성 | 전체 |
-| `git-submodule` | Git 서브모듈 관리 | 전체 |
+| `git-submodule` | 결정-우선 Git 서브모듈 워크플로 — submodule vs subtree/vendor 선택, 재귀 부트스트랩, 안전한 포인터 업데이트, CI checkout/auth 구성 | 전체 |
 | `git-workflow` | 로컬 Git 브랜치, 커밋, 리베이스, 충돌 해결, 안전한 푸시, 복구 워크플로우 | 전체 |
 | `google-workspace` | Google Workspace REST API 자동화 — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |

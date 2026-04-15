@@ -353,7 +353,7 @@ If no → skip silently. Never re-ask.
 | **Creative Media** | remotion-video-production *(compatibility alias for video-production when legacy tooling or explicit Remotion naming still expects the old skill)*, video-production *(canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs)* | All (`*`) |
 | **Marketing** | marketing-automation, marketing-skills-collection *(compatibility alias for marketing-automation)* | All (`*`) |
 | **Game Development** | game-build-log-triage *(Unity/Unreal build-log triage)*, game-ci-cd-pipeline *(game build/release pipeline design)*, game-demo-feedback-triage *(demo/playtest feedback synthesis)*, game-performance-profiler *(Unity/Unreal performance evidence triage)*, steam-store-launch-ops *(Steam store/festival/wishlist/launch operations)* | All (`*`) |
-| **Utilities** | clawteam, fabric, file-organization, git-submodule, git-workflow, google-workspace, llm-wiki, npm-git-install *(Git dependency / tarball / workspace / publish-first choice)*, obsidian-cli, obsidian-plugin, opencontext, workflow-automation *(repo task runners / bootstrap / local-CI automation)* | All (`*`) |
+| **Utilities** | clawteam, fabric, file-organization, git-submodule *(submodule-vs-subtree/vendor choice, recursive bootstrap, pointer updates, detached-HEAD handling, and CI checkout/auth)*, git-workflow, google-workspace, llm-wiki, npm-git-install *(Git dependency / tarball / workspace / publish-first choice)*, obsidian-cli, obsidian-plugin, opencontext, workflow-automation *(repo task runners / bootstrap / local-CI automation)* | All (`*`) |
 
 ---
 
