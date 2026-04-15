@@ -292,7 +292,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `firebase-ai-logic` | Firebase 앱/클라이언트 SDK에서 Gemini 기능, 스트리밍, 구조화 출력, App Check 연동을 다루는 직접 통합 레인이며, 백엔드 오케스트레이션은 `genkit`으로 라우팅 | Claude · Gemini |
 | `firebase-cli` | Firebase CLI (firebase-tools) — Hosting, Functions, Firestore, Realtime DB, Storage, Extensions, 에뮬레이터 수트 배포 | 전체 |
 | `genkit` | 서버 소유 AI 플로우, tool calling, 프롬프트 파일, RAG, 평가, 관측성, Firebase / Cloud Run 배포를 다루는 풀스택 AI 워크플로 레인이며, 직접 앱 SDK 작업은 `firebase-ai-logic`으로 라우팅 | Claude · Gemini |
-| `looker-studio-bigquery` | Looker Studio + BigQuery 대시보드 | 전체 |
+| `looker-studio-bigquery` | KPI 보드, PM/ops 리뷰, 마케팅/GTM 리포팅, 게임/비즈니스 텔레메트리를 위한 BigQuery 기반 이해관계자 대시보드/리포팅 레인이며, KPI 해석은 `data-analysis`로 라우팅 | 전체 |
 | `monitoring-observability` | 서비스·파이프라인·alerts·dashboards·live-ops 가시성을 위한 텔레메트리 설계/리뷰 | 전체 |
 | `scrapling` | parser-first `Selector`, HTTP/브라우저/stealth fetcher, CLI 추출, 선택적 MCP/spider 워크플로우를 포함한 적응형 웹 스크래핑 | 전체 |
 | `rtk` | Rust Token Killer 설치 및 에이전트 설정 - `rtk gain` 검증, 동명 패키지 충돌 복구, 에이전트별 `rtk init`, 직접 호출용 압축 래퍼 명령 | 전체 |

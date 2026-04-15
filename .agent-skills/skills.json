@@ -1547,39 +1547,36 @@
     },
     {
       "name": "looker-studio-bigquery",
-      "description": "Design and configure Looker Studio dashboards with BigQuery data sources. Use when creating analytics dashboards, connecting BigQuery to visualization tools, or optimizing data pipeline performance. Handles BigQuery connections, custom SQL queries, scheduled queries, dashboard design, and performance optimization.",
+      "description": "Build BigQuery-backed Looker Studio dashboards for stakeholder reporting: KPI scorecards, funnel and retention boards, marketing / GTM reporting, PM/ops review dashboards, and game/business telemetry views. Use when the real job is shaping the presentation layer, refresh strategy, and dashboard interaction on top of curated BigQuery data — not generic dataset analysis or broad data engineering. Route KPI explanation to data-analysis, repeated anomaly hunting to pattern-detection, telemetry/alerting coverage to monitoring-observability, and BI-platform comparison to survey.",
       "category": "infrastructure",
       "path": "looker-studio-bigquery/SKILL.md",
       "tags": [
-        "Looker-Studio",
-        "BigQuery",
-        "dashboard",
-        "analytics",
-        "visualization",
-        "GCP",
+        "looker-studio",
         "data-studio",
-        "SQL"
+        "bigquery",
+        "dashboard",
+        "kpi",
+        "analytics",
+        "reporting",
+        "marketing",
+        "pm-ops",
+        "live-ops",
+        "bi-engine"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
-      "allowed_tools": [],
-      "commands": [
-        {
-          "command": "gcloud projects create my-analytics-project",
-          "source": "infrastructure/looker-studio-bigquery/SKILL.md"
-        },
-        {
-          "command": "gcloud config set project my-analytics-project",
-          "source": "infrastructure/looker-studio-bigquery/SKILL.md"
-        },
-        {
-          "command": "gcloud services enable bigquery.googleapis.com",
-          "source": "infrastructure/looker-studio-bigquery/SKILL.md"
-        }
-      ]
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
     },
     {
       "name": "marketing-automation",
