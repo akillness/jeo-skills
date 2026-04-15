@@ -1,0 +1,43 @@
+{
+  "skill_name": "agentation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I can click the broken CTA in the running app, leave a note, and I want the agent to patch the exact component without guessing which button I mean.",
+      "expected_output": "Chooses agentation as the UI annotation bridge, recommends a copy-paste or synced review mode, and keeps browser-runtime choice separate.",
+      "assertions": [
+        "Selects agentation for exact rendered-UI feedback",
+        "Mentions structured annotation packets or exact UI targeting",
+        "Does not misroute the task to plannotator as the primary skill"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Run a repeatable headless checkout verification and compare the result in a clean browser session.",
+      "expected_output": "Routes away from agentation to agent-browser because deterministic fresh-session verification is the real job.",
+      "assertions": [
+        "Routes to agent-browser or an equivalent fresh-session browser verifier",
+        "Explains that agentation is not the primary tool for deterministic browser verification"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Wire the annotation queue into Claude Code so pending UI notes show up automatically every time I send a message.",
+      "expected_output": "Chooses agentation platform setup mode, mentions MCP registration plus the Claude hook/injection path, and includes verification guidance.",
+      "assertions": [
+        "Selects agentation platform setup or watch-loop mode",
+        "Mentions MCP registration or agentation-mcp",
+        "Mentions verifying the setup before trusting the loop"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Open the proposed implementation plan in a browser so I can approve or reject changes before coding starts.",
+      "expected_output": "Routes away from agentation to plannotator because the review target is a plan/diff rather than a rendered UI issue.",
+      "assertions": [
+        "Routes to plannotator or equivalent plan review skill",
+        "Explains that agentation is for rendered UI feedback, not plan approval"
+      ]
+    }
+  ]
+}

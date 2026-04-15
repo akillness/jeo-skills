@@ -151,7 +151,7 @@
     },
     {
       "name": "agentation",
-      "description": "Visual UI annotation tool for AI agents. Drop the React toolbar into any app — humans click elements and leave feedback, agents receive structured CSS selectors, bounding boxes, and React component trees to find exact code. Supports MCP watch-loop, platform-specific hooks (Claude Code / Codex / Gemini CLI / OpenCode), webhook delivery, and autonomous self-driving critique with agent-browser.",
+      "description": "Capture exact rendered-UI feedback and hand it to an agent as selectors, element paths, and structured annotation packets. Use when a human needs to point at a real UI issue, run a sync/watch loop, or wire browser feedback into Claude Code, Codex, Gemini CLI, or OpenCode. Not for fresh-session browser verification (`agent-browser`), running-browser reuse (`playwriter`), or plan/diff approval (`plannotator`).",
       "category": "planning-review",
       "path": "agentation/SKILL.md",
       "tags": [
@@ -181,7 +181,7 @@
         "Glob"
       ],
       "keyword": "agentation",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "commands": []
     },
     {
