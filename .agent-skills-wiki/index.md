@@ -53,6 +53,7 @@
 - [[agent-browser-modernization-2026-04-15]] — Why the best bounded next browser-review improvement was modernizing `agent-browser` into the fresh-session deterministic browser verification anchor instead of adding another overlapping browser or QA wrapper.
 - [[marketing-skill-canonicalization-2026-04-12]] — Why the best bounded marketing change was canonicalizing `marketing-automation` and narrowing `marketing-skills-collection` into a compatibility alias.
 - [[react-skill-canonicalization-2026-04-12]] — Why the best bounded frontend change was canonicalizing the React pair instead of adding another frontend skill.
+- [[react-best-practices-support-hardening-2026-04-16]] — Why the best bounded next frontend support upgrade was hardening `react-best-practices` with a measurement-led reference bundle instead of adding another React wrapper or relying only on `AGENTS.md`.
 - [[codebase-search-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `codebase-search` into an evidence-first repo-navigation anchor instead of adding another search wrapper.
 - [[data-analysis-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `data-analysis` into the decision-first dataset-reasoning anchor instead of adding another analytics wrapper.
 - [[pattern-detection-modernization-2026-04-14]] — Why the best bounded next search-analysis improvement was modernizing `pattern-detection` into the repeatable rule/anomaly-hunting anchor instead of adding another overlapping wrapper.

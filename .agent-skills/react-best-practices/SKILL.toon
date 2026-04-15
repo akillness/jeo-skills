@@ -1,6 +1,6 @@
 N:react-best-practices
-D:React/Next.js performance optimization guidelines from Vercel Engineering. 45 rules across 8 categories — eliminating waterfalls (CRITICAL), bundle optimization (CRITICAL), SSR, RSC, and re-render optimization.
-G:React Next.js performance optimization vercel waterfalls bundle-size RSC frontend
+D:Measurement-led React/Next.js performance audits for waterfalls, bundle size, RSC or client-boundary mistakes, hydration/script cost, rerender churn, and slow route interactions.
+G:React Next.js performance optimization vercel waterfalls bundle-size RSC hydration profiler web-vitals frontend
 
 U[5]:
   Writing React components — avoid performance anti-patterns
