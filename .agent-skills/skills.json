@@ -1030,7 +1030,7 @@
     },
     {
       "name": "game-performance-profiler",
-      "description": "Triage Unity and Unreal performance complaints into a profiling plan, likely bottleneck class, evidence checklist, and next optimization artifact. Use when a game has low FPS, frame-time spikes, hitches, GC stalls, GPU bottlenecks, streaming problems, Steam Deck/mobile/per-platform performance regressions, or profiler screenshots that need interpretation, even if the user only says \"Unity is stuttering\", \"Unreal frame time is bad\", \"GPU or CPU bottleneck?\", \"Steam Deck performance\", or \"help read this profiler capture\".",
+      "description": "Triage Unity and Unreal performance complaints into a quick evidence packet, likely bottleneck class, next capture plan, and one profiling artifact. Use when a game has low FPS, frame-time spikes, hitches, Steam Deck or device review issues, profiler screenshots, `stat unit` / `stat gpu` output, or benchmark-route complaints that need interpretation, even if the user only says \"Unity is stuttering\", \"Unreal frame time is bad\", \"Steam Deck performance\", \"GPU or CPU bottleneck?\", \"help read this profiler capture\", or \"set up a reproducible perf pass\".",
       "path": "game-performance-profiler/SKILL.md",
       "tags": [
         "game-development",
@@ -1044,7 +1044,15 @@
       ],
       "keywords": [
         "game-performance-profiler",
-        "game performance profiler"
+        "game performance profiler",
+        "frame time",
+        "unity profiler",
+        "unreal insights",
+        "stat unit",
+        "stat gpu",
+        "steam deck performance",
+        "benchmark route",
+        "profiling brief"
       ],
       "allowed_tools": [
         "Bash",

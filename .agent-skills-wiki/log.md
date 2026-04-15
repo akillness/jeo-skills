@@ -470,3 +470,11 @@
 - Accepted: rewrite `fabric` around explicit workflow modes, add `references/` + `evals/`, and update README / README.ko / setup prompt / manifests so discovery surfaces reflect the stronger utility-lane boundary
 - Rejected: adding another Fabric-adjacent utility wrapper; treating Fabric as a coding assistant or upstream scraping layer
 - Wiki files created/updated: `queries/fabric-modernization-2026-04-15.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-15] query | Game performance profiler modernization
+- Area researched: Unity/Unreal runtime performance triage workflows, especially quick evidence packets, benchmark routes, packaged-vs-editor ambiguity, target-device / Steam Deck review, and the repo-local boundary between `game-performance-profiler`, `game-demo-feedback-triage`, `game-build-log-triage`, `game-ci-cd-pipeline`, and `performance-optimization`
+- Survey files created under `.survey/game-performance-profiler-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `game-performance-profiler` around quick-triage / bottleneck-classification / benchmark-route / device-review / escalation modes, add three focused `references/` docs plus stronger `evals/evals.json`, add `SKILL.toon`, update README / README.ko / setup prompt / `skills.json`, and record the durable game-cluster boundary in the wiki
+- Rejected: adding another Steam Deck/perf wrapper; merging game performance triage into generic `performance-optimization`; leaving the lane as a profiler-tool explainer with weak route/device guidance
+- Wiki files created/updated: `queries/game-performance-profiler-modernization-2026-04-15.md`, `concepts/game-development-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
