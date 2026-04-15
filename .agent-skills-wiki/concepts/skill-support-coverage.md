@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 76 skills with `references/`
-- 77 skills with `evals/`
+- 77 skills with `references/`
+- 78 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -71,6 +71,7 @@ Recent ratchets:
 - The `agent-browser` modernization pass added `references/modes-and-routing.md` and `evals/evals.json`, which matters because the browser-review lane now has an explicit clean-session verification anchor instead of a generic browser CLI guide with weak boundary enforcement and no ratcheting harness.
 - The `presentation-builder` modernization pass added three `references/` docs, `evals/evals.json`, and `SKILL.toon`, which matters because the documentation/publishing lane now has a stronger deck-artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch workflows instead of a short slides-grab command note with weak routing.
 - The `vibe-kanban` modernization pass added three workflow-first `references/` docs plus `evals/evals.json`, which matters because a high-visibility orchestration skill now owns coding-task board/workspace control, review queues, retries, cleanup, and route-outs instead of remaining a setup-heavy kanban command catalog.
+- The `genkit` modernization pass added three `references/` docs and `evals/evals.json`, which matters because a previously weak Firebase/fullstack AI skill now clearly owns server-side flows, tool calling, retrieval, evaluation, observability, and deployment boundaries instead of remaining a long example dump that overlapped with direct app-side Firebase AI integration.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.

@@ -857,7 +857,7 @@
     },
     {
       "name": "firebase-ai-logic",
-      "description": "Integrate Firebase AI Logic (Gemini in Firebase) for intelligent app features. Use when adding AI capabilities to Firebase apps, implementing generative AI features, or setting up Firebase AI SDK. Handles Firebase AI SDK setup, prompt engineering, and AI-powered features.",
+      "description": "Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for Gemini-powered features. Use when the user needs in-app text/chat/multimodal generation, structured output, streaming, or App Check-aware Firebase app integration without a separate workflow framework. Triggers on: Firebase AI Logic, Gemini in Firebase app, Firebase AI SDK, client-side Gemini, in-app AI feature, and direct Firebase model integration. Route server-owned flows, tool calling, RAG, evaluation, and reusable backend orchestration to `genkit`.",
       "category": "infrastructure",
       "path": "firebase-ai-logic/SKILL.md",
       "tags": [
@@ -1067,7 +1067,7 @@
     },
     {
       "name": "genkit",
-      "description": "Build production-ready AI workflows using Firebase Genkit. Use when creating flows, tool-calling agents, RAG pipelines, multi-agent systems, or deploying AI to Firebase/Cloud Run. Supports TypeScript, Go, and Python with Gemini, OpenAI, Anthropic, Ollama, and Vertex AI plugins.",
+      "description": "Build and operate Genkit as the full-stack AI workflow layer for web and backend apps. Use when the user needs server-owned AI flows, tool calling, prompt files, structured outputs, RAG, evaluation, observability, or deployment to Firebase / Cloud Run / another backend runtime. Triggers on: Genkit, Firebase Genkit, AI flow, tool-calling backend, Genkit evals, Genkit developer UI, server-side prompt workflow, and deployable AI endpoints. Route direct Firebase app SDK integration and simple in-app Gemini features to `firebase-ai-logic`.",
       "category": "infrastructure",
       "path": "genkit/SKILL.md",
       "tags": [

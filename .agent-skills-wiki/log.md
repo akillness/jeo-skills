@@ -438,3 +438,11 @@
 - Accepted: rewrite `vibe-kanban` as the coding-task board/workspace control-plane anchor, add workflow-first `references/` docs + `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the durable boundary in the wiki
 - Rejected: adding another agent-board wrapper; letting `vibe-kanban` absorb planning-only, browser-review, or non-code PM/marketing/game workflows; keeping the skill as a setup-heavy command catalog with no eval harness
 - Wiki files created/updated: `queries/vibe-kanban-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | Genkit modernization
+- Area researched: Firebase/fullstack AI app workflows, especially the boundary between `genkit`, `firebase-ai-logic`, direct provider SDKs, and backend deployment choices
+- Survey files created under `.survey/genkit-firebase-ai-logic-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `genkit` as the backend AI workflow anchor, add `references/` + `evals/`, sharpen `firebase-ai-logic` trigger wording toward direct app/client SDK integration, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the durable boundary in the wiki
+- Rejected: adding another overlapping Firebase AI wrapper; merging `genkit` and `firebase-ai-logic` into one skill; leaving `genkit` as a long example/command dump
+- Wiki files created/updated: `concepts/firebase-ai-workflow-cluster.md`, `queries/genkit-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

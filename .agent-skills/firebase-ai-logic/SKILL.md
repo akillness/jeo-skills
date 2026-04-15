@@ -1,6 +1,13 @@
 ---
 name: firebase-ai-logic
-description: Integrate Firebase AI Logic (Gemini in Firebase) for intelligent app features. Use when adding AI capabilities to Firebase apps, implementing generative AI features, or setting up Firebase AI SDK. Handles Firebase AI SDK setup, prompt engineering, and AI-powered features.
+description: >
+  Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for
+  Gemini-powered features. Use when the user needs in-app text/chat/multimodal
+  generation, structured output, streaming, or App Check-aware Firebase app
+  integration without a separate workflow framework. Triggers on: Firebase AI
+  Logic, Gemini in Firebase app, Firebase AI SDK, client-side Gemini, in-app AI
+  feature, and direct Firebase model integration. Route server-owned flows,
+  tool calling, RAG, evaluation, and reusable backend orchestration to `genkit`.
 metadata:
   tags: firebase, ai, gemini, generative-ai, sdk
   platforms: Claude, ChatGPT, Gemini
@@ -12,10 +19,15 @@ metadata:
 
 ## When to use this skill
 
-- **Add AI features**: integrate generative AI features into your app
-- **Firebase projects**: add AI to Firebase-based apps
-- **Text generation**: content generation, summarization, translation
-- **Image analysis**: image-based AI processing
+- **Direct Firebase app integration**: add Gemini-powered features inside a Firebase app without standing up a workflow framework first
+- **Client/app-side generation**: text, chat, multimodal prompts, structured output, or streaming inside app experiences
+- **Firebase production controls**: App Check-aware usage, quota/cost awareness, and app-level Firebase integration concerns
+- **Simple AI product features**: summaries, chat helpers, assistant UI, image or content generation in the app layer
+
+## When not to use this skill
+
+- **Server-owned flows, tool calling, RAG, evals, or reusable backend orchestration** → use `genkit`
+- **Firebase CLI / project / emulator / deploy operations** → use `firebase-cli`
 
 ## Instructions
 

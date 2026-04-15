@@ -1,11 +1,12 @@
 N:firebase-ai-logic
-D:Integrate Firebase AI Logic (Gemini in Firebase) for intelligent app features. Use when adding AI...
-G:firebase ai gemini generative-ai sdk
-U[4]:
-  **Add AI features**: integrate generative AI features into your app
-  **Firebase projects**: add AI to Firebase-based apps
-  **Text generation**: content generation, summarization, translation
-  **Image analysis**: image-based AI processing
+D:Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for Gemini-powered features. Use when the user needs in-app text/chat/multimodal generation, structured output, streaming, or App Check-aware Firebase app integration without a separate workflow framework. Route server-owned flows, tool calling, RAG, evals, and reusable backend orchestration to `genkit`.
+G:firebase ai gemini sdk client-side app-integration streaming structured-output app-check
+U[5]:
+  **Direct app integration**: add Gemini-powered features inside a Firebase app
+  **Client-side generation**: text, chat, multimodal prompts, structured output, and streaming
+  **Firebase production controls**: App Check-aware usage and quota/cost concerns
+  **Simple product features**: summaries, assistants, and in-app AI helpers
+  **Routing boundary**: send backend-owned workflows to `genkit`
 S[5]{n,action}:
   1,Firebase Project Setup
   2,Enable AI Logic
