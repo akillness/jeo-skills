@@ -398,3 +398,11 @@
 - Accepted: rewrite `file-organization` as the decision-first structure and migration anchor, add `references/` + `evals/`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the durable rationale in the wiki
 - Rejected: adding another generic project-layout wrapper; keeping `file-organization` as a static scaffold dump; letting the skill absorb search, automation, environment-setup, or game-production responsibilities
 - Wiki files created/updated: `queries/file-organization-modernization-2026-04-15.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | OpenContext modernization
+- Area researched: the hourly cross-domain scan across CLI/dev workflow, web/fullstack, PM/ops, marketing/content, and game-development lanes, then the active memory-layer boundary between `opencontext`, `llm-wiki`, graph-style repo mapping, and human-authored note/vault workflows
+- Survey files created under `.survey/opencontext-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `opencontext` as the project/repo memory and cross-agent handoff anchor, add `references/` + `evals/`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the persistent-memory boundary in the wiki
+- Rejected: adding another generic persistent-memory wrapper; treating OpenContext as a replacement for `llm-wiki` or `graphify`; keeping the skill as a raw command catalog with no support files
+- Wiki files created/updated: `concepts/persistent-memory-cluster.md`, `queries/opencontext-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

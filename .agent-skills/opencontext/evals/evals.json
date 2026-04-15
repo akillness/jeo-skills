@@ -1,0 +1,38 @@
+{
+  "skill_name": "opencontext",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We keep losing repo background between agent sessions. I need a persistent memory layer so the next coding agent can load the right docs, avoid repeated explanations, and store the conclusion after the task.",
+      "expected_output": "Selects OpenContext as the project/repo memory layer, explains a load → search → store workflow, and mentions manifests or searches plus post-run capture.",
+      "assertions": [
+        "Output selects OpenContext or project/repo memory as the primary fit",
+        "Output includes a load/search/store or equivalent lifecycle",
+        "Output mentions a manifest, folder scan, or targeted document search",
+        "Output includes storing conclusions or handoff notes after meaningful work"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I want one place for persistent AI memory, but I'm not sure whether I should use OpenContext, a markdown wiki, Obsidian, or a graph tool for this project and future research.",
+      "expected_output": "Compares memory layers, picks OpenContext for active project memory when appropriate, and routes wiki, graph, and human-authored vault needs to the right adjacent tools.",
+      "assertions": [
+        "Output distinguishes OpenContext from llm-wiki or a markdown wiki",
+        "Output distinguishes OpenContext from graph-style structure mapping",
+        "Output mentions a human-authored note/vault surface such as Obsidian when relevant",
+        "Output avoids claiming that OpenContext replaces every adjacent memory layer"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Set up OpenContext in our repo and tell me when I should bother with embeddings or semantic search instead of simple keyword search.",
+      "expected_output": "Provides installation/init guidance, core commands, and a bounded rule for escalating from keyword search to embeddings/index builds.",
+      "assertions": [
+        "Output includes install and/or `oc init` guidance",
+        "Output includes at least one core OpenContext command such as `oc search` or `oc context manifest`",
+        "Output states that keyword search should be tried before escalating to embeddings or index builds",
+        "Output treats semantic search setup as conditional rather than mandatory"
+      ]
+    }
+  ]
+}

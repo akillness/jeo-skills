@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/opencontext/SKILL.md` | Reframing OpenContext as the project/repo memory and cross-agent handoff anchor, with explicit route-outs and support files, will improve trigger precision and reuse more than keeping a command-catalog format. | Rewrite SKILL.md into a decision-first workflow, add references/evals, sync discovery surfaces, and refresh wiki/graph artifacts. | `validate_skill.sh` passed with 0 warnings; evals JSON parsed; catalog sync check passed. | Keep | Chosen because the hourly cross-domain scan found this as the strongest bounded support-gap in the utility/memory lane. |
