@@ -1906,7 +1906,7 @@
     },
     {
       "name": "opencontext",
-      "description": "Persistent memory and context management for AI agents using OpenContext. Keep context across sessions/repos/dates, store conclusions, and provide document search workflows.",
+      "description": "Project/repo memory and cross-agent handoff using OpenContext. Use for searchable decisions, manifests, stable links, and load→search→store workflows when active delivery work needs durable context across sessions.",
       "category": "utilities",
       "path": "opencontext/SKILL.md",
       "tags": [

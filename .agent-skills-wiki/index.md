@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-15 | Total pages: 53
+> Last updated: 2026-04-15 | Total pages: 55
 
 ## Entities
 
@@ -16,6 +16,7 @@
 - [[game-development-cluster]] — Boundaries and maintenance direction for the game-production cluster, with `bmad-gds` as the coordinating layer.
 - [[infrastructure-environment-cluster]] — Canonical-vs-alias guidance for the environment/setup lane, with `system-environment-setup` as the broader anchor.
 - [[marketing-cluster]] — Boundaries and maintenance direction for the broad marketing lane, with `marketing-automation` as the canonical router.
+- [[persistent-memory-cluster]] — Boundaries for the memory stack, keeping active project/repo memory separate from wiki synthesis, graph structure mapping, and human-authored note vaults.
 - [[project-management-cluster]] — Boundaries and maintenance direction for the PM skill cluster.
 - [[search-analysis-cluster]] — Boundaries for the search-analysis lane, keeping repo navigation, log triage, data analysis, and pattern detection in separate roles.
 - [[skill-support-coverage]] — Snapshot of reference/eval coverage and why legacy support upgrades matter.
@@ -41,6 +42,7 @@
 - [[git-submodule-modernization-2026-04-15]] — Why the best bounded next utilities/developer-workflow improvement was modernizing `git-submodule` into the external-repo boundary and operator-flow anchor instead of leaving a command catalog or adding another Git dependency wrapper.
 - [[file-organization-modernization-2026-04-15]] — Why the best bounded repo-structure improvement was modernizing `file-organization` into a decision-first structure and migration anchor instead of adding another project-layout wrapper.
 - [[npm-git-install-modernization-2026-04-15]] — Why the best bounded next utility/developer-workflow improvement was modernizing `npm-git-install` into the Git-based package-delivery decision anchor instead of adding another install helper.
+- [[opencontext-modernization-2026-04-15]] — Why the best bounded next memory-layer improvement was modernizing `opencontext` into the project/repo memory and cross-agent handoff anchor instead of adding another persistent-memory wrapper.
 - [[marketing-skill-canonicalization-2026-04-12]] — Why the best bounded marketing change was canonicalizing `marketing-automation` and narrowing `marketing-skills-collection` into a compatibility alias.
 - [[react-skill-canonicalization-2026-04-12]] — Why the best bounded frontend change was canonicalizing the React pair instead of adding another frontend skill.
 - [[codebase-search-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `codebase-search` into an evidence-first repo-navigation anchor instead of adding another search wrapper.

@@ -365,7 +365,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `npm-git-install` | Decision-first Git dependency workflow for npm / pnpm / Yarn / Bun — choose Git ref, tarball, workspace, or publish-first path safely | All |
 | `obsidian-cli` | Operate the official Obsidian CLI — enablement, TUI, note and task automation, vault and file targeting, plugin reload, developer commands | All |
 | `obsidian-plugin` | Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility, submission validation | All |
-| `opencontext` | Persistent memory and context management for AI agents | All |
+| `opencontext` | Project/repo memory and cross-agent handoff with OpenContext — searchable decisions, manifests, stable links, and load→search→store workflows | All |
 | `workflow-automation` | Repo-scoped recurring workflow automation — task runners, bootstrap entrypoints, local-CI parity, hooks, and maintenance routines | All |
 
 ---
