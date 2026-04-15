@@ -20,6 +20,16 @@
         "Output nudges future usage toward marketing-automation",
         "Output preserves the canonical routing-brief behavior"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use marketing-skills-collection for our Steam store page, wishlist push, and Next Fest launch checklist.",
+      "expected_output": "A compatibility-safe response that preserves the alias note but routes the real execution toward the game-specific Steam launch specialist instead of forcing a general marketing packet.",
+      "assertions": [
+        "Output notes that marketing-skills-collection maps to marketing-automation or is a compatibility alias",
+        "Output identifies the request as better suited to steam-store-launch-ops or a game-specific launch/store workflow",
+        "Output does not present the alias as a second independent broad marketing skill"
+      ]
     }
   ]
 }

@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-16 | Total pages: 82
+> Last updated: 2026-04-16 | Total pages: 83
 
 ## Entities
 
@@ -52,6 +52,7 @@
 - [[opencontext-modernization-2026-04-15]] — Why the best bounded next memory-layer improvement was modernizing `opencontext` into the project/repo memory and cross-agent handoff anchor instead of adding another persistent-memory wrapper.
 - [[agent-browser-modernization-2026-04-15]] — Why the best bounded next browser-review improvement was modernizing `agent-browser` into the fresh-session deterministic browser verification anchor instead of adding another overlapping browser or QA wrapper.
 - [[marketing-skill-canonicalization-2026-04-12]] — Why the best bounded marketing change was canonicalizing `marketing-automation` and narrowing `marketing-skills-collection` into a compatibility alias.
+- [[marketing-skills-collection-support-hardening-2026-04-16]] — Why the best bounded next marketing support upgrade was adding a tiny alias packet plus compact-surface sync instead of reviving the old 23-sub-skill framing or adding another broad marketing wrapper.
 - [[react-skill-canonicalization-2026-04-12]] — Why the best bounded frontend change was canonicalizing the React pair instead of adding another frontend skill.
 - [[react-best-practices-support-hardening-2026-04-16]] — Why the best bounded next frontend support upgrade was hardening `react-best-practices` with a measurement-led reference bundle instead of adding another React wrapper or relying only on `AGENTS.md`.
 - [[codebase-search-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `codebase-search` into an evidence-first repo-navigation anchor instead of adding another search wrapper.

@@ -37,15 +37,24 @@ Immediately map this alias to `marketing-automation`.
 ### Step 2: Preserve the legacy reference in the response
 If helpful, note that `marketing-skills-collection` is a legacy-compatible alias for `marketing-automation`.
 
-### Step 3: Run the canonical routing flow
+### Step 3: Use the smallest alias support packet that answers the question
+Start with the focused alias support docs before opening the full canonical skill:
+- `references/alias-resolution-checklist.md` — when to preserve the old name, how to announce the mapping, and what not to change
+- `references/legacy-intake-and-route-outs.md` — how to translate legacy asks into the canonical brief and when to route out to `steam-store-launch-ops` or other specialists
+- `../marketing-automation/SKILL.md` — only when the task needs the full canonical routing flow
+
+### Step 4: Run the canonical routing flow
 Use the same process as `marketing-automation`:
 1. normalize the marketing brief,
 2. choose one primary lane,
 3. return one implementation-ready packet,
 4. include KPI, handoff, and measurement logic.
 
-### Step 4: Avoid drifting into a second independent skill
-Do not invent different heuristics, deliverables, or sub-skill inventories here. This alias exists to reduce migration friction, not to become a competing general marketing skill.
+### Step 5: Keep route-outs explicit
+If the request is really game-store / wishlist / Steam festival launch work, or another clearly narrower specialist workflow, preserve the alias note but route execution to the stronger specialist skill instead of forcing the general marketing router to absorb it.
+
+### Step 6: Avoid drifting into a second independent skill
+Do not invent different heuristics, deliverables, sub-skill inventories, or a separate discovery story here. This alias exists to reduce migration friction, not to become a competing general marketing skill.
 
 ## Output format
 Return the same **Marketing Routing Brief** used by `marketing-automation`.
@@ -76,5 +85,7 @@ Return the same **Marketing Routing Brief** used by `marketing-automation`.
 3. Nudge future usage toward `marketing-automation` whenever discovery wording matters.
 
 ## References
+- `references/alias-resolution-checklist.md`
+- `references/legacy-intake-and-route-outs.md`
 - `../marketing-automation/SKILL.md`
 - `../steam-store-launch-ops/SKILL.md`
