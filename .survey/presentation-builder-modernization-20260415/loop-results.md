@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | presentation-builder/SKILL.md | A mode-selecting rewrite with explicit route-outs plus references/evals will improve trigger precision and reuse more than the current command catalog. | Rewrote the skill around presentation-artifact modes, visual review/export workflow, and documentation-cluster boundaries; added support files and synced discovery surfaces. | Pass: `validate_skill.sh` clean, `validate_catalog_sync.py` clean, JSON artifacts valid, docs/catalog surfaces synced. | Keep | Transferable improvement: stronger trigger boundaries across developer, PM/ops, GTM, investor, and game-pitch deck workflows without creating a duplicate skill. |

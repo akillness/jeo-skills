@@ -1,0 +1,47 @@
+{
+  "skill_name": "presentation-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Turn this product brief into a 10-slide investor deck. Show me the outline first, then generate the deck in decks/series-a and export PPTX/PDF after approval.",
+      "expected_output": "The skill classifies the request as an investor deck, asks for or constructs an outline before slide generation, uses a `decks/series-a/` workspace, and preserves export as a post-approval step.",
+      "assertions": [
+        "Mentions investor or fundraising deck mode explicitly",
+        "Includes outline-first workflow before slide generation",
+        "Uses a deck workspace path such as decks/series-a/",
+        "Treats PPTX/PDF export as a later approval step"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Build an 8-slide architecture review deck for our browser automation service. Use screenshots, flow diagrams, and one slide on failure handling. I need an editable PPTX after we review the HTML deck.",
+      "expected_output": "The skill routes this to architecture-demo mode, focuses on evidence-rich technical slides, requires browser/visual review, and preserves PPTX handoff after approval.",
+      "assertions": [
+        "Mentions architecture-demo or equivalent technical presentation mode",
+        "Calls for screenshots, diagrams, or technical evidence rather than generic marketing slides",
+        "Includes visual review before export",
+        "Reports PPTX as an editable handoff target"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Create a publisher pitch deck for our indie tactics game. Include hook, audience, gameplay loop, milestone plan, budget ask, and next step. Keep the deck source in decks/tactics-pitch.",
+      "expected_output": "The skill chooses game-pitch mode and structures the deck around gameplay proof, market/audience, milestones, budget/ask, and next step while keeping a stable deck workspace.",
+      "assertions": [
+        "Mentions game-pitch or publisher pitch mode",
+        "Includes gameplay, audience, milestones, and budget/ask in the structure",
+        "Keeps the deck source in decks/tactics-pitch or equivalent stable workspace",
+        "Treats the deliverable as a presentation artifact rather than a generic game plan"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Write internal technical docs for our rollout plan, migration risks, and rollback steps.",
+      "expected_output": "The skill should route away from presentation-builder and recommend technical-writing because the main artifact is a technical document, not a deck.",
+      "assertions": [
+        "Routes to technical-writing or explicitly says presentation-builder is not the right skill",
+        "Explains that the artifact is a technical document rather than a slide deck"
+      ]
+    }
+  ]
+}
