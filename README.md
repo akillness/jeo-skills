@@ -226,7 +226,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Multi-agent workflow layer for Codex CLI (v0.11.10) — 30+ agents, 35+ skills, tmux team runtime, omx explore/sparkshell |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | Gemini / Antigravity entry for the portable `oh-my-agent` harness (`.agents` source of truth, native Gemini projection, cross-vendor-ready layout) |
 | `ralph` | `ralph`, `ooo` | All | Ouroboros specification-first + persistent completion loop |
-| `ralphmode` | `ralphmode` | All | Automation permission profiles (sandbox-first, repo boundary) |
+| `ralphmode` | `ralphmode` | All | Automation permission profile — repo-local settings, boundary rules, and hook-backed checkpoints for trusted repos vs sandbox-only YOLO |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Portable BMAD/BMM core router — choose project level, identify the current phase, recommend the next artifact, and route runtime-specific depth outward |
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |

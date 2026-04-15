@@ -1,10 +1,10 @@
 ---
 name: ralphmode
-description: Configure Claude Code, Codex CLI, and Gemini CLI for Ralph-style automation with fewer approval prompts while keeping project boundaries, secret denylists, and sandbox-first safety rules intact.
+description: Configure Claude Code, Codex CLI, and Gemini CLI for lower-friction `ralph` / `jeo` automation by choosing repo-local settings, explicit rules, and hook-backed checkpoints without collapsing into unsafe global bypass. Use when the user needs trusted-folder setup, approval-policy tuning, sandbox-first YOLO boundaries, or secret/destructive-command guardrails for long-running agent loops.
 license: CC-BY-4.0
-compatibility: Claude Code, Codex CLI, and Gemini CLI. Requires bash, git, and a repo-scoped workspace. Treat full bypass as sandbox-only. Codex guidance in this skill reflects the official sandbox/approval model current on 2026-03-06; legacy permissions.allow or deny examples are compatibility notes only.
+compatibility: Claude Code, Codex CLI, and Gemini CLI. Requires bash, git, and a repo-scoped workspace. Treat full bypass as sandbox-only. Codex guidance in this skill reflects the official sandbox/approval model current on 2026-04-16; legacy permissions.allow or deny examples are compatibility notes only.
 metadata:
-  version: 0.2.0
+  version: 0.3.0
   author: supercent-io
   keyword: ralphmode
   platforms: Claude Code, Codex CLI, Gemini CLI
@@ -24,6 +24,17 @@ The core rule is simple: widen automation only inside a bounded project or dispo
 - You are setting up the same repo for Claude Code, Codex CLI, and Gemini CLI.
 - You need a shared safety model: repo-only writes, no secrets reads, no destructive shell by default.
 - You want a stronger separation between day-to-day automation and true YOLO mode.
+- You need one portable mental model for vendor-specific permission features: settings, rules, and hooks.
+
+## Portable mental model
+
+Treat each platform as three layers:
+
+- **Settings** — choose the default repo-safe preset versus sandbox-only YOLO preset.
+- **Rules** — define the boundary: repo-only writes, secret/path denylist, and Tier 1 checkpoint conditions.
+- **Hooks** — enforce dangerous-edge behavior when the platform supports pre-tool interception; otherwise fall back to approval policy plus prompt contracts.
+
+If you keep those layers separate, the profile stays portable even when vendor syntax changes.
 
 ## Instructions
 
@@ -38,7 +49,7 @@ Before changing any permission mode:
 If the answer is "disposable sandbox," you may use the platform's highest-autonomy mode.
 If not, use the repo-scoped preset instead.
 
-### Step 2: Choose one preset per platform
+### Step 2: Choose one settings preset per platform
 
 Use only the section that matches the current tool:
 
@@ -58,9 +69,20 @@ Prefer project-local configuration over user-global defaults.
 
 If you must use a user-global default, pair it with a stricter denylist and a sandbox boundary.
 
-### Step 4: Run Ralph with an explicit verification loop
+### Step 4: Write the rules layer separately from the preset
 
-After permissions are configured:
+Do not hide all safety logic inside the settings file alone. Record the shared rules in repo instructions, team docs, or the hook script itself:
+
+- repo-only mutation scope
+- secret/path denylist (`.env*`, `secrets/**`, credential files)
+- Tier 1 commands that always require a checkpoint (`rm -rf`, force-push, destructive DB commands, `sudo`)
+- when to stop and output `CHECKPOINT_NEEDED: <reason>`
+
+This matters most on platforms where hooks are weak or absent, because the rules layer becomes the durable fallback.
+
+### Step 5: Run Ralph with an explicit verification loop
+
+After settings and rules are configured:
 
 1. Confirm the task and acceptance criteria.
 2. Run `ralph` or the `jeo` plan-execute-verify loop.
@@ -70,10 +92,10 @@ After permissions are configured:
 Recommended execution contract:
 
 ```text
-boundary check -> permission profile -> ralph run -> verify -> cleanup or revert
+boundary check -> settings preset -> rules contract -> ralph run -> verify -> cleanup or revert
 ```
 
-### Step 5: Keep "skip" and "safe" separate
+### Step 6: Keep "skip" and "safe" separate
 
 Treat these as different modes:
 
@@ -82,7 +104,7 @@ Treat these as different modes:
 
 Do not collapse them into one shared team default.
 
-### Step 6: Configure Mid-Execution Approval Checkpoints
+### Step 7: Configure Mid-Execution Approval Checkpoints
 
 Static permission profiles (Steps 2–3) reduce friction before a run starts, but they do not stop dangerous operations that arise during execution. Add dynamic checkpoints so that Tier 1 actions are blocked or flagged at the moment they are attempted.
 
