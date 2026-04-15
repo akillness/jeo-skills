@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-15 | Total pages: 75
+> Last updated: 2026-04-15 | Total pages: 76
 
 ## Entities
 
@@ -26,6 +26,7 @@
 ## Comparisons
 
 ## Queries
+- [[compact-variant-gap-2026-04-15]] — Why the best bounded fix for the remaining repo-wide compact-discovery drift was finishing the last 8 `SKILL.toon` gaps instead of downgrading docs or building a generator first.
 - [[api-design-modernization-2026-04-12]] — Why the best bounded backend-cluster improvement was modernizing `api-design` into a contract-first anchor instead of adding a new overlapping API skill.
 - [[api-documentation-modernization-2026-04-13]] — Why the best bounded documentation-cluster improvement was modernizing `api-documentation` into the developer-facing API-docs anchor instead of adding another portal/docs wrapper.
 - [[authentication-setup-modernization-2026-04-14]] — Why the best bounded backend-cluster improvement was modernizing `authentication-setup` into the product-auth setup router instead of leaving a JWT/OAuth catch-all or adding another auth wrapper.

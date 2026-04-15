@@ -1,0 +1,19 @@
+N:clawteam
+D:Multi-agent swarm orchestration where AI agents spawn, coordinate, and self-organize into collaborative teams. Use when running parallel AI agent tasks, orchestrating multi-agent workflows across Claude Code / Codex / Cursor / custom agents, isolating agent workspaces via git worktrees, tracking task dependencies across agents, or running autonomous experiments. Triggers on: clawteam, agent swarm, spawn agents, multi-agent team, agent orchestration, parallel agents, agent coordination, swarm intelligence, agent spawn, clawteam spawn, agent worktree, agentic team, ml agent experiments, autonomous agents, agent team.
+G:clawteam multi-agent swarm orchestration tmux git-worktree autonomous python
+
+U[6]:
+  Spawn parallel AI agent workers for large, decomposable tasks
+  Run autonomous ML experiments across multiple GPU workers
+  Orchestrate full-stack development with specialized agents (API, backend, frontend, tests)
+  Run investment analysis with multi-specialist agent teams
+  Coordinate agents across Claude Code, Codex, OpenClaw, nanobot, or Cursor
+  Monitor live agent progress via tmux tiled views or web Kanban dashboard
+
+S[6]{n,action,details}:
+  1,Spawn a team from your agent session,bash # Leader spawns 3 Claude workers on a task clawteam spawn claude "Build the REST API" --workers 3 --team api-build
+  2,Check team status,bash clawteam status # all teams clawteam status --team api-build # specific team clawteam board --team api-build # live web Kanban dashboard
+  3,Send messages between agents,bash # Leader sends task to a worker clawteam send --to crud-worker "Priority: implement DELETE /users/{id} first"
+  4,Task management,bash clawteam task add "Implement rate limiting" --team api-build clawteam task list --team api-build clawteam task done --id <task-id> --team api-build clawteam task block --id <t
+  5,ML Research Team,bash # 8 agents × H100 GPU experiments clawteam template ml-research \ --agents 8 \ --task "Optimize transformer attention with val_bpb target 0.97" \ --team ml-exp
+  6,Full-Stack Development Team,bash clawteam template fullstack \ --agents 4 \ --task "Build e-commerce product catalog API" \ --team shop-api # Spawns: api-designer, backend-dev, frontend-dev, test-engineer

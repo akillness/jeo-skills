@@ -478,3 +478,11 @@
 - Accepted: rewrite `game-performance-profiler` around quick-triage / bottleneck-classification / benchmark-route / device-review / escalation modes, add three focused `references/` docs plus stronger `evals/evals.json`, add `SKILL.toon`, update README / README.ko / setup prompt / `skills.json`, and record the durable game-cluster boundary in the wiki
 - Rejected: adding another Steam Deck/perf wrapper; merging game performance triage into generic `performance-optimization`; leaving the lane as a profiler-tool explainer with weak route/device guidance
 - Wiki files created/updated: `queries/game-performance-profiler-modernization-2026-04-15.md`, `concepts/game-development-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | Compact variant gap closure
+- Area researched: remaining repo-wide compact-discovery drift, especially the last missing `SKILL.toon` files across game, CLI/dev workflow, note-taking, research, and orchestration surfaces
+- Survey files created under `.survey/compact-variant-gap-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: add the final 8 missing `SKILL.toon` files, keep the docs/runtime promise intact, and record the closure in the wiki
+- Rejected: weakening the docs claim first; building a generator in the same bounded run; treating the support gap as a reason to add new skills
+- Wiki files created/updated: `queries/compact-variant-gap-2026-04-15.md`, `concepts/skill-support-coverage.md`, `concepts/game-development-cluster.md`, `index.md`, `log.md`
