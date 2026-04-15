@@ -75,6 +75,7 @@ Recent ratchets:
 - The `firebase-ai-logic` follow-up hardening pass added three `references/` docs, `evals/evals.json`, and a refreshed `SKILL.toon`, which matters because the client-side half of the Firebase AI lane now preserves app-integration, production-control, and route-out guidance instead of relying on a stale snippet dump next to a much stronger `genkit` skill.
 - The `looker-studio-bigquery` modernization pass added three `references/` docs, `evals/evals.json`, and refreshed discovery surfaces, which matters because a README-visible dashboard/reporting anchor now has a clear boundary between BigQuery-backed stakeholder dashboards, KPI interpretation, anomaly hunting, and telemetry observability instead of a stale feature-tour skill.
 - The `fabric` modernization pass added three `references/` docs, `evals/evals.json`, and refreshed discovery surfaces, which matters because a README-visible utility skill now clearly owns reusable pattern-driven stdin/file/transcript transforms plus custom-pattern maintenance instead of a broad AI-CLI feature tour with no support coverage.
+- The `game-performance-profiler` hardening pass added three focused `references/` docs, a stronger `evals/evals.json`, and `SKILL.toon`, which matters because the game-performance lane now reflects quick triage packets, benchmark routes, device-review context, and escalation logic instead of relying on one generic profiling reference.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
@@ -121,3 +122,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[agentation-modernization-2026-04-15]]
 - [[agent-browser-modernization-2026-04-15]]
 - [[presentation-builder-modernization-2026-04-15]]
+- [[game-performance-profiler-modernization-2026-04-15]]
