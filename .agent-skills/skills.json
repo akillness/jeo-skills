@@ -265,7 +265,7 @@
     },
     {
       "name": "autoresearch",
-      "description": "Autonomous ML experimentation framework by Andrej Karpathy. AI agent autonomously modifies train.py, runs 5-minute GPU experiments, evaluates with val_bpb, and commits only improvements via git ratcheting — so you wake up to 100+ experiments and a better model. Use when setting up autoresearch, writing program.md directives, interpreting results, configuring hardware, or running overnight autonomous ML experiments. Triggers on: autoresearch, autonomous ml experiments, overnight gpu experiments, karpathy autoresearch, train.py experiments, val_bpb, program.md research directives, ai runs experiments.",
+      "description": "Run Karpathy-style autonomous ML experiments on a real training repository. Use when the user needs to set up or operate `karpathy/autoresearch`, write `program.md`, tune GPU/VRAM settings, interpret `results.tsv`, or run overnight `train.py` experiments under a fixed 300-second budget and `val_bpb` ratchet. Not for prompt evaluation, LLM app observability, or repo-local `SKILL.md` optimization — route those to tools like LangSmith, Promptfoo, Braintrust, or `skill-autoresearch`. Triggers on: autoresearch, autonomous ML experiments, overnight GPU experiments, `program.md`, `train.py`, `val_bpb`.",
       "category": "search-analysis",
       "path": "autoresearch/SKILL.md",
       "tags": [

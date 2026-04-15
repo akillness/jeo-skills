@@ -1,0 +1,35 @@
+{
+  "skill_name": "autoresearch",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Help me set up Karpathy autoresearch on a 40GB GPU, write program.md, and run an overnight experiment loop.",
+      "expected_output": "The skill activates as a GPU-bound ML experimentation workflow with `program.md`, `train.py`, a fixed 300-second budget, and `val_bpb` keep/revert logic.",
+      "assertions": [
+        "The workflow clearly centers `program.md`, `train.py`, `val_bpb`, and the fixed 300-second budget.",
+        "The workflow includes hardware/setup guidance such as CUDA/VRAM readiness or low-VRAM adaptation.",
+        "The workflow treats `results.tsv` or git ratcheting as part of the core loop."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I want to improve a SKILL.md with binary evals and keep-or-revert scoring. Can autoresearch do that?",
+      "expected_output": "The skill should route the request away from `autoresearch` toward `skill-autoresearch` or other eval tooling instead of pretending the ML training skill is the right fit.",
+      "assertions": [
+        "The skill explicitly says this is not the right tool for repo-local `SKILL.md` optimization.",
+        "The skill names `skill-autoresearch` or an equivalent route-out for that neighboring job.",
+        "The skill does not blur prompt/skill evaluation with GPU-bound ML experimentation."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "My autoresearch run on smaller hardware keeps crashing, and I am tempted to change the evaluator halfway through. What should I do?",
+      "expected_output": "The skill should preserve an immutable evaluation harness, recommend low-VRAM adjustments, and keep comparability rules explicit.",
+      "assertions": [
+        "The skill warns against modifying the evaluation harness mid-session.",
+        "The skill recommends hardware-aware adjustments such as reducing MAX_SEQ_LEN or using the hardware reference guidance.",
+        "The skill keeps comparability tied to a fixed harness and does not encourage changing the scoring target mid-run."
+      ]
+    }
+  ]
+}

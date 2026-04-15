@@ -1,22 +1,23 @@
 ---
 name: autoresearch
 description: >
-  Autonomous ML experimentation framework by Andrej Karpathy. AI agent
-  autonomously modifies train.py, runs 5-minute GPU experiments, evaluates with
-  val_bpb, and commits only improvements via git ratcheting — so you wake up to
-  100+ experiments and a better model. Use when setting up autoresearch,
-  writing program.md directives, interpreting results, configuring hardware, or
-  running overnight autonomous ML experiments. Triggers on: autoresearch,
-  autonomous ml experiments, overnight gpu experiments, karpathy autoresearch,
-  train.py experiments, val_bpb, program.md research directives, ai runs experiments.
+  Run Karpathy-style autonomous ML experiments on a real training repository.
+  Use when the user needs to set up or operate `karpathy/autoresearch`, write
+  `program.md`, tune GPU/VRAM settings, interpret `results.tsv`, or run
+  overnight `train.py` experiments under a fixed 300-second budget and `val_bpb`
+  ratchet. Not for prompt evaluation, LLM app observability, or repo-local
+  `SKILL.md` optimization — route those to tools like LangSmith, Promptfoo,
+  Braintrust, or `skill-autoresearch`. Triggers on: autoresearch, autonomous ML
+  experiments, overnight GPU experiments, `program.md`, `train.py`, `val_bpb`.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: >
-  Requires NVIDIA GPU with 40GB+ VRAM (H100 recommended; community forks for
-  GTX 1660 Ti 6GB, Apple Silicon MLX, Windows RTX). Linux with CUDA. Python 3.10+.
-  uv package manager. Dataset: ~6543 FineWeb-Edu parquet shards (~2 min download).
+  Official path assumes a single NVIDIA GPU on Linux with CUDA; ~40GB VRAM is
+  the comfortable default for MAX_SEQ_LEN=2048, but lower-VRAM and community-fork
+  paths exist for RTX 4090 / 3090, GTX 1660 Ti, Apple Silicon MLX, and Windows RTX.
+  Python 3.10+ and uv required. Dataset: ~6543 FineWeb-Edu parquet shards (~2 min download).
 metadata:
   tags: autoresearch, ml-experiments, autonomous-research, karpathy, gpu, train, val-bpb, overnight, ratcheting
-  version: "1.0"
+  version: "1.1.0"
   source: https://github.com/karpathy/autoresearch
   license: MIT
 ---
@@ -36,6 +37,13 @@ Autoresearch is an autonomous ML experimentation framework. An AI agent iterativ
 - Configuring the system for constrained hardware (limited VRAM)
 - Understanding the ratcheting mechanism and git workflow
 - Porting to Apple Silicon (MLX) or Windows RTX
+
+## Do not use this skill when
+
+- The user wants to optimize a `SKILL.md`, prompt, or agent workflow with a local eval loop — use `skill-autoresearch`
+- The user wants application traces, online/offline LLM evals, annotation queues, or app-level regression review — use `langsmith` or similar eval/observability tooling
+- The user wants prompt comparison, red teaming, or CI gates for an LLM app — use Promptfoo-style tooling instead of this ML training skill
+- The job does not involve a real training repo, fixed runtime budget, immutable evaluation harness, and `val_bpb`-style keep/revert search
 
 ## Core Architecture
 
@@ -73,8 +81,7 @@ keep commit   git reset HEAD~1
 |------|-------------|---------|
 | `train.py` | **Read + Write** | Model, optimizer, training loop (~630 lines) |
 | `program.md` | Read-only | Human research directives |
-| `prepare.py` | Read-only | Data pipeline + `evaluate_bpb()` harness |
-| `constants.py` | Read-only | `TIME_BUDGET=300`, `MAX_SEQ_LEN`, `EVAL_TOKENS` |
+| `prepare.py` | Read-only | Data pipeline plus the fixed evaluation harness (`evaluate_bpb()`, `MAX_SEQ_LEN`, `TIME_BUDGET`, `EVAL_TOKENS`) |
 | `pyproject.toml` | Read-only | Locked dependencies (no new packages) |
 | `results.tsv` | Append | All experiments: kept and discarded |
 
@@ -147,7 +154,7 @@ val_bpb: 0.9979 (depth-12 GPT, Muon + AdamW optimizer)
 - Must complete within 300 seconds
 - Peak VRAM must stay under 39GB
 - No new packages (use only what is in pyproject.toml)
-- Do not modify prepare.py or constants.py
+- Do not modify `prepare.py`
 
 ## Notes from Previous Runs
 - Depth-12 improvements transfer to depth-24 (scale-invariant gains)
@@ -171,6 +178,14 @@ Point your AI agent (Claude Code, Codex, etc.) at the repository with `program.m
 5. Extract `val_bpb`; keep or revert via git
 6. Append to `results.tsv`
 7. Repeat
+
+Keep the boundary crisp:
+- the human updates `program.md`
+- the agent edits `train.py`
+- the harness in `prepare.py` stays fixed
+- the loop keeps only lower-`val_bpb` results
+
+If the user really wants prompt/app evals, tracing, or `SKILL.md` mutation loops, route out instead of stretching this skill.
 
 **With Claude Code (OMC):**
 ```bash
@@ -234,7 +249,7 @@ Top improvements:
 ```python
 # In prepare.py — edit before uv run prepare.py
 MAX_SEQ_LEN = 256       # was 2048
-EVAL_TOKENS = 2_097_152  # was 20_971_520 (scale down proportionally)
+EVAL_TOKENS = 2_097_152  # 6GB reference value; keep it fixed for the whole session
 ```
 
 ### Example 3: Extract Experiments by Category
@@ -283,7 +298,7 @@ Detailed documentation in `references/`:
 1. **Write program.md before running** — the agent is only as good as its directives; vague programs waste compute
 2. **Start with the baseline first** — always `uv run train.py` manually before launching the loop to confirm the setup works
 3. **Keep `MAX_SEQ_LEN` in `prepare.py` consistent** — changing it mid-run invalidates val_bpb comparisons
-4. **Never modify `prepare.py` or `constants.py`** — the evaluation harness must stay fixed for results to be meaningful
+4. **Never modify the evaluation harness mid-session** — `prepare.py` owns `evaluate_bpb()`, `TIME_BUDGET`, `MAX_SEQ_LEN`, and `EVAL_TOKENS`; changing them breaks comparability
 5. **Scale improvements before committing** — test that a depth-12 improvement also holds at depth-24 before treating it as a fundamental gain
 6. **Commit `program.md` updates** — version-control your research directives alongside `results.tsv` for reproducibility
 7. **Monitor VRAM** — add `peak_vram_mb` constraints in `program.md` for your GPU's headroom
@@ -314,4 +329,5 @@ Detailed documentation in `references/`:
 - [nanochat — the underlying LLM training framework](https://github.com/karpathy/nanochat)
 - [Karpathy's original announcement (X/Twitter)](https://x.com/karpathy)
 - [DeepWiki — autoresearch architecture](https://deepwiki.com/karpathy/autoresearch)
+- [SkyPilot — Scaling autoresearch](https://blog.skypilot.co/scaling-autoresearch/)
 - [MIT License](https://github.com/karpathy/autoresearch/blob/master/LICENSE)

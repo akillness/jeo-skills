@@ -542,3 +542,11 @@
 - Accepted: harden `skill-autoresearch` in place around the frozen evaluator / keep-or-revert model, add `references/loop-charter-template.md` plus `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / discovery manifests, and record the stronger search-analysis support boundary in the wiki
 - Rejected: adding another generic eval helper; blurring the lane with hosted eval platforms or the ML-focused `autoresearch` skill; leading with broad docs/setup churn before the main skill boundary was proven
 - Wiki files created/updated: `queries/skill-autoresearch-hardening-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | Autoresearch hardening
+- Area researched: Karpathy-style autonomous ML experimentation workflows, hardware/workflow reality, adjacent eval/observability platforms, and the repo boundary between `autoresearch` and `skill-autoresearch`
+- Survey files created under `.survey/autoresearch-hardening-20260416/`; direct GitHub/raw/browser retrieval was used because `web_search` and `web_extract` returned invalid API-key errors in this environment
+- Accepted: harden `autoresearch` in place around the ML-specific `program.md` / `train.py` / `val_bpb` boundary, add `evals/evals.json`, correct stale support docs that still referenced `constants.py` or automatic `EVAL_TOKENS` scaling, and refresh README / README.ko / setup prompt / discovery manifests
+- Rejected: broadening `autoresearch` into generic prompt/app eval work; adding another overlapping autoresearch wrapper; treating hosted eval platforms as substitutes for the fixed-budget training loop
+- Structural graph artifacts not refreshed this pass because the change was boundary/support-local and the current graph already reflected the active search-analysis cluster shape
+- Wiki files created/updated: `queries/autoresearch-hardening-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

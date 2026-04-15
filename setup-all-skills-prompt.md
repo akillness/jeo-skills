@@ -383,7 +383,7 @@ If no → skip silently. Never re-ask.
 | `game-performance-profiler` | `frame time`, `unity profiler`, `unreal insights` | Turn Unity/Unreal perf packets into bottleneck-first next captures, benchmark routes, and device-review briefs |
 | `steam-store-launch-ops` | `steam launch`, `steam page`, `wishlist funnel` | Steam store-page, festival, demo, and launch-readiness operations |
 | `clawteam` | `clawteam`, `agent swarm`, `spawn agents` | Framework-agnostic multi-agent CLI — file-based state, task queues, inboxes, kanban |
-| `autoresearch` | `autoresearch`, `autonomous ml experiments`, `val_bpb` | Karpathy autonomous ML — overnight GPU experiments, ratchets improvements via git |
+| `autoresearch` | `autoresearch`, `autonomous ml experiments`, `val_bpb` | Karpathy autonomous ML — human-written `program.md`, agent-edited `train.py`, fixed 300s GPU runs, `val_bpb` keep/revert ratchet; not for prompt/skill eval |
 | `skill-autoresearch` | `skill-autoresearch`, `optimize this skill`, `eval my skill` | Repo-local skill ratcheting — freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces if the core change holds |
 | `scrapling` | `scrapling`, `adaptive scraping`, `stealthy fetch` | Adaptive web scraping — parser-first HTML, fetcher escalation, CLI extraction, MCP/spider |
 | `rtk` | `rtk`, `rust token killer`, `rtk init`, `rtk gain` | RTK install and agent integration — verify correct package, choose init mode, and use compact shell wrappers |
