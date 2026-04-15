@@ -2232,15 +2232,15 @@
     },
     {
       "name": "prompt-repetition",
-      "description": "A prompt repetition technique for improving LLM accuracy. Achieves significant performance gains in 67% (47/70) of 70 benchmarks. Automatically applied on lightweight models (haiku, flash, mini).",
+      "description": "Decide when repeating a full prompt is a useful accuracy hack for non-reasoning or lightweight LLM tasks, and when the real fix is better prompt structure, retrieval, or a stronger model. Use for long-context retrieval, options-first MCQ, or position-sensitive prompts on Haiku/Flash/mini-class models — not as a universal default for reasoning-heavy or RAG-architecture problems.",
       "category": "agent-development",
       "path": "prompt-repetition/SKILL.md",
       "tags": [
         "prompt-engineering",
-        "accuracy",
-        "optimization",
-        "lightweight-model",
-        "attention"
+        "llm-accuracy",
+        "long-context",
+        "lightweight-models",
+        "evaluation"
       ],
       "platforms": [
         "Claude",
@@ -2248,7 +2248,13 @@
         "ChatGPT",
         "Codex"
       ],
-      "allowed_tools": [],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
       "commands": []
     },
     {

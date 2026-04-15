@@ -5,40 +5,40 @@
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, compact-variant coverage, and documentation indexing
 - Total skills: 89
 - Manifest skills in `.agent-skills/skills.json`: 89
-- Skills with references/: 80
-- Skills with evals/: 81
+- Skills with references/: 81
+- Skills with evals/: 82
 - Skills with scripts/: 23
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
-- Graph nodes: 367
-- Graph edges: 991
+- Graph nodes: 369
+- Graph edges: 1061
 
 ## Strongest structural findings
-1. The compact-discovery layer is now complete again: every filesystem skill ships either `SKILL.toon` or `SKILL.compact.md`, so the repo docs and runtime assumptions are aligned.
-2. The bounded sweep closed support drift without adding new overlapping skills, which is exactly the kind of maintenance ratchet the repo has been favoring across earlier modernization passes.
-3. The game cluster is no longer an outlier in compact discovery coverage; all four remaining specialist gaps there were closed in the same pass.
-4. The next highest-leverage work is no longer variant completion but true content modernization for the warning-heavy legacy skills that still lint with non-fatal spec gaps.
+1. The graph remains docs-first: README.md, README.ko.md, setup-all-skills-prompt.md, skills.json, and skills.toon still touch every live skill and remain the highest-degree maintenance nodes.
+2. prompt-repetition is no longer a support-gap outlier: this run added both references/ and evals/, so it now matches the modernized pattern used by other bounded decision-first skills.
+3. The meaningful change was content tightening, not cluster splitting: prompt-repetition stayed in agent-development and gained clearer route-outs to retrieval/context work instead of spawning another prompt-hacks sibling.
+4. The next leverage point in the agent-development lane is still not adding another prompt trick, but modernizing remaining weak-support or weak-boundary skills with the same decision-first pattern.
 
 ## Highest-degree nodes
+- README.md: degree 89
+- README.ko.md: degree 89
+- setup-all-skills-prompt.md: degree 89
 - .agent-skills/skills.json: degree 89
 - .agent-skills/skills.toon: degree 89
-- README.ko.md: degree 89
-- README.md: degree 89
-- setup-all-skills-prompt.md: degree 89
-- debugging: degree 25
-- code-review: degree 24
-- performance-optimization: degree 24
+- debugging: degree 41
+- code-review: degree 26
+- performance-optimization: degree 26
+- bmad: degree 25
 - task-planning: degree 24
-- plannotator: degree 22
-- system-environment-setup: degree 22
-- vibe-kanban: degree 22
+- plannotator: degree 23
+- vibe-kanban: degree 23
 
 ## Duplicate / consolidation notes
-- Compact support completion removed a support-layer inconsistency; it did not create a new reason to split or merge skills.
-- The game cluster remains healthier when build logs, CI/release structure, demo feedback, runtime performance, and Steam launch ops stay in separate skills.
-- Future docs edits should keep describing compact variants as shipped artifacts only if the filesystem scan still says coverage is complete.
+- `prompt-repetition` now reads as a bounded routing skill instead of a generic prompt-hacks bucket, which reduces pressure to add a separate long-context or lightweight-model wrapper.
+- No new duplicate cluster was created in planning-review or agent-development; this was a consolidation-through-modernization pass.
+- Documentation and manifest surfaces were updated alongside the skill, so discovery drift did not reopen.
 
 ## Recommended maintenance direction
-- Use future bounded runs on actual content modernization targets such as warning-heavy legacy skills rather than more support-layer cleanup for this specific gap.
-- Keep validating catalog/runtime sync after any material skill rewrite.
-- Re-run the structural scan whenever a skill is added or a compact variant is removed so the wiki and docs do not drift again.
+- Keep using bounded modernization passes on remaining legacy skills with weak support coverage or vague trigger boundaries.
+- Re-run catalog/runtime sync validation whenever a skill description or compact variant changes materially.
+- Treat route-out clarity as a structural maintenance lever: it prevents catalog growth through overlapping new skills.
