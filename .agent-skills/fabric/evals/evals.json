@@ -1,0 +1,35 @@
+{
+  "skill_name": "fabric",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I already have a transcript.txt file. Show me how to use Fabric to summarize it and keep the workflow reusable.",
+      "expected_output": "Chooses quick-transform mode, recommends a Fabric summary pattern, and gives an exact command over the existing file rather than generic chat advice.",
+      "assertions": [
+        "Output explicitly identifies a Fabric mode or equivalent routing decision",
+        "Output includes an exact Fabric CLI command using transcript.txt or stdin piping",
+        "Output frames Fabric as a reusable pattern workflow rather than a one-off chat tool"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We summarize competitor articles every week. Help me make a custom Fabric pattern pack for this workflow.",
+      "expected_output": "Chooses custom-pattern mode, provides a system.md-style scaffold, and explains when to fork a custom pattern instead of only naming stock patterns.",
+      "assertions": [
+        "Output recommends custom-pattern mode or equivalent repeated-workflow framing",
+        "Output includes the core custom pattern sections such as IDENTITY AND PURPOSE, STEPS, OUTPUT INSTRUCTIONS, and INPUT",
+        "Output explains why a custom pattern is better than a one-off prompt for this repeated job"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Should I use Fabric, a general LLM CLI, or a coding assistant for this workflow? I need to turn logs and docs into repeatable summaries, but I might also edit code later.",
+      "expected_output": "Chooses migration-review mode, keeps Fabric for repeatable text transforms, and routes repo-aware code editing to a coding assistant boundary.",
+      "assertions": [
+        "Output compares Fabric with at least one adjacent tool category",
+        "Output states that Fabric is strongest for repeatable pattern-driven text transforms",
+        "Output routes repo-aware code editing or implementation work away from Fabric"
+      ]
+    }
+  ]
+}

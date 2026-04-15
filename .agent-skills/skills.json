@@ -801,23 +801,21 @@
     },
     {
       "name": "fabric",
-      "description": "AI prompt orchestration CLI using reusable Patterns. Use for YouTube summarization, document analysis, content extraction, code explanation, writing assistance, and any AI task via stdin/stdout piping across 20+ providers.",
+      "description": "Pattern-first CLI orchestration with Daniel Miessler's Fabric for turning stdin, files, transcripts, notes, logs, and cleaned web text into repeatable AI transforms. Use when the user wants reusable named patterns, custom pattern packs, shell-pipe composition, or Fabric server mode—not generic one-off chat prompting or repo-editing agents.",
       "category": "utilities",
       "path": "fabric/SKILL.md",
       "tags": [
         "fabric",
         "patterns",
         "ai-prompts",
-        "youtube",
-        "summarize",
-        "extract-wisdom",
-        "piping",
+        "prompt-orchestration",
+        "content-transforms",
         "cli",
-        "multi-provider",
-        "openai",
-        "claude",
-        "gemini",
-        "ollama"
+        "piping",
+        "summarize",
+        "extract",
+        "custom-patterns",
+        "multi-provider"
       ],
       "platforms": [
         "All platforms"
