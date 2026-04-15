@@ -857,40 +857,33 @@
     },
     {
       "name": "firebase-ai-logic",
-      "description": "Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for Gemini-powered features. Use when the user needs in-app text/chat/multimodal generation, structured output, streaming, or App Check-aware Firebase app integration without a separate workflow framework. Triggers on: Firebase AI Logic, Gemini in Firebase app, Firebase AI SDK, client-side Gemini, in-app AI feature, and direct Firebase model integration. Route server-owned flows, tool calling, RAG, evaluation, and reusable backend orchestration to `genkit`.",
+      "description": "Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for Gemini-powered features. Use when the user needs in-app text/chat/multimodal generation, structured output, streaming, or App Check-aware Firebase app integration without a separate workflow framework. Triggers on: Firebase AI Logic, Gemini in Firebase app, Firebase AI SDK, client-side Gemini, in-app AI feature, mobile/web AI integration, and direct Firebase model integration. Route server-owned flows, tool calling, RAG, evaluation, and reusable backend orchestration to `genkit`, and route project/deploy/operator tasks to `firebase-cli`.",
       "category": "infrastructure",
       "path": "firebase-ai-logic/SKILL.md",
       "tags": [
         "firebase",
         "ai",
         "gemini",
-        "generative-ai",
-        "sdk"
+        "app-integration",
+        "mobile",
+        "web",
+        "client-sdk"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
-      "allowed_tools": [],
-      "commands": [
-        {
-          "command": "npm install -g firebase-tools",
-          "source": "infrastructure/firebase-ai-logic/SKILL.md"
-        },
-        {
-          "command": "firebase login",
-          "source": "infrastructure/firebase-ai-logic/SKILL.md"
-        },
-        {
-          "command": "firebase init",
-          "source": "infrastructure/firebase-ai-logic/SKILL.md"
-        },
-        {
-          "command": "npm install firebase @anthropic-ai/sdk",
-          "source": "infrastructure/firebase-ai-logic/SKILL.md"
-        }
-      ]
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "commands": []
     },
     {
       "name": "firebase-cli",

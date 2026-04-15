@@ -25,6 +25,7 @@ Without this split, two bad outcomes recur:
 ## Maintenance direction
 - Keep `genkit` as the canonical **server-owned workflow/orchestration anchor** in this lane.
 - Keep `firebase-ai-logic` as the narrower **direct app integration** skill.
+- Preserve support symmetry across the lane: both sides should carry `references/`, `evals/`, and clear `SKILL.toon` discovery wording so client-side requests do not drift back into backend-first answers.
 - Do not merge them unless Firebase collapses the product boundary more aggressively in upstream docs.
 - When future Firebase AI work lands, check whether it belongs to app integration, backend workflow orchestration, or Firebase project operations before adding or modernizing skills.
 

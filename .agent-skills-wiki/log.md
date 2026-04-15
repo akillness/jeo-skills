@@ -446,3 +446,11 @@
 - Accepted: rewrite `genkit` as the backend AI workflow anchor, add `references/` + `evals/`, sharpen `firebase-ai-logic` trigger wording toward direct app/client SDK integration, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the durable boundary in the wiki
 - Rejected: adding another overlapping Firebase AI wrapper; merging `genkit` and `firebase-ai-logic` into one skill; leaving `genkit` as a long example/command dump
 - Wiki files created/updated: `concepts/firebase-ai-workflow-cluster.md`, `queries/genkit-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | Firebase AI Logic support hardening
+- Area researched: Firebase AI client/app integration versus backend workflow orchestration, especially the lane boundary between `firebase-ai-logic`, `genkit`, and `firebase-cli`
+- Survey files created under `.survey/firebase-ai-logic-client-integration-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `firebase-ai-logic` as the direct app/client integration anchor, add three `references/` docs plus `evals/evals.json`, refresh `SKILL.toon` and discovery manifests, update README / README.ko, and record the support-symmetry takeaway in the wiki
+- Rejected: adding another Firebase AI wrapper; merging `firebase-ai-logic` into `genkit`; leaving the client-side lane as a stale snippet dump next to a stronger backend skill
+- Wiki files created/updated: `concepts/firebase-ai-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `queries/firebase-ai-logic-support-hardening-2026-04-15.md`, `index.md`, `log.md`

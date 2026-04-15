@@ -1,15 +1,16 @@
 N:firebase-ai-logic
-D:Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for Gemini-powered features. Use when the user needs in-app text/chat/multimodal generation, structured output, streaming, or App Check-aware Firebase app integration without a separate workflow framework. Route server-owned flows, tool calling, RAG, evals, and reusable backend orchestration to `genkit`.
-G:firebase ai gemini sdk client-side app-integration streaming structured-output app-check
+D:Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for Gemini-powered features. Use when the user needs in-app text/chat/multimodal generation, structured output, streaming, or App Check-aware Firebase app integration without a separate workflow framework. Route server-owned flows, tool calling, RAG, evaluation, and reusable backend orchestration to `genkit`, and route project/deploy/operator tasks to `firebase-cli`.
+G:firebase ai gemini sdk client-side app-integration streaming structured-output app-check mobile web
 U[5]:
   **Direct app integration**: add Gemini-powered features inside a Firebase app
   **Client-side generation**: text, chat, multimodal prompts, structured output, and streaming
-  **Firebase production controls**: App Check-aware usage and quota/cost concerns
-  **Simple product features**: summaries, assistants, and in-app AI helpers
-  **Routing boundary**: send backend-owned workflows to `genkit`
-S[5]{n,action}:
-  1,Firebase Project Setup
-  2,Enable AI Logic
-  3,Install SDK
-  4,Implement AI Features
-  5,Configure Security Rules
+  **Production controls**: App Check-aware usage, quota/cost, and launch hardening
+  **Boundary check**: decide when the request must split into backend orchestration
+  **Routing**: send backend workflows to `genkit` and Firebase ops to `firebase-cli`
+S[6]{n,action}:
+  1,Classify the request
+  2,Normalize the feature packet
+  3,Give app-layer guidance
+  4,Cover Firebase-specific controls
+  5,Enforce route-outs
+  6,Format the recommendation
