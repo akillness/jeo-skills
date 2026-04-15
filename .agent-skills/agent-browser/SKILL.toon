@@ -1,24 +1,26 @@
 N:agent-browser
-D:Browser automation CLI for AI agents. Use refs from snapshot -i for deterministic interaction, verification, and repeatable web workflows.
-G:agent-browser browser-automation ai-agent web-testing scraping snapshot-refs verification sessions
+D:Fresh-session deterministic browser verification for AI agents. Use when the job needs a clean disposable browser, snapshot refs, and explicit before/after evidence. Route running-browser reuse to playwriter, rendered-UI feedback to agentation, and plan/diff approval to plannotator.
+G:agent-browser browser-automation verification fresh-session headless-browser ai-agent web-testing snapshot-refs ci
 U[5]:
-  Open websites and automate interactions
-  Fill forms and verify expected UI changes
-  Capture screenshots and extract structured signals
-  Run deterministic ref-based browser workflows
-  Isolate parallel tasks with named sessions
+  Clean disposable browser checks
+  Snapshot-ref form and page-state verification
+  Explicit before/after evidence with diffs or extraction
+  Isolated parallel browser sessions
+  CI-style reproducible website automation
 S[6]{n,action,details}:
-  1,Open,Navigate using agent-browser open <url>
-  2,Wait,Stabilize page with wait --load networkidle or selector wait
-  3,Snapshot,Collect refs via agent-browser snapshot -i
-  4,Interact,Use @eN refs for click/fill/select/check
-  5,Resnapshot,Run snapshot -i again after navigation or DOM updates
-  6,Verify,Use diff snapshot or screenshot baseline diff for evidence
-R[4]:
-  Never reuse stale refs after page changes
-  Prefer explicit waits over fixed sleep
-  Use eval --stdin for complex JavaScript payloads
-  Close sessions or use unique --session names in parallel runs
-E[2]{desc,in,out}:
-  "Click and verify","snapshot -i; click @e2; diff snapshot","Accessibility tree diff confirms expected change"
-  "Visual regression check","screenshot baseline.png; click @e5; diff screenshot --baseline baseline.png","Mismatch and changed regions reported"
+  1,Open,Start a clean browser session with open <url>
+  2,Wait,Use wait --load networkidle or a targeted wait for stable state
+  3,Observe,Capture snapshot -i and collect fresh refs
+  4,Act,Perform one concrete click/fill/select/check step
+  5,Observe again,Re-run snapshot -i after navigation or DOM change
+  6,Verify,Use diff snapshot, screenshot diff, or targeted extraction as evidence
+R[5]:
+  Never reuse stale refs after navigation or meaningful DOM change
+  Prefer deterministic waits over fixed sleep
+  Keep auth reuse explicit and bounded with state save/load
+  Route logged-in personal-browser work to playwriter
+  Route exact rendered-UI annotation to agentation
+E[3]{desc,in,out}:
+  "Clean signup verification","open; wait; snapshot -i; fill; click; diff snapshot","Fresh-session verification with explicit before/after evidence"
+  "Logged-in browser request","use my already signed-in Chrome and cookies","Routes to playwriter because stateful browser continuity is required"
+  "Exact UI feedback packet","click the broken UI and capture the exact element for the agent","Routes to agentation because annotation is the deliverable"

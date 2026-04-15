@@ -1,10 +1,13 @@
 # Authentication workflows
 
-## Preferred approach
+## Boundary first
 
-Use vault/state-based authentication so secrets are not repeatedly passed in prompts.
+`agent-browser` can save and load auth state, but it is still the **clean-session** browser lane.
 
-## Login once, reuse session state
+Use explicit auth-state files when you need bounded reproducible reuse.
+If the task depends on the user's already-open browser, passkeys, active SSO state, extensions, or trusted-device continuity, route to `playwriter` instead.
+
+## Login once, save bounded state
 
 ```bash
 agent-browser open https://app.example.com/login
@@ -17,15 +20,17 @@ agent-browser wait --url "**/dashboard"
 agent-browser state save auth.json
 ```
 
-## Reuse saved auth
+## Reuse saved auth state later
 
 ```bash
 agent-browser state load auth.json
 agent-browser open https://app.example.com/dashboard
+agent-browser snapshot -i
 ```
 
 ## Security notes
 
-- Prefer environment variables for credentials.
-- Avoid embedding secrets in committed scripts.
-- Scope auth files per environment and rotate regularly.
+- Prefer environment variables or a secret manager for credentials.
+- Do not commit auth files to the repository.
+- Scope auth-state files per environment and rotate them regularly.
+- Treat saved auth as a bounded automation artifact, not a substitute for a real running-browser workflow.
