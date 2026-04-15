@@ -430,3 +430,11 @@
 - Accepted: rewrite `presentation-builder` as the deck-artifact anchor, add three `references/` docs + `evals/evals.json`, add `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the documentation-cluster/support-coverage implications in the wiki
 - Rejected: adding another pitch/deck wrapper; leaving the skill as a short slides-grab command note; letting it absorb long-form docs or non-deck marketing planning
 - Wiki files created/updated: `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `queries/presentation-builder-modernization-2026-04-15.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | vibe-kanban modernization
+- Area researched: coding-task board/workspace orchestration across CLI/dev workflow, web/fullstack delivery, PM/ops coordination, marketing/content workflows, and game-production planning, plus the repo-local boundary between `vibe-kanban`, `plannotator`, `agentation`, `agent-browser`, and `playwriter`
+- Survey files created under `.survey/vibe-kanban-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `vibe-kanban` as the coding-task board/workspace control-plane anchor, add workflow-first `references/` docs + `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the durable boundary in the wiki
+- Rejected: adding another agent-board wrapper; letting `vibe-kanban` absorb planning-only, browser-review, or non-code PM/marketing/game workflows; keeping the skill as a setup-heavy command catalog with no eval harness
+- Wiki files created/updated: `queries/vibe-kanban-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

@@ -237,7 +237,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `agentation` | `annotate` | Exact rendered-UI feedback router — choose copy-paste review, watch-loop sync, self-driving critique, or platform setup |
 | `agent-browser` | `agent-browser` | Fresh-session browser verification anchor — clean disposable browser, snapshot refs, and explicit before/after evidence |
 | `playwriter` | `playwriter` | Running-browser automation for authenticated Chrome sessions and MCP browser reuse |
-| `vibe-kanban` | `kanbanview` | Visual Kanban board with git worktree isolation |
+| `vibe-kanban` | `kanbanview` | Coding-task board/workspace control plane for parallel agents, review queues, worktree isolation, and PR handoff |
 
 ### 🤖 Agent Development (2)
 
@@ -426,7 +426,7 @@ ooo ralph "fix all failing tests"
 ### vibe-kanban — AI Agent Kanban Board
 > Keyword: `kanbanview` | [Docs](docs/vibe-kanban/README.md) | [GitHub](https://github.com/BloopAI/vibe-kanban)
 
-Visual Kanban (To Do → In Progress → Review → Done) with parallel AI agents isolated via git worktrees.
+Board/workspace control plane for bounded coding tasks: run parallel AI agents in isolated worktrees, keep human review explicit, and hand off cleanly to PRs.
 
 ```bash
 npx vibe-kanban

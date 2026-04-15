@@ -237,7 +237,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `agentation` | `annotate` | 정확한 렌더드 UI 피드백 라우터 — copy-paste review, watch-loop sync, self-driving critique, platform setup 선택 |
 | `agent-browser` | `agent-browser` | fresh-session 브라우저 검증 앵커 — clean disposable browser, snapshot refs, 명시적 before/after evidence |
 | `playwriter` | `playwriter` | 인증된 Chrome 세션과 MCP 재사용을 위한 실행 중 브라우저 자동화 |
-| `vibe-kanban` | `kanbanview` | git worktree 격리가 있는 시각적 칸반 보드 |
+| `vibe-kanban` | `kanbanview` | 병렬 에이전트·검토 큐·worktree 격리·PR 핸드오프를 다루는 코딩 작업 보드/워크스페이스 제어면 |
 
 ### 🤖 에이전트 개발 (2개)
 
@@ -426,7 +426,7 @@ ooo ralph "모든 실패 테스트 수정"
 ### vibe-kanban — AI 에이전트 칸반 보드
 > 키워드: `kanbanview` | [문서](docs/vibe-kanban/README.md) | [GitHub](https://github.com/BloopAI/vibe-kanban)
 
-git worktree로 격리된 병렬 AI 에이전트를 시각적 칸반 보드(할 일 → 진행 중 → 검토 → 완료)로 관리.
+바운드된 코딩 작업을 위한 보드/워크스페이스 제어면: 병렬 AI 에이전트를 격리된 worktree에서 실행하고, 사람 검토를 명시적으로 거쳐 PR로 넘기는 흐름을 관리합니다.
 
 ```bash
 npx vibe-kanban
