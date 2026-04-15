@@ -145,7 +145,7 @@ graph TD
 | **skill-autoresearch: eval 기반 스킬 최적화** | 기존 `SKILL.md` 를 바이너리 eval, mutation loop, baseline scoring, dashboard/changelog 산출물로 반복 개선하는 신규 스킬. 기존 ML용 `autoresearch` 와는 별도 용도입니다. 76 → **77개** |
 | **firebase-cli: Firebase CLI 스킬** | Firebase CLI(firebase-tools) 전체 커버리지 — 배포, 에뮬레이터, 데이터 가져오기/내보내기, 사용자 관리, CI/CD. 74 → **75개** |
 | **google-workspace, langsmith, react-grab 추가** | 3개 신규 스킬: Google Workspace REST API 자동화, LangSmith LLM 관측성/평가, react-grab React 엘리먼트 컨텍스트 캡처. 71 → **74개** |
-| **research-paper-writing: ML/CV/NLP 논문 작성 스킬** | Abstract, Introduction, Method, Experiments, Conclusion 섹션별 학술 논문 작성. 문단 흐름, 주장-증거 정합성, 제출 전 셀프 리뷰. Prof. Peng Sida 노트 기반. 70 → **71개** |
+| **research-paper-writing: ML/CV/NLP 논문 작성 스킬** | Abstract, Introduction, Method, Experiments뿐 아니라 figure/table 지원, reviewer response, camera-ready 수정까지 다루는 학술 논문·리버틀 워크플로우. 주장-증거 정합성, 섹션 계획, reviewer-risk 점검 중심. Prof. Peng Sida 노트 기반 + 저장소 지원 보강. 70 → **71개** |
 | **ai-tool-compliance 및 llm-monitoring-dashboard 제거** | `ai-tool-compliance` (내부 컴플라이언스 자동화) 및 `llm-monitoring-dashboard` 제거. 72 → **70개** |
 | **에이전트 개발 스킬 일부 제거** | `agent-configuration`, `agent-evaluation`, `agentic-development-principles`, `agentic-principles`, `agentic-workflow` 제거. 80 → **72개** |
 | **이미지/미디어 스킬 일부 제거** | `image-generation`, `image-generation-mcp`, `pollinations-ai` 제거. 미디어는 `video-production`을 기본 프로그래머블 비디오 스킬로 사용하고, `remotion-video-production`은 명시적 Remotion 이름용 호환 별칭으로 유지 |
@@ -308,7 +308,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 |------|------|--------|
 | `changelog-maintenance` | 변경로그·릴리스 노트·마이그레이션 업데이트·패치 노트를 다루는 릴리스 히스토리 앵커 | 전체 |
 | `presentation-builder` | 투자/로드맵/런치/아키텍처 데모/워크숍/게임 피치 덱용 slides-grab 리뷰 + PPTX/PDF 핸드오프 앵커 | 전체 |
-| `research-paper-writing` | ML/CV/NLP 학술 논문 작성 — Abstract, Introduction, Method, Experiments, Conclusion; 주장-증거 정합성, 제출 전 셀프 리뷰 | 전체 |
+| `research-paper-writing` | ML/CV/NLP 학술 논문 + 리버틀 워크플로우 — abstract/introduction/method/experiments, figure-table 지원, 주장-증거 정합성, reviewer response, camera-ready revision | 전체 |
 | `technical-writing` | 스펙, 아키텍처 문서, ADR, 런북, 마이그레이션 가이드, 개발자용 구현 문서를 다루는 내부 기술 문서 앵커 | 전체 |
 | `user-guide-writing` | 온보딩 가이드, 튜토리얼, 작업형 how-to, FAQ, 헬프센터 문서, 출시 후 도움말 업데이트를 다루는 사용자 문서 앵커 | 전체 |
 

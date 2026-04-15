@@ -14,7 +14,7 @@ sources: [.survey/technical-writing-modernization-20260413/context.md, .survey/t
 - `api-documentation` — published API / SDK / portal docs and developer-facing contract presentation
 - `user-guide-writing` — end-user onboarding, tutorials, screenshots, FAQs, and help-center content
 - `changelog-maintenance` — release-history / release-notes anchor for `CHANGELOG.md`, migration/deprecation updates, customer/developer release summaries, and lightweight game patch notes
-- `research-paper-writing` — specialized academic / manuscript output that should not absorb deck or general documentation requests
+- `research-paper-writing` — specialized academic / manuscript package anchor for claim/evidence mapping, figure-table support, rebuttal workflow, and camera-ready revision; it should not absorb deck, general documentation, or marketing requests
 - `presentation-builder` — deck-artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch slides that need visual review and editable export/handoff
 
 ## Why it matters
@@ -30,7 +30,7 @@ Boundary checks:
 4. If the request is about specs, ADRs, architecture docs, runbooks, migration notes, or internal developer guides, keep it in `technical-writing`.
 
 ## Current structural note
-After the `technical-writing`, `user-guide-writing`, `api-documentation`, `changelog-maintenance`, and `presentation-builder` modernization runs, the documentation cluster now has sharper anchors for internal docs, developer-facing API docs, end-user help content, release-history / release-summary work, and presentation artifacts. The latest graph-style scan reports 76 skills with `references/` and 76 with `evals/`; route-out discipline and support-file ratchets still matter more than adding a new wrapper skill.
+After the `technical-writing`, `user-guide-writing`, `api-documentation`, `changelog-maintenance`, `presentation-builder`, and `research-paper-writing` hardening runs, the documentation cluster now has sharper anchors for internal docs, developer-facing API docs, end-user help content, release-history / release-summary work, presentation artifacts, and academic manuscript packages. The latest graph-style scan reports 83 skills with `references/` and 84 with `evals/`; route-out discipline and support-file ratchets still matter more than adding a new wrapper skill.
 
 ## Related pages
 - [[skill-support-coverage]]

@@ -502,3 +502,11 @@
 - Accepted: rewrite `lmstudio-cli` into a decision-first operator skill, add three `references/` docs plus `scripts/check_lmstudio_endpoint.py` and `evals/evals.json`, refresh `SKILL.toon` and the `skills.json` manifest entry, and record the stronger developer-workflow/support-coverage boundary in the wiki
 - Rejected: adding another generic local-LLM wrapper; widening into broad provider comparison; forcing README / README.ko / setup prompt edits when those surfaces do not currently mention `lmstudio-cli` directly
 - Wiki files created/updated: `queries/lmstudio-cli-modernization-2026-04-15.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | research-paper-writing hardening
+- Area researched: ML/AI/CS paper-writing workflows, especially claim-evidence mapping, figure/table support, review-response matrices, venue checklist pressure, and the documentation-cluster boundary between `research-paper-writing`, `technical-writing`, `presentation-builder`, and `marketing-automation`
+- Survey files created under `.survey/research-paper-writing-hardening-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: harden `research-paper-writing` in place, add three focused `references/` docs plus `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `skills.json`, and record the stronger documentation-cluster + support-coverage boundary in the wiki
+- Rejected: adding another paper/rebuttal wrapper; broadening the skill into generic academic tooling; leaving the lane as a prose-only paper helper with no support files
+- Wiki files created/updated: `queries/research-paper-writing-hardening-2026-04-15.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
