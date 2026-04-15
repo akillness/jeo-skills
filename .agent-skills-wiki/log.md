@@ -414,3 +414,11 @@
 - Accepted: rewrite `opencontext` as the project/repo memory and cross-agent handoff anchor, add `references/` + `evals/`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the persistent-memory boundary in the wiki
 - Rejected: adding another generic persistent-memory wrapper; treating OpenContext as a replacement for `llm-wiki` or `graphify`; keeping the skill as a raw command catalog with no support files
 - Wiki files created/updated: `concepts/persistent-memory-cluster.md`, `queries/opencontext-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | agent-browser modernization
+- Area researched: fresh-session browser verification patterns across Playwright/browser-agent tooling, plus the repo-local browser-review boundary between `agent-browser`, `playwriter`, `agentation`, and `plannotator`
+- Survey files created under `.survey/agent-browser-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `agent-browser` as the clean-session deterministic verification anchor, add `references/modes-and-routing.md` + `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the browser-review boundary in the wiki
+- Rejected: adding another overlapping browser/QA wrapper; letting `agent-browser` absorb running-browser reuse or rendered-UI annotation work; keeping the skill as a generic browser CLI guide with no eval harness
+- Wiki files created/updated: `concepts/browser-review-cluster.md`, `queries/agent-browser-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

@@ -1,0 +1,35 @@
+{
+  "skill_name": "agent-browser",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run a clean browser verification that fills a signup form, clicks submit, and proves the confirmation state changed.",
+      "expected_output": "The skill activates `agent-browser`, frames the task as fresh-session deterministic verification, uses snapshot refs before actions, and verifies with explicit before/after evidence.",
+      "assertions": [
+        "Response chooses `agent-browser` rather than `playwriter` or `agentation`.",
+        "Response includes an observe -> act -> observe loop or equivalent wording.",
+        "Response mentions snapshot refs, snapshot diff, screenshot diff, or another explicit verification artifact."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use my already logged-in Chrome session and existing cookies to update a billing setting.",
+      "expected_output": "The skill does not claim `agent-browser` is the correct default and instead routes the task to `playwriter` because live browser state is required.",
+      "assertions": [
+        "Response routes to `playwriter`.",
+        "Response explains that existing browser state or session continuity is the deciding factor.",
+        "Response does not present `agent-browser` as the primary tool for this prompt."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want to click the broken UI, capture the exact element and feedback packet, and send it back to the coding agent.",
+      "expected_output": "The skill routes to `agentation` because the task is exact rendered-UI feedback, not fresh-session verification.",
+      "assertions": [
+        "Response routes to `agentation`.",
+        "Response distinguishes annotation packets from deterministic browser verification.",
+        "Response keeps `agent-browser` scoped to clean-session verification if mentioned at all."
+      ]
+    }
+  ]
+}

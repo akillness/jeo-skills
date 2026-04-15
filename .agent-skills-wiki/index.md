@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-15 | Total pages: 66
+> Last updated: 2026-04-15 | Total pages: 67
 
 ## Entities
 
@@ -44,6 +44,7 @@
 - [[file-organization-modernization-2026-04-15]] — Why the best bounded repo-structure improvement was modernizing `file-organization` into a decision-first structure and migration anchor instead of adding another project-layout wrapper.
 - [[npm-git-install-modernization-2026-04-15]] — Why the best bounded next utility/developer-workflow improvement was modernizing `npm-git-install` into the Git-based package-delivery decision anchor instead of adding another install helper.
 - [[opencontext-modernization-2026-04-15]] — Why the best bounded next memory-layer improvement was modernizing `opencontext` into the project/repo memory and cross-agent handoff anchor instead of adding another persistent-memory wrapper.
+- [[agent-browser-modernization-2026-04-15]] — Why the best bounded next browser-review improvement was modernizing `agent-browser` into the fresh-session deterministic browser verification anchor instead of adding another overlapping browser or QA wrapper.
 - [[marketing-skill-canonicalization-2026-04-12]] — Why the best bounded marketing change was canonicalizing `marketing-automation` and narrowing `marketing-skills-collection` into a compatibility alias.
 - [[react-skill-canonicalization-2026-04-12]] — Why the best bounded frontend change was canonicalizing the React pair instead of adding another frontend skill.
 - [[codebase-search-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `codebase-search` into an evidence-first repo-navigation anchor instead of adding another search wrapper.
