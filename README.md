@@ -365,7 +365,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `file-organization` | Decision-first repo structure guidance — choose framework defaults vs feature folders, monorepo boundaries, docs taxonomy, or engine-aware game layouts | All |
 | `git-submodule` | Decision-first Git submodule workflow — choose submodule vs subtree/vendor, bootstrap recursively, advance pointers safely, and wire CI checkout/auth | All |
 | `git-workflow` | Local Git branch, commit, rebase, conflict, push-safety, and recovery workflows | All |
-| `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
+| `google-workspace` | Decision-first Google Workspace operations — choose Apps Script vs REST API vs Admin SDK, auth model, and cross-service flows across Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, and Forms | All |
 | `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |
 | `npm-git-install` | Decision-first Git dependency workflow for npm / pnpm / Yarn / Bun — choose Git ref, tarball, workspace, or publish-first path safely | All |
 | `obsidian-cli` | Operate the official Obsidian CLI — enablement, TUI, note and task automation, vault and file targeting, plugin reload, developer commands | All |

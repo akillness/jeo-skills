@@ -5,19 +5,19 @@
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, compact-variant coverage, and documentation indexing
 - Total skills: 89
 - Manifest skills in `.agent-skills/skills.json`: 89
-- Skills with references/: 83
+- Skills with references/: 84
 - Skills with evals/: 84
 - Skills with scripts/: 24
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
-- Graph nodes: 374
-- Graph edges: 1004
+- Graph nodes: 375
+- Graph edges: 1069
 
 ## Strongest structural findings
-1. The graph remains docs-first: README.md, README.ko.md, setup-all-skills-prompt.md, skills.json, and skills.toon index every live skill and remain the highest-degree maintenance nodes.
-2. research-paper-writing is no longer a support-gap outlier in the documentation cluster: this run added references and evals, plus refreshed compact/discovery wording.
-3. The useful boundary for research-paper-writing remains manuscript-package work: abstract/introduction/method/experiments, figure-table support, rebuttal, and camera-ready revision rather than general documentation or marketing copy.
-4. Support-coverage leverage continues to come from upgrading legacy skills with references/evals instead of adding duplicates.
+1. The graph remains docs-first: README.md, README.ko.md, setup-all-skills-prompt.md, skills.json, and skills.toon still index every live skill and remain the highest-degree maintenance nodes.
+2. `google-workspace` is no longer a support-gap outlier: the skill now has a dedicated `references/` bundle, refreshed evals, and synced compact/discovery copy.
+3. The useful boundary for `google-workspace` is no longer “all Workspace APIs in one file”; it is deciding between Apps Script, direct REST APIs, and Admin SDK routes, then shaping auth and cross-service workflows.
+4. Support-coverage leverage still comes from upgrading indexed legacy anchors instead of adding parallel wrappers for Zapier / Make / n8n style tooling.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
@@ -25,20 +25,20 @@
 - README.ko.md: degree 89
 - README.md: degree 89
 - setup-all-skills-prompt.md: degree 89
-- debugging: degree 25
-- code-review: degree 24
-- performance-optimization: degree 24
+- debugging: degree 41
+- performance-optimization: degree 26
+- bmad: degree 25
+- code-review: degree 25
 - task-planning: degree 24
-- plannotator: degree 22
-- system-environment-setup: degree 22
-- vibe-kanban: degree 22
+- plannotator: degree 23
+- vibe-kanban: degree 23
 
 ## Duplicate / consolidation notes
-- `research-paper-writing` now reads as a specialized manuscript + rebuttal workflow instead of a generic academic-writing skill, which reduces pressure to add another paper-review or submission wrapper.
-- No new duplicate skill was introduced in the documentation cluster; this run was a support-and-boundary ratchet on an existing skill.
-- README / setup surfaces now reflect the stronger rebuttal / camera-ready positioning, so discovery copy is aligned with the skill boundary.
+- `google-workspace` should remain the single general Workspace automation skill instead of spawning separate generic wrappers for no-code automation vendors or one API family at a time.
+- The stronger route is support-and-boundary hardening: Apps Script vs REST API vs Admin SDK, auth choice, and quota-aware workflow packets.
+- README / setup surfaces now reflect the stronger routing boundary, so discovery copy is aligned with the skill body again.
 
 ## Recommended maintenance direction
-- Keep upgrading remaining legacy skills that still lack `references/` or `evals/` before adding new overlapping skills.
-- Re-run catalog/runtime sync validation whenever a skill description or manifest entry changes materially.
-- Treat manuscript-writing skills as boundary-sensitive: preserve the split between academic paper packages, general docs, decks, and marketing surfaces.
+- Keep upgrading remaining legacy skills that still lack `references/` or `evals/` before adding overlapping productivity or orchestration wrappers.
+- Re-run catalog/runtime sync validation whenever discovery copy or manifest descriptions change materially.
+- Treat Google Workspace work as workflow-sensitive: preserve the split between content operations, admin operations, and external no-code substitutes.
