@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-15 | Total pages: 67
+> Last updated: 2026-04-15 | Total pages: 68
 
 ## Entities
 
@@ -78,4 +78,5 @@
 - [[bmad-idea-modernization-2026-04-15]] — Why the best bounded pre-planning creativity improvement was modernizing `bmad-idea` into the concept-routing anchor instead of leaving it as a command/persona catalog or adding another ideation wrapper.
 - [[playwriter-modernization-2026-04-15]] — Why the best bounded browser-tooling improvement was modernizing `playwriter` into the running-browser / authenticated-session reuse anchor instead of adding another browser wrapper or letting it blur into `agent-browser`.
 - [[agentation-modernization-2026-04-15]] — Why the best bounded planning-review/browser-follow-up improvement was modernizing `agentation` into the exact rendered-UI feedback router instead of adding another browser or QA wrapper.
+- [[presentation-builder-modernization-2026-04-15]] — Why the best bounded documentation/publishing improvement was modernizing `presentation-builder` into the deck-artifact anchor instead of leaving it as a thin slides-grab command note or adding another pitch/deck wrapper.
 

@@ -2209,12 +2209,16 @@
     },
     {
       "name": "presentation-builder",
-      "description": "Build editable presentations with slides-grab. Use when creating slide decks as HTML slides, iterating visually in a browser, and exporting approved decks to PPTX or PDF.",
+      "description": "Build real presentation artifacts when the user needs an editable deck rather than just an outline: investor decks, roadmap reviews, launch decks, architecture/demo decks, workshop decks, and game pitch/update decks. Use when the workflow needs slide planning, visual iteration, and export or handoff to PPTX/PDF after approval.",
       "category": "documentation",
       "path": "presentation-builder/SKILL.md",
       "tags": [
         "presentation",
         "slides-grab",
+        "pitch-deck",
+        "roadmap-deck",
+        "investor-deck",
+        "demo-deck",
         "pptx",
         "pdf",
         "html-slides",

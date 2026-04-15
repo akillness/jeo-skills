@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 75 skills with `references/`
-- 75 skills with `evals/`
+- 76 skills with `references/`
+- 76 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -69,6 +69,7 @@ Recent ratchets:
 - The `opencontext` modernization pass added three `references/` docs and `evals/evals.json`, which matters because another high-utility utility skill now clearly owns active project/repo memory, manifests, stable links, and cross-agent handoff instead of remaining a generic persistent-memory command catalog that blurred into wiki or graph layers.
 - The `agentation` modernization pass added three `references/` docs and `evals/evals.json`, which matters because a flagship planning-review/browser-adjacent skill now clearly owns exact rendered-UI feedback plus annotation-loop setup instead of remaining a giant mixed install/config/API catalog that blurred into `agent-browser`, `playwriter`, and `plannotator`.
 - The `agent-browser` modernization pass added `references/modes-and-routing.md` and `evals/evals.json`, which matters because the browser-review lane now has an explicit clean-session verification anchor instead of a generic browser CLI guide with weak boundary enforcement and no ratcheting harness.
+- The `presentation-builder` modernization pass added three `references/` docs, `evals/evals.json`, and `SKILL.toon`, which matters because the documentation/publishing lane now has a stronger deck-artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch workflows instead of a short slides-grab command note with weak routing.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
@@ -114,3 +115,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[playwriter-modernization-2026-04-15]]
 - [[agentation-modernization-2026-04-15]]
 - [[agent-browser-modernization-2026-04-15]]
+- [[presentation-builder-modernization-2026-04-15]]

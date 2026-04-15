@@ -149,7 +149,7 @@ graph TD
 | **autoresearch: Karpathy autonomous ML experiment skill** | AI agent modifies `train.py`, runs 5-min GPU experiments, evaluates with `val_bpb`, ratchets improvements via git. Includes `scripts/` and `references/`. |
 | **jeo v1.2.3: plannotator-plan-loop.sh all-platform hardening** | Cross-platform temp dir fallback, dedicated port `PLANNOTATOR_PORT=47291`, `probe_plannotator_port()` + `wait_for_listen()`, browser-crash retry up to 3 times, structured `jeo-blocked.json` output. |
 | **survey: cross-platform landscape scan** | 4-lane discovery flow, artifacts to `.survey/{slug}/`, Claude/Codex/Gemini abstraction as `settings/rules/hooks`, plus an explicit evidence-recovery ladder for broken search/extract runs. |
-| **presentation-builder: slides-grab workflow** | HTML-first deck creation, visual editing, PPTX/PDF export. Removed duplicate `pptx-presentation-builder`. |
+| **presentation-builder: deck artifact workflow** | Slides-grab-based deck planning for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks, with browser review and PPTX/PDF handoff. Removed duplicate `pptx-presentation-builder`. |
 
 ---
 
@@ -304,7 +304,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `changelog-maintenance` | Release-history + release-notes anchor for changelogs, migration updates, and patch notes | All |
-| `presentation-builder` | HTML slides with slides-grab, PPTX/PDF export | All |
+| `presentation-builder` | Deck artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks, with slides-grab review and PPTX/PDF handoff | All |
 | `research-paper-writing` | ML/CV/NLP academic paper writing — Abstract, Introduction, Method, Experiments, Conclusion; claim-evidence alignment, pre-submission review | All |
 | `technical-writing` | Internal technical docs anchor for specs, architecture docs, ADRs, runbooks, migration guides, and developer-facing implementation notes | All |
 | `user-guide-writing` | User-facing docs anchor for onboarding guides, tutorials, how-to articles, FAQs, help-center content, and release-facing help updates | All |

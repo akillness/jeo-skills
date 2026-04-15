@@ -422,3 +422,11 @@
 - Accepted: rewrite `agent-browser` as the clean-session deterministic verification anchor, add `references/modes-and-routing.md` + `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the browser-review boundary in the wiki
 - Rejected: adding another overlapping browser/QA wrapper; letting `agent-browser` absorb running-browser reuse or rendered-UI annotation work; keeping the skill as a generic browser CLI guide with no eval harness
 - Wiki files created/updated: `concepts/browser-review-cluster.md`, `queries/agent-browser-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | presentation-builder modernization
+- Area researched: cross-domain deck-building workflows across developer demos, PM/ops review decks, GTM/launch decks, investor decks, and game pitch/update decks, plus the repo-local documentation-cluster boundary between `presentation-builder`, `technical-writing`, `user-guide-writing`, `research-paper-writing`, and `marketing-automation`
+- Survey files created under `.survey/presentation-builder-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `presentation-builder` as the deck-artifact anchor, add three `references/` docs + `evals/evals.json`, add `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the documentation-cluster/support-coverage implications in the wiki
+- Rejected: adding another pitch/deck wrapper; leaving the skill as a short slides-grab command note; letting it absorb long-form docs or non-deck marketing planning
+- Wiki files created/updated: `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `queries/presentation-builder-modernization-2026-04-15.md`, `index.md`, `log.md`
