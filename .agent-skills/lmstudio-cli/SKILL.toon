@@ -1,11 +1,12 @@
 N:lmstudio-cli
-D:Use LM Studio CLI docs and OpenAI-compatible LM Studio servers to discover models, verify remote availability, and configure downstream tools like Strix. Supports local lms CLI flows and remote HTTP endpoint validation.
-G:lmstudio lm-studio lms local-llm openai-compatible strix model-server inference
+D:Operate LM Studio's lms CLI and local or remote LM Studio servers for model discovery, server status checks, model loading, endpoint smoke tests, and downstream OpenAI-compatible wiring. Use when the user mentions LM Studio, lms, a local model server, /v1/models, a remote LM Studio host, or connecting another tool to LM Studio.
+G:lmstudio lm-studio lms local-llm openai-compatible model-server inference local-inference endpoint-validation strix
 
-S[6]{n,action,details}:
-  1,1) Check whether local lms exists,bash command -v lms lms --help If absent, do not invent CLI output. Use the remote OpenAI-compatible HTTP API instead.
-  2,2) Verify remote LM Studio endpoint,bash curl -fsS http://HOST:PORT/v1/models This returns OpenAI-compatible model IDs. Choose the exact ID you want to use.
-  3,2.5) If you need max context, inspect and load via LM Studio native REST API,Use the native API to inspect max_context_length and load a dedicated instance with that value: bash curl -fsS http://HOST:PORT/api/v1/models curl -fsS http://HOST:PORT/api/v1/mode
-  4,3) If lms exists locally, use the CLI docs-backed commands,bash lms server status --json --quiet lms ls --llm lms load <model_key> --identifier "my-model" lms ps --json
-  5,4) Configure Strix for LM Studio,Use the exact remote model ID under the OpenAI provider namespace: bash export STRIX_LLM="openai/MODEL_ID" export LLM_API_BASE="http://HOST:PORT/v1" Example: bash export STRIX_LLM=
-  6,5) Save reusable config files,Prefer tool-specific config JSON files over editing global shell profiles. For Strix: json { "env": { "STRIX_LLM": "openai/google/gemma-4-26b-a4b", "LLM_API_BASE": "http://10.0.3.2
+S[7]{n,action,details}:
+  1,Identify the operating mode,Choose between local native CLI mode remote HTTP mode LM Studio-native management mode and downstream wiring mode before issuing commands.
+  2,Check whether local lms exists,bash command -v lms && lms --help If lms is missing switch to remote HTTP verification instead of inventing local CLI output.
+  3,Verify server status or endpoint reachability,bash lms server status --json --quiet or curl -fsS http://HOST:PORT/v1/models Optional helper: python3 scripts/check_lmstudio_endpoint.py --base-url http://HOST:PORT/v1
+  4,Discover exact model identifiers,bash lms ls --llm lms ps --json or curl -fsS http://HOST:PORT/v1/models Do not guess model IDs.
+  5,Escalate to native management only when needed,bash curl -fsS http://HOST:PORT/api/v1/models and curl -fsS http://HOST:PORT/api/v1/models/load ... or lms load MODEL_KEY --identifier my-model for context length load state or instance-specific questions.
+  6,Wire downstream tools carefully,Use the exact model ID and base URL. Example: export LLM_API_BASE="http://HOST:PORT/v1" and export STRIX_LLM="openai/MODEL_ID"
+  7,Report operating facts,Include whether lms existed which base URL was tested which model IDs were found whether the job stayed in OpenAI-compatible mode or required native management and the final config snippet needed downstream.

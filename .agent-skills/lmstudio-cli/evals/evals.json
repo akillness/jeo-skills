@@ -1,0 +1,35 @@
+{
+  "skill_name": "lmstudio-cli",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "My teammate says our LM Studio box is up. Verify the endpoint and tell me which exact model ID to use before I point another OpenAI-compatible client at it.",
+      "expected_output": "The skill chooses endpoint verification, checks `/v1/models`, reports exact model IDs, and avoids guessing names.",
+      "assertions": [
+        "Uses endpoint verification before downstream-tool configuration",
+        "Requires exact model IDs from LM Studio instead of guessed aliases",
+        "Keeps the job scoped to LM Studio verification rather than generic provider comparison"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I installed LM Studio locally. Can you check whether `lms` exists and whether the local server is running in a machine-readable way?",
+      "expected_output": "The skill checks `command -v lms`, uses `lms --help`, and reaches for `lms server status --json --quiet`.",
+      "assertions": [
+        "Verifies CLI existence before assuming local control",
+        "Uses `lms server status --json --quiet` for machine-readable local status",
+        "Separates local CLI availability from remote HTTP mode"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The OpenAI-compatible endpoint works, but I need to load the model with a larger context length and confirm the effective config. What path should I use?",
+      "expected_output": "The skill routes from the OpenAI-compatible smoke-test path to LM Studio-native REST or CLI model-management guidance.",
+      "assertions": [
+        "Escalates to native REST or `lms load` for model-management questions",
+        "Explains why `/v1/models` alone is insufficient for context-length / load-state work",
+        "Preserves the boundary between compatibility wiring and native management"
+      ]
+    }
+  ]
+}
