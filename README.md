@@ -329,7 +329,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `skill-autoresearch` | Eval-driven optimization loop for improving an existing SKILL.md without replacing the ML-focused `autoresearch` workflow | All |
 | `codebase-search` | Evidence-first repo navigation, call-site tracing, and impact analysis | All |
 | `data-analysis` | Decision-first dataset analysis for exports, experiments, telemetry, and KPI explanation | All |
-| `langsmith` | LLM observability, tracing, evaluation, and prompt management via LangSmith | All |
+| `langsmith` | Mode-selecting LangSmith skill for LLM tracing, evals, feedback/review queues, prompt-registry decisions, and multi-service propagation | All |
 | `log-analysis` | Root-cause triage for application, infrastructure, browser, and CI logs | All |
 | `pattern-detection` | Mode-selecting pattern/rule hunting for code, logs, telemetry, and metric anomalies | All |
 

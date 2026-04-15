@@ -1,315 +1,290 @@
 ---
 name: langsmith
 description: >
-  Instrument, trace, evaluate, and monitor LLM applications and AI agents with LangSmith.
-  Use when setting up observability for LLM pipelines, running offline or online evaluations,
-  managing prompts in the Prompt Hub, creating datasets for regression testing, or deploying
-  agent servers. Triggers on: langsmith, langchain tracing, llm tracing, llm observability,
-  llm evaluation, trace llm calls, @traceable, wrap_openai, langsmith evaluate, langsmith dataset,
-  langsmith feedback, langsmith prompt hub, langsmith project, llm monitoring, llm debugging,
-  llm quality, openevals, langsmith cli, langsmith experiment, annotate llm, llm judge.
+  Instrument, trace, evaluate, and review LLM applications with LangSmith by choosing the
+  right workflow first: debugging traces, offline evals, online feedback/review queues,
+  prompt-registry work, or multi-service trace propagation. Use when the user needs
+  LangSmith for LLM observability, LangChain tracing, `@traceable` / `traceable`,
+  provider wrappers like `wrap_openai` / `wrapOpenAI`, dataset-backed regression checks,
+  annotation queues, experiment comparison, or prompt/version review; even if they only
+  mention trace IDs, LLM judge scores, human feedback, run trees, prompt hub, or
+  production confidence for an AI feature. Not for generic alerting/SLO design,
+  deployment orchestration, or runtime guardrails outside LangSmith.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+license: MIT
+compatibility: >
+  Works best when LangSmith is already the chosen tracing/eval substrate or the user needs
+  help deciding how to instrument/debug/evaluate an LLM app. Best with Python or
+  TypeScript projects plus access to `LANGSMITH_API_KEY`; self-hosted setups may also need
+  `LANGSMITH_ENDPOINT` and `LANGSMITH_WORKSPACE_ID`.
 metadata:
   tags: langsmith, langchain, tracing, observability, evaluation, llm-monitoring, prompt-hub, datasets, openevals
-  version: "1.0"
+  version: "2.0.0"
   source: https://docs.langchain.com/langsmith/home
-  license: MIT
 ---
 
-# langsmith — LLM Observability, Evaluation & Prompt Management
+# LangSmith
 
-> **Keyword**: `langsmith` · `llm tracing` · `llm evaluation` · `@traceable` · `langsmith evaluate`
->
-> LangSmith is a framework-agnostic platform for developing, debugging, and deploying LLM applications.
-> It provides end-to-end tracing, quality evaluation, prompt versioning, and production monitoring.
+Use this skill to turn a vague “set up LangSmith” request into a **mode-specific operator packet**.
+
+The goal is **not** to dump SDK trivia.
+The goal is to decide:
+1. what LangSmith workflow the user actually needs,
+2. how much instrumentation is required,
+3. what should stay inside LangSmith versus route out to adjacent skills,
+4. what evidence packet to produce before implementation or rollout.
+
+Read [references/modes-and-routing.md](references/modes-and-routing.md) before handling mixed requests that blur tracing, evals, feedback workflows, prompt registry work, and generic observability.
+Read [references/python-sdk.md](references/python-sdk.md) for Python-specific API details.
+Read [references/typescript-sdk.md](references/typescript-sdk.md) for TypeScript-specific API details.
+Read [references/cli.md](references/cli.md) when the user needs CLI export/list/get workflows rather than SDK code.
 
 ## When to use this skill
+- Add or review LangSmith tracing for a chat app, RAG pipeline, tool-calling backend, or agent workflow
+- Choose between quick wrapper-based tracing, targeted decorators, or more explicit manual tracing
+- Build offline evals on a dataset before a prompt/model/app change ships
+- Add online feedback, annotation queues, or review rubrics for production traces
+- Compare prompt or model variants with experiment runs and judge/evaluator packets
+- Decide whether Prompt Hub should own the prompt lifecycle for this workflow
+- Correlate multi-service traces by propagating parent context across jobs, workers, or microservices
+- Audit an existing LangSmith setup that “collects traces” but still does not give trustworthy debugging or launch confidence
 
-- Add tracing to any LLM pipeline (OpenAI, Anthropic, LangChain, custom models)
-- Run offline evaluations with `evaluate()` against a curated dataset
-- Set up production monitoring and online evaluation
-- Manage and version prompts in the Prompt Hub
-- Create datasets for regression testing and benchmarking
-- Attach human or automated feedback to traces
-- Use LLM-as-judge scoring with `openevals`
-- Debug agent failures with end-to-end trace inspection
+## When not to use this skill
+- **Generic metrics / logs / dashboards / SLO / alert design** → use `monitoring-observability`
+- **Root-cause triage on existing logs or stack traces** → use `log-analysis`
+- **Code-level reproduction and bug isolation** → use `debugging`
+- **Performance bottleneck diagnosis after measurements exist** → use `performance-optimization`
+- **Deployment / rollout orchestration** → use `deployment-automation`
+- **Runtime guardrails / approval policies / safety middleware** → use the appropriate runtime-policy or security skill instead of overclaiming LangSmith as the control plane
+
+## Mode selection
+Choose one primary mode before suggesting code or CLI commands.
+
+| Mode | Use when | Main output |
+|------|----------|-------------|
+| Debugging traces | The team cannot explain what the app/agent actually did | trace-debug packet |
+| Offline evals | A change needs regression confidence before shipping | eval packet |
+| Online feedback & review | Production traces need human or automated quality scoring | review packet |
+| Prompt registry & experiment comparison | Prompt/version choice is the bottleneck | prompt packet |
+| Multi-service / agent propagation | Runs span services, jobs, or agent/tool boundaries | propagation packet |
+| Audit / gap review | LangSmith exists already but confidence is still low | audit packet |
+
+If multiple modes appear, pick the bottleneck first and list the others as follow-ups.
 
 ## Instructions
 
-1. Install SDK: `pip install -U langsmith` (Python) or `npm install langsmith` (TypeScript)
-2. Set environment variables: `LANGSMITH_TRACING=true`, `LANGSMITH_API_KEY=lsv2_...`
-3. Instrument with `@traceable` decorator or `wrap_openai()` wrapper
-4. View traces at [smith.langchain.com](https://smith.langchain.com)
-5. For evaluation setup, see [references/python-sdk.md](references/python-sdk.md)
-6. For CLI commands, see [references/cli.md](references/cli.md)
-7. Run `bash scripts/setup.sh` to auto-configure environment
+### Step 1: Label the workflow before choosing APIs
+Capture the minimum facts first.
 
-> **API Key**: Get from [smith.langchain.com → Settings → API Keys](https://smith.langchain.com)
-> **Docs**: https://docs.langchain.com/langsmith
+Record:
+- app shape: chat app | RAG | tool-calling backend | agent | batch job | multi-service system | mixed
+- language/runtime: Python | TypeScript | mixed | unknown
+- request type: new setup | debug issue | eval rollout | prompt comparison | feedback queue | audit
+- current evidence: traces | datasets | evaluators | feedback configs | prompt versions | none
+- confidence problem: missing traces | noisy traces | no regression gate | no review rubric | prompt drift | missing cross-service correlation
+- environment: local | staging | preview | prod | mixed
 
----
+Do **not** start with “should I use `@traceable`?” Start by labeling the workflow.
 
-## Quick Start
+### Step 2: Choose the primary LangSmith mode
 
-### Python
+#### Mode A — Debugging traces
+Use when the real question is “what happened?”
 
-```bash
-pip install -U langsmith openai
-export LANGSMITH_TRACING=true
-export LANGSMITH_API_KEY="lsv2_..."
-export OPENAI_API_KEY="sk-..."
-```
+Focus on:
+- trace tree coverage across app, LLM, retrieval, tools, and downstream services
+- project/tag/metadata standards so traces are queryable later
+- whether provider wrappers are enough or explicit decorators/contexts are needed
+- explicit flush behavior for short-lived scripts/jobs
 
-```python
-from langsmith import traceable
-from langsmith.wrappers import wrap_openai
-from openai import OpenAI
+Return:
+- tracing surface to instrument first
+- minimum metadata/tags to attach
+- wrapper vs decorator vs manual trace choice
+- route-out if the real problem is generic infra observability or log triage
 
-client = wrap_openai(OpenAI())
+#### Mode B — Offline evals
+Use when the team needs a regression gate before shipping a change.
 
-@traceable
-def rag_pipeline(question: str) -> str:
-    """Automatically traced in LangSmith"""
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[{"role": "user", "content": question}]
-    )
-    return response.choices[0].message.content
+Focus on:
+- dataset scope and example shape
+- deterministic evaluator vs LLM-as-judge vs pairwise comparison
+- experiment naming and baseline/candidate comparison
+- concurrency / cost awareness
 
-result = rag_pipeline("What is LangSmith?")
-```
+Return:
+- dataset packet
+- evaluator packet
+- experiment packet
+- “ship / not yet” confidence note
 
-### TypeScript
+#### Mode C — Online feedback & review
+Use when traces exist but quality review is weak.
 
-```bash
-npm install langsmith openai
-export LANGSMITH_TRACING=true
-export LANGSMITH_API_KEY="lsv2_..."
-```
+Focus on:
+- feedback schema and score semantics
+- annotation queue design and required rubric items
+- who will review and when
+- how run IDs / trace IDs get preserved for later feedback attachment
 
-```typescript
-import { traceable } from "langsmith/traceable";
-import { wrapOpenAI } from "langsmith/wrappers";
-import { OpenAI } from "openai";
+Return:
+- feedback keys + scale definitions
+- queue/rubric packet
+- reviewer workflow
+- route-out if the user really needs product analytics, support ops, or moderation tooling instead
 
-const client = wrapOpenAI(new OpenAI());
+#### Mode D — Prompt registry & experiment comparison
+Use when prompt/version choice is the bottleneck.
 
-const pipeline = traceable(async (question: string): Promise<string> => {
-  const res = await client.chat.completions.create({
-    model: "gpt-4o",
-    messages: [{ role: "user", content: question }],
-  });
-  return res.choices[0].message.content ?? "";
-}, { name: "RAG Pipeline" });
+Focus on:
+- whether Prompt Hub should own the prompt or the team should stay in Git/app config
+- version pinning and experiment comparison
+- pull/push workflow boundaries
+- how prompts connect to datasets/evals
 
-await pipeline("What is LangSmith?");
-```
+Return:
+- prompt registry decision
+- baseline vs candidate comparison packet
+- explicit note if Prompt Hub is optional rather than required
 
----
+#### Mode E — Multi-service / agent propagation
+Use when one user request becomes multiple runs across services, jobs, or agents.
 
-## Core Concepts
+Focus on:
+- parent/child context propagation
+- shared trace identifiers and metadata
+- service boundary handoffs
+- what still belongs in generic observability/cost dashboards outside LangSmith
 
-| Concept | Description |
-|---------|-------------|
-| **Run** | Individual operation (LLM call, tool call, retrieval). The fundamental unit. |
-| **Trace** | All runs from a single user request, linked by `trace_id`. |
-| **Thread** | Multiple traces in a conversation, linked by `session_id` or `thread_id`. |
-| **Project** | Container grouping related traces (set via `LANGSMITH_PROJECT`). |
-| **Dataset** | Collection of `{inputs, outputs}` examples for offline evaluation. |
-| **Experiment** | Result set from running `evaluate()` against a dataset. |
-| **Feedback** | Score/label attached to a run — numeric, categorical, or freeform. |
+Return:
+- propagation packet
+- required headers/IDs
+- missing correlation risks
+- route-out if the main job is distributed-systems observability rather than LangSmith instrumentation
 
----
+#### Mode F — Audit / gap review
+Use when LangSmith is already installed but trust is low.
 
-## Tracing
+Focus on:
+- missing instrumentation coverage
+- empty or noisy metadata
+- absent evals / weak review rubrics
+- prompt/version ambiguity
+- missing trace flush or run-ID preservation
 
-### @traceable decorator (Python)
+Return:
+- gap list by severity
+- first ratchet to add next
+- route-outs to adjacent skills
 
-```python
-from langsmith import traceable
+### Step 3: Choose the instrumentation surface
 
-@traceable(
-    run_type="chain",          # llm | chain | tool | retriever | embedding
-    name="My Pipeline",
-    tags=["production", "v2"],
-    metadata={"version": "2.1", "env": "prod"},
-    project_name="my-project"
-)
-def pipeline(question: str) -> str:
-    return generate_answer(question)
-```
+| Choice | Use when | Strengths | Risks |
+|---|---|---|---|
+| Provider wrappers (`wrap_openai`, `wrap_anthropic`, `wrapOpenAI`) | Need fast coverage around model calls | Quickest adoption, low touch | Misses non-model workflow context unless paired with higher-level traces |
+| Decorators / `traceable()` | Need named workflow spans around application functions | Clear trace boundaries, reusable | Still requires explicit placement |
+| `tracing_context(...)` / manual trace blocks | Need scoped or temporary tracing | Good for audits, tests, suspicious blocks | Easy to under-instrument if used as the only approach |
+| Cross-service header propagation | Request spans multiple services/jobs | Preserves trace lineage | Manual glue; easy to forget |
+| CLI export/list/get flows | Need read/export/audit operations more than instrumentation | Useful for scripts and audits | Not a substitute for instrumentation design |
 
-### Selective tracing context
+Rules:
+- Prefer the **smallest useful coverage** first instead of tracing everything blindly.
+- Always set a clear project/workspace/environment grouping.
+- Use tags/metadata that match the question you will ask later.
+- If traces will be reviewed after the fact, preserve `run_id` / `trace_id` explicitly.
+- If the process is short-lived, include a flush/wait step before exit.
 
-```python
-import langsmith as ls
+### Step 4: Choose the evaluation packet
 
-# Enable tracing for this block only
-with ls.tracing_context(enabled=True, project_name="debug"):
-    result = chain.invoke({"input": "..."})
+| Eval type | Use when | Notes |
+|---|---|---|
+| Heuristic / code evaluator | Output can be checked deterministically | Best first choice for factual or structural checks |
+| LLM-as-judge (`openevals`) | Quality is subjective or reference-light | Good for style/helpfulness/safety packets, but not ground truth |
+| Human review | Stakes are high or judgments are nuanced | Needs rubric and reviewer workflow |
+| Pairwise comparison | Comparing baseline vs candidate | Good for prompt/model swaps |
+| Online evaluator | Production traces need ongoing scoring | Pair with explicit review/alert semantics |
 
-# Disable tracing despite LANGSMITH_TRACING=true
-with ls.tracing_context(enabled=False):
-    result = chain.invoke({"input": "..."})
-```
+Do **not** claim one eval type replaces the others. Mixed stacks are normal.
 
-### Wrap provider clients
+### Step 5: Produce a concrete LangSmith packet
 
-```python
-from langsmith.wrappers import wrap_openai, wrap_anthropic
-from openai import OpenAI
-import anthropic
+Return a compact plan with:
+- selected mode
+- chosen instrumentation surface
+- required env/config (`LANGSMITH_API_KEY`, project/workspace/env, endpoint if self-hosted)
+- required metadata / IDs / tags
+- dataset/evaluator/review design if applicable
+- route-outs to adjacent skills
+- verification step
 
-openai_client = wrap_openai(OpenAI())           # All calls auto-traced
-anthropic_client = wrap_anthropic(anthropic.Anthropic())
-```
+### Step 6: Use route-outs aggressively
 
-### Distributed tracing (microservices)
+Route out when:
+- the main issue is generic dashboards / alerts / telemetry ownership → `monitoring-observability`
+- the main issue is reproducing a bug rather than collecting traces → `debugging`
+- the main issue is runtime guardrails or approval logic → the relevant policy/security skill
+- the main issue is rollout, release, or deployment procedure → `deployment-automation`
+- the main issue is generic data interpretation after exports exist → `data-analysis`
 
-```python
-from langsmith.run_helpers import get_current_run_tree
-import langsmith
+## Examples
 
-@langsmith.traceable
-def service_a(inputs):
-    rt = get_current_run_tree()
-    headers = rt.to_headers()     # Pass to child service
-    return call_service_b(headers=headers)
+### Example 1: Quick tracing packet
+**Prompt:** “Add LangSmith tracing to this FastAPI RAG app.”
 
-@langsmith.traceable
-def service_b(x, headers):
-    with langsmith.tracing_context(parent=headers):
-        return process(x)
-```
+Use this skill to:
+- label it as **debugging traces**
+- choose wrappers plus higher-level decorators if retrieval/tools must be visible
+- define project/tags/metadata and a flush step for short-lived scripts
+- route out generic infra dashboards to `monitoring-observability`
 
----
+### Example 2: Eval rollout packet
+**Prompt:** “Before we ship this prompt change, build a LangSmith eval gate.”
 
-## Evaluation
+Use this skill to:
+- label it as **offline evals**
+- define dataset shape, baseline/candidate comparison, and evaluator mix
+- separate deterministic checks from LLM-as-judge and human review
+- return a compact experiment packet instead of raw SDK trivia
 
-### Basic evaluation with evaluate()
+### Example 3: Human review queue packet
+**Prompt:** “Our support copilot has traces, but nobody trusts the responses. Set up review.”
 
-```python
-from langsmith import Client
-from langsmith.wrappers import wrap_openai
-from openai import OpenAI
+Use this skill to:
+- label it as **online feedback & review**
+- define feedback keys, rubric items, queue flow, and run-ID preservation
+- clarify what belongs in LangSmith versus product analytics or support ops tooling
 
-client = Client()
-oai = wrap_openai(OpenAI())
+### Example 4: Prompt Hub decision
+**Prompt:** “Should we store these prompts in LangSmith or keep them in Git?”
 
-# 1. Create dataset
-dataset = client.create_dataset("Geography QA")
-client.create_examples(
-    dataset_id=dataset.id,
-    examples=[
-        {"inputs": {"q": "Capital of France?"}, "outputs": {"a": "Paris"}},
-        {"inputs": {"q": "Capital of Germany?"}, "outputs": {"a": "Berlin"}},
-    ]
-)
+Use this skill to:
+- label it as **prompt registry & experiment comparison**
+- compare Prompt Hub against Git/app-config ownership
+- define how prompt versions connect to experiments and rollout confidence
 
-# 2. Target function
-def target(inputs: dict) -> dict:
-    res = oai.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": inputs["q"]}]
-    )
-    return {"a": res.choices[0].message.content}
+### Example 5: Multi-service trace propagation
+**Prompt:** “One chat request fans out to workers and tools — how do we keep one trace?”
 
-# 3. Evaluator
-def exact_match(inputs, outputs, reference_outputs):
-    return outputs["a"].strip().lower() == reference_outputs["a"].strip().lower()
+Use this skill to:
+- label it as **multi-service / agent propagation**
+- define parent/child propagation and shared metadata requirements
+- route out generic distributed-systems observability concerns when LangSmith alone is not enough
 
-# 4. Run experiment
-results = client.evaluate(
-    target,
-    data="Geography QA",
-    evaluators=[exact_match],
-    experiment_prefix="gpt-4o-mini-v1",
-    max_concurrency=4
-)
-```
-
-### LLM-as-judge with openevals
-
-```python
-pip install -U openevals
-```
-
-```python
-from openevals.llm import create_llm_as_judge
-from openevals.prompts import CORRECTNESS_PROMPT
-
-judge = create_llm_as_judge(
-    prompt=CORRECTNESS_PROMPT,
-    model="openai:o3-mini",
-    feedback_key="correctness",
-)
-
-results = client.evaluate(target, data="my-dataset", evaluators=[judge])
-```
-
-### Evaluation types
-
-| Type | When to use |
-|------|------------|
-| **Code/Heuristic** | Exact match, format checks, rule-based |
-| **LLM-as-judge** | Subjective quality, safety, reference-free |
-| **Human** | Annotation queues, pairwise comparison |
-| **Pairwise** | Compare two app versions |
-| **Online** | Production traces, real traffic |
-
----
-
-## Prompt Hub
-
-```python
-from langsmith import Client
-from langchain_core.prompts import ChatPromptTemplate
-
-client = Client()
-
-# Push a prompt
-prompt = ChatPromptTemplate([
-    ("system", "You are a helpful assistant."),
-    ("user", "{question}"),
-])
-client.push_prompt("my-assistant-prompt", object=prompt)
-
-# Pull and use
-prompt = client.pull_prompt("my-assistant-prompt")
-# Pull specific version:
-prompt = client.pull_prompt("my-assistant-prompt:abc123")
-```
-
----
-
-## Feedback
-
-```python
-from langsmith import Client
-import uuid
-
-client = Client()
-
-# Custom run ID for later feedback linking
-my_run_id = str(uuid.uuid4())
-result = chain.invoke({"input": "..."}, {"run_id": my_run_id})
-
-# Attach feedback
-client.create_feedback(
-    key="correctness",
-    score=1,              # 0-1 numeric or categorical
-    run_id=my_run_id,
-    comment="Accurate and concise"
-)
-```
-
----
+## Best practices
+1. Start with the **workflow mode**, not the SDK call.
+2. Treat LangSmith as a **trace/eval/review substrate**, not the entire production control plane.
+3. Preserve `run_id`, `trace_id`, tags, and metadata deliberately; they are the handle for later debugging and feedback.
+4. Prefer the smallest instrumentation surface that answers the current question.
+5. Separate deterministic evaluators, LLM judges, and human review instead of pretending one replaces the others.
+6. Be explicit when Prompt Hub is optional.
+7. Include shutdown flush behavior for CLIs, scripts, workers, and cron-style jobs.
+8. Route generic observability, deployment, and runtime-policy requests elsewhere instead of overextending this skill.
 
 ## References
-
-- [Python SDK Reference](references/python-sdk.md) — full Client API, @traceable signature, evaluate()
-- [TypeScript SDK Reference](references/typescript-sdk.md) — Client, traceable, wrappers, evaluate
-- [CLI Reference](references/cli.md) — langsmith CLI commands
-- [Official Docs](https://docs.langchain.com/langsmith) — langchain.com/langsmith
-- [SDK GitHub](https://github.com/langchain-ai/langsmith-sdk) — MIT License, v0.7.17
-- [openevals](https://github.com/langchain-ai/openevals) — Prebuilt LLM evaluators
+- `references/modes-and-routing.md` — workflow modes, operator packets, and route-outs
+- `references/python-sdk.md` — Python client, decorators, evaluators, feedback, annotation queues
+- `references/typescript-sdk.md` — TypeScript wrappers, evaluators, feedback, LangChain callbacks
+- `references/cli.md` — CLI list/get/export flows for traces, runs, datasets, experiments
+- Official docs: https://docs.langchain.com/langsmith
+- SDK repo: https://github.com/langchain-ai/langsmith-sdk
+- OpenEvals: https://github.com/langchain-ai/openevals
