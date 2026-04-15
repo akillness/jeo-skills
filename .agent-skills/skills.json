@@ -1222,7 +1222,7 @@
     },
     {
       "name": "google-workspace",
-      "description": "Create, read, update, and manage all Google Workspace documents and services via REST APIs. Use when working with Google Docs, Google Sheets, Google Slides, Google Drive, Gmail, Google Calendar, Google Chat, Google Forms, Google Meet, Admin SDK, or Apps Script. Triggers on: \"Google Doc\", \"Google Sheet\", \"spreadsheet\", \"Google Slides\", \"presentation\", \"Google Drive\", \"Drive folder\", \"Gmail\", \"send email\", \"Google Calendar\", \"calendar event\", \"schedule meeting\", \"Google Chat\", \"Google Forms\", \"survey form\", \"Google Meet\", \"Workspace user\", \"Apps Script\", \"구글 문서\", \"구글 시트\", \"스프레드시트\", \"구글 슬라이드\", \"프레젠테이션\", \"구글 드라이브\", \"지메일\", \"이메일 보내기\", \"구글 캘린더\", \"일정 추가\", \"회의 예약\", \"구글 챗\", \"구글 폼\", \"설문지\", \"워크스페이스 사용자\".",
+      "description": "Plan and execute Google Workspace operations across Docs, Sheets, Slides, Drive, Gmail, Calendar, Forms, Chat, and Admin SDK by choosing the right surface first: Apps Script, direct REST API, or admin-only APIs. Use when the user needs to automate a Workspace workflow, edit or create Workspace files, send Gmail, schedule calendar events, process Forms/Sheets pipelines, manage Drive sharing, or handle Workspace admin tasks; even if they only mention a spreadsheet, document, shared drive, inbox workflow, approval flow, or domain user change. Triggers on: Google Doc, Google Sheet, spreadsheet, Slides, Drive folder, Gmail, calendar event, Forms, Apps Script, Admin SDK, shared drive, Google Chat, workspace automation, domain user, send email, approval flow.",
       "category": "utilities",
       "path": "google-workspace/SKILL.md",
       "tags": [

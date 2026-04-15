@@ -510,3 +510,11 @@
 - Accepted: harden `research-paper-writing` in place, add three focused `references/` docs plus `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `skills.json`, and record the stronger documentation-cluster + support-coverage boundary in the wiki
 - Rejected: adding another paper/rebuttal wrapper; broadening the skill into generic academic tooling; leaving the lane as a prose-only paper helper with no support files
 - Wiki files created/updated: `queries/research-paper-writing-hardening-2026-04-15.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | Google Workspace modernization
+- Area researched: Google Workspace automation workflows across Docs / Sheets / Drive / Gmail / Calendar / Forms / Admin SDK, especially Apps Script vs direct REST API choice, auth model selection, quota/runtime pressure, and the best bounded support upgrade instead of another productivity wrapper
+- Survey files created under `.survey/google-workspace-modernization-20260416/` and the loop charter stayed fixed for the run; official Google docs plus Yahoo Japan indexed snippets were used because `web_search` returned `401 Invalid API key` in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `google-workspace` into a decision-first routing skill, add three `references/` docs, refresh `evals/evals.json` and `SKILL.toon`, update README / README.ko / setup prompt / `skills.json` / `skills.toon`, and record the stronger support-coverage finding in the wiki
+- Rejected: adding a separate Workspace wrapper; turning the skill into a Zapier / Make / n8n tutorial; keeping the 745-line single-file API encyclopedia
+- Wiki files created/updated: `queries/google-workspace-modernization-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

@@ -1,24 +1,24 @@
 N:google-workspace
-D:Create, read, update, and manage Google Workspace documents and services through official REST APIs. Use when working with Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, or Apps Script.
-G:google-workspace google-docs google-sheets google-slides google-drive gmail google-calendar google-chat google-forms admin-sdk apps-script spreadsheet presentation drive-folder send-email
+D:Plan and execute Google Workspace operations across Docs, Sheets, Slides, Drive, Gmail, Calendar, Forms, Chat, and Admin SDK by choosing the right surface first: Apps Script, direct REST API, or admin-only APIs. Use when the user needs Workspace automation, spreadsheet/document/file workflows, Gmail sending, calendar scheduling, Forms pipelines, Drive sharing, or domain user/admin changes.
+G:google-workspace google-docs google-sheets google-slides google-drive gmail google-calendar google-chat google-forms admin-sdk apps-script spreadsheet document shared-drive send-email approval-flow domain-user
 F:Claude|Gemini|Codex|OpenCode
 T:Bash|Read|Write|Edit|Glob|Grep
 
 U[5]:
-  Create or edit Google Docs, Sheets, and Slides
-  Send Gmail, manage drafts, labels, and mailbox workflows
-  Create calendar events, invite attendees, and check schedules
-  Upload, organize, and search Google Drive files and folders
-  Automate Workspace operations through Apps Script or Admin SDK
+  Route work across Docs, Sheets, Slides, Drive, Gmail, Calendar, Forms, Chat, and Admin SDK
+  Choose Apps Script vs direct REST API vs admin-only APIs before coding
+  Pick the auth model: OAuth, service account, domain-wide delegation, or Apps Script auth
+  Design cross-service workflows like Form→Sheet→Gmail/Calendar or approval queues
+  Review quota/runtime risk and route-outs before implementation
 
 S[4]{n,action,details}:
-  1,Enable APIs,Enable Workspace APIs in Google Cloud before authenticating credentials
-  2,Install Clients,Install google-api-python-client google-auth-httplib2 google-auth-oauthlib
-  3,Authenticate,Use OAuth2 for user data or service accounts for backend automation
-  4,Execute,Call the product-specific REST API with the official client libraries and required scopes
+  1,Classify Request,Identify products operation actor execution home and trigger cadence
+  2,Choose Surface,Pick Apps Script direct REST API or Admin SDK based on workflow ownership and limits
+  3,Choose Auth,Match OAuth service account or delegated admin access to the task
+  4,Execute Packet,Return the service bundle scopes IDs sequence verification and risks
 
 R[4]:
-  Prefer official REST APIs and client SDKs over browser scraping
-  Match scopes to the narrowest product access required for the task
-  Keep OAuth and service-account secrets outside the repository
-  Use batch APIs for large document or spreadsheet updates when available
+  Start with surface choice and auth model instead of jumping to snippets
+  Separate admin operations from ordinary content editing workflows
+  Prefer batch operations and watch Apps Script quota/runtime limits on heavy jobs
+  Route no-code cross-app orchestration requests out instead of turning this into a Zapier or n8n tutorial
