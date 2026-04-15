@@ -4,7 +4,7 @@ created: 2026-04-12
 updated: 2026-04-16
 type: concept
 tags: [skills, skill-quality, graphify]
-sources: [graphify-out/GRAPH_REPORT.md]
+sources: [graphify-out/GRAPH_REPORT.md, .survey/marketing-skills-collection-support-hardening-20260416/context.md, .survey/marketing-skills-collection-support-hardening-20260416/solutions.md]
 ---
 
 # Skill Support Coverage
@@ -15,7 +15,7 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 85 skills with `references/`
+- 86 skills with `references/`
 - 88 skills with `evals/`
 - 24 skills with `scripts/`
 
@@ -85,6 +85,7 @@ Recent ratchets:
 - The `skill-autoresearch` hardening pass added `references/loop-charter-template.md`, `evals/evals.json`, and sharper repo-local ratcheting language, which matters because the maintenance loop now has a dedicated search-analysis anchor for frozen evaluators, one-change iterations, and append-only keep/revert history instead of relying on prose-only memory.
 - The `autoresearch` hardening pass added `evals/evals.json` and corrected stale support docs around the immutable harness, which matters because a README-visible search-analysis anchor now distinguishes real GPU-bound ML search from repo-local skill eval loops and no longer relies on outdated `constants.py` assumptions.
 - The `react-best-practices` support-hardening pass added three focused `references/` docs and refreshed discovery wording, which matters because a canonical frontend performance anchor now matches the repo’s lighter support-packet pattern instead of relying on one giant `AGENTS.md` plus a thin surface skill.
+- The `marketing-skills-collection` support-hardening pass added a small alias-side `references/` packet, expanded route-out eval coverage, and refreshed the marketing compact surfaces so the repo no longer advertises the obsolete 23-sub-skill worldview in that lane.
 
 - The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
 
@@ -108,6 +109,7 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[design-system-canonicalization-2026-04-12]]
 - [[bmad-gds-modernization-2026-04-12]]
 - [[marketing-skill-canonicalization-2026-04-12]]
+- [[marketing-skills-collection-support-hardening-2026-04-16]]
 - [[log-analysis-modernization-2026-04-13]]
 - [[debugging-modernization-2026-04-13]]
 - [[code-review-modernization-2026-04-13]]
