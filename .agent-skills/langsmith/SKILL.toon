@@ -1,33 +1,30 @@
 N:langsmith
-D:[langsmith] Instrument, trace, evaluate, and monitor LLM applications with LangSmith. Framework-agnostic: @traceable decorator, wrap_openai/wrap_anthropic wrappers, offline evaluate(), Prompt Hub versioning, feedback attachment, LLM-as-judge with openevals. Supports Python and TypeScript.
-G:langsmith langchain tracing observability evaluation llm-monitoring prompt-hub datasets openevals traceable wrap_openai evaluate feedback judge experiment distributed-tracing project
+D:[langsmith] Instrument, trace, evaluate, and review LLM applications with LangSmith by choosing the right workflow first: debugging traces, offline evals, online feedback/review queues, prompt-registry work, or multi-service trace propagation. Use when users mention LangSmith, LangChain tracing, @traceable/traceable, wrap_openai/wrapOpenAI, datasets, annotation queues, experiment comparison, prompt hub, run trees, or production confidence for an AI feature. Not for generic alerting/SLO design, deployment orchestration, or runtime guardrails outside LangSmith.
+G:langsmith langchain tracing observability evaluation llm-monitoring prompt-hub datasets openevals traceable wrap_openai wrapOpenAI feedback annotation-queue experiment run-tree trace-propagation
 
-U[8]:
-  Add tracing to any LLM pipeline (OpenAI, Anthropic, LangChain, custom models)
-  Run offline evaluations with evaluate() against a curated dataset
-  Set up production monitoring and online evaluation with real traffic
-  Manage and version prompts in the Prompt Hub
-  Create datasets for regression testing and benchmarking
-  Attach human or automated feedback to traces for quality tracking
-  Use LLM-as-judge scoring with openevals (CORRECTNESS_PROMPT, etc.)
-  Debug agent failures with end-to-end trace inspection
+U[6]:
+  Add or review LangSmith tracing for chat apps, RAG pipelines, tool-calling backends, or agents
+  Build offline evals before a prompt/model/app change ships
+  Add online feedback, annotation queues, or review rubrics for production traces
+  Compare prompt or model variants with experiment runs
+  Decide whether Prompt Hub should own the prompt lifecycle
+  Correlate traces across services, workers, or agent/tool boundaries
 
 S[5]{n,action,details}:
-  1,Install,pip install -U langsmith (Python) OR npm install langsmith (TypeScript)
-  2,Configure,export LANGSMITH_TRACING=true && export LANGSMITH_API_KEY=lsv2_... && export LANGSMITH_PROJECT=my-project
-  3,Instrument,@traceable decorator on functions OR wrap_openai(OpenAI()) / wrap_anthropic(Anthropic()) for zero-code-change tracing
-  4,Evaluate,results = client.evaluate(target_fn, data="dataset-name", evaluators=[fn], experiment_prefix="v1", max_concurrency=4)
-  5,Monitor,view traces at smith.langchain.com; attach feedback with client.create_feedback(key="correctness", score=1, run_id=id)
+  1,Label workflow,Classify app shape runtime request type current evidence and confidence problem before touching APIs
+  2,Choose mode,Pick debugging traces offline evals online review prompt-registry work multi-service propagation or audit/gap review
+  3,Choose surface,Select wrappers decorators tracing_context manual trace blocks header propagation or CLI export flows
+  4,Design packet,Return required env/config metadata IDs dataset/evaluator/review design and verification step
+  5,Route out,Send generic observability deployment or runtime-policy work to adjacent skills instead of overclaiming LangSmith
 
 R[5]:
-  Always set LANGSMITH_PROJECT to group related traces by feature/environment
-  Use wrap_openai/wrap_anthropic for zero-code-change tracing of provider clients
-  For distributed tracing across microservices pass run_tree.to_headers() between services
-  For LLM-as-judge use openevals create_llm_as_judge with CORRECTNESS_PROMPT or custom prompts
-  Use tracing_context(enabled=False) block to selectively disable tracing for specific sections
+  Treat LangSmith as a trace/eval/review substrate not the whole production control plane
+  Preserve run_id trace_id project env tags and metadata deliberately
+  Use the smallest useful instrumentation surface first
+  Separate deterministic evaluators LLM judges and human review instead of pretending one replaces the others
+  Add flush or wait behavior for short-lived scripts workers and CLIs
 
-E[4]{type,code}:
-  Trace Python function,@traceable(run_type="chain", tags=["prod"]) def fn(): ...
-  Wrap OpenAI client,client = wrap_openai(OpenAI())  # all calls auto-traced
-  Run evaluation,results = client.evaluate(target, data="Geography QA", evaluators=[exact_match])
-  LLM-as-judge,judge = create_llm_as_judge(prompt=CORRECTNESS_PROMPT, model="openai:o3-mini", feedback_key="correctness")
+E[3]{type,code}:
+  Trace debugging packet,mode=debugging traces plus wrappers/decorators project tags metadata and flush step
+  Eval packet,mode=offline evals plus dataset evaluators experiment prefix baseline/candidate comparison
+  Review packet,mode=online feedback plus feedback keys annotation queue rubric and run_id preservation

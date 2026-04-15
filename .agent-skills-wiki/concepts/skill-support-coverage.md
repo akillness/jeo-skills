@@ -16,7 +16,7 @@ Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
 - 84 skills with `references/`
-- 84 skills with `evals/`
+- 85 skills with `evals/`
 - 24 skills with `scripts/`
 
 Recent ratchets:
@@ -80,6 +80,7 @@ Recent ratchets:
 - The `lmstudio-cli` modernization pass added three `references/` docs, `evals/evals.json`, and a lightweight endpoint-check helper script, which matters because a lingering developer-workflow support-gap skill now owns LM Studio-specific verification and wiring instead of remaining a thin command list.
 - The `research-paper-writing` hardening pass added three `references/` docs and `evals/evals.json`, which matters because the documentation cluster now has a stronger manuscript-package anchor for claim/evidence mapping, figure-table support, rebuttal planning, and camera-ready revision instead of a prose-only paper helper.
 - The `google-workspace` modernization pass added three `references/` docs and refreshed `evals/evals.json`, which matters because a broad ops/productivity skill now behaves like a routing anchor for Apps Script vs REST API vs Admin SDK plus auth and cross-service workflow choice instead of a 745-line single-file API encyclopedia.
+- The `langsmith` hardening pass added `references/modes-and-routing.md` plus `evals/evals.json`, which matters because a high-utility AI-ops/search-analysis skill now behaves like a mode-selecting trace/eval/review anchor instead of a feature-tour reference with no ratcheting harness.
 
 - The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
 

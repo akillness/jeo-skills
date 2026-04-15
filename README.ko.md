@@ -329,7 +329,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `skill-autoresearch` | 기존 `SKILL.md` 자체를 eval 기반 mutation loop 로 개선하는 스킬 최적화 워크플로우 | 전체 |
 | `codebase-search` | 증거 중심 리포 탐색, 호출 지점 추적, 영향 범위 분석 | 전체 |
 | `data-analysis` | 내보내기 데이터, 실험, 텔레메트리, KPI 설명을 위한 의사결정 중심 데이터 분석 | 전체 |
-| `langsmith` | LangSmith를 통한 LLM 관측성, 트레이싱, 평가, 프롬프트 관리 | 전체 |
+| `langsmith` | LLM 트레이싱, 평가, 피드백/리뷰 큐, 프롬프트 레지스트리 결정, 멀티서비스 전파를 다루는 모드 선택형 LangSmith 스킬 | 전체 |
 | `log-analysis` | 애플리케이션·인프라·브라우저·CI 로그의 근본 원인 트리아지 | 전체 |
 | `pattern-detection` | 코드·로그·텔레메트리·지표 이상을 모드별로 탐지하는 패턴/룰 헌팅 | 전체 |
 

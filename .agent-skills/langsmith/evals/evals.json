@@ -1,0 +1,38 @@
+{
+  "skill_name": "langsmith",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add LangSmith to this FastAPI RAG service so we can debug why answer quality regressed after a retriever change.",
+      "expected_output": "The skill selects debugging traces as the primary mode, recommends an instrumentation packet, and routes generic observability work away from LangSmith.",
+      "assertions": [
+        "Response identifies a primary mode equivalent to debugging traces.",
+        "Response specifies an instrumentation surface such as wrappers, decorators, or manual tracing contexts.",
+        "Response mentions required config like LANGSMITH_API_KEY and project/environment grouping.",
+        "Response includes a route-out to monitoring-observability or log-analysis for non-LangSmith concerns."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Before we ship this prompt rewrite, build a LangSmith eval workflow with a baseline, a candidate, and one judge for subjective quality.",
+      "expected_output": "The skill selects offline evals as the primary mode and returns a dataset/evaluator/experiment packet instead of generic SDK trivia.",
+      "assertions": [
+        "Response identifies offline evals or experiment comparison as the primary mode.",
+        "Response distinguishes evaluator choices such as heuristic checks, LLM-as-judge, pairwise comparison, or human review.",
+        "Response includes dataset and experiment design guidance.",
+        "Response does not frame LangSmith as generic deployment orchestration."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We already have LangSmith traces, but support leads still do not trust the AI assistant. Set up a review workflow with human scoring.",
+      "expected_output": "The skill selects online feedback and review mode, defines feedback keys or rubric items, and explains run ID / trace ID preservation.",
+      "assertions": [
+        "Response identifies online feedback, annotation queue, or review workflow as the primary mode.",
+        "Response includes feedback schema or rubric design guidance.",
+        "Response mentions preserving run_id or trace_id for later feedback attachment.",
+        "Response avoids collapsing the request into generic prompt management only."
+      ]
+    }
+  ]
+}

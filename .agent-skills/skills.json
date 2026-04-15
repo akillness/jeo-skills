@@ -1351,7 +1351,7 @@
     },
     {
       "name": "langsmith",
-      "description": "Instrument, trace, evaluate, and monitor LLM applications and AI agents with LangSmith. Use when setting up observability for LLM pipelines, running offline or online evaluations, managing prompts in the Prompt Hub, creating datasets for regression testing, or deploying agent servers. Triggers on: langsmith, langchain tracing, llm tracing, llm observability, llm evaluation, trace llm calls, @traceable, wrap_openai, langsmith evaluate, langsmith dataset, langsmith feedback, langsmith prompt hub, langsmith project, llm monitoring, llm debugging, llm quality, openevals, langsmith cli, langsmith experiment, annotate llm, llm judge.",
+      "description": "Instrument, trace, evaluate, and review LLM applications with LangSmith by choosing the right workflow first: debugging traces, offline evals, online feedback/review queues, prompt-registry work, or multi-service trace propagation. Use when the user needs LangSmith for LLM observability, LangChain tracing, `@traceable` / `traceable`, provider wrappers like `wrap_openai` / `wrapOpenAI`, dataset-backed regression checks, annotation queues, experiment comparison, or prompt/version review; even if they only mention trace IDs, LLM judge scores, human feedback, run trees, prompt hub, or production confidence for an AI feature. Not for generic alerting/SLO design, deployment orchestration, or runtime guardrails outside LangSmith.",
       "category": "search-analysis",
       "path": "langsmith/SKILL.md",
       "tags": [

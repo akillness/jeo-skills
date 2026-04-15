@@ -511,6 +511,14 @@
 - Rejected: adding another paper/rebuttal wrapper; broadening the skill into generic academic tooling; leaving the lane as a prose-only paper helper with no support files
 - Wiki files created/updated: `queries/research-paper-writing-hardening-2026-04-15.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
 
+## [2026-04-16] query | LangSmith hardening
+- Area researched: LangSmith workflows across debugging traces, offline evals, online feedback/review queues, prompt-registry decisions, and multi-service propagation; plus the repo-local boundary with `monitoring-observability`, `debugging`, `deployment-automation`, and generic AI-ops wrappers
+- Survey files created under `.survey/langsmith-hardening-20260416/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `langsmith` into a mode-selecting trace/eval/review anchor, add `references/modes-and-routing.md` plus `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / discovery manifests, and record the stronger support-coverage boundary in the wiki
+- Rejected: adding tracing-only or Prompt-Hub-only wrapper skills; treating `langsmith` as generic observability or deployment control; leaving the lane as a feature-tour reference with no eval harness
+- Wiki files created/updated: `queries/langsmith-hardening-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
 ## [2026-04-16] query | Google Workspace modernization
 - Area researched: Google Workspace automation workflows across Docs / Sheets / Drive / Gmail / Calendar / Forms / Admin SDK, especially Apps Script vs direct REST API choice, auth model selection, quota/runtime pressure, and the best bounded support upgrade instead of another productivity wrapper
 - Survey files created under `.survey/google-workspace-modernization-20260416/` and the loop charter stayed fixed for the run; official Google docs plus Yahoo Japan indexed snippets were used because `web_search` returned `401 Invalid API key` in this environment
