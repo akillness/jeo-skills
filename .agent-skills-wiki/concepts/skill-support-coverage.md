@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 71 skills with `references/`
-- 70 skills with `evals/`
+- 73 skills with `references/`
+- 72 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -65,6 +65,7 @@ Recent ratchets:
 - The compact-variant sync follow-up ratcheted `skill-standardization` again so the same maintenance loop now treats `SKILL.toon` / `SKILL.compact.md` as derived discovery artifacts that must stay aligned with material `SKILL.md` rewrites, instead of leaving that duty to per-run memory.
 - The `playwriter` modernization pass added both `references/` and `evals/`, which matters because a high-visibility browser skill now clearly owns running-browser / authenticated-session reuse instead of remaining a generic Playwright/MCP command dump that blurred the boundary with `agent-browser`.
 - The `git-submodule` modernization pass added both `references/` and `evals/`, which matters because another high-utility developer-workflow anchor now owns submodule-vs-subtree choice, recursive bootstrap, pointer updates, detached-HEAD handling, and CI checkout/auth instead of remaining a long command catalog with weak boundaries.
+- The `file-organization` modernization pass added three `references/` docs and `evals/evals.json`, which matters because a highly visible legacy utility skill now owns structure-choice and migration guidance across frontend, backend, monorepo, docs/ops, and game-development repos instead of remaining a static scaffold dump with no durable support files.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.

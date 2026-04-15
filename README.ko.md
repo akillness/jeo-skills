@@ -357,7 +357,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `fabric` | AI 프롬프트 패턴 — YouTube 요약, 문서 분석 (200+ 패턴) | 전체 |
-| `file-organization` | 파일 및 폴더 구성 | 전체 |
+| `file-organization` | 결정 우선 저장소 구조 가이드 — 프레임워크 기본 구조, feature 폴더, 모노레포 경계, 문서 분류, 게임 엔진형 레이아웃 중 무엇을 쓸지 결정 | 전체 |
 | `git-submodule` | 결정-우선 Git 서브모듈 워크플로 — submodule vs subtree/vendor 선택, 재귀 부트스트랩, 안전한 포인터 업데이트, CI checkout/auth 구성 | 전체 |
 | `git-workflow` | 로컬 Git 브랜치, 커밋, 리베이스, 충돌 해결, 안전한 푸시, 복구 워크플로우 | 전체 |
 | `google-workspace` | Google Workspace REST API 자동화 — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | 전체 |

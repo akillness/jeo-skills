@@ -357,7 +357,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `fabric` | AI prompt patterns — YouTube summaries, document analysis via 200+ Patterns | All |
-| `file-organization` | File and folder organization | All |
+| `file-organization` | Decision-first repo structure guidance — choose framework defaults vs feature folders, monorepo boundaries, docs taxonomy, or engine-aware game layouts | All |
 | `git-submodule` | Decision-first Git submodule workflow — choose submodule vs subtree/vendor, bootstrap recursively, advance pointers safely, and wire CI checkout/auth | All |
 | `git-workflow` | Local Git branch, commit, rebase, conflict, push-safety, and recovery workflows | All |
 | `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
