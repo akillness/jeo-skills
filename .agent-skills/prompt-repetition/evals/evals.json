@@ -1,0 +1,35 @@
+{
+  "skill_name": "prompt-repetition",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a long options-first multiple-choice prompt on a Flash model. Should I duplicate the prompt or restructure it?",
+      "expected_output": "Classifies the task as a good fit for prompt repetition, recommends question restatement or full prompt 2x as the first bounded experiment, mentions input-token cost, and notes that reordering the prompt is a valid alternative.",
+      "assertions": [
+        "Response classifies the prompt shape before recommending a change",
+        "Response mentions token or context-budget cost",
+        "Response offers prompt restructuring as an alternative instead of claiming repetition is mandatory"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our RAG answers are weak. Should we add prompt repetition everywhere?",
+      "expected_output": "Says prompt repetition is a weak fit, explains that retrieval or context quality is the bigger lever, and routes to broader context-engineering or RAG work.",
+      "assertions": [
+        "Response does not recommend blanket auto-apply",
+        "Response distinguishes repetition from retrieval or context-quality work",
+        "Response routes to a broader context-engineering or RAG fix"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "A mini model keeps missing the item at slot 25 in a long inventory list.",
+      "expected_output": "Classifies the task as a position-sensitive lookup, allows 2x or 3x repetition if budget permits, and mentions structured-table or chunking fallbacks.",
+      "assertions": [
+        "Response recognizes position-sensitive or index-heavy lookup",
+        "Response limits 3x repetition to a bounded case instead of making it universal",
+        "Response includes a non-repetition fallback such as chunking or structured formatting"
+      ]
+    }
+  ]
+}

@@ -486,3 +486,11 @@
 - Accepted: add the final 8 missing `SKILL.toon` files, keep the docs/runtime promise intact, and record the closure in the wiki
 - Rejected: weakening the docs claim first; building a generator in the same bounded run; treating the support gap as a reason to add new skills
 - Wiki files created/updated: `queries/compact-variant-gap-2026-04-15.md`, `concepts/skill-support-coverage.md`, `concepts/game-development-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | Prompt repetition modernization
+- Area researched: prompt repetition as a bounded operator workflow across non-reasoning/lightweight LLM use, long-context retrieval, options-first MCQ, position-sensitive lookup, and the repo-local boundary between `prompt-repetition` and broader context-engineering / retrieval / reasoning-model choice
+- Survey files created under `.survey/prompt-repetition-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `prompt-repetition` into a decision-first router, add `references/` + `evals/`, refresh `SKILL.toon`, update README / README.ko / setup prompt / manifests, and record the support-coverage lift plus durable boundary in the wiki
+- Rejected: keeping blanket auto-apply language; adding another nearby prompt-hacks wrapper; letting repetition claim to replace retrieval, context engineering, or reasoning-model choice
+- Wiki files created/updated: `queries/prompt-repetition-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

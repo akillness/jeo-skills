@@ -246,7 +246,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `prompt-repetition` | LLM accuracy via prompt repetition technique | All |
+| `prompt-repetition` | Decision-first prompt repetition skill for non-reasoning/lightweight LLMs — long-context retrieval, options-first MCQ, position-sensitive lookup, and explicit route-outs to retrieval or stronger models | All |
 | `skill-standardization` | Validate SKILL.md, canonicalize duplicates, and keep catalog + compact discovery surfaces in sync | All |
 
 ### ⚙️ Backend (5)
