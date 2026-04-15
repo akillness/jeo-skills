@@ -494,3 +494,11 @@
 - Accepted: rewrite `prompt-repetition` into a decision-first router, add `references/` + `evals/`, refresh `SKILL.toon`, update README / README.ko / setup prompt / manifests, and record the support-coverage lift plus durable boundary in the wiki
 - Rejected: keeping blanket auto-apply language; adding another nearby prompt-hacks wrapper; letting repetition claim to replace retrieval, context engineering, or reasoning-model choice
 - Wiki files created/updated: `queries/prompt-repetition-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | lmstudio-cli modernization
+- Area researched: LM Studio CLI / local-server workflows, especially local `lms` checks, remote endpoint verification, native REST vs OpenAI-compatible boundaries, and downstream-tool wiring patterns inside the developer-workflow lane
+- Survey files created under `.survey/lmstudio-cli-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `lmstudio-cli` into a decision-first operator skill, add three `references/` docs plus `scripts/check_lmstudio_endpoint.py` and `evals/evals.json`, refresh `SKILL.toon` and the `skills.json` manifest entry, and record the stronger developer-workflow/support-coverage boundary in the wiki
+- Rejected: adding another generic local-LLM wrapper; widening into broad provider comparison; forcing README / README.ko / setup prompt edits when those surfaces do not currently mention `lmstudio-cli` directly
+- Wiki files created/updated: `queries/lmstudio-cli-modernization-2026-04-15.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

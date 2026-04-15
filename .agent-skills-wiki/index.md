@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-15 | Total pages: 77
+> Last updated: 2026-04-15 | Total pages: 78
 
 ## Entities
 
@@ -62,6 +62,7 @@
 - [[task-planning-modernization-2026-04-12]] — Why the best move was upgrading `task-planning` instead of adding another overlapping PM skill.
 - [[log-analysis-modernization-2026-04-13]] — Why the best bounded search-analysis upgrade was rewriting `log-analysis` into a root-cause-first triage skill instead of adding another logging wrapper.
 - [[looker-studio-bigquery-modernization-2026-04-15]] — Why the best bounded BigQuery reporting improvement was modernizing `looker-studio-bigquery` into the stakeholder dashboard/reporting anchor instead of adding another BI wrapper or merging it into dataset analysis.
+- [[lmstudio-cli-modernization-2026-04-15]] — Why the best bounded LM Studio improvement was modernizing `lmstudio-cli` into the LM Studio operator anchor instead of adding another generic local-LLM wrapper or leaving it as a thin command list.
 - [[debugging-modernization-2026-04-13]] — Why the best bounded code-quality upgrade was rewriting `debugging` into a reproduce → isolate → verify workflow instead of adding another generic troubleshooting wrapper.
 - [[code-review-modernization-2026-04-13]] — Why the best bounded code-quality improvement was modernizing `code-review` into a workflow-aware review anchor instead of adding another review-adjacent wrapper.
 - [[testing-strategies-modernization-2026-04-13]] — Why the best bounded testing-policy improvement was rewriting `testing-strategies` into a risk-based validation-policy anchor instead of leaving it as a generic test-pyramid skill.

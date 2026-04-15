@@ -1430,7 +1430,7 @@
     },
     {
       "name": "lmstudio-cli",
-      "description": "Use LM Studio CLI docs and OpenAI-compatible LM Studio servers to discover models, verify remote availability, and configure downstream tools like Strix. Supports local `lms` CLI flows and remote HTTP endpoint validation.",
+      "description": "Operate LM Studio's `lms` CLI and local/remote LM Studio servers for model discovery, server status checks, model loading, endpoint smoke tests, and downstream OpenAI-compatible wiring. Use when the user mentions LM Studio, `lms`, a local model server, `/v1/models`, a remote LM Studio host, or connecting another tool to LM Studio.",
       "category": "utilities",
       "path": "lmstudio-cli/SKILL.md",
       "tags": [
@@ -1439,9 +1439,11 @@
         "lms",
         "local-llm",
         "openai-compatible",
-        "strix",
         "model-server",
-        "inference"
+        "inference",
+        "local-inference",
+        "endpoint-validation",
+        "strix"
       ],
       "platforms": [
         "Claude",
@@ -1454,8 +1456,9 @@
         "Bash",
         "Read",
         "Write",
-        "Grep",
+        "Edit",
         "Glob",
+        "Grep",
         "WebFetch"
       ],
       "commands": [
@@ -1482,6 +1485,10 @@
         {
           "command": "curl -fsS http://HOST:PORT/api/v1/models/load -H \"Content-Type: application/json\" -d '{\"model\":\"MODEL_KEY\",\"context_length\":262144,\"echo_load_config\":true}'",
           "source": "utilities/lmstudio-cli/SKILL.md"
+        },
+        {
+          "command": "python3 scripts/check_lmstudio_endpoint.py --base-url http://HOST:PORT/v1",
+          "source": "utilities/lmstudio-cli/scripts/check_lmstudio_endpoint.py"
         }
       ]
     },

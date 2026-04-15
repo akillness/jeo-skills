@@ -15,9 +15,9 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 81 skills with `references/`
-- 82 skills with `evals/`
-- 23 skills with `scripts/`
+- 82 skills with `references/`
+- 83 skills with `evals/`
+- 24 skills with `scripts/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -77,6 +77,7 @@ Recent ratchets:
 - The `fabric` modernization pass added three `references/` docs, `evals/evals.json`, and refreshed discovery surfaces, which matters because a README-visible utility skill now clearly owns reusable pattern-driven stdin/file/transcript transforms plus custom-pattern maintenance instead of a broad AI-CLI feature tour with no support coverage.
 - The `game-performance-profiler` hardening pass added three focused `references/` docs, a stronger `evals/evals.json`, and `SKILL.toon`, which matters because the game-performance lane now reflects quick triage packets, benchmark routes, device-review context, and escalation logic instead of relying on one generic profiling reference.
 - The `prompt-repetition` modernization pass added two `references/` docs, `evals/evals.json`, and refreshed compact/discovery wording, which matters because a legacy prompt-engineering skill now behaves like a bounded decision-first router instead of a universal auto-apply hack with no support coverage.
+- The `lmstudio-cli` modernization pass added three `references/` docs, `evals/evals.json`, and a lightweight endpoint-check helper script, which matters because a lingering developer-workflow support-gap skill now owns LM Studio-specific verification and wiring instead of remaining a thin command list.
 
 - The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
 
