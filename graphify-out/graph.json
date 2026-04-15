@@ -276,6 +276,11 @@
       "kind": "support"
     },
     {
+      "id": "clawteam/SKILL.toon",
+      "label": "clawteam/SKILL.toon",
+      "kind": "support"
+    },
+    {
       "id": "code-refactoring",
       "label": "code-refactoring",
       "kind": "skill"
@@ -571,6 +576,11 @@
       "kind": "support"
     },
     {
+      "id": "game-build-log-triage/SKILL.toon",
+      "label": "game-build-log-triage/SKILL.toon",
+      "kind": "support"
+    },
+    {
       "id": "game-ci-cd-pipeline",
       "label": "game-ci-cd-pipeline",
       "kind": "skill"
@@ -586,6 +596,11 @@
       "kind": "support"
     },
     {
+      "id": "game-ci-cd-pipeline/SKILL.toon",
+      "label": "game-ci-cd-pipeline/SKILL.toon",
+      "kind": "support"
+    },
+    {
       "id": "game-demo-feedback-triage",
       "label": "game-demo-feedback-triage",
       "kind": "skill"
@@ -598,6 +613,11 @@
     {
       "id": "game-demo-feedback-triage/evals",
       "label": "game-demo-feedback-triage/evals",
+      "kind": "support"
+    },
+    {
+      "id": "game-demo-feedback-triage/SKILL.toon",
+      "label": "game-demo-feedback-triage/SKILL.toon",
       "kind": "support"
     },
     {
@@ -801,6 +821,11 @@
       "kind": "skill"
     },
     {
+      "id": "lmstudio-cli/SKILL.toon",
+      "label": "lmstudio-cli/SKILL.toon",
+      "kind": "support"
+    },
+    {
       "id": "log-analysis",
       "label": "log-analysis",
       "kind": "skill"
@@ -958,6 +983,11 @@
     {
       "id": "obsidian-plugin/evals",
       "label": "obsidian-plugin/evals",
+      "kind": "support"
+    },
+    {
+      "id": "obsidian-plugin/SKILL.toon",
+      "label": "obsidian-plugin/SKILL.toon",
       "kind": "support"
     },
     {
@@ -1261,6 +1291,11 @@
       "kind": "skill"
     },
     {
+      "id": "research-paper-writing/SKILL.toon",
+      "label": "research-paper-writing/SKILL.toon",
+      "kind": "support"
+    },
+    {
       "id": "responsive-design",
       "label": "responsive-design",
       "kind": "skill"
@@ -1463,6 +1498,11 @@
     {
       "id": "steam-store-launch-ops/evals",
       "label": "steam-store-launch-ops/evals",
+      "kind": "support"
+    },
+    {
+      "id": "steam-store-launch-ops/SKILL.toon",
+      "label": "steam-store-launch-ops/SKILL.toon",
       "kind": "support"
     },
     {
@@ -2523,6 +2563,11 @@
       "kind": "has-support"
     },
     {
+      "source": "clawteam",
+      "target": "clawteam/SKILL.toon",
+      "kind": "has-support"
+    },
+    {
       "source": "README.md",
       "target": "code-refactoring",
       "kind": "indexes"
@@ -3354,6 +3399,11 @@
     },
     {
       "source": "game-build-log-triage",
+      "target": "game-build-log-triage/SKILL.toon",
+      "kind": "has-support"
+    },
+    {
+      "source": "game-build-log-triage",
       "target": "game-ci-cd-pipeline",
       "kind": "mentions"
     },
@@ -3394,6 +3444,11 @@
     },
     {
       "source": "game-ci-cd-pipeline",
+      "target": "game-ci-cd-pipeline/SKILL.toon",
+      "kind": "has-support"
+    },
+    {
+      "source": "game-ci-cd-pipeline",
       "target": "game-build-log-triage",
       "kind": "mentions"
     },
@@ -3430,6 +3485,11 @@
     {
       "source": "game-demo-feedback-triage",
       "target": "game-demo-feedback-triage/evals",
+      "kind": "has-support"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "game-demo-feedback-triage/SKILL.toon",
       "kind": "has-support"
     },
     {
@@ -3938,6 +3998,11 @@
       "kind": "indexes"
     },
     {
+      "source": "lmstudio-cli",
+      "target": "lmstudio-cli/SKILL.toon",
+      "kind": "has-support"
+    },
+    {
       "source": "README.md",
       "target": "log-analysis",
       "kind": "indexes"
@@ -4350,6 +4415,11 @@
     {
       "source": "obsidian-plugin",
       "target": "obsidian-plugin/evals",
+      "kind": "has-support"
+    },
+    {
+      "source": "obsidian-plugin",
+      "target": "obsidian-plugin/SKILL.toon",
       "kind": "has-support"
     },
     {
@@ -5178,6 +5248,11 @@
       "kind": "indexes"
     },
     {
+      "source": "research-paper-writing",
+      "target": "research-paper-writing/SKILL.toon",
+      "kind": "has-support"
+    },
+    {
       "source": "README.md",
       "target": "responsive-design",
       "kind": "indexes"
@@ -5705,6 +5780,11 @@
     {
       "source": "steam-store-launch-ops",
       "target": "steam-store-launch-ops/evals",
+      "kind": "has-support"
+    },
+    {
+      "source": "steam-store-launch-ops",
+      "target": "steam-store-launch-ops/SKILL.toon",
       "kind": "has-support"
     },
     {

@@ -1,0 +1,18 @@
+N:game-build-log-triage
+D:Triage Unity and Unreal Engine editor, build, package, cook, compile, and CI logs into the first actionable failure, likely subsystem, and next debugging steps. Use when a game project fails to build, cook, package, import assets, compile scripts/code, or throws noisy editor/runtime errors, even if the user only shares raw log text or says "Unity build failed", "Unreal cook error", "Editor.log", "UHT/UBT failed", or "packaging started breaking after asset moves".
+G:game-development unity unreal logs debugging build-failures ci triage
+
+U[5]:
+  Unity build, import, compile, package, or play-mode startup failures
+  Unreal build, UBT/UHT, cook, package, shader, plugin, or module failures
+  CI logs from game projects where the raw output is long and noisy
+  Asset moves, redirectors, missing references, .meta/GUID, module, or plugin breakages
+  Users who provide Editor.log, package output, BuildCookRun logs, stack traces, or console excerpts and want the next debugging steps
+
+S[6]{n,action,details}:
+  1,Confirm the engine and log scope,1. Detect whether the material is mainly **Unity**, **Unreal**, or **mixed/unknown**. 2. Record the log source when visible: - Unity: Editor.log, Console output, package manager ou
+  2,Find the first actionable failure,Work top-down and separate **root-cause candidates** from **cascade noise**.
+  3,Classify the failure bucket,Map the log to one primary bucket and optional secondary bucket.
+  4,Produce the triage brief,Return a concise report with this exact structure:
+  5,Tailor the next checks to the engine,**For Unity, prefer checks like:** - Packages/manifest.json, Packages/packages-lock.json - .asmdef references and scripting define symbols - ProjectSettings/, platform build settin
+  6,Escalate carefully when evidence is weak,If the log excerpt is too short or starts mid-cascade: 1. Say that confidence is low. 2. Ask for the earliest error cluster or the failing command section. 3. List the minimum extr

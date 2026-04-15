@@ -1,0 +1,19 @@
+N:game-ci-cd-pipeline
+D:Design, audit, and harden CI/CD pipelines for Unity and Unreal projects, including build matrices, cache strategy, artifact naming, packaging stages, platform SDK/toolchain checks, and smoke-test gates. Use when a game team needs to set up or repair GitHub Actions or other CI for engine builds, even if they only say "our Unity cloud/GitHub build keeps breaking", "help with Unreal packaging CI", "make our game builds reproducible", "speed up cook / package jobs", or "turn this manual release process into a pipeline".
+G:game-development unity unreal ci-cd github-actions build-pipeline release-engineering
+
+U[6]:
+  Unity or Unreal teams setting up CI/CD from scratch
+  GitHub Actions, Build Automation, or other CI pipelines that are flaky, slow, or hard to debug
+  Manual game release processes that need reproducible build, package, and artifact steps
+  Requests about cache strategy, large binaries, artifact naming, matrix builds, smoke tests, or packaging gates
+  Teams that keep fixing the same cook/package/build problem without changing the pipeline structure
+  Publisher, contractor, or technical-lead audits where the team wants a short pipeline hardening brief instead of generic infrastructure advice
+
+S[6]{n,action,details}:
+  1,Identify the pipeline scope,Label the request before proposing fixes.
+  2,Audit the pipeline through six lenses,Find the weakest lens first.
+  3,Classify the primary blocker,Map the situation to one primary blocker and optional secondary blocker.
+  4,Build the pipeline brief,Return a concise report with this exact structure:
+  5,Tailor the advice to the engine,**For Unity, focus on:** - engine/editor version pinning - package restore stability and Packages/manifest.json / lockfile drift - whether editor-only code or platform defines leak
+  6,Ask for the minimum missing evidence when needed,If confidence is low, request the smallest next packet that would materially improve the audit: 1. current workflow file or CI job outline 2. engine version and target platforms 3.

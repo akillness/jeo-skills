@@ -1,0 +1,19 @@
+N:obsidian-plugin
+D:Build, validate, and publish Obsidian plugins following official community submission standards. Use when developing an Obsidian plugin from scratch, reviewing existing plugin code, fixing ESLint violations from eslint-plugin-obsidianmd, preparing a plugin for community directory submission, or applying Obsidian-specific best practices (memory management, type safety, accessibility, CSS variables, vault API). Triggers on: obsidian plugin, obsidian development, obsidian-plugin, create obsidian plugin, obsidian eslint, obsidian submission, obsidian community plugin, obsidian API, plugin boilerplate, obsidian typescript, obsidian vault, obsidian settings, obsidian commands.
+G:obsidian plugin-development eslint typescript boilerplate submission accessibility
+
+U[6]:
+  Generate a new Obsidian plugin project with clean boilerplate (no sample code bloat)
+  Review and fix ESLint violations from eslint-plugin-obsidianmd
+  Prepare a plugin for Obsidian community directory submission
+  Apply memory-safe lifecycle patterns (registerEvent, no view reference storage)
+  Implement proper type safety (no unsafe as TFile casts, no any)
+  Enforce accessibility requirements (keyboard navigation, ARIA labels, focus management)
+
+S[6]{n,action,details}:
+  1,Generate a new plugin project,bash # Interactive boilerplate generator — validates metadata against submission rules node scripts/create-plugin.js
+  2,Install ESLint validation,bash npm install --save-dev eslint eslint-plugin-obsidianmd
+  3,Follow the submission validation workflow,1. Run bash scripts/install.sh to set up the development environment 2. Validate plugin ID and name against naming rules (see below) 3. Run ESLint — all 27 rules must pass 4. Compl
+  4,Submission & Naming,| Rule | Auto-fix | Description | |------|----------|-------------| | no-obsidian-in-id | No | Plugin ID must not contain "obsidian" | | no-plugin-suffix-in-id | No | Plugin ID mus
+  5,Memory & Lifecycle,| Rule | Auto-fix | Description | |------|----------|-------------| | prefer-register-event | No | Use this.registerEvent() for automatic cleanup | | no-view-reference | No | Never
+  6,Type Safety,| Rule | Auto-fix | Description | |------|----------|-------------| | no-tfile-cast | No | Avoid as TFile / as TFolder (use instanceof) |

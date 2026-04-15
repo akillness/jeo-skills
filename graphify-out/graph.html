@@ -8,16 +8,16 @@
 - Skills with references/: 80
 - Skills with evals/: 81
 - Skills with scripts/: 23
-- Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 81
-- Skills missing compact variants: 8
-- Graph nodes: 359
-- Graph edges: 983
+- Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
+- Skills missing compact variants: 0
+- Graph nodes: 367
+- Graph edges: 991
 
 ## Strongest structural findings
-1. Discovery surfaces still behave like first-class routing nodes: `README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `.agent-skills/skills.json`, and `.agent-skills/skills.toon` point at the full catalog, so compact-variant drift is a real retrieval problem rather than a cosmetic one.
-2. `game-performance-profiler` now has a compact discovery variant, which makes the game-performance lane consistent with its newly sharpened trigger surface around quick packets, benchmark routes, and device review.
-3. `fabric` remains a high-degree utility anchor whose README-visible positioning matters; keeping its stronger boundary alongside refreshed graph outputs reduces the chance of another vague AI-CLI wrapper appearing nearby.
-4. The remaining maintenance gap is narrow and legible: only 8 skills still lack compact variants (clawteam, game-build-log-triage, game-ci-cd-pipeline, game-demo-feedback-triage, lmstudio-cli, obsidian-plugin, research-paper-writing, steam-store-launch-ops).
+1. The compact-discovery layer is now complete again: every filesystem skill ships either `SKILL.toon` or `SKILL.compact.md`, so the repo docs and runtime assumptions are aligned.
+2. The bounded sweep closed support drift without adding new overlapping skills, which is exactly the kind of maintenance ratchet the repo has been favoring across earlier modernization passes.
+3. The game cluster is no longer an outlier in compact discovery coverage; all four remaining specialist gaps there were closed in the same pass.
+4. The next highest-leverage work is no longer variant completion but true content modernization for the warning-heavy legacy skills that still lint with non-fatal spec gaps.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
@@ -34,19 +34,12 @@
 - vibe-kanban: degree 22
 
 ## Duplicate / consolidation notes
-- The game cluster is healthier when specialist lanes stay separate: build logs, CI/release structure, demo feedback, runtime performance, and Steam launch ops should not collapse into one catch-all skill.
-- Compact variants should follow material trigger-surface rewrites; otherwise the runtime may advertise stale intent even when `SKILL.md` has already improved.
-- The cleaner next move remains support/variant completion for the last missing skills, not adding another overlapping wrapper.
+- Compact support completion removed a support-layer inconsistency; it did not create a new reason to split or merge skills.
+- The game cluster remains healthier when build logs, CI/release structure, demo feedback, runtime performance, and Steam launch ops stay in separate skills.
+- Future docs edits should keep describing compact variants as shipped artifacts only if the filesystem scan still says coverage is complete.
 
 ## Recommended maintenance direction
-- Finish compact-variant coverage for the last missing skills or explicitly weaken the docs claim that every skill folder ships `SKILL.toon`.
+- Use future bounded runs on actual content modernization targets such as warning-heavy legacy skills rather than more support-layer cleanup for this specific gap.
 - Keep validating catalog/runtime sync after any material skill rewrite.
-- Use the wiki to record which remaining missing-variant skills were accepted or deferred so the loop compounds instead of rediscovering the same gaps.
-</pre><h2>Top-degree nodes</h2><table><tr><th>Node</th><th>Degree</th></tr><tr><td>.agent-skills/skills.json</td><td>89</td></tr><tr><td>.agent-skills/skills.toon</td><td>89</td></tr><tr><td>README.ko.md</td><td>89</td></tr><tr><td>README.md</td><td>89</td></tr><tr><td>setup-all-skills-prompt.md</td><td>89</td></tr><tr><td>debugging</td><td>25</td></tr><tr><td>code-review</td><td>24</td></tr><tr><td>performance-optimization</td><td>24</td></tr><tr><td>task-planning</td><td>24</td></tr><tr><td>plannotator</td><td>22</td></tr><tr><td>system-environment-setup</td><td>22</td></tr><tr><td>vibe-kanban</td><td>22</td></tr></table><h2>Missing compact variants</h2><pre>clawteam
-game-build-log-triage
-game-ci-cd-pipeline
-game-demo-feedback-triage
-lmstudio-cli
-obsidian-plugin
-research-paper-writing
-steam-store-launch-ops</pre></body></html>
+- Re-run the structural scan whenever a skill is added or a compact variant is removed so the wiki and docs do not drift again.
+</pre><h2>Top-degree nodes</h2><table><tr><th>Node</th><th>Degree</th></tr><tr><td>.agent-skills/skills.json</td><td>89</td></tr><tr><td>.agent-skills/skills.toon</td><td>89</td></tr><tr><td>README.ko.md</td><td>89</td></tr><tr><td>README.md</td><td>89</td></tr><tr><td>setup-all-skills-prompt.md</td><td>89</td></tr><tr><td>debugging</td><td>25</td></tr><tr><td>code-review</td><td>24</td></tr><tr><td>performance-optimization</td><td>24</td></tr><tr><td>task-planning</td><td>24</td></tr><tr><td>plannotator</td><td>22</td></tr><tr><td>system-environment-setup</td><td>22</td></tr><tr><td>vibe-kanban</td><td>22</td></tr></table><h2>Missing compact variants</h2><pre>(none)</pre></body></html>

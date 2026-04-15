@@ -18,6 +18,7 @@ The repository's game-development lane now has a clearer shape:
 
 Recent refinement:
 - `game-performance-profiler` now starts from quick evidence packets, benchmark routes, and packaged-on-device review before escalating to deeper profiler tooling.
+- The four specialist game-support skills now all ship compact discovery variants, so the game lane is no longer an outlier against the repo's tiered discovery model.
 
 ## Durable finding
 - The cluster did not need another new game skill in this run.

@@ -1,0 +1,24 @@
+N:game-demo-feedback-triage
+D:Triage mixed game demo and playtest feedback into a prioritized fix brief, weighted evidence summary, and next artifact recommendation. Use when a team has playtest notes, Steam Playtest responses, creator or streamer demo reactions, survey comments, wishlist/context signals, bug lists, or performance findings and needs to decide what to fix first before the next build, festival, or launch beat, even if they only say "sort our playtest feedback", "what should we fix before Next Fest", "players are confused", "streamers bounced off the demo", or "turn these demo notes into priorities".
+G:game-development playtesting demo-feedback steam-playtest next-fest prioritization ux qa launch-ops
+
+U[5]:
+  Internal playtest notes, survey responses, bug lists, and feedback docs need prioritization
+  Steam Playtest, Next Fest, creator, or streamer demo reactions need to be converted into a ranked fix brief
+  Teams have mixed qualitative and technical evidence and need to decide what matters before the next build
+  Feedback touches onboarding, clarity, difficulty, controls, performance, stability, or conversion and the team needs one cross-functional view
+  Small studios need a short go / no-go or fix-first recommendation instead of a giant product report
+
+S[6]{n,action,details}:
+  1,Label the feedback packet,Record the minimum facts before prioritizing.
+  2,Cluster the feedback into one primary bucket set,Use these buckets and keep the list tight.
+  3,Weight the signals before ranking,For each bucket, score the evidence using four lenses: 1. **Frequency** — how often did it appear across testers or sources? 2. **Severity** — does it block understanding, retentio
+  4,Build the feedback brief,Return a concise report with this exact structure:
+  5,Tailor the brief to the request type,**For internal playtests:** - prioritize comprehension, fun, and progression before long-tail polish - separate team-known issues from genuinely new player confusion
+  6,Ask for the minimum missing evidence when needed,If confidence is low, request the smallest next packet that would materially improve the triage: 1. 5-10 representative feedback quotes or issue bullets 2. whether the testers are 
+
+R[4]:
+  The main problem is a raw build/log failure with no broader feedback packet → prefer game-build-log-triage
+  The main problem is clearly performance capture and bottleneck diagnosis → prefer game-performance-profiler
+  The team needs a store-page or launch-page audit before player feedback exists → prefer steam-store-launch-ops
+  The user wants a generic sprint plan with no game-specific feedback evidence → prefer task-planning or bmad-gds

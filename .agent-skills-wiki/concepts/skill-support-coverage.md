@@ -77,6 +77,8 @@ Recent ratchets:
 - The `fabric` modernization pass added three `references/` docs, `evals/evals.json`, and refreshed discovery surfaces, which matters because a README-visible utility skill now clearly owns reusable pattern-driven stdin/file/transcript transforms plus custom-pattern maintenance instead of a broad AI-CLI feature tour with no support coverage.
 - The `game-performance-profiler` hardening pass added three focused `references/` docs, a stronger `evals/evals.json`, and `SKILL.toon`, which matters because the game-performance lane now reflects quick triage packets, benchmark routes, device-review context, and escalation logic instead of relying on one generic profiling reference.
 
+- The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
+
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
 - Missing evals make ratcheting and regression checks harder for future improvement loops.
@@ -86,6 +88,7 @@ Recent ratchets:
 When a legacy skill is materially upgraded, prefer adding at least one of:
 - `references/` for durable heuristics
 - `evals/evals.json` for dry-run validation
+- `SKILL.toon` / `SKILL.compact.md` when the repo ships compact discovery surfaces for that lane
 
 ## Related pages
 - [[project-management-cluster]]
@@ -123,3 +126,4 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[agent-browser-modernization-2026-04-15]]
 - [[presentation-builder-modernization-2026-04-15]]
 - [[game-performance-profiler-modernization-2026-04-15]]
+- [[compact-variant-gap-2026-04-15]]

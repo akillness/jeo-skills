@@ -1,0 +1,19 @@
+N:research-paper-writing
+D:Write and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow. Use when drafting an abstract, introduction, related work, method, experiments, ablations, discussion, or rebuttal; structuring figures and tables; tightening reviewer-facing logic; or preparing a paper for submission. Triggers on: research paper, paper writing, academic writing, ML paper, CVPR paper, NeurIPS paper, ICLR paper, experiments section, rebuttal, abstract rewrite, contribution framing, reviewer response.
+G:research-paper-writing academic-writing ml cv nlp experiments rebuttal
+
+U[6]:
+  Drafting or rewriting an abstract around concrete claims and measurable evidence
+  Structuring an introduction so motivation, gap, method, and contributions land quickly
+  Turning notes or code results into a method section with reproducible detail
+  Designing experiment, ablation, and error-analysis sections
+  Writing related work that positions the paper instead of listing references
+  Tightening a rebuttal or reviewer response under strict word limits
+
+S[6]{n,action,details}:
+  1,Lock the paper contract,Before writing, define:
+  2,Write the abstract from claims, not chronology,Use this order:
+  3,Build the introduction as a reviewer funnel,Structure the introduction in five moves:
+  4,Make the method reproducible,The method section should answer:
+  5,Treat experiments as the proof section,Cover at least:
+  6,Write rebuttals with evidence first,For each reviewer concern:

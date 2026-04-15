@@ -1,0 +1,19 @@
+N:steam-store-launch-ops
+D:Audit and structure Steam store-page optimization, wishlist funnel review, demo / Next Fest readiness, creator-outreach prep, and launch-adjacent operating checklists for indie games. Use when a developer, publisher helper, or small studio needs to review a Steam page, coming-soon page, capsule art, trailer, tags, demo timing, launch checklist, or fest readiness, even if they only say "help my Steam page", "wishlists are weak", "are we ready for Next Fest", "review our capsule/trailer/tags", or "give me a launch readiness checklist".
+G:steam indie-games game-marketing launch-ops next-fest wishlists store-page demos
+
+U[6]:
+  Steam coming-soon page reviews for indie games
+  Wishlist funnel triage when wishlists are weak or flat
+  Steam capsule, screenshots, trailer, short-description, tag, and page-structure audits
+  Demo readiness reviews before Steam Next Fest, streamer outreach, or a public reveal
+  Launch-adjacent operating checklists for creator outreach, storefront hygiene, and last-mile prep
+  Publisher/contractor audits where the team needs a short action plan instead of a giant strategy deck
+
+S[6]{n,action,details}:
+  1,Identify the review scope,Start by labeling what the user actually needs.
+  2,Score the page through five operating lenses,Use these five lenses and find the weakest one first.
+  3,Classify the primary blocker,Map the situation to one primary blocker and optional secondary blocker.
+  4,Build the Steam ops brief,Return a concise report with this exact structure:
+  5,Tailor the advice to the request type,**For store-page audits, focus on:** - first-impression clarity - capsule readability at small sizes - screenshot order showing gameplay before lore fluff - short description speci
+  6,Ask for the minimum missing evidence when needed,If confidence is low, request the smallest next packet that would materially improve the audit: 1. Steam page URL or screenshots of the top page sections 2. current capsule art and
