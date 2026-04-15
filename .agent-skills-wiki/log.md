@@ -550,3 +550,11 @@
 - Rejected: broadening `autoresearch` into generic prompt/app eval work; adding another overlapping autoresearch wrapper; treating hosted eval platforms as substitutes for the fixed-budget training loop
 - Structural graph artifacts not refreshed this pass because the change was boundary/support-local and the current graph already reflected the active search-analysis cluster shape
 - Wiki files created/updated: `queries/autoresearch-hardening-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | React best practices support hardening
+- Area researched: React / Next.js performance workflows across waterfalls, bundle analysis, RSC boundaries, hydration/script cost, rerender diagnostics, and the repo-local boundary between `react-best-practices` and adjacent frontend/perf skills
+- Survey files created under `.survey/react-best-practices-support-hardening-20260416/` and the loop charter stayed fixed for the run; direct doc / GitHub / indexed-snippet retrieval was used because `web_search` and `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: harden `react-best-practices` in place with three focused `references/` docs, refresh `SKILL.toon` plus README / README.ko / setup prompt / discovery wording, and record the stronger frontend support boundary in the wiki
+- Rejected: adding another React wrapper; promoting `vercel-react-best-practices` back to a peer default; leaving the lane as one giant `AGENTS.md` plus a thin surface skill
+- Wiki files created/updated: `queries/react-best-practices-support-hardening-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

@@ -2341,7 +2341,7 @@
     },
     {
       "name": "react-best-practices",
-      "description": "Audit and improve React and Next.js performance using Vercel-style guidance for waterfalls, bundle size, RSC boundaries, caching, hydration, and rerender behavior. Use when the user needs help with slow React UIs, Next.js data fetching, bundle bloat, hydration mismatch, server/client component boundaries, or frontend performance refactors. Triggers on: React perf, Next.js perf, waterfall, bundle size, RSC, hydration, rerender, slow page.",
+      "description": "Run measurement-led React and Next.js performance audits for waterfalls, bundle size, RSC/server-client boundaries, hydration mismatch, rerender churn, script cost, and slow page interactions. Use when the user needs help diagnosing or refactoring a slow React UI, App Router route, heavy client component, or Next.js page with excess JavaScript or weak client/server boundaries. Triggers on: React perf, Next.js perf, waterfall, bundle size, hydration, rerender, client component too heavy, slow route, React profiler, web vitals.",
       "category": "frontend",
       "path": "react-best-practices/SKILL.md",
       "tags": [

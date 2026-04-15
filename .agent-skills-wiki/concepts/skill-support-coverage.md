@@ -16,7 +16,7 @@ Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
 - 85 skills with `references/`
-- 87 skills with `evals/`
+- 88 skills with `evals/`
 - 24 skills with `scripts/`
 
 Recent ratchets:
@@ -84,6 +84,7 @@ Recent ratchets:
 - The `ralphmode` hardening pass added `evals/evals.json` and sharper settings / rules / hooks discovery wording, which matters because a high-visibility orchestration-platform skill now has frozen trigger and route-boundary coverage instead of prose-only permission guidance.
 - The `skill-autoresearch` hardening pass added `references/loop-charter-template.md`, `evals/evals.json`, and sharper repo-local ratcheting language, which matters because the maintenance loop now has a dedicated search-analysis anchor for frozen evaluators, one-change iterations, and append-only keep/revert history instead of relying on prose-only memory.
 - The `autoresearch` hardening pass added `evals/evals.json` and corrected stale support docs around the immutable harness, which matters because a README-visible search-analysis anchor now distinguishes real GPU-bound ML search from repo-local skill eval loops and no longer relies on outdated `constants.py` assumptions.
+- The `react-best-practices` support-hardening pass added three focused `references/` docs and refreshed discovery wording, which matters because a canonical frontend performance anchor now matches the repo’s lighter support-packet pattern instead of relying on one giant `AGENTS.md` plus a thin surface skill.
 
 - The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
 
