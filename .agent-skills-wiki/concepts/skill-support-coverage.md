@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 74 skills with `references/`
-- 73 skills with `evals/`
+- 75 skills with `references/`
+- 74 skills with `evals/`
 - 23 skills with `scripts/`
 
 Recent ratchets:
@@ -67,6 +67,7 @@ Recent ratchets:
 - The `git-submodule` modernization pass added both `references/` and `evals/`, which matters because another high-utility developer-workflow anchor now owns submodule-vs-subtree choice, recursive bootstrap, pointer updates, detached-HEAD handling, and CI checkout/auth instead of remaining a long command catalog with weak boundaries.
 - The `file-organization` modernization pass added three `references/` docs and `evals/evals.json`, which matters because a highly visible legacy utility skill now owns structure-choice and migration guidance across frontend, backend, monorepo, docs/ops, and game-development repos instead of remaining a static scaffold dump with no durable support files.
 - The `opencontext` modernization pass added three `references/` docs and `evals/evals.json`, which matters because another high-utility utility skill now clearly owns active project/repo memory, manifests, stable links, and cross-agent handoff instead of remaining a generic persistent-memory command catalog that blurred into wiki or graph layers.
+- The `agentation` modernization pass added three `references/` docs and `evals/evals.json`, which matters because a flagship planning-review/browser-adjacent skill now clearly owns exact rendered-UI feedback plus annotation-loop setup instead of remaining a giant mixed install/config/API catalog that blurred into `agent-browser`, `playwriter`, and `plannotator`.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
@@ -107,5 +108,7 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[web-design-guidelines-modernization-2026-04-14]]
 - [[vercel-deploy-modernization-2026-04-15]]
 - [[core-orchestration-platform-cluster]]
+- [[browser-review-cluster]]
 - [[ohmg-modernization-2026-04-15]]
 - [[playwriter-modernization-2026-04-15]]
+- [[agentation-modernization-2026-04-15]]

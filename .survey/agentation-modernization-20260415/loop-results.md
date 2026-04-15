@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `agentation/SKILL.md` (+ support/docs sync) | A shorter decision-first `agentation` with explicit route-outs, support references, evals, and synced discovery surfaces will be more reusable than the current monolithic catalog | Rewrote `SKILL.md`, added 3 reference docs + `evals/evals.json`, refreshed `SKILL.toon`/`skills.json`/`skills.toon`, updated README / README.ko / setup prompt, refreshed graph/wiki artifacts | `validate_skill.sh` passed; evals JSON parsed; `validate_catalog_sync.py --repo-root .` reported no drift | Keep | Also fixed stale 85 → 89 discovery-count drift on touched top-level surfaces without adding a duplicate skill |

@@ -391,6 +391,14 @@
 - Rejected: adding another authenticated-browser wrapper; keeping `playwriter` as a generic Playwright/MCP command dump; letting it compete directly with `agent-browser` as the default browser skill
 - Wiki files created/updated: `queries/playwriter-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
 
+## [2026-04-15] query | agentation modernization
+- Area researched: rendered-UI feedback loops, upstream `agentation` workflow details, platform hook/MCP setup, and the repo boundary between `agentation`, `agent-browser`, `playwriter`, and `plannotator`
+- Survey files created under `.survey/agentation-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `agentation` as the exact rendered-UI feedback router, add `references/` + `evals/`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and fix stale 85 → 89 discovery-count drift on touched top-level surfaces
+- Rejected: adding another browser or QA wrapper; letting `agentation` absorb fresh-session verification, running-browser reuse, or plan/diff approval
+- Wiki files created/updated: `concepts/browser-review-cluster.md`, `queries/agentation-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
 ## [2026-04-15] query | File organization modernization
 - Area researched: repo-structure choice and incremental reorganization across frontend, backend, fullstack/monorepo, docs/ops, and game-development repos, plus the repo-local boundary with `codebase-search`, `workflow-automation`, `system-environment-setup`, `state-management`, `design-system`, and `bmad-gds`
 - Survey files created under `.survey/file-organization-modernization-20260415/` and the loop charter stayed fixed for the run

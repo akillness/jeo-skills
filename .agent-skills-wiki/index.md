@@ -1,12 +1,13 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-15 | Total pages: 55
+> Last updated: 2026-04-15 | Total pages: 66
 
 ## Entities
 
 ## Concepts
 - [[backend-api-cluster]] — Boundaries and maintenance direction for the backend API lane, with `api-design` as the contract-first anchor and `api-documentation` as the publishing handoff.
+- [[browser-review-cluster]] — Boundaries for the browser/review lane, keeping plan approval, fresh-session verification, running-browser reuse, and exact UI annotation in separate skills.
 - [[code-quality-cluster]] — Boundaries for the code-quality lane, separating validation policy, test implementation, debugging, and reviewer judgment.
 - [[core-orchestration-platform-cluster]] — Boundaries for the platform orchestration lane, separating Gemini / Antigravity portable-harness adoption from Claude-first and Codex-first runtime overlays.
 - [[creative-media-cluster]] — Boundaries for the creative-media lane, keeping programmable / automated video as the canonical anchor and Remotion naming as a compatibility alias.
@@ -75,4 +76,5 @@
 - [[bmad-modernization-2026-04-15]] — Why the best bounded core-BMAD improvement was modernizing `bmad` into the level/phase/next-artifact router instead of keeping a giant command dump or adding another BMAD wrapper.
 - [[bmad-idea-modernization-2026-04-15]] — Why the best bounded pre-planning creativity improvement was modernizing `bmad-idea` into the concept-routing anchor instead of leaving it as a command/persona catalog or adding another ideation wrapper.
 - [[playwriter-modernization-2026-04-15]] — Why the best bounded browser-tooling improvement was modernizing `playwriter` into the running-browser / authenticated-session reuse anchor instead of adding another browser wrapper or letting it blur into `agent-browser`.
+- [[agentation-modernization-2026-04-15]] — Why the best bounded planning-review/browser-follow-up improvement was modernizing `agentation` into the exact rendered-UI feedback router instead of adding another browser or QA wrapper.
 
