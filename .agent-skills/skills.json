@@ -2417,7 +2417,7 @@
     },
     {
       "name": "research-paper-writing",
-      "description": "Write and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow. Use when drafting an abstract, introduction, related work, method, experiments, ablations, discussion, or rebuttal; structuring figures and tables; tightening reviewer-facing logic; or preparing a paper for submission. Triggers on: research paper, paper writing, academic writing, ML paper, CVPR paper, NeurIPS paper, ICLR paper, experiments section, rebuttal, abstract rewrite, contribution framing, reviewer response.",
+      "description": "Draft and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow, reviewer-aware structure, and submission-ready section planning. Use when the user needs help with an abstract, introduction, related work, method, experiments, ablations, figures/tables, checklist coverage, or rebuttal / response-letter writing for a paper. Triggers on: research paper, academic paper, ML paper, NeurIPS paper, ICLR paper, CVPR paper, experiments section, ablation plan, related work, contribution framing, reviewer response, rebuttal, camera-ready revision.",
       "category": "documentation",
       "path": "research-paper-writing/SKILL.md",
       "tags": [
