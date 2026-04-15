@@ -38,7 +38,9 @@ Good reasons:
 Otherwise, switch to `../design-system/SKILL.md`.
 
 ### Step 2: Redirect to the canonical skill
-For real frontend UI-system work, follow the canonical skill and its support files:
+Use the alias-side packet first, then jump to the canonical skill for substantive UI-system work:
+- Alias routing notes: `./references/alias-routing.md`
+- Compact/discovery sync notes: `./references/compact-surface-sync.md`
 - Canonical skill: `../design-system/SKILL.md`
 - Boundary notes: `../design-system/references/scope-boundaries.md`
 - Nearby skills:
@@ -68,6 +70,8 @@ Output: Do **not** stay in the alias. Route to `design-system` directly.
 
 ## References
 
+- `./references/alias-routing.md`
+- `./references/compact-surface-sync.md`
 - `../design-system/SKILL.md`
 - `../design-system/references/scope-boundaries.md`
 - `../ui-component-patterns/SKILL.md`

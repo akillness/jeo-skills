@@ -4,7 +4,7 @@ created: 2026-04-12
 updated: 2026-04-13
 type: concept
 tags: [skills, consolidation, trigger-design, frontend, docs]
-sources: [.survey/frontend-skill-consolidation-20260412/context.md, .survey/frontend-design-system-canonicalization-20260412/context.md, .survey/frontend-legacy-anchors-20260413/context.md, .survey/frontend-legacy-anchors-20260413/platform-map.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/frontend-skill-consolidation-20260412/context.md, .survey/frontend-design-system-canonicalization-20260412/context.md, .survey/frontend-legacy-anchors-20260413/context.md, .survey/frontend-legacy-anchors-20260413/platform-map.md, .survey/frontend-alias-support-hardening-20260416/context.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Frontend Skill Canonicalization
@@ -26,10 +26,13 @@ The frontend cluster now has **two** true canonical-vs-alias pairs plus three cl
 ## Operational rule
 When two frontend skills compete at the metadata layer but not in long-term user value, prefer one canonical skill plus one thin compatibility alias. Add evals so the canonical skill wins ordinary prompts and the alias only survives for exact-name or migration scenarios.
 
+Canonicalization is not fully done until compact discovery surfaces (`SKILL.toon`, shared manifests, and any top-level discovery copy that changed materially) also present the alias as a redirect layer rather than a peer frontend default.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[react-skill-canonicalization-2026-04-12]]
 - [[design-system-canonicalization-2026-04-12]]
+- [[frontend-alias-support-hardening-2026-04-16]]
 - [[state-management-modernization-2026-04-13]]
 - [[web-accessibility-modernization-2026-04-13]]
 - [[ui-component-patterns-modernization-2026-04-13]]

@@ -40,7 +40,9 @@ Use this alias only when:
 Otherwise, switch to `../react-best-practices/SKILL.md`.
 
 ### Step 2: Redirect to the canonical skill
-For actual React or Next.js performance work, follow the canonical skill and its deep reference bundle:
+Use the alias-side packet first, then jump to the canonical React performance guidance:
+- Alias routing notes: `./references/alias-routing.md`
+- Measurement + route-out notes: `./references/measurement-route-outs.md`
 - Canonical skill: `../react-best-practices/SKILL.md`
 - Deep reference: `../react-best-practices/AGENTS.md`
 - Nearby boundaries:
@@ -70,6 +72,8 @@ Output: Do **not** stay in the alias. Route to `react-best-practices` directly.
 
 ## References
 
+- `./references/alias-routing.md`
+- `./references/measurement-route-outs.md`
 - `../react-best-practices/SKILL.md`
 - `../react-best-practices/AGENTS.md`
 - `../state-management/SKILL.md`
