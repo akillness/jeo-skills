@@ -1,0 +1,35 @@
+{
+  "skill_name": "skill-autoresearch",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Improve this stale SKILL.md. I want a bounded loop with clear prompts, fixed evals, and a decision about whether to keep or revert changes.",
+      "expected_output": "The skill activates as a repo-local optimization workflow, requires freezing the evaluation harness before edits, and includes explicit keep-or-revert logging.",
+      "assertions": [
+        "The workflow requires a frozen evaluation harness or loop charter before mutations start.",
+        "The workflow changes one meaningful thing at a time and uses keep-or-revert decisions tied to measured results.",
+        "The workflow records experiment history in append-only artifacts such as results/changelog files."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My prompt benchmark is weak and I keep changing the tests while rewriting the skill. Help me optimize the skill anyway.",
+      "expected_output": "The skill should refuse benchmark drift inside the same run and direct the maintainer to freeze or restart the comparison track.",
+      "assertions": [
+        "The skill warns against changing the evaluator mid-run.",
+        "The skill instructs the user to freeze prompts/evals or start a new comparison track.",
+        "The skill does not treat ad hoc rewriting without a stable benchmark as acceptable autoresearch."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I updated the main SKILL.md and now I think the README, setup prompt, and compact variant might be out of sync. What should the loop do?",
+      "expected_output": "The skill treats docs/setup/discovery updates as secondary supporting work after the main skill change is justified, and syncs them when positioning changed materially.",
+      "assertions": [
+        "The skill explicitly mentions docs/setup/discovery-surface sync when positioning or discoverability changed materially.",
+        "The skill keeps the primary mutable artifact focused even when supporting files are allowed.",
+        "The skill does not start with broad multi-file churn before proving the main skill change."
+      ]
+    }
+  ]
+}

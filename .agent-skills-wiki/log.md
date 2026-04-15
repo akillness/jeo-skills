@@ -534,3 +534,11 @@
 - Accepted: harden `ralphmode` in place around the explicit settings / rules / hooks mental model, add `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / discovery manifests, and record the stronger orchestration-platform support boundary in the wiki
 - Rejected: adding a separate trusted-folder, bypass, or checkpoint wrapper; broadening compatibility to OpenCode in this run; letting `ralphmode` absorb runtime-orchestration ownership from `ralph`, `omc`, `omx`, `ohmg`, or `jeo`
 - Wiki files created/updated: `queries/ralphmode-hardening-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | Skill-autoresearch hardening
+- Area researched: prompt/skill optimization loops across repo-local eval ratcheting, hosted eval platforms, frozen-evaluator discipline, and cross-platform settings / rules / hooks portability for skill-maintenance workflows
+- Survey files created under `.survey/skill-autoresearch-hardening-20260416/` and the loop charter stayed fixed for the run; direct doc / GitHub / HN retrieval was used because `web_search` and `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: harden `skill-autoresearch` in place around the frozen evaluator / keep-or-revert model, add `references/loop-charter-template.md` plus `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / discovery manifests, and record the stronger search-analysis support boundary in the wiki
+- Rejected: adding another generic eval helper; blurring the lane with hosted eval platforms or the ML-focused `autoresearch` skill; leading with broad docs/setup churn before the main skill boundary was proven
+- Wiki files created/updated: `queries/skill-autoresearch-hardening-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

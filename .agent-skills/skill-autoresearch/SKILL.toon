@@ -1,30 +1,32 @@
 N:skill-autoresearch
-D:Autonomously optimize an existing AI skill by running repeatable eval-driven experiments, mutating one instruction at a time, and keeping only changes that improve binary pass rate.
-G:skill-autoresearch skill-optimization evals prompt-iteration benchmark mutation-loop autoresearch
+D:Improve an existing SKILL.md through a bounded eval-driven mutation loop with a frozen evaluator, one meaningful change at a time, explicit keep-or-revert decisions, and append-only experiment logs.
+G:skill-autoresearch skill-optimization evals prompt-iteration benchmark mutation-loop ratcheting autoresearch
 
 U[5]:
-  Improve an underperforming SKILL.md with measured iterations
-  Build binary evals for prompt or skill quality
-  Compare baseline vs mutation scores before keeping changes
-  Generate dashboard, results log, and changelog artifacts for a skill
-  Continue improving a skill from prior experiment history
+  Improve a reusable SKILL.md with measured iterations instead of ad hoc rewriting
+  Freeze prompts and evals before mutating the skill
+  Compare baseline versus mutations and keep only score-improving changes
+  Add or refresh support files and discovery surfaces when the main boundary is proven
+  Preserve append-only logs so future maintainers can reuse or reject prior mutations
 
-S[6]{n,action,details}:
-  1,ConfirmInputs,Collect target skill path; 3-5 test inputs; 3-6 binary evals; runs per experiment; interval; budget cap
-  2,ReadSkill,Read SKILL.md and linked references; identify job, output format, and failure modes
-  3,CreateWorkspace,Create skill-autoresearch-[skill-name] with dashboard.html; results.json; results.tsv; changelog.md; SKILL.md.baseline
-  4,Baseline,Run the target skill as-is N times; score all outputs; record experiment 0
-  5,MutateLoop,Change one instruction at a time; rerun; keep only score improvements; log keep and discard outcomes
-  6,Deliver,Report baseline-to-final improvement; keep rate; top fixes; remaining failures; artifact paths
+S[7]{n,action,details}:
+  1,ConfirmInputs,Collect target skill path; 3-5 representative prompts; 3-6 binary evals; runs per experiment; budget cap; supporting files in scope
+  2,ReadSkill,Read SKILL.md plus linked references; identify triggers; route-outs; failure modes; missing support coverage
+  3,FreezeEvaluator,Write loop-charter.md with goal; baseline; mutable artifact; fixed harness; constraints; rejected directions
+  4,Baseline,Create skill-autoresearch-[skill-name] artifacts and record experiment 0 on the fixed prompt set
+  5,MutateLoop,Change one meaningful thing; rerun the same harness; keep only score improvements; revert ties or regressions
+  6,SyncSupport,Update evals; compact variants; discovery manifests; docs/setup surfaces only if positioning changed materially
+  7,Deliver,Report baseline-to-final score; keep-vs-revert count; top changes; remaining failures; artifact paths
 
-R[6]:
-  Do not start without target skill, test inputs, and binary evals
-  Use yes-no evals only; never use scales
-  Change one thing at a time so results stay attributable
-  Keep or discard by measured score, not intuition
-  Log every experiment, including discarded mutations
-  Stop only on manual stop, budget cap, or clear score plateau
+R[7]:
+  Do not start without target skill, representative prompts, and binary evals
+  Freeze the evaluator before the first mutation
+  Change one meaningful thing at a time so results stay attributable
+  Keep or revert by measured score, not intuition
+  Log every experiment, including reverts
+  Treat hosted eval platforms as references, not substitutes for repo-local artifacts
+  Start a new comparison track if prompts, evals, or scoring rules change
 
 E[2]{desc,in,out}:
-  "Baseline benchmark","Run the target skill 5 times on the fixed test set and score each output","results.tsv baseline row; results.json baseline state; dashboard bootstrapped"
-  "Mutation experiment","Edit one instruction; rerun the same eval suite","keep or discard decision with changelog entry and updated pass-rate history"
+  "Trigger precision ratchet","Baseline a stale skill, rewrite the description only, and rerun the fixed eval suite","improved trigger precision without changing the evaluator; keep or revert decision logged"
+  "Support-surface sync","After a justified main-skill improvement, update compact/discovery/docs surfaces that changed materially","support files and manifests synced after the core mutation proved out"

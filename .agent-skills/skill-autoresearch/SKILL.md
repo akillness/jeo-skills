@@ -1,86 +1,75 @@
 ---
 name: skill-autoresearch
 description: >
-  Autonomously optimize an existing AI skill by running it repeatedly against
-  binary evals, mutating one instruction at a time, and keeping only changes
-  that improve pass rate. Based on Karpathy-style autoresearch, but applied to
-  SKILL.md iteration instead of ML training. Use when optimizing a skill,
-  benchmarking prompt quality, building evals for a skill, or running
-  self-improvement loops on reusable agent instructions. Triggers on:
-  skill-autoresearch, optimize this skill, improve this skill, benchmark this
-  skill, eval my skill, run autoresearch on this skill, self-improve skill.
+  Improve an existing `SKILL.md` through a bounded eval-driven mutation loop.
+  Use when a reusable skill needs sharper triggers, clearer instructions, or
+  stronger support files and you want a frozen evaluation harness, one
+  meaningful change per iteration, explicit keep-or-revert decisions, and
+  append-only experiment logs instead of ad hoc rewriting. Triggers on:
+  optimize this skill, eval my skill, improve this skill, benchmark this skill,
+  skill mutation loop, ratchet this skill, run autoresearch on this skill.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: >
-  Works best when the target skill has 3-5 representative test inputs, 3-6
-  binary yes/no evals, and a deterministic way to run or inspect outputs.
+  Works best when the target skill has 3-5 representative prompts, 3-6 binary
+  evals, and a deterministic way to inspect outputs or dry-run behavior.
 metadata:
-  tags: skill-autoresearch, skill-optimization, evals, prompt-iteration, benchmarking, mutation-loop, karpathy
-  version: "1.0"
+  tags: skill-autoresearch, skill-optimization, evals, prompt-iteration, benchmarking, mutation-loop, ratcheting, karpathy
+  version: "1.1.0"
   source: https://github.com/olelehmann100kMRR/autoresearch-skill
 ---
 
 # Skill Autoresearch
 
-Use this skill to improve another skill through measured iteration instead of gut feel.
+Use autoresearch as an operating model for skills, not as a vague “self-improve” slogan.
 
-The job is simple: run the target skill on a small test set, score outputs with binary evals, change one thing in the prompt, and keep only mutations that improve the score. Repeat until the score plateaus, the budget cap is hit, or the user stops the loop.
+The loop is simple:
+1. freeze the judge,
+2. run a baseline,
+3. change one meaningful thing,
+4. score again,
+5. keep only measured improvements,
+6. log both wins and failures.
+
+This skill is for **repo-local skill maintenance**. If the user needs a hosted eval platform, route to tools like LangSmith, Braintrust, Weave, or Promptfoo instead of pretending a markdown-only loop replaces them.
 
 ## When to use this skill
 
-- A skill works inconsistently and needs a repeatable improvement loop
-- You want to benchmark a SKILL.md before editing it
-- You need binary evals for prompt or skill quality
-- You want a mutation log instead of ad-hoc rewriting
-- You want to compare baseline vs improved prompt behavior
+- A reusable `SKILL.md` works inconsistently and needs a repeatable improvement loop
+- You want to benchmark a skill before editing it
+- You need binary evals for trigger quality, execution clarity, or support-file usefulness
+- You want append-only keep/discard history instead of ad hoc rewrites
+- You need to improve a skill in git without moving the benchmark during the run
+- You want a bounded way to add or refresh `references/`, `evals/`, compact variants, or discovery copy around a skill
+
+## Do not use this skill when
+
+- The user already knows the exact skill rewrite they want and does not need a benchmark loop
+- The target has no representative prompts or no way to evaluate behavior
+- The work is really about the underlying product/system, not the reusable skill instructions
+- You are tempted to change the skill and the evaluator at the same time with no frozen baseline
 
 ## Required inputs
 
-Do not start experiments until all inputs below are known:
+Do not start the loop until these are known:
 
 1. Target skill path
-2. Three to five representative test inputs
+2. Three to five representative prompts
 3. Three to six binary yes/no evals
-4. Runs per experiment, default `5`
-5. Experiment interval, default `2m`
-6. Optional budget cap
+4. Runs per experiment, default `3`
+5. Optional effort cap: iteration count, time budget, or tool budget
+6. What files are in scope beyond `SKILL.md` (for example `references/`, `evals/`, `SKILL.toon`, docs surfaces)
 
-For writing reliable evals, read [references/eval-guide.md](references/eval-guide.md).
+Use these support files before editing:
+- `references/eval-guide.md` — turning vague quality claims into binary checks
+- `references/loop-charter-template.md` — freezing the run contract before mutations begin
 
-## Instructions
+## Artifact package
 
-### Step 1: Read the target skill
-
-1. Read the target `SKILL.md`
-2. Read any directly linked files under that skill's `references/`
-3. Identify the core job, required steps, output format, and likely failure modes
-4. Note buried instructions or conflicting rules before changing anything
-
-### Step 2: Build the eval suite
-
-Convert the user's quality criteria into binary checks only.
-
-Use this format:
-
-```text
-EVAL 1: Short name
-Question: Yes/no question about the output
-Pass: Specific condition that counts as yes
-Fail: Specific condition that counts as no
-```
-
-Rules:
-
-- Use binary yes/no checks only
-- Prefer observable checks over taste-based judgments
-- Keep evals distinct; do not double-count the same failure
-- Use three to six evals total
-
-### Step 3: Create the experiment workspace
-
-Inside the target skill folder, create:
+Create a repo-local experiment folder next to the target skill:
 
 ```text
 skill-autoresearch-[skill-name]/
+  loop-charter.md
   dashboard.html
   results.json
   results.tsv
@@ -88,22 +77,77 @@ skill-autoresearch-[skill-name]/
   SKILL.md.baseline
 ```
 
-Requirements:
+Minimum artifact expectations:
+- `loop-charter.md` freezes the goal, baseline, mutable artifact, evaluator, and constraints for the run
+- `results.tsv` stores one row per experiment
+- `results.json` powers the dashboard or any later structured analysis
+- `changelog.md` records both kept and reverted changes in plain language
+- `SKILL.md.baseline` preserves the untouched starting point
 
-- `results.tsv` stores experiment summaries
-- `results.json` powers the dashboard
-- `dashboard.html` is a self-contained status page
-- `SKILL.md.baseline` is the untouched original
+## Instructions
+
+### Step 1: Read the target skill and supporting files
+
+1. Read the target `SKILL.md`
+2. Read linked files under `references/`, `evals/`, `scripts/`, or compact variants if they exist
+3. Identify:
+   - the skill's real job
+   - what should trigger it
+   - what it explicitly routes out
+   - likely failure modes
+4. Note contradictions, buried instructions, weak trigger wording, and missing support coverage before editing anything
+
+### Step 2: Freeze the evaluator
+
+Before changing the skill, write `loop-charter.md`.
+
+The charter must freeze:
+- the goal of the run
+- the current baseline
+- the single primary mutable artifact
+- the fixed evaluation harness
+- allowed supporting files
+- time / iteration / tool budget
+- rejected directions for this run
+
+Rules:
+- Do **not** change the evaluator mid-run unless the human explicitly requests a new comparison track
+- Keep one primary mutable artifact even if supporting files change around it
+- Prefer dry-run checks that another maintainer could rerun tomorrow
+
+### Step 3: Build the eval suite
+
+Convert quality criteria into binary checks only.
+
+Use this format:
+
+```text
+EVAL 1: Short name
+Question: Yes/no question about the output or artifact
+Pass: Specific condition that counts as yes
+Fail: Specific condition that counts as no
+```
+
+Strong eval categories for skill work:
+- **Trigger quality** — does the description clearly say when to use the skill?
+- **Boundary clarity** — does it route neighboring jobs elsewhere instead of becoming a catch-all?
+- **Execution clarity** — are steps deterministic and ordered?
+- **Artifact usefulness** — are support files or output expectations concrete enough to reuse?
+- **Benchmark discipline** — does the loop freeze the test set and evaluator before edits?
+
+Rules:
+- use binary yes/no checks only
+- prefer observable checks over taste-based judgments
+- keep evals distinct; do not score the same failure twice
+- use the same prompt set for baseline and mutations inside a run
 
 ### Step 4: Establish the baseline
 
-Run the target skill as-is before editing it.
-
-1. Back up the original skill as `SKILL.md.baseline`
-2. Run the skill `N` times on the same test inputs
+1. Copy the original skill to `SKILL.md.baseline`
+2. Run the current skill against the fixed prompt set
 3. Score every run against every eval
 4. Record experiment `0` as the baseline
-5. If baseline is already above 90 percent, confirm whether more optimization is worth it
+5. Summarize what is failing before you edit anything
 
 Use this `results.tsv` header:
 
@@ -111,93 +155,113 @@ Use this `results.tsv` header:
 experiment	score	max_score	pass_rate	status	description
 ```
 
-### Step 5: Run the mutation loop
+If the target already passes comfortably, stop and report that no ratchet is justified.
+
+### Step 5: Run one-change iterations
 
 This is the core loop:
 
-1. Inspect the failing outputs
+1. Read the failing outputs and artifacts
 2. Form one hypothesis about the failure
-3. Make one targeted change to `SKILL.md`
-4. Re-run the same test set
-5. Score all outputs again
-6. Keep the change only if the score improves
+3. Make one meaningful change only
+4. Re-run the same prompt set and eval suite
+5. Compare to the baseline and current best
+6. Keep only score-improving changes
 7. Revert ties or regressions
-8. Append the result to `results.tsv`, `results.json`, and `changelog.md`
+8. Append the outcome to `results.tsv`, `results.json`, and `changelog.md`
 
 Good mutations:
-
-- Clarify an ambiguous instruction
-- Move a critical rule higher
-- Add one anti-pattern for a recurring failure
-- Add one focused example
-- Remove a noisy instruction that causes overfitting
+- tightening a weak trigger description
+- moving a critical rule higher
+- adding one focused example or route-out
+- adding one support file that closes a clear usability gap
+- removing a noisy instruction that causes over-triggering
 
 Bad mutations:
+- rewriting the whole skill and support layer at once
+- changing the skill and the evaluator together
+- keyword stuffing for recall without improving precision
+- adding docs/setup changes before the skill boundary is stable
+- optimizing for style instead of measured behavior
 
-- Rewrite the whole skill at once
-- Add many rules in one experiment
-- Optimize for length instead of behavior
-- Use intuition instead of measured score
+### Step 6: Validate support surfaces when needed
 
-### Step 6: Keep the dashboard live
+If the change materially affects discoverability, onboarding, naming, or usage, also update:
+- discovery manifests such as `skills.json` / compact indexes
+- docs/setup surfaces such as `README.md`, localized README entries, or setup prompts
+- compact skill variants when the repo ships them
 
-The dashboard should refresh from `results.json` and show:
-
-- Experiment number
-- Score and pass rate progression
-- Baseline vs keep vs discard status
-- Per-eval failure hotspots
-- Current run state: running, idle, or complete
-
-Use a single self-contained HTML file. Inline CSS/JS is preferred.
+Do this **after** the main skill change is justified by the frozen evaluator, not before.
 
 ### Step 7: Log every experiment
 
-Append after every run:
+Append after every iteration:
 
 ```markdown
-## Experiment N — keep|discard
+## Experiment N — keep|revert
 
 Score: X/Y
 Change: one-sentence mutation summary
-Reasoning: why this mutation was tried
+Hypothesis: why this mutation was tried
 Result: what improved or regressed
 Remaining failures: what still breaks
 ```
 
-Discarded experiments matter. They stop future agents from repeating dead ends.
+Discarded experiments matter. They prevent future maintainers from rediscovering the same bad idea.
 
 ### Step 8: Deliver results
 
 When the loop stops, report:
 
-1. Baseline score to final score
-2. Number of experiments run
-3. Keep vs discard count
-4. Top changes that helped most
-5. Remaining failure patterns
-6. Artifact locations
+1. baseline score to final score
+2. number of experiments run
+3. keep vs revert count
+4. top changes that helped most
+5. remaining failure patterns
+6. artifact locations
+7. whether docs/setup/discovery surfaces were updated
 
-## Rules
+## Examples
 
-- Do not run experiments before inputs and evals are defined
-- Use the same test set for baseline and mutations
-- Change one thing at a time
-- Keep or discard by score, not by preference
-- Record every attempt
-- Stop only on manual stop, budget cap, or clear score plateau
+### Example 1: Tighten a stale trigger description
 
-## Output format
+Input situation:
+- Skill triggers too broadly
+- No evals for neighboring skills
+- Maintainer wants bounded improvement, not a rewrite
 
-Expected artifacts:
+Expected loop:
+1. Freeze 3 prompts and 4 binary evals
+2. Baseline current trigger behavior
+3. Rewrite description only
+4. Keep only if precision improves without losing core recall
 
-```text
-skill-autoresearch-[skill-name]/
-  dashboard.html
-  results.json
-  results.tsv
-  changelog.md
-  SKILL.md.baseline
-```
+### Example 2: Add missing support files after boundary is proven
 
-The improved skill stays in place at its original path.
+Input situation:
+- The skill boundary is sound, but reuse is weak because there is no reference doc or eval file
+
+Expected loop:
+1. Validate the core `SKILL.md` boundary first
+2. Add one reference or `evals/evals.json`
+3. Re-run the same harness
+4. Update discovery surfaces only if the positioning changed materially
+
+## Best practices
+
+1. Freeze the evaluator before the first edit
+2. Change one meaningful thing at a time
+3. Prefer representative real-world prompts over invented perfect cases
+4. Use repeated runs when non-determinism matters
+5. Keep the loop bounded; short comparable iterations beat heroic rewrites
+6. Log failed experiments, not just successes
+7. Prefer transferable improvements over narrow benchmark gaming
+8. Treat hosted eval products as references, not replacements, for repo-local skill ratchets
+9. If the skill body changes materially, sync discovery manifests and compact variants in the same bounded run
+
+## References
+
+- [Upstream autoresearch-skill](https://github.com/olelehmann100kMRR/autoresearch-skill)
+- [Karpathy/autoresearch](https://github.com/karpathy/autoresearch)
+- [Promptfoo](https://github.com/promptfoo/promptfoo)
+- [LangSmith Evaluation](https://docs.langchain.com/langsmith/evaluation)

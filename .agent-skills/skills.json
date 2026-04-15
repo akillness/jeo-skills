@@ -1,6 +1,6 @@
 {
   "version": "1.2.0",
-  "generated": "2026-04-15T03:06:00Z",
+  "generated": "2026-04-15T18:20:43Z",
   "skill_count": 89,
   "categories": {
     "planning-review": [
@@ -2609,7 +2609,7 @@
     },
     {
       "name": "skill-autoresearch",
-      "description": "Autonomously optimize an existing AI skill by running it repeatedly against binary evals, mutating one instruction at a time, and keeping only changes that improve pass rate. Based on Karpathy-style autoresearch, but applied to SKILL.md iteration instead of ML training. Use when optimizing a skill, benchmarking prompt quality, building evals for a skill, or running self-improvement loops on reusable agent instructions. Triggers on: skill-autoresearch, optimize this skill, improve this skill, benchmark this skill, eval my skill, run autoresearch on this skill, self-improve skill.",
+      "description": "Improve an existing `SKILL.md` through a bounded eval-driven mutation loop. Use when a reusable skill needs sharper triggers, clearer instructions, or stronger support files and you want a frozen evaluation harness, one meaningful change per iteration, explicit keep-or-revert decisions, and append-only experiment logs instead of ad hoc rewriting. Triggers on: optimize this skill, eval my skill, improve this skill, benchmark this skill, skill mutation loop, ratchet this skill, run autoresearch on this skill.",
       "category": "search-analysis",
       "path": "skill-autoresearch/SKILL.md",
       "tags": [
@@ -2619,7 +2619,8 @@
         "prompt-iteration",
         "benchmarking",
         "mutation-loop",
-        "karpathy"
+        "karpathy",
+        "ratcheting"
       ],
       "platforms": [
         "Claude",

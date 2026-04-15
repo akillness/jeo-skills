@@ -15,8 +15,8 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 84 skills with `references/`
-- 86 skills with `evals/`
+- 85 skills with `references/`
+- 87 skills with `evals/`
 - 24 skills with `scripts/`
 
 Recent ratchets:
@@ -82,6 +82,7 @@ Recent ratchets:
 - The `google-workspace` modernization pass added three `references/` docs and refreshed `evals/evals.json`, which matters because a broad ops/productivity skill now behaves like a routing anchor for Apps Script vs REST API vs Admin SDK plus auth and cross-service workflow choice instead of a 745-line single-file API encyclopedia.
 - The `langsmith` hardening pass added `references/modes-and-routing.md` plus `evals/evals.json`, which matters because a high-utility AI-ops/search-analysis skill now behaves like a mode-selecting trace/eval/review anchor instead of a feature-tour reference with no ratcheting harness.
 - The `ralphmode` hardening pass added `evals/evals.json` and sharper settings / rules / hooks discovery wording, which matters because a high-visibility orchestration-platform skill now has frozen trigger and route-boundary coverage instead of prose-only permission guidance.
+- The `skill-autoresearch` hardening pass added `references/loop-charter-template.md`, `evals/evals.json`, and sharper repo-local ratcheting language, which matters because the maintenance loop now has a dedicated search-analysis anchor for frozen evaluators, one-change iterations, and append-only keep/revert history instead of relying on prose-only memory.
 
 - The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
 
@@ -132,4 +133,5 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[agent-browser-modernization-2026-04-15]]
 - [[presentation-builder-modernization-2026-04-15]]
 - [[game-performance-profiler-modernization-2026-04-15]]
+- [[skill-autoresearch-hardening-2026-04-16]]
 - [[compact-variant-gap-2026-04-15]]

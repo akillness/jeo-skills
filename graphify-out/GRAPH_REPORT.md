@@ -6,40 +6,40 @@
 - Total skills: 89
 - Manifest skills in `.agent-skills/skills.json`: 89
 - Skills with references/: 84
-- Skills with evals/: 86
+- Skills with evals/: 87
 - Skills with scripts/: 24
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
-- Graph nodes: 377
-- Graph edges: 1013
+- Graph nodes: 378
+- Graph edges: 1070
 
 ## Strongest structural findings
 1. The graph remains docs-first: `README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`, and `skills.toon` still index every live skill and remain the highest-degree maintenance nodes.
-2. `ralphmode` is no longer just a reference-only permission skill: it now has eval coverage, a refreshed compact variant, and discovery copy that states the settings / rules / hooks model more explicitly.
-3. The useful boundary for `ralphmode` is the permission/profile layer for trusted repos versus sandbox-only YOLO, not the runtime ownership of `ralph`, `omc`, `omx`, `ohmg`, or `jeo`.
-4. Support-coverage leverage still comes from upgrading indexed legacy anchors instead of adding overlapping orchestration or permissions wrappers.
+2. `skill-autoresearch` is now part of the supported modernized core instead of a support-gap holdout: it has a stronger repo-local ratcheting description, a charter template reference, and `evals/evals.json`.
+3. The durable boundary is sharper: `skill-autoresearch` owns repo-local skill mutation loops, while hosted eval platforms and the ML-specific `autoresearch` skill stay outside its lane.
+4. The highest-value remaining support gaps are now narrower and more intentional: alias/reference holdouts in the frontend/creative/marketing lanes and the two prose-only eval holdouts `autoresearch` and `ralph`.
 
 ## Highest-degree nodes
-- skills.json: degree 89
-- skills.toon: degree 89
-- README.ko.md: degree 89
-- README.md: degree 89
-- setup-all-skills-prompt.md: degree 89
-- debugging: degree 26
-- performance-optimization: degree 25
-- code-review: degree 24
+- .agent-skills/skills.json: degree 89
+- README.md: degree 88
+- README.ko.md: degree 88
+- setup-all-skills-prompt.md: degree 88
+- .agent-skills/skills.toon: degree 81
+- debugging: degree 41
+- performance-optimization: degree 27
+- bmad: degree 26
+- code-review: degree 25
 - task-planning: degree 24
-- monitoring-observability: degree 22
-- plannotator: degree 22
-- system-environment-setup: degree 22
-
+- plannotator: degree 23
+- vibe-kanban: degree 23
 
 ## Duplicate / consolidation notes
-- `ralphmode` should remain the single cross-platform permission-profile skill instead of spawning separate trusted-folder, bypass, or checkpoint wrapper skills.
-- The stronger route is workflow-and-boundary hardening: repo-local presets, explicit rules, and hook-backed checkpoints where the platform supports them.
-- README / setup surfaces now reflect the sharper route boundary, so discovery copy is aligned with the skill body again.
+- `skill-autoresearch` should stay distinct from `autoresearch`: one owns repo-local skill ratchets, the other owns GPU-backed ML experiment loops.
+- No new overlapping wrapper is justified in the skill-optimization lane; strengthening the existing skill beat creating another eval/benchmark helper.
+- Remaining weakly separated areas are still concentrated in known alias lanes rather than in this run's target.
 
 ## Recommended maintenance direction
-- Keep upgrading the remaining support-gap skills that still lack `references/` or `evals/` before adding overlapping wrappers.
-- Re-run catalog/runtime sync validation whenever discovery copy or manifest descriptions change materially.
-- Treat `ralphmode` as the permission/profile layer; route runtime orchestration questions outward to `ralph`, `omc`, `omx`, `ohmg`, and `jeo`.
+- Keep upgrading remaining support-gap skills before adding overlapping wrappers.
+- Remaining `references/` holdouts: frontend-design-system, marketing-skills-collection, react-best-practices, remotion-video-production, vercel-react-best-practices.
+- Remaining `evals/` holdouts: autoresearch, ralph.
+- Re-run catalog/runtime sync validation whenever manifest descriptions or docs/setup copy changes materially.
