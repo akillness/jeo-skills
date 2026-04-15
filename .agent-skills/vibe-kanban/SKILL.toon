@@ -1,33 +1,32 @@
 N:vibe-kanban
-V:1.2.0
-D:Visual Kanban board for AI agents. To Do->In Progress->Review->Done flow. Automatic git worktree isolation, MCP integration, and GitHub PR auto-generation. Supports remote deployment.
-G:vibe-kanban kanban multi-agent git-worktree github-pr mcp task-management claude-code codex gemini docker remote
+V:2.0.0
+D:Board-first control plane for AI coding agents. Use when the real job is managing task cards, isolated workspaces/worktrees, review queues, retries, and PR handoff for bounded coding tasks — not just prompting one agent once.
+G:vibe-kanban kanban kanbanview task-board workspace-board review-queue multi-agent worktree github-pr claude-code codex gemini opencode
 U[6]:
-  Break epics into independent tasks and assign agents in parallel
-  Visually track AI agent task status (To Do->Done)
-  In the Review column, inspect diffs/logs via browser UI and retry if needed
-  Combine GitHub PR-based team collaboration with AI agent execution
-  Compare two agents on the same task (implementation comparison strategy)
-  MCP integration allows agents to call board APIs directly
+  Run a visual board for bounded coding tasks with isolated workspaces
+  Track Running -> Review -> Done state for parallel coding-agent work
+  Compare agent attempts and retry based on diff/review evidence
+  Keep review plus PR handoff explicit instead of relying on chat memory
+  Manage worktree/branch cleanup as part of the board workflow
+  Route planning-only or non-code workflows away before opening a board
 S[5]{n,action,details}:
-  1,Start,npx vibe-kanban (or bash scripts/vibe-kanban-start.sh)
-  2,CreateTask,Create a card on the board: title + description + agent selection
-  3,Run,Drag a card to In Progress -> auto-start worktree + agent
-  4,Review,Check diffs in the Review column -> approve or retry -> create PR
-  5,MCP,Enable MCP server with --mcp flag -> agents can manipulate cards via API
+  1,Classify,Decide whether the request truly needs a coding board/workspace loop
+  2,Split,Keep one bounded coding task per card/workspace
+  3,Run,Start the board and launch isolated workspaces for selected agents
+  4,Review,Inspect diffs/logs and choose retry split approve or PR handoff
+  5,Cleanup,Close stale cards prune worktrees and clean leftover branches/servers
 R[5]:
-  Keep card scope narrow (1 card = 1 commit)
-  For tasks changing 2+ files, review the plan first with planno
-  Use VIBE_KANBAN_REMOTE=true only on trusted networks
-  If an agent stalls, reassign or split the card
-  In MCP mode, control binding with MCP_HOST/MCP_PORT environment variables
+  Use vibe-kanban only when board control review and worktree isolation matter
+  Prefer board-first then PR handoff for fast local iteration on shared repos
+  Limit parallel cards to what a human reviewer can actually keep up with
+  Route PM marketing and non-code game-production coordination to other skills
+  Use MCP only when programmatic board control materially helps
 E[4]{desc,in,out}:
-  "Start server","npx vibe-kanban","Open board UI at http://localhost:3000"
-  "Run agent","Drag card to In Progress","Create git worktree + run agent CLI + stream logs"
-  "Create PR","Approve in Review column","Auto-create GitHub Draft PR + move card to Done"
-  "MCP server","npx vibe-kanban --mcp","Expose card CRUD API via MCP protocol"
-  "OpenCode ulw integration","Load ulw keyword + vibe-kanban then invoke task(category=\"visual-engineering\", run_in_background=True, ...) in parallel","Show concurrent Running status across 3 workspace Kanban boards"
+  "Parallel bugfix board","Set up a board so Claude and Codex each handle one frontend bug and I can review diffs before PRs","Create bounded cards and isolated workspaces with review -> PR flow"
+  "Agent comparison","Run two agents on the same API bug so I can compare their diffs","Create comparison-friendly workspaces and preserve review criteria"
+  "Planning only","Help me break this migration into phases before coding starts","Route to task-planning or plannotator instead of opening a board"
+  "Marketing board","I need a board for content calendar approvals and launch copy revisions","Route to marketing-automation or PM/content workflow skills"
 T[3]{problem,solution}:
-  "Worktree conflict","git worktree prune && git worktree list"
-  "403 CORS error","Set VK_ALLOWED_ORIGINS=https://your-domain.com"
-  "Port conflict","PORT=3001 npx vibe-kanban or lsof -i :3000"
+  "Cards keep stalling","Split them smaller and reduce parallel workspaces"
+  "Review backlog grows","Switch to PR-first review or lower active card count"
+  "Worktree mess","Run cleanup scripts plus git worktree list/prune and close stale cards"

@@ -3104,7 +3104,7 @@
     },
     {
       "name": "vibe-kanban",
-      "description": "Manage AI coding agents on a visual Kanban board. Run parallel agents through a To Do→In Progress→Review→Done flow with automatic git worktree isolation and GitHub PR creation.",
+      "description": "Run a board-first workflow for AI coding agents when the real job is managing task cards, isolated workspaces/worktrees, review queues, retries, and PR handoff — not just prompting one agent once. Use when the user needs a visual board or workspace control plane for parallel coding tasks, worktree hygiene, human review, or agent retries. Triggers on: kanban board, workspace board, agent task board, review queue, worktree board, parallel coding agents, card-based agent workflow, and vibe-kanban. Route planning-only requests to `plannotator` / `task-planning`, running-browser review to `agentation` or `playwriter`, and non-code PM / marketing / game-production coordination to their domain workflow skills.",
       "category": "planning-review",
       "path": "vibe-kanban/SKILL.md",
       "tags": [
@@ -3112,14 +3112,14 @@
         "kanban",
         "kanbanview",
         "multi-agent",
-        "git-worktree",
+        "worktree",
+        "review-queue",
         "github-pr",
-        "task-management",
+        "task-board",
         "claude-code",
         "codex",
         "gemini",
-        "open-code",
-        "mcp"
+        "opencode"
       ],
       "platforms": [
         "Claude",
