@@ -2306,7 +2306,7 @@
     },
     {
       "name": "ralphmode",
-      "description": "Configure Claude Code, Codex CLI, and Gemini CLI for Ralph-style automation with fewer approval prompts while keeping project boundaries, secret denylists, and sandbox-first safety rules intact.",
+      "description": "Configure Claude Code, Codex CLI, and Gemini CLI for lower-friction `ralph` / `jeo` automation by choosing repo-local settings, explicit rules, and hook-backed checkpoints without collapsing into unsafe global bypass. Use when the user needs trusted-folder setup, approval-policy tuning, sandbox-first YOLO boundaries, or secret/destructive-command guardrails for long-running agent loops.",
       "category": "core-orchestration",
       "path": "ralphmode/SKILL.md",
       "tags": [
@@ -2334,7 +2334,10 @@
       ],
       "keyword": "ralphmode",
       "version": "0.1.0",
-      "commands": []
+      "commands": [],
+      "metadata": {
+        "version": "0.3.0"
+      }
     },
     {
       "name": "react-best-practices",

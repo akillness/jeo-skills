@@ -122,7 +122,7 @@ skills add -g "$REPO_URL" --skill ohmg -a 'gemini-cli,antigravity' --yes --copy
 # omx — Codex CLI primary, also usable from Claude Code and Gemini CLI
 skills add -g "$REPO_URL" --skill omx -a 'codex,claude-code,gemini-cli' --yes --copy
 
-# ralphmode — Claude Code, Codex CLI, Gemini CLI (not OpenCode)
+# ralphmode — Claude Code, Codex CLI, Gemini CLI (repo-local settings + rules + hook checkpoints; not OpenCode)
 skills add -g "$REPO_URL" --skill ralphmode -a 'claude-code,codex,gemini-cli' --yes --copy
 
 # ── Clean stale symlinks from non-target agents ──

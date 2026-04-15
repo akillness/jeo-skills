@@ -526,3 +526,11 @@
 - Accepted: rewrite `google-workspace` into a decision-first routing skill, add three `references/` docs, refresh `evals/evals.json` and `SKILL.toon`, update README / README.ko / setup prompt / `skills.json` / `skills.toon`, and record the stronger support-coverage finding in the wiki
 - Rejected: adding a separate Workspace wrapper; turning the skill into a Zapier / Make / n8n tutorial; keeping the 745-line single-file API encyclopedia
 - Wiki files created/updated: `queries/google-workspace-modernization-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | Ralphmode hardening
+- Area researched: cross-platform approval-friction / trusted-repo automation workflows for Claude Code, Codex CLI, Gemini CLI, and comparative OpenCode permission surfaces; plus the repo-local support-gap scan across the required maintenance domains
+- Survey files created under `.survey/ralphmode-hardening-20260416/` and the loop charter stayed fixed for the run; direct doc / GitHub issue retrieval was used because `web_search` and `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: harden `ralphmode` in place around the explicit settings / rules / hooks mental model, add `evals/evals.json`, refresh `SKILL.toon`, update README / README.ko / setup prompt / discovery manifests, and record the stronger orchestration-platform support boundary in the wiki
+- Rejected: adding a separate trusted-folder, bypass, or checkpoint wrapper; broadening compatibility to OpenCode in this run; letting `ralphmode` absorb runtime-orchestration ownership from `ralph`, `omc`, `omx`, `ohmg`, or `jeo`
+- Wiki files created/updated: `queries/ralphmode-hardening-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
