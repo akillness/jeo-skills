@@ -832,7 +832,7 @@
     },
     {
       "name": "file-organization",
-      "description": "Organize project files and folders for maintainability and scalability. Use when structuring new projects, refactoring folder structure, or establishing conventions. Handles project structure, naming conventions, and file organization best practices.",
+      "description": "Choose and evolve project/repository structure without cargo-culting one folder tree. Use when deciding how a frontend, backend, fullstack, docs/ops, or game-development repo should be organized; when feature folders, monorepo boundaries, docs taxonomy, or engine-aware asset layouts are being debated; or when a messy repo needs clearer boundaries.",
       "category": "utilities",
       "path": "file-organization/SKILL.md",
       "tags": [

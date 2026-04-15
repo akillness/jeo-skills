@@ -13,6 +13,7 @@ sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey
 The developer-workflow lane is cleaner when repo-scoped recurring workflow glue and local Git collaboration are treated as separate anchors instead of both being described as generic "workflow" skills.
 
 Current cluster shape:
+- `file-organization` = repository-shape choice and incremental reorg guidance: framework defaults vs feature/domain grouping vs monorepo boundaries vs docs taxonomy vs engine-aware game/content layouts
 - `workflow-automation` = recurring repo glue: task runners, bootstrap entrypoints, local-CI parity, hook guardrails, and maintenance routines
 - `git-workflow` = local collaboration and recovery: branch hygiene, commit shaping, sync, conflict handling, push safety, and rescue patterns
 - `git-submodule` = external-repo boundary choice and operator flow: submodule-vs-subtree/vendor choice, recursive bootstrap, pointer updates, detached-HEAD handling, removal, and CI checkout/auth
@@ -26,6 +27,7 @@ Current cluster shape:
 - Discovery docs are enough to steer activation, but only if the utility-layer one-line descriptions state the boundary clearly.
 
 ## Boundary rules
+- If the question is **"how should this repo be structured next: framework defaults, feature/domain folders, monorepo boundaries, docs taxonomy, or engine-aware game/content layout?"** → `file-organization`
 - If the question is **"how do we make recurring repo commands repeatable?"** → `workflow-automation`
 - If the question is **"how do we shape, sync, or recover local Git history?"** → `git-workflow`
 - If the question is **"how should we embed or update another repository inside this repo: submodule, subtree, vendor copy, recursive bootstrap, or CI checkout?"** → `git-submodule`

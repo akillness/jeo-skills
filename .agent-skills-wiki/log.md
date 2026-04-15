@@ -390,3 +390,11 @@
 - Accepted: rewrite `playwriter` as the running-browser / authenticated-session reuse anchor, add `references/` + `evals/`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json`, and record the durable rationale in the wiki
 - Rejected: adding another authenticated-browser wrapper; keeping `playwriter` as a generic Playwright/MCP command dump; letting it compete directly with `agent-browser` as the default browser skill
 - Wiki files created/updated: `queries/playwriter-modernization-2026-04-15.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | File organization modernization
+- Area researched: repo-structure choice and incremental reorganization across frontend, backend, fullstack/monorepo, docs/ops, and game-development repos, plus the repo-local boundary with `codebase-search`, `workflow-automation`, `system-environment-setup`, `state-management`, `design-system`, and `bmad-gds`
+- Survey files created under `.survey/file-organization-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `file-organization` as the decision-first structure and migration anchor, add `references/` + `evals/`, refresh `SKILL.toon`, update README / README.ko / setup prompt / `.agent-skills/skills.json` / `.agent-skills/skills.toon`, and record the durable rationale in the wiki
+- Rejected: adding another generic project-layout wrapper; keeping `file-organization` as a static scaffold dump; letting the skill absorb search, automation, environment-setup, or game-production responsibilities
+- Wiki files created/updated: `queries/file-organization-modernization-2026-04-15.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
