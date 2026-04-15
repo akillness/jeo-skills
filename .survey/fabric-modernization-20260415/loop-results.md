@@ -1,0 +1,4 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/fabric/SKILL.md` | Reframing Fabric around pattern-first CLI transforms will improve trigger precision and boundary clarity | Rewrote skill around six workflow modes and explicit route-outs | `validate_skill.sh` passed; dry-run prompts now map cleanly to Fabric-specific workflows | Keep | Stronger reuse story than the old product-tour format |
+| 2 | `references/` + `evals/` + discovery docs | Adding support files and syncing discovery surfaces will make the modernization transferable and discoverable | Added three references docs, evals, README/README.ko/setup prompt/manifest updates | `validate_catalog_sync.py` passed; graph coverage increased to 80 refs / 81 evals | Keep | Meets current repo support-file floor for a README-visible utility skill |

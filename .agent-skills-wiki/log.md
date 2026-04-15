@@ -462,3 +462,11 @@
 - Accepted: rewrite `looker-studio-bigquery` as the stakeholder dashboard/reporting anchor, add three `references/` docs plus `evals/evals.json`, refresh `SKILL.toon` and discovery manifests, update README / README.ko / setup prompt, and record the search-analysis boundary in the wiki
 - Rejected: adding another generic BI wrapper; merging the skill into `data-analysis`; leaving the lane as a stale Looker Studio feature tour with no refresh/cost or audience-routing guidance
 - Wiki files created/updated: `queries/looker-studio-bigquery-modernization-2026-04-15.md`, `concepts/search-analysis-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | Fabric modernization
+- Area researched: Fabric as a pattern-first CLI for reusable stdin/file/transcript transforms, custom pattern packs, shell composition, and server-mode boundaries
+- Survey files created under `.survey/fabric-modernization-20260415/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `fabric` around explicit workflow modes, add `references/` + `evals/`, and update README / README.ko / setup prompt / manifests so discovery surfaces reflect the stronger utility-lane boundary
+- Rejected: adding another Fabric-adjacent utility wrapper; treating Fabric as a coding assistant or upstream scraping layer
+- Wiki files created/updated: `queries/fabric-modernization-2026-04-15.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`
