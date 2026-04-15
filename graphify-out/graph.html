@@ -1,38 +1,31 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>graphify-out</title>
-<style>body{font-family:system-ui;margin:24px;line-height:1.4}code{background:#f4f4f4;padding:2px 4px}table{border-collapse:collapse}td,th{border:1px solid #ddd;padding:6px 10px;text-align:left}.muted{color:#666}</style>
+<html><head><meta charset="utf-8"><title>Graphify Structural Graph</title>
+<style>body{font-family:Arial,sans-serif;max-width:1000px;margin:40px auto;line-height:1.5} code{background:#f4f4f4;padding:2px 4px} pre{background:#f7f7f7;padding:12px;overflow:auto} .muted{color:#666}</style>
 </head><body>
 <h1>Graphify Structural Graph</h1>
-<p class="muted">Generated from <code>.agent-skills/</code> and discovery docs.</p>
+<p class="muted">Custom graphify-style structural scan for <code>.agent-skills</code>.</p>
 <ul>
 <li>Total skills: 89</li>
-<li>Skills with references/: 76</li>
-<li>Skills with evals/: 77</li>
+<li>Skills with references/: 78</li>
+<li>Skills with evals/: 79</li>
 <li>Skills with scripts/: 23</li>
-<li>Nodes: 274</li>
-<li>Edges: 935</li>
+<li>Graph nodes: 274</li>
+<li>Graph edges: 879</li>
 </ul>
-<h2>Current focus</h2>
-<p><code>vibe-kanban</code> now acts as the coding-task board/workspace control plane, with separate boundaries for plan approval, browser review, and non-code coordination.</p>
-<h2>Top-degree nodes</h2>
-<table><tr><th>Node</th><th>Degree</th></tr><tr><td>.agent-skills/skills.json</td><td>89</td></tr>
-<tr><td>README.md</td><td>88</td></tr>
-<tr><td>README.ko.md</td><td>88</td></tr>
-<tr><td>setup-all-skills-prompt.md</td><td>88</td></tr>
-<tr><td>.agent-skills/skills.toon</td><td>80</td></tr>
-<tr><td>debugging</td><td>39</td></tr>
-<tr><td>bmad</td><td>25</td></tr>
-<tr><td>code-review</td><td>24</td></tr>
-<tr><td>performance-optimization</td><td>24</td></tr>
-<tr><td>vibe-kanban</td><td>23</td></tr>
-<tr><td>plannotator</td><td>22</td></tr>
-<tr><td>task-planning</td><td>22</td></tr>
-<tr><td>jeo</td><td>21</td></tr>
-<tr><td>system-environment-setup</td><td>21</td></tr>
-<tr><td>web-accessibility</td><td>21</td></tr>
-<tr><td>bmad-gds</td><td>20</td></tr>
-<tr><td>design-system</td><td>20</td></tr>
-<tr><td>monitoring-observability</td><td>20</td></tr>
-<tr><td>security-best-practices</td><td>20</td></tr>
-<tr><td>workflow-automation</td><td>20</td></tr></table>
+<h2>Highest-degree nodes</h2><ul><li><b>skills.json</b>: degree 89</li>
+<li><b>README.md</b>: degree 88</li>
+<li><b>README.ko.md</b>: degree 88</li>
+<li><b>setup-all-skills-prompt.md</b>: degree 88</li>
+<li><b>skills.toon</b>: degree 80</li>
+<li><b>debugging</b>: degree 24</li>
+<li><b>task-planning</b>: degree 23</li>
+<li><b>code-review</b>: degree 23</li>
+<li><b>performance-optimization</b>: degree 22</li>
+<li><b>plannotator</b>: degree 21</li>
+<li><b>system-environment-setup</b>: degree 21</li>
+<li><b>vibe-kanban</b>: degree 21</li></ul>
+<h2>Current structural finding</h2>
+<p>The Firebase AI lane is healthiest when <code>firebase-ai-logic</code> owns direct app/client integration, <code>genkit</code> owns backend workflows, and <code>firebase-cli</code> owns operator tasks.</p>
+<h2>Artifacts</h2>
+<ul><li><code>GRAPH_REPORT.md</code></li><li><code>graph.json</code></li></ul>
 </body></html>
