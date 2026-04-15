@@ -15,8 +15,7 @@ autoresearch is a closed-loop ML experimentation system. A human authors `progra
 ```
 autoresearch/
 ├── train.py        ← Agent's ONLY editable file (~630 lines)
-├── prepare.py      ← Immutable: data pipeline + evaluate_bpb()
-├── constants.py    ← Immutable: TIME_BUDGET=300, MAX_SEQ_LEN, EVAL_TOKENS
+├── prepare.py      ← Immutable: data pipeline + evaluate_bpb() + MAX_SEQ_LEN/TIME_BUDGET/EVAL_TOKENS
 ├── program.md      ← Human-written research directives (agent reads this)
 ├── pyproject.toml  ← Locked dependencies (no new packages allowed)
 └── results.tsv     ← Persistent experiment log (all runs)
@@ -27,8 +26,7 @@ autoresearch/
 | File | Agent Access | Rationale |
 |------|-------------|-----------|
 | `train.py` | Read + Write | The search space — architecture, optimizer, hyperparameters |
-| `prepare.py` | Read-only | Contains `evaluate_bpb()` — must never change for fair comparison |
-| `constants.py` | Read-only | Hard budget constraints — changing them invalidates all comparisons |
+| `prepare.py` | Read-only | Contains `evaluate_bpb()` plus `MAX_SEQ_LEN`, `TIME_BUDGET`, and `EVAL_TOKENS` — must never change for fair comparison |
 | `program.md` | Read-only | Human's intent — agent follows, never modifies |
 | `pyproject.toml` | Read-only | Locked deps — no `pip install` during search |
 | `results.tsv` | Append-only | Monotonic experiment log — never delete rows |
@@ -63,7 +61,7 @@ autoresearch/
 
 ### 1. Fixed 300-Second Budget
 
-`TIME_BUDGET = 300` in `constants.py`. Every experiment runs for exactly 300 seconds wall-clock time regardless of GPU or model size.
+`TIME_BUDGET = 300` lives in `prepare.py`. Every experiment runs for exactly 300 seconds wall-clock time regardless of GPU or model size.
 
 **Why**: Ensures every row in `results.tsv` is directly comparable. A `val_bpb` of 0.97 in experiment 3 means the same thing as 0.97 in experiment 97.
 
@@ -71,7 +69,7 @@ autoresearch/
 
 ### 2. Immutable Evaluation Harness
 
-`evaluate_bpb()` in `prepare.py` is never modified. It always evaluates on the same validation shard (the last FineWeb-Edu parquet file), with the same tokenizer, for `EVAL_TOKENS = 20,971,520` tokens.
+`evaluate_bpb()` in `prepare.py` is never modified. It always evaluates on the same validation shard (the last FineWeb-Edu parquet file), with the same tokenizer, for the same `EVAL_TOKENS` value chosen before the session starts.
 
 **Why**: Without a fixed harness, a clever agent could modify the evaluation to make its model appear better — "metric hacking." The immutable harness prevents this.
 
@@ -172,7 +170,7 @@ autoresearch is designed for a **single NVIDIA GPU on Linux**. Community forks e
 
 ## What the Agent Should Never Do
 
-1. Modify `prepare.py` or `constants.py` — breaks evaluation fairness
+1. Modify `prepare.py` mid-session — breaks evaluation fairness
 2. Change `TIME_BUDGET` — makes comparisons invalid
 3. Add new packages via pip — `pyproject.toml` is locked
 4. Delete rows from `results.tsv` — permanent record

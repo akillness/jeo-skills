@@ -1,5 +1,5 @@
 N:autoresearch
-D:Autonomous ML experimentation framework by Andrej Karpathy. AI agent modifies train.py, runs 5-minute GPU experiments, evaluates with val_bpb, and commits only improvements via git ratcheting for overnight autonomous research.
+D:Run Karpathy-style autonomous ML experiments on a real training repo: human-written program.md, agent-edited train.py, fixed 300-second GPU runs, val_bpb keep/revert ratcheting, and explicit route-outs away from prompt/skill eval tooling.
 G:autoresearch ml-experiments autonomous-research karpathy gpu train val-bpb overnight ratcheting
 
 U[5]:
@@ -17,7 +17,7 @@ S[5]{n,action,details}:
   5,Analyze,Use bash scripts/show-results.sh to view improvement timeline, best val_bpb, and experiment statistics
 
 R[5]:
-  Never modify prepare.py or constants.py — they define the immutable evaluation harness
+  Never modify prepare.py during an active session — it defines the immutable evaluation harness (MAX_SEQ_LEN, TIME_BUDGET, EVAL_TOKENS, evaluate_bpb)
   Never change TIME_BUDGET (300s) — this is required for all experiment results to be comparable
   Never add new packages — pyproject.toml is locked; agent can only use what is already installed
   Record what has been tried in program.md to prevent redundant experiments

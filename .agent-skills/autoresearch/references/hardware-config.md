@@ -1,6 +1,6 @@
 # Hardware Configuration Reference
 
-Configure autoresearch for your GPU. The key levers are `MAX_SEQ_LEN` in `prepare.py` and `EVAL_TOKENS` in `constants.py`.
+Configure autoresearch for your GPU. The key levers are `MAX_SEQ_LEN` and `EVAL_TOKENS` in `prepare.py`.
 
 > **Rule**: Never change these values mid-session. A session's `results.tsv` is only internally comparable if all rows use the same `MAX_SEQ_LEN` and `EVAL_TOKENS`.
 
@@ -32,7 +32,7 @@ Edit `prepare.py` before running `uv run prepare.py` (one-time setup):
 MAX_SEQ_LEN = 2048    # change to your value
 
 # prepare.py — find and edit this line:
-EVAL_TOKENS = 20_971_520    # change to your value
+EVAL_TOKENS = 20_971_520    # change to your value from the table above
 ```
 
 Or use the setup script with `--seq-len`:
@@ -41,7 +41,7 @@ Or use the setup script with `--seq-len`:
 bash scripts/setup.sh --seq-len 512
 ```
 
-> The setup script automatically scales `EVAL_TOKENS` when it patches `prepare.py`.
+> The setup script currently patches `MAX_SEQ_LEN` only. Update `EVAL_TOKENS` in `prepare.py` yourself using the table above so runs stay internally comparable.
 
 ---
 
