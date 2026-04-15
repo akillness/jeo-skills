@@ -292,7 +292,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `firebase-ai-logic` | Direct Firebase app/client SDK lane for Gemini-powered features, streaming, structured output, and App Check-aware in-app integration; routes backend orchestration to `genkit` | Claude · Gemini |
 | `firebase-cli` | Firebase CLI (firebase-tools) — deploy Hosting, Functions, Firestore, Realtime DB, Storage, Extensions, Emulator Suite | All |
 | `genkit` | Full-stack AI workflow layer for server-owned flows, tool calling, prompt files, RAG, evaluation, observability, and deployment to Firebase / Cloud Run; routes direct app SDK work to `firebase-ai-logic` | Claude · Gemini |
-| `looker-studio-bigquery` | Looker Studio + BigQuery dashboards | All |
+| `looker-studio-bigquery` | BigQuery-backed stakeholder dashboard/reporting layer for KPI boards, PM/ops reviews, marketing/GTM reporting, and game/business telemetry; routes KPI interpretation to `data-analysis` | All |
 | `monitoring-observability` | Telemetry design/review for services, pipelines, alerts, dashboards, and live-ops visibility | All |
 | `scrapling` | Adaptive web scraping with parser-first `Selector`, HTTP/browser/stealth fetchers, CLI extraction, and optional MCP/spider workflows | All |
 | `rtk` | Rust Token Killer installation and agent setup - `rtk gain` verification, package-collision repair, agent-specific `rtk init`, and direct compact shell wrappers | All |

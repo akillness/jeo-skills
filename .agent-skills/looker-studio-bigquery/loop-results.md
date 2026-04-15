@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | SKILL.md | Reframing the skill as a thin-dashboard / refresh-strategy anchor will improve trigger precision and route-outs more than preserving the legacy command catalog. | Rewrote `SKILL.md`, added `references/`, added `evals/`, refreshed `SKILL.toon`, and updated discovery surfaces. | Passed `validate_skill.sh`, passed catalog-sync validation, and matches the frozen dry-run prompts for dashboard build-out, refresh/cost hardening, and route-out behavior. | Keep | Bounded single-change modernization focused on one primary artifact with support files. |

@@ -454,3 +454,11 @@
 - Accepted: rewrite `firebase-ai-logic` as the direct app/client integration anchor, add three `references/` docs plus `evals/evals.json`, refresh `SKILL.toon` and discovery manifests, update README / README.ko, and record the support-symmetry takeaway in the wiki
 - Rejected: adding another Firebase AI wrapper; merging `firebase-ai-logic` into `genkit`; leaving the client-side lane as a stale snippet dump next to a stronger backend skill
 - Wiki files created/updated: `concepts/firebase-ai-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `queries/firebase-ai-logic-support-hardening-2026-04-15.md`, `index.md`, `log.md`
+
+## [2026-04-15] query | Looker Studio BigQuery modernization
+- Area researched: BigQuery-backed dashboard/reporting workflows across PM/ops, product analytics, marketing/GTM reporting, and game/business telemetry, especially the repo-local boundary between `looker-studio-bigquery`, `data-analysis`, `pattern-detection`, and `monitoring-observability`
+- Survey files created under `.survey/looker-studio-bigquery-modernization-20260415/` and the loop charter stayed fixed for the run
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: rewrite `looker-studio-bigquery` as the stakeholder dashboard/reporting anchor, add three `references/` docs plus `evals/evals.json`, refresh `SKILL.toon` and discovery manifests, update README / README.ko / setup prompt, and record the search-analysis boundary in the wiki
+- Rejected: adding another generic BI wrapper; merging the skill into `data-analysis`; leaving the lane as a stale Looker Studio feature tour with no refresh/cost or audience-routing guidance
+- Wiki files created/updated: `queries/looker-studio-bigquery-modernization-2026-04-15.md`, `concepts/search-analysis-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
