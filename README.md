@@ -326,7 +326,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `autoresearch` | Autonomous ML experiments (Karpathy) — AI agent runs overnight GPU experiments, ratchets improvements via git | All |
-| `skill-autoresearch` | Eval-driven optimization loop for improving an existing SKILL.md without replacing the ML-focused `autoresearch` workflow | All |
+| `skill-autoresearch` | Repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, and sync support surfaces only after the core skill change is justified | All |
 | `codebase-search` | Evidence-first repo navigation, call-site tracing, and impact analysis | All |
 | `data-analysis` | Decision-first dataset analysis for exports, experiments, telemetry, and KPI explanation | All |
 | `langsmith` | Mode-selecting LangSmith skill for LLM tracing, evals, feedback/review queues, prompt-registry decisions, and multi-service propagation | All |

@@ -326,7 +326,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `autoresearch` | 자율 ML 실험 (Karpathy) — AI 에이전트가 야간 GPU 실험 실행, git ratcheting으로 개선 커밋 | 전체 |
-| `skill-autoresearch` | 기존 `SKILL.md` 자체를 eval 기반 mutation loop 로 개선하는 스킬 최적화 워크플로우 | 전체 |
+| `skill-autoresearch` | eval을 고정하고 한 번에 한 가지씩만 바꾸며 점수로 keep/revert를 결정하는 repo-local 스킬 ratcheting 루프. 핵심 경계가 입증된 뒤에만 support surface를 동기화합니다 | 전체 |
 | `codebase-search` | 증거 중심 리포 탐색, 호출 지점 추적, 영향 범위 분석 | 전체 |
 | `data-analysis` | 내보내기 데이터, 실험, 텔레메트리, KPI 설명을 위한 의사결정 중심 데이터 분석 | 전체 |
 | `langsmith` | LLM 트레이싱, 평가, 피드백/리뷰 큐, 프롬프트 레지스트리 결정, 멀티서비스 전파를 다루는 모드 선택형 LangSmith 스킬 | 전체 |

@@ -1,18 +1,17 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>oh-my-skills structural graph</title>
-<style>body{font-family:system-ui,sans-serif;max-width:960px;margin:40px auto;padding:0 16px;line-height:1.5}code{background:#f4f4f4;padding:2px 4px}pre{background:#f7f7f7;padding:12px;overflow:auto} .grid{display:grid;grid-template-columns:repeat(2,minmax(240px,1fr));gap:12px} .card{border:1px solid #ddd;border-radius:10px;padding:12px}</style></head>
-<body><h1>oh-my-skills structural graph</h1>
-<p>Deterministic graphify-style fallback over skills, support files, and discovery docs.</p>
-<div class="grid">
-<div class="card"><h2>Counts</h2><ul><li>Total skills: 89</li><li>References: 84</li><li>Evals: 86</li><li>Scripts: 24</li><li>Compact variants: 89</li></ul></div>
-<div class="card"><h2>Current focus</h2><p><code>ralphmode</code> now includes eval coverage and sharper discovery copy around <em>settings / rules / hooks</em>.</p></div>
-</div>
-<h2>Highest-degree nodes</h2><ul><li><strong>skills.json</strong>: degree 89</li><li><strong>skills.toon</strong>: degree 89</li><li><strong>README.ko.md</strong>: degree 89</li><li><strong>README.md</strong>: degree 89</li><li><strong>setup-all-skills-prompt.md</strong>: degree 89</li><li><strong>debugging</strong>: degree 26</li><li><strong>performance-optimization</strong>: degree 25</li><li><strong>code-review</strong>: degree 24</li><li><strong>task-planning</strong>: degree 24</li><li><strong>monitoring-observability</strong>: degree 22</li><li><strong>plannotator</strong>: degree 22</li><li><strong>system-environment-setup</strong>: degree 22</li></ul>
-<h2>Artifacts</h2><pre>{
-  &quot;total_skills&quot;: 89,
-  &quot;skills_with_references&quot;: 84,
-  &quot;skills_with_evals&quot;: 86,
-  &quot;skills_with_scripts&quot;: 24,
-  &quot;skills_with_compact&quot;: 89
-}</pre>
+<html><head><meta charset="utf-8"><title>oh-my-skills graph</title>
+<style>body{font-family:system-ui,sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.5}code{background:#f4f4f4;padding:2px 4px}table{border-collapse:collapse}td,th{border:1px solid #ddd;padding:6px 10px}</style>
+</head><body>
+<h1>Graphify-style structural graph</h1>
+<p><strong>Total skills:</strong> 89 | <strong>references/:</strong> 84 | <strong>evals/:</strong> 87 | <strong>scripts/:</strong> 24 | <strong>compact variants:</strong> 89</p>
+<h2>Current finding</h2>
+<p><code>skill-autoresearch</code> now sits in the supported modernized core with a frozen-evaluator / keep-or-revert positioning, while <code>autoresearch</code> remains the distinct ML experiment loop.</p>
+<h2>Highest-degree nodes</h2><ul><li><strong>.agent-skills/skills.json</strong>: degree 89</li><li><strong>README.md</strong>: degree 88</li><li><strong>README.ko.md</strong>: degree 88</li><li><strong>setup-all-skills-prompt.md</strong>: degree 88</li><li><strong>.agent-skills/skills.toon</strong>: degree 81</li><li><strong>debugging</strong>: degree 41</li><li><strong>performance-optimization</strong>: degree 27</li><li><strong>bmad</strong>: degree 26</li><li><strong>code-review</strong>: degree 25</li><li><strong>task-planning</strong>: degree 24</li><li><strong>plannotator</strong>: degree 23</li><li><strong>vibe-kanban</strong>: degree 23</li></ul>
+<h2>Remaining support gaps</h2>
+<table>
+<tr><th>Type</th><th>Skills</th></tr>
+<tr><td>Missing references/</td><td>frontend-design-system, marketing-skills-collection, react-best-practices, remotion-video-production, vercel-react-best-practices</td></tr>
+<tr><td>Missing evals/</td><td>autoresearch, ralph</td></tr>
+</table>
+<p>See <code>GRAPH_REPORT.md</code> and <code>graph.json</code> for the full structural snapshot.</p>
 </body></html>
