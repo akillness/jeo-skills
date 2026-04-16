@@ -1,459 +1,257 @@
 ---
 name: design-system
 description: >
-  Design or refactor production-grade frontend UI systems using design tokens,
-  component primitives, layout rules, motion guidance, and accessibility checks.
-  Use when the user needs a reusable visual system, landing-page or dashboard UI
-  direction, component-library foundations, or page-level design specs that stay
-  consistent across screens. Route exact legacy-name requests for
-  `frontend-design-system` to that compatibility alias instead. Triggers on:
-  design system, design tokens, UI system, component library, dashboard UI,
-  landing page design, visual language, motion guidelines.
+  Define or refactor a shared frontend UI system before polishing one screen at a
+  time. Use when the user needs token governance, visual-language rules,
+  primitive naming, page-system direction, cross-product consistency, or a design
+  handoff that should stay coherent across landing pages, dashboards, forms, and
+  component libraries. Not for reusable component API architecture, responsive
+  layout-only fixes, accessibility-only remediation, or broad UI critique.
+  Triggers on: design system, design tokens, visual language, component library
+  foundations, UI governance, cross-product consistency, landing page plus
+  dashboard system, primitive naming, token policy.
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: >
+  Best for frontend and fullstack repos that need reusable system rules across
+  multiple pages or products. Route implementation-only work and specialist
+  remediation to neighboring frontend skills once the system boundary is clear.
+license: MIT
 metadata:
-  tags: frontend, design, ui, ux, typography, animation, design-tokens, accessibility, canonical
+  tags: frontend, design-system, ui, ux, design-tokens, governance, visual-language, accessibility
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "1.1.0"
+  version: "2.0"
+  source: akillness/oh-my-skills
 ---
 
+# Design System
 
-# Frontend Design System
+Use this skill when the main question is **"what shared UI rules should govern this product or product family before we design or refactor individual screens?"**
 
-This is the canonical frontend UI-system skill for the repository. Use it for production-grade UI design, reusable component-system planning, and page-level visual direction grounded in tokens, layout rules, motion guidance, and accessibility checks.
+This is the repo's **canonical frontend UI-system anchor**.
+It should:
+1. classify the system problem,
+2. choose the right design-system mode,
+3. route neighboring frontend work out early,
+4. define a compact system packet another human or agent can execute.
+
+Read [references/system-modes.md](references/system-modes.md) before choosing an approach.
+Read [references/token-and-governance-checklist.md](references/token-and-governance-checklist.md) before changing shared tokens, primitives, or naming rules.
+Read [references/scope-boundaries.md](references/scope-boundaries.md) when deciding whether the work belongs here, `ui-component-patterns`, `responsive-design`, `web-accessibility`, or `web-design-guidelines`.
+Read [references/design-system-packet-template.md](references/design-system-packet-template.md) before writing the final handoff.
 
 ## When to use this skill
+- Define or refactor a shared design system for a product, product suite, or app + marketing surface
+- Set token policy for color, typography, spacing, radius, elevation, motion, and breakpoint scales
+- Choose primitive naming rules, contribution boundaries, and reusable visual-language conventions
+- Create a coherent system direction for landing pages, dashboards, forms, and component libraries that must feel related
+- Turn vague requests like “our UI feels inconsistent” into a system-level direction packet instead of a one-off page redesign
+- Review whether a team needs a system decision before component, accessibility, or responsive implementation starts
+- Prepare a design-system handoff for Figma, code tokens, primitives, and downstream frontend work
 
-- **Production-quality UI needed**: Generate high-quality UI specs or implementation-ready design guidance
-- **Reusable visual system needed**: Define tokens, component primitives, and visual rules that can scale across screens
-- **Landing page, dashboard, or app-shell direction**: Shape page-level hierarchy, CTA structure, and layout behavior
-- **Accessibility-aware design decisions**: Bake contrast, focus states, touch targets, and responsive behavior into the design system
-- **Not for exact legacy-name compatibility**: If a workflow explicitly asks for `frontend-design-system`, use that compatibility alias but route substantive guidance back here
+## When not to use this skill
+- **The main task is reusable primitive / slot / variant API design or component-family extraction** → use `ui-component-patterns`
+- **The main task is viewport adaptation, container-query strategy, overflow, or mobile layout verification** → use `responsive-design`
+- **The main task is keyboard/focus behavior, WCAG remediation, labels, semantics, contrast, or manual a11y verification** → use `web-accessibility`
+- **The main task is a broad page or flow critique for hierarchy, CTA clarity, polish, and launch readiness** → use `web-design-guidelines`
+- **The task is implementation-only and the system rules are already clear**; implement directly instead of reopening system governance
 
----
+## Core idea
+A good design system is not a random palette plus a hero-section mock.
+It is a shared decision layer that defines:
+- what stays consistent,
+- what may vary by surface,
+- which neighboring skill owns the next implementation step,
+- and what artifact downstream teams should follow.
+
+Do **not** let this skill become a catch-all for every frontend concern.
+System governance stays here; specialist remediation routes out.
 
 ## Instructions
 
-### Step 1: Define Design Tokens
+### Step 1: Classify the design-system request before generating examples
+Pick one primary mode so the answer stays bounded.
 
-```typescript
-// design-tokens.ts
-export const tokens = {
-  // Colors
-  colors: {
-    primary: {
-      50: '#EFF6FF',
-      100: '#DBEAFE',
-      500: '#3B82F6',
-      600: '#2563EB',
-      700: '#1D4ED8',
-    },
-    secondary: {
-      500: '#6366F1',
-      600: '#4F46E5',
-    },
-    accent: '#F59E0B',
-    success: '#10B981',
-    warning: '#F59E0B',
-    error: '#EF4444',
-    background: {
-      primary: '#FFFFFF',
-      secondary: '#F9FAFB',
-      tertiary: '#F3F4F6',
-    },
-    text: {
-      primary: '#1F2937',
-      secondary: '#6B7280',
-      tertiary: '#9CA3AF',
-      inverse: '#FFFFFF',
-    },
-  },
+Modes:
+- **Foundations mode** — tokens, scales, naming, motion, density, breakpoint policy
+- **Cross-surface alignment mode** — landing page + dashboard + app-shell consistency, shared hierarchy, shared brand/system language
+- **Primitive governance mode** — when the team needs rules for primitive naming, ownership, contribution boundaries, and promotion from product-local UI into shared primitives
+- **System handoff mode** — package already-decided system rules into a concise artifact for design/dev execution
+- **System review mode** — assess whether inconsistency is really a design-system problem or should route to a neighboring skill
 
-  // Typography
-  typography: {
-    fontFamily: {
-      sans: ['Inter', 'system-ui', 'sans-serif'],
-      mono: ['JetBrains Mono', 'monospace'],
-    },
-    fontSize: {
-      xs: '0.75rem',     // 12px
-      sm: '0.875rem',    // 14px
-      base: '1rem',      // 16px
-      lg: '1.125rem',    // 18px
-      xl: '1.25rem',     // 20px
-      '2xl': '1.5rem',   // 24px
-      '3xl': '1.875rem', // 30px
-      '4xl': '2.25rem',  // 36px
-    },
-    fontWeight: {
-      normal: 400,
-      medium: 500,
-      semibold: 600,
-      bold: 700,
-    },
-    lineHeight: {
-      tight: 1.25,
-      normal: 1.5,
-      relaxed: 1.75,
-    },
-  },
-
-  // Spacing (8px base unit)
-  spacing: {
-    0: '0',
-    1: '0.25rem',  // 4px
-    2: '0.5rem',   // 8px
-    3: '0.75rem',  // 12px
-    4: '1rem',     // 16px
-    5: '1.25rem',  // 20px
-    6: '1.5rem',   // 24px
-    8: '2rem',     // 32px
-    10: '2.5rem',  // 40px
-    12: '3rem',    // 48px
-    16: '4rem',    // 64px
-  },
-
-  // Border Radius
-  borderRadius: {
-    none: '0',
-    sm: '0.25rem',  // 4px
-    md: '0.375rem', // 6px
-    lg: '0.5rem',   // 8px
-    xl: '0.75rem',  // 12px
-    '2xl': '1rem',  // 16px
-    full: '9999px',
-  },
-
-  // Shadows
-  shadows: {
-    sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
-    md: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-    lg: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
-    xl: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
-  },
-
-  // Breakpoints
-  breakpoints: {
-    sm: '640px',
-    md: '768px',
-    lg: '1024px',
-    xl: '1280px',
-    '2xl': '1536px',
-  },
-};
-```
-
-### Step 2: Define Layout + UX Goals
-
-```yaml
-page_spec:
-  type: "landing" | "dashboard" | "form" | "blog" | "e-commerce"
-
-  hierarchy:
-    primary_action: [Primary CTA]
-    secondary_actions: [secondary actions]
-    information_architecture:
-      - section: hero
-        priority: 1
-      - section: features
-        priority: 2
-      - section: social_proof
-        priority: 3
-      - section: cta
-        priority: 4
-
-  responsive:
-    mobile_first: true
-    breakpoints:
-      - mobile: "< 640px"
-      - tablet: "640px - 1024px"
-      - desktop: "> 1024px"
-    stack_behavior: "vertical on mobile, horizontal on desktop"
-```
-
-### Step 3: Generate UI Output
-
-**Section-by-section component structure**:
-
-```tsx
-// Hero Section
-<section className="hero">
-  <div className="container">
-    <div className="hero-content">
-      <Badge>New Release</Badge>
-      <Heading level={1}>
-        Main Headline Here
-      </Heading>
-      <Paragraph size="lg">
-        Supporting copy that explains the value proposition
-        in 1-2 sentences.
-      </Paragraph>
-      <div className="cta-group">
-        <Button variant="primary" size="lg">
-          Primary CTA
-        </Button>
-        <Button variant="secondary" size="lg">
-          Secondary CTA
-        </Button>
-      </div>
-    </div>
-    <div className="hero-visual">
-      <Image src="hero-image.png" alt="Product screenshot" />
-    </div>
-  </div>
-</section>
-```
-
-**Motion/Interaction notes**:
-
-```css
-/* Motion Guidelines */
-:root {
-  /* Duration */
-  --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --duration-slow: 500ms;
-
-  /* Easing */
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);
-}
-
-/* Hover States */
-.button {
-  transition: all var(--duration-fast) var(--ease-in-out);
-}
-.button:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-/* Page Transitions */
-.page-enter {
-  opacity: 0;
-  transform: translateY(10px);
-}
-.page-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all var(--duration-normal) var(--ease-out);
-}
-```
-
-### Step 4: Validate Accessibility
-
+Quick frame:
 ```markdown
-## Accessibility Checklist
-
-### Color Contrast (WCAG 2.1 AA)
-- [ ] Text/background: 4.5:1 minimum (normal text)
-- [ ] Text/background: 3:1 minimum (large text)
-- [ ] UI components: 3:1 minimum
-
-### Keyboard Navigation
-- [ ] All interactive elements focusable
-- [ ] Focus order logical (left→right, top→bottom)
-- [ ] Focus indicator visible
-- [ ] Skip links present
-
-### Screen Reader
-- [ ] Semantic HTML used
-- [ ] Images have alt text
-- [ ] Form labels associated
-- [ ] ARIA labels where needed
-
-### Text & Readability
-- [ ] Minimum 16px body text
-- [ ] Line height ≥ 1.5
-- [ ] Paragraph width < 80 characters
-- [ ] No text in images
+Design-system request:
+- Surface: marketing site + logged-in dashboard
+- Primary mode: cross-surface alignment
+- System question: shared tokens and hierarchy, separate page-specific layouts
+- Likely route-outs: component API details to ui-component-patterns, responsive verification to responsive-design
 ```
 
-### Step 5: Handoff
+### Step 2: Define the shared system boundary
+Before changing tokens or page direction, decide what the system actually owns.
 
+Keep in `design-system` when the job is to define:
+- token scales and naming rules
+- primitive naming and contribution policy
+- visual-language principles that should apply across many screens
+- breakpoint or density policy that multiple surfaces should inherit
+- motion principles and accessibility baseline that many components depend on
+
+Do **not** keep the work here when the question becomes:
+- one reusable component API → `ui-component-patterns`
+- one page’s layout breakage → `responsive-design`
+- one accessibility failure or remediation plan → `web-accessibility`
+- one broad UX/UI critique → `web-design-guidelines`
+
+### Step 3: Make the minimum shared decisions first
+Do not start by dumping dozens of example tokens.
+
+For each system request, decide these shared layers first:
+1. **Foundations** — color, type, spacing, radius, elevation, motion, density, breakpoints
+2. **Primitive policy** — which primitives exist, how they are named, what is shared vs product-local
+3. **Surface rules** — how landing pages, dashboards, forms, nav, and data-heavy surfaces should differ while staying coherent
+4. **Accessibility baseline** — contrast expectations, focus visibility, reduced-motion posture, semantic expectations
+5. **Governance** — who can add/change tokens or primitives, what must be reviewed, and when work should route to another skill
+
+If a layer is unknown, say so and capture it as an open decision instead of inventing detail.
+
+### Step 4: Keep examples subordinate to the rules
+Examples are useful only after the shared rules are explicit.
+
+Good example usage:
+- show one token naming pattern
+- show one page-system contrast between landing and dashboard surfaces
+- show one primitive promotion rule
+- show one motion baseline or accessibility baseline
+
+Bad example usage:
+- dumping a full palette, TS token file, CSS animation sheet, and JSX screen mock before saying what problem the system is solving
+
+Use this rule:
+- **rules first**,
+- **one or two illustrative examples second**,
+- **handoff packet last**.
+
+### Step 5: Route neighboring frontend work out early
+Mixed requests are normal. Split them explicitly.
+
+Examples:
+- if the team asks for button variants, slot structure, and controlled/uncontrolled behavior, keep the system naming/tokens here but route API design to `ui-component-patterns`
+- if the team asks how cards collapse on mobile, keep shared breakpoint policy here but route layout adaptation to `responsive-design`
+- if the team asks whether icon-only buttons meet keyboard/focus/label requirements, keep baseline a11y expectations here but route remediation to `web-accessibility`
+- if the request is “audit this dashboard and tell us what feels off,” route the broad critique to `web-design-guidelines`
+
+Do not hide unclear ownership by calling everything “design-system work.”
+
+### Step 6: Produce the design-system packet
+End with a concise artifact that downstream design/dev work can follow.
+
+Preferred format:
 ```markdown
-## Design Handoff Package
+# Design System Packet
 
-### Component Breakdown
-| Component | Props | Variants |
-|-----------|-------|----------|
-| Button | size, variant, disabled | primary, secondary, ghost |
-| Input | size, error, placeholder | default, error, success |
-| Card | padding, shadow | elevated, flat, outlined |
+## Scope
+- Products / surfaces covered:
+- Primary mode:
+- Shared system goal:
 
-### CSS/Token Summary
-- Colors: [link to color palette]
-- Typography: [link to type scale]
-- Spacing: 8px base unit
-- Breakpoints: 640/768/1024/1280px
+## Foundations
+- Color / semantic token rules:
+- Typography / spacing / radius / elevation:
+- Motion / density / breakpoint policy:
 
-### Files
-- Figma: [link]
-- Tokens: design-tokens.ts
-- Components: /src/components/
+## Primitive policy
+- Shared primitives:
+- Naming rules:
+- What stays product-local:
+
+## Surface guidance
+- Landing / marketing:
+- Dashboard / app shell:
+- Forms / workflows:
+
+## Accessibility baseline
+- Contrast / focus / reduced motion / semantics:
+
+## Route-outs
+- `ui-component-patterns`:
+- `responsive-design`:
+- `web-accessibility`:
+- `web-design-guidelines`:
+
+## Open decisions
+- ...
 ```
 
----
+If the user asks for a terse answer, keep the same sections but compress them into bullets.
+
+### Step 7: Only then add a small illustrative example when needed
+Use at most one or two examples and keep them obviously subordinate to the packet.
+
+Healthy example shapes:
+- semantic color tokens (`surface/default`, `surface/emphasis`, `text/muted`) instead of giant fixed palettes
+- landing-page hero vs dashboard header comparison to show shared hierarchy but different density
+- primitive promotion rule such as “shared button stays primitive; billing-upsell banner stays product-local”
+
+### Step 8: Finish with a boundary sentence
+End with a sentence that prevents overlap drift.
+
+Examples:
+- "This packet defines the shared UI system; component API extraction belongs in `ui-component-patterns`."
+- "This packet sets breakpoint and density policy; page-level layout fixes belong in `responsive-design`."
+- "This packet sets accessibility baseline expectations; remediation and verification belong in `web-accessibility`."
 
 ## Examples
 
-### Example 1: SaaS Landing Page
+### Example 1: shared landing page + dashboard system
+**Input:** "We need one design system for our marketing site and B2B dashboard so tokens, typography, and motion feel related without making both surfaces identical."
 
-**Prompt**:
-```
-Design a SaaS landing page with modern typography,
-soft gradients, and subtle motion.
-Include hero, features, pricing, and CTA.
-```
+**Good response shape:**
+- choose cross-surface alignment mode
+- define shared foundations and surface-specific differences
+- leave one compact design-system packet
+- route component-family API design to `ui-component-patterns`
 
-**Expected output**:
-- Section layout with visual direction
-- Typography scale (H1: 48px → Body: 16px)
-- Color palette with gradient definitions
-- Motion/interaction specifications
-- Component list with props
+### Example 2: token and primitive governance
+**Input:** "Our team keeps adding random colors and spacing values. We need naming rules and a review policy for shared primitives."
 
-### Example 2: Admin Dashboard
+**Good response shape:**
+- choose foundations or primitive governance mode
+- define token/naming rules and review thresholds
+- keep one or two naming examples only
+- avoid turning the answer into a full page mock
 
-**Prompt**:
-```
-Create a clean admin dashboard with data cards,
-filters, and tables. Focus on clarity and fast scanning.
-```
+### Example 3: mixed system + responsive request
+**Input:** "Should the dashboard and mobile web app share one breakpoint policy, and how should the layout collapse on small screens?"
 
-**Expected output**:
-- Grid layout (12-column)
-- Component breakdown (cards, tables, filters)
-- Visual hierarchy documentation
-- Responsive behavior specification
+**Good response shape:**
+- keep shared breakpoint/density policy in `design-system`
+- route the actual collapse strategy and verification to `responsive-design`
+- make the split explicit in the packet
 
-### Example 3: Mobile-First Form
+### Example 4: accessibility-heavy follow-up
+**Input:** "We already have tokens, but our forms still fail focus visibility and error-state accessibility."
 
-**Prompt**:
-```
-Design a multi-step form optimized for mobile.
-Include progress indicator, validation states,
-and success confirmation.
-```
-
-**Expected output**:
-- Step-by-step flow diagram
-- Form field specifications
-- Error/success state designs
-- Touch-friendly sizing (min 44px targets)
-
----
+**Good response shape:**
+- note the design-system baseline briefly
+- route the real remediation and manual verification to `web-accessibility`
+- do not absorb the full a11y fix into this skill
 
 ## Best practices
-
-1. **Start with content hierarchy**: UI follows content priority
-2. **Define the system before the screen**: lock tokens, primitives, and interaction rules before polishing individual pages
-3. **Consistent spacing scale**: 8px-based system, no ad-hoc spacing
-4. **Motion with intent**: Animate only meaningful transitions
-5. **Test on mobile**: Verify layout integrity
-6. **Accessibility first**: Consider accessibility at the design stage
-7. **Keep the boundary explicit**: use `frontend-design-system` only as a compatibility alias; keep substantive UI-system guidance centralized here
-
----
-
-## Common pitfalls
-
-- **Overuse of effects and gradients**: Maintain simplicity
-- **Inconsistent typography scale**: Use the defined scale
-- **Missing accessibility considerations**: Color contrast, keyboard navigation
-
----
-
-## Troubleshooting
-
-### Issue: UI feels generic
-**Cause**: No visual direction or tokens
-**Solution**: Provide style references and palette
-
-### Issue: Layout breaks on mobile
-**Cause**: No responsive grid rules
-**Solution**: Define breakpoints and stacking behavior
-
-### Issue: Inconsistent components
-**Cause**: Tokens not in use
-**Solution**: Reference all values from tokens
-
----
-
-## Output format
-
-```markdown
-## Design System Report
-
-### Tokens Applied
-- **Colors**: [primary, secondary, accent]
-- **Typography**: [font-family, scale]
-- **Spacing**: [base unit, scale]
-- **Shadows**: [levels]
-
-### Section Layout
-| Section | Grid | Components |
-|---------|------|------------|
-| Hero | 2-col | Badge, Heading, CTA |
-| Features | 3-col | Card, Icon |
-| Pricing | 3-col | PricingCard |
-| CTA | 1-col | Button |
-
-### Component List
-- [ ] Button (primary, secondary, ghost)
-- [ ] Card (elevated, flat)
-- [ ] Input (default, error)
-- [ ] Badge
-- [ ] Icon
-
-### Accessibility Audit
-- [x] Contrast ratios pass
-- [x] Focus indicators visible
-- [x] Semantic HTML
-```
-
----
-
-## Multi-Agent Workflow
-
-### Validation & Retrospectives
-
-- **Round 1 (Orchestrator)**: Visual direction, section completeness
-- **Round 2 (Analyst)**: Accessibility, hierarchy review
-- **Round 3 (Executor)**: Handoff checklist verification
-
-### Agent Roles
-
-| Agent | Role |
-|-------|------|
-| Claude | Token definition, component design |
-| Gemini | Accessibility analysis, reference research |
-| Codex | CSS/component code generation |
-
----
+1. **Decide the mode first** so the skill stays bounded.
+2. **Define shared rules before examples** to avoid overfitting on one mockup.
+3. **Keep governance explicit**: token changes, primitive promotion, and ownership rules are part of the system.
+4. **Use route-outs early** so `design-system` does not steal layout, component-API, accessibility, or broad-audit work.
+5. **Leave a compact packet** another human or agent can follow.
+6. **Keep the alias narrow**: `frontend-design-system` remains a compatibility redirect, not a peer canonical skill.
 
 ## References
-
-- `./references/scope-boundaries.md`
-- `../frontend-design-system/SKILL.md`
-- `../ui-component-patterns/SKILL.md`
-- `../responsive-design/SKILL.md`
-- `../web-accessibility/SKILL.md`
-
----
-
-## Metadata
-
-### Version
-- **Current Version**: 1.1.0
-- **Last Updated**: 2026-04-12
-- **Compatible Platforms**: Claude, ChatGPT, Gemini, Codex
-
-### Related Skills
-- [frontend-design-system](../frontend-design-system/SKILL.md) — Compatibility alias for exact-name legacy workflows
-- [ui-component-patterns](../ui-component-patterns/SKILL.md) — Component implementation patterns after the system direction is clear
-- [responsive-design](../responsive-design/SKILL.md) — Breakpoint and device adaptation work after the design system is defined
-- [web-accessibility](../web-accessibility/SKILL.md) — Accessibility remediation and audits beyond visual-system design
-- [image-generation](../../creative-media/image-generation/SKILL.md)
-
-### Tags
-`#frontend` `#design` `#ui` `#ux` `#typography` `#animation` `#design-tokens` `#accessibility`
+- [System modes](references/system-modes.md)
+- [Token and governance checklist](references/token-and-governance-checklist.md)
+- [Scope boundaries](references/scope-boundaries.md)
+- [Design-system packet template](references/design-system-packet-template.md)
+- [Compatibility alias](../frontend-design-system/SKILL.md)
+- [Component architecture neighbor](../ui-component-patterns/SKILL.md)
+- [Responsive layout neighbor](../responsive-design/SKILL.md)
+- [Accessibility neighbor](../web-accessibility/SKILL.md)
+- [Broad UI audit neighbor](../web-design-guidelines/SKILL.md)

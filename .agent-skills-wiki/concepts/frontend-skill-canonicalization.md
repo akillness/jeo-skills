@@ -4,7 +4,7 @@ created: 2026-04-12
 updated: 2026-04-16
 type: concept
 tags: [skills, consolidation, trigger-design, frontend, docs]
-sources: [.survey/frontend-skill-consolidation-20260412/context.md, .survey/frontend-design-system-canonicalization-20260412/context.md, .survey/frontend-legacy-anchors-20260413/context.md, .survey/frontend-legacy-anchors-20260413/platform-map.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/react-grab-structural-hardening-20260416/context.md, .survey/react-grab-structural-hardening-20260416/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/frontend-skill-consolidation-20260412/context.md, .survey/frontend-design-system-canonicalization-20260412/context.md, .survey/frontend-legacy-anchors-20260413/context.md, .survey/frontend-legacy-anchors-20260413/platform-map.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/react-grab-structural-hardening-20260416/context.md, .survey/react-grab-structural-hardening-20260416/solutions.md, .survey/design-system-structural-hardening-20260416/context.md, .survey/design-system-structural-hardening-20260416/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Frontend Skill Canonicalization
@@ -17,6 +17,7 @@ The frontend cluster now has **two** true canonical-vs-alias pairs plus three cl
 - `web-accessibility` now owns accessibility remediation plus manual-vs-automated verification, while `web-design-guidelines` now owns the broad interface-audit lane for hierarchy, clarity, consistency, interaction-state quality, responsiveness basics, accessibility basics, and launch-readiness review.
 - `ui-component-patterns` now owns reusable primitive / variant / slot API design, while `responsive-design` now owns mobile-first, container-aware layout adaptation plus overflow/reflow verification instead of remaining a generic CSS/example dump.
 - `react-grab` stays distinct from both the browser-review cluster and the broader frontend architecture lane: it owns exact React element-context capture from a live browser UI, not generic browser automation (`agent-browser`, `playwriter`), rendered-UI review (`agentation`), performance diagnosis (`react-best-practices`), or general UI-system design (`design-system`).
+- `design-system` now behaves like a stronger canonical anchor instead of a generic example dump: it owns token governance, primitive naming, and cross-surface system direction, while routing component API design to `ui-component-patterns`, responsive layout work to `responsive-design`, accessibility-heavy remediation to `web-accessibility`, and broad critique to `web-design-guidelines`.
 
 ## Why this matters
 - Tier-1 discovery relies heavily on compact skill metadata.
@@ -35,6 +36,7 @@ Canonicalization is not fully done until compact discovery surfaces (`SKILL.toon
 - [[design-system-canonicalization-2026-04-12]]
 - [[frontend-alias-support-hardening-2026-04-16]]
 - [[react-grab-structural-hardening-2026-04-16]]
+- [[design-system-structural-hardening-2026-04-16]]
 - [[state-management-modernization-2026-04-13]]
 - [[web-accessibility-modernization-2026-04-13]]
 - [[ui-component-patterns-modernization-2026-04-13]]

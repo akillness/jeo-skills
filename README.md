@@ -263,7 +263,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `design-system` | Canonical frontend UI-system skill for design tokens, page hierarchy, motion, and accessibility-aware visual systems | All |
+| `design-system` | Canonical frontend UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface system direction; routes component API, responsive layout, accessibility remediation, and broad UI critique to adjacent skills | All |
 | `frontend-design-system` | Compatibility alias for `design-system` when legacy tooling or exact-name workflows still expect the old name | All |
 | `react-best-practices` | Measurement-led React & Next.js performance audits for waterfalls, bundle size, RSC/client boundaries, hydration, rerender churn, and slow routes | All |
 | `react-grab` | Browser element context capture — point at UI element, copy React component name, file path, HTML to clipboard for AI agents | All |
