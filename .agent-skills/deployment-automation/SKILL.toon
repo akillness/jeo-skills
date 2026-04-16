@@ -1,21 +1,32 @@
 N:deployment-automation
-D:Automate application deployment to cloud platforms and servers. Use when setting up CI/CD pipelin...
-G:deployment CI/CD Docker Kubernetes AWS
-U[4]:
-  **New Projects**: Set up automated deployment from scratch
-  **Manual Deployment Improvement**: Automate repetitive manual tasks
-  **Multi-Environment**: Separate dev, staging, and production environments
-  **Scaling**: Introduce Kubernetes to handle traffic growth
-S[5]{n,action}:
-  1,Docker Containerization
-  2,GitHub Actions CI/CD
-  3,Kubernetes Deployment
-  4,Vercel/Netlify (Frontend)
-  5,Zero-Downtime Deployment Strategy
+D:[deployment-automation] Release-execution anchor for web, backend, and fullstack systems: preview releases, staging-to-production promotion, rollout strategy, post-deploy verification, rollback response, and release-hardening packets. Use when the system already builds and the main job is shipping or recovering a release safely. Route CI workflow authoring to workflow-automation, machine/runtime setup to system-environment-setup, long-lived telemetry design to monitoring-observability, and Vercel-specific operations to vercel-deploy.
+G:deployment release rollout promotion rollback preview staging production canary blue-green progressive delivery hardening
+
+U[6]:
+  Define what a preview deployment is supposed to prove
+  Add gates and sign-off to staging-to-production promotion
+  Choose between replace rolling blue-green canary or progressive rollout
+  Create a concise release packet for container/PaaS or Kubernetes delivery
+  Contain a failed release and name the real rollback path
+  Tighten an existing deploy flow with preflight checks and stop conditions
+
+S[5]{n,action,details}:
+  1,Choose mode,preview-release | environment-promotion | container-paas-rollout | kubernetes-rollout | rollback-response | release-hardening
+  2,Gather evidence,identify artifact environment promotion model verification signals rollback path and schema/data caveats
+  3,Route adjacent work,send CI YAML to workflow-automation setup/bootstrap to system-environment-setup telemetry architecture to monitoring-observability and Vercel specifics to vercel-deploy
+  4,Load the matching packet,use release-packet-templates plus strategy-selection-and-stop-conditions and rollout-and-rollback-checklist
+  5,Produce release packet,return steps verification stop conditions rollback limits and route-outs
+
 R[6]:
-  uses
-  name
-  name
-  name
-  name
-  name
+  Keep the front door about release decisions not platform encyclopedias
+  State unknowns explicitly instead of inventing a deploy flow
+  Separate app rollback from schema or data rollback
+  Prefer the smallest rollout strategy that matches verification maturity
+  Treat verification and stop conditions as required output
+  Prefer same-artifact promotion when reproducibility matters
+
+E[4]{type,command}:
+  Preview packet,Define preview checks and discard-or-promote rules before merge
+  Promotion packet,Name artifact gates verification and rollback for staging to production
+  Rollback response,Contain blast radius and separate app recovery from migration risk
+  Release hardening,Add missing preflight sign-off and stop conditions to an existing deploy path

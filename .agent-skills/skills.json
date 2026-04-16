@@ -699,7 +699,7 @@
     },
     {
       "name": "deployment-automation",
-      "description": "Plan and execute hosted deployment and rollout automation for web, backend, and fullstack systems: preview/staging/prod promotion, release verification, rollback planning, provider handoff, and deployment runbooks. Use when the main job is shipping a built artifact or service safely to an environment, choosing a rollout strategy, or tightening deploy/release steps around health checks and promotion rules. Route CI workflow authoring to `workflow-automation`, machine/runtime setup to `system-environment-setup`, ongoing dashboards/alerts to `monitoring-observability`, and Vercel-specific operations to `vercel-deploy`.",
+      "description": "Plan and review release execution for web, backend, and fullstack systems: preview releases, staging-to-production promotion, rollout strategy, post-deploy verification, rollback response, and release hardening. Use when the system can already build and the main job is shipping or recovering a release safely, choosing between preview / promotion / canary / rollback paths, or tightening deploy gates around health checks and sign-off. Route CI workflow authoring to `workflow-automation`, machine/runtime setup to `system-environment-setup`, long-lived telemetry design to `monitoring-observability`, and Vercel-specific operations to `vercel-deploy`.",
       "category": "infrastructure",
       "path": "deployment-automation/SKILL.md",
       "tags": [
@@ -726,7 +726,7 @@
       ],
       "commands": [
         {
-          "command": "# classify: preview-release | environment-promotion | container-paas | kubernetes-rollout | rollback-response | release-hardening",
+          "command": "# classify: preview-release | environment-promotion | container-paas-rollout | kubernetes-rollout | rollback-response | release-hardening",
           "source": "infrastructure/deployment-automation/SKILL.md"
         },
         {
