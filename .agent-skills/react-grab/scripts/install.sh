@@ -9,7 +9,7 @@
 #   bash scripts/install.sh --framework vite        # Vite
 #   bash scripts/install.sh --framework webpack     # Webpack
 #
-# Requirements: Node.js >=18, npm/npx
+# Requirements: Node.js >=22, npm/npx
 
 set -euo pipefail
 
@@ -40,13 +40,13 @@ done
 
 # Check Node.js
 if ! command -v node &>/dev/null; then
-  echo "❌ Node.js is required. Install from https://nodejs.org/ (>=18 required)"
+  echo "❌ Node.js is required. Install from https://nodejs.org/ (>=22 required)"
   exit 1
 fi
 
 NODE_VERSION=$(node --version | sed 's/v//' | cut -d. -f1)
-if [[ "$NODE_VERSION" -lt 18 ]]; then
-  echo "❌ Node.js >=18 is required (current: $(node --version))"
+if [[ "$NODE_VERSION" -lt 22 ]]; then
+  echo "❌ Node.js >=22 is required (current: $(node --version))"
   exit 1
 fi
 

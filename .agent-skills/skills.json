@@ -2364,7 +2364,7 @@
     },
     {
       "name": "react-grab",
-      "description": "Install and configure react-grab to capture React component context (file path, component name, HTML markup) from any browser UI element for AI coding agents. Use when you want to point at a UI element in the browser and instantly copy its React component name, source file path, and HTML to clipboard for Claude Code, Cursor, Copilot, Gemini, or Codex. Triggers on: react-grab, grab, grab element context, copy component to ai, point and copy to claude, ui context clipboard, element to ai agent, click component copy, grab ui component, react component inspector, browser element context, component source file, copy element context, feed element to ai, element picker, grab react component, inspect element ai, component to clipboard, react devtools ai.",
+      "description": "Capture exact React element context from a live browser UI and hand it to an AI coding agent as component name, source file path, line number, and HTML. Use for react-grab install/use, clipboard-to-agent copy, MCP-backed element selection, or plugin/API customization. Not for generic browser automation (agent-browser/playwriter), rendered-UI review (agentation), React performance audits (react-best-practices), or general design-system work.",
       "category": "frontend",
       "path": "react-grab/SKILL.md",
       "tags": [

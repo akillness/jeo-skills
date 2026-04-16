@@ -3770,3907 +3770,4012 @@
     {
       "source": "README.md",
       "target": "agent-browser",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "agentation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "api-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "api-documentation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "authentication-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "autoresearch",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "backend-testing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "bmad",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "bmad-gds",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "bmad-idea",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "changelog-maintenance",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "clawteam",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "code-refactoring",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "code-review",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "codebase-search",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "data-analysis",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "database-schema-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "debugging",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "deployment-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "design-system",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "environment-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "fabric",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "file-organization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "firebase-ai-logic",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "firebase-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "frontend-design-system",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "game-build-log-triage",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "game-ci-cd-pipeline",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "game-demo-feedback-triage",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "game-performance-profiler",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "genkit",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "git-submodule",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "git-workflow",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "google-workspace",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "harness",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "jeo",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "langsmith",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "llm-wiki",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "log-analysis",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "looker-studio-bigquery",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "marketing-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "marketing-skills-collection",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "monitoring-observability",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "npm-git-install",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "obsidian-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "obsidian-plugin",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "ohmg",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "omc",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "omx",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "opencontext",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "pattern-detection",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "performance-optimization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "plannotator",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "playwriter",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "presentation-builder",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "prompt-repetition",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "ralph",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "ralphmode",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "react-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "react-grab",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "remotion-video-production",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "research-paper-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "responsive-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "rtk",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "scrapling",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "security-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "skill-autoresearch",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "skill-standardization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "sprint-retrospective",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "standup-meeting",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "state-management",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "steam-store-launch-ops",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "strix",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "survey",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "system-environment-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "task-estimation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "task-planning",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "technical-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "testing-strategies",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "ui-component-patterns",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "user-guide-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "vercel-deploy",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "vercel-react-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "vibe-kanban",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "video-production",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "web-accessibility",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "web-design-guidelines",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.md",
       "target": "workflow-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "agent-browser",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "agentation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "api-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "api-documentation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "authentication-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "autoresearch",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "backend-testing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "bmad",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "bmad-gds",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "bmad-idea",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "changelog-maintenance",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "clawteam",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "code-refactoring",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "code-review",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "codebase-search",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "data-analysis",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "database-schema-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "debugging",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "deployment-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "design-system",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "environment-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "fabric",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "file-organization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "firebase-ai-logic",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "firebase-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "frontend-design-system",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "game-build-log-triage",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "game-ci-cd-pipeline",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "game-demo-feedback-triage",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "game-performance-profiler",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "genkit",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "git-submodule",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "git-workflow",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "google-workspace",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "harness",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "jeo",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "langsmith",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "llm-wiki",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "log-analysis",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "looker-studio-bigquery",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "marketing-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "marketing-skills-collection",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "monitoring-observability",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "npm-git-install",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "obsidian-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "obsidian-plugin",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "ohmg",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "omc",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "omx",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "opencontext",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "pattern-detection",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "performance-optimization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "plannotator",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "playwriter",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "presentation-builder",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "prompt-repetition",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "ralph",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "ralphmode",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "react-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "react-grab",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "remotion-video-production",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "research-paper-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "responsive-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "rtk",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "scrapling",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "security-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "skill-autoresearch",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "skill-standardization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "sprint-retrospective",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "standup-meeting",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "state-management",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "steam-store-launch-ops",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "strix",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "survey",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "system-environment-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "task-estimation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "task-planning",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "technical-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "testing-strategies",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "ui-component-patterns",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "user-guide-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "vercel-deploy",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "vercel-react-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "vibe-kanban",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "video-production",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "web-accessibility",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "web-design-guidelines",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "README.ko.md",
       "target": "workflow-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "agent-browser",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "agentation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "api-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "api-documentation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "authentication-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "autoresearch",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "backend-testing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "bmad",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "bmad-gds",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "bmad-idea",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "changelog-maintenance",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "clawteam",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "code-refactoring",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "code-review",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "codebase-search",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "data-analysis",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "database-schema-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "debugging",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "deployment-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "design-system",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "environment-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "fabric",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "file-organization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "firebase-ai-logic",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "firebase-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "frontend-design-system",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "game-build-log-triage",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "game-ci-cd-pipeline",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "game-demo-feedback-triage",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "game-performance-profiler",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "genkit",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "git-submodule",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "git-workflow",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "google-workspace",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "harness",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "jeo",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "langsmith",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "llm-wiki",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "log-analysis",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "looker-studio-bigquery",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "marketing-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "marketing-skills-collection",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "monitoring-observability",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "npm-git-install",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "obsidian-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "obsidian-plugin",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ohmg",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "omc",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "omx",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "opencontext",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "pattern-detection",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "performance-optimization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "plannotator",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "playwriter",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "presentation-builder",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "prompt-repetition",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ralph",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ralphmode",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "react-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "react-grab",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "remotion-video-production",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "research-paper-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "responsive-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "rtk",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "scrapling",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "security-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "skill-autoresearch",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "skill-standardization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "sprint-retrospective",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "standup-meeting",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "state-management",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "steam-store-launch-ops",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "strix",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "survey",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "system-environment-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "task-estimation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "task-planning",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "technical-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "testing-strategies",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ui-component-patterns",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "user-guide-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "vercel-deploy",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "vercel-react-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "vibe-kanban",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "video-production",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "web-accessibility",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "web-design-guidelines",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "workflow-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "agent-browser",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "agentation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "api-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "api-documentation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "authentication-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "autoresearch",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "backend-testing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "bmad",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "bmad-gds",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "bmad-idea",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "changelog-maintenance",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "clawteam",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "code-refactoring",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "code-review",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "codebase-search",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "data-analysis",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "database-schema-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "debugging",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "deployment-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "design-system",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "environment-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "fabric",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "file-organization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "firebase-ai-logic",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "firebase-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "frontend-design-system",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "game-build-log-triage",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "game-ci-cd-pipeline",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "game-demo-feedback-triage",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "game-performance-profiler",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "genkit",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "git-submodule",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "git-workflow",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "google-workspace",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "harness",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "jeo",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "langsmith",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "llm-wiki",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "lmstudio-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "log-analysis",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "looker-studio-bigquery",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "marketing-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "marketing-skills-collection",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "monitoring-observability",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "npm-git-install",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "obsidian-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "obsidian-plugin",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "ohmg",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "omc",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "omx",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "opencontext",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "pattern-detection",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "performance-optimization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "plannotator",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "playwriter",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "presentation-builder",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "prompt-repetition",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "ralph",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "ralphmode",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "react-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "react-grab",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "remotion-video-production",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "research-paper-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "responsive-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "rtk",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "scrapling",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "security-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "skill-autoresearch",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "skill-standardization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "sprint-retrospective",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "standup-meeting",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "state-management",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "steam-store-launch-ops",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "strix",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "survey",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "system-environment-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "task-estimation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "task-planning",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "technical-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "testing-strategies",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "ui-component-patterns",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "user-guide-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "vercel-deploy",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "vercel-react-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "vibe-kanban",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "video-production",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "web-accessibility",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "web-design-guidelines",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.json",
       "target": "workflow-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "agent-browser",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "agentation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "api-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "api-documentation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "authentication-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "autoresearch",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "backend-testing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "bmad",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "bmad-gds",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "bmad-idea",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "changelog-maintenance",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "code-refactoring",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "code-review",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "codebase-search",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "data-analysis",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "database-schema-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "debugging",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "deployment-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "design-system",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "environment-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "fabric",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "file-organization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "firebase-ai-logic",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "firebase-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "frontend-design-system",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "genkit",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "git-submodule",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "git-workflow",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "google-workspace",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "harness",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "jeo",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "langsmith",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "llm-wiki",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "log-analysis",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "looker-studio-bigquery",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "marketing-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "marketing-skills-collection",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "monitoring-observability",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "npm-git-install",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "obsidian-cli",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "obsidian-plugin",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "ohmg",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "omc",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "omx",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "opencontext",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "pattern-detection",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "performance-optimization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "plannotator",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "playwriter",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "presentation-builder",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "prompt-repetition",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "ralph",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "ralphmode",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "react-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "react-grab",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "remotion-video-production",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "research-paper-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "responsive-design",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "scrapling",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "security-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "skill-autoresearch",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "skill-standardization",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "sprint-retrospective",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "standup-meeting",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "state-management",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "strix",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "survey",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "system-environment-setup",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "task-estimation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "task-planning",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "technical-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "testing-strategies",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "ui-component-patterns",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "user-guide-writing",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "vercel-deploy",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "vercel-react-best-practices",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "vibe-kanban",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "video-production",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "web-accessibility",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "web-design-guidelines",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "skills.toon",
       "target": "workflow-automation",
-      "kind": "indexes"
+      "kind": "indexes-skill"
     },
     {
       "source": "agent-browser",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "agent-browser",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "agent-browser",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "agent-browser",
       "target": "playwriter",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "agentation",
       "target": "agent-browser",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "agentation",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "agentation",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "agentation",
       "target": "playwriter",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-design",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-design",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-design",
       "target": "backend-testing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-design",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "api-design",
+      "target": "harness",
+      "kind": "mentions-skill"
     },
     {
       "source": "api-documentation",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-documentation",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-documentation",
       "target": "changelog-maintenance",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-documentation",
       "target": "technical-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-documentation",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "authentication-setup",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "authentication-setup",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "authentication-setup",
       "target": "backend-testing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "authentication-setup",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "authentication-setup",
       "target": "security-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "autoresearch",
       "target": "harness",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "autoresearch",
       "target": "langsmith",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "autoresearch",
       "target": "skill-autoresearch",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "backend-testing",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "backend-testing",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "backend-testing",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "backend-testing",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "backend-testing",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "bmad-idea",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "harness",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "ohmg",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "omc",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "omx",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "bmad",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "bmad-idea",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "game-build-log-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "game-demo-feedback-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "game-performance-profiler",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "steam-store-launch-ops",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-idea",
       "target": "bmad",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-idea",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-idea",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-idea",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "changelog-maintenance",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "changelog-maintenance",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "changelog-maintenance",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "changelog-maintenance",
       "target": "technical-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "changelog-maintenance",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-refactoring",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-refactoring",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-refactoring",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-refactoring",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-refactoring",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "git-workflow",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "codebase-search",
       "target": "code-refactoring",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "codebase-search",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "codebase-search",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "codebase-search",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "data-analysis",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "data-analysis",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "data-analysis",
       "target": "looker-studio-bigquery",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "data-analysis",
       "target": "pattern-detection",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "backend-testing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "security-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "debugging",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "debugging",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "debugging",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "debugging",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "debugging",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "debugging",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "deployment-automation",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "deployment-automation",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "deployment-automation",
       "target": "vercel-deploy",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "deployment-automation",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "design-system",
       "target": "frontend-design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "design-system",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "design-system",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "design-system",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "environment-setup",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "environment-setup",
       "target": "security-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "environment-setup",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "fabric",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "fabric",
+      "target": "log-analysis",
+      "kind": "mentions-skill"
     },
     {
       "source": "fabric",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "state-management",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "firebase-ai-logic",
       "target": "firebase-cli",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "firebase-ai-logic",
       "target": "genkit",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "firebase-cli",
+      "target": "genkit",
+      "kind": "mentions-skill"
     },
     {
       "source": "frontend-design-system",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "frontend-design-system",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "frontend-design-system",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "frontend-design-system",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-build-log-triage",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-build-log-triage",
       "target": "game-ci-cd-pipeline",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-ci-cd-pipeline",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-ci-cd-pipeline",
       "target": "game-build-log-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "game-build-log-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "game-performance-profiler",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "steam-store-launch-ops",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-performance-profiler",
       "target": "game-build-log-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-performance-profiler",
       "target": "game-ci-cd-pipeline",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-performance-profiler",
       "target": "game-demo-feedback-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-performance-profiler",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "genkit",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "genkit",
       "target": "firebase-ai-logic",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "genkit",
       "target": "firebase-cli",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "genkit",
       "target": "harness",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "genkit",
+      "target": "monitoring-observability",
+      "kind": "mentions-skill"
     },
     {
       "source": "genkit",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "genkit",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-submodule",
       "target": "git-workflow",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-submodule",
       "target": "npm-git-install",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-submodule",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-submodule",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-workflow",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-workflow",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-workflow",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "google-workspace",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "harness",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "harness",
+      "target": "strix",
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "agent-browser",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "bmad",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "ohmg",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "omc",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "omx",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "ralphmode",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "langsmith",
       "target": "data-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "langsmith",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "langsmith",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "langsmith",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "langsmith",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "langsmith",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "llm-wiki",
       "target": "scrapling",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "lmstudio-cli",
+      "target": "debugging",
+      "kind": "mentions-skill"
     },
     {
       "source": "lmstudio-cli",
       "target": "strix",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "lmstudio-cli",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "log-analysis",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "log-analysis",
       "target": "game-build-log-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "log-analysis",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "looker-studio-bigquery",
       "target": "data-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "looker-studio-bigquery",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "looker-studio-bigquery",
       "target": "pattern-detection",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "looker-studio-bigquery",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "marketing-automation",
       "target": "marketing-skills-collection",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "marketing-automation",
       "target": "steam-store-launch-ops",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "marketing-skills-collection",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "marketing-skills-collection",
       "target": "steam-store-launch-ops",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "game-performance-profiler",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "langsmith",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "npm-git-install",
       "target": "git-workflow",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "npm-git-install",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "npm-git-install",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "obsidian-cli",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ohmg",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ohmg",
       "target": "harness",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ohmg",
       "target": "omc",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ohmg",
       "target": "omx",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ohmg",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "omc",
+      "target": "debugging",
+      "kind": "mentions-skill"
     },
     {
       "source": "omc",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "omx",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "omx",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "omx",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "opencontext",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "opencontext",
       "target": "file-organization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "opencontext",
       "target": "llm-wiki",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "opencontext",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "pattern-detection",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "pattern-detection",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "pattern-detection",
       "target": "data-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "pattern-detection",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "pattern-detection",
       "target": "security-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "code-refactoring",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "game-performance-profiler",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "state-management",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "performance-optimization",
+      "target": "workflow-automation",
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "bmad",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "llm-wiki",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "plannotator",
+      "target": "survey",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "plannotator",
+      "target": "system-environment-setup",
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "vibe-kanban",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "playwriter",
       "target": "agent-browser",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "presentation-builder",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "presentation-builder",
       "target": "research-paper-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "presentation-builder",
       "target": "technical-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "presentation-builder",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "ohmg",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "omc",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "omx",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "ralphmode",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralphmode",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralphmode",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-best-practices",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-best-practices",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-best-practices",
       "target": "state-management",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-best-practices",
       "target": "vercel-react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-best-practices",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "react-grab",
+      "target": "agent-browser",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "react-grab",
+      "target": "agentation",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "react-grab",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "react-grab",
+      "target": "design-system",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "react-grab",
+      "target": "playwriter",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "react-grab",
+      "target": "react-best-practices",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "react-grab",
+      "target": "ui-component-patterns",
+      "kind": "mentions-skill"
     },
     {
       "source": "remotion-video-production",
       "target": "video-production",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "research-paper-writing",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "research-paper-writing",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "research-paper-writing",
       "target": "presentation-builder",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "research-paper-writing",
       "target": "technical-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "research-paper-writing",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "responsive-design",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "responsive-design",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "responsive-design",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "responsive-design",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "responsive-design",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "backend-testing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "skill-autoresearch",
       "target": "autoresearch",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "skill-autoresearch",
       "target": "harness",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "skill-autoresearch",
       "target": "langsmith",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "sprint-retrospective",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "sprint-retrospective",
       "target": "standup-meeting",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "sprint-retrospective",
       "target": "task-estimation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "sprint-retrospective",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "standup-meeting",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "standup-meeting",
       "target": "sprint-retrospective",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "standup-meeting",
       "target": "task-estimation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "standup-meeting",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "steam-store-launch-ops",
       "target": "game-demo-feedback-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "survey",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "survey",
       "target": "ohmg",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "survey",
       "target": "omc",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "survey",
       "target": "omx",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "survey",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "system-environment-setup",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "system-environment-setup",
       "target": "environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "system-environment-setup",
       "target": "security-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "system-environment-setup",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "system-environment-setup",
       "target": "vercel-deploy",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-estimation",
       "target": "sprint-retrospective",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-estimation",
       "target": "standup-meeting",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-estimation",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "sprint-retrospective",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "standup-meeting",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "task-estimation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "changelog-maintenance",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "backend-testing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "testing-strategies",
+      "target": "design-system",
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ui-component-patterns",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ui-component-patterns",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ui-component-patterns",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ui-component-patterns",
       "target": "state-management",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ui-component-patterns",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "user-guide-writing",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "user-guide-writing",
       "target": "changelog-maintenance",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "user-guide-writing",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "user-guide-writing",
       "target": "technical-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-deploy",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-deploy",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-deploy",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-deploy",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-deploy",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-react-best-practices",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-react-best-practices",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "responsive-design",
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-react-best-practices",
       "target": "state-management",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-react-best-practices",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "agent-browser",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "playwriter",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "sprint-retrospective",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "standup-meeting",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "video-production",
       "target": "remotion-video-production",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-accessibility",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-accessibility",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-accessibility",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-accessibility",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-accessibility",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "workflow-automation",
+      "target": "debugging",
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "git-workflow",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "vercel-deploy",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     }
   ]
 }
