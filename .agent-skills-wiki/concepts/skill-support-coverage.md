@@ -4,20 +4,21 @@ created: 2026-04-12
 updated: 2026-04-16
 type: concept
 tags: [skills, skill-quality, graphify]
-sources: [graphify-out/GRAPH_REPORT.md, .survey/marketing-skills-collection-support-hardening-20260416/context.md, .survey/marketing-skills-collection-support-hardening-20260416/solutions.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/frontend-alias-support-hardening-20260416/solutions.md, .survey/remotion-video-production-support-hardening-20260416/context.md, .survey/remotion-video-production-support-hardening-20260416/solutions.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/solutions.md]
+sources: [graphify-out/GRAPH_REPORT.md, .survey/marketing-skills-collection-support-hardening-20260416/context.md, .survey/marketing-skills-collection-support-hardening-20260416/solutions.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/frontend-alias-support-hardening-20260416/solutions.md, .survey/remotion-video-production-support-hardening-20260416/context.md, .survey/remotion-video-production-support-hardening-20260416/solutions.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/solutions.md, .survey/jeo-structural-hardening-20260416/context.md, .survey/jeo-structural-hardening-20260416/solutions.md]
 ---
 
 # Skill Support Coverage
 
 ## Durable finding
-Support coverage is uneven across the `.agent-skills` corpus.
+Baseline support coverage is now complete across the live `.agent-skills` corpus, so the next structural wins come from high-visibility trigger, boundary, and maintenance-shape improvements rather than missing `references/` or `evals/` folders.
 
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
-- 88 live manifest-indexed skills in `.agent-skills/skills.json` categories
-- 88 live skills with `references/`
-- 88 live skills with `evals/`
-- 23 live skills with `scripts/`
+- 89 live manifest-indexed skills in `.agent-skills/skills.json` categories
+- 89 live skills with `references/`
+- 89 live skills with `evals/`
+- 24 live skills with `scripts/`
+- 89 live skills with a compact discovery variant
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -89,6 +90,7 @@ Recent ratchets:
 - The frontend alias support-hardening pass added alias-side `references/` packets to both `frontend-design-system` and `vercel-react-best-practices`, plus compact-surface sync in `SKILL.toon` and `.agent-skills/skills.toon`, which matters because the frontend lane no longer relies on wiki memory to explain that those folders are compatibility shells rather than peer default skills.
 - The `remotion-video-production` support-hardening pass added the last missing alias-side `references/` packet in the creative-media lane, refreshed the compact wording, and added an eval that explicitly routes spreadsheet/API-style bulk generation back to broader `video-production` modes instead of forcing a Remotion codebase.
 - The `ralph` support-hardening pass added `evals/evals.json`, fixed stale live self-path examples that still pointed at `.agent-skills/ralph-ooo/...`, and closed the last remaining live eval holdout in the graph snapshot without broadening the core-orchestration lane.
+- The `jeo` structural-hardening pass shrank a high-degree orchestration anchor under the 500-line guideline, moved platform/state/troubleshooting detail into packaged references, and refreshed compact/discovery wording so the next maintenance loop can optimize boundary quality instead of re-reading one giant front-door file.
 
 - The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
 

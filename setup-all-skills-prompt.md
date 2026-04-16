@@ -89,7 +89,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
 
-> **jeo**: Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` on Claude Code. Creates a `.jeo/` ledger (long-term.md, short-term.md, planned.md, progress.md, history.md) for durable workflow state.
+> **jeo**: Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` on Claude Code. Creates a resumable `.jeo/` ledger (long-term.md, short-term.md, planned.md, progress.md, history.md) plus `.omc/state/jeo-state.json` for durable workflow state across planning, execution, QA, and cleanup.
 >
 > **agentation MCP**: `npx add-mcp "npx -y agentation-mcp server"` — auto-detects 9+ agents.
 > **agentation Claude Code Official Skill**: `npx skills add benjitaylor/agentation -g` → `/agentation` in conversation.
