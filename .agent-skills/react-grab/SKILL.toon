@@ -1,29 +1,29 @@
 N:react-grab
-D:[react-grab] Point at any browser UI element, press Cmd/Ctrl+C, copy React component name + source file path + HTML markup to clipboard for AI coding agents. Dev-only overlay, MCP server for programmatic access, plugin system for custom workflows. Works with Claude Code, Cursor, Copilot, Codex, Gemini.
-G:react-grab grab element-context ai-agent clipboard component-inspector dev-tools react browser mcp cursor claude-code copilot codex gemini freeze primitives plugin
+D:[react-grab] Capture exact React element context from a live browser UI and hand it to an AI coding agent as component name, source file path, line number, and HTML. Use for react-grab install/use, clipboard-to-agent copy, MCP-backed element selection, or plugin/API customization. Not for generic browser automation (agent-browser/playwriter), rendered-UI review (agentation), React performance audits (react-best-practices), or general design-system work.
+G:react-grab grab element-context ai-agent clipboard component-inspector dev-tools react browser mcp component-source browser-component-picker plugin freeze
 
-U[6]:
-  Set up react-grab in a React project (Next.js, Vite, Webpack) for AI-assisted development
-  Point at UI elements and copy precise component context to Claude Code / Cursor / Copilot / Gemini
-  Add react-grab MCP server so AI agent receives element context programmatically
-  Configure react-grab with a custom plugin for project-specific workflows (Jira, Figma, etc.)
-  Use the programmatic API (getElementContext, freeze) for automation or test tooling
-  Remove react-grab from a project or disconnect a specific agent integration
+U[5]:
+  Install react-grab in a React project so agents can copy exact component context from the browser
+  Choose between clipboard flow, MCP flow, and plugin/API flow for React element capture
+  Fix react-grab setup issues like wrong load point, missing file paths, or empty MCP responses
+  Add or remove a specific agent integration (claude-code, cursor, codex, gemini, mcp, etc.)
+  Build a custom plugin or use primitives like freeze() and getElementContext()
 
-S[3]{n,action,details}:
-  1,Install,npx -y grab@latest init (auto-detects framework: Next.js/Vite/Webpack and package manager: npm/pnpm/yarn/bun)
-  2,Capture,hover over element in browser -> Cmd+C (Mac) / Ctrl+C (Win/Linux) -> paste context into AI agent prompt
-  3,MCP,npx -y grab@latest add mcp -> AI agent calls get_element_context tool to receive selected element context
+S[4]{n,action,details}:
+  1,Classify,choose clipboard install/use vs MCP vs plugin/API vs troubleshooting/removal
+  2,Prereqs,confirm upstream truth: Node.js >=22 and development-only browser overlay
+  3,Default path,use npx -y grab@latest init unless the user explicitly needs MCP or manual framework setup
+  4,Route,send generic browser automation to agent-browser/playwriter and UI review to agentation
 
 R[5]:
-  Dev-only: always wrap in NODE_ENV=development or import.meta.env.DEV — never ships to production
-  Use npx -y grab@latest init for auto-detection; avoid manual script tag insertion unless necessary
-  Add MCP server (grab add mcp) for AI-driven workflows that don't depend on clipboard
-  react-grab script must load before React renders: use strategy=beforeInteractive in Next.js
-  Use freeze() from primitives API when inspecting dynamic elements that disappear on hover
+  Use npx -y grab@latest init as the default install path from project root
+  For tool-based retrieval after browser selection use npx -y grab@latest add mcp
+  Keep react-grab dev-only; never position it as a production feature
+  Use references/install-and-routing.md, references/agent-workflows.md, references/troubleshooting.md, and references/api.md for depth
+  State the Node.js >=22 prerequisite truthfully before recommending install commands
 
 E[4]{type,command}:
-  Install project,npx -y grab@latest init
-  Add MCP server,npx -y grab@latest add mcp
-  Add Claude Code,npx -y grab@latest add claude-code
-  Custom plugin,registerPlugin({ name: "my-plugin", actions: [{ id: "...", label: "...", onAction: (ctx) => {} }] })
+  Default install,npx -y grab@latest init
+  MCP workflow,npx -y grab@latest add mcp
+  Agent integration,npx -y grab@latest add claude-code
+  Removal,npx -y grab@latest remove cursor

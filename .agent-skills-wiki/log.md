@@ -598,3 +598,11 @@
 - Accepted: shrink `jeo/SKILL.md` under the 500-line guideline, move platform/state/troubleshooting detail into `references/PLATFORM_SETUP.md` and `references/STATE_AND_TROUBLESHOOTING.md`, refresh `SKILL.toon`, sync `skills.json`, and update README / README.ko / setup prompt so the resume/recovery framing is visible on the discovery surface
 - Rejected: adding another orchestration wrapper for resume/state/setup; letting `jeo` absorb runtime or specialist review ownership from adjacent skills; keeping the giant mixed manual as the front-door experience
 - Wiki files created/updated: `queries/jeo-structural-hardening-2026-04-16.md`, `concepts/core-orchestration-platform-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | react-grab structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/frontend, PM/ops, marketing, and game-dev lanes, with the best bounded next win landing on the oversized and partially stale `react-grab` frontend/browser skill
+- Survey files created under `.survey/react-grab-structural-hardening-20260416/`; repo-local evidence plus GitHub raw primary-source retrieval were used because normal search/extract APIs are unavailable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `react-grab/SKILL.md` into a routing-first front door, add focused install/workflow/troubleshooting references, update helper scripts to enforce the current upstream Node.js >=22 requirement, refresh evals, and sync compact/discovery wording
+- Rejected: keeping the 494-line mixed manual; adding another overlapping browser/frontend wrapper; merging `react-grab` into `agent-browser`, `playwriter`, `agentation`, or `react-best-practices`
+- Wiki files created/updated: `queries/react-grab-structural-hardening-2026-04-16.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
