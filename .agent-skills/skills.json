@@ -745,7 +745,7 @@
     },
     {
       "name": "design-system",
-      "description": "Design or refactor production-grade frontend UI systems using design tokens, component primitives, layout rules, motion guidance, and accessibility checks. Use when the user needs a reusable visual system, landing-page or dashboard UI direction, component-library foundations, or page-level design specs that stay consistent across screens.",
+      "description": "Define or refactor a shared frontend UI system before polishing one screen at a time. Use when the user needs token governance, visual-language rules, primitive naming, cross-product consistency, or page-system direction across landing pages, dashboards, forms, and component libraries. Route component API design to ui-component-patterns, responsive layout work to responsive-design, accessibility-only remediation to web-accessibility, and broad UI critique to web-design-guidelines.",
       "category": "frontend",
       "path": "design-system/SKILL.md",
       "tags": [

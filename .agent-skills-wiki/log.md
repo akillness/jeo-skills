@@ -606,3 +606,11 @@
 - Accepted: shrink `react-grab/SKILL.md` into a routing-first front door, add focused install/workflow/troubleshooting references, update helper scripts to enforce the current upstream Node.js >=22 requirement, refresh evals, and sync compact/discovery wording
 - Rejected: keeping the 494-line mixed manual; adding another overlapping browser/frontend wrapper; merging `react-grab` into `agent-browser`, `playwriter`, `agentation`, or `react-best-practices`
 - Wiki files created/updated: `queries/react-grab-structural-hardening-2026-04-16.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | design-system structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/frontend, PM/ops, marketing, and game-dev lanes, with the best bounded next frontend-cluster win landing on the dense canonical `design-system` anchor
+- Survey files created under `.survey/design-system-structural-hardening-20260416/`; repo-local evidence plus direct primary-doc retrieval from mature design-system docs were used because normal search/extract APIs are unavailable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `design-system/SKILL.md` into a mode-selecting router, add focused references for system modes / governance / packet output / boundaries, refresh evals and compact/discovery wording, remove stale related-skill residue, and update frontend discovery text where positioning changed materially
+- Rejected: leaving the canonical skill as a giant mixed example dump; reopening alias work; adding another overlapping frontend wrapper; merging system-governance work into `ui-component-patterns`, `responsive-design`, `web-accessibility`, or `web-design-guidelines`
+- Wiki files created/updated: `queries/design-system-structural-hardening-2026-04-16.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
