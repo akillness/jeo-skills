@@ -19,6 +19,8 @@ metadata:
 
 # Remotion Video Production
 
+Read [references/alias-routing.md](references/alias-routing.md) and [references/remotion-route-outs.md](references/remotion-route-outs.md) before handling broad or ambiguous Remotion requests.
+
 ## When to use this skill
 - A legacy prompt, installed catalog, or setup surface still calls `remotion-video-production`
 - The user explicitly names Remotion, React-based video composition, scenes, compositions, or rendering from code
@@ -47,7 +49,10 @@ Use the same process as `video-production`:
 3. return one implementation-ready brief,
 4. include assets, QA risks, and handoffs.
 
-### Step 5: Avoid becoming a competing skill
+### Step 5: Keep alternative modes visible
+If the ask sounds like bulk personalization, spreadsheet-driven generation, or vendor/API automation rather than a React video codebase, say so explicitly and route back through the relevant `video-production` mode instead of over-committing to Remotion.
+
+### Step 6: Avoid becoming a competing skill
 Do not invent separate heuristics, outputs, or support rules here. This alias exists to reduce migration friction and catch explicit Remotion naming, not to compete with the canonical skill.
 
 ## Output format
@@ -77,6 +82,10 @@ Return the same **Video Production Brief** used by `video-production`, with a Re
 1. Keep the alias lightweight and explicit.
 2. Preserve backward compatibility without duplicating the full canonical instructions.
 3. Nudge future discovery toward `video-production` whenever naming or setup surfaces are being updated.
+4. Reuse the canonical `video-production` support packet instead of improvising a second media workflow here.
+5. Make route-outs explicit when a request is better served by template/API automation than by a Remotion codebase.
 
 ## References
 - `../video-production/SKILL.md`
+- `references/alias-routing.md`
+- `references/remotion-route-outs.md`

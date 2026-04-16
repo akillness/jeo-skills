@@ -574,3 +574,11 @@
 - Accepted: harden `frontend-design-system` and `vercel-react-best-practices` with alias-side `references/` docs, refresh both alias `SKILL.toon` files plus `.agent-skills/skills.toon`, and record the stronger frontend alias boundary in the wiki
 - Rejected: deleting either alias; re-promoting either alias to a peer frontend default; unnecessary README/setup churn when the top-level discovery wording was already accurate enough
 - Wiki files created/updated: `queries/frontend-alias-support-hardening-2026-04-16.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | Remotion video production support hardening
+- Area researched: cross-domain support-gap scan across CLI/dev workflow, web/frontend, PM/ops, marketing, and game/media lanes, with the best bounded follow-up landing on the remaining creative-media alias holdout `remotion-video-production`
+- Survey files created under `.survey/remotion-video-production-support-hardening-20260416/` and the loop charter stayed fixed for the run; browser-rendered primary-page evidence plus repo-local graph data were used because `web_search` and `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: harden `remotion-video-production` with two alias-side `references/` docs, refresh `SKILL.toon`, add a route-out eval for bulk spreadsheet/API generation, and record the support-complete creative-media boundary in the wiki
+- Rejected: reviving `remotion-video-production` as a peer media skill; adding another video wrapper; rewriting README / README.ko / setup prompt when their current canonical-vs-alias wording was already accurate
+- Wiki files created/updated: `queries/remotion-video-production-support-hardening-2026-04-16.md`, `concepts/creative-media-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
