@@ -1,25 +1,25 @@
 N:frontend-design-system
-D:Produce production-grade UI designs using clear design tokens, layout rules, motion guidance, and accessibility checks for consistent, scalable frontend development.
-G:frontend design ui ux typography animation design-tokens accessibility components
+D:Compatibility alias for design-system. Use when a legacy workflow, setup script, or exact-name request still depends on frontend-design-system; route ordinary design-token, component-library, landing-page, dashboard, and UI-system work to design-system.
+G:frontend design ui ux design-system alias compatibility migration routing
 
 U[4]:
-  Define and document a design token system (colors, spacing, typography, shadow)
-  Create accessible, responsive component layouts with motion guidance
-  Audit existing UI code for design system compliance and accessibility
-  Build scalable design specifications for developer handoff
+  Exact-name legacy workflow compatibility for frontend-design-system
+  Migration-safe routing from old UI-system prompts to the canonical design-system skill
+  Folder-name preservation for setup/sync surfaces that still expect the alias
+  Boundary clarification so ordinary design-system work does not stay in the alias
 
 S[4]{n,action,details}:
-  1,Tokens,Define design tokens: color palette (primitive + semantic + component), spacing scale, typography scale, elevation and shadow layers
-  2,Layout,Apply layout rules: grid system, spacing rhythm, responsive breakpoints, container constraints
-  3,Motion,Specify motion guidance: duration scale, easing curves, enter/exit/emphasis patterns, reduced-motion fallbacks
-  4,Accessibility,Run accessibility checks: color contrast ratios (WCAG AA/AAA), focus management, ARIA roles, keyboard navigation
+  1,Confirm Alias Intent,Use the alias only when the exact legacy name matters for the request or tooling surface
+  2,Load Alias Packet,Read references/alias-routing.md and references/compact-surface-sync.md before redirecting
+  3,Redirect to Canonical,Route substantive UI-system work to ../design-system/SKILL.md and its scope boundaries
+  4,Preserve Compatibility,Keep the alias name only where migration-safe outputs or exact-name references require it
 
 R[4]:
-  Use semantic token naming (color-background-primary) not primitive names (blue-500) in components
-  Always include reduced-motion media query alternatives for all animations
-  Test color contrast at both AA (4.5:1) and AAA (7:1) levels for text
-  Prefer component-level tokens over global tokens for encapsulation and theming
+  Never present frontend-design-system as a peer canonical skill
+  Ordinary UI-system work belongs in design-system
+  Keep compact/discovery wording aligned with skills.json and README surfaces
+  Update the canonical skill first when underlying UI-system guidance changes
 
 E[2]{desc,in,out}:
-  "Token audit","Review existing CSS/Tailwind codebase for design consistency","Report with inconsistent values, proposed token names, and migration plan"
-  "Component spec","Design spec for a card component","Token-annotated layout, spacing values, motion spec, accessibility checklist"
+  "Explicit alias request","Use frontend-design-system to shape our dashboard design system","Acknowledge alias compatibility and continue with canonical design-system guidance"
+  "Migration-safe tooling","Our setup script still expects a frontend-design-system folder","Preserve exact-name compatibility while steering future maintenance to design-system"

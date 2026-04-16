@@ -566,3 +566,11 @@
 - Accepted: harden `marketing-skills-collection` in place with two small alias-side `references/` docs, add a game-launch route-out eval, refresh `marketing-automation/SKILL.toon` + `marketing-skills-collection/SKILL.toon` + `.agent-skills/skills.toon`, and record the stronger marketing support boundary in the wiki
 - Rejected: reviving the old 23-sub-skill marketing framing; promoting the alias back to a peer broad-marketing generator; adding another broad marketing wrapper; unnecessary README/setup churn when the top-level discovery wording was already accurate enough
 - Wiki files created/updated: `queries/marketing-skills-collection-support-hardening-2026-04-16.md`, `concepts/marketing-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | Frontend alias support hardening
+- Area researched: remaining frontend canonical-vs-alias support gaps across design-system and React/Next.js performance workflows, plus compact-surface drift between `SKILL.md`, `skills.json`, and `skills.toon`
+- Survey files created under `.survey/frontend-alias-support-hardening-20260416/` and the loop charter stayed fixed for the run; browser-rendered primary-page evidence was used because `web_search` and `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: harden `frontend-design-system` and `vercel-react-best-practices` with alias-side `references/` docs, refresh both alias `SKILL.toon` files plus `.agent-skills/skills.toon`, and record the stronger frontend alias boundary in the wiki
+- Rejected: deleting either alias; re-promoting either alias to a peer frontend default; unnecessary README/setup churn when the top-level discovery wording was already accurate enough
+- Wiki files created/updated: `queries/frontend-alias-support-hardening-2026-04-16.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
