@@ -31,7 +31,7 @@ ooo setup
 ### Option B: oh-my-skills integration
 
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill ralph-ooo
+npx skills add https://github.com/akillness/oh-my-skills --skill ralph
 ```
 
 ### Hooks
@@ -93,7 +93,7 @@ Codex CLI has no native AfterAgent hooks. Ralph loop uses conversation-level pro
 ### Setup
 
 ```bash
-bash .agent-skills/ralph-ooo/scripts/setup-codex-hook.sh
+bash .agent-skills/ralph/scripts/setup-codex-hook.sh
 ```
 
 This configures:
@@ -171,7 +171,7 @@ gemini extensions install https://github.com/Q00/ouroboros
 Or use setup script:
 
 ```bash
-bash .agent-skills/ralph-ooo/scripts/setup-gemini-hook.sh
+bash .agent-skills/ralph/scripts/setup-gemini-hook.sh
 ```
 
 ### Required settings.json
@@ -269,9 +269,9 @@ Across all platforms, ralph-ooo state lives at:
 Use the state utility script to manage it:
 
 ```bash
-bash .agent-skills/ralph-ooo/scripts/ooo-state.sh init "fix all tests"
-bash .agent-skills/ralph-ooo/scripts/ooo-state.sh status
-bash .agent-skills/ralph-ooo/scripts/ooo-state.sh checkpoint
-bash .agent-skills/ralph-ooo/scripts/ooo-state.sh reset
-bash .agent-skills/ralph-ooo/scripts/ooo-state.sh resume
+bash .agent-skills/ralph/scripts/ooo-state.sh init "fix all tests"
+bash .agent-skills/ralph/scripts/ooo-state.sh status
+bash .agent-skills/ralph/scripts/ooo-state.sh checkpoint
+bash .agent-skills/ralph/scripts/ooo-state.sh reset
+bash .agent-skills/ralph/scripts/ooo-state.sh resume
 ```

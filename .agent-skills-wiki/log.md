@@ -582,3 +582,11 @@
 - Accepted: harden `remotion-video-production` with two alias-side `references/` docs, refresh `SKILL.toon`, add a route-out eval for bulk spreadsheet/API generation, and record the support-complete creative-media boundary in the wiki
 - Rejected: reviving `remotion-video-production` as a peer media skill; adding another video wrapper; rewriting README / README.ko / setup prompt when their current canonical-vs-alias wording was already accurate
 - Wiki files created/updated: `queries/remotion-video-production-support-hardening-2026-04-16.md`, `concepts/creative-media-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | ralph support hardening
+- Area researched: upstream Ouroboros spec-first / persistent-loop practice, adjacent orchestration-platform boundaries, and the remaining repo-local support gap in `ralph`
+- Survey files created under `.survey/ralph-support-hardening-20260416/` and the loop charter stayed fixed for the run; direct GitHub/raw-doc retrieval plus repo-local graph data were used because `web_search` and `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: harden `ralph` in place by adding `evals/evals.json`, fixing stale live self-path examples that still pointed at `.agent-skills/ralph-ooo/...`, and recording the sharper core-orchestration boundary in the wiki
+- Rejected: adding another persistent-loop wrapper; broadening `ralph` into `omc` / `omx` / `ohmg` / `jeo` / `plannotator` / `ralphmode`; unnecessary README / README.ko / setup prompt churn when top-level discovery wording was already accurate
+- Wiki files created/updated: `queries/ralph-support-hardening-2026-04-16.md`, `concepts/core-orchestration-platform-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

@@ -4,7 +4,7 @@ created: 2026-04-12
 updated: 2026-04-16
 type: concept
 tags: [skills, skill-quality, graphify]
-sources: [graphify-out/GRAPH_REPORT.md, .survey/marketing-skills-collection-support-hardening-20260416/context.md, .survey/marketing-skills-collection-support-hardening-20260416/solutions.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/frontend-alias-support-hardening-20260416/solutions.md, .survey/remotion-video-production-support-hardening-20260416/context.md, .survey/remotion-video-production-support-hardening-20260416/solutions.md]
+sources: [graphify-out/GRAPH_REPORT.md, .survey/marketing-skills-collection-support-hardening-20260416/context.md, .survey/marketing-skills-collection-support-hardening-20260416/solutions.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/frontend-alias-support-hardening-20260416/solutions.md, .survey/remotion-video-production-support-hardening-20260416/context.md, .survey/remotion-video-production-support-hardening-20260416/solutions.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/solutions.md]
 ---
 
 # Skill Support Coverage
@@ -14,10 +14,10 @@ Support coverage is uneven across the `.agent-skills` corpus.
 
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
-- 89 manifest entries in `.agent-skills/skills.json`
-- 89 skills with `references/`
-- 88 skills with `evals/`
-- 24 skills with `scripts/`
+- 88 live manifest-indexed skills in `.agent-skills/skills.json` categories
+- 88 live skills with `references/`
+- 88 live skills with `evals/`
+- 23 live skills with `scripts/`
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -88,12 +88,13 @@ Recent ratchets:
 - The `marketing-skills-collection` support-hardening pass added a small alias-side `references/` packet, expanded route-out eval coverage, and refreshed the marketing compact surfaces so the repo no longer advertises the obsolete 23-sub-skill worldview in that lane.
 - The frontend alias support-hardening pass added alias-side `references/` packets to both `frontend-design-system` and `vercel-react-best-practices`, plus compact-surface sync in `SKILL.toon` and `.agent-skills/skills.toon`, which matters because the frontend lane no longer relies on wiki memory to explain that those folders are compatibility shells rather than peer default skills.
 - The `remotion-video-production` support-hardening pass added the last missing alias-side `references/` packet in the creative-media lane, refreshed the compact wording, and added an eval that explicitly routes spreadsheet/API-style bulk generation back to broader `video-production` modes instead of forcing a Remotion codebase.
+- The `ralph` support-hardening pass added `evals/evals.json`, fixed stale live self-path examples that still pointed at `.agent-skills/ralph-ooo/...`, and closed the last remaining live eval holdout in the graph snapshot without broadening the core-orchestration lane.
 
 - The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.
-- Missing evals make ratcheting and regression checks harder for future improvement loops.
+- Missing evals make ratcheting and regression checks harder for future improvement loops, so closing the last live eval holdout materially improves future maintenance runs.
 - Generic legacy skills should usually be upgraded with support files before adding new overlapping skills.
 
 ## Operational rule
@@ -142,4 +143,5 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[presentation-builder-modernization-2026-04-15]]
 - [[game-performance-profiler-modernization-2026-04-15]]
 - [[skill-autoresearch-hardening-2026-04-16]]
+- [[ralph-support-hardening-2026-04-16]]
 - [[compact-variant-gap-2026-04-15]]
