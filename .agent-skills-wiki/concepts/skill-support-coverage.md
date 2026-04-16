@@ -4,7 +4,7 @@ created: 2026-04-12
 updated: 2026-04-16
 type: concept
 tags: [skills, skill-quality, graphify]
-sources: [graphify-out/GRAPH_REPORT.md, .survey/marketing-skills-collection-support-hardening-20260416/context.md, .survey/marketing-skills-collection-support-hardening-20260416/solutions.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/frontend-alias-support-hardening-20260416/solutions.md]
+sources: [graphify-out/GRAPH_REPORT.md, .survey/marketing-skills-collection-support-hardening-20260416/context.md, .survey/marketing-skills-collection-support-hardening-20260416/solutions.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/frontend-alias-support-hardening-20260416/solutions.md, .survey/remotion-video-production-support-hardening-20260416/context.md, .survey/remotion-video-production-support-hardening-20260416/solutions.md]
 ---
 
 # Skill Support Coverage
@@ -15,7 +15,7 @@ Support coverage is uneven across the `.agent-skills` corpus.
 Current structural snapshot from the graph-style scan:
 - 89 filesystem skills with `SKILL.md`
 - 89 manifest entries in `.agent-skills/skills.json`
-- 88 skills with `references/`
+- 89 skills with `references/`
 - 88 skills with `evals/`
 - 24 skills with `scripts/`
 
@@ -87,6 +87,7 @@ Recent ratchets:
 - The `react-best-practices` support-hardening pass added three focused `references/` docs and refreshed discovery wording, which matters because a canonical frontend performance anchor now matches the repo’s lighter support-packet pattern instead of relying on one giant `AGENTS.md` plus a thin surface skill.
 - The `marketing-skills-collection` support-hardening pass added a small alias-side `references/` packet, expanded route-out eval coverage, and refreshed the marketing compact surfaces so the repo no longer advertises the obsolete 23-sub-skill worldview in that lane.
 - The frontend alias support-hardening pass added alias-side `references/` packets to both `frontend-design-system` and `vercel-react-best-practices`, plus compact-surface sync in `SKILL.toon` and `.agent-skills/skills.toon`, which matters because the frontend lane no longer relies on wiki memory to explain that those folders are compatibility shells rather than peer default skills.
+- The `remotion-video-production` support-hardening pass added the last missing alias-side `references/` packet in the creative-media lane, refreshed the compact wording, and added an eval that explicitly routes spreadsheet/API-style bulk generation back to broader `video-production` modes instead of forcing a Remotion codebase.
 
 - The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
 
@@ -112,6 +113,7 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[marketing-skill-canonicalization-2026-04-12]]
 - [[marketing-skills-collection-support-hardening-2026-04-16]]
 - [[frontend-alias-support-hardening-2026-04-16]]
+- [[remotion-video-production-support-hardening-2026-04-16]]
 - [[log-analysis-modernization-2026-04-13]]
 - [[debugging-modernization-2026-04-13]]
 - [[code-review-modernization-2026-04-13]]

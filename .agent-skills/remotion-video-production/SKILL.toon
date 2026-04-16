@@ -1,26 +1,26 @@
 N:remotion-video-production
-D:Produce programmable videos with Remotion using scene planning, asset orchestration, and validation gates for automated, brand-consistent video content.
-G:video remotion animation storytelling automation react scenes programmatic
+D:Compatibility alias for `video-production` when legacy tooling or an explicit Remotion request still expects the old skill name. Preserve exact-name compatibility, route substantive work to the canonical programmable-video workflow, and default to the code-first mode only when Remotion is truly the right stack.
+G:video remotion alias compatibility programmable-video automated-video react compositions render-player migration
 
 U[4]:
-  Plan and scaffold a multi-scene Remotion video with consistent branding
-  Orchestrate text, image, audio, and motion assets across video scenes
-  Implement validation gates to ensure render quality before export
-  Automate brand-consistent video production from structured content inputs
+  Catch exact-name legacy prompts that still invoke `remotion-video-production`
+  Preserve explicit Remotion stack requests while routing to the canonical video-production workflow
+  Keep code-first programmable-video mode as the default only for true Remotion asks
+  Route bulk template/API, repurposing, or manual-finish work back to broader video-production modes
 
 S[5]{n,action,details}:
-  1,Plan,Define video structure: total duration, scenes list with timestamps, assets required (fonts, images, audio), brand tokens (colors, typography)
-  2,Scaffold,Initialize Remotion project; create scene components; define composition with fps, width, height, durationInFrames
-  3,Orchestrate,Build scene components using useCurrentFrame and interpolate; compose with Sequence and Series; add audio with Audio component
-  4,Validate,Run validation gates: check asset availability, test render at key frames, verify timing alignment, confirm brand token usage
-  5,Render,Export with npx remotion render or Lambda render for production; validate output resolution and file size
+  1,Resolve,Acknowledge the alias and state that `video-production` now owns the canonical programmable-video workflow
+  2,Lock,Use Code-first programmable video when the user truly needs Remotion scenes/components/player/runtime control
+  3,Reuse,Pull the packet shape, asset minimums, QA checklist, and handoff boundaries from `video-production`
+  4,Route-out,If the real need is API/template automation, clip repurposing, or manual polish, say so explicitly and hand back to the relevant canonical mode
+  5,Deliver,Return one canonical Video Production Brief while preserving the alias name only where compatibility matters
 
 R[4]:
-  Define all brand tokens (colors, fonts, spacing) in a single config file imported by all scenes
-  Use interpolate with Easing functions for all animations — never hard-code frame offsets
-  Add useVideoConfig() at scene level to support dynamic composition dimensions
-  Test render 3 frames per scene (first, mid, last) before full render
+  Keep this folder thin — no competing heuristics or packet types
+  Treat `video-production` as the canonical owner for support docs and workflow boundaries
+  Make explicit Remotion cues visible: compositions, props, rendering, player embedding
+  Refresh compact discovery surfaces whenever alias wording changes materially
 
 E[2]{desc,in,out}:
-  "Product demo video","Script with 4 scenes, brand colors, product screenshots","Multi-scene Remotion composition with transitions, text overlays, and screen recordings"
-  "Social clip","30-second highlight reel from long-form content, 9:16 vertical","Vertical short-form composition with captions, music sync, and brand end card"
+  "Legacy alias request","Use remotion-video-production to plan a reusable product video template","Alias acknowledgement plus canonical Video Production Brief using the code-first programmable-video mode"
+  "Wrong-stack detection","We need thousands of personalized recap videos from a spreadsheet feed","Alias routes back to template/API automation under video-production instead of overcommitting to Remotion"

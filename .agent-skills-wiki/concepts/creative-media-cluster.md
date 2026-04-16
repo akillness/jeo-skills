@@ -1,10 +1,10 @@
 ---
 title: Creative Media Cluster
 created: 2026-04-14
-updated: 2026-04-14
+updated: 2026-04-16
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
-sources: [.survey/video-production-canonicalization-20260414/context.md, .survey/video-production-canonicalization-20260414/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/video-production-canonicalization-20260414/context.md, .survey/video-production-canonicalization-20260414/solutions.md, .survey/remotion-video-production-support-hardening-20260416/context.md, .survey/remotion-video-production-support-hardening-20260416/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Creative Media Cluster
@@ -27,7 +27,7 @@ Current cluster shape:
 - If the problem is only final manual polish or editor technique with no automation layer, this cluster should not pretend to own the whole job
 
 ## Structural note
-Graph structure already showed `README.md`, `README.ko.md`, and `setup-all-skills-prompt.md` as high-degree discovery nodes. That means canonical-vs-alias wording in the creative-media lane matters as much as the SKILL.md itself.
+Graph structure still shows `README.md`, `README.ko.md`, and `setup-all-skills-prompt.md` as high-degree discovery nodes. That means canonical-vs-alias wording in the creative-media lane matters as much as the SKILL.md itself. The latest graph refresh also shows the lane is now support-complete on the `references/` side: `remotion-video-production` no longer stands out as a holdout, so the next creative-media improvements should come from better evals or stronger canonical packets rather than another alias split.
 
 ## Related pages
 - [[skill-support-coverage]]

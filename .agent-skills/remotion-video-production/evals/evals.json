@@ -20,6 +20,16 @@
         "Output keeps the response aligned with the canonical video-production workflow",
         "Output includes asset or QA guidance"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our ops team asked for remotion-video-production, but the real job is generating thousands of recap videos from spreadsheet rows with minimal engineering overhead.",
+      "expected_output": "Acknowledges the alias while routing the workflow back to a broader template/API automation path under video-production instead of forcing a Remotion codebase.",
+      "assertions": [
+        "Output notes that remotion-video-production is a compatibility alias or maps to video-production",
+        "Output explicitly says template/API automation or a broader video-production mode is a better fit than a Remotion codebase",
+        "Output still returns one coherent implementation-ready packet rather than multiple competing plans"
+      ]
     }
   ]
 }
