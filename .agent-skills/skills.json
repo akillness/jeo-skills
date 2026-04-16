@@ -885,7 +885,7 @@
     },
     {
       "name": "firebase-cli",
-      "description": "Install, configure, and operate the Firebase CLI (firebase-tools) for all Firebase services. Use when you need to deploy to Firebase Hosting, Cloud Functions, Firestore, Realtime Database, Cloud Storage, Extensions, App Hosting, or run the Firebase Emulator Suite. Triggers on: firebase deploy, firebase init, firebase emulators, firebase hosting, firebase functions, firebase firestore, firebase database, firebase auth import, firebase remote config, firebase app distribution, firebase extensions, firebase apphosting, firebase cli, firebase-tools, deploy firebase, firebase preview channel, firebase login, firebase serve.",
+      "description": "Operate Firebase from the terminal with `firebase-tools`: install/auth the CLI, bootstrap `firebase.json` / `.firebaserc`, run the Emulator Suite, deploy Hosting / Functions / rules / App Hosting, and handle admin tasks like auth import/export, Remote Config, App Distribution, Extensions, and Data Connect CLI commands. Use when the job is Firebase platform/project operation through the CLI. Triggers on: firebase deploy, firebase init, firebase emulators, firebase hosting, firebase functions, firebase firestore, firebase database, firebase auth import, firebase remote config, firebase app distribution, firebase extensions, firebase apphosting, firebase dataconnect, firebase cli, firebase-tools, deploy firebase, firebase preview channel, firebase login, firebase use, firebase target apply. Route backend AI workflow orchestration to `genkit` and direct in-app SDK integration to `firebase-ai-logic`.",
       "category": "infrastructure",
       "path": "firebase-cli/SKILL.md",
       "tags": [
@@ -902,7 +902,8 @@
         "remote-config",
         "app-distribution",
         "extensions",
-        "apphosting"
+        "apphosting",
+        "dataconnect"
       ],
       "platforms": [],
       "allowed_tools": [

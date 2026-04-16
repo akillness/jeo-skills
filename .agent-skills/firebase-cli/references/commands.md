@@ -1,7 +1,7 @@
 # Firebase CLI — Complete Command Reference
 
-> Source: https://firebase.google.com/docs/cli | firebase-tools v13.x
-> Last updated: 2026-03-13
+> Source: https://firebase.google.com/docs/cli | firebase-tools v15.15.0
+> Last updated: 2026-04-16
 
 ---
 
@@ -1121,4 +1121,4 @@ client.deploy({
 | `ext:dev:publish` | Deprecated; use `ext:dev:upload` |
 | `firebase serve` | Primarily for Hosting + 1st gen HTTPS Functions |
 | App Hosting | GA as of late 2024; requires `firebase init apphosting` |
-| Node.js requirement | Node.js 18+ (LTS) recommended; 16+ minimum |
+| Node.js requirement | Current firebase-tools releases require Node.js 20+ for the npm install path |

@@ -1,419 +1,199 @@
 ---
 name: firebase-cli
 description: >
-  Install, configure, and operate the Firebase CLI (firebase-tools) for all Firebase services.
-  Use when you need to deploy to Firebase Hosting, Cloud Functions, Firestore, Realtime Database,
-  Cloud Storage, Extensions, App Hosting, or run the Firebase Emulator Suite. Triggers on:
+  Operate Firebase from the terminal with `firebase-tools`: install/auth the CLI,
+  bootstrap `firebase.json` / `.firebaserc`, run the Emulator Suite, deploy Hosting /
+  Functions / rules / App Hosting, manage preview channels, and handle Firebase admin
+  tasks like auth import/export, Remote Config, App Distribution, and Extensions.
+  Use when the job is Firebase platform/project operation through the CLI. Triggers on:
   firebase deploy, firebase init, firebase emulators, firebase hosting, firebase functions,
   firebase firestore, firebase database, firebase auth import, firebase remote config,
-  firebase app distribution, firebase extensions, firebase apphosting, firebase cli,
-  firebase-tools, deploy firebase, firebase preview channel, firebase login, firebase serve.
+  firebase app distribution, firebase extensions, firebase apphosting, firebase dataconnect,
+  firebase cli, firebase-tools, deploy firebase, firebase preview channel, firebase login,
+  firebase use, firebase target apply. Route backend AI workflow orchestration to `genkit`
+  and direct in-app SDK integration to `firebase-ai-logic`.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 metadata:
-  tags: firebase, firebase-cli, firebase-tools, deploy, hosting, functions, firestore, database, emulators, auth, remote-config, app-distribution, extensions, apphosting
-  version: "1.0"
+  tags: firebase, firebase-cli, firebase-tools, deploy, hosting, functions, firestore, database, emulators, auth, remote-config, app-distribution, extensions, apphosting, dataconnect
+  version: "1.1"
   source: https://firebase.google.com/docs/cli
   license: Apache-2.0
 ---
 
-# firebase-cli — Firebase Command Line Interface
+# firebase-cli — Firebase platform operator
 
 > **Keyword**: `firebase` · `firebase deploy` · `firebase init` · `firebase emulators`
 >
-> The Firebase CLI (`firebase-tools`) manages your Firebase project from the terminal:
-> deploy, emulate, import/export data, manage users, configure services, and automate CI/CD.
+> Use this skill when the center of gravity is **Firebase platform/project operation through the CLI**.
 
 ## When to use this skill
 
-- Deploy Firebase Hosting, Cloud Functions, Firestore rules/indexes, Realtime Database rules, Cloud Storage rules, Remote Config, or Extensions
-- Set up a new Firebase project with `firebase init`
-- Run the Firebase Emulator Suite locally for development and testing
-- Manage preview/staging channels for Hosting
-- Import or export Firebase Authentication users in bulk
-- Distribute app builds to testers via App Distribution
-- Manage Firebase Extensions (install, configure, update, uninstall)
-- Deploy Next.js / Angular apps via Firebase App Hosting
-- Use Firebase CLI in CI/CD pipelines with service account credentials
+- Install or update `firebase-tools`, choose an auth path, and verify the CLI can operate the target project
+- Bootstrap Firebase config in a repo with `firebase init`, `.firebaserc`, aliases, targets, and deploy surfaces
+- Run the Firebase Emulator Suite for local development, persistence, and test execution
+- Deploy or promote Hosting, Functions, rules, Remote Config, Extensions, or App Hosting through the CLI
+- Manage preview channels, project aliases, selective deploys, and CI/CD auth for Firebase operations
+- Perform Firebase admin/data tasks such as auth import/export, App Distribution, Remote Config rollback, and extension management
+
+## When not to use this skill
+
+- The main job is **backend AI workflow orchestration, tools, flows, RAG, evals, or observability** inside Firebase / Google AI products → use `genkit`
+- The main job is **direct app/client SDK integration** for Gemini-powered in-app features → use `firebase-ai-logic`
+- The main job is **auth stack choice and product auth architecture** rather than Firebase CLI execution → use `authentication-setup`
+- The main job is **schema/index design** rather than Firebase CLI commands → use `database-schema-design`
+- The main job is **generic rollout strategy across providers** instead of Firebase-specific operator commands → use `deployment-automation`
 
 ## Instructions
 
-1. Install the Firebase CLI: `npm install -g firebase-tools`
-2. Authenticate: `firebase login` (browser OAuth) or `GOOGLE_APPLICATION_CREDENTIALS` for CI
-3. Initialize project: `firebase init` (creates `firebase.json` and `.firebaserc`)
-4. Deploy: `firebase deploy` or `firebase deploy --only hosting,functions`
-5. Run emulators: `firebase emulators:start`
-6. For detailed command reference, see [references/commands.md](references/commands.md)
-7. For installation and setup scripts, see [scripts/install.sh](scripts/install.sh)
+### Step 1: Pick the operating mode
 
-> **CI/CD**: Use `GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json firebase deploy`
-> instead of the deprecated `--token` / `FIREBASE_TOKEN` method.
+Start by routing the request into one of these modes:
 
----
+| Mode | Use when | Primary support |
+|------|----------|-----------------|
+| Install / auth | CLI missing, outdated, or blocked on credentials | `scripts/install.sh`, `references/install-auth-and-bootstrap.md` |
+| Bootstrap / config | Need `firebase init`, aliases, targets, or repo config layout | `references/install-auth-and-bootstrap.md` |
+| Local emulators | Need local Firebase runtime, persistence, or test harness | `scripts/emulators.sh`, `references/emulator-and-release-workflows.md` |
+| Deploy / release | Need scoped deploys, preview channels, App Hosting rollout, or CI execution | `scripts/deploy.sh`, `references/emulator-and-release-workflows.md` |
+| Admin / data ops | Need auth import/export, Remote Config, App Distribution, Extensions, or Data Connect commands | `references/admin-and-data-operations.md` |
+| Unsure / mixed job | Need help deciding whether this is Firebase CLI vs adjacent lane work | `references/modes-and-routing.md` |
+
+### Step 2: Verify prerequisites before changing anything
+
+1. Confirm the CLI exists and capture the version: `firebase --version`
+2. Confirm the runtime is new enough for current `firebase-tools` releases:
+   - npm install path requires **Node.js 20+**
+   - standalone installer is macOS/Linux only
+3. Check authentication path:
+   - local interactive work → `firebase login`
+   - CI/non-interactive work → service account credentials via `GOOGLE_APPLICATION_CREDENTIALS`
+4. Inspect project config before deploys or emulator work:
+   - `firebase.json`
+   - `.firebaserc`
+   - any target-specific directories (`functions/`, hosting output dir, rules/index files)
+
+### Step 3: Run the smallest workflow that answers the request
+
+#### Mode A — Install / auth
+- Install or update via `bash scripts/install.sh`
+- Prefer npm install when Node.js 20+ is available: `npm install -g firebase-tools`
+- Use browser OAuth locally with `firebase login`
+- In CI, prefer service-account credentials over deprecated `--token` / `FIREBASE_TOKEN`
+
+#### Mode B — Bootstrap / config
+- Use `firebase init` for the exact surfaces needed instead of turning on everything blindly
+- Set/inspect aliases with `firebase use` and `firebase use --add`
+- Use deploy targets when multiple Hosting sites, DB instances, or buckets exist
+- Record which Firebase features belong in this repo and which belong in adjacent skills
+
+#### Mode C — Local emulators
+- Use `bash scripts/emulators.sh --persistent` for durable local data
+- Use `firebase emulators:exec "<test command>"` for one-shot test runs
+- Start only the emulators you need with `--only auth,firestore,functions`
+- Keep emulator config and seed-data expectations explicit in the repo
+
+#### Mode D — Deploy / release
+- Scope deploys with `--only` or `--except`
+- Prefer preview channels for reviewable Hosting changes before production deploys
+- For App Hosting, treat backend creation/rollouts as an operator workflow, not a generic web deploy shortcut
+- In CI, use `--non-interactive` and explicit credentials
+- Verify what changed after deploy instead of assuming success from the command exit alone
+
+#### Mode E — Admin / data ops
+- Use the CLI for auth import/export, Remote Config versioning/rollback, App Distribution, Extensions, and targeted cleanup tasks
+- Be explicit about destructive commands like `firestore:delete --recursive --force`
+- For large/import-sensitive jobs, capture the exact hash/config/version parameters before execution
+
+### Step 4: Route out aggressively when the job changed shape
+
+Use `firebase-cli` as the operator anchor, but hand off when the work is really about:
+- app/client Gemini SDK feature wiring → `firebase-ai-logic`
+- flow/tool/RAG/eval orchestration → `genkit`
+- auth-model product decisions → `authentication-setup`
+- schema/index modeling → `database-schema-design`
+- provider-agnostic rollout strategy → `deployment-automation`
+
+### Step 5: Verify the outcome
+
+For every mode, verify the smallest truthful artifact:
+- install/auth → `firebase --version`, `firebase login:list`, or successful auth-bound command
+- bootstrap/config → `firebase.json`, `.firebaserc`, target mappings
+- emulators → running ports, imported/exported data directory, successful test run
+- deploy/release → deployed target list, preview URL, or post-deploy smoke check
+- admin/data ops → exported/imported file, version rollback confirmation, tester/group update, or extension status
 
 ## Examples
 
-### Deploy everything
+### Example 1: Bootstrap a Firebase repo cleanly
 
-```bash
-firebase deploy
+```text
+Prompt: "Set up Firebase in this repo for Hosting + Functions + preview channels"
+
+Mode:
+- Bootstrap / config
+
+Likely actions:
+- bash scripts/install.sh
+- firebase login
+- firebase init hosting functions
+- firebase use --add
+- firebase target:apply ...   # if multi-site is needed
 ```
 
-### Deploy only Hosting and Functions
+### Example 2: Local emulator workflow with persistence
 
-```bash
-firebase deploy --only hosting,functions
+```text
+Prompt: "Run auth + firestore emulators locally and keep the data between runs"
+
+Mode:
+- Local emulators
+
+Likely actions:
+- bash scripts/emulators.sh --only auth,firestore --persistent
+- or firebase emulators:start --only auth,firestore --import ./emulator-data --export-on-exit
 ```
 
-### Run all emulators with data persistence
+### Example 3: Firebase release / preview flow
 
-```bash
-firebase emulators:start --import ./emulator-data --export-on-exit
+```text
+Prompt: "Deploy Hosting to a reviewable staging channel, then ship production after approval"
+
+Mode:
+- Deploy / release
+
+Likely actions:
+- bash scripts/deploy.sh --channel staging --expires 7d
+- firebase hosting:channel:open staging
+- firebase deploy --only hosting
 ```
 
-### Create a preview channel and deploy
+### Example 4: Route AI workflow work away from this skill
 
-```bash
-firebase hosting:channel:create staging --expires 7d
-firebase hosting:channel:deploy staging
+```text
+Prompt: "Build a Firebase RAG flow with tools, evals, and observability"
+
+Decision:
+- Route to `genkit`
+- Keep `firebase-cli` only for operator tasks like local setup or deploy wiring if needed
 ```
-
-### Import users from JSON
-
-```bash
-firebase auth:import users.json --hash-algo=BCRYPT
-```
-
-### Distribute Android build to testers
-
-```bash
-firebase appdistribution:distribute app-release.apk \
-  --app "1:1234567890:android:abcd1234" \
-  --release-notes "Sprint 42 build" \
-  --groups "qa-team"
-```
-
----
-
-## Quick Start
-
-```bash
-# Install
-npm install -g firebase-tools
-
-# Authenticate
-firebase login
-
-# Initialize project (interactive)
-firebase init
-
-# Deploy
-firebase deploy
-
-# Run emulators
-firebase emulators:start
-```
-
----
-
-## Installation
-
-### npm (recommended — all platforms)
-
-```bash
-npm install -g firebase-tools
-firebase --version
-```
-
-### Standalone binary (macOS/Linux — no Node.js required)
-
-```bash
-curl -sL firebase.tools | bash
-```
-
-### CI/CD — service account authentication (recommended)
-
-```bash
-# Set environment variable pointing to service account JSON key
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"
-firebase deploy --non-interactive
-```
-
-### Via skill script
-
-```bash
-bash scripts/install.sh
-```
-
----
-
-## Core Usage
-
-### Authentication
-
-```bash
-firebase login                          # OAuth browser login
-firebase login --no-localhost           # Copy-paste code flow
-firebase login:ci                       # Generate CI token (deprecated — use service account)
-firebase login:list                     # List all authorized accounts
-firebase login:use user@example.com     # Set default account
-firebase logout                         # Sign out
-```
-
-### Project Management
-
-```bash
-firebase init                    # Set up Firebase features in current directory
-firebase use <project_id>        # Set active project
-firebase use --add               # Add a project alias
-firebase projects:list           # List all Firebase projects
-firebase open hosting:site       # Open Firebase console in browser
-```
-
-### Deployment
-
-```bash
-# Deploy everything
-firebase deploy
-
-# Deploy specific targets
-firebase deploy --only hosting
-firebase deploy --only functions
-firebase deploy --only firestore
-firebase deploy --only hosting,functions
-
-# Deploy sub-targets
-firebase deploy --only functions:myFunction
-firebase deploy --only hosting:my-site
-firebase deploy --only firestore:rules
-firebase deploy --only firestore:indexes
-
-# Exclude targets
-firebase deploy --except functions
-
-# With message
-firebase deploy --message "v2.3.1 release"
-```
-
-### Firebase Emulator Suite
-
-```bash
-# Start all configured emulators
-firebase emulators:start
-
-# Start specific emulators
-firebase emulators:start --only auth,firestore,functions
-
-# With data import/export
-firebase emulators:start --import ./emulator-data --export-on-exit
-
-# Run tests against emulators then shut down
-firebase emulators:exec "npm test" --only firestore,auth
-
-# Enable Functions debugger (Node.js inspector on port 9229)
-firebase emulators:start --inspect-functions
-```
-
-### Local Development Server
-
-```bash
-firebase serve                        # Hosting + HTTPS Functions
-firebase serve --only hosting
-firebase serve --port 5000
-```
-
----
-
-## Hosting Commands
-
-```bash
-# Preview channels
-firebase hosting:channel:create staging --expires 7d
-firebase hosting:channel:deploy staging
-firebase hosting:channel:list
-firebase hosting:channel:open staging
-firebase hosting:channel:delete staging --force
-firebase hosting:clone my-app:live my-app-staging:staging
-
-# Multi-site management
-firebase hosting:sites:list
-firebase hosting:sites:create new-site-id
-firebase hosting:disable --site my-old-site
-```
-
----
-
-## Cloud Functions Commands
-
-```bash
-firebase functions:list                           # List deployed functions
-firebase functions:log                            # View logs
-firebase functions:log --only myFunction          # Filter by function name
-firebase functions:delete myFunction              # Delete a function
-firebase functions:shell                          # Local interactive shell
-
-# Secrets (2nd gen — replaces functions:config)
-firebase functions:secrets:set MY_SECRET
-firebase functions:secrets:get MY_SECRET
-firebase functions:secrets:prune
-
-# Config (1st gen only)
-firebase functions:config:set api.key="VALUE"
-firebase functions:config:get
-```
-
----
-
-## Firestore Commands
-
-```bash
-firebase firestore:delete /collection/doc --recursive
-firebase firestore:indexes
-firebase firestore:rules:get
-```
-
----
-
-## Realtime Database Commands
-
-```bash
-firebase database:get /path --pretty
-firebase database:set /path data.json
-firebase database:push /messages --data '{"text":"Hello"}'
-firebase database:update /users/uid --data '{"name":"New Name"}'
-firebase database:remove /path --confirm
-firebase database:profile --duration 30
-```
-
----
-
-## Auth Import / Export
-
-```bash
-# Export all users
-firebase auth:export users.json
-
-# Import users (BCRYPT hashes)
-firebase auth:import users.json --hash-algo=BCRYPT
-
-# Import users (SCRYPT hashes — Firebase default)
-firebase auth:import users.json \
-  --hash-algo=SCRYPT \
-  --hash-key=<base64-key> \
-  --salt-separator=<base64-separator> \
-  --rounds=8 \
-  --mem-cost=8
-```
-
----
-
-## Remote Config
-
-```bash
-firebase remoteconfig:get
-firebase remoteconfig:get --output config.json
-firebase remoteconfig:versions:list --limit 20
-firebase remoteconfig:rollback --version-number 5
-```
-
----
-
-## App Distribution
-
-```bash
-# Distribute Android APK
-firebase appdistribution:distribute app.apk \
-  --app APP_ID \
-  --release-notes "Bug fixes and improvements" \
-  --testers "qa@example.com" \
-  --groups "qa-team,beta-users"
-
-# Manage testers
-firebase appdistribution:testers:add alice@example.com --group-alias qa-team
-firebase appdistribution:testers:remove alice@example.com
-firebase appdistribution:groups:list
-```
-
----
-
-## Extensions
-
-```bash
-firebase ext:list
-firebase ext:info firebase/delete-user-data
-firebase ext:install firebase/delete-user-data
-firebase ext:configure delete-user-data
-firebase ext:update delete-user-data
-firebase ext:uninstall delete-user-data
-firebase ext:export
-```
-
----
-
-## App Hosting (Next.js / Angular)
-
-```bash
-firebase init apphosting
-firebase apphosting:backends:create --location us-central1
-firebase apphosting:backends:list
-firebase deploy --only apphosting
-firebase apphosting:rollouts:create BACKEND_ID --git-branch main
-```
-
----
-
-## Deploy Targets (multi-site / multi-instance)
-
-```bash
-# Apply target name to a resource
-firebase target:apply hosting prod-site my-app-prod
-firebase target:apply storage prod-bucket my-app-bucket
-firebase target:apply database default my-app-db
-
-# Use target in deploy
-firebase deploy --only hosting:prod-site
-
-# Clear targets
-firebase target:clear hosting prod-site
-```
-
----
 
 ## Best practices
 
-1. **Use service accounts for CI/CD**: Set `GOOGLE_APPLICATION_CREDENTIALS` instead of `--token` (deprecated).
-2. **Use `--only` in deploy**: Never deploy everything blindly in production — always scope with `--only`.
-3. **Emulators for development**: Always run `emulators:start` locally before deploying; use `--import`/`--export-on-exit` for persistence.
-4. **Preview channels before production**: Use `hosting:channel:deploy` for staging reviews before `firebase deploy --only hosting`.
-5. **Secrets over functions:config**: For Cloud Functions 2nd gen, use `functions:secrets:set` (Secret Manager) instead of deprecated `functions:config:set`.
-6. **`--non-interactive` in scripts**: Always add `--non-interactive` in automated scripts to avoid hanging on prompts.
-7. **`.firebaserc` in VCS**: Commit `.firebaserc` (project aliases) but add secrets and service account keys to `.gitignore`.
-8. **`--debug` for troubleshooting**: Run any failing command with `--debug` for verbose output.
-
----
-
-## Troubleshooting
-
-| Issue | Solution |
-|-------|---------|
-| `command not found: firebase` | Run `npm install -g firebase-tools`; check `npm bin -g` is in `PATH` |
-| Authentication error in CI | Set `GOOGLE_APPLICATION_CREDENTIALS` to service account JSON path |
-| `FIREBASE_TOKEN` warning | Migrate from token-based auth to service accounts |
-| Deploy fails with permission error | Verify service account has required IAM roles (Firebase Admin, Cloud Functions Admin, etc.) |
-| Emulators not starting | Check ports 4000/5000/5001/8080/9000/9099/9199 are available; run `lsof -i :<port>` |
-| Functions deploy timeout | Use `--only functions:specificFunction` to deploy one at a time |
-| Hosting deploy not reflecting changes | Check `firebase.json` `public` directory and `ignore` patterns |
-| `ext:install` fails | Check extension ID format: `publisher/extension-id`; try `--debug` |
-| Database permission denied | Verify database rules and that CLI auth account has access |
-
----
+1. **Prefer workflow selection over command dumping** — choose the mode first, then the commands
+2. **Use service accounts in CI** — treat `--token` / `FIREBASE_TOKEN` as deprecated escape hatches, not the default path
+3. **Scope deploys tightly** — `--only` and preview channels reduce accidental blast radius
+4. **Keep repo config explicit** — `firebase.json`, `.firebaserc`, and target mappings should match the repo’s real deploy surfaces
+5. **Use persistence intentionally in emulator work** — import/export directories make local debugging and tests repeatable
+6. **Separate Firebase operator work from app/AI logic work** — route to `firebase-ai-logic` or `genkit` when the CLI is no longer the main job
+7. **Treat destructive admin commands as high-risk** — confirm paths, versions, and resource IDs before delete/rollback/import operations
 
 ## References
 
-- [Firebase CLI Reference](https://firebase.google.com/docs/cli) — official full command reference
-- [Full Command Reference](references/commands.md) — complete options and flags for all commands
-- [Install Scripts](scripts/) — `install.sh` (setup) · `deploy.sh` (deployment helper) · `emulators.sh` (emulator management)
-- [firebase-tools GitHub](https://github.com/firebase/firebase-tools) — source code and changelog
-- [Firebase CLI Release Notes](https://firebase.google.com/support/release-notes/cli) — version history
-- [Auth Import/Export Reference](https://firebase.google.com/docs/cli/auth) — hash algorithm details
-- [Hosting Preview Channels](https://firebase.google.com/docs/hosting/test-preview-deploy) — staging workflow
-- [Emulator Suite Configuration](https://firebase.google.com/docs/emulator-suite/install_and_configure) — emulator setup
+- [Mode selection and route-outs](references/modes-and-routing.md)
+- [Install, auth, and bootstrap guide](references/install-auth-and-bootstrap.md)
+- [Emulator and release workflows](references/emulator-and-release-workflows.md)
+- [Admin and data operations](references/admin-and-data-operations.md)
+- [Full command reference](references/commands.md)
+- [Scripts](scripts/) — `install.sh`, `deploy.sh`, `emulators.sh`
+- [Firebase CLI reference](https://firebase.google.com/docs/cli)
+- [firebase-tools GitHub](https://github.com/firebase/firebase-tools)

@@ -78,9 +78,9 @@ case "$METHOD" in
   npm)
     # Check Node.js version
     NODE_VERSION=$(node --version 2>/dev/null | sed 's/v//' | cut -d. -f1 || echo "0")
-    if [[ "$NODE_VERSION" -lt 18 ]]; then
-      log_warn "Node.js v${NODE_VERSION} detected. Firebase CLI requires Node.js 18+."
-      log_warn "Consider upgrading: https://nodejs.org"
+    if [[ "$NODE_VERSION" -lt 20 ]]; then
+      log_warn "Node.js v${NODE_VERSION} detected. Current firebase-tools releases require Node.js 20+."
+      log_warn "Consider upgrading before using the npm install path: https://nodejs.org"
     fi
 
     PACKAGE="firebase-tools"
@@ -118,8 +118,8 @@ case "$METHOD" in
     log_info "     - Cloud Build Service Account (if using Cloud Build)"
     log_info "  3. Download the JSON key file"
     log_info "  4. Set environment variable:"
-    log_info "     export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account-key.json"
-    log_info ""
+    log_info "     export GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account.json"
+
     log_info "In CI (GitHub Actions example):"
     log_info "  - name: Deploy to Firebase"
     log_info "    env:"

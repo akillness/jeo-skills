@@ -1,39 +1,36 @@
 N:firebase-cli
-D:[firebase-cli] Install, configure, and operate Firebase CLI for all Firebase services. Covers deploy, emulators, hosting preview channels, auth import/export, app distribution, extensions, app hosting, CI/CD. Installation: npm install -g firebase-tools.
-G:firebase firebase-cli firebase-tools deploy hosting functions firestore database emulators auth remote-config app-distribution extensions apphosting ci-cd service-account preview-channel
+D:[firebase-cli] Firebase platform/operator anchor for `firebase-tools`: install/auth the CLI, bootstrap `firebase.json` + `.firebaserc`, run emulators, deploy Hosting / Functions / rules / App Hosting, manage preview channels, and handle admin tasks like auth import/export, Remote Config, App Distribution, Extensions, and Data Connect CLI commands. Route backend AI workflow orchestration to genkit and direct in-app SDK integration to firebase-ai-logic.
+G:firebase firebase-cli firebase-tools deploy hosting functions firestore database emulators auth remote-config app-distribution extensions apphosting dataconnect ci-cd preview-channel service-account
 
-U[9]:
-  Deploy Firebase Hosting, Cloud Functions, Firestore rules/indexes, Realtime Database rules
-  Set up a new Firebase project with firebase init
-  Run the Firebase Emulator Suite locally for development and testing
-  Manage preview/staging channels for Hosting before production deploy
-  Import or export Firebase Authentication users in bulk
-  Distribute app builds to testers via App Distribution
-  Manage Firebase Extensions (install, configure, update, uninstall)
-  Deploy Next.js / Angular apps via Firebase App Hosting
-  Use Firebase CLI in CI/CD pipelines with service account credentials
+U[8]:
+  Install or update firebase-tools and choose the right auth path
+  Bootstrap firebase.json, .firebaserc, aliases, and deploy targets
+  Run the Firebase Emulator Suite with persistence or one-shot test execution
+  Deploy Hosting, Functions, rules, or App Hosting with scoped commands
+  Manage preview/staging channels before production deploys
+  Handle auth import/export, Remote Config, App Distribution, and Extensions
+  Use Firebase CLI in CI/CD with service-account credentials
+  Route AI flow orchestration to genkit and app/client Gemini wiring to firebase-ai-logic
 
 S[5]{n,action,details}:
-  1,Install,npm install -g firebase-tools OR curl -sL firebase.tools | bash (standalone binary)
-  2,Auth,firebase login (browser OAuth) OR export GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json for CI
-  3,Init,firebase init (interactive: creates firebase.json and .firebaserc with project aliases)
-  4,Deploy,firebase deploy OR firebase deploy --only hosting,functions (scope with --only in prod)
-  5,Emulate,firebase emulators:start --import ./emulator-data --export-on-exit
+  1,Pick mode,install/auth | bootstrap/config | local emulators | deploy/release | admin/data ops
+  2,Verify prerequisites,check firebase --version plus Node.js 20+ for npm install path and inspect firebase.json/.firebaserc
+  3,Run smallest workflow,use scripts/install.sh deploy.sh emulators.sh or focused raw commands for the chosen mode
+  4,Route out,send backend AI workflow work to genkit and client SDK integration to firebase-ai-logic
+  5,Verify outcome,confirm version login config files emulator data preview URL or admin operation result
 
-R[8]:
-  Use service accounts for CI/CD: set GOOGLE_APPLICATION_CREDENTIALS instead of deprecated --token
-  Always scope deploys with --only in production — never blindly deploy everything
-  Run emulators:start locally before deploying; use --import/--export-on-exit for persistence
-  Use hosting:channel:deploy for staging previews before firebase deploy --only hosting
-  For Cloud Functions 2nd gen use functions:secrets:set (Secret Manager) not deprecated functions:config:set
-  Always add --non-interactive in automated scripts to avoid hanging on prompts
-  Commit .firebaserc (project aliases) but gitignore service account key files
-  Run failing commands with --debug flag for verbose diagnostic output
+R[7]:
+  Choose the workflow mode first instead of dumping commands
+  Prefer service-account auth in CI over deprecated --token / FIREBASE_TOKEN
+  Scope deploys with --only and use preview channels when possible
+  Keep firebase.json, .firebaserc, and target mappings truthful to the repo
+  Use emulator import/export directories for repeatable local runs
+  Separate Firebase operator work from app/AI logic work
+  Treat delete/rollback/import commands as high-risk operations
 
-E[6]{type,command}:
-  Deploy all,firebase deploy
-  Deploy scoped,firebase deploy --only hosting,functions
-  Emulators with persistence,firebase emulators:start --import ./emulator-data --export-on-exit
-  Preview channel,firebase hosting:channel:create staging --expires 7d && firebase hosting:channel:deploy staging
-  Import auth users,firebase auth:import users.json --hash-algo=BCRYPT
-  Distribute build,firebase appdistribution:distribute app.apk --app APP_ID --groups qa-team
+E[5]{type,command}:
+  Bootstrap repo,bash scripts/install.sh && firebase login && firebase init hosting functions
+  Persistent emulators,bash scripts/emulators.sh --only auth,firestore --persistent
+  Preview deploy,firebase hosting:channel:create staging --expires 7d && firebase hosting:channel:deploy staging
+  Scoped prod deploy,firebase deploy --only hosting
+  Admin import,firebase auth:import users.json --hash-algo=BCRYPT

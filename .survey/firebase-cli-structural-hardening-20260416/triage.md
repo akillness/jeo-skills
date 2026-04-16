@@ -1,0 +1,4 @@
+# Triage
+- Problem: The repo’s `firebase-cli` skill is still a 419-line command-heavy front door with weak workflow routing, even though Firebase CLI now spans project bootstrap, emulators, Hosting/App Hosting deploys, data/admin tasks, and adjacent AI-era surfaces like `genkit` / Data Connect.
+- Audience: Agents and developers who use Firebase for project setup, local emulation, deployments, admin operations, and CI/CD automation.
+- Why now: In this run’s required cross-domain opportunity scan (CLI/dev workflow, web/fullstack, product/ops, marketing, game-dev), `firebase-cli` was the clearest unmodernized high-utility candidate: it is the only representative anchor in the scan without a prior wiki modernization entry, and its current front door is larger and less mode-selective than nearby modernized skills.

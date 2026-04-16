@@ -614,3 +614,11 @@
 - Accepted: shrink `design-system/SKILL.md` into a mode-selecting router, add focused references for system modes / governance / packet output / boundaries, refresh evals and compact/discovery wording, remove stale related-skill residue, and update frontend discovery text where positioning changed materially
 - Rejected: leaving the canonical skill as a giant mixed example dump; reopening alias work; adding another overlapping frontend wrapper; merging system-governance work into `ui-component-patterns`, `responsive-design`, `web-accessibility`, or `web-design-guidelines`
 - Wiki files created/updated: `queries/design-system-structural-hardening-2026-04-16.md`, `concepts/frontend-skill-canonicalization.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | firebase-cli structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, PM/ops, marketing, and game-dev lanes, with the best bounded Firebase/platform improvement landing on the dense `firebase-cli` operator skill
+- Survey files created under `.survey/firebase-cli-structural-hardening-20260416/`; repo-local evidence plus Firebase primary docs were used because normal search/extract APIs are unavailable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `firebase-cli/SKILL.md` into a routing-first operator anchor, add focused routing / bootstrap / emulator-release / admin-data references, refresh evals and compact/discovery wording, and preserve the lane boundary with `genkit` and `firebase-ai-logic`
+- Rejected: adding another Firebase wrapper; merging CLI/project operations into `genkit` or `firebase-ai-logic`; keeping the old command-catalog front door
+- Wiki files created/updated: `queries/firebase-cli-structural-hardening-2026-04-16.md`, `concepts/firebase-ai-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
