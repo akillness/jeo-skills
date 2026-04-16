@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-16 | Total pages: 84
+> Last updated: 2026-04-16 | Total pages: 85
 
 ## Entities
 
@@ -71,6 +71,7 @@
 - [[langsmith-hardening-2026-04-16]] — Why the best bounded next search-analysis / AI-ops improvement was modernizing `langsmith` into a mode-selecting trace/eval/review anchor instead of leaving it as a feature tour or splitting it into overlapping wrappers.
 - [[autoresearch-hardening-2026-04-16]] — Why the best bounded follow-up after `skill-autoresearch` was hardening `autoresearch` around the ML-specific `program.md` / `train.py` / `val_bpb` boundary instead of broadening it into generic eval tooling.
 - [[ralphmode-hardening-2026-04-16]] — Why the best bounded next orchestration-platform support upgrade was hardening `ralphmode` around the settings / rules / hooks model and adding eval coverage instead of spawning another permissions wrapper.
+- [[ralph-support-hardening-2026-04-16]] — Why the best bounded next core-orchestration improvement was hardening `ralph` with eval coverage and live self-path cleanup instead of adding another persistent-loop wrapper.
 - [[skill-autoresearch-hardening-2026-04-16]] — Why the best bounded next skill-maintenance upgrade was hardening `skill-autoresearch` around frozen evaluators, keep-or-revert ratcheting, and append-only experiment artifacts instead of creating another eval helper.
 - [[debugging-modernization-2026-04-13]] — Why the best bounded code-quality upgrade was rewriting `debugging` into a reproduce → isolate → verify workflow instead of adding another generic troubleshooting wrapper.
 - [[code-review-modernization-2026-04-13]] — Why the best bounded code-quality improvement was modernizing `code-review` into a workflow-aware review anchor instead of adding another review-adjacent wrapper.

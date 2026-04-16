@@ -1,10 +1,10 @@
 ---
 title: Core Orchestration Platform Cluster
 created: 2026-04-15
-updated: 2026-04-15
+updated: 2026-04-16
 type: concept
 tags: [skills, consolidation, trigger-design, graphify]
-sources: [.survey/ohmg-modernization-20260415/context.md, .survey/ohmg-modernization-20260415/platform-map.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/ohmg-modernization-20260415/context.md, .survey/ohmg-modernization-20260415/platform-map.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/platform-map.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Core Orchestration Platform Cluster
@@ -13,6 +13,7 @@ sources: [.survey/ohmg-modernization-20260415/context.md, .survey/ohmg-moderniza
 The platform-orchestration lane is cleaner when `ohmg`, `omc`, and `omx` are treated as **different runtime anchors**, not three equivalent "multi-agent framework" wrappers.
 
 ## Current cluster shape
+- `ralph` = canonical specification-first method and persistent completion loop: interview → immutable seed → execute → evaluate → evolve, plus `ooo ralph` for verified persistence
 - `ohmg` = Gemini CLI / Antigravity-facing entry for the portable `oh-my-agent` harness, with `.agents` as the source of truth and cross-vendor-ready projection
 - `omc` = Claude-first runtime overlay for plugin/in-session orchestration, team flows, and Claude-native operator surfaces
 - `omx` = Codex-first runtime overlay for `$deep-interview`, `$ralplan`, `$team`, `$ralph`, and `.omx/` runtime-state behavior
@@ -25,6 +26,7 @@ The platform-orchestration lane is cleaner when `ohmg`, `omc`, and `omx` are tre
 - The graph refresh shows that discovery docs are high-degree nodes, so small wording mistakes in this cluster can distort activation across many sessions.
 
 ## Boundary rules
+- If the main question is **spec-first clarification, immutable seed generation, drift/evaluate flows, or persistent completion until verification passes** → `ralph`
 - If the main question is **portable `.agents` structure, Gemini-native generated agents, or Antigravity compatibility** → `ohmg`
 - If the main question is **Claude Code-native orchestration, plugin flow, or `/team` / `/autopilot` behavior** → `omc`
 - If the main question is **Codex-native orchestration, `$deep-interview` / `$ralplan` / `$team` / `$ralph` behavior, or `.omx/` state** → `omx`
@@ -34,7 +36,10 @@ The platform-orchestration lane is cleaner when `ohmg`, `omc`, and `omx` are tre
 ## Structural note
 The `ohmg` modernization pass confirmed the same pattern seen elsewhere in the repo: fixing a stale high-visibility anchor and adding support files is more valuable than creating another overlapping platform wrapper.
 
+The `ralph` support-hardening pass reinforces that same rule inside the core-orchestration lane: finishing eval coverage and removing stale self-path examples is more valuable than creating another persistent-loop wrapper.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[ohmg-modernization-2026-04-15]]
+- [[ralph-support-hardening-2026-04-16]]
 - [[developer-workflow-cluster]]

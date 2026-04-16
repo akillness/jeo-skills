@@ -1,0 +1,35 @@
+{
+  "skill_name": "ralph",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a vague product idea for a command-line release checklist tool. Use ralph to clarify what I actually need before anyone writes code.",
+      "expected_output": "The skill activates the Socratic interview / ambiguity-reduction flow before implementation.",
+      "assertions": [
+        "Response routes to interview/spec clarification instead of immediate coding",
+        "Response references ambiguity reduction, seed/spec creation, or equivalent prerequisite clarification gate",
+        "Response keeps `ralph` positioned as the specification-first method rather than a platform-specific runtime wrapper"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Run a persistent loop until all failing tests in this repo are fixed, and don't stop until verification passes.",
+      "expected_output": "The skill activates the Ralph persistent completion loop with explicit verification/completion semantics.",
+      "assertions": [
+        "Response references `ooo ralph` or the persistent loop behavior",
+        "Response includes verification or completion-promise language rather than stopping at implementation alone",
+        "Response does not reroute the task to `plannotator`, `ralphmode`, `omc`, or `omx` as the primary owner"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "How do I install the local helpers for ralph in this repo so Codex CLI or Gemini CLI can use the loop correctly?",
+      "expected_output": "The skill points to the live `ralph` skill path for setup scripts while preserving platform-specific loop mechanics.",
+      "assertions": [
+        "Response references `.agent-skills/ralph/scripts/setup-codex-hook.sh` and/or `.agent-skills/ralph/scripts/setup-gemini-hook.sh`",
+        "Response does not tell the user to install `--skill ralph-ooo` or use `.agent-skills/ralph-ooo/...` self-paths",
+        "Response keeps platform setup separate from the core spec-first method description"
+      ]
+    }
+  ]
+}

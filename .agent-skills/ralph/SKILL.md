@@ -82,6 +82,10 @@ You cannot design what you haven't understood. The first diamond is a prerequisi
 
 ---
 
+## Instructions
+
+Follow the full Ouroboros loop in order unless the user explicitly asks for a narrower sub-command.
+
 ## Phase 1: Interview — From Wonder to Ontology
 
 > *Wonder → "How should I live?" → "What IS 'live'?" → Ontology* — Socrates
@@ -390,6 +394,34 @@ ooo unstuck architect        # restructure the approach entirely
 
 ---
 
+## Examples
+
+### Example 1: Clarify a vague build request
+
+```text
+ooo interview "build a task management CLI"
+```
+
+### Example 2: Run the persistent completion loop
+
+```text
+ooo ralph "fix all failing tests" --max-iterations=10
+```
+
+### Example 3: Install local helpers for Codex or Gemini
+
+```bash
+bash .agent-skills/ralph/scripts/setup-codex-hook.sh
+bash .agent-skills/ralph/scripts/setup-gemini-hook.sh
+```
+
+## Best practices
+
+- Freeze the seed before implementation and measure drift against that original contract.
+- Pair long-running Ralph runs with repo-local rules and verification steps rather than trusting autonomy alone.
+- Keep `ralph` focused on specification-first method + persistent completion; route runtime shells to `omc`, `omx`, `ohmg`, `jeo`, `plannotator`, and `ralphmode` as appropriate.
+- Prefer the live `ralph` skill path in local setup examples, even when runtime internals still use `ralph-ooo` as an alias or state name.
+
 ## Quick Reference
 
 | Action | Command |
@@ -436,13 +468,13 @@ Run from the skill directory:
 
 ```bash
 # Claude Code (via oh-my-skills)
-npx skills add https://github.com/akillness/oh-my-skills --skill ralph-ooo
+npx skills add https://github.com/akillness/oh-my-skills --skill ralph
 
 # Codex CLI setup
-bash .agent-skills/ralph-ooo/scripts/setup-codex-hook.sh
+bash .agent-skills/ralph/scripts/setup-codex-hook.sh
 
 # Gemini CLI setup
-bash .agent-skills/ralph-ooo/scripts/setup-gemini-hook.sh
+bash .agent-skills/ralph/scripts/setup-gemini-hook.sh
 
 # Ouroboros native plugin
 claude plugin marketplace add Q00/ouroboros
