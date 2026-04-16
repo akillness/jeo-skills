@@ -4,42 +4,41 @@
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, compact-variant coverage, and documentation indexing
 - Total skills: 89
-- Manifest skills in `.agent-skills/skills.json`: 88
-- Skills with references/: 88
-- Skills with evals/: 88
-- Skills with scripts/: 23
-- Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 88
+- Manifest skills in `.agent-skills/skills.json`: 89
+- Skills with references/: 89
+- Skills with evals/: 89
+- Skills with scripts/: 24
+- Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
-- Graph nodes: 380
-- Graph edges: 1057
+- Graph nodes: 385
+- Graph edges: 1072
 
 ## Strongest structural findings
 1. The graph remains docs-first: `README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`, and `skills.toon` are still the highest-degree maintenance nodes because they index the live catalog.
-2. The core-orchestration lane is cleaner after the remotion alias PR merged: `ralph` is now the main remaining support hardening target, and the bounded win this run is to finish its eval/residue gap instead of inventing another orchestration wrapper.
-3. `ralph` now looks like a support-complete canonical method candidate once eval coverage lands: the remaining repo-local friction is stale self-path examples that still point at `.agent-skills/ralph-ooo/...` rather than the live `ralph` directory.
-4. After this run, the remaining structural eval holdouts should be empty; future graph refreshes should focus on boundary quality and duplicate pressure rather than missing basic support folders.
+2. Basic support coverage is now complete across the live skill set: all 89 skills have `references/`, `evals/`, and a compact discovery variant. Structural maintenance should keep shifting from missing support folders to trigger clarity, boundary quality, and stale high-visibility anchors.
+3. `jeo` remains one of the highest-degree runtime skills, and this run improved the maintenance shape by shrinking `SKILL.md` well under the 500-line guideline while moving platform/state/troubleshooting detail into dedicated references.
+4. The core-orchestration lane is still healthiest when `jeo` stays the integrated router and routes outward to `ralph`, `plannotator`, `agent-browser`, `agentation`, `omc`, `omx`, `ohmg`, and `ralphmode` instead of absorbing their specialist surfaces.
 
 ## Highest-degree nodes
-- .agent-skills/skills.json: degree 88
-- README.ko.md: degree 87
-- README.md: degree 87
-- setup-all-skills-prompt.md: degree 87
-- .agent-skills/skills.toon: degree 80
-- debugging: degree 34
-- code-review: degree 22
-- performance-optimization: degree 21
-- task-planning: degree 21
-- vibe-kanban: degree 21
-- jeo: degree 20
-- survey: degree 20
+- skills.json: degree 89
+- README.md: degree 88
+- README.ko.md: degree 88
+- setup-all-skills-prompt.md: degree 88
+- skills.toon: degree 81
+- debugging: degree 40
+- performance-optimization: degree 27
+- code-review: degree 25
+- plannotator: degree 24
+- task-planning: degree 24
+- jeo: degree 23
+- ralph: degree 23
 
 ## Duplicate / consolidation notes
-- `ralph` should stay distinct from `omc`, `omx`, `ohmg`, `jeo`, `plannotator`, and `ralphmode`: it owns the specification-first method + persistent completion loop, not the platform runtime, approval gate, or permission layer.
-- The bounded win is support hardening in place, not another orchestration wrapper.
-- Creative-media and frontend alias lanes remain settled; this run shifts attention back to the core-orchestration support holdout.
+- `jeo` should stay distinct from `ralph`, `plannotator`, `agent-browser`, `agentation`, `omc`, `omx`, `ohmg`, and `ralphmode`: it owns the integrated delivery loop and `.jeo` resume surface, not each specialist runtime or review layer.
+- No new wrapper skill is justified in the orchestration cluster; the bounded win remains improving the existing anchor and syncing discovery surfaces.
+- Future duplicate pressure is more likely to come from boundary creep inside high-visibility router skills than from missing support directories.
 
 ## Recommended maintenance direction
-- Keep improving intentional support holdouts before adding overlapping wrappers.
-- Remaining `references/` holdouts: none.
-- Remaining `evals/` holdouts: none.
-- Re-run catalog/runtime sync validation whenever skill boundaries or compact/discovery wording changes materially.
+- Keep improving high-degree anchors when they drift or become too dense before adding new adjacent skills.
+- Re-run catalog/runtime sync validation whenever `skills.json`, `skills.toon`, or top-level docs change materially.
+- Prefer reference-doc splits for setup/state/troubleshooting detail when a main `SKILL.md` starts to overgrow its trigger surface.

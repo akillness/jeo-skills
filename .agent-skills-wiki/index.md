@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-16 | Total pages: 85
+> Last updated: 2026-04-16 | Total pages: 86
 
 ## Entities
 
@@ -72,6 +72,7 @@
 - [[autoresearch-hardening-2026-04-16]] — Why the best bounded follow-up after `skill-autoresearch` was hardening `autoresearch` around the ML-specific `program.md` / `train.py` / `val_bpb` boundary instead of broadening it into generic eval tooling.
 - [[ralphmode-hardening-2026-04-16]] — Why the best bounded next orchestration-platform support upgrade was hardening `ralphmode` around the settings / rules / hooks model and adding eval coverage instead of spawning another permissions wrapper.
 - [[ralph-support-hardening-2026-04-16]] — Why the best bounded next core-orchestration improvement was hardening `ralph` with eval coverage and live self-path cleanup instead of adding another persistent-loop wrapper.
+- [[jeo-structural-hardening-2026-04-16]] — Why the best bounded next improvement for the repo's front-door orchestration skill was shrinking `jeo` into a cleaner router and moving platform/state/troubleshooting detail into packaged references instead of creating another wrapper.
 - [[skill-autoresearch-hardening-2026-04-16]] — Why the best bounded next skill-maintenance upgrade was hardening `skill-autoresearch` around frozen evaluators, keep-or-revert ratcheting, and append-only experiment artifacts instead of creating another eval helper.
 - [[debugging-modernization-2026-04-13]] — Why the best bounded code-quality upgrade was rewriting `debugging` into a reproduce → isolate → verify workflow instead of adding another generic troubleshooting wrapper.
 - [[code-review-modernization-2026-04-13]] — Why the best bounded code-quality improvement was modernizing `code-review` into a workflow-aware review anchor instead of adding another review-adjacent wrapper.
@@ -100,4 +101,3 @@
 - [[game-performance-profiler-modernization-2026-04-15]] — Why the best bounded game-performance improvement was modernizing `game-performance-profiler` into a quick-packet / benchmark-route / device-review anchor instead of adding another perf wrapper or merging it into generic optimization.
 - [[fabric-modernization-2026-04-15]] — Why the best bounded utilities/developer-workflow improvement was modernizing `fabric` into the pattern-first CLI transform anchor instead of leaving it as a broad AI-CLI feature tour or adding another adjacent prompt wrapper.
 - [[vibe-kanban-modernization-2026-04-15]] — Why the best bounded orchestration/planning-review improvement was modernizing `vibe-kanban` into the coding-task board/workspace control plane instead of adding another agent-board wrapper.
-

@@ -590,3 +590,11 @@
 - Accepted: harden `ralph` in place by adding `evals/evals.json`, fixing stale live self-path examples that still pointed at `.agent-skills/ralph-ooo/...`, and recording the sharper core-orchestration boundary in the wiki
 - Rejected: adding another persistent-loop wrapper; broadening `ralph` into `omc` / `omx` / `ohmg` / `jeo` / `plannotator` / `ralphmode`; unnecessary README / README.ko / setup prompt churn when top-level discovery wording was already accurate
 - Wiki files created/updated: `queries/ralph-support-hardening-2026-04-16.md`, `concepts/core-orchestration-platform-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | jeo structural hardening
+- Area researched: repo-local orchestration-cluster maintenance around the high-visibility `jeo` router, including top-level discovery docs, compact surfaces, and the boundary with `ralph`, `plannotator`, `agent-browser`, `agentation`, `omc`, `omx`, `ohmg`, and `ralphmode`
+- Survey files created under `.survey/jeo-structural-hardening-20260416/`; repo-local primary sources were used because `web_search` returned an invalid API key in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `jeo/SKILL.md` under the 500-line guideline, move platform/state/troubleshooting detail into `references/PLATFORM_SETUP.md` and `references/STATE_AND_TROUBLESHOOTING.md`, refresh `SKILL.toon`, sync `skills.json`, and update README / README.ko / setup prompt so the resume/recovery framing is visible on the discovery surface
+- Rejected: adding another orchestration wrapper for resume/state/setup; letting `jeo` absorb runtime or specialist review ownership from adjacent skills; keeping the giant mixed manual as the front-door experience
+- Wiki files created/updated: `queries/jeo-structural-hardening-2026-04-16.md`, `concepts/core-orchestration-platform-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

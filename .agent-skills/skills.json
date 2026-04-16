@@ -1307,7 +1307,7 @@
     },
     {
       "name": "jeo",
-      "description": "JEO — Integrated AI agent orchestration skill. Plan with plannotator (approval triggers ralphmode), execute with ralphmode/team/bmad, verify browser behavior with agent-browser, apply UI feedback with agentation(annotate), auto-cleanup worktrees after completion. Supports Claude, Codex, Gemini CLI, and OpenCode. Install: ralph, omc, omx, ohmg, bmad, plannotator, agent-browser, agentation.",
+      "description": "Run the integrated multi-agent delivery loop: plan with ralph and plannotator, execute with the platform runtime (omc, omx, ohmg) or bmad, verify browser behavior with agent-browser, apply submit-gated UI feedback with agentation, and finish with cleanup while maintaining a project-local .jeo ledger and resumable state. Use when the user wants one orchestration surface for planning, implementation, QA, resume/recovery, and durable task history across Claude Code, Codex CLI, Gemini CLI, or OpenCode.",
       "category": "core-orchestration",
       "path": "jeo/SKILL.md",
       "tags": [
@@ -1346,7 +1346,7 @@
         "Task"
       ],
       "keyword": "jeo",
-      "version": "1.3.0",
+      "version": "1.6.2",
       "commands": []
     },
     {

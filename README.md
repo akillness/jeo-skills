@@ -395,9 +395,9 @@ TOON (Token-Oriented Object Notation) compresses the skill catalog and auto-inje
 ### jeo — Integrated Agent Orchestration
 > Keyword: `jeo` · `annotate` | Platforms: Claude · Codex · Gemini · OpenCode
 
-Complete automated pipeline: Plan (ralph+plannotator) → Execute (team/bmad) → Verify (agent-browser) → UI Feedback (agentation) → Cleanup.
+Complete integrated delivery loop: Plan (ralph+plannotator) → Execute (platform runtime or bmad) → Verify (agent-browser) → optional submit-gated UI Feedback (agentation) → Cleanup.
 
-JEO now also maintains a project-local `.jeo/` ledger so the workflow has durable long-term rules, short-term system/test plans, queued work, live progress notes, and append-only history across sessions.
+JEO also maintains a project-local `.jeo/` ledger plus resumable `.omc/state/jeo-state.json`, so the workflow keeps durable long-term rules, short-term system/test plans, queued work, live progress notes, and append-only history across sessions.
 
 | Phase | Tool | Description |
 |-------|------|-------------|
