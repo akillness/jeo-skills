@@ -9,21 +9,21 @@
 - Skills with scripts/: 24
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
-- Graph nodes: 94
-- Graph edges: 836
+- Graph nodes: 385
+- Graph edges: 1106
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
 2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. The `survey` hardening pass kept the canonical 4-lane `.survey/{slug}` contract while shrinking the front door from 392 to 309 lines and moving slower-changing portability detail into a focused reference.
-4. The next research-layer wins still come from sharpening dense front doors and truthful discovery wording, not from inventing another nearby research wrapper.
+3. The `debugging` hardening pass shrank the front door to 252 lines, added an explicit mode-selection packet, and synced stale compact/discovery surfaces without creating another code-quality wrapper.
+4. The next bounded wins still come from sharpening high-degree front doors and keeping `SKILL.toon` / manifest / README surfaces truthful after structural edits.
 
 ## Highest-degree nodes
-- debugging: degree 46
-- task-planning: degree 27
-- performance-optimization: degree 25
-- plannotator: degree 24
-- code-review: degree 22
+- debugging: degree 41
+- task-planning: degree 30
+- performance-optimization: degree 27
+- bmad: degree 26
+- code-review: degree 25
 
 ## Oversized front-door watchlist
 - autoresearch: 334 lines in SKILL.md
@@ -33,16 +33,16 @@
 - survey: 310 lines in SKILL.md
 - fabric: 309 lines in SKILL.md
 - sprint-retrospective: 305 lines in SKILL.md
-- debugging: 298 lines in SKILL.md
 - game-performance-profiler: 297 lines in SKILL.md
 - task-planning: 295 lines in SKILL.md
+- git-submodule: 294 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new adjacent research wrapper is justified: the bounded win was hardening `survey` in place.
-- `survey` should stay distinct from `plan`, `jeo`, `ralph`, `skill-autoresearch`, and domain anchors; it owns reusable landscape artifacts, not architecture planning or implementation.
-- Future duplicate pressure remains highest when market/workflow discovery, platform-config details, and execution planning drift back into one giant front door.
+- No new debugging-adjacent wrapper is justified: the bounded win was hardening `debugging` in place.
+- `debugging` should stay distinct from `log-analysis`, `testing-strategies`, `code-review`, `performance-optimization`, and `monitoring-observability`; it owns the diagnosis loop after the failure is concrete enough to test.
+- Duplicate pressure remains highest when symptom triage, flake policy, env/setup redesign, and performance work drift back into the same front door.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree skills whose route-in logic can be made smaller without weakening their artifact contract.
-- Prefer references/evals/discovery-surface sync over creating another neighboring wrapper.
-- Re-run catalog/runtime sync validation whenever discovery wording or compact surfaces change materially.
+- Prefer reference packets, eval expansion, and discovery-surface sync over creating another neighboring wrapper.
+- Re-run catalog/runtime sync validation whenever compact or README/setup wording changes materially.

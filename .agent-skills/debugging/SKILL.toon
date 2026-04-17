@@ -1,18 +1,19 @@
 N:debugging
-D:Debug code, runtime behavior, regressions, flaky failures, and code-adjacent incidents with a systematic reproduce → isolate → hypothesize → verify loop. Use after symptom triage when the user needs a debugging workflow, not just log line selection.
-G:debugging regression-isolation reproduction flaky-tests git-bisect root-cause
+D:Run a reproduce → isolate → verify debugging workflow for concrete bugs, regressions, flaky failures, and environment-specific behavior. Use when the user already has a failing command, test, request, UI flow, or narrowed symptom and needs root-cause diagnosis or fix verification rather than raw log-line selection, broad test-policy design, PR review, or generic performance tuning.
+G:debugging regression-isolation reproduction flaky-tests git-bisect root-cause env-diff
 U[6]:
-  Runtime bugs, regressions, or incorrect behavior with a narrowed suspect boundary
-  Flaky or intermittent failures that need reproduction and stabilization
-  CI/test failures after the first actionable error is already known
-  Frontend/backend/fullstack bugs that need recent-change or config comparison
-  Requests to reproduce, isolate, bisect, fix, or verify a bug
-  Debugging plans that should route raw log triage to log-analysis first
-S[7]{n,action}:
-  1,Frame the failure precisely
-  2,Build the smallest reliable reproduction
-  3,Isolate the failing boundary
-  4,Form hypotheses and run the smallest discriminating check
-  5,Handle common debugging modes explicitly
-  6,Fix the cause then prove it
-  7,Escalate carefully when evidence is weak
+  Concrete failing command/test/request/UI flow that needs diagnosis
+  Reproducible or near-reproducible bug that needs narrowing before patching
+  Regression with a last-known-good state or suspect change window
+  Flaky failure that needs repeated-run evidence and stabilization of one case
+  CI/staging/prod-only behavior that now has enough evidence for env/config comparison
+  Requests to reproduce, isolate, bisect, confirm, or verify a bug fix
+S[8]{n,action}:
+  1,Freeze the failure definition
+  2,Choose the right first evidence source
+  3,Build the smallest reliable reproducer
+  4,Isolate the boundary before proposing fixes
+  5,Run one discriminating check per hypothesis
+  6,Use the right mode packet
+  7,Fix the cause then prove it
+  8,Escalate honestly when evidence is still weak
