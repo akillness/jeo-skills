@@ -686,3 +686,11 @@
 - Accepted: shrink `skill-standardization/SKILL.md` from 315 to 201 lines, add `references/working-modes.md`, refresh `SKILL.toon`, update `skills.json` / `.agent-skills/skills.toon` / README / README.ko / setup discovery wording, expand eval coverage with a repo-root command-truthfulness case, and remove stale legacy manifest commands/source paths
 - Rejected: adding another validation/meta skill; rewriting the validator scripts first instead of fixing the canonical skill and discovery truthfulness; leaving derived discovery surfaces untouched after a material rewrite
 - Wiki files created/updated: `queries/skill-standardization-structural-hardening-2026-04-17.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | ralph structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops/UX, marketing/GTM/content, and game-dev lanes, with the best bounded core-orchestration improvement landing on the existing `ralph` skill rather than a new wrapper
+- Survey files created under `.survey/ralph-structural-hardening-20260418/`; repo-local evidence plus direct primary-page retrieval from Ouroboros, Codex docs, Claude docs, and Gemini docs were used because the normal web search/extract APIs returned `401 INVALID_API_KEY`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `ralph/SKILL.md` from 499 to 236 lines, add `references/runtime-boundaries.md`, rewrite `references/platform-setup.md`, refresh `SKILL.toon` / `evals/evals.json` / `docs/ralph/README.md` / catalog and discovery surfaces, and preserve the boundary with `omc`, `omx`, `ohmg`, `jeo`, and `ralphmode`
+- Rejected: adding another persistent-completion wrapper; letting `ralph` absorb runtime-native hook and approval ownership; leaving stale Codex compensation-only wording in local docs
+- Wiki files created/updated: `queries/ralph-structural-hardening-2026-04-18.md`, `concepts/core-orchestration-platform-cluster.md`, `index.md`, `log.md`

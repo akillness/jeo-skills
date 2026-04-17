@@ -321,7 +321,7 @@ If no → skip silently. Never re-ask.
 | Start any task | `jeo "task description"` |
 | Claude orchestration | `autopilot: task` or `/oh-my-claudecode:team "task"` |
 | Visual plan review | `plan` (plannotator keyword) |
-| Spec-first dev loop | `ralph "build X"` or `ooo interview "X"` |
+| Spec-first dev loop | `ralph "build X"` or `ooo interview "X"` *(portable method anchor; route runtime-native hook/approval setup to omc/omx/ohmg/ralphmode)* |
 | Pre-impl research | `survey "topic"` |
 | Agent team design | `harness "design team for X"` |
 | UI annotation | `annotate` (agentation keyword) |
@@ -363,7 +363,7 @@ If no → skip silently. Never re-ask.
 |-------|-------------------|-------------|
 | `jeo` | `jeo` | Integrated orchestration with `.jeo` ledger — Plan→Execute→Verify→Cleanup. Requires `plannotator` + `agentation`. **Claude Code**: requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` |
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `deep interview`, `deslop`, `cancelomc` | Claude Code multi-agent orchestration (v4.9.3, 29+ agents) — Teams/Autopilot/Ralph/Ultrawork/CCG |
-| `ralph` | `ralph`, `ooo`, `ooo ralph`, `ooo interview` | Ouroboros spec-first development — Interview→Seed→Execute→Evaluate→Evolve + persistent loop |
+| `ralph` | `ralph`, `ooo`, `ooo ralph`, `ooo interview` | Ouroboros spec-first method anchor — Interview→Seed→Execute→Evaluate→Evolve, immutable seed/spec, and persistent completion until verification passes |
 | `ralphmode` | `ralphmode` | Automation permission profiles — repo boundary, sandbox-first, secret denylist |
 | `plannotator` | `plan` | Visual approval gate for agent plans/diffs — annotate, approve, request changes, or save reviewed plans |
 | `harness` | `harness`, `build a harness`, `agent team architect` | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/`, validate harness |
