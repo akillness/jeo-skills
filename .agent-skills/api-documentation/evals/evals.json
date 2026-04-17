@@ -35,6 +35,16 @@
     },
     {
       "id": 4,
+      "prompt": "Our developer portal publishes one huge OpenAPI collection with public, partner-only, and internal endpoints mixed together. Help regroup the docs, expose only partner-safe sections, and make navigation easier to scan.",
+      "expected_output": "The skill should treat this as developer-facing API documentation with a navigation/grouping packet, not as contract redesign or a generic static-site rewrite.",
+      "assertions": [
+        "Response keeps the task in api-documentation rather than routing it away by default",
+        "Response proposes grouping, selective publishing, navigation, or portal-section structure",
+        "Response preserves truthful linkage to deeper reference content instead of replacing it with generic marketing copy"
+      ]
+    },
+    {
+      "id": 5,
       "prompt": "We have not decided whether this new inventory integration should be REST or GraphQL, and we need someone to propose the resource model, versioning plan, and pagination semantics.",
       "expected_output": "The skill should identify that the main job is contract/interface design and route the request to api-design instead of pretending to write docs first.",
       "assertions": [

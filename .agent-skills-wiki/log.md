@@ -639,6 +639,14 @@
 - Rejected: adding another auth wrapper; re-expanding the front door with more provider detail; unnecessary README / README.ko / setup prompt churn when discovery wording stayed materially accurate
 - Wiki files created/updated: `queries/authentication-setup-structural-hardening-2026-04-17.md`, `concepts/backend-api-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
 
+## [2026-04-17] query | api-documentation structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, PM/ops, marketing/content, and game-dev lanes, with the best bounded documentation-cluster follow-up landing on the still-dense `api-documentation` anchor
+- Survey files created under `.survey/api-documentation-structural-hardening-20260417/`; direct primary-doc retrieval and repo-local graph data were used because normal search/extract APIs are unavailable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `api-documentation/SKILL.md` from 336 to 201 lines, add `references/output-packets-and-navigation.md`, expand eval coverage with a large-portal regrouping case, refresh `SKILL.toon`, and preserve the boundary with `api-design`, `technical-writing`, `user-guide-writing`, `authentication-setup`, and `changelog-maintenance`
+- Rejected: adding another developer-portal/API-doc helper; re-expanding the front door with more embedded templates; unnecessary README / README.ko / setup prompt churn when discovery wording stayed materially accurate
+- Wiki files created/updated: `queries/api-documentation-structural-hardening-2026-04-17.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
 ## [2026-04-17] query | file-organization structural hardening
 - Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, PM/ops, marketing/GTM/content, and game-dev lanes, with the best bounded next developer-workflow win landing on the still-oversized `file-organization` anchor
 - Survey files created under `.survey/file-organization-structural-hardening-20260417/`; repo-local evidence plus direct primary-page retrieval from Next.js, Diátaxis, GitHub Well-Architected monorepos, and Unity project-organization docs were used because normal search APIs are unavailable in this environment

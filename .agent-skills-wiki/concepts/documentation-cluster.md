@@ -1,10 +1,10 @@
 ---
 title: Documentation Cluster
 created: 2026-04-13
-updated: 2026-04-15
+updated: 2026-04-17
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality, docs, graphify]
-sources: [.survey/technical-writing-modernization-20260413/context.md, .survey/technical-writing-modernization-20260413/solutions.md, .survey/user-guide-writing-modernization-20260413/context.md, .survey/user-guide-writing-modernization-20260413/solutions.md, .survey/presentation-builder-modernization-20260415/context.md, .survey/presentation-builder-modernization-20260415/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/technical-writing-modernization-20260413/context.md, .survey/technical-writing-modernization-20260413/solutions.md, .survey/user-guide-writing-modernization-20260413/context.md, .survey/user-guide-writing-modernization-20260413/solutions.md, .survey/presentation-builder-modernization-20260415/context.md, .survey/presentation-builder-modernization-20260415/solutions.md, .survey/api-documentation-structural-hardening-20260417/context.md, .survey/api-documentation-structural-hardening-20260417/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Documentation Cluster
@@ -30,7 +30,9 @@ Boundary checks:
 4. If the request is about specs, ADRs, architecture docs, runbooks, migration notes, or internal developer guides, keep it in `technical-writing`.
 
 ## Current structural note
-After the `technical-writing`, `user-guide-writing`, `api-documentation`, `changelog-maintenance`, `presentation-builder`, and `research-paper-writing` hardening runs, the documentation cluster now has sharper anchors for internal docs, developer-facing API docs, end-user help content, release-history / release-summary work, presentation artifacts, and academic manuscript packages. The latest graph-style scan reports 83 skills with `references/` and 84 with `evals/`; route-out discipline and support-file ratchets still matter more than adding a new wrapper skill.
+After the `technical-writing`, `user-guide-writing`, `api-documentation`, `changelog-maintenance`, `presentation-builder`, and `research-paper-writing` hardening runs, the documentation cluster now has sharper anchors for internal docs, developer-facing API docs, end-user help content, release-history / release-summary work, presentation artifacts, and academic manuscript packages. The latest graph-style scan reports 89 skills with `references/`, 89 with `evals/`, and a fully covered compact layer, so route-out discipline and dense-anchor cleanup matter more than adding a new wrapper skill.
+
+The 2026-04-17 `api-documentation` follow-up confirmed the next documentation-cluster win pattern after support coverage is complete: shrink the front door, move packet templates and navigation guidance into focused references, and strengthen evals around real portal/grouping pain instead of inventing another API-doc helper.
 
 ## Related pages
 - [[skill-support-coverage]]
@@ -38,5 +40,6 @@ After the `technical-writing`, `user-guide-writing`, `api-documentation`, `chang
 - [[technical-writing-modernization-2026-04-13]]
 - [[user-guide-writing-modernization-2026-04-13]]
 - [[api-documentation-modernization-2026-04-13]]
+- [[api-documentation-structural-hardening-2026-04-17]]
 - [[changelog-maintenance-modernization-2026-04-14]]
 - [[presentation-builder-modernization-2026-04-15]]
