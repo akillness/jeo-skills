@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/git-workflow/SKILL.md` | Shrinking the front door and moving packet detail into references will improve trigger clarity without weakening the local Git boundary | Rewrote the front door, added `references/mode-selection-and-command-packets.md`, refreshed evals + compact/discovery surfaces | `validate_skill.sh` pass, catalog sync pass, JSON parse checks pass, front door reduced from 298 → 258 lines | Keep | Transferable dense-anchor ratchet for the developer-workflow lane |

@@ -376,7 +376,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `fabric` | stdin/파일/트랜스크립트 기반 요약·추출·재작성·커스텀 패턴 팩·서버 워크플로를 위한 패턴-우선 CLI | 전체 |
 | `file-organization` | 결정 우선 저장소 구조 가이드 — 프레임워크 기본 구조, feature 폴더, 모노레포 경계, 문서 분류, 게임 엔진형 레이아웃 중 무엇을 쓸지 결정 | 전체 |
 | `git-submodule` | 결정-우선 Git 서브모듈 워크플로 — submodule vs subtree/vendor 선택, 재귀 부트스트랩, 안전한 포인터 업데이트, CI checkout/auth 구성 | 전체 |
-| `git-workflow` | 로컬 Git 브랜치, 커밋, 리베이스, 충돌 해결, 안전한 푸시, 복구 워크플로우 | 전체 |
+| `git-workflow` | 라우팅 우선 로컬 Git 워크플로 — 브랜치 정리, 선택적 staging, 커밋 정리, merge-vs-rebase 선택, 충돌 해결, `--force-with-lease` 기반 안전 푸시, 복구 | 전체 |
 | `google-workspace` | 결정-우선 Google Workspace 운영 스킬 — Apps Script vs REST API vs Admin SDK, 인증 방식, Docs/Sheets/Slides/Drive/Gmail/Calendar/Chat/Forms 교차 워크플로를 먼저 고릅니다 | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
 | `npm-git-install` | npm / pnpm / Yarn / Bun용 결정-우선 Git 의존성 워크플로 — Git ref, tarball, workspace, publish-first 경로를 안전하게 선택 | 전체 |

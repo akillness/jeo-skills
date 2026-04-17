@@ -1,4 +1,5 @@
 # GRAPH_REPORT
+
 ## Scope
 - Path analyzed: `.agent-skills/` plus repository discovery docs
 - Method: custom graphify-style structural graph over skill metadata, support-file presence, compact-variant coverage, documentation indexing, and cross-skill mentions
@@ -10,36 +11,41 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 94
-- Graph edges: 825
+- Graph edges: 806
 
 ## Strongest structural findings
-1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index almost the whole live catalog.
-2. Support coverage remains complete across the live skill set, so dense-anchor cleanup and truthful routing still matter more than adding new wrapper skills.
-3. `task-planning` is healthier as a routing-first planning anchor when backlog/sprint/release/milestone mode choice stays in the front door and domain packet detail moves into references.
-4. The project-management lane still rewards bounded hardening of canonical anchors over another overlapping backlog or sprint wrapper.
+1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest / compact surfaces still index almost the whole live catalog.
+2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding new wrapper skills.
+3. `git-workflow` is healthier as a routing-first local Git anchor when mode packets live in references and the front door stays focused on local-state triage, collaboration risk, and safe next moves.
+4. The developer-workflow lane still rewards bounded hardening of canonical anchors over creating adjacent Git wrappers that would blur the clean boundary with hosted PR or repo-management flows.
 
 ## Highest-degree nodes
-- debugging: degree 40
-- task-planning: degree 27
-- performance-optimization: degree 24
+- debugging: degree 34
+- code-review: degree 19
+- task-planning: degree 19
+- performance-optimization: degree 18
+- survey: degree 17
+- vibe-kanban: degree 17
+- jeo: degree 16
+- bmad: degree 15
 
 ## Oversized front-door watchlist
-- survey: 391 lines in SKILL.md
-- autoresearch: 333 lines in SKILL.md
-- clawteam: 329 lines in SKILL.md
-- scrapling: 319 lines in SKILL.md
-- vercel-deploy: 313 lines in SKILL.md
-- fabric: 308 lines in SKILL.md
-- sprint-retrospective: 304 lines in SKILL.md
-- git-workflow: 298 lines in SKILL.md
-- debugging: 297 lines in SKILL.md
+- survey: 392 lines in SKILL.md
+- autoresearch: 334 lines in SKILL.md
+- clawteam: 330 lines in SKILL.md
+- scrapling: 320 lines in SKILL.md
+- vercel-deploy: 314 lines in SKILL.md
+- fabric: 309 lines in SKILL.md
+- sprint-retrospective: 305 lines in SKILL.md
+- debugging: 298 lines in SKILL.md
+- game-performance-profiler: 297 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new PM wrapper is justified: the bounded win was hardening `task-planning` in place.
-- `task-planning` should stay distinct from `task-estimation`, `vibe-kanban`, `plannotator`, `standup-meeting`, `sprint-retrospective`, and `bmad-gds`; those own sizing, board control, plan review, cadence, reflection, and broader game orchestration layers.
-- Future duplicate pressure remains highest when trackers or board-control language drifts back into the planning anchor.
+- No new Git wrapper is justified: the bounded win was hardening `git-workflow` in place.
+- `git-workflow` should stay distinct from hosted PR/repo-management flows; those own remote review/admin state, not local history repair.
+- Future duplicate pressure remains highest where local Git mechanics drift back into hosted PR language or generic repo-automation claims.
 
 ## Recommended maintenance direction
 - Keep targeting dense front-door skills whose method boundary can be sharpened without expanding the catalog.
-- Prefer correcting stale compact/manifest/discovery wording before adding another wrapper skill.
-- Re-run catalog/runtime sync validation whenever descriptions, compact files, or manifest entries change materially.
+- Prefer correcting stale compact/discovery wording and moving packet detail to references before adding another wrapper.
+- Re-run catalog/runtime sync validation whenever descriptions, compact files, or discovery surfaces change materially.

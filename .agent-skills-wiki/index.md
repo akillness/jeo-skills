@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 103
+> Last updated: 2026-04-18 | Total pages: 104
 
 ## Entities
 
@@ -47,6 +47,7 @@
 - [[prompt-repetition-modernization-2026-04-15]] — Why the best bounded prompt-engineering improvement was tightening `prompt-repetition` into a non-reasoning decision router instead of keeping broad auto-apply language or adding another prompt-hacks wrapper.
 - [[environment-skill-canonicalization-2026-04-12]] — Why the best bounded infrastructure fix was canonicalizing `system-environment-setup` and narrowing `environment-setup` into an app-config compatibility skill.
 - [[git-workflow-modernization-2026-04-12]] — Why the best bounded developer-workflow fix was modernizing `git-workflow` into a local collaboration and recovery anchor.
+- [[git-workflow-structural-hardening-2026-04-18]] — Why the best bounded next developer-workflow improvement was shrinking `git-workflow` into a routing-first local Git anchor with a dedicated mode-packet reference instead of adding another Git wrapper.
 - [[git-submodule-modernization-2026-04-15]] — Why the best bounded next utilities/developer-workflow improvement was modernizing `git-submodule` into the external-repo boundary and operator-flow anchor instead of leaving a command catalog or adding another Git dependency wrapper.
 - [[google-workspace-modernization-2026-04-16]] — Why the best bounded next ops/productivity improvement was modernizing `google-workspace` into the Apps Script vs REST API vs Admin SDK routing anchor instead of keeping a giant API encyclopedia or adding another Workspace wrapper.
 - [[file-organization-modernization-2026-04-15]] — Why the best bounded repo-structure improvement was modernizing `file-organization` into a decision-first structure and migration anchor instead of adding another project-layout wrapper.

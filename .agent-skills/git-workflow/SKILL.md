@@ -1,64 +1,66 @@
 ---
 name: git-workflow
 description: >
-  Manage local Git collaboration safely: branch creation, staging, commit shaping,
-  rebase/merge decisions, conflict resolution, lease-safe pushes, and recovery from
-  resets or bad history edits. Use when the user needs help preparing a branch,
-  cleaning up commits, rebasing onto an updated base branch, resolving conflicts,
-  pushing rewritten history safely, undoing or recovering Git mistakes, or getting
-  a diff ready for review. Not for hosted PR review, repo administration, or sprint
-  planning.
+  Route local Git work into the safest next move: branch hygiene, selective staging,
+  commit cleanup, merge-vs-rebase choice, conflict resolution, lease-safe pushes,
+  and recovery from resets or bad history edits. Use when the user needs help
+  preparing a branch, cleaning up commits, syncing with an updated base, resolving
+  local Git conflicts, pushing rewritten history safely, recovering lost commits,
+  or getting a diff ready for review. Not for hosted PR review, repo
+  administration, or sprint planning.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
-  Best for repositories where Git CLI is available and the main problem is local
-  repository state: branches, commits, history edits, conflict handling, or recovery.
-  This skill is a local Git workflow and recovery guide, not a hosted PR or repo-
-  settings workflow.
+  Best when Git CLI is available and the real problem is local repository state:
+  branch shape, worktree/index cleanup, history edits, sync decisions, conflict
+  handling, or recovery.
 metadata:
-  tags: git, version-control, branching, rebasing, conflict-resolution, recovery, collaboration
-  platforms: Claude, ChatGPT, Gemini, Codex
-  version: "1.1"
+  tags: git, version-control, branching, commits, rebasing, conflict-resolution, recovery, collaboration
+  platforms: Claude, ChatGPT, Gemini, Codex, OpenCode
+  version: "1.2"
   source: akillness/oh-my-skills
 ---
 
 # Git Workflow
 
-Use this skill as the repository's **local Git collaboration and recovery anchor**.
+Use this skill as the repo's **routing-first local Git collaboration and recovery anchor**.
 
-The job is not to dump every Git command ever made. The job is to:
-- choose the safest local Git move for the current state,
-- keep branches and commits reviewable,
-- handle rebases and conflicts without clobbering teammates,
-- recover cleanly when resets, rebases, or force-pushes go sideways.
+The job is not to teach all of Git. The job is to:
+- identify the current local Git state quickly,
+- choose one safe workflow mode,
+- recommend the smallest reversible fix that solves the problem,
+- keep boundaries to review, debugging, planning, and hosted PR workflows explicit.
 
-Read [references/collaboration-boundaries.md](references/collaboration-boundaries.md) and [references/recovery-patterns.md](references/recovery-patterns.md) before unusual cases or when choosing between merge, rebase, revert, reset, or reflog recovery.
+Read these references when the case gets sharp-edged or the user needs more than the brief:
+- [references/collaboration-boundaries.md](references/collaboration-boundaries.md)
+- [references/mode-selection-and-command-packets.md](references/mode-selection-and-command-packets.md)
+- [references/recovery-patterns.md](references/recovery-patterns.md)
 
-If the user mainly needs:
-- **what work should exist before touching Git** → route to `task-planning`
-- **reviewing a diff for correctness, design, or security** → route to `code-review`
-- **root-cause analysis of a bug or regression** → route to `debugging` (keep `git bisect` here only as the Git mechanic)
-- **hosted PR lifecycle, reviewer assignment, or repo settings** → use a dedicated PR/repo-management workflow instead of this skill
+If the main need is:
+- **reviewing a diff for correctness, architecture, or security** → route to `code-review`
+- **reproducing or diagnosing a bug/regression** → route to `debugging`
+- **planning tasks, acceptance criteria, or sprint slices** → route to `task-planning`
+- **hosted PR lifecycle, branch protection, reviewers, labels, or repo settings** → use a dedicated PR/repo-management workflow
 
 ## When to use this skill
-- Create or rename a branch and choose a safe branch naming convention
-- Stage changes selectively and shape commits into reviewable units
-- Clean up local history before review with amend, interactive rebase, squash, or fixup
-- Rebase or merge onto an updated base branch and resolve conflicts safely
-- Push a branch, set upstream, or force-push rewritten history with `--force-with-lease`
-- Recover from a bad reset, wrong-branch commit, dropped commit, or broken rebase using `reflog`, revert, restore, or rescue branches
-- Prepare a branch/diff so the next review or PR step is clean and low-surprise
+- Create, rename, or clean up a branch before coding or review
+- Stage changes selectively and shape reviewable commits
+- Decide whether to merge or rebase onto an updated base branch
+- Resolve merge/rebase conflicts safely
+- Push a branch, set upstream, or update rewritten history with `--force-with-lease`
+- Recover from a bad reset, wrong-branch commit, detached HEAD, dropped commit, or messy rebase
+- Prepare a clean diff before a later PR or review step
 
 ## When not to use this skill
-- The main task is deciding whether the code/design/test approach is good → use `code-review`
-- The main task is planning backlog slices, acceptance criteria, or sequencing → use `task-planning`
-- The main task is reproducing and diagnosing a defect → use `debugging`
-- The main task is GitHub/GitLab PR templates, reviewers, merge queues, branch protections, labels, or repo settings → use a hosted PR/repo-management workflow
-- The user wants a giant Git tutorial instead of the next safe move for the current state
+- The real question is whether the code or architecture is good
+- The real question is how to split or sequence the work
+- The real question is root cause, not Git mechanics
+- The real question is hosted-service workflow instead of local repository state
+- The user wants a giant Git tutorial instead of the next safe move
 
 ## Instructions
 
-### Step 1: Classify the local Git situation
-Normalize the request into this intake first:
+### Step 1: Normalize the local Git intake
+Classify the request before suggesting commands.
 
 ```yaml
 git_intake:
@@ -81,67 +83,51 @@ git_intake:
   confidence: high | medium | low
 ```
 
-If the user provides an unclear packet, choose the safest local next move and state the assumptions.
+If the packet is incomplete, choose the safest reasonable next move and state the assumptions.
 
 ### Step 2: Choose one primary workflow mode
-Pick exactly one mode for the current run:
+Pick exactly one mode:
 
-1. **branch-and-stage hygiene**
-   - Use when the main need is branch creation, switching, staging, partial staging, or keeping the worktree clean
+1. **branch-and-stage hygiene** — branch creation/switching, staging, stash-or-clean decisions
+2. **commit-shaping** — amend, fixup, reword, interactive rebase, cleaner review units
+3. **sync-with-base** — fetch + merge/rebase choice when the branch must catch up
+4. **conflict-resolution** — merge/rebase already produced conflicts; the next safe loop matters most
+5. **push-safety** — upstream setup, rejected pushes, diverged branches, rewrite-safe pushes
+6. **undo-and-recovery** — reset/rebase/amend/checkout/branch deletion went sideways; rescue first
 
-2. **commit-shaping**
-   - Use when the user needs better commit boundaries, better messages, amend/fixup, or interactive rebase cleanup before review
+### Step 3: Use the safety ladder
+Always prefer these checks before irreversible actions:
+- `git status`
+- `git branch --show-current`
+- `git log --oneline --decorate -5`
 
-3. **sync-with-base**
-   - Use when the branch must catch up with `main` / `origin/main` via merge or rebase
-
-4. **conflict-resolution**
-   - Use when a merge or rebase already produced conflicts and the next safe move matters most
-
-5. **push-safety**
-   - Use when the branch is ready but remote collaboration safety matters: upstream, rejected pushes, `--force-with-lease`, fork sync, or diverged branch handling
-
-6. **undo-and-recovery**
-   - Use when a reset, rebase, checkout, amend, or branch deletion went wrong and the user needs rescue steps first
-
-### Step 3: Pick the safest Git move, not the fanciest one
-Use these rules:
-
-- Prefer **`git status` + `git branch --show-current` + `git log --oneline --decorate -5`** before irreversible actions.
-- Prefer **`git add -p`** or explicit file staging when commit boundaries matter.
-- Prefer **`git commit --amend` / interactive rebase** only on local or safely rewritable branches.
-- Prefer **`git pull --rebase` / `git fetch` + `git rebase origin/main`** when the team wants linear history and the branch is not a shared integration branch.
-- Prefer **merge** when preserving integration context or avoiding risky history rewrites matters more than linear history.
-- Prefer **`git push --force-with-lease`**, never raw `--force`, after rebases or amended history that must update a remote branch.
-- Prefer **`git revert`** over `reset --hard` when the bad commit is already shared and the goal is safe collaborative undo.
-- Prefer **`git reflog`** before panic when commits seem lost.
+Core rules:
+- Prefer `git add -p` or explicit staging when commit boundaries matter.
+- Prefer amend or interactive rebase only on local or safely rewritable history.
+- Prefer rebase when the branch is mostly yours and a cleaner review history helps.
+- Prefer merge when the branch is shared or preserving integration context matters more than linear history.
+- Prefer `git push --force-with-lease`, never raw `--force`, after intentional history rewrites.
+- Prefer `git revert` over `reset --hard` when the bad commit is already shared.
+- Prefer `git reflog` and a rescue branch before panic cleanup.
 
 ### Step 4: Apply the decision ladder
-Use this ladder when deciding between common alternatives:
+Use these callouts explicitly:
 
 #### Merge vs rebase
-- **Use rebase** when:
-  - the branch is primarily yours,
-  - the goal is a cleaner reviewable history,
-  - rewriting the branch will not surprise collaborators,
-  - conflict resolution effort is acceptable.
-- **Use merge** when:
-  - the branch is shared,
-  - preserving branch integration history matters,
-  - rebasing would create confusing rewrite risk,
-  - the team already expects merge commits.
+- **Use rebase** when rewrite risk is low and reviewable linear history matters.
+- **Use merge** when the branch is shared, integration context matters, or rewrite risk is not worth it.
 
 #### Revert vs reset
-- **Use revert** when the bad commit is already pushed/shared.
-- **Use reset** when the history is still local and you intentionally want to rewrite it.
-- **Use restore / checkout of files** when only the worktree/index needs fixing, not the branch history.
+- **Use revert** for collaborative undo on already-pushed history.
+- **Use reset** only when rewriting local history intentionally.
+- **Use restore / checkout of files** when the worktree/index needs repair more than the branch history.
 
-#### Force-with-lease vs normal push
-- **Use normal push** when history is unchanged and the remote is simply ahead/behind in a normal way.
-- **Use `--force-with-lease`** only after rebase, amend, squash, or other history rewrite, and only when you are confident about the remote state.
-- If the branch appears shared and you are unsure who else has pushed, stop and call out the collaboration risk.
+#### Normal push vs `--force-with-lease`
+- **Use normal push** when history was not rewritten.
+- **Use `--force-with-lease`** after rebase, amend, squash, or another intentional rewrite.
+- If the branch may be shared and the remote state is unclear, stop and name the collaboration risk.
 
-### Step 5: Build the local Git brief
+### Step 5: Build the Git Workflow Brief
 Return this exact structure:
 
 ```markdown
@@ -185,50 +171,23 @@ Return this exact structure:
 - Use `task-planning` when ...
 ```
 
-### Step 6: Use these mode-specific patterns
+### Step 6: Use concise mode packets
+- **branch-and-stage hygiene** — branch name, dirty/clean state, selective staging, stash only when it lowers risk
+- **commit-shaping** — reviewable commit units, amend/fixup/rebase only when rewrite is safe
+- **sync-with-base** — fetch first, decide merge vs rebase explicitly, name rewrite risk before starting
+- **conflict-resolution** — inspect → resolve → `git add` → continue/commit, with `abort` as the calm fallback
+- **push-safety** — distinguish upstream creation, normal push, rejected push, and rewritten-history push
+- **undo-and-recovery** — identify what moved, inspect `reflog`, create a rescue branch, prefer reversible steps first
 
-**For branch-and-stage hygiene**
-- start with branch name and dirty/clean state
-- use explicit staging or `git add -p`
-- keep unrelated changes out of the same commit
-- call out whether a temporary stash is safer than carrying unrelated changes forward
-
-**For commit-shaping**
-- recommend one clean commit per meaningful review unit when possible
-- use `git commit --amend` only before the commit is shared or when shared rewrite is explicitly acceptable
-- use `git rebase -i` for squash/reword/fixup on local branch history
-- prefer conventional or repo-specific commit format when known
-
-**For sync-with-base**
-- fetch first
-- decide merge vs rebase explicitly
-- say whether the branch is safe to rewrite
-- if conflicts are likely, point to the fallback before starting
-
-**For conflict-resolution**
-- show the loop clearly: inspect → edit conflict markers or resolve with tool → `git add` → continue/commit
-- remind the user whether they are in merge or rebase state
-- keep the next action mechanical and calm; conflict handling is a sequence, not a philosophy essay
-
-**For push-safety**
-- state whether upstream exists
-- distinguish normal push, rejected push, and rewritten-history push
-- prefer `--force-with-lease` after rebase/amend, never raw `--force`
-- if the remote branch is shared or policy-protected, say so explicitly
-
-**For undo-and-recovery**
-- identify what was lost or changed: commit, file, branch pointer, worktree contents, or remote state
-- inspect reflog before destructive cleanup
-- create a rescue branch if needed before further edits
-- prefer reversible steps first when confidence is low
+Use the detailed command packets in [references/mode-selection-and-command-packets.md](references/mode-selection-and-command-packets.md) when you need the expanded workflow.
 
 ### Step 7: Keep boundaries sharp
 Before finalizing:
 - Do **not** turn this into a hosted PR tutorial.
-- Do **not** pretend every branch should be rebased; state the tradeoff.
+- Do **not** pretend every branch should be rebased.
 - Do **not** recommend `reset --hard` casually without naming the data-loss risk.
-- Do **not** bury the shared-vs-solo branch distinction.
-- Do **not** drift into code-review comments, root-cause analysis, or backlog design.
+- Do **not** hide the solo-vs-shared branch distinction.
+- Do **not** drift into code-review judgment, root-cause analysis, or backlog design.
 
 ## Output format
 Always return a compact **Git Workflow Brief**, not a giant command dump.
@@ -238,7 +197,7 @@ Required qualities:
 - state the collaboration risk
 - prefer the safest reversible path that solves the current problem
 - make rewrite risk explicit
-- include a recovery fallback when the command sequence has teeth
+- include a recovery fallback when the commands have teeth
 - keep routing boundaries to review, debugging, planning, and hosted PR workflows visible
 
 ## Examples
@@ -282,16 +241,17 @@ Required qualities:
 - Hand off to `code-review`
 
 ## Best practices
-1. **Inspect before surgery.** `git status`, branch name, and recent log beat guesswork.
+1. **Inspect before surgery.** Status, branch, and recent log beat guesswork.
 2. **Prefer reviewable commits over giant snapshots.** Commit shape affects review quality.
 3. **Treat history rewrites as collaboration decisions, not personal preferences.** Shared branches change the answer.
 4. **Use `--force-with-lease`, not raw `--force`.** Rewrite safely or do not rewrite.
-5. **Reach for `reflog` early in recovery.** Lost commits are often only misplaced branch pointers.
-6. **Choose the smallest safe fix.** Not every problem needs rebase, reset, or branch surgery.
-7. **Route out when the problem changes.** Review quality, debugging, and planning are adjacent but distinct jobs.
+5. **Reach for `reflog` early in recovery.** Lost commits are often only misplaced pointers.
+6. **Choose the smallest safe fix.** Not every problem needs branch surgery.
+7. **Route out when the problem changes.** Review, debugging, planning, and hosted PR work stay separate.
 
 ## References
 - [references/collaboration-boundaries.md](references/collaboration-boundaries.md)
+- [references/mode-selection-and-command-packets.md](references/mode-selection-and-command-packets.md)
 - [references/recovery-patterns.md](references/recovery-patterns.md)
 - Git documentation — https://git-scm.com/docs
 - GitHub Docs, *Resolving merge conflicts after a Git rebase* — https://docs.github.com/en/get-started/using-git/resolving-merge-conflicts-after-a-git-rebase

@@ -702,3 +702,11 @@
 - Accepted: shrink `task-planning` into a routing-first planning anchor, add `references/modes-and-handoffs.md` and `references/packet-shapes.md`, expand eval coverage with launch and board-control boundary cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko discovery wording
 - Rejected: adding another backlog or sprint wrapper; merging sizing or board-control behavior into `task-planning`; leaving stale software-only discovery wording after the rewrite
 - Wiki files created/updated: `queries/task-planning-structural-hardening-2026-04-18.md`, `concepts/project-management-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | git-workflow structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game development, with the best bounded developer-workflow follow-up landing on the existing `git-workflow` skill rather than a new wrapper
+- Survey files created under `.survey/git-workflow-structural-hardening-20260418/`; repo-local graph and wiki evidence plus direct primary-source retrieval from Git / GitHub docs were used because normal search/extract APIs were unreliable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `git-workflow` from 298 to 258 lines, add `references/mode-selection-and-command-packets.md`, expand eval coverage with a shared-branch merge-vs-rebase case, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup prompt discovery wording
+- Rejected: adding another Git recovery or push-safety wrapper; letting hosted PR/admin language drift back into the local Git anchor; leaving compact/discovery wording stale after the rewrite
+- Wiki files created/updated: `queries/git-workflow-structural-hardening-2026-04-18.md`, `concepts/developer-workflow-cluster.md`, `index.md`, `log.md`
