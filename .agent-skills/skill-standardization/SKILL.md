@@ -2,309 +2,195 @@
 name: skill-standardization
 description: >
   Standardize and validate SKILL.md files against the Agent Skills specification
-  (agentskills.io). Use when creating new skills, auditing existing skills for
-  spec compliance, converting legacy skill formats to standard structure,
-  improving descriptions for reliable triggering, consolidating duplicate
-  skills into a canonical skill plus compatibility alias, or repairing
-  discovery/catalog drift between live skill folders, shipped indexes, and
-  token-optimized variants such as `SKILL.toon` or `SKILL.compact.md`.
-  Triggers on: "validate skill", "create SKILL.md", "standardize skill format",
+  (agentskills.io). Use when creating or rewriting a skill, auditing an existing
+  skill for spec compliance, sharpening trigger descriptions, canonicalizing
+  overlapping skills into a canonical skill plus compatibility alias, or checking
+  whether derived discovery surfaces (`skills.json`, README/setup inventories,
+  `SKILL.toon`, `SKILL.compact.md`) still match the live skill folders. In
+  repo-root maintenance loops, prefer truthful validator commands instead of bare
+  `scripts/...` examples. Triggers on: "validate skill", "create SKILL.md",
   "check skill spec", "skill frontmatter", "improve skill description",
-  "add evals to skill", "merge duplicate skills", "canonical skill",
-  "compatibility alias", "skills.json drift", "catalog sync", "SKILL.toon drift",
-  "compact skill drift", "skill inventory mismatch".
+  "catalog sync", "SKILL.toon drift", "compact skill drift", "canonical skill".
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: Designed for Claude Code and compatible agent clients with filesystem access
 metadata:
-  tags: skill-management, standardization, validation, agentskills-spec, automation, deduplication
-  version: "2.2"
+  tags: skill-management, standardization, validation, agentskills-spec, automation, deduplication, catalog-sync
+  version: "2.3"
 ---
 
 # Skill Standardization
 
 ## When to use this skill
 
-- Creating a new SKILL.md file from scratch
-- Auditing existing skills for Agent Skills specification compliance
-- Converting legacy skill formats (non-standard headings, frontmatter) to standard
-- Improving skill descriptions to trigger more reliably on relevant prompts
-- Adding evaluation test cases (`evals/evals.json`) to a skill
-- Batch-validating all skills in a directory for consistency
-- Auditing `SKILL.toon` / `SKILL.compact.md` drift after material skill rewrites
-
-## Agent Skills Specification Reference
-
-### Frontmatter fields
-
-| Field | Required | Constraints |
-|-------|----------|-------------|
-| `name` | Yes | 1–64 chars, lowercase alphanumeric + hyphens, no leading/trailing/consecutive hyphens, must match parent directory name |
-| `description` | Yes | 1–1024 chars, must describe what skill does AND when to trigger |
-| `allowed-tools` | No | Space-delimited list of pre-approved tools |
-| `compatibility` | No | Max 500 chars, environment requirements |
-| `license` | No | License name or reference to bundled file |
-| `metadata` | No | Arbitrary key-value map for additional fields |
-
-### Standard directory structure
-
-```
-skill-name/
-├── SKILL.md          # Required
-├── scripts/          # Optional: executable scripts
-├── references/       # Optional: detailed documentation
-├── assets/           # Optional: templates, images, data
-└── evals/            # Optional: evaluation test cases
-    └── evals.json
-```
-
-### Progressive disclosure tiers
-
-| Tier | What's loaded | When | Token budget |
-|------|--------------|------|-------------|
-| 1. Catalog | name + description | Session start | ~100 tokens per skill |
-| 2. Instructions | Full SKILL.md body | On activation | < 5000 tokens (500 lines max) |
-| 3. Resources | scripts/, references/ | When needed | Varies |
+- Creating a new `SKILL.md` from scratch
+- Auditing an existing skill for Agent Skills spec compliance
+- Repairing weak trigger descriptions or stale route-outs
+- Canonicalizing duplicate skills into a default skill plus compatibility alias
+- Validating repo-level discovery/catalog drift after add/rename/remove/alias work
+- Reviewing `SKILL.toon` / `SKILL.compact.md` drift after material rewrites
 
 ## Instructions
 
-### Step 1: Validate an existing skill
+### Step 1: Pick the smallest working mode
+Use `references/working-modes.md` and pick exactly one primary mode:
+1. validate or repair one existing skill
+2. create or rewrite a `SKILL.md`
+3. canonicalize duplicates
+4. structural catalog / discovery sync
+5. derived-surface sync after a material rewrite
 
-Run the validation script on a skill directory:
+Do not start with a giant blended pass if one of those modes answers the job.
 
-```bash
-bash scripts/validate_skill.sh path/to/skill-directory
-```
-
-Validate all skills in a directory:
-
-```bash
-bash scripts/validate_skill.sh --all .agent-skills/
-```
-
-The script checks:
-- Required frontmatter fields (`name`, `description`)
-- `name` format: lowercase, no consecutive hyphens, matches directory name
-- `description` length: 1–1024 characters
-- `allowed-tools` format: space-delimited (not YAML list)
-- Recommended sections present
-- File length: warns if over 500 lines
-
-When the maintenance problem is not one SKILL.md but a repo-level discovery mismatch, also run:
+### Step 2: Run the truthful validator command for the current working directory
+For `oh-my-skills` repo-root maintenance loops, use:
 
 ```bash
-python3 scripts/validate_catalog_sync.py --repo-root /path/to/repo
+bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/<skill-name>
 ```
 
-Use the catalog sync check when a skill was added, renamed, removed, canonicalized into an alias, or when README/setup/manifest counts look suspicious.
+If you are running from inside `.agent-skills/skill-standardization`, use the skill-local form from `references/working-modes.md` instead. Do not copy bare `scripts/...` commands into repo-root runbooks unless the current cwd really makes them valid.
 
-### Step 2: Write an effective description
+The validator checks:
+- required frontmatter (`name`, `description`)
+- directory-safe naming
+- description length and imperative trigger phrasing
+- recommended sections
+- file-length warning
 
-The `description` field determines when a skill triggers. A weak description means the skill never activates; an over-broad one triggers at wrong times.
+### Step 3: Fix or write the primary `SKILL.md`
+When creating or rewriting the skill:
+- keep the description trigger-oriented and specific about when to use the skill
+- make the default job-to-be-done obvious before listing edge cases
+- keep the front door routing-first; move slower-changing examples/checklists/templates to `references/` when they start to crowd the main skill
+- keep `SKILL.md` under 500 lines and preferably much smaller when the skill is a high-frequency router
 
-**Template:**
+Use the compact template and legacy heading map in `references/working-modes.md` instead of copying a bloated starter by hand.
+
+### Step 4: Improve description quality before polishing anything else
+A weak description means the skill never activates. Use this pattern:
+
 ```yaml
 description: >
-  [What the skill does — list specific operations.]
-  Use when [trigger conditions]. Even if the user doesn't explicitly
+  [What it does — list specific operations.]
+  Use when [trigger conditions]. Even if the user does not explicitly
   mention [domain keyword] — also triggers on: [synonym list].
 ```
 
-**Principles** (from agentskills.io):
-1. **Imperative phrasing** — "Use this skill when..." not "This skill does..."
-2. **User intent, not implementation** — describe what the user wants to achieve
-3. **Be explicit about edge cases** — "even if they don't say X"
-4. **List trigger keywords** — synonyms, related terms the user might type
-5. **Stay under 1024 characters** — descriptions grow during editing; watch the limit
+Description rules:
+1. use imperative phrasing — "Use when..."
+2. describe user intent, not internal implementation
+3. include edge triggers and nearby synonyms
+4. stay under 1024 characters
+5. keep route-outs truthful when adjacent skills should win
 
-**Before / After:**
-```yaml
-# Before (weak — never triggers)
-description: Helps with PDFs.
+### Step 5: Add evals whenever the behavior changed materially
+Create or refresh `evals/evals.json` when you add a skill, rewrite its trigger surface, or narrow it into an alias.
 
-# After (optimized — reliable triggering)
-description: >
-  Extract text and tables from PDF files, fill forms, merge and split documents.
-  Use when the user needs to work with PDF files, even if they don't explicitly
-  say 'PDF' — triggers on: fill form, extract text from document, merge files,
-  read scanned pages.
+Good eval coverage includes:
+- a normal prompt that should clearly trigger the skill
+- a near-miss prompt that should route elsewhere
+- a structural-change prompt that checks catalog/discovery sync when relevant
+- compact/discovery-surface checks when `SKILL.toon` / `SKILL.compact.md` matter in the repo
+
+Keep assertions concrete and verifiable.
+
+### Step 6: Canonicalize duplicates instead of letting them compete
+When two skills cover the same default job closely enough that their `name + description` metadata competes:
+1. pick the canonical skill
+2. sharpen the canonical description so it wins ordinary prompts
+3. convert the overlapping skill into a narrow compatibility alias when old workflows or exact-name installs still depend on it
+4. add evals for both sides
+5. sync discovery surfaces in the same change so users do not see two false peers
+
+Hard deletion is usually a later step, not the first move.
+
+### Step 7: Run structural catalog sync after add / rename / remove / alias / major repositioning work
+For repo-level drift in `oh-my-skills`, use:
+
+```bash
+python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --repo-root /Users/jang_jennie/projects/oh-my-skills
 ```
 
-### Step 3: Create a new SKILL.md
+Portable form:
 
-Use this template as the starting point:
-
-```markdown
----
-name: skill-name
-description: >
-  [What it does and specific operations it handles.]
-  Use when [trigger conditions]. Triggers on: [keyword list].
-allowed-tools: Bash Read Write Edit Glob Grep
-metadata:
-  tags: tag1, tag2, tag3
-  version: "1.0"
----
-
-# Skill Title
-
-## When to use this skill
-- Scenario 1
-- Scenario 2
-
-## Instructions
-
-### Step 1: [Action]
-Content...
-
-### Step 2: [Action]
-Content...
-
-## Examples
-
-### Example 1: [Scenario]
-Input: ...
-Output: ...
-
-## Best practices
-1. Practice 1
-2. Practice 2
-
-## References
-- [Link](url)
+```bash
+python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --repo-root /path/to/repo
 ```
 
-### Step 4: Convert legacy section headings
+Treat the catalog validator as a guardrail, not the whole job. It checks membership/count/path drift, but it does not replace manual review of derived discovery wording or compact freshness.
 
-| Legacy heading | Standard heading |
-|----------------|-----------------|
-| `## Purpose` | `## When to use this skill` |
-| `## When to Use` | `## When to use this skill` |
-| `## Procedure` | `## Instructions` |
-| `## Best Practices` | `## Best practices` |
-| `## Reference` | `## References` |
-| `## Output Format` | `## Output format` |
+### Step 8: Sync derived discovery surfaces when the rewrite was material
+If `SKILL.md` changed the job-to-be-done, route-outs, or supported use-cases materially, review and refresh as needed:
+- skill-local `SKILL.toon` / `SKILL.compact.md`
+- `.agent-skills/skills.json`
+- `.agent-skills/skills.toon`
+- `README.md`
+- `README.ko.md`
+- `setup-all-skills-prompt.md`
 
-### Step 5: Add evaluation test cases
+If one of those surfaces does not need a change, be able to explain why.
 
-Create `evals/evals.json` with 2–5 realistic test prompts:
+### Step 9: Do a residue scan before calling the pass done
+After support-heavy or structural rewrites, search for obvious residue:
+- stale filenames or paths
+- removed command examples
+- old canonical-vs-alias wording
+- compact/discovery text that still advertises the old job
 
-```json
-{
-  "skill_name": "your-skill-name",
-  "evals": [
-    {
-      "id": 1,
-      "prompt": "Realistic user message that should trigger this skill",
-      "expected_output": "Description of what success looks like",
-      "assertions": [
-        "Specific verifiable claim (file exists, count is correct, format is valid)",
-        "Another specific claim"
-      ]
-    }
-  ]
-}
-```
-
-Good assertions are **verifiable**: file exists, JSON is valid, chart has 3 bars. Avoid vague assertions like "output is good."
-
-### Step 6: Consolidate duplicates with a canonical skill + compatibility alias
-
-When two skills cover the same job closely enough that their `name + description` metadata would compete in the catalog, do **not** keep treating them as peer defaults.
-
-Use this decision rule:
-1. **Pick the canonical skill** — the one that should win general-use activation.
-2. **Sharpen the canonical description** so it clearly owns the default job-to-be-done.
-3. **Convert the overlapping skill into a compatibility alias** when old workflows, exact-name installs, or existing docs still depend on it.
-4. **Keep the alias narrow** — it should say that substantive work routes to the canonical skill.
-5. **Add evals for both sides**:
-   - canonical skill evals should prove it wins ordinary prompts
-   - alias evals should prove it activates only for explicit legacy/exact-name scenarios
-6. **Update discovery surfaces in the same change** — README, setup prompts, manifests, and catalog indexes should reflect canonical-vs-alias status so users do not see two false peers.
-
-Use hard deletion only after a longer deprecation window. In most repositories, a canonical skill plus thin compatibility alias is safer than abruptly removing the old name.
-
-### Step 7: Keep discovery surfaces in sync
-
-When a skill is added, renamed, removed, or materially repositioned, do not stop after fixing `SKILL.md`. Validate the shipped catalog and discovery surfaces in the same pass:
-
-1. **Filesystem is the source of truth** — start from live `./.agent-skills/<name>/SKILL.md` folders.
-2. **Check the manifest** — verify `skills.json` includes every live skill, removes stale names, and points to the right `SKILL.md` paths.
-3. **Check README/setup surfaces** — counts, inventory rows, and compatibility-alias wording should match the live repo.
-4. **Check token-optimized discovery variants** — if the repo ships `SKILL.toon` or `SKILL.compact.md`, refresh them when the description, trigger surface, or supported use-cases changed materially. Otherwise the runtime may keep advertising stale intent even when `SKILL.md` is correct.
-5. **Check runtime discovery** — query/list tooling should still find live skills even if a manifest entry is stale.
-6. **Record the change in the same PR** — catalog drift compounds when docs/manifests are deferred.
-
-Use `references/catalog-sync-checklist.md` as the reusable checklist and `scripts/validate_catalog_sync.py` as the quick verifier, but remember that generated discovery variants such as `SKILL.toon` may still need a manual sync step.
+Keep the pass only if the result is more truthful and transferable than the baseline.
 
 ## Available scripts
 
-- **`scripts/validate_skill.sh`** — Validates a SKILL.md against the Agent Skills spec
-- **`scripts/validate_catalog_sync.py`** — Compares live skill folders against `skills.json` and top-level discovery-count surfaces
+- `bash .agent-skills/skill-standardization/scripts/validate_skill.sh <skill-dir>` — validate one skill
+- `bash .agent-skills/skill-standardization/scripts/validate_skill.sh --all .agent-skills/` — batch validation
+- `python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --repo-root /path/to/repo` — compare live folders against catalog/discovery surfaces
 
 ## Examples
 
-### Example 1: Validate a skill directory
+### Example 1: Validate one skill from repo root
 
 ```bash
-bash scripts/validate_skill.sh .agent-skills/my-skill/
+bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/my-skill
 ```
 
-Output:
-```
-Validating: .agent-skills/my-skill/SKILL.md
-✓ Required field: name = 'my-skill'
-✓ Required field: description present
-✗ Description length: 1087 chars (max 1024)
-✓ Name format: valid lowercase
-✗ Name/directory mismatch: name='myskill' vs dir='my-skill'
-✓ Recommended section: When to use this skill
-✓ Recommended section: Instructions
-⚠ Missing recommended section: Examples
-✓ File length: 234 lines (OK)
-
-Issues: 2 errors, 1 warning
-```
-
-### Example 2: Batch validate all skills
+### Example 2: Batch validate the whole repo
 
 ```bash
-bash scripts/validate_skill.sh --all .agent-skills/
+bash .agent-skills/skill-standardization/scripts/validate_skill.sh --all .agent-skills/
 ```
 
-
-### Example 4: Check manifest, README/setup, and compact-variant drift after a rename
+### Example 3: Check catalog/discovery sync after a rename or alias change
 
 ```bash
-python3 scripts/validate_catalog_sync.py --repo-root /path/to/repo
+python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --repo-root /path/to/repo
 ```
 
-Use this after adding, renaming, removing, or canonicalizing a skill so stale manifest entries, wrong inventory counts, and forgotten compact-surface refreshes do not linger.
+Use this after adding, renaming, removing, or canonicalizing a skill so stale manifest entries, wrong inventory counts, and forgotten derived-surface updates do not linger.
 
-### Example 3: Fix common frontmatter issues
+### Example 4: Fix common frontmatter issues
 
 ```yaml
-# WRONG — tags inside metadata is non-standard for some validators
+# WRONG
 metadata:
-  tags: [tag1, tag2]   # list syntax
-  platforms: Claude    # non-spec field
+  tags: [tag1, tag2]
+  platforms: Claude
 
-# CORRECT — per Agent Skills spec
+# CORRECT
 metadata:
-  tags: tag1, tag2     # string value
-allowed-tools: Bash Read Write  # space-delimited, not a YAML list
+  tags: tag1, tag2
+allowed-tools: Bash Read Write
 ```
 
 ## Best practices
 
-1. **Description quality first** — weak descriptions mean the skill never activates; improve it before anything else
-2. **Keep SKILL.md under 500 lines** — move detailed reference docs to `references/`
-3. **Pin script versions** — use `uvx ruff@0.8.0` not just `ruff` to ensure reproducibility
-4. **No interactive prompts in scripts** — agents run in non-interactive shells; use `--flag` inputs, never TTY prompts
-5. **Structured output from scripts** — prefer JSON/CSV over free-form text; send data to stdout, diagnostics to stderr
-6. **Add evals before publishing** — at least 2–3 test cases covering core and edge cases
-7. **Canonicalize true duplicates instead of letting them compete** — if two skills have overlapping `name + description` trigger surfaces, prefer one canonical skill plus a thin compatibility alias and update README/setup/manifest surfaces in the same pass
-8. **Validate catalog surfaces after structural changes** — additions, removals, renames, and aliasing should trigger a `skills.json` + README/setup sync check, not just a SKILL.md lint pass
-9. **Treat compact discovery files as derived artifacts** — when `SKILL.md` changes the trigger surface or supported use-cases materially, refresh `SKILL.toon` / `SKILL.compact.md` too or explicitly document why no compact update was needed
+1. **Description quality first** — weak descriptions mean the skill never activates
+2. **Shrink high-frequency routers** — move slower-changing detail to `references/` before the front door turns into a handbook
+3. **Use truthful command paths** — match repo-root vs skill-local execution context explicitly
+4. **Keep scripts non-interactive and structured** — prefer flags and machine-readable output
+5. **Add evals before publishing** — cover should-trigger, should-not-trigger, and structural-change cases
+6. **Treat compact/discovery files as derived artifacts** — refresh them after material rewrites or document why not
+7. **Canonicalize duplicates instead of multiplying peers** — prefer one default skill plus a compatibility alias
+8. **Run residue scans after structural rewrites** — passing validators can still leave stale filenames, commands, or discovery copy behind
 
 ## References
 

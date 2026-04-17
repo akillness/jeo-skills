@@ -678,3 +678,11 @@
 - Accepted: shrink `user-guide-writing/SKILL.md` from 314 to 235 lines, add `references/mode-structures.md`, tighten the front door around one primary mode plus one output shape, expand eval coverage with packet-shape and route-out cases, and refresh `SKILL.toon` / manifest / README / setup discovery wording so the sharper role is visible
 - Rejected: adding another help-center or docs-program wrapper; re-expanding the front door with more inline templates; collapsing user-doc work into `technical-writing` or `changelog-maintenance`
 - Wiki files created/updated: `queries/user-guide-writing-structural-hardening-2026-04-17.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-17] query | skill-standardization structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops/UX, marketing/GTM/content, and game-dev lanes, with the best bounded maintenance-layer improvement landing on the existing `skill-standardization` skill rather than a new meta wrapper
+- Survey files created under `.survey/skill-standardization-structural-hardening-20260417/`; repo-local evidence plus direct Agent Skills primary-page retrieval were used because the normal web search/extract APIs returned `401 INVALID_API_KEY`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `skill-standardization/SKILL.md` from 315 to 201 lines, add `references/working-modes.md`, refresh `SKILL.toon`, update `skills.json` / `.agent-skills/skills.toon` / README / README.ko / setup discovery wording, expand eval coverage with a repo-root command-truthfulness case, and remove stale legacy manifest commands/source paths
+- Rejected: adding another validation/meta skill; rewriting the validator scripts first instead of fixing the canonical skill and discovery truthfulness; leaving derived discovery surfaces untouched after a material rewrite
+- Wiki files created/updated: `queries/skill-standardization-structural-hardening-2026-04-17.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
