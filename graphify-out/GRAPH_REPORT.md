@@ -11,13 +11,13 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 385
-- Graph edges: 1098
+- Graph edges: 1100
 
 ## Strongest structural findings
-1. The graph is still discovery-surface dominated: `README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`, and `skills.toon` remain the highest-degree maintenance nodes because they index almost the whole live catalog.
-2. Baseline support coverage remains effectively complete across the live skill set (89/89 with `references/`, 89/89 with `evals/`, 89/89 with compact variants). The next wins continue to come from boundary clarity, oversized front doors, and stale routing.
-3. `firebase-cli` was a high-value bounded target because it sits in a dense Firebase cluster with `genkit` and `firebase-ai-logic` but still had a command-catalog front door. The current pass moves it back toward a routing-first operator anchor with focused packets for install/auth, bootstrap, emulators/release, and admin/data operations.
-4. The Firebase lane should stay three-part: `firebase-cli` for platform/project operation, `firebase-ai-logic` for direct app/client Gemini integration, and `genkit` for backend workflow orchestration. No new wrapper skill is justified there.
+1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index almost the whole live catalog.
+2. Support coverage is still complete across the live skill set, so the next structural wins continue to come from dense-anchor cleanup, truthful routing, and compact-surface synchronization rather than adding new folders.
+3. `deployment-automation` was a good bounded target because the lane was already conceptually modernized, but the front door still carried too much packet/template material. The current pass shrinks it from 408 lines to 213 and moves more release detail into focused support packets.
+4. The infrastructure lane remains cleaner when `deployment-automation` owns vendor-neutral release execution, `workflow-automation` owns CI authoring, `system-environment-setup` owns runnable-machine setup, `monitoring-observability` owns telemetry architecture, and `vercel-deploy` owns Vercel-specific operator work.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
@@ -25,41 +25,32 @@
 - README.md: degree 88
 - setup-all-skills-prompt.md: degree 88
 - .agent-skills/skills.toon: degree 81
-- debugging: degree 38
-- bmad: degree 22
-- code-review: degree 22
-- vibe-kanban: degree 22
-- performance-optimization: degree 21
-- task-planning: degree 21
-- jeo: degree 20
+- debugging: degree 43
+- performance-optimization: degree 27
+- bmad: degree 26
+- code-review: degree 25
+- plannotator: degree 24
+- task-planning: degree 24
+- design-system: degree 23
 
 ## Oversized front-door watchlist
-- ralph: 500 lines in SKILL.md
-- deployment-automation: 409 lines in SKILL.md
-- survey: 392 lines in SKILL.md
-- file-organization: 358 lines in SKILL.md
-- authentication-setup: 338 lines in SKILL.md
-- api-documentation: 337 lines in SKILL.md
-- autoresearch: 334 lines in SKILL.md
-- clawteam: 330 lines in SKILL.md
-- technical-writing: 321 lines in SKILL.md
-- scrapling: 320 lines in SKILL.md
+- ralph: 499 lines in SKILL.md
+- survey: 391 lines in SKILL.md
+- file-organization: 357 lines in SKILL.md
+- authentication-setup: 337 lines in SKILL.md
+- api-documentation: 336 lines in SKILL.md
+- autoresearch: 333 lines in SKILL.md
+- clawteam: 329 lines in SKILL.md
+- technical-writing: 320 lines in SKILL.md
+- scrapling: 319 lines in SKILL.md
+- skill-standardization: 315 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- `firebase-cli` should stay distinct from `genkit` and `firebase-ai-logic`: CLI/platform operation is not backend AI workflow orchestration or direct in-app Gemini SDK wiring.
-- The bounded win in the Firebase lane is improving the existing canonical operator anchor, not adding another Firebase wrapper.
-- Future duplicate pressure is more likely to come from high-visibility anchors drifting into adjacent route-outs than from missing support directories.
-
-## Firebase cluster neighbors
-- authentication-setup
-- database-schema-design
-- debugging
-- deployment-automation
-- firebase-ai-logic
-- genkit
-- harness
+- No new deployment wrapper is justified: the bounded win was hardening the existing canonical release-execution skill in place.
+- Future duplicate pressure is more likely to come from dense anchors drifting into adjacent route-outs than from missing support directories.
+- `deployment-automation` should stay distinct from `workflow-automation`, `system-environment-setup`, `monitoring-observability`, and `vercel-deploy`; each owns a different failure mode and operator surface.
 
 ## Recommended maintenance direction
-- Keep improving high-degree anchors when they become too dense before adding new adjacent skills.
-- Re-run catalog/runtime sync validation whenever `skills.json`, `skills.toon`, or top-level docs change materially.
-- Prefer reference-doc splits and truthful routing/discovery updates when a main `SKILL.md` starts to outgrow its trigger surface or carry stale route-outs.
+- Keep targeting oversized or stale high-degree anchors after support coverage is already complete.
+- Refresh compact discovery wording whenever a main `SKILL.md` is materially shortened or rerouted.
+- Re-run catalog/runtime sync validation whenever `skills.json`, compact files, or discovery docs change materially.

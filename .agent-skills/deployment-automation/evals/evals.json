@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "We already have builds passing in CI, but production releases are still a Slack checklist and a senior engineer manually clicking promote. Design the safest automation packet for staging to production.",
-      "expected_output": "An environment-promotion deployment packet with explicit gates, verification, rollback, and route-outs.",
+      "expected_output": "An environment-promotion release packet with explicit gates, verification, rollback, and route-outs.",
       "assertions": [
         "Classifies the work as environment-promotion or an equivalent release/promotion mode",
         "Names staging and production environments explicitly",
@@ -32,6 +32,17 @@
         "Separates application rollback from schema or data rollback",
         "Includes immediate containment and post-recovery verification steps",
         "Does not prescribe a full observability-stack redesign as the main answer"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We deploy a Next.js app on Vercel and need help with project linking, domains, aliases, and preview environment variables. Should deployment-automation own this?",
+      "expected_output": "A route-out that keeps generic release framing small and sends the Vercel-specific operator work to vercel-deploy.",
+      "assertions": [
+        "Recognizes that the request is centered on Vercel-specific operations",
+        "Routes the main task to vercel-deploy",
+        "Does not turn deployment-automation into a Vercel manual",
+        "Keeps any remaining release-execution advice vendor-neutral"
       ]
     }
   ]

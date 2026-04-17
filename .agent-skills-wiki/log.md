@@ -622,3 +622,11 @@
 - Accepted: shrink `firebase-cli/SKILL.md` into a routing-first operator anchor, add focused routing / bootstrap / emulator-release / admin-data references, refresh evals and compact/discovery wording, and preserve the lane boundary with `genkit` and `firebase-ai-logic`
 - Rejected: adding another Firebase wrapper; merging CLI/project operations into `genkit` or `firebase-ai-logic`; keeping the old command-catalog front door
 - Wiki files created/updated: `queries/firebase-cli-structural-hardening-2026-04-16.md`, `concepts/firebase-ai-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-16] query | deployment-automation structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, PM/ops, marketing, and game-dev lanes, with the best bounded infrastructure win landing on the still-oversized `deployment-automation` release-execution skill
+- Survey files created under `.survey/deployment-automation-structural-hardening-20260416/`; repo-local evidence plus Kubernetes, Argo Rollouts, and Vercel primary surfaces were used because normal search/extract APIs are unavailable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `deployment-automation/SKILL.md` from 408 lines to 213, add focused packet / strategy references, refresh the Vercel route-out eval, sync compact/discovery wording, and keep the boundary with `workflow-automation`, `system-environment-setup`, `monitoring-observability`, and `vercel-deploy`
+- Rejected: adding another deployment wrapper; re-expanding the front door into a blended handbook; absorbing CI authoring or provider-specific operator work into the generic release-execution skill
+- Wiki files created/updated: `queries/deployment-automation-structural-hardening-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

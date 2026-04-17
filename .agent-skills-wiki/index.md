@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-16 | Total pages: 89
+> Last updated: 2026-04-16 | Total pages: 90
 
 ## Entities
 
@@ -35,6 +35,7 @@
 - [[changelog-maintenance-modernization-2026-04-14]] — Why the best bounded documentation-cluster improvement was modernizing `changelog-maintenance` into the release-history / release-notes anchor instead of adding another release-note wrapper.
 - [[monitoring-observability-modernization-2026-04-14]] — Why the best bounded infrastructure improvement was modernizing `monitoring-observability` into the telemetry design/review anchor instead of adding another dashboard-only, alerting-only, or vendor wrapper.
 - [[deployment-automation-modernization-2026-04-13]] — Why the best bounded infrastructure/developer-workflow improvement was modernizing `deployment-automation` into the release-execution anchor instead of adding another CI/CD or rollout wrapper.
+- [[deployment-automation-structural-hardening-2026-04-16]] — Why the best bounded follow-up after the deployment modernization pass was shrinking `deployment-automation` into a tighter routing-first anchor with focused packet references instead of adding another deployment wrapper.
 - [[backend-testing-modernization-2026-04-12]] — Why the best bounded backend verification fix was modernizing `backend-testing` into a layer-selecting, fixture-aware coverage skill instead of adding another testing wrapper.
 - [[bmad-gds-modernization-2026-04-12]] — Why the best bounded game-cluster fix was modernizing `bmad-gds` into a coordinating producer/orchestrator skill.
 - [[code-refactoring-modernization-2026-04-14]] — Why the best bounded fix for the code-quality pair was modernizing `code-refactoring` into a behavior-preserving structural-cleanup anchor instead of adding another refactoring wrapper.
