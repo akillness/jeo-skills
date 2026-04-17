@@ -1,17 +1,18 @@
 N:skill-standardization
-D:Standardize and validate SKILL.md files against the Agent Skills specification (agentskills.io). Use when creating new skills, auditing existing skills for spec compliance, improving trigger descriptions, consolidating duplicates, or checking drift between live skill folders, shipped discovery surfaces, and compact variants like SKILL.toon / SKILL.compact.md. Triggers on: validate skill, create SKILL.md, standardize skill format, check skill spec, improve skill description, catalog sync, skills.json drift, SKILL.toon drift.
-G:skill-management standardization validation agentskills-spec automation description-optimization
+D:Standardize and validate SKILL.md files against the Agent Skills specification. Use when creating or rewriting a skill, auditing spec compliance, sharpening trigger descriptions, canonicalizing overlapping skills into a canonical skill plus compatibility alias, or checking whether derived discovery surfaces (`skills.json`, README/setup inventories, `SKILL.toon`, `SKILL.compact.md`) still match the live skill folders. In repo-root maintenance loops, prefer truthful validator commands instead of bare `scripts/...` examples.
+G:skill-management standardization validation agentskills-spec automation deduplication catalog-sync compact-drift canonical-skill
 U[8]:
-  Creating a new SKILL.md from scratch
-  Auditing existing skills for spec compliance
-  Converting legacy skill formats to standard structure
-  Improving descriptions for better triggering accuracy
-  Adding evaluation test cases (evals/evals.json)
-  Batch-validating all skills in a directory
-  Auditing skills.json / README / setup inventory drift against live folders
-  Auditing SKILL.toon / SKILL.compact.md drift after material rewrites
-S[4]{n,action}:
-  1,Validate SKILL.md with scripts/validate_skill.sh
-  2,Check catalog drift with scripts/validate_catalog_sync.py and review compact variants
-  3,Create or fix SKILL.md frontmatter and sections
-  4,Write effective description with imperative phrasing and trigger keywords
+  Create a new SKILL.md from scratch
+  Audit an existing skill for spec compliance
+  Repair weak trigger descriptions or stale route-outs
+  Canonicalize duplicates into a default skill plus compatibility alias
+  Validate repo-level discovery/catalog drift after add/rename/remove/alias work
+  Review SKILL.toon / SKILL.compact.md drift after material rewrites
+  Use repo-root validator commands truthfully in maintenance loops
+  Do residue scans for stale command/path/discovery copy
+S[5]{n,action}:
+  1,Pick the smallest working mode from references/working-modes.md
+  2,Run the truthful validator command for the current working directory
+  3,Fix or write the primary SKILL.md and its description/evals
+  4,Run catalog sync after structural changes and refresh derived discovery surfaces when the rewrite was material
+  5,Do a residue scan before calling the pass done

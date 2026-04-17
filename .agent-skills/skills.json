@@ -2642,7 +2642,7 @@
     },
     {
       "name": "skill-standardization",
-      "description": "Standardize and validate SKILL.md files against the Agent Skills specification (agentskills.io). Use when creating new skills, auditing existing skills for spec compliance, converting legacy skill formats to standard structure, improving descriptions for reliable triggering, consolidating canonical-vs-alias duplicates, or checking drift between live skill folders, shipped indexes, and compact variants like SKILL.toon. Triggers on: \"validate skill\", \"create SKILL.md\", \"standardize skill format\", \"check skill spec\", \"skill frontmatter\", \"improve skill description\", \"catalog sync\", \"SKILL.toon drift\".",
+      "description": "Standardize and validate SKILL.md files against the Agent Skills specification (agentskills.io). Use when creating or rewriting a skill, auditing spec compliance, sharpening trigger descriptions, canonicalizing overlapping skills into a canonical skill plus compatibility alias, or checking whether derived discovery surfaces (`skills.json`, README/setup inventories, `SKILL.toon`, `SKILL.compact.md`) still match the live skill folders. In repo-root maintenance loops, prefer truthful validator commands instead of bare `scripts/...` examples.",
       "category": "agent-development",
       "path": "skill-standardization/SKILL.md",
       "tags": [
@@ -2663,24 +2663,20 @@
       ],
       "commands": [
         {
-          "command": "cd /path/to/.agent-skills",
-          "source": "utilities/skill-standardization/SKILL.md"
+          "command": "bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/<skill-name>",
+          "source": "skill-standardization/SKILL.md"
         },
         {
-          "command": "python3 scripts/convert_skills.py",
-          "source": "utilities/skill-standardization/SKILL.md"
+          "command": "bash .agent-skills/skill-standardization/scripts/validate_skill.sh --all .agent-skills/",
+          "source": "skill-standardization/SKILL.md"
         },
         {
-          "command": "python3 scripts/remove_duplicates.py",
-          "source": "utilities/skill-standardization/SKILL.md"
+          "command": "python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --repo-root /path/to/repo",
+          "source": "skill-standardization/SKILL.md"
         },
         {
-          "command": "python3 scripts/final_cleanup.py",
-          "source": "utilities/skill-standardization/SKILL.md"
-        },
-        {
-          "command": "grep -E \"^## (When to use|Instructions|Examples|Best practices|References)\" SKILL.md",
-          "source": "utilities/skill-standardization/SKILL.md"
+          "command": "grep -E \"^## (When to use this skill|Instructions|Examples|Best practices|References)\" .agent-skills/<skill-name>/SKILL.md",
+          "source": "skill-standardization/SKILL.md"
         }
       ]
     },
