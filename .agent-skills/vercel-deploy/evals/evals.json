@@ -33,6 +33,27 @@
         "Response includes a Vercel-specific verification step such as `vercel env ls` or `vercel pull --environment=...`",
         "Response distinguishes Vercel env scope from app-level configuration if relevant"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our production deploy is broken on Vercel. Roll back safely and tell me what still needs manual verification.",
+      "expected_output": "Selects rollback-response mode, identifies the rollback target, calls out plan/config caveats, and includes post-rollback verification instead of treating rollback as complete by itself.",
+      "assertions": [
+        "Response identifies rollback or production recovery as the primary mode",
+        "Response mentions stale config, plan eligibility, cron, or similar rollback caveats",
+        "Response includes post-rollback verification such as health or log checks",
+        "Response does not present rollback as a lossless or fully sufficient fix by itself"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Help me design a staging-to-production rollout policy with canary rules across providers, and maybe later we can wire Vercel into it.",
+      "expected_output": "Routes the main job to deployment-automation instead of pretending this is a Vercel-specific operator task.",
+      "assertions": [
+        "Response routes the main planning/policy job to `deployment-automation`",
+        "Response does not frame Vercel as the sole or primary owner of cross-provider rollout design",
+        "Response preserves `vercel-deploy` only for any explicitly Vercel-specific follow-up"
+      ]
     }
   ]
 }
