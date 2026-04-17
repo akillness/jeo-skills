@@ -630,3 +630,11 @@
 - Accepted: shrink `deployment-automation/SKILL.md` from 408 lines to 213, add focused packet / strategy references, refresh the Vercel route-out eval, sync compact/discovery wording, and keep the boundary with `workflow-automation`, `system-environment-setup`, `monitoring-observability`, and `vercel-deploy`
 - Rejected: adding another deployment wrapper; re-expanding the front door into a blended handbook; absorbing CI authoring or provider-specific operator work into the generic release-execution skill
 - Wiki files created/updated: `queries/deployment-automation-structural-hardening-2026-04-16.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-17] query | authentication-setup structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, PM/ops, marketing, and game-dev lanes, with the best bounded next backend/fullstack win landing on the still-oversized `authentication-setup` router
+- Survey files created under `.survey/authentication-setup-structural-hardening-20260417/`; browser-rendered primary-page evidence plus GitHub API primary-source retrieval and repo-local graph data were used because normal search/extract APIs are unavailable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `authentication-setup/SKILL.md` from 337 to 251 lines, add `references/enterprise-and-migration-notes.md`, refresh `SKILL.toon`, expand eval coverage with a self-hosted migration case, and preserve the boundary with `security-best-practices`, `api-design`, `api-documentation`, `backend-testing`, and `database-schema-design`
+- Rejected: adding another auth wrapper; re-expanding the front door with more provider detail; unnecessary README / README.ko / setup prompt churn when discovery wording stayed materially accurate
+- Wiki files created/updated: `queries/authentication-setup-structural-hardening-2026-04-17.md`, `concepts/backend-api-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

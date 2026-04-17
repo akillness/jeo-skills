@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-16 | Total pages: 90
+> Last updated: 2026-04-17 | Total pages: 91
 
 ## Entities
 
@@ -30,6 +30,7 @@
 - [[api-design-modernization-2026-04-12]] — Why the best bounded backend-cluster improvement was modernizing `api-design` into a contract-first anchor instead of adding a new overlapping API skill.
 - [[api-documentation-modernization-2026-04-13]] — Why the best bounded documentation-cluster improvement was modernizing `api-documentation` into the developer-facing API-docs anchor instead of adding another portal/docs wrapper.
 - [[authentication-setup-modernization-2026-04-14]] — Why the best bounded backend-cluster improvement was modernizing `authentication-setup` into the product-auth setup router instead of leaving a JWT/OAuth catch-all or adding another auth wrapper.
+- [[authentication-setup-structural-hardening-2026-04-17]] — Why the best bounded backend/fullstack follow-up after modernization was shrinking `authentication-setup` into a tighter routing-first anchor with an enterprise/migration support packet instead of adding another auth wrapper.
 - [[database-schema-design-modernization-2026-04-14]] — Why the best bounded backend-cluster improvement was modernizing `database-schema-design` into the storage-model and staged-migration anchor instead of adding another database wrapper.
 - [[security-best-practices-modernization-2026-04-14]] — Why the best bounded web/fullstack security improvement was modernizing `security-best-practices` into the layered hardening anchor instead of leaving it as a stale middleware snippet dump or adding another generic appsec wrapper.
 - [[changelog-maintenance-modernization-2026-04-14]] — Why the best bounded documentation-cluster improvement was modernizing `changelog-maintenance` into the release-history / release-notes anchor instead of adding another release-note wrapper.
