@@ -4,7 +4,7 @@ created: 2026-04-13
 updated: 2026-04-17
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality, docs, graphify]
-sources: [.survey/technical-writing-modernization-20260413/context.md, .survey/technical-writing-modernization-20260413/solutions.md, .survey/technical-writing-structural-hardening-20260417/context.md, .survey/technical-writing-structural-hardening-20260417/solutions.md, .survey/user-guide-writing-modernization-20260413/context.md, .survey/user-guide-writing-modernization-20260413/solutions.md, .survey/presentation-builder-modernization-20260415/context.md, .survey/presentation-builder-modernization-20260415/solutions.md, .survey/api-documentation-structural-hardening-20260417/context.md, .survey/api-documentation-structural-hardening-20260417/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/technical-writing-modernization-20260413/context.md, .survey/technical-writing-modernization-20260413/solutions.md, .survey/technical-writing-structural-hardening-20260417/context.md, .survey/technical-writing-structural-hardening-20260417/solutions.md, .survey/user-guide-writing-modernization-20260413/context.md, .survey/user-guide-writing-modernization-20260413/solutions.md, .survey/user-guide-writing-structural-hardening-20260417/context.md, .survey/user-guide-writing-structural-hardening-20260417/solutions.md, .survey/presentation-builder-modernization-20260415/context.md, .survey/presentation-builder-modernization-20260415/solutions.md, .survey/api-documentation-structural-hardening-20260417/context.md, .survey/api-documentation-structural-hardening-20260417/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Documentation Cluster
@@ -32,7 +32,9 @@ Boundary checks:
 ## Current structural note
 After the `technical-writing`, `user-guide-writing`, `api-documentation`, `changelog-maintenance`, `presentation-builder`, and `research-paper-writing` hardening runs, the documentation cluster now has sharper anchors for internal docs, developer-facing API docs, end-user help content, release-history / release-summary work, presentation artifacts, and academic manuscript packages. The latest graph-style scan reports 89 skills with `references/`, 89 with `evals/`, and a fully covered compact layer, so route-out discipline and dense-anchor cleanup matter more than adding a new wrapper skill.
 
-The 2026-04-17 `api-documentation` and `technical-writing` follow-ups confirmed the next documentation-cluster win pattern after support coverage is complete: shrink dense front doors, move packet templates and slower-changing structures into focused references, and strengthen evals around real routing pressure instead of inventing another documentation helper.
+The 2026-04-17 `api-documentation`, `technical-writing`, and `user-guide-writing` follow-ups confirmed the next documentation-cluster win pattern after support coverage is complete: shrink dense front doors, move packet templates and slower-changing structures into focused references, and strengthen evals around real routing pressure instead of inventing another documentation helper.
+
+`user-guide-writing` now fits that same pattern explicitly: it is strongest when it picks one primary page type plus the smallest useful artifact packet (`single-page`, `guide-plus-faq`, `refresh-packet`, or `guide-set`) rather than acting like a giant mixed tutorial/help-center template dump.
 
 ## Related pages
 - [[skill-support-coverage]]
@@ -40,6 +42,7 @@ The 2026-04-17 `api-documentation` and `technical-writing` follow-ups confirmed 
 - [[technical-writing-modernization-2026-04-13]]
 - [[technical-writing-structural-hardening-2026-04-17]]
 - [[user-guide-writing-modernization-2026-04-13]]
+- [[user-guide-writing-structural-hardening-2026-04-17]]
 - [[api-documentation-modernization-2026-04-13]]
 - [[api-documentation-structural-hardening-2026-04-17]]
 - [[changelog-maintenance-modernization-2026-04-14]]

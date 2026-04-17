@@ -3043,7 +3043,7 @@
     },
     {
       "name": "user-guide-writing",
-      "description": "Write user-facing documentation for onboarding, tutorials, how-to guides, FAQs, help-center articles, and release-facing help updates. Use when the main job is helping end users or admins complete product tasks; routes internal technical docs to technical-writing, API portals to api-documentation, and release-note hygiene to changelog-maintenance.",
+      "description": "Write user-facing documentation for onboarding, tutorials, task how-to guides, FAQs, help-center updates, and release-facing help refreshes. Use when the main job is helping end users or admins complete a product workflow or understand a changed UI path; routes internal specs/runbooks to technical-writing, API portals/SDK docs to api-documentation, and release-note hygiene to changelog-maintenance.",
       "category": "documentation",
       "path": "user-guide-writing/SKILL.md",
       "tags": [

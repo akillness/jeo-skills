@@ -670,3 +670,11 @@
 - Accepted: harden `steam-store-launch-ops` around visibility / promise / proof / timing / ops diagnosis, add `references/diagnostic-model.md` and `references/event-hooks.md`, refresh `evals/evals.json` and `SKILL.toon`, and update README / README.ko / setup prompt / manifest discovery wording so the repo advertises the sharper role truthfully
 - Rejected: adding another Steam / wishlist / Next Fest wrapper; broadening the skill into generic marketing strategy; collapsing public launch diagnosis into `game-demo-feedback-triage` or `marketing-automation`
 - Wiki files created/updated: `queries/steam-store-launch-ops-structural-hardening-2026-04-17.md`, `concepts/game-development-cluster.md`, `concepts/marketing-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-17] query | user-guide-writing structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops/UX, marketing/GTM/content, and game-dev lanes, with the best bounded documentation-cluster follow-up landing on the existing `user-guide-writing` skill rather than a new help-center wrapper
+- Survey files created under `.survey/user-guide-writing-structural-hardening-20260417/`; direct primary-page retrieval plus repo-local evidence were used because the normal web search/extract APIs returned `401 INVALID_API_KEY`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `user-guide-writing/SKILL.md` from 314 to 235 lines, add `references/mode-structures.md`, tighten the front door around one primary mode plus one output shape, expand eval coverage with packet-shape and route-out cases, and refresh `SKILL.toon` / manifest / README / setup discovery wording so the sharper role is visible
+- Rejected: adding another help-center or docs-program wrapper; re-expanding the front door with more inline templates; collapsing user-doc work into `technical-writing` or `changelog-maintenance`
+- Wiki files created/updated: `queries/user-guide-writing-structural-hardening-2026-04-17.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

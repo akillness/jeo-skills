@@ -1,65 +1,66 @@
 ---
 name: user-guide-writing
 description: >
-  Write user-facing documentation for onboarding, tutorials, how-to guides, FAQs,
-  help-center articles, release-facing help updates, and task-based support content.
-  Use when the main job is helping end users or admins complete product tasks,
-  recover from confusion, or learn a workflow through clear prerequisites,
-  screenshots/placeholders, and step-by-step guidance. Triggers on: user guide,
-  tutorial, onboarding guide, getting started, help article, how-to, FAQ,
-  support doc, knowledge-base article, product walkthrough, and customer-facing
-  documentation. Route internal specs/runbooks/ADRs to `technical-writing`, API
-  portals/SDK reference docs to `api-documentation`, and release-note /
-  semver hygiene to `changelog-maintenance`.
+  Write user-facing documentation for onboarding, tutorials, task how-to guides,
+  FAQs, help-center updates, and release-facing help refreshes. Use when the main
+  job is helping end users or admins complete a product workflow, recover from a
+  blocker, or understand a changed UI path. Triggers on: user guide, tutorial,
+  getting started, onboarding doc, help article, how-to, FAQ, knowledge-base
+  article, support doc, release help update, and customer-facing documentation.
+  Route internal specs/runbooks to `technical-writing`, API portals/SDK docs to
+  `api-documentation`, and release-note hygiene to `changelog-maintenance`.
 allowed-tools: Read Write Edit Glob Grep
 compatibility: >
   Best for Markdown, help-center, docs-site, or knowledge-base workflows where the
-  output teaches users how to complete tasks in a real product rather than how the
+  output teaches someone how to complete a task in the product rather than how the
   underlying system is implemented.
 license: MIT
 metadata:
   tags: user-guides, tutorials, documentation, onboarding, how-to, faq, help-center, customer-docs, product-education
   platforms: Claude, ChatGPT, Gemini
-  version: "2.0.0"
+  version: "2.1.0"
   modernization: 2026-04-13
+  hardening: 2026-04-17
 ---
 
 # User Guide Writing
 
-Use this skill when the main job is **writing or restructuring customer-facing documentation that helps people learn, complete, or recover a product workflow**.
+Use this skill when the deliverable is **customer-facing or admin-facing documentation that helps someone complete a workflow in the product**.
 
 `user-guide-writing` is the documentation-cluster anchor for:
-- getting-started and onboarding guides
+- getting-started / first-success guides
 - tutorials and guided walkthroughs
 - task-based how-to articles
-- FAQs and support content
-- release-facing help-center updates for changed workflows
-- user/admin docs that need prerequisites, warnings, screenshots, and maintenance notes
+- FAQs and support-oriented answer sets
+- release-facing help updates after shipped UI/workflow changes
+- small guide sets that combine one primary page with the minimum supporting companion docs
 
 Read these support docs before choosing the mode or boundary:
 - [references/document-modes-and-boundaries.md](references/document-modes-and-boundaries.md)
+- [references/mode-structures.md](references/mode-structures.md)
 - [references/workflow-checklist.md](references/workflow-checklist.md)
 - [references/maintenance-signals.md](references/maintenance-signals.md)
 
 ## When to use this skill
-- A product needs a getting-started guide that helps a new user reach the first successful outcome
-- A feature launch needs a user-facing tutorial or how-to article rather than internal implementation notes
-- A help center or docs site needs a task-based article, troubleshooting FAQ, or onboarding path
-- Support pain keeps recurring and the answer should become reusable public documentation
-- A workflow changed and the existing user-facing steps, screenshots, warnings, or prerequisites need to be updated
-- A product or ops team needs customer/admin guidance that explains what to click, what to expect, and what can go wrong
+- A product needs a getting-started guide that gets a new user to the first successful outcome.
+- A feature launch needs a tutorial or how-to article for real product users.
+- A help center needs a task-based article, FAQ, or troubleshooting-friendly walkthrough.
+- Support pain keeps recurring and the answer should become durable customer-facing documentation.
+- A workflow changed and the existing user-facing steps, screenshots, warnings, or prerequisites need to be updated.
+- A request really needs one guide plus a tiny companion packet instead of a huge mixed-purpose document.
 
 ## When not to use this skill
-- **The main job is an internal spec, architecture doc, ADR, runbook, migration plan, or developer-facing implementation guide** → use `technical-writing`
-- **The main job is published API reference, SDK docs, OpenAPI examples, or developer-portal content** → use `api-documentation`
-- **The main job is release-note hygiene, semantic version summaries, or `CHANGELOG.md` upkeep** → use `changelog-maintenance`
-- **The main job is product positioning, marketing copy, launch messaging, or lifecycle email copy** → use `marketing-automation` or the relevant marketing skill
-- **The main job is in-app onboarding mechanics or product-tour implementation** → use the relevant product/UX skill first, then use this skill for the durable written companion docs
+- **The main job is an internal spec, architecture doc, ADR, runbook, migration plan, or builder-facing implementation guide** → use `technical-writing`.
+- **The main job is API reference, SDK docs, webhook docs, developer quickstarts, or developer-portal content** → use `api-documentation`.
+- **The main job is release notes, `CHANGELOG.md`, migration announcements, or shipped-change summaries** → use `changelog-maintenance`.
+- **The main job is a deck, launch presentation, workshop slide set, or visual review artifact** → use `presentation-builder`.
+- **The main job is product positioning, marketing messaging, lifecycle email copy, or launch copy** → use `marketing-automation`.
+- **The main job is building in-app onboarding mechanics or product-tour UX** → use the relevant product/UX skill first, then use this skill for the durable written companion docs.
 
 ## Instructions
 
-### Step 1: Classify the user-doc mode
-Normalize the request into one primary mode before drafting.
+### Step 1: Classify one primary mode
+Normalize the request before drafting.
 
 ```yaml
 user_guide_mode:
@@ -69,246 +70,166 @@ user_guide_mode:
   docs_surface: help-center | docs-site | in-app-companion | pdf | unknown
   source_of_truth: product-ui | release-notes | support-tickets | sme-notes | mixed | unknown
   maintenance_need: one-off | recurring | stale-doc-rewrite | launch-critical
+  output_shape: single-page | guide-plus-faq | refresh-packet | guide-set | unknown
 ```
 
-Choose one primary mode per run:
-- `getting-started` → first-success path for a new user
-- `tutorial` → guided learning flow with context and milestones
-- `how-to` → task-based instructions for a specific outcome
-- `faq` → concise recurring questions, edge cases, and redirects to deeper docs
-- `release-help-update` → user-facing update for changed behavior, renamed UI, or new workflow steps
+Use one primary mode per run:
+- `getting-started` → shortest path to first success
+- `tutorial` → guided learning with context and milestones
+- `how-to` → one practical task completed quickly
+- `faq` → concise repeated questions plus route-outs to deeper guides
+- `release-help-update` → patch user-facing docs after shipped UI or workflow change
 
-### Step 2: Confirm the audience, task, and route-outs
-Before writing, answer four questions:
-1. Who will follow this doc, and what role/permissions do they have?
+### Step 2: Confirm audience, task, and route-outs
+Answer these before writing:
+1. Who will follow the doc, and what role or permissions do they have?
 2. What exact task or outcome should they achieve?
 3. Which prerequisites, plan limits, or environment assumptions could break the flow?
-4. Which neighboring documentation skills must stay out of scope?
+4. Which neighboring skills must stay out of scope?
 
 Quick route-out table:
 
 | If the request sounds like... | Use |
 |---|---|
-| "Write the developer portal / API docs / SDK reference" | `api-documentation` |
-| "Write a design doc / architecture doc / runbook" | `technical-writing` |
+| "Write the architecture doc / runbook / migration plan" | `technical-writing` |
+| "Write the developer portal / SDK quickstart / webhook docs" | `api-documentation` |
 | "Summarize what shipped this release" | `changelog-maintenance` |
 | "Write onboarding docs / tutorial / FAQ / help article" | `user-guide-writing` |
+| "Make a launch deck / training deck / walkthrough presentation" | `presentation-builder` |
 
 ### Step 3: Gather the minimum user-facing evidence
-Do not write customer-facing steps from vibes alone. Pull the smallest credible evidence set first:
+Do not draft from vibes alone. Pull the smallest credible evidence set first:
 - current UI labels, navigation, and states
 - prerequisites, permissions, and plan / edition assumptions
 - expected result after each important step
-- likely failure points, empty states, and confusing branches
-- screenshots or screenshot placeholders for key transitions
-- existing support tickets, search terms, or recurring user questions if available
-- release changes that made existing docs stale
+- likely blockers, empty states, and branching conditions
+- screenshots or screenshot placeholders only where they reduce confusion
+- support questions, search terms, or recurring failure signals if available
+- release changes that made the current guide stale
 
-If the product details are incomplete, label assumptions explicitly and avoid pretending the guide is verified.
+If details are incomplete, label assumptions explicitly instead of pretending the guide is verified.
 
-### Step 4: Match the structure to the mode
-Use the smallest structure that fits the chosen job.
+### Step 4: Choose the smallest fitting structure
+Use [references/mode-structures.md](references/mode-structures.md) and keep only the sections the chosen mode needs.
 
-#### A. Getting-started guide
-Use for first-success onboarding.
+Rules:
+- If the request is one user outcome, prefer a **single page**.
+- If the task needs one main guide plus recurring blockers, use **guide plus FAQ**.
+- If the real work is patching stale pages after a release, use a **refresh packet** instead of rewriting a whole manual.
+- If one draft starts doing onboarding, daily usage, troubleshooting, and release notes all at once, split it into a **small guide set**.
 
-Recommended skeleton:
-```markdown
-# Get Started with <Product / Feature>
+### Step 5: Emit the smallest useful artifact packet
+Default output shapes:
+- `single-page` → one getting-started guide, tutorial, how-to, or FAQ page
+- `guide-plus-faq` → one main guide plus a short FAQ or troubleshooting appendix
+- `refresh-packet` → changed steps, stale screenshot list, affected companion docs, and assumptions to verify
+- `guide-set` → a bounded set such as getting-started + FAQ or tutorial + how-to follow-up
 
-## Who this is for
-## What you will accomplish
-## Prerequisites
-## Step 1: <first action>
-## Step 2: <next action>
-## Step 3: <first success state>
-## Common mistakes
-## Next steps
-## Where to get help
-```
+Do not ship a broad handbook when the request only needs one page and a short sync list.
 
-#### B. Tutorial
-Use for guided learning that explains why each step matters.
-
-Recommended skeleton:
-```markdown
-# Tutorial: <Outcome>
-
-## What you will build / learn
-## Time and prerequisites
-## Before you start
-## Step 1
-## Step 2
-## Step 3
-## Check your result
-## What changed and why it matters
-## Next tutorial / related guides
-```
-
-#### C. How-to guide
-Use for an existing user trying to complete one task quickly.
-
-Recommended skeleton:
-```markdown
-# How to <Task>
-
-## Before you begin
-## Step 1
-## Step 2
-## Step 3
-## Verify success
-## Troubleshooting
-## Related tasks
-```
-
-#### D. FAQ
-Use when repeated questions need short, scannable answers.
-
-Recommended skeleton:
-```markdown
-# Frequently Asked Questions
-
-## <Category>
-### <Question>
-Short answer
-Longer answer if needed
-Link to the deeper guide if one exists
-```
-
-#### E. Release-facing help update
-Use when existing docs must catch up with a shipped change.
-
-Recommended skeleton:
-```markdown
-# <Feature / Workflow> update
-
-## What changed
-## Who is affected
-## New steps
-## Differences from the old flow
-## Screenshot / UI callout updates needed
-## Related help articles to update
-```
-
-### Step 5: Apply user-doc rules instead of generic writing advice
-Use these rules aggressively:
-- **Lead with task and audience**, not with implementation internals.
-- **Name prerequisites early**: account type, permissions, browser/app version, data required, or setup already completed.
+### Step 6: Apply user-doc writing rules
+- **Lead with the task and audience**, not implementation details.
+- **Name prerequisites early**: role, permissions, plan limits, data required, browser/app/version assumptions.
 - **Prefer observable actions**: what the user clicks, types, sees, and receives.
-- **Keep one major outcome per guide**. Split when a page tries to teach setup, daily use, troubleshooting, and release notes all at once.
-- **Use screenshots or screenshot placeholders sparingly and intentionally** at confusing transitions, not after every click.
-- **Call out branching conditions** like role-based UI differences, plan limits, or alternate paths.
+- **Keep one major outcome per page**.
+- **Call out branching conditions** like role-specific UI or alternate paths.
 - **Give the user a success check** so they know the task worked.
-- **Troubleshooting belongs near the task**, not hidden in a separate generic appendix.
-- **Link outward deliberately**: tutorials → deeper how-to guides, FAQs → full guides, release updates → affected help articles.
+- **Keep troubleshooting near the task** instead of burying it in a generic appendix.
+- **Use screenshots intentionally** at confusing transitions, not after every click.
+- **Link outward deliberately**: FAQ → full guide, release-help update → affected articles, getting-started → next task.
 
-### Step 6: Use the Diátaxis boundary on purpose
-Treat doc types as separate jobs instead of one blob:
-- `tutorial` = learn by doing, with context and milestones
-- `how-to` = solve one practical task fast
-- `faq` = answer repeat questions and redirect
-- `getting-started` = shortest path to first success
+### Step 7: Run the maintenance and sync check
+Use [references/workflow-checklist.md](references/workflow-checklist.md) and [references/maintenance-signals.md](references/maintenance-signals.md) before finalizing.
 
-If the draft starts mixing all four, split it into a small guide set rather than forcing everything into one page.
+Verify:
+1. The page type matches the user job.
+2. Prerequisites and blockers appear before risky steps.
+3. Screenshot placeholders are justified and trackable.
+4. Related guides, FAQs, release updates, or support macros that must stay in sync are named.
+5. Route-outs to `technical-writing`, `api-documentation`, and `changelog-maintenance` remain explicit when the request drifts.
 
-### Step 7: Make the guide maintainable
-Before finalizing, add the maintenance details future editors will need:
-- product version / release window if relevant
-- permissions or plan assumptions
-- screenshot inventory or placeholders still needed
-- linked companion docs that should stay in sync
-- phrases or UI labels likely to go stale after release
-- owner / review checkpoint if the doc is launch-critical
-
-Use this quick checklist:
-1. Can a new user follow the steps without private context?
-2. Are warnings and prerequisites visible before the user gets stuck?
-3. Does every screenshot or placeholder justify itself?
-4. Is there a clear success state?
-5. Are route-outs to API docs, internal docs, or changelog work explicit where needed?
-
-### Step 8: Review for scannability and support deflection
-Good user docs help humans and support teams. Before shipping:
-- shorten headings until they are easy to scan in a help-center sidebar
-- promote the most common blockers into callouts or FAQ entries
-- remove product-team jargon unless the UI uses it verbatim
-- keep paragraphs short; prefer bullets for options and limits
-- ensure related guides and escalation paths are easy to find
-
-### Step 9: Output the smallest useful artifact set
-Return only the artifacts the request actually needs. Common outputs:
-- one onboarding / getting-started page
-- one how-to article plus a mini FAQ
-- a tutorial plus companion troubleshooting notes
-- a release-help update plus a list of stale docs to patch
-- a doc-refresh plan that names which user-facing pages need rewritten screenshots or steps
-
-## Output format
-Use this when the user does not specify another format:
+### Step 8: Return a brief or the finished artifact
+Preferred brief shape before full drafting:
 
 ```markdown
-# <Guide title>
+# User Guide Writing Brief
 
-## Audience
-## Goal
-## Prerequisites
-## Steps / sections matched to the chosen mode
-## Troubleshooting or FAQ
-## Success check
-## Related guides / next steps
+## Mode
+- Primary mode:
+- Why it fits:
+- Audience:
+- Output shape:
+
+## Source material used
+- Product truth / UI evidence:
+- Support or release signals:
+- Assumptions / gaps:
+
+## Planned artifact packet
+1. main page
+2. companion FAQ / refresh list / sync note
+
+## Writing notes
+- Key user outcome:
+- Known blockers / branching conditions:
+- Route-outs kept out of scope:
 ```
 
-For maintenance-heavy requests, add:
-
-```markdown
-## Doc maintenance notes
-- Source of truth:
-- Screenshots to capture/update:
-- Related docs to keep in sync:
-- Assumptions to verify:
-```
+If the user already asked for the finished artifact, produce the selected page or packet directly with the matching structure.
 
 ## Examples
 
-### Example 1: SaaS onboarding guide
-**Request:** "Write a getting-started guide for new workspace admins connecting their first data source."
+### Example 1: First-success onboarding
+**Input**
+> Write a getting-started guide for new workspace admins inviting their team and creating the first project.
 
-Use `getting-started` mode:
-- audience = admin
-- outcome = first successful connection
-- prerequisites = workspace owner rights, data-source credentials, supported browser
-- output = short onboarding guide + common setup blockers + next steps
+**Good output direction**
+- mode: `getting-started`
+- output shape: `single-page`
+- include prerequisites, step order, success check, and next steps
+- keep internal implementation notes out of scope
 
-### Example 2: Help-center article after UI changes
-**Request:** "Update our help article for exporting reports because the menu moved and there is now a CSV/XLSX choice."
+### Example 2: Release-driven doc refresh
+**Input**
+> Update our help-center article for exporting reports because the Export button moved into the Reports header and only admins can choose XLSX now.
 
-Use `release-help-update` mode:
-- compare old vs new steps
-- explicitly mark screenshot/UI callout updates
-- keep changelog language out of the article unless it helps explain the new flow
-- add a success check and troubleshooting for missing export permissions
+**Good output direction**
+- mode: `release-help-update`
+- output shape: `refresh-packet`
+- call out changed UI, role differences, screenshot refreshes, and affected companion docs
+- keep release-note summarization out of scope
 
-### Example 3: FAQ from repeated support questions
-**Request:** "Turn these recurring support replies into a concise FAQ for billing admins."
+### Example 3: Support-to-FAQ conversion
+**Input**
+> Turn these repeated billing support replies into a short FAQ for workspace owners.
 
-Use `faq` mode:
-- cluster by recurring user task or confusion
-- keep each answer short
-- link to the full how-to guide when the answer needs step-by-step detail
-- pull role/plan caveats into the first sentence instead of burying them
+**Good output direction**
+- mode: `faq`
+- output shape: `single-page` or `guide-plus-faq`
+- keep answers short and link to the deeper task guide where needed
+- surface role / plan caveats early
+
+### Example 4: Boundary with developer docs
+**Input**
+> Refresh our public webhook quickstart and auth troubleshooting page for external developers.
+
+**Good output direction**
+- route to `api-documentation`
+- explain that the main job is published developer-facing API docs, not end-user product guidance
 
 ## Best practices
-1. Default to one user outcome per guide.
-2. Prefer realistic user tasks over feature-tour prose.
-3. Use exact UI text when it helps accuracy; avoid internal team jargon.
-4. Make hidden assumptions visible early.
+1. Choose the page type before writing the body.
+2. Prefer one user outcome per page and one primary mode per run.
+3. Use the smallest useful packet instead of a giant all-in-one guide.
+4. Put prerequisites, permissions, and blockers before the user gets stuck.
 5. Keep screenshots intentional and easy to refresh.
-6. Split tutorials, how-to guides, FAQs, and release updates when the document starts doing too many jobs.
-7. Route internal technical detail to `technical-writing`, API surface detail to `api-documentation`, and release-note hygiene to `changelog-maintenance`.
-8. Use support signals and stale-doc clues to prioritize updates, not just launch announcements.
+6. Use support/search/release signals to decide what to patch next.
+7. Route internal docs, API docs, and release notes out instead of stretching the skill boundary.
+8. Split mixed-purpose drafts into a guide set when the page starts teaching too many jobs.
 
 ## References
 - [Diátaxis](https://diataxis.fr/)
 - [Google developer documentation style guide](https://developers.google.com/style)
 - [Microsoft Writing Style Guide](https://learn.microsoft.com/style-guide/welcome/)
 - [GitLab documentation workflow](https://docs.gitlab.com/development/documentation/)
+- [Write the Docs — Docs as Code](https://www.writethedocs.org/guide/docs-as-code/)

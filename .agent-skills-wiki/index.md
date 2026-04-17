@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-17 | Total pages: 95
+> Last updated: 2026-04-17 | Total pages: 96
 
 ## Entities
 
@@ -95,6 +95,7 @@
 - [[technical-writing-modernization-2026-04-13]] — Why the best bounded documentation-cluster improvement was modernizing `technical-writing` into the internal technical-docs anchor instead of adding another generic docs wrapper.
 - [[technical-writing-structural-hardening-2026-04-17]] — Why the best bounded documentation-cluster follow-up after the API-doc pass was shrinking `technical-writing` into a cleaner routing-first anchor with support-owned mode skeletons instead of adding another internal-docs wrapper.
 - [[user-guide-writing-modernization-2026-04-13]] — Why the best bounded next documentation-cluster improvement was modernizing `user-guide-writing` into the end-user-docs anchor instead of adding another help-center wrapper.
+- [[user-guide-writing-structural-hardening-2026-04-17]] — Why the best bounded documentation-cluster follow-up after support coverage completion was shrinking `user-guide-writing` into a cleaner mode-selecting router with packet guidance instead of adding another help-center wrapper.
 - [[web-design-guidelines-modernization-2026-04-14]] — Why the best bounded remaining frontend review improvement was modernizing `web-design-guidelines` into the broad interface-audit anchor instead of leaving it as a thin vendor-rules fetcher or adding another generic UI audit wrapper.
 - [[vercel-deploy-modernization-2026-04-15]] — Why the best bounded infrastructure/provider-specific deployment improvement was modernizing `vercel-deploy` into the Vercel operations anchor instead of leaving it as a claimable deploy shortcut or adding another Vercel wrapper.
 - [[ohmg-modernization-2026-04-15]] — Why the best bounded orchestration-platform improvement was modernizing `ohmg` into the Gemini / Antigravity entrypoint for the portable `oh-my-agent` harness instead of adding another platform wrapper.

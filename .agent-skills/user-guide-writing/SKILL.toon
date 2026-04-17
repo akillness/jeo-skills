@@ -1,14 +1,15 @@
 N:user-guide-writing
-D:Write user-facing documentation for onboarding, tutorials, how-to guides, FAQs, help-center articles, and release-facing help updates. Route internal technical docs to technical-writing, API portals to api-documentation, and changelog hygiene to changelog-maintenance.
-G:user-guides tutorials documentation onboarding how-to faq help-center customer-docs
+D:Write user-facing documentation for onboarding, tutorials, task how-to guides, FAQs, help-center updates, and release-facing help refreshes. Use when the main job is helping end users or admins complete a product workflow or understand a changed UI path. Route internal specs and runbooks to technical-writing, API portals and SDK docs to api-documentation, and release-note hygiene to changelog-maintenance.
+G:user-guides tutorials documentation onboarding how-to faq help-center customer-docs release-help-update
 U[6]:
-  Getting-started and onboarding guides
+  Getting-started and first-success guides
   Tutorials and guided walkthroughs
   Task-based how-to articles
   FAQs and recurring support answers
-  Release-facing help updates after UI/workflow changes
+  Release-facing help refresh packets after UI/workflow changes
   Boundary routing across documentation skills
-S[3]{n,action}:
-  1,Classify the user-doc mode
-  2,Gather user-facing evidence and constraints
-  3,Apply the matching guide structure and maintenance checklist
+S[4]{n,action}:
+  1,Classify one primary mode and output shape
+  2,Gather the minimum user-facing evidence
+  3,Use the smallest fitting structure from references/mode-structures.md
+  4,Run the maintenance and sync check with explicit route-outs
