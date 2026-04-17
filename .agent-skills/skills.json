@@ -2963,7 +2963,7 @@
     },
     {
       "name": "technical-writing",
-      "description": "Write internal technical documentation for engineers and operators: specs, architecture docs, ADRs, runbooks, migration notes, and developer-facing implementation guides. Routes published API portals to api-documentation, end-user tutorials to user-guide-writing, and release-note hygiene to changelog-maintenance.",
+      "description": "Write internal technical documentation for engineers and operators: technical specs, architecture docs, ADRs, runbooks, migration plans, and developer-facing implementation guides. Use when the main job is capturing a technical decision, system boundary, operating procedure, or rollout path for builders and maintainers; routes API portals to api-documentation, end-user help to user-guide-writing, release notes to changelog-maintenance, decks to presentation-builder, and GTM messaging to marketing-automation.",
       "category": "documentation",
       "path": "technical-writing/SKILL.md",
       "tags": [
