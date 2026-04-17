@@ -1,265 +1,195 @@
 ---
 name: survey
-description: "Research context, workarounds, existing solutions, and structural gaps before planning or implementation, then write reusable `.survey/{slug}/` artifacts for OMC, OMX, OHMG, and general agent workflows. Use when the user asks to survey a space, scan the landscape, research options, or compare platform/tooling patterns before deciding what to build."
+description: >
+  Run a bounded cross-platform landscape scan before planning or implementation.
+  Use when the real job is researching what exists, how people work around it,
+  which solutions repeat, or how platform/tooling patterns map before deciding
+  what to build. Produce reusable `.survey/{slug}/` artifacts and route follow-up
+  architecture or execution work to `plan`, `jeo`, `ralph`, or implementation
+  only after the survey is done.
 allowed-tools: Read Write Bash Grep Glob WebFetch
+compatibility: >
+  Best for repo-maintenance research, workflow discovery, agent-platform
+  comparisons, and market/problem-space scans that should leave reusable markdown
+  artifacts. This is research mode, not implementation mode.
+license: MIT
 metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: 1.0.0
+  version: "2.0.0"
   source: akillness/oh-my-skills
+  modernization: 2026-04-12
+  hardening: 2026-04-18
 ---
 
+# Survey
 
-# survey - Cross-Platform Problem-Space Scan
+Use this skill when the job is **discovering the landscape before committing to a plan**.
 
-> Keyword: `survey` | Platforms: OMC / OMX / OHMG / Claude Code / Codex CLI / Gemini CLI / OpenCode
->
-> Survey the landscape before planning, coding, or committing to a direction.
+`survey` stays portable by doing three things well:
+1. freeze the question and evidence rules,
+2. run the same 4 research lanes every time,
+3. save reusable `.survey/{slug}/` artifacts that other skills can consume.
 
----
+Read these support docs before running unfamiliar survey work:
+- [references/evidence-recovery-ladder.md](references/evidence-recovery-ladder.md)
+- [references/platform-adapter-and-artifact-contract.md](references/platform-adapter-and-artifact-contract.md)
 
 ## When to use this skill
+- The user asks what exists, what people actually use, or what the current solution landscape looks like.
+- A feature, workflow, tooling choice, or operational pain needs context before planning or implementation.
+- The topic spans multiple platforms or vendors and needs a vendor-neutral comparison.
+- Repo maintenance needs one bounded research pass before rewriting a skill, SOP, or workflow.
+- The right next step depends on understanding workarounds, repeated complaints, and structural gaps rather than writing code immediately.
 
-- Before building a new feature, tool, workflow, or agent capability
-- When the user asks "what exists?", "scan the landscape", "research this space", or "survey solutions"
-- When you need problem context, current workarounds, and solution gaps before `/plan`, `jeo`, `ralph`, or implementation
-- When the topic spans multiple agent platforms and you need a single vendor-neutral picture
+## When not to use this skill
+- **The solution is already known and the user wants implementation now** → implement or route to the execution skill directly.
+- **The task is a small bug fix, narrow code change, or single-file edit** → do not force a survey first.
+- **The user needs an architecture plan, task plan, or immutable spec more than market/workflow discovery** → `plan`, `jeo`, or `ralph`.
+- **The request is mainly a live browse-and-click task** → use a browser/operator skill instead of pretending the work is a survey.
 
-## Do not use this skill when
-
-- The user already knows the solution and wants implementation now
-- The task is a small bug fix or narrow code change
-- The user needs a feasibility study, architecture plan, or execution roadmap rather than discovery
-
----
-
-## Output Package
-
-Save research in a platform-neutral directory so Claude / Codex / Gemini can all reuse it:
+## Artifact contract
+Always save research in a shared folder with the same filenames:
 
 ```text
 .survey/{slug}/
 ├── triage.md
 ├── context.md
 ├── solutions.md
-└── platform-map.md    # optional; required for agent/tooling/platform topics
+└── platform-map.md    # required for agent/tooling/platform topics
 ```
 
-- `triage.md`: problem / audience / why now
-- `context.md`: workflows, affected users, workarounds, adjacent problems, user voices
-- `solutions.md`: solution inventory, categories, frequency, gaps, contradictions, key insight
-- `platform-map.md`: normalize platform-specific findings into `settings`, `rules`, `hooks`
+Required meanings:
+- `triage.md` = problem, audience, why now
+- `context.md` = workflow context, affected users, workarounds, adjacent problems, user voices
+- `solutions.md` = solution list, categories, actual behavior, frequency, gaps, contradictions, key insight
+- `platform-map.md` = `settings`, `rules`, `hooks`, `platform gaps` normalized across Claude / Codex / Gemini when relevant
 
----
-
-## Core Abstraction Layer
-
-When the topic involves agent tooling, model orchestration, hooks, permissions, or vendor APIs, normalize findings into three layers:
-
-- `settings`: model, safety, temperature, max tokens, system prompt, provider parameters
-- `rules`: allow/deny/modify policy, guardrails, action constraints, approval logic
-- `hooks`: pre/post/error callbacks, notify handlers, lifecycle automation, event triggers
-
-Use this abstraction when comparing Claude, Codex, Gemini, OMC, OMX, or OHMG. Do not describe vendor features as unrelated one-off concepts if they map cleanly into one of these three layers.
-
-Recommended internal profile:
-
-```yaml
-survey_profile:
-  settings:
-    search_language: English
-    output_language: user-language
-    max_searches_per_lane: 8-10
-    save_root: .survey
-  rules:
-    - facts_only
-    - no_code_generation
-    - ask_max_2_triage_questions
-    - dedupe_solution_names
-    - include_source_links
-  hooks:
-    pre_research:
-      - normalize_topic
-      - choose_platform_adapter
-    post_lane:
-      - merge_notes
-      - record_sources
-    post_run:
-      - write_summary
-      - suggest_next_skill
-```
-
----
-
-## Platform Adapter
-
-Select the closest available orchestration surface, but keep the output format identical.
-
-| Platform | Preferred execution shape | Notes |
-|----------|---------------------------|-------|
-| **OMC / Claude Code** | 4 parallel research agents. Prefer research-oriented specialist agents when available; otherwise use general-purpose agents with web search. | Keep artifacts in `.survey/`, not `.omc/`, so other platforms can reuse them. |
-| **OMX / Codex CLI** | Use `$research`, explorer/planner-style agents, or parallel workers with web access. | Translate vendor config into `settings/rules/hooks` in `platform-map.md` when relevant. |
-| **OHMG / Gemini / Antigravity** | Use Workflow Guide + PM/research-capable agents or equivalent parallel lanes. | Preserve the same 4-lane structure and shared artifact names. |
-| **OpenCode / fallback** | Use generic web-capable agents in parallel. | Do not block on missing specialized agent names. |
-
-If a platform-specific specialist does not exist, fall back to a general-purpose web-enabled agent and keep going.
-
----
-
-## Execution Policy
-
-- Never write product code in this skill. This is a research-only skill.
-- Search broadly in **English** for coverage, unless the user explicitly requires another search language.
-- Save files in the **user's language** unless the repository has a stronger convention.
-- Ask at most **2 triage questions**, one at a time, only if `what`, `who`, or `why` is unclear.
-- Run all 4 research lanes in parallel whenever possible.
-- Keep claims source-backed. Include links for quotes, rankings, and non-obvious claims.
-- Deduplicate tools that appear under multiple names or product tiers.
-- If standard web search/extract tools are unavailable or failing (including auth failures), retry with direct primary-page retrieval before giving up. Use `python3` with `urllib.request` and a browser-like User-Agent to recover the HTML `<title>`, meta description, canonical/redirect target, and exact keyword presence. Record this as `direct page retrieval`, not indexed-snippet evidence.
-- If direct retrieval fails because of SSL/certificate issues, anti-bot noise, or JS-only rendering, do **not** keep grinding on the same fetch path. Escalate to browser-rendered retrieval or indexed-snippet recovery and label the downgrade explicitly.
-- When specific blog/resource URLs 404 or drift, prefer stable vendor/use-case/product pages over stale guessed links. For workflow-intake evidence, a durable official page is often better than a missing blog post.
-- Use RSS/Atom or other structured publication feeds as a machine-readable fallback when a site exposes them; they are especially useful for recovering canonical links, timestamps, and summaries.
-- When only search-result snippets are recoverable, label them as `indexed snippet` or `browser-rendered indexed snippet` and include a confidence note (`high`, `medium`, `low`) instead of treating them as equivalent to the primary page.
-- Distinguish evidence quality in the artifact: `direct page retrieval`, `indexed snippet`, `browser-rendered indexed snippet`, or `unverified prior knowledge`.
-- Do not recommend build/kill/adopt by default. Present the landscape and gaps.
-
-## Evidence Recovery Ladder
-
-Use this recovery order when normal search/extract paths are weak or broken:
-
-1. **Direct primary-page retrieval** — recover title, description, redirects/canonical target, and exact keyword presence.
-2. **Stable official substitution** — if the exact URL drifts, prefer durable vendor/use-case/product pages over stale guessed links.
-3. **Structured feed recovery** — check RSS/Atom or other structured publication feeds when the site exposes them.
-4. **Browser-rendered retrieval** — escalate to a real rendered page when direct fetches are incomplete or JS-heavy.
-5. **Indexed snippet recovery** — use search-result snippets only as explicitly labeled lower-confidence evidence.
-6. **Thin-evidence stop** — if recovery still fails, record the thin evidence and continue without bluffing certainty.
-
-Keep the concise ladder in the main skill and move detailed examples/provenance patterns into `references/evidence-recovery-ladder.md`.
-
----
+Do not invent alternate filenames or free-form artifact shapes unless the user explicitly asks.
 
 ## Instructions
 
-### Step 0: Triage
+### Step 1: Classify one primary survey mode
+Normalize the request before researching:
 
-Parse the request into:
+```yaml
+survey_run:
+  primary_mode: market-landscape | workflow-landscape | repo-maintenance | platform-comparison
+  scope: narrow | medium | broad
+  evidence_floor: primary-pages-first | indexed-snippets-allowed | thin-evidence-ok
+  output_language: repo-default | user-language
+  needs_platform_map: true | false
+  reuse_existing: true | false | unknown
+```
 
-- `what`: the pain point, idea, or capability to survey
-- `who`: who feels the pain or uses the workflow
-- `why`: why it matters now
+Mode guide:
+- `market-landscape` → products, categories, competitors, packaging, complaints
+- `workflow-landscape` → how people do the job now, workarounds, operational rituals
+- `repo-maintenance` → bounded research to improve an existing skill, SOP, or reusable workflow
+- `platform-comparison` → normalize Claude / Codex / Gemini differences into `settings`, `rules`, `hooks`
 
-Before proceeding, check whether `.survey/{slug}/triage.md` already exists.
+Choose **one primary mode** even if the topic touches more than one.
 
-- If it exists, ask whether to reuse or overwrite.
-- If the user keeps the existing survey, skip to Step 3 and summarize the saved files.
+### Step 2: Freeze the evidence contract
+Before searching, make the rules explicit:
+- search broadly in English unless the user requires another language
+- write artifacts in the repo default or user language
+- keep claims source-backed
+- label downgraded evidence clearly: `direct page retrieval`, `indexed snippet`, `browser-rendered indexed snippet`, `feed recovery`, or `thin evidence`
+- keep the task in research mode only
 
-Save:
+Use the cheap-first recovery order from [references/evidence-recovery-ladder.md](references/evidence-recovery-ladder.md):
+1. direct primary-page retrieval
+2. stable official substitution
+3. feed recovery
+4. browser-rendered retrieval
+5. indexed snippets
+6. thin-evidence stop
+
+### Step 3: Triage the request and check reuse
+Parse:
+- `what` — the pain point, idea, or capability to survey
+- `who` — who feels it or operates the workflow
+- `why` — why it matters now
+
+Then check whether `.survey/{slug}/triage.md` already exists.
+- If it exists and the user is present, ask whether to reuse or overwrite.
+- In unattended loops, reuse when the existing artifact still matches the same question; overwrite only when the scope has clearly changed.
+
+Write `triage.md`:
 
 ```markdown
 # Triage
-- Problem: {what}
-- Audience: {who}
-- Why now: {why}
+- Problem: ...
+- Audience: ...
+- Why now: ...
 ```
 
-### Step 1: Run 4 Parallel Lanes
+### Step 4: Run the 4 lanes in parallel
+Keep the lanes separate even if one is thinner.
 
-Launch all lanes together.
-
-#### Lane A: Context
-
-Research:
-
-- where the problem appears in real workflows
-- who is affected
-- how people currently work around it
-- adjacent problems and downstream consequences
-- direct user voices from communities
-
-Return sections:
-
+#### Lane A — Context
+Return:
 - `## Workflow Context`
 - `## Affected Users`
 - `## Current Workarounds`
 - `## Adjacent Problems`
 - `## User Voices`
 
-#### Lane B: Solutions
-
-Research:
-
-- products, plugins, libraries, SaaS, GitHub projects, services
-- curated lists and comparison pages
-- common pricing and packaging
-- limitations and repeated complaints
-
-Return sections:
-
+#### Lane B — Solutions
+Return:
 - `## Solutions`
 - `## Frequency Ranking`
 - `## Categories`
 - `## Curated Sources`
 
-#### Lane C: Actual Behavior
-
-Research:
-
-- what people actually use in practice
-- which manual workflows persist despite vendor claims
-- common frustration patterns
-- where users drop back to spreadsheets, scripts, copy-paste, or multi-tool workflows
-
-Return sections:
-
+#### Lane C — Actual behavior
+Return:
 - `## What People Actually Use`
 - `## Common Workarounds`
 - `## Pain Points With Current Solutions`
 - `## Sources`
 
-#### Lane D: Alternatives / Platform Map
-
+#### Lane D — Alternatives or platform map
 Default mode:
-
 - JTBD alternatives
-- cross-industry substitutes
-- indirect competitors
+- indirect substitutes
+- cross-industry parallels
 
-For agent / model / orchestration topics, this lane must instead normalize the space into:
-
+For agent/tooling/platform topics, replace that with:
 - `## Settings`
 - `## Rules`
 - `## Hooks`
 - `## Platform Gaps`
 
-Use a comparison table for Claude / Codex / Gemini when applicable.
+Use `settings / rules / hooks` as the common layer whenever Claude / Codex / Gemini differences are relevant.
 
-### Step 2: Synthesize and Save
-
-Write `context.md`:
+### Step 5: Synthesize the artifacts
+Write `context.md` using this shape:
 
 ```markdown
 # Context: {project name}
 
 ## Workflow Context
-{when and where the problem shows up}
+...
 
 ## Affected Users
 | Role | Responsibility | Skill Level |
 |------|----------------|-------------|
-{rows}
+| ... | ... | ... |
 
 ## Current Workarounds
-{numbered list with limitations}
+1. ...
 
 ## Adjacent Problems
-{lettered or bulleted list}
+- ...
 
 ## User Voices
-{quotes with source links}
+- "..." — source
 ```
 
-Write `solutions.md`:
+Write `solutions.md` using this shape:
 
 ```markdown
 # Solution Landscape: {project name}
@@ -267,28 +197,28 @@ Write `solutions.md`:
 ## Solution List
 | Name | Approach | Strengths | Weaknesses | Notes |
 |------|----------|-----------|------------|-------|
-{deduplicated list}
+| ... | ... | ... | ... | ... |
 
 ## Categories
-{grouped by category}
+...
 
 ## What People Actually Use
-{behavior summary}
+...
 
 ## Frequency Ranking
-{most mentioned solutions}
+1. ...
 
 ## Key Gaps
-{structural gaps not covered today}
+- ...
 
 ## Contradictions
-{marketed claims vs user reality}
+- ...
 
 ## Key Insight
-{1 paragraph}
+...
 ```
 
-When the topic is platform or agent related, write `platform-map.md`:
+For platform topics, write `platform-map.md` using this shape:
 
 ```markdown
 # Platform Map: {project name}
@@ -296,96 +226,84 @@ When the topic is platform or agent related, write `platform-map.md`:
 ## Settings
 | Concern | Claude | Codex | Gemini | Common Layer |
 |---------|--------|-------|--------|--------------|
-{rows}
+| ... | ... | ... | ... | ... |
 
 ## Rules
 | Concern | Claude / OMC | Codex / OMX | Gemini / OHMG | Common Layer |
 |---------|---------------|-------------|---------------|--------------|
-{rows}
+| ... | ... | ... | ... | ... |
 
 ## Hooks
 | Lifecycle | Claude | Codex | Gemini | Common Layer |
 |-----------|--------|-------|--------|--------------|
-{rows}
+| ... | ... | ... | ... | ... |
 
 ## Platform Gaps
-{where abstractions do not align cleanly}
+1. ...
 ```
 
-### Step 3: Summarize for the User
-
-Return a short summary:
+### Step 6: End with a factual survey summary
+Return a short summary only after files are written:
 
 ```markdown
 ## Survey complete: {slug}
 
 ### Context
-- {1-2 sentence summary}
-- Main workaround: {most common workaround}
+- ...
+- Main workaround: ...
 
 ### Solution Landscape
 - {N} solutions across {M} categories
-- Key insight: {one sentence}
-- Key gap: {one sentence}
+- Key insight: ...
+- Key gap: ...
 
 ### Files
 - `.survey/{slug}/triage.md`
 - `.survey/{slug}/context.md`
 - `.survey/{slug}/solutions.md`
-- `.survey/{slug}/platform-map.md`   # if created
+- `.survey/{slug}/platform-map.md`
 ```
 
-Do not move into planning or implementation unless the user asks.
+Do **not** slide into planning or implementation unless the user explicitly asks for the next step.
+
+## Output rules
+- Facts first, recommendations second only if requested.
+- One bounded question per survey artifact.
+- Keep solution names deduplicated.
+- Preserve evidence labels when sources are weak or indirect.
+- Keep the output artifact schema identical across platforms.
+- Route architecture/planning/execution work outward once the survey is done.
 
 ## Examples
 
-### Example 1: Search API failure
-Input: `survey browser automation tools for support teams, but web search is returning 401 errors`
+### Example 1: Repo-maintenance survey
+**Input**
+> survey which existing skill in this repo is the best bounded maintenance target next
 
-Output: The survey still runs the 4 lanes, falls back to direct primary-page retrieval, labels recovered evidence as `direct page retrieval`, and saves `.survey/{slug}/triage.md`, `context.md`, and `solutions.md`.
+**Good output direction**
+- mode: `repo-maintenance`
+- checks existing `.survey/{slug}` first
+- uses repo-local graph/wiki evidence plus any necessary primary-source retrieval
+- writes triage/context/solutions and a factual summary
+- does not start rewriting the skill inside the survey step
 
-### Example 2: Snippet-only recovery
-Input: `survey roadmap communication workflows, but the useful evidence is only visible as search-result snippets in the browser`
+### Example 2: Platform comparison
+**Input**
+> survey how Claude Code, Codex, and Gemini CLI differ for hooks, approvals, and research workers
 
-Output: The survey records `browser-rendered indexed snippet` evidence with a confidence note, keeps the claim scope narrow, and avoids pretending the original page was fully verified.
+**Good output direction**
+- mode: `platform-comparison`
+- writes `platform-map.md`
+- normalizes differences into `settings`, `rules`, `hooks`
+- records portability gaps without treating vendor-specific features as the artifact contract
 
 ## Best practices
-
-1. Preserve the 4-lane structure even when one lane has thinner evidence than the others.
-2. Escalate retrieval cheaply first: direct fetch before full browser work.
-3. Label evidence type and confidence whenever the source is not directly recoverable.
-4. Prefer durable official pages over dead links, but do not hide that a substitution happened.
-5. Update the artifact with thin-evidence notes instead of silently promoting guesses into facts.
-
----
-
-## Quick Reference
-
-| Action | Instruction |
-|--------|-------------|
-| Start a survey | `survey <topic>` |
-| Reuse existing results | Check `.survey/{slug}/` first |
-| Search strategy | Search in English, write in the user's language |
-| Parallel lanes | Context + Solutions + Behavior + Alternatives/Platform Map |
-| Next step after survey | `/plan`, `jeo`, `ralph`, or implementation if the user asks |
-
----
-
-## Final Checklist
-
-- [ ] `what / who / why` are clear
-- [ ] Existing survey checked before overwrite
-- [ ] 4 lanes executed in parallel
-- [ ] Source links included for quotes and non-obvious claims
-- [ ] `context.md` saved
-- [ ] `solutions.md` saved
-- [ ] `platform-map.md` saved for agent/platform topics
-- [ ] Final user summary is factual, short, and recommendation-free
+1. Keep the front door small: classify mode, freeze evidence rules, run the 4 lanes, and save the artifacts.
+2. Push slow-changing retrieval/platform detail into references instead of bloating the main skill.
+3. Prefer direct primary sources, but label every downgrade honestly.
+4. Preserve the same artifact filenames and headings across Claude / Codex / Gemini runs.
+5. If evidence is thin, narrow the claim instead of bluffing certainty.
 
 ## References
-
-- `references/evidence-recovery-ladder.md` — detailed fallback ladder, provenance labels, and recovery patterns for broken search/extract runs
-- Python `urllib.request` docs — https://docs.python.org/3/library/urllib.request.html
-- Google Search Central snippets docs — https://developers.google.com/search/docs/appearance/snippet
-- Atom Syndication Format (RFC 4287) — https://datatracker.ietf.org/doc/html/rfc4287
-
+- `references/evidence-recovery-ladder.md` — fallback ladder and provenance labels for weak search/extract environments
+- `references/platform-adapter-and-artifact-contract.md` — portability rules for `settings`, `rules`, `hooks`, and identical artifact output across platforms

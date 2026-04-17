@@ -1,10 +1,10 @@
 ---
 title: Core Orchestration Platform Cluster
 created: 2026-04-15
-updated: 2026-04-16
+updated: 2026-04-18
 type: concept
 tags: [skills, consolidation, trigger-design, graphify]
-sources: [.survey/ohmg-modernization-20260415/context.md, .survey/ohmg-modernization-20260415/platform-map.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/platform-map.md, .survey/jeo-structural-hardening-20260416/context.md, .survey/jeo-structural-hardening-20260416/platform-map.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/ohmg-modernization-20260415/context.md, .survey/ohmg-modernization-20260415/platform-map.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/platform-map.md, .survey/jeo-structural-hardening-20260416/context.md, .survey/jeo-structural-hardening-20260416/platform-map.md, .survey/survey-structural-hardening-20260418/context.md, .survey/survey-structural-hardening-20260418/platform-map.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Core Orchestration Platform Cluster
@@ -42,9 +42,12 @@ The `ralph` structural-hardening pass pushed the next step further: once support
 
 The `jeo` structural-hardening pass extends the same pattern to the repo's front-door router: once support coverage is complete, the best bounded move is shrinking the trigger surface, pushing config/state/troubleshooting detail into references, and preserving clean route-outs to the specialist runtime and review skills.
 
+The `survey` structural-hardening pass extended that same rule to the research layer that sits just ahead of planning/orchestration work: keep the 4-lane `.survey/{slug}` contract, but move slower-changing Claude / Codex / Gemini portability detail into a focused reference so the front door stays portable without becoming another oversized orchestration manual.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[ohmg-modernization-2026-04-15]]
 - [[ralph-support-hardening-2026-04-16]]
 - [[jeo-structural-hardening-2026-04-16]]
+- [[survey-structural-hardening-2026-04-18]]
 - [[developer-workflow-cluster]]

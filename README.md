@@ -163,7 +163,7 @@ graph TD
 | **Removed deprecated image/media skills** | Removed `image-generation`, `image-generation-mcp`, `pollinations-ai`. Use `video-production` as the canonical programmable-video skill; `remotion-video-production` remains as the compatibility alias for explicit Remotion naming. |
 | **autoresearch: Karpathy autonomous ML experiment skill** | Human-written `program.md`, agent-edited `train.py`, fixed 5-minute GPU runs, and `val_bpb` keep/revert ratcheting for real ML search. Now explicitly routes prompt / app eval work away to `skill-autoresearch` or eval platforms, and includes `scripts/`, `references/`, and `evals/`. |
 | **jeo v1.2.3: plannotator-plan-loop.sh all-platform hardening** | Cross-platform temp dir fallback, dedicated port `PLANNOTATOR_PORT=47291`, `probe_plannotator_port()` + `wait_for_listen()`, browser-crash retry up to 3 times, structured `jeo-blocked.json` output. |
-| **survey: cross-platform landscape scan** | 4-lane discovery flow, artifacts to `.survey/{slug}/`, Claude/Codex/Gemini abstraction as `settings/rules/hooks`, plus an explicit evidence-recovery ladder for broken search/extract runs. |
+| **survey: routing-first landscape scan hardening** | Reframed `survey` into a smaller artifact-contract-first research anchor: classify one survey mode, preserve the 4-lane `.survey/{slug}/` output contract, normalize platform topics as `settings/rules/hooks`, and push recovery/portability detail into focused references instead of one giant front door. |
 | **presentation-builder: deck artifact workflow** | Slides-grab-based deck planning for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks, with browser review and PPTX/PDF handoff. Removed duplicate `pptx-presentation-builder`. |
 
 ---
@@ -242,7 +242,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Portable BMAD/BMM core router — choose project level, identify the current phase, recommend the next artifact, and route runtime-specific depth outward |
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |
-| `survey` | `survey` | All | Pre-implementation landscape scan |
+| `survey` | `survey` | All | Bounded pre-implementation landscape scan with reusable `.survey/{slug}/` artifacts |
 
 ### 📋 Planning & Review (5)
 
