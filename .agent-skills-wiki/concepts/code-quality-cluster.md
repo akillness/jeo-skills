@@ -1,7 +1,7 @@
 ---
 title: Code Quality Cluster
 created: 2026-04-13
-updated: 2026-04-14
+updated: 2026-04-18
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
 sources: [.survey/testing-strategies-modernization-20260413/context.md, .survey/testing-strategies-modernization-20260413/solutions.md, .survey/code-refactoring-modernization-20260414/context.md, .survey/code-refactoring-modernization-20260414/solutions.md, .survey/performance-optimization-modernization-20260414/context.md, .survey/performance-optimization-modernization-20260414/solutions.md, graphify-out/GRAPH_REPORT.md]
@@ -36,10 +36,13 @@ Current cluster shape:
 ## Structural note
 The latest graph refresh strengthened the same pattern already visible after `debugging`, `code-review`, and `testing-strategies`: improving a legacy anchor with support files is more valuable than creating another wrapper skill in the code-quality lane. `code-refactoring` now fills the structural-cleanup role and `performance-optimization` now fills the measurement-led tuning role, which makes the cluster read more cleanly as cleanup → policy → implementation → diagnosis → judgment → tuning.
 
+The 2026-04-18 `debugging` structural-hardening pass confirmed the next ratchet after support coverage reaches 100%: shrink the front door, keep the diagnosis loop centered on reproduce → isolate → verify, move case-specific packets into references, and sync compact/discovery surfaces so the cluster boundaries stay truthful under pressure.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[backend-api-cluster]]
 - [[debugging-modernization-2026-04-13]]
+- [[debugging-structural-hardening-2026-04-18]]
 - [[code-review-modernization-2026-04-13]]
 - [[testing-strategies-modernization-2026-04-13]]
 - [[code-refactoring-modernization-2026-04-14]]

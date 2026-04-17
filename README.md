@@ -292,7 +292,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 |-------|-------------|-----------|
 | `code-refactoring` | Behavior-preserving structural cleanup, decomposition, duplication removal, and codemod planning | All |
 | `code-review` | Workflow-aware diff / PR review for correctness, risk, and missing evidence | All |
-| `debugging` | Reproduce → isolate → verify debugging for regressions and flaky failures | All |
+| `debugging` | Routing-first diagnosis for concrete bugs, regressions, flaky failures, and env-specific behavior; routes raw logs to `log-analysis` and perf-only work to `performance-optimization` | All |
 | `performance-optimization` | Measurement-led bottleneck analysis and tuning across latency, throughput, memory, bundle, and frame-budget work | All |
 | `testing-strategies` | Risk-based validation policy, merge/release gates, flaky-suite policy | All |
 

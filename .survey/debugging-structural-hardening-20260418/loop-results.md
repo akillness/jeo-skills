@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/debugging/SKILL.md` | A smaller routing-first front door plus one mode-packet reference will improve trigger clarity without weakening the core debug loop | Shrunk `SKILL.md`, added `references/mode-selection-and-fast-checks.md`, expanded evals, synced compact/discovery surfaces, and refreshed graph/wiki artifacts | `validate_skill.sh` pass; catalog sync pass; graph refresh shows `debugging` still canonical and no new wrapper needed | Keep | Transferable across CLI, web, CI, and game/runtime debugging prompts |

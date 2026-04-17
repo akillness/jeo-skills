@@ -24,6 +24,26 @@
     },
     {
       "id": 3,
+      "prompt": "The worker only crashes in staging. I already have the first failing request payload and a diff of the env vars from local. Debug it.",
+      "expected_output": "A debugging plan that treats the issue as env/config mismatch debugging, compares staging and local facts before speculative code edits, and keeps the verification tied to the same payload/runtime context.",
+      "assertions": [
+        "Output explicitly compares staging vs local/runtime facts such as env vars, flags, versions, or config branches",
+        "Output uses the existing failing payload or runtime context as the main reproducer",
+        "Output avoids jumping straight to broad environment-setup redesign unless the task clearly shifts there"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "This page feels slow and we need to improve p95 latency. Can you debug it?",
+      "expected_output": "A response that recognizes the request as primarily a performance/bottleneck problem and routes to performance-optimization unless there is a concrete broken behavior that still needs diagnosis.",
+      "assertions": [
+        "Output identifies that the request is mainly about measurement or optimization tradeoffs",
+        "Output routes to performance-optimization or clearly performs the equivalent handoff",
+        "Output avoids presenting generic bug-root-cause steps as if a concrete failing behavior were already defined"
+      ]
+    },
+    {
+      "id": 5,
       "prompt": "I pasted 500 lines of CI stack traces and retries. Can you debug this and tell me what's wrong?",
       "expected_output": "A response that routes symptom-first log work to log-analysis before pretending a root-cause debugging loop can start.",
       "assertions": [

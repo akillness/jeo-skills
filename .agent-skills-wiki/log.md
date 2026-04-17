@@ -711,6 +711,14 @@
 - Rejected: adding another Git recovery or push-safety wrapper; letting hosted PR/admin language drift back into the local Git anchor; leaving compact/discovery wording stale after the rewrite
 - Wiki files created/updated: `queries/git-workflow-structural-hardening-2026-04-18.md`, `concepts/developer-workflow-cluster.md`, `index.md`, `log.md`
 
+## [2026-04-18] query | debugging structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game development, with the best bounded code-quality follow-up landing on the existing `debugging` skill rather than a new troubleshooting wrapper
+- Survey files created under `.survey/debugging-structural-hardening-20260418/`; browser-rendered primary-page retrieval from Playwright, GitHub Actions, Git docs, and Google Testing Blog was used after normal web search/extract paths failed auth in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `debugging` into a routing-first diagnosis anchor, add `references/mode-selection-and-fast-checks.md`, expand eval coverage with env/config mismatch and perf-handoff cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording
+- Rejected: adding another CI-debug, flaky-test, or env-diff wrapper; letting `debugging` absorb raw log triage or pure performance work; leaving compact/discovery wording stale after the rewrite
+- Wiki files created/updated: `queries/debugging-structural-hardening-2026-04-18.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
 ## [2026-04-18] query | survey structural hardening
 - Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game development, with the best bounded research-layer improvement landing on the existing `survey` skill rather than a new wrapper
 - Survey files created under `.survey/survey-structural-hardening-20260418/`; repo-local graph and wiki evidence plus direct primary-source retrieval from Claude Code, Codex, and Gemini docs were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
