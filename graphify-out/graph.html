@@ -1,58 +1,6 @@
-<!doctype html>
-<html><head><meta charset="utf-8"><title>graphify-out</title>
-<style>body{font-family:system-ui,sans-serif;max-width:1000px;margin:40px auto;padding:0 20px}pre{white-space:pre-wrap;background:#f6f8fa;padding:16px;border-radius:8px}code{background:#f6f8fa;padding:2px 4px}</style></head>
-<body>
-<h1>graphify-out</h1>
-<p>Graphify-style structural fallback for <code>.agent-skills/</code>.</p>
-<h2>Top skill nodes</h2><ul><li><strong>debugging</strong> — degree 41, 252 lines</li><li><strong>task-planning</strong> — degree 30, 295 lines</li><li><strong>performance-optimization</strong> — degree 27, 250 lines</li><li><strong>bmad</strong> — degree 26, 230 lines</li><li><strong>code-review</strong> — degree 25, 288 lines</li></ul>
-<h2>Summary</h2><pre># GRAPH_REPORT
-## Scope
-- Path analyzed: `.agent-skills/` plus repository discovery docs
-- Method: custom graphify-style structural graph over skill metadata, support-file presence, compact-variant coverage, documentation indexing, and cross-skill mentions
-- Total skills: 89
-- Manifest skills in `.agent-skills/skills.json`: 89
-- Skills with references/: 89
-- Skills with evals/: 89
-- Skills with scripts/: 24
-- Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
-- Skills missing compact variants: 0
-- Graph nodes: 385
-- Graph edges: 1106
-
-## Strongest structural findings
-1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
-2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. The `debugging` hardening pass shrank the front door to 252 lines, added an explicit mode-selection packet, and synced stale compact/discovery surfaces without creating another code-quality wrapper.
-4. The next bounded wins still come from sharpening high-degree front doors and keeping `SKILL.toon` / manifest / README surfaces truthful after structural edits.
-
-## Highest-degree nodes
-- debugging: degree 41
-- task-planning: degree 30
-- performance-optimization: degree 27
-- bmad: degree 26
-- code-review: degree 25
-
-## Oversized front-door watchlist
-- autoresearch: 334 lines in SKILL.md
-- clawteam: 330 lines in SKILL.md
-- scrapling: 320 lines in SKILL.md
-- vercel-deploy: 314 lines in SKILL.md
-- survey: 310 lines in SKILL.md
-- fabric: 309 lines in SKILL.md
-- sprint-retrospective: 305 lines in SKILL.md
-- game-performance-profiler: 297 lines in SKILL.md
-- task-planning: 295 lines in SKILL.md
-- git-submodule: 294 lines in SKILL.md
-
-## Duplicate / consolidation notes
-- No new debugging-adjacent wrapper is justified: the bounded win was hardening `debugging` in place.
-- `debugging` should stay distinct from `log-analysis`, `testing-strategies`, `code-review`, `performance-optimization`, and `monitoring-observability`; it owns the diagnosis loop after the failure is concrete enough to test.
-- Duplicate pressure remains highest when symptom triage, flake policy, env/setup redesign, and performance work drift back into the same front door.
-
-## Recommended maintenance direction
-- Keep targeting high-degree skills whose route-in logic can be made smaller without weakening their artifact contract.
-- Prefer reference packets, eval expansion, and discovery-surface sync over creating another neighboring wrapper.
-- Re-run catalog/runtime sync validation whenever compact or README/setup wording changes materially.
-</pre>
-<p>Structured data saved in <code>graph.json</code>.</p>
-</body></html>
+<!doctype html><html><head><meta charset="utf-8"><title>Graphify Structural Graph</title><style>body{font-family:system-ui,sans-serif;margin:24px;} table{border-collapse:collapse;width:100%;margin:16px 0;} th,td{border:1px solid #ddd;padding:8px;text-align:left;} code{background:#f4f4f4;padding:2px 4px;border-radius:4px;} .small{color:#666;font-size:14px;} </style></head><body><h1>Graphify Structural Graph</h1><p class="small">Custom structural graph fallback over <code>.agent-skills/</code> and discovery docs.</p><h2>Top skill nodes by degree</h2><table><tr><th>Skill</th><th>Degree</th><th>SKILL.md lines</th></tr><tr><td>debugging</td><td>41</td><td>251</td></tr><tr><td>task-planning</td><td>30</td><td>294</td></tr><tr><td>performance-optimization</td><td>27</td><td>246</td></tr><tr><td>bmad</td><td>26</td><td>229</td></tr><tr><td>code-review</td><td>25</td><td>287</td></tr><tr><td>plannotator</td><td>24</td><td>266</td></tr><tr><td>ralph</td><td>24</td><td>236</td></tr><tr><td>vibe-kanban</td><td>24</td><td>277</td></tr><tr><td>design-system</td><td>23</td><td>257</td></tr><tr><td>jeo</td><td>23</td><td>288</td></tr><tr><td>bmad-gds</td><td>22</td><td>230</td></tr><tr><td>monitoring-observability</td><td>22</td><td>290</td></tr><tr><td>web-accessibility</td><td>22</td><td>290</td></tr><tr><td>api-documentation</td><td>21</td><td>201</td></tr><tr><td>deployment-automation</td><td>21</td><td>213</td></tr></table><h2>Current structural note</h2><p><code>performance-optimization</code> is at 246 lines, with compact/discovery sync refreshed and an intake-packet escalation reference added.</p><h2>Raw JSON</h2><pre>{
+  &quot;scope&quot;: &quot;.agent-skills plus discovery docs&quot;,
+  &quot;total_skills&quot;: 89,
+  &quot;graph_nodes&quot;: 385,
+  &quot;graph_edges&quot;: 1106
+}</pre></body></html>

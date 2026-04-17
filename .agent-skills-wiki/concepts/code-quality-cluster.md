@@ -38,6 +38,8 @@ The latest graph refresh strengthened the same pattern already visible after `de
 
 The 2026-04-18 `debugging` structural-hardening pass confirmed the next ratchet after support coverage reaches 100%: shrink the front door, keep the diagnosis loop centered on reproduce → isolate → verify, move case-specific packets into references, and sync compact/discovery surfaces so the cluster boundaries stay truthful under pressure.
 
+The 2026-04-18 `performance-optimization` structural-hardening pass extended the same rule to tuning work: the durable win was not another performance wrapper, but an artifact-first front door that starts from traces, CWV reports, query plans, benchmark diffs, or profiler captures, then routes to observability, debugging, refactoring, testing policy, or engine-specific profiling only after one bottleneck is named.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[backend-api-cluster]]
@@ -47,3 +49,4 @@ The 2026-04-18 `debugging` structural-hardening pass confirmed the next ratchet 
 - [[testing-strategies-modernization-2026-04-13]]
 - [[code-refactoring-modernization-2026-04-14]]
 - [[performance-optimization-modernization-2026-04-14]]
+- [[performance-optimization-structural-hardening-2026-04-18]]
