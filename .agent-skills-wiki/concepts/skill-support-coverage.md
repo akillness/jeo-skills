@@ -98,6 +98,7 @@ Recent ratchets:
 - The `firebase-cli` structural-hardening pass applied the same dense-anchor cleanup pattern in the Firebase lane: keep the existing operator anchor, split install/auth, bootstrap, emulator/release, and admin/data guidance into support packets, refresh evals and compact surfaces, and preserve the boundary with `genkit` and `firebase-ai-logic` instead of adding another wrapper.
 - The `deployment-automation` structural-hardening pass showed the same post-support-coverage ratchet in the infrastructure lane: shrink a conceptually-correct but oversized canonical skill from 408 to 213 lines, move packet and strategy detail into focused references, refresh the Vercel route-out eval, and sync discovery wording instead of inventing another deployment wrapper.
 - The `authentication-setup` structural-hardening pass showed the same post-support-coverage ratchet in the backend lane: shrink the canonical auth router from 337 to 251 lines, move enterprise/migration rollout detail into a focused reference, add a self-hosted migration eval, and preserve the boundary with security, API design/docs, testing, and database design instead of adding another auth wrapper.
+- The `steam-store-launch-ops` structural-hardening pass applied the same ratchet in the game/marketing crossover lane: keep the existing specialist skill, move the reusable bottleneck model and timeline hooks into focused references, sharpen the front door around visibility / promise / proof / timing / ops diagnosis, refresh evals + compact discovery, and update README/setup/manifest surfaces instead of inventing another Steam-marketing wrapper.
 
 - The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
 
@@ -154,4 +155,5 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[skill-autoresearch-hardening-2026-04-16]]
 - [[ralph-support-hardening-2026-04-16]]
 - [[authentication-setup-structural-hardening-2026-04-17]]
+- [[steam-store-launch-ops-structural-hardening-2026-04-17]]
 - [[compact-variant-gap-2026-04-15]]

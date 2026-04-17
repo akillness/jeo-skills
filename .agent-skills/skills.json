@@ -2767,7 +2767,7 @@
     },
     {
       "name": "steam-store-launch-ops",
-      "description": "Audit and structure Steam store-page optimization, wishlist funnel review, demo / Next Fest readiness, creator-outreach prep, and launch-adjacent operating checklists for indie games. Use when a developer, publisher helper, or small studio needs to review a Steam page, coming-soon page, capsule art, trailer, tags, demo timing, launch checklist, or fest readiness, even if they only say \"help my Steam page\", \"wishlists are weak\", \"are we ready for Next Fest\", \"review our capsule/trailer/tags\", or \"give me a launch readiness checklist\".",
+      "description": "Diagnose Steam launch/store bottlenecks for indie games across store-page conversion, wishlist underperformance, demo / Steam Next Fest readiness, and launch-ops checkpoints. Use when a solo dev, small studio, publisher helper, or founder-marketer needs to decide whether the real problem is visibility, page promise, demo proof, event timing, or launch readiness — even if they only say \"help my Steam page\", \"wishlists are weak\", \"are we ready for Next Fest\", \"review our capsule/trailer/tags\", \"should we launch this demo\", or \"give me a Steam launch checklist\".",
       "path": "steam-store-launch-ops/SKILL.md",
       "tags": [
         "steam",
@@ -2781,7 +2781,11 @@
       ],
       "keywords": [
         "steam-store-launch-ops",
-        "steam store launch ops"
+        "steam store launch ops",
+        "steam page",
+        "wishlist funnel",
+        "steam next fest",
+        "steam launch checklist"
       ],
       "allowed_tools": [
         "Bash",

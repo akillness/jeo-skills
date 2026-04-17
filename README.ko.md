@@ -70,6 +70,12 @@ graph TD
 
 ---
 
+## 🆕 v2026-04-17 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **steam-store-launch-ops: 병목 라우터 강화** | `steam-store-launch-ops`를 인디 게임용 Steam 출시/상점 진단 라우터로 더 날카롭게 다듬었습니다. 이제 `visibility-acquisition`, `promise-clarity`, `proof-demo-readiness`, `timing-hook-fit`, `launch-ops-readiness`를 분리하고, 현재 hook(coming-soon page, wishlist anomaly, demo decision, Next Fest, launch window)을 먼저 명시한 뒤, 일반적인 마케팅 장문 대신 **하나의 intervention**과 **하나의 next artifact**를 추천합니다. 또한 `references/diagnostic-model.md`, `references/event-hooks.md`, 갱신된 `evals/evals.json`, 동기화된 `SKILL.toon`을 추가했고, 중복 게임 마케팅 스킬은 만들지 않았습니다. |
+
 ## 🆕 v2026-04-15 업데이트
 
 | 변경 | 내용 |
@@ -355,7 +361,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `game-ci-cd-pipeline` | 게임 빌드/릴리즈 파이프라인 설계 및 강화 — matrix, artifact 흐름, cache 정책, packaging 단계, release gate | 전체 |
 | `game-demo-feedback-triage` | 플레이테스트/데모/커뮤니티 피드백을 가중치 테마와 fix-first 우선순위로 정리 | 전체 |
 | `game-performance-profiler` | Unity/Unreal 성능 트리아지 — quick evidence packet, benchmark route, packaged-on-device 검토, profiler escalation | 전체 |
-| `steam-store-launch-ops` | Steam 상점 페이지, 페스티벌, 데모, 위시리스트, 출시 준비 운영 | 전체 |
+| `steam-store-launch-ops` | Steam 출시/상점 병목 진단 — visibility, 페이지 promise, demo proof, event timing, launch-readiness ops | 전체 |
 
 ### 🔧 유틸리티 (11개)
 

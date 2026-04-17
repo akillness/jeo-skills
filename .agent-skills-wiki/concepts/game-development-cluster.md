@@ -1,7 +1,7 @@
 ---
 title: Game Development Cluster
 created: 2026-04-12
-updated: 2026-04-15
+updated: 2026-04-17
 type: concept
 tags: [skills, consolidation, trigger-design, game-dev]
 sources: [graphify-out/GRAPH_REPORT.md, .survey/bmad-gds-modernization-20260412/context.md, .survey/bmad-gds-modernization-20260412/solutions.md]
@@ -19,6 +19,7 @@ The repository's game-development lane now has a clearer shape:
 Recent refinement:
 - `game-performance-profiler` now starts from quick evidence packets, benchmark routes, and packaged-on-device review before escalating to deeper profiler tooling.
 - The four specialist game-support skills now all ship compact discovery variants, so the game lane is no longer an outlier against the repo's tiered discovery model.
+- `steam-store-launch-ops` is strongest as a bottleneck-first public-facing router: keep it focused on Steam-specific visibility, page promise, demo proof, event timing, and launch-ops readiness instead of letting it drift into generic marketing advice or playtest-feedback synthesis.
 
 ## Durable finding
 - The cluster did not need another new game skill in this run.
@@ -32,8 +33,10 @@ Recent refinement:
 - `log-analysis` can support mixed app/infra/browser/CI log triage around game projects, but Unity/Unreal editor/build/package logs should still route to `game-build-log-triage`.
 - Discovery surfaces matter: the top-level README/setup inventory should continue listing the game specialist lane explicitly so those skills are not discoverable only through cross-links inside `bmad-gds`.
 - Future game-cluster work should prefer support upgrades and clearer boundaries over catalog expansion.
+- Steam-specific public launch work should stay distinct from `game-demo-feedback-triage`: the former chooses launch/store interventions, the latter weighs gameplay/player-feedback evidence.
 
 ## Related pages
 - [[skill-support-coverage]]
 - [[bmad-gds-modernization-2026-04-12]]
 - [[log-analysis-modernization-2026-04-13]]
+- [[steam-store-launch-ops-structural-hardening-2026-04-17]]

@@ -70,6 +70,12 @@ graph TD
 
 ---
 
+## 🆕 What's New in v2026-04-17
+
+| Change | Details |
+|--------|---------|
+| **steam-store-launch-ops: bottleneck-router hardening** | Tightened `steam-store-launch-ops` into a diagnosis-first Steam launch/store router for indie games. It now separates `visibility-acquisition`, `promise-clarity`, `proof-demo-readiness`, `timing-hook-fit`, and `launch-ops-readiness`; makes the current hook explicit (coming-soon page, wishlist anomaly, demo decision, Next Fest, or launch window); recommends one intervention and one next artifact instead of a generic marketing dump; and adds `references/diagnostic-model.md`, `references/event-hooks.md`, refreshed `evals/evals.json`, and synced `SKILL.toon` without adding a duplicate game-marketing skill. |
+
 ## 🆕 What's New in v2026-04-15
 
 | Change | Details |
@@ -355,7 +361,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `game-ci-cd-pipeline` | Game CI/CD design and hardening — build matrices, artifact flow, cache policy, packaging stages, and release gates | All |
 | `game-demo-feedback-triage` | Turn playtest/demo/community feedback into weighted themes, fix-first priorities, and explicit handoffs | All |
 | `game-performance-profiler` | Unity/Unreal performance triage — quick evidence packets, benchmark routes, packaged-on-device review, and profiler escalation | All |
-| `steam-store-launch-ops` | Steam store-page, festival, demo, wishlist, and launch-readiness operations | All |
+| `steam-store-launch-ops` | Diagnose Steam launch/store bottlenecks — visibility, page promise, demo proof, event timing, and launch-readiness ops | All |
 
 ### 🔧 Utilities (11)
 

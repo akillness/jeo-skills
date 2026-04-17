@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-17 | Total pages: 94
+> Last updated: 2026-04-17 | Total pages: 95
 
 ## Entities
 
@@ -105,6 +105,7 @@
 - [[presentation-builder-modernization-2026-04-15]] — Why the best bounded documentation/publishing improvement was modernizing `presentation-builder` into the deck-artifact anchor instead of leaving it as a thin slides-grab command note or adding another pitch/deck wrapper.
 - [[research-paper-writing-hardening-2026-04-15]] — Why the best bounded documentation-cluster improvement was hardening `research-paper-writing` with manuscript-package support files instead of adding another paper/rebuttal wrapper or broadening it into generic academic tooling.
 - [[game-performance-profiler-modernization-2026-04-15]] — Why the best bounded game-performance improvement was modernizing `game-performance-profiler` into a quick-packet / benchmark-route / device-review anchor instead of adding another perf wrapper or merging it into generic optimization.
+- [[steam-store-launch-ops-structural-hardening-2026-04-17]] — Why the best bounded game/marketing crossover follow-up was hardening `steam-store-launch-ops` into a bottleneck-first Steam launch/store router instead of adding another wishlist/Next Fest wrapper.
 - [[react-grab-structural-hardening-2026-04-16]] — Why the best bounded next frontend/browser maintenance move was shrinking `react-grab` into a routing-first skill, adding focused support docs, and syncing stale helper-script prerequisites to the upstream Node.js >=22 reality instead of adding another wrapper.
 - [[fabric-modernization-2026-04-15]] — Why the best bounded utilities/developer-workflow improvement was modernizing `fabric` into the pattern-first CLI transform anchor instead of leaving it as a broad AI-CLI feature tour or adding another adjacent prompt wrapper.
 - [[firebase-cli-structural-hardening-2026-04-16]] — Why the best bounded Firebase/platform improvement was shrinking `firebase-cli` into a routing-first operator anchor with focused support packets instead of adding another wrapper or keeping a command-catalog front door.
