@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 98
+> Last updated: 2026-04-18 | Total pages: 103
 
 ## Entities
 
@@ -70,6 +70,7 @@
 - [[survey-evidence-recovery-2026-04-12]] — Why the best bounded research-layer change was hardening `survey` with an explicit evidence-recovery ladder and support files.
 - [[task-estimation-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `task-estimation` into a sizing and forecast-language anchor.
 - [[task-planning-modernization-2026-04-12]] — Why the best move was upgrading `task-planning` instead of adding another overlapping PM skill.
+- [[task-planning-structural-hardening-2026-04-18]] — Why the best bounded next PM-cluster improvement was shrinking `task-planning` into a routing-first planning anchor and syncing stale compact/manifest discovery surfaces instead of adding another wrapper.
 - [[log-analysis-modernization-2026-04-13]] — Why the best bounded search-analysis upgrade was rewriting `log-analysis` into a root-cause-first triage skill instead of adding another logging wrapper.
 - [[looker-studio-bigquery-modernization-2026-04-15]] — Why the best bounded BigQuery reporting improvement was modernizing `looker-studio-bigquery` into the stakeholder dashboard/reporting anchor instead of adding another BI wrapper or merging it into dataset analysis.
 - [[lmstudio-cli-modernization-2026-04-15]] — Why the best bounded LM Studio improvement was modernizing `lmstudio-cli` into the LM Studio operator anchor instead of adding another generic local-LLM wrapper or leaving it as a thin command list.

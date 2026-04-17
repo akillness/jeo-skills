@@ -109,6 +109,8 @@ Recent ratchets:
 - Missing evals make ratcheting and regression checks harder for future improvement loops, so closing the last live eval holdout materially improves future maintenance runs.
 - Generic legacy skills should usually be upgraded with support files before adding new overlapping skills.
 
+- The `task-planning` structural-hardening pass added `references/modes-and-handoffs.md`, `references/packet-shapes.md`, a board-control boundary eval, and synced manifest/compact discovery wording, which matters because the PM anchor now follows the same routing-first maintenance pattern as other high-degree skills instead of leaving stale user-story-only discovery text in the catalog.
+
 ## Operational rule
 When a legacy skill is materially upgraded, prefer adding at least one of:
 - `references/` for durable heuristics
@@ -121,6 +123,7 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[marketing-cluster]]
 - [[frontend-skill-canonicalization]]
 - [[task-planning-modernization-2026-04-12]]
+- [[task-planning-structural-hardening-2026-04-18]]
 - [[design-system-canonicalization-2026-04-12]]
 - [[bmad-gds-modernization-2026-04-12]]
 - [[marketing-skill-canonicalization-2026-04-12]]

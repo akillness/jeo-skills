@@ -2943,22 +2943,33 @@
     },
     {
       "name": "task-planning",
-      "description": "Plan and organize software development tasks effectively. Use when breaking down features, creating user stories, or planning sprints. Handles task breakdown, user stories, acceptance criteria, and backlog management.",
+      "description": "Turn vague features, bugs, roadmap items, launch work, or playtest findings into execution-ready planning packets with horizon choice, slice boundaries, dependencies, acceptance criteria, blockers, and one clear next move. Use when the user needs backlog grooming, sprint or milestone preparation, roadmap-to-delivery translation, or a practical planning pass across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work.",
       "category": "project-management",
       "path": "task-planning/SKILL.md",
       "tags": [
         "task-planning",
-        "user-stories",
-        "backlog",
+        "backlog-grooming",
         "sprint-planning",
-        "agile"
+        "milestone-planning",
+        "roadmap-slicing",
+        "feature-breakdown",
+        "launch-planning",
+        "game-development"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
-      "allowed_tools": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
       "commands": []
     },
     {
