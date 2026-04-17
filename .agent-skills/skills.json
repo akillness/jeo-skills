@@ -2267,7 +2267,7 @@
     },
     {
       "name": "ralph",
-      "description": "Specification-first AI development powered by Ouroboros. Socratic questioning exposes hidden assumptions before writing code. Evolutionary loop (Interview → Seed → Execute → Evaluate → Evolve) runs until ontology converges. Ralph mode persists until verification passes — the boulder never stops. Use when user says \\\"ralph\\\", \\\"ooo\\\", \\\"don't stop\\\", \\\"must complete\\\", \\\"until it works\\\", \\\"keep going\\\", \\\"interview me\\\", or \\\"stop prompting\\\".",
+      "description": "Run the Ouroboros specification-first development loop: reduce ambiguity with a Socratic interview, freeze an immutable seed/spec, execute against that contract, verify before claiming success, and keep looping until completion is actually verified. Use when the user wants spec-first clarification, immutable requirements, drift-aware implementation, or a persistent completion loop that should keep going until tests / checks / acceptance criteria pass.",
       "category": "core-orchestration",
       "path": "ralph/SKILL.md",
       "tags": [

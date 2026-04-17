@@ -231,7 +231,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Multi-agent workflow layer for Codex CLI (v0.11.10) — 30+ agents, 35+ skills, tmux team runtime, omx explore/sparkshell |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | Gemini / Antigravity entry for the portable `oh-my-agent` harness (`.agents` source of truth, native Gemini projection, cross-vendor-ready layout) |
-| `ralph` | `ralph`, `ooo` | All | Ouroboros specification-first + persistent completion loop |
+| `ralph` | `ralph`, `ooo` | All | Ouroboros spec-first method anchor — Socratic clarification, immutable seed/spec, drift-aware execution, and persistent completion until verification passes |
 | `ralphmode` | `ralphmode` | All | Automation permission profile — repo-local settings, boundary rules, and hook-backed checkpoints for trusted repos vs sandbox-only YOLO |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Portable BMAD/BMM core router — choose project level, identify the current phase, recommend the next artifact, and route runtime-specific depth outward |
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
@@ -424,7 +424,7 @@ bash scripts/install.sh --all
 ### ralph — Specification-First Development
 > Keyword: `ralph`, `ooo` | [Docs](docs/ralph/README.md) | [GitHub](https://github.com/Q00/ouroboros)
 
-Socratic interview → immutable spec → Double Diamond execution → 3-stage verification → loop until passed.
+Socratic interview → immutable seed/spec → execute against the contract → verify before done → keep looping until completion is actually verified. Runtime-specific hook / approval / harness details stay in `omc`, `omx`, `ohmg`, `jeo`, and `ralphmode`.
 
 ```bash
 ooo interview "I want to build a task management CLI"

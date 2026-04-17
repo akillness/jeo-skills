@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-17 | Total pages: 97
+> Last updated: 2026-04-18 | Total pages: 98
 
 ## Entities
 
@@ -86,6 +86,7 @@
 - [[video-production-canonicalization-2026-04-14]] — Why the best bounded creative-media improvement was canonicalizing `video-production` and narrowing `remotion-video-production` into a compatibility alias instead of keeping two equal Remotion clones.
 - [[skill-catalog-sync-hardening-2026-04-14]] — Why the best bounded post-modernization maintenance move was making runtime discovery filesystem-first, validating catalog sync explicitly, and surfacing the game-development lane in top-level inventories.
 - [[skill-standardization-variant-sync-2026-04-15]] — Why the best bounded follow-up to catalog-sync hardening was teaching `skill-standardization` to review `SKILL.toon` / `SKILL.compact.md` drift after material rewrites instead of relying on ad hoc memory.
+- [[ralph-structural-hardening-2026-04-18]] — Why the best bounded next core-orchestration improvement was shrinking `ralph` into a cleaner spec-first method anchor with runtime-boundary references and corrected Codex guidance instead of adding another persistent-loop wrapper.
 - [[skill-standardization-structural-hardening-2026-04-17]] — Why the best bounded next maintenance-layer improvement was shrinking `skill-standardization` into a truthful repo-root router with derived-surface sync instead of adding another validation/meta wrapper.
 - [[state-management-modernization-2026-04-13]] — Why the best bounded frontend architecture improvement was rewriting `state-management` into a decision-first state-boundary anchor instead of leaving it as a generic library-tour skill.
 - [[ui-component-patterns-modernization-2026-04-13]] — Why the best bounded frontend reusable-component improvement was rewriting `ui-component-patterns` into a reusable primitive / variant / slot API anchor instead of modernizing `responsive-design` first.

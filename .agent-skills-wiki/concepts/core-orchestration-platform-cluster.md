@@ -36,7 +36,9 @@ The platform-orchestration lane is cleaner when `ohmg`, `omc`, and `omx` are tre
 ## Structural note
 The `ohmg` modernization pass confirmed the same pattern seen elsewhere in the repo: fixing a stale high-visibility anchor and adding support files is more valuable than creating another overlapping platform wrapper.
 
-The `ralph` support-hardening pass reinforces that same rule inside the core-orchestration lane: finishing eval coverage and removing stale self-path examples is more valuable than creating another persistent-loop wrapper.
+The `ralph` support-hardening pass reinforced that same rule inside the core-orchestration lane: finishing eval coverage and removing stale self-path examples was more valuable than creating another persistent-loop wrapper.
+
+The `ralph` structural-hardening pass pushed the next step further: once support coverage was complete, the best bounded move was shrinking the front door, correcting stale Codex compensation-only wording, and moving runtime ownership into references and sibling skills instead of letting the portable method surface absorb Claude / Codex / Gemini execution details.
 
 The `jeo` structural-hardening pass extends the same pattern to the repo's front-door router: once support coverage is complete, the best bounded move is shrinking the trigger surface, pushing config/state/troubleshooting detail into references, and preserving clean route-outs to the specialist runtime and review skills.
 
