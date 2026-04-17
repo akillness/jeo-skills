@@ -2859,7 +2859,7 @@
     },
     {
       "name": "survey",
-      "description": "Research context, workarounds, existing solutions, and structural gaps before planning or implementation, then write reusable `.survey/{slug}/` artifacts for OMC, OMX, OHMG, and general agent workflows. Use when the user asks to survey a space, scan the landscape, research options, or compare platform/tooling patterns before deciding what to build.",
+      "description": "Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform/tooling patterns map before deciding what to build. Produce reusable `.survey/{slug}/` artifacts and route planning or execution outward only after the survey is done.",
       "category": "core-orchestration",
       "path": "survey/SKILL.md",
       "tags": [

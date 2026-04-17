@@ -710,3 +710,11 @@
 - Accepted: shrink `git-workflow` from 298 to 258 lines, add `references/mode-selection-and-command-packets.md`, expand eval coverage with a shared-branch merge-vs-rebase case, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup prompt discovery wording
 - Rejected: adding another Git recovery or push-safety wrapper; letting hosted PR/admin language drift back into the local Git anchor; leaving compact/discovery wording stale after the rewrite
 - Wiki files created/updated: `queries/git-workflow-structural-hardening-2026-04-18.md`, `concepts/developer-workflow-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | survey structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game development, with the best bounded research-layer improvement landing on the existing `survey` skill rather than a new wrapper
+- Survey files created under `.survey/survey-structural-hardening-20260418/`; repo-local graph and wiki evidence plus direct primary-source retrieval from Claude Code, Codex, and Gemini docs were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `survey` from 392 to 309 lines, add `references/platform-adapter-and-artifact-contract.md`, expand eval coverage with repo-maintenance / platform-map / non-trigger cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup prompt discovery wording while preserving the canonical `.survey/{slug}` contract
+- Rejected: adding another research-hardening wrapper; leaving Claude/Codex/Gemini portability detail only inside the main front door; using platform-native config as the source of truth for the artifact contract
+- Wiki files created/updated: `queries/survey-structural-hardening-2026-04-18.md`, `concepts/core-orchestration-platform-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
