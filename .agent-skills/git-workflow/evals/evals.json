@@ -39,6 +39,16 @@
         "Output routes to `code-review` or explicitly states that review quality is outside the main scope of `git-workflow`.",
         "Output does not frame the request as a branch/rebase/recovery workflow."
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our shared release branch is behind main. I need to sync it, but I do not want to surprise the rest of the team with rewritten history.",
+      "expected_output": "Chooses sync-with-base mode, names the branch as shared-risk, and prefers merge over rebase unless the user explicitly accepts rewrite risk.",
+      "assertions": [
+        "Output chooses `sync-with-base` as the main mode.",
+        "Output identifies the branch as shared or otherwise high collaboration risk.",
+        "Output prefers merge or explicitly warns against rebasing a shared branch by default."
+      ]
     }
   ]
 }

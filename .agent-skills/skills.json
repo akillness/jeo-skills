@@ -1158,7 +1158,7 @@
     },
     {
       "name": "git-workflow",
-      "description": "Manage local Git collaboration safely: branch creation, staging, commit shaping, rebase/merge decisions, conflict resolution, lease-safe pushes, and recovery from resets or bad history edits. Use when the user needs help preparing a branch, cleaning up commits, rebasing onto an updated base branch, resolving conflicts, pushing rewritten history safely, undoing or recovering Git mistakes, or getting a diff ready for review. Not for hosted PR review, repo administration, or sprint planning.",
+      "description": "Route local Git work into the safest next move: branch hygiene, selective staging, commit cleanup, merge-vs-rebase choice, conflict resolution, lease-safe pushes, and recovery from resets or bad history edits. Use when the user needs help preparing a branch, cleaning up commits, syncing with an updated base, resolving local Git conflicts, pushing rewritten history safely, recovering lost commits, or getting a diff ready for review. Not for hosted PR review, repo administration, or sprint planning.",
       "category": "utilities",
       "path": "git-workflow/SKILL.md",
       "tags": [
@@ -1166,17 +1166,25 @@
         "version-control",
         "branching",
         "commits",
+        "rebasing",
+        "conflicts",
+        "recovery",
         "collaboration"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex",
+        "OpenCode"
       ],
       "allowed_tools": [
         "Bash",
         "Read",
-        "Write"
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
       ],
       "commands": [
         {

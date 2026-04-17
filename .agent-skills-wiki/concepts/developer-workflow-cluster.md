@@ -1,10 +1,10 @@
 ---
 title: Developer Workflow Cluster
 created: 2026-04-13
-updated: 2026-04-17
+updated: 2026-04-18
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
-sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, .survey/fabric-modernization-20260415/context.md, .survey/fabric-modernization-20260415/solutions.md, .survey/lmstudio-cli-modernization-20260415/context.md, .survey/lmstudio-cli-modernization-20260415/solutions.md, .survey/file-organization-structural-hardening-20260417/context.md, .survey/file-organization-structural-hardening-20260417/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, .survey/fabric-modernization-20260415/context.md, .survey/fabric-modernization-20260415/solutions.md, .survey/lmstudio-cli-modernization-20260415/context.md, .survey/lmstudio-cli-modernization-20260415/solutions.md, .survey/file-organization-structural-hardening-20260417/context.md, .survey/file-organization-structural-hardening-20260417/solutions.md, .survey/git-workflow-structural-hardening-20260418/context.md, .survey/git-workflow-structural-hardening-20260418/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Developer Workflow Cluster
@@ -44,11 +44,14 @@ The graph refresh after the `npm-git-install`, `fabric`, `lmstudio-cli`, and `fi
 
 The `file-organization` follow-up matters because it is one of the few developer-workflow skills that also crosses backend, docs, and game-development structure decisions. Keeping the front door small while letting the existing references carry repo-type detail preserves that breadth without turning the skill back into a mini-handbook.
 
+The `git-workflow` structural-hardening pass extended the same rule to the local Git anchor. The lane stays cleaner when `git-workflow` keeps the six local-state modes together but pushes command packets into support docs, because that preserves the existing split between local history work and hosted PR/repo-management work without inventing another Git wrapper.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[file-organization-modernization-2026-04-15]]
 - [[file-organization-structural-hardening-2026-04-17]]
 - [[git-workflow-modernization-2026-04-12]]
+- [[git-workflow-structural-hardening-2026-04-18]]
 - [[npm-git-install-modernization-2026-04-15]]
 - [[fabric-modernization-2026-04-15]]
 - [[lmstudio-cli-modernization-2026-04-15]]
