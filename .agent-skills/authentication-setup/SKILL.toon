@@ -1,17 +1,17 @@
 N:authentication-setup
-D:Design or refactor product authentication setup for web apps and APIs. Use when choosing hosted/framework-native/platform-native/self-hosted auth, sessions vs JWTs, OAuth/social login, passkeys, org/member models, enterprise SSO/SCIM handoff, or callback/cookie environment setup.
+D:Design or refactor product authentication setup for web apps and APIs. Use when choosing hosted/framework-native/platform-native/enterprise-add-on/self-hosted auth, sessions vs JWTs, OAuth/social login, passkeys, org/member models, callback/cookie environment setup, or SSO/SCIM rollout boundaries.
 G:authentication auth sessions JWT OAuth passkeys SSO SCIM product-auth backend
 U[4]:
-  Choose the right auth lane before implementation
-  Define provider-vs-app ownership for users, orgs, roles, and sync points
-  Decide session/token strategy and environment rollout constraints
+  Choose the smallest credible auth lane before implementation
+  Define provider-vs-app ownership for users, orgs, roles, sync points, and rollout boundaries
+  Decide session/token strategy plus environment-specific callback and cookie behavior
   Route security hardening, API docs/design, testing, and DB-heavy work to neighboring skills
 S[5]{n,action}:
   1,Classify the auth setup job and lane
-  2,Pick the auth stack and session model deliberately
+  2,Choose one primary auth stack with at most one fallback
   3,Draw the provider/app ownership boundary
-  4,Model app-owned users, orgs, memberships, and rollout notes
-  5,Hand off adjacent work to security-best-practices, api-design, api-documentation, backend-testing, or database-schema-design
+  4,Record session, login, environment, and app-owned data decisions
+  5,Branch enterprise or migration work explicitly and route adjacent work out
 R[5]:
   security-best-practices
   api-design

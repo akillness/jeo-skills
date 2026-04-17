@@ -29,11 +29,22 @@
       "assertions": [
         "Output classifies the request as an enterprise add-on or equivalent distinct auth lane.",
         "Output mentions SSO and SCIM as separate rollout/provisioning concerns.",
+        "Output mentions account linking, org/domain mapping, or migration-sensitive rollout notes.",
         "Output does not present the work as merely adding another OAuth provider button."
       ]
     },
     {
       "id": 4,
+      "prompt": "We're replacing a homegrown auth system with Keycloak for an on-prem deployment and need to avoid breaking existing users.",
+      "expected_output": "The skill recognizes self-hosted plus migration work, calls out operational ownership and user/account cutover risks, and treats the move as more than a library swap.",
+      "assertions": [
+        "Output identifies self-hosted auth as the main lane or primary candidate.",
+        "Output mentions migration or cutover concerns such as canonical user IDs, session invalidation, or rollback.",
+        "Output mentions operational/admin burden associated with self-hosted identity."
+      ]
+    },
+    {
+      "id": 5,
       "prompt": "Harden cookies, CSRF, and abuse controls on our auth endpoints.",
       "expected_output": "The skill should recognize adjacent security-hardening work and route the main request to security-best-practices instead of claiming the whole problem.",
       "assertions": [
