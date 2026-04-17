@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-17 | Total pages: 92
+> Last updated: 2026-04-17 | Total pages: 93
 
 ## Entities
 
@@ -29,6 +29,7 @@
 - [[compact-variant-gap-2026-04-15]] — Why the best bounded fix for the remaining repo-wide compact-discovery drift was finishing the last 8 `SKILL.toon` gaps instead of downgrading docs or building a generator first.
 - [[api-design-modernization-2026-04-12]] — Why the best bounded backend-cluster improvement was modernizing `api-design` into a contract-first anchor instead of adding a new overlapping API skill.
 - [[api-documentation-modernization-2026-04-13]] — Why the best bounded documentation-cluster improvement was modernizing `api-documentation` into the developer-facing API-docs anchor instead of adding another portal/docs wrapper.
+- [[api-documentation-structural-hardening-2026-04-17]] — Why the best bounded follow-up after the API-doc modernization pass was shrinking `api-documentation` into a tighter routing-first anchor with a dedicated packet/navigation reference instead of adding another portal-docs helper.
 - [[authentication-setup-modernization-2026-04-14]] — Why the best bounded backend-cluster improvement was modernizing `authentication-setup` into the product-auth setup router instead of leaving a JWT/OAuth catch-all or adding another auth wrapper.
 - [[authentication-setup-structural-hardening-2026-04-17]] — Why the best bounded backend/fullstack follow-up after modernization was shrinking `authentication-setup` into a tighter routing-first anchor with an enterprise/migration support packet instead of adding another auth wrapper.
 - [[database-schema-design-modernization-2026-04-14]] — Why the best bounded backend-cluster improvement was modernizing `database-schema-design` into the storage-model and staged-migration anchor instead of adding another database wrapper.
