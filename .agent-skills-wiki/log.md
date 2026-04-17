@@ -638,3 +638,11 @@
 - Accepted: shrink `authentication-setup/SKILL.md` from 337 to 251 lines, add `references/enterprise-and-migration-notes.md`, refresh `SKILL.toon`, expand eval coverage with a self-hosted migration case, and preserve the boundary with `security-best-practices`, `api-design`, `api-documentation`, `backend-testing`, and `database-schema-design`
 - Rejected: adding another auth wrapper; re-expanding the front door with more provider detail; unnecessary README / README.ko / setup prompt churn when discovery wording stayed materially accurate
 - Wiki files created/updated: `queries/authentication-setup-structural-hardening-2026-04-17.md`, `concepts/backend-api-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-17] query | file-organization structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, PM/ops, marketing/GTM/content, and game-dev lanes, with the best bounded next developer-workflow win landing on the still-oversized `file-organization` anchor
+- Survey files created under `.survey/file-organization-structural-hardening-20260417/`; repo-local evidence plus direct primary-page retrieval from Next.js, Diátaxis, GitHub Well-Architected monorepos, and Unity project-organization docs were used because normal search APIs are unavailable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `file-organization/SKILL.md` from 357 to 233 lines, refresh `SKILL.toon`, expand eval coverage with backend-service and docs-taxonomy cases, and preserve the boundary with `codebase-search`, `workflow-automation`, `system-environment-setup`, `design-system`, `state-management`, and `bmad-gds`
+- Rejected: adding another repo-structure wrapper; re-expanding the front door with more repo-type walkthrough detail; README / README.ko / setup prompt churn when discovery wording stayed materially accurate
+- Wiki files created/updated: `queries/file-organization-structural-hardening-2026-04-17.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

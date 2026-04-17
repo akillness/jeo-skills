@@ -1,38 +1,24 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>oh-my-skills graph</title>
-<style>body{font-family:system-ui, sans-serif; margin:2rem;} table{border-collapse:collapse} td,th{border:1px solid #ccc;padding:.4rem .6rem} code{background:#f4f4f4;padding:.1rem .3rem}</style></head>
-<body>
+<html lang="en"><head><meta charset="utf-8"><title>oh-my-skills graph</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;line-height:1.5}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left}
+code{background:#f4f4f4;padding:.1rem .3rem;border-radius:4px}
+</style>
+</head><body>
 <h1>oh-my-skills structural graph</h1>
-<p>Generated from <code>.agent-skills/</code> plus discovery docs using a graphify-style structural fallback.</p>
+<p>Nodes: 607 | Edges: 1334 | Skills: 89</p>
+<h2>Strongest findings</h2>
 <ul>
-<li>Total skills: 89</li>
-<li>Nodes: 385</li>
-<li>Edges: 1043</li>
-<li>References coverage: 89/89</li>
-<li>Evals coverage: 89/89</li>
+<li>Discovery docs remain the highest-degree maintenance nodes.</li>
+<li>Support coverage is complete, so dense-anchor cleanup beats new-skill growth.</li>
+<li><code>file-organization</code> was refreshed from 357 to 233 lines and now behaves more like a routing-first front door.</li>
 </ul>
 <h2>Highest-degree nodes</h2>
-<table><tr><th>Node</th><th>Degree</th></tr><tr><td>.agent-skills/skills.json</td><td>89</td></tr>
-<tr><td>README.ko.md</td><td>88</td></tr>
-<tr><td>README.md</td><td>88</td></tr>
-<tr><td>setup-all-skills-prompt.md</td><td>88</td></tr>
-<tr><td>.agent-skills/skills.toon</td><td>81</td></tr>
-<tr><td>debugging</td><td>26</td></tr>
-<tr><td>performance-optimization</td><td>26</td></tr>
-<tr><td>code-review</td><td>24</td></tr>
-<tr><td>task-planning</td><td>24</td></tr>
-<tr><td>jeo</td><td>23</td></tr>
-<tr><td>plannotator</td><td>23</td></tr>
-<tr><td>monitoring-observability</td><td>22</td></tr></table>
-<h2>Oversized front-door watchlist</h2>
-<ul><li><strong>ralph</strong>: 500 lines</li>
-<li><strong>survey</strong>: 392 lines</li>
-<li><strong>file-organization</strong>: 358 lines</li>
-<li><strong>api-documentation</strong>: 337 lines</li>
-<li><strong>autoresearch</strong>: 334 lines</li>
-<li><strong>clawteam</strong>: 330 lines</li>
-<li><strong>technical-writing</strong>: 321 lines</li>
-<li><strong>scrapling</strong>: 320 lines</li>
-<li><strong>skill-standardization</strong>: 316 lines</li>
-<li><strong>user-guide-writing</strong>: 315 lines</li></ul>
+<table><thead><tr><th>Node</th><th>Degree</th><th>Kind</th></tr></thead><tbody><tr><td>.agent-skills/skills.json</td><td>89</td><td>discovery</td></tr><tr><td>README.ko.md</td><td>88</td><td>discovery</td></tr><tr><td>README.md</td><td>88</td><td>discovery</td></tr><tr><td>setup-all-skills-prompt.md</td><td>88</td><td>discovery</td></tr><tr><td>.agent-skills/skills.toon</td><td>81</td><td>discovery</td></tr><tr><td>debugging</td><td>48</td><td>skill</td></tr><tr><td>jeo</td><td>39</td><td>skill</td></tr><tr><td>plannotator</td><td>36</td><td>skill</td></tr><tr><td>bmad</td><td>31</td><td>skill</td></tr><tr><td>performance-optimization</td><td>30</td><td>skill</td></tr><tr><td>vibe-kanban</td><td>30</td><td>skill</td></tr><tr><td>harness</td><td>28</td><td>skill</td></tr></tbody></table>
+<h2>Oversized watchlist (&gt;=300 lines)</h2>
+<ul><li><code>ralph</code>: 500 lines</li><li><code>survey</code>: 392 lines</li><li><code>api-documentation</code>: 337 lines</li><li><code>autoresearch</code>: 334 lines</li><li><code>clawteam</code>: 330 lines</li><li><code>technical-writing</code>: 321 lines</li><li><code>scrapling</code>: 320 lines</li><li><code>skill-standardization</code>: 316 lines</li><li><code>user-guide-writing</code>: 315 lines</li><li><code>vercel-deploy</code>: 314 lines</li></ul>
+<h2>Artifacts</h2>
+<p>See <code>GRAPH_REPORT.md</code> for the narrative summary and <code>graph.json</code> for the structured graph.</p>
 </body></html>
