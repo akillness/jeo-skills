@@ -4,7 +4,7 @@ created: 2026-04-12
 updated: 2026-04-18
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
-sources: [graphify-out/GRAPH_REPORT.md, .survey/task-planning-modernization/context.md, .survey/task-planning-modernization/solutions.md, .survey/task-planning-structural-hardening-20260418/context.md, .survey/task-planning-structural-hardening-20260418/solutions.md, .survey/task-estimation-modernization-20260412/context.md, .survey/task-estimation-modernization-20260412/solutions.md]
+sources: [graphify-out/GRAPH_REPORT.md, .survey/task-planning-modernization/context.md, .survey/task-planning-modernization/solutions.md, .survey/task-planning-structural-hardening-20260418/context.md, .survey/task-planning-structural-hardening-20260418/solutions.md, .survey/task-estimation-modernization-20260412/context.md, .survey/task-estimation-modernization-20260412/solutions.md, .survey/sprint-retrospective-structural-hardening-20260418/context.md, .survey/sprint-retrospective-structural-hardening-20260418/solutions.md]
 ---
 
 # Project Management Cluster
@@ -18,7 +18,8 @@ The repository's project-management cluster is currently anchored by `task-plann
 - `task-estimation` now owns estimation-mode selection, reference-story calibration, confidence/risk framing, and split-or-spike decisions.
 - `standup-meeting` now owns daily coordination mode selection: board-walk, blocker-first, async, and hybrid daily syncs.
 - `sprint-retrospective` now owns reflection and follow-through mode selection: live retros, async/hybrid retros, milestone postmortems, and action-review resets.
-- The cluster still benefits more from boundary clarification and support upgrades than from catalog expansion.
+- The 2026-04-18 structural-hardening pass then shrank `sprint-retrospective` into the same routing-first shape as the rest of the cluster: one chosen mode, prior-action review first, packet guidance moved to references, and a stronger route-out to planning / estimation / daily sync work.
+- The cluster still benefits more from boundary clarification and dense-anchor cleanup than from catalog expansion.
 
 ## Implications
 - `task-planning` should handle backlog grooming, sprint-prep slicing, release packets, and roadmap-to-delivery decomposition without absorbing sizing or board operations.
@@ -33,3 +34,4 @@ The repository's project-management cluster is currently anchored by `task-plann
 - [[task-estimation-modernization-2026-04-12]]
 - [[standup-meeting-modernization-2026-04-12]]
 - [[sprint-retrospective-modernization-2026-04-12]]
+- [[sprint-retrospective-structural-hardening-2026-04-18]]

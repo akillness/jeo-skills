@@ -74,7 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
-| **task-planning: 구조 강화** | `task-planning`을 백로그 정리, 기능 분해, 스프린트 후보 준비, 릴리스 패킷, 마일스톤 계획을 담당하는 라우팅 우선 planning anchor로 다듬었습니다. 이제 developer workflow, web/fullstack, product/ops, marketing/GTM, game work 전반에서 하나의 planning mode를 고르고, discovery와 delivery를 분리하고, 가장 작은 packet shape를 선택하며, `task-estimation`, `vibe-kanban`, `plannotator`, `standup-meeting`, `sprint-retrospective`, `bmad`, `bmad-gds`로의 route-out을 명시합니다. 또한 `references/modes-and-handoffs.md`, `references/packet-shapes.md`, 갱신된 `evals/evals.json`, 동기화된 compact/manifest discovery wording을 추가했습니다. |
+| **sprint-retrospective: 구조 강화** | `sprint-retrospective`를 software, product/ops, marketing/GTM, game-delivery work 전반에서 쓰는 라우팅 우선 retrospective anchor로 다듬었습니다. 이제 하나의 retrospective mode를 고르고, 이전 액션을 새 액션보다 먼저 검토하고, action count를 작게 유지하며, planning/sizing/daily-sync 작업을 바깥으로 route-out합니다. 또한 `references/action-review-and-packet-shapes.md`, 갱신된 `evals/evals.json`, 동기화된 compact/manifest discovery wording을 추가했습니다. |
 
 ## 🆕 v2026-04-17 업데이트
 
@@ -328,7 +328,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `sprint-retrospective` | 스프린트 회고, 마일스톤 포스트모템, 비동기/하이브리드 진행, 액션 후속관리 | 전체 |
+| `sprint-retrospective` | 스프린트 회고, 마일스톤 포스트모템, 원격/하이브리드 진행, 죽은 액션아이템 복구를 담당하는 라우팅 우선 회고 앵커 | 전체 |
 | `standup-meeting` | 일일 스탠드업, 비동기 체크인, 보드 워크, 블로커 트리아지 진행 | 전체 |
 | `task-estimation` | 스토리 포인트, T셔츠 사이징, 플래닝 포커 준비, 예측 안전형 사이징 | 전체 |
 | `task-planning` | software, GTM, game work 전반에서 백로그 정리, 기능 분해, 릴리스 패킷, 마일스톤 준비를 담당하는 라우팅 우선 planning anchor | 전체 |

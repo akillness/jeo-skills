@@ -2692,7 +2692,7 @@
     },
     {
       "name": "sprint-retrospective",
-      "description": "Facilitate sprint retrospectives, milestone postmortems, or iteration reviews that turn completed work into a few owned process improvements instead of another stale template exercise. Use when the user needs a retro format, async or hybrid retro flow, retrospective facilitation script, action-item follow-through, or help reviewing what the team should change after a sprint, release, milestone, or rough delivery cycle.",
+      "description": "Facilitate sprint retrospectives, milestone postmortems, or iteration reviews by picking one retrospective mode, reviewing prior actions first, and turning completed work into a few owned process improvements. Use when the user needs remote/hybrid retro facilitation, action-item follow-through recovery, or post-sprint/post-milestone reflection. Route planning to task-planning, sizing to task-estimation, and daily coordination to standup-meeting.",
       "category": "project-management",
       "path": "sprint-retrospective/SKILL.md",
       "tags": [

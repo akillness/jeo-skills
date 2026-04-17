@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 107
+> Last updated: 2026-04-18 | Total pages: 108
 
 ## Entities
 
@@ -69,6 +69,7 @@
 - [[data-analysis-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `data-analysis` into the decision-first dataset-reasoning anchor instead of adding another analytics wrapper.
 - [[pattern-detection-modernization-2026-04-14]] — Why the best bounded next search-analysis improvement was modernizing `pattern-detection` into the repeatable rule/anomaly-hunting anchor instead of adding another overlapping wrapper.
 - [[sprint-retrospective-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `sprint-retrospective` into a mode-selecting reflection and follow-through skill.
+- [[sprint-retrospective-structural-hardening-2026-04-18]] — Why the best bounded PM-cluster follow-up was shrinking `sprint-retrospective` into a routing-first retrospective anchor with a dedicated action-review packet instead of adding another ceremony wrapper.
 - [[standup-meeting-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `standup-meeting` into a mode-selecting daily coordination skill.
 - [[survey-evidence-recovery-2026-04-12]] — Why the best bounded research-layer change was hardening `survey` with an explicit evidence-recovery ladder and support files.
 - [[survey-structural-hardening-2026-04-18]] — Why the best bounded next research-layer improvement was shrinking `survey` into a routing-first artifact-contract anchor instead of adding another research wrapper.

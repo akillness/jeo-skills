@@ -742,3 +742,12 @@
 - Accepted: shrink `code-review` into an evidence-first review front door, add `references/intake-packets-and-escalations.md`, expand eval coverage with repo-admin and gameplay-validation cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording while preserving boundaries with `git-workflow`, `debugging`, `testing-strategies`, visual-review skills, and repo/PR workflows
 - Rejected: adding another PR-review/security-review wrapper; letting `code-review` absorb CODEOWNERS / merge-queue / reviewer-assignment operations; treating CI bot comments as the review itself
 - Wiki files created/updated: `queries/code-review-structural-hardening-2026-04-18.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+
+## [2026-04-18] query | sprint-retrospective structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game development, with the best bounded PM-cluster follow-up landing on the existing `sprint-retrospective` skill rather than a new ceremony wrapper
+- Survey files created under `.survey/sprint-retrospective-structural-hardening-20260418/`; repo-local graph and wiki evidence plus direct primary-source retrieval from Atlassian, Scrum.org, Miro, TeamRetro, and browser-rendered Parabol evidence were used because `web_search` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `sprint-retrospective` from 304 to 263 lines, add `references/action-review-and-packet-shapes.md`, expand eval coverage with a planning-route near miss, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording
+- Rejected: adding another remote-retro, postmortem, or action-items-only skill; broadening retros into planning, sizing, or daily coordination; treating more templates as the fix for follow-through failure
+- Wiki files created/updated: `queries/sprint-retrospective-structural-hardening-2026-04-18.md`, `concepts/project-management-cluster.md`, `index.md`, `log.md`
