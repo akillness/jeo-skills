@@ -40,6 +40,8 @@ The 2026-04-18 `debugging` structural-hardening pass confirmed the next ratchet 
 
 The 2026-04-18 `performance-optimization` structural-hardening pass extended the same rule to tuning work: the durable win was not another performance wrapper, but an artifact-first front door that starts from traces, CWV reports, query plans, benchmark diffs, or profiler captures, then routes to observability, debugging, refactoring, testing policy, or engine-specific profiling only after one bottleneck is named.
 
+The 2026-04-18 `code-review` structural-hardening pass applied the same pattern to review judgment: keep one canonical review skill, shrink the front door around explicit review packets and severity, move packet/escalation detail into a focused reference, treat CI bots as evidence inputs rather than the reviewer, and keep repo-admin / CODEOWNERS / merge-queue work outside the core review lane.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[backend-api-cluster]]

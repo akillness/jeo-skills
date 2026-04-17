@@ -32,6 +32,26 @@
         "Output explains that review quality depends on a cleaner diff or commit structure",
         "Output does not treat the request as a completed code review"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Can you review this PR and also figure out who to request based on CODEOWNERS, then set labels and merge queue options?",
+      "expected_output": "A split response that keeps the actual diff-review judgment inside code-review but routes reviewer assignment, CODEOWNERS handling, labels, and merge-queue administration to a repo/PR workflow skill.",
+      "assertions": [
+        "Output distinguishes review judgment from repo or PR administration",
+        "Output routes CODEOWNERS, reviewer assignment, labels, or merge queue work to a repo/PR workflow skill",
+        "Output does not pretend repository administration is owned by code-review"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "reviewdog already posted lint and static-analysis comments on this gameplay PR. Can you do the final review pass before we merge?",
+      "expected_output": "A review brief that treats bot findings as evidence inputs, still judges the riskiest gameplay/runtime behavior, and notes when playtest or engine validation is still required.",
+      "assertions": [
+        "Output treats reviewdog or CI annotations as inputs rather than the entire review",
+        "Output still performs a human or agent merge-readiness judgment",
+        "Output can mention gameplay, runtime, playtest, or engine-validation evidence when the change is game-related"
+      ]
     }
   ]
 }

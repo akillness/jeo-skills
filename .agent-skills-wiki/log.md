@@ -734,3 +734,11 @@
 - Accepted: tighten `performance-optimization` around artifact-first intake packets, add `references/intake-packets-and-escalations.md`, expand eval coverage for CWV/report and CI benchmark cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording while keeping the front door slightly smaller than the 249-line baseline
 - Rejected: adding another generic performance helper; folding observability rollout, correctness debugging, benchmark-policy design, or engine-specific profiler interpretation into the same front door
 - Wiki files created/updated: `queries/performance-optimization-structural-hardening-2026-04-18.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | code-review structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/content site changes, and game development, with the best bounded code-quality follow-up landing on the existing `code-review` skill rather than a new wrapper
+- Survey files created under `.survey/code-review-structural-hardening-20260418/`; repo-local graph and wiki evidence plus direct primary-source retrieval from GitHub Docs, GitLab Docs, reviewdog, and Danger were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `code-review` into an evidence-first review front door, add `references/intake-packets-and-escalations.md`, expand eval coverage with repo-admin and gameplay-validation cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording while preserving boundaries with `git-workflow`, `debugging`, `testing-strategies`, visual-review skills, and repo/PR workflows
+- Rejected: adding another PR-review/security-review wrapper; letting `code-review` absorb CODEOWNERS / merge-queue / reviewer-assignment operations; treating CI bot comments as the review itself
+- Wiki files created/updated: `queries/code-review-structural-hardening-2026-04-18.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

@@ -1,24 +1,24 @@
 N:code-review
-D:Workflow-aware review of diffs, PRs, MRs, and patch stacks for correctness, risk, missing evidenc...
-G:code-review code-quality security-review risk-review pull-request-review diff-review
+D:Turn a PR, diff, merge request, or patch stack into one evidence-first review brief with severity, missing-proof checks, and route-outs.
+G:code-review code-quality security-review risk-review pull-request-review diff-review pre-merge missing-evidence
 U[5]:
-  Reviewing a pull request or diff before merge
-  Deciding approve vs request changes vs route-out
-  Checking backend/frontend/game-programming changes for risk
-  Self-reviewing a change before requesting teammates
-  Writing concise reviewer comments with severity
+  Review a pull request or diff before merge
+  Decide approve vs request changes vs block
+  Check correctness, security, rollout risk, and missing evidence
+  Self-review a change before requesting teammates
+  Route Git, debugging, UI review, or repo-admin work correctly
 S[7]{n,action}:
-  1,Identify the review surface
-  2,Choose the review mode
-  3,Scan highest-value risks first
-  4,Review by evidence not vibe
-  5,Classify findings by severity
-  6,Produce a reviewer-grade output
-  7,Route neighboring concerns to the right skill
+  1,Normalize the review packet
+  2,Choose the primary review mode
+  3,Inspect the highest-risk path first
+  4,Separate findings from missing evidence
+  5,Classify severity and route-outs
+  6,Produce a reviewer-grade decision brief
+  7,Escalate confidence honestly
 R[6]:
   correctness
-  security
+  security or trust boundaries
   migration or rollout risk
-  missing test evidence
+  missing test or preview proof
   maintainability
-  route-out to adjacent skill
+  repo-admin route-outs

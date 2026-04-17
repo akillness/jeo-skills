@@ -291,7 +291,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `code-refactoring` | 동작 보존 중심 구조 정리, 분해, 중복 제거, codemod 계획 | 전체 |
-| `code-review` | 정합성·위험·증거 공백을 보는 워크플로우형 diff / PR 리뷰 | 전체 |
+| `code-review` | 심각도·증거 공백 점검·route-out을 포함한 evidence-first diff / PR 리뷰 | 전체 |
 | `debugging` | 구체적인 버그·회귀·flaky 실패·환경별 이상 동작을 위한 routing-first 진단 스킬; raw log는 `log-analysis`, 순수 성능 작업은 `performance-optimization`으로 라우팅 | 전체 |
 | `performance-optimization` | trace·보고서·query plan 같은 현재 아티팩트에서 출발해 지연시간·처리량·메모리·번들·CWV·프레임 예산 병목을 측정 중심으로 분석하고 튜닝 | 전체 |
 | `testing-strategies` | 리스크 기반 검증 정책, 머지/릴리즈 게이트, flaky 스위트 정책 | 전체 |
