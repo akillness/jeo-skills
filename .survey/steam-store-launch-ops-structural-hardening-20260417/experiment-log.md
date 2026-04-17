@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `steam-store-launch-ops/SKILL.md` | A sharper visibility/promise/proof/timing/ops model will improve trigger clarity and decision quality more than adding another game-marketing skill | Rewrote the front door around bottleneck diagnosis, moved reusable detail into `references/diagnostic-model.md` + `references/event-hooks.md`, refreshed evals/compact/docs surfaces | Passed `validate_skill.sh` and `validate_catalog_sync.py`; graph/wiki/docs surfaces synced | Keep | Transferable improvement for Steam-specific launch/store requests without expanding the catalog |

@@ -662,3 +662,11 @@
 - Accepted: shrink `technical-writing/SKILL.md` from 320 to 220 lines, add `references/mode-structures.md`, refresh `SKILL.toon`, expand eval coverage with explicit `api-documentation` and `changelog-maintenance` boundary cases, and preserve the boundary with `user-guide-writing`, `presentation-builder`, and `marketing-automation`
 - Rejected: adding another internal-docs wrapper; merging the lane into adjacent documentation skills; unnecessary README / README.ko / setup prompt churn when discovery wording stayed materially accurate
 - Wiki files created/updated: `queries/technical-writing-structural-hardening-2026-04-17.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-17] query | steam-store-launch-ops structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, PM/ops, marketing/GTM/content, and game-dev lanes, with the best bounded next game/marketing win landing on the existing `steam-store-launch-ops` skill rather than a new wrapper
+- Survey files created under `.survey/steam-store-launch-ops-structural-hardening-20260417/`; direct primary-page retrieval verified Steamworks docs in this run, while higher-level indie-marketing references were recorded as source links after the normal web search/extract APIs returned `401 INVALID_API_KEY`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: harden `steam-store-launch-ops` around visibility / promise / proof / timing / ops diagnosis, add `references/diagnostic-model.md` and `references/event-hooks.md`, refresh `evals/evals.json` and `SKILL.toon`, and update README / README.ko / setup prompt / manifest discovery wording so the repo advertises the sharper role truthfully
+- Rejected: adding another Steam / wishlist / Next Fest wrapper; broadening the skill into generic marketing strategy; collapsing public launch diagnosis into `game-demo-feedback-triage` or `marketing-automation`
+- Wiki files created/updated: `queries/steam-store-launch-ops-structural-hardening-2026-04-17.md`, `concepts/game-development-cluster.md`, `concepts/marketing-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

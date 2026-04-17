@@ -1,7 +1,7 @@
 ---
 title: Marketing Cluster
 created: 2026-04-12
-updated: 2026-04-16
+updated: 2026-04-17
 type: concept
 tags: [skills, consolidation, trigger-design, marketing, docs]
 sources: [graphify-out/GRAPH_REPORT.md, .survey/marketing-skill-canonicalization-20260412/context.md, .survey/marketing-skill-canonicalization-20260412/solutions.md, .survey/marketing-skills-collection-support-hardening-20260416/context.md, .survey/marketing-skills-collection-support-hardening-20260416/solutions.md]
@@ -24,8 +24,10 @@ The repository's broad marketing lane now has a clearer shape:
 - `marketing-skills-collection` should remain lightweight so it reduces migration friction without becoming a competing peer skill.
 - Alias support hardening belongs in tiny migration-focused packets plus compact-surface sync, not in another broad support encyclopedia.
 - Future marketing-cluster work should prefer support upgrades and sharper downstream boundaries over adding another general marketing wrapper.
+- `steam-store-launch-ops` should continue to act as the game-specific exception, but its downstream value comes from bottleneck diagnosis (`visibility`, `promise`, `proof`, `timing`, `ops`) rather than from pretending to be another broad launch-marketing strategy skill.
 
 ## Related pages
 - [[skill-support-coverage]]
 - [[marketing-skill-canonicalization-2026-04-12]]
 - [[marketing-skills-collection-support-hardening-2026-04-16]]
+- [[steam-store-launch-ops-structural-hardening-2026-04-17]]
