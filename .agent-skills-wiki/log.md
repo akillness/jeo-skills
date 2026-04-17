@@ -694,3 +694,11 @@
 - Accepted: shrink `ralph/SKILL.md` from 499 to 236 lines, add `references/runtime-boundaries.md`, rewrite `references/platform-setup.md`, refresh `SKILL.toon` / `evals/evals.json` / `docs/ralph/README.md` / catalog and discovery surfaces, and preserve the boundary with `omc`, `omx`, `ohmg`, `jeo`, and `ralphmode`
 - Rejected: adding another persistent-completion wrapper; letting `ralph` absorb runtime-native hook and approval ownership; leaving stale Codex compensation-only wording in local docs
 - Wiki files created/updated: `queries/ralph-structural-hardening-2026-04-18.md`, `concepts/core-orchestration-platform-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | task-planning structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game development, with the best bounded PM-cluster follow-up landing on the existing `task-planning` skill rather than a new wrapper
+- Survey files created under `.survey/task-planning-structural-hardening-20260418/`; direct primary-page retrieval plus repo-local graph and wiki evidence were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `task-planning` into a routing-first planning anchor, add `references/modes-and-handoffs.md` and `references/packet-shapes.md`, expand eval coverage with launch and board-control boundary cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko discovery wording
+- Rejected: adding another backlog or sprint wrapper; merging sizing or board-control behavior into `task-planning`; leaving stale software-only discovery wording after the rewrite
+- Wiki files created/updated: `queries/task-planning-structural-hardening-2026-04-18.md`, `concepts/project-management-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
