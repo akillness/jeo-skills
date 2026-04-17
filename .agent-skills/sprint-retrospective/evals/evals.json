@@ -28,9 +28,19 @@
       "expected_output": "Chooses action-review-reset mode, audits why previous actions failed, and sharply constrains the next action count.",
       "assertions": [
         "Output can choose action-review-reset mode",
-        "Output diagnoses previous-action failure reasons such as no owner, no due date, or no review loop",
+        "Output diagnoses previous-action failure reasons such as no owner, no due date, no authority, or too much scope",
         "Output recommends 1-3 actions maximum",
         "Output preserves boundaries to task-planning, task-estimation, and standup-meeting when relevant"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Help me plan our next sprint stories and decide what we can fit after yesterday's retro.",
+      "expected_output": "Routes the user to task-planning rather than pretending sprint-retrospective should handle backlog decomposition.",
+      "assertions": [
+        "Output explicitly says the main job is planning, not retrospective facilitation",
+        "Output routes to task-planning",
+        "Output does not emit a full Retrospective Brief as if the wrong skill were selected"
       ]
     }
   ]

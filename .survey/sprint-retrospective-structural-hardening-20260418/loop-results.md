@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `sprint-retrospective/SKILL.md` | Shrinking the front door and moving slower-changing packet detail into focused references will improve trigger clarity and maintainability without weakening the PM-cluster boundary. | Rewrote the front door, added `references/action-review-and-packet-shapes.md`, expanded eval coverage with a planning-route near miss, and synced discovery surfaces. | `validate_skill.sh` passed, catalog sync passed, JSON checks passed, front door reduced from 304 to 263 lines. | Keep | Transferable PM-cluster hardening pattern; no duplicate skill needed. |

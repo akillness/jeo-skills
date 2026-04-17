@@ -10,37 +10,37 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 385
-- Graph edges: 956
+- Graph edges: 1107
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
 2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. The `code-review` hardening pass kept the front door under the 500-line guideline at 255 lines, added an explicit intake-packet escalation reference, expanded eval coverage for repo-admin and gameplay-validation cases, and synced stale compact/discovery surfaces.
+3. The `sprint-retrospective` hardening pass kept the front door under the 500-line guideline at 264 lines, moved stable packet detail into `references/action-review-and-packet-shapes.md`, expanded eval coverage with a planning-route near miss, and synced compact/discovery surfaces.
 4. The next bounded wins still come from sharpening high-degree front doors and keeping `SKILL.toon` / manifest / README surfaces truthful after structural edits.
 
 ## Highest-degree nodes
-- task-planning: degree 22
-- code-review: degree 21
-- vibe-kanban: degree 21
-- debugging: degree 20
-- jeo: degree 20
+- debugging: degree 41
+- task-planning: degree 30
+- performance-optimization: degree 27
+- bmad: degree 27
+- vibe-kanban: degree 24
 
 ## Oversized front-door watchlist
-- autoresearch: 333 lines in SKILL.md
-- clawteam: 329 lines in SKILL.md
-- scrapling: 319 lines in SKILL.md
-- vercel-deploy: 313 lines in SKILL.md
-- survey: 309 lines in SKILL.md
-- fabric: 308 lines in SKILL.md
-- sprint-retrospective: 304 lines in SKILL.md
-- game-performance-profiler: 296 lines in SKILL.md
-- task-planning: 294 lines in SKILL.md
-- git-submodule: 293 lines in SKILL.md
+- autoresearch: 334 lines in SKILL.md
+- clawteam: 330 lines in SKILL.md
+- scrapling: 320 lines in SKILL.md
+- vercel-deploy: 314 lines in SKILL.md
+- survey: 310 lines in SKILL.md
+- fabric: 309 lines in SKILL.md
+- game-performance-profiler: 297 lines in SKILL.md
+- task-planning: 295 lines in SKILL.md
+- git-submodule: 294 lines in SKILL.md
+- code-refactoring: 293 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new code-review wrapper is justified: the bounded win was hardening `code-review` in place.
-- `code-review` should stay distinct from `git-workflow`, `debugging`, `testing-strategies`, `performance-optimization`, `web-design-guidelines`, `web-accessibility`, and repo/PR workflow skills; it owns merge-readiness judgment on a concrete change.
-- Duplicate pressure remains highest when Git hygiene, repo administration, debugging, UI critique, and review judgment drift back into the same front door.
+- No new PM ceremony skill is justified: the bounded win was hardening `sprint-retrospective` in place.
+- `sprint-retrospective` should stay distinct from `task-planning`, `task-estimation`, and `standup-meeting`; it owns reflection, mode selection, and action follow-through after work is complete.
+- Duplicate pressure remains highest when retros drift back into planning, sizing, daily syncs, or deep incident RCA.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree skills whose route-in logic can be made smaller without weakening their artifact contract.

@@ -74,7 +74,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
-| **task-planning: structural hardening** | Tightened `task-planning` into a routing-first planning anchor for backlog cleanup, feature slicing, sprint-candidate prep, release packets, and milestone planning across developer workflow, web/fullstack, product/ops, marketing/GTM, and game work. The front door now classifies one primary planning mode, separates discovery from delivery, chooses the smallest packet shape, makes route-outs explicit to `task-estimation`, `vibe-kanban`, `plannotator`, `standup-meeting`, `sprint-retrospective`, `bmad`, and `bmad-gds`, and adds `references/modes-and-handoffs.md`, `references/packet-shapes.md`, refreshed `evals/evals.json`, and synced compact/manifest discovery wording. |
+| **sprint-retrospective: structural hardening** | Tightened `sprint-retrospective` into a routing-first PM anchor for sprint retros, milestone postmortems, remote/hybrid facilitation, and dead-action-item recovery across software, product/ops, marketing/GTM, and game-delivery work. The front door now picks one retrospective mode, reviews prior commitments before new actions, keeps action counts brutally small, routes planning/sizing/daily-sync work outward, and adds `references/action-review-and-packet-shapes.md`, refreshed `evals/evals.json`, and synced compact/manifest discovery wording. |
 
 ## 🆕 What's New in v2026-04-17
 
@@ -328,7 +328,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `sprint-retrospective` | Sprint retros, milestone postmortems, async/hybrid facilitation, and action follow-through | All |
+| `sprint-retrospective` | Routing-first retrospective anchor for sprint retros, milestone postmortems, remote/hybrid facilitation, and dead-action-item recovery | All |
 | `standup-meeting` | Daily standups, async check-ins, walk-the-board syncs, and blocker triage | All |
 | `task-estimation` | Story points, t-shirt sizing, planning poker prep, and forecast-safe sizing | All |
 | `task-planning` | Routing-first planning anchor for backlog cleanup, feature slicing, release packets, and milestone prep across software, GTM, and game work | All |
