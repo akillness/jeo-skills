@@ -10,14 +10,14 @@
 - Skills with scripts/: 24
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
-- Graph nodes: 385
-- Graph edges: 1043
+- Graph nodes: 607
+- Graph edges: 1334
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index almost the whole live catalog.
 2. Support coverage stays complete across the live skill set, so the next structural wins still come from dense-anchor cleanup, truthful routing, and compact-surface synchronization rather than adding missing support folders.
-3. `authentication-setup` was a good bounded target because the backend lane was already conceptually modernized, but the front door still duplicated enterprise/migration and session boundary detail. This pass shrank it from 337 lines to 251 and moved the remaining rollout nuance into a focused support packet.
-4. The backend lane stays cleanest when `authentication-setup` owns auth-lane choice plus provider-vs-app boundaries, `security-best-practices` owns hardening, `api-design` owns contract semantics, `backend-testing` owns regression coverage, and `api-documentation` owns published developer docs.
+3. `file-organization` was a good bounded target because the developer-workflow lane already had the correct canonical boundary, but the front door still duplicated repo-type walkthroughs and output scaffolding that now belong in references. This pass shrank it from 357 lines to 233 and broadened eval coverage to backend and docs-taxonomy cases.
+4. The developer-workflow lane stays cleanest when `file-organization` owns repository-shape choice and migration packets, `codebase-search` owns archaeology, `workflow-automation` owns enforcement/generators, `system-environment-setup` owns runnable environments, and `bmad-gds` owns game-production routing.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
@@ -25,18 +25,17 @@
 - README.md: degree 88
 - setup-all-skills-prompt.md: degree 88
 - .agent-skills/skills.toon: degree 81
-- debugging: degree 26
-- performance-optimization: degree 26
-- code-review: degree 24
-- task-planning: degree 24
-- jeo: degree 23
-- plannotator: degree 23
-- monitoring-observability: degree 22
+- debugging: degree 48
+- jeo: degree 39
+- plannotator: degree 36
+- bmad: degree 31
+- performance-optimization: degree 30
+- vibe-kanban: degree 30
+- harness: degree 28
 
 ## Oversized front-door watchlist
 - ralph: 500 lines in SKILL.md
 - survey: 392 lines in SKILL.md
-- file-organization: 358 lines in SKILL.md
 - api-documentation: 337 lines in SKILL.md
 - autoresearch: 334 lines in SKILL.md
 - clawteam: 330 lines in SKILL.md
@@ -44,13 +43,14 @@
 - scrapling: 320 lines in SKILL.md
 - skill-standardization: 316 lines in SKILL.md
 - user-guide-writing: 315 lines in SKILL.md
+- vercel-deploy: 314 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new authentication wrapper is justified: the bounded win was hardening the existing canonical product-auth router in place.
-- Future duplicate pressure is more likely to come from auth setup drifting into security, API design/docs, or backend testing than from missing auth subtopics.
-- `authentication-setup` should stay distinct from `security-best-practices`, `api-design`, `api-documentation`, `backend-testing`, and `database-schema-design`; each owns a different decision surface.
+- No new repo-structure wrapper is justified: the bounded win was hardening the existing canonical `file-organization` skill in place.
+- Future duplicate pressure is more likely to come from repo-shape questions drifting into search, automation, environment setup, or subsystem/game-planning skills than from missing structure subtopics.
+- `file-organization` should stay distinct from `codebase-search`, `workflow-automation`, `system-environment-setup`, `design-system`, `state-management`, and `bmad-gds`; each owns a different decision surface.
 
 ## Recommended maintenance direction
 - Keep targeting oversized or stale high-degree anchors after support coverage is already complete.
-- Prefer splitting enterprise, migration, and operator-detail packets into references before adding another skill in the same lane.
+- Prefer moving repo-type walkthrough bulk into focused references before adding another skill in the same lane.
 - Re-run catalog/runtime sync validation whenever compact files or discovery wording change materially.

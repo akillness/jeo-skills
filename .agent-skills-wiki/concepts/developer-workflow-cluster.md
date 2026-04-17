@@ -1,10 +1,10 @@
 ---
 title: Developer Workflow Cluster
 created: 2026-04-13
-updated: 2026-04-15
+updated: 2026-04-17
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
-sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, .survey/fabric-modernization-20260415/context.md, .survey/fabric-modernization-20260415/solutions.md, .survey/lmstudio-cli-modernization-20260415/context.md, .survey/lmstudio-cli-modernization-20260415/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, .survey/fabric-modernization-20260415/context.md, .survey/fabric-modernization-20260415/solutions.md, .survey/lmstudio-cli-modernization-20260415/context.md, .survey/lmstudio-cli-modernization-20260415/solutions.md, .survey/file-organization-structural-hardening-20260417/context.md, .survey/file-organization-structural-hardening-20260417/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Developer Workflow Cluster
@@ -40,10 +40,14 @@ Current cluster shape:
 - If the question is **"how do we deploy or automate hosted CI/CD rollout?"** → `deployment-automation`
 
 ## Structural note
-The graph refresh after the `npm-git-install`, `fabric`, and `lmstudio-cli` modernizations reinforced the same repo pattern seen in other clusters: upgrading an indexed legacy anchor with support files and a clearer boundary is more valuable than adding another overlapping wrapper skill in the utilities/developer-workflow lane.
+The graph refresh after the `npm-git-install`, `fabric`, `lmstudio-cli`, and `file-organization` hardening passes reinforced the same repo pattern seen in other clusters: once support coverage is complete, the higher-value move is shrinking indexed dense anchors into routing-first front doors rather than adding another overlapping wrapper skill in the utilities/developer-workflow lane.
+
+The `file-organization` follow-up matters because it is one of the few developer-workflow skills that also crosses backend, docs, and game-development structure decisions. Keeping the front door small while letting the existing references carry repo-type detail preserves that breadth without turning the skill back into a mini-handbook.
 
 ## Related pages
 - [[skill-support-coverage]]
+- [[file-organization-modernization-2026-04-15]]
+- [[file-organization-structural-hardening-2026-04-17]]
 - [[git-workflow-modernization-2026-04-12]]
 - [[npm-git-install-modernization-2026-04-15]]
 - [[fabric-modernization-2026-04-15]]

@@ -1,0 +1,4 @@
+# Triage
+- Problem: The repo’s `file-organization` skill already has the right cross-domain boundary, but its 357-line `SKILL.md` still carries repo-type walkthroughs and output examples that now belong in support files rather than the discovery surface.
+- Audience: Agents and developers deciding how to structure frontend, backend, fullstack/monorepo, docs/ops, or game-development repositories without drifting into search, automation, environment setup, or production-process planning.
+- Why now: In this run’s required cross-domain opportunity scan (CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game development), `file-organization` was the strongest bounded target: a high-visibility developer-workflow anchor that also crosses web, docs, and game lanes, remains on the graph watchlist, and can be improved in place without creating another overlapping structure skill.

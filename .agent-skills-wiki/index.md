@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-17 | Total pages: 91
+> Last updated: 2026-04-17 | Total pages: 92
 
 ## Entities
 
@@ -49,6 +49,7 @@
 - [[git-submodule-modernization-2026-04-15]] — Why the best bounded next utilities/developer-workflow improvement was modernizing `git-submodule` into the external-repo boundary and operator-flow anchor instead of leaving a command catalog or adding another Git dependency wrapper.
 - [[google-workspace-modernization-2026-04-16]] — Why the best bounded next ops/productivity improvement was modernizing `google-workspace` into the Apps Script vs REST API vs Admin SDK routing anchor instead of keeping a giant API encyclopedia or adding another Workspace wrapper.
 - [[file-organization-modernization-2026-04-15]] — Why the best bounded repo-structure improvement was modernizing `file-organization` into a decision-first structure and migration anchor instead of adding another project-layout wrapper.
+- [[file-organization-structural-hardening-2026-04-17]] — Why the best bounded follow-up after the modernization pass was shrinking `file-organization` into a tighter routing-first anchor with stronger backend/docs eval coverage instead of adding another repo-structure wrapper.
 - [[firebase-ai-logic-support-hardening-2026-04-15]] — Why the best bounded Firebase AI follow-up after the `genkit` rewrite was upgrading `firebase-ai-logic` with support files and evals instead of adding another wrapper or merging the lane.
 - [[genkit-modernization-2026-04-15]] — Why the best bounded Firebase/fullstack AI improvement was modernizing `genkit` into the server-owned workflow anchor and sharpening the boundary with `firebase-ai-logic` instead of adding another Firebase AI wrapper or merging the two skills.
 - [[npm-git-install-modernization-2026-04-15]] — Why the best bounded next utility/developer-workflow improvement was modernizing `npm-git-install` into the Git-based package-delivery decision anchor instead of adding another install helper.
