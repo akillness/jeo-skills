@@ -38,17 +38,17 @@ Cross-domain scan for this run:
 - The graph shows support coverage is complete across the repo, so the next wins come from shrinking dense anchors and syncing compact surfaces rather than adding new skills.
 
 ## User Voices
-> "Learn the folder and file conventions in Next.js, and how to organize your project." — Next.js project structure docs (direct page retrieval)  
+> "Learn the folder and file conventions in Next.js, and how to organize your project." — Next.js project structure docs (direct page retrieval)
 > Source: https://nextjs.org/docs/app/getting-started/project-structure
 
-> "Diátaxis" organizes documentation around distinct content modes including tutorials and reference, reinforcing task-based documentation taxonomy instead of one mixed notes tree. — Diátaxis primary page (direct page retrieval)  
+> "Diátaxis" organizes documentation around distinct content modes including tutorials and reference, reinforcing task-based documentation taxonomy instead of one mixed notes tree. — Diátaxis primary page (direct page retrieval)
 > Source: https://diataxis.fr/
 
-> "Discover tips and best practices on how to set up your Unity project for team-based game development and version control." — Unity organizing-your-project page (direct page retrieval)  
+> "Discover tips and best practices on how to set up your Unity project for team-based game development and version control." — Unity organizing-your-project page (direct page retrieval)
 > Source: https://unity.com/how-to/organizing-your-project
 
-> GitHub Well-Architected maintains a distinct monorepos scenario, reinforcing that monorepo structure is an explicit architectural choice rather than a default folder tree. — direct page retrieval  
+> GitHub Well-Architected maintains a distinct monorepos scenario, reinforcing that monorepo structure is an explicit architectural choice rather than a default folder tree. — direct page retrieval
 > Source: https://wellarchitected.github.com/library/scenarios/monorepos/
 
-> "Choose and evolve project/repository structure without cargo-culting one folder tree..." — current repo skill front door  
+> "Choose and evolve project/repository structure without cargo-culting one folder tree..." — current repo skill front door
 > Source: `.agent-skills/file-organization/SKILL.md`
