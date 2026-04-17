@@ -10,28 +10,28 @@
 - Skills with scripts/: 24
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
-- Graph nodes: 361
-- Graph edges: 1076
+- Graph nodes: 474
+- Graph edges: 1190
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index almost the whole live catalog.
 2. Support coverage remains complete across the live skill set, so dense-anchor cleanup and truthful routing still matter more than adding new wrapper skills.
-3. `steam-store-launch-ops` is healthiest as the single Steam-specific game/marketing bridge skill when it routes by bottleneck (`visibility`, `promise`, `proof`, `timing`, `ops`) instead of behaving like a generic launch-marketing wrapper.
-4. The documentation lane is cleaner after the `technical-writing` merge, but `user-guide-writing` remains on the oversized watchlist and still looks like a plausible next bounded documentation follow-up.
+3. `user-guide-writing` is healthier as a mode-selecting user-doc anchor when it chooses one primary mode plus the smallest useful artifact packet instead of behaving like a long mixed template dump.
+4. The documentation lane now shows the same post-support-coverage pattern across `technical-writing`, `api-documentation`, and `user-guide-writing`: shrink the front door, move slower-changing structure into references, and ratchet boundary-heavy evals.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
-- README.ko.md: degree 88
 - README.md: degree 88
+- README.ko.md: degree 88
 - setup-all-skills-prompt.md: degree 88
 - .agent-skills/skills.toon: degree 81
-- debugging: degree 43
-- performance-optimization: degree 27
-- code-review: degree 25
-- bmad: degree 24
-- task-planning: degree 24
-- design-system: degree 23
-- plannotator: degree 23
+- debugging: degree 44
+- performance-optimization: degree 28
+- bmad: degree 26
+- code-review: degree 26
+- plannotator: degree 25
+- task-planning: degree 25
+- design-system: degree 24
 
 ## Oversized front-door watchlist
 - ralph: 499 lines in SKILL.md
@@ -40,17 +40,17 @@
 - clawteam: 329 lines in SKILL.md
 - scrapling: 319 lines in SKILL.md
 - skill-standardization: 315 lines in SKILL.md
-- user-guide-writing: 314 lines in SKILL.md
 - vercel-deploy: 313 lines in SKILL.md
 - fabric: 308 lines in SKILL.md
 - sprint-retrospective: 304 lines in SKILL.md
+- task-planning: 300 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new Steam/game-marketing wrapper is justified: the bounded win was hardening `steam-store-launch-ops` in place.
-- `steam-store-launch-ops` should stay distinct from `marketing-automation`, `game-demo-feedback-triage`, and `bmad-gds`; each owns a different decision surface.
-- Future duplicate pressure is more likely to come from broad launch/GTM helpers trying to absorb Steam-specific timing/demo/proof work.
+- No new documentation wrapper is justified: the bounded win was hardening `user-guide-writing` in place.
+- `user-guide-writing` should stay distinct from `technical-writing`, `api-documentation`, `changelog-maintenance`, and `presentation-builder`; each owns a different audience and artifact shape.
+- Future duplicate pressure is more likely to come from broad help-center / onboarding / docs-program helpers trying to absorb page-type routing that already belongs inside the documentation cluster.
 
 ## Recommended maintenance direction
 - Keep targeting dense front-door skills whose routing logic can be sharpened without expanding the catalog.
-- Prefer extracting reusable decision models and hook timelines into references before adding another adjacent skill.
+- Prefer extracting reusable mode structures and output-packet rules into references before adding another adjacent skill.
 - Re-run catalog/runtime sync validation whenever descriptions, keywords, compact files, or discovery surfaces change materially.

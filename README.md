@@ -316,7 +316,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `presentation-builder` | Deck artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks, with slides-grab review and PPTX/PDF handoff | All |
 | `research-paper-writing` | ML/CV/NLP academic paper + rebuttal workflow — abstract/introduction/method/experiments, figure-table support, claim-evidence alignment, reviewer response, camera-ready revision | All |
 | `technical-writing` | Internal technical docs anchor for specs, architecture docs, ADRs, runbooks, migration guides, and developer-facing implementation notes | All |
-| `user-guide-writing` | User-facing docs anchor for onboarding guides, tutorials, how-to articles, FAQs, help-center content, and release-facing help updates | All |
+| `user-guide-writing` | Mode-selecting user-docs anchor for onboarding guides, tutorials, task how-to articles, FAQs, help-center updates, and release-facing help refresh packets | All |
 
 ### 📊 Project Management (4)
 
