@@ -1,5 +1,5 @@
 N:technical-writing
-D:Write internal technical documentation for engineers and operators: specs, architecture docs, ADRs, runbooks, migration notes, and developer-facing implementation guides. Route API portals to api-documentation, end-user tutorials to user-guide-writing, and release-note hygiene to changelog-maintenance.
+D:Write internal technical documentation for engineers and operators: technical specs, architecture docs, ADRs, runbooks, migration plans, and developer-facing implementation guides. Use when the main job is capturing a technical decision, system boundary, operating procedure, or rollout path for builders and maintainers. Route API portals to api-documentation, end-user help to user-guide-writing, release notes to changelog-maintenance, decks to presentation-builder, and GTM messaging to marketing-automation.
 G:technical-writing docs spec architecture adr runbook migration developer-docs
 U[6]:
   Technical specs before implementation
@@ -8,7 +8,8 @@ U[6]:
   Migration and rollout guides
   Internal developer guides
   Boundary routing across documentation skills
-S[3]{n,action}:
-  1,Classify the document mode
+S[4]{n,action}:
+  1,Classify one primary mode
   2,Gather technical evidence
-  3,Apply the matching structure and review checklist
+  3,Use the smallest fitting structure from references/mode-structures.md
+  4,Run the quality check and keep route-outs explicit

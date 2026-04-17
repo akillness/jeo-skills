@@ -40,6 +40,26 @@
         "Output explains the boundary with end-user tutorials",
         "Output does not claim this is an internal spec, ADR, runbook, migration guide, or internal developer guide"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Refresh our public webhook quickstart and auth troubleshooting page for external developers using the new signing flow.",
+      "expected_output": "The skill routes the request to api-documentation because the main job is published developer-facing API documentation.",
+      "assertions": [
+        "Output routes the request to api-documentation or explicitly declines technical-writing as the main skill",
+        "Output explains that published API/SDK/docs-portal work is out of scope for technical-writing",
+        "Output does not frame the request as an internal spec, ADR, runbook, migration guide, or internal developer guide"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Update our release notes and CHANGELOG.md for the v4.2 rollout, including upgrade notes for customers and a short summary for developers.",
+      "expected_output": "The skill routes the request to changelog-maintenance because the main job is release-history and audience-specific release communication.",
+      "assertions": [
+        "Output routes the request to changelog-maintenance or explicitly declines technical-writing as the main skill",
+        "Output explains the boundary with release notes or CHANGELOG.md maintenance",
+        "Output does not claim the request is primarily an internal spec, architecture doc, ADR, runbook, or internal guide"
+      ]
     }
   ]
 }

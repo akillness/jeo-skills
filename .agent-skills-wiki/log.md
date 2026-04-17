@@ -654,3 +654,11 @@
 - Accepted: shrink `file-organization/SKILL.md` from 357 to 233 lines, refresh `SKILL.toon`, expand eval coverage with backend-service and docs-taxonomy cases, and preserve the boundary with `codebase-search`, `workflow-automation`, `system-environment-setup`, `design-system`, `state-management`, and `bmad-gds`
 - Rejected: adding another repo-structure wrapper; re-expanding the front door with more repo-type walkthrough detail; README / README.ko / setup prompt churn when discovery wording stayed materially accurate
 - Wiki files created/updated: `queries/file-organization-structural-hardening-2026-04-17.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-17] query | technical-writing structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops/UX, marketing/GTM/content, and game-dev lanes, with the best bounded documentation-cluster follow-up landing on the still-dense `technical-writing` anchor
+- Survey files created under `.survey/technical-writing-structural-hardening-20260417/`; direct primary-page retrieval from Diátaxis, Write the Docs, and ADR guidance plus repo-local graph data were used because normal search/extract APIs are unavailable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `technical-writing/SKILL.md` from 320 to 220 lines, add `references/mode-structures.md`, refresh `SKILL.toon`, expand eval coverage with explicit `api-documentation` and `changelog-maintenance` boundary cases, and preserve the boundary with `user-guide-writing`, `presentation-builder`, and `marketing-automation`
+- Rejected: adding another internal-docs wrapper; merging the lane into adjacent documentation skills; unnecessary README / README.ko / setup prompt churn when discovery wording stayed materially accurate
+- Wiki files created/updated: `queries/technical-writing-structural-hardening-2026-04-17.md`, `concepts/documentation-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
