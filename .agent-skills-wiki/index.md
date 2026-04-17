@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 106
+> Last updated: 2026-04-18 | Total pages: 107
 
 ## Entities
 
@@ -86,6 +86,7 @@
 - [[skill-autoresearch-hardening-2026-04-16]] — Why the best bounded next skill-maintenance upgrade was hardening `skill-autoresearch` around frozen evaluators, keep-or-revert ratcheting, and append-only experiment artifacts instead of creating another eval helper.
 - [[debugging-modernization-2026-04-13]] — Why the best bounded code-quality upgrade was rewriting `debugging` into a reproduce → isolate → verify workflow instead of adding another generic troubleshooting wrapper.
 - [[code-review-modernization-2026-04-13]] — Why the best bounded code-quality improvement was modernizing `code-review` into a workflow-aware review anchor instead of adding another review-adjacent wrapper.
+- [[code-review-structural-hardening-2026-04-18]] — Why the best bounded next code-quality improvement was shrinking `code-review` into an evidence-first review front door with explicit packet routing and repo-admin/gameplay eval coverage instead of adding another review wrapper.
 - [[testing-strategies-modernization-2026-04-13]] — Why the best bounded testing-policy improvement was rewriting `testing-strategies` into a risk-based validation-policy anchor instead of leaving it as a generic test-pyramid skill.
 - [[code-refactoring-modernization-2026-04-14]] — Why the best bounded next code-quality improvement was rewriting `code-refactoring` into the behavior-preserving structural-cleanup anchor instead of adding another cleanup wrapper.
 - [[video-production-canonicalization-2026-04-14]] — Why the best bounded creative-media improvement was canonicalizing `video-production` and narrowing `remotion-video-production` into a compatibility alias instead of keeping two equal Remotion clones.

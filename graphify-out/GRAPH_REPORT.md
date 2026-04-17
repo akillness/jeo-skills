@@ -10,20 +10,20 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 385
-- Graph edges: 1106
+- Graph edges: 956
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
 2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. The `performance-optimization` hardening pass kept the front door compact at 246 lines, added an explicit intake-packet escalation reference, expanded eval coverage beyond pure web/backend cases, and synced stale compact/discovery surfaces.
+3. The `code-review` hardening pass kept the front door under the 500-line guideline at 255 lines, added an explicit intake-packet escalation reference, expanded eval coverage for repo-admin and gameplay-validation cases, and synced stale compact/discovery surfaces.
 4. The next bounded wins still come from sharpening high-degree front doors and keeping `SKILL.toon` / manifest / README surfaces truthful after structural edits.
 
 ## Highest-degree nodes
-- debugging: degree 41
-- task-planning: degree 30
-- performance-optimization: degree 27
-- bmad: degree 26
-- code-review: degree 25
+- task-planning: degree 22
+- code-review: degree 21
+- vibe-kanban: degree 21
+- debugging: degree 20
+- jeo: degree 20
 
 ## Oversized front-door watchlist
 - autoresearch: 333 lines in SKILL.md
@@ -38,9 +38,9 @@
 - git-submodule: 293 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new performance wrapper is justified: the bounded win was hardening `performance-optimization` in place.
-- `performance-optimization` should stay distinct from `monitoring-observability`, `debugging`, `code-refactoring`, `testing-strategies`, and `game-performance-profiler`; it owns artifact-first measurement-led tuning after a concrete performance signal exists.
-- Duplicate pressure remains highest when telemetry setup, correctness diagnosis, benchmark policy, and engine-specific profiler reading drift back into the same front door.
+- No new code-review wrapper is justified: the bounded win was hardening `code-review` in place.
+- `code-review` should stay distinct from `git-workflow`, `debugging`, `testing-strategies`, `performance-optimization`, `web-design-guidelines`, `web-accessibility`, and repo/PR workflow skills; it owns merge-readiness judgment on a concrete change.
+- Duplicate pressure remains highest when Git hygiene, repo administration, debugging, UI critique, and review judgment drift back into the same front door.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree skills whose route-in logic can be made smaller without weakening their artifact contract.
