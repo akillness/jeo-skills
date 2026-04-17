@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 105
+> Last updated: 2026-04-18 | Total pages: 106
 
 ## Entities
 
@@ -45,6 +45,7 @@
 - [[design-system-canonicalization-2026-04-12]] — Why the best bounded fix for the UI-system pair was canonicalizing `design-system` and narrowing `frontend-design-system` into a compatibility alias.
 - [[design-system-structural-hardening-2026-04-16]] — Why the best bounded next frontend-cluster improvement was shrinking `design-system` into a routing-first canonical anchor with focused governance/packet references instead of adding another wrapper or leaving the dense example dump intact.
 - [[performance-optimization-modernization-2026-04-14]] — Why the best bounded next code-quality improvement was modernizing `performance-optimization` into the measurement-led bottleneck-analysis anchor instead of adding another performance wrapper.
+- [[performance-optimization-structural-hardening-2026-04-18]] — Why the best bounded next code-quality follow-up was tightening `performance-optimization` around artifact-first intake packets and synced compact/discovery surfaces instead of adding another performance helper.
 - [[prompt-repetition-modernization-2026-04-15]] — Why the best bounded prompt-engineering improvement was tightening `prompt-repetition` into a non-reasoning decision router instead of keeping broad auto-apply language or adding another prompt-hacks wrapper.
 - [[environment-skill-canonicalization-2026-04-12]] — Why the best bounded infrastructure fix was canonicalizing `system-environment-setup` and narrowing `environment-setup` into an app-config compatibility skill.
 - [[git-workflow-modernization-2026-04-12]] — Why the best bounded developer-workflow fix was modernizing `git-workflow` into a local collaboration and recovery anchor.

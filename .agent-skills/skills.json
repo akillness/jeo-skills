@@ -2054,7 +2054,7 @@
     },
     {
       "name": "performance-optimization",
-      "description": "Run measurement-led performance tuning across frontend, backend, database, cache, and runtime bottlenecks. Use when the main job is locating the tightest latency, throughput, memory, bundle-size, or frame-time constraint; choosing the right profiling evidence; staging one or two high-leverage optimizations; and verifying before/after impact. Route telemetry setup to monitoring-observability, failure diagnosis to debugging, behavior-preserving cleanup to code-refactoring, validation policy to testing-strategies, and Unity/Unreal capture interpretation to game-performance-profiler.",
+      "description": "Route performance work from the artifact people already have into one measurement-led tuning brief. Use when the main job is locating the tightest latency, throughput, memory, bundle-size, or frame-budget bottleneck; choosing the right trace, query plan, load-test result, profiler capture, or CWV report; naming one bottleneck; and recommending one or two bounded optimizations with before/after verification. Route telemetry rollout to monitoring-observability, correctness diagnosis to debugging, structural cleanup to code-refactoring, validation-policy design to testing-strategies, and engine-specific capture interpretation to game-performance-profiler.",
       "category": "code-quality",
       "path": "performance-optimization/SKILL.md",
       "tags": [
@@ -2065,7 +2065,9 @@
         "throughput",
         "memory",
         "bundle-size",
-        "query-plans"
+        "query-plans",
+        "web-vitals",
+        "flamegraphs"
       ],
       "platforms": [
         "Claude",
@@ -2082,15 +2084,15 @@
       ],
       "commands": [
         {
-          "command": "# classify: interaction-and-rendering | page-load-and-bundle | api-latency-and-hot-paths | database-plan-and-data-access | throughput-and-capacity | memory-and-allocation | runtime-frame-budget",
+          "command": "# frame the complaint, decision target, and environment before suggesting fixes",
           "source": "code-quality/performance-optimization/SKILL.md"
         },
         {
-          "command": "# choose the primary evidence source before proposing fixes: trace | flame graph | query plan | load test | heap/profile | frame capture",
+          "command": "# start from the current intake packet: trace | CWV/Lighthouse report | flamegraph/profiler | query plan | benchmark diff | engine capture | stakeholder report",
           "source": "code-quality/performance-optimization/SKILL.md"
         },
         {
-          "command": "# name one primary bottleneck and recommend at most two high-leverage changes",
+          "command": "# choose one primary tuning mode and name one bottleneck before recommending at most two high-leverage changes",
           "source": "code-quality/performance-optimization/SKILL.md"
         },
         {
@@ -2098,8 +2100,8 @@
           "source": "code-quality/performance-optimization/SKILL.md"
         }
       ],
-      "compatibility": "Best for repositories, traces, benchmarks, query plans, flame graphs, browser profiles, load-test outputs, and runtime notes where the main decision is what to measure, what to tune first, and how to prove improvement. Not for observability platform setup, generic refactoring, or correctness-bug debugging.",
-      "version": "2.0",
+      "compatibility": "Best for repositories, traces, benchmarks, query plans, flame graphs, browser profiles, load-test outputs, CWV reports, profiler screenshots, and runtime notes where the main decision is what evidence means, what to tune first, and how to prove improvement. Not for observability platform setup, generic refactoring, or correctness-first debugging.",
+      "version": "2.1",
       "source": "akillness/oh-my-skills"
     },
     {
