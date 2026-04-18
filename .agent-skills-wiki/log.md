@@ -927,3 +927,11 @@
 - Accepted: shrink `ui-component-patterns` from 274 to 230 lines, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with alternate-root and Storybook/docs-verification cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the packet-first frontend boundary into the wiki
 - Rejected: adding another component-library wrapper; letting `ui-component-patterns` absorb design-system governance, accessibility remediation, responsive strategy, app-state ownership, or React performance work; leaving compact/discovery wording on the stale generic component-best-practices framing
 - Wiki files created/updated: `concepts/frontend-skill-canonicalization.md`, `queries/ui-component-patterns-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | looker-studio-bigquery structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack reporting surfaces, PM/ops KPI boards, marketing/GTM dashboards, and game/business telemetry review flows, with the best bounded next win landing on the existing `looker-studio-bigquery` skill rather than a new BI/reporting wrapper.
+- Survey files created under `.survey/looker-studio-bigquery-structural-hardening-20260419/`; repo-local wiki/graph evidence plus the canonical Google source links already captured in the earlier modernization survey were sufficient for this structural-hardening pass.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `looker-studio-bigquery` into a packet-first front door, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a Connected Sheets / exec-handoff case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the search-analysis cluster note into the wiki.
+- Rejected: adding another dashboard / BI wrapper; merging the lane into `data-analysis`; leaving the skill as a long BI feature tour after the repo already converged on smaller packet-first skills.
+- Wiki files created/updated: `concepts/search-analysis-cluster.md`, `queries/looker-studio-bigquery-structural-hardening-2026-04-19.md`, `index.md`, `log.md`

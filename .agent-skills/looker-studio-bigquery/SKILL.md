@@ -1,272 +1,192 @@
 ---
 name: looker-studio-bigquery
 description: >
-  Build BigQuery-backed Looker Studio dashboards for stakeholder reporting: KPI
-  scorecards, funnel and retention boards, marketing / GTM reporting, PM/ops
-  review dashboards, and game/business telemetry views. Use when the real job is
-  shaping the presentation layer, refresh strategy, and dashboard interaction on
-  top of curated BigQuery data — not generic dataset analysis or broad data
-  engineering. Triggers on: Looker Studio, Data Studio, BigQuery dashboard,
-  marketing dashboard, KPI board, exec dashboard, PM review dashboard, funnel
-  dashboard, retention dashboard, live-ops dashboard, scheduled-query reporting,
-  BI Engine, Connected Sheets handoff.
+  Route BigQuery-backed Looker Studio work into one stakeholder-reporting packet:
+  dashboard-spec, slow-dashboard triage, refresh-shape choice, audience split, or
+  exec-handoff. Use when the user needs KPI boards, PM/ops reviews, marketing / GTM
+  reporting, product funnel summaries, or game/live-ops telemetry dashboards on top
+  of curated BigQuery data. Route KPI explanation to `data-analysis`, repeated
+  anomaly hunting to `pattern-detection`, telemetry/alerting coverage to
+  `monitoring-observability`, and semantic-platform choice to `survey`.
 allowed-tools: Read Write Edit Glob Grep
 compatibility: >
-  Best when the workspace can edit SQL, dashboard specs, and repo files for
-  reporting definitions. This skill assumes BigQuery is already available or can
-  be referenced conceptually; it is not a full GCP project bootstrap skill.
+  Best when the workspace can inspect SQL, reporting specs, and repo files tied to
+  dashboard delivery. Assumes BigQuery already exists or can be reasoned about; this
+  is not a full GCP bootstrap skill.
 license: MIT
 metadata:
-  tags: looker-studio, bigquery, dashboard, kpi, analytics, reporting, marketing, pm-ops, live-ops, bi-engine
+  tags: looker-studio, data-studio, bigquery, dashboard, kpi, analytics, reporting, marketing, pm-ops, live-ops, bi-engine
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.0.0"
+  version: "2.1.0"
   modernization: 2026-04-15
+  structural_hardening: 2026-04-19
 ---
 
 # Looker Studio + BigQuery
 
-Use this skill when the real deliverable is a **trustworthy stakeholder dashboard layer on top of BigQuery**.
+Use this skill when the real deliverable is **one trustworthy stakeholder-reporting packet on top of BigQuery**.
 
-`looker-studio-bigquery` is the dashboard/reporting handoff for:
-- PM and ops KPI review boards
-- product funnel, retention, and cohort dashboards already modeled in BigQuery
+`looker-studio-bigquery` owns the reporting layer for:
+- PM / ops KPI review boards
+- product funnel, retention, and rollout dashboards already modeled in BigQuery
 - marketing / GTM channel and revenue reporting
-- game / live-ops / monetization dashboards for studio review
-- refresh, cost, and interaction decisions for Looker Studio on curated warehouse data
+- game / live-ops / business telemetry review boards
+- refresh, cost, audience, and export-handoff decisions for Looker Studio on curated data
 
-Read these support docs before choosing the workflow:
-- [references/modes-and-routing.md](references/modes-and-routing.md)
+Read these support docs first when needed:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
 - [references/modeling-refresh-and-cost.md](references/modeling-refresh-and-cost.md)
 - [references/dashboard-delivery-checklist.md](references/dashboard-delivery-checklist.md)
+- [references/modes-and-routing.md](references/modes-and-routing.md)
 
 ## When to use this skill
 - The user explicitly wants **Looker Studio / Data Studio + BigQuery** help.
-- The dataset already lives in BigQuery, or the reporting layer will clearly sit on BigQuery tables/views.
-- The main job is dashboard structure, refresh strategy, filter behavior, audience-specific scorecards, or stakeholder-ready delivery.
-- The request is about KPI boards, funnel/retention dashboards, exec reporting, marketing performance dashboards, or game/business telemetry dashboards.
-- The real risk is dashboard trust, refresh cost, or interaction design rather than raw SQL analysis alone.
+- The data already lives in BigQuery, or the dashboard clearly sits on curated BigQuery tables/views.
+- The main job is dashboard structure, refresh/cost shape, audience-specific delivery, or export-ready reporting.
+- The request is about KPI boards, PM/ops reviews, marketing/GTM reporting, product summary dashboards, or game/business telemetry dashboards.
+- The real risk is dashboard trust, refresh design, or mixed-audience sprawl rather than raw SQL interpretation alone.
 
 ## When not to use this skill
-- **The main job is interpreting a CSV/export, experiment result, or KPI drop** → use `data-analysis`
-- **The main job is repeated anomaly/rule hunting across metrics or events** → use `pattern-detection`
-- **The main job is telemetry reliability, monitoring coverage, or alert design** → use `monitoring-observability`
-- **The main job is full semantic modeling / governed BI platform design across many teams** → use `survey` or a warehouse / BI architecture workflow first
-- **The main job is broad GCP/bootstrap/deploy work** → use the relevant infrastructure or cloud skill first
+- **The main job is explaining why a KPI moved or what the dataset means** → use `data-analysis`
+- **The main job is repeated anomaly hunting or reusable rule scans across metrics/events** → use `pattern-detection`
+- **The main job is telemetry reliability, alerting, or instrumentation coverage** → use `monitoring-observability`
+- **The main job is choosing a full BI / semantic platform** → use `survey`
+- **The main job is broad GCP/bootstrap/deploy work** → route to the relevant infrastructure skill first
 
 ## Instructions
 
-### Step 1: Classify the reporting job before designing charts
-Normalize the request first.
+### Step 1: Pick one primary packet before talking about charts
+Normalize the request into one packet.
 
 ```yaml
-looker_studio_bigquery_mode:
-  primary_mode: dashboard-build | performance-hardening | refresh-cost | audience-routing | migration-review
+looker_studio_bigquery_packet:
+  primary_packet: dashboard-spec | slow-dashboard | refresh-shape | audience-split | exec-handoff
   audience: executive | pm-ops | product-analytics | marketing-gtm | game-liveops | mixed | unknown
-  data_shape: curated-table | view | scheduled-query-output | raw-fact-table | mixed | unknown
+  source_shape: curated-table | view | scheduled-query-output | materialized-view | mixed | unknown
   freshness_need: near-real-time | hourly | daily | weekly | unknown
-  interaction_need: scorecard | trend | drilldown | filters | export-handoff | mixed
   trust_risk: low | medium | high
 ```
 
-Choose exactly one primary mode for the run:
-- `dashboard-build` → new or revised stakeholder dashboard on top of curated BigQuery data
-- `performance-hardening` → dashboard is too slow, too expensive, or too brittle
-- `refresh-cost` → the real question is live query vs scheduled table vs extract/snapshot behavior
-- `audience-routing` → one dashboard is trying to serve conflicting stakeholders
-- `migration-review` → compare Looker Studio with a heavier BI/semantic option instead of blindly staying here
+Pick exactly one `primary_packet`:
+- `dashboard-spec` — build or redesign a stakeholder dashboard
+- `slow-dashboard` — fix a dashboard that is slow, expensive, or brittle
+- `refresh-shape` — decide live vs scheduled vs snapshot vs BI Engine
+- `audience-split` — separate one overloaded report into audience-specific artifacts
+- `exec-handoff` — produce a thin dashboard plus export/sheet/deck handoff for commentary and approvals
 
-### Step 2: Verify that the dashboard should stay thin
-Before editing dashboard structure, answer these:
-1. **What decision or review ritual does the dashboard support?**
-2. **What table/view should be the source of truth?**
-3. **Which metrics must be precomputed in BigQuery instead of report-level formulas?**
-4. **Who owns the data refresh and trust checks?**
+If two packets seem plausible, choose the one that removes the biggest delivery risk first.
 
-If the request still depends on raw event tables, ad hoc joins, or unstable metric definitions, push that modeling work upstream before overdesigning the report.
+### Step 2: Keep the dashboard thin on purpose
+Before designing sections, answer these:
+1. What review ritual or decision does this dashboard support?
+2. What table/view is the source of truth?
+3. Which metrics belong in BigQuery instead of report-level formulas?
+4. Who owns freshness, trust checks, and caveats?
 
-### Step 3: Choose the right mode
+If the request still depends on raw fact tables, unstable joins, or fuzzy metric definitions, say so and push modeling work upstream before polishing the dashboard.
 
-#### A. Dashboard-build
-Use when the user needs a new dashboard or a serious redesign.
+### Step 3: Shape the packet, not a generic BI essay
+Use the packet guidance in [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-Output packet should include:
-- dashboard purpose and audience
-- page/section structure
-- KPI scorecards and definitions
-- required filters and drill paths
-- chart-to-question mapping
-- BigQuery source tables/views
-- trust and freshness notes
+Minimum packet expectations:
+- `dashboard-spec` → page structure, KPI set, chart-to-question mapping, and BigQuery contract
+- `slow-dashboard` → bottleneck order, upstream precompute options, and one shortest-path fix
+- `refresh-shape` → live vs scheduled vs snapshot choice tied to the real review cadence
+- `audience-split` → artifact split by stakeholder ritual, trust need, and detail depth
+- `exec-handoff` → thin dashboard plus Connected Sheets / export / slide handoff plan
 
-Recommended structure:
-1. top-line scorecards
-2. one main trend or comparison area
-3. segment or drilldown view
-4. detail table or export surface
-5. caveats / freshness / owner metadata
+Do not answer with a generic chart buffet.
 
-#### B. Performance-hardening
-Use when dashboards feel slow, expensive, or fragile.
+### Step 4: Return a delivery brief
+Use this structure:
 
-Check in this order:
-1. Is the dashboard reading raw fact tables instead of curated marts/views?
-2. Are joins or expensive calculations happening too late?
-3. Can a scheduled query or materialized view precompute the repeated work?
-4. Does the audience really need live freshness?
-5. Is BI Engine or caching worth enabling for this workload?
+```markdown
+# Looker Studio Delivery Brief
 
-Do not treat chart cosmetics as the fix for a warehouse-shape problem.
+## Primary packet
+- Packet: ...
+- Audience: ...
+- Confidence: high | medium | low
 
-#### C. Refresh-cost
-Use when the real question is **live vs scheduled vs snapshot**.
+## Review ritual and question
+- Ritual: ...
+- Decisions supported: ...
 
-Compare:
-- direct query against curated table/view
-- scheduled-query output table
-- materialized view
-- BI Engine acceleration
-- export / Connected Sheets handoff for the last mile
+## BigQuery contract
+- Source table/view: ...
+- Grain: ...
+- Core dimensions: ...
+- Core metrics: ...
+- Freshness / owner / caveats: ...
 
-Default bias:
-- hourly/daily stakeholder reporting usually prefers precomputed tables
-- only keep dashboards closer to live when the review ritual truly needs it
+## Recommended dashboard shape
+- Pages or sections: ...
+- KPI and chart-to-question mapping: ...
+- Filters / drilldowns / export needs: ...
 
-#### D. Audience-routing
-Use when one dashboard is trying to serve incompatible readers.
+## Refresh, cost, and trust plan
+- Preferred refresh shape: ...
+- Heavy logic to move upstream: ...
+- Trust or caveat notes: ...
 
-Common split:
-- **exec / leadership** → fewer charts, higher stability, stronger freshness/trust labels
-- **PM / analyst / ops** → more filters, segment views, and detail tables
-- **marketing / growth** → channel dimensions, pacing, targets, and export handoffs
-- **game / live-ops** → cohort/time windows, regional splits, event/state segmentation, anomaly callouts
+## Recommended next artifact
+- Choose one: dashboard spec | SQL handoff list | refresh decision memo | audience split brief | export / Connected Sheets handoff
 
-If the dashboard keeps accumulating exceptions, split it by audience rather than forcing one artifact to do everything.
-
-#### E. Migration-review
-Use when the user is really asking whether Looker Studio should remain the surface at all.
-
-Escalation signs:
-- many teams need governed reusable metrics
-- row-level access and semantic reuse dominate the work
-- dashboard logic is duplicated across many reports
-- stakeholders want stronger self-serve exploration than thin dashboards can provide
-
-If those dominate, compare Looker Studio with a heavier BI/semantic route instead of pretending a dashboard tweak will solve it.
-
-### Step 4: Define the BigQuery contract for the dashboard
-For each dashboard page or section, specify:
-- source table/view name
-- grain
-- primary dimensions
-- primary metrics
-- freshness source and expected lag
-- owner
-- known caveats
-
-Example packet:
-
-```yaml
-dashboard_contract:
-  source: analytics.reporting_daily_kpis
-  grain: date x segment
-  dimensions: [date, segment, country, platform]
-  metrics: [active_users, revenue, conversion_rate]
-  freshness: daily at 08:00 UTC
-  owner: analytics
-  caveats:
-    - excludes sandbox traffic
-    - conversion uses paid-checkout definition v2
+## Route-outs
+- Upstream modeling / KPI interpretation / anomaly hunting / observability / platform comparison as needed
 ```
 
-If you cannot state this contract clearly, the dashboard is not ready for stakeholder trust.
-
-### Step 5: Map questions to dashboard components
-Build charts from decision questions, not from widget inventory.
-
-Typical mapping:
-- **Are we up or down?** → KPI scorecards + trend line
-- **Where is the change coming from?** → segmented bar / breakdown table
-- **Which slice needs action?** → filtered comparison + detail table
-- **What should leadership trust?** → freshness stamp + caveats + owner
-- **What needs external distribution?** → export or Connected Sheets handoff plan
-
-Prefer fewer charts with a clear narrative over a dense wall of widgets.
-
-### Step 6: Design refresh, cost, and reliability intentionally
-Use this order:
-1. decide freshness target from the business ritual
-2. precompute repeated heavy logic in BigQuery when possible
-3. minimize report-level calculated-field sprawl
-4. separate stakeholder pages from analyst/debug pages
-5. document the refresh and ownership contract in the deliverable
-
-Common patterns:
-- daily exec dashboard → scheduled-query table + thin Looker Studio page
-- marketing performance board → scheduled-query funnel/channel mart + export/sheet handoff
-- game live-ops board → curated telemetry table + segmented trend pages + explicit freshness note
-- PM review board → KPI scorecards, trend, drilldown, and a detail table tied to one review cadence
-
-### Step 7: Produce the dashboard packet, not just chart notes
-Default output should include:
-- recommended mode
-- dashboard sections/pages
-- chart-to-question mapping
-- BigQuery contract summary
-- refresh/cost strategy
-- route-outs for upstream modeling or downstream handoff
-
-Good deliverables:
-- dashboard spec markdown
-- metric dictionary for report fields
-- SQL handoff list for upstream modeling
-- stakeholder delivery checklist
-
-### Step 8: Route out honestly
-- If the user really needs **dataset reasoning or KPI interpretation**, route to `data-analysis`.
-- If the user really needs **repeated anomaly detection**, route to `pattern-detection`.
-- If the user really needs **telemetry/alerting coverage**, route to `monitoring-observability`.
-- If the user really needs **full BI stack comparison or semantic-platform choice**, route to `survey` before pretending Looker Studio is the answer.
+### Step 5: Route out honestly
+- If the user needs **dataset reasoning or KPI explanation**, route to `data-analysis`.
+- If the user needs **repeated anomaly detection or reusable metric rules**, route to `pattern-detection`.
+- If the user needs **telemetry coverage, alerting, or instrumentation trust**, route to `monitoring-observability`.
+- If the user needs **a heavier BI or semantic-platform decision**, route to `survey`.
 
 ## Examples
 
 ### Example 1: PM / ops dashboard build
-Input:
-- BigQuery table of product events and weekly KPI definitions
-- request for a leadership-ready PM review dashboard
+**Input**
+> Build a leadership-ready PM review dashboard in Looker Studio on top of BigQuery weekly KPIs.
 
-Output:
-- dashboard-build mode
-- KPI + trend + segment drilldown structure
-- daily refresh contract
-- route-out for any metric that still needs upstream SQL modeling
+**Output sketch**
+- Packet: `dashboard-spec`
+- Dashboard shape: KPI scorecards + main trend + one drilldown + owner/freshness notes
+- Next artifact: `dashboard spec`
 
-### Example 2: Marketing funnel report with cost issues
-Input:
-- BigQuery funnel model
-- request to make a slow Looker Studio dashboard cheaper and more reliable
+### Example 2: Slow marketing board
+**Input**
+> Our marketing funnel dashboard is too slow and expensive whenever people touch filters.
 
-Output:
-- performance-hardening or refresh-cost mode
-- recommendation to precompute funnel stages in scheduled tables
-- clear split between stakeholder dashboard and export/sheet handoff
+**Output sketch**
+- Packet: `slow-dashboard` or `refresh-shape`
+- Primary recommendation: precompute the repeated funnel logic in BigQuery before styling changes
+- Next artifact: `refresh decision memo` or `SQL handoff list`
 
-### Example 3: Game live-ops reporting
-Input:
-- BigQuery telemetry tables for payer behavior and regional retention
-- request for a live-ops review dashboard
+### Example 3: Mixed audience dashboard
+**Input**
+> One board is trying to serve executives, PMs, growth, and live-ops. Should we keep patching it?
 
-Output:
-- audience-specific dashboard packet
-- freshness note matched to the studio ritual
-- chart plan for retention, payer mix, and region/event slices
+**Output sketch**
+- Packet: `audience-split`
+- Recommendation: split the artifact by decision ritual and trust needs
+- Next artifact: `audience split brief`
+
+### Example 4: Commentary-friendly handoff
+**Input**
+> Leadership wants a weekly board, but they still annotate numbers in Sheets before the review.
+
+**Output sketch**
+- Packet: `exec-handoff`
+- Recommendation: keep the dashboard thin and define the export / Connected Sheets handoff explicitly
+- Next artifact: `export / Connected Sheets handoff`
 
 ## Best practices
-1. Keep Looker Studio thin; do the heavy logic in BigQuery whenever possible.
-2. Start from the review ritual and decision question, not from chart types.
-3. Treat freshness, cost, and trust as first-class design constraints.
-4. Split dashboards by audience when one artifact keeps absorbing conflicting needs.
-5. Make source grain, owner, and caveats explicit in every serious dashboard handoff.
-6. Use route-outs instead of pretending every reporting problem belongs in this skill.
+1. Start from the current packet, not from chart types.
+2. Keep heavy logic in BigQuery whenever possible.
+3. Tie freshness to the real review ritual instead of pretending everything must be live.
+4. Split dashboards by audience when one artifact keeps absorbing incompatible needs.
+5. Name the owner, caveats, and trust contract in every serious dashboard handoff.
+6. Prefer route-outs over stuffing analysis, anomaly hunting, or observability into this skill.
 
 ## References
 - [BigQuery: Visualize data in Looker Studio](https://cloud.google.com/bigquery/docs/visualize-looker-studio)

@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-19 | Total pages: 130
+> Last updated: 2026-04-19 | Total pages: 131
 
 ## Entities
 
@@ -89,6 +89,7 @@
 - [[task-planning-structural-hardening-2026-04-18]] — Why the best bounded next PM-cluster improvement was shrinking `task-planning` into a routing-first planning anchor and syncing stale compact/manifest discovery surfaces instead of adding another wrapper.
 - [[log-analysis-modernization-2026-04-13]] — Why the best bounded search-analysis upgrade was rewriting `log-analysis` into a root-cause-first triage skill instead of adding another logging wrapper.
 - [[looker-studio-bigquery-modernization-2026-04-15]] — Why the best bounded BigQuery reporting improvement was modernizing `looker-studio-bigquery` into the stakeholder dashboard/reporting anchor instead of adding another BI wrapper or merging it into dataset analysis.
+- [[looker-studio-bigquery-structural-hardening-2026-04-19]] — Why the best bounded follow-up was shrinking `looker-studio-bigquery` into a packet-first reporting front door with synced discovery surfaces instead of adding another BI/reporting wrapper.
 - [[lmstudio-cli-modernization-2026-04-15]] — Why the best bounded LM Studio improvement was modernizing `lmstudio-cli` into the LM Studio operator anchor instead of adding another generic local-LLM wrapper or leaving it as a thin command list.
 - [[langsmith-hardening-2026-04-16]] — Why the best bounded next search-analysis / AI-ops improvement was modernizing `langsmith` into a mode-selecting trace/eval/review anchor instead of leaving it as a feature tour or splitting it into overlapping wrappers.
 - [[autoresearch-hardening-2026-04-16]] — Why the best bounded follow-up after `skill-autoresearch` was hardening `autoresearch` around the ML-specific `program.md` / `train.py` / `val_bpb` boundary instead of broadening it into generic eval tooling.

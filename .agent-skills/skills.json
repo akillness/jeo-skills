@@ -1576,7 +1576,7 @@
     },
     {
       "name": "looker-studio-bigquery",
-      "description": "Build BigQuery-backed Looker Studio dashboards for stakeholder reporting: KPI scorecards, funnel and retention boards, marketing / GTM reporting, PM/ops review dashboards, and game/business telemetry views. Use when the real job is shaping the presentation layer, refresh strategy, and dashboard interaction on top of curated BigQuery data — not generic dataset analysis or broad data engineering. Route KPI explanation to data-analysis, repeated anomaly hunting to pattern-detection, telemetry/alerting coverage to monitoring-observability, and BI-platform comparison to survey.",
+      "description": "Route BigQuery-backed Looker Studio work into one stakeholder-reporting packet: dashboard-spec, slow-dashboard triage, refresh-shape choice, audience split, or exec-handoff. Use when the user needs KPI boards, PM/ops reviews, marketing / GTM reporting, product funnel summaries, or game/live-ops telemetry dashboards on top of curated BigQuery data. Route KPI explanation to data-analysis, repeated anomaly hunting to pattern-detection, telemetry/alerting coverage to monitoring-observability, and semantic-platform choice to survey.",
       "category": "infrastructure",
       "path": "looker-studio-bigquery/SKILL.md",
       "tags": [
