@@ -375,7 +375,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `fabric` | stdin/파일/트랜스크립트 기반 요약·추출·재작성·커스텀 패턴 팩·서버 워크플로를 위한 패턴-우선 CLI | 전체 |
+| `fabric` | stdin/파일/트랜스크립트/로그용 재사용 패턴, 커스텀 패턴 팩, 셸 파이프라인, `fabric --serve` 워크플로를 고르는 라우팅-우선 Fabric 운영 스킬 | 전체 |
 | `file-organization` | 결정 우선 저장소 구조 가이드 — 프레임워크 기본 구조, feature 폴더, 모노레포 경계, 문서 분류, 게임 엔진형 레이아웃 중 무엇을 쓸지 결정 | 전체 |
 | `git-submodule` | 라우팅-우선 Git 서브모듈 워크플로 — submodule vs subtree/vendor/package delivery 선택, 재귀 부트스트랩, 안전한 포인터 동기화/업데이트, detached HEAD 방지, CI / hosted-platform checkout 제약 처리 | 전체 |
 | `git-workflow` | 라우팅 우선 로컬 Git 워크플로 — 브랜치 정리, 선택적 staging, 커밋 정리, merge-vs-rebase 선택, 충돌 해결, `--force-with-lease` 기반 안전 푸시, 복구 | 전체 |
