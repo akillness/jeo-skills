@@ -167,7 +167,7 @@ graph TD
 | **autoresearch: Karpathy 자율 ML 실험 스킬** | 사람이 `program.md`를 쓰고 에이전트가 `train.py`를 수정하며, 5분 GPU 실행과 `val_bpb` keep/revert ratcheting으로 실제 ML 탐색을 돌립니다. 프롬프트/앱 eval 작업은 `skill-autoresearch`나 별도 eval 플랫폼으로 라우팅하고, `scripts/`, `references/`, `evals/`를 포함합니다. |
 | **jeo v1.2.3: plannotator-plan-loop.sh 전 플랫폼 강화** | 크로스 플랫폼 임시 디렉토리, 전용 포트 `PLANNOTATOR_PORT=47291`, `probe_plannotator_port()` + `wait_for_listen()`, 브라우저 강제종료 시 최대 3회 자동 재시작, 구조화 `jeo-blocked.json` 출력 |
 | **survey: 라우팅 우선 문제공간 스캔 강화** | `survey`를 더 작은 아티팩트 계약 중심 조사 앵커로 다듬었습니다. 하나의 조사 모드를 먼저 분류하고, 4개 레인의 `.survey/{slug}/` 출력 계약을 유지하며, 플랫폼 비교는 `settings/rules/hooks`로 정규화하고, 검색 복구/이식성 세부사항은 별도 reference로 분리합니다. |
-| **presentation-builder: 덱 아티팩트 워크플로우** | 투자/로드맵/런치/아키텍처 데모/워크숍/게임 피치 덱을 slides-grab으로 기획·브라우저 리뷰·PPTX/PDF 핸드오프까지 다루는 스킬. 중복 스킬 `pptx-presentation-builder` 제거 |
+| **presentation-builder: 패킷 우선 덱 핸드오프 강화** | `presentation-builder`를 더 작은 라우팅 우선 덱 아티팩트 앵커로 다듬었습니다. 이제 하나의 덱 모드, 하나의 최소 아티팩트 패킷(`outline-brief`, `storyboard`, `review-ready-html`, `export-handoff`, `sync-packet`), 그리고 하나의 정직한 마지막 전달 표면(HTML 뷰어, PPTX, PDF, Google Slides, Figma Slides)을 먼저 고르고, `references/artifact-packets-and-last-mile-handoffs.md`와 함께 실제 덱 제작 흐름에 맞게 동작합니다. |
 
 ---
 
@@ -322,7 +322,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `changelog-maintenance` | changelog·release notes·migration update·lightweight patch-note 패킷을 다루는 routing-first 릴리스 히스토리 앵커 | 전체 |
-| `presentation-builder` | 투자/로드맵/런치/아키텍처 데모/워크숍/게임 피치 덱용 slides-grab 리뷰 + PPTX/PDF 핸드오프 앵커 | 전체 |
+| `presentation-builder` | 투자/로드맵/런치/아키텍처 데모/워크숍/게임 피치 덱을 위한 패킷 우선 덱 아티팩트 앵커로, HTML 리뷰와 PPTX/PDF/Google Slides/Figma Slides 마지막 전달을 정직하게 다룸 | 전체 |
 | `research-paper-writing` | ML/CV/NLP 학술 논문 + 리버틀 워크플로우 — abstract/introduction/method/experiments, figure-table 지원, 주장-증거 정합성, reviewer response, camera-ready revision | 전체 |
 | `technical-writing` | 스펙, 아키텍처 문서, ADR, 런북, 마이그레이션 가이드, 개발자용 구현 문서를 다루는 내부 기술 문서 앵커 | 전체 |
 | `user-guide-writing` | 온보딩 가이드, 튜토리얼, 작업형 how-to, FAQ, 헬프센터 업데이트, 출시 후 도움말 refresh packet까지 고르는 mode-selecting 사용자 문서 앵커 | 전체 |

@@ -2223,7 +2223,7 @@
     },
     {
       "name": "presentation-builder",
-      "description": "Build real presentation artifacts when the user needs an editable deck rather than just an outline: investor decks, roadmap reviews, launch decks, architecture/demo decks, workshop decks, and game pitch/update decks. Use when the workflow needs slide planning, visual iteration, and export or handoff to PPTX/PDF after approval.",
+      "description": "Build real deck artifacts when the user needs editable slides, not just prose: investor, roadmap/QBR, launch, architecture/demo, workshop/training, and game pitch decks. Use when the job is to choose one deck mode, one smallest useful artifact packet, and one honest handoff surface (HTML review, PPTX, PDF, Google Slides, or Figma Slides).",
       "category": "documentation",
       "path": "presentation-builder/SKILL.md",
       "tags": [

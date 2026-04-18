@@ -856,6 +856,14 @@
 - Rejected: adding another broad OWASP/appsec wrapper; letting `security-best-practices` absorb auth-stack design, schema work, backend test implementation, or environment bootstrap; treating scanners, middleware, or WAF rules as proof without a verification ladder
 - Wiki files created/updated: `queries/security-best-practices-structural-hardening-2026-04-18.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
 
+## [2026-04-18] query | presentation-builder structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack demos, product/ops review decks, marketing/GTM decks, and game pitch/milestone decks, with the best bounded documentation follow-up landing on the existing `presentation-builder` skill rather than a new slide/pitch wrapper
+- Survey files created under `.survey/presentation-builder-structural-hardening-20260418/`; repo-local wiki and graph evidence plus primary-source retrieval from slides-grab, Slidev, Marp, reveal.js, Google Slides, Microsoft PowerPoint, Figma Slides, Beautiful.ai, and PptxGenJS were used because `web_search` / `web_extract` remained unreliable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `presentation-builder` from 284 to 233 lines, add `references/artifact-packets-and-last-mile-handoffs.md`, expand `evals/evals.json` with Google Slides handoff and marketing-planning route-out cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the packet-first handoff boundary into the wiki
+- Rejected: adding another pitch-deck or office-export wrapper; letting `presentation-builder` absorb launch planning, technical docs, tutorials, or research manuscripts; pretending browser-authored slides are always the final review surface
+- Wiki files created/updated: `queries/presentation-builder-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
+
 ## [2026-04-18] query | web-accessibility structural hardening
 - Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops release-readiness, marketing-site/form UX, and game-adjacent web surfaces, with the best bounded next frontend win landing on the existing `web-accessibility` skill rather than a new accessibility wrapper
 - Survey files created under `.survey/web-accessibility-structural-hardening-20260418/`; repo-local wiki and graph evidence plus primary-source retrieval from W3C WAI, MDN, React Router, Next.js, Gatsby, Lighthouse, Accessibility Insights, Deque, GOV.UK, and GitHub issue/discussion threads were used because `web_search` / `web_extract` remained unreliable in this environment

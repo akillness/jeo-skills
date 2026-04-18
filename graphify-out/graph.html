@@ -1,53 +1,15 @@
-<!doctype html><html><head><meta charset="utf-8"><title>graphify-out</title><style>body{font-family:system-ui,sans-serif;margin:2rem} table{border-collapse:collapse} td,th{border:1px solid #ccc;padding:6px 10px} code{background:#f4f4f4;padding:2px 4px}</style></head><body><h1>Graphify Structural Report</h1><pre># GRAPH_REPORT
-## Scope
-- Path analyzed: `.agent-skills/` plus repository discovery docs
-- Method: custom graphify-style structural graph over skill metadata, support-file presence, compact-variant coverage, documentation indexing, and cross-skill mentions
-- Total skills: 89
-- Manifest skills in `.agent-skills/skills.json`: 89
-- Skills with references/: 89
-- Skills with evals/: 89
-- Skills with scripts/: 24
-- Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
-- Skills missing compact variants: 0
-- Graph nodes: 385
-- Graph edges: 1063
-- Category counts: agent-development=2, backend=5, code-quality=5, core-orchestration=10, creative-media=2, documentation=5, frontend=10, infrastructure=13, marketing=2, planning-review=5, project-management=4, search-analysis=7, uncategorized=7, utilities=12
-
-## Strongest structural findings
-1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
-2. Support coverage remains complete across the live skill set, so bounded front-door cleanup is still more valuable than adding another wrapper skill.
-3. `web-accessibility` dropped to 231 lines and now reads as a routing-first remediation anchor with explicit packet selection, route-outs, and routed-app feedback coverage.
-4. The frontend lane stays healthiest when `web-accessibility` owns remediation + verification, while `web-design-guidelines`, `responsive-design`, `ui-component-patterns`, and `design-system` keep neighboring critique, layout, API, and governance work separate.
-
-## Highest-degree nodes
-- .agent-skills/skills.json: degree 89
-- .agent-skills/skills.toon: degree 89
-- README.ko.md: degree 89
-- README.md: degree 89
-- setup-all-skills-prompt.md: degree 89
-- task-planning: degree 30
-- performance-optimization: degree 26
-- debugging: degree 25
-
-## Oversized front-door watchlist
-- clawteam: 329 lines in SKILL.md
-- scrapling: 319 lines in SKILL.md
-- survey: 309 lines in SKILL.md
-- task-planning: 294 lines in SKILL.md
-- code-refactoring: 292 lines in SKILL.md
-- langsmith: 290 lines in SKILL.md
-- jeo: 288 lines in SKILL.md
-- obsidian-cli: 286 lines in SKILL.md
-- autoresearch: 284 lines in SKILL.md
-- presentation-builder: 284 lines in SKILL.md
-
-## Duplicate / consolidation notes
-- No new accessibility wrapper is justified: the bounded win was tightening `web-accessibility` in place and syncing the discovery surfaces.
-- `web-accessibility` should stay distinct from `web-design-guidelines` (broad critique), `responsive-design` (layout strategy), `ui-component-patterns` (reusable API boundaries), and `design-system` (governance).
-- Routed-app navigation feedback is a useful sub-lane inside accessibility remediation, not a separate standalone skill.
-
-## Recommended maintenance direction
-- Keep targeting oversized front-door skills whose trigger logic can be made smaller without weakening their output contract.
-- Prefer focused support packets and synced discovery surfaces over creating another neighboring wrapper.
-- Re-run catalog/runtime sync validation whenever README/setup or compact wording changes materially.
-</pre><h2>Top oversized skills</h2><table><tr><th>Skill</th><th>Lines</th><th>Category</th></tr><tr><td>clawteam</td><td>329</td><td>uncategorized</td></tr><tr><td>scrapling</td><td>319</td><td>infrastructure</td></tr><tr><td>survey</td><td>309</td><td>core-orchestration</td></tr><tr><td>task-planning</td><td>294</td><td>project-management</td></tr><tr><td>code-refactoring</td><td>292</td><td>code-quality</td></tr><tr><td>langsmith</td><td>290</td><td>search-analysis</td></tr><tr><td>jeo</td><td>288</td><td>core-orchestration</td></tr><tr><td>obsidian-cli</td><td>286</td><td>utilities</td></tr><tr><td>autoresearch</td><td>284</td><td>search-analysis</td></tr><tr><td>presentation-builder</td><td>284</td><td>documentation</td></tr></table></body></html>
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Graphify Report</title>
+<style>body{font-family:Arial,sans-serif;max-width:1000px;margin:40px auto;padding:0 20px;line-height:1.5}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:8px;text-align:left}code{background:#f4f4f4;padding:2px 4px}</style></head>
+<body>
+<h1>Graphify Structural Report</h1>
+<p><strong>Total skills:</strong> 89<br><strong>Nodes:</strong> 385<br><strong>Edges:</strong> 1107</p>
+<h2>Current run highlight</h2>
+<p><code>presentation-builder</code> is now a packet-first deck artifact anchor with explicit last-mile surface selection.</p>
+<h2>Highest-degree nodes</h2>
+<ul>
+<li>skills.json — degree 89</li><li>README.ko.md — degree 88</li><li>README.md — degree 88</li><li>setup-all-skills-prompt.md — degree 88</li><li>skills.toon — degree 82</li>
+</ul>
+<h2>Oversized front-door watchlist</h2>
+<table><thead><tr><th>Skill</th><th>Lines</th></tr></thead><tbody><tr><td>clawteam</td><td>329</td></tr><tr><td>scrapling</td><td>319</td></tr><tr><td>survey</td><td>309</td></tr><tr><td>task-planning</td><td>294</td></tr><tr><td>code-refactoring</td><td>292</td></tr><tr><td>langsmith</td><td>290</td></tr><tr><td>jeo</td><td>288</td></tr><tr><td>obsidian-cli</td><td>286</td></tr><tr><td>autoresearch</td><td>284</td></tr><tr><td>database-schema-design</td><td>282</td></tr></tbody></table>
+</body></html>
