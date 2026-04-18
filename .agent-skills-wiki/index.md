@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-19 | Total pages: 126
+> Last updated: 2026-04-19 | Total pages: 127
 
 ## Entities
 
@@ -109,6 +109,7 @@
 - [[state-management-structural-hardening-2026-04-18]] — Why the best bounded frontend follow-up was shrinking `state-management` into an ownership-packet router with router-native data guidance and stronger route-outs instead of adding another React state wrapper.
 - [[ui-component-patterns-modernization-2026-04-13]] — Why the best bounded frontend reusable-component improvement was rewriting `ui-component-patterns` into a reusable primitive / variant / slot API anchor instead of modernizing `responsive-design` first.
 - [[responsive-design-modernization-2026-04-13]] — Why the best bounded next frontend modernization was rewriting `responsive-design` into a mobile-first, container-aware layout adaptation + verification anchor.
+- [[responsive-design-structural-hardening-2026-04-19]] — Why the best bounded frontend follow-up was shrinking `responsive-design` into a routing-first responsive packet anchor with synced compact/discovery surfaces instead of adding another responsive or launch-review wrapper.
 - [[web-accessibility-modernization-2026-04-13]] — Why the best bounded frontend accessibility improvement was rewriting `web-accessibility` into an accessibility remediation + verification anchor instead of leaving it as a generic WCAG/example dump.
 - [[web-accessibility-structural-hardening-2026-04-18]] — Why the best bounded frontend follow-up was shrinking `web-accessibility` into a routing-first remediation anchor with explicit packet selection, routed-app feedback coverage, and synced discovery surfaces instead of adding another accessibility wrapper.
 - [[workflow-automation-modernization-2026-04-13]] — Why the best bounded utilities/developer-workflow improvement was modernizing `workflow-automation` into a repo-scoped recurring-workflow anchor instead of adding another automation wrapper.

@@ -16,8 +16,8 @@
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
 2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. `task-estimation` now reads more clearly as a routing-first estimate-packet anchor that chooses one sizing horizon and keeps split/spike and forecast-safe language explicit.
-4. The project-management lane stays healthiest when `task-planning` owns decomposition, `task-estimation` owns sizing and uncertainty packets, `standup-meeting` owns daily coordination, and `sprint-retrospective` owns process learning.
+3. `responsive-design` now reads more clearly as a routing-first responsive strategy anchor that chooses one packet before suggesting mechanisms and keeps dense-data, media, and reflow verification explicit.
+4. The frontend lane stays healthiest when `responsive-design` owns layout strategy, `web-accessibility` owns remediation-heavy a11y work, `ui-component-patterns` owns reusable component APIs, and `design-system` owns shared breakpoint/token governance.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
@@ -27,21 +27,21 @@
 - .agent-skills/skills.toon: degree 82
 
 ## Oversized front-door watchlist
-- clawteam: 330 lines in SKILL.md
-- scrapling: 320 lines in SKILL.md
-- survey: 310 lines in SKILL.md
-- task-planning: 295 lines in SKILL.md
-- langsmith: 291 lines in SKILL.md
-- jeo: 289 lines in SKILL.md
-- obsidian-cli: 287 lines in SKILL.md
-- autoresearch: 285 lines in SKILL.md
-- responsive-design: 278 lines in SKILL.md
-- looker-studio-bigquery: 277 lines in SKILL.md
+- clawteam: 329 lines in SKILL.md
+- scrapling: 319 lines in SKILL.md
+- survey: 309 lines in SKILL.md
+- task-planning: 294 lines in SKILL.md
+- langsmith: 290 lines in SKILL.md
+- jeo: 288 lines in SKILL.md
+- obsidian-cli: 286 lines in SKILL.md
+- autoresearch: 284 lines in SKILL.md
+- looker-studio-bigquery: 276 lines in SKILL.md
+- codebase-search: 275 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new PM wrapper is justified: the bounded win was tightening `task-estimation` in place and syncing the discovery surfaces.
-- `task-estimation` should stay distinct from `task-planning` (decomposition), `standup-meeting` (daily sync), and `sprint-retrospective` (reflection and process correction).
-- Duplicate pressure rises when sizing, planning, forecasting, and commitment language blur together; the routing-first estimate-packet model is the right fix.
+- No new responsive/front-end wrapper is justified: the bounded win was tightening `responsive-design` in place and syncing the discovery surfaces.
+- `responsive-design` should stay distinct from `ui-component-patterns` (component API design), `web-accessibility` (accessibility remediation), `design-system` (shared breakpoint/token governance), and `web-design-guidelines` (broad UI audit).
+- Duplicate pressure rises when responsive layout, launch review, component structure, and accessibility remediation blur together; the routing-first packet model is the right fix.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree or oversized front-door skills whose trigger logic can be made smaller without weakening the output contract.

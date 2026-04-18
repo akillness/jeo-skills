@@ -108,6 +108,12 @@ graph TD
 | **code-refactoring: 패킷 우선 구조 강화** | `code-refactoring`을 더 작은 routing-first cleanup 앵커로 다듬었습니다. 이제 팀이 실제로 가진 cleanup packet(local cleanup, fragile legacy area, repeated migration / codemod, cleanup-heavy diff shaping)에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, search-first blast-radius route-out 케이스까지 eval 범위를 넓혔습니다. 또한 `SKILL.toon` / `skills.toon` / `skills.json`을 동기화해 compact discovery가 더 이상 낡은 DRY/SOLID design-pattern helper처럼 보이지 않게 했습니다. |
 | **changelog-maintenance: 패킷 우선 강화** | `changelog-maintenance`를 더 작은 routing-first 릴리스 작성 앵커로 다듬었습니다. 이제 하나의 primary mode와 가장 작은 truthful output packet(`single-entry`, `summary-plus-links`, `migration-brief`, `patch-note-brief`, `sync-packet`)을 고르고, `references/output-packets-and-channel-handoffs.md`를 추가했으며, 릴리스 노트 + 마이그레이션 기한 + downstream sync follow-up 케이스까지 eval 범위를 넓혔습니다. 또한 compact/discovery 문구를 맞춰 스킬이 다시 generic changelog / semver 템플릿 덤프로 흐르지 않게 했습니다. |
 
+## 🆕 v2026-04-19 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **responsive-design: 구조적 하드닝** | `responsive-design`를 CSS 예시 모음이 아니라 하나의 반응형 전략 패킷을 고르는 routing-first 스킬로 더 압축했습니다. 이제 CSS를 제안하기 전에 `page-layout`, `component-slot`, `dense-data`, `media-behavior`, `verification-reflow` 중 하나의 기본 패킷을 선택하고, 패킷 라우팅은 `references/intake-packets-and-route-outs.md`로 옮겼습니다. 또한 launch-readiness 경계 사례를 eval에 추가하고, `SKILL.toon`과 manifest/README discovery 문구를 새 트리거 표면에 맞춰 갱신했으며, `ui-component-patterns`, `web-accessibility`, `design-system`, `web-design-guidelines`로의 route-out을 명시적으로 유지해 프런트엔드 만능 스킬로 다시 비대해지지 않도록 했습니다. |
+
 ## 🆕 v2026-04-13 업데이트
 
 | 변경 | 내용 |
@@ -283,7 +289,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `react-best-practices` | waterfall, 번들 크기, RSC/클라이언트 경계, hydration, rerender churn, 느린 라우트를 측정 기반으로 진단하는 React & Next.js 성능 스킬 | 전체 |
 | `react-grab` | 브라우저 UI 엘리먼트에서 React 컴포넌트명·파일경로·HTML을 클립보드로 복사해 AI 에이전트에 전달 | 전체 |
 | `vercel-react-best-practices` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `react-best-practices` 호환 별칭 | Claude · Gemini · Codex |
-| `responsive-design` | 모바일 우선·컨테이너 기반 레이아웃 적응과 overflow/reflow 검증 가이드 | 전체 |
+| `responsive-design` | page-shell, component-slot, dense-data, media, reflow 검증 패킷을 위한 routing-first 반응형 레이아웃 전략 | 전체 |
 | `state-management` | local·Context·URL/폼·클라이언트 스토어·서버 상태/라우터 데이터 계층을 가르는 React/fullstack 소유권 패킷 결정 | 전체 |
 | `ui-component-patterns` | 공유 프론트엔드 컴포넌트를 위한 재사용 primitive·variant·slot API 설계 | 전체 |
 | `web-accessibility` | semantics, keyboard/focus, labels/announcements, reflow, media alternatives, routed-app feedback를 다루는 routing-first 접근성 수정·검증 스킬 | 전체 |
