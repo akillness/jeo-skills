@@ -74,6 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **looker-studio-bigquery: packet-first 구조 강화** | `looker-studio-bigquery`를 더 작은 리포팅 front door로 다듬었습니다. 이제 `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, `exec-handoff` 중 하나의 packet에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, Connected Sheets / exec-handoff 케이스까지 `evals/evals.json`을 넓혔습니다. 또한 BigQuery 리포팅 레인이 긴 BI 기능 투어처럼 보이지 않도록 `SKILL.toon` / `skills.toon` / `skills.json`과 README/setup 문구도 함께 동기화했습니다. |
 | **web-accessibility: 라우팅 우선 구조 강화** | `web-accessibility`를 더 작은 routing-first 접근성 수정 앵커로 다듬었습니다. 이제 하나의 primary accessibility packet(`semantics-structure`, `keyboard-focus`, `labels-announcements`, `visual-perception-reflow`, `media-alternatives`, `routed-navigation-feedback`)에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, routed-app / responsive-boundary 케이스까지 `evals/evals.json`을 넓혔습니다. 또한 discovery surface가 다시 generic WCAG/ARIA 튜토리얼로 흐르지 않도록 `SKILL.toon` / `skills.toon` / `skills.json`과 README/setup 문구도 함께 동기화했습니다. |
 | **marketing-automation: 구조 강화** | `marketing-automation`를 broad marketing front door로 더 날카롭게 다듬었습니다. 이제 `launch-orchestration`, `conversion-surface`, `lifecycle-retention`, `acquisition-content`, `measurement-experiment` 중 하나의 operating mode를 먼저 고른 뒤, 하나의 primary lane과 하나의 handoff packet만 남기도록 라우팅합니다. `references/operating-modes-and-route-outs.md`를 추가하고 `evals/evals.json`, `SKILL.toon`, manifest wording을 동기화했으며, `steam-store-launch-ops`와 `task-planning`으로의 route-out도 더 선명하게 만들었습니다. |
 | **sprint-retrospective: 구조 강화** | `sprint-retrospective`를 software, product/ops, marketing/GTM, game-delivery work 전반에서 쓰는 라우팅 우선 retrospective anchor로 다듬었습니다. 이제 하나의 retrospective mode를 고르고, 이전 액션을 새 액션보다 먼저 검토하고, action count를 작게 유지하며, planning/sizing/daily-sync 작업을 바깥으로 route-out합니다. 또한 `references/action-review-and-packet-shapes.md`, 갱신된 `evals/evals.json`, 동기화된 compact/manifest discovery wording을 추가했습니다. |
@@ -315,7 +316,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `firebase-ai-logic` | Firebase 앱/클라이언트 SDK에서 Gemini 기능, 스트리밍, 구조화 출력, App Check 연동을 다루는 직접 통합 레인이며, 백엔드 오케스트레이션은 `genkit`으로 라우팅 | Claude · Gemini |
 | `firebase-cli` | install/auth, bootstrap/config, Emulator Suite, scoped deploy/release, App Hosting, admin/data 작업을 담당하는 Firebase 플랫폼 운영 앵커. 백엔드 AI 워크플로 오케스트레이션은 `genkit`, 앱 SDK 통합은 `firebase-ai-logic`으로 라우팅 | 전체 |
 | `genkit` | 기능이 재사용 가능한 서버 소유 flow, Genkit eval/trace, 혹은 plain SDK route / `survey` fallback 중 무엇이 필요한지 결정하는 packet-first 백엔드 AI 워크플로 앵커이며, 직접 앱 SDK 작업은 `firebase-ai-logic`, Firebase 운영 작업은 `firebase-cli`로 라우팅 | Claude · Gemini |
-| `looker-studio-bigquery` | KPI 보드, PM/ops 리뷰, 마케팅/GTM 리포팅, 게임/비즈니스 텔레메트리를 위한 BigQuery 기반 이해관계자 대시보드/리포팅 레인이며, KPI 해석은 `data-analysis`로 라우팅 | 전체 |
+| `looker-studio-bigquery` | `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, `exec-handoff` 패킷으로 라우팅하는 BigQuery 기반 리포팅 레인이며, KPI 해석은 `data-analysis`로 라우팅 | 전체 |
 | `monitoring-observability` | 서비스 헬스, 텔레메트리 롤아웃, alert/dashboard 감사, 파이프라인 신뢰, live-ops 가시성을 위한 packet-first 텔레메트리 설계/리뷰 | 전체 |
 | `scrapling` | parser-first `Selector`, HTTP/브라우저/stealth fetcher, CLI 추출, 선택적 MCP/spider 워크플로우를 포함한 적응형 웹 스크래핑 | 전체 |
 | `rtk` | Rust Token Killer 설치 및 에이전트 설정 - `rtk gain` 검증, 동명 패키지 충돌 복구, 에이전트별 `rtk init`, 직접 호출용 압축 래퍼 명령 | 전체 |
