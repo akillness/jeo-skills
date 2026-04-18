@@ -943,3 +943,11 @@
 - Accepted: shrink `looker-studio-bigquery` into a packet-first front door, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a Connected Sheets / exec-handoff case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the search-analysis cluster note into the wiki.
 - Rejected: adding another dashboard / BI wrapper; merging the lane into `data-analysis`; leaving the skill as a long BI feature tour after the repo already converged on smaller packet-first skills.
 - Wiki files created/updated: `concepts/search-analysis-cluster.md`, `queries/looker-studio-bigquery-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | langsmith structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack AI products, PM/ops review queues, marketing/content prompt-ops, and game-adjacent agent workflows, with the best bounded search-analysis follow-up landing on the existing `langsmith` skill rather than a new LLM observability wrapper.
+- Survey files created under `.survey/langsmith-structural-hardening-20260419/`; repo-local wiki/graph evidence plus browser-rendered primary-page evidence from LangSmith/Langfuse/Helicone docs and Yahoo Japan indexed snippets for Prompt Hub and annotation-queue workflows were used because `web_search` returned invalid API-key errors in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `langsmith` into a routing-first packet selector, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a prompt-registry ownership case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the hardened LangSmith boundary into the search-analysis wiki note.
+- Rejected: adding another generic LLM observability / eval wrapper; letting `langsmith` absorb generic dashboards, deployment choreography, or runtime-policy ownership; keeping the old oversized feature-tour front door.
+- Wiki files created/updated: `concepts/search-analysis-cluster.md`, `queries/langsmith-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
