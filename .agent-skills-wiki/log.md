@@ -839,3 +839,11 @@
 - Accepted: shrink `genkit` into a packet-first backend workflow anchor, add `references/intake-packets-and-fallbacks.md`, expand `references/modes-and-routing.md` with `comparison-or-fallback`, extend `evals/evals.json` with a thin-route fallback case, sync `SKILL.toon` / `skills.toon` / `skills.json`, update README / README.ko / setup discovery wording, and ratchet the Firebase lane fallback gradient into the wiki
 - Rejected: adding another Firebase AI wrapper; merging `genkit`, `firebase-ai-logic`, and `firebase-cli`; re-expanding `genkit` into a command/example dump
 - Wiki files created/updated: `concepts/firebase-ai-workflow-cluster.md`, `queries/genkit-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | workflow-automation structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/content operations, and game-adjacent repo maintenance, with the best bounded next developer-workflow win landing on the existing `workflow-automation` skill rather than a new automation wrapper
+- Survey files created under `.survey/workflow-automation-structural-hardening-20260418/`; repo-local wiki and graph evidence plus source-backed synthesis from npm scripts, Make/just/Task, pre-commit, GitHub Actions, Dependabot, and Renovate docs were used because `web_search` / `web_extract` remained unreliable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `workflow-automation` from 273 to 213 lines, add `references/mode-packets-and-route-outs.md`, expand `evals/evals.json` with a repo-maintenance ownership case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the routing-first developer-workflow boundary into the wiki
+- Rejected: adding another task-runner or CI-wrapper skill; letting `workflow-automation` absorb environment setup, deploy execution, Git policy, or test-policy work; treating maintenance bots as fully autonomous instead of review-bound automation
+- Wiki files created/updated: `queries/workflow-automation-structural-hardening-2026-04-18.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

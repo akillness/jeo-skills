@@ -385,7 +385,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `obsidian-cli` | 공식 Obsidian CLI 운영 — 활성화, TUI, 노트/작업 자동화, vault·file 타기팅, plugin reload, 개발자 명령 | 전체 |
 | `obsidian-plugin` | Obsidian 플러그인 개발 — 27개 ESLint 규칙, 보일러플레이트 생성기, 접근성, 커뮤니티 제출 검증 | 전체 |
 | `opencontext` | OpenContext 기반 프로젝트/저장소 메모리 및 에이전트 핸드오프 — 검색 가능한 결정/교훈, manifest, stable link, load→search→store 워크플로 | 전체 |
-| `workflow-automation` | 저장소 범위 반복 워크플로우 자동화 — task runner, bootstrap 진입점, 로컬 CI 패리티, hook, 유지보수 루틴 | 전체 |
+| `workflow-automation` | 라우팅-우선 저장소 워크플로우 자동화 — task-entrypoints, bootstrap/onboarding, 로컬 CI 패리티, hook 가드레일, 유지보수 봇, 워크플로우 정리 중 하나를 고르고 환경/배포 문제로 번지지 않게 유지 | 전체 |
 
 ---
 

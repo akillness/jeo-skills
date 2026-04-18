@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 116
+> Last updated: 2026-04-18 | Total pages: 121
 
 ## Entities
 
@@ -107,6 +107,7 @@
 - [[responsive-design-modernization-2026-04-13]] — Why the best bounded next frontend modernization was rewriting `responsive-design` into a mobile-first, container-aware layout adaptation + verification anchor.
 - [[web-accessibility-modernization-2026-04-13]] — Why the best bounded frontend accessibility improvement was rewriting `web-accessibility` into an accessibility remediation + verification anchor instead of leaving it as a generic WCAG/example dump.
 - [[workflow-automation-modernization-2026-04-13]] — Why the best bounded utilities/developer-workflow improvement was modernizing `workflow-automation` into a repo-scoped recurring-workflow anchor instead of adding another automation wrapper.
+- [[workflow-automation-structural-hardening-2026-04-18]] — Why the best bounded next developer-workflow improvement was shrinking `workflow-automation` into a routing-first repo-automation anchor with explicit maintenance-bot and workflow-diagnosis packets instead of adding another automation wrapper.
 - [[plannotator-modernization-2026-04-13]] — Why the best bounded planning-review improvement was modernizing `plannotator` into a visual approval gate instead of adding another wrapper around planning or orchestration flows.
 - [[technical-writing-modernization-2026-04-13]] — Why the best bounded documentation-cluster improvement was modernizing `technical-writing` into the internal technical-docs anchor instead of adding another generic docs wrapper.
 - [[technical-writing-structural-hardening-2026-04-17]] — Why the best bounded documentation-cluster follow-up after the API-doc pass was shrinking `technical-writing` into a cleaner routing-first anchor with support-owned mode skeletons instead of adding another internal-docs wrapper.

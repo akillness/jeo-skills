@@ -3253,7 +3253,7 @@
     },
     {
       "name": "workflow-automation",
-      "description": "Design repo-scoped recurring workflow automation: task runners, bootstrap entrypoints, local-CI parity commands, hook guardrails, and maintenance routines that wrap existing tools without bloating into full deployment or environment provisioning. Use when the user needs repeatable commands for setup/build/test/lint/release prep, wants to replace copy-paste shell rituals, or must choose between npm scripts, Make/just/Task, hooks, local CI mirrors, and repo maintenance bots. Triggers on: workflow automation, task runner, make this repeatable, bootstrap script, make/just/taskfile, local CI parity, repo automation, and recurring dev workflow.",
+      "description": "Routing-first skill for repo-scoped recurring workflow automation: task-entrypoint design, bootstrap/onboarding commands, local-CI parity wrappers, hook guardrails, maintenance bots, and workflow-diagnosis cleanup. Use when the user needs one repeatable repo command surface, must choose between package scripts / Make / just / Task / hooks / CI wrappers / scheduled maintenance, or wants to replace README copy-paste rituals without drifting into environment provisioning, deployment architecture, Git history policy, or observability design.",
       "category": "utilities",
       "path": "workflow-automation/SKILL.md",
       "tags": [
