@@ -30,10 +30,11 @@ It becomes weak when it tries to absorb:
 
 ## Recommended maintenance direction
 - Keep `codebase-search` as the repo-navigation anchor.
+- Harden `codebase-search` around packet choice: exact-text, symbol/indexed, structural, config/content, hosted search, or graph/path trace.
 - Keep `data-analysis` as the dataset-reasoning anchor; route repeated anomaly work to `pattern-detection` and BI/reporting build-out to `looker-studio-bigquery`.
 - Keep `pattern-detection` focused on mode selection, confidence labeling, and repeatable rule/anomaly hunting; route root-cause forensics to `log-analysis` and remediation/reporting to adjacent specialist skills.
 - Keep `looker-studio-bigquery` focused on thin dashboards over curated BigQuery data; route KPI explanation back to `data-analysis`, telemetry/alerting coverage to `monitoring-observability`, and stack-choice comparisons to `survey`.
-- Prefer support bundles that teach search-mode choice and evidence-map output, not giant command catalogs.
+- Prefer support bundles that teach search-mode choice, config/content ownership, and evidence-map output instead of giant command catalogs.
 - Re-check discovery wording in README/setup surfaces whenever `codebase-search`, `data-analysis`, `pattern-detection`, or `looker-studio-bigquery` is materially repositioned.
 
 ## Related pages

@@ -556,7 +556,7 @@
     },
     {
       "name": "codebase-search",
-      "description": "Search and navigate codebases with an evidence-first workflow. Use when the user needs repo navigation, call-site tracing, code archaeology, ownership discovery, impact analysis, entry-point mapping, config hunting, or pre-change discovery. Choose between exact-text search, symbol/indexed search, structural search, and file discovery, then hand off cleanly to debugging, refactoring, review, or graph-based architecture analysis.",
+      "description": "Route repo-navigation requests to one search packet before editing anything. Use when the user needs to find where something lives, who references it, which files own a config/content surface, or what must be inspected before a change. Choose one packet: exact-text, symbol/indexed, structural, config/content, hosted search, or graph/path trace, then route cleanly to debugging, refactoring, review, or graphify when search is no longer the bottleneck.",
       "category": "search-analysis",
       "path": "codebase-search/SKILL.md",
       "tags": [
