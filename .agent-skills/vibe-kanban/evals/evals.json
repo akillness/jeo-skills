@@ -39,6 +39,17 @@
         "Routes to marketing-automation or a PM/content workflow skill",
         "Explains that vibe-kanban is for coding boards with workspaces/review/PR handoff"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Keep GitHub Projects as the source of truth, but open a coding board for three worktree-isolated feature cards and hand each finished card to PR review.",
+      "expected_output": "The skill keeps the external tracker canonical while using vibe-kanban for coding execution state, isolated workspaces, and explicit review/cleanup handoff.",
+      "assertions": [
+        "Mentions tracker-linked coding board or tracker sync",
+        "Keeps GitHub Projects or the external tracker as the source of truth",
+        "Includes isolated workspaces or worktrees plus PR handoff",
+        "Mentions cleanup ownership or explicit cleanup"
+      ]
     }
   ]
 }

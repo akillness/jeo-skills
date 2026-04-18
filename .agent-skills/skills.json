@@ -3139,7 +3139,7 @@
     },
     {
       "name": "vibe-kanban",
-      "description": "Run a board-first workflow for AI coding agents when the real job is managing task cards, isolated workspaces/worktrees, review queues, retries, and PR handoff — not just prompting one agent once. Use when the user needs a visual board or workspace control plane for parallel coding tasks, worktree hygiene, human review, or agent retries. Triggers on: kanban board, workspace board, agent task board, review queue, worktree board, parallel coding agents, card-based agent workflow, and vibe-kanban. Route planning-only requests to `plannotator` / `task-planning`, running-browser review to `agentation` or `playwriter`, and non-code PM / marketing / game-production coordination to their domain workflow skills.",
+      "description": "Run a coding-board control plane when the real job is managing bounded coding cards, isolated workspaces/worktrees, review queues, retries, and PR handoff — not just prompting one agent once. Use when the user needs a visual board or tracker-linked workspace loop for parallel coding tasks, agent comparison, or review-heavy handoff. Triggers on: kanban board, coding board, workspace board, review queue, tracker sync for coding tasks, worktree board, parallel coding agents, card-based agent workflow, and vibe-kanban. Route planning-only requests to `task-planning` / `survey` / `plannotator`, browser/UI execution to `agentation` / `agent-browser` / `playwriter`, and non-code PM / marketing / game-production coordination to their domain skills.",
       "category": "planning-review",
       "path": "vibe-kanban/SKILL.md",
       "tags": [

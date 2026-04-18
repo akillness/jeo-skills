@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 115
+> Last updated: 2026-04-18 | Total pages: 116
 
 ## Entities
 
@@ -129,3 +129,4 @@
 - [[fabric-structural-hardening-2026-04-18]] — Why the best bounded utilities follow-up after modernization was shrinking `fabric` into a routing-first operator front door with a dedicated packet/route-out reference instead of adding another Fabric helper or leaving the long feature-tour shape intact.
 - [[firebase-cli-structural-hardening-2026-04-16]] — Why the best bounded Firebase/platform improvement was shrinking `firebase-cli` into a routing-first operator anchor with focused support packets instead of adding another wrapper or keeping a command-catalog front door.
 - [[vibe-kanban-modernization-2026-04-15]] — Why the best bounded orchestration/planning-review improvement was modernizing `vibe-kanban` into the coding-task board/workspace control plane instead of adding another agent-board wrapper.
+- [[vibe-kanban-structural-hardening-2026-04-18]] — Why the best bounded orchestration follow-up was shrinking `vibe-kanban` into a smaller coding-board front door with tracker-sync guidance instead of adding another board helper.

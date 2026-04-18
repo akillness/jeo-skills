@@ -823,3 +823,11 @@
 - Accepted: shrink `fabric` from 308 to 265 lines, add `references/operator-packets-and-route-outs.md`, expand `evals/evals.json` with a `serve-api` case, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the front door matches the routing-first operator boundary
 - Rejected: adding another Fabric server-mode or pattern-helper wrapper; broadening `fabric` into a generic AI CLI; leaving packet and route-out detail inline once support coverage was already complete
 - Wiki files created/updated: `queries/fabric-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | vibe-kanban structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game-development lanes, with the best bounded orchestration follow-up landing on the existing `vibe-kanban` skill rather than a new AI board wrapper
+- Survey files created under `.survey/vibe-kanban-structural-hardening-20260418/`; repo-local wiki and graph evidence plus direct primary-source retrieval from Git worktree docs, Claude Code common-workflows docs, GitHub Projects docs, GitHub merge queue docs, and the upstream `BloopAI/vibe-kanban` repository were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `vibe-kanban` from 277 to 195 lines, add `references/board-packets-and-surface-selection.md`, expand `evals/evals.json` with a tracker-linked coding-board case, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the front door matches the coding-board vs tracker boundary
+- Rejected: adding another agent-board helper; letting `vibe-kanban` sprawl back into PM-board, browser-review, or non-code game/marketing coordination; treating generic trackers as full substitutes for the coding-board control-plane layer
+- Wiki files created/updated: `queries/vibe-kanban-structural-hardening-2026-04-18.md`, `index.md`, `log.md`

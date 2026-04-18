@@ -254,7 +254,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `agentation` | `annotate` | Exact rendered-UI feedback router — choose copy-paste review, watch-loop sync, self-driving critique, or platform setup |
 | `agent-browser` | `agent-browser` | Fresh-session browser verification anchor — clean disposable browser, snapshot refs, and explicit before/after evidence |
 | `playwriter` | `playwriter` | Running-browser automation for authenticated Chrome sessions and MCP browser reuse |
-| `vibe-kanban` | `kanbanview` | Coding-task board/workspace control plane for parallel agents, review queues, worktree isolation, and PR handoff |
+| `vibe-kanban` | `kanbanview` | Coding-board control plane for bounded coding cards, tracker-linked workspaces, review queues, worktree isolation, and PR handoff |
 
 ### 🤖 Agent Development (2)
 
@@ -443,7 +443,7 @@ ooo ralph "fix all failing tests"
 ### vibe-kanban — AI Agent Kanban Board
 > Keyword: `kanbanview` | [Docs](docs/vibe-kanban/README.md) | [GitHub](https://github.com/BloopAI/vibe-kanban)
 
-Board/workspace control plane for bounded coding tasks: run parallel AI agents in isolated worktrees, keep human review explicit, and hand off cleanly to PRs.
+Coding-board control plane for bounded coding cards: keep GitHub Projects / Linear / Jira as the PM source of truth when needed, run isolated workspaces or worktrees for actual coding execution, keep human review explicit, and hand off cleanly to PRs.
 
 ```bash
 npx vibe-kanban

@@ -1,32 +1,33 @@
 N:vibe-kanban
-V:2.0.0
-D:Board-first control plane for AI coding agents. Use when the real job is managing task cards, isolated workspaces/worktrees, review queues, retries, and PR handoff for bounded coding tasks — not just prompting one agent once.
-G:vibe-kanban kanban kanbanview task-board workspace-board review-queue multi-agent worktree github-pr claude-code codex gemini opencode
+V:2.1.0
+D:Coding-board control plane for bounded coding cards, isolated workspaces/worktrees, review queues, retries, and PR handoff. Use when the user needs a visual board or tracker-linked workspace loop for parallel coding tasks, agent comparison, or review-heavy handoff.
+G:vibe-kanban kanban kanbanview coding-board workspace-board review-queue tracker-sync worktree github-pr claude-code codex gemini opencode
 U[6]:
-  Run a visual board for bounded coding tasks with isolated workspaces
-  Track Running -> Review -> Done state for parallel coding-agent work
-  Compare agent attempts and retry based on diff/review evidence
-  Keep review plus PR handoff explicit instead of relying on chat memory
-  Manage worktree/branch cleanup as part of the board workflow
-  Route planning-only or non-code workflows away before opening a board
+  Run a visible coding board for bounded tasks with isolated workspaces
+  Keep tracker-linked coding execution separate from PM source-of-truth boards
+  Compare agent attempts and preserve explicit review criteria
+  Move work through review then PR handoff instead of relying on chat memory
+  Treat cleanup of worktrees branches and servers as part of the board loop
+  Route planning browser-review and non-code board requests away early
 S[5]{n,action,details}:
-  1,Classify,Decide whether the request truly needs a coding board/workspace loop
-  2,Split,Keep one bounded coding task per card/workspace
-  3,Run,Start the board and launch isolated workspaces for selected agents
-  4,Review,Inspect diffs/logs and choose retry split approve or PR handoff
-  5,Cleanup,Close stale cards prune worktrees and clean leftover branches/servers
+  1,Classify,Decide whether the request truly needs a coding board or only planning/tracker/browser help
+  2,Scope,Keep one bounded coding task per card and choose the board packet
+  3,Run,Launch isolated workspaces and set the review surface for each card
+  4,Review,Compare output against the card contract and choose retry split approve or PR handoff
+  5,Cleanup,Close stale cards prune worktrees and remove leftover branches or servers
 R[5]:
-  Use vibe-kanban only when board control review and worktree isolation matter
-  Prefer board-first then PR handoff for fast local iteration on shared repos
-  Limit parallel cards to what a human reviewer can actually keep up with
+  Use vibe-kanban only when board control review and workspace isolation materially matter
+  Keep GitHub Projects Linear or Jira canonical when they remain the PM tracker
+  Limit active cards to what a human reviewer can really evaluate
+  Prefer board-then-PR when shared repos need both fast iteration and durable review
   Route PM marketing and non-code game-production coordination to other skills
-  Use MCP only when programmatic board control materially helps
-E[4]{desc,in,out}:
-  "Parallel bugfix board","Set up a board so Claude and Codex each handle one frontend bug and I can review diffs before PRs","Create bounded cards and isolated workspaces with review -> PR flow"
-  "Agent comparison","Run two agents on the same API bug so I can compare their diffs","Create comparison-friendly workspaces and preserve review criteria"
+E[5]{desc,in,out}:
+  "Parallel bugfix board","Set up a board so Claude and Codex each handle one frontend bug and I can review diffs before PRs","Create bounded cards and isolated workspaces with review then PR flow"
+  "Agent comparison","Run two agents on the same API bug so I can compare diffs and decide which PR to keep","Preserve isolated attempts and explicit review criteria"
   "Planning only","Help me break this migration into phases before coding starts","Route to task-planning or plannotator instead of opening a board"
-  "Marketing board","I need a board for content calendar approvals and launch copy revisions","Route to marketing-automation or PM/content workflow skills"
+  "Marketing board","I need a board for launch-copy approvals and content calendar changes","Route to marketing-automation or PM/content workflow skills"
+  "Tracker-linked coding board","Keep GitHub Projects canonical but run three coding cards in worktrees and hand each to PR review","Use vibe-kanban for coding execution state without replacing the tracker"
 T[3]{problem,solution}:
-  "Cards keep stalling","Split them smaller and reduce parallel workspaces"
-  "Review backlog grows","Switch to PR-first review or lower active card count"
-  "Worktree mess","Run cleanup scripts plus git worktree list/prune and close stale cards"
+  "Cards keep stalling","Split them smaller and reduce active parallel work"
+  "Review backlog grows","Lower active card count or switch to board-then-PR / PR-first review"
+  "Worktree mess","Run cleanup steps and close stale cards explicitly"
