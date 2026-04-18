@@ -1,23 +1,24 @@
 N:state-management
-D:Design React state boundaries before picking libraries. Use when deciding whether data should...
-G:state-management context zustand redux-toolkit server-state client-state tanstack-query
+D:Classify React/fullstack state ownership before picking libraries. Use when deciding whether data should stay local, be shared via Context, live in URL or form state, use a client store like Zustand / Redux Toolkit / Jotai, or stay in a server-state cache such as TanStack Query or a router-native data layer.
+G:state-management react context zustand redux-toolkit jotai tanstack-query server-state client-state url-state form-state
 U[5]:
-  Decide what kind of state a React problem really is
-  Separate server state from client and UI state
-  Choose Context vs Zustand vs Redux Toolkit vs Jotai
-  Fix prop drilling without over-centralizing the app
-  Produce a state-boundary recommendation brief
+  Decide what kind of state a frontend problem really is
+  Separate URL/form/server/client workflow ownership packets
+  Choose Context vs Zustand vs Redux Toolkit vs Jotai only after the boundary is clear
+  Keep remote caches separate from client workflow state
+  Produce a state-ownership recommendation brief with route-outs
 S[7]{n,action}:
-  1,Classify the state type before naming any library
-  2,Choose the smallest ownership layer
+  1,Classify the ownership packet before naming any library
+  2,Choose the smallest owner first
   3,Separate server state from client state
-  4,Choose the right client-state tool only after the boundary is clear
-  5,Handle mixed-mode architectures explicitly
+  4,Pick the client-state tool only after the boundary is clear
+  5,Name mixed architectures directly
   6,Route adjacent concerns correctly
-  7,Produce the state-boundary brief
-R[5]:
+  7,Produce the ownership brief
+R[6]:
   react-best-practices
   api-design
   debugging
   ui-component-patterns
+  design-system
   responsive-design

@@ -4,18 +4,19 @@
     {
       "id": 1,
       "prompt": "Should this React dashboard use Zustand or TanStack Query for API data, filters, and modal state?",
-      "expected_output": "Separates server state from client/UI and URL state, recommends TanStack Query for API data, and warns against mirroring fetched entities into a client store without a reason.",
+      "expected_output": "Separates server state from client/UI and URL state, recommends TanStack Query or equivalent for remote data, and warns against mirroring fetched entities into a client store without a reason.",
       "assertions": [
         "Output classifies API data as server state.",
-        "Output recommends TanStack Query or equivalent query cache for fetched remote data.",
-        "Output distinguishes filters or modal state from remote cached data.",
+        "Output recommends TanStack Query or equivalent query/cache ownership for fetched remote data.",
+        "Output treats filters as URL state when shareable or bookmarkable.",
+        "Output distinguishes modal/client UI state from remote cached data.",
         "Output does not recommend one universal store for all state by default."
       ]
     },
     {
       "id": 2,
       "prompt": "We keep prop drilling theme and auth through five component layers. Do we need Redux?",
-      "expected_output": "Treats the problem as shared app/context state first and recommends Context before Redux unless broader complexity exists.",
+      "expected_output": "Treats the problem as shared subtree ownership first and recommends Context before Redux unless broader workflow complexity exists.",
       "assertions": [
         "Output identifies prop drilling as a shared-state ownership problem.",
         "Output recommends Context or lifted/shared state before Redux Toolkit.",
@@ -25,12 +26,22 @@
     {
       "id": 3,
       "prompt": "Our app has optimistic updates, undo, cross-page drafts, and complex workflow transitions. Which state approach fits?",
-      "expected_output": "Splits server state from long-lived client workflow state and compares Zustand versus Redux Toolkit based on coordination complexity and tooling needs.",
+      "expected_output": "Splits server state from long-lived client workflow state and compares Zustand versus Redux Toolkit based on coordination complexity, with room for explicit workflow/state-machine modeling if transitions dominate.",
       "assertions": [
         "Output separates server state from client workflow state.",
-        "Output discusses TanStack Query for cache/invalidation or optimistic server data handling.",
+        "Output discusses TanStack Query or router-native data ownership for cache/invalidation or optimistic server data handling.",
         "Output compares at least two client-state options, including Redux Toolkit or Zustand.",
         "Output produces a recommendation brief rather than only code snippets."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "On tablet our filter sidebar collapses awkwardly and the main issue is layout adaptation across breakpoints, not deciding where the state lives.",
+      "expected_output": "Recognizes that the main task is responsive layout strategy and routes to responsive-design instead of trying to solve the whole request as a state-library decision.",
+      "assertions": [
+        "Output identifies responsive layout adaptation as the primary task.",
+        "Output routes the request to responsive-design.",
+        "Output does not frame the answer as Context vs Zustand vs Redux Toolkit by default."
       ]
     }
   ]

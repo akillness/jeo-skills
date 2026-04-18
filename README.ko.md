@@ -281,7 +281,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `react-grab` | 브라우저 UI 엘리먼트에서 React 컴포넌트명·파일경로·HTML을 클립보드로 복사해 AI 에이전트에 전달 | 전체 |
 | `vercel-react-best-practices` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `react-best-practices` 호환 별칭 | Claude · Gemini · Codex |
 | `responsive-design` | 모바일 우선·컨테이너 기반 레이아웃 적응과 overflow/reflow 검증 가이드 | 전체 |
-| `state-management` | Context·Zustand·Redux Toolkit·Jotai·TanStack Query를 나누는 React 상태 경계 결정 | 전체 |
+| `state-management` | local·Context·URL/폼·클라이언트 스토어·서버 상태/라우터 데이터 계층을 가르는 React/fullstack 소유권 패킷 결정 | 전체 |
 | `ui-component-patterns` | 공유 프론트엔드 컴포넌트를 위한 재사용 primitive·variant·slot API 설계 | 전체 |
 | `web-accessibility` | 접근성 감사·수정과 자동화 이후 수동 검증 가이드 | 전체 |
 | `web-design-guidelines` | hierarchy, clarity, consistency, state, responsiveness/accessibility basics를 보는 broad 웹 UI 감사 | 전체 |

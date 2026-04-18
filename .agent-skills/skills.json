@@ -2742,7 +2742,7 @@
     },
     {
       "name": "state-management",
-      "description": "Design React state boundaries before picking libraries. Use when deciding whether data should stay local, be shared via Context, move into Zustand / Redux Toolkit / Jotai, live in URL or form state, or stay in a server-state cache such as TanStack Query.",
+      "description": "Classify React/fullstack state ownership before picking libraries. Use when deciding whether data should stay local, be shared via Context, live in URL or form state, use a client store like Zustand / Redux Toolkit / Jotai, or stay in a server-state cache such as TanStack Query or a router-native data layer.",
       "category": "frontend",
       "path": "state-management/SKILL.md",
       "tags": [
