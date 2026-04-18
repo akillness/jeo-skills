@@ -34,2367 +34,2367 @@
       "id": "agent-browser",
       "type": "skill",
       "label": "agent-browser",
-      "lines": 239,
+      "lines": 240,
       "degree": 17
     },
     {
       "id": "agentation",
       "type": "skill",
       "label": "agentation",
-      "lines": 223,
+      "lines": 224,
       "degree": 18
     },
     {
       "id": "api-design",
       "type": "skill",
       "label": "api-design",
-      "lines": 243,
+      "lines": 244,
       "degree": 19
     },
     {
       "id": "api-documentation",
       "type": "skill",
       "label": "api-documentation",
-      "lines": 201,
+      "lines": 202,
       "degree": 21
     },
     {
       "id": "authentication-setup",
       "type": "skill",
       "label": "authentication-setup",
-      "lines": 251,
+      "lines": 252,
       "degree": 19
     },
     {
       "id": "autoresearch",
       "type": "skill",
       "label": "autoresearch",
-      "lines": 333,
+      "lines": 334,
       "degree": 13
     },
     {
       "id": "backend-testing",
       "type": "skill",
       "label": "backend-testing",
-      "lines": 254,
+      "lines": 255,
       "degree": 18
     },
     {
       "id": "bmad",
       "type": "skill",
       "label": "bmad",
-      "lines": 229,
+      "lines": 230,
       "degree": 27
     },
     {
       "id": "bmad-gds",
       "type": "skill",
       "label": "bmad-gds",
-      "lines": 230,
+      "lines": 231,
       "degree": 23
     },
     {
       "id": "bmad-idea",
       "type": "skill",
       "label": "bmad-idea",
-      "lines": 255,
+      "lines": 256,
       "degree": 15
     },
     {
       "id": "changelog-maintenance",
       "type": "skill",
       "label": "changelog-maintenance",
-      "lines": 292,
+      "lines": 293,
       "degree": 16
     },
     {
       "id": "clawteam",
       "type": "skill",
       "label": "clawteam",
-      "lines": 329,
+      "lines": 330,
       "degree": 8
     },
     {
       "id": "code-refactoring",
       "type": "skill",
       "label": "code-refactoring",
-      "lines": 292,
+      "lines": 293,
       "degree": 15
     },
     {
       "id": "code-review",
       "type": "skill",
       "label": "code-review",
-      "lines": 255,
+      "lines": 256,
       "degree": 24
     },
     {
       "id": "codebase-search",
       "type": "skill",
       "label": "codebase-search",
-      "lines": 275,
+      "lines": 276,
       "degree": 16
     },
     {
       "id": "data-analysis",
       "type": "skill",
       "label": "data-analysis",
-      "lines": 245,
+      "lines": 246,
       "degree": 15
     },
     {
       "id": "database-schema-design",
       "type": "skill",
       "label": "database-schema-design",
-      "lines": 282,
+      "lines": 283,
       "degree": 19
     },
     {
       "id": "debugging",
       "type": "skill",
       "label": "debugging",
-      "lines": 251,
+      "lines": 252,
       "degree": 41
     },
     {
       "id": "deployment-automation",
       "type": "skill",
       "label": "deployment-automation",
-      "lines": 213,
+      "lines": 214,
       "degree": 21
     },
     {
       "id": "design-system",
       "type": "skill",
       "label": "design-system",
-      "lines": 257,
+      "lines": 258,
       "degree": 22
     },
     {
       "id": "environment-setup",
       "type": "skill",
       "label": "environment-setup",
-      "lines": 199,
+      "lines": 200,
       "degree": 19
     },
     {
       "id": "fabric",
       "type": "skill",
       "label": "fabric",
-      "lines": 308,
+      "lines": 309,
       "degree": 9
     },
     {
       "id": "file-organization",
       "type": "skill",
       "label": "file-organization",
-      "lines": 233,
+      "lines": 234,
       "degree": 17
     },
     {
       "id": "firebase-ai-logic",
       "type": "skill",
       "label": "firebase-ai-logic",
-      "lines": 185,
+      "lines": 186,
       "degree": 12
     },
     {
       "id": "firebase-cli",
       "type": "skill",
       "label": "firebase-cli",
-      "lines": 199,
+      "lines": 200,
       "degree": 18
     },
     {
       "id": "frontend-design-system",
       "type": "skill",
       "label": "frontend-design-system",
-      "lines": 79,
+      "lines": 80,
       "degree": 13
     },
     {
       "id": "game-build-log-triage",
       "type": "skill",
       "label": "game-build-log-triage",
-      "lines": 230,
+      "lines": 231,
       "degree": 14
     },
     {
       "id": "game-ci-cd-pipeline",
       "type": "skill",
       "label": "game-ci-cd-pipeline",
-      "lines": 260,
+      "lines": 261,
       "degree": 10
     },
     {
       "id": "game-demo-feedback-triage",
       "type": "skill",
       "label": "game-demo-feedback-triage",
-      "lines": 220,
+      "lines": 221,
       "degree": 17
     },
     {
       "id": "game-performance-profiler",
       "type": "skill",
       "label": "game-performance-profiler",
-      "lines": 231,
+      "lines": 232,
       "degree": 16
     },
     {
       "id": "genkit",
       "type": "skill",
       "label": "genkit",
-      "lines": 285,
+      "lines": 286,
       "degree": 16
     },
     {
       "id": "git-submodule",
       "type": "skill",
       "label": "git-submodule",
-      "lines": 293,
+      "lines": 208,
       "degree": 13
     },
     {
       "id": "git-workflow",
       "type": "skill",
       "label": "git-workflow",
-      "lines": 258,
+      "lines": 259,
       "degree": 15
     },
     {
       "id": "google-workspace",
       "type": "skill",
       "label": "google-workspace",
-      "lines": 212,
+      "lines": 213,
       "degree": 10
     },
     {
       "id": "harness",
       "type": "skill",
       "label": "harness",
-      "lines": 213,
+      "lines": 214,
       "degree": 17
     },
     {
       "id": "jeo",
       "type": "skill",
       "label": "jeo",
-      "lines": 288,
+      "lines": 289,
       "degree": 23
     },
     {
       "id": "langsmith",
       "type": "skill",
       "label": "langsmith",
-      "lines": 290,
+      "lines": 291,
       "degree": 18
     },
     {
       "id": "llm-wiki",
       "type": "skill",
       "label": "llm-wiki",
-      "lines": 201,
+      "lines": 202,
       "degree": 12
     },
     {
       "id": "lmstudio-cli",
       "type": "skill",
       "label": "lmstudio-cli",
-      "lines": 196,
+      "lines": 197,
       "degree": 7
     },
     {
       "id": "log-analysis",
       "type": "skill",
       "label": "log-analysis",
-      "lines": 261,
+      "lines": 262,
       "degree": 17
     },
     {
       "id": "looker-studio-bigquery",
       "type": "skill",
       "label": "looker-studio-bigquery",
-      "lines": 276,
+      "lines": 277,
       "degree": 13
     },
     {
       "id": "marketing-automation",
       "type": "skill",
       "label": "marketing-automation",
-      "lines": 238,
+      "lines": 239,
       "degree": 20
     },
     {
       "id": "marketing-skills-collection",
       "type": "skill",
       "label": "marketing-skills-collection",
-      "lines": 91,
+      "lines": 92,
       "degree": 11
     },
     {
       "id": "monitoring-observability",
       "type": "skill",
       "label": "monitoring-observability",
-      "lines": 290,
+      "lines": 291,
       "degree": 22
     },
     {
       "id": "npm-git-install",
       "type": "skill",
       "label": "npm-git-install",
-      "lines": 271,
+      "lines": 272,
       "degree": 13
     },
     {
       "id": "obsidian-cli",
       "type": "skill",
       "label": "obsidian-cli",
-      "lines": 286,
+      "lines": 287,
       "degree": 10
     },
     {
       "id": "obsidian-plugin",
       "type": "skill",
       "label": "obsidian-plugin",
-      "lines": 244,
+      "lines": 245,
       "degree": 9
     },
     {
       "id": "ohmg",
       "type": "skill",
       "label": "ohmg",
-      "lines": 214,
+      "lines": 215,
       "degree": 17
     },
     {
       "id": "omc",
       "type": "skill",
       "label": "omc",
-      "lines": 272,
+      "lines": 273,
       "degree": 15
     },
     {
       "id": "omx",
       "type": "skill",
       "label": "omx",
-      "lines": 240,
+      "lines": 241,
       "degree": 17
     },
     {
       "id": "opencontext",
       "type": "skill",
       "label": "opencontext",
-      "lines": 270,
+      "lines": 271,
       "degree": 12
     },
     {
       "id": "pattern-detection",
       "type": "skill",
       "label": "pattern-detection",
-      "lines": 259,
+      "lines": 260,
       "degree": 15
     },
     {
       "id": "performance-optimization",
       "type": "skill",
       "label": "performance-optimization",
-      "lines": 246,
+      "lines": 247,
       "degree": 27
     },
     {
       "id": "plannotator",
       "type": "skill",
       "label": "plannotator",
-      "lines": 266,
+      "lines": 267,
       "degree": 24
     },
     {
       "id": "playwriter",
       "type": "skill",
       "label": "playwriter",
-      "lines": 236,
+      "lines": 237,
       "degree": 13
     },
     {
       "id": "presentation-builder",
       "type": "skill",
       "label": "presentation-builder",
-      "lines": 284,
+      "lines": 285,
       "degree": 15
     },
     {
       "id": "prompt-repetition",
       "type": "skill",
       "label": "prompt-repetition",
-      "lines": 178,
+      "lines": 179,
       "degree": 8
     },
     {
       "id": "ralph",
       "type": "skill",
       "label": "ralph",
-      "lines": 236,
+      "lines": 237,
       "degree": 24
     },
     {
       "id": "ralphmode",
       "type": "skill",
       "label": "ralphmode",
-      "lines": 187,
+      "lines": 188,
       "degree": 12
     },
     {
       "id": "react-best-practices",
       "type": "skill",
       "label": "react-best-practices",
-      "lines": 254,
+      "lines": 255,
       "degree": 21
     },
     {
       "id": "react-grab",
       "type": "skill",
       "label": "react-grab",
-      "lines": 213,
+      "lines": 214,
       "degree": 16
     },
     {
       "id": "remotion-video-production",
       "type": "skill",
       "label": "remotion-video-production",
-      "lines": 91,
+      "lines": 92,
       "degree": 10
     },
     {
       "id": "research-paper-writing",
       "type": "skill",
       "label": "research-paper-writing",
-      "lines": 252,
+      "lines": 253,
       "degree": 14
     },
     {
       "id": "responsive-design",
       "type": "skill",
       "label": "responsive-design",
-      "lines": 277,
+      "lines": 278,
       "degree": 20
     },
     {
       "id": "rtk",
       "type": "skill",
       "label": "rtk",
-      "lines": 226,
+      "lines": 227,
       "degree": 9
     },
     {
       "id": "scrapling",
       "type": "skill",
       "label": "scrapling",
-      "lines": 319,
+      "lines": 320,
       "degree": 10
     },
     {
       "id": "security-best-practices",
       "type": "skill",
       "label": "security-best-practices",
-      "lines": 284,
+      "lines": 285,
       "degree": 21
     },
     {
       "id": "skill-autoresearch",
       "type": "skill",
       "label": "skill-autoresearch",
-      "lines": 267,
+      "lines": 268,
       "degree": 12
     },
     {
       "id": "skill-standardization",
       "type": "skill",
       "label": "skill-standardization",
-      "lines": 201,
+      "lines": 202,
       "degree": 9
     },
     {
       "id": "sprint-retrospective",
       "type": "skill",
       "label": "sprint-retrospective",
-      "lines": 263,
+      "lines": 264,
       "degree": 16
     },
     {
       "id": "standup-meeting",
       "type": "skill",
       "label": "standup-meeting",
-      "lines": 232,
+      "lines": 233,
       "degree": 16
     },
     {
       "id": "state-management",
       "type": "skill",
       "label": "state-management",
-      "lines": 290,
+      "lines": 291,
       "degree": 20
     },
     {
       "id": "steam-store-launch-ops",
       "type": "skill",
       "label": "steam-store-launch-ops",
-      "lines": 272,
+      "lines": 273,
       "degree": 13
     },
     {
       "id": "strix",
       "type": "skill",
       "label": "strix",
-      "lines": 202,
+      "lines": 203,
       "degree": 10
     },
     {
       "id": "survey",
       "type": "skill",
       "label": "survey",
-      "lines": 309,
+      "lines": 310,
       "degree": 21
     },
     {
       "id": "system-environment-setup",
       "type": "skill",
       "label": "system-environment-setup",
-      "lines": 218,
+      "lines": 219,
       "degree": 21
     },
     {
       "id": "task-estimation",
       "type": "skill",
       "label": "task-estimation",
-      "lines": 278,
+      "lines": 279,
       "degree": 14
     },
     {
       "id": "task-planning",
       "type": "skill",
       "label": "task-planning",
-      "lines": 294,
+      "lines": 295,
       "degree": 30
     },
     {
       "id": "technical-writing",
       "type": "skill",
       "label": "technical-writing",
-      "lines": 220,
+      "lines": 221,
       "degree": 20
     },
     {
       "id": "testing-strategies",
       "type": "skill",
       "label": "testing-strategies",
-      "lines": 269,
+      "lines": 270,
       "degree": 20
     },
     {
       "id": "ui-component-patterns",
       "type": "skill",
       "label": "ui-component-patterns",
-      "lines": 274,
+      "lines": 275,
       "degree": 21
     },
     {
       "id": "user-guide-writing",
       "type": "skill",
       "label": "user-guide-writing",
-      "lines": 235,
+      "lines": 236,
       "degree": 18
     },
     {
       "id": "vercel-deploy",
       "type": "skill",
       "label": "vercel-deploy",
-      "lines": 244,
+      "lines": 245,
       "degree": 18
     },
     {
       "id": "vercel-react-best-practices",
       "type": "skill",
       "label": "vercel-react-best-practices",
-      "lines": 81,
+      "lines": 82,
       "degree": 13
     },
     {
       "id": "vibe-kanban",
       "type": "skill",
       "label": "vibe-kanban",
-      "lines": 277,
+      "lines": 278,
       "degree": 24
     },
     {
       "id": "video-production",
       "type": "skill",
       "label": "video-production",
-      "lines": 225,
+      "lines": 226,
       "degree": 10
     },
     {
       "id": "web-accessibility",
       "type": "skill",
       "label": "web-accessibility",
-      "lines": 290,
+      "lines": 291,
       "degree": 22
     },
     {
       "id": "web-design-guidelines",
       "type": "skill",
       "label": "web-design-guidelines",
-      "lines": 261,
+      "lines": 262,
       "degree": 20
     },
     {
       "id": "workflow-automation",
       "type": "skill",
       "label": "workflow-automation",
-      "lines": 273,
+      "lines": 274,
       "degree": 21
     },
     {
-      "id": "agent-browser:compact",
+      "id": "agent-browser/compact",
       "type": "support",
       "label": "agent-browser/compact",
       "degree": 1
     },
     {
-      "id": "agent-browser:evals",
+      "id": "agent-browser/evals",
       "type": "support",
       "label": "agent-browser/evals",
       "degree": 1
     },
     {
-      "id": "agent-browser:references",
+      "id": "agent-browser/references",
       "type": "support",
       "label": "agent-browser/references",
       "degree": 1
     },
     {
-      "id": "agentation:compact",
+      "id": "agentation/compact",
       "type": "support",
       "label": "agentation/compact",
       "degree": 1
     },
     {
-      "id": "agentation:evals",
+      "id": "agentation/evals",
       "type": "support",
       "label": "agentation/evals",
       "degree": 1
     },
     {
-      "id": "agentation:references",
+      "id": "agentation/references",
       "type": "support",
       "label": "agentation/references",
       "degree": 1
     },
     {
-      "id": "agentation:scripts",
+      "id": "agentation/scripts",
       "type": "support",
       "label": "agentation/scripts",
       "degree": 1
     },
     {
-      "id": "api-design:compact",
+      "id": "api-design/compact",
       "type": "support",
       "label": "api-design/compact",
       "degree": 1
     },
     {
-      "id": "api-design:evals",
+      "id": "api-design/evals",
       "type": "support",
       "label": "api-design/evals",
       "degree": 1
     },
     {
-      "id": "api-design:references",
+      "id": "api-design/references",
       "type": "support",
       "label": "api-design/references",
       "degree": 1
     },
     {
-      "id": "api-documentation:compact",
+      "id": "api-documentation/compact",
       "type": "support",
       "label": "api-documentation/compact",
       "degree": 1
     },
     {
-      "id": "api-documentation:evals",
+      "id": "api-documentation/evals",
       "type": "support",
       "label": "api-documentation/evals",
       "degree": 1
     },
     {
-      "id": "api-documentation:references",
+      "id": "api-documentation/references",
       "type": "support",
       "label": "api-documentation/references",
       "degree": 1
     },
     {
-      "id": "authentication-setup:compact",
+      "id": "authentication-setup/compact",
       "type": "support",
       "label": "authentication-setup/compact",
       "degree": 1
     },
     {
-      "id": "authentication-setup:evals",
+      "id": "authentication-setup/evals",
       "type": "support",
       "label": "authentication-setup/evals",
       "degree": 1
     },
     {
-      "id": "authentication-setup:references",
+      "id": "authentication-setup/references",
       "type": "support",
       "label": "authentication-setup/references",
       "degree": 1
     },
     {
-      "id": "autoresearch:compact",
+      "id": "autoresearch/compact",
       "type": "support",
       "label": "autoresearch/compact",
       "degree": 1
     },
     {
-      "id": "autoresearch:evals",
+      "id": "autoresearch/evals",
       "type": "support",
       "label": "autoresearch/evals",
       "degree": 1
     },
     {
-      "id": "autoresearch:references",
+      "id": "autoresearch/references",
       "type": "support",
       "label": "autoresearch/references",
       "degree": 1
     },
     {
-      "id": "autoresearch:scripts",
+      "id": "autoresearch/scripts",
       "type": "support",
       "label": "autoresearch/scripts",
       "degree": 1
     },
     {
-      "id": "backend-testing:compact",
+      "id": "backend-testing/compact",
       "type": "support",
       "label": "backend-testing/compact",
       "degree": 1
     },
     {
-      "id": "backend-testing:evals",
+      "id": "backend-testing/evals",
       "type": "support",
       "label": "backend-testing/evals",
       "degree": 1
     },
     {
-      "id": "backend-testing:references",
+      "id": "backend-testing/references",
       "type": "support",
       "label": "backend-testing/references",
       "degree": 1
     },
     {
-      "id": "bmad-gds:compact",
+      "id": "bmad-gds/compact",
       "type": "support",
       "label": "bmad-gds/compact",
       "degree": 1
     },
     {
-      "id": "bmad-gds:evals",
+      "id": "bmad-gds/evals",
       "type": "support",
       "label": "bmad-gds/evals",
       "degree": 1
     },
     {
-      "id": "bmad-gds:references",
+      "id": "bmad-gds/references",
       "type": "support",
       "label": "bmad-gds/references",
       "degree": 1
     },
     {
-      "id": "bmad-idea:compact",
+      "id": "bmad-idea/compact",
       "type": "support",
       "label": "bmad-idea/compact",
       "degree": 1
     },
     {
-      "id": "bmad-idea:evals",
+      "id": "bmad-idea/evals",
       "type": "support",
       "label": "bmad-idea/evals",
       "degree": 1
     },
     {
-      "id": "bmad-idea:references",
+      "id": "bmad-idea/references",
       "type": "support",
       "label": "bmad-idea/references",
       "degree": 1
     },
     {
-      "id": "bmad:compact",
+      "id": "bmad/compact",
       "type": "support",
       "label": "bmad/compact",
       "degree": 1
     },
     {
-      "id": "bmad:evals",
+      "id": "bmad/evals",
       "type": "support",
       "label": "bmad/evals",
       "degree": 1
     },
     {
-      "id": "bmad:references",
+      "id": "bmad/references",
       "type": "support",
       "label": "bmad/references",
       "degree": 1
     },
     {
-      "id": "bmad:scripts",
+      "id": "bmad/scripts",
       "type": "support",
       "label": "bmad/scripts",
       "degree": 1
     },
     {
-      "id": "changelog-maintenance:compact",
+      "id": "changelog-maintenance/compact",
       "type": "support",
       "label": "changelog-maintenance/compact",
       "degree": 1
     },
     {
-      "id": "changelog-maintenance:evals",
+      "id": "changelog-maintenance/evals",
       "type": "support",
       "label": "changelog-maintenance/evals",
       "degree": 1
     },
     {
-      "id": "changelog-maintenance:references",
+      "id": "changelog-maintenance/references",
       "type": "support",
       "label": "changelog-maintenance/references",
       "degree": 1
     },
     {
-      "id": "clawteam:compact",
+      "id": "clawteam/compact",
       "type": "support",
       "label": "clawteam/compact",
       "degree": 1
     },
     {
-      "id": "clawteam:evals",
+      "id": "clawteam/evals",
       "type": "support",
       "label": "clawteam/evals",
       "degree": 1
     },
     {
-      "id": "clawteam:references",
+      "id": "clawteam/references",
       "type": "support",
       "label": "clawteam/references",
       "degree": 1
     },
     {
-      "id": "clawteam:scripts",
+      "id": "clawteam/scripts",
       "type": "support",
       "label": "clawteam/scripts",
       "degree": 1
     },
     {
-      "id": "code-refactoring:compact",
+      "id": "code-refactoring/compact",
       "type": "support",
       "label": "code-refactoring/compact",
       "degree": 1
     },
     {
-      "id": "code-refactoring:evals",
+      "id": "code-refactoring/evals",
       "type": "support",
       "label": "code-refactoring/evals",
       "degree": 1
     },
     {
-      "id": "code-refactoring:references",
+      "id": "code-refactoring/references",
       "type": "support",
       "label": "code-refactoring/references",
       "degree": 1
     },
     {
-      "id": "code-review:compact",
+      "id": "code-review/compact",
       "type": "support",
       "label": "code-review/compact",
       "degree": 1
     },
     {
-      "id": "code-review:evals",
+      "id": "code-review/evals",
       "type": "support",
       "label": "code-review/evals",
       "degree": 1
     },
     {
-      "id": "code-review:references",
+      "id": "code-review/references",
       "type": "support",
       "label": "code-review/references",
       "degree": 1
     },
     {
-      "id": "codebase-search:compact",
+      "id": "codebase-search/compact",
       "type": "support",
       "label": "codebase-search/compact",
       "degree": 1
     },
     {
-      "id": "codebase-search:evals",
+      "id": "codebase-search/evals",
       "type": "support",
       "label": "codebase-search/evals",
       "degree": 1
     },
     {
-      "id": "codebase-search:references",
+      "id": "codebase-search/references",
       "type": "support",
       "label": "codebase-search/references",
       "degree": 1
     },
     {
-      "id": "data-analysis:compact",
+      "id": "data-analysis/compact",
       "type": "support",
       "label": "data-analysis/compact",
       "degree": 1
     },
     {
-      "id": "data-analysis:evals",
+      "id": "data-analysis/evals",
       "type": "support",
       "label": "data-analysis/evals",
       "degree": 1
     },
     {
-      "id": "data-analysis:references",
+      "id": "data-analysis/references",
       "type": "support",
       "label": "data-analysis/references",
       "degree": 1
     },
     {
-      "id": "database-schema-design:compact",
+      "id": "database-schema-design/compact",
       "type": "support",
       "label": "database-schema-design/compact",
       "degree": 1
     },
     {
-      "id": "database-schema-design:evals",
+      "id": "database-schema-design/evals",
       "type": "support",
       "label": "database-schema-design/evals",
       "degree": 1
     },
     {
-      "id": "database-schema-design:references",
+      "id": "database-schema-design/references",
       "type": "support",
       "label": "database-schema-design/references",
       "degree": 1
     },
     {
-      "id": "debugging:compact",
+      "id": "debugging/compact",
       "type": "support",
       "label": "debugging/compact",
       "degree": 1
     },
     {
-      "id": "debugging:evals",
+      "id": "debugging/evals",
       "type": "support",
       "label": "debugging/evals",
       "degree": 1
     },
     {
-      "id": "debugging:references",
+      "id": "debugging/references",
       "type": "support",
       "label": "debugging/references",
       "degree": 1
     },
     {
-      "id": "deployment-automation:compact",
+      "id": "deployment-automation/compact",
       "type": "support",
       "label": "deployment-automation/compact",
       "degree": 1
     },
     {
-      "id": "deployment-automation:evals",
+      "id": "deployment-automation/evals",
       "type": "support",
       "label": "deployment-automation/evals",
       "degree": 1
     },
     {
-      "id": "deployment-automation:references",
+      "id": "deployment-automation/references",
       "type": "support",
       "label": "deployment-automation/references",
       "degree": 1
     },
     {
-      "id": "design-system:compact",
+      "id": "design-system/compact",
       "type": "support",
       "label": "design-system/compact",
       "degree": 1
     },
     {
-      "id": "design-system:evals",
+      "id": "design-system/evals",
       "type": "support",
       "label": "design-system/evals",
       "degree": 1
     },
     {
-      "id": "design-system:references",
+      "id": "design-system/references",
       "type": "support",
       "label": "design-system/references",
       "degree": 1
     },
     {
-      "id": "environment-setup:compact",
+      "id": "environment-setup/compact",
       "type": "support",
       "label": "environment-setup/compact",
       "degree": 1
     },
     {
-      "id": "environment-setup:evals",
+      "id": "environment-setup/evals",
       "type": "support",
       "label": "environment-setup/evals",
       "degree": 1
     },
     {
-      "id": "environment-setup:references",
+      "id": "environment-setup/references",
       "type": "support",
       "label": "environment-setup/references",
       "degree": 1
     },
     {
-      "id": "fabric:compact",
+      "id": "fabric/compact",
       "type": "support",
       "label": "fabric/compact",
       "degree": 1
     },
     {
-      "id": "fabric:evals",
+      "id": "fabric/evals",
       "type": "support",
       "label": "fabric/evals",
       "degree": 1
     },
     {
-      "id": "fabric:references",
+      "id": "fabric/references",
       "type": "support",
       "label": "fabric/references",
       "degree": 1
     },
     {
-      "id": "file-organization:compact",
+      "id": "file-organization/compact",
       "type": "support",
       "label": "file-organization/compact",
       "degree": 1
     },
     {
-      "id": "file-organization:evals",
+      "id": "file-organization/evals",
       "type": "support",
       "label": "file-organization/evals",
       "degree": 1
     },
     {
-      "id": "file-organization:references",
+      "id": "file-organization/references",
       "type": "support",
       "label": "file-organization/references",
       "degree": 1
     },
     {
-      "id": "firebase-ai-logic:compact",
+      "id": "firebase-ai-logic/compact",
       "type": "support",
       "label": "firebase-ai-logic/compact",
       "degree": 1
     },
     {
-      "id": "firebase-ai-logic:evals",
+      "id": "firebase-ai-logic/evals",
       "type": "support",
       "label": "firebase-ai-logic/evals",
       "degree": 1
     },
     {
-      "id": "firebase-ai-logic:references",
+      "id": "firebase-ai-logic/references",
       "type": "support",
       "label": "firebase-ai-logic/references",
       "degree": 1
     },
     {
-      "id": "firebase-cli:compact",
+      "id": "firebase-cli/compact",
       "type": "support",
       "label": "firebase-cli/compact",
       "degree": 1
     },
     {
-      "id": "firebase-cli:evals",
+      "id": "firebase-cli/evals",
       "type": "support",
       "label": "firebase-cli/evals",
       "degree": 1
     },
     {
-      "id": "firebase-cli:references",
+      "id": "firebase-cli/references",
       "type": "support",
       "label": "firebase-cli/references",
       "degree": 1
     },
     {
-      "id": "firebase-cli:scripts",
+      "id": "firebase-cli/scripts",
       "type": "support",
       "label": "firebase-cli/scripts",
       "degree": 1
     },
     {
-      "id": "frontend-design-system:compact",
+      "id": "frontend-design-system/compact",
       "type": "support",
       "label": "frontend-design-system/compact",
       "degree": 1
     },
     {
-      "id": "frontend-design-system:evals",
+      "id": "frontend-design-system/evals",
       "type": "support",
       "label": "frontend-design-system/evals",
       "degree": 1
     },
     {
-      "id": "frontend-design-system:references",
+      "id": "frontend-design-system/references",
       "type": "support",
       "label": "frontend-design-system/references",
       "degree": 1
     },
     {
-      "id": "game-build-log-triage:compact",
+      "id": "game-build-log-triage/compact",
       "type": "support",
       "label": "game-build-log-triage/compact",
       "degree": 1
     },
     {
-      "id": "game-build-log-triage:evals",
+      "id": "game-build-log-triage/evals",
       "type": "support",
       "label": "game-build-log-triage/evals",
       "degree": 1
     },
     {
-      "id": "game-build-log-triage:references",
+      "id": "game-build-log-triage/references",
       "type": "support",
       "label": "game-build-log-triage/references",
       "degree": 1
     },
     {
-      "id": "game-ci-cd-pipeline:compact",
+      "id": "game-ci-cd-pipeline/compact",
       "type": "support",
       "label": "game-ci-cd-pipeline/compact",
       "degree": 1
     },
     {
-      "id": "game-ci-cd-pipeline:evals",
+      "id": "game-ci-cd-pipeline/evals",
       "type": "support",
       "label": "game-ci-cd-pipeline/evals",
       "degree": 1
     },
     {
-      "id": "game-ci-cd-pipeline:references",
+      "id": "game-ci-cd-pipeline/references",
       "type": "support",
       "label": "game-ci-cd-pipeline/references",
       "degree": 1
     },
     {
-      "id": "game-demo-feedback-triage:compact",
+      "id": "game-demo-feedback-triage/compact",
       "type": "support",
       "label": "game-demo-feedback-triage/compact",
       "degree": 1
     },
     {
-      "id": "game-demo-feedback-triage:evals",
+      "id": "game-demo-feedback-triage/evals",
       "type": "support",
       "label": "game-demo-feedback-triage/evals",
       "degree": 1
     },
     {
-      "id": "game-demo-feedback-triage:references",
+      "id": "game-demo-feedback-triage/references",
       "type": "support",
       "label": "game-demo-feedback-triage/references",
       "degree": 1
     },
     {
-      "id": "game-performance-profiler:compact",
+      "id": "game-performance-profiler/compact",
       "type": "support",
       "label": "game-performance-profiler/compact",
       "degree": 1
     },
     {
-      "id": "game-performance-profiler:evals",
+      "id": "game-performance-profiler/evals",
       "type": "support",
       "label": "game-performance-profiler/evals",
       "degree": 1
     },
     {
-      "id": "game-performance-profiler:references",
+      "id": "game-performance-profiler/references",
       "type": "support",
       "label": "game-performance-profiler/references",
       "degree": 1
     },
     {
-      "id": "genkit:compact",
+      "id": "genkit/compact",
       "type": "support",
       "label": "genkit/compact",
       "degree": 1
     },
     {
-      "id": "genkit:evals",
+      "id": "genkit/evals",
       "type": "support",
       "label": "genkit/evals",
       "degree": 1
     },
     {
-      "id": "genkit:references",
+      "id": "genkit/references",
       "type": "support",
       "label": "genkit/references",
       "degree": 1
     },
     {
-      "id": "git-submodule:compact",
+      "id": "git-submodule/compact",
       "type": "support",
       "label": "git-submodule/compact",
       "degree": 1
     },
     {
-      "id": "git-submodule:evals",
+      "id": "git-submodule/evals",
       "type": "support",
       "label": "git-submodule/evals",
       "degree": 1
     },
     {
-      "id": "git-submodule:references",
+      "id": "git-submodule/references",
       "type": "support",
       "label": "git-submodule/references",
       "degree": 1
     },
     {
-      "id": "git-workflow:compact",
+      "id": "git-workflow/compact",
       "type": "support",
       "label": "git-workflow/compact",
       "degree": 1
     },
     {
-      "id": "git-workflow:evals",
+      "id": "git-workflow/evals",
       "type": "support",
       "label": "git-workflow/evals",
       "degree": 1
     },
     {
-      "id": "git-workflow:references",
+      "id": "git-workflow/references",
       "type": "support",
       "label": "git-workflow/references",
       "degree": 1
     },
     {
-      "id": "google-workspace:compact",
+      "id": "google-workspace/compact",
       "type": "support",
       "label": "google-workspace/compact",
       "degree": 1
     },
     {
-      "id": "google-workspace:evals",
+      "id": "google-workspace/evals",
       "type": "support",
       "label": "google-workspace/evals",
       "degree": 1
     },
     {
-      "id": "google-workspace:references",
+      "id": "google-workspace/references",
       "type": "support",
       "label": "google-workspace/references",
       "degree": 1
     },
     {
-      "id": "google-workspace:scripts",
+      "id": "google-workspace/scripts",
       "type": "support",
       "label": "google-workspace/scripts",
       "degree": 1
     },
     {
-      "id": "harness:compact",
+      "id": "harness/compact",
       "type": "support",
       "label": "harness/compact",
       "degree": 1
     },
     {
-      "id": "harness:evals",
+      "id": "harness/evals",
       "type": "support",
       "label": "harness/evals",
       "degree": 1
     },
     {
-      "id": "harness:references",
+      "id": "harness/references",
       "type": "support",
       "label": "harness/references",
       "degree": 1
     },
     {
-      "id": "harness:scripts",
+      "id": "harness/scripts",
       "type": "support",
       "label": "harness/scripts",
       "degree": 1
     },
     {
-      "id": "jeo:compact",
+      "id": "jeo/compact",
       "type": "support",
       "label": "jeo/compact",
       "degree": 1
     },
     {
-      "id": "jeo:evals",
+      "id": "jeo/evals",
       "type": "support",
       "label": "jeo/evals",
       "degree": 1
     },
     {
-      "id": "jeo:references",
+      "id": "jeo/references",
       "type": "support",
       "label": "jeo/references",
       "degree": 1
     },
     {
-      "id": "jeo:scripts",
+      "id": "jeo/scripts",
       "type": "support",
       "label": "jeo/scripts",
       "degree": 1
     },
     {
-      "id": "langsmith:compact",
+      "id": "langsmith/compact",
       "type": "support",
       "label": "langsmith/compact",
       "degree": 1
     },
     {
-      "id": "langsmith:evals",
+      "id": "langsmith/evals",
       "type": "support",
       "label": "langsmith/evals",
       "degree": 1
     },
     {
-      "id": "langsmith:references",
+      "id": "langsmith/references",
       "type": "support",
       "label": "langsmith/references",
       "degree": 1
     },
     {
-      "id": "langsmith:scripts",
+      "id": "langsmith/scripts",
       "type": "support",
       "label": "langsmith/scripts",
       "degree": 1
     },
     {
-      "id": "llm-wiki:compact",
+      "id": "llm-wiki/compact",
       "type": "support",
       "label": "llm-wiki/compact",
       "degree": 1
     },
     {
-      "id": "llm-wiki:evals",
+      "id": "llm-wiki/evals",
       "type": "support",
       "label": "llm-wiki/evals",
       "degree": 1
     },
     {
-      "id": "llm-wiki:references",
+      "id": "llm-wiki/references",
       "type": "support",
       "label": "llm-wiki/references",
       "degree": 1
     },
     {
-      "id": "llm-wiki:scripts",
+      "id": "llm-wiki/scripts",
       "type": "support",
       "label": "llm-wiki/scripts",
       "degree": 1
     },
     {
-      "id": "lmstudio-cli:compact",
+      "id": "lmstudio-cli/compact",
       "type": "support",
       "label": "lmstudio-cli/compact",
       "degree": 1
     },
     {
-      "id": "lmstudio-cli:evals",
+      "id": "lmstudio-cli/evals",
       "type": "support",
       "label": "lmstudio-cli/evals",
       "degree": 1
     },
     {
-      "id": "lmstudio-cli:references",
+      "id": "lmstudio-cli/references",
       "type": "support",
       "label": "lmstudio-cli/references",
       "degree": 1
     },
     {
-      "id": "lmstudio-cli:scripts",
+      "id": "lmstudio-cli/scripts",
       "type": "support",
       "label": "lmstudio-cli/scripts",
       "degree": 1
     },
     {
-      "id": "log-analysis:compact",
+      "id": "log-analysis/compact",
       "type": "support",
       "label": "log-analysis/compact",
       "degree": 1
     },
     {
-      "id": "log-analysis:evals",
+      "id": "log-analysis/evals",
       "type": "support",
       "label": "log-analysis/evals",
       "degree": 1
     },
     {
-      "id": "log-analysis:references",
+      "id": "log-analysis/references",
       "type": "support",
       "label": "log-analysis/references",
       "degree": 1
     },
     {
-      "id": "looker-studio-bigquery:compact",
+      "id": "looker-studio-bigquery/compact",
       "type": "support",
       "label": "looker-studio-bigquery/compact",
       "degree": 1
     },
     {
-      "id": "looker-studio-bigquery:evals",
+      "id": "looker-studio-bigquery/evals",
       "type": "support",
       "label": "looker-studio-bigquery/evals",
       "degree": 1
     },
     {
-      "id": "looker-studio-bigquery:references",
+      "id": "looker-studio-bigquery/references",
       "type": "support",
       "label": "looker-studio-bigquery/references",
       "degree": 1
     },
     {
-      "id": "marketing-automation:compact",
+      "id": "marketing-automation/compact",
       "type": "support",
       "label": "marketing-automation/compact",
       "degree": 1
     },
     {
-      "id": "marketing-automation:evals",
+      "id": "marketing-automation/evals",
       "type": "support",
       "label": "marketing-automation/evals",
       "degree": 1
     },
     {
-      "id": "marketing-automation:references",
+      "id": "marketing-automation/references",
       "type": "support",
       "label": "marketing-automation/references",
       "degree": 1
     },
     {
-      "id": "marketing-skills-collection:compact",
+      "id": "marketing-skills-collection/compact",
       "type": "support",
       "label": "marketing-skills-collection/compact",
       "degree": 1
     },
     {
-      "id": "marketing-skills-collection:evals",
+      "id": "marketing-skills-collection/evals",
       "type": "support",
       "label": "marketing-skills-collection/evals",
       "degree": 1
     },
     {
-      "id": "marketing-skills-collection:references",
+      "id": "marketing-skills-collection/references",
       "type": "support",
       "label": "marketing-skills-collection/references",
       "degree": 1
     },
     {
-      "id": "monitoring-observability:compact",
+      "id": "monitoring-observability/compact",
       "type": "support",
       "label": "monitoring-observability/compact",
       "degree": 1
     },
     {
-      "id": "monitoring-observability:evals",
+      "id": "monitoring-observability/evals",
       "type": "support",
       "label": "monitoring-observability/evals",
       "degree": 1
     },
     {
-      "id": "monitoring-observability:references",
+      "id": "monitoring-observability/references",
       "type": "support",
       "label": "monitoring-observability/references",
       "degree": 1
     },
     {
-      "id": "npm-git-install:compact",
+      "id": "npm-git-install/compact",
       "type": "support",
       "label": "npm-git-install/compact",
       "degree": 1
     },
     {
-      "id": "npm-git-install:evals",
+      "id": "npm-git-install/evals",
       "type": "support",
       "label": "npm-git-install/evals",
       "degree": 1
     },
     {
-      "id": "npm-git-install:references",
+      "id": "npm-git-install/references",
       "type": "support",
       "label": "npm-git-install/references",
       "degree": 1
     },
     {
-      "id": "obsidian-cli:compact",
+      "id": "obsidian-cli/compact",
       "type": "support",
       "label": "obsidian-cli/compact",
       "degree": 1
     },
     {
-      "id": "obsidian-cli:evals",
+      "id": "obsidian-cli/evals",
       "type": "support",
       "label": "obsidian-cli/evals",
       "degree": 1
     },
     {
-      "id": "obsidian-cli:references",
+      "id": "obsidian-cli/references",
       "type": "support",
       "label": "obsidian-cli/references",
       "degree": 1
     },
     {
-      "id": "obsidian-cli:scripts",
+      "id": "obsidian-cli/scripts",
       "type": "support",
       "label": "obsidian-cli/scripts",
       "degree": 1
     },
     {
-      "id": "obsidian-plugin:compact",
+      "id": "obsidian-plugin/compact",
       "type": "support",
       "label": "obsidian-plugin/compact",
       "degree": 1
     },
     {
-      "id": "obsidian-plugin:evals",
+      "id": "obsidian-plugin/evals",
       "type": "support",
       "label": "obsidian-plugin/evals",
       "degree": 1
     },
     {
-      "id": "obsidian-plugin:references",
+      "id": "obsidian-plugin/references",
       "type": "support",
       "label": "obsidian-plugin/references",
       "degree": 1
     },
     {
-      "id": "obsidian-plugin:scripts",
+      "id": "obsidian-plugin/scripts",
       "type": "support",
       "label": "obsidian-plugin/scripts",
       "degree": 1
     },
     {
-      "id": "ohmg:compact",
+      "id": "ohmg/compact",
       "type": "support",
       "label": "ohmg/compact",
       "degree": 1
     },
     {
-      "id": "ohmg:evals",
+      "id": "ohmg/evals",
       "type": "support",
       "label": "ohmg/evals",
       "degree": 1
     },
     {
-      "id": "ohmg:references",
+      "id": "ohmg/references",
       "type": "support",
       "label": "ohmg/references",
       "degree": 1
     },
     {
-      "id": "omc:compact",
+      "id": "omc/compact",
       "type": "support",
       "label": "omc/compact",
       "degree": 1
     },
     {
-      "id": "omc:evals",
+      "id": "omc/evals",
       "type": "support",
       "label": "omc/evals",
       "degree": 1
     },
     {
-      "id": "omc:references",
+      "id": "omc/references",
       "type": "support",
       "label": "omc/references",
       "degree": 1
     },
     {
-      "id": "omc:scripts",
+      "id": "omc/scripts",
       "type": "support",
       "label": "omc/scripts",
       "degree": 1
     },
     {
-      "id": "omx:compact",
+      "id": "omx/compact",
       "type": "support",
       "label": "omx/compact",
       "degree": 1
     },
     {
-      "id": "omx:evals",
+      "id": "omx/evals",
       "type": "support",
       "label": "omx/evals",
       "degree": 1
     },
     {
-      "id": "omx:references",
+      "id": "omx/references",
       "type": "support",
       "label": "omx/references",
       "degree": 1
     },
     {
-      "id": "omx:scripts",
+      "id": "omx/scripts",
       "type": "support",
       "label": "omx/scripts",
       "degree": 1
     },
     {
-      "id": "opencontext:compact",
+      "id": "opencontext/compact",
       "type": "support",
       "label": "opencontext/compact",
       "degree": 1
     },
     {
-      "id": "opencontext:evals",
+      "id": "opencontext/evals",
       "type": "support",
       "label": "opencontext/evals",
       "degree": 1
     },
     {
-      "id": "opencontext:references",
+      "id": "opencontext/references",
       "type": "support",
       "label": "opencontext/references",
       "degree": 1
     },
     {
-      "id": "pattern-detection:compact",
+      "id": "pattern-detection/compact",
       "type": "support",
       "label": "pattern-detection/compact",
       "degree": 1
     },
     {
-      "id": "pattern-detection:evals",
+      "id": "pattern-detection/evals",
       "type": "support",
       "label": "pattern-detection/evals",
       "degree": 1
     },
     {
-      "id": "pattern-detection:references",
+      "id": "pattern-detection/references",
       "type": "support",
       "label": "pattern-detection/references",
       "degree": 1
     },
     {
-      "id": "performance-optimization:compact",
+      "id": "performance-optimization/compact",
       "type": "support",
       "label": "performance-optimization/compact",
       "degree": 1
     },
     {
-      "id": "performance-optimization:evals",
+      "id": "performance-optimization/evals",
       "type": "support",
       "label": "performance-optimization/evals",
       "degree": 1
     },
     {
-      "id": "performance-optimization:references",
+      "id": "performance-optimization/references",
       "type": "support",
       "label": "performance-optimization/references",
       "degree": 1
     },
     {
-      "id": "plannotator:compact",
+      "id": "plannotator/compact",
       "type": "support",
       "label": "plannotator/compact",
       "degree": 1
     },
     {
-      "id": "plannotator:evals",
+      "id": "plannotator/evals",
       "type": "support",
       "label": "plannotator/evals",
       "degree": 1
     },
     {
-      "id": "plannotator:references",
+      "id": "plannotator/references",
       "type": "support",
       "label": "plannotator/references",
       "degree": 1
     },
     {
-      "id": "plannotator:scripts",
+      "id": "plannotator/scripts",
       "type": "support",
       "label": "plannotator/scripts",
       "degree": 1
     },
     {
-      "id": "playwriter:compact",
+      "id": "playwriter/compact",
       "type": "support",
       "label": "playwriter/compact",
       "degree": 1
     },
     {
-      "id": "playwriter:evals",
+      "id": "playwriter/evals",
       "type": "support",
       "label": "playwriter/evals",
       "degree": 1
     },
     {
-      "id": "playwriter:references",
+      "id": "playwriter/references",
       "type": "support",
       "label": "playwriter/references",
       "degree": 1
     },
     {
-      "id": "presentation-builder:compact",
+      "id": "presentation-builder/compact",
       "type": "support",
       "label": "presentation-builder/compact",
       "degree": 1
     },
     {
-      "id": "presentation-builder:evals",
+      "id": "presentation-builder/evals",
       "type": "support",
       "label": "presentation-builder/evals",
       "degree": 1
     },
     {
-      "id": "presentation-builder:references",
+      "id": "presentation-builder/references",
       "type": "support",
       "label": "presentation-builder/references",
       "degree": 1
     },
     {
-      "id": "prompt-repetition:compact",
+      "id": "prompt-repetition/compact",
       "type": "support",
       "label": "prompt-repetition/compact",
       "degree": 1
     },
     {
-      "id": "prompt-repetition:evals",
+      "id": "prompt-repetition/evals",
       "type": "support",
       "label": "prompt-repetition/evals",
       "degree": 1
     },
     {
-      "id": "prompt-repetition:references",
+      "id": "prompt-repetition/references",
       "type": "support",
       "label": "prompt-repetition/references",
       "degree": 1
     },
     {
-      "id": "ralph:compact",
+      "id": "ralph/compact",
       "type": "support",
       "label": "ralph/compact",
       "degree": 1
     },
     {
-      "id": "ralph:evals",
+      "id": "ralph/evals",
       "type": "support",
       "label": "ralph/evals",
       "degree": 1
     },
     {
-      "id": "ralph:references",
+      "id": "ralph/references",
       "type": "support",
       "label": "ralph/references",
       "degree": 1
     },
     {
-      "id": "ralph:scripts",
+      "id": "ralph/scripts",
       "type": "support",
       "label": "ralph/scripts",
       "degree": 1
     },
     {
-      "id": "ralphmode:compact",
+      "id": "ralphmode/compact",
       "type": "support",
       "label": "ralphmode/compact",
       "degree": 1
     },
     {
-      "id": "ralphmode:evals",
+      "id": "ralphmode/evals",
       "type": "support",
       "label": "ralphmode/evals",
       "degree": 1
     },
     {
-      "id": "ralphmode:references",
+      "id": "ralphmode/references",
       "type": "support",
       "label": "ralphmode/references",
       "degree": 1
     },
     {
-      "id": "react-best-practices:compact",
+      "id": "react-best-practices/compact",
       "type": "support",
       "label": "react-best-practices/compact",
       "degree": 1
     },
     {
-      "id": "react-best-practices:evals",
+      "id": "react-best-practices/evals",
       "type": "support",
       "label": "react-best-practices/evals",
       "degree": 1
     },
     {
-      "id": "react-best-practices:references",
+      "id": "react-best-practices/references",
       "type": "support",
       "label": "react-best-practices/references",
       "degree": 1
     },
     {
-      "id": "react-grab:compact",
+      "id": "react-grab/compact",
       "type": "support",
       "label": "react-grab/compact",
       "degree": 1
     },
     {
-      "id": "react-grab:evals",
+      "id": "react-grab/evals",
       "type": "support",
       "label": "react-grab/evals",
       "degree": 1
     },
     {
-      "id": "react-grab:references",
+      "id": "react-grab/references",
       "type": "support",
       "label": "react-grab/references",
       "degree": 1
     },
     {
-      "id": "react-grab:scripts",
+      "id": "react-grab/scripts",
       "type": "support",
       "label": "react-grab/scripts",
       "degree": 1
     },
     {
-      "id": "remotion-video-production:compact",
+      "id": "remotion-video-production/compact",
       "type": "support",
       "label": "remotion-video-production/compact",
       "degree": 1
     },
     {
-      "id": "remotion-video-production:evals",
+      "id": "remotion-video-production/evals",
       "type": "support",
       "label": "remotion-video-production/evals",
       "degree": 1
     },
     {
-      "id": "remotion-video-production:references",
+      "id": "remotion-video-production/references",
       "type": "support",
       "label": "remotion-video-production/references",
       "degree": 1
     },
     {
-      "id": "research-paper-writing:compact",
+      "id": "research-paper-writing/compact",
       "type": "support",
       "label": "research-paper-writing/compact",
       "degree": 1
     },
     {
-      "id": "research-paper-writing:evals",
+      "id": "research-paper-writing/evals",
       "type": "support",
       "label": "research-paper-writing/evals",
       "degree": 1
     },
     {
-      "id": "research-paper-writing:references",
+      "id": "research-paper-writing/references",
       "type": "support",
       "label": "research-paper-writing/references",
       "degree": 1
     },
     {
-      "id": "responsive-design:compact",
+      "id": "responsive-design/compact",
       "type": "support",
       "label": "responsive-design/compact",
       "degree": 1
     },
     {
-      "id": "responsive-design:evals",
+      "id": "responsive-design/evals",
       "type": "support",
       "label": "responsive-design/evals",
       "degree": 1
     },
     {
-      "id": "responsive-design:references",
+      "id": "responsive-design/references",
       "type": "support",
       "label": "responsive-design/references",
       "degree": 1
     },
     {
-      "id": "rtk:compact",
+      "id": "rtk/compact",
       "type": "support",
       "label": "rtk/compact",
       "degree": 1
     },
     {
-      "id": "rtk:evals",
+      "id": "rtk/evals",
       "type": "support",
       "label": "rtk/evals",
       "degree": 1
     },
     {
-      "id": "rtk:references",
+      "id": "rtk/references",
       "type": "support",
       "label": "rtk/references",
       "degree": 1
     },
     {
-      "id": "rtk:scripts",
+      "id": "rtk/scripts",
       "type": "support",
       "label": "rtk/scripts",
       "degree": 1
     },
     {
-      "id": "scrapling:compact",
+      "id": "scrapling/compact",
       "type": "support",
       "label": "scrapling/compact",
       "degree": 1
     },
     {
-      "id": "scrapling:evals",
+      "id": "scrapling/evals",
       "type": "support",
       "label": "scrapling/evals",
       "degree": 1
     },
     {
-      "id": "scrapling:references",
+      "id": "scrapling/references",
       "type": "support",
       "label": "scrapling/references",
       "degree": 1
     },
     {
-      "id": "scrapling:scripts",
+      "id": "scrapling/scripts",
       "type": "support",
       "label": "scrapling/scripts",
       "degree": 1
     },
     {
-      "id": "security-best-practices:compact",
+      "id": "security-best-practices/compact",
       "type": "support",
       "label": "security-best-practices/compact",
       "degree": 1
     },
     {
-      "id": "security-best-practices:evals",
+      "id": "security-best-practices/evals",
       "type": "support",
       "label": "security-best-practices/evals",
       "degree": 1
     },
     {
-      "id": "security-best-practices:references",
+      "id": "security-best-practices/references",
       "type": "support",
       "label": "security-best-practices/references",
       "degree": 1
     },
     {
-      "id": "skill-autoresearch:compact",
+      "id": "skill-autoresearch/compact",
       "type": "support",
       "label": "skill-autoresearch/compact",
       "degree": 1
     },
     {
-      "id": "skill-autoresearch:evals",
+      "id": "skill-autoresearch/evals",
       "type": "support",
       "label": "skill-autoresearch/evals",
       "degree": 1
     },
     {
-      "id": "skill-autoresearch:references",
+      "id": "skill-autoresearch/references",
       "type": "support",
       "label": "skill-autoresearch/references",
       "degree": 1
     },
     {
-      "id": "skill-standardization:compact",
+      "id": "skill-standardization/compact",
       "type": "support",
       "label": "skill-standardization/compact",
       "degree": 1
     },
     {
-      "id": "skill-standardization:evals",
+      "id": "skill-standardization/evals",
       "type": "support",
       "label": "skill-standardization/evals",
       "degree": 1
     },
     {
-      "id": "skill-standardization:references",
+      "id": "skill-standardization/references",
       "type": "support",
       "label": "skill-standardization/references",
       "degree": 1
     },
     {
-      "id": "skill-standardization:scripts",
+      "id": "skill-standardization/scripts",
       "type": "support",
       "label": "skill-standardization/scripts",
       "degree": 1
     },
     {
-      "id": "sprint-retrospective:compact",
+      "id": "sprint-retrospective/compact",
       "type": "support",
       "label": "sprint-retrospective/compact",
       "degree": 1
     },
     {
-      "id": "sprint-retrospective:evals",
+      "id": "sprint-retrospective/evals",
       "type": "support",
       "label": "sprint-retrospective/evals",
       "degree": 1
     },
     {
-      "id": "sprint-retrospective:references",
+      "id": "sprint-retrospective/references",
       "type": "support",
       "label": "sprint-retrospective/references",
       "degree": 1
     },
     {
-      "id": "standup-meeting:compact",
+      "id": "standup-meeting/compact",
       "type": "support",
       "label": "standup-meeting/compact",
       "degree": 1
     },
     {
-      "id": "standup-meeting:evals",
+      "id": "standup-meeting/evals",
       "type": "support",
       "label": "standup-meeting/evals",
       "degree": 1
     },
     {
-      "id": "standup-meeting:references",
+      "id": "standup-meeting/references",
       "type": "support",
       "label": "standup-meeting/references",
       "degree": 1
     },
     {
-      "id": "state-management:compact",
+      "id": "state-management/compact",
       "type": "support",
       "label": "state-management/compact",
       "degree": 1
     },
     {
-      "id": "state-management:evals",
+      "id": "state-management/evals",
       "type": "support",
       "label": "state-management/evals",
       "degree": 1
     },
     {
-      "id": "state-management:references",
+      "id": "state-management/references",
       "type": "support",
       "label": "state-management/references",
       "degree": 1
     },
     {
-      "id": "steam-store-launch-ops:compact",
+      "id": "steam-store-launch-ops/compact",
       "type": "support",
       "label": "steam-store-launch-ops/compact",
       "degree": 1
     },
     {
-      "id": "steam-store-launch-ops:evals",
+      "id": "steam-store-launch-ops/evals",
       "type": "support",
       "label": "steam-store-launch-ops/evals",
       "degree": 1
     },
     {
-      "id": "steam-store-launch-ops:references",
+      "id": "steam-store-launch-ops/references",
       "type": "support",
       "label": "steam-store-launch-ops/references",
       "degree": 1
     },
     {
-      "id": "strix:compact",
+      "id": "strix/compact",
       "type": "support",
       "label": "strix/compact",
       "degree": 1
     },
     {
-      "id": "strix:evals",
+      "id": "strix/evals",
       "type": "support",
       "label": "strix/evals",
       "degree": 1
     },
     {
-      "id": "strix:references",
+      "id": "strix/references",
       "type": "support",
       "label": "strix/references",
       "degree": 1
     },
     {
-      "id": "strix:scripts",
+      "id": "strix/scripts",
       "type": "support",
       "label": "strix/scripts",
       "degree": 1
     },
     {
-      "id": "survey:compact",
+      "id": "survey/compact",
       "type": "support",
       "label": "survey/compact",
       "degree": 1
     },
     {
-      "id": "survey:evals",
+      "id": "survey/evals",
       "type": "support",
       "label": "survey/evals",
       "degree": 1
     },
     {
-      "id": "survey:references",
+      "id": "survey/references",
       "type": "support",
       "label": "survey/references",
       "degree": 1
     },
     {
-      "id": "system-environment-setup:compact",
+      "id": "system-environment-setup/compact",
       "type": "support",
       "label": "system-environment-setup/compact",
       "degree": 1
     },
     {
-      "id": "system-environment-setup:evals",
+      "id": "system-environment-setup/evals",
       "type": "support",
       "label": "system-environment-setup/evals",
       "degree": 1
     },
     {
-      "id": "system-environment-setup:references",
+      "id": "system-environment-setup/references",
       "type": "support",
       "label": "system-environment-setup/references",
       "degree": 1
     },
     {
-      "id": "task-estimation:compact",
+      "id": "task-estimation/compact",
       "type": "support",
       "label": "task-estimation/compact",
       "degree": 1
     },
     {
-      "id": "task-estimation:evals",
+      "id": "task-estimation/evals",
       "type": "support",
       "label": "task-estimation/evals",
       "degree": 1
     },
     {
-      "id": "task-estimation:references",
+      "id": "task-estimation/references",
       "type": "support",
       "label": "task-estimation/references",
       "degree": 1
     },
     {
-      "id": "task-planning:compact",
+      "id": "task-planning/compact",
       "type": "support",
       "label": "task-planning/compact",
       "degree": 1
     },
     {
-      "id": "task-planning:evals",
+      "id": "task-planning/evals",
       "type": "support",
       "label": "task-planning/evals",
       "degree": 1
     },
     {
-      "id": "task-planning:references",
+      "id": "task-planning/references",
       "type": "support",
       "label": "task-planning/references",
       "degree": 1
     },
     {
-      "id": "technical-writing:compact",
+      "id": "technical-writing/compact",
       "type": "support",
       "label": "technical-writing/compact",
       "degree": 1
     },
     {
-      "id": "technical-writing:evals",
+      "id": "technical-writing/evals",
       "type": "support",
       "label": "technical-writing/evals",
       "degree": 1
     },
     {
-      "id": "technical-writing:references",
+      "id": "technical-writing/references",
       "type": "support",
       "label": "technical-writing/references",
       "degree": 1
     },
     {
-      "id": "testing-strategies:compact",
+      "id": "testing-strategies/compact",
       "type": "support",
       "label": "testing-strategies/compact",
       "degree": 1
     },
     {
-      "id": "testing-strategies:evals",
+      "id": "testing-strategies/evals",
       "type": "support",
       "label": "testing-strategies/evals",
       "degree": 1
     },
     {
-      "id": "testing-strategies:references",
+      "id": "testing-strategies/references",
       "type": "support",
       "label": "testing-strategies/references",
       "degree": 1
     },
     {
-      "id": "ui-component-patterns:compact",
+      "id": "ui-component-patterns/compact",
       "type": "support",
       "label": "ui-component-patterns/compact",
       "degree": 1
     },
     {
-      "id": "ui-component-patterns:evals",
+      "id": "ui-component-patterns/evals",
       "type": "support",
       "label": "ui-component-patterns/evals",
       "degree": 1
     },
     {
-      "id": "ui-component-patterns:references",
+      "id": "ui-component-patterns/references",
       "type": "support",
       "label": "ui-component-patterns/references",
       "degree": 1
     },
     {
-      "id": "user-guide-writing:compact",
+      "id": "user-guide-writing/compact",
       "type": "support",
       "label": "user-guide-writing/compact",
       "degree": 1
     },
     {
-      "id": "user-guide-writing:evals",
+      "id": "user-guide-writing/evals",
       "type": "support",
       "label": "user-guide-writing/evals",
       "degree": 1
     },
     {
-      "id": "user-guide-writing:references",
+      "id": "user-guide-writing/references",
       "type": "support",
       "label": "user-guide-writing/references",
       "degree": 1
     },
     {
-      "id": "vercel-deploy:compact",
+      "id": "vercel-deploy/compact",
       "type": "support",
       "label": "vercel-deploy/compact",
       "degree": 1
     },
     {
-      "id": "vercel-deploy:evals",
+      "id": "vercel-deploy/evals",
       "type": "support",
       "label": "vercel-deploy/evals",
       "degree": 1
     },
     {
-      "id": "vercel-deploy:references",
+      "id": "vercel-deploy/references",
       "type": "support",
       "label": "vercel-deploy/references",
       "degree": 1
     },
     {
-      "id": "vercel-deploy:scripts",
+      "id": "vercel-deploy/scripts",
       "type": "support",
       "label": "vercel-deploy/scripts",
       "degree": 1
     },
     {
-      "id": "vercel-react-best-practices:compact",
+      "id": "vercel-react-best-practices/compact",
       "type": "support",
       "label": "vercel-react-best-practices/compact",
       "degree": 1
     },
     {
-      "id": "vercel-react-best-practices:evals",
+      "id": "vercel-react-best-practices/evals",
       "type": "support",
       "label": "vercel-react-best-practices/evals",
       "degree": 1
     },
     {
-      "id": "vercel-react-best-practices:references",
+      "id": "vercel-react-best-practices/references",
       "type": "support",
       "label": "vercel-react-best-practices/references",
       "degree": 1
     },
     {
-      "id": "vibe-kanban:compact",
+      "id": "vibe-kanban/compact",
       "type": "support",
       "label": "vibe-kanban/compact",
       "degree": 1
     },
     {
-      "id": "vibe-kanban:evals",
+      "id": "vibe-kanban/evals",
       "type": "support",
       "label": "vibe-kanban/evals",
       "degree": 1
     },
     {
-      "id": "vibe-kanban:references",
+      "id": "vibe-kanban/references",
       "type": "support",
       "label": "vibe-kanban/references",
       "degree": 1
     },
     {
-      "id": "vibe-kanban:scripts",
+      "id": "vibe-kanban/scripts",
       "type": "support",
       "label": "vibe-kanban/scripts",
       "degree": 1
     },
     {
-      "id": "video-production:compact",
+      "id": "video-production/compact",
       "type": "support",
       "label": "video-production/compact",
       "degree": 1
     },
     {
-      "id": "video-production:evals",
+      "id": "video-production/evals",
       "type": "support",
       "label": "video-production/evals",
       "degree": 1
     },
     {
-      "id": "video-production:references",
+      "id": "video-production/references",
       "type": "support",
       "label": "video-production/references",
       "degree": 1
     },
     {
-      "id": "web-accessibility:compact",
+      "id": "web-accessibility/compact",
       "type": "support",
       "label": "web-accessibility/compact",
       "degree": 1
     },
     {
-      "id": "web-accessibility:evals",
+      "id": "web-accessibility/evals",
       "type": "support",
       "label": "web-accessibility/evals",
       "degree": 1
     },
     {
-      "id": "web-accessibility:references",
+      "id": "web-accessibility/references",
       "type": "support",
       "label": "web-accessibility/references",
       "degree": 1
     },
     {
-      "id": "web-design-guidelines:compact",
+      "id": "web-design-guidelines/compact",
       "type": "support",
       "label": "web-design-guidelines/compact",
       "degree": 1
     },
     {
-      "id": "web-design-guidelines:evals",
+      "id": "web-design-guidelines/evals",
       "type": "support",
       "label": "web-design-guidelines/evals",
       "degree": 1
     },
     {
-      "id": "web-design-guidelines:references",
+      "id": "web-design-guidelines/references",
       "type": "support",
       "label": "web-design-guidelines/references",
       "degree": 1
     },
     {
-      "id": "workflow-automation:compact",
+      "id": "workflow-automation/compact",
       "type": "support",
       "label": "workflow-automation/compact",
       "degree": 1
     },
     {
-      "id": "workflow-automation:evals",
+      "id": "workflow-automation/evals",
       "type": "support",
       "label": "workflow-automation/evals",
       "degree": 1
     },
     {
-      "id": "workflow-automation:references",
+      "id": "workflow-automation/references",
       "type": "support",
       "label": "workflow-automation/references",
       "degree": 1
@@ -2404,1746 +2404,1746 @@
     {
       "source": ".agent-skills/skills.json",
       "target": "agent-browser",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "agentation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "api-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "api-documentation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "authentication-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "autoresearch",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "backend-testing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "bmad",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "bmad-gds",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "bmad-idea",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "changelog-maintenance",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "clawteam",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "code-refactoring",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "code-review",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "codebase-search",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "data-analysis",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "database-schema-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "debugging",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "deployment-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "design-system",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "environment-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "fabric",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "file-organization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "firebase-ai-logic",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "firebase-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "frontend-design-system",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "game-build-log-triage",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "game-ci-cd-pipeline",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "game-demo-feedback-triage",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "game-performance-profiler",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "genkit",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "git-submodule",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "git-workflow",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "google-workspace",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "harness",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "jeo",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "langsmith",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "llm-wiki",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "lmstudio-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "log-analysis",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "looker-studio-bigquery",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "marketing-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "marketing-skills-collection",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "monitoring-observability",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "npm-git-install",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "obsidian-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "obsidian-plugin",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "ohmg",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "omc",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "omx",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "opencontext",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "pattern-detection",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "performance-optimization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "plannotator",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "playwriter",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "presentation-builder",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "prompt-repetition",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "ralph",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "ralphmode",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "react-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "react-grab",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "remotion-video-production",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "research-paper-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "responsive-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "rtk",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "scrapling",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "security-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "skill-autoresearch",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "skill-standardization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "sprint-retrospective",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "standup-meeting",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "state-management",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "steam-store-launch-ops",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "strix",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "survey",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "system-environment-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "task-estimation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "task-planning",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "technical-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "testing-strategies",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "ui-component-patterns",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "user-guide-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "vercel-deploy",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "vercel-react-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "vibe-kanban",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "video-production",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "web-accessibility",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "web-design-guidelines",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.json",
       "target": "workflow-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "agent-browser",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "agentation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "api-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "api-documentation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "authentication-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "autoresearch",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "backend-testing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "bmad",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "bmad-gds",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "bmad-idea",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "changelog-maintenance",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "code-refactoring",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "code-review",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "codebase-search",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "data-analysis",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "database-schema-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "debugging",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "deployment-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "design-system",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "environment-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "fabric",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "file-organization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "firebase-ai-logic",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "firebase-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "frontend-design-system",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "genkit",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "git-submodule",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "git-workflow",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "google-workspace",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "harness",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "jeo",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "langsmith",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "llm-wiki",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "log-analysis",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "looker-studio-bigquery",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "marketing-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "marketing-skills-collection",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "monitoring-observability",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "npm-git-install",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "obsidian-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "obsidian-plugin",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "ohmg",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "omc",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "omx",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "opencontext",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "pattern-detection",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "performance-optimization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "plannotator",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "playwriter",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "presentation-builder",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "prompt-repetition",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "ralph",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "ralphmode",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "react-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "react-grab",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "remotion-video-production",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "research-paper-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "responsive-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "scrapling",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "security-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "skill-autoresearch",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "skill-standardization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "sprint-retrospective",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "standup-meeting",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "state-management",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "strix",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "survey",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "system-environment-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "task-estimation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "task-planning",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "technical-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "testing-strategies",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "ui-component-patterns",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "user-guide-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "vercel-deploy",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "vercel-react-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "vibe-kanban",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "video-production",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "web-accessibility",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "web-design-guidelines",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": ".agent-skills/skills.toon",
       "target": "workflow-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "agent-browser",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "agentation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "api-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "api-documentation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "authentication-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "autoresearch",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "backend-testing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "bmad",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "bmad-gds",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "bmad-idea",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "changelog-maintenance",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "clawteam",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "code-refactoring",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "code-review",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "codebase-search",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "data-analysis",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "database-schema-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "debugging",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "deployment-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "design-system",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "environment-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "fabric",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "file-organization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "firebase-ai-logic",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "firebase-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "frontend-design-system",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "game-build-log-triage",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "game-ci-cd-pipeline",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "game-demo-feedback-triage",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "game-performance-profiler",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "genkit",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "git-submodule",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "git-workflow",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "google-workspace",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "harness",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "jeo",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "langsmith",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "llm-wiki",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "log-analysis",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "looker-studio-bigquery",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "marketing-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "marketing-skills-collection",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "monitoring-observability",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "npm-git-install",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "obsidian-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "obsidian-plugin",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "ohmg",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "omc",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "omx",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "opencontext",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "pattern-detection",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "performance-optimization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "plannotator",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "playwriter",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "presentation-builder",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "prompt-repetition",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "ralph",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "ralphmode",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "react-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "react-grab",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "remotion-video-production",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "research-paper-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "responsive-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "rtk",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "scrapling",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "security-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "skill-autoresearch",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "skill-standardization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "sprint-retrospective",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "standup-meeting",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "state-management",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "steam-store-launch-ops",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "strix",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "survey",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "system-environment-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "task-estimation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "task-planning",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "technical-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "testing-strategies",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "ui-component-patterns",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "user-guide-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "vercel-deploy",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "vercel-react-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "vibe-kanban",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "video-production",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "web-accessibility",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "web-design-guidelines",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.ko.md",
       "target": "workflow-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "agent-browser",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "agentation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "api-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "api-documentation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "authentication-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "autoresearch",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "backend-testing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "bmad",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "bmad-gds",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "bmad-idea",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "changelog-maintenance",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "clawteam",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "code-refactoring",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "code-review",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "codebase-search",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "data-analysis",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "database-schema-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "debugging",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "deployment-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "design-system",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "environment-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "fabric",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "file-organization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "firebase-ai-logic",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "firebase-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "frontend-design-system",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "game-build-log-triage",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "game-ci-cd-pipeline",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "game-demo-feedback-triage",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "game-performance-profiler",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "genkit",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "git-submodule",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "git-workflow",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "google-workspace",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "harness",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "jeo",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "langsmith",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "llm-wiki",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "log-analysis",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "looker-studio-bigquery",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "marketing-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "marketing-skills-collection",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "monitoring-observability",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "npm-git-install",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "obsidian-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "obsidian-plugin",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "ohmg",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "omc",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "omx",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "opencontext",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "pattern-detection",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "performance-optimization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "plannotator",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "playwriter",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "presentation-builder",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "prompt-repetition",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "ralph",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "ralphmode",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "react-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "react-grab",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "remotion-video-production",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "research-paper-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "responsive-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "rtk",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "scrapling",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "security-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "skill-autoresearch",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "skill-standardization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "sprint-retrospective",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "standup-meeting",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "state-management",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "steam-store-launch-ops",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "strix",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "survey",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "system-environment-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "task-estimation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "task-planning",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "technical-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "testing-strategies",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "ui-component-patterns",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "user-guide-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "vercel-deploy",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "vercel-react-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "vibe-kanban",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "video-production",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "web-accessibility",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "web-design-guidelines",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "README.md",
       "target": "workflow-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "agent-browser",
-      "target": "agent-browser:compact",
+      "target": "agent-browser/compact",
       "type": "has-support"
     },
     {
       "source": "agent-browser",
-      "target": "agent-browser:evals",
+      "target": "agent-browser/evals",
       "type": "has-support"
     },
     {
       "source": "agent-browser",
-      "target": "agent-browser:references",
+      "target": "agent-browser/references",
       "type": "has-support"
     },
     {
@@ -4173,22 +4173,22 @@
     },
     {
       "source": "agentation",
-      "target": "agentation:compact",
+      "target": "agentation/compact",
       "type": "has-support"
     },
     {
       "source": "agentation",
-      "target": "agentation:evals",
+      "target": "agentation/evals",
       "type": "has-support"
     },
     {
       "source": "agentation",
-      "target": "agentation:references",
+      "target": "agentation/references",
       "type": "has-support"
     },
     {
       "source": "agentation",
-      "target": "agentation:scripts",
+      "target": "agentation/scripts",
       "type": "has-support"
     },
     {
@@ -4208,17 +4208,17 @@
     },
     {
       "source": "api-design",
-      "target": "api-design:compact",
+      "target": "api-design/compact",
       "type": "has-support"
     },
     {
       "source": "api-design",
-      "target": "api-design:evals",
+      "target": "api-design/evals",
       "type": "has-support"
     },
     {
       "source": "api-design",
-      "target": "api-design:references",
+      "target": "api-design/references",
       "type": "has-support"
     },
     {
@@ -4248,17 +4248,17 @@
     },
     {
       "source": "api-documentation",
-      "target": "api-documentation:compact",
+      "target": "api-documentation/compact",
       "type": "has-support"
     },
     {
       "source": "api-documentation",
-      "target": "api-documentation:evals",
+      "target": "api-documentation/evals",
       "type": "has-support"
     },
     {
       "source": "api-documentation",
-      "target": "api-documentation:references",
+      "target": "api-documentation/references",
       "type": "has-support"
     },
     {
@@ -4293,17 +4293,17 @@
     },
     {
       "source": "authentication-setup",
-      "target": "authentication-setup:compact",
+      "target": "authentication-setup/compact",
       "type": "has-support"
     },
     {
       "source": "authentication-setup",
-      "target": "authentication-setup:evals",
+      "target": "authentication-setup/evals",
       "type": "has-support"
     },
     {
       "source": "authentication-setup",
-      "target": "authentication-setup:references",
+      "target": "authentication-setup/references",
       "type": "has-support"
     },
     {
@@ -4323,22 +4323,22 @@
     },
     {
       "source": "autoresearch",
-      "target": "autoresearch:compact",
+      "target": "autoresearch/compact",
       "type": "has-support"
     },
     {
       "source": "autoresearch",
-      "target": "autoresearch:evals",
+      "target": "autoresearch/evals",
       "type": "has-support"
     },
     {
       "source": "autoresearch",
-      "target": "autoresearch:references",
+      "target": "autoresearch/references",
       "type": "has-support"
     },
     {
       "source": "autoresearch",
-      "target": "autoresearch:scripts",
+      "target": "autoresearch/scripts",
       "type": "has-support"
     },
     {
@@ -4373,17 +4373,17 @@
     },
     {
       "source": "backend-testing",
-      "target": "backend-testing:compact",
+      "target": "backend-testing/compact",
       "type": "has-support"
     },
     {
       "source": "backend-testing",
-      "target": "backend-testing:evals",
+      "target": "backend-testing/evals",
       "type": "has-support"
     },
     {
       "source": "backend-testing",
-      "target": "backend-testing:references",
+      "target": "backend-testing/references",
       "type": "has-support"
     },
     {
@@ -4408,22 +4408,22 @@
     },
     {
       "source": "bmad",
-      "target": "bmad:compact",
+      "target": "bmad/compact",
       "type": "has-support"
     },
     {
       "source": "bmad",
-      "target": "bmad:evals",
+      "target": "bmad/evals",
       "type": "has-support"
     },
     {
       "source": "bmad",
-      "target": "bmad:references",
+      "target": "bmad/references",
       "type": "has-support"
     },
     {
       "source": "bmad",
-      "target": "bmad:scripts",
+      "target": "bmad/scripts",
       "type": "has-support"
     },
     {
@@ -4468,17 +4468,17 @@
     },
     {
       "source": "bmad-gds",
-      "target": "bmad-gds:compact",
+      "target": "bmad-gds/compact",
       "type": "has-support"
     },
     {
       "source": "bmad-gds",
-      "target": "bmad-gds:evals",
+      "target": "bmad-gds/evals",
       "type": "has-support"
     },
     {
       "source": "bmad-gds",
-      "target": "bmad-gds:references",
+      "target": "bmad-gds/references",
       "type": "has-support"
     },
     {
@@ -4528,17 +4528,17 @@
     },
     {
       "source": "bmad-idea",
-      "target": "bmad-idea:compact",
+      "target": "bmad-idea/compact",
       "type": "has-support"
     },
     {
       "source": "bmad-idea",
-      "target": "bmad-idea:evals",
+      "target": "bmad-idea/evals",
       "type": "has-support"
     },
     {
       "source": "bmad-idea",
-      "target": "bmad-idea:references",
+      "target": "bmad-idea/references",
       "type": "has-support"
     },
     {
@@ -4558,17 +4558,17 @@
     },
     {
       "source": "changelog-maintenance",
-      "target": "changelog-maintenance:compact",
+      "target": "changelog-maintenance/compact",
       "type": "has-support"
     },
     {
       "source": "changelog-maintenance",
-      "target": "changelog-maintenance:evals",
+      "target": "changelog-maintenance/evals",
       "type": "has-support"
     },
     {
       "source": "changelog-maintenance",
-      "target": "changelog-maintenance:references",
+      "target": "changelog-maintenance/references",
       "type": "has-support"
     },
     {
@@ -4593,37 +4593,37 @@
     },
     {
       "source": "clawteam",
-      "target": "clawteam:compact",
+      "target": "clawteam/compact",
       "type": "has-support"
     },
     {
       "source": "clawteam",
-      "target": "clawteam:evals",
+      "target": "clawteam/evals",
       "type": "has-support"
     },
     {
       "source": "clawteam",
-      "target": "clawteam:references",
+      "target": "clawteam/references",
       "type": "has-support"
     },
     {
       "source": "clawteam",
-      "target": "clawteam:scripts",
+      "target": "clawteam/scripts",
       "type": "has-support"
     },
     {
       "source": "code-refactoring",
-      "target": "code-refactoring:compact",
+      "target": "code-refactoring/compact",
       "type": "has-support"
     },
     {
       "source": "code-refactoring",
-      "target": "code-refactoring:evals",
+      "target": "code-refactoring/evals",
       "type": "has-support"
     },
     {
       "source": "code-refactoring",
-      "target": "code-refactoring:references",
+      "target": "code-refactoring/references",
       "type": "has-support"
     },
     {
@@ -4653,17 +4653,17 @@
     },
     {
       "source": "code-review",
-      "target": "code-review:compact",
+      "target": "code-review/compact",
       "type": "has-support"
     },
     {
       "source": "code-review",
-      "target": "code-review:evals",
+      "target": "code-review/evals",
       "type": "has-support"
     },
     {
       "source": "code-review",
-      "target": "code-review:references",
+      "target": "code-review/references",
       "type": "has-support"
     },
     {
@@ -4708,17 +4708,17 @@
     },
     {
       "source": "codebase-search",
-      "target": "codebase-search:compact",
+      "target": "codebase-search/compact",
       "type": "has-support"
     },
     {
       "source": "codebase-search",
-      "target": "codebase-search:evals",
+      "target": "codebase-search/evals",
       "type": "has-support"
     },
     {
       "source": "codebase-search",
-      "target": "codebase-search:references",
+      "target": "codebase-search/references",
       "type": "has-support"
     },
     {
@@ -4738,17 +4738,17 @@
     },
     {
       "source": "data-analysis",
-      "target": "data-analysis:compact",
+      "target": "data-analysis/compact",
       "type": "has-support"
     },
     {
       "source": "data-analysis",
-      "target": "data-analysis:evals",
+      "target": "data-analysis/evals",
       "type": "has-support"
     },
     {
       "source": "data-analysis",
-      "target": "data-analysis:references",
+      "target": "data-analysis/references",
       "type": "has-support"
     },
     {
@@ -4788,17 +4788,17 @@
     },
     {
       "source": "database-schema-design",
-      "target": "database-schema-design:compact",
+      "target": "database-schema-design/compact",
       "type": "has-support"
     },
     {
       "source": "database-schema-design",
-      "target": "database-schema-design:evals",
+      "target": "database-schema-design/evals",
       "type": "has-support"
     },
     {
       "source": "database-schema-design",
-      "target": "database-schema-design:references",
+      "target": "database-schema-design/references",
       "type": "has-support"
     },
     {
@@ -4813,17 +4813,17 @@
     },
     {
       "source": "debugging",
-      "target": "debugging:compact",
+      "target": "debugging/compact",
       "type": "has-support"
     },
     {
       "source": "debugging",
-      "target": "debugging:evals",
+      "target": "debugging/evals",
       "type": "has-support"
     },
     {
       "source": "debugging",
-      "target": "debugging:references",
+      "target": "debugging/references",
       "type": "has-support"
     },
     {
@@ -4848,17 +4848,17 @@
     },
     {
       "source": "deployment-automation",
-      "target": "deployment-automation:compact",
+      "target": "deployment-automation/compact",
       "type": "has-support"
     },
     {
       "source": "deployment-automation",
-      "target": "deployment-automation:evals",
+      "target": "deployment-automation/evals",
       "type": "has-support"
     },
     {
       "source": "deployment-automation",
-      "target": "deployment-automation:references",
+      "target": "deployment-automation/references",
       "type": "has-support"
     },
     {
@@ -4888,17 +4888,17 @@
     },
     {
       "source": "design-system",
-      "target": "design-system:compact",
+      "target": "design-system/compact",
       "type": "has-support"
     },
     {
       "source": "design-system",
-      "target": "design-system:evals",
+      "target": "design-system/evals",
       "type": "has-support"
     },
     {
       "source": "design-system",
-      "target": "design-system:references",
+      "target": "design-system/references",
       "type": "has-support"
     },
     {
@@ -4933,17 +4933,17 @@
     },
     {
       "source": "environment-setup",
-      "target": "environment-setup:compact",
+      "target": "environment-setup/compact",
       "type": "has-support"
     },
     {
       "source": "environment-setup",
-      "target": "environment-setup:evals",
+      "target": "environment-setup/evals",
       "type": "has-support"
     },
     {
       "source": "environment-setup",
-      "target": "environment-setup:references",
+      "target": "environment-setup/references",
       "type": "has-support"
     },
     {
@@ -4958,17 +4958,17 @@
     },
     {
       "source": "fabric",
-      "target": "fabric:compact",
+      "target": "fabric/compact",
       "type": "has-support"
     },
     {
       "source": "fabric",
-      "target": "fabric:evals",
+      "target": "fabric/evals",
       "type": "has-support"
     },
     {
       "source": "fabric",
-      "target": "fabric:references",
+      "target": "fabric/references",
       "type": "has-support"
     },
     {
@@ -5003,17 +5003,17 @@
     },
     {
       "source": "file-organization",
-      "target": "file-organization:compact",
+      "target": "file-organization/compact",
       "type": "has-support"
     },
     {
       "source": "file-organization",
-      "target": "file-organization:evals",
+      "target": "file-organization/evals",
       "type": "has-support"
     },
     {
       "source": "file-organization",
-      "target": "file-organization:references",
+      "target": "file-organization/references",
       "type": "has-support"
     },
     {
@@ -5033,17 +5033,17 @@
     },
     {
       "source": "firebase-ai-logic",
-      "target": "firebase-ai-logic:compact",
+      "target": "firebase-ai-logic/compact",
       "type": "has-support"
     },
     {
       "source": "firebase-ai-logic",
-      "target": "firebase-ai-logic:evals",
+      "target": "firebase-ai-logic/evals",
       "type": "has-support"
     },
     {
       "source": "firebase-ai-logic",
-      "target": "firebase-ai-logic:references",
+      "target": "firebase-ai-logic/references",
       "type": "has-support"
     },
     {
@@ -5083,22 +5083,22 @@
     },
     {
       "source": "firebase-cli",
-      "target": "firebase-cli:compact",
+      "target": "firebase-cli/compact",
       "type": "has-support"
     },
     {
       "source": "firebase-cli",
-      "target": "firebase-cli:evals",
+      "target": "firebase-cli/evals",
       "type": "has-support"
     },
     {
       "source": "firebase-cli",
-      "target": "firebase-cli:references",
+      "target": "firebase-cli/references",
       "type": "has-support"
     },
     {
       "source": "firebase-cli",
-      "target": "firebase-cli:scripts",
+      "target": "firebase-cli/scripts",
       "type": "has-support"
     },
     {
@@ -5118,17 +5118,17 @@
     },
     {
       "source": "frontend-design-system",
-      "target": "frontend-design-system:compact",
+      "target": "frontend-design-system/compact",
       "type": "has-support"
     },
     {
       "source": "frontend-design-system",
-      "target": "frontend-design-system:evals",
+      "target": "frontend-design-system/evals",
       "type": "has-support"
     },
     {
       "source": "frontend-design-system",
-      "target": "frontend-design-system:references",
+      "target": "frontend-design-system/references",
       "type": "has-support"
     },
     {
@@ -5153,17 +5153,17 @@
     },
     {
       "source": "game-build-log-triage",
-      "target": "game-build-log-triage:compact",
+      "target": "game-build-log-triage/compact",
       "type": "has-support"
     },
     {
       "source": "game-build-log-triage",
-      "target": "game-build-log-triage:evals",
+      "target": "game-build-log-triage/evals",
       "type": "has-support"
     },
     {
       "source": "game-build-log-triage",
-      "target": "game-build-log-triage:references",
+      "target": "game-build-log-triage/references",
       "type": "has-support"
     },
     {
@@ -5183,17 +5183,17 @@
     },
     {
       "source": "game-ci-cd-pipeline",
-      "target": "game-ci-cd-pipeline:compact",
+      "target": "game-ci-cd-pipeline/compact",
       "type": "has-support"
     },
     {
       "source": "game-ci-cd-pipeline",
-      "target": "game-ci-cd-pipeline:evals",
+      "target": "game-ci-cd-pipeline/evals",
       "type": "has-support"
     },
     {
       "source": "game-ci-cd-pipeline",
-      "target": "game-ci-cd-pipeline:references",
+      "target": "game-ci-cd-pipeline/references",
       "type": "has-support"
     },
     {
@@ -5213,17 +5213,17 @@
     },
     {
       "source": "game-demo-feedback-triage",
-      "target": "game-demo-feedback-triage:compact",
+      "target": "game-demo-feedback-triage/compact",
       "type": "has-support"
     },
     {
       "source": "game-demo-feedback-triage",
-      "target": "game-demo-feedback-triage:evals",
+      "target": "game-demo-feedback-triage/evals",
       "type": "has-support"
     },
     {
       "source": "game-demo-feedback-triage",
-      "target": "game-demo-feedback-triage:references",
+      "target": "game-demo-feedback-triage/references",
       "type": "has-support"
     },
     {
@@ -5268,17 +5268,17 @@
     },
     {
       "source": "game-performance-profiler",
-      "target": "game-performance-profiler:compact",
+      "target": "game-performance-profiler/compact",
       "type": "has-support"
     },
     {
       "source": "game-performance-profiler",
-      "target": "game-performance-profiler:evals",
+      "target": "game-performance-profiler/evals",
       "type": "has-support"
     },
     {
       "source": "game-performance-profiler",
-      "target": "game-performance-profiler:references",
+      "target": "game-performance-profiler/references",
       "type": "has-support"
     },
     {
@@ -5303,17 +5303,17 @@
     },
     {
       "source": "genkit",
-      "target": "genkit:compact",
+      "target": "genkit/compact",
       "type": "has-support"
     },
     {
       "source": "genkit",
-      "target": "genkit:evals",
+      "target": "genkit/evals",
       "type": "has-support"
     },
     {
       "source": "genkit",
-      "target": "genkit:references",
+      "target": "genkit/references",
       "type": "has-support"
     },
     {
@@ -5338,17 +5338,17 @@
     },
     {
       "source": "git-submodule",
-      "target": "git-submodule:compact",
+      "target": "git-submodule/compact",
       "type": "has-support"
     },
     {
       "source": "git-submodule",
-      "target": "git-submodule:evals",
+      "target": "git-submodule/evals",
       "type": "has-support"
     },
     {
       "source": "git-submodule",
-      "target": "git-submodule:references",
+      "target": "git-submodule/references",
       "type": "has-support"
     },
     {
@@ -5383,17 +5383,17 @@
     },
     {
       "source": "git-workflow",
-      "target": "git-workflow:compact",
+      "target": "git-workflow/compact",
       "type": "has-support"
     },
     {
       "source": "git-workflow",
-      "target": "git-workflow:evals",
+      "target": "git-workflow/evals",
       "type": "has-support"
     },
     {
       "source": "git-workflow",
-      "target": "git-workflow:references",
+      "target": "git-workflow/references",
       "type": "has-support"
     },
     {
@@ -5403,22 +5403,22 @@
     },
     {
       "source": "google-workspace",
-      "target": "google-workspace:compact",
+      "target": "google-workspace/compact",
       "type": "has-support"
     },
     {
       "source": "google-workspace",
-      "target": "google-workspace:evals",
+      "target": "google-workspace/evals",
       "type": "has-support"
     },
     {
       "source": "google-workspace",
-      "target": "google-workspace:references",
+      "target": "google-workspace/references",
       "type": "has-support"
     },
     {
       "source": "google-workspace",
-      "target": "google-workspace:scripts",
+      "target": "google-workspace/scripts",
       "type": "has-support"
     },
     {
@@ -5433,22 +5433,22 @@
     },
     {
       "source": "harness",
-      "target": "harness:compact",
+      "target": "harness/compact",
       "type": "has-support"
     },
     {
       "source": "harness",
-      "target": "harness:evals",
+      "target": "harness/evals",
       "type": "has-support"
     },
     {
       "source": "harness",
-      "target": "harness:references",
+      "target": "harness/references",
       "type": "has-support"
     },
     {
       "source": "harness",
-      "target": "harness:scripts",
+      "target": "harness/scripts",
       "type": "has-support"
     },
     {
@@ -5468,22 +5468,22 @@
     },
     {
       "source": "jeo",
-      "target": "jeo:compact",
+      "target": "jeo/compact",
       "type": "has-support"
     },
     {
       "source": "jeo",
-      "target": "jeo:evals",
+      "target": "jeo/evals",
       "type": "has-support"
     },
     {
       "source": "jeo",
-      "target": "jeo:references",
+      "target": "jeo/references",
       "type": "has-support"
     },
     {
       "source": "jeo",
-      "target": "jeo:scripts",
+      "target": "jeo/scripts",
       "type": "has-support"
     },
     {
@@ -5533,22 +5533,22 @@
     },
     {
       "source": "langsmith",
-      "target": "langsmith:compact",
+      "target": "langsmith/compact",
       "type": "has-support"
     },
     {
       "source": "langsmith",
-      "target": "langsmith:evals",
+      "target": "langsmith/evals",
       "type": "has-support"
     },
     {
       "source": "langsmith",
-      "target": "langsmith:references",
+      "target": "langsmith/references",
       "type": "has-support"
     },
     {
       "source": "langsmith",
-      "target": "langsmith:scripts",
+      "target": "langsmith/scripts",
       "type": "has-support"
     },
     {
@@ -5568,22 +5568,22 @@
     },
     {
       "source": "llm-wiki",
-      "target": "llm-wiki:compact",
+      "target": "llm-wiki/compact",
       "type": "has-support"
     },
     {
       "source": "llm-wiki",
-      "target": "llm-wiki:evals",
+      "target": "llm-wiki/evals",
       "type": "has-support"
     },
     {
       "source": "llm-wiki",
-      "target": "llm-wiki:references",
+      "target": "llm-wiki/references",
       "type": "has-support"
     },
     {
       "source": "llm-wiki",
-      "target": "llm-wiki:scripts",
+      "target": "llm-wiki/scripts",
       "type": "has-support"
     },
     {
@@ -5593,22 +5593,22 @@
     },
     {
       "source": "lmstudio-cli",
-      "target": "lmstudio-cli:compact",
+      "target": "lmstudio-cli/compact",
       "type": "has-support"
     },
     {
       "source": "lmstudio-cli",
-      "target": "lmstudio-cli:evals",
+      "target": "lmstudio-cli/evals",
       "type": "has-support"
     },
     {
       "source": "lmstudio-cli",
-      "target": "lmstudio-cli:references",
+      "target": "lmstudio-cli/references",
       "type": "has-support"
     },
     {
       "source": "lmstudio-cli",
-      "target": "lmstudio-cli:scripts",
+      "target": "lmstudio-cli/scripts",
       "type": "has-support"
     },
     {
@@ -5633,17 +5633,17 @@
     },
     {
       "source": "log-analysis",
-      "target": "log-analysis:compact",
+      "target": "log-analysis/compact",
       "type": "has-support"
     },
     {
       "source": "log-analysis",
-      "target": "log-analysis:evals",
+      "target": "log-analysis/evals",
       "type": "has-support"
     },
     {
       "source": "log-analysis",
-      "target": "log-analysis:references",
+      "target": "log-analysis/references",
       "type": "has-support"
     },
     {
@@ -5658,17 +5658,17 @@
     },
     {
       "source": "looker-studio-bigquery",
-      "target": "looker-studio-bigquery:compact",
+      "target": "looker-studio-bigquery/compact",
       "type": "has-support"
     },
     {
       "source": "looker-studio-bigquery",
-      "target": "looker-studio-bigquery:evals",
+      "target": "looker-studio-bigquery/evals",
       "type": "has-support"
     },
     {
       "source": "looker-studio-bigquery",
-      "target": "looker-studio-bigquery:references",
+      "target": "looker-studio-bigquery/references",
       "type": "has-support"
     },
     {
@@ -5688,17 +5688,17 @@
     },
     {
       "source": "marketing-automation",
-      "target": "marketing-automation:compact",
+      "target": "marketing-automation/compact",
       "type": "has-support"
     },
     {
       "source": "marketing-automation",
-      "target": "marketing-automation:evals",
+      "target": "marketing-automation/evals",
       "type": "has-support"
     },
     {
       "source": "marketing-automation",
-      "target": "marketing-automation:references",
+      "target": "marketing-automation/references",
       "type": "has-support"
     },
     {
@@ -5718,17 +5718,17 @@
     },
     {
       "source": "marketing-skills-collection",
-      "target": "marketing-skills-collection:compact",
+      "target": "marketing-skills-collection/compact",
       "type": "has-support"
     },
     {
       "source": "marketing-skills-collection",
-      "target": "marketing-skills-collection:evals",
+      "target": "marketing-skills-collection/evals",
       "type": "has-support"
     },
     {
       "source": "marketing-skills-collection",
-      "target": "marketing-skills-collection:references",
+      "target": "marketing-skills-collection/references",
       "type": "has-support"
     },
     {
@@ -5763,17 +5763,17 @@
     },
     {
       "source": "monitoring-observability",
-      "target": "monitoring-observability:compact",
+      "target": "monitoring-observability/compact",
       "type": "has-support"
     },
     {
       "source": "monitoring-observability",
-      "target": "monitoring-observability:evals",
+      "target": "monitoring-observability/evals",
       "type": "has-support"
     },
     {
       "source": "monitoring-observability",
-      "target": "monitoring-observability:references",
+      "target": "monitoring-observability/references",
       "type": "has-support"
     },
     {
@@ -5793,17 +5793,17 @@
     },
     {
       "source": "npm-git-install",
-      "target": "npm-git-install:compact",
+      "target": "npm-git-install/compact",
       "type": "has-support"
     },
     {
       "source": "npm-git-install",
-      "target": "npm-git-install:evals",
+      "target": "npm-git-install/evals",
       "type": "has-support"
     },
     {
       "source": "npm-git-install",
-      "target": "npm-git-install:references",
+      "target": "npm-git-install/references",
       "type": "has-support"
     },
     {
@@ -5823,42 +5823,42 @@
     },
     {
       "source": "obsidian-cli",
-      "target": "obsidian-cli:compact",
+      "target": "obsidian-cli/compact",
       "type": "has-support"
     },
     {
       "source": "obsidian-cli",
-      "target": "obsidian-cli:evals",
+      "target": "obsidian-cli/evals",
       "type": "has-support"
     },
     {
       "source": "obsidian-cli",
-      "target": "obsidian-cli:references",
+      "target": "obsidian-cli/references",
       "type": "has-support"
     },
     {
       "source": "obsidian-cli",
-      "target": "obsidian-cli:scripts",
+      "target": "obsidian-cli/scripts",
       "type": "has-support"
     },
     {
       "source": "obsidian-plugin",
-      "target": "obsidian-plugin:compact",
+      "target": "obsidian-plugin/compact",
       "type": "has-support"
     },
     {
       "source": "obsidian-plugin",
-      "target": "obsidian-plugin:evals",
+      "target": "obsidian-plugin/evals",
       "type": "has-support"
     },
     {
       "source": "obsidian-plugin",
-      "target": "obsidian-plugin:references",
+      "target": "obsidian-plugin/references",
       "type": "has-support"
     },
     {
       "source": "obsidian-plugin",
-      "target": "obsidian-plugin:scripts",
+      "target": "obsidian-plugin/scripts",
       "type": "has-support"
     },
     {
@@ -5873,17 +5873,17 @@
     },
     {
       "source": "ohmg",
-      "target": "ohmg:compact",
+      "target": "ohmg/compact",
       "type": "has-support"
     },
     {
       "source": "ohmg",
-      "target": "ohmg:evals",
+      "target": "ohmg/evals",
       "type": "has-support"
     },
     {
       "source": "ohmg",
-      "target": "ohmg:references",
+      "target": "ohmg/references",
       "type": "has-support"
     },
     {
@@ -5903,22 +5903,22 @@
     },
     {
       "source": "omc",
-      "target": "omc:compact",
+      "target": "omc/compact",
       "type": "has-support"
     },
     {
       "source": "omc",
-      "target": "omc:evals",
+      "target": "omc/evals",
       "type": "has-support"
     },
     {
       "source": "omc",
-      "target": "omc:references",
+      "target": "omc/references",
       "type": "has-support"
     },
     {
       "source": "omc",
-      "target": "omc:scripts",
+      "target": "omc/scripts",
       "type": "has-support"
     },
     {
@@ -5938,22 +5938,22 @@
     },
     {
       "source": "omx",
-      "target": "omx:compact",
+      "target": "omx/compact",
       "type": "has-support"
     },
     {
       "source": "omx",
-      "target": "omx:evals",
+      "target": "omx/evals",
       "type": "has-support"
     },
     {
       "source": "omx",
-      "target": "omx:references",
+      "target": "omx/references",
       "type": "has-support"
     },
     {
       "source": "omx",
-      "target": "omx:scripts",
+      "target": "omx/scripts",
       "type": "has-support"
     },
     {
@@ -5978,17 +5978,17 @@
     },
     {
       "source": "opencontext",
-      "target": "opencontext:compact",
+      "target": "opencontext/compact",
       "type": "has-support"
     },
     {
       "source": "opencontext",
-      "target": "opencontext:evals",
+      "target": "opencontext/evals",
       "type": "has-support"
     },
     {
       "source": "opencontext",
-      "target": "opencontext:references",
+      "target": "opencontext/references",
       "type": "has-support"
     },
     {
@@ -6018,17 +6018,17 @@
     },
     {
       "source": "pattern-detection",
-      "target": "pattern-detection:compact",
+      "target": "pattern-detection/compact",
       "type": "has-support"
     },
     {
       "source": "pattern-detection",
-      "target": "pattern-detection:evals",
+      "target": "pattern-detection/evals",
       "type": "has-support"
     },
     {
       "source": "pattern-detection",
-      "target": "pattern-detection:references",
+      "target": "pattern-detection/references",
       "type": "has-support"
     },
     {
@@ -6063,17 +6063,17 @@
     },
     {
       "source": "performance-optimization",
-      "target": "performance-optimization:compact",
+      "target": "performance-optimization/compact",
       "type": "has-support"
     },
     {
       "source": "performance-optimization",
-      "target": "performance-optimization:evals",
+      "target": "performance-optimization/evals",
       "type": "has-support"
     },
     {
       "source": "performance-optimization",
-      "target": "performance-optimization:references",
+      "target": "performance-optimization/references",
       "type": "has-support"
     },
     {
@@ -6128,22 +6128,22 @@
     },
     {
       "source": "plannotator",
-      "target": "plannotator:compact",
+      "target": "plannotator/compact",
       "type": "has-support"
     },
     {
       "source": "plannotator",
-      "target": "plannotator:evals",
+      "target": "plannotator/evals",
       "type": "has-support"
     },
     {
       "source": "plannotator",
-      "target": "plannotator:references",
+      "target": "plannotator/references",
       "type": "has-support"
     },
     {
       "source": "plannotator",
-      "target": "plannotator:scripts",
+      "target": "plannotator/scripts",
       "type": "has-support"
     },
     {
@@ -6168,17 +6168,17 @@
     },
     {
       "source": "playwriter",
-      "target": "playwriter:compact",
+      "target": "playwriter/compact",
       "type": "has-support"
     },
     {
       "source": "playwriter",
-      "target": "playwriter:evals",
+      "target": "playwriter/evals",
       "type": "has-support"
     },
     {
       "source": "playwriter",
-      "target": "playwriter:references",
+      "target": "playwriter/references",
       "type": "has-support"
     },
     {
@@ -6188,17 +6188,17 @@
     },
     {
       "source": "presentation-builder",
-      "target": "presentation-builder:compact",
+      "target": "presentation-builder/compact",
       "type": "has-support"
     },
     {
       "source": "presentation-builder",
-      "target": "presentation-builder:evals",
+      "target": "presentation-builder/evals",
       "type": "has-support"
     },
     {
       "source": "presentation-builder",
-      "target": "presentation-builder:references",
+      "target": "presentation-builder/references",
       "type": "has-support"
     },
     {
@@ -6218,17 +6218,17 @@
     },
     {
       "source": "prompt-repetition",
-      "target": "prompt-repetition:compact",
+      "target": "prompt-repetition/compact",
       "type": "has-support"
     },
     {
       "source": "prompt-repetition",
-      "target": "prompt-repetition:evals",
+      "target": "prompt-repetition/evals",
       "type": "has-support"
     },
     {
       "source": "prompt-repetition",
-      "target": "prompt-repetition:references",
+      "target": "prompt-repetition/references",
       "type": "has-support"
     },
     {
@@ -6258,22 +6258,22 @@
     },
     {
       "source": "ralph",
-      "target": "ralph:compact",
+      "target": "ralph/compact",
       "type": "has-support"
     },
     {
       "source": "ralph",
-      "target": "ralph:evals",
+      "target": "ralph/evals",
       "type": "has-support"
     },
     {
       "source": "ralph",
-      "target": "ralph:references",
+      "target": "ralph/references",
       "type": "has-support"
     },
     {
       "source": "ralph",
-      "target": "ralph:scripts",
+      "target": "ralph/scripts",
       "type": "has-support"
     },
     {
@@ -6298,17 +6298,17 @@
     },
     {
       "source": "ralphmode",
-      "target": "ralphmode:compact",
+      "target": "ralphmode/compact",
       "type": "has-support"
     },
     {
       "source": "ralphmode",
-      "target": "ralphmode:evals",
+      "target": "ralphmode/evals",
       "type": "has-support"
     },
     {
       "source": "ralphmode",
-      "target": "ralphmode:references",
+      "target": "ralphmode/references",
       "type": "has-support"
     },
     {
@@ -6318,17 +6318,17 @@
     },
     {
       "source": "react-best-practices",
-      "target": "react-best-practices:compact",
+      "target": "react-best-practices/compact",
       "type": "has-support"
     },
     {
       "source": "react-best-practices",
-      "target": "react-best-practices:evals",
+      "target": "react-best-practices/evals",
       "type": "has-support"
     },
     {
       "source": "react-best-practices",
-      "target": "react-best-practices:references",
+      "target": "react-best-practices/references",
       "type": "has-support"
     },
     {
@@ -6383,22 +6383,22 @@
     },
     {
       "source": "react-grab",
-      "target": "react-grab:compact",
+      "target": "react-grab/compact",
       "type": "has-support"
     },
     {
       "source": "react-grab",
-      "target": "react-grab:evals",
+      "target": "react-grab/evals",
       "type": "has-support"
     },
     {
       "source": "react-grab",
-      "target": "react-grab:references",
+      "target": "react-grab/references",
       "type": "has-support"
     },
     {
       "source": "react-grab",
-      "target": "react-grab:scripts",
+      "target": "react-grab/scripts",
       "type": "has-support"
     },
     {
@@ -6408,17 +6408,17 @@
     },
     {
       "source": "remotion-video-production",
-      "target": "remotion-video-production:compact",
+      "target": "remotion-video-production/compact",
       "type": "has-support"
     },
     {
       "source": "remotion-video-production",
-      "target": "remotion-video-production:evals",
+      "target": "remotion-video-production/evals",
       "type": "has-support"
     },
     {
       "source": "remotion-video-production",
-      "target": "remotion-video-production:references",
+      "target": "remotion-video-production/references",
       "type": "has-support"
     },
     {
@@ -6443,17 +6443,17 @@
     },
     {
       "source": "research-paper-writing",
-      "target": "research-paper-writing:compact",
+      "target": "research-paper-writing/compact",
       "type": "has-support"
     },
     {
       "source": "research-paper-writing",
-      "target": "research-paper-writing:evals",
+      "target": "research-paper-writing/evals",
       "type": "has-support"
     },
     {
       "source": "research-paper-writing",
-      "target": "research-paper-writing:references",
+      "target": "research-paper-writing/references",
       "type": "has-support"
     },
     {
@@ -6478,17 +6478,17 @@
     },
     {
       "source": "responsive-design",
-      "target": "responsive-design:compact",
+      "target": "responsive-design/compact",
       "type": "has-support"
     },
     {
       "source": "responsive-design",
-      "target": "responsive-design:evals",
+      "target": "responsive-design/evals",
       "type": "has-support"
     },
     {
       "source": "responsive-design",
-      "target": "responsive-design:references",
+      "target": "responsive-design/references",
       "type": "has-support"
     },
     {
@@ -6508,42 +6508,42 @@
     },
     {
       "source": "rtk",
-      "target": "rtk:compact",
+      "target": "rtk/compact",
       "type": "has-support"
     },
     {
       "source": "rtk",
-      "target": "rtk:evals",
+      "target": "rtk/evals",
       "type": "has-support"
     },
     {
       "source": "rtk",
-      "target": "rtk:references",
+      "target": "rtk/references",
       "type": "has-support"
     },
     {
       "source": "rtk",
-      "target": "rtk:scripts",
+      "target": "rtk/scripts",
       "type": "has-support"
     },
     {
       "source": "scrapling",
-      "target": "scrapling:compact",
+      "target": "scrapling/compact",
       "type": "has-support"
     },
     {
       "source": "scrapling",
-      "target": "scrapling:evals",
+      "target": "scrapling/evals",
       "type": "has-support"
     },
     {
       "source": "scrapling",
-      "target": "scrapling:references",
+      "target": "scrapling/references",
       "type": "has-support"
     },
     {
       "source": "scrapling",
-      "target": "scrapling:scripts",
+      "target": "scrapling/scripts",
       "type": "has-support"
     },
     {
@@ -6583,17 +6583,17 @@
     },
     {
       "source": "security-best-practices",
-      "target": "security-best-practices:compact",
+      "target": "security-best-practices/compact",
       "type": "has-support"
     },
     {
       "source": "security-best-practices",
-      "target": "security-best-practices:evals",
+      "target": "security-best-practices/evals",
       "type": "has-support"
     },
     {
       "source": "security-best-practices",
-      "target": "security-best-practices:references",
+      "target": "security-best-practices/references",
       "type": "has-support"
     },
     {
@@ -6604,442 +6604,442 @@
     {
       "source": "setup-all-skills-prompt.md",
       "target": "agent-browser",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "agentation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "api-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "api-documentation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "authentication-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "autoresearch",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "backend-testing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "bmad",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "bmad-gds",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "bmad-idea",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "changelog-maintenance",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "clawteam",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "code-refactoring",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "code-review",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "codebase-search",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "data-analysis",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "database-schema-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "debugging",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "deployment-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "design-system",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "environment-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "fabric",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "file-organization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "firebase-ai-logic",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "firebase-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "frontend-design-system",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "game-build-log-triage",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "game-ci-cd-pipeline",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "game-demo-feedback-triage",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "game-performance-profiler",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "genkit",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "git-submodule",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "git-workflow",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "google-workspace",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "harness",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "jeo",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "langsmith",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "llm-wiki",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "log-analysis",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "looker-studio-bigquery",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "marketing-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "marketing-skills-collection",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "monitoring-observability",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "npm-git-install",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "obsidian-cli",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "obsidian-plugin",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ohmg",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "omc",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "omx",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "opencontext",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "pattern-detection",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "performance-optimization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "plannotator",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "playwriter",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "presentation-builder",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "prompt-repetition",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ralph",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ralphmode",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "react-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "react-grab",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "remotion-video-production",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "research-paper-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "responsive-design",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "rtk",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "scrapling",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "security-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "skill-autoresearch",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "skill-standardization",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "sprint-retrospective",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "standup-meeting",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "state-management",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "steam-store-launch-ops",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "strix",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "survey",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "system-environment-setup",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "task-estimation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "task-planning",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "technical-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "testing-strategies",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "ui-component-patterns",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "user-guide-writing",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "vercel-deploy",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "vercel-react-best-practices",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "vibe-kanban",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "video-production",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "web-accessibility",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "web-design-guidelines",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "setup-all-skills-prompt.md",
       "target": "workflow-automation",
-      "type": "indexes-skill"
+      "type": "indexed-in-doc"
     },
     {
       "source": "skill-autoresearch",
@@ -7058,37 +7058,37 @@
     },
     {
       "source": "skill-autoresearch",
-      "target": "skill-autoresearch:compact",
+      "target": "skill-autoresearch/compact",
       "type": "has-support"
     },
     {
       "source": "skill-autoresearch",
-      "target": "skill-autoresearch:evals",
+      "target": "skill-autoresearch/evals",
       "type": "has-support"
     },
     {
       "source": "skill-autoresearch",
-      "target": "skill-autoresearch:references",
+      "target": "skill-autoresearch/references",
       "type": "has-support"
     },
     {
       "source": "skill-standardization",
-      "target": "skill-standardization:compact",
+      "target": "skill-standardization/compact",
       "type": "has-support"
     },
     {
       "source": "skill-standardization",
-      "target": "skill-standardization:evals",
+      "target": "skill-standardization/evals",
       "type": "has-support"
     },
     {
       "source": "skill-standardization",
-      "target": "skill-standardization:references",
+      "target": "skill-standardization/references",
       "type": "has-support"
     },
     {
       "source": "skill-standardization",
-      "target": "skill-standardization:scripts",
+      "target": "skill-standardization/scripts",
       "type": "has-support"
     },
     {
@@ -7098,17 +7098,17 @@
     },
     {
       "source": "sprint-retrospective",
-      "target": "sprint-retrospective:compact",
+      "target": "sprint-retrospective/compact",
       "type": "has-support"
     },
     {
       "source": "sprint-retrospective",
-      "target": "sprint-retrospective:evals",
+      "target": "sprint-retrospective/evals",
       "type": "has-support"
     },
     {
       "source": "sprint-retrospective",
-      "target": "sprint-retrospective:references",
+      "target": "sprint-retrospective/references",
       "type": "has-support"
     },
     {
@@ -7138,17 +7138,17 @@
     },
     {
       "source": "standup-meeting",
-      "target": "standup-meeting:compact",
+      "target": "standup-meeting/compact",
       "type": "has-support"
     },
     {
       "source": "standup-meeting",
-      "target": "standup-meeting:evals",
+      "target": "standup-meeting/evals",
       "type": "has-support"
     },
     {
       "source": "standup-meeting",
-      "target": "standup-meeting:references",
+      "target": "standup-meeting/references",
       "type": "has-support"
     },
     {
@@ -7193,17 +7193,17 @@
     },
     {
       "source": "state-management",
-      "target": "state-management:compact",
+      "target": "state-management/compact",
       "type": "has-support"
     },
     {
       "source": "state-management",
-      "target": "state-management:evals",
+      "target": "state-management/evals",
       "type": "has-support"
     },
     {
       "source": "state-management",
-      "target": "state-management:references",
+      "target": "state-management/references",
       "type": "has-support"
     },
     {
@@ -7223,37 +7223,37 @@
     },
     {
       "source": "steam-store-launch-ops",
-      "target": "steam-store-launch-ops:compact",
+      "target": "steam-store-launch-ops/compact",
       "type": "has-support"
     },
     {
       "source": "steam-store-launch-ops",
-      "target": "steam-store-launch-ops:evals",
+      "target": "steam-store-launch-ops/evals",
       "type": "has-support"
     },
     {
       "source": "steam-store-launch-ops",
-      "target": "steam-store-launch-ops:references",
+      "target": "steam-store-launch-ops/references",
       "type": "has-support"
     },
     {
       "source": "strix",
-      "target": "strix:compact",
+      "target": "strix/compact",
       "type": "has-support"
     },
     {
       "source": "strix",
-      "target": "strix:evals",
+      "target": "strix/evals",
       "type": "has-support"
     },
     {
       "source": "strix",
-      "target": "strix:references",
+      "target": "strix/references",
       "type": "has-support"
     },
     {
       "source": "strix",
-      "target": "strix:scripts",
+      "target": "strix/scripts",
       "type": "has-support"
     },
     {
@@ -7283,17 +7283,17 @@
     },
     {
       "source": "survey",
-      "target": "survey:compact",
+      "target": "survey/compact",
       "type": "has-support"
     },
     {
       "source": "survey",
-      "target": "survey:evals",
+      "target": "survey/evals",
       "type": "has-support"
     },
     {
       "source": "survey",
-      "target": "survey:references",
+      "target": "survey/references",
       "type": "has-support"
     },
     {
@@ -7313,17 +7313,17 @@
     },
     {
       "source": "system-environment-setup",
-      "target": "system-environment-setup:compact",
+      "target": "system-environment-setup/compact",
       "type": "has-support"
     },
     {
       "source": "system-environment-setup",
-      "target": "system-environment-setup:evals",
+      "target": "system-environment-setup/evals",
       "type": "has-support"
     },
     {
       "source": "system-environment-setup",
-      "target": "system-environment-setup:references",
+      "target": "system-environment-setup/references",
       "type": "has-support"
     },
     {
@@ -7348,17 +7348,17 @@
     },
     {
       "source": "task-estimation",
-      "target": "task-estimation:compact",
+      "target": "task-estimation/compact",
       "type": "has-support"
     },
     {
       "source": "task-estimation",
-      "target": "task-estimation:evals",
+      "target": "task-estimation/evals",
       "type": "has-support"
     },
     {
       "source": "task-estimation",
-      "target": "task-estimation:references",
+      "target": "task-estimation/references",
       "type": "has-support"
     },
     {
@@ -7408,17 +7408,17 @@
     },
     {
       "source": "task-planning",
-      "target": "task-planning:compact",
+      "target": "task-planning/compact",
       "type": "has-support"
     },
     {
       "source": "task-planning",
-      "target": "task-planning:evals",
+      "target": "task-planning/evals",
       "type": "has-support"
     },
     {
       "source": "task-planning",
-      "target": "task-planning:references",
+      "target": "task-planning/references",
       "type": "has-support"
     },
     {
@@ -7458,17 +7458,17 @@
     },
     {
       "source": "technical-writing",
-      "target": "technical-writing:compact",
+      "target": "technical-writing/compact",
       "type": "has-support"
     },
     {
       "source": "technical-writing",
-      "target": "technical-writing:evals",
+      "target": "technical-writing/evals",
       "type": "has-support"
     },
     {
       "source": "technical-writing",
-      "target": "technical-writing:references",
+      "target": "technical-writing/references",
       "type": "has-support"
     },
     {
@@ -7498,17 +7498,17 @@
     },
     {
       "source": "testing-strategies",
-      "target": "testing-strategies:compact",
+      "target": "testing-strategies/compact",
       "type": "has-support"
     },
     {
       "source": "testing-strategies",
-      "target": "testing-strategies:evals",
+      "target": "testing-strategies/evals",
       "type": "has-support"
     },
     {
       "source": "testing-strategies",
-      "target": "testing-strategies:references",
+      "target": "testing-strategies/references",
       "type": "has-support"
     },
     {
@@ -7543,17 +7543,17 @@
     },
     {
       "source": "ui-component-patterns",
-      "target": "ui-component-patterns:compact",
+      "target": "ui-component-patterns/compact",
       "type": "has-support"
     },
     {
       "source": "ui-component-patterns",
-      "target": "ui-component-patterns:evals",
+      "target": "ui-component-patterns/evals",
       "type": "has-support"
     },
     {
       "source": "ui-component-patterns",
-      "target": "ui-component-patterns:references",
+      "target": "ui-component-patterns/references",
       "type": "has-support"
     },
     {
@@ -7588,17 +7588,17 @@
     },
     {
       "source": "user-guide-writing",
-      "target": "user-guide-writing:compact",
+      "target": "user-guide-writing/compact",
       "type": "has-support"
     },
     {
       "source": "user-guide-writing",
-      "target": "user-guide-writing:evals",
+      "target": "user-guide-writing/evals",
       "type": "has-support"
     },
     {
       "source": "user-guide-writing",
-      "target": "user-guide-writing:references",
+      "target": "user-guide-writing/references",
       "type": "has-support"
     },
     {
@@ -7628,22 +7628,22 @@
     },
     {
       "source": "vercel-deploy",
-      "target": "vercel-deploy:compact",
+      "target": "vercel-deploy/compact",
       "type": "has-support"
     },
     {
       "source": "vercel-deploy",
-      "target": "vercel-deploy:evals",
+      "target": "vercel-deploy/evals",
       "type": "has-support"
     },
     {
       "source": "vercel-deploy",
-      "target": "vercel-deploy:references",
+      "target": "vercel-deploy/references",
       "type": "has-support"
     },
     {
       "source": "vercel-deploy",
-      "target": "vercel-deploy:scripts",
+      "target": "vercel-deploy/scripts",
       "type": "has-support"
     },
     {
@@ -7668,17 +7668,17 @@
     },
     {
       "source": "vercel-react-best-practices",
-      "target": "vercel-react-best-practices:compact",
+      "target": "vercel-react-best-practices/compact",
       "type": "has-support"
     },
     {
       "source": "vercel-react-best-practices",
-      "target": "vercel-react-best-practices:evals",
+      "target": "vercel-react-best-practices/evals",
       "type": "has-support"
     },
     {
       "source": "vercel-react-best-practices",
-      "target": "vercel-react-best-practices:references",
+      "target": "vercel-react-best-practices/references",
       "type": "has-support"
     },
     {
@@ -7753,22 +7753,22 @@
     },
     {
       "source": "vibe-kanban",
-      "target": "vibe-kanban:compact",
+      "target": "vibe-kanban/compact",
       "type": "has-support"
     },
     {
       "source": "vibe-kanban",
-      "target": "vibe-kanban:evals",
+      "target": "vibe-kanban/evals",
       "type": "has-support"
     },
     {
       "source": "vibe-kanban",
-      "target": "vibe-kanban:references",
+      "target": "vibe-kanban/references",
       "type": "has-support"
     },
     {
       "source": "vibe-kanban",
-      "target": "vibe-kanban:scripts",
+      "target": "vibe-kanban/scripts",
       "type": "has-support"
     },
     {
@@ -7778,17 +7778,17 @@
     },
     {
       "source": "video-production",
-      "target": "video-production:compact",
+      "target": "video-production/compact",
       "type": "has-support"
     },
     {
       "source": "video-production",
-      "target": "video-production:evals",
+      "target": "video-production/evals",
       "type": "has-support"
     },
     {
       "source": "video-production",
-      "target": "video-production:references",
+      "target": "video-production/references",
       "type": "has-support"
     },
     {
@@ -7813,17 +7813,17 @@
     },
     {
       "source": "web-accessibility",
-      "target": "web-accessibility:compact",
+      "target": "web-accessibility/compact",
       "type": "has-support"
     },
     {
       "source": "web-accessibility",
-      "target": "web-accessibility:evals",
+      "target": "web-accessibility/evals",
       "type": "has-support"
     },
     {
       "source": "web-accessibility",
-      "target": "web-accessibility:references",
+      "target": "web-accessibility/references",
       "type": "has-support"
     },
     {
@@ -7868,17 +7868,17 @@
     },
     {
       "source": "web-design-guidelines",
-      "target": "web-design-guidelines:compact",
+      "target": "web-design-guidelines/compact",
       "type": "has-support"
     },
     {
       "source": "web-design-guidelines",
-      "target": "web-design-guidelines:evals",
+      "target": "web-design-guidelines/evals",
       "type": "has-support"
     },
     {
       "source": "web-design-guidelines",
-      "target": "web-design-guidelines:references",
+      "target": "web-design-guidelines/references",
       "type": "has-support"
     },
     {
@@ -7918,17 +7918,17 @@
     },
     {
       "source": "workflow-automation",
-      "target": "workflow-automation:compact",
+      "target": "workflow-automation/compact",
       "type": "has-support"
     },
     {
       "source": "workflow-automation",
-      "target": "workflow-automation:evals",
+      "target": "workflow-automation/evals",
       "type": "has-support"
     },
     {
       "source": "workflow-automation",
-      "target": "workflow-automation:references",
+      "target": "workflow-automation/references",
       "type": "has-support"
     }
   ]

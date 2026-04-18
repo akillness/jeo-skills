@@ -40,6 +40,17 @@
         "Response includes `actions/checkout` with `submodules: recursive` or equivalent",
         "Response mentions SSH key or token access for the private submodule"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our GitHub Pages build uses a private docs-theme submodule and keeps failing. Can we just add auth and keep going?",
+      "expected_output": "Chooses hosted-constraint mode, explains GitHub Pages' public https-only submodule limitation, and routes away from pretending private-submodule auth will work there.",
+      "assertions": [
+        "Response identifies hosted-constraint as the primary mode",
+        "Response mentions GitHub Pages specifically",
+        "Response explains that the submodule must be public and use https or equivalent public-read-only wording",
+        "Response does not present a normal CI token or SSH workaround as a sufficient fix"
+      ]
     }
   ]
 }

@@ -1,18 +1,17 @@
 N:git-submodule
-D:Decide when Git submodules are the right dependency boundary, then operate them safely: add, bootstrap recursively, update pointers, handle detached HEAD, remove cleanly, or configure CI checkout. Use for `.gitmodules`, `git submodule`, recursive clone/setup, pointer updates, private submodules in CI, or submodule-vs-subtree decisions.
-G:git submodule subtree dependencies version-control ci repo-structure
+D:Decide when Git submodules are the right external-repo boundary, then choose one safe operator flow: add and pin, bootstrap recursively, sync the recorded commit, advance a tracked branch, avoid detached-HEAD surprises while editing inside the submodule, remove cleanly, or handle CI / hosted-platform checkout constraints. Use for `.gitmodules`, `git submodule`, recursive clone/setup, pointer updates, detached HEAD, private submodules in CI, GitHub Pages limits, or submodule-vs-subtree/vendor decisions.
+G:git submodule subtree dependencies version-control ci repo-structure github-pages
 U[5]:
-  Add an external repository as a pinned submodule
-  Bootstrap or clone a repo with existing submodules
+  Add or pin an external repository as a submodule
+  Bootstrap or sync a repo with existing submodules safely
   Advance a tracked branch and commit the pointer update
   Work inside a submodule without detached HEAD confusion
-  Configure CI checkout for public or private submodules
-S[8]{n,action}:
+  Handle CI or hosted-platform constraints for submodules
+S[7]{n,action}:
   1,Normalize the submodule request
   2,Decide whether submodule is the right tool
   3,Choose one workflow mode
-  4,Apply the decision ladder
-  5,Build the submodule brief
-  6,Use mode-specific patterns
-  7,Keep operator rules visible
-  8,Route adjacent problems to the right skill
+  4,Keep pinned-commit and detached-HEAD invariants visible
+  5,Build the Git Submodule Brief
+  6,Use the mode packets and hosted-constraint reference
+  7,Route adjacent problems to the right skill
