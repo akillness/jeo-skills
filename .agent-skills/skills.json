@@ -1,6 +1,6 @@
 {
   "version": "1.2.0",
-  "generated": "2026-04-15T18:20:43Z",
+  "generated": "2026-04-18T01:16:31Z",
   "skill_count": 89,
   "categories": {
     "planning-review": [
@@ -1093,7 +1093,7 @@
     },
     {
       "name": "git-submodule",
-      "description": "Decide when Git submodules are the right dependency boundary, then operate them safely: add, bootstrap recursively, update pointers, handle detached HEAD, remove cleanly, or configure CI checkout.",
+      "description": "Decide when Git submodules are the right external-repo boundary, then choose one safe operator flow: add and pin, bootstrap recursively, sync or advance pointers, avoid detached HEAD surprises, and handle CI or hosted-platform checkout constraints.",
       "category": "utilities",
       "path": "git-submodule/SKILL.md",
       "tags": [

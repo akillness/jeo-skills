@@ -4,7 +4,7 @@ created: 2026-04-13
 updated: 2026-04-18
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
-sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, .survey/fabric-modernization-20260415/context.md, .survey/fabric-modernization-20260415/solutions.md, .survey/lmstudio-cli-modernization-20260415/context.md, .survey/lmstudio-cli-modernization-20260415/solutions.md, .survey/file-organization-structural-hardening-20260417/context.md, .survey/file-organization-structural-hardening-20260417/solutions.md, .survey/git-workflow-structural-hardening-20260418/context.md, .survey/git-workflow-structural-hardening-20260418/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, .survey/fabric-modernization-20260415/context.md, .survey/fabric-modernization-20260415/solutions.md, .survey/lmstudio-cli-modernization-20260415/context.md, .survey/lmstudio-cli-modernization-20260415/solutions.md, .survey/file-organization-structural-hardening-20260417/context.md, .survey/file-organization-structural-hardening-20260417/solutions.md, .survey/git-workflow-structural-hardening-20260418/context.md, .survey/git-workflow-structural-hardening-20260418/solutions.md, .survey/git-submodule-structural-hardening-20260418/context.md, .survey/git-submodule-structural-hardening-20260418/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Developer Workflow Cluster
@@ -16,7 +16,7 @@ Current cluster shape:
 - `file-organization` = repository-shape choice and incremental reorg guidance: framework defaults vs feature/domain grouping vs monorepo boundaries vs docs taxonomy vs engine-aware game/content layouts
 - `workflow-automation` = recurring repo glue: task runners, bootstrap entrypoints, local-CI parity, hook guardrails, and maintenance routines
 - `git-workflow` = local collaboration and recovery: branch hygiene, commit shaping, sync, conflict handling, push safety, and rescue patterns
-- `git-submodule` = external-repo boundary choice and operator flow: submodule-vs-subtree/vendor choice, recursive bootstrap, pointer updates, detached-HEAD handling, removal, and CI checkout/auth
+- `git-submodule` = external-repo boundary choice and operator flow: submodule-vs-subtree/vendor/package-delivery choice, recursive bootstrap, pinned-state sync, safe pointer updates, detached-HEAD handling, hosted-platform constraints, removal, and CI checkout/auth
 - `npm-git-install` = Git-based package delivery choice: decide between Git refs, SHA pins, private auth, tarballs, workspace/file links, and publish-first registry paths
 - `fabric` = reusable pattern-driven CLI transforms over stdin/files/transcripts/notes/logs plus custom-pattern maintenance and optional server mode; not a generic coding assistant or scraping layer
 - `lmstudio-cli` = LM Studio operator lane: local `lms` checks, remote endpoint verification, native-management escalation, and downstream OpenAI-compatible wiring for LM Studio specifically
@@ -46,12 +46,16 @@ The `file-organization` follow-up matters because it is one of the few developer
 
 The `git-workflow` structural-hardening pass extended the same rule to the local Git anchor. The lane stays cleaner when `git-workflow` keeps the six local-state modes together but pushes command packets into support docs, because that preserves the existing split between local history work and hosted PR/repo-management work without inventing another Git wrapper.
 
+The `git-submodule` structural-hardening pass applied the same dense-anchor rule to repo-boundary work. Moving mode packets and hosted-platform constraints into a support reference kept the canonical skill boundary intact while making GitHub Pages limits, detached-HEAD invariants, and pointer semantics easier to scan than when they were buried in one giant front door.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[file-organization-modernization-2026-04-15]]
 - [[file-organization-structural-hardening-2026-04-17]]
 - [[git-workflow-modernization-2026-04-12]]
 - [[git-workflow-structural-hardening-2026-04-18]]
+- [[git-submodule-modernization-2026-04-15]]
+- [[git-submodule-structural-hardening-2026-04-18]]
 - [[npm-git-install-modernization-2026-04-15]]
 - [[fabric-modernization-2026-04-15]]
 - [[lmstudio-cli-modernization-2026-04-15]]

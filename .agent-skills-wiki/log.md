@@ -767,3 +767,11 @@
 - Accepted: shrink `game-performance-profiler` from 296 to 231 lines, add `references/mode-selection-and-route-outs.md`, expand eval coverage with a build-failure boundary case, sync `SKILL.toon` / `skills.json`, and update README / README.ko / setup discovery wording so the front door now matches the packet-first profiling boundary
 - Rejected: adding another Steam Deck-only or profiler-only wrapper; merging engine-specific runtime triage back into `performance-optimization`; leaving the oversized front door untouched after support coverage reached 100%
 - Wiki files created/updated: `queries/game-performance-profiler-structural-hardening-2026-04-18.md`, `concepts/game-development-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | git-submodule structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/content, and game-development lanes, with the best bounded developer-workflow follow-up landing on the existing `git-submodule` skill rather than a new Git wrapper
+- Survey files created under `.survey/git-submodule-structural-hardening-20260418/`; repo-local graph and wiki evidence plus direct primary-source retrieval from Git docs, GitHub Docs, `actions/checkout`, and GitHub issue threads were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `git-submodule` from 293 to 208 lines, add `references/mode-packets-and-hosted-constraints.md`, add a GitHub Pages hosted-constraint eval, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording
+- Rejected: adding another Git checkout/auth helper, letting `git-submodule` absorb generic Git cleanup, or treating package delivery as a submodule problem
+- Wiki files created/updated: `queries/git-submodule-structural-hardening-2026-04-18.md`, `concepts/developer-workflow-cluster.md`, `index.md`, `log.md`

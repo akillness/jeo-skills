@@ -1,23 +1,23 @@
 ---
 name: git-submodule
 description: >
-  Decide when Git submodules are the right dependency boundary, then operate them
-  safely: add a submodule, clone/init recursively, update a tracked branch,
-  develop inside the submodule without getting lost in detached HEAD, remove a
-  submodule cleanly, or configure CI checkout. Use when the user asks about
-  `.gitmodules`, `git submodule`, recursive clone/setup, updating submodule
-  pointers, private submodules in CI, or whether submodule vs subtree/vendoring
-  is the better fit. Not for generic Git history cleanup or package-manager
-  dependency delivery.
+  Decide when Git submodules are the right external-repo boundary, then choose one
+  safe operator flow: add and pin, bootstrap recursively, sync to the recorded
+  commit, advance a tracked branch, edit inside the submodule without detached-HEAD
+  surprises, remove cleanly, or configure CI/hosted-platform checkout constraints.
+  Use when the user asks about `.gitmodules`, `git submodule`, recursive clone/setup,
+  pointer updates, detached HEAD, private submodules in CI, GitHub Pages submodule
+  limits, or submodule vs subtree/vendoring/package delivery. Not for generic Git
+  history cleanup or package-manager dependency delivery.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
   Best for repositories where Git CLI is available and the main problem is the
   repo boundary around external code: submodule choice, bootstrap, pointer
-  updates, detached-HEAD handling, or CI checkout behavior.
+  updates, detached-HEAD handling, or CI / hosted-platform behavior.
 metadata:
   tags: git, submodule, subtree, dependencies, version-control, ci, repo-structure
   platforms: Claude, ChatGPT, Gemini, Codex, OpenCode
-  version: "2.0.0"
+  version: "2.1.0"
   source: akillness/oh-my-skills
 ---
 
@@ -28,102 +28,89 @@ Use this skill as the repository's **Git submodule choice and operator-workflow 
 The job is not to dump every `git submodule` command in one blob. The job is to:
 1. decide whether submodule is the right boundary at all,
 2. choose one operating mode,
-3. make detached-HEAD, pointer, and CI consequences explicit,
+3. keep pinned-commit, detached-`HEAD`, and hosted-platform consequences explicit,
 4. emit the next safe commands only for that mode.
 
-Read [references/decision-matrix.md](references/decision-matrix.md) first. Use [references/update-and-detached-head.md](references/update-and-detached-head.md) and [references/ci-and-automation.md](references/ci-and-automation.md) when the task involves branch tracking, automation, or editing inside the submodule.
+Read [references/decision-matrix.md](references/decision-matrix.md) first.
+Read [references/update-and-detached-head.md](references/update-and-detached-head.md) when the request involves pointer updates, detached `HEAD`, or editing inside the submodule.
+Read [references/ci-and-automation.md](references/ci-and-automation.md) for CI/bootstrap expectations.
+Read [references/mode-packets-and-hosted-constraints.md](references/mode-packets-and-hosted-constraints.md) for mode-specific command packets and GitHub Pages / URL-drift constraints.
 
 If the user mainly needs:
 - **local branch/history cleanup, rebase, conflict recovery, or push safety** → use `git-workflow`
-- **Node package delivery from Git refs, tarballs, or workspaces** → use `npm-git-install`
+- **Node package delivery from Git refs, tarballs, workspaces, or publish-first flows** → use `npm-git-install`
 - **repo bootstrap/task-runner automation beyond submodule mechanics** → use `workflow-automation`
 - **broader environment or container setup** → use `system-environment-setup`
 
 ## When to use this skill
 - Add an external repository to a project via `git submodule add`
 - Clone or initialize a repository that already contains submodules
-- Update a submodule to the commit recorded by the superproject
+- Sync a submodule back to the commit recorded by the superproject
 - Advance a submodule to a tracked remote branch and commit the new pointer
 - Work inside a submodule without getting surprised by detached `HEAD`
 - Remove a submodule cleanly
 - Configure GitHub Actions or other CI to fetch submodules, including private ones
-- Decide whether submodule vs subtree vs vendoring is the better fit
+- Check hosted-platform constraints such as GitHub Pages public-submodule limits
+- Decide whether submodule vs subtree vs vendoring vs package delivery is the better fit
 
 ## When not to use this skill
 - The main problem is ordinary Git collaboration, rebasing, or history repair
 - The dependency should really be a package-manager / registry artifact
+- The task is broader repo bootstrap automation rather than submodule mechanics
+- The request is hosted repo administration outside submodule checkout / visibility constraints
 - The user wants a giant Git tutorial instead of the next safe move for one submodule situation
-- The task is hosted repo administration rather than repo-internal dependency structure
 
 ## Instructions
 
-### Step 1: Normalize the submodule request
+### Step 1: Normalize the request
 Capture the request in this form first:
 
 ```yaml
 submodule_intake:
-  current_goal: decide-boundary | add | bootstrap | sync-to-pinned-commit | advance-tracked-branch | edit-inside-submodule | remove | ci-checkout | unknown
+  current_goal: decide-boundary | add | bootstrap | sync-to-pinned-commit | advance-tracked-branch | edit-inside-submodule | remove | ci-checkout | hosted-constraint | unknown
   repo_role: superproject-consumer | submodule-maintainer | both | unknown
   dependency_shape: external-repo | vendor-copy | subtree-candidate | package-candidate | unknown
   submodule_state: absent | present-uninitialized | present-detached-head | present-on-branch | pointer-needs-update | unknown
   update_intent: none | match-recorded-commit | move-to-new-upstream-commit | develop-and-push-submodule | unknown
-  ci_context: none | github-actions | other-ci | unknown
+  ci_context: none | github-actions | other-ci | github-pages | unknown
   auth_context: public | private-ssh | private-token | unknown
   collaboration_risk: solo | shared | unknown
   confidence: high | medium | low
 ```
 
-If the context is incomplete, pick the safest default and say what you assumed.
+If context is incomplete, make the safest default explicit.
 
 ### Step 2: Decide whether submodule is the right tool
-Ask this before giving commands:
-
+Answer these before giving commands:
 - Do we need a **separate upstream Git history** inside this repo?
-- Is **pinning an exact commit** the real requirement?
+- Is **exact commit pinning** the real requirement?
 - Can the team tolerate recursive clone/bootstrap and CI checkout setup?
-- Is the dependency more like a long-lived integrated component (`git subtree`) or a published artifact (`npm-git-install`) instead?
+- Is the dependency more like a subtree, a vendored snapshot, or a published package instead?
 
 If the answer is "not really", route away instead of forcing submodules.
 
-### Step 3: Choose exactly one workflow mode
-Pick one primary mode for the current run.
-
+### Step 3: Choose exactly one primary mode
+Pick one primary mode for the current run:
 1. **boundary decision**
-   - Use when the real question is submodule vs subtree vs vendoring vs package delivery.
-
 2. **add-and-pin**
-   - Use when the repo needs a new submodule added and committed.
-
 3. **bootstrap-and-clone**
-   - Use when the repo already has submodules and the goal is getting a clone or CI worktree into a usable state.
-
 4. **sync-to-pinned-commit**
-   - Use when the goal is reproducibility: match the commit already recorded by the superproject.
-
 5. **advance-tracked-branch**
-   - Use when you intentionally want to move the submodule pointer to a newer upstream commit.
-
 6. **edit-inside-submodule**
-   - Use when work must happen inside the submodule repo and detached `HEAD` would be dangerous.
-
 7. **remove-and-cleanup**
-   - Use when a submodule should be deinitialized and removed cleanly.
-
 8. **ci-checkout**
-   - Use when the main issue is automation checkout, recursive fetch, or private-submodule auth.
+9. **hosted-constraint**
 
-### Step 4: Apply the decision ladder
-Use these rules:
+Use `hosted-constraint` when the user is blocked by platform rules such as GitHub Pages public-only submodules or stale submodule URL forms, rather than by ordinary local Git usage.
 
-- Prefer **submodule** when separate repo history + exact commit pinning matter most.
-- Prefer **subtree** when consumers should clone one repo without submodule bootstrap and the integrated-history trade-off is acceptable.
-- Prefer **vendoring** when the dependency is tiny or changes rarely.
-- Prefer **package-manager / artifact delivery** when the need is distributing a library, not embedding another repo boundary.
-- Prefer **`git clone --recurse-submodules`** or **`git submodule update --init --recursive`** for bootstrap.
-- Prefer **plain `git submodule update`** when the goal is to match the pinned commit.
-- Prefer **explicit branch tracking + `git submodule update --remote`** only when intentionally advancing the pointer.
-- Prefer **switching to a real branch inside the submodule** before making commits there.
-- Prefer **documented CI checkout config** over assuming submodules appear automatically.
+### Step 4: Keep the operator invariants visible
+These truths should survive every answer:
+- A superproject records a submodule by **commit**, not by "latest branch".
+- `git submodule update` usually restores the recorded commit and may leave the submodule in detached `HEAD`.
+- `.gitmodules` is part of the contract; branch-tracking intent belongs there when `update --remote` is expected.
+- A submodule commit is not reflected in the superproject until the submodule path is staged and committed there.
+- Recursive bootstrap belongs in onboarding and automation docs if the repo depends on submodules.
+- Hosted platforms may add visibility, URL, or auth constraints that normal local Git use does not reveal.
 
 ### Step 5: Build the submodule brief
 Return this exact structure:
@@ -132,13 +119,13 @@ Return this exact structure:
 # Git Submodule Brief
 
 ## Recommended mode
-- Mode: boundary decision | add-and-pin | bootstrap-and-clone | sync-to-pinned-commit | advance-tracked-branch | edit-inside-submodule | remove-and-cleanup | ci-checkout
+- Mode: boundary decision | add-and-pin | bootstrap-and-clone | sync-to-pinned-commit | advance-tracked-branch | edit-inside-submodule | remove-and-cleanup | ci-checkout | hosted-constraint
 - Why this mode fits: ...
 
 ## Current state
 - Superproject goal: ...
 - Submodule state: ...
-- Auth / CI context: ...
+- Auth / CI / hosted context: ...
 - Collaboration risk: solo | shared | unknown
 - Confidence: high | medium | low
 
@@ -165,103 +152,25 @@ Return this exact structure:
 - `workflow-automation` when ...
 ```
 
-### Step 6: Use these mode-specific patterns
+### Step 6: Use the mode packets, not a giant improvised command dump
+Pull the exact packet from [references/mode-packets-and-hosted-constraints.md](references/mode-packets-and-hosted-constraints.md).
 
-#### boundary decision
-- say clearly whether submodule is justified
-- if not, name the preferred alternative and why
-- do not emit submodule commands for a case that is really subtree, vendoring, or package delivery
-
-#### add-and-pin
-```bash
-git submodule add <repo-url> <path>
-git add .gitmodules <path>
-git commit -m "feat: add <name> as submodule"
-```
-- If a tracked branch matters, set it explicitly rather than assuming collaborators know the intent:
-```bash
-git submodule set-branch --branch main <path>
-git add .gitmodules
-```
-- Call out that the superproject pins a commit, not “latest”.
-
-#### bootstrap-and-clone
-```bash
-git clone --recurse-submodules <repo-url>
-# or inside an existing clone
-git submodule update --init --recursive
-```
-- Use this for onboarding, fresh machines, and repo bootstrap.
-- Mention private-auth requirements if any submodule is private.
-
-#### sync-to-pinned-commit
-```bash
-git submodule update --init --recursive
-git submodule status --recursive
-git diff --submodule
-```
-- This mode is about reproducing the committed state, not upgrading anything.
-- Detached `HEAD` after update is normal here.
-
-#### advance-tracked-branch
-```bash
-git submodule set-branch --branch main path/to/submodule
-git submodule update --remote path/to/submodule
-git add .gitmodules path/to/submodule
-git commit -m "chore: update submodule pointer"
-```
-- Explain that `update --remote` changes what commit the superproject pins.
-- Review the resulting pointer diff before committing.
-- If the branch is shared, call out review risk explicitly.
-
-#### edit-inside-submodule
-```bash
-cd path/to/submodule
-git switch main   # or another real branch
-# make and commit changes here
-git push origin main
-cd -
-git add path/to/submodule
-git commit -m "chore: update submodule pointer"
-```
-- Do not leave a contributor in detached `HEAD` if they plan to commit inside the submodule.
-- Keep submodule commits and superproject pointer commits conceptually separate.
-
-#### remove-and-cleanup
-```bash
-git submodule deinit -f path/to/submodule
-git rm -f path/to/submodule
-rm -rf .git/modules/path/to/submodule
-git commit -m "chore: remove submodule"
-```
-- Verify the path is really no longer needed before cleanup.
-- Explain that both `.gitmodules` and `.git/modules/...` state are part of the removal.
-
-#### ci-checkout
-For GitHub Actions:
-```yaml
-- uses: actions/checkout@v5
-  with:
-    submodules: recursive
-```
-For private submodules, add the chosen auth story (SSH key or token with access to every repo).
-- Make CI auth an explicit part of the answer.
-- If the workflow only needs pinned contents, avoid mixing checkout guidance with pointer-upgrade logic.
-
-### Step 7: Keep these operator rules visible
-- `git submodule update` usually checks out the recorded commit and may leave the submodule in detached `HEAD`.
-- `.gitmodules` is part of the contract; branch-tracking intent belongs there when `update --remote` is expected.
-- A submodule commit is not reflected in the superproject until the submodule path is staged and committed there.
-- Recursive bootstrap belongs in onboarding and automation docs if the repo depends on submodules.
+Rules:
+- `boundary decision` should compare submodule with subtree / vendoring / package delivery directly.
+- `bootstrap-and-clone` and `sync-to-pinned-commit` must preserve the difference between **restore recorded state** and **upgrade pointer**.
+- `advance-tracked-branch` must make branch intent explicit and commit the resulting pointer update in the superproject.
+- `edit-inside-submodule` must avoid detached-`HEAD` commit loss.
+- `ci-checkout` must make private-submodule auth explicit.
+- `hosted-constraint` must call out public-only or URL-form restrictions instead of pretending hosted builds will authenticate like a local clone.
 
 ## Output format
-Return a **short operator-style Git submodule brief**.
+Return a short operator-style **Git Submodule Brief**.
 
 Required qualities:
 - pick one workflow mode
 - say whether submodule is actually the right tool
-- make detached-HEAD / pointer consequences explicit
-- include CI/auth notes when relevant
+- make detached-`HEAD` / pointer consequences explicit
+- include CI/auth or hosted-platform notes when relevant
 - route away cleanly when the problem belongs to another skill
 
 ## Examples
@@ -278,12 +187,16 @@ Output: choose `advance-tracked-branch`, set or confirm `submodule.<name>.branch
 Input: "Should this shared component repo be a submodule or subtree?"
 Output: choose `boundary decision`, compare separate-history/pinning needs against clone simplicity, and route to subtree if consumers should not deal with recursive bootstrap.
 
+### Example 4: hosted-platform constraint
+Input: "Our GitHub Pages build uses a private docs-theme submodule and keeps failing."
+Output: choose `hosted-constraint`, explain the public-`https://` GitHub Pages limitation, and route away from a private-submodule Pages design instead of pretending auth fixes it.
+
 ## Best practices
 1. Start with the boundary decision, not the command list.
 2. Distinguish **match pinned commit** from **advance upstream pointer**.
 3. Treat detached `HEAD` as normal-but-important operator state, not as a mysterious Git bug.
 4. Keep submodule mechanics separate from generic Git history repair.
-5. Make CI checkout and auth part of the main workflow whenever submodules are involved.
+5. Make CI checkout, hosted-platform limits, and auth part of the main workflow whenever submodules are involved.
 
 ## References
 - [Git Book: Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
@@ -291,3 +204,4 @@ Output: choose `boundary decision`, compare separate-history/pinning needs again
 - [Atlassian: Git submodule](https://www.atlassian.com/git/tutorials/git-submodule)
 - [Atlassian: Git subtree](https://www.atlassian.com/git/tutorials/git-subtree)
 - [GitHub Actions checkout](https://github.com/actions/checkout#checkout-multiple-repos-private)
+- [GitHub Pages submodule limitations](https://docs.github.com/en/pages/getting-started-with-github-pages/using-submodules-with-github-pages)
