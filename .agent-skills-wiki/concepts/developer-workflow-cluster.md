@@ -4,7 +4,7 @@ created: 2026-04-13
 updated: 2026-04-18
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
-sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, .survey/fabric-modernization-20260415/context.md, .survey/fabric-modernization-20260415/solutions.md, .survey/lmstudio-cli-modernization-20260415/context.md, .survey/lmstudio-cli-modernization-20260415/solutions.md, .survey/file-organization-structural-hardening-20260417/context.md, .survey/file-organization-structural-hardening-20260417/solutions.md, .survey/git-workflow-structural-hardening-20260418/context.md, .survey/git-workflow-structural-hardening-20260418/solutions.md, .survey/git-submodule-structural-hardening-20260418/context.md, .survey/git-submodule-structural-hardening-20260418/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/workflow-automation-structural-hardening-20260418/context.md, .survey/workflow-automation-structural-hardening-20260418/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, .survey/fabric-modernization-20260415/context.md, .survey/fabric-modernization-20260415/solutions.md, .survey/lmstudio-cli-modernization-20260415/context.md, .survey/lmstudio-cli-modernization-20260415/solutions.md, .survey/file-organization-structural-hardening-20260417/context.md, .survey/file-organization-structural-hardening-20260417/solutions.md, .survey/git-workflow-structural-hardening-20260418/context.md, .survey/git-workflow-structural-hardening-20260418/solutions.md, .survey/git-submodule-structural-hardening-20260418/context.md, .survey/git-submodule-structural-hardening-20260418/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Developer Workflow Cluster
@@ -48,6 +48,8 @@ The `git-workflow` structural-hardening pass extended the same rule to the local
 
 The `git-submodule` structural-hardening pass applied the same dense-anchor rule to repo-boundary work. Moving mode packets and hosted-platform constraints into a support reference kept the canonical skill boundary intact while making GitHub Pages limits, detached-HEAD invariants, and pointer semantics easier to scan than when they were buried in one giant front door.
 
+The `workflow-automation` structural-hardening pass extended the same pattern to recurring repo glue itself. The lane stays cleaner when `workflow-automation` acts as a routing-first front door for task-entrypoints, bootstrap, local-CI parity, hooks, maintenance bots, and workflow cleanup while leaving machine setup, deploy execution, Git policy, and test-policy questions to neighboring skills.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[file-organization-modernization-2026-04-15]]
@@ -60,4 +62,5 @@ The `git-submodule` structural-hardening pass applied the same dense-anchor rule
 - [[fabric-modernization-2026-04-15]]
 - [[lmstudio-cli-modernization-2026-04-15]]
 - [[workflow-automation-modernization-2026-04-13]]
+- [[workflow-automation-structural-hardening-2026-04-18]]
 - [[environment-skill-canonicalization-2026-04-12]]

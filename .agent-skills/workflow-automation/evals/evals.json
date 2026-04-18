@@ -30,6 +30,16 @@
         "Response requires idempotent and non-interactive behavior for the bootstrap path",
         "Response explicitly distinguishes repo automation from broader environment provisioning"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Dependency update PRs, stale cleanup, and release-prep chores keep slipping. We have a few scripts already, but I need to know whether this should become a scheduled bot workflow and what humans still own.",
+      "expected_output": "The skill activates in repo-maintenance mode, recommends a scheduled or bot-owned maintenance surface, and defines review/noise-control guardrails instead of treating automation as fully autonomous.",
+      "assertions": [
+        "Response identifies repo-maintenance as the primary mode or equivalent",
+        "Response distinguishes scheduled automation from daily human-invoked commands",
+        "Response includes review cadence, batching, ownership, or noise-control guidance"
+      ]
     }
   ]
 }
