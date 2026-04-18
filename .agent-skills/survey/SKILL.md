@@ -4,9 +4,9 @@ description: >
   Run a bounded cross-platform landscape scan before planning or implementation.
   Use when the real job is researching what exists, how people work around it,
   which solutions repeat, or how platform/tooling patterns map before deciding
-  what to build. Produce reusable `.survey/{slug}/` artifacts and route follow-up
-  architecture or execution work to `plan`, `jeo`, `ralph`, or implementation
-  only after the survey is done.
+  what to build. Produce reusable `.survey/{slug}/` artifacts, validate the
+  artifact contract, and route planning or execution outward only after the
+  survey is done.
 allowed-tools: Read Write Bash Grep Glob WebFetch
 compatibility: >
   Best for repo-maintenance research, workflow discovery, agent-platform
@@ -17,30 +17,32 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.0.0"
+  version: "2.1.0"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
-  hardening: 2026-04-18
+  hardening: 2026-04-19
 ---
 
 # Survey
 
 Use this skill when the job is **discovering the landscape before committing to a plan**.
 
-`survey` stays portable by doing three things well:
-1. freeze the question and evidence rules,
+`survey` stays portable by doing four things well:
+1. freeze one bounded research question,
 2. run the same 4 research lanes every time,
-3. save reusable `.survey/{slug}/` artifacts that other skills can consume.
+3. save reusable `.survey/{slug}/` artifacts with fixed headings,
+4. validate the artifact contract before handing off to planning or execution.
 
 Read these support docs before running unfamiliar survey work:
 - [references/evidence-recovery-ladder.md](references/evidence-recovery-ladder.md)
 - [references/platform-adapter-and-artifact-contract.md](references/platform-adapter-and-artifact-contract.md)
+- [references/output-templates-and-validator.md](references/output-templates-and-validator.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.
 - A feature, workflow, tooling choice, or operational pain needs context before planning or implementation.
 - The topic spans multiple platforms or vendors and needs a vendor-neutral comparison.
-- Repo maintenance needs one bounded research pass before rewriting a skill, SOP, or workflow.
+- Repo maintenance needs one bounded research pass before rewriting a skill, SOP, or reusable workflow.
 - The right next step depends on understanding workarounds, repeated complaints, and structural gaps rather than writing code immediately.
 
 ## When not to use this skill
@@ -50,7 +52,7 @@ Read these support docs before running unfamiliar survey work:
 - **The request is mainly a live browse-and-click task** → use a browser/operator skill instead of pretending the work is a survey.
 
 ## Artifact contract
-Always save research in a shared folder with the same filenames:
+Keep the output package stable:
 
 ```text
 .survey/{slug}/
@@ -67,6 +69,7 @@ Required meanings:
 - `platform-map.md` = `settings`, `rules`, `hooks`, `platform gaps` normalized across Claude / Codex / Gemini when relevant
 
 Do not invent alternate filenames or free-form artifact shapes unless the user explicitly asks.
+Use `python3 .agent-skills/survey/scripts/validate_survey_artifacts.py <path>` after writing files whenever the survey output is meant to be reusable.
 
 ## Instructions
 
@@ -117,14 +120,11 @@ Then check whether `.survey/{slug}/triage.md` already exists.
 - If it exists and the user is present, ask whether to reuse or overwrite.
 - In unattended loops, reuse when the existing artifact still matches the same question; overwrite only when the scope has clearly changed.
 
-Write `triage.md`:
-
-```markdown
-# Triage
-- Problem: ...
-- Audience: ...
-- Why now: ...
-```
+Write `triage.md` with:
+- `# Triage`
+- `- Problem:`
+- `- Audience:`
+- `- Why now:`
 
 ### Step 4: Run the 4 lanes in parallel
 Keep the lanes separate even if one is thinner.
@@ -166,103 +166,35 @@ For agent/tooling/platform topics, replace that with:
 Use `settings / rules / hooks` as the common layer whenever Claude / Codex / Gemini differences are relevant.
 
 ### Step 5: Synthesize the artifacts
-Write `context.md` using this shape:
+Keep the written files compact and schema-stable.
+- Use the exact markdown templates in [references/output-templates-and-validator.md](references/output-templates-and-validator.md).
+- Keep the required filenames and headings unchanged.
+- Preserve honest provenance labels when evidence is weak.
+- For platform topics, make `platform-map.md` explicit instead of burying platform differences in `solutions.md`.
 
-```markdown
-# Context: {project name}
+### Step 6: Validate the artifact contract
+Run the validator after writing the files:
 
-## Workflow Context
-...
-
-## Affected Users
-| Role | Responsibility | Skill Level |
-|------|----------------|-------------|
-| ... | ... | ... |
-
-## Current Workarounds
-1. ...
-
-## Adjacent Problems
-- ...
-
-## User Voices
-- "..." — source
+```bash
+python3 .agent-skills/survey/scripts/validate_survey_artifacts.py .survey/<slug>
+python3 .agent-skills/survey/scripts/validate_survey_artifacts.py .survey/<slug> --platform-topic
 ```
 
-Write `solutions.md` using this shape:
+Use `--platform-topic` when `platform-map.md` is required.
+If provenance labels matter for the run, also use:
 
-```markdown
-# Solution Landscape: {project name}
-
-## Solution List
-| Name | Approach | Strengths | Weaknesses | Notes |
-|------|----------|-----------|------------|-------|
-| ... | ... | ... | ... | ... |
-
-## Categories
-...
-
-## What People Actually Use
-...
-
-## Frequency Ranking
-1. ...
-
-## Key Gaps
-- ...
-
-## Contradictions
-- ...
-
-## Key Insight
-...
+```bash
+python3 .agent-skills/survey/scripts/validate_survey_artifacts.py .survey/<slug> --require-provenance
 ```
 
-For platform topics, write `platform-map.md` using this shape:
+If the validator fails, fix the artifact files before handing off to planning or implementation.
 
-```markdown
-# Platform Map: {project name}
-
-## Settings
-| Concern | Claude | Codex | Gemini | Common Layer |
-|---------|--------|-------|--------|--------------|
-| ... | ... | ... | ... | ... |
-
-## Rules
-| Concern | Claude / OMC | Codex / OMX | Gemini / OHMG | Common Layer |
-|---------|---------------|-------------|---------------|--------------|
-| ... | ... | ... | ... | ... |
-
-## Hooks
-| Lifecycle | Claude | Codex | Gemini | Common Layer |
-|-----------|--------|-------|--------|--------------|
-| ... | ... | ... | ... | ... |
-
-## Platform Gaps
-1. ...
-```
-
-### Step 6: End with a factual survey summary
-Return a short summary only after files are written:
-
-```markdown
-## Survey complete: {slug}
-
-### Context
-- ...
-- Main workaround: ...
-
-### Solution Landscape
-- {N} solutions across {M} categories
-- Key insight: ...
-- Key gap: ...
-
-### Files
-- `.survey/{slug}/triage.md`
-- `.survey/{slug}/context.md`
-- `.survey/{slug}/solutions.md`
-- `.survey/{slug}/platform-map.md`
-```
+### Step 7: End with a factual survey summary
+Return a short summary only after files are written and validated:
+- `## Survey complete: {slug}`
+- 1-2 context bullets including the main workaround
+- 1-2 solution-landscape bullets including the key insight and key gap
+- file list for the generated artifacts
 
 Do **not** slide into planning or implementation unless the user explicitly asks for the next step.
 
@@ -285,7 +217,7 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - checks existing `.survey/{slug}` first
 - uses repo-local graph/wiki evidence plus any necessary primary-source retrieval
 - writes triage/context/solutions and a factual summary
-- does not start rewriting the skill inside the survey step
+- validates the output folder before any skill rewrite starts
 
 ### Example 2: Platform comparison
 **Input**
@@ -295,15 +227,19 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - mode: `platform-comparison`
 - writes `platform-map.md`
 - normalizes differences into `settings`, `rules`, `hooks`
+- validates with `--platform-topic`
 - records portability gaps without treating vendor-specific features as the artifact contract
 
 ## Best practices
-1. Keep the front door small: classify mode, freeze evidence rules, run the 4 lanes, and save the artifacts.
-2. Push slow-changing retrieval/platform detail into references instead of bloating the main skill.
+1. Keep the front door small: classify mode, freeze evidence rules, run the 4 lanes, validate, and save the artifacts.
+2. Push slow-changing retrieval/platform/template detail into references instead of bloating the main skill.
 3. Prefer direct primary sources, but label every downgrade honestly.
 4. Preserve the same artifact filenames and headings across Claude / Codex / Gemini runs.
 5. If evidence is thin, narrow the claim instead of bluffing certainty.
+6. Treat hook systems as accelerators around the validator, not replacements for checked-in artifact rules.
 
 ## References
 - `references/evidence-recovery-ladder.md` — fallback ladder and provenance labels for weak search/extract environments
 - `references/platform-adapter-and-artifact-contract.md` — portability rules for `settings`, `rules`, `hooks`, and identical artifact output across platforms
+- `references/output-templates-and-validator.md` — exact file templates plus validator usage for `.survey/{slug}/`
+- `scripts/validate_survey_artifacts.py` — artifact-contract validator for survey output folders

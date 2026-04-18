@@ -81,6 +81,12 @@ Use the same validation logic everywhere:
 3. check citations / provenance labels exist where needed
 4. verify that platform-map files use the `settings / rules / hooks` layer for platform topics
 
+Default repo-local validator:
+```bash
+python3 .agent-skills/survey/scripts/validate_survey_artifacts.py .survey/<slug>
+python3 .agent-skills/survey/scripts/validate_survey_artifacts.py .survey/<slug> --platform-topic
+```
+
 If a platform supports hooks, wrap the validator there.
 If it does not, run the validator as a normal command after writing files.
 

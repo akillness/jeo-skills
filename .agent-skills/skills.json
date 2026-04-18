@@ -2868,7 +2868,7 @@
     },
     {
       "name": "survey",
-      "description": "Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform/tooling patterns map before deciding what to build. Produce reusable `.survey/{slug}/` artifacts and route planning or execution outward only after the survey is done.",
+      "description": "Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform/tooling patterns map before deciding what to build. Produce reusable `.survey/{slug}/` artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.",
       "category": "core-orchestration",
       "path": "survey/SKILL.md",
       "tags": [
@@ -2902,8 +2902,17 @@
         "WebFetch"
       ],
       "keyword": "survey",
-      "version": "1.0.0",
-      "commands": []
+      "version": "2.1.0",
+      "commands": [
+        {
+          "command": "python3 .agent-skills/survey/scripts/validate_survey_artifacts.py .survey/<slug>",
+          "source": "survey/SKILL.md"
+        },
+        {
+          "command": "python3 .agent-skills/survey/scripts/validate_survey_artifacts.py .survey/<slug> --platform-topic",
+          "source": "survey/SKILL.md"
+        }
+      ]
     },
     {
       "name": "system-environment-setup",

@@ -40,6 +40,26 @@
         "Routes to implementation or a more direct debugging/coding path",
         "Does not prescribe full `.survey/{slug}/` artifact creation for the one-line fix"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "survey this repo-maintenance question, then leave the findings in a reusable folder for later automation",
+      "expected_output": "The survey writes the canonical `.survey/{slug}/` files and explicitly validates the artifact folder before handing off to planning or implementation.",
+      "assertions": [
+        "Mentions validating the artifact contract after writing files",
+        "Uses the repo-local validator script or equivalent validation command",
+        "Keeps the survey output in the canonical filenames instead of inventing a new folder layout"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "survey Claude Code vs Codex vs Gemini CLI for hooks and worker orchestration, and make the result portable for a cron loop",
+      "expected_output": "The survey requires `platform-map.md`, preserves the fixed headings, and treats hooks as optional accelerators around a portable artifact contract rather than the only source of truth.",
+      "assertions": [
+        "Requires `platform-map.md` or validates with a platform-topic mode",
+        "States that repo-local artifact files remain the durable source of truth",
+        "Treats hooks as optional runtime wrappers instead of assuming hook parity across platforms"
+      ]
     }
   ]
 }
