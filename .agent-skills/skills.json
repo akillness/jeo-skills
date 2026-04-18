@@ -1602,7 +1602,7 @@
     },
     {
       "name": "marketing-automation",
-      "description": "Canonical general marketing router that turns broad marketing asks into a KPI-aware brief, one chosen lane, and an implementation-ready packet across CRO, copywriting, SEO, analytics, pricing, launch, retention, and growth.",
+      "description": "Canonical broad marketing front door that turns vague product and growth asks into one operating mode, one primary lane, and one implementation-ready packet across launch planning, conversion surfaces, lifecycle/retention, acquisition/content, and measurement/experiments.",
       "category": "marketing",
       "path": "marketing-automation/SKILL.md",
       "tags": [

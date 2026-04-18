@@ -807,3 +807,11 @@
 - Accepted: shrink `autoresearch` from 333 to 284 lines, rewrite it around five operating modes, add `references/operating-modes-and-route-outs.md`, refresh `evals/evals.json`, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the front door matches the ML-search boundary
 - Rejected: adding another autoresearch-adjacent wrapper, broadening the skill into generic eval/observability tooling, or leaving the long explainer shape in place after support coverage was already complete
 - Wiki files created/updated: `queries/autoresearch-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | marketing-automation structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack launch and funnel work, product/ops coordination, marketing/GTM execution, and game-launch specialist boundaries, with the best bounded follow-up landing on the existing `marketing-automation` skill rather than a new broad marketing wrapper
+- Survey files created under `.survey/marketing-automation-structural-hardening-20260418/`; repo-local wiki and graph evidence plus browser-rendered primary-page evidence from Asana, Notion, HubSpot, Steamworks, and Yahoo Japan indexed snippets were used because `web_search` / `web_extract` were unavailable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: tighten `marketing-automation` around five operating modes, add `references/operating-modes-and-route-outs.md`, expand `evals/evals.json` with lifecycle and specialist route-out coverage, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the front door matches the packet-first boundary
+- Rejected: adding another broad marketing wrapper; letting the skill absorb Steam/store launch work already owned by `steam-store-launch-ops`; letting backlog/milestone planning drift in from `task-planning`
+- Wiki files created/updated: `queries/marketing-automation-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
