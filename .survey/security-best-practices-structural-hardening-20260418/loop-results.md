@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | .agent-skills/security-best-practices/SKILL.md | Moving packet-level mode detail into one focused reference and shrinking the front door will improve trigger clarity without losing coverage. | Rewrote `SKILL.md`, added `references/mode-packets-and-route-outs.md`, expanded evals, synced discovery surfaces, refreshed graph/wiki artifacts. | `validate_skill.sh` passed; `validate_catalog_sync.py` passed; line count dropped 284 → 232; survey evidence still matched the six-layer boundary. | Keep | Transferable pattern matches other successful structural-hardening passes: smaller front door, support-owned packets, synced discovery surfaces. |

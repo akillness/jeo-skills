@@ -34,11 +34,31 @@
     {
       "id": 4,
       "prompt": "Our scanner report says we have weak CSP and missing security headers. The team already added middleware, but we don't trust the rollout.",
-      "expected_output": "The skill should choose perimeter/browser-policy or review/verification mode, recommend staged rollout/testing, and avoid claiming middleware install equals completion.",
+      "expected_output": "The skill should choose browser-perimeter-policy or review-verification mode, recommend staged rollout/testing, and avoid claiming middleware install equals completion.",
       "assertions": [
-        "Output identifies perimeter/browser-policy or review/verification as the main mode.",
+        "Output identifies browser-perimeter-policy or review-verification as the main mode.",
         "Output mentions staged rollout, report-only CSP, or verification steps.",
         "Output explicitly avoids equating middleware installation with full coverage."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our marketing site signup and demo-request forms are still getting spammed even after a honeypot and CAPTCHA. Should we just tighten CSP and call it done?",
+      "expected_output": "The skill should choose abuse-controls mode, keep form abuse separate from generic browser-policy work, and recommend route-aware controls plus monitoring.",
+      "assertions": [
+        "Output identifies abuse-controls as the primary mode.",
+        "Output separates form abuse controls from CSP/header work.",
+        "Output includes monitoring, ownership, or verification evidence for whether the abuse controls work."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "We have a game companion site and backend APIs. I'm worried partner keys and admin tokens are drifting into CI logs and maybe client bundles.",
+      "expected_output": "The skill should choose secrets-runtime-config mode, separate detection from storage/rotation policy, and route environment wiring details outward when needed.",
+      "assertions": [
+        "Output identifies secrets-runtime-config as the primary mode.",
+        "Output distinguishes secret detection from storage, rotation, or revocation policy.",
+        "Output routes environment bootstrapping or injection mechanics to system-environment-setup or environment-setup when appropriate."
       ]
     }
   ]
