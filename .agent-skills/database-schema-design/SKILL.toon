@@ -1,22 +1,15 @@
 N:database-schema-design
-D:Design and optimize database schemas for SQL and NoSQL databases. Use when creating new databases...
-G:database schema SQL NoSQL PostgreSQL
-U[5]:
-  **New Project**: Database schema design for a new application
-  **Schema Refactoring**: Redesigning an existing schema for performance or scalability
-  **Relationship Definition**: Implementing 1:1, 1:N, N:M relationships between tables
-  **Migration**: Safely applying schema changes
-  **Performance Issues**: Index and schema optimization to resolve slow queries
-S[5]{n,action}:
-  1,Define Entities and Attributes
-  2,Design Relationships and Normalization
-  3,Establish Indexing Strategy
-  4,Set Up Constraints and Triggers
-  5,Write Migration Scripts
-R[6]:
-  id
-  email
-  username
-  password_hash
-  created_at
-  updated_at
+D:Design storage-model and migration-safety packets for relational, document-heavy, and hybrid data systems. Use when the user needs entity ownership, constraints, indexes, staged schema changes, or queryable-vs-flexible field decisions across backend/fullstack products, internal ops tools, marketing/customer-data workflows, or game/live-ops systems. Route API contracts to api-design, auth-owned identity/session modeling to authentication-setup, verification to backend-testing, and reporting/telemetry follow-through to looker-studio-bigquery or monitoring-observability.
+G:database schema-design migrations indexing constraints relational nosql backend
+U[6]:
+  New schema design for product, ops, customer-data, or live-ops systems
+  Refactors with weak constraints, bad cardinality, or poor indexes
+  Queryable-vs-flexible field decisions for JSON/document metadata
+  Multi-tenant, audit-log, retention, and lifecycle boundary planning
+  Staged rollout / backfill / cleanup planning for live systems
+  Route-outs to API, auth, testing, reporting, and observability neighbors
+S[4]{n,action}:
+  1,Classify one primary storage-design packet
+  2,Gather the minimum credible evidence and choose the data lane
+  3,Model ownership, lifecycle, integrity, and query-critical fields
+  4,Plan rollout, route-outs, and one next move

@@ -10,21 +10,20 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 385
-- Graph edges: 1107
-- Category counts: agent-development=2, backend=5, code-quality=5, core-orchestration=10, creative-media=2, documentation=5, frontend=10, infrastructure=13, marketing=2, planning-review=5, project-management=4, search-analysis=7, uncategorized=7, utilities=12
+- Graph edges: 1112
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
 2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. `code-refactoring` dropped to 264 lines and now reads more clearly as a packet-first cleanup anchor that starts from the artifact the user already has.
-4. The code-quality lane stays healthiest when `code-refactoring` owns cleanup packets while `debugging`, `code-review`, `testing-strategies`, `performance-optimization`, and `codebase-search` keep diagnosis, judgment, policy, bottleneck analysis, and impact mapping separate.
+3. `database-schema-design` dropped to 246 lines and now reads more clearly as a packet-first storage-design anchor with explicit report/telemetry route-outs.
+4. The backend lane is healthier when `database-schema-design` owns storage-model and migration packets while `api-design`, `authentication-setup`, `backend-testing`, `looker-studio-bigquery`, and `monitoring-observability` keep their adjacent follow-through roles separate.
 
 ## Highest-degree nodes
-- skills.json: degree 89
+- .agent-skills/skills.json: degree 89
 - README.ko.md: degree 88
 - README.md: degree 88
 - setup-all-skills-prompt.md: degree 88
-- skills.toon: degree 82
+- .agent-skills/skills.toon: degree 82
 
 ## Oversized front-door watchlist
 - clawteam: 330 lines in SKILL.md
@@ -35,13 +34,13 @@
 - jeo: 289 lines in SKILL.md
 - obsidian-cli: 287 lines in SKILL.md
 - autoresearch: 285 lines in SKILL.md
-- database-schema-design: 283 lines in SKILL.md
 - task-estimation: 279 lines in SKILL.md
+- responsive-design: 278 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new code-quality wrapper is justified: the bounded win was tightening `code-refactoring` in place and syncing the discovery surfaces.
-- `code-refactoring` should stay distinct from `debugging` (diagnosis), `code-review` (review judgment), `testing-strategies` (validation policy), `performance-optimization` (bottleneck-led tuning), and `codebase-search` (impact mapping / symbol inventory).
-- Duplicate pressure rises when cleanup requests blur packet choice, guardrail design, migration tooling, and route-out decisions into one blob; the packet-first refactor model is the right fix.
+- No new database wrapper is justified: the bounded win was tightening `database-schema-design` in place and syncing the discovery surfaces.
+- `database-schema-design` should stay distinct from `api-design` (contract shape), `authentication-setup` (identity/session ownership), `backend-testing` (verification), `looker-studio-bigquery` (reporting presentation), and `monitoring-observability` (telemetry freshness / alerts).
+- Duplicate pressure rises when schema requests blur data modeling, dashboard design, auth ownership, and migration verification into one blob; the packet-first route-out model is the right fix.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree or oversized front-door skills whose trigger logic can be made smaller without weakening their output contract.

@@ -1,34 +1,39 @@
 {
   "meta": {
-    "path": ".agent-skills/ plus repository discovery docs",
-    "method": "custom graphify-style structural graph",
-    "total_skills": 89
+    "scope": ".agent-skills plus discovery docs",
+    "method": "graphify-style structural fallback",
+    "skill_count": 89
   },
   "nodes": [
     {
       "id": "README.md",
       "label": "README.md",
-      "type": "discovery-doc"
+      "type": "discovery",
+      "path": "README.md"
     },
     {
       "id": "README.ko.md",
       "label": "README.ko.md",
-      "type": "discovery-doc"
+      "type": "discovery",
+      "path": "README.ko.md"
     },
     {
       "id": "setup-all-skills-prompt.md",
       "label": "setup-all-skills-prompt.md",
-      "type": "discovery-doc"
+      "type": "discovery",
+      "path": "setup-all-skills-prompt.md"
     },
     {
       "id": ".agent-skills/skills.json",
-      "label": "skills.json",
-      "type": "discovery-doc"
+      "label": ".agent-skills/skills.json",
+      "type": "discovery",
+      "path": ".agent-skills/skills.json"
     },
     {
       "id": ".agent-skills/skills.toon",
-      "label": "skills.toon",
-      "type": "discovery-doc"
+      "label": ".agent-skills/skills.toon",
+      "type": "discovery",
+      "path": ".agent-skills/skills.toon"
     },
     {
       "id": "skill:agent-browser",
@@ -407,7 +412,7 @@
       "label": "database-schema-design",
       "type": "skill",
       "path": ".agent-skills/database-schema-design/SKILL.md",
-      "lines": 283
+      "lines": 246
     },
     {
       "id": "support:database-schema-design:references",
@@ -2126,6 +2131,26 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:agent-browser",
+      "target": "skill:agentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:agent-browser",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:agent-browser",
+      "target": "skill:plannotator",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:agent-browser",
+      "target": "skill:playwriter",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:agentation",
       "target": "support:agentation:references",
       "relation": "has-support"
@@ -2146,6 +2171,26 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:agentation",
+      "target": "skill:agent-browser",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:agentation",
+      "target": "skill:design-system",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:agentation",
+      "target": "skill:plannotator",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:agentation",
+      "target": "skill:playwriter",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:api-design",
       "target": "support:api-design:references",
       "relation": "has-support"
@@ -2159,6 +2204,26 @@
       "source": "skill:api-design",
       "target": "support:api-design:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:api-design",
+      "target": "skill:api-documentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:api-design",
+      "target": "skill:authentication-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:api-design",
+      "target": "skill:backend-testing",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:api-design",
+      "target": "skill:database-schema-design",
+      "relation": "mentions"
     },
     {
       "source": "skill:api-documentation",
@@ -2176,6 +2241,31 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:api-documentation",
+      "target": "skill:api-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:api-documentation",
+      "target": "skill:authentication-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:api-documentation",
+      "target": "skill:changelog-maintenance",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:api-documentation",
+      "target": "skill:technical-writing",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:api-documentation",
+      "target": "skill:user-guide-writing",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:authentication-setup",
       "target": "support:authentication-setup:references",
       "relation": "has-support"
@@ -2189,6 +2279,31 @@
       "source": "skill:authentication-setup",
       "target": "support:authentication-setup:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:authentication-setup",
+      "target": "skill:api-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:authentication-setup",
+      "target": "skill:api-documentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:authentication-setup",
+      "target": "skill:backend-testing",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:authentication-setup",
+      "target": "skill:database-schema-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:authentication-setup",
+      "target": "skill:security-best-practices",
+      "relation": "mentions"
     },
     {
       "source": "skill:autoresearch",
@@ -2211,6 +2326,21 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:autoresearch",
+      "target": "skill:harness",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:autoresearch",
+      "target": "skill:skill-autoresearch",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:autoresearch",
+      "target": "skill:survey",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:backend-testing",
       "target": "support:backend-testing:references",
       "relation": "has-support"
@@ -2224,6 +2354,31 @@
       "source": "skill:backend-testing",
       "target": "support:backend-testing:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:backend-testing",
+      "target": "skill:api-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:backend-testing",
+      "target": "skill:api-documentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:backend-testing",
+      "target": "skill:authentication-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:backend-testing",
+      "target": "skill:database-schema-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:backend-testing",
+      "target": "skill:testing-strategies",
+      "relation": "mentions"
     },
     {
       "source": "skill:bmad",
@@ -2246,6 +2401,51 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:bmad",
+      "target": "skill:bmad-gds",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad",
+      "target": "skill:bmad-idea",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad",
+      "target": "skill:harness",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad",
+      "target": "skill:ohmg",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad",
+      "target": "skill:omc",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad",
+      "target": "skill:omx",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad",
+      "target": "skill:plannotator",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad",
+      "target": "skill:ralph",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad",
+      "target": "skill:task-planning",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:bmad-gds",
       "target": "support:bmad-gds:references",
       "relation": "has-support"
@@ -2259,6 +2459,46 @@
       "source": "skill:bmad-gds",
       "target": "support:bmad-gds:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:bmad-gds",
+      "target": "skill:bmad",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad-gds",
+      "target": "skill:bmad-idea",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad-gds",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad-gds",
+      "target": "skill:game-build-log-triage",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad-gds",
+      "target": "skill:game-demo-feedback-triage",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad-gds",
+      "target": "skill:game-performance-profiler",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad-gds",
+      "target": "skill:steam-store-launch-ops",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad-gds",
+      "target": "skill:task-planning",
+      "relation": "mentions"
     },
     {
       "source": "skill:bmad-idea",
@@ -2276,6 +2516,26 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:bmad-idea",
+      "target": "skill:bmad",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad-idea",
+      "target": "skill:bmad-gds",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad-idea",
+      "target": "skill:marketing-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:bmad-idea",
+      "target": "skill:task-planning",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:changelog-maintenance",
       "target": "support:changelog-maintenance:references",
       "relation": "has-support"
@@ -2289,6 +2549,31 @@
       "source": "skill:changelog-maintenance",
       "target": "support:changelog-maintenance:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:changelog-maintenance",
+      "target": "skill:api-documentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:changelog-maintenance",
+      "target": "skill:deployment-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:changelog-maintenance",
+      "target": "skill:marketing-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:changelog-maintenance",
+      "target": "skill:technical-writing",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:changelog-maintenance",
+      "target": "skill:user-guide-writing",
+      "relation": "mentions"
     },
     {
       "source": "skill:clawteam",
@@ -2311,6 +2596,11 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:clawteam",
+      "target": "skill:api-design",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:code-refactoring",
       "target": "support:code-refactoring:references",
       "relation": "has-support"
@@ -2324,6 +2614,31 @@
       "source": "skill:code-refactoring",
       "target": "support:code-refactoring:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:code-refactoring",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:code-refactoring",
+      "target": "skill:codebase-search",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:code-refactoring",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:code-refactoring",
+      "target": "skill:performance-optimization",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:code-refactoring",
+      "target": "skill:testing-strategies",
+      "relation": "mentions"
     },
     {
       "source": "skill:code-review",
@@ -2341,6 +2656,36 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:code-review",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:code-review",
+      "target": "skill:git-workflow",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:code-review",
+      "target": "skill:performance-optimization",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:code-review",
+      "target": "skill:testing-strategies",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:code-review",
+      "target": "skill:web-accessibility",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:code-review",
+      "target": "skill:web-design-guidelines",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:codebase-search",
       "target": "support:codebase-search:references",
       "relation": "has-support"
@@ -2354,6 +2699,26 @@
       "source": "skill:codebase-search",
       "target": "support:codebase-search:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:codebase-search",
+      "target": "skill:code-refactoring",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:codebase-search",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:codebase-search",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:codebase-search",
+      "target": "skill:log-analysis",
+      "relation": "mentions"
     },
     {
       "source": "skill:data-analysis",
@@ -2371,6 +2736,26 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:data-analysis",
+      "target": "skill:codebase-search",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:data-analysis",
+      "target": "skill:log-analysis",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:data-analysis",
+      "target": "skill:looker-studio-bigquery",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:data-analysis",
+      "target": "skill:pattern-detection",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:database-schema-design",
       "target": "support:database-schema-design:references",
       "relation": "has-support"
@@ -2384,6 +2769,41 @@
       "source": "skill:database-schema-design",
       "target": "support:database-schema-design:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:database-schema-design",
+      "target": "skill:api-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:database-schema-design",
+      "target": "skill:api-documentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:database-schema-design",
+      "target": "skill:authentication-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:database-schema-design",
+      "target": "skill:backend-testing",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:database-schema-design",
+      "target": "skill:looker-studio-bigquery",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:database-schema-design",
+      "target": "skill:monitoring-observability",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:database-schema-design",
+      "target": "skill:security-best-practices",
+      "relation": "mentions"
     },
     {
       "source": "skill:debugging",
@@ -2401,6 +2821,31 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:debugging",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:debugging",
+      "target": "skill:log-analysis",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:debugging",
+      "target": "skill:monitoring-observability",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:debugging",
+      "target": "skill:performance-optimization",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:debugging",
+      "target": "skill:testing-strategies",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:deployment-automation",
       "target": "support:deployment-automation:references",
       "relation": "has-support"
@@ -2414,6 +2859,31 @@
       "source": "skill:deployment-automation",
       "target": "support:deployment-automation:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:deployment-automation",
+      "target": "skill:environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:deployment-automation",
+      "target": "skill:monitoring-observability",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:deployment-automation",
+      "target": "skill:system-environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:deployment-automation",
+      "target": "skill:vercel-deploy",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:deployment-automation",
+      "target": "skill:workflow-automation",
+      "relation": "mentions"
     },
     {
       "source": "skill:design-system",
@@ -2431,6 +2901,31 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:design-system",
+      "target": "skill:frontend-design-system",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:design-system",
+      "target": "skill:responsive-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:design-system",
+      "target": "skill:ui-component-patterns",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:design-system",
+      "target": "skill:web-accessibility",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:design-system",
+      "target": "skill:web-design-guidelines",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:environment-setup",
       "target": "support:environment-setup:references",
       "relation": "has-support"
@@ -2444,6 +2939,21 @@
       "source": "skill:environment-setup",
       "target": "support:environment-setup:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:environment-setup",
+      "target": "skill:deployment-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:environment-setup",
+      "target": "skill:security-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:environment-setup",
+      "target": "skill:system-environment-setup",
+      "relation": "mentions"
     },
     {
       "source": "skill:fabric",
@@ -2461,6 +2971,11 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:fabric",
+      "target": "skill:survey",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:file-organization",
       "target": "support:file-organization:references",
       "relation": "has-support"
@@ -2476,6 +2991,46 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:file-organization",
+      "target": "skill:bmad",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:file-organization",
+      "target": "skill:bmad-gds",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:file-organization",
+      "target": "skill:codebase-search",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:file-organization",
+      "target": "skill:design-system",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:file-organization",
+      "target": "skill:environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:file-organization",
+      "target": "skill:state-management",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:file-organization",
+      "target": "skill:system-environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:file-organization",
+      "target": "skill:workflow-automation",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:firebase-ai-logic",
       "target": "support:firebase-ai-logic:references",
       "relation": "has-support"
@@ -2489,6 +3044,21 @@
       "source": "skill:firebase-ai-logic",
       "target": "support:firebase-ai-logic:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:firebase-ai-logic",
+      "target": "skill:firebase-cli",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:firebase-ai-logic",
+      "target": "skill:genkit",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:firebase-ai-logic",
+      "target": "skill:harness",
+      "relation": "mentions"
     },
     {
       "source": "skill:firebase-cli",
@@ -2511,6 +3081,41 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:firebase-cli",
+      "target": "skill:authentication-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:firebase-cli",
+      "target": "skill:database-schema-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:firebase-cli",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:firebase-cli",
+      "target": "skill:deployment-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:firebase-cli",
+      "target": "skill:firebase-ai-logic",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:firebase-cli",
+      "target": "skill:genkit",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:firebase-cli",
+      "target": "skill:harness",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:frontend-design-system",
       "target": "support:frontend-design-system:references",
       "relation": "has-support"
@@ -2524,6 +3129,26 @@
       "source": "skill:frontend-design-system",
       "target": "support:frontend-design-system:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:frontend-design-system",
+      "target": "skill:design-system",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:frontend-design-system",
+      "target": "skill:responsive-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:frontend-design-system",
+      "target": "skill:ui-component-patterns",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:frontend-design-system",
+      "target": "skill:web-accessibility",
+      "relation": "mentions"
     },
     {
       "source": "skill:game-build-log-triage",
@@ -2541,6 +3166,16 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:game-build-log-triage",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-build-log-triage",
+      "target": "skill:game-ci-cd-pipeline",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:game-ci-cd-pipeline",
       "target": "support:game-ci-cd-pipeline:references",
       "relation": "has-support"
@@ -2554,6 +3189,16 @@
       "source": "skill:game-ci-cd-pipeline",
       "target": "support:game-ci-cd-pipeline:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:game-ci-cd-pipeline",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-ci-cd-pipeline",
+      "target": "skill:game-build-log-triage",
+      "relation": "mentions"
     },
     {
       "source": "skill:game-demo-feedback-triage",
@@ -2571,6 +3216,41 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:game-demo-feedback-triage",
+      "target": "skill:bmad",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-demo-feedback-triage",
+      "target": "skill:bmad-gds",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-demo-feedback-triage",
+      "target": "skill:game-build-log-triage",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-demo-feedback-triage",
+      "target": "skill:game-performance-profiler",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-demo-feedback-triage",
+      "target": "skill:steam-store-launch-ops",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-demo-feedback-triage",
+      "target": "skill:survey",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-demo-feedback-triage",
+      "target": "skill:task-planning",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:game-performance-profiler",
       "target": "support:game-performance-profiler:references",
       "relation": "has-support"
@@ -2584,6 +3264,31 @@
       "source": "skill:game-performance-profiler",
       "target": "support:game-performance-profiler:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:game-performance-profiler",
+      "target": "skill:bmad",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-performance-profiler",
+      "target": "skill:bmad-gds",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-performance-profiler",
+      "target": "skill:game-build-log-triage",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-performance-profiler",
+      "target": "skill:game-demo-feedback-triage",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:game-performance-profiler",
+      "target": "skill:performance-optimization",
+      "relation": "mentions"
     },
     {
       "source": "skill:genkit",
@@ -2601,6 +3306,21 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:genkit",
+      "target": "skill:firebase-ai-logic",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:genkit",
+      "target": "skill:firebase-cli",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:genkit",
+      "target": "skill:survey",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:git-submodule",
       "target": "support:git-submodule:references",
       "relation": "has-support"
@@ -2616,6 +3336,31 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:git-submodule",
+      "target": "skill:environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:git-submodule",
+      "target": "skill:git-workflow",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:git-submodule",
+      "target": "skill:npm-git-install",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:git-submodule",
+      "target": "skill:system-environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:git-submodule",
+      "target": "skill:workflow-automation",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:git-workflow",
       "target": "support:git-workflow:references",
       "relation": "has-support"
@@ -2629,6 +3374,21 @@
       "source": "skill:git-workflow",
       "target": "support:git-workflow:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:git-workflow",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:git-workflow",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:git-workflow",
+      "target": "skill:task-planning",
+      "relation": "mentions"
     },
     {
       "source": "skill:google-workspace",
@@ -2651,6 +3411,11 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:google-workspace",
+      "target": "skill:survey",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:harness",
       "target": "support:harness:references",
       "relation": "has-support"
@@ -2669,6 +3434,11 @@
       "source": "skill:harness",
       "target": "support:harness:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:harness",
+      "target": "skill:debugging",
+      "relation": "mentions"
     },
     {
       "source": "skill:jeo",
@@ -2691,6 +3461,51 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:jeo",
+      "target": "skill:agent-browser",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:jeo",
+      "target": "skill:agentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:jeo",
+      "target": "skill:bmad",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:jeo",
+      "target": "skill:ohmg",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:jeo",
+      "target": "skill:omc",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:jeo",
+      "target": "skill:omx",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:jeo",
+      "target": "skill:plannotator",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:jeo",
+      "target": "skill:ralph",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:jeo",
+      "target": "skill:ralphmode",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:langsmith",
       "target": "support:langsmith:references",
       "relation": "has-support"
@@ -2709,6 +3524,36 @@
       "source": "skill:langsmith",
       "target": "support:langsmith:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:langsmith",
+      "target": "skill:data-analysis",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:langsmith",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:langsmith",
+      "target": "skill:deployment-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:langsmith",
+      "target": "skill:log-analysis",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:langsmith",
+      "target": "skill:monitoring-observability",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:langsmith",
+      "target": "skill:performance-optimization",
+      "relation": "mentions"
     },
     {
       "source": "skill:llm-wiki",
@@ -2731,6 +3576,11 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:llm-wiki",
+      "target": "skill:scrapling",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:lmstudio-cli",
       "target": "support:lmstudio-cli:references",
       "relation": "has-support"
@@ -2751,6 +3601,16 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:lmstudio-cli",
+      "target": "skill:strix",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:lmstudio-cli",
+      "target": "skill:survey",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:log-analysis",
       "target": "support:log-analysis:references",
       "relation": "has-support"
@@ -2764,6 +3624,21 @@
       "source": "skill:log-analysis",
       "target": "support:log-analysis:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:log-analysis",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:log-analysis",
+      "target": "skill:game-build-log-triage",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:log-analysis",
+      "target": "skill:monitoring-observability",
+      "relation": "mentions"
     },
     {
       "source": "skill:looker-studio-bigquery",
@@ -2781,6 +3656,26 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:looker-studio-bigquery",
+      "target": "skill:data-analysis",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:looker-studio-bigquery",
+      "target": "skill:monitoring-observability",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:looker-studio-bigquery",
+      "target": "skill:pattern-detection",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:looker-studio-bigquery",
+      "target": "skill:survey",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:marketing-automation",
       "target": "support:marketing-automation:references",
       "relation": "has-support"
@@ -2794,6 +3689,21 @@
       "source": "skill:marketing-automation",
       "target": "support:marketing-automation:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:marketing-automation",
+      "target": "skill:marketing-skills-collection",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:marketing-automation",
+      "target": "skill:steam-store-launch-ops",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:marketing-automation",
+      "target": "skill:task-planning",
+      "relation": "mentions"
     },
     {
       "source": "skill:marketing-skills-collection",
@@ -2811,6 +3721,16 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:marketing-skills-collection",
+      "target": "skill:marketing-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:marketing-skills-collection",
+      "target": "skill:steam-store-launch-ops",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:monitoring-observability",
       "target": "support:monitoring-observability:references",
       "relation": "has-support"
@@ -2826,6 +3746,46 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:monitoring-observability",
+      "target": "skill:data-analysis",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:monitoring-observability",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:monitoring-observability",
+      "target": "skill:deployment-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:monitoring-observability",
+      "target": "skill:game-performance-profiler",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:monitoring-observability",
+      "target": "skill:langsmith",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:monitoring-observability",
+      "target": "skill:log-analysis",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:monitoring-observability",
+      "target": "skill:looker-studio-bigquery",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:monitoring-observability",
+      "target": "skill:performance-optimization",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:npm-git-install",
       "target": "support:npm-git-install:references",
       "relation": "has-support"
@@ -2839,6 +3799,26 @@
       "source": "skill:npm-git-install",
       "target": "support:npm-git-install:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:npm-git-install",
+      "target": "skill:environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:npm-git-install",
+      "target": "skill:git-workflow",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:npm-git-install",
+      "target": "skill:system-environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:npm-git-install",
+      "target": "skill:workflow-automation",
+      "relation": "mentions"
     },
     {
       "source": "skill:obsidian-cli",
@@ -2859,6 +3839,11 @@
       "source": "skill:obsidian-cli",
       "target": "support:obsidian-cli:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:obsidian-cli",
+      "target": "skill:debugging",
+      "relation": "mentions"
     },
     {
       "source": "skill:obsidian-plugin",
@@ -2896,6 +3881,31 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:ohmg",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ohmg",
+      "target": "skill:harness",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ohmg",
+      "target": "skill:omc",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ohmg",
+      "target": "skill:omx",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ohmg",
+      "target": "skill:ralph",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:omc",
       "target": "support:omc:references",
       "relation": "has-support"
@@ -2914,6 +3924,16 @@
       "source": "skill:omc",
       "target": "support:omc:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:omc",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:omc",
+      "target": "skill:ralph",
+      "relation": "mentions"
     },
     {
       "source": "skill:omx",
@@ -2936,6 +3956,21 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:omx",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:omx",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:omx",
+      "target": "skill:ralph",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:opencontext",
       "target": "support:opencontext:references",
       "relation": "has-support"
@@ -2949,6 +3984,26 @@
       "source": "skill:opencontext",
       "target": "support:opencontext:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:opencontext",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:opencontext",
+      "target": "skill:file-organization",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:opencontext",
+      "target": "skill:llm-wiki",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:opencontext",
+      "target": "skill:workflow-automation",
+      "relation": "mentions"
     },
     {
       "source": "skill:pattern-detection",
@@ -2966,6 +4021,31 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:pattern-detection",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:pattern-detection",
+      "target": "skill:codebase-search",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:pattern-detection",
+      "target": "skill:data-analysis",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:pattern-detection",
+      "target": "skill:log-analysis",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:pattern-detection",
+      "target": "skill:security-best-practices",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:performance-optimization",
       "target": "support:performance-optimization:references",
       "relation": "has-support"
@@ -2979,6 +4059,51 @@
       "source": "skill:performance-optimization",
       "target": "support:performance-optimization:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:performance-optimization",
+      "target": "skill:code-refactoring",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:performance-optimization",
+      "target": "skill:database-schema-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:performance-optimization",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:performance-optimization",
+      "target": "skill:game-performance-profiler",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:performance-optimization",
+      "target": "skill:monitoring-observability",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:performance-optimization",
+      "target": "skill:react-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:performance-optimization",
+      "target": "skill:state-management",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:performance-optimization",
+      "target": "skill:testing-strategies",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:performance-optimization",
+      "target": "skill:ui-component-patterns",
+      "relation": "mentions"
     },
     {
       "source": "skill:plannotator",
@@ -3001,6 +4126,51 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:plannotator",
+      "target": "skill:agentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:plannotator",
+      "target": "skill:bmad",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:plannotator",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:plannotator",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:plannotator",
+      "target": "skill:jeo",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:plannotator",
+      "target": "skill:llm-wiki",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:plannotator",
+      "target": "skill:ralph",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:plannotator",
+      "target": "skill:task-planning",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:plannotator",
+      "target": "skill:vibe-kanban",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:playwriter",
       "target": "support:playwriter:references",
       "relation": "has-support"
@@ -3016,6 +4186,11 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:playwriter",
+      "target": "skill:agent-browser",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:presentation-builder",
       "target": "support:presentation-builder:references",
       "relation": "has-support"
@@ -3029,6 +4204,26 @@
       "source": "skill:presentation-builder",
       "target": "support:presentation-builder:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:presentation-builder",
+      "target": "skill:marketing-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:presentation-builder",
+      "target": "skill:research-paper-writing",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:presentation-builder",
+      "target": "skill:technical-writing",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:presentation-builder",
+      "target": "skill:user-guide-writing",
+      "relation": "mentions"
     },
     {
       "source": "skill:prompt-repetition",
@@ -3066,6 +4261,41 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:ralph",
+      "target": "skill:harness",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ralph",
+      "target": "skill:jeo",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ralph",
+      "target": "skill:ohmg",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ralph",
+      "target": "skill:omc",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ralph",
+      "target": "skill:omx",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ralph",
+      "target": "skill:ralphmode",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ralph",
+      "target": "skill:survey",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:ralphmode",
       "target": "support:ralphmode:references",
       "relation": "has-support"
@@ -3081,6 +4311,16 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:ralphmode",
+      "target": "skill:jeo",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ralphmode",
+      "target": "skill:ralph",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:react-best-practices",
       "target": "support:react-best-practices:references",
       "relation": "has-support"
@@ -3094,6 +4334,31 @@
       "source": "skill:react-best-practices",
       "target": "support:react-best-practices:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:react-best-practices",
+      "target": "skill:performance-optimization",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:react-best-practices",
+      "target": "skill:responsive-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:react-best-practices",
+      "target": "skill:state-management",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:react-best-practices",
+      "target": "skill:vercel-react-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:react-best-practices",
+      "target": "skill:web-accessibility",
+      "relation": "mentions"
     },
     {
       "source": "skill:react-grab",
@@ -3116,6 +4381,41 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:react-grab",
+      "target": "skill:agent-browser",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:react-grab",
+      "target": "skill:agentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:react-grab",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:react-grab",
+      "target": "skill:design-system",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:react-grab",
+      "target": "skill:playwriter",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:react-grab",
+      "target": "skill:react-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:react-grab",
+      "target": "skill:ui-component-patterns",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:remotion-video-production",
       "target": "support:remotion-video-production:references",
       "relation": "has-support"
@@ -3129,6 +4429,11 @@
       "source": "skill:remotion-video-production",
       "target": "support:remotion-video-production:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:remotion-video-production",
+      "target": "skill:video-production",
+      "relation": "mentions"
     },
     {
       "source": "skill:research-paper-writing",
@@ -3146,6 +4451,31 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:research-paper-writing",
+      "target": "skill:api-documentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:research-paper-writing",
+      "target": "skill:marketing-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:research-paper-writing",
+      "target": "skill:presentation-builder",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:research-paper-writing",
+      "target": "skill:technical-writing",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:research-paper-writing",
+      "target": "skill:user-guide-writing",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:responsive-design",
       "target": "support:responsive-design:references",
       "relation": "has-support"
@@ -3159,6 +4489,31 @@
       "source": "skill:responsive-design",
       "target": "support:responsive-design:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:responsive-design",
+      "target": "skill:design-system",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:responsive-design",
+      "target": "skill:react-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:responsive-design",
+      "target": "skill:ui-component-patterns",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:responsive-design",
+      "target": "skill:web-accessibility",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:responsive-design",
+      "target": "skill:web-design-guidelines",
+      "relation": "mentions"
     },
     {
       "source": "skill:rtk",
@@ -3216,6 +4571,46 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:security-best-practices",
+      "target": "skill:api-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:security-best-practices",
+      "target": "skill:authentication-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:security-best-practices",
+      "target": "skill:backend-testing",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:security-best-practices",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:security-best-practices",
+      "target": "skill:database-schema-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:security-best-practices",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:security-best-practices",
+      "target": "skill:environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:security-best-practices",
+      "target": "skill:system-environment-setup",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:skill-autoresearch",
       "target": "support:skill-autoresearch:references",
       "relation": "has-support"
@@ -3229,6 +4624,21 @@
       "source": "skill:skill-autoresearch",
       "target": "support:skill-autoresearch:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:skill-autoresearch",
+      "target": "skill:autoresearch",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:skill-autoresearch",
+      "target": "skill:harness",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:skill-autoresearch",
+      "target": "skill:langsmith",
+      "relation": "mentions"
     },
     {
       "source": "skill:skill-standardization",
@@ -3266,6 +4676,26 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:sprint-retrospective",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:sprint-retrospective",
+      "target": "skill:standup-meeting",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:sprint-retrospective",
+      "target": "skill:task-estimation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:sprint-retrospective",
+      "target": "skill:task-planning",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:standup-meeting",
       "target": "support:standup-meeting:references",
       "relation": "has-support"
@@ -3279,6 +4709,26 @@
       "source": "skill:standup-meeting",
       "target": "support:standup-meeting:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:standup-meeting",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:standup-meeting",
+      "target": "skill:sprint-retrospective",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:standup-meeting",
+      "target": "skill:task-estimation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:standup-meeting",
+      "target": "skill:task-planning",
+      "relation": "mentions"
     },
     {
       "source": "skill:state-management",
@@ -3296,6 +4746,41 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:state-management",
+      "target": "skill:api-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:state-management",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:state-management",
+      "target": "skill:design-system",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:state-management",
+      "target": "skill:react-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:state-management",
+      "target": "skill:responsive-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:state-management",
+      "target": "skill:rtk",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:state-management",
+      "target": "skill:ui-component-patterns",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:steam-store-launch-ops",
       "target": "support:steam-store-launch-ops:references",
       "relation": "has-support"
@@ -3309,6 +4794,16 @@
       "source": "skill:steam-store-launch-ops",
       "target": "support:steam-store-launch-ops:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:steam-store-launch-ops",
+      "target": "skill:game-demo-feedback-triage",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:steam-store-launch-ops",
+      "target": "skill:marketing-automation",
+      "relation": "mentions"
     },
     {
       "source": "skill:strix",
@@ -3346,6 +4841,31 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:survey",
+      "target": "skill:jeo",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:survey",
+      "target": "skill:ohmg",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:survey",
+      "target": "skill:omc",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:survey",
+      "target": "skill:omx",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:survey",
+      "target": "skill:ralph",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:system-environment-setup",
       "target": "support:system-environment-setup:references",
       "relation": "has-support"
@@ -3359,6 +4879,31 @@
       "source": "skill:system-environment-setup",
       "target": "support:system-environment-setup:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:system-environment-setup",
+      "target": "skill:deployment-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:system-environment-setup",
+      "target": "skill:environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:system-environment-setup",
+      "target": "skill:security-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:system-environment-setup",
+      "target": "skill:task-planning",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:system-environment-setup",
+      "target": "skill:vercel-deploy",
+      "relation": "mentions"
     },
     {
       "source": "skill:task-estimation",
@@ -3376,6 +4921,21 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:task-estimation",
+      "target": "skill:sprint-retrospective",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:task-estimation",
+      "target": "skill:standup-meeting",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:task-estimation",
+      "target": "skill:task-planning",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:task-planning",
       "target": "support:task-planning:references",
       "relation": "has-support"
@@ -3389,6 +4949,51 @@
       "source": "skill:task-planning",
       "target": "support:task-planning:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:task-planning",
+      "target": "skill:bmad",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:task-planning",
+      "target": "skill:bmad-gds",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:task-planning",
+      "target": "skill:bmad-idea",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:task-planning",
+      "target": "skill:marketing-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:task-planning",
+      "target": "skill:plannotator",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:task-planning",
+      "target": "skill:sprint-retrospective",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:task-planning",
+      "target": "skill:standup-meeting",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:task-planning",
+      "target": "skill:task-estimation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:task-planning",
+      "target": "skill:vibe-kanban",
+      "relation": "mentions"
     },
     {
       "source": "skill:technical-writing",
@@ -3406,6 +5011,41 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:technical-writing",
+      "target": "skill:api-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:technical-writing",
+      "target": "skill:api-documentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:technical-writing",
+      "target": "skill:changelog-maintenance",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:technical-writing",
+      "target": "skill:marketing-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:technical-writing",
+      "target": "skill:presentation-builder",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:technical-writing",
+      "target": "skill:task-planning",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:technical-writing",
+      "target": "skill:user-guide-writing",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:testing-strategies",
       "target": "support:testing-strategies:references",
       "relation": "has-support"
@@ -3419,6 +5059,36 @@
       "source": "skill:testing-strategies",
       "target": "support:testing-strategies:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:testing-strategies",
+      "target": "skill:backend-testing",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:testing-strategies",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:testing-strategies",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:testing-strategies",
+      "target": "skill:performance-optimization",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:testing-strategies",
+      "target": "skill:web-accessibility",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:testing-strategies",
+      "target": "skill:web-design-guidelines",
+      "relation": "mentions"
     },
     {
       "source": "skill:ui-component-patterns",
@@ -3436,6 +5106,31 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:ui-component-patterns",
+      "target": "skill:design-system",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ui-component-patterns",
+      "target": "skill:react-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ui-component-patterns",
+      "target": "skill:responsive-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ui-component-patterns",
+      "target": "skill:state-management",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:ui-component-patterns",
+      "target": "skill:web-accessibility",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:user-guide-writing",
       "target": "support:user-guide-writing:references",
       "relation": "has-support"
@@ -3449,6 +5144,31 @@
       "source": "skill:user-guide-writing",
       "target": "support:user-guide-writing:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:user-guide-writing",
+      "target": "skill:api-documentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:user-guide-writing",
+      "target": "skill:changelog-maintenance",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:user-guide-writing",
+      "target": "skill:marketing-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:user-guide-writing",
+      "target": "skill:presentation-builder",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:user-guide-writing",
+      "target": "skill:technical-writing",
+      "relation": "mentions"
     },
     {
       "source": "skill:vercel-deploy",
@@ -3471,6 +5191,36 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:vercel-deploy",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vercel-deploy",
+      "target": "skill:deployment-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vercel-deploy",
+      "target": "skill:environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vercel-deploy",
+      "target": "skill:monitoring-observability",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vercel-deploy",
+      "target": "skill:system-environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vercel-deploy",
+      "target": "skill:workflow-automation",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:vercel-react-best-practices",
       "target": "support:vercel-react-best-practices:references",
       "relation": "has-support"
@@ -3484,6 +5234,26 @@
       "source": "skill:vercel-react-best-practices",
       "target": "support:vercel-react-best-practices:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:vercel-react-best-practices",
+      "target": "skill:performance-optimization",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vercel-react-best-practices",
+      "target": "skill:react-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vercel-react-best-practices",
+      "target": "skill:state-management",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vercel-react-best-practices",
+      "target": "skill:web-accessibility",
+      "relation": "mentions"
     },
     {
       "source": "skill:vibe-kanban",
@@ -3506,6 +5276,71 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:vibe-kanban",
+      "target": "skill:agent-browser",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:agentation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:bmad",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:bmad-gds",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:code-review",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:jeo",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:marketing-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:plannotator",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:playwriter",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:sprint-retrospective",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:standup-meeting",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:survey",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:vibe-kanban",
+      "target": "skill:task-planning",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:video-production",
       "target": "support:video-production:references",
       "relation": "has-support"
@@ -3519,6 +5354,11 @@
       "source": "skill:video-production",
       "target": "support:video-production:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:video-production",
+      "target": "skill:remotion-video-production",
+      "relation": "mentions"
     },
     {
       "source": "skill:web-accessibility",
@@ -3536,6 +5376,31 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:web-accessibility",
+      "target": "skill:design-system",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:web-accessibility",
+      "target": "skill:react-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:web-accessibility",
+      "target": "skill:responsive-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:web-accessibility",
+      "target": "skill:ui-component-patterns",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:web-accessibility",
+      "target": "skill:web-design-guidelines",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:web-design-guidelines",
       "target": "support:web-design-guidelines:references",
       "relation": "has-support"
@@ -3551,6 +5416,41 @@
       "relation": "has-support"
     },
     {
+      "source": "skill:web-design-guidelines",
+      "target": "skill:debugging",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:web-design-guidelines",
+      "target": "skill:design-system",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:web-design-guidelines",
+      "target": "skill:performance-optimization",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:web-design-guidelines",
+      "target": "skill:react-best-practices",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:web-design-guidelines",
+      "target": "skill:responsive-design",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:web-design-guidelines",
+      "target": "skill:ui-component-patterns",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:web-design-guidelines",
+      "target": "skill:web-accessibility",
+      "relation": "mentions"
+    },
+    {
       "source": "skill:workflow-automation",
       "target": "support:workflow-automation:references",
       "relation": "has-support"
@@ -3564,6 +5464,41 @@
       "source": "skill:workflow-automation",
       "target": "support:workflow-automation:compact",
       "relation": "has-support"
+    },
+    {
+      "source": "skill:workflow-automation",
+      "target": "skill:deployment-automation",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:workflow-automation",
+      "target": "skill:environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:workflow-automation",
+      "target": "skill:git-workflow",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:workflow-automation",
+      "target": "skill:monitoring-observability",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:workflow-automation",
+      "target": "skill:system-environment-setup",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:workflow-automation",
+      "target": "skill:testing-strategies",
+      "relation": "mentions"
+    },
+    {
+      "source": "skill:workflow-automation",
+      "target": "skill:vercel-deploy",
+      "relation": "mentions"
     },
     {
       "source": "README.md",
@@ -5739,1978 +7674,6 @@
       "source": ".agent-skills/skills.toon",
       "target": "skill:workflow-automation",
       "relation": "indexes"
-    },
-    {
-      "source": "skill:agent-browser",
-      "target": "skill:agentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:agent-browser",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:agent-browser",
-      "target": "skill:plannotator",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:agent-browser",
-      "target": "skill:playwriter",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:agentation",
-      "target": "skill:agent-browser",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:agentation",
-      "target": "skill:design-system",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:agentation",
-      "target": "skill:plannotator",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:agentation",
-      "target": "skill:playwriter",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:api-design",
-      "target": "skill:api-documentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:api-design",
-      "target": "skill:authentication-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:api-design",
-      "target": "skill:backend-testing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:api-design",
-      "target": "skill:database-schema-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:api-documentation",
-      "target": "skill:api-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:api-documentation",
-      "target": "skill:authentication-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:api-documentation",
-      "target": "skill:changelog-maintenance",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:api-documentation",
-      "target": "skill:technical-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:api-documentation",
-      "target": "skill:user-guide-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:authentication-setup",
-      "target": "skill:api-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:authentication-setup",
-      "target": "skill:api-documentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:authentication-setup",
-      "target": "skill:backend-testing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:authentication-setup",
-      "target": "skill:database-schema-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:authentication-setup",
-      "target": "skill:security-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:autoresearch",
-      "target": "skill:harness",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:autoresearch",
-      "target": "skill:skill-autoresearch",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:autoresearch",
-      "target": "skill:survey",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:backend-testing",
-      "target": "skill:api-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:backend-testing",
-      "target": "skill:api-documentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:backend-testing",
-      "target": "skill:authentication-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:backend-testing",
-      "target": "skill:database-schema-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:backend-testing",
-      "target": "skill:testing-strategies",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad",
-      "target": "skill:bmad-gds",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad",
-      "target": "skill:bmad-idea",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad",
-      "target": "skill:harness",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad",
-      "target": "skill:ohmg",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad",
-      "target": "skill:omc",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad",
-      "target": "skill:omx",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad",
-      "target": "skill:plannotator",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad",
-      "target": "skill:ralph",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-gds",
-      "target": "skill:bmad",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-gds",
-      "target": "skill:bmad-idea",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-gds",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-gds",
-      "target": "skill:game-build-log-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-gds",
-      "target": "skill:game-demo-feedback-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-gds",
-      "target": "skill:game-performance-profiler",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-gds",
-      "target": "skill:steam-store-launch-ops",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-gds",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-idea",
-      "target": "skill:bmad",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-idea",
-      "target": "skill:bmad-gds",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-idea",
-      "target": "skill:marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:bmad-idea",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:changelog-maintenance",
-      "target": "skill:api-documentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:changelog-maintenance",
-      "target": "skill:deployment-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:changelog-maintenance",
-      "target": "skill:marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:changelog-maintenance",
-      "target": "skill:technical-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:changelog-maintenance",
-      "target": "skill:user-guide-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-refactoring",
-      "target": "skill:code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-refactoring",
-      "target": "skill:codebase-search",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-refactoring",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-refactoring",
-      "target": "skill:performance-optimization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-refactoring",
-      "target": "skill:testing-strategies",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-review",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-review",
-      "target": "skill:git-workflow",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-review",
-      "target": "skill:performance-optimization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-review",
-      "target": "skill:testing-strategies",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-review",
-      "target": "skill:web-accessibility",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:code-review",
-      "target": "skill:web-design-guidelines",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:codebase-search",
-      "target": "skill:code-refactoring",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:codebase-search",
-      "target": "skill:code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:codebase-search",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:codebase-search",
-      "target": "skill:log-analysis",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:data-analysis",
-      "target": "skill:codebase-search",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:data-analysis",
-      "target": "skill:log-analysis",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:data-analysis",
-      "target": "skill:looker-studio-bigquery",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:data-analysis",
-      "target": "skill:pattern-detection",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:database-schema-design",
-      "target": "skill:api-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:database-schema-design",
-      "target": "skill:api-documentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:database-schema-design",
-      "target": "skill:authentication-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:database-schema-design",
-      "target": "skill:backend-testing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:database-schema-design",
-      "target": "skill:security-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:debugging",
-      "target": "skill:code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:debugging",
-      "target": "skill:log-analysis",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:debugging",
-      "target": "skill:monitoring-observability",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:debugging",
-      "target": "skill:performance-optimization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:debugging",
-      "target": "skill:testing-strategies",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:deployment-automation",
-      "target": "skill:environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:deployment-automation",
-      "target": "skill:monitoring-observability",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:deployment-automation",
-      "target": "skill:system-environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:deployment-automation",
-      "target": "skill:vercel-deploy",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:deployment-automation",
-      "target": "skill:workflow-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:design-system",
-      "target": "skill:frontend-design-system",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:design-system",
-      "target": "skill:responsive-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:design-system",
-      "target": "skill:ui-component-patterns",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:design-system",
-      "target": "skill:web-accessibility",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:design-system",
-      "target": "skill:web-design-guidelines",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:environment-setup",
-      "target": "skill:deployment-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:environment-setup",
-      "target": "skill:security-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:environment-setup",
-      "target": "skill:system-environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:fabric",
-      "target": "skill:survey",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:file-organization",
-      "target": "skill:bmad",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:file-organization",
-      "target": "skill:bmad-gds",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:file-organization",
-      "target": "skill:codebase-search",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:file-organization",
-      "target": "skill:design-system",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:file-organization",
-      "target": "skill:environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:file-organization",
-      "target": "skill:state-management",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:file-organization",
-      "target": "skill:system-environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:file-organization",
-      "target": "skill:workflow-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:firebase-ai-logic",
-      "target": "skill:firebase-cli",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:firebase-ai-logic",
-      "target": "skill:genkit",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:firebase-cli",
-      "target": "skill:authentication-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:firebase-cli",
-      "target": "skill:database-schema-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:firebase-cli",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:firebase-cli",
-      "target": "skill:deployment-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:firebase-cli",
-      "target": "skill:firebase-ai-logic",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:firebase-cli",
-      "target": "skill:genkit",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:firebase-cli",
-      "target": "skill:harness",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:frontend-design-system",
-      "target": "skill:design-system",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:frontend-design-system",
-      "target": "skill:responsive-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:frontend-design-system",
-      "target": "skill:ui-component-patterns",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:frontend-design-system",
-      "target": "skill:web-accessibility",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-build-log-triage",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-build-log-triage",
-      "target": "skill:game-ci-cd-pipeline",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-ci-cd-pipeline",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-ci-cd-pipeline",
-      "target": "skill:game-build-log-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-demo-feedback-triage",
-      "target": "skill:bmad",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-demo-feedback-triage",
-      "target": "skill:bmad-gds",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-demo-feedback-triage",
-      "target": "skill:game-build-log-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-demo-feedback-triage",
-      "target": "skill:game-performance-profiler",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-demo-feedback-triage",
-      "target": "skill:steam-store-launch-ops",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-demo-feedback-triage",
-      "target": "skill:survey",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-demo-feedback-triage",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-performance-profiler",
-      "target": "skill:bmad",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-performance-profiler",
-      "target": "skill:bmad-gds",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-performance-profiler",
-      "target": "skill:game-build-log-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-performance-profiler",
-      "target": "skill:game-demo-feedback-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:game-performance-profiler",
-      "target": "skill:performance-optimization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:genkit",
-      "target": "skill:firebase-ai-logic",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:genkit",
-      "target": "skill:firebase-cli",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:genkit",
-      "target": "skill:survey",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:git-submodule",
-      "target": "skill:environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:git-submodule",
-      "target": "skill:git-workflow",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:git-submodule",
-      "target": "skill:npm-git-install",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:git-submodule",
-      "target": "skill:system-environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:git-submodule",
-      "target": "skill:workflow-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:git-workflow",
-      "target": "skill:code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:git-workflow",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:git-workflow",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:google-workspace",
-      "target": "skill:survey",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:harness",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:jeo",
-      "target": "skill:agent-browser",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:jeo",
-      "target": "skill:agentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:jeo",
-      "target": "skill:bmad",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:jeo",
-      "target": "skill:ohmg",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:jeo",
-      "target": "skill:omc",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:jeo",
-      "target": "skill:omx",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:jeo",
-      "target": "skill:plannotator",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:jeo",
-      "target": "skill:ralph",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:jeo",
-      "target": "skill:ralphmode",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:langsmith",
-      "target": "skill:data-analysis",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:langsmith",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:langsmith",
-      "target": "skill:deployment-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:langsmith",
-      "target": "skill:log-analysis",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:langsmith",
-      "target": "skill:monitoring-observability",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:langsmith",
-      "target": "skill:performance-optimization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:llm-wiki",
-      "target": "skill:scrapling",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:lmstudio-cli",
-      "target": "skill:strix",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:lmstudio-cli",
-      "target": "skill:survey",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:log-analysis",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:log-analysis",
-      "target": "skill:game-build-log-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:log-analysis",
-      "target": "skill:monitoring-observability",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:looker-studio-bigquery",
-      "target": "skill:data-analysis",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:looker-studio-bigquery",
-      "target": "skill:monitoring-observability",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:looker-studio-bigquery",
-      "target": "skill:pattern-detection",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:looker-studio-bigquery",
-      "target": "skill:survey",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:marketing-automation",
-      "target": "skill:marketing-skills-collection",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:marketing-automation",
-      "target": "skill:steam-store-launch-ops",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:marketing-automation",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:marketing-skills-collection",
-      "target": "skill:marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:marketing-skills-collection",
-      "target": "skill:steam-store-launch-ops",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:monitoring-observability",
-      "target": "skill:data-analysis",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:monitoring-observability",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:monitoring-observability",
-      "target": "skill:deployment-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:monitoring-observability",
-      "target": "skill:game-performance-profiler",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:monitoring-observability",
-      "target": "skill:langsmith",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:monitoring-observability",
-      "target": "skill:log-analysis",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:monitoring-observability",
-      "target": "skill:looker-studio-bigquery",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:monitoring-observability",
-      "target": "skill:performance-optimization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:npm-git-install",
-      "target": "skill:environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:npm-git-install",
-      "target": "skill:git-workflow",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:npm-git-install",
-      "target": "skill:system-environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:npm-git-install",
-      "target": "skill:workflow-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:obsidian-cli",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ohmg",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ohmg",
-      "target": "skill:harness",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ohmg",
-      "target": "skill:omc",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ohmg",
-      "target": "skill:omx",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ohmg",
-      "target": "skill:ralph",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:omc",
-      "target": "skill:ralph",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:omx",
-      "target": "skill:code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:omx",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:omx",
-      "target": "skill:ralph",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:opencontext",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:opencontext",
-      "target": "skill:file-organization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:opencontext",
-      "target": "skill:llm-wiki",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:opencontext",
-      "target": "skill:workflow-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:pattern-detection",
-      "target": "skill:code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:pattern-detection",
-      "target": "skill:codebase-search",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:pattern-detection",
-      "target": "skill:data-analysis",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:pattern-detection",
-      "target": "skill:log-analysis",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:pattern-detection",
-      "target": "skill:security-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:performance-optimization",
-      "target": "skill:code-refactoring",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:performance-optimization",
-      "target": "skill:database-schema-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:performance-optimization",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:performance-optimization",
-      "target": "skill:game-performance-profiler",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:performance-optimization",
-      "target": "skill:monitoring-observability",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:performance-optimization",
-      "target": "skill:react-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:performance-optimization",
-      "target": "skill:state-management",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:performance-optimization",
-      "target": "skill:testing-strategies",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:performance-optimization",
-      "target": "skill:ui-component-patterns",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:plannotator",
-      "target": "skill:agentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:plannotator",
-      "target": "skill:bmad",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:plannotator",
-      "target": "skill:code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:plannotator",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:plannotator",
-      "target": "skill:jeo",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:plannotator",
-      "target": "skill:llm-wiki",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:plannotator",
-      "target": "skill:ralph",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:plannotator",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:plannotator",
-      "target": "skill:vibe-kanban",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:playwriter",
-      "target": "skill:agent-browser",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:presentation-builder",
-      "target": "skill:marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:presentation-builder",
-      "target": "skill:research-paper-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:presentation-builder",
-      "target": "skill:technical-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:presentation-builder",
-      "target": "skill:user-guide-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ralph",
-      "target": "skill:harness",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ralph",
-      "target": "skill:jeo",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ralph",
-      "target": "skill:ohmg",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ralph",
-      "target": "skill:omc",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ralph",
-      "target": "skill:omx",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ralph",
-      "target": "skill:ralphmode",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ralph",
-      "target": "skill:survey",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ralphmode",
-      "target": "skill:jeo",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ralphmode",
-      "target": "skill:ralph",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-best-practices",
-      "target": "skill:performance-optimization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-best-practices",
-      "target": "skill:responsive-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-best-practices",
-      "target": "skill:state-management",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-best-practices",
-      "target": "skill:vercel-react-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-best-practices",
-      "target": "skill:web-accessibility",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-grab",
-      "target": "skill:agent-browser",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-grab",
-      "target": "skill:agentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-grab",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-grab",
-      "target": "skill:design-system",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-grab",
-      "target": "skill:playwriter",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-grab",
-      "target": "skill:react-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:react-grab",
-      "target": "skill:ui-component-patterns",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:remotion-video-production",
-      "target": "skill:video-production",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:research-paper-writing",
-      "target": "skill:api-documentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:research-paper-writing",
-      "target": "skill:marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:research-paper-writing",
-      "target": "skill:presentation-builder",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:research-paper-writing",
-      "target": "skill:technical-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:research-paper-writing",
-      "target": "skill:user-guide-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:responsive-design",
-      "target": "skill:design-system",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:responsive-design",
-      "target": "skill:react-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:responsive-design",
-      "target": "skill:ui-component-patterns",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:responsive-design",
-      "target": "skill:web-accessibility",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:responsive-design",
-      "target": "skill:web-design-guidelines",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:security-best-practices",
-      "target": "skill:api-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:security-best-practices",
-      "target": "skill:authentication-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:security-best-practices",
-      "target": "skill:backend-testing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:security-best-practices",
-      "target": "skill:code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:security-best-practices",
-      "target": "skill:database-schema-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:security-best-practices",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:security-best-practices",
-      "target": "skill:environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:security-best-practices",
-      "target": "skill:system-environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:skill-autoresearch",
-      "target": "skill:autoresearch",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:skill-autoresearch",
-      "target": "skill:harness",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:skill-autoresearch",
-      "target": "skill:langsmith",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:sprint-retrospective",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:sprint-retrospective",
-      "target": "skill:standup-meeting",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:sprint-retrospective",
-      "target": "skill:task-estimation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:sprint-retrospective",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:standup-meeting",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:standup-meeting",
-      "target": "skill:sprint-retrospective",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:standup-meeting",
-      "target": "skill:task-estimation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:standup-meeting",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:state-management",
-      "target": "skill:api-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:state-management",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:state-management",
-      "target": "skill:design-system",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:state-management",
-      "target": "skill:react-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:state-management",
-      "target": "skill:responsive-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:state-management",
-      "target": "skill:rtk",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:state-management",
-      "target": "skill:ui-component-patterns",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:steam-store-launch-ops",
-      "target": "skill:game-demo-feedback-triage",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:steam-store-launch-ops",
-      "target": "skill:marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:survey",
-      "target": "skill:jeo",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:survey",
-      "target": "skill:ohmg",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:survey",
-      "target": "skill:omc",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:survey",
-      "target": "skill:omx",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:survey",
-      "target": "skill:ralph",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:system-environment-setup",
-      "target": "skill:deployment-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:system-environment-setup",
-      "target": "skill:environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:system-environment-setup",
-      "target": "skill:security-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:system-environment-setup",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:system-environment-setup",
-      "target": "skill:vercel-deploy",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-estimation",
-      "target": "skill:sprint-retrospective",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-estimation",
-      "target": "skill:standup-meeting",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-estimation",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-planning",
-      "target": "skill:bmad",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-planning",
-      "target": "skill:bmad-gds",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-planning",
-      "target": "skill:bmad-idea",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-planning",
-      "target": "skill:marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-planning",
-      "target": "skill:plannotator",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-planning",
-      "target": "skill:sprint-retrospective",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-planning",
-      "target": "skill:standup-meeting",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-planning",
-      "target": "skill:task-estimation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:task-planning",
-      "target": "skill:vibe-kanban",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:technical-writing",
-      "target": "skill:api-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:technical-writing",
-      "target": "skill:api-documentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:technical-writing",
-      "target": "skill:changelog-maintenance",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:technical-writing",
-      "target": "skill:marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:technical-writing",
-      "target": "skill:presentation-builder",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:technical-writing",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:technical-writing",
-      "target": "skill:user-guide-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:testing-strategies",
-      "target": "skill:backend-testing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:testing-strategies",
-      "target": "skill:code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:testing-strategies",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:testing-strategies",
-      "target": "skill:performance-optimization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:testing-strategies",
-      "target": "skill:web-accessibility",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:testing-strategies",
-      "target": "skill:web-design-guidelines",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ui-component-patterns",
-      "target": "skill:design-system",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ui-component-patterns",
-      "target": "skill:react-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ui-component-patterns",
-      "target": "skill:responsive-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ui-component-patterns",
-      "target": "skill:state-management",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:ui-component-patterns",
-      "target": "skill:web-accessibility",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:user-guide-writing",
-      "target": "skill:api-documentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:user-guide-writing",
-      "target": "skill:changelog-maintenance",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:user-guide-writing",
-      "target": "skill:marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:user-guide-writing",
-      "target": "skill:presentation-builder",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:user-guide-writing",
-      "target": "skill:technical-writing",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vercel-deploy",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vercel-deploy",
-      "target": "skill:deployment-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vercel-deploy",
-      "target": "skill:environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vercel-deploy",
-      "target": "skill:monitoring-observability",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vercel-deploy",
-      "target": "skill:system-environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vercel-deploy",
-      "target": "skill:workflow-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vercel-react-best-practices",
-      "target": "skill:performance-optimization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vercel-react-best-practices",
-      "target": "skill:react-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vercel-react-best-practices",
-      "target": "skill:state-management",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vercel-react-best-practices",
-      "target": "skill:web-accessibility",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:agent-browser",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:agentation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:bmad",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:bmad-gds",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:code-review",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:jeo",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:marketing-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:plannotator",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:playwriter",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:sprint-retrospective",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:standup-meeting",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:survey",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:vibe-kanban",
-      "target": "skill:task-planning",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:video-production",
-      "target": "skill:remotion-video-production",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-accessibility",
-      "target": "skill:design-system",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-accessibility",
-      "target": "skill:react-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-accessibility",
-      "target": "skill:responsive-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-accessibility",
-      "target": "skill:ui-component-patterns",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-accessibility",
-      "target": "skill:web-design-guidelines",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-design-guidelines",
-      "target": "skill:debugging",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-design-guidelines",
-      "target": "skill:design-system",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-design-guidelines",
-      "target": "skill:performance-optimization",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-design-guidelines",
-      "target": "skill:react-best-practices",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-design-guidelines",
-      "target": "skill:responsive-design",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-design-guidelines",
-      "target": "skill:ui-component-patterns",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:web-design-guidelines",
-      "target": "skill:web-accessibility",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:workflow-automation",
-      "target": "skill:deployment-automation",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:workflow-automation",
-      "target": "skill:environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:workflow-automation",
-      "target": "skill:git-workflow",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:workflow-automation",
-      "target": "skill:monitoring-observability",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:workflow-automation",
-      "target": "skill:system-environment-setup",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:workflow-automation",
-      "target": "skill:testing-strategies",
-      "relation": "mentions"
-    },
-    {
-      "source": "skill:workflow-automation",
-      "target": "skill:vercel-deploy",
-      "relation": "mentions"
     }
-  ],
-  "summary": {
-    "highest_degree_nodes": [
-      {
-        "label": "skills.json",
-        "degree": 89
-      },
-      {
-        "label": "README.ko.md",
-        "degree": 88
-      },
-      {
-        "label": "README.md",
-        "degree": 88
-      },
-      {
-        "label": "setup-all-skills-prompt.md",
-        "degree": 88
-      },
-      {
-        "label": "skills.toon",
-        "degree": 82
-      }
-    ],
-    "watchlist": [
-      {
-        "skill": "clawteam",
-        "lines": 330
-      },
-      {
-        "skill": "scrapling",
-        "lines": 320
-      },
-      {
-        "skill": "survey",
-        "lines": 310
-      },
-      {
-        "skill": "task-planning",
-        "lines": 295
-      },
-      {
-        "skill": "langsmith",
-        "lines": 291
-      },
-      {
-        "skill": "jeo",
-        "lines": 289
-      },
-      {
-        "skill": "obsidian-cli",
-        "lines": 287
-      },
-      {
-        "skill": "autoresearch",
-        "lines": 285
-      },
-      {
-        "skill": "database-schema-design",
-        "lines": 283
-      },
-      {
-        "skill": "task-estimation",
-        "lines": 279
-      }
-    ],
-    "highlight": "code-refactoring packet-first structural hardening"
-  }
+  ]
 }

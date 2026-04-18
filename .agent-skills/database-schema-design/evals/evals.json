@@ -33,6 +33,28 @@
         "Mentions indexing or queryability for search-critical fields",
         "Avoids collapsing the task into API design or docs writing"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Plan the storage model for a marketing attribution system with accounts, campaigns, touchpoints, and flexible channel metadata. The growth team still needs clean reporting fields for dashboards.",
+      "expected_output": "A packet that preserves queryable customer/account/event structure, keeps only justified metadata flexible, and routes dashboard/reporting follow-through to looker-studio-bigquery when appropriate.",
+      "assertions": [
+        "Names a relational-first or hybrid lane with rationale",
+        "Calls out which attribution or reporting fields must stay queryable",
+        "Avoids turning the answer into dashboard implementation work",
+        "Routes reporting presentation or stakeholder dashboard work to looker-studio-bigquery when relevant"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We need a live-ops schema for player inventory, seasonal event progress, and telemetry events for our multiplayer game. Keep gameplay state reliable, but we also need runtime visibility later.",
+      "expected_output": "A packet that separates transactional player state from telemetry/reporting concerns, keeps storage integrity in scope, and routes telemetry visibility follow-through to monitoring-observability when needed.",
+      "assertions": [
+        "Separates player-owned state from telemetry or reporting data",
+        "Mentions lifecycle or retention rules for live-ops entities",
+        "Does not absorb alerting or observability implementation into the schema packet",
+        "Routes telemetry freshness, alerting, or runtime visibility to monitoring-observability when relevant"
+      ]
     }
   ]
 }
