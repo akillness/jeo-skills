@@ -801,7 +801,7 @@
     },
     {
       "name": "fabric",
-      "description": "Pattern-first CLI orchestration with Daniel Miessler's Fabric for turning stdin, files, transcripts, notes, logs, and cleaned web text into repeatable AI transforms. Use when the user wants reusable named patterns, custom pattern packs, shell-pipe composition, or Fabric server mode—not generic one-off chat prompting or repo-editing agents.",
+      "description": "Routing-first Fabric operator skill for reusable named AI transforms over stdin, files, transcripts, notes, logs, and cleaned web text. Use when the user wants Fabric patterns, custom pattern packs, shell-pipe composition, or fabric --serve workflows—not generic one-off chat prompting, repo-aware coding, or deterministic automation.",
       "category": "utilities",
       "path": "fabric/SKILL.md",
       "tags": [

@@ -10,39 +10,39 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 385
-- Graph edges: 1110
+- Graph edges: 1054
 
 ## Strongest structural findings
-1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index the live catalog.
-2. Support coverage remains effectively complete across the live skill set, so bounded front-door hardening still beats adding adjacent wrapper skills.
-3. `marketing-automation` now fits that hardening pattern better: it shifted from a broad lane catalog toward operating-mode choice (`launch-orchestration`, `conversion-surface`, `lifecycle-retention`, `acquisition-content`, `measurement-experiment`) plus sharper route-outs to `steam-store-launch-ops` and `task-planning`.
-4. The marketing cluster stays cleaner when the canonical front door owns mode + packet choice while `marketing-skills-collection` remains a compatibility alias and game-store launch work stays outside the general lane.
+1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
+2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
+3. `fabric` dropped to 265 lines and now reads like a routing-first operator front door that chooses one lane before handing off exact commands, scaffolds, or server packets.
+4. The utilities boundary stays cleaner when `fabric` owns repeatable pattern-driven transforms and routes generic chat prompting, repo-aware coding, and deterministic automation outward.
 
 ## Highest-degree nodes
-- debugging: degree 36
-- bmad: degree 23
 - task-planning: degree 22
-- vibe-kanban: degree 22
 - code-review: degree 21
+- vibe-kanban: degree 21
+- debugging: degree 20
+- jeo: degree 20
 
 ## Oversized front-door watchlist
-- clawteam: 330 lines in SKILL.md
-- scrapling: 320 lines in SKILL.md
-- survey: 310 lines in SKILL.md
-- fabric: 309 lines in SKILL.md
-- task-planning: 295 lines in SKILL.md
-- code-refactoring: 293 lines in SKILL.md
-- langsmith: 291 lines in SKILL.md
-- web-accessibility: 291 lines in SKILL.md
-- jeo: 289 lines in SKILL.md
-- obsidian-cli: 287 lines in SKILL.md
+- clawteam: 329 lines in SKILL.md
+- scrapling: 319 lines in SKILL.md
+- survey: 309 lines in SKILL.md
+- task-planning: 294 lines in SKILL.md
+- code-refactoring: 292 lines in SKILL.md
+- langsmith: 290 lines in SKILL.md
+- web-accessibility: 290 lines in SKILL.md
+- jeo: 288 lines in SKILL.md
+- obsidian-cli: 286 lines in SKILL.md
+- genkit: 285 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new broad marketing wrapper is justified: the bounded win was hardening `marketing-automation` in place.
-- `marketing-automation` should stay distinct from `task-planning` and `steam-store-launch-ops`; it owns broad marketing mode selection, not milestone slicing or Steam-specific launch operations.
-- Duplicate pressure remains highest when launch planning, lifecycle execution, analytics readout, and game-store work all get pulled into one generic “marketing help” request.
+- No new Fabric-adjacent helper skill is justified: the bounded win was shrinking `fabric` in place and syncing the discovery surfaces.
+- `fabric` should stay distinct from general LLM CLIs, coding assistants, and workflow-automation skills because it owns repeatable named transforms over external text/content.
+- Duplicate pressure rises when users describe any CLI AI workflow as “Fabric”; explicit route-outs remain the right fix.
 
 ## Recommended maintenance direction
-- Keep targeting high-degree skills whose front doors still behave like catalogs instead of routing packets.
-- Prefer packet references, eval expansion, and discovery-surface sync over adding neighboring wrappers.
-- Re-run catalog/runtime sync validation whenever compact or README/setup wording changes materially.
+- Keep targeting high-degree skills whose trigger logic can be made smaller without weakening their artifact contract.
+- Prefer focused support packets and synced discovery surfaces over creating another neighboring wrapper.
+- Re-run catalog/runtime sync validation whenever README/setup or compact wording changes materially.

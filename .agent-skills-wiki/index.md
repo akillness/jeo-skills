@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 114
+> Last updated: 2026-04-18 | Total pages: 115
 
 ## Entities
 
@@ -126,5 +126,6 @@
 - [[steam-store-launch-ops-structural-hardening-2026-04-17]] — Why the best bounded game/marketing crossover follow-up was hardening `steam-store-launch-ops` into a bottleneck-first Steam launch/store router instead of adding another wishlist/Next Fest wrapper.
 - [[react-grab-structural-hardening-2026-04-16]] — Why the best bounded next frontend/browser maintenance move was shrinking `react-grab` into a routing-first skill, adding focused support docs, and syncing stale helper-script prerequisites to the upstream Node.js >=22 reality instead of adding another wrapper.
 - [[fabric-modernization-2026-04-15]] — Why the best bounded utilities/developer-workflow improvement was modernizing `fabric` into the pattern-first CLI transform anchor instead of leaving it as a broad AI-CLI feature tour or adding another adjacent prompt wrapper.
+- [[fabric-structural-hardening-2026-04-18]] — Why the best bounded utilities follow-up after modernization was shrinking `fabric` into a routing-first operator front door with a dedicated packet/route-out reference instead of adding another Fabric helper or leaving the long feature-tour shape intact.
 - [[firebase-cli-structural-hardening-2026-04-16]] — Why the best bounded Firebase/platform improvement was shrinking `firebase-cli` into a routing-first operator anchor with focused support packets instead of adding another wrapper or keeping a command-catalog front door.
 - [[vibe-kanban-modernization-2026-04-15]] — Why the best bounded orchestration/planning-review improvement was modernizing `vibe-kanban` into the coding-task board/workspace control plane instead of adding another agent-board wrapper.

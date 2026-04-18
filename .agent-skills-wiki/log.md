@@ -815,3 +815,11 @@
 - Accepted: tighten `marketing-automation` around five operating modes, add `references/operating-modes-and-route-outs.md`, expand `evals/evals.json` with lifecycle and specialist route-out coverage, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the front door matches the packet-first boundary
 - Rejected: adding another broad marketing wrapper; letting the skill absorb Steam/store launch work already owned by `steam-store-launch-ops`; letting backlog/milestone planning drift in from `task-planning`
 - Wiki files created/updated: `queries/marketing-automation-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | fabric structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/content, and game-development lanes, with the best bounded utilities follow-up landing on the existing `fabric` skill rather than a new Fabric-adjacent wrapper
+- Survey files created under `.survey/fabric-structural-hardening-20260418/`; repo-local wiki and graph evidence plus GitHub raw/API primary-source retrieval from Fabric upstream README, REST API docs, release metadata, and issue traffic were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `fabric` from 308 to 265 lines, add `references/operator-packets-and-route-outs.md`, expand `evals/evals.json` with a `serve-api` case, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the front door matches the routing-first operator boundary
+- Rejected: adding another Fabric server-mode or pattern-helper wrapper; broadening `fabric` into a generic AI CLI; leaving packet and route-out detail inline once support coverage was already complete
+- Wiki files created/updated: `queries/fabric-structural-hardening-2026-04-18.md`, `index.md`, `log.md`

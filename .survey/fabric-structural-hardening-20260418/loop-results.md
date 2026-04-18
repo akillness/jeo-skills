@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/fabric/SKILL.md` | Moving packet/route-out detail from the front door into a focused reference will improve trigger clarity without weakening the Fabric boundary | Rewrote `SKILL.md` into a routing-first operator shape, added `references/operator-packets-and-route-outs.md`, expanded evals with a `serve-api` case, and synced discovery surfaces | `validate_skill.sh` passed with 0 issues; JSON validation passed; line count dropped from 308 to 265 | Keep | Transferable with the repo's broader packet-first hardening pattern |

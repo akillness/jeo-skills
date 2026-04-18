@@ -375,7 +375,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `fabric` | Pattern-first CLI for stdin/files/transcripts → summaries, extraction, rewriting, custom pattern packs, and Fabric server workflows | All |
+| `fabric` | Routing-first Fabric operator skill for stdin/files/transcripts/logs → reusable patterns, custom pattern packs, shell pipelines, and `fabric --serve` workflows | All |
 | `file-organization` | Decision-first repo structure guidance — choose framework defaults vs feature folders, monorepo boundaries, docs taxonomy, or engine-aware game layouts | All |
 | `git-submodule` | Routing-first Git submodule workflow — choose submodule vs subtree/vendor/package delivery, bootstrap recursively, sync or advance pointers safely, avoid detached-HEAD traps, and handle CI / hosted-platform checkout limits | All |
 | `git-workflow` | Routing-first local Git workflow — branch hygiene, selective staging, commit cleanup, merge-vs-rebase choice, conflict resolution, lease-safe pushes, and recovery | All |
