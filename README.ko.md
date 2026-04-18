@@ -103,7 +103,7 @@ graph TD
 | **monitoring-observability: telemetry-review 재작성** | `monitoring-observability`를 일반적인 Prometheus/로깅 스니펫 모음에서 모드 선택형 observability 앵커로 재구성했습니다. 이제 service reliability, telemetry foundations, data/marketing pipeline health, game live-ops visibility, stack-review audits를 다루며, symptom-first alerting, explicit dashboard/ownership checks, 그리고 `log-analysis`, `debugging`, `performance-optimization`, `langsmith`, `deployment-automation`, `game-performance-profiler`로의 route-out을 적용합니다. 또한 `references/modes-and-boundaries.md`, `references/alert-dashboard-checklist.md`, `references/telemetry-rollout-matrix.md`, `evals/evals.json`을 추가했습니다. |
 | **performance-optimization: 아티팩트 우선 강화** | `performance-optimization`을 팀이 실제로 들고 오는 성능 패킷 중심의 측정 우선 튜닝 앵커로 더 다듬었습니다. 이제 trace, Lighthouse/CWV 보고서, query plan, load-test diff, profiler 출력, stakeholder report 같은 현재 아티팩트에서 출발하고, `references/intake-packets-and-escalations.md`를 추가했으며, `monitoring-observability`, `debugging`, `code-refactoring`, `testing-strategies`, `game-performance-profiler`로의 route-out을 더 선명하게 했습니다. 또한 marketing/CWV·CI benchmark 케이스까지 eval 범위를 넓히고 compact/discovery 문구를 동기화해 예전의 generic optimization wording으로 되돌아가지 않게 했습니다. |
 | **code-refactoring: 동작 보존 재작성** | `code-refactoring`을 긴 교과서식 패턴 덤프에서 코드 품질 클러스터의 구조 개선 앵커로 재구성했습니다. 이제 local safe refactors, behavior-freeze-first cleanup, repetitive migration / codemod work 사이에서 고르고, 테스트/검색/리뷰 가능한 슬라이스를 명시합니다. 또한 `debugging`, `code-review`, `testing-strategies`, `performance-optimization`, `codebase-search`로의 route-out과 `references/refactor-modes.md`, `references/handoff-boundaries.md`, `references/safe-refactor-checklist.md`, `evals/evals.json`을 추가했습니다. |
-| **changelog-maintenance: 릴리스 기록 재작성** | `changelog-maintenance`를 일반적인 semver/example 덤프에서 문서화 클러스터의 release-history / release-notes 앵커로 재구성했습니다. 이제 changelog, release-notes, migration-update, game-patch-note 워크플로우를 고를 수 있고, `technical-writing`, `api-documentation`, `user-guide-writing`, `deployment-automation`, `marketing-automation`로의 route-out을 제공합니다. 또한 `references/automation-and-source-of-truth.md`, `references/modes-and-boundaries.md`, `references/release-note-quality-checklist.md`, `evals/evals.json`을 추가했습니다. |
+| **changelog-maintenance: 패킷 우선 강화** | `changelog-maintenance`를 더 작은 routing-first 릴리스 작성 앵커로 다듬었습니다. 이제 하나의 primary mode와 가장 작은 truthful output packet(`single-entry`, `summary-plus-links`, `migration-brief`, `patch-note-brief`, `sync-packet`)을 고르고, `references/output-packets-and-channel-handoffs.md`를 추가했으며, 릴리스 노트 + 마이그레이션 기한 + downstream sync follow-up 케이스까지 eval 범위를 넓혔습니다. 또한 compact/discovery 문구를 맞춰 스킬이 다시 generic changelog / semver 템플릿 덤프로 흐르지 않게 했습니다. |
 
 ## 🆕 v2026-04-13 업데이트
 
@@ -318,7 +318,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `changelog-maintenance` | 변경로그·릴리스 노트·마이그레이션 업데이트·패치 노트를 다루는 릴리스 히스토리 앵커 | 전체 |
+| `changelog-maintenance` | changelog·release notes·migration update·lightweight patch-note 패킷을 다루는 routing-first 릴리스 히스토리 앵커 | 전체 |
 | `presentation-builder` | 투자/로드맵/런치/아키텍처 데모/워크숍/게임 피치 덱용 slides-grab 리뷰 + PPTX/PDF 핸드오프 앵커 | 전체 |
 | `research-paper-writing` | ML/CV/NLP 학술 논문 + 리버틀 워크플로우 — abstract/introduction/method/experiments, figure-table 지원, 주장-증거 정합성, reviewer response, camera-ready revision | 전체 |
 | `technical-writing` | 스펙, 아키텍처 문서, ADR, 런북, 마이그레이션 가이드, 개발자용 구현 문서를 다루는 내부 기술 문서 앵커 | 전체 |
