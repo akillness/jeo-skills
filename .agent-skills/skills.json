@@ -265,7 +265,7 @@
     },
     {
       "name": "autoresearch",
-      "description": "Run Karpathy-style autonomous ML experiments on a real training repository. Use when the user needs to set up or operate `karpathy/autoresearch`, write `program.md`, tune GPU/VRAM settings, interpret `results.tsv`, or run overnight `train.py` experiments under a fixed 300-second budget and `val_bpb` ratchet. Not for prompt evaluation, LLM app observability, or repo-local `SKILL.md` optimization — route those to tools like LangSmith, Promptfoo, Braintrust, or `skill-autoresearch`. Triggers on: autoresearch, autonomous ML experiments, overnight GPU experiments, `program.md`, `train.py`, `val_bpb`.",
+      "description": "Run Karpathy-style autonomous ML search on a real training repository. Use when the user needs to set up or operate `karpathy/autoresearch`, choose the right run mode (setup, `program.md`, bounded loop, result interpretation, or constrained-hardware adaptation), and preserve the immutable `prepare.py` / 300-second / `val_bpb` contract. Not for prompt evaluation, LLM app observability, or repo-local `SKILL.md` optimization — route those to LangSmith, Promptfoo, Braintrust, or `skill-autoresearch`. Triggers on: autoresearch, autonomous ML experiments, `program.md`, `train.py`, `val_bpb`, overnight GPU loop, fixed eval harness.",
       "category": "search-analysis",
       "path": "autoresearch/SKILL.md",
       "tags": [

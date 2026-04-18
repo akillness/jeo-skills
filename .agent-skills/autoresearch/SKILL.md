@@ -1,266 +1,226 @@
 ---
 name: autoresearch
 description: >
-  Run Karpathy-style autonomous ML experiments on a real training repository.
-  Use when the user needs to set up or operate `karpathy/autoresearch`, write
-  `program.md`, tune GPU/VRAM settings, interpret `results.tsv`, or run
-  overnight `train.py` experiments under a fixed 300-second budget and `val_bpb`
-  ratchet. Not for prompt evaluation, LLM app observability, or repo-local
-  `SKILL.md` optimization — route those to tools like LangSmith, Promptfoo,
-  Braintrust, or `skill-autoresearch`. Triggers on: autoresearch, autonomous ML
-  experiments, overnight GPU experiments, `program.md`, `train.py`, `val_bpb`.
+  Run Karpathy-style autonomous ML search on a real training repository. Use when
+  the user needs to set up or operate `karpathy/autoresearch`, choose the right
+  run mode (setup, `program.md`, bounded loop, result interpretation, or
+  constrained-hardware adaptation), and preserve the immutable `prepare.py` /
+  300-second / `val_bpb` contract. Not for prompt evaluation, LLM app
+  observability, or repo-local `SKILL.md` optimization — route those to
+  LangSmith, Promptfoo, Braintrust, or `skill-autoresearch`. Triggers on:
+  autoresearch, autonomous ML experiments, `program.md`, `train.py`, `val_bpb`,
+  overnight GPU loop, fixed eval harness.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: >
-  Official path assumes a single NVIDIA GPU on Linux with CUDA; ~40GB VRAM is
-  the comfortable default for MAX_SEQ_LEN=2048, but lower-VRAM and community-fork
-  paths exist for RTX 4090 / 3090, GTX 1660 Ti, Apple Silicon MLX, and Windows RTX.
-  Python 3.10+ and uv required. Dataset: ~6543 FineWeb-Edu parquet shards (~2 min download).
+  Official path assumes a single NVIDIA GPU on Linux with CUDA; ~40GB VRAM is a
+  comfortable default for MAX_SEQ_LEN=2048, but lower-VRAM and community-fork
+  paths exist for RTX 4090 / 3090, GTX 1660 Ti, Apple Silicon MLX, and Windows
+  RTX. Python 3.10+ and uv required. Dataset: ~6543 FineWeb-Edu parquet shards.
 metadata:
   tags: autoresearch, ml-experiments, autonomous-research, karpathy, gpu, train, val-bpb, overnight, ratcheting
-  version: "1.1.0"
+  version: "1.2.0"
   source: https://github.com/karpathy/autoresearch
   license: MIT
 ---
 
 # autoresearch
 
-> *"The researcher's job shifts from writing Python to writing Markdown."* — Andrej Karpathy
+Autoresearch is a **closed-loop ML experimentation workflow**:
+- human writes `program.md`
+- agent edits `train.py`
+- `prepare.py` stays fixed
+- every run gets the same 300-second budget
+- lower `val_bpb` wins
+- regressions get reverted
 
-Autoresearch is an autonomous ML experimentation framework. An AI agent iteratively modifies `train.py`, runs fixed 5-minute GPU experiments, evaluates with a single metric (`val_bpb`), and commits only improvements via git ratcheting. The result: wake up to 100+ experiments logged and a monotonically better model.
+This skill should behave like a **routing-first front door**, not a giant tutorial. Pick the user's mode, enforce the immutable-harness rules, then hand them to the smallest useful script or reference.
 
 ## When to use this skill
 
-- Setting up autoresearch on a GPU machine for the first time
-- Writing or refining `program.md` research directives for the agent
-- Launching an overnight autonomous experiment loop
-- Interpreting `results.tsv` to understand what the agent found
-- Configuring the system for constrained hardware (limited VRAM)
-- Understanding the ratcheting mechanism and git workflow
-- Porting to Apple Silicon (MLX) or Windows RTX
+- Set up `karpathy/autoresearch` on a real GPU machine
+- Write or refine `program.md` before a session
+- Run a bounded overnight `train.py` search loop
+- Interpret `results.tsv` after a session
+- Adapt the workflow to tighter VRAM constraints without invalidating comparisons
+- Explain the ML-specific boundary between `autoresearch` and nearby eval tooling
 
 ## Do not use this skill when
 
-- The user wants to optimize a `SKILL.md`, prompt, or agent workflow with a local eval loop — use `skill-autoresearch`
-- The user wants application traces, online/offline LLM evals, annotation queues, or app-level regression review — use `langsmith` or similar eval/observability tooling
-- The user wants prompt comparison, red teaming, or CI gates for an LLM app — use Promptfoo-style tooling instead of this ML training skill
-- The job does not involve a real training repo, fixed runtime budget, immutable evaluation harness, and `val_bpb`-style keep/revert search
+- The user wants to optimize a `SKILL.md`, prompt, or repo-local workflow with frozen prompts/evals — use `skill-autoresearch`
+- The user wants app-level tracing, dataset-backed LLM evals, feedback review, or observability — use LangSmith, Braintrust, Weave, Promptfoo, or similar tools
+- The job does not involve a real training repo, `program.md`, `train.py`, fixed runtime budget, and `val_bpb` keep/revert ratcheting
+- The user is really asking for a paper survey, general benchmark scan, or literature review with no intention to run the training loop
 
-## Core Architecture
+## Core boundary
 
-```
-Human authors program.md
-       │
-       ▼
-Agent reads program.md + train.py
-       │
-       ▼
-Agent modifies train.py → git commit
-       │
-       ▼
-uv run train.py  (exactly 300 seconds)
-       │
-       ▼
-Extract val_bpb + peak_vram_mb
-       │
-  ┌────┴────┐
-improved?   no improvement
-  │              │
-keep commit   git reset HEAD~1
-  │              │
-  └──────┬───────┘
-         │
-   log to results.tsv
-         │
-         ▼
-    repeat ∞
-```
+| Concern | `autoresearch` owns | Route elsewhere |
+|---------|---------------------|-----------------|
+| Mutable target | `train.py` in a real training repo | prompts, app configs, `SKILL.md`, product behavior |
+| Fixed evaluator | `prepare.py`, validation shard, `TIME_BUDGET=300`, chosen `MAX_SEQ_LEN` / `EVAL_TOKENS` for the session | prompt/eval datasets, app scorecards, observability dashboards |
+| Acceptance rule | keep only lower `val_bpb`; revert ties/regressions | human review queues, app-level release gates |
+| Main artifacts | `program.md`, `results.tsv`, kept/discarded commits | prompt suites, traces, feedback datasets |
 
-### Mutable vs. Immutable Files
+If that boundary does not fit, do not stretch this skill.
 
-| File | Agent access | Purpose |
-|------|-------------|---------|
-| `train.py` | **Read + Write** | Model, optimizer, training loop (~630 lines) |
-| `program.md` | Read-only | Human research directives |
-| `prepare.py` | Read-only | Data pipeline plus the fixed evaluation harness (`evaluate_bpb()`, `MAX_SEQ_LEN`, `TIME_BUDGET`, `EVAL_TOKENS`) |
-| `pyproject.toml` | Read-only | Locked dependencies (no new packages) |
-| `results.tsv` | Append | All experiments: kept and discarded |
+## Required intake packet
+
+Before acting, identify:
+1. **Mode** — setup, `program.md`, run loop, results interpretation, or constrained hardware
+2. **Repository state** — cloned or not, dependencies installed or not
+3. **Hardware state** — GPU / VRAM / CUDA / MLX / Windows path
+4. **Session state** — first baseline, active loop, or completed run
+5. **Constraint state** — target VRAM ceiling, whether `prepare.py` has already been frozen for this session
 
 ## Instructions
 
-### Step 1: Install Prerequisites
+### Step 1: Pick exactly one operating mode
+
+Choose the smallest mode that answers the request:
+
+1. **Setup readiness**
+   - install `uv`
+   - clone repo
+   - sync dependencies
+   - verify GPU/CUDA/uv with `scripts/check-hardware.sh`
+   - run the first baseline experiment
+
+2. **`program.md` authoring**
+   - write or refine the human research charter
+   - record current baseline `val_bpb`
+   - prioritize hypotheses
+   - list what has already been tried
+   - freeze constraints before the loop starts
+
+3. **Bounded run loop**
+   - confirm the evaluator is already fixed
+   - use `train.py` as the only mutable search surface
+   - run the loop with keep/revert discipline
+   - log every experiment to `results.tsv`
+
+4. **Results interpretation**
+   - summarize best kept runs
+   - identify repeated failures or crash patterns
+   - extract what belongs in the next `program.md`
+   - distinguish genuine gains from one-off anomalies
+
+5. **Constrained-hardware adaptation**
+   - set `MAX_SEQ_LEN` and `EVAL_TOKENS` before the session
+   - keep them unchanged once the session starts
+   - adjust model/search strategy instead of cheating the evaluator mid-run
+   - route to community forks when CUDA assumptions do not hold
+
+Do **not** answer all five modes at once unless the user explicitly asked for a full end-to-end walkthrough.
+
+### Step 2: Re-state the immutable harness
+
+Every mode must preserve these rules:
+
+- `program.md` is human-authored and read-only during a session
+- `train.py` is the main mutable search surface
+- `prepare.py` is read-only once the session starts
+- `TIME_BUDGET=300` stays fixed
+- `val_bpb` is the main keep/revert metric
+- `results.tsv` is append-only
+- dependency set in `pyproject.toml` stays locked
+
+If the user wants to change the evaluator, start a **new comparison track**, not the current session.
+
+### Step 3: Execute the chosen mode
+
+#### Mode A — Setup readiness
+
+Use this path when the repo is not yet runnable.
 
 ```bash
-# Install uv (fast Python package manager)
 curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Clone the repository
 git clone https://github.com/karpathy/autoresearch
 cd autoresearch
-
-# Install locked dependencies
 uv sync
-```
-
-### Step 2: Prepare Data (One-Time, ~2 Minutes)
-
-```bash
-# Downloads FineWeb-Edu parquet shards, trains BPE tokenizer
-# Last shard is reserved for validation — never seen during training
+bash scripts/check-hardware.sh
 uv run prepare.py
-```
-
-For constrained hardware, edit `prepare.py` before running:
-```python
-# Lower MAX_SEQ_LEN for GPUs with limited VRAM
-MAX_SEQ_LEN = 256   # default: 2048
-```
-
-### Step 3: Run a Baseline Experiment
-
-```bash
-# Single 5-minute experiment to verify setup
 uv run train.py > run.log 2>&1
-
-# Extract key metrics
 grep "^val_bpb:\|^peak_vram_mb:" run.log
 ```
 
-Expected output:
-```
-val_bpb: 0.9979
-peak_vram_mb: 38420
-```
+Success condition: one baseline run completes and prints both `val_bpb` and `peak_vram_mb`.
 
-### Step 4: Author program.md
+#### Mode B — `program.md` authoring
 
-`program.md` is the human-written research charter the agent reads at the start of every loop iteration. Write it as precise Markdown instructions:
+Use this path when the loop exists but direction is weak.
 
-```markdown
-# Research Program
+Minimum sections:
+- goal tied to lower `val_bpb`
+- current baseline `val_bpb`
+- directions to explore in priority order
+- what has been tried already
+- constraints: `TIME_BUDGET=300`, no `prepare.py` mutation, no new packages, VRAM ceiling, one meaningful change per experiment
 
-## Goal
-Minimize val_bpb on the FineWeb-Edu validation set within the 300-second budget.
+For fuller templates and update patterns, use `references/program-md-guide.md`.
 
-## Current Baseline
-val_bpb: 0.9979 (depth-12 GPT, Muon + AdamW optimizer)
+#### Mode C — Bounded run loop
 
-## Directions to Explore
-1. Attention variants: MLA, GQA, sliding window, local-global hybrid
-2. Layer types: MoE FFN layers, SwiGLU activations
-3. Optimizer tuning: Muon momentum, AdamW β values, learning rate schedule
-4. Architectural depth/width tradeoffs within VRAM budget
+Use this path only after setup and `program.md` are ready.
 
-## Constraints
-- Must complete within 300 seconds
-- Peak VRAM must stay under 39GB
-- No new packages (use only what is in pyproject.toml)
-- Do not modify `prepare.py`
+Loop contract:
+1. read `program.md` + current `train.py`
+2. form one hypothesis
+3. edit `train.py`
+4. commit
+5. run one 300-second experiment
+6. extract `val_bpb`
+7. keep if improved, otherwise `git reset HEAD~1`
+8. append result to `results.tsv`
 
-## Notes from Previous Runs
-- Depth-12 improvements transfer to depth-24 (scale-invariant gains)
-- RoPE positional encoding outperformed learned embeddings (+0.008 val_bpb)
-```
-
-**Effective program.md principles:**
-- Be specific about what to explore — vague directives waste experiments
-- Record what has already been tried (prevents redundant experiments)
-- Note hardware constraints explicitly
-- Use the current best `val_bpb` as a reference point
-
-### Step 5: Run the Autonomous Agent Loop
-
-Point your AI agent (Claude Code, Codex, etc.) at the repository with `program.md` as its research context. The agent will:
-
-1. Read `program.md` + current `train.py`
-2. Hypothesize an improvement
-3. Modify `train.py` + commit
-4. Execute `uv run train.py` (300 seconds)
-5. Extract `val_bpb`; keep or revert via git
-6. Append to `results.tsv`
-7. Repeat
-
-Keep the boundary crisp:
-- the human updates `program.md`
-- the agent edits `train.py`
-- the harness in `prepare.py` stays fixed
-- the loop keeps only lower-`val_bpb` results
-
-If the user really wants prompt/app evals, tracing, or `SKILL.md` mutation loops, route out instead of stretching this skill.
-
-**With Claude Code (OMC):**
-```bash
-# From inside autoresearch/
-# Give Claude the context: "Run the autoresearch loop following program.md"
-```
-
-**With Claude Code CLI directly:**
-```bash
-claude "Follow program.md. Run autonomous research loop on train.py.
-Execute: uv run train.py, extract val_bpb, keep improvements, revert failures.
-Log everything to results.tsv. Do not stop until I say so."
-```
-
-### Step 6: Monitor Results
+Typical commands:
 
 ```bash
-# Live monitoring during a run
-watch -n 30 "tail -20 results.tsv"
-
-# Count kept vs. discarded
-awk -F'\t' '{print $4}' results.tsv | sort | uniq -c
-
-# Find the best experiment
-sort -t$'\t' -k2 -n results.tsv | head -5
-
-# Check current best val_bpb
-git log --oneline -5
+bash scripts/run-experiment.sh
+bash scripts/run-loop.sh --max 20 --desc "session-1"
 ```
 
-### Step 7: Interpret results.tsv
+Do not encourage multi-change hero rewrites. Clean ablations matter more than flashy edits.
 
-```
-commit    val_bpb    memory_gb    status     description
-a3f2c91   0.9697     37.2         keep       SwiGLU activation + depth-12
-b8e1d04   0.9821     38.1         discard    MoE 4-expert: marginal gain
-c1a5f30   crash      —            crash      OOM: sequence length 4096
-```
+#### Mode D — Results interpretation
 
-| Status | Meaning |
-|--------|---------|
-| `keep` | `val_bpb` improved; commit retained on branch |
-| `discard` | No improvement; `git reset HEAD~1` applied |
-| `crash` | OOM, syntax error, or timeout; always reverted |
+Use this path after a completed run or checkpoint.
 
-## Examples
-
-### Example 1: Overnight Run Summary
-
-```
-Session summary: 126 experiments, 18 improvements
-Best val_bpb: 0.9697 (started: 0.9979)
-Top improvements:
-- SwiGLU activation: -0.012 val_bpb
-- GQA with 4 KV heads: -0.009 val_bpb
-- Muon momentum 0.92→0.95: -0.006 val_bpb
-```
-
-### Example 2: Low-VRAM Configuration (6GB GPU)
-
-```python
-# In prepare.py — edit before uv run prepare.py
-MAX_SEQ_LEN = 256       # was 2048
-EVAL_TOKENS = 2_097_152  # 6GB reference value; keep it fixed for the whole session
-```
-
-### Example 3: Extract Experiments by Category
+Helpful commands:
 
 ```bash
-# Find all attention-related experiments
-grep -i "attention\|GQA\|MLA\|MHA" results.tsv
-
-# List only improvements sorted by gain
+bash scripts/show-results.sh --top 10
 awk -F'\t' '$4=="keep"' results.tsv | sort -t$'\t' -k2 -n
+awk -F'\t' '{print $4}' results.tsv | sort | uniq -c
 ```
+
+Summarize only four things: best gains, repeated failures, what should move into `What Has Been Tried`, and the next narrow experiment family.
+
+#### Mode E — Constrained-hardware adaptation
+
+Use this path when VRAM, platform, or runtime constraints dominate.
+
+Rules:
+- choose `MAX_SEQ_LEN` and `EVAL_TOKENS` **before** the session
+- never change them mid-session
+- lower model/search ambition before mutating the evaluator
+- prefer route-outs to community forks for Apple Silicon / non-CUDA paths
+
+For concrete values and troubleshooting, use `references/hardware-config.md`.
+
+### Step 4: Route out aggressively when the request is adjacent
+
+Route out when:
+- the user wants to optimize instructions, prompts, or repo-local skills → `skill-autoresearch`
+- the user wants app-level traces, feedback review, observability, or online/offline eval dashboards → LangSmith / Braintrust / Weave / Promptfoo
+- the user wants general literature synthesis rather than a runnable ML loop → research or survey tooling
+
+### Step 5: Keep the heavy detail in support files
+
+Use support files instead of re-explaining everything inline:
+- `references/operating-modes-and-route-outs.md` — fast routing table, minimal response shape, and handoff logic
+- `references/architecture.md` — immutability contract, file map, metric rationale
+- `references/program-md-guide.md` — templates and update rules
+- `references/hardware-config.md` — VRAM tables and platform troubleshooting
+- `scripts/*.sh` — runnable setup / loop / reporting helpers
 
 ## Available scripts
 
@@ -269,65 +229,56 @@ Run from inside the autoresearch repository directory:
 | Script | Purpose | Usage |
 |--------|---------|-------|
 | `setup.sh` | One-time environment setup | `bash scripts/setup.sh [--seq-len 512]` |
-| `run-experiment.sh` | Single 5-min experiment + metric extraction | `bash scripts/run-experiment.sh` |
+| `run-experiment.sh` | Single 5-minute experiment + metric extraction | `bash scripts/run-experiment.sh` |
 | `run-loop.sh` | Autonomous loop: run → keep/revert → repeat | `bash scripts/run-loop.sh [--max 20]` |
-| `show-results.sh` | Human-readable results.tsv report | `bash scripts/show-results.sh [--top 10]` |
-| `check-hardware.sh` | GPU/CUDA/uv availability check (JSON output) | `bash scripts/check-hardware.sh` |
-
-```bash
-# Typical overnight session
-bash scripts/check-hardware.sh
-bash scripts/setup.sh --seq-len 512     # adjust for your VRAM
-# Edit program.md with your research directives
-bash scripts/run-loop.sh --max 100 --desc "session-1"
-bash scripts/show-results.sh --kept-only
-```
+| `show-results.sh` | Human-readable `results.tsv` report | `bash scripts/show-results.sh [--top 10]` |
+| `check-hardware.sh` | GPU/CUDA/uv readiness check (JSON output) | `bash scripts/check-hardware.sh` |
 
 ## References
 
 Detailed documentation in `references/`:
 
 | File | Contents |
-|------|---------|
-| `references/architecture.md` | System design, immutability contract, git ratcheting, key design decisions |
-| `references/program-md-guide.md` | How to write effective `program.md` directives; full template + principles |
-| `references/hardware-config.md` | VRAM settings by GPU, memory optimization techniques, troubleshooting |
+|------|----------|
+| `references/operating-modes-and-route-outs.md` | Mode picker, adjacency boundaries, and minimal output contract |
+| `references/architecture.md` | System design, immutability contract, git ratcheting, metric rationale |
+| `references/program-md-guide.md` | How to write and update effective `program.md` directives |
+| `references/hardware-config.md` | VRAM settings by GPU, memory optimization, platform troubleshooting |
+
+## Examples
+
+### Example 1: First 40GB GPU session
+
+Request: “Help me run Karpathy autoresearch on a 40GB GPU.”
+
+Expected behavior:
+- choose **Setup readiness** first
+- verify hardware and dependencies
+- run one baseline experiment
+- route to `program.md` authoring only after the baseline exists
+
+### Example 2: User wants to optimize a skill instead
+
+Request: “Can autoresearch help me improve this `SKILL.md` with binary evals?”
+
+Expected behavior:
+- route out immediately to `skill-autoresearch`
+- explain that this skill is for real ML training search on `train.py`
 
 ## Best practices
 
-1. **Write program.md before running** — the agent is only as good as its directives; vague programs waste compute
-2. **Start with the baseline first** — always `uv run train.py` manually before launching the loop to confirm the setup works
-3. **Keep `MAX_SEQ_LEN` in `prepare.py` consistent** — changing it mid-run invalidates val_bpb comparisons
-4. **Never modify the evaluation harness mid-session** — `prepare.py` owns `evaluate_bpb()`, `TIME_BUDGET`, `MAX_SEQ_LEN`, and `EVAL_TOKENS`; changing them breaks comparability
-5. **Scale improvements before committing** — test that a depth-12 improvement also holds at depth-24 before treating it as a fundamental gain
-6. **Commit `program.md` updates** — version-control your research directives alongside `results.tsv` for reproducibility
-7. **Monitor VRAM** — add `peak_vram_mb` constraints in `program.md` for your GPU's headroom
-8. **No new dependencies** — the agent cannot `pip install`; it can only use what is in `pyproject.toml`
-
-## Hardware Requirements
-
-| Hardware | Status | Notes |
-|----------|--------|-------|
-| H100 80GB | Recommended | Default config, full MAX_SEQ_LEN=2048 |
-| A100 40GB | Supported | Lower MAX_SEQ_LEN if needed |
-| RTX 4090 24GB | Community | Reduce MAX_SEQ_LEN to 512 |
-| GTX 1660 Ti 6GB | Community fork | MAX_SEQ_LEN=256, reduced EVAL_TOKENS |
-| Apple Silicon (M-series) | MLX port | Community fork; different optimizer API |
-| Windows RTX | Community | WSL2 + CUDA recommended |
-
-## Key Metrics Reference
-
-| Metric | Direction | Description |
-|--------|-----------|-------------|
-| `val_bpb` | Lower = better | Validation bits-per-byte; vocabulary-size-independent |
-| `peak_vram_mb` | Lower = more headroom | Peak GPU memory during the training run |
-| Experiments/hour | Higher = faster search | ~12 at TIME_BUDGET=300 |
+1. **Start with the smallest mode that fits** — setup, authoring, run loop, interpretation, or hardware adaptation
+2. **Baseline before bravado** — confirm one successful run before talking about overnight loops
+3. **Freeze the evaluator before the session** — `prepare.py`, `TIME_BUDGET`, `MAX_SEQ_LEN`, and `EVAL_TOKENS` must stay comparable
+4. **One meaningful experiment at a time** — ablations beat mystery bundles
+5. **Keep `results.tsv` append-only** — discarded runs are still evidence
+6. **Push deep detail into references/scripts** — the front door should classify and route, not duplicate every table
+7. **Route adjacent jobs away early** — prompt/app eval and `SKILL.md` optimization are different lanes
 
 ## References
 
 - [GitHub — karpathy/autoresearch](https://github.com/karpathy/autoresearch)
-- [nanochat — the underlying LLM training framework](https://github.com/karpathy/nanochat)
-- [Karpathy's original announcement (X/Twitter)](https://x.com/karpathy)
-- [DeepWiki — autoresearch architecture](https://deepwiki.com/karpathy/autoresearch)
-- [SkyPilot — Scaling autoresearch](https://blog.skypilot.co/scaling-autoresearch/)
+- [Karpathy — A Recipe for Training Neural Networks](https://karpathy.github.io/2019/04/25/recipe/)
+- [MLflow Tracking](https://mlflow.org/docs/latest/ml/tracking/)
+- [Weights & Biases Tracking](https://docs.wandb.ai/guides/track/)
 - [MIT License](https://github.com/karpathy/autoresearch/blob/master/LICENSE)
