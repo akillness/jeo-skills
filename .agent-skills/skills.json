@@ -1,6 +1,6 @@
 {
   "version": "1.2.0",
-  "generated": "2026-04-18T01:16:31Z",
+  "generated": "2026-04-18T15:11:29Z",
   "skill_count": 89,
   "categories": {
     "planning-review": [
@@ -624,25 +624,32 @@
     },
     {
       "name": "database-schema-design",
-      "description": "Design or refactor application data models and schema evolution plans for relational and document databases. Use when the user needs entity boundaries, constraints, indexes, cardinality, lifecycle rules, or staged migration safety before or alongside backend implementation.",
+      "description": "Design storage-model and migration-safety packets for relational, document-heavy, and hybrid data systems. Use when the user needs entity ownership, constraints, indexes, staged schema changes, or queryable-vs-flexible field decisions across backend/fullstack products, internal ops tools, marketing/customer-data workflows, or game/live-ops systems.",
       "category": "backend",
       "path": "database-schema-design/SKILL.md",
       "tags": [
         "database",
-        "schema",
-        "SQL",
-        "NoSQL",
-        "PostgreSQL",
-        "MySQL",
-        "MongoDB",
-        "migration"
+        "schema-design",
+        "migrations",
+        "indexing",
+        "constraints",
+        "relational",
+        "nosql",
+        "backend"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
         "Gemini"
       ],
-      "allowed_tools": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
       "commands": []
     },
     {

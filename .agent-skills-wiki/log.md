@@ -879,3 +879,11 @@
 - Accepted: shrink `code-refactoring` from 292 to 263 lines, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a search-first blast-radius route-out case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the packet-first code-quality boundary into the wiki
 - Rejected: adding another generic technical-debt / cleanup wrapper; letting `code-refactoring` absorb debugging, review judgment, performance bottleneck triage, or pure impact mapping; leaving stale compact discovery surfaces untouched after the front-door rewrite
 - Wiki files created/updated: `concepts/code-quality-cluster.md`, `queries/code-refactoring-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | database-schema-design structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, backend/fullstack products, product/ops systems, marketing/customer-data workflows, and game/live-ops storage design, with the best bounded backend follow-up landing on the existing `database-schema-design` skill rather than a new database wrapper
+- Survey files created under `.survey/database-schema-design-structural-hardening-20260419/`; repo-local wiki/graph evidence plus primary-source retrieval from PostgreSQL, Prisma, MongoDB, Firestore, Stripe, and PlayFab were used because `web_search` / `web_extract` remained unreliable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `database-schema-design` into a packet-first storage router, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with marketing/customer-data and game/live-ops cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet reporting/telemetry route-outs into the backend cluster wiki note
+- Rejected: adding another generic schema/migration wrapper; letting `database-schema-design` absorb dashboard/reporting or observability implementation; leaving compact/discovery surfaces stale after tightening the front door
+- Wiki files created/updated: `concepts/backend-api-cluster.md`, `queries/database-schema-design-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
