@@ -1,14 +1,15 @@
 N:ui-component-patterns
-D:Design reusable UI primitives and component APIs before duplicating product UI. Use when the user needs help extracting shared components, defining variants, slots, controlled-vs-uncontrolled boundaries, composition patterns, Storybook coverage, or deciding what belongs in a reusable primitive versus app-local UI.
+D:Routing-first reusable component architecture for shared frontend primitives, slots, controlled ownership, alternate-root composition, and docs/verification packets. Use when the user needs to decide what should become a shared primitive, how a component API should expose variants or subcomponents, when parent state should control the component, how to compose onto alternate element types or wrappers, or what Storybook/example coverage is required.
 G:ui-components react typescript composition variants slots reusable frontend
-U[4]:
-  Extract duplicated UI into a shared primitive or component family
-  Design button, modal, dropdown, card, table, or form-field APIs with variants and slots
-  Decide between headless primitives, styled wrappers, and product-local components
-  Review whether a component API is overfitted, underpowered, or mixing too many responsibilities
+U[5]:
+  Choose what should become a shared primitive versus stay product-local
+  Design component APIs with variants, slots, or subcomponents without prop sprawl
+  Decide controlled-vs-uncontrolled ownership for reusable components
+  Handle alternate-root composition for buttons, links, dialogs, or wrappers
+  Define the docs/verification packet for stories, examples, and edge cases
 S[5]{n,action}:
-  1,Decide whether a reusable primitive is justified
-  2,Classify the component role before writing props
-  3,Define the smallest useful API surface
-  4,Choose controlled vs uncontrolled ownership deliberately
-  5,Produce the component architecture packet
+  1,Frame the reusable component job before naming props
+  2,Choose one primary component packet
+  3,Keep the invariants visible
+  4,Build the component architecture packet
+  5,Route adjacent frontend work honestly

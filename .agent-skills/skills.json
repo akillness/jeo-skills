@@ -3055,15 +3055,18 @@
     },
     {
       "name": "ui-component-patterns",
-      "description": "Design reusable UI primitives and component APIs before duplicating product UI. Use when the user needs help extracting shared components, defining variants, slots, controlled-vs-uncontrolled boundaries, composition patterns, Storybook coverage, or deciding what belongs in a reusable primitive versus app-local UI.",
+      "description": "Routing-first reusable component architecture for shared frontend primitives, slots, controlled ownership, alternate-root composition, and docs/verification packets. Use when deciding what should become a shared primitive, how a component API should expose variants or subcomponents, when parent state should control the component, how to compose onto alternate element types or wrappers, or what Storybook/example coverage is required.",
       "category": "frontend",
       "path": "ui-component-patterns/SKILL.md",
       "tags": [
         "UI-components",
         "React",
-        "design-patterns",
         "composition",
         "TypeScript",
+        "variants",
+        "slots",
+        "controlled",
+        "storybook",
         "reusable"
       ],
       "platforms": [
