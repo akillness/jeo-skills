@@ -928,6 +928,14 @@
 - Rejected: adding another component-library wrapper; letting `ui-component-patterns` absorb design-system governance, accessibility remediation, responsive strategy, app-state ownership, or React performance work; leaving compact/discovery wording on the stale generic component-best-practices framing
 - Wiki files created/updated: `concepts/frontend-skill-canonicalization.md`, `queries/ui-component-patterns-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
 
+## [2026-04-19] query | log-analysis structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev runtime triage, web/fullstack browser+API failures, product/ops and marketing automation pipelines, and game-adjacent log boundaries, with the best bounded search-analysis follow-up landing on the existing `log-analysis` skill rather than a new incident wrapper
+- Survey files created under `.survey/log-analysis-structural-hardening-20260419/`; repo-local wiki/graph evidence plus direct primary-source retrieval from Docker, Kubernetes, Chrome DevTools, GitHub Actions docs, and Unity log-file docs were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `log-analysis` into a routing-first evidence-packet anchor, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a structured webhook/JSON case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the packet-first search-analysis boundary into the wiki
+- Rejected: adding another generic incident/log wrapper; letting `log-analysis` absorb debugging hypotheses, observability setup, or broad anomaly hunting; leaving discovery surfaces on the stale generic log-analysis wording
+- Wiki files created/updated: `concepts/search-analysis-cluster.md`, `queries/log-analysis-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
+
 ## [2026-04-19] query | looker-studio-bigquery structural hardening
 - Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack reporting surfaces, PM/ops KPI boards, marketing/GTM dashboards, and game/business telemetry review flows, with the best bounded next win landing on the existing `looker-studio-bigquery` skill rather than a new BI/reporting wrapper.
 - Survey files created under `.survey/looker-studio-bigquery-structural-hardening-20260419/`; repo-local wiki/graph evidence plus the canonical Google source links already captured in the earlier modernization survey were sufficient for this structural-hardening pass.

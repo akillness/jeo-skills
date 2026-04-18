@@ -24,6 +24,15 @@ Examples:
 - Design alert rules or ingestion pipelines
 - Improve retention/indexing/queryability
 
+## Route to `pattern-detection`
+Use `pattern-detection` when the main job is repeated anomaly or rule hunting across many log windows, event families, or telemetry records rather than isolating one first actionable blocker.
+
+Examples:
+- Compare repeated error signatures across many releases or cohorts
+- Hunt for suspicious retry or abuse patterns over time
+- Build a reusable rule pack for recurring event shapes
+- Separate broad anomaly detection from one concrete incident
+
 ## Route to `game-build-log-triage`
 Use `game-build-log-triage` for Unity or Unreal engine-specific editor, package, player, cook, compile, shader, or asset pipeline logs.
 
