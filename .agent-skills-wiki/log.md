@@ -759,3 +759,11 @@
 - Accepted: shrink `vercel-deploy` from 313 to 244 lines, update `references/preview-production-command-packets.md` with a staged promote packet, expand eval coverage with rollback and route-out cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the compact surface no longer advertises the legacy claimable tarball flow
 - Rejected: adding another Vercel domain/promote/rollback helper; keeping stale compact wording after the canonical skill changed; broadening `vercel-deploy` back into generic release strategy or CI authoring
 - Wiki files created/updated: `queries/vercel-deploy-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | game-performance-profiler structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game development, with the best bounded follow-up landing on the existing `game-performance-profiler` skill rather than a new game-performance wrapper
+- Survey files created under `.survey/game-performance-profiler-structural-hardening-20260418/`; repo-local graph and wiki evidence plus direct primary-source retrieval from Unity, Unreal, GPUOpen, and Steamworks docs were used because `web_search` / `web_extract` remained unreliable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `game-performance-profiler` from 296 to 231 lines, add `references/mode-selection-and-route-outs.md`, expand eval coverage with a build-failure boundary case, sync `SKILL.toon` / `skills.json`, and update README / README.ko / setup discovery wording so the front door now matches the packet-first profiling boundary
+- Rejected: adding another Steam Deck-only or profiler-only wrapper; merging engine-specific runtime triage back into `performance-optimization`; leaving the oversized front door untouched after support coverage reached 100%
+- Wiki files created/updated: `queries/game-performance-profiler-structural-hardening-2026-04-18.md`, `concepts/game-development-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

@@ -1,7 +1,7 @@
 ---
 title: Game Development Cluster
 created: 2026-04-12
-updated: 2026-04-17
+updated: 2026-04-18
 type: concept
 tags: [skills, consolidation, trigger-design, game-dev]
 sources: [graphify-out/GRAPH_REPORT.md, .survey/bmad-gds-modernization-20260412/context.md, .survey/bmad-gds-modernization-20260412/solutions.md]
@@ -18,6 +18,7 @@ The repository's game-development lane now has a clearer shape:
 
 Recent refinement:
 - `game-performance-profiler` now starts from quick evidence packets, benchmark routes, and packaged-on-device review before escalating to deeper profiler tooling.
+- The 2026-04-18 structural-hardening pass then shrank `game-performance-profiler` from 296 to 231 lines, added a dedicated mode-selection / route-out reference, and removed it from the oversized front-door watchlist without changing the cluster boundary.
 - The four specialist game-support skills now all ship compact discovery variants, so the game lane is no longer an outlier against the repo's tiered discovery model.
 - `steam-store-launch-ops` is strongest as a bottleneck-first public-facing router: keep it focused on Steam-specific visibility, page promise, demo proof, event timing, and launch-ops readiness instead of letting it drift into generic marketing advice or playtest-feedback synthesis.
 

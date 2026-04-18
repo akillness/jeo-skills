@@ -49,6 +49,16 @@
         "Output asks for or defines route, build, and settings context",
         "Output recommends a quick triage packet or benchmark route brief as the next artifact"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our Unreal packaged build crashes during cook on CI and we do not even have runtime numbers yet. Can you help with performance?",
+      "expected_output": "A boundary-preserving response that routes the request to game-build-log-triage instead of pretending the problem is already a runtime profiling issue.",
+      "assertions": [
+        "Output explicitly routes or recommends game-build-log-triage",
+        "Output does not present a full Game Performance Profiling Brief as if runtime evidence exists",
+        "Output explains that build or cook failure is the primary problem before frame-time triage"
+      ]
     }
   ]
 }
