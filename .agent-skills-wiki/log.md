@@ -911,3 +911,11 @@
 - Accepted: shrink `codebase-search` into a routing-first packet selector, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with content/template and game-repo cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the packet-first search-analysis boundary into the wiki
 - Rejected: adding another search-adjacent wrapper; letting `codebase-search` absorb diagnosis, refactoring, or persistent graphing; keeping a code-only framing that ignores config/content/game surfaces
 - Wiki files created/updated: `concepts/search-analysis-cluster.md`, `queries/codebase-search-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | survey artifact-validator hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack planning loops, product/ops research packets, marketing/content discovery work, and game-adjacent platform comparisons, with the best bounded research-layer follow-up landing on the existing `survey` skill rather than a new wrapper
+- Survey files created under `.survey/survey-artifact-validator-hardening-20260419/`; repo-local wiki/graph evidence plus direct primary-source retrieval from Claude Code docs, OpenAI Codex docs, and Gemini CLI docs were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `survey` from 309 to 245 lines, add `references/output-templates-and-validator.md`, add `scripts/validate_survey_artifacts.py`, expand `evals/evals.json` with validator-aware cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the validator-backed artifact boundary into the wiki
+- Rejected: adding another survey-adjacent wrapper; treating hooks or runtime config as the source of truth; leaving the artifact contract prose-only after the repo moved toward truthful validator commands
+- Wiki files created/updated: `queries/survey-artifact-validator-hardening-2026-04-19.md`, `index.md`, `log.md`

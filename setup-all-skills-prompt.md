@@ -322,7 +322,7 @@ If no → skip silently. Never re-ask.
 | Claude orchestration | `autopilot: task` or `/oh-my-claudecode:team "task"` |
 | Visual plan review | `plan` (plannotator keyword) |
 | Spec-first dev loop | `ralph "build X"` or `ooo interview "X"` *(portable method anchor; route runtime-native hook/approval setup to omc/omx/ohmg/ralphmode)* |
-| Pre-impl research | `survey "topic"` |
+| Pre-impl research | `survey "topic"` *(writes reusable `.survey/{slug}/` artifacts and validates the artifact contract before handoff)* |
 | Agent team design | `harness "design team for X"` |
 | UI annotation | `annotate` (agentation keyword) |
 | Kanban board | `kanbanview` (vibe-kanban keyword) |

@@ -172,7 +172,7 @@ graph TD
 | **이미지/미디어 스킬 일부 제거** | `image-generation`, `image-generation-mcp`, `pollinations-ai` 제거. 미디어는 `video-production`을 기본 프로그래머블 비디오 스킬로 사용하고, `remotion-video-production`은 명시적 Remotion 이름용 호환 별칭으로 유지 |
 | **autoresearch: Karpathy 자율 ML 실험 스킬** | 사람이 `program.md`를 쓰고 에이전트가 `train.py`를 수정하며, 5분 GPU 실행과 `val_bpb` keep/revert ratcheting으로 실제 ML 탐색을 돌립니다. 프롬프트/앱 eval 작업은 `skill-autoresearch`나 별도 eval 플랫폼으로 라우팅하고, `scripts/`, `references/`, `evals/`를 포함합니다. |
 | **jeo v1.2.3: plannotator-plan-loop.sh 전 플랫폼 강화** | 크로스 플랫폼 임시 디렉토리, 전용 포트 `PLANNOTATOR_PORT=47291`, `probe_plannotator_port()` + `wait_for_listen()`, 브라우저 강제종료 시 최대 3회 자동 재시작, 구조화 `jeo-blocked.json` 출력 |
-| **survey: 라우팅 우선 문제공간 스캔 강화** | `survey`를 더 작은 아티팩트 계약 중심 조사 앵커로 다듬었습니다. 하나의 조사 모드를 먼저 분류하고, 4개 레인의 `.survey/{slug}/` 출력 계약을 유지하며, 플랫폼 비교는 `settings/rules/hooks`로 정규화하고, 검색 복구/이식성 세부사항은 별도 reference로 분리합니다. |
+| **survey: 아티팩트 검증기 강화** | `survey`를 더 작은 아티팩트 계약 중심 조사 앵커로 다듬고, 장황한 출력 템플릿은 별도 reference로 옮겼으며, `scripts/validate_survey_artifacts.py`를 추가해 `.survey/{slug}/` 폴더를 계획/구현 전에 기계적으로 검증할 수 있게 했습니다. 플랫폼 비교는 계속 `settings/rules/hooks`로 정규화하고, hooks는 같은 이식형 검증기를 감싸는 선택적 래퍼로 취급합니다. |
 | **presentation-builder: 패킷 우선 덱 핸드오프 강화** | `presentation-builder`를 더 작은 라우팅 우선 덱 아티팩트 앵커로 다듬었습니다. 이제 하나의 덱 모드, 하나의 최소 아티팩트 패킷(`outline-brief`, `storyboard`, `review-ready-html`, `export-handoff`, `sync-packet`), 그리고 하나의 정직한 마지막 전달 표면(HTML 뷰어, PPTX, PDF, Google Slides, Figma Slides)을 먼저 고르고, `references/artifact-packets-and-last-mile-handoffs.md`와 함께 실제 덱 제작 흐름에 맞게 동작합니다. |
 
 ---
@@ -251,7 +251,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | 휴대형 BMAD/BMM 코어 라우터 — 프로젝트 레벨과 현재 단계를 정하고, 다음 산출물을 추천한 뒤 런타임별 세부 작업을 바깥으로 라우팅 |
 | `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |
 | `bmad-idea` | `bmad-idea` | 전체 | 사전 기획 아이디어 라우터 — 거친 제품/GTM/컨설팅/게임 아이디어를 하나의 컨셉 산출물과 다음 핸드오프로 정리 |
-| `survey` | `survey` | 전체 | 재사용 가능한 `.survey/{slug}/` 결과물을 남기는 bounded 사전 구현 문제공간 스캔 |
+| `survey` | `survey` | 전체 | 재사용 가능한 `.survey/{slug}/` 결과물과 검증기 기반 아티팩트 계약 체크를 남기는 bounded 사전 구현 문제공간 스캔 |
 
 ### 📋 계획 및 검토 (5개)
 

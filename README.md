@@ -172,7 +172,7 @@ graph TD
 | **Removed deprecated image/media skills** | Removed `image-generation`, `image-generation-mcp`, `pollinations-ai`. Use `video-production` as the canonical programmable-video skill; `remotion-video-production` remains as the compatibility alias for explicit Remotion naming. |
 | **autoresearch: Karpathy autonomous ML experiment skill** | Human-written `program.md`, agent-edited `train.py`, fixed 5-minute GPU runs, and `val_bpb` keep/revert ratcheting for real ML search. Now explicitly routes prompt / app eval work away to `skill-autoresearch` or eval platforms, and includes `scripts/`, `references/`, and `evals/`. |
 | **jeo v1.2.3: plannotator-plan-loop.sh all-platform hardening** | Cross-platform temp dir fallback, dedicated port `PLANNOTATOR_PORT=47291`, `probe_plannotator_port()` + `wait_for_listen()`, browser-crash retry up to 3 times, structured `jeo-blocked.json` output. |
-| **survey: routing-first landscape scan hardening** | Reframed `survey` into a smaller artifact-contract-first research anchor: classify one survey mode, preserve the 4-lane `.survey/{slug}/` output contract, normalize platform topics as `settings/rules/hooks`, and push recovery/portability detail into focused references instead of one giant front door. |
+| **survey: artifact-validator hardening** | Tightened `survey` into a smaller artifact-contract-first research anchor, moved verbose output templates into a dedicated reference, and added `scripts/validate_survey_artifacts.py` so `.survey/{slug}/` folders can be checked mechanically before planning or implementation. Platform topics still normalize as `settings/rules/hooks`, with hooks treated as optional wrappers around the same portable validator. |
 | **presentation-builder: packet-first deck handoff hardening** | Tightened `presentation-builder` into a smaller routing-first deck artifact anchor. It now chooses one deck mode, one smallest useful artifact packet (`outline-brief`, `storyboard`, `review-ready-html`, `export-handoff`, or `sync-packet`), and one honest last-mile surface (HTML viewer, PPTX, PDF, Google Slides, or Figma Slides); adds `references/artifact-packets-and-last-mile-handoffs.md`; refreshes eval coverage; and syncs compact/discovery surfaces so the skill matches real deck workflows instead of acting like a giant slides essay. |
 
 ---
@@ -251,7 +251,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Portable BMAD/BMM core router — choose project level, identify the current phase, recommend the next artifact, and route runtime-specific depth outward |
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |
-| `survey` | `survey` | All | Bounded pre-implementation landscape scan with reusable `.survey/{slug}/` artifacts |
+| `survey` | `survey` | All | Bounded pre-implementation landscape scan with reusable `.survey/{slug}/` artifacts plus validator-backed artifact-contract checks |
 
 ### 📋 Planning & Review (5)
 
