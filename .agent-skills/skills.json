@@ -2464,7 +2464,7 @@
     },
     {
       "name": "responsive-design",
-      "description": "Plan mobile-first, container-aware responsive layouts before patching breakpoints everywhere. Use when the user needs help fixing overflow, wrapping, layout collapse, responsive media, breakpoint strategy, container queries, or deciding what should adapt at the viewport level versus inside a component/container.",
+      "description": "Routing-first responsive layout strategy and verification for page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, and reflow checks. Use when vague \"breaks on mobile\" requests need one concrete strategy packet, and route component API design to `ui-component-patterns`, accessibility remediation to `web-accessibility`, system-wide breakpoint/token governance to `design-system`, and broad UI audit work to `web-design-guidelines`.",
       "category": "frontend",
       "path": "responsive-design/SKILL.md",
       "tags": [

@@ -1,14 +1,14 @@
 N:responsive-design
-D:Plan mobile-first, container-aware responsive layouts before patching breakpoints everywhere. Use when the user needs help fixing overflow, wrapping, layout collapse, responsive media, breakpoint strategy, container queries, or deciding what should adapt at the viewport level versus inside a component/container.
+D:Routing-first responsive layout strategy and verification for web interfaces. Use when the main job is classifying whether the failure is page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, or reflow verification, then turning vague "breaks on mobile" requests into one concrete strategy packet.
 G:responsive mobile-first layout container-queries breakpoints overflow reflow frontend css
 U[4]:
-  Fix layouts that overflow, wrap badly, collapse awkwardly, or force horizontal scrolling on smaller screens
-  Plan mobile-first page, dashboard, card-grid, form, nav, table, or media layouts
-  Decide between viewport breakpoints, container queries, intrinsic layout rules, and responsive media behavior
-  Define responsive verification for overflow, wrapping, zoom/reflow, and responsive media
+  Fix page-shell, dashboard, form, nav, card-grid, or table behavior that breaks across widths
+  Choose between intrinsic layout, viewport queries, container queries, dense-data fallbacks, and responsive media behavior
+  Define zoom/reflow, overflow, wrapping, and long-copy verification before release
+  Route component API design to ui-component-patterns, accessibility-heavy remediation to web-accessibility, and system-wide breakpoint policy to design-system
 S[5]{n,action}:
-  1,Classify the responsive failure before writing CSS
-  2,Choose the adaptation surface deliberately
-  3,Start from a mobile-first baseline
-  4,Use container queries when the component’s parent drives the layout
-  5,Produce the responsive strategy packet
+  1,Frame the responsive job before naming CSS
+  2,Choose exactly one primary responsive packet
+  3,Keep the invariants visible
+  4,Build the responsive strategy packet
+  5,Route adjacent work explicitly

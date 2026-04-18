@@ -895,3 +895,11 @@
 - Accepted: shrink `task-estimation` into a routing-first estimate-packet anchor, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a GTM/ops launch-readiness case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the hardened PM-cluster boundary into the wiki
 - Rejected: adding another forecasting/planning-poker wrapper; letting `task-estimation` absorb decomposition, standup coordination, or retrospective analysis; leaving stale compact/discovery surfaces untouched after the front-door rewrite
 - Wiki files created/updated: `concepts/project-management-cluster.md`, `queries/task-estimation-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | responsive-design structural hardening
+- Area researched: required cross-domain opportunity scan across web/fullstack delivery, launch-readiness UI review, dense dashboard/table surfaces, and container-query/component-slot workflows, with the best bounded frontend follow-up landing on the existing `responsive-design` skill rather than a new responsive or launch-review wrapper
+- Survey files created under `.survey/responsive-design-structural-hardening-20260419/`; repo-local wiki/graph evidence plus canonical-source links from MDN, web.dev, W3C WAI, Tailwind, Bootstrap, MUI, Chakra, DataTables, and TanStack Table were used because `web_search` / `web_extract` remained unreliable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `responsive-design` into a routing-first responsive packet anchor, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a launch-readiness boundary case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the hardened frontend-cluster boundary into the wiki
+- Rejected: adding another responsive/mobile wrapper; letting `responsive-design` absorb broad UI audit, accessibility-heavy remediation, component API ownership, or breakpoint-governance work; leaving stale compact/discovery surfaces untouched after the front-door rewrite
+- Wiki files created/updated: `concepts/frontend-skill-canonicalization.md`, `queries/responsive-design-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
