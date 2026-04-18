@@ -1,7 +1,7 @@
 ---
 title: Frontend Skill Canonicalization
 created: 2026-04-12
-updated: 2026-04-16
+updated: 2026-04-18
 type: concept
 tags: [skills, consolidation, trigger-design, frontend, docs]
 sources: [.survey/frontend-skill-consolidation-20260412/context.md, .survey/frontend-design-system-canonicalization-20260412/context.md, .survey/frontend-legacy-anchors-20260413/context.md, .survey/frontend-legacy-anchors-20260413/platform-map.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/react-grab-structural-hardening-20260416/context.md, .survey/react-grab-structural-hardening-20260416/solutions.md, .survey/design-system-structural-hardening-20260416/context.md, .survey/design-system-structural-hardening-20260416/solutions.md, graphify-out/GRAPH_REPORT.md]
@@ -14,6 +14,7 @@ The frontend cluster now has **two** true canonical-vs-alias pairs plus three cl
 - `react-best-practices` owns general React/Next.js performance work, while `vercel-react-best-practices` survives only as a compatibility alias.
 - `design-system` owns general frontend UI-system work, while `frontend-design-system` survives only as a compatibility alias.
 - `state-management` now owns React state-boundary decisions across local, shared, URL/form, server, and long-lived client workflow state instead of remaining a generic library-tour skill.
+- The 2026-04-18 structural-hardening pass tightened that boundary further: `state-management` is now an ownership-packet router that explicitly accounts for router-native data ownership and routes responsive-layout and design-system governance questions out instead of absorbing them.
 - `web-accessibility` now owns accessibility remediation plus manual-vs-automated verification, while `web-design-guidelines` now owns the broad interface-audit lane for hierarchy, clarity, consistency, interaction-state quality, responsiveness basics, accessibility basics, and launch-readiness review.
 - `ui-component-patterns` now owns reusable primitive / variant / slot API design, while `responsive-design` now owns mobile-first, container-aware layout adaptation plus overflow/reflow verification instead of remaining a generic CSS/example dump.
 - `react-grab` stays distinct from both the browser-review cluster and the broader frontend architecture lane: it owns exact React element-context capture from a live browser UI, not generic browser automation (`agent-browser`, `playwriter`), rendered-UI review (`agentation`), performance diagnosis (`react-best-practices`), or general UI-system design (`design-system`).
@@ -38,6 +39,7 @@ Canonicalization is not fully done until compact discovery surfaces (`SKILL.toon
 - [[react-grab-structural-hardening-2026-04-16]]
 - [[design-system-structural-hardening-2026-04-16]]
 - [[state-management-modernization-2026-04-13]]
+- [[state-management-structural-hardening-2026-04-18]]
 - [[web-accessibility-modernization-2026-04-13]]
 - [[ui-component-patterns-modernization-2026-04-13]]
 - [[responsive-design-modernization-2026-04-13]]

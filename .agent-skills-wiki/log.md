@@ -791,3 +791,11 @@
 - Accepted: shrink `monitoring-observability` from 290 to 226 lines, add `references/intake-packets-and-route-outs.md`, expand eval coverage with review-audit and deployment-route-out cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so compact surfaces match the packet-first boundary
 - Rejected: adding another monitoring/alerting/dashboard wrapper; re-expanding the front door with more vendor detail; letting rollout execution, KPI explanation, or engine-profiler interpretation drift back into observability
 - Wiki files created/updated: `queries/monitoring-observability-structural-hardening-2026-04-18.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | state-management structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game-development lanes, with the best bounded frontend follow-up landing on the existing `state-management` skill rather than a new React state wrapper
+- Survey files created under `.survey/state-management-structural-hardening-20260418/`; repo-local graph and wiki evidence plus direct primary-source retrieval from React, React Router, Next.js, Redux, TanStack Query, Zustand, Jotai, State of React, and selected user-voice threads were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `state-management` from 290 to 273 lines, tighten it around ownership packets and router-native data ownership, expand route-outs to `design-system` / `responsive-design`, add `references/ownership-packets-and-route-outs.md`, expand eval coverage with a responsive-layout near miss, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording
+- Rejected: adding another router-state or global-state wrapper; turning the skill back into a library tour; flattening URL/form/server/client-workflow state into one default store
+- Wiki files created/updated: `queries/state-management-structural-hardening-2026-04-18.md`, `concepts/frontend-skill-canonicalization.md`, `index.md`, `log.md`

@@ -1,223 +1,213 @@
 ---
 name: state-management
 description: >
-  Design React state boundaries before picking libraries. Use when the user needs
-  to decide whether data should stay local, be lifted/shared via Context, live in
-  URL or form state, move into a client store like Zustand / Redux Toolkit /
-  Jotai, or stay in a server-state cache such as TanStack Query. Triggers on:
-  global state, prop drilling, Context vs Zustand, Redux Toolkit vs Zustand,
-  server state vs client state, React state architecture, shared state, optimistic
-  updates, and too much state in one store.
+  Classify React and fullstack state ownership before picking libraries. Use when
+  the user needs to decide whether data should stay local, be lifted/shared via
+  Context, live in URL or form state, use a client store like Zustand / Redux
+  Toolkit / Jotai, or stay in a server-state cache such as TanStack Query or a
+  router-native data layer. Triggers on: global state, prop drilling, Context vs
+  Zustand, Redux Toolkit vs Zustand, server state vs client state, React state
+  architecture, optimistic updates, URL state, form state, and too much state in
+  one store.
 allowed-tools: Read Write Bash Grep Glob
 compatibility: >
-  Best for React, Next.js, and frontend/fullstack TypeScript repos that need a
-  decision-first state architecture layer. Not for raw performance tuning,
-  backend API design, or writing a full app from scratch without a state-boundary
-  question.
+  Best for React, Next.js, Remix/React Router, and frontend/fullstack TypeScript
+  repos that need a decision-first ownership layer. Not for raw performance
+  tuning, backend API contract design, or debugging already-broken state code.
 license: MIT
 metadata:
   tags: state-management, react, context, redux-toolkit, zustand, jotai, tanstack-query, client-state, server-state
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.0"
+  version: "2.1"
   source: akillness/oh-my-skills
 ---
 
 # State Management
 
-Use this skill when the main question is **"what kind of state is this, who should own it, and what is the smallest tool that fits?"**
+Use this skill when the main question is:
 
-The job is not to dump boilerplate for Redux, Context, or Zustand.
-The job is to:
-1. classify the state category first,
-2. choose the narrowest ownership layer,
-3. keep server-state caching separate from client UI/global state,
-4. pick a store only when React built-ins stop being enough,
-5. route adjacent concerns to the right neighboring skill.
+**What kind of state is this, who should own it, and what is the smallest viable layer?**
 
-Read [references/decision-matrix.md](references/decision-matrix.md) before handling a mixed client/server workflow or a cross-page architecture decision.
-Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `state-management`, `react-best-practices`, `api-design`, `debugging`, or `ui-component-patterns` should own the next step.
+The job is not to dump boilerplate for Redux, Zustand, or Context.
+The job is to classify the ownership packet first, keep unlike lifecycles apart, and route neighboring frontend work to the right skill.
+
+Read [references/decision-matrix.md](references/decision-matrix.md) after classifying the problem.
+Read [references/ownership-packets-and-route-outs.md](references/ownership-packets-and-route-outs.md) when the request mixes URL/router state, server caches, client workflow state, and neighboring skills.
 
 ## When to use this skill
-- Decide whether a React problem is local state, shared UI state, form state, URL state, client global state, or server state
-- Turn vague requests like “we need state management” into a concrete architecture recommendation
-- Choose between Context, Zustand, Redux Toolkit, Jotai, or a query cache without treating them as interchangeable
-- Fix prop-drilling complaints without defaulting to a global store
+- Decide whether a React problem is local UI state, shared subtree state, URL/navigation state, form state, server state, or long-lived client workflow state
+- Turn vague requests like “we need state management” into a concrete ownership recommendation
+- Choose between Context, Zustand, Redux Toolkit, Jotai, TanStack Query, or router-native data ownership without treating them as interchangeable
+- Fix prop-drilling complaints without defaulting to a universal global store
 - Separate API/cache concerns from UI/workflow state in frontend or fullstack apps
-- Decide whether optimistic updates, cache invalidation, or synchronization requirements mean the real problem is server state
-- Produce a short state-boundary brief for implementation or review
+- Decide whether optimistic updates, invalidation, or route-native data loading mean the real problem is server state first
+- Produce a short ownership brief before implementation or code review
 
 ## When not to use this skill
-- **The main task is React/Next.js rendering performance, waterfalls, hydration, or rerender behavior** → use `react-best-practices`
-- **The main task is API contract design, mutation shape, or backend ownership** → use `api-design`
-- **The main task is debugging why existing state code is broken or racey** → use `debugging`
-- **The main task is component API design or reusable UI primitives** → use `ui-component-patterns` or `design-system`
-- **The main task is just writing one reducer/store file after the architecture is already chosen**; in that case implement directly instead of re-running the whole decision flow
-- **The user has not described any shared ownership, data lifecycle, or coordination problem yet**; clarify the actual state symptom first
+- **The main task is rerender churn, hydration mismatch, waterfalls, bundle cost, or client/server performance behavior** → use `react-best-practices`
+- **The main task is mutation shape, response contracts, backend ownership, or optimistic-write API design** → use `api-design`
+- **The main task is debugging stale closures, races, broken optimistic updates, or existing state bugs** → use `debugging`
+- **The main task is controlled/uncontrolled component APIs, reusable primitives, slots, or design-system governance** → use `ui-component-patterns` or `design-system`
+- **The main task is viewport adaptation, layout collapse, or mobile/tablet behavior** → use `responsive-design`
+- **The architecture choice is already made and the user only needs store/reducer code written** → implement directly instead of re-running the whole chooser
 
 ## Instructions
 
-### Step 1: Classify the state type before naming any library
-Do not start with “use Redux” or “use Zustand.” Start by classifying the data.
+### Step 1: Classify the ownership packet before naming any library
+Do not start with “use Redux” or “use Zustand.” Start by naming the state category.
 
-Use these buckets:
-- **Local UI state** — input values, open/closed toggles, hover, tab selection, temporary wizard step
-- **Shared UI state** — theme, auth session snapshot, modal coordination, command palette visibility, feature flags consumed across multiple branches of the tree
-- **Form state** — validation, dirty fields, touched state, submission lifecycle
-- **URL/navigation state** — filters, sort order, tabs, pagination, deep-linkable view state
-- **Server state** — fetched remote data, caching, invalidation, background refetching, optimistic updates, stale/fresh data rules
-- **Long-lived client workflow state** — drafts, multi-step local workflows, offline edits, cross-page state machines, collaborative client-side coordination
+Use these packets:
+- **Local UI state** — toggles, open/closed panels, inline edit state, hovered row, active tab inside one feature subtree
+- **Shared subtree state** — theme, auth snapshot, locale, feature flags, command palette visibility, modal coordination used across a moderate tree
+- **URL/navigation state** — filters, sort order, pagination, tab choice, deep-linkable or back/forward-aware view state
+- **Form state** — dirty/touched state, validation, submission lifecycle, async form errors
+- **Server state** — fetched remote data, caching, revalidation, invalidation, optimistic updates, stale/fresh rules
+- **Client workflow state** — multi-step drafts, cross-page editing flows, offline edits, long-lived client coordination, state machines
 
-If a request mixes multiple buckets, split them explicitly instead of forcing one owner.
+If a request mixes packets, split them explicitly instead of forcing one owner.
 
 Quick framing template:
 ```markdown
-State buckets:
-- Server state: project list, status counts, notifications
-- Shared UI state: active modal, selected workspace, command palette
-- URL state: filters and pagination
-- Local state: inline edit open/close
+Ownership packets:
+- Server state: project list, unread counts, remote entity details
+- URL state: filters, pagination, active tab
+- Shared subtree state: command palette visibility, selected workspace shell state
+- Local UI state: row expansion, hover/edit toggles
 ```
 
-### Step 2: Choose the smallest ownership layer
-Apply the narrowest possible owner first.
+### Step 2: Choose the smallest owner first
+Start with the narrowest owner that matches the lifecycle.
 
 #### Keep it local when
-- only one component or one tight subtree needs it
-- the state dies when the component unmounts
-- syncing it globally would add indirection without reuse
+- only one component or tight subtree needs the value
+- the state dies when the feature unmounts
+- global sharing would add indirection without real reuse
 
-Typical tools:
+Typical owners:
 - `useState`
 - `useReducer`
 - lifted state to the nearest common parent
 
-#### Use URL or form ownership when
+#### Prefer URL or form ownership when
 - the value should survive refresh, deep links, or browser navigation
-- the state is fundamentally part of a form lifecycle rather than app-wide coordination
+- the state is really part of a form lifecycle rather than app-wide coordination
+- router-native search params, actions, loaders, or sessions already own the problem
 
-Do not hide these inside a general-purpose global store unless you have a clear reason.
+Do not hide shareable filters, tabs, or submission state inside a generic client store without a clear reason.
 
-#### Use Context when
+#### Prefer Context when
 - consumers need one shared source of truth across a moderate subtree
 - write frequency is modest
-- you want dependency-free shared state such as theme, auth snapshot, locale, or feature switches
-- the real problem is ownership, not advanced store tooling
+- the real pain is ownership/access, not workflow orchestration
+- examples: theme, auth snapshot, locale, feature switches, moderate shell state
 
-Context is a distribution mechanism, not proof that the app needs a full global-state framework.
+Context is a distribution mechanism, not proof that the app needs a full state framework.
 
 ### Step 3: Separate server state from client state
-If the problem involves fetching, caching, invalidation, background refetching, stale/fresh policies, or optimistic mutation behavior, classify it as **server state first**.
+If the problem involves fetching, caching, invalidation, background refetching, stale/fresh policies, optimistic mutation behavior, or route-native revalidation, classify it as **server state first**.
 
-That usually means:
-- keep remote data in TanStack Query or an equivalent query/cache layer
-- avoid duplicating fetched entities into a generic client store unless there is a strong offline/workflow reason
-- keep ephemeral UI state next to the UI or in a small client store if needed
-
-Good pattern:
-```markdown
-TanStack Query owns:
-- fetching projects
-- cache invalidation after mutation
-- optimistic update rollback
-
-Client state owns:
-- open/closed inspector panel
-- selected local draft mode
-- non-URL UI toggles
-```
+Healthy defaults:
+- **TanStack Query or equivalent** owns fetched entities, cache invalidation, optimistic rollback, and refetch rules
+- **Router-native data APIs** can own URL-driven data loading and mutation flows when the framework already provides them
+- **Client state** should own only the remaining local UI/workflow coordination
 
 Bad pattern:
 ```markdown
-Fetch everything with a query library,
-then immediately mirror the whole server cache into Zustand/Redux
+Fetch everything remotely,
+then mirror the whole remote cache into Zustand/Redux
 just so one store appears to own everything.
 ```
 
-### Step 4: Choose the right client-state tool only after the boundary is clear
-When React built-ins or Context are no longer enough, choose the store by coordination cost.
+### Step 4: Pick the client-state tool only after the boundary is clear
+When React built-ins or Context stop being enough, choose the store by coordination cost.
 
 #### Prefer React built-ins / Context when
 - the shared surface is small to medium
-- update flows are understandable without event/reducer machinery
-- the main pain is prop drilling, not complex cross-feature workflows
+- update flows stay understandable without event machinery
+- the main pain is prop drilling, not complex workflow logic
 
 #### Prefer Zustand when
 - you need lightweight cross-component or cross-page client state
-- state slices are fairly independent
-- you want low boilerplate and incremental adoption
-- the app benefits from reading/writing state outside deeply nested component chains
+- slices are fairly independent
+- low ceremony and incremental adoption matter
+- you want a small store, not a full event-modeling system
 
-Watch out for:
-- store sprawl
-- silently mixing server-cache data into the store
-- unclear derived-state ownership
+Watch out for store sprawl and server-cache duplication.
 
 #### Prefer Redux Toolkit when
-- workflows are complex, highly coupled, or long-lived
-- auditability, action history, or richer devtools matter
-- many contributors need explicit conventions and predictability
-- you have cross-feature state interactions where event-based modeling helps more than ad hoc setters
+- workflows are coupled, long-lived, or require explicit event modeling
+- richer devtools, conventions, and auditability matter
+- many contributors need predictable reducer/action boundaries
+- cross-feature state interactions are hard to reason about with ad hoc setters
 
-Use Redux Toolkit, not hand-rolled legacy Redux-core patterns.
+Use Redux Toolkit, not legacy Redux-core advice.
 
 #### Consider Jotai when
-- the app benefits from atom-level composition
-- state is easier to model as small independent units than as one store tree
-- the team already understands the atom mental model and can keep it coherent
+- atom-level composition actually matches the app’s mental model
+- state is easier to model as many semi-independent units than as one store tree
+- the team can keep atom boundaries coherent
 
-Do not force Jotai just because it looks elegant in isolated examples.
+#### Consider explicit workflow/state-machine modeling when
+- transitions, guards, and multi-step client workflows dominate the problem
+- the real need is orchestration clarity, not just a generic shared store
 
-### Step 5: Handle mixed-mode architectures explicitly
-Many real apps need more than one layer.
+### Step 5: Name mixed architectures directly
+Many real apps need more than one owner. Say so plainly.
 
-Common healthy combinations:
-- **Local/Context + TanStack Query** — the default for many apps
-- **Zustand + TanStack Query** — shared client workflow state plus remote cache
-- **Redux Toolkit + TanStack Query** — complex client workflows plus structured async cache boundaries
-- **URL state + query cache + local UI state** — dashboards, search pages, admin tools
+Healthy combinations:
+- **URL state + query cache + local UI state** — dashboards, admin tools, search/filter pages
+- **Context + query cache** — auth/theme plus remote entities
+- **Zustand + query cache** — lightweight client workflow state plus remote cache
+- **Redux Toolkit + query cache** — complex client workflows plus structured remote-data boundaries
+- **Form state + URL state + query cache** — multi-step search/forms with shareable results
 
-Name the split directly:
+Example brief:
 ```markdown
 Recommendation:
 - URL owns filters and pagination
 - TanStack Query owns fetched lists and invalidation
-- Zustand owns transient cross-panel UI coordination
-- local state owns per-row expansion and hover/edit toggles
+- Zustand owns transient cross-panel coordination
+- local state owns per-row expansion and inline edit toggles
 ```
 
-If the user asks for one universal store, explain what would be lost by flattening those layers together.
+If the user asks for one universal store, explain what would be lost by flattening unlike lifecycles together.
 
 ### Step 6: Route adjacent concerns correctly
-This skill owns state-boundary decisions, not every downstream concern.
+This skill owns **ownership decisions**, not every downstream frontend task.
 
-Typical handoffs:
-- **`react-best-practices`** — rerender behavior, hydration, server/client component boundaries, waterfalls, caching/perf issues
-- **`api-design`** — mutation contracts, resource shape, backend/client boundary design
-- **`debugging`** — race conditions, stale closures, broken synchronization, weird rerender loops, or state bugs already happening
-- **`ui-component-patterns`** — component APIs, controlled/uncontrolled boundaries, reusable UI primitives
-- **`responsive-design`** — layout/breakpoint state only when the main problem is viewport behavior rather than app architecture
+Route out when the next step is:
+- **`react-best-practices`** — rerender churn, hydration mismatch, server/client boundary cost, waterfalls, or performance tuning
+- **`api-design`** — mutation contracts, optimistic-write API shape, backend/client responsibility, resource shape
+- **`debugging`** — stale closures, race conditions, broken optimistic updates, inconsistent synchronization, existing bugs
+- **`ui-component-patterns`** — controlled/uncontrolled APIs, reusable component contracts, primitives, slots, compound components
+- **`design-system`** — breakpoint policy, token governance, cross-product visual rules, system-level preference strategy
+- **`responsive-design`** — viewport adaptation, layout collapse, overflow behavior, mobile/tablet strategy
 
-If the user asks “which state layer should own this?” stay here.
-If they ask “why is this current state code failing?” route to debugging.
+If the question is “which owner should this state have?”, stay here.
+If the question is “why is the current code broken or slow?”, route out.
 
-### Step 7: Produce the state-boundary brief
-End with a short recommendation the implementer can act on.
+### Step 7: Produce the ownership brief
+End with a short recommendation an implementer or reviewer can act on.
 
 Use this format:
 ```markdown
-State categories:
+Ownership packets:
 - Local UI:
-- Shared client state:
-- URL/form state:
+- Shared subtree:
+- URL/form:
 - Server state:
+- Client workflow state:
 
-Recommended ownership:
-- local / lifted / Context / Zustand / Redux Toolkit / Jotai / TanStack Query
+Recommended owners:
+- local / lifted / Context / router / form layer / TanStack Query / Zustand / Redux Toolkit / Jotai
 
-Why this is the smallest viable choice:
+Why this is the smallest viable split:
 - ...
 
 Avoid:
+- ...
+
+Route-out note:
 - ...
 
 Next implementation step:
@@ -226,65 +216,57 @@ Next implementation step:
 
 A good answer names both the chosen owner and the tempting wrong owner.
 
-## Decision heuristics
-- Prefer **fewer owners** only when the data lifecycles genuinely match.
-- Prefer **local state** over shared state until reuse or coordination pressure proves otherwise.
-- Prefer **Context** over a store when the app only needs shared access, not heavy event modeling.
-- Prefer **TanStack Query** for remote data lifecycle problems.
-- Prefer **Redux Toolkit** when explicit structure, tooling, and cross-feature coordination outweigh ceremony cost.
-- Prefer **Zustand** when you need a small-to-medium client store without Redux-style ceremony.
-- Prefer **Jotai** when atom composition is a real fit, not just a novelty.
-
 ## Output format
-Return a concise architecture recommendation with:
-1. state categories identified
-2. chosen owners per category
+Return a concise ownership recommendation with:
+1. packets identified
+2. chosen owners per packet
 3. one-paragraph rationale
 4. explicit anti-patterns to avoid
 5. route-out note if another skill should own the next step
 
 ## Examples
 
-### Example 1: Query cache vs UI store
+### Example 1: Dashboard filters and API data
 **Input:** “Should this dashboard use Zustand or TanStack Query for project data, filters, and modal state?”
 
 **Good output shape:**
 - project data = server state → TanStack Query
-- modal state = shared UI state → local state or Zustand if coordination spans distant branches
-- filters = URL state if shareable/bookmarkable, otherwise local/shared UI state
-- avoid mirroring fetched entities into Zustand unless offline workflow needs it
+- filters = URL state if shareable/bookmarkable
+- modal state = local/shared client state → local state or Zustand only if coordination spans distant branches
+- avoid mirroring fetched entities into Zustand without an offline/workflow reason
 
 ### Example 2: Prop drilling complaint
 **Input:** “Theme and auth are passed through five levels. Do we need Redux?”
 
 **Good output shape:**
-- classify as shared UI/app context, not complex global workflow state
+- classify as shared subtree state, not complex workflow state
 - recommend Context first
-- reject Redux unless broader coordination/debugging complexity is also present
+- reject Redux unless broader coordination/debugging needs are also present
 
-### Example 3: Complex product workflow
-**Input:** “We have optimistic updates, undo, cross-page drafts, and complicated workflow transitions.”
+### Example 3: Cross-page editing flow
+**Input:** “We have optimistic updates, undo, cross-page drafts, and complex workflow transitions. Which state approach fits?”
 
 **Good output shape:**
 - split server state from client workflow state
-- use TanStack Query for remote entities/invalidation
-- evaluate Zustand vs Redux Toolkit based on workflow coupling, devtools needs, and event-model clarity
+- use TanStack Query or router-native data ownership for remote entities/invalidation
+- compare Zustand vs Redux Toolkit based on workflow coupling, auditability, and event-model clarity
+- mention explicit state-machine modeling if transitions/guards dominate
 
 ## Best practices
-1. Classify the state category before comparing libraries.
+1. Classify the ownership packet before comparing libraries.
 2. Keep server-state caching out of generic client stores unless there is a strong reason.
-3. Use the smallest viable owner, not the most famous tool.
-4. Name mixed architectures explicitly instead of pretending one store should own everything.
-5. Treat “prop drilling” as a symptom, not a library requirement.
-6. Prefer Redux Toolkit over legacy Redux-core guidance when structured Redux is truly needed.
+3. Prefer URL/form ownership when navigation or submission lifecycle is the real product surface.
+4. Use the smallest viable owner, not the most famous tool.
+5. Name mixed architectures explicitly instead of pretending one store should own everything.
+6. Treat prop drilling as a symptom, not a library requirement.
 7. End with a brief the implementer can act on immediately.
 
 ## References
-- [React — Managing State](https://react.dev/learn/managing-state)
-- [React — Choosing the State Structure](https://react.dev/learn/choosing-the-state-structure)
 - [React — Sharing State Between Components](https://react.dev/learn/sharing-state-between-components)
-- [Redux — Getting Started / Should You Use Redux?](https://redux.js.org/introduction/getting-started)
+- [React — Context](https://react.dev/learn/passing-data-deeply-with-context)
+- [Redux FAQ — Organizing State](https://redux.js.org/faq/organizing-state)
 - [Redux — Why Redux Toolkit is How To Use Redux Today](https://redux.js.org/introduction/why-rtk-is-redux-today)
-- [TanStack Query React Overview](https://tanstack.com/query/latest/docs/framework/react/overview)
-- [Jotai](https://jotai.org/)
-- [TkDodo — React Query as a State Manager](https://tkdodo.eu/blog/react-query-as-a-state-manager)
+- [TanStack Query — Does this replace client state managers?](https://tanstack.com/query/latest/docs/framework/react/guides/does-this-replace-client-state)
+- [React Router — State Management](https://reactrouter.com/explanation/state-management)
+- [Zustand](https://github.com/pmndrs/zustand)
+- [Jotai](https://jotai.org/docs/basics/comparison)

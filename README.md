@@ -281,7 +281,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `react-grab` | Browser element context capture — point at UI element, copy React component name, file path, HTML to clipboard for AI agents | All |
 | `vercel-react-best-practices` | Compatibility alias for `react-best-practices` when legacy tooling or exact-name workflows still expect the Vercel variant | Claude · Gemini · Codex |
 | `responsive-design` | Mobile-first, container-aware layout adaptation plus overflow/reflow verification guidance | All |
-| `state-management` | React state-boundary decisions across Context, Zustand, Redux Toolkit, Jotai, and TanStack Query | All |
+| `state-management` | React/fullstack ownership-packet decisions across local, Context, URL/form, client-store, and server-state/router data layers | All |
 | `ui-component-patterns` | Reusable primitive / variant / slot API design for shared frontend components | All |
 | `web-accessibility` | Accessibility audit/remediation plus manual-vs-automated verification guidance | All |
 | `web-design-guidelines` | Broad web UI audit for hierarchy, clarity, consistency, states, responsiveness basics, and accessibility basics | All |

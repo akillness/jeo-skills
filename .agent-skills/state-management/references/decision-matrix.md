@@ -1,15 +1,16 @@
 # State Management Decision Matrix
 
-Use this matrix after classifying the state type.
+Use this matrix after classifying the ownership packet.
 
-| State category | Default owner | Escalate when | Typical anti-pattern |
+| Ownership packet | Default owner | Escalate when | Typical anti-pattern |
 |---|---|---|---|
-| Local UI state | `useState` / `useReducer` | multiple distant consumers need it or state survives route changes | putting every toggle and input into a global store |
-| Shared UI state | lift state / Context | write frequency, cross-page coordination, or event complexity outgrow Context | introducing Redux/Zustand before proving Context is insufficient |
-| URL/navigation state | router/search params | deep-linkability or browser back/forward matters | hiding shareable filters/tabs only inside a store |
-| Form state | form library or local reducer | complex validation / async submission lifecycle needs dedicated handling | storing touched/errors/submission status in the global app store |
-| Server state | TanStack Query or equivalent query cache | offline drafts or workflow staging require a separate client layer too | mirroring the full server cache into Zustand/Redux just for one-store aesthetics |
-| Long-lived client workflow state | Zustand or Redux Toolkit | auditability, event modeling, or cross-feature coupling grows | forcing complex workflow state into Context with ad hoc setters |
+| Local UI state | `useState` / `useReducer` / lifted state | multiple distant consumers need it or the state survives feature boundaries | putting every toggle and inline input into a global store |
+| Shared subtree state | lift state / Context | write frequency, cross-page coordination, or event complexity outgrow Context | jumping to Redux/Zustand before proving Context is insufficient |
+| URL/navigation state | router/search params/session-backed route state | deep-linkability, back/forward behavior, or framework-native data ownership matters | hiding shareable filters/tabs only inside a client store |
+| Form state | form library or local reducer | validation, async submission, or dirty/touched lifecycle becomes non-trivial | storing touched/errors/submission status in the app-wide store |
+| Server state | TanStack Query or router-native data/cache layer | offline drafts or long-lived client workflow staging require a separate client layer too | mirroring the full remote cache into Zustand/Redux for one-store aesthetics |
+| Client workflow state | Zustand or Redux Toolkit | auditability, event modeling, transition complexity, or cross-feature coupling grows | forcing long-lived workflow state into Context with ad hoc setters |
+| Explicit workflow / state machine | state-machine layer plus the relevant client/server owners | guards, transitions, retries, and multi-step flows dominate the reasoning | pretending a complex state machine is just another blob in one store |
 
 ## Quick chooser
 
@@ -36,13 +37,20 @@ Use this matrix after classifying the state type.
 - different state units evolve semi-independently
 - the team can maintain discipline around atom boundaries
 
+### Router-native data/state is enough when
+- the framework already owns loaders/actions/search params/sessions cleanly
+- the main value is deep-linkability or route-driven revalidation
+- adding a separate cache/store would duplicate what the router already knows
+
 ## Mixed-mode defaults
 - Dashboard: URL state + TanStack Query + local UI state
 - Authenticated SaaS app: Context for auth/theme + TanStack Query for data + optional Zustand for cross-panel coordination
 - Complex product workflow: TanStack Query for remote entities + Redux Toolkit or Zustand for client workflow state
+- Search/results app: router/search params + route data layer + local form state
 
 ## Red flags
 - “Everything goes in one store” with no lifecycle distinction
 - fetched API data duplicated into a second store without a clear reason
 - Context used for high-churn complex workflow state just because it is dependency-free
-- Redux chosen from habit even though the real issue is only prop drilling
+- Redux chosen from habit when the real issue is only prop drilling
+- URL/search-param state hidden in memory even though shareability and back/forward matter

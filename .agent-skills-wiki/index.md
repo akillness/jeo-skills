@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 111
+> Last updated: 2026-04-18 | Total pages: 112
 
 ## Entities
 
@@ -99,6 +99,7 @@
 - [[ralph-structural-hardening-2026-04-18]] — Why the best bounded next core-orchestration improvement was shrinking `ralph` into a cleaner spec-first method anchor with runtime-boundary references and corrected Codex guidance instead of adding another persistent-loop wrapper.
 - [[skill-standardization-structural-hardening-2026-04-17]] — Why the best bounded next maintenance-layer improvement was shrinking `skill-standardization` into a truthful repo-root router with derived-surface sync instead of adding another validation/meta wrapper.
 - [[state-management-modernization-2026-04-13]] — Why the best bounded frontend architecture improvement was rewriting `state-management` into a decision-first state-boundary anchor instead of leaving it as a generic library-tour skill.
+- [[state-management-structural-hardening-2026-04-18]] — Why the best bounded frontend follow-up was shrinking `state-management` into an ownership-packet router with router-native data guidance and stronger route-outs instead of adding another React state wrapper.
 - [[ui-component-patterns-modernization-2026-04-13]] — Why the best bounded frontend reusable-component improvement was rewriting `ui-component-patterns` into a reusable primitive / variant / slot API anchor instead of modernizing `responsive-design` first.
 - [[responsive-design-modernization-2026-04-13]] — Why the best bounded next frontend modernization was rewriting `responsive-design` into a mobile-first, container-aware layout adaptation + verification anchor.
 - [[web-accessibility-modernization-2026-04-13]] — Why the best bounded frontend accessibility improvement was rewriting `web-accessibility` into an accessibility remediation + verification anchor instead of leaving it as a generic WCAG/example dump.
