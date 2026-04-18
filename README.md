@@ -74,6 +74,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
+| **web-accessibility: routing-first structural hardening** | Tightened `web-accessibility` into a smaller routing-first remediation anchor. It now starts from one primary accessibility packet (`semantics-structure`, `keyboard-focus`, `labels-announcements`, `visual-perception-reflow`, `media-alternatives`, or `routed-navigation-feedback`), adds `references/intake-packets-and-route-outs.md`, expands `evals/evals.json` with routed-app and responsive-boundary cases, and syncs `SKILL.toon` / `skills.toon` / `skills.json` plus README/setup wording so discovery surfaces stop drifting back to a generic WCAG/ARIA tutorial. |
 | **marketing-automation: structural hardening** | Tightened `marketing-automation` into a broader marketing front door that first chooses one operating mode (`launch-orchestration`, `conversion-surface`, `lifecycle-retention`, `acquisition-content`, or `measurement-experiment`), then one primary lane and one handoff packet instead of dumping channel soup. Added `references/operating-modes-and-route-outs.md`, refreshed `evals/evals.json`, synced `SKILL.toon` / manifest wording, and sharpened route-outs to `steam-store-launch-ops` and `task-planning`. |
 | **sprint-retrospective: structural hardening** | Tightened `sprint-retrospective` into a routing-first PM anchor for sprint retros, milestone postmortems, remote/hybrid facilitation, and dead-action-item recovery across software, product/ops, marketing/GTM, and game-delivery work. The front door now picks one retrospective mode, reviews prior commitments before new actions, keeps action counts brutally small, routes planning/sizing/daily-sync work outward, and adds `references/action-review-and-packet-shapes.md`, refreshed `evals/evals.json`, and synced compact/manifest discovery wording. |
 | **autoresearch: routing-first structural hardening** | Tightened `autoresearch` into a smaller Karpathy ML search front door. It now chooses one mode (`setup readiness`, `program.md` authoring, bounded run loop, results interpretation, or constrained-hardware adaptation), keeps the immutable `prepare.py` / 300-second / `val_bpb` contract explicit, adds `references/operating-modes-and-route-outs.md`, refreshes `evals/evals.json`, and sharpens route-outs to `skill-autoresearch` plus app-level eval / observability tools instead of acting like a giant end-to-end explainer. |
@@ -285,7 +286,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `responsive-design` | Mobile-first, container-aware layout adaptation plus overflow/reflow verification guidance | All |
 | `state-management` | React/fullstack ownership-packet decisions across local, Context, URL/form, client-store, and server-state/router data layers | All |
 | `ui-component-patterns` | Reusable primitive / variant / slot API design for shared frontend components | All |
-| `web-accessibility` | Accessibility audit/remediation plus manual-vs-automated verification guidance | All |
+| `web-accessibility` | Routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback | All |
 | `web-design-guidelines` | Broad web UI audit for hierarchy, clarity, consistency, states, responsiveness basics, and accessibility basics | All |
 
 ### 🔍 Code Quality (5)

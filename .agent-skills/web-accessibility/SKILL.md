@@ -1,241 +1,178 @@
 ---
 name: web-accessibility
 description: >
-  Diagnose and remediate web accessibility issues across semantic HTML, keyboard
-  support, focus management, labels, ARIA, contrast, motion, and manual-vs-
-  automated verification. Use when the user needs an accessibility audit,
-  accessibility remediation plan, WCAG-oriented implementation guidance, or help
-  deciding what to test manually after tools like axe or Lighthouse. Triggers on:
-  a11y, accessibility audit, keyboard trap, focus return, screen reader issue,
-  aria-label, semantic HTML, color contrast, WCAG, accessible modal, accessible
-  form, and what manual accessibility checks are still required.
+  Routing-first skill for web accessibility remediation and verification. Use when
+  the main job is classifying which accessibility surface is failing — semantics,
+  keyboard/focus, labels/announcements, visual perception/reflow, media
+  alternatives, or routed-app navigation feedback — and turning vague audit,
+  WCAG, axe/Lighthouse, or "make this accessible" requests into one concrete
+  remediation packet. Route broad UI critique to `web-design-guidelines`,
+  component API architecture to `ui-component-patterns`, responsive layout
+  strategy to `responsive-design`, and system governance to `design-system`.
 allowed-tools: Read Write Bash Grep Glob
 compatibility: >
-  Best for frontend and fullstack web work where the main problem is
-  accessibility remediation or verification. Not for broad UI polish reviews,
-  pure component API architecture, or viewport-only responsive layout work.
+  Best for frontend and fullstack web work where the primary task is
+  accessibility remediation or manual-vs-automated verification. Not for broad
+  UI polish reviews, reusable component API architecture, or viewport-first
+  layout strategy as the main owner.
 license: MIT
 metadata:
   tags: accessibility, a11y, wcag, aria, keyboard-navigation, focus-management, screen-reader, frontend
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.0"
+  version: "2.1.0"
+  modernization: 2026-04-13
+  hardening: 2026-04-18
   source: akillness/oh-my-skills
 ---
 
 # Web Accessibility
 
-Use this skill when the main question is **"what accessibility issue is present, how do we fix it, and what still needs manual verification beyond automated scans?"**
+Use this skill when the job is to **name the failing accessibility surface, fix it at the right layer, and leave behind a short remediation + verification packet**.
 
-The job is not to dump generic WCAG prose or a giant widget cookbook.
-The job is to:
-1. identify the accessibility failure mode,
-2. separate automated findings from manual/assistive-technology follow-up,
-3. fix semantics, labeling, focus, keyboard, feedback, and media behavior at the right layer,
-4. route adjacent design-review or component-architecture work to the right neighboring skill,
-5. leave behind a short remediation and verification packet.
+The job is not to dump generic WCAG prose, paste raw scanner output, or absorb every neighboring frontend concern.
 
-Read [references/audit-remediation-checklist.md](references/audit-remediation-checklist.md) before handling a broad audit or release-critical accessibility pass.
-Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `web-accessibility`, `web-design-guidelines`, `ui-component-patterns`, `responsive-design`, or `design-system` should own the next step.
+This skill should:
+1. classify the failing accessibility surface,
+2. separate automated findings from manual or assistive-technology follow-up,
+3. choose the smallest credible remediation packet,
+4. keep routed-app feedback and focus behavior explicit,
+5. route broader design/layout/component-governance work honestly.
+
+Read these support docs first:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/audit-remediation-checklist.md](references/audit-remediation-checklist.md)
+- [references/handoff-boundaries.md](references/handoff-boundaries.md)
 
 ## When to use this skill
-- Audit a web flow, page, or component for accessibility issues and decide what to test beyond automated tooling
-- Fix keyboard traps, missing focus return, invisible focus states, or broken tab order
-- Repair labels, instructions, error messages, landmarks, headings, live regions, and form semantics
-- Choose semantic HTML versus ARIA and remove unnecessary role-heavy implementations
-- Review accessibility behavior for modals, menus, tabs, accordions, toasts, dialogs, carousels, and forms
-- Turn vague requests like “make this accessible” into a concrete remediation + verification plan
-- Prepare an accessibility check packet for implementation, QA, or release review
+- A team says “make this accessible” and the missing accessibility surface is still unclear
+- axe, Lighthouse, Accessibility Insights, Pa11y, QA notes, or user reports need to be turned into one remediation plan instead of a raw finding dump
+- You need to decide whether the main issue is semantics, keyboard/focus, labels/announcements, reflow/contrast/motion, media alternatives, or routed-app navigation feedback
+- A modal, form, nav, menu, table, dashboard, or routed flow needs manual-vs-automated verification guidance before release
+- Screen-reader, keyboard-only, or zoom/reflow issues are suspected, but ownership and next checks are unclear
 
 ## When not to use this skill
-- **The main task is broad UI polish, copy hierarchy, spacing, consistency, or multi-rule design review** → use `web-design-guidelines`
-- **The main task is reusable primitive/component API design, slot/variant structure, or controlled-vs-uncontrolled component architecture** → use `ui-component-patterns` or `design-system`
-- **The main task is viewport adaptation, mobile layout behavior, breakpoint selection, or responsive media sizing** → use `responsive-design`
-- **The main task is general React performance or rendering behavior** → use `react-best-practices`
-- **The task is only to run one tool and paste raw findings with no remediation judgment**; in that case run the tool directly, then return here to interpret and prioritize
+- **The main task is broad UI polish, heuristic review, hierarchy, or interface consistency** → `web-design-guidelines`
+- **The main task is reusable primitive / slot / variant API design or component-family ownership** → `ui-component-patterns`
+- **The main task is viewport adaptation, breakpoint strategy, container-query planning, or layout overflow control** → `responsive-design`
+- **The main task is token governance, contribution rules, or system-wide frontend standards** → `design-system`
+- **The task is only to run one tool and paste raw results**; run the tool directly, then return here to prioritize remediation and manual follow-up
 
 ## Instructions
 
-### Step 1: Frame the accessibility surface
-Before suggesting fixes, classify what kind of accessibility surface is failing.
+### Step 1: Frame the accessibility job before naming fixes
+Capture the minimum packet first.
 
-Use one or more of these buckets:
-- **Structure and semantics** — landmarks, headings, lists, tables, button/link semantics, form labels
-- **Keyboard and focus** — tab order, focus visibility, focus trap, focus return, roving tabindex, escape behavior
-- **Name / role / value** — labels, accessible names, state announcements, ARIA relationships
-- **Content and feedback** — error text, instructions, validation timing, live regions, status updates
-- **Visual perception** — color contrast, reduced motion, visible states, zoom/reflow side effects
-- **Media and alternatives** — alt text, captions, transcripts, decorative media handling
-
-If multiple buckets are involved, list them explicitly instead of treating the whole issue as a single “a11y bug.”
-
-Quick frame:
-```markdown
-Accessibility surfaces:
-- Keyboard and focus: modal traps focus but does not restore it on close
-- Name / role / value: icon-only close button has no accessible name
-- Content and feedback: form validation errors are not announced
+```yaml
+accessibility_intake:
+  surface: page | routed-flow | modal | form | nav | menu | table | dashboard | component-family | mixed | unknown
+  workflow_type: audit-review | remediation-pass | release-readiness | regression-follow-up | user-reported-bug | design-system-follow-up
+  signal_source: axe | lighthouse | accessibility-insights | pa11y | manual-qa | screen-reader-report | user-feedback | mixed | unknown
+  primary_surface: semantics | keyboard-focus | labels-announcements | visual-perception-reflow | media-alternatives | routed-navigation-feedback | mixed | unknown
+  severity: blocker | major | medium | low | unknown
+  ownership: app-team | frontend-platform | design-system | qa-accessibility | shared | unknown
 ```
 
-### Step 2: Separate automated findings from manual follow-up
-Do not pretend an automated scan is the full answer.
+Rule: do **not** start with “add ARIA,” “run axe again,” or “quote WCAG 2.1.”
+First label the failing accessibility surface.
 
-Use this split:
-- **Automated-friendly checks** — missing labels, basic ARIA misuse, contrast on simple cases, duplicate IDs, landmark/heading presence
-- **Manual checks required** — logical tab order, focus visibility, keyboard trap behavior, screen-reader announcement quality, alternative-text usefulness, content clarity, timing/motion comfort, realistic task completion
-- **Assistive-technology follow-up** — when a flow is critical, dynamic, widget-heavy, or already known to confuse screen-reader users
+### Step 2: Choose exactly one primary remediation packet
+Use the router in [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-Good framing:
-```markdown
-Automated scan can confirm:
-- missing form labels
-- icon button missing accessible name
-- color contrast failures on solid backgrounds
+Primary packets:
+1. `semantics-structure`
+2. `keyboard-focus`
+3. `labels-announcements`
+4. `visual-perception-reflow`
+5. `media-alternatives`
+6. `routed-navigation-feedback`
 
-Manual verification still required:
-- opening the modal moves focus to the right element
-- Escape closes it and focus returns logically
-- screen reader announces the dialog title and error summary
-```
+Pick the **highest-risk user-facing failure** as primary.
+List everything else as follow-up, not as equal co-owners.
 
-If the user mentions axe, Lighthouse, Pa11y, Accessibility Insights, or another scanner, treat that as the **start** of the workflow, not the entire workflow.
+### Step 3: Keep the invariants visible
+These rules survive every answer:
+- automated tools accelerate discovery, but they do not prove accessibility completeness
+- native HTML semantics beat ARIA patching when native controls already solve the problem
+- keyboard/focus failures in interactive flows usually outrank cosmetic cleanups
+- routed apps need explicit focus and announcement decisions because browser navigation cues disappear
+- labels, instructions, errors, and async status text are part of task completion, not polish
+- every remediation recommendation needs a matching manual verification step
 
-### Step 3: Prefer semantic HTML before ARIA
-If native HTML already solves the problem, use it first.
+### Step 4: Build the accessibility remediation packet
+Return this structure:
 
-Common rules:
-- use `<button>` for button behavior, not clickable `<div>` or `<span>`
-- use real `<label>` relationships for inputs before adding ARIA labels everywhere
-- use `<nav>`, `<main>`, `<header>`, `<footer>`, `<table>`, `<th>`, and headings correctly before adding roles
-- use ARIA to express missing semantics or state only when native HTML cannot carry them alone
-
-Ask these questions:
-1. Is this element interactive?
-2. Does native HTML already provide the right role and keyboard behavior?
-3. If ARIA is added, does it clarify state, relationship, or announcement rather than patching bad markup?
-
-Bad pattern:
-```html
-<div role="button" tabindex="0" onclick="save()">Save</div>
-```
-
-Better pattern:
-```html
-<button type="button" onclick="save()">Save</button>
-```
-
-### Step 4: Fix keyboard and focus behavior first for interactive flows
-When users cannot operate the UI with a keyboard, that is usually a priority issue.
-
-Check:
-- every interactive control is reachable without a mouse
-- tab order follows visual/task logic
-- focus state is visible and not removed without replacement
-- opening overlays places focus in the right place
-- closing overlays returns focus logically
-- composite widgets use the correct arrow-key / escape / enter / space behavior
-- trapped focus only exists where it should, such as an active modal dialog
-
-Typical failure → fix mapping:
-- **keyboard trap with no exit** → ensure Escape and close controls work, and restore focus to the invoking control
-- **focus disappears on route or dialog close** → move focus to main content, heading, or invoker intentionally
-- **custom widget uses click only** → add native semantics or implement full keyboard interaction, not partial `tabindex` hacks
-- **`outline: none` with no replacement** → restore visible `:focus-visible` styling
-
-### Step 5: Repair names, labels, instructions, and announcements
-Many accessibility failures are not about widgets being absent; they are about meaning being unclear.
-
-Audit:
-- icon-only buttons need an accessible name
-- form fields need labels and useful instructions
-- errors should be tied to fields and surfaced in plain language
-- dynamic status updates should be announced appropriately
-- helper text, required state, and validation timing should make sense without vision alone
-
-Useful fixes:
-- `aria-label` only when visible text is not available and no better labeling relationship exists
-- `aria-describedby` for hint/error text that should be read with a field
-- `aria-live="polite"` for non-blocking async updates such as save confirmations or validation messages
-- explicit error summary + focus management on submit when multiple fields fail
-
-Avoid using ARIA to mask unclear copy. Rewrite the user-facing text when that is the real issue.
-
-### Step 6: Handle common component families with the right remediation lens
-Use the failure mode, not the component name alone, to choose the fix.
-
-#### Forms
-Prioritize labels, hints, required-state communication, inline error clarity, and error-summary focus.
-
-#### Modals / dialogs
-Prioritize initial focus, focus trap only while open, escape/close behavior, background inertness, and logical focus return.
-
-#### Menus / listboxes / tabs / accordions
-Prioritize correct roles only when needed, arrow-key behavior, selected-state announcement, and avoiding over-complex custom widgets when simpler native controls would work.
-
-#### Toasts / async validation / status banners
-Prioritize timely announcement without hijacking focus unnecessarily.
-
-#### Tables / data-heavy views
-Prioritize header association, caption/summary clarity where needed, sortable-state announcement, and keyboard access to interactive cells.
-
-### Step 7: Route adjacent work correctly
-This skill owns accessibility remediation and verification, not every adjacent frontend concern.
-
-Typical handoffs:
-- **`web-design-guidelines`** — broader UI/design/polish/compliance review across multiple rule families, not just accessibility
-- **`ui-component-patterns`** — reusable primitive APIs, composition, slot/variant design, controlled/uncontrolled boundaries
-- **`design-system`** — system-level token/pattern/primitive decisions before individual accessibility fixes
-- **`responsive-design`** — breakpoint and viewport adaptation when the main bug is layout behavior rather than accessibility semantics
-- **`react-best-practices`** — rendering/performance/hydration issues that only incidentally touch accessibility
-
-If the user asks “is this accessible and how do we fix it?”, stay here.
-If the user asks “how should our button API be designed for all variants?” route to `ui-component-patterns`.
-If the user asks “review this UI against broader design rules and product polish,” route to `web-design-guidelines`.
-
-### Step 8: Produce the remediation + verification packet
-End with a concise artifact someone can act on.
-
-Preferred format:
 ```markdown
 # Accessibility Remediation Packet
 
-## Surface
-- Flow/component:
-- Accessibility buckets:
-- Severity / user impact:
+## Scope
+- Surface:
+- Workflow type:
+- Primary packet:
+- Confidence: high | medium | low
 
-## Findings
+## Current signal
+- Tool or report source:
+- What is already known:
+- What still needs direct verification:
+
+## Highest-risk gaps
 1. ...
 2. ...
 3. ...
 
-## Recommended fixes
-- Semantic / markup:
-- Keyboard / focus:
-- Labels / announcements:
-- Visual / motion / contrast:
+## Recommended first slice
+1. ...
+2. ...
+3. ...
 
-## Verification
-- Automated:
-- Manual keyboard:
+## Verification plan
+- Automated re-check:
+- Manual keyboard / focus:
 - Manual screen-reader / AT:
-- Out of scope for now:
+- Visual / zoom / motion / reflow:
 
-## Route-outs
-- `web-design-guidelines` / `ui-component-patterns` / `responsive-design` / other
+## Ownership and route-outs
+- Primary owner:
+- Adjacent skills / teams:
 ```
 
-If the right answer is “the automated tool is correct, but the real next step is manual focus and screen-reader verification,” say that explicitly.
+### Step 5: Use the packet, not a giant checklist
+Pull the packet from [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-## Output format
-Always return an **accessibility remediation packet**, **accessibility audit summary**, or **manual-vs-automated verification plan**.
+Packet rules:
+- `semantics-structure` → landmarks, headings, lists, tables, buttons/links, form markup, native-first fixes
+- `keyboard-focus` → tab order, visible focus, trap/escape behavior, initial focus, focus return, composite widget behavior
+- `labels-announcements` → accessible names, helper/error relationships, live regions, status/error messaging, required-state clarity
+- `visual-perception-reflow` → contrast, reduced motion, zoom, reflow, target visibility, state visibility
+- `media-alternatives` → alt text, decorative-vs-informative imagery, captions, transcripts, fallback descriptions
+- `routed-navigation-feedback` → page title / heading announcement, route-change focus strategy, SPA/app-router cues, async load state announcements
 
-Required qualities:
-- classify the failing accessibility surface
-- distinguish automated findings from manual or AT follow-up
-- prefer semantic HTML before ARIA-heavy fixes
-- prioritize keyboard/focus issues for interactive flows
-- tie labels, instructions, and announcements to real user tasks
-- route broader design review or component architecture to the correct neighboring skill
+### Step 6: Separate automated findings from manual proof
+Use this split in every serious answer:
+- **Automated-friendly** — missing labels, duplicate IDs, invalid ARIA, simple contrast failures, landmark/heading gaps
+- **Manual keyboard/focus** — tab sequence, visible focus, trap behavior, initial focus, focus return, menu/listbox/dialog interaction
+- **Manual AT / content quality** — announcement usefulness, alt-text quality, label clarity, route-change comprehension, async feedback quality
+
+If the request starts from a scanner, say explicitly that the scanner is the **input artifact**, not the finished answer.
+
+### Step 7: Route adjacent work explicitly
+Use these route-outs when the problem crosses boundaries:
+
+| If the real job is... | Route to... |
+|---|---|
+| broad UI/design review, hierarchy, polish, or guideline compliance | `web-design-guidelines` |
+| reusable component API / primitive ownership / slot-variant design | `ui-component-patterns` |
+| viewport/container layout strategy or breakpoint planning | `responsive-design` |
+| token governance or system-wide frontend standards | `design-system` |
+| React/Next performance or hydration behavior | `react-best-practices` |
+
+## Output expectations
+A strong answer from this skill should:
+1. identify the **primary failing accessibility surface**,
+2. recommend one bounded remediation packet,
+3. name the **manual verification still required**,
+4. avoid equating a scanner pass with completion,
+5. route broader frontend ownership questions outward instead of absorbing them.
 
 ## Examples
 
@@ -243,48 +180,52 @@ Required qualities:
 **Input**
 > Audit this checkout modal for accessibility issues and tell me what to test manually after axe.
 
-**Output sketch**
-- Surface: keyboard/focus + labels/announcements
-- Findings:
-  1. close button missing accessible name
-  2. focus trap exists but focus does not return to the checkout trigger
-  3. coupon validation message is not announced
-- Manual checks:
-  - tab sequence stays inside dialog only while open
-  - Escape closes dialog
-  - screen reader announces title + error text
-- Route-out: none unless broader visual-polish review is also requested
+**Output direction**
+- choose `keyboard-focus` or `labels-announcements`
+- treat axe as the input artifact, not the whole workflow
+- verify initial focus, trap behavior, focus return, and announcement quality
+- keep broader visual-polish critique out unless it materially affects accessibility
 
-### Example 2: component-boundary confusion
+### Example 2: routed app navigation confusion
+**Input**
+> Screen-reader users say our React app changes routes but the new page is not announced and focus stays on the old nav link.
+
+**Output direction**
+- choose `routed-navigation-feedback`
+- classify title/heading announcement plus focus-reset strategy
+- include manual AT verification after the fix
+- avoid turning the task into generic routing architecture work
+
+### Example 3: component-boundary confusion
 **Input**
 > Our button primitive API is messy and some variants are not accessible. Is this web-accessibility or ui-component-patterns?
 
-**Output sketch**
-- Stay in `web-accessibility` for missing names, focus states, and disabled/loading announcements
-- Route to `ui-component-patterns` for variant API design, slot structure, and reusable primitive architecture
-- If both matter, produce a split plan instead of forcing one skill to own everything
+**Output direction**
+- keep accessible-name, focus-state, and disabled/loading announcement fixes in `web-accessibility`
+- route primitive API / variant ownership to `ui-component-patterns`
+- split the plan instead of forcing one skill to own everything
 
-### Example 3: manual checks after Lighthouse
+### Example 4: manual checks after Lighthouse
 **Input**
 > Lighthouse says contrast is okay now. What should I still test manually?
 
-**Output sketch**
-- Verify keyboard order and visible focus across the user journey
-- Verify modal open/close and focus return behavior
-- Verify screen-reader announcement quality for status/error updates
-- Verify zoom/reflow and reduced-motion behavior where relevant
+**Output direction**
+- treat this as verification planning, not score celebration
+- verify keyboard order, focus visibility, routed-flow cues, and screen-reader announcement quality where relevant
+- include zoom/reflow and reduced-motion checks when the interface depends on them
 
 ## Best practices
-1. Start with the user task, not the rule number.
+1. Start with the user task and failing surface, not the rule number.
 2. Treat automated tools as accelerators, not as proof of accessibility completeness.
-3. Prefer native HTML semantics before ARIA patches.
-4. Keep focus behavior intentional for route changes, overlays, and async validation.
-5. Separate remediation work from broader design-review or component-API architecture work.
+3. Prefer native HTML semantics before ARIA-heavy patches.
+4. Keep focus behavior intentional for overlays, route changes, and async validation.
+5. Separate remediation packets from broader design-review or component-architecture work.
 6. When unsure, name the manual verification still required instead of pretending the scan is enough.
 
 ## References
 - [W3C: Evaluating Web Accessibility Overview](https://www.w3.org/WAI/test-evaluate/)
-- [web.dev: Automated accessibility testing](https://web.dev/learn/accessibility/test-automated)
+- [W3C: Easy Checks – A First Review of Web Accessibility](https://www.w3.org/WAI/test-evaluate/preliminary/)
 - [web.dev: Manual accessibility testing](https://web.dev/learn/accessibility/test-manual)
 - [MDN: Keyboard accessible](https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Understanding_WCAG/Keyboard)
-- [A11Y Project checklist](https://www.a11yproject.com/checklist/)
+- [React Router: Accessibility](https://reactrouter.com/how-to/accessibility)
+- [Next.js: Accessibility](https://nextjs.org/docs/architecture/accessibility)

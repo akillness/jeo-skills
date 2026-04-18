@@ -3202,7 +3202,7 @@
     },
     {
       "name": "web-accessibility",
-      "description": "Diagnose and remediate web accessibility issues across semantic HTML, keyboard support, focus management, labels, ARIA, contrast, motion, and manual-vs-automated verification. Use when the user needs an accessibility audit, accessibility remediation plan, WCAG-oriented implementation guidance, or help deciding what to test manually after tools like axe or Lighthouse.",
+      "description": "Routing-first web accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow/contrast/motion, media alternatives, and routed-app navigation feedback. Use when audit, WCAG, axe/Lighthouse, or \"make this accessible\" requests need one concrete remediation packet, and route broad UI critique to `web-design-guidelines`, component API architecture to `ui-component-patterns`, and layout strategy to `responsive-design`.",
       "category": "frontend",
       "path": "web-accessibility/SKILL.md",
       "tags": [
