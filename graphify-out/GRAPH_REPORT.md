@@ -9,40 +9,40 @@
 - Skills with scripts/: 24
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
-- Graph nodes: 476
-- Graph edges: 1198
+- Graph nodes: 385
+- Graph edges: 1110
 
 ## Strongest structural findings
-1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
-2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. `autoresearch` dropped from 333 to 284 lines and now behaves like a routing-first ML-search front door that picks setup, `program.md`, bounded-loop, results-interpretation, or constrained-hardware mode before diving into details.
-4. The search-analysis boundary stays cleaner when `autoresearch` owns the real `program.md` / `train.py` / `prepare.py` / `val_bpb` lane and routes repo-local skill mutation plus app-level eval/observability outward.
+1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index the live catalog.
+2. Support coverage remains effectively complete across the live skill set, so bounded front-door hardening still beats adding adjacent wrapper skills.
+3. `marketing-automation` now fits that hardening pattern better: it shifted from a broad lane catalog toward operating-mode choice (`launch-orchestration`, `conversion-surface`, `lifecycle-retention`, `acquisition-content`, `measurement-experiment`) plus sharper route-outs to `steam-store-launch-ops` and `task-planning`.
+4. The marketing cluster stays cleaner when the canonical front door owns mode + packet choice while `marketing-skills-collection` remains a compatibility alias and game-store launch work stays outside the general lane.
 
 ## Highest-degree nodes
-- debugging: degree 42
-- task-planning: degree 31
-- bmad: degree 28
-- performance-optimization: degree 28
-- code-review: degree 25
+- debugging: degree 36
+- bmad: degree 23
+- task-planning: degree 22
+- vibe-kanban: degree 22
+- code-review: degree 21
 
 ## Oversized front-door watchlist
-- clawteam: 329 lines in SKILL.md
-- scrapling: 319 lines in SKILL.md
-- survey: 309 lines in SKILL.md
-- fabric: 308 lines in SKILL.md
-- task-planning: 294 lines in SKILL.md
-- code-refactoring: 292 lines in SKILL.md
-- langsmith: 290 lines in SKILL.md
-- web-accessibility: 290 lines in SKILL.md
-- jeo: 288 lines in SKILL.md
-- obsidian-cli: 286 lines in SKILL.md
+- clawteam: 330 lines in SKILL.md
+- scrapling: 320 lines in SKILL.md
+- survey: 310 lines in SKILL.md
+- fabric: 309 lines in SKILL.md
+- task-planning: 295 lines in SKILL.md
+- code-refactoring: 293 lines in SKILL.md
+- langsmith: 291 lines in SKILL.md
+- web-accessibility: 291 lines in SKILL.md
+- jeo: 289 lines in SKILL.md
+- obsidian-cli: 287 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new autoresearch-adjacent wrapper is justified: the bounded win was hardening `autoresearch` in place and syncing discovery surfaces.
-- `autoresearch` should stay distinct from `skill-autoresearch`, `langsmith`, and survey/research tooling; it owns Karpathy-style ML training search, not repo-local skill ratcheting, app-level observability, or generic literature scans.
-- Duplicate pressure rises when users describe prompt-eval or app-observability work using the word “autoresearch”; explicit route-outs remain the right fix.
+- No new broad marketing wrapper is justified: the bounded win was hardening `marketing-automation` in place.
+- `marketing-automation` should stay distinct from `task-planning` and `steam-store-launch-ops`; it owns broad marketing mode selection, not milestone slicing or Steam-specific launch operations.
+- Duplicate pressure remains highest when launch planning, lifecycle execution, analytics readout, and game-store work all get pulled into one generic “marketing help” request.
 
 ## Recommended maintenance direction
-- Keep targeting high-degree skills whose route-in logic can be made smaller without weakening their artifact contract.
-- Prefer packet references, eval expansion, and discovery-surface sync over creating another neighboring wrapper.
+- Keep targeting high-degree skills whose front doors still behave like catalogs instead of routing packets.
+- Prefer packet references, eval expansion, and discovery-surface sync over adding neighboring wrappers.
 - Re-run catalog/runtime sync validation whenever compact or README/setup wording changes materially.

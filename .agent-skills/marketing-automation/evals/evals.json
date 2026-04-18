@@ -4,33 +4,43 @@
     {
       "id": 1,
       "prompt": "We are launching a new SaaS workflow next month and need help with messaging, landing page copy, onboarding emails, and how to measure whether it worked. Use marketing-automation.",
-      "expected_output": "A Marketing Routing Brief that chooses one primary lane, returns a single implementation-ready packet, and includes KPI plus measurement logic.",
+      "expected_output": "A Marketing Routing Brief that chooses one primary mode, one primary lane, one implementation-ready packet, and includes KPI plus measurement logic.",
       "assertions": [
         "Output includes the heading 'Marketing Routing Brief'",
-        "Output includes a 'Chosen lane' section with one primary lane",
-        "Output includes a 'Primary KPI' or equivalent explicit KPI field",
-        "Output includes a 'Measurement checklist' section",
-        "Output does not treat Steam/store-page game launch ops as the chosen lane"
+        "Output includes an intake or summary section that names a mode and a primary lane",
+        "Output selects a launch-oriented mode such as launch-orchestration instead of listing many unrelated channels",
+        "Output includes a Measurement handoff section with KPI and leading signal"
       ]
     },
     {
       "id": 2,
-      "prompt": "Our homepage gets traffic but signups are flat. Help with conversion. Use marketing-automation.",
-      "expected_output": "A CRO-oriented routing brief with a measurement-aware experiment packet.",
+      "prompt": "Our pricing page gets traffic, but upgrades are weak. We need help with the page and what to test. Use marketing-automation.",
+      "expected_output": "A conversion-surface marketing brief with a CRO-oriented experiment packet.",
       "assertions": [
-        "Output selects CRO as the primary lane or clearly frames the work as conversion optimization",
+        "Output selects the conversion-surface mode or clearly frames the work as a page/flow conversion problem",
+        "Output selects CRO or clearly frames the lane as conversion optimization",
         "Output includes immediate next steps",
-        "Output includes at least one measurement signal such as conversion rate, CTA clicks, or signup completion"
+        "Output includes at least one conversion-oriented measurement signal such as upgrade rate, CTA clicks, or signup completion"
       ]
     },
     {
       "id": 3,
+      "prompt": "Trial users activate once and disappear. We need onboarding and lifecycle help, plus a sensible KPI. Use marketing-automation.",
+      "expected_output": "A lifecycle-retention brief that chooses one packet and leaves activation/retention measurement guidance.",
+      "assertions": [
+        "Output selects the lifecycle-retention mode or clearly frames the work as onboarding/retention",
+        "Output includes a single packet instead of many unrelated deliverables",
+        "Output includes a KPI and leading signal tied to activation, retention, or repeat usage"
+      ]
+    },
+    {
+      "id": 4,
       "prompt": "We need Steam capsule copy and Next Fest marketing help for our game demo. Use marketing-automation.",
-      "expected_output": "A brief that defers the task toward steam-store-launch-ops instead of absorbing the whole niche workflow.",
+      "expected_output": "A short brief that routes execution toward steam-store-launch-ops instead of absorbing the whole niche workflow.",
       "assertions": [
         "Output references steam-store-launch-ops as the preferred downstream skill or workflow",
-        "Output does not present the task as a normal canonical marketing-automation lane",
-        "Output leaves a short handoff rather than a giant generic marketing plan"
+        "Output does not present the task as a normal canonical marketing-automation packet",
+        "Output leaves a concise handoff rather than a giant generic marketing plan"
       ]
     }
   ]

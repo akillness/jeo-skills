@@ -1,28 +1,29 @@
 N:marketing-automation
-D:Route broad product and growth marketing asks into one KPI-aware brief, one chosen lane, and one implementation-ready packet across CRO, copy, SEO, analytics, pricing, launch, retention, and experiments.
+D:Route broad product and growth marketing asks into one operating mode, one primary lane, and one implementation-ready packet across launch planning, conversion surfaces, lifecycle/retention, acquisition/content, and measurement/experiments.
 G:marketing|growth|cro|copywriting|seo|analytics|pricing|launch|retention|experiments|routing
 F:Claude|ChatGPT|Gemini|Codex
 
 U[5]:
-  Turn a messy marketing request into a structured routing brief
-  Choose one primary lane across CRO, messaging, SEO/content, ads/analytics, or strategy/growth
-  Produce one implementation-ready packet instead of channel soup
-  Add explicit KPI, assumptions, next artifact, and measurement logic
-  Route narrow specialist or game-store launch work outward when needed
+  Turn a messy marketing ask into one clear operating mode and one primary lane
+  Choose one packet instead of channel soup
+  Attach KPI and leading-signal measurement handoff to every packet
+  Route Steam/store-page game launch work to steam-store-launch-ops
+  Route backlog or milestone shaping to task-planning when marketing is not the real bottleneck
 
-S[5]{n,action,details}:
-  1,Normalize,Capture objective primary_kpi audience surface offer constraints and main_question in a lightweight marketing_brief
-  2,ChooseLane,Pick exactly one lane that reduces ambiguity fastest and name any secondary handoff separately
-  3,BuildPacket,Return one routing brief channel-ready brief copy packet measurement packet or launch/growth brief
-  4,AddMeasurement,Include assumptions success thresholds and what to measure after implementation
-  5,RouteOut,Escalate specialist work such as Steam store launch ops instead of absorbing everything into general marketing
+S[6]{n,action,details}:
+  1,Normalize,Capture primary_mode primary_lane objective audience stage surface_or_channel offer measurement_maturity and main_question in a compact marketing_router_profile
+  2,Evidence,Pull the smallest credible brief with bottleneck audience surface constraints and current KPI or proxy
+  3,ChooseMode,Pick exactly one operating mode: launch-orchestration conversion-surface lifecycle-retention acquisition-content or measurement-experiment
+  4,ChoosePacket,Map the mode to one primary lane and one packet that can actually be handed off
+  5,Measure,Include one primary KPI one leading signal one baseline or assumption one success threshold and one next owner
+  6,RouteOut,Escalate game-store launch ops to steam-store-launch-ops and execution/backlog coordination to task-planning when those lanes dominate
 
 R[4]:
-  One primary KPI and one primary lane per packet
-  Prefer explicit assumptions over blocking on missing detail
-  Keep broad routing distinct from narrow specialist execution
-  Always name the next artifact and how success will be measured
+  One primary mode one primary lane and one primary packet per response
+  Prefer explicit assumptions over stalling on missing context
+  Keep general marketing routing distinct from planning and game-store specialists
+  Always leave a measurement handoff with ownership
 
 E[2]{desc,in,out}:
-  "Broad launch ask","We are launching a new SaaS workflow next month and need help with messaging, landing page copy, onboarding emails, and how to measure whether it worked.","Marketing Routing Brief with one primary lane, launch/growth packet, assumptions, secondary handoff, and measurement checklist"
-  "Landing page conversion ask","Our homepage gets traffic but signups are flat. Help with conversion.","Marketing Routing Brief with CRO lane, prioritized decisions, immediate next steps, and experiment/measurement checklist"
+  "Broad launch ask","We are launching a new SaaS workflow next month and need help with messaging, landing page copy, onboarding emails, and how to measure whether it worked.","Marketing Routing Brief with launch-orchestration mode, Strategy and growth lane, one launch packet, and KPI plus leading-signal handoff"
+  "Lifecycle retention ask","Trial users activate once and disappear. We need onboarding and lifecycle help, plus a sensible KPI.","Marketing Routing Brief with lifecycle-retention mode, one chosen lane, one packet, and activation or retention measurement handoff"
