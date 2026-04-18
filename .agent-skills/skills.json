@@ -499,18 +499,18 @@
     },
     {
       "name": "code-refactoring",
-      "description": "Refactor code safely with a behavior-preserving workflow for decomposition, duplication removal, naming cleanup, module splits, and repeated API migrations. Use when the user wants to simplify messy code, shrink an oversized function or component, make a diff more reviewable, or plan a codemod-style cleanup without changing intended behavior.",
+      "description": "Turn a cleanup packet into one behavior-preserving refactor brief. Use when simplifying a messy function or component, freezing behavior before touching fragile legacy code, splitting a cleanup-heavy diff into reviewable slices, or planning a repeated migration / codemod without changing intended behavior.",
       "category": "code-quality",
       "path": "code-refactoring/SKILL.md",
       "tags": [
         "refactoring",
         "code-quality",
-        "DRY",
-        "SOLID",
-        "design-patterns",
-        "clean-code",
-        "simplification",
-        "behavior-preservation"
+        "behavior-preservation",
+        "cleanup",
+        "codemod",
+        "migration",
+        "legacy-code",
+        "technical-debt"
       ],
       "platforms": [
         "Claude",

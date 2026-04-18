@@ -871,3 +871,11 @@
 - Accepted: shrink `web-accessibility` from 290 to 231 lines, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with routed-app feedback and responsive-boundary cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the routing-first accessibility-packet boundary into the wiki
 - Rejected: adding another generic WCAG/accessibility-audit wrapper; letting `web-accessibility` absorb broad UI critique, viewport/layout strategy, or reusable component API design; treating scanner scores as proof without manual verification and AT follow-up
 - Wiki files created/updated: `queries/web-accessibility-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | code-refactoring structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops delivery codebases, marketing automation code paths, and game-programming cleanup work, with the best bounded code-quality follow-up landing on the existing `code-refactoring` skill rather than a new cleanup or codemod wrapper
+- Survey files created under `.survey/code-refactoring-structural-hardening-20260418/`; repo-local wiki and graph evidence plus primary-source retrieval from Martin Fowler, `facebook/jscodeshift`, OpenRewrite, `ast-grep`, and Comby were used because `web_search` / `web_extract` remained unreliable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `code-refactoring` from 292 to 263 lines, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a search-first blast-radius route-out case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the packet-first code-quality boundary into the wiki
+- Rejected: adding another generic technical-debt / cleanup wrapper; letting `code-refactoring` absorb debugging, review judgment, performance bottleneck triage, or pure impact mapping; leaving stale compact discovery surfaces untouched after the front-door rewrite
+- Wiki files created/updated: `concepts/code-quality-cluster.md`, `queries/code-refactoring-structural-hardening-2026-04-18.md`, `index.md`, `log.md`

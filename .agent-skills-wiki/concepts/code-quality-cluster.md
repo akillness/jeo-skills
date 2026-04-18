@@ -42,6 +42,8 @@ The 2026-04-18 `performance-optimization` structural-hardening pass extended the
 
 The 2026-04-18 `code-review` structural-hardening pass applied the same pattern to review judgment: keep one canonical review skill, shrink the front door around explicit review packets and severity, move packet/escalation detail into a focused reference, treat CI bots as evidence inputs rather than the reviewer, and keep repo-admin / CODEOWNERS / merge-queue work outside the core review lane.
 
+The 2026-04-18 `code-refactoring` structural-hardening pass completed the same ratchet for cleanup work: start from the cleanup packet already in hand (local cleanup, fragile legacy area, repeated migration, or diff shaping), make one behavior guardrail explicit, keep one primary refactor mode per run, and sync compact/discovery surfaces so fast skill selection does not regress to stale DRY/SOLID pattern-language.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[backend-api-cluster]]
@@ -50,5 +52,6 @@ The 2026-04-18 `code-review` structural-hardening pass applied the same pattern 
 - [[code-review-modernization-2026-04-13]]
 - [[testing-strategies-modernization-2026-04-13]]
 - [[code-refactoring-modernization-2026-04-14]]
+- [[code-refactoring-structural-hardening-2026-04-18]]
 - [[performance-optimization-modernization-2026-04-14]]
 - [[performance-optimization-structural-hardening-2026-04-18]]

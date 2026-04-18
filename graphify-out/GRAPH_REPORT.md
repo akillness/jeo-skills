@@ -11,12 +11,13 @@
 - Skills missing compact variants: 0
 - Graph nodes: 385
 - Graph edges: 1107
+- Category counts: agent-development=2, backend=5, code-quality=5, core-orchestration=10, creative-media=2, documentation=5, frontend=10, infrastructure=13, marketing=2, planning-review=5, project-management=4, search-analysis=7, uncategorized=7, utilities=12
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
 2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. `presentation-builder` dropped to 233 lines and now reads more clearly as a packet-first deck artifact anchor with explicit last-mile surface selection.
-4. The documentation lane stays healthiest when `presentation-builder` owns deck-mode + packet + handoff selection while `technical-writing`, `user-guide-writing`, `research-paper-writing`, and `marketing-automation` keep adjacent artifacts separate.
+3. `code-refactoring` dropped to 264 lines and now reads more clearly as a packet-first cleanup anchor that starts from the artifact the user already has.
+4. The code-quality lane stays healthiest when `code-refactoring` owns cleanup packets while `debugging`, `code-review`, `testing-strategies`, `performance-optimization`, and `codebase-search` keep diagnosis, judgment, policy, bottleneck analysis, and impact mapping separate.
 
 ## Highest-degree nodes
 - skills.json: degree 89
@@ -26,21 +27,21 @@
 - skills.toon: degree 82
 
 ## Oversized front-door watchlist
-- clawteam: 329 lines in SKILL.md
-- scrapling: 319 lines in SKILL.md
-- survey: 309 lines in SKILL.md
-- task-planning: 294 lines in SKILL.md
-- code-refactoring: 292 lines in SKILL.md
-- langsmith: 290 lines in SKILL.md
-- jeo: 288 lines in SKILL.md
-- obsidian-cli: 286 lines in SKILL.md
-- autoresearch: 284 lines in SKILL.md
-- database-schema-design: 282 lines in SKILL.md
+- clawteam: 330 lines in SKILL.md
+- scrapling: 320 lines in SKILL.md
+- survey: 310 lines in SKILL.md
+- task-planning: 295 lines in SKILL.md
+- langsmith: 291 lines in SKILL.md
+- jeo: 289 lines in SKILL.md
+- obsidian-cli: 287 lines in SKILL.md
+- autoresearch: 285 lines in SKILL.md
+- database-schema-design: 283 lines in SKILL.md
+- task-estimation: 279 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new deck wrapper is justified: the bounded win was tightening `presentation-builder` in place and syncing the discovery surfaces.
-- `presentation-builder` should stay distinct from `technical-writing` (docs/specs), `user-guide-writing` (tutorial/help flows), `research-paper-writing` (manuscripts), and `marketing-automation` (non-deck GTM planning).
-- Duplicate pressure rises when deck requests blur packet choice, source-of-truth handling, and last-mile cleanup into one blob; the packet-first handoff model is the right fix.
+- No new code-quality wrapper is justified: the bounded win was tightening `code-refactoring` in place and syncing the discovery surfaces.
+- `code-refactoring` should stay distinct from `debugging` (diagnosis), `code-review` (review judgment), `testing-strategies` (validation policy), `performance-optimization` (bottleneck-led tuning), and `codebase-search` (impact mapping / symbol inventory).
+- Duplicate pressure rises when cleanup requests blur packet choice, guardrail design, migration tooling, and route-out decisions into one blob; the packet-first refactor model is the right fix.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree or oversized front-door skills whose trigger logic can be made smaller without weakening their output contract.

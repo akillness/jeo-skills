@@ -42,6 +42,16 @@
         "Response mentions routing to code-review",
         "Response distinguishes refactor planning from review judgment"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Before we refactor anything, find every call site and wrapper around this old helper so we can see the blast radius.",
+      "expected_output": "Routes the primary task to codebase-search because the immediate need is symbol inventory / impact mapping rather than a cleanup brief.",
+      "assertions": [
+        "Response routes to codebase-search or explicitly says the task is impact mapping first",
+        "Response does not present a full refactor plan as the primary answer",
+        "Response keeps code-refactoring positioned as the behavior-preserving cleanup lane after the map exists"
+      ]
     }
   ]
 }
