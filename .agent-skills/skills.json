@@ -450,7 +450,7 @@
     },
     {
       "name": "changelog-maintenance",
-      "description": "Maintain release history and release communication across CHANGELOG.md, migration updates, developer/customer release notes, and lightweight game patch notes. Use when the main job is turning shipped changes into a durable changelog or audience-appropriate release summary; routes internal specs/runbooks to technical-writing, API portals to api-documentation, end-user tutorials to user-guide-writing, rollout execution to deployment-automation, and launch messaging to marketing-automation.",
+      "description": "Write and maintain release-history artifacts for shipped changes: CHANGELOG.md updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players; routes internal specs/runbooks to technical-writing, API portals to api-documentation, end-user tutorials to user-guide-writing, rollout execution to deployment-automation, and launch messaging to marketing-automation.",
       "category": "documentation",
       "path": "changelog-maintenance/SKILL.md",
       "tags": [

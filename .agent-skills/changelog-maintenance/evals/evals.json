@@ -33,6 +33,18 @@
         "Output keeps the wording concise and player-facing instead of turning into a long technical dump",
         "Output routes launch campaign or broader marketing work to another skill or separate artifact"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "We shipped a billing overhaul. I need release notes for customers, an obvious heads-up that legacy invoice exports disappear in 30 days, and a short list of downstream docs that must be refreshed. Do not turn this into a full tutorial or rollout runbook.",
+      "expected_output": "Selects release-notes or migration-update with a bounded packet shape, makes the 30-day removal obvious, and routes tutorial / rollout detail to neighboring skills instead of absorbing them.",
+      "assertions": [
+        "Output names a primary mode from changelog | release-notes | migration-update | game-patch-notes",
+        "Output identifies a compact output shape such as summary-plus-links, migration-brief, or sync-packet",
+        "Output explicitly mentions the 30-day removal window or deadline",
+        "Output names downstream sync work or linked-doc follow-ups rather than embedding a full tutorial/runbook",
+        "Output routes tutorial/help or deployment execution work to another skill or separate artifact"
+      ]
     }
   ]
 }

@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/changelog-maintenance/SKILL.md` | A packet-first rewrite will shrink the front door and improve trigger clarity without weakening the release-history boundary. | Rewrote the front door around one primary mode + one smallest output packet, moved packet/channel detail into a new reference, expanded evals, and synced discovery/docs surfaces. | `validate_skill.sh` passed with 0 errors / 0 warnings; JSON validation passed; SKILL length dropped from 292 to 230 lines. | Keep | Transferable documentation-cluster pattern: smaller router, packet reference, stronger route-out pressure. |

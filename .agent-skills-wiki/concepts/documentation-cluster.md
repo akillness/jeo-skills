@@ -36,6 +36,8 @@ The 2026-04-17 `api-documentation`, `technical-writing`, and `user-guide-writing
 
 `user-guide-writing` now fits that same pattern explicitly: it is strongest when it picks one primary page type plus the smallest useful artifact packet (`single-page`, `guide-plus-faq`, `refresh-packet`, or `guide-set`) rather than acting like a giant mixed tutorial/help-center template dump.
 
+`changelog-maintenance` now fits the same hardening pattern too: it is strongest when it chooses one release-writing mode plus one smallest truthful packet (`single-entry`, `summary-plus-links`, `migration-brief`, `patch-note-brief`, or `sync-packet`) instead of acting like a broad semver/changelog template dump with every neighboring doc type folded in.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[backend-api-cluster]]
@@ -46,4 +48,5 @@ The 2026-04-17 `api-documentation`, `technical-writing`, and `user-guide-writing
 - [[api-documentation-modernization-2026-04-13]]
 - [[api-documentation-structural-hardening-2026-04-17]]
 - [[changelog-maintenance-modernization-2026-04-14]]
+- [[changelog-maintenance-structural-hardening-2026-04-18]]
 - [[presentation-builder-modernization-2026-04-15]]

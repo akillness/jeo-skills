@@ -775,3 +775,11 @@
 - Accepted: shrink `git-submodule` from 293 to 208 lines, add `references/mode-packets-and-hosted-constraints.md`, add a GitHub Pages hosted-constraint eval, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording
 - Rejected: adding another Git checkout/auth helper, letting `git-submodule` absorb generic Git cleanup, or treating package delivery as a submodule problem
 - Wiki files created/updated: `queries/git-submodule-structural-hardening-2026-04-18.md`, `concepts/developer-workflow-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | changelog-maintenance structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack release communication, product/customer release notes, marketing-adjacent launch boundaries, and game patch-note workflows, with the best bounded documentation-cluster follow-up landing on the existing `changelog-maintenance` skill rather than a new release-note helper
+- Survey files created under `.survey/changelog-maintenance-structural-hardening-20260418/`; repo-local graph and wiki evidence plus direct primary-source retrieval from Keep a Changelog, GitHub Docs, Changesets, Release Drafter, release-please, LaunchNotes, and Steamworks docs were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `changelog-maintenance` from 292 to 230 lines, add `references/output-packets-and-channel-handoffs.md`, expand eval coverage with a release-notes + migration-window + sync-followups case, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the front door matches the packet-first boundary
+- Rejected: adding another release-note wrapper; re-expanding the front door with more inline templates; folding rollout execution, tutorials, internal migration procedures, or launch messaging into the same skill
+- Wiki files created/updated: `queries/changelog-maintenance-structural-hardening-2026-04-18.md`, `concepts/documentation-cluster.md`, `index.md`, `log.md`
