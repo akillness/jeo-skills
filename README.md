@@ -75,6 +75,7 @@ graph TD
 | Change | Details |
 |--------|---------|
 | **sprint-retrospective: structural hardening** | Tightened `sprint-retrospective` into a routing-first PM anchor for sprint retros, milestone postmortems, remote/hybrid facilitation, and dead-action-item recovery across software, product/ops, marketing/GTM, and game-delivery work. The front door now picks one retrospective mode, reviews prior commitments before new actions, keeps action counts brutally small, routes planning/sizing/daily-sync work outward, and adds `references/action-review-and-packet-shapes.md`, refreshed `evals/evals.json`, and synced compact/manifest discovery wording. |
+| **autoresearch: routing-first structural hardening** | Tightened `autoresearch` into a smaller Karpathy ML search front door. It now chooses one mode (`setup readiness`, `program.md` authoring, bounded run loop, results interpretation, or constrained-hardware adaptation), keeps the immutable `prepare.py` / 300-second / `val_bpb` contract explicit, adds `references/operating-modes-and-route-outs.md`, refreshes `evals/evals.json`, and sharpens route-outs to `skill-autoresearch` plus app-level eval / observability tools instead of acting like a giant end-to-end explainer. |
 
 ## 🆕 What's New in v2026-04-17
 
@@ -337,7 +338,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `autoresearch` | Karpathy autonomous ML search — human-written `program.md`, agent-edited `train.py`, fixed 300s GPU runs, `val_bpb` keep/revert ratchet; routes prompt/skill eval elsewhere | All |
+| `autoresearch` | Karpathy autonomous ML search front door — choose setup / `program.md` / bounded loop / results interpretation / constrained-hardware mode, preserve immutable `prepare.py` + 300s + `val_bpb`, route prompt/skill eval elsewhere | All |
 | `skill-autoresearch` | Repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, and sync support surfaces only after the core skill change is justified | All |
 | `codebase-search` | Evidence-first repo navigation, call-site tracing, and impact analysis | All |
 | `data-analysis` | Decision-first dataset analysis for exports, experiments, telemetry, and KPI explanation | All |

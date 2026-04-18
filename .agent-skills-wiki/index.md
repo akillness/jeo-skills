@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 112
+> Last updated: 2026-04-18 | Total pages: 113
 
 ## Entities
 
@@ -84,6 +84,7 @@
 - [[lmstudio-cli-modernization-2026-04-15]] — Why the best bounded LM Studio improvement was modernizing `lmstudio-cli` into the LM Studio operator anchor instead of adding another generic local-LLM wrapper or leaving it as a thin command list.
 - [[langsmith-hardening-2026-04-16]] — Why the best bounded next search-analysis / AI-ops improvement was modernizing `langsmith` into a mode-selecting trace/eval/review anchor instead of leaving it as a feature tour or splitting it into overlapping wrappers.
 - [[autoresearch-hardening-2026-04-16]] — Why the best bounded follow-up after `skill-autoresearch` was hardening `autoresearch` around the ML-specific `program.md` / `train.py` / `val_bpb` boundary instead of broadening it into generic eval tooling.
+- [[autoresearch-structural-hardening-2026-04-18]] — Why the best bounded next `autoresearch` improvement was shrinking it into a routing-first ML-search front door with explicit operating modes and route-outs instead of keeping a giant explainer or adding another eval wrapper.
 - [[ralphmode-hardening-2026-04-16]] — Why the best bounded next orchestration-platform support upgrade was hardening `ralphmode` around the settings / rules / hooks model and adding eval coverage instead of spawning another permissions wrapper.
 - [[ralph-support-hardening-2026-04-16]] — Why the best bounded next core-orchestration improvement was hardening `ralph` with eval coverage and live self-path cleanup instead of adding another persistent-loop wrapper.
 - [[jeo-structural-hardening-2026-04-16]] — Why the best bounded next improvement for the repo's front-door orchestration skill was shrinking `jeo` into a cleaner router and moving platform/state/troubleshooting detail into packaged references instead of creating another wrapper.

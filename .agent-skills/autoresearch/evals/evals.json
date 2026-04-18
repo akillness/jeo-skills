@@ -3,32 +3,42 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Help me set up Karpathy autoresearch on a 40GB GPU, write program.md, and run an overnight experiment loop.",
-      "expected_output": "The skill activates as a GPU-bound ML experimentation workflow with `program.md`, `train.py`, a fixed 300-second budget, and `val_bpb` keep/revert logic.",
+      "prompt": "Help me set up Karpathy autoresearch on a 40GB GPU, verify the machine, and run the first baseline experiment.",
+      "expected_output": "The skill chooses setup-readiness mode, preserves the immutable harness, and points to concrete setup / hardware / baseline commands instead of dumping every downstream detail at once.",
       "assertions": [
-        "The workflow clearly centers `program.md`, `train.py`, `val_bpb`, and the fixed 300-second budget.",
-        "The workflow includes hardware/setup guidance such as CUDA/VRAM readiness or low-VRAM adaptation.",
-        "The workflow treats `results.tsv` or git ratcheting as part of the core loop."
+        "The workflow clearly identifies setup or readiness as the chosen mode.",
+        "The workflow includes hardware verification or baseline-run commands such as `check-hardware.sh`, `uv sync`, `uv run prepare.py`, or `uv run train.py`.",
+        "The response keeps the immutable 300-second / `prepare.py` / `val_bpb` contract visible."
       ]
     },
     {
       "id": 2,
-      "prompt": "I want to improve a SKILL.md with binary evals and keep-or-revert scoring. Can autoresearch do that?",
-      "expected_output": "The skill should route the request away from `autoresearch` toward `skill-autoresearch` or other eval tooling instead of pretending the ML training skill is the right fit.",
+      "prompt": "My repo runs, but my `program.md` just says 'try improvements'. Help me fix it before tonight's run.",
+      "expected_output": "The skill chooses `program.md` authoring mode, asks for or fills in the baseline/priority/constraints structure, and keeps the loop tied to `train.py` rather than generic eval tooling.",
       "assertions": [
-        "The skill explicitly says this is not the right tool for repo-local `SKILL.md` optimization.",
-        "The skill names `skill-autoresearch` or an equivalent route-out for that neighboring job.",
-        "The skill does not blur prompt/skill evaluation with GPU-bound ML experimentation."
+        "The workflow explicitly selects `program.md` authoring or an equivalent mode.",
+        "The response includes sections such as current baseline, directions to explore, tried-already notes, or constraints.",
+        "The response does not drift into prompt / app observability tooling as the main answer."
       ]
     },
     {
       "id": 3,
-      "prompt": "My autoresearch run on smaller hardware keeps crashing, and I am tempted to change the evaluator halfway through. What should I do?",
-      "expected_output": "The skill should preserve an immutable evaluation harness, recommend low-VRAM adjustments, and keep comparability rules explicit.",
+      "prompt": "My smaller-GPU autoresearch run keeps crashing, and I want to change the evaluator halfway through to get something working.",
+      "expected_output": "The skill keeps the evaluator immutable inside the session, recommends constrained-hardware adaptation, and treats any evaluator change as a new comparison track.",
       "assertions": [
-        "The skill warns against modifying the evaluation harness mid-session.",
-        "The skill recommends hardware-aware adjustments such as reducing MAX_SEQ_LEN or using the hardware reference guidance.",
-        "The skill keeps comparability tied to a fixed harness and does not encourage changing the scoring target mid-run."
+        "The skill warns against modifying `prepare.py`, `TIME_BUDGET`, or the active evaluator mid-session.",
+        "The response recommends hardware-aware adaptation such as lowering `MAX_SEQ_LEN`, adjusting `EVAL_TOKENS` before the session, or using the hardware reference guidance.",
+        "The response frames evaluator changes as a new comparison track rather than part of the current run."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Can autoresearch help me improve this SKILL.md with binary evals and keep-or-revert scoring?",
+      "expected_output": "The skill routes the request away from ML search toward `skill-autoresearch` or adjacent eval tooling instead of pretending this training-loop skill is the right fit.",
+      "assertions": [
+        "The skill explicitly says this is not the right tool for repo-local `SKILL.md` optimization.",
+        "The response names `skill-autoresearch` as the preferred route-out.",
+        "The response preserves the ML-specific `program.md` / `train.py` / `val_bpb` boundary."
       ]
     }
   ]

@@ -799,3 +799,11 @@
 - Accepted: shrink `state-management` from 290 to 273 lines, tighten it around ownership packets and router-native data ownership, expand route-outs to `design-system` / `responsive-design`, add `references/ownership-packets-and-route-outs.md`, expand eval coverage with a responsive-layout near miss, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording
 - Rejected: adding another router-state or global-state wrapper; turning the skill back into a library tour; flattening URL/form/server/client-workflow state into one default store
 - Wiki files created/updated: `queries/state-management-structural-hardening-2026-04-18.md`, `concepts/frontend-skill-canonicalization.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | autoresearch structural hardening
+- Area researched: required cross-domain opportunity scan plus a focused survey of Karpathy-style closed-loop ML experimentation, adjacent eval/observability tooling, and the remaining structural gap in the existing `autoresearch` skill
+- Survey files created under `.survey/autoresearch-structural-hardening-20260418/`; repo-local graph and wiki evidence plus source-backed survey synthesis were used, while web search/extract remained unreliable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `autoresearch` from 333 to 284 lines, rewrite it around five operating modes, add `references/operating-modes-and-route-outs.md`, refresh `evals/evals.json`, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the front door matches the ML-search boundary
+- Rejected: adding another autoresearch-adjacent wrapper, broadening the skill into generic eval/observability tooling, or leaving the long explainer shape in place after support coverage was already complete
+- Wiki files created/updated: `queries/autoresearch-structural-hardening-2026-04-18.md`, `index.md`, `log.md`

@@ -75,6 +75,7 @@ graph TD
 | 변경 | 내용 |
 |------|------|
 | **sprint-retrospective: 구조 강화** | `sprint-retrospective`를 software, product/ops, marketing/GTM, game-delivery work 전반에서 쓰는 라우팅 우선 retrospective anchor로 다듬었습니다. 이제 하나의 retrospective mode를 고르고, 이전 액션을 새 액션보다 먼저 검토하고, action count를 작게 유지하며, planning/sizing/daily-sync 작업을 바깥으로 route-out합니다. 또한 `references/action-review-and-packet-shapes.md`, 갱신된 `evals/evals.json`, 동기화된 compact/manifest discovery wording을 추가했습니다. |
+| **autoresearch: 라우팅형 구조 강화** | `autoresearch`를 더 작은 Karpathy ML 탐색 front door로 다듬었습니다. 이제 `setup readiness`, `program.md` 작성, bounded run loop, 결과 해석, constrained-hardware adaptation 중 하나의 mode를 먼저 고르고, 불변 `prepare.py` / 300초 / `val_bpb` 계약을 계속 드러내며, `references/operating-modes-and-route-outs.md`와 갱신된 `evals/evals.json`을 추가하고, 거대한 설명형 스킬이 되지 않도록 `skill-autoresearch` 및 앱 단위 eval / observability 도구로의 route-out도 더 선명하게 만들었습니다. |
 
 ## 🆕 v2026-04-17 업데이트
 
@@ -337,7 +338,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `autoresearch` | Karpathy 자율 ML 탐색 — 사람이 `program.md`를 쓰고 에이전트가 `train.py`를 수정, 300초 GPU 실행과 `val_bpb` ratchet로 keep/revert; 프롬프트/스킬 eval은 별도 라우팅 | 전체 |
+| `autoresearch` | Karpathy 자율 ML 탐색 front door — setup / `program.md` / bounded loop / 결과 해석 / constrained-hardware mode 중 하나를 고르고, 불변 `prepare.py` + 300초 + `val_bpb` 계약을 지키며, 프롬프트/스킬 eval은 별도 라우팅 | 전체 |
 | `skill-autoresearch` | eval을 고정하고 한 번에 한 가지씩만 바꾸며 점수로 keep/revert를 결정하는 repo-local 스킬 ratcheting 루프. 핵심 경계가 입증된 뒤에만 support surface를 동기화합니다 | 전체 |
 | `codebase-search` | 증거 중심 리포 탐색, 호출 지점 추적, 영향 범위 분석 | 전체 |
 | `data-analysis` | 내보내기 데이터, 실험, 텔레메트리, KPI 설명을 위한 의사결정 중심 데이터 분석 | 전체 |
