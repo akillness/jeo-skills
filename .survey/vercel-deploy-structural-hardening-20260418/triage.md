@@ -1,0 +1,4 @@
+# Triage
+- Problem: `vercel-deploy` still has an oversized front door and stale compact discovery wording (`SKILL.toon`) despite the 2026-04-15 modernization; the next bounded question is whether the canonical skill should be tightened into a smaller routing-first Vercel operations anchor with cleaner packets and synchronized discovery surfaces.
+- Audience: Maintainers of the `oh-my-skills` catalog and agents/users who need reliable Vercel-specific deploy, promote, alias/domain, env-sync, and rollback guidance without drifting into generic release-planning or machine-setup work.
+- Why now: The repo’s graph report still flags `vercel-deploy` on the oversized front-door watchlist, and the compact variant currently advertises a legacy claimable deploy flow that no longer matches the canonical skill.

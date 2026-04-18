@@ -1,16 +1,16 @@
 ---
 name: vercel-deploy
 description: >
-  Handle Vercel-specific deployment operations for linked web/fullstack projects:
-  preview deploys, production deploys, preview-to-production promotion, stable
-  preview aliases, domain assignment, environment-variable sync, and rollback
-  checks. Use when the request is specifically about deploying on Vercel,
-  promoting a Vercel preview build, fixing Vercel env/domain/alias workflow
-  problems, or rolling back a Vercel deployment. Triggers on: Vercel deploy,
-  Vercel preview URL, Vercel alias, vercel promote, Vercel domain, Vercel env,
-  Vercel rollback, and Vercel CLI deployment. Route provider-neutral release
-  strategy to `deployment-automation`, CI YAML authoring to
-  `workflow-automation`, and machine/bootstrap issues to
+  Run Vercel-specific deployment operations for linked web/fullstack projects:
+  preview deploys, direct production deploys, staged deploy + promote flows,
+  aliases/domains, environment-variable sync, and rollback response. Use when the
+  request is specifically about operating a project on Vercel after the provider
+  is already chosen — especially when someone needs a preview URL, stable alias,
+  custom domain, env-scope fix, production cutover, or rollback on Vercel.
+  Triggers on: Vercel deploy, Vercel preview URL, vercel promote, vercel alias,
+  Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route
+  provider-neutral release strategy to `deployment-automation`, CI/workflow
+  authoring to `workflow-automation`, and local install/auth/bootstrap work to
   `system-environment-setup`.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
@@ -19,25 +19,25 @@ compatibility: >
   can inspect repo config and run Vercel commands if authenticated.
 license: MIT
 metadata:
-  tags: vercel, deployment, preview, production, alias, domains, environment-variables, rollback
+  tags: vercel, deployment, preview, production, promote, alias, domains, environment-variables, rollback
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.0.0"
+  version: "2.1.0"
   modernization: 2026-04-15
+  structural_hardening: 2026-04-18
   source: akillness/oh-my-skills
 ---
 
 # Vercel Deploy
 
-Use this skill when the job is **operating a deployment on Vercel specifically**, not generic release planning.
+Use this skill when the job is **operating a deployment on Vercel specifically**, not designing generic rollout policy.
 
-`vercel-deploy` is the provider-specific anchor for:
-- creating or verifying Vercel preview deployments
-- promoting a verified preview deployment to production
-- direct production deploys on Vercel when that is explicitly the job
-- stable preview aliases and branch/demo URLs
-- custom-domain assignment and post-domain checks
-- Vercel environment-variable sync/troubleshooting
-- production rollback / instant rollback checks on Vercel
+`vercel-deploy` is the provider-specific front door for:
+- creating or refreshing Vercel preview deployments
+- running a direct production deployment on Vercel
+- staging a deploy, verifying it, then promoting it live
+- assigning a stable preview alias or attaching a custom domain
+- inspecting/fixing Vercel environment-variable scope and redeploy needs
+- responding to a bad production deployment with rollback-oriented checks
 
 Read these support docs before choosing the mode:
 - [references/modes-and-boundaries.md](references/modes-and-boundaries.md)
@@ -45,216 +45,138 @@ Read these support docs before choosing the mode:
 - [references/env-domain-rollback-troubleshooting.md](references/env-domain-rollback-troubleshooting.md)
 
 ## When to use this skill
-- The user explicitly wants to deploy a site/app/service **on Vercel**
-- The request is about a Vercel preview URL, preview alias, or branch demo environment
-- A Vercel preview deployment needs to be inspected, tested, and promoted to production
-- A Vercel project needs environment variables pulled, listed, added, or checked by environment
-- The deployment problem is really about Vercel domains, aliases, generated URLs, or rollback behavior
-- The user already chose Vercel and needs provider-specific operational steps instead of a vendor-neutral release plan
+- The user explicitly wants to deploy a project **on Vercel**
+- The job is about a Vercel preview URL, preview alias, or stable demo environment
+- A linked Vercel deployment already exists and needs promotion or rollback handling
+- The main issue is Vercel env scope, Vercel domain/alias state, or Vercel-specific release verification
+- The provider has already been chosen and the user needs Vercel operator guidance rather than vendor-neutral release design
 
 ## When not to use this skill
-- **The main question is generic rollout strategy, release gating, staging/prod policy, or cross-provider deployment design** → use `deployment-automation`
+- **The main question is generic rollout strategy, release gating, canary policy, or cross-provider deployment design** → use `deployment-automation`
 - **The main job is editing GitHub Actions / CI YAML / task runners around the deploy flow** → use `workflow-automation`
-- **The main job is installing Node, Vercel CLI, auth bootstrap, or making the machine runnable** → use `system-environment-setup`
-- **The main job is debugging app/runtime/build logic before the deploy step works at all** → use `debugging` or the relevant framework/build skill first
-- **The main job is long-lived telemetry / SLO / alerting design after deployment** → use `monitoring-observability`
+- **The main job is installing Node, Vercel CLI, auth bootstrap, or linking the local machine** → use `system-environment-setup`
+- **The app/framework/build is broken before the deploy path itself works** → use `debugging` or the relevant framework/build skill first
+- **The main job is long-lived telemetry, SLOs, or alerting after release** → use `monitoring-observability`
 
 ## Instructions
 
-### Step 1: Classify the Vercel job before touching commands
-Normalize the request into one primary mode.
+### Step 1: Normalize the Vercel job into one packet
+Choose exactly one primary mode before reaching for commands.
 
 ```yaml
-vercel_mode:
+vercel_packet:
   primary_mode: preview-deploy | production-deploy | promote-preview | alias-domain | env-sync | rollback-response
   project_state: linked | unlinked | unknown
-  artifact_mode: source-build | prebuilt | unknown
-  target_environment: preview | production | custom | unknown
-  domain_shape: generated-url | preview-alias | custom-domain | mixed | none
-  env_scope: preview | production | development | custom | mixed | none
+  build_mode: source-build | prebuilt | unknown
+  target_environment: preview | production | development | custom | unknown
+  url_goal: generated-url | stable-preview-alias | custom-domain | mixed | none
   verification_depth: none | smoke | health-plus-logs | release-checklist
 ```
 
-Choose exactly one primary mode per run:
-- `preview-deploy` → create or refresh a Vercel preview deployment
-- `production-deploy` → direct production deployment on Vercel
-- `promote-preview` → verify and promote a known-good preview deployment to production
-- `alias-domain` → set a stable preview alias or attach/verify a custom domain
-- `env-sync` → inspect or fix environment-variable scope and application to new deployments
-- `rollback-response` → revert production traffic safely and document caveats
+Primary modes:
+- `preview-deploy` — create or refresh a testable Vercel preview
+- `production-deploy` — run a direct fresh production deployment
+- `promote-preview` — verify an existing deployment, then make it current
+- `alias-domain` — apply/verify a stable preview alias or custom domain
+- `env-sync` — fix environment-variable scope or stale local/project env state
+- `rollback-response` — move production back to a known-good deployment and verify recovery
 
-### Step 2: Gather the minimum truthful evidence
-Do not guess from the framework name alone. Pull the smallest credible set first:
-1. Is the project already linked to Vercel (`vercel link` / `.vercel/project.json`) or still unlinked?
-2. Is the request about preview, production, or a custom environment?
-3. Is the deploy path source-based (`vercel deploy`) or prebuilt (`vercel build` + `vercel deploy --prebuilt`)?
-4. Which URL shape matters: generated `*.vercel.app`, stable preview alias, or custom production domain?
-5. Which env scope matters: preview, production, development, or custom environment?
-6. What proof is expected: URL only, health check, logs, promotion, or rollback?
+If the request contains multiple goals, pick the one that owns the first answer and route the rest explicitly.
 
-If one of these is missing, state the assumption and pick the smallest safe interpretation.
+### Step 2: Gather only the minimum truthful evidence
+Do not guess from the framework name alone. Confirm the smallest credible set first:
+1. Is the project already linked to Vercel (`vercel link`, `.vercel/project.json`, or dashboard evidence)?
+2. Is the target really preview, production, or a custom/development environment?
+3. Is the deploy path source-based or prebuilt?
+4. Does the user care about the generated deployment URL, a stable alias, or a custom domain?
+5. Is this actually a deploy/cutover problem, or an env/config mismatch that still needs redeploy?
+6. What proof is expected: URL only, smoke check, health + logs, DNS verification, or rollback verification?
 
-### Step 3: Use the right packet for the mode
+If one item is unknown, state the assumption instead of pretending the mode is fully known.
 
-#### A. Preview deploy
-Use when the main need is a testable Vercel preview.
+### Step 3: Use the matching operator path
+Do not dump every command at once. Pick the reference packet that matches the mode.
 
-Recommended sequence:
-```bash
-# Link if needed
-vercel link
+#### A. `preview-deploy`
+Use when the deliverable is a testable preview deployment.
+- Prefer linked-project CLI or dashboard-backed preview flows.
+- Return the generated deployment URL plus any stable alias plan.
+- If the goal is a stable demo URL, carry the result into `alias-domain` rather than mixing everything into one blob.
 
-# Pull preview env metadata if using CLI-based builds
-vercel pull --yes --environment=preview
+Use packet: `references/preview-production-command-packets.md#preview-deploy-packet`
 
-# Option 1: source deploy
-vercel deploy
-
-# Option 2: prebuilt deploy
-vercel build
-vercel deploy --prebuilt
-```
-
-Then verify:
-```bash
-vercel inspect <deployment-url>
-vercel logs --deployment <deployment-url> --level error --limit 50
-```
-
-Output packet:
-```markdown
-# Vercel Preview Packet
-- Deployment URL:
-- Branch / commit:
-- Build mode: source-build | prebuilt
-- Env scope used: preview | custom
-- Verification completed:
-- Next step: share | alias | promote | debug
-```
-
-#### B. Promote preview to production
-Use when a preview deployment is already built and should become prod.
-
-Recommended sequence:
-```bash
-vercel list --environment preview
-vercel inspect <deployment-url>
-vercel curl /api/health --deployment <deployment-url>
-vercel logs --deployment <deployment-url> --level error --limit 50
-vercel promote <deployment-url> --yes
-vercel promote status
-vercel logs --environment production --level error --since 5m
-```
-
-Rules:
-- Verify the preview deployment matches the intended branch/commit before promote.
-- Prefer promoting a known-good deployment over rebuilding blindly when the goal is release confidence.
-- Report the production verification result separately from the promotion step.
-
-#### C. Direct production deploy
+#### B. `production-deploy`
 Use when the user explicitly wants a fresh production deployment now.
+- Say whether the deployment is source-build or prebuilt.
+- Report the production URL/domain reached.
+- Separate deploy success from post-deploy verification.
 
-Recommended sequence:
-```bash
-vercel pull --yes --environment=production
-vercel deploy --prod
-# or, for prebuilt flows
-vercel build --prod
-vercel deploy --prebuilt --prod
-```
+Use packet: `references/preview-production-command-packets.md#direct-production-deploy-packet`
 
-Always capture:
-- whether the deploy was source-build or prebuilt
-- production URL/domain reached
-- any post-deploy smoke/health/log check performed
+#### C. `promote-preview`
+Use when a deployment already exists and the job is to cut over safely.
+- Verify the exact deployment URL/commit before promotion.
+- Treat promotion as a release operation, not a magical pointer flip.
+- Note team-scope or domain caveats when they matter.
+- Report production verification separately from the promote command itself.
 
-#### D. Alias or domain operations
-Use when the stable URL is the real job.
+Use packet: `references/preview-production-command-packets.md#staged-production--promote-packet`
 
-Preview alias pattern:
-```bash
-url="$(vercel deploy --prebuilt)"
-vercel alias set "$url" preview.example.com
-```
+#### D. `alias-domain`
+Use when the stable URL is the real deliverable.
+- Distinguish generated URL vs stable preview alias vs production custom domain.
+- Report DNS/manual verification status separately from CLI success.
+- Keep the raw deployment URL available as fallback evidence.
 
-For custom domains, gather first:
-- project already owns the domain or not
-- preview alias vs production domain intent
-- whether DNS is already pointed correctly
+Use packet: `references/env-domain-rollback-troubleshooting.md#aliases-and-domains`
 
-Then report:
-```markdown
-# Vercel URL / Domain Packet
-- Deployment URL:
-- Alias/domain applied:
-- Scope: preview | production
-- DNS / verification status:
-- Remaining manual step (if any):
-```
+#### E. `env-sync`
+Use when preview/prod behavior differs because variables are missing, stale, or scoped incorrectly.
+- Check the intended environment first.
+- Call out that env-var changes apply to **new deployments**, not old ones.
+- Distinguish Vercel env scope from app-level canonical URL/config expectations.
 
-#### E. Environment-variable sync / troubleshooting
-Use when deployment behavior differs across preview/production/custom environments.
+Use packet: `references/env-domain-rollback-troubleshooting.md#environment-variables`
 
-Checklist:
-1. Identify which environment(s) the variable should apply to.
-2. Check whether a new deployment is required for the change to take effect.
-3. Prefer environment-scoped verification (`vercel env ls`, environment-specific settings) over UI assumptions alone.
-4. Distinguish system vars (`VERCEL_ENV`, `VERCEL_TARGET_ENV`, `VERCEL_URL`) from app-level canonical URL vars that may still need explicit configuration.
-
-Suggested commands:
-```bash
-vercel env ls
-vercel pull --yes --environment=preview
-vercel pull --yes --environment=production
-```
-
-When a preview auth/callback flow is failing, explicitly check whether the app needs a canonical preview URL variable instead of relying only on `VERCEL_URL`.
-
-#### F. Rollback response
+#### F. `rollback-response`
 Use when production traffic must revert quickly.
+- Identify the currently bad deployment and the exact rollback target.
+- Call out stale-config / cron / plan-limit caveats before claiming recovery.
+- Re-check production logs/health after rollback.
 
-Checklist:
-1. Identify the currently bad production deployment.
-2. Identify the target rollback deployment and whether it is eligible.
-3. Call out stale-config caveats before treating rollback as a perfect restore.
-4. Re-verify production after rollback.
+Use packet: `references/env-domain-rollback-troubleshooting.md#rollback`
 
-Operational notes from Vercel docs:
-- rollback restores a previous deployment state
-- env/config can become stale relative to current project settings
-- cron-job state can roll back with the deployment
-- rollback eligibility differs by plan
-
-### Step 4: Keep the boundary clean
-Use this route-out table whenever the request drifts:
+### Step 4: Keep boundaries clean while answering
+Use this route-out table whenever the request drifts.
 
 | If the request sounds like... | Use |
 |---|---|
-| "Design the release gates / canary / rollback strategy across providers" | `deployment-automation` |
-| "Rewrite the GitHub Actions workflow that runs Vercel deploy" | `workflow-automation` |
-| "Install Vercel CLI, Node, auth, or link local machine credentials" | `system-environment-setup` |
-| "The app crashes or the framework build is broken before deploy" | `debugging` or framework-specific skill |
-| "Set up dashboards, alerts, and ongoing post-release observability" | `monitoring-observability` |
-| "Inspect, deploy, promote, alias, domain-manage, or roll back on Vercel" | `vercel-deploy` |
+| “Design the release gates, canary policy, or rollback strategy across providers” | `deployment-automation` |
+| “Rewrite the GitHub Actions workflow that runs Vercel commands” | `workflow-automation` |
+| “Install Vercel CLI, auth, Node, or link local credentials” | `system-environment-setup` |
+| “The build crashes before deploy succeeds” | `debugging` or a framework-specific skill |
+| “Set up dashboards, alerts, or long-lived post-release monitoring” | `monitoring-observability` |
+| “Inspect, deploy, promote, alias, domain-manage, env-sync, or roll back on Vercel” | `vercel-deploy` |
 
-### Step 5: Mention the legacy claimable deploy helper only when it is truly the environment's contract
-This skill directory still contains `scripts/deploy.sh`, a claimable-preview helper for environments that explicitly rely on that custom endpoint. Treat it as a **legacy / environment-specific shortcut**, not the default Vercel operational model.
+### Step 5: Mention the legacy claimable deploy helper only if the environment explicitly depends on it
+This directory still ships `scripts/deploy.sh`, a claimable-preview helper that packages a tarball and returns preview/claim URLs. Treat it as a **legacy environment-specific shortcut**, not the default Vercel operating model.
 
 Use it only when all of these are true:
 - the runtime explicitly expects the claimable deploy endpoint
 - the job is just creating a claimable preview URL
-- linked-project / env / alias / promotion / rollback operations are out of scope
+- linked-project, promotion, alias/domain, env-sync, and rollback operations are out of scope
 
-Otherwise prefer the official Vercel CLI workflow above.
+Otherwise prefer the official Vercel CLI / dashboard model described above.
 
 ## Output format
-Return a mode-specific packet, not just raw commands.
+Return a mode-specific packet instead of a loose command dump.
 
 Minimum structure:
 ```markdown
 # Vercel Operation Summary
 - Mode:
 - Project linked:
+- Build mode:
 - Target environment:
 - URL / deployment:
 - Verification performed:
@@ -265,49 +187,58 @@ Minimum structure:
 ## Examples
 
 ### Example 1: Preview deploy with stable alias
-User asks: "Deploy this Next.js branch to Vercel and give me a stable preview URL."
+User asks: “Deploy this Next.js branch to Vercel and give me a stable preview URL.”
 
 Expected move:
-- choose `preview-deploy` mode
-- deploy via `vercel deploy` or `vercel deploy --prebuilt`
-- capture the deployment URL
-- alias it with `vercel alias set`
-- return the preview packet with both generated and stable URLs
+- choose `preview-deploy` as the primary mode
+- deploy via the preview packet
+- capture the generated deployment URL
+- apply or plan a stable alias separately
+- return both URLs and any DNS/manual step still needed
 
-### Example 2: Promote a verified preview deployment
-User asks: "This preview deployment looks good. Make it production."
+### Example 2: Promote a verified staged deployment
+User asks: “This Vercel build already passed QA. Promote it to production and verify it.”
 
 Expected move:
-- choose `promote-preview` mode
-- inspect and smoke-test the preview deployment
-- run `vercel promote <deployment-url> --yes`
-- verify production logs/health separately
-- report production verification, not just promotion success
+- choose `promote-preview` as the primary mode
+- verify the exact deployment/commit first
+- run the staged-production promote packet
+- report production verification after promotion
+- mention scope/domain caveats if they apply
 
 ### Example 3: Vercel env vars not showing up in deploys
-User asks: "The variable is in the Vercel UI but the deployment can't read it."
+User asks: “The variable is in Vercel, but the deployment can’t read it.”
 
 Expected move:
-- choose `env-sync` mode
+- choose `env-sync`
 - verify the intended environment scope
-- confirm a new deployment happened after the env change
-- use CLI/env listing or environment-specific settings as the trusted state check
+- confirm whether a new deployment happened after the env change
+- use Vercel env inspection/pull as the trusted state check
 - call out any app-level canonical URL/config still required
 
+### Example 4: Route out generic release design
+User asks: “Help me design our staging-to-prod rollout policy and canary rules across providers.”
+
+Expected move:
+- do **not** pretend this is a Vercel-only operation
+- route the main job to `deployment-automation`
+- keep only any explicitly Vercel-specific follow-up inside `vercel-deploy`
+
 ## Best practices
-1. Start by selecting a single Vercel mode; don't mix preview, prod, env repair, and rollback into one vague answer.
-2. Prefer linked-project, official CLI flows over one-off tarball shortcuts.
-3. Treat preview verification and production promotion as separate steps.
+1. Pick one primary Vercel mode before giving commands.
+2. Prefer linked-project, official CLI/dashboard flows over legacy tarball shortcuts.
+3. Treat deploy, promote, alias/domain, env repair, and rollback as distinct operator packets.
 4. Always distinguish generated deployment URLs, stable preview aliases, and custom domains.
-5. Remember that environment-variable changes only affect new deployments.
-6. Do not oversell rollback as lossless; call out stale env/config caveats.
+5. Remember that env-var changes only affect new deployments.
+6. Do not oversell `vercel promote` or rollback as lossless; call out scope/domain/plan/config caveats.
 7. Route generic rollout design back to `deployment-automation` to avoid overlap.
 
 ## References
-- [Vercel CLI deploy docs](https://vercel.com/docs/cli/deploy)
-- [Vercel environments docs](https://vercel.com/docs/deployments/environments)
-- [Promote preview to production](https://vercel.com/docs/deployments/promote-preview-to-production)
+- [Deploying Projects from Vercel CLI](https://vercel.com/docs/cli/deploying-from-cli)
+- [vercel deploy](https://vercel.com/docs/cli/deploy)
+- [vercel promote](https://vercel.com/docs/cli/promote)
+- [vercel rollback](https://vercel.com/docs/cli/rollback)
 - [Environment variables](https://vercel.com/docs/environment-variables)
 - [System environment variables](https://vercel.com/docs/environment-variables/system-environment-variables)
-- [Instant rollback](https://vercel.com/docs/instant-rollback)
-- [Preview alias guide](https://vercel.com/kb/guide/how-to-alias-a-preview-deployment-using-the-cli)
+- [Working with domains](https://vercel.com/docs/domains/working-with-domains)
+- [Deploying Git Repositories with Vercel](https://vercel.com/docs/deployments/git)

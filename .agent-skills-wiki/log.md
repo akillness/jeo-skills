@@ -751,3 +751,11 @@
 - Accepted: shrink `sprint-retrospective` from 304 to 263 lines, add `references/action-review-and-packet-shapes.md`, expand eval coverage with a planning-route near miss, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording
 - Rejected: adding another remote-retro, postmortem, or action-items-only skill; broadening retros into planning, sizing, or daily coordination; treating more templates as the fix for follow-through failure
 - Wiki files created/updated: `queries/sprint-retrospective-structural-hardening-2026-04-18.md`, `concepts/project-management-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | vercel-deploy structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/GTM/content, and game development, with the best bounded infrastructure follow-up landing on the existing `vercel-deploy` skill rather than a new Vercel wrapper
+- Survey files created under `.survey/vercel-deploy-structural-hardening-20260418/`; repo-local graph and wiki evidence plus direct primary-source retrieval from Vercel docs and public GitHub issues/PRs were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `vercel-deploy` from 313 to 244 lines, update `references/preview-production-command-packets.md` with a staged promote packet, expand eval coverage with rollback and route-out cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the compact surface no longer advertises the legacy claimable tarball flow
+- Rejected: adding another Vercel domain/promote/rollback helper; keeping stale compact wording after the canonical skill changed; broadening `vercel-deploy` back into generic release strategy or CI authoring
+- Wiki files created/updated: `queries/vercel-deploy-structural-hardening-2026-04-18.md`, `index.md`, `log.md`

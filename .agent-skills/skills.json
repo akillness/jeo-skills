@@ -3081,7 +3081,7 @@
     },
     {
       "name": "vercel-deploy",
-      "description": "Handle Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, production deploys, preview-to-production promotion, stable preview aliases, domain assignment, environment-variable sync, and rollback checks. Use when the request is specifically about deploying on Vercel, promoting a Vercel preview build, fixing Vercel env/domain/alias workflow problems, or rolling back a Vercel deployment. Triggers on: Vercel deploy, Vercel preview URL, Vercel alias, vercel promote, Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route provider-neutral release strategy to `deployment-automation`, CI YAML authoring to `workflow-automation`, and machine/bootstrap issues to `system-environment-setup`.",
+      "description": "Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, environment-variable sync, and rollback response. Use when the request is specifically about operating on Vercel after the provider is already chosen — especially when someone needs a preview URL, stable alias, custom domain, env-scope fix, production cutover, or rollback on Vercel. Triggers on: Vercel deploy, Vercel preview URL, vercel promote, vercel alias, Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route provider-neutral release strategy to `deployment-automation`, CI/workflow authoring to `workflow-automation`, and local install/auth/bootstrap work to `system-environment-setup`.",
       "category": "infrastructure",
       "path": "vercel-deploy/SKILL.md",
       "tags": [
