@@ -10,24 +10,20 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 385
-- Graph edges: 1063
-- Category counts: agent-development=2, backend=5, code-quality=5, core-orchestration=10, creative-media=2, documentation=5, frontend=10, infrastructure=13, marketing=2, planning-review=5, project-management=4, search-analysis=7, uncategorized=7, utilities=12
+- Graph edges: 1107
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
-2. Support coverage remains complete across the live skill set, so bounded front-door cleanup is still more valuable than adding another wrapper skill.
-3. `web-accessibility` dropped to 231 lines and now reads as a routing-first remediation anchor with explicit packet selection, route-outs, and routed-app feedback coverage.
-4. The frontend lane stays healthiest when `web-accessibility` owns remediation + verification, while `web-design-guidelines`, `responsive-design`, `ui-component-patterns`, and `design-system` keep neighboring critique, layout, API, and governance work separate.
+2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
+3. `presentation-builder` dropped to 233 lines and now reads more clearly as a packet-first deck artifact anchor with explicit last-mile surface selection.
+4. The documentation lane stays healthiest when `presentation-builder` owns deck-mode + packet + handoff selection while `technical-writing`, `user-guide-writing`, `research-paper-writing`, and `marketing-automation` keep adjacent artifacts separate.
 
 ## Highest-degree nodes
-- .agent-skills/skills.json: degree 89
-- .agent-skills/skills.toon: degree 89
-- README.ko.md: degree 89
-- README.md: degree 89
-- setup-all-skills-prompt.md: degree 89
-- task-planning: degree 30
-- performance-optimization: degree 26
-- debugging: degree 25
+- skills.json: degree 89
+- README.ko.md: degree 88
+- README.md: degree 88
+- setup-all-skills-prompt.md: degree 88
+- skills.toon: degree 82
 
 ## Oversized front-door watchlist
 - clawteam: 329 lines in SKILL.md
@@ -39,14 +35,14 @@
 - jeo: 288 lines in SKILL.md
 - obsidian-cli: 286 lines in SKILL.md
 - autoresearch: 284 lines in SKILL.md
-- presentation-builder: 284 lines in SKILL.md
+- database-schema-design: 282 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new accessibility wrapper is justified: the bounded win was tightening `web-accessibility` in place and syncing the discovery surfaces.
-- `web-accessibility` should stay distinct from `web-design-guidelines` (broad critique), `responsive-design` (layout strategy), `ui-component-patterns` (reusable API boundaries), and `design-system` (governance).
-- Routed-app navigation feedback is a useful sub-lane inside accessibility remediation, not a separate standalone skill.
+- No new deck wrapper is justified: the bounded win was tightening `presentation-builder` in place and syncing the discovery surfaces.
+- `presentation-builder` should stay distinct from `technical-writing` (docs/specs), `user-guide-writing` (tutorial/help flows), `research-paper-writing` (manuscripts), and `marketing-automation` (non-deck GTM planning).
+- Duplicate pressure rises when deck requests blur packet choice, source-of-truth handling, and last-mile cleanup into one blob; the packet-first handoff model is the right fix.
 
 ## Recommended maintenance direction
-- Keep targeting oversized front-door skills whose trigger logic can be made smaller without weakening their output contract.
+- Keep targeting high-degree or oversized front-door skills whose trigger logic can be made smaller without weakening their output contract.
 - Prefer focused support packets and synced discovery surfaces over creating another neighboring wrapper.
 - Re-run catalog/runtime sync validation whenever README/setup or compact wording changes materially.
