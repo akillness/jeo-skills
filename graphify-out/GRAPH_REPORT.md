@@ -10,20 +10,20 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 385
-- Graph edges: 1054
+- Graph edges: 1113
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
 2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. `fabric` dropped to 265 lines and now reads like a routing-first operator front door that chooses one lane before handing off exact commands, scaffolds, or server packets.
-4. The utilities boundary stays cleaner when `fabric` owns repeatable pattern-driven transforms and routes generic chat prompting, repo-aware coding, and deterministic automation outward.
+3. `vibe-kanban` dropped to 195 lines and now reads more clearly as a coding-board front door that can sit on top of GitHub Projects / Linear / Jira instead of pretending to replace them.
+4. The planning-review boundary stays cleaner when `vibe-kanban` owns coding-board execution state while planning, browser review, and non-code coordination keep routing outward.
 
 ## Highest-degree nodes
-- task-planning: degree 22
-- code-review: degree 21
-- vibe-kanban: degree 21
-- debugging: degree 20
-- jeo: degree 20
+- debugging: degree 41
+- task-planning: degree 31
+- bmad: degree 27
+- performance-optimization: degree 27
+- code-review: degree 25
 
 ## Oversized front-door watchlist
 - clawteam: 329 lines in SKILL.md
@@ -38,9 +38,9 @@
 - genkit: 285 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new Fabric-adjacent helper skill is justified: the bounded win was shrinking `fabric` in place and syncing the discovery surfaces.
-- `fabric` should stay distinct from general LLM CLIs, coding assistants, and workflow-automation skills because it owns repeatable named transforms over external text/content.
-- Duplicate pressure rises when users describe any CLI AI workflow as “Fabric”; explicit route-outs remain the right fix.
+- No new vibe-kanban-adjacent helper skill is justified: the bounded win was shrinking `vibe-kanban` in place and syncing the discovery surfaces.
+- `vibe-kanban` should stay distinct from generic PM boards, browser-review tools, and planning-only orchestration because it owns coding-board execution state, review queues, and cleanup discipline.
+- Duplicate pressure rises when teams describe any tracker board as an AI kanban; explicit tracker-sync guidance is the right fix.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree skills whose trigger logic can be made smaller without weakening their artifact contract.
