@@ -1,274 +1,230 @@
 ---
 name: ui-component-patterns
 description: >
-  Design reusable UI primitives and component APIs before duplicating product UI.
-  Use when the user needs help extracting shared components, defining variants,
-  slots, controlled-vs-uncontrolled boundaries, composition patterns, Storybook
-  coverage, or deciding what belongs in a reusable primitive versus app-local UI.
-  Triggers on: component library, reusable component, button API, modal API,
-  slots, variants, compound component, headless component, controlled vs
-  uncontrolled, design-system primitive, and too many similar components.
+  Routing-first reusable component architecture for shared frontend primitives,
+  slots, controlled ownership, alternate-root composition, and docs/verification
+  packets. Use when the user needs to decide what should become a shared
+  primitive, how a component API should expose variants or subcomponents, when
+  parent state should control the component, how to compose a button/link/dialog
+  onto alternate element types, or what Storybook/example coverage is required.
+  Route design-token or cross-product governance to `design-system`,
+  accessibility-heavy remediation to `web-accessibility`, layout adaptation to
+  `responsive-design`, app-level state ownership to `state-management`, and
+  React performance work to `react-best-practices`.
 allowed-tools: Read Write Bash Grep Glob
 compatibility: >
-  Best for React, TypeScript, and modern frontend/fullstack repos that need
-  reusable component architecture. Not for broad visual-system direction,
-  accessibility remediation, viewport-only responsive layout work, or React
-  performance tuning.
+  Best for React, TypeScript, and frontend/fullstack repos where the main job is
+  reusable component API architecture. Not for full design-system governance,
+  accessibility-only remediation, responsive layout strategy, or React/Next.js
+  performance tuning as the primary owner.
 license: MIT
 metadata:
   tags: ui-components, react, typescript, composition, variants, slots, reusable, frontend
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.0"
+  version: "2.1.0"
   source: akillness/oh-my-skills
+  modernization: 2026-04-13
+  hardening: 2026-04-19
 ---
 
 # UI Component Patterns
 
-Use this skill when the main question is **"should this UI be a reusable primitive, what should its API look like, and where should the boundary between shared and product-local code live?"**
+Use this skill when the job is to **classify the reusable component problem, choose one primary component packet, and leave behind a short component-architecture brief instead of a giant React-pattern dump**.
 
-The job is not to dump a random React pattern gallery.
+The job is not to catalog every possible component pattern.
 The job is to:
-1. decide whether a shared component is warranted,
-2. define the smallest useful primitive and its API,
-3. separate visual variants, behavior, and composition responsibilities,
-4. keep adjacent concerns routed to the right neighboring skill,
-5. leave behind a concise component brief or implementation plan.
+1. identify the reusable component pressure first,
+2. choose one bounded packet,
+3. keep shared-vs-local and parent-vs-component ownership visible,
+4. separate alternate-root composition from broader system or accessibility work,
+5. route neighboring frontend concerns honestly.
 
-Read [references/component-api-checklist.md](references/component-api-checklist.md) before handling a new primitive or refactoring a duplicated component family.
-Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `ui-component-patterns`, `design-system`, `web-accessibility`, `responsive-design`, `state-management`, or `react-best-practices` should own the next step.
+Read these support docs first:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/component-api-checklist.md](references/component-api-checklist.md)
+- [references/handoff-boundaries.md](references/handoff-boundaries.md)
 
 ## When to use this skill
-- Extract duplicated UI into a shared primitive or component family
-- Design button, modal, dropdown, card, table, form-field, or navigation APIs with variants and slots
-- Decide between a headless primitive, a styled wrapper, or a product-local component
-- Choose controlled vs uncontrolled behavior for reusable components
-- Review whether a component API is overfitted, underpowered, or mixing too many responsibilities
-- Turn vague requests like “our components are messy” into a concrete architecture brief
-- Define Storybook/example coverage for states, variants, and edge cases
+- A team has too many similar buttons, cards, dialogs, field wrappers, or nav patterns and needs one shared primitive or component-family boundary.
+- A request mixes variants, slots, controlled-vs-uncontrolled behavior, wrappers, and docs expectations and needs routing before implementation.
+- You need to decide whether something should stay product-local, become a shared primitive, or split into primitive plus wrapper.
+- A component API is growing escape hatches and someone needs to shrink it into one honest packet.
+- The tricky part is alternate-root composition (`button` vs `a`/router `Link`, slotted child, custom wrapper) rather than pure styling.
+- Storybook/examples exist, but the docs/verification packet for states, usage rules, or edge cases is still unclear.
 
 ## When not to use this skill
-- **The main task is system-wide tokens, visual language, contribution governance, or page-level UI direction** → use `design-system`
-- **The main task is accessibility remediation, keyboard/focus behavior, labels, or manual a11y verification** → use `web-accessibility`
-- **The main task is breakpoints, container queries, responsive media, or viewport adaptation** → use `responsive-design`
-- **The main task is app-level state ownership or client/server state boundaries** → use `state-management`
-- **The main task is React/Next.js performance, hydration, waterfalls, or rerender behavior** → use `react-best-practices`
-- **The task is just implementing a component that already has a settled API**; in that case implement directly instead of reopening the architecture decision
+- **The main task is token governance, visual-language rules, primitive naming policy, or cross-product system direction** → `design-system`
+- **The main task is keyboard/focus behavior, semantics, labels, announcements, contrast, or manual accessibility remediation** → `web-accessibility`
+- **The main task is viewport/container adaptation, breakpoint strategy, reflow, or responsive media** → `responsive-design`
+- **The main task is broader app/workflow state ownership, server/client boundaries, or cross-screen state coordination** → `state-management`
+- **The main task is rerender churn, hydration, route performance, or bundle/runtime behavior** → `react-best-practices`
+- **The reusable component boundary is already settled and the real job is just implementing it**; in that case implement directly instead of reopening the architecture decision
 
 ## Instructions
 
-### Step 1: Decide whether a reusable primitive is justified
-Do not create a shared component just because two screens look similar.
+### Step 1: Frame the reusable component job before naming props
+Capture the minimum intake packet first.
 
-Use this threshold test:
-- **Create or refactor a primitive** when the same interaction or UI shape appears in multiple places, or will clearly recur
-- **Keep it product-local** when the UI is highly specific to one flow and abstraction would mostly add indirection
-- **Promote to design-system work** when the decision affects many component families, tokens, naming rules, or contribution policy
-
-Quick framing template:
-```markdown
-Reuse decision:
-- Shared candidate: Button + icon button + loading button
-- Why shared: repeated across settings, billing, onboarding, and dashboard
-- Keep local: one-off onboarding progress illustration
-- Escalate: token naming and spacing scale belong to design-system
+```yaml
+component_intake:
+  surface: button-action | form-field | dialog-overlay | nav-menu | card-list-item | table-toolbar | mixed | unknown
+  workflow_type: new-primitive | duplicate-cleanup | api-review | wrapper-split | docs-verification | unknown
+  primary_packet: primitive-boundary | slot-anatomy | controlled-ownership | alternate-root-composition | docs-verification | mixed | unknown
+  ownership_pressure: shared-vs-local | parent-state | wrapper-proliferation | type-safety | docs-drift | mixed | unknown
+  signal_source: repeated-components | bug-report | code-review | storybook-gap | design-review | migration | mixed | unknown
+  confidence: high | medium | low
 ```
 
-### Step 2: Classify the component role before writing props
-First define what kind of thing you are building.
+Rule: do **not** start with “add a prop.” First label the reusable component pressure.
 
-Use one or more buckets:
-- **Primitive** — button, input, text, stack, surface, dialog shell
-- **Composite pattern** — modal, command palette, form row, filter bar, card with actions
-- **Product-local wrapper** — a domain-specific arrangement built from primitives
-- **Headless behavior layer** — state + interactions without final styling
-- **Styled opinionated wrapper** — packaged presentation around a stable primitive
+### Step 2: Choose exactly one primary component packet
+Use the router in [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-If the component mixes multiple roles, split the boundary explicitly instead of letting one API own everything.
+Primary packets:
+1. `primitive-boundary`
+2. `slot-anatomy`
+3. `controlled-ownership`
+4. `alternate-root-composition`
+5. `docs-verification`
 
-### Step 3: Define the smallest useful API surface
-A good shared component solves recurring needs without turning into a kitchen sink.
+Pick the packet that resolves the current decision. List anything else as follow-up, not as equal co-owners.
 
-Ask:
-1. What are the required inputs?
-2. Which differences are true variants versus arbitrary styling escape hatches?
-3. Which parts should be slots/children instead of dozens of props?
-4. Which behavior can stay internal, and which must be controlled by the parent?
-5. What should remain product-local rather than being generalized now?
+### Step 3: Keep the invariants visible
+These rules survive every serious answer:
+- shared components should solve repeated work, not invent a local framework for one screen
+- product-specific copy, analytics, workflow rules, and layout quirks usually belong in wrappers, not the primitive
+- variants should express stable meaning (`tone`, `size`, `density`, `state`) rather than one-off screen exceptions
+- slots/subcomponents are for structured flexibility, not for hiding a confused API
+- if both controlled and uncontrolled behavior are offered, the contract must be explicit and coherent
+- alternate-root composition changes semantics and accessibility responsibility; keep that visible
+- Storybook/examples are evidence surfaces, not proof that the component boundary is healthy
 
-Common design rules:
-- prefer a few meaningful `variant`, `size`, `tone`, or `state` props over many one-off booleans
-- prefer composition/slots when consumers need structured flexibility
-- keep DOM passthroughs intentional; do not blindly expose every internal implementation detail
-- if consumers constantly need `className` plus several “temporary” escape hatches, the primitive boundary is probably wrong
+### Step 4: Build the component packet
+Return this structure:
 
-Bad pattern:
-```tsx
-<Button
-  primary
-  secondary
-  ghost
-  compact
-  isDanger
-  iconLeft={...}
-  iconRight={...}
-  forceMobileLayout
-  customSpacing="12px"
-/>
-```
-
-Better pattern:
-```tsx
-<Button variant="primary" size="md" tone="default" leadingIcon={<SaveIcon />}>
-  Save
-</Button>
-```
-
-### Step 4: Choose controlled vs uncontrolled ownership deliberately
-Reusable components become fragile when ownership is unclear.
-
-Use **controlled** APIs when:
-- the parent must coordinate state with routing, analytics, forms, or other components
-- the current value/open state is part of a larger workflow
-- external validation or async lifecycle should own transitions
-
-Use **uncontrolled/internal** ownership when:
-- the component is simple and self-contained
-- external coordination is unnecessary
-- a default value/open state is enough
-
-Healthy pattern:
-```tsx
-<Accordion value={value} onValueChange={setValue} />
-<Accordion defaultValue="shipping" />
-```
-
-If a component needs both, provide a clear controlled + uncontrolled model instead of a half-controlled hybrid.
-
-### Step 5: Separate structure, styling, and behavior
-Do not let one component API carry every concern.
-
-Useful splits:
-- **Behavior primitive** — focus/open/selection/keyboard logic
-- **Structure/composition** — slots, subcomponents, layout skeleton
-- **Styling layer** — variants, tokens, class mapping
-- **Product wrapper** — domain-specific copy, analytics, business rules
-
-This is where headless or compound-component patterns often help.
-
-Example split:
-```markdown
-Dialog primitive owns:
-- open/close lifecycle
-- focus return
-- overlay semantics
-
-App wrapper owns:
-- billing copy
-- submit side effects
-- analytics events
-- product-specific button labels
-```
-
-### Step 6: Handle common pattern families with the right lens
-#### Buttons and actions
-Prioritize semantic role, variant count, loading/disabled behavior, icon labeling, and consistent affordance.
-
-#### Dialogs, drawers, menus, command palettes
-Prioritize composition boundaries, open-state ownership, close reasons, focus expectations, and slot structure.
-
-#### Form fields
-Prioritize label/help/error placement, controlled vs uncontrolled data flow, field wrappers versus raw inputs, and extensibility for validation states.
-
-#### Tables, cards, list items, nav patterns
-Prioritize slot structure, action placement, density variants, and avoiding props that only encode one screen’s layout.
-
-#### Headless primitives
-Use when multiple visual treatments need the same behavior. Do not reach for them if the team cannot maintain the extra composition complexity.
-
-### Step 7: Capture responsive, accessibility, and state concerns as constraints — not ownership theft
-This skill should acknowledge neighboring concerns without absorbing them.
-
-Examples:
-- note that a primitive must support keyboard/focus behavior, then route remediation details to `web-accessibility`
-- note that a component needs mobile and desktop adaptations, then route layout strategy to `responsive-design`
-- note that an accordion’s open state may need parent ownership, then route broader app state questions to `state-management`
-- note that token or primitive naming rules should stay consistent with `design-system`
-
-If the main question changes from component API architecture to another concern, hand off explicitly.
-
-### Step 8: Produce the component architecture packet
-End with a concise artifact that another engineer or agent can execute.
-
-Preferred format:
 ```markdown
 # Component Architecture Packet
 
-## Component family
-- Name:
-- Role: primitive | composite | wrapper | headless
-- Shared vs local decision:
+## Scope
+- Surface:
+- Workflow type:
+- Primary packet:
+- Confidence: high | medium | low
 
-## API shape
-- Required props:
-- Variants / slots:
-- Controlled vs uncontrolled:
-- Escape hatches allowed:
+## Current signal
+- Main symptom:
+- Ownership pressure:
+- What is already known:
+- What still needs direct verification:
 
-## Boundaries
-- Keeps:
-- Routes to neighboring skills:
-
-## Examples to implement or document
+## Recommended first slice
 1. ...
 2. ...
 3. ...
 
-## Verification
-- States/variants covered:
-- Storybook/examples needed:
+## Component decisions
+- Shared vs local:
+- Primitive / wrapper split:
+- Variants or slots:
+- Controlled vs uncontrolled:
+- Alternate-root or wrapper rules:
+
+## Docs and verification
+- Stories/examples required:
+- State / variant matrix:
 - Accessibility follow-up:
 - Responsive follow-up:
+
+## Ownership and route-outs
+- Primary owner:
+- Adjacent skills / teams:
 ```
+
+### Step 5: Use the packet, not a giant pattern gallery
+Pull the packet from [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
+
+Packet rules:
+- `primitive-boundary` → decide shared vs local scope, primitive vs wrapper split, and what absolutely stays outside the shared API
+- `slot-anatomy` → define subcomponents/slots, variant boundaries, composition rules, and anatomy expectations for reusable structure
+- `controlled-ownership` → decide whether parent state, workflow state, or component-local defaults own the lifecycle
+- `alternate-root-composition` → handle `asChild` / `component` / wrapper-root behavior, prop spreading, refs, and semantic constraints when the primitive must compose onto another element
+- `docs-verification` → define Storybook/examples, state matrix, anti-usage notes, and the smallest credible verification surface for the component family
+
+### Step 6: Keep mechanism choice separate from ownership choice
+Use this split in serious answers:
+- **Mechanism** — variants, slots, subcomponents, controlled props, polymorphic root, wrapper split, docs matrix
+- **Ownership** — `ui-component-patterns`, `design-system`, `web-accessibility`, `responsive-design`, `state-management`, or `react-best-practices`
+
+If the request starts from screenshots, Storybook drift, or a code diff, say explicitly that those artifacts are the **signal**, not the finished component decision.
+
+### Step 7: Route adjacent work explicitly
+Use these route-outs when the problem crosses boundaries:
+- token governance, primitive naming, contribution policy, or cross-product component standards → `design-system`
+- keyboard/focus remediation, label/announcement issues, ARIA, contrast, reduced motion, or manual a11y verification → `web-accessibility`
+- viewport/container adaptation, reflow, responsive media, or dense-data layout strategy → `responsive-design`
+- app/workflow state ownership, server/client state boundaries, URL/form/global-store decisions → `state-management`
+- rerender churn, hydration, bundle/runtime performance, or route-level performance behavior → `react-best-practices`
+
+When mixed requests appear, keep `ui-component-patterns` on the reusable component packet and name the routed follow-up explicitly.
+
+### Step 8: Prefer honest boundaries over over-generalized props
+When a component keeps accumulating booleans, escape hatches, or product-specific rules:
+1. check whether the API should split into primitive plus wrapper,
+2. collapse accidental variants into a smaller semantic set,
+3. move layout- or workflow-specific behavior out of the primitive,
+4. route systemic or remediation-heavy follow-ups outward instead of widening the skill.
 
 ## Examples
 
 ### Example 1: Button family drift
-**Input:** “We have five button implementations and people keep adding ad hoc props.”
+**Input:** “We have five button implementations and people keep adding one-off props.”
 
 **Good output direction:**
-- decide there should be one shared action primitive plus a narrower icon-button variant
+- choose `primitive-boundary` as the primary packet
+- keep one shared action primitive plus a narrower icon/button-group wrapper if needed
 - collapse random booleans into a small variant/tone/size set
-- keep analytics and one-off layout wrappers outside the primitive
+- keep analytics and screen-specific layout wrappers outside the primitive
 - route token naming to `design-system`
 
-### Example 2: Modal API confusion
-**Input:** “Should our modal manage its own state or always be controlled by the parent?”
+### Example 2: Modal state confusion
+**Input:** “Should our modal manage its own state or always be controlled by the parent workflow?”
 
 **Good output direction:**
+- choose `controlled-ownership` as the primary packet
 - classify the modal as a reusable composite pattern
 - recommend controlled ownership when workflow state, routing, or async submit logic matters
-- allow an uncontrolled convenience path for simple confirmations if the API stays clear
+- allow an uncontrolled convenience path only if the contract remains explicit
 - route keyboard/focus remediation details to `web-accessibility`
 
-### Example 3: Reusable versus local card
-**Input:** “Should this pricing card become a shared component?”
+### Example 3: Link-button composition
+**Input:** “Our design-system button sometimes needs to render as a router link. How should we support that without breaking types or semantics?”
 
 **Good output direction:**
-- keep the domain-specific marketing card local if only one page needs it
-- extract shared sub-primitives only if repeated slots/actions truly recur
-- route page-level visual-system concerns to `design-system`
+- choose `alternate-root-composition` as the primary packet
+- make prop spreading, ref forwarding, and semantic/accessibility constraints explicit
+- keep route-level navigation policy or token governance outside the primitive decision
+- leave behind a bounded wrapper/root contract instead of a vague “just add an `as` prop” answer
+
+### Example 4: Storybook drift
+**Input:** “The component exists, but teams keep using it differently and Storybook is missing the edge cases.”
+
+**Good output direction:**
+- choose `docs-verification` as the primary packet
+- define the minimum state/variant matrix and example set
+- add anti-usage notes and wrapper expectations
+- route accessibility-only or responsive-only follow-up packets outward
 
 ## Best practices
-1. Prefer the smallest reusable primitive that removes repeated work without inventing a framework.
-2. Treat slots/composition as a tool for real flexibility, not an excuse to skip API design.
-3. Keep controlled/uncontrolled behavior explicit; half-controlled components create the worst maintenance burden.
-4. Write down route-outs to `design-system`, `web-accessibility`, `responsive-design`, `state-management`, and `react-best-practices` whenever the boundary is mixed.
-5. Document state, variants, loading/error/empty behavior, and responsive edge cases in examples or Storybook coverage.
-6. Avoid prop explosions that encode one product screen instead of a reusable concept.
-7. Revisit the abstraction when consumers repeatedly need escape hatches or wrappers to use it.
+1. Prefer the smallest reusable primitive that removes repeated work without inventing a local framework.
+2. Keep packet choice explicit; one component decision should not silently absorb governance, remediation, responsive strategy, and runtime tuning.
+3. Treat slots and subcomponents as structured API tools, not as a way to dodge ownership decisions.
+4. Make controlled vs uncontrolled behavior an explicit contract, not an accidental half-state hybrid.
+5. Keep alternate-root composition honest about refs, prop spreading, and semantics.
+6. Use Storybook/examples as part of the evidence surface, but still write down the docs/verification packet.
+7. Revisit the abstraction when consumers repeatedly need escape hatches or app-specific wrappers to use it.
 
 ## References
-- [React — Thinking in React](https://react.dev/learn/thinking-in-react)
+- [Radix UI — Composition](https://www.radix-ui.com/primitives/docs/guides/composition)
+- [Material UI — Composition](https://mui.com/material-ui/guides/composition/)
 - [Storybook Docs](https://storybook.js.org/docs)
-- [Brad Frost — Atomic Design](https://bradfrost.com/blog/post/atomic-web-design/)
-- [Radix UI Primitives Overview](https://www.radix-ui.com/primitives/docs/overview/introduction)
+- [shadcn/ui Docs](https://ui.shadcn.com/docs)
