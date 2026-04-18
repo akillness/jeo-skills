@@ -10,37 +10,37 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 385
-- Graph edges: 1107
+- Graph edges: 1064
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
 2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. `workflow-automation` dropped to 213 lines and now reads more clearly as a routing-first repo workflow anchor with explicit maintenance-bot and workflow-diagnosis lanes.
-4. The developer-workflow lane stays healthiest when `workflow-automation` owns repo-local command glue, while `system-environment-setup`, `deployment-automation`, `git-workflow`, and `testing-strategies` keep neighboring concerns separate.
+3. `security-best-practices` dropped to 232 lines and now reads more clearly as a routing-first hardening anchor with explicit security-layer packets and route-outs.
+4. The security lane stays healthiest when `security-best-practices` owns layer classification and hardening briefs while `authentication-setup`, `api-design`, `database-schema-design`, `backend-testing`, `debugging`, and `system-environment-setup` keep adjacent concerns separate.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
-- README.md: degree 88
-- README.ko.md: degree 88
-- setup-all-skills-prompt.md: degree 88
-- .agent-skills/skills.toon: degree 82
+- .agent-skills/skills.toon: degree 89
+- README.ko.md: degree 89
+- README.md: degree 89
+- setup-all-skills-prompt.md: degree 89
 
 ## Oversized front-door watchlist
-- clawteam: 330 lines in SKILL.md
-- scrapling: 320 lines in SKILL.md
-- survey: 310 lines in SKILL.md
-- task-planning: 295 lines in SKILL.md
-- code-refactoring: 293 lines in SKILL.md
-- web-accessibility: 291 lines in SKILL.md
-- langsmith: 291 lines in SKILL.md
-- jeo: 289 lines in SKILL.md
-- obsidian-cli: 287 lines in SKILL.md
-- security-best-practices: 285 lines in SKILL.md
+- clawteam: 329 lines in SKILL.md
+- scrapling: 319 lines in SKILL.md
+- survey: 309 lines in SKILL.md
+- task-planning: 294 lines in SKILL.md
+- code-refactoring: 292 lines in SKILL.md
+- web-accessibility: 290 lines in SKILL.md
+- langsmith: 290 lines in SKILL.md
+- jeo: 288 lines in SKILL.md
+- obsidian-cli: 286 lines in SKILL.md
+- presentation-builder: 284 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new workflow-automation wrapper is justified: the bounded win was tightening `workflow-automation` in place and syncing the discovery surfaces.
-- `workflow-automation` should stay distinct from `system-environment-setup` (machine/runtime setup), `deployment-automation` (release/deploy execution), `git-workflow` (history/collaboration), and `testing-strategies` (policy depth).
-- Duplicate pressure rises when repos mix README command lists, hook configs, shell scripts, and CI YAML without one human-facing front door; workflow-diagnosis is the right fix.
+- No new security wrapper is justified: the bounded win was tightening `security-best-practices` in place and syncing the discovery surfaces.
+- `security-best-practices` should stay distinct from `authentication-setup` (auth-stack choice), `api-design` (interface contracts), `database-schema-design` (schema/data-model work), `backend-testing` (test implementation), and `debugging` / `code-review` (code-level fixes and review judgment).
+- Duplicate pressure rises when headers/CSP, CSRF, rate limits, secrets, and scanner findings are all described as one blob; the routing-first hardening brief is the right fix.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree or oversized front-door skills whose trigger logic can be made smaller without weakening their output contract.

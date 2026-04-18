@@ -2589,7 +2589,7 @@
     },
     {
       "name": "security-best-practices",
-      "description": "Design or review web-application and API hardening: headers/CSP/HTTPS, session and cookie safety, CSRF, abuse controls, validation and output encoding, secret handling, and verification handoffs. Use when the main job is deciding which security layer is missing, auditing whether current controls are enough, or turning vague OWASP/security requests into a concrete hardening brief before or alongside implementation. Route product-auth architecture to `authentication-setup`, schema design to `database-schema-design`, and backend security test planning to `backend-testing`.",
+      "description": "Routing-first web/application/API hardening. Use when the main job is classifying which security layer is missing — browser/perimeter policy, session/cookie/CSRF, abuse controls, validation/unsafe execution, secrets/runtime config, or verification — and turning vague OWASP/security asks into one concrete hardening brief. Route auth-stack choice to `authentication-setup`, schema work to `database-schema-design`, code-level fixes to `debugging` / `code-review`, environment wiring to `system-environment-setup`, and backend security test implementation to `backend-testing`.",
       "category": "infrastructure",
       "path": "security-best-practices/SKILL.md",
       "tags": [
