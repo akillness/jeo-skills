@@ -1,21 +1,22 @@
 N:web-accessibility
-D:Diagnose and remediate web accessibility issues across semantics, keyboard/focus, labels, ARIA...
-G:accessibility a11y WCAG keyboard focus ARIA screen-reader
+D:Routing-first web accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow/contrast/motion, media alternatives, and routed-app navigation feedback. Use when audit, WCAG, axe/Lighthouse, or "make this accessible" requests need one concrete remediation packet.
+G:accessibility|a11y|WCAG|keyboard|focus|ARIA|screen-reader|route-announcer|reflow
 U[5]:
-  Accessibility audit with manual follow-up after axe/Lighthouse
+  Accessibility remediation packet after axe/Lighthouse/QA findings
   Keyboard trap / focus return / visible focus remediation
-  Form labels, errors, and live-region announcement fixes
-  Semantic HTML vs ARIA decision-making
-  Accessible modal, form, menu, tab, or toast verification
+  Labels, errors, live-region, and announcement fixes
+  Routed app navigation feedback and focus-reset planning
+  Manual-vs-automated verification for forms, dialogs, and flows
 S[5]{n,action}:
-  1,Frame the accessibility surface
-  2,Separate automated findings from manual follow-up
-  3,Prefer semantic HTML before ARIA
-  4,Fix keyboard and focus behavior first
+  1,Frame the accessibility job before naming fixes
+  2,Choose one primary remediation packet
+  3,Separate automated findings from manual proof
+  4,Route adjacent frontend work explicitly
   5,Produce the remediation and verification packet
-R[5]:
-  structure and semantics
-  keyboard and focus
-  name role value
-  content and feedback
-  visual perception
+R[6]:
+  semantics structure
+  keyboard focus
+  labels announcements
+  visual perception reflow
+  media alternatives
+  routed navigation feedback

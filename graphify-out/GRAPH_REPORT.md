@@ -10,13 +10,14 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 385
-- Graph edges: 1064
+- Graph edges: 1063
+- Category counts: agent-development=2, backend=5, code-quality=5, core-orchestration=10, creative-media=2, documentation=5, frontend=10, infrastructure=13, marketing=2, planning-review=5, project-management=4, search-analysis=7, uncategorized=7, utilities=12
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
-2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. `security-best-practices` dropped to 232 lines and now reads more clearly as a routing-first hardening anchor with explicit security-layer packets and route-outs.
-4. The security lane stays healthiest when `security-best-practices` owns layer classification and hardening briefs while `authentication-setup`, `api-design`, `database-schema-design`, `backend-testing`, `debugging`, and `system-environment-setup` keep adjacent concerns separate.
+2. Support coverage remains complete across the live skill set, so bounded front-door cleanup is still more valuable than adding another wrapper skill.
+3. `web-accessibility` dropped to 231 lines and now reads as a routing-first remediation anchor with explicit packet selection, route-outs, and routed-app feedback coverage.
+4. The frontend lane stays healthiest when `web-accessibility` owns remediation + verification, while `web-design-guidelines`, `responsive-design`, `ui-component-patterns`, and `design-system` keep neighboring critique, layout, API, and governance work separate.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
@@ -24,6 +25,9 @@
 - README.ko.md: degree 89
 - README.md: degree 89
 - setup-all-skills-prompt.md: degree 89
+- task-planning: degree 30
+- performance-optimization: degree 26
+- debugging: degree 25
 
 ## Oversized front-door watchlist
 - clawteam: 329 lines in SKILL.md
@@ -31,18 +35,18 @@
 - survey: 309 lines in SKILL.md
 - task-planning: 294 lines in SKILL.md
 - code-refactoring: 292 lines in SKILL.md
-- web-accessibility: 290 lines in SKILL.md
 - langsmith: 290 lines in SKILL.md
 - jeo: 288 lines in SKILL.md
 - obsidian-cli: 286 lines in SKILL.md
+- autoresearch: 284 lines in SKILL.md
 - presentation-builder: 284 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new security wrapper is justified: the bounded win was tightening `security-best-practices` in place and syncing the discovery surfaces.
-- `security-best-practices` should stay distinct from `authentication-setup` (auth-stack choice), `api-design` (interface contracts), `database-schema-design` (schema/data-model work), `backend-testing` (test implementation), and `debugging` / `code-review` (code-level fixes and review judgment).
-- Duplicate pressure rises when headers/CSP, CSRF, rate limits, secrets, and scanner findings are all described as one blob; the routing-first hardening brief is the right fix.
+- No new accessibility wrapper is justified: the bounded win was tightening `web-accessibility` in place and syncing the discovery surfaces.
+- `web-accessibility` should stay distinct from `web-design-guidelines` (broad critique), `responsive-design` (layout strategy), `ui-component-patterns` (reusable API boundaries), and `design-system` (governance).
+- Routed-app navigation feedback is a useful sub-lane inside accessibility remediation, not a separate standalone skill.
 
 ## Recommended maintenance direction
-- Keep targeting high-degree or oversized front-door skills whose trigger logic can be made smaller without weakening their output contract.
+- Keep targeting oversized front-door skills whose trigger logic can be made smaller without weakening their output contract.
 - Prefer focused support packets and synced discovery surfaces over creating another neighboring wrapper.
 - Re-run catalog/runtime sync validation whenever README/setup or compact wording changes materially.
