@@ -1,32 +1,33 @@
 N:genkit
-D:Build and operate Genkit as the full-stack AI workflow layer for web and backend apps. Use when the user needs server-owned AI flows, tool calling, prompt files, structured outputs, RAG, evaluation, observability, or deployment to Firebase / Cloud Run / another backend runtime. Route direct Firebase app SDK integration and simple in-app Gemini features to `firebase-ai-logic`.
+D:Route server-owned AI workflow work into one Genkit implementation brief. Use when the main job is deciding whether a web/backend/fullstack feature needs reusable flows, tools, retrieval, prompt files, typed contracts, evals, observability, or deployment across Firebase / Cloud Run / another backend runtime. Keep direct Firebase app/client SDK integration routed to `firebase-ai-logic`, Firebase platform/operator work routed to `firebase-cli`, and framework-choice comparisons routed to `survey`.
 G:genkit firebase ai-workflows flows tool-calling rag evaluation observability cloud-run fullstack backend developer-ui dotprompt
 
 U[6]:
-  **Backend AI workflows**: own reusable server-side flows instead of client-only model calls
-  **Tool calling / agents**: add deterministic actions behind a backend workflow boundary
-  **Retrieval / prompts**: manage grounded workflows, prompt files, and structured outputs
-  **Evaluation / observability**: use traces, Developer UI, and eval loops before rollout
-  **Deployment choice**: choose Firebase vs Cloud Run vs another backend runtime deliberately
-  **Routing boundary**: send direct Firebase app SDK integration to `firebase-ai-logic`
+  **Backend workflow ownership**: choose Genkit when the capability should live server-side and be reused across routes, clients, or jobs
+  **Mode selection**: pick flow-foundation / tool-and-agent / retrieval-and-prompt / evaluation-and-observability / deployment-runtime / comparison-or-fallback
+  **Flow contract**: define one smallest input/output boundary and what must remain server-side
+  **Fallback honesty**: keep plain provider SDK + route-handler fallbacks visible when a framework layer is overkill
+  **Deployment decision**: choose Firebase vs Cloud Run vs another backend runtime deliberately
+  **Routing boundary**: send direct Firebase app SDK work to `firebase-ai-logic` and framework comparisons to `survey`
 
 S[6]{n,action,details}:
-  1,Classify layer,Decide whether the job is client integration or backend workflow ownership
-  2,Choose mode,Pick flow-foundation / tool-and-agent / retrieval-and-prompt / evaluation-and-observability / deployment-runtime
-  3,Freeze contract,Define one flow boundary with input/output schema and server-side responsibilities
-  4,Build minimum workflow,Start with one flow and add tools/retrieval only if justified
-  5,Debug with traces,Use Developer UI and representative inputs before scaling usage
-  6,Deploy deliberately,Choose Firebase or Cloud Run based on ownership, clients, and security boundary
+  1,Frame packet,Capture app shape, ownership, current packet, workflow need, and delivery pressure
+  2,Decide layer,Choose whether Genkit is actually the right layer or a fallback/neighboring skill is better
+  3,Choose mode,Pick one primary operating mode before naming tools or models
+  4,Freeze boundary,Define one named backend capability with a typed contract and server-only responsibilities
+  5,Name next slice,Pick the smallest implementation/eval/deployment slice worth doing now
+  6,Route out honestly,Send app SDK work to firebase-ai-logic, Firebase ops to firebase-cli, and framework choice to survey
 
 R[6]:
-  Choose Genkit because you need a workflow layer, not just because the app uses Firebase
-  Keep direct in-app Gemini features routed to `firebase-ai-logic`
-  Start with one crisp backend flow before adding tools, RAG, or multi-agent behavior
-  Use Developer UI and traces early; they are part of the framework value
-  Add evals once the workflow becomes a maintained product capability
-  Treat runtime choice as an architecture decision, not a copy-pasted default
+  Choose Genkit because you need a server-owned workflow layer, not just because the app uses Firebase
+  Start from the packet and ownership decision before naming tools or models
+  Prefer one crisp flow boundary over a giant AI feature bucket
+  Use traces and evals when confidence is the bottleneck
+  Keep plain SDK and route-handler fallbacks visible when they are enough
+  Treat runtime choice as an architecture decision, not proof that Genkit is mandatory
 
-E[3]{desc,in,out}:
-  "Reusable backend assistant","Support app needs retrieval + one ticket tool + one endpoint reused by the web app","Use genkit with a backend flow boundary and explicit tool/retrieval plan"
-  "Direct Firebase app feature","Add Gemini summaries directly inside a Firebase web app","Route to firebase-ai-logic instead of forcing Genkit"
+E[4]{desc,in,out}:
+  "Reusable backend assistant","Support app needs retrieval + one ticket tool + one endpoint reused by the web app","Use genkit with a server-owned flow boundary and explicit tool/retrieval plan"
+  "Direct Firebase app feature","Add Gemini summaries directly inside a Firebase web app with the Firebase SDK","Route to firebase-ai-logic instead of forcing Genkit"
   "Launch-readiness loop","Existing Genkit flows need evals and observability before Cloud Run rollout","Use genkit with an evidence-first eval and trace plan"
+  "Framework-choice packet","Should we use Genkit, Firebase AI Logic, Vercel AI SDK, or direct SDK calls?","Route to survey unless the backend workflow layer is already chosen"

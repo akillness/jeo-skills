@@ -831,3 +831,11 @@
 - Accepted: shrink `vibe-kanban` from 277 to 195 lines, add `references/board-packets-and-surface-selection.md`, expand `evals/evals.json` with a tracker-linked coding-board case, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording so the front door matches the coding-board vs tracker boundary
 - Rejected: adding another agent-board helper; letting `vibe-kanban` sprawl back into PM-board, browser-review, or non-code game/marketing coordination; treating generic trackers as full substitutes for the coding-board control-plane layer
 - Wiki files created/updated: `queries/vibe-kanban-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
+
+## [2026-04-18] query | genkit structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack, product/ops, marketing/content automation, and game-adjacent backend feature work, with the best bounded Firebase/fullstack AI follow-up landing on the existing `genkit` skill rather than a new Firebase/AI wrapper
+- Survey files created under `.survey/genkit-structural-hardening-20260418/`; repo-local wiki and graph evidence plus browser-rendered primary-page evidence from Genkit, Firebase AI Logic, and Vercel AI SDK were used because `web_search` / `web_extract` returned invalid API-key errors in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `genkit` into a packet-first backend workflow anchor, add `references/intake-packets-and-fallbacks.md`, expand `references/modes-and-routing.md` with `comparison-or-fallback`, extend `evals/evals.json` with a thin-route fallback case, sync `SKILL.toon` / `skills.toon` / `skills.json`, update README / README.ko / setup discovery wording, and ratchet the Firebase lane fallback gradient into the wiki
+- Rejected: adding another Firebase AI wrapper; merging `genkit`, `firebase-ai-logic`, and `firebase-cli`; re-expanding `genkit` into a command/example dump
+- Wiki files created/updated: `concepts/firebase-ai-workflow-cluster.md`, `queries/genkit-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
