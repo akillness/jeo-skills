@@ -1,21 +1,24 @@
 N:codebase-search
-D:Search and navigate large codebases efficiently. Use when finding specific code patterns, tracing...
-G:codebase-search grep code-navigation pattern-matching
+D:Route repo-navigation requests to one search packet before editing: exact-text, symbol/indexed, structural, config/content, hosted search, or graph/path trace. Use when the user asks where something is defined or referenced, which files own config/content surfaces, or what must be inspected before a change.
+G:codebase-search repo-navigation impact-analysis grep config-ownership call-sites
 U[8]:
-  Finding specific functions or classes
-  Tracing function calls and dependencies
-  Understanding code structure and architecture
-  Finding usage examples
-  Identifying code patterns
+  Where is this defined?
+  Who uses this?
+  Find call sites before refactoring
+  Which files own this config?
+  Which pages/assets still reference this?
+  Entry-point and ownership discovery
+  Repo archaeology
+  Narrow a large repo before debugging
 S[6]{n,action}:
-  1,Understand what you're looking for
-  2,Choose search strategy
-  3,Search workflow
-  4,Common search patterns
-  5,Advanced techniques
-  6,Search optimization
+  1,Normalize the request into one packet
+  2,Choose exact-text symbol structural config/content hosted or graph packet
+  3,Narrow scope by path package or file type
+  4,Read winners not the whole match list
+  5,Return a compact evidence map
+  6,Route out to debugging refactoring review or graphify when search is done
 R[4]:
-  Function names
-  Class names
-  Error messages
-  Specific strings
+  exact-text
+  symbol-indexed
+  config-content
+  graph-path

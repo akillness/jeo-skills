@@ -348,7 +348,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 |-------|-------------|-----------|
 | `autoresearch` | Karpathy autonomous ML search front door — choose setup / `program.md` / bounded loop / results interpretation / constrained-hardware mode, preserve immutable `prepare.py` + 300s + `val_bpb`, route prompt/skill eval elsewhere | All |
 | `skill-autoresearch` | Repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, and sync support surfaces only after the core skill change is justified | All |
-| `codebase-search` | Evidence-first repo navigation, call-site tracing, and impact analysis | All |
+| `codebase-search` | Routing-first repo navigation: choose one search packet for definitions/references, config/content ownership, entry-point discovery, or impact mapping before debugging/refactoring | All |
 | `data-analysis` | Decision-first dataset analysis for exports, experiments, telemetry, and KPI explanation | All |
 | `langsmith` | Mode-selecting LangSmith skill for LLM tracing, evals, feedback/review queues, prompt-registry decisions, and multi-service propagation | All |
 | `log-analysis` | Root-cause triage for application, infrastructure, browser, and CI logs | All |

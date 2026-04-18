@@ -903,3 +903,11 @@
 - Accepted: shrink `responsive-design` into a routing-first responsive packet anchor, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a launch-readiness boundary case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the hardened frontend-cluster boundary into the wiki
 - Rejected: adding another responsive/mobile wrapper; letting `responsive-design` absorb broad UI audit, accessibility-heavy remediation, component API ownership, or breakpoint-governance work; leaving stale compact/discovery surfaces untouched after the front-door rewrite
 - Wiki files created/updated: `concepts/frontend-skill-canonicalization.md`, `queries/responsive-design-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | codebase-search structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack repos, product/ops infrastructure/config repos, marketing/content repositories, and game-development repo navigation, with the best bounded search-analysis follow-up landing on the existing `codebase-search` skill rather than a new search wrapper
+- Survey files created under `.survey/codebase-search-structural-hardening-20260419/`; repo-local wiki/graph evidence, local OMC/OMX/OHMG docs, and canonical-source links from GitHub Code Search, ripgrep, Sourcegraph, ctags/LSP references, and Unreal Blueprint Search were used because `web_search` / `web_extract` remained unreliable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `codebase-search` into a routing-first packet selector, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with content/template and game-repo cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the packet-first search-analysis boundary into the wiki
+- Rejected: adding another search-adjacent wrapper; letting `codebase-search` absorb diagnosis, refactoring, or persistent graphing; keeping a code-only framing that ignores config/content/game surfaces
+- Wiki files created/updated: `concepts/search-analysis-cluster.md`, `queries/codebase-search-structural-hardening-2026-04-19.md`, `index.md`, `log.md`

@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-19 | Total pages: 127
+> Last updated: 2026-04-19 | Total pages: 128
 
 ## Entities
 
@@ -74,6 +74,7 @@
 - [[frontend-alias-support-hardening-2026-04-16]] — Why the best bounded remaining frontend support fix was hardening the two legacy aliases with alias-side references and compact-surface sync instead of deleting them or re-promoting them as peer skills.
 - [[remotion-video-production-support-hardening-2026-04-16]] — Why the best bounded next creative-media improvement after the frontend alias PR merged was hardening `remotion-video-production` with alias-side references and route-out coverage instead of reviving duplicate Remotion peers.
 - [[codebase-search-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `codebase-search` into an evidence-first repo-navigation anchor instead of adding another search wrapper.
+- [[codebase-search-structural-hardening-2026-04-19]] — Why the best bounded search-analysis follow-up was shrinking `codebase-search` into a routing-first packet selector with config/content and hosted-search coverage instead of adding another search wrapper.
 - [[data-analysis-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `data-analysis` into the decision-first dataset-reasoning anchor instead of adding another analytics wrapper.
 - [[pattern-detection-modernization-2026-04-14]] — Why the best bounded next search-analysis improvement was modernizing `pattern-detection` into the repeatable rule/anomaly-hunting anchor instead of adding another overlapping wrapper.
 - [[sprint-retrospective-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `sprint-retrospective` into a mode-selecting reflection and follow-through skill.
