@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-18 | Total pages: 125
+> Last updated: 2026-04-19 | Total pages: 126
 
 ## Entities
 
@@ -82,6 +82,7 @@
 - [[survey-evidence-recovery-2026-04-12]] — Why the best bounded research-layer change was hardening `survey` with an explicit evidence-recovery ladder and support files.
 - [[survey-structural-hardening-2026-04-18]] — Why the best bounded next research-layer improvement was shrinking `survey` into a routing-first artifact-contract anchor instead of adding another research wrapper.
 - [[task-estimation-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `task-estimation` into a sizing and forecast-language anchor.
+- [[task-estimation-structural-hardening-2026-04-19]] — Why the best bounded PM-cluster follow-up was shrinking `task-estimation` into a routing-first estimate-packet anchor with synced compact/discovery surfaces instead of adding another planning or forecasting wrapper.
 - [[task-planning-modernization-2026-04-12]] — Why the best move was upgrading `task-planning` instead of adding another overlapping PM skill.
 - [[task-planning-structural-hardening-2026-04-18]] — Why the best bounded next PM-cluster improvement was shrinking `task-planning` into a routing-first planning anchor and syncing stale compact/manifest discovery surfaces instead of adding another wrapper.
 - [[log-analysis-modernization-2026-04-13]] — Why the best bounded search-analysis upgrade was rewriting `log-analysis` into a root-cause-first triage skill instead of adding another logging wrapper.

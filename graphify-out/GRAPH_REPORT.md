@@ -10,13 +10,14 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 385
-- Graph edges: 1112
+- Graph edges: 1055
+- Category counts: agent-development=2, backend=5, code-quality=5, core-orchestration=10, creative-media=2, documentation=5, frontend=10, infrastructure=13, marketing=2, planning-review=5, project-management=4, search-analysis=7, uncategorized=7, utilities=12
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
 2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. `database-schema-design` dropped to 246 lines and now reads more clearly as a packet-first storage-design anchor with explicit report/telemetry route-outs.
-4. The backend lane is healthier when `database-schema-design` owns storage-model and migration packets while `api-design`, `authentication-setup`, `backend-testing`, `looker-studio-bigquery`, and `monitoring-observability` keep their adjacent follow-through roles separate.
+3. `task-estimation` now reads more clearly as a routing-first estimate-packet anchor that chooses one sizing horizon and keeps split/spike and forecast-safe language explicit.
+4. The project-management lane stays healthiest when `task-planning` owns decomposition, `task-estimation` owns sizing and uncertainty packets, `standup-meeting` owns daily coordination, and `sprint-retrospective` owns process learning.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
@@ -34,15 +35,15 @@
 - jeo: 289 lines in SKILL.md
 - obsidian-cli: 287 lines in SKILL.md
 - autoresearch: 285 lines in SKILL.md
-- task-estimation: 279 lines in SKILL.md
 - responsive-design: 278 lines in SKILL.md
+- looker-studio-bigquery: 277 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new database wrapper is justified: the bounded win was tightening `database-schema-design` in place and syncing the discovery surfaces.
-- `database-schema-design` should stay distinct from `api-design` (contract shape), `authentication-setup` (identity/session ownership), `backend-testing` (verification), `looker-studio-bigquery` (reporting presentation), and `monitoring-observability` (telemetry freshness / alerts).
-- Duplicate pressure rises when schema requests blur data modeling, dashboard design, auth ownership, and migration verification into one blob; the packet-first route-out model is the right fix.
+- No new PM wrapper is justified: the bounded win was tightening `task-estimation` in place and syncing the discovery surfaces.
+- `task-estimation` should stay distinct from `task-planning` (decomposition), `standup-meeting` (daily sync), and `sprint-retrospective` (reflection and process correction).
+- Duplicate pressure rises when sizing, planning, forecasting, and commitment language blur together; the routing-first estimate-packet model is the right fix.
 
 ## Recommended maintenance direction
-- Keep targeting high-degree or oversized front-door skills whose trigger logic can be made smaller without weakening their output contract.
-- Prefer focused support packets and synced discovery surfaces over creating another neighboring wrapper.
+- Keep targeting high-degree or oversized front-door skills whose trigger logic can be made smaller without weakening the output contract.
+- Prefer support-packet improvements and synced discovery surfaces over creating another neighboring wrapper.
 - Re-run catalog/runtime sync validation whenever README/setup or compact wording changes materially.
