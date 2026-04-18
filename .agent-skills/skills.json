@@ -1067,7 +1067,7 @@
     },
     {
       "name": "genkit",
-      "description": "Build and operate Genkit as the full-stack AI workflow layer for web and backend apps. Use when the user needs server-owned AI flows, tool calling, prompt files, structured outputs, RAG, evaluation, observability, or deployment to Firebase / Cloud Run / another backend runtime. Triggers on: Genkit, Firebase Genkit, AI flow, tool-calling backend, Genkit evals, Genkit developer UI, server-side prompt workflow, and deployable AI endpoints. Route direct Firebase app SDK integration and simple in-app Gemini features to `firebase-ai-logic`.",
+      "description": "Route server-owned AI workflow work into one Genkit implementation brief. Use when the main job is deciding whether a web/backend/fullstack feature needs reusable flows, tools, retrieval, prompt files, typed contracts, evals, observability, or deployment across Firebase / Cloud Run / another backend runtime. Choose among flow-foundation, tool-and-agent, retrieval-and-prompt, evaluation-and-observability, deployment-runtime, and comparison-or-fallback modes; keep direct Firebase app/client SDK integration routed to `firebase-ai-logic`, Firebase platform/operator work routed to `firebase-cli`, and framework-choice comparisons routed to `survey`.",
       "category": "infrastructure",
       "path": "genkit/SKILL.md",
       "tags": [

@@ -1,285 +1,251 @@
 ---
 name: genkit
 description: >
-  Build and operate Genkit as the full-stack AI workflow layer for web and
-  backend apps. Use when the user needs server-owned AI flows, tool calling,
-  prompt files, structured outputs, RAG, evaluation, observability, or
-  deployment to Firebase / Cloud Run / another backend runtime. Triggers on:
-  Genkit, Firebase Genkit, AI flow, tool-calling backend, Genkit evals, Genkit
-  developer UI, server-side prompt workflow, and deployable AI endpoints. Route
-  direct Firebase app SDK integration and simple in-app Gemini features to
-  `firebase-ai-logic`.
+  Route server-owned AI workflow work into one Genkit implementation brief.
+  Use when the main job is deciding whether a web/backend/fullstack feature needs
+  reusable flows, tools, retrieval, prompt files, typed contracts, evals,
+  observability, or deployment across Firebase / Cloud Run / another backend
+  runtime. Choose among flow-foundation, tool-and-agent, retrieval-and-prompt,
+  evaluation-and-observability, and deployment-runtime modes; keep direct
+  Firebase app/client SDK integration routed to `firebase-ai-logic`, Firebase
+  platform/operator work routed to `firebase-cli`, and framework-choice
+  comparisons routed to `survey`.
 allowed-tools: Read Write Bash Grep Glob
+compatibility: >
+  Best for repository packets, backend route handlers, API/service notes,
+  Firebase app backends, Cloud Run service plans, flow/eval docs, and launch
+  readiness reviews where the real decision is whether Genkit should own a
+  server-side capability or the work belongs to a neighboring skill or simpler
+  fallback.
 metadata:
-  tags: genkit, firebase, ai-workflows, flows, tool-calling, rag, evaluation, observability, firebase, cloud-run, fullstack
+  tags: genkit, firebase, ai-workflows, flows, tool-calling, rag, evaluation, observability, cloud-run, fullstack, backend
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.0"
+  version: "2.1"
   source: Firebase Genkit docs + Genkit official docs
   modernization: 2026-04-15
 ---
 
 # Genkit
 
-`genkit` is the **full-stack AI workflow / orchestration** skill for app teams that need more than a single model call.
+Use this skill when the main question is **"should this feature become a reusable server-owned AI workflow, and if so what is the smallest Genkit shape worth owning?"**
 
-Use it when the real problem is **owning AI behavior on the server side**: reusable flows, tool execution, retrieval, prompt files, evaluation, local observability, and deployment as backend endpoints or jobs.
+The job is not to dump a long Genkit tutorial, CLI catalog, or Firebase product tour.
+The job is to frame the current packet, choose one operating mode, define one backend flow boundary, decide whether Genkit is actually the right layer, and route adjacent work away before the skill turns into app SDK wiring, Firebase ops, or generic framework comparison.
 
-Read these support docs before choosing the workflow:
-- [references/modes-and-routing.md](references/modes-and-routing.md)
-- [references/deployment-and-runtime-boundaries.md](references/deployment-and-runtime-boundaries.md)
-- [references/evals-and-observability.md](references/evals-and-observability.md)
+Read [references/intake-packets-and-fallbacks.md](references/intake-packets-and-fallbacks.md) before handling mixed or ambiguous requests.
+Read [references/modes-and-routing.md](references/modes-and-routing.md) before choosing a primary mode.
+Read [references/deployment-and-runtime-boundaries.md](references/deployment-and-runtime-boundaries.md) when runtime choice is the real open question.
+Read [references/evals-and-observability.md](references/evals-and-observability.md) when the workflow already exists and confidence is the bottleneck.
 
 ## When to use this skill
-Use `genkit` when one or more of these are true:
-- The user needs **server-owned AI flows** instead of direct client-side model calls.
-- The workflow needs **tool calling, retrieval, structured outputs, or multi-step orchestration**.
-- The team wants **prompt files, reusable flow contracts, or deployable AI endpoints**.
-- The request involves **Genkit Developer UI, flow tracing, evaluation, or local observability**.
-- The app needs to deploy AI behavior to **Firebase, Cloud Run, or another backend runtime**.
-- The same AI behavior should be reused across **web, mobile, cron, internal tools, or multiple backend surfaces**.
-- The request explicitly mentions Genkit, Firebase Genkit, AI flows, deployable AI workflows, tool-calling backend, RAG pipeline, or Genkit evals.
+- A backend or full-stack feature needs a **reusable AI flow** instead of one-off provider calls scattered through route handlers
+- The work needs **typed input/output contracts**, flow ownership, or one AI capability reused across multiple clients, jobs, or surfaces
+- The workflow needs **tool calling, retrieval, prompt files, structured outputs, evaluation, or local tracing** under a server-owned boundary
+- The request is clearly about **Genkit** or **server-side Firebase AI workflow design**, not direct app/client SDK integration
+- The open question is how to structure, debug, evaluate, or deploy an existing Genkit flow to Firebase, Cloud Run, or another backend runtime
 
 ## When not to use this skill
-- **The user mainly wants direct Gemini features inside a Firebase app/client SDK** → use `firebase-ai-logic`
-- **The task is mainly Firebase project setup, emulators, hosting, or deploy/admin CLI work** → use `firebase-cli`
-- **The request is a generic orchestration or planning workflow, not an app/backend AI framework choice** → use `survey`, `task-planning`, or the relevant orchestration skill
-- **The user only needs provider-specific model access with minimal abstraction** → use the relevant provider or SDK skill instead of forcing Genkit
-- **The main job is frontend UI integration and streaming UX rather than backend AI ownership** → use the relevant frontend/web skill, and only keep Genkit if the server workflow is the real center of gravity
-
-## Quick routing rule
-| If the job needs... | Use |
-|---|---|
-| Direct Firebase app integration for Gemini-powered product features | `firebase-ai-logic` |
-| Reusable backend AI flows, tools, retrieval, evals, and deployment | `genkit` |
-| Firebase project/bootstrap/deploy/admin operations | `firebase-cli` |
-| Framework comparison or architecture discovery before choosing | `survey` |
-
-## Core idea
-Treat Genkit as the **workflow layer**, not just a collection of code snippets.
-
-Genkit is strongest when you need all or most of these together:
-- **generation primitives** for model calls and structured output
-- **flows** as reusable backend contracts
-- **tools** and agentic building blocks
-- **prompt files / Dotprompt** for maintainable prompts
-- **retrieval** and RAG support
-- **Developer UI / tracing / local observability**
-- **evaluation** for prompt and workflow quality
-- **deployment** to Firebase, Cloud Run, or another backend target
-
-If the workflow never leaves the app layer and does not need backend ownership, Genkit is often more framework than you need.
+- **The main job is direct mobile/web app integration with Firebase AI Logic client SDKs** → `firebase-ai-logic`
+- **The main job is Firebase bootstrap, emulator usage, hosting/functions deploy, auth/login, or admin CLI work** → `firebase-cli`
+- **The request is mostly frontend streaming/rendering/app wiring without backend workflow ownership** → relevant frontend/web skill
+- **The real question is framework choice (`Genkit` vs `Firebase AI Logic` vs `Vercel AI SDK` vs direct SDKs)** → `survey`
+- **A plain provider SDK or simple route handler is probably enough and the user is not asking for reusable workflow structure** → note the fallback and keep the answer lightweight
 
 ## Instructions
 
-### Step 1: Classify whether Genkit is the right layer
-Normalize the request first:
+### Step 1: Frame the current packet
+Record the smallest useful intake before recommending Genkit.
 
-```yaml
-genkit_intake:
-  app_shape: web | mobile | backend | fullstack | mixed | unknown
-  ownership: client-feature | backend-workflow | mixed | unknown
-  workflow_need:
-    - simple-generation
-    - structured-output
-    - tool-calling
-    - retrieval-rag
-    - prompt-files
-    - evals
-    - observability
-    - deployment
-  deployment_target: firebase | cloud-run | other-backend | local-only | unknown
-  runtime_language: typescript | go | python | mixed | unknown
-  reuse_scope: one-feature | several-endpoints | cross-surface | unknown
+Capture:
+- app shape: web | mobile | backend | fullstack | mixed | unknown
+- ownership: client feature | backend capability | mixed | unknown
+- packet: route handler | feature brief | architecture note | deployed flow | eval/trace complaint | deploy plan | none
+- workflow need: simple generation | structured output | tools | retrieval | prompt files | evals | observability | deployment | unknown
+- delivery pressure: single endpoint | multi-surface reuse | launch readiness | migration | reliability concern | unknown
+
+Quick frame:
+```markdown
+App shape: fullstack
+Ownership: backend capability
+Packet: existing API route + support feature brief
+Workflow need: retrieval + one ticket tool + evals later
+Delivery pressure: reuse across web app and internal ops panel
 ```
 
-Choose `genkit` when the dominant need is **backend-owned AI workflow structure**.
-If the request is really just app-side Firebase model usage, route out to `firebase-ai-logic`.
+### Step 2: Choose the intake packet first
+Use [references/intake-packets-and-fallbacks.md](references/intake-packets-and-fallbacks.md).
 
-### Step 2: Choose one operating mode
-Pick one primary mode before writing code or commands:
+Pick the packet the user actually has now:
+- new backend capability packet
+- existing route/handler packet
+- deployed flow quality packet
+- deployment/runtime packet
+- comparison/fallback packet
+- no usable packet yet
 
-1. **flow-foundation mode**
-   - Use when the team needs a reusable flow contract for one backend AI task.
-   - Output: flow boundary, input/output schema, model/tool plan, and runtime choice.
-
-2. **tool-and-agent mode**
-   - Use when the app needs tool calling, external actions, or agentic patterns.
-   - Output: tool boundary, safety notes, flow/tool split, and execution plan.
-
-3. **retrieval-and-prompt mode**
-   - Use when the app needs RAG, prompt files, context injection, or structured grounding.
-   - Output: retrieval plan, prompt contract, evaluation targets, and deployment notes.
-
-4. **evaluation-and-observability mode**
-   - Use when the team already has Genkit flows and needs confidence, traces, or quality checks.
-   - Output: eval harness shape, trace/debug loop, metrics to watch, and iteration plan.
-
-5. **deployment-runtime mode**
-   - Use when the AI workflow exists and the main question is Firebase vs Cloud Run vs another runtime.
-   - Output: deployment boundary, secret/config plan, serving shape, and rollout checklist.
-
-Return the chosen mode explicitly before continuing.
-
-### Step 3: Freeze the flow boundary before implementation
-Define the smallest useful workflow contract:
-- what input enters the flow
-- what output leaves the flow
-- which steps must stay server-side
-- which provider/model assumptions matter
-- where tools/retrieval fit, if anywhere
-
-A good Genkit boundary usually looks like:
-- **one named backend capability**
-- **typed input/output contract**
-- **clear server ownership**
-- **observable execution path**
-
-Bad boundaries:
-- “put every AI feature in one mega-flow”
-- “use Genkit because the app uses Firebase, even though the work is client-only”
-- “start with tool calling, retrieval, and evals before one basic flow works”
-
-### Step 4: Pick the right runtime shape
-Use the runtime choice as a product/operations decision, not a default reflex.
-
-| Runtime shape | Use when | Watch for |
-|---|---|---|
-| **Firebase-backed app + server workflow** | The app already lives in Firebase and you want close platform alignment | Secret handling, callable/API shape, rollout ownership |
-| **Cloud Run / generic backend service** | You need a more explicit service boundary or non-Firebase backend control | Deployment pipeline, auth between services, scaling/cold-start tradeoffs |
-| **Local-only dev loop first** | You are still proving the workflow and need tracing/debugging before deployment | Do not mistake local success for production readiness |
-
-Read [references/deployment-and-runtime-boundaries.md](references/deployment-and-runtime-boundaries.md) before choosing.
-
-### Step 5: Build the minimum useful Genkit workflow
-Use this default build order:
-1. choose provider + model
-2. define input/output schema
-3. implement one flow
-4. run it in the local dev loop / Developer UI
-5. add tools or retrieval only if the job actually requires them
-6. add evaluation and observability before scaling usage
-7. deploy only after the workflow contract is stable enough
-
-Typical Genkit building blocks:
-- `genkit()` runtime setup
-- `generate()` / structured output
-- `defineFlow()`
-- prompt files / Dotprompt
-- `defineTool()` when the model needs real actions
-- retrieval support only when grounding matters
-- evals / observability for quality and regression control
-
-### Step 6: Use Developer UI and traces early
-The Genkit dev loop is part of the value proposition, not an afterthought.
-
-Use Developer UI / local tracing when:
-- the flow shape is still changing
-- prompts are unstable
-- tool or retrieval steps need inspection
-- structured output is brittle
-- you need evidence before rollout
-
-Questions to answer in the trace/debug loop:
-- where does the workflow actually fail?
-- is the schema right, or is the prompt compensating for a bad contract?
-- should a tool or retrieval step live outside the model loop?
-- does this need a formal eval set yet?
-
-### Step 7: Add tools, retrieval, or agents only when justified
-Use Genkit's richer workflow surface carefully.
-
-Add **tools** when the model must trigger deterministic actions.
-Add **retrieval/RAG** when the workflow needs external knowledge grounding.
-Add **multi-step or agentic patterns** when a single well-bounded flow is not enough.
-
-Do not add all three at once without proving why each one is necessary.
-A smaller flow with a crisp schema beats a giant "AI system" that nobody can debug.
-
-### Step 8: Decide how evaluation will work
-If the workflow matters in production, evaluation cannot stay implicit forever.
-
-Minimum useful evaluation questions:
-- what good output looks like
-- what failures are unacceptable
-- which sample inputs represent real usage
-- whether quality should be checked manually, automatically, or both
-
-Genkit should own the **evidence loop** for prompt/workflow quality once the feature matters enough to be maintained over time.
-Read [references/evals-and-observability.md](references/evals-and-observability.md) before adding quality gates.
-
-### Step 9: Route out honestly
-`genkit` should stay narrow enough to be useful.
-
-Route out when the request is really about:
-- **direct Firebase app SDK integration** → `firebase-ai-logic`
-- **Firebase CLI, emulators, hosting, or admin operations** → `firebase-cli`
-- **frontend rendering or UI wiring without backend workflow ownership** → relevant web/frontend skills
-- **generic framework comparison before implementation** → `survey`
-- **provider-specific low-abstraction integration** → the relevant provider/SDK skill
-
-## High-value command patterns
-
-### Install CLI / runtime packages
-```bash
-npm install -g genkit-cli
-npm install genkit @genkit-ai/google-genai
+Output this step as:
+```markdown
+## Intake Packet
+- Current packet:
+- Why it is enough (or not enough):
+- Missing context to collect next:
 ```
 
-### Start local development loop
-```bash
-genkit start -- npx tsx --watch src/index.ts
+Rule: do not force Genkit just because the app already uses Firebase.
+
+### Step 3: Decide whether Genkit is the right layer
+Make the ownership decision explicit before choosing a mode.
+
+Choose **Genkit** when the dominant need is:
+- a reusable server-side AI contract
+- typed flow input/output boundaries
+- one place to own tool/retrieval/prompt orchestration
+- evaluation, tracing, or deployment support for a maintained backend feature
+
+Do **not** force Genkit when the request is mainly:
+- direct client/mobile/web SDK usage
+- a thin one-off model call that can stay in a normal backend route
+- a generic framework comparison with no chosen ownership layer yet
+- a reliability/durability question better owned by queue/job/workflow infrastructure
+
+State the decision in one line:
+```markdown
+## Layer Decision
+- Use Genkit: yes | no | maybe-after-survey
+- Why:
 ```
 
-### Run a flow from the CLI
-```bash
-genkit flow:run myFlow '{"input":"value"}'
-```
+### Step 4: Choose one primary operating mode
+Pick one primary mode from [references/modes-and-routing.md](references/modes-and-routing.md).
 
-### Evaluate a flow
-```bash
-genkit eval:flow myFlow --input eval-inputs.json
-```
+Primary modes:
+- `flow-foundation`
+- `tool-and-agent`
+- `retrieval-and-prompt`
+- `evaluation-and-observability`
+- `deployment-runtime`
+- `comparison-or-fallback`
 
-## Troubleshooting
-| Issue | What to check |
-|---|---|
-| Genkit feels heavy for the request | Re-check whether the work should live in `firebase-ai-logic` or direct SDK calls instead |
-| Flow keeps changing shape | Freeze a smaller input/output contract before adding tools or retrieval |
-| Tool calling keeps getting messy | Split deterministic actions from model reasoning and make tool boundaries explicit |
-| RAG quality is weak | Inspect retrieval quality and prompt contract before adding more framework complexity |
-| Team cannot tell where to deploy | Decide whether Firebase alignment or generic backend control is the real priority |
-| Nobody trusts outputs yet | Add a small eval set and use traces/observability before widening rollout |
+Rule: one primary mode, optional secondary mode.
+Do not mix backend flow design, frontend app wiring, deployment ops, and architecture comparison into one blob.
+
+### Step 5: Freeze one smallest flow boundary
+If Genkit is the right layer, define the smallest useful workflow contract:
+- one named backend capability
+- one input/output schema or contract
+- what must remain server-side
+- where tools/retrieval belong, if anywhere
+- which client(s) or jobs call it
+
+Good boundary examples:
+- support reply + ticket action flow shared by web app and internal admin tools
+- document-grounded answer flow with one retrieval source and schema-valid output
+- existing flow that now needs eval coverage before a Cloud Run rollout
+
+Bad boundary examples:
+- every AI feature in one mega-flow
+- client-side app integration disguised as a server workflow
+- adding tools, retrieval, and multi-agent logic before one basic flow works
+
+### Step 6: Name the fallback or route-out honestly
+Use [references/intake-packets-and-fallbacks.md](references/intake-packets-and-fallbacks.md).
+
+Common route-outs:
+- direct Firebase app/client SDK integration → `firebase-ai-logic`
+- Firebase CLI / emulator / deploy / admin work → `firebase-cli`
+- frontend streaming/rendering/app wiring → relevant frontend/web skill
+- framework comparison or architecture uncertainty → `survey`
+- thin synchronous model call that can stay inside one existing route → note plain provider SDK / route-handler fallback instead of forcing Genkit
+- durability / retries / background orchestration dominating the problem → note queue/job/workflow substrate as a complement or better first layer
+
+### Step 7: Pick the smallest next slice
+Do not jump to a giant system diagram.
+Return the smallest next slice that makes Genkit real:
+- define one flow contract
+- wrap one existing route into a flow
+- add one tool boundary
+- add one retrieval boundary
+- add one eval set with representative inputs
+- choose one runtime/deploy shape
+
+### Step 8: Use evals and traces when confidence is the bottleneck
+Use [references/evals-and-observability.md](references/evals-and-observability.md).
+
+When the workflow already exists, prefer:
+1. representative inputs
+2. local trace review / Developer UI inspection
+3. small eval set
+4. contract / prompt / tool cleanup
+5. rollout only after the evidence loop is good enough
+
+### Step 9: Return the Genkit brief
+```markdown
+# Genkit Brief
+
+## Scope
+- App shape:
+- Ownership:
+- Intake packet:
+- Primary mode:
+- Confidence:
+
+## Layer Decision
+- Use Genkit: yes | no | maybe-after-survey
+- Why:
+
+## Backend Flow Boundary
+- Capability:
+- Input / output contract:
+- Server-only responsibilities:
+- Tools / retrieval / prompt-file needs:
+
+## Smallest Next Slice
+1. ...
+2. ...
+3. ...
+
+## Route-outs / Fallbacks
+- ...
+```
 
 ## Examples
 
-### Example 1: Server-owned support assistant for a Firebase app
-- Prompt: "We need a backend Genkit flow for our support app: retrieve help articles, call one ticket tool, and expose one endpoint the web app can reuse."
-- Expected behavior: use `genkit`, choose `tool-and-agent` or `retrieval-and-prompt` mode, define the flow boundary, retrieval/tool plan, eval targets, and deployment shape.
+### Example 1: Reusable backend support workflow
+**Input:** “Build a Genkit backend flow for our support app: retrieve help articles, call one ticket tool, and expose one server endpoint the web app can reuse.”
 
-### Example 2: Direct in-app Gemini feature
-- Prompt: "Add Gemini-powered summaries directly inside our Firebase web app."
-- Expected behavior: route away to `firebase-ai-logic` unless the request clearly adds server-owned orchestration requirements.
+**Expected shape:** `tool-and-agent` or `retrieval-and-prompt`, explicit server-owned flow boundary, one tool/retrieval plan, no route to `firebase-ai-logic`.
 
-### Example 3: Existing Genkit app needs confidence before launch
-- Prompt: "Our Genkit flows work locally, but we need a practical eval and observability plan before we deploy to Cloud Run."
-- Expected behavior: use `genkit`, choose `evaluation-and-observability` mode, and produce an evidence-first quality plan.
+### Example 2: Direct Firebase app feature
+**Input:** “Add Gemini-powered summaries directly inside our Firebase web app with the Firebase SDK.”
+
+**Expected shape:** route to `firebase-ai-logic` unless the request clearly adds a server-owned workflow requirement.
+
+### Example 3: Existing flow needs confidence before launch
+**Input:** “Our Genkit flows work locally, but we need a practical eval and observability plan before deploying to Cloud Run.”
+
+**Expected shape:** `evaluation-and-observability`, small evidence loop, route runtime specifics through the deployment boundary without turning the answer into Firebase CLI ops.
 
 ### Example 4: Framework choice is still unclear
-- Prompt: "Should we use Genkit, Firebase AI Logic, or just direct SDK calls for this Firebase app?"
-- Expected behavior: route first to `survey`, then return to `genkit` only if the decision favors a backend workflow layer.
+**Input:** “Should we use Genkit, Firebase AI Logic, Vercel AI SDK, or just direct SDK calls for this Firebase app?”
+
+**Expected shape:** `comparison-or-fallback`, route to `survey`, and only return to `genkit` if the chosen ownership layer is a reusable backend workflow.
 
 ## Best practices
-1. Choose Genkit because you need a **workflow layer**, not just because the app uses Firebase.
-2. Start with one crisp flow contract before adding tools, RAG, or multi-agent behavior.
-3. Keep direct app-side Gemini integration routed to `firebase-ai-logic`.
-4. Use Developer UI / local traces early; they are part of Genkit's value.
-5. Add evals when the workflow becomes a maintained product capability, not a one-off demo.
-6. Treat deployment target choice as an architecture decision, not a copy-pasted default.
-7. Prefer small reusable flows over one giant AI orchestration blob.
+1. Choose Genkit because you need a **server-owned workflow layer**, not just because the product uses Firebase.
+2. Start from the packet and ownership decision before naming tools or models.
+3. Prefer one crisp flow boundary over a giant AI feature bucket.
+4. Keep direct app/client SDK work routed to `firebase-ai-logic`.
+5. Acknowledge plain route-handler / provider-SDK fallbacks when they are enough.
+6. Treat runtime choice as an architecture decision, not proof that Genkit is mandatory.
+7. Use traces and evals before widening rollout.
+8. Sync compact discovery surfaces whenever the front-door boundary changes.
 
 ## References
 - Firebase Genkit docs: https://firebase.google.com/docs/genkit
 - Genkit docs: https://genkit.dev/docs/
 - Genkit flows docs: https://genkit.dev/docs/js/flows/
-- Genkit deployment docs: https://genkit.dev/docs/js/deployment/firebase/
+- Genkit client access docs: https://genkit.dev/docs/client/
 - Firebase AI Logic docs: https://firebase.google.com/docs/ai-logic
+- `../firebase-ai-logic/SKILL.md`
+- `../firebase-cli/SKILL.md`
+- `../survey/SKILL.md`
