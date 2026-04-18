@@ -86,7 +86,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
-| **game-performance-profiler: quick-packet + device-review 강화** | `game-performance-profiler`를 실제 팀이 가지고 오는 성능 패킷 중심으로 강화했습니다. 이제 profiler/overlay 스크린샷, `stat unit` / `stat gpu` 출력, benchmark-route 불만, Steam Deck 또는 packaged-on-device 검토 메모에서 출발해 `quick-triage`, `bottleneck-classification`, `benchmark-route`, `device-review`, `escalation` 모드 중 하나를 선택합니다. 또한 `references/capture-packets-and-benchmark-routes.md`, `references/device-review-and-steam-deck.md`, `references/escalation-ladder.md`, 갱신된 `references/profiling-patterns.md`, `evals/evals.json`, `SKILL.toon`을 추가했고, 스킬 수 증가 없이 `game-demo-feedback-triage`, `game-build-log-triage`, `game-ci-cd-pipeline`, `performance-optimization`로의 route-out도 더 선명하게 만들었습니다. |
+| **game-performance-profiler: 라우팅 우선 구조 강화** | `game-performance-profiler`를 더 작은 bottleneck-first 프로파일링 프런트도어로 다듬었습니다. 새 `references/mode-selection-and-route-outs.md`와 기존 packet/device/escalation reference를 중심으로 하나의 출력 계약(`Game Performance Profiling Brief`)을 유지하고, 빌드 실패를 `game-build-log-triage`로 보내는 경계 eval도 추가했으며, quick packet·benchmark route·target-device review·의도적인 profiler escalation 중심으로 발견 문구를 다시 맞췄습니다. |
 | **agent-browser: fresh-session verification 재작성** | `agent-browser`를 일반적인 브라우저 CLI 가이드에서 브라우저 검토 레인의 **fresh-session deterministic verification** 앵커로 재구성했습니다. 이제 먼저 clean browser 레인을 선택하고, observe → act → observe 루프를 기본 계약으로 삼으며, `playwriter`, `agentation`, `plannotator`로의 route-out을 명시합니다. 또한 `references/modes-and-routing.md`와 `evals/evals.json`을 추가했고, auth 재사용도 실행 중 브라우저 워크플로로 흐르지 않도록 bounded reuse로 제한합니다. |
 | **agentation: UI 어노테이션 라우터 재작성** | `agentation`을 거대한 설치/설정 카탈로그에서 계획·검토 레인의 **정확한 렌더드 UI 피드백 라우터**로 재구성했습니다. 이제 copy-paste review, synced watch-loop, self-driving critique, platform-setup 모드 중 하나를 고르고, `agent-browser`, `playwriter`, `plannotator`로의 route-out을 명시합니다. 또한 `references/modes-and-routing.md`, `references/platform-setup-and-hooks.md`, `references/watch-loop-and-self-driving.md`, `evals/evals.json`을 추가했고, 저장소 상단 발견면도 **89개 스킬** 기준으로 맞췄습니다. |
 | **git-submodule: 서브모듈 운영 앵커 재작성** | `git-submodule`을 오래된 명령 카탈로그에서 유틸리티 레인의 결정-우선 서브모듈 앵커로 재구성했습니다. 이제 먼저 submodule vs subtree/vendoring/package delivery를 판단하고, `boundary decision`, `add-and-pin`, `bootstrap-and-clone`, `sync-to-pinned-commit`, `advance-tracked-branch`, `edit-inside-submodule`, `remove-and-cleanup`, `ci-checkout` 중 하나의 워크플로 모드를 선택합니다. 또한 detached HEAD, 포인터 변경, CI/auth 결과를 명시하고, 일반 Git 히스토리 정리는 `git-workflow`, 패키지 전달 판단은 `npm-git-install`로 라우팅하며, 스킬 수 증가 없이 `references/decision-matrix.md`, `references/update-and-detached-head.md`, `references/ci-and-automation.md`, `evals/evals.json`을 제공합니다. |
@@ -366,7 +366,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `game-build-log-triage` | Unity/Unreal 빌드, cook, package, editor, signing, CI 로그에서 첫 번째 실행 가능한 실패를 분리하는 전문 triage | 전체 |
 | `game-ci-cd-pipeline` | 게임 빌드/릴리즈 파이프라인 설계 및 강화 — matrix, artifact 흐름, cache 정책, packaging 단계, release gate | 전체 |
 | `game-demo-feedback-triage` | 플레이테스트/데모/커뮤니티 피드백을 가중치 테마와 fix-first 우선순위로 정리 | 전체 |
-| `game-performance-profiler` | Unity/Unreal 성능 트리아지 — quick evidence packet, benchmark route, packaged-on-device 검토, profiler escalation | 전체 |
+| `game-performance-profiler` | Unity/Unreal frame-time 트리아지 — bottleneck-first profiling brief, quick packet, benchmark route, target-device 검토, profiler escalation | 전체 |
 | `steam-store-launch-ops` | Steam 출시/상점 병목 진단 — visibility, 페이지 promise, demo proof, event timing, launch-readiness ops | 전체 |
 
 ### 🔧 유틸리티 (11개)
