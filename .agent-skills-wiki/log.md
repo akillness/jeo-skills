@@ -887,3 +887,11 @@
 - Accepted: shrink `database-schema-design` into a packet-first storage router, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with marketing/customer-data and game/live-ops cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet reporting/telemetry route-outs into the backend cluster wiki note
 - Rejected: adding another generic schema/migration wrapper; letting `database-schema-design` absorb dashboard/reporting or observability implementation; leaving compact/discovery surfaces stale after tightening the front door
 - Wiki files created/updated: `concepts/backend-api-cluster.md`, `queries/database-schema-design-structural-hardening-2026-04-18.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | task-estimation structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack delivery, product/ops and GTM launch packets, and game milestone estimation, with the best bounded PM follow-up landing on the existing `task-estimation` skill rather than a new planning or forecasting wrapper
+- Survey files created under `.survey/task-estimation-structural-hardening-20260419/`; repo-local wiki/graph evidence plus primary-source retrieval from Atlassian, Scrum.org, John Cutler, Mountain Goat Software, Rami Ismail, and Yahoo Japan indexed discussion snippets were used because `web_search` / `web_extract` remained unreliable in this environment
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `task-estimation` into a routing-first estimate-packet anchor, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a GTM/ops launch-readiness case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the hardened PM-cluster boundary into the wiki
+- Rejected: adding another forecasting/planning-poker wrapper; letting `task-estimation` absorb decomposition, standup coordination, or retrospective analysis; leaving stale compact/discovery surfaces untouched after the front-door rewrite
+- Wiki files created/updated: `concepts/project-management-cluster.md`, `queries/task-estimation-structural-hardening-2026-04-19.md`, `index.md`, `log.md`

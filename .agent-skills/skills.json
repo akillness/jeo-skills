@@ -2940,7 +2940,7 @@
     },
     {
       "name": "task-estimation",
-      "description": "Turn vague backlog items, stories, bugs, spikes, roadmap slices, or milestone work into practical size signals, uncertainty notes, and forecast-safe estimate packets. Use when the user needs story points, t-shirt sizing, planning-poker prep, reference-story calibration, confidence/risk framing, or a sizing pass for software, product, or game work. Not for backlog decomposition, standups, retrospectives, or hard deadline promises.",
+      "description": "Turn fuzzy work into one honest estimate packet by choosing the right sizing horizon, naming confidence and uncertainty, and separating discovery from delivery before anyone treats the number like a promise. Use when the user needs story points, t-shirt sizing, planning-poker prep, forecast-safe language, split-or-spike guidance, or cross-functional sizing across software, product/ops, marketing/GTM, or game work. Route decomposition to task-planning, daily coordination to standup-meeting, and retrospective learning to sprint-retrospective.",
       "category": "project-management",
       "path": "task-estimation/SKILL.md",
       "tags": [

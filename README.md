@@ -333,7 +333,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 |-------|-------------|-----------|
 | `sprint-retrospective` | Routing-first retrospective anchor for sprint retros, milestone postmortems, remote/hybrid facilitation, and dead-action-item recovery | All |
 | `standup-meeting` | Daily standups, async check-ins, walk-the-board syncs, and blocker triage | All |
-| `task-estimation` | Story points, t-shirt sizing, planning poker prep, and forecast-safe sizing | All |
+| `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Routing-first planning anchor for backlog cleanup, feature slicing, release packets, and milestone prep across software, GTM, and game work | All |
 
 ### 🔭 Search & Analysis (7)
