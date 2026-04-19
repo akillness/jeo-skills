@@ -1024,3 +1024,11 @@
 - Accepted: patch `validate_skill.sh` to replace `awk | xargs` multiline-description flattening with quote-safe normalization, add `scripts/regression_folded_description_quotes.sh`, expand eval coverage with a folded-description apostrophe case, update `SKILL.md` + `references/working-modes.md` to treat prose-level quote failures as validator bugs to repair, and ratchet the result into the wiki.
 - Rejected: telling authors to rewrite valid prose like `ClawTeam's` to appease shell parsing; broadening the run into a `yq` / PyYAML dependency shift; downgrading the validator to shallower grep-only checks.
 - Wiki files created/updated: `queries/skill-standardization-validator-hardening-2026-04-19.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | obsidian-cli structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack note automation, PM/ops coordination, marketing/content capture, and game-dev production-note workflows, with the best bounded follow-up landing on the existing `obsidian-cli` skill rather than another note-automation wrapper.
+- Survey files created under `.survey/obsidian-cli-structural-hardening-20260419/`; official Obsidian CLI / URI / Headless docs, Advanced URI and Local REST/API ecosystem evidence, forum and issue workflow evidence, plus repo-local wiki/graph context were used. Normal `web_search` / `web_extract` reliability remained weak, so primary-source retrieval and direct docs were used.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `obsidian-cli` into a routing-first desktop-automation front door, add `references/intake-packets-and-route-outs.md`, refresh install guidance against current official docs (`1.12.7+`, macOS `/usr/local/bin/obsidian`, Linux `~/.local/bin/obsidian`), add eval coverage for plugin/API route-outs, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording.
+- Rejected: adding a generic note-automation wrapper; pretending first-party CLI covers headless Sync/Publish or richer external CRUD/frontmatter/workspace automation; keeping stale packaging-specific troubleshooting guesses.
+- Wiki files created/updated: `queries/obsidian-cli-structural-hardening-2026-04-19.md`, `concepts/persistent-memory-cluster.md`, `index.md`, `log.md`

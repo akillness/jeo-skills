@@ -149,7 +149,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
-| **obsidian-cli: Obsidian 터미널 자동화 스킬** | 공식 Obsidian CLI를 활성화하고 운영하기 위한 전용 `obsidian-cli` 스킬을 추가했습니다. 설치/등록 프리플라이트, TUI와 단일 명령 사용, `vault=` / `file=` / `path=` 타기팅, `--copy`, 일상 노트 워크플로우, 플러그인/테마 제어, `plugin:reload`·`dev:screenshot` 같은 개발자 명령, 그리고 플랫폼별 문제해결 참고 문서를 포함합니다. 79 → **80개** |
+| **obsidian-cli: 라우팅-우선 Obsidian 데스크톱 자동화** | `obsidian-cli`를 공식 Obsidian 데스크톱 자동화용 라우팅-우선 프런트도어로 하드닝했습니다. 먼저 CLI 단일 명령/TUI 모드, 개발자 명령 모드, 공식 `obsidian://` URI handoff를 구분하고, `vault=` + `path=` 중심의 결정적 타기팅을 권장하며, headless sync·단순 파일쓰기·더 풍부한 plugin/API 자동화는 억지로 CLI에 우겨넣지 않고 명시적으로 route-out 하도록 정리했습니다. 설치/문제해결 가이드와 intake/route-out 참고 문서도 함께 갱신했습니다. |
 | **scrapling: 라우팅 우선 적응형 웹 스크래핑 스킬** | 전용 `scrapling` 스킬을 추가한 뒤, 가장 가벼운 모드부터 고르게 하도록 하드닝했습니다: parser-only HTML, HTTP fetch, JS 렌더 브라우저 fetch, 보호 대상용 stealth, CLI/MCP 운영 경로, 그리고 전체 crawl용 spiders. install/extract/MCP 래퍼 스크립트와 fetcher·parser·CLI/MCP·spider·intake packet route-out 참고 문서를 함께 제공합니다. 78 → **79개** |
 | **strix: AI 기반 애플리케이션 보안 테스트 스킬** | Strix CLI를 실무적으로 운영하는 전용 `strix` 스킬 추가. 설치 및 Docker 프리플라이트, `STRIX_LLM` 공급자 설정, 로컬/GitHub/라이브 타깃 스캔, quick/standard/deep 모드 선택, 헤드리스 CI/CD 사용, 그리고 이 저장소의 스킬과 Strix 내부 보안 스킬의 차이까지 포함합니다. 77 → **78개** |
 
@@ -394,7 +394,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `graphify` | 라우팅-우선 durable graph 스킬 — assistant-native install, local build, refresh, graph query, structural fallback 중 하나를 골라 repo/corpus 그래프와 `GRAPH_REPORT.md` / `graph.json` 산출물을 만듭니다 | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
 | `npm-git-install` | npm / pnpm / Yarn / Bun용 라우팅-우선 Node 패키지 전달 스킬 — temporary Git bridge, SHA pin, tarball, workspace, publish-first handoff를 안전하게 선택 | 전체 |
-| `obsidian-cli` | 공식 Obsidian CLI 운영 — 활성화, TUI, 노트/작업 자동화, vault·file 타기팅, plugin reload, 개발자 명령 | 전체 |
+| `obsidian-cli` | Obsidian 데스크톱 자동화 라우팅 — 공식 CLI 단일 명령/TUI, 개발자 명령, 공식 `obsidian://` handoff, headless·plugin/API route-out까지 명시 | 전체 |
 | `obsidian-plugin` | Obsidian 플러그인 개발 — 27개 ESLint 규칙, 보일러플레이트 생성기, 접근성, 커뮤니티 제출 검증 | 전체 |
 | `opencontext` | OpenContext 기반 프로젝트/저장소 메모리 및 에이전트 핸드오프 — 검색 가능한 결정/교훈, manifest, stable link, load→search→store 워크플로 | 전체 |
 | `workflow-automation` | 라우팅-우선 저장소 워크플로우 자동화 — task-entrypoints, bootstrap/onboarding, 로컬 CI 패리티, hook 가드레일, 유지보수 봇, 워크플로우 정리 중 하나를 고르고 환경/배포 문제로 번지지 않게 유지 | 전체 |

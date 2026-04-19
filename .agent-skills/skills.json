@@ -1776,19 +1776,19 @@
     },
     {
       "name": "obsidian-cli",
-      "description": "Install, enable, and operate the Obsidian CLI for terminal-driven note management, vault targeting, file and task workflows, plugin and theme control, developer tooling, and TUI exploration. Use when you need to script or automate a running Obsidian app from the command line, open or modify notes, target a specific vault or file, copy command output, reload a plugin under development, or inspect the app UI from the terminal. Triggers on: obsidian cli, obsidian command line, obsidian terminal, obsidian vault command, obsidian daily note cli, obsidian devtools cli, obsidian plugin reload.",
+      "description": "Route Obsidian desktop automation to the right first-party surface: official Obsidian CLI for terminal/TUI commands against a running app, official `obsidian://` URIs for launcher/callback handoff, and explicit route-outs for headless sync, filesystem writes, or richer plugin/API automation. Use when the user wants vault or note targeting, daily-note/search flows, plugin reload/dev screenshots, command-palette execution, or URI-based open/new/search callbacks from scripts, shortcuts, browsers, or agent loops.",
       "category": "utilities",
       "path": "obsidian-cli/SKILL.md",
       "tags": [
         "obsidian",
         "cli",
+        "uri",
         "notes",
         "vault",
-        "daily-notes",
-        "tasks",
-        "plugins",
-        "themes",
+        "automation",
+        "callbacks",
         "developer-tools",
+        "headless",
         "tui"
       ],
       "platforms": [
@@ -1812,15 +1812,19 @@
           "source": "utilities/obsidian-cli/SKILL.md"
         },
         {
-          "command": "bash scripts/run-command.sh --vault Notes daily",
+          "command": "obsidian vault=Notes daily",
           "source": "utilities/obsidian-cli/SKILL.md"
         },
         {
-          "command": "bash scripts/run-command.sh search query=\"meeting notes\" --copy",
+          "command": "obsidian vault=\"My Vault\" read path=\"Projects/Roadmap.md\" --copy",
           "source": "utilities/obsidian-cli/SKILL.md"
         },
         {
-          "command": "bash scripts/run-command.sh plugin:reload id=my-plugin",
+          "command": "obsidian plugin:reload id=my-plugin",
+          "source": "utilities/obsidian-cli/SKILL.md"
+        },
+        {
+          "command": "bash scripts/open-uri.sh 'obsidian://open?vault=my%20vault&file=my%20note'",
           "source": "utilities/obsidian-cli/SKILL.md"
         }
       ]
