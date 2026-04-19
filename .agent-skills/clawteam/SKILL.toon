@@ -1,19 +1,17 @@
 N:clawteam
-D:Multi-agent swarm orchestration where AI agents spawn, coordinate, and self-organize into collaborative teams. Use when running parallel AI agent tasks, orchestrating multi-agent workflows across Claude Code / Codex / Cursor / custom agents, isolating agent workspaces via git worktrees, tracking task dependencies across agents, or running autonomous experiments. Triggers on: clawteam, agent swarm, spawn agents, multi-agent team, agent orchestration, parallel agents, agent coordination, swarm intelligence, agent spawn, clawteam spawn, agent worktree, agentic team, ml agent experiments, autonomous agents, agent team.
-G:clawteam multi-agent swarm orchestration tmux git-worktree autonomous python
+D:Route ClawTeam operator requests into the right mode before touching commands: manual team control, one-command template launch, monitoring/recovery, or provider/runtime profile setup. Use when the user explicitly wants the ClawTeam task/inbox/worktree swarm workflow for parallel developer work, fullstack delivery, product/ops research teams, marketing/content studios, or game and simulation squads. Not for generic multi-agent routing when `jeo`, `omc`, `omx`, `ohmg`, `vibe-kanban`, or simple subtask delegation already fit.
+G:clawteam multi-agent swarm orchestration tmux git-worktree autonomous python routing
 
 U[6]:
-  Spawn parallel AI agent workers for large, decomposable tasks
-  Run autonomous ML experiments across multiple GPU workers
-  Orchestrate full-stack development with specialized agents (API, backend, frontend, tests)
-  Run investment analysis with multi-specialist agent teams
-  Coordinate agents across Claude Code, Codex, OpenClaw, nanobot, or Cursor
-  Monitor live agent progress via tmux tiled views or web Kanban dashboard
+  Explicit ClawTeam team/task/inbox/worktree workflows
+  Parallel developer workflow and fullstack delivery teams
+  Product/ops, marketing/content, and game/simulation squads using ClawTeam
+  Monitoring existing teams with board/team/task/inbox commands
+  Provider/model setup via preset/profile flows
+  Honest route-outs for generic orchestration requests
 
-S[6]{n,action,details}:
-  1,Spawn a team from your agent session,bash # Leader spawns 3 Claude workers on a task clawteam spawn claude "Build the REST API" --workers 3 --team api-build
-  2,Check team status,bash clawteam status # all teams clawteam status --team api-build # specific team clawteam board --team api-build # live web Kanban dashboard
-  3,Send messages between agents,bash # Leader sends task to a worker clawteam send --to crud-worker "Priority: implement DELETE /users/{id} first"
-  4,Task management,bash clawteam task add "Implement rate limiting" --team api-build clawteam task list --team api-build clawteam task done --id <task-id> --team api-build clawteam task block --id <t
-  5,ML Research Team,bash # 8 agents × H100 GPU experiments clawteam template ml-research \ --agents 8 \ --task "Optimize transformer attention with val_bpb target 0.97" \ --team ml-exp
-  6,Full-Stack Development Team,bash clawteam template fullstack \ --agents 4 \ --task "Build e-commerce product catalog API" \ --team shop-api # Spawns: api-designer, backend-dev, frontend-dev, test-engineer
+S[4]{n,action,details}:
+  1,Manual team control,bash clawteam team spawn-team my-team -d "Build the auth module" -n leader && clawteam spawn tmux claude --team my-team --agent-name architect --task "Design the API schema" && clawteam task create my-team "Design the API schema" -o architect && clawteam board attach my-team
+  2,Launch a template,bash clawteam template list && clawteam launch hedge-fund --team fund1 --goal "Analyze AAPL, MSFT, NVDA for Q2 2026" && clawteam board attach fund1
+  3,Monitor or recover,bash clawteam team status my-team && clawteam board show my-team && clawteam task list my-team --status blocked && clawteam inbox peek my-team
+  4,Provider/runtime setup,bash clawteam preset list && clawteam preset generate-profile moonshot-cn claude --name claude-kimi && clawteam profile doctor claude && clawteam spawn tmux --profile claude-kimi --team my-team --agent-name researcher --task "Compare onboarding flows"

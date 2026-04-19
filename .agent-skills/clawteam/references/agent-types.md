@@ -1,90 +1,67 @@
-# Agent Types & Compatibility
+# Agent types and spawn paths
 
-ClawTeam supports any CLI-based coding agent. Agents are spawned in tmux panes
-and receive coordination prompts automatically.
+ClawTeam works with CLI agents that already run correctly on their own.
 
-## Supported Agents
-
-| Agent | Spawn Key | Notes |
-|-------|-----------|-------|
-| Claude Code | `claude` | Recommended. Full tool access. |
-| OpenAI Codex CLI | `codex` | Good for code generation tasks |
-| OpenClaw | `openclaw` | Claude-compatible open alternative |
-| nanobot | `nanobot` | Lightweight, fast for simple tasks |
-| Cursor | `cursor` | IDE-integrated agent |
-| Custom script | `script:/path/to/agent.sh` | Any CLI agent |
-
-## Spawning with Specific Agents
+## Rule zero
+Verify the raw agent command first.
 
 ```bash
-# Claude Code (default)
-clawteam spawn claude "Implement auth module" --team myteam
-
-# Codex CLI
-clawteam spawn codex "Write unit tests" --team myteam
-
-# Mixed team (Claude for complex tasks, Codex for tests)
-clawteam spawn claude "Design API architecture" --team myteam --name architect
-clawteam spawn claude "Implement endpoints"    --team myteam --name backend
-clawteam spawn codex  "Generate test suite"    --team myteam --name tester
-
-# Custom agent script
-clawteam spawn script:/usr/local/bin/my-agent "Analyze logs" --team myteam
+claude --version
+codex --version
+cursor --help
 ```
 
-## Coordination Prompt Injection
+If the agent command does not work outside ClawTeam, fix that first.
 
-ClawTeam automatically injects a coordination prompt when spawning workers.
-The prompt teaches the agent to:
+## Common spawn patterns
 
-1. Check tasks: `clawteam task list --team {name} --owner {me}`
-2. Start task: `clawteam task start --id {id}`
-3. Complete task: `clawteam task done --id {id}`
-4. Check inbox: `clawteam inbox --team {name} --worker {me}`
-5. Report to leader: `clawteam send --to leader "{status}"`
+| Runtime path | Example | Best for |
+|--------------|---------|----------|
+| tmux + Claude | `clawteam spawn tmux claude --team my-team --agent-name architect --task "Design the API schema"` | interactive dev/research teams |
+| tmux + Codex | `clawteam spawn tmux codex --team my-team --agent-name tester --task "Write integration tests"` | coding/test workers with live monitoring |
+| subprocess + Cursor | `clawteam spawn subprocess cursor --team my-team --agent-name reviewer --task "Review the UI copy"` | headless / non-tmux workers |
+| profile-based spawn | `clawteam spawn tmux --profile claude-kimi --team my-team --agent-name researcher --task "Compare onboarding flows"` | non-default providers/models |
+| custom command | `clawteam spawn subprocess python --team my-team --agent-name helper --task "Run the export check"` | arbitrary CLI wrappers |
 
-Workers are fully autonomous after spawning — they check tasks, work, and report
-without further human input.
+## Role naming guidance
+Use semantic names:
+- `architect`
+- `backend`
+- `tester`
+- `researcher`
+- `content-editor`
+- `build-reviewer`
 
-## Worker Naming Conventions
+Avoid generic names like `worker-1` unless the user truly does not care about ownership clarity.
 
-Use semantic names that describe the worker's role:
+## Prompt / coordination expectations
+Spawned workers are expected to:
+- inspect their tasks
+- update task status
+- read and send inbox messages
+- report idle or completion state
+
+Representative operator commands:
+```bash
+clawteam task list my-team --owner backend
+clawteam task update my-team 2 --status in_progress
+clawteam task update my-team 2 --status completed
+clawteam inbox send my-team leader "Auth flow is ready for review"
+clawteam inbox receive my-team
+clawteam lifecycle idle my-team
+```
+
+## Provider-aware setup
+When the blocker is provider/model/runtime configuration, use profiles and presets instead of improvising every spawn command:
 
 ```bash
-# Good — role is clear
-clawteam spawn claude "..." --name auth-engineer
-clawteam spawn claude "..." --name test-engineer
-clawteam spawn claude "..." --name data-analyst
-
-# Avoid — generic names make monitoring confusing
-clawteam spawn claude "..." --name worker-1
-clawteam spawn claude "..." --name agent-a
+clawteam preset list
+clawteam preset generate-profile moonshot-cn claude --name claude-kimi
+clawteam profile doctor claude
+clawteam profile test claude-kimi
 ```
 
-## Multi-Agent Patterns
-
-### Parallel Independent Workers
-```bash
-# All workers get different subtasks, no dependencies
-for i in 1 2 3 4; do
-  clawteam spawn claude "Experiment config $i: lr=0.000${i}" \
-    --team ml-exp --name exp-${i}
-done
-```
-
-### Sequential Pipeline
-```bash
-# Task B waits for Task A
-clawteam task add "Generate dataset" --team pipeline --id gen
-clawteam task add "Train model"      --team pipeline --id train
-clawteam task add "Evaluate model"   --team pipeline --id eval
-clawteam task block --id train --blocked-by gen
-clawteam task block --id eval  --blocked-by train
-```
-
-### Leader-Worker Hierarchy
-```bash
-# Leader orchestrates, workers execute
-clawteam spawn claude "Orchestrate the full-stack build. Use clawteam spawn for subtasks." \
-  --team fullstack --name leader --role leader
-```
+## Caveats
+- `tmux` is the default happy path for visible teams.
+- `subprocess` is useful but deserves more caution for long-running workers.
+- Do not assume advanced agent-definition files are fully honored without testing.

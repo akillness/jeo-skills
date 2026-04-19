@@ -1,44 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>oh-my-skills structural graph</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 2rem; line-height: 1.45; }
-    code { background: #f4f4f4; padding: 0.1rem 0.3rem; border-radius: 4px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .card { border: 1px solid #ddd; border-radius: 10px; padding: 1rem; }
-    ul { padding-left: 1.2rem; }
-  </style>
-</head>
-<body>
-  <h1>oh-my-skills structural graph</h1>
-  <p>This is a graphify-style structural fallback visualization generated from discovery docs, live skill metadata, support surfaces, and explicit cross-skill mentions.</p>
-  <div class="grid">
-    <div class="card">
-      <h2>Coverage</h2>
-      <ul>
-        <li>Total skills: 90</li>
-        <li>References: 90</li>
-        <li>Evals: 90</li>
-        <li>Scripts: 25</li>
-        <li>Compact variants: 90</li>
-        <li>Nodes: 390</li>
-        <li>Edges: 1116</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h2>Highest-degree nodes</h2>
-      <ul><li>setup-all-skills-prompt.md — degree 90</li><li>README.md — degree 90</li><li>README.ko.md — degree 90</li><li>.agent-skills/skills.toon — degree 90</li><li>.agent-skills/skills.json — degree 90</li></ul>
-    </div>
-    <div class="card">
-      <h2>Oversized front-door watchlist</h2>
-      <ul><li><strong>clawteam</strong> — 330 lines</li><li><strong>task-planning</strong> — 295 lines</li><li><strong>jeo</strong> — 289 lines</li><li><strong>obsidian-cli</strong> — 287 lines</li><li><strong>autoresearch</strong> — 285 lines</li><li><strong>testing-strategies</strong> — 275 lines</li><li><strong>steam-store-launch-ops</strong> — 273 lines</li><li><strong>state-management</strong> — 273 lines</li><li><strong>omc</strong> — 273 lines</li><li><strong>opencontext</strong> — 271 lines</li></ul>
-    </div>
-    <div class="card">
-      <h2>Structural findings</h2>
-      <ul><li>ath analyzed: `.agent-skills/` plus repository discovery docs</li><li>ethod: custom graphify-style structural graph over skill metadata, support-file presence, compact-variant coverage, discovery indexing, and explicit cross-skill mentions</li><li>otal skills: 90</li><li>anifest skills in `.agent-skills/skills.json`: 90</li><li>kills with references/: 90</li><li>kills with evals/: 90</li><li>kills with scripts/: 25</li><li>kills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 90</li><li>kills missing compact variants: 0</li><li>raph nodes: 390</li><li>raph edges: 1116</li><li>etup-all-skills-prompt.md: degree 90</li><li>EADME.md: degree 90</li><li>EADME.ko.md: degree 90</li><li>agent-skills/skills.toon: degree 90</li><li>agent-skills/skills.json: degree 90</li><li>lawteam: 330 lines in SKILL.md</li><li>ask-planning: 295 lines in SKILL.md</li><li>eo: 289 lines in SKILL.md</li><li>bsidian-cli: 287 lines in SKILL.md</li><li>utoresearch: 285 lines in SKILL.md</li><li>esting-strategies: 275 lines in SKILL.md</li><li>team-store-launch-ops: 273 lines in SKILL.md</li><li>tate-management: 273 lines in SKILL.md</li><li>mc: 273 lines in SKILL.md</li><li>pencontext: 271 lines in SKILL.md</li><li>graphify` should stay distinct from `codebase-search`, `llm-wiki`, and `opencontext` by owning durable graph artifacts, graph-backed path tracing, and truthful structural fallback rather than search-first navigation, markdown synthesis, or project-memory handoff.</li><li>scrapling` should stay distinct from general browser automation, crawler frameworks, and agent-facing scrape APIs by owning mode selection inside the Scrapling ecosystem rather than trying to absorb every scraping-adjacent stack.</li><li>iscovery docs remain the highest-degree maintenance nodes, so README/setup/manifest sync is still required whenever a skill boundary or trigger surface changes materially.</li><li>eep targeting high-degree or oversized front-door skills whose contracts are stable enough to validate mechanically.</li><li>refer support-packet improvements and synced discovery surfaces over creating adjacent wrappers.</li><li>e-run catalog/runtime sync validation whenever README/setup or discovery wording changes materially.</li></ul>
-    </div>
-  </div>
-</body>
-</html>
+<html><head><meta charset="utf-8"><title>graphify-out</title>
+<style>body{font-family:system-ui;margin:2rem} table{border-collapse:collapse} td,th{border:1px solid #ccc;padding:.4rem .6rem} code{background:#f4f4f4;padding:.1rem .25rem}</style>
+</head><body>
+<h1>Graphify structural graph</h1>
+<p>Generated from <code>.agent-skills/</code> and repo discovery docs.</p>
+<h2>Highest-degree nodes</h2>
+<table><tr><th>Node</th><th>Kind</th><th>Degree</th></tr>
+<tr><td>.agent-skills/skills.json</td><td>discovery-doc</td><td>90</td></tr>
+<tr><td>setup-all-skills-prompt.md</td><td>discovery-doc</td><td>89</td></tr>
+<tr><td>README.md</td><td>discovery-doc</td><td>89</td></tr>
+<tr><td>README.ko.md</td><td>discovery-doc</td><td>89</td></tr>
+<tr><td>.agent-skills/skills.toon</td><td>discovery-doc</td><td>83</td></tr>
+<tr><td>task-planning</td><td>skill</td><td>31</td></tr>
+<tr><td>monitoring-observability</td><td>skill</td><td>26</td></tr>
+<tr><td>performance-optimization</td><td>skill</td><td>25</td></tr>
+<tr><td>debugging</td><td>skill</td><td>25</td></tr>
+<tr><td>vibe-kanban</td><td>skill</td><td>24</td></tr>
+<tr><td>plannotator</td><td>skill</td><td>24</td></tr>
+<tr><td>jeo</td><td>skill</td><td>24</td></tr>
+<tr><td>code-review</td><td>skill</td><td>24</td></tr>
+<tr><td>ralph</td><td>skill</td><td>22</td></tr>
+<tr><td>bmad-gds</td><td>skill</td><td>22</td></tr>
+<tr><td>testing-strategies</td><td>skill</td><td>21</td></tr>
+<tr><td>system-environment-setup</td><td>skill</td><td>21</td></tr>
+<tr><td>security-best-practices</td><td>skill</td><td>21</td></tr>
+<tr><td>react-best-practices</td><td>skill</td><td>21</td></tr>
+<tr><td>design-system</td><td>skill</td><td>21</td></tr>
+</table>
+<h2>Oversized front-door watchlist</h2><ul>
+<li><strong>clawteam</strong>: 300 lines</li>
+<li><strong>task-planning</strong>: 294 lines</li>
+<li><strong>jeo</strong>: 288 lines</li>
+<li><strong>obsidian-cli</strong>: 286 lines</li>
+<li><strong>autoresearch</strong>: 284 lines</li>
+<li><strong>testing-strategies</strong>: 274 lines</li>
+<li><strong>steam-store-launch-ops</strong>: 272 lines</li>
+<li><strong>state-management</strong>: 272 lines</li>
+<li><strong>omc</strong>: 272 lines</li>
+<li><strong>opencontext</strong>: 270 lines</li>
+</ul>
+<h2>Changed focus this run</h2><p><code>clawteam</code> was hardened into a routing-first operator skill and synced across support/discovery surfaces.</p>
+</body></html>
