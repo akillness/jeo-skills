@@ -1,10 +1,59 @@
-<!doctype html><html><head><meta charset="utf-8"><title>oh-my-skills structural graph</title>
-<style>body{font-family:system-ui,Arial,sans-serif;margin:24px;line-height:1.4} table{border-collapse:collapse} td,th{border:1px solid #ccc;padding:6px 8px;text-align:left} code{background:#f4f4f4;padding:2px 4px}</style></head><body>
-<h1>oh-my-skills structural graph</h1>
-<p>Deterministic graphify-style structural refresh. Skills: 90 · Nodes: 390 · Edges: 1094</p>
-<h2>Notable finding</h2>
-<p><code>steam-store-launch-ops</code> now reads as a packet-first Steam launch router (304 lines) with cleaner route-outs instead of another broad game-marketing wrapper.</p>
-<h2>Highest-degree nodes</h2><table><tr><th>Node</th><th>Degree</th></tr><tr><td>.agent-skills/skills.json</td><td>90</td></tr><tr><td>README.ko.md</td><td>89</td></tr><tr><td>README.md</td><td>89</td></tr><tr><td>setup-all-skills-prompt.md</td><td>89</td></tr><tr><td>.agent-skills/skills.toon</td><td>82</td></tr><tr><td>task-planning</td><td>31</td></tr><tr><td>plannotator</td><td>27</td></tr><tr><td>monitoring-observability</td><td>26</td></tr></table>
-<h2>Oversized front-door watchlist</h2><table><tr><th>Skill</th><th>Lines</th></tr><tr><td>jeo</td><td>304</td></tr><tr><td>steam-store-launch-ops</td><td>304</td></tr><tr><td>clawteam</td><td>300</td></tr><tr><td>opencontext</td><td>295</td></tr><tr><td>task-planning</td><td>294</td></tr><tr><td>autoresearch</td><td>284</td></tr><tr><td>testing-strategies</td><td>274</td></tr><tr><td>skill-autoresearch</td><td>273</td></tr><tr><td>state-management</td><td>272</td></tr><tr><td>fabric</td><td>265</td></tr></table>
-<p>See <code>GRAPH_REPORT.md</code> and <code>graph.json</code> for the durable artifacts.</p>
-</body></html>
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Graphify Structural Graph</title>
+<style>body{font-family:system-ui,sans-serif;max-width:1000px;margin:40px auto;padding:0 16px} table{border-collapse:collapse;width:100%} td,th{border:1px solid #ccc;padding:6px 8px;text-align:left} code{background:#f4f4f4;padding:2px 4px}</style></head>
+<body><h1>Graphify Structural Graph</h1><p>Deterministic fallback graph for <code>oh-my-skills</code>.</p>
+<h2>Top watchlist</h2><table><tr><th>Skill</th><th>Lines</th></tr><tr><td>jeo</td><td>305</td></tr><tr><td>steam-store-launch-ops</td><td>305</td></tr><tr><td>clawteam</td><td>301</td></tr><tr><td>opencontext</td><td>296</td></tr><tr><td>task-planning</td><td>288</td></tr><tr><td>autoresearch</td><td>285</td></tr><tr><td>testing-strategies</td><td>275</td></tr><tr><td>skill-autoresearch</td><td>274</td></tr><tr><td>fabric</td><td>266</td></tr><tr><td>omc</td><td>265</td></tr></table>
+<h2>Highest-degree nodes</h2><table><tr><th>Node</th><th>Degree</th></tr><tr><td>README.md</td><td>90</td></tr><tr><td>README.ko.md</td><td>90</td></tr><tr><td>setup-all-skills-prompt.md</td><td>90</td></tr><tr><td>.agent-skills/skills.json</td><td>90</td></tr><tr><td>.agent-skills/skills.toon</td><td>90</td></tr><tr><td>debugging</td><td>39</td></tr><tr><td>task-planning</td><td>31</td></tr><tr><td>bmad</td><td>29</td></tr><tr><td>plannotator</td><td>27</td></tr><tr><td>jeo</td><td>26</td></tr><tr><td>monitoring-observability</td><td>26</td></tr><tr><td>performance-optimization</td><td>26</td></tr></table>
+<pre># GRAPH_REPORT
+## Scope
+- Path analyzed: `.agent-skills/` plus repository discovery docs
+- Method: custom graphify-style structural graph over skill metadata, support-file presence, compact-variant coverage, discovery indexing, and explicit cross-skill mentions
+- Total skills: 90
+- Manifest skills in `.agent-skills/skills.json`: 90
+- Skills with references/: 90
+- Skills with evals/: 90
+- Skills with scripts/: 25
+- Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 90
+- Skills missing compact variants: 0
+- Graph nodes: 390
+- Graph edges: 1162
+
+## Strongest structural findings
+1. Discovery docs still dominate the graph because README / setup / manifest surfaces index nearly the full live catalog, so documentation sync remains mandatory whenever a skill boundary changes materially.
+2. Support coverage remains effectively complete across the live skill set, so the highest-value maintenance wins still come from tightening dense front-door skills instead of adding wrappers.
+3. `state-management` is now smaller and more explicit: it forces one primary packet, calls out the likely wrong owner, and routes React Router/server-state misclassification away from universal-store advice.
+4. The frontend cluster remains cleaner when `state-management` owns ownership classification and routes component API, layout, performance, debugging, and API-contract work outward.
+5. The next best maintenance wins still look like oversized routers whose contracts are stable enough to shrink without changing ownership.
+
+## Highest-degree nodes
+- README.md: degree 90
+- README.ko.md: degree 90
+- setup-all-skills-prompt.md: degree 90
+- .agent-skills/skills.json: degree 90
+- .agent-skills/skills.toon: degree 90
+- debugging: degree 39
+- task-planning: degree 31
+- bmad: degree 29
+
+## Oversized front-door watchlist
+- jeo: 305 lines in SKILL.md
+- steam-store-launch-ops: 305 lines in SKILL.md
+- clawteam: 301 lines in SKILL.md
+- opencontext: 296 lines in SKILL.md
+- task-planning: 288 lines in SKILL.md
+- autoresearch: 285 lines in SKILL.md
+- testing-strategies: 275 lines in SKILL.md
+- skill-autoresearch: 274 lines in SKILL.md
+- fabric: 266 lines in SKILL.md
+- omc: 265 lines in SKILL.md
+
+## Duplicate / consolidation notes
+- `state-management` should stay distinct from `react-best-practices`, `api-design`, `debugging`, `ui-component-patterns`, `design-system`, and `responsive-design` by owning packet classification rather than performance, API contracts, active failure diagnosis, component API design, system governance, or viewport strategy.
+- Discovery docs remain the highest-degree maintenance nodes, so README/setup/manifest sync is still required whenever a skill boundary or trigger surface changes materially.
+- The frontend cluster still benefits more from front-door hardening than from another React state wrapper.
+
+## Recommended maintenance direction
+- Keep targeting high-degree or oversized front-door skills whose contracts are stable enough to validate mechanically.
+- Prefer packet/route-out clarifications and synced discovery surfaces over creating adjacent wrappers.
+- Re-run catalog/runtime sync validation whenever README/setup or discovery wording changes materially.
+</pre></body></html>

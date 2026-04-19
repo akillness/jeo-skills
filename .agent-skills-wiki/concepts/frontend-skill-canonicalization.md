@@ -1,10 +1,10 @@
 ---
 title: Frontend Skill Canonicalization
 created: 2026-04-12
-updated: 2026-04-19
+updated: 2026-04-20
 type: concept
 tags: [skills, consolidation, trigger-design, frontend, docs]
-sources: [.survey/frontend-skill-consolidation-20260412/context.md, .survey/frontend-design-system-canonicalization-20260412/context.md, .survey/frontend-legacy-anchors-20260413/context.md, .survey/frontend-legacy-anchors-20260413/platform-map.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/react-grab-structural-hardening-20260416/context.md, .survey/react-grab-structural-hardening-20260416/solutions.md, .survey/design-system-structural-hardening-20260416/context.md, .survey/design-system-structural-hardening-20260416/solutions.md, .survey/responsive-design-structural-hardening-20260419/context.md, .survey/responsive-design-structural-hardening-20260419/solutions.md, .survey/ui-component-patterns-structural-hardening-20260419/context.md, .survey/ui-component-patterns-structural-hardening-20260419/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/frontend-skill-consolidation-20260412/context.md, .survey/frontend-design-system-canonicalization-20260412/context.md, .survey/frontend-legacy-anchors-20260413/context.md, .survey/frontend-legacy-anchors-20260413/platform-map.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/react-grab-structural-hardening-20260416/context.md, .survey/react-grab-structural-hardening-20260416/solutions.md, .survey/design-system-structural-hardening-20260416/context.md, .survey/design-system-structural-hardening-20260416/solutions.md, .survey/responsive-design-structural-hardening-20260419/context.md, .survey/responsive-design-structural-hardening-20260419/solutions.md, .survey/ui-component-patterns-structural-hardening-20260419/context.md, .survey/ui-component-patterns-structural-hardening-20260419/solutions.md, .survey/state-management-next-ratchet-20260420/context.md, .survey/state-management-next-ratchet-20260420/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Frontend Skill Canonicalization
@@ -15,6 +15,7 @@ The frontend cluster now has **two** true canonical-vs-alias pairs plus three cl
 - `design-system` owns general frontend UI-system work, while `frontend-design-system` survives only as a compatibility alias.
 - `state-management` now owns React state-boundary decisions across local, shared, URL/form, server, and long-lived client workflow state instead of remaining a generic library-tour skill.
 - The 2026-04-18 structural-hardening pass tightened that boundary further: `state-management` is now an ownership-packet router that explicitly accounts for router-native data ownership and routes responsive-layout and design-system governance questions out instead of absorbing them.
+- The 2026-04-20 next-ratchet pass made the same router faster: it now forces one primary packet, calls out the likely wrong owner explicitly, compares client stores only after URL/form/server packets are removed, and routes broken-state diagnosis to `debugging` sooner instead of re-opening a broad library debate.
 - `web-accessibility` now owns accessibility remediation plus manual-vs-automated verification, while `web-design-guidelines` now owns the broad interface-audit lane for hierarchy, clarity, consistency, interaction-state quality, responsiveness basics, accessibility basics, and launch-readiness review.
 - `ui-component-patterns` now owns reusable primitive / variant / slot API design, while `responsive-design` owns the responsive-layout lane.
 - The 2026-04-19 structural-hardening pass tightened `ui-component-patterns` further: it is now a routing-first reusable-component anchor that chooses one packet (`primitive-boundary`, `slot-anatomy`, `controlled-ownership`, `alternate-root-composition`, or `docs-verification`) before suggesting props, and it routes design-system governance, accessibility-heavy remediation, layout strategy, app-state ownership, and React performance outward instead of drifting back into a generic component-best-practices catch-all.
@@ -42,6 +43,7 @@ Canonicalization is not fully done until compact discovery surfaces (`SKILL.toon
 - [[design-system-structural-hardening-2026-04-16]]
 - [[state-management-modernization-2026-04-13]]
 - [[state-management-structural-hardening-2026-04-18]]
+- [[state-management-next-ratchet-2026-04-20]]
 - [[web-accessibility-modernization-2026-04-13]]
 - [[ui-component-patterns-modernization-2026-04-13]]
 - [[ui-component-patterns-structural-hardening-2026-04-19]]
