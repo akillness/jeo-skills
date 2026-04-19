@@ -1007,3 +1007,12 @@
 - Accepted: promote `graphify` from nested `utilities/graphify` into live top-level `.agent-skills/graphify`, shrink the front door into a routing-first graph mode selector, add packet/fallback references, add `SKILL.toon`, expand evals, sync README / README.ko / setup / manifest surfaces, and ratchet the runtime-discovery lesson into the wiki
 - Rejected: adding another graph/GraphRAG wrapper; treating search-first repo navigation as part of `graphify`; leaving the skill nested and off-catalog
 - Wiki files created/updated: `queries/graphify-structural-hardening-2026-04-19.md`, `concepts/persistent-memory-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+
+## [2026-04-19] query | clawteam structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack delivery, product/ops research teams, marketing/content studios, and game/simulation swarm use-cases, with the best bounded follow-up landing on the existing `clawteam` skill rather than another orchestration wrapper.
+- Survey files created under `.survey/clawteam-structural-hardening-20260419/`; GitHub raw/API primary-source retrieval from the ClawTeam README, repo metadata, releases, and issues plus repo-local graph/wiki evidence were used because normal search/extract reliability remains weak in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `clawteam` into a routing-first operator router, add `references/operator-modes-and-route-outs.md`, rewrite stale support docs against the current upstream CLI, expand eval coverage with launch/profile/recovery/route-out cases, sync `SKILL.toon` / `skills.json` / README / README.ko / setup discovery wording, and ratchet the developer-workflow boundary into the wiki.
+- Rejected: adding another generic swarm wrapper; treating `clawteam` as the default answer for every multi-agent ask; keeping stale `send` / `broadcast` / `task add` / `monitor` examples; overselling long-running worker reliability despite upstream issue evidence.
+- Wiki files created/updated: `queries/clawteam-structural-hardening-2026-04-19.md`, `concepts/developer-workflow-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

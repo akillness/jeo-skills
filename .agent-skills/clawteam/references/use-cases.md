@@ -1,115 +1,78 @@
-# Use Cases & Templates
+# ClawTeam use cases
 
-## 1. Autonomous ML Research
-
-Run hundreds of experiments in parallel across GPU workers.
-
-```bash
-# 8 agents, each testing different hyperparameter config
-clawteam template ml-research \
-  --agents 8 \
-  --task "Optimize transformer: target val_bpb < 0.97, modify train.py only" \
-  --team ml-exp
-
-# Monitor all 8 GPU experiments live
-clawteam monitor --team ml-exp
-```
-
-**Proven result**: 2,430+ experiments, 6.4% improvement (1.044 → 0.977 val_bpb)
-
-Each worker:
-1. Receives a unique config slice to explore
-2. Runs `train.py` with modifications
-3. Evaluates with `val_bpb`
-4. Reports improvement; leader ratchets best configs via git
-
-## 2. Full-Stack Development
-
-Specialized agents build different layers simultaneously.
+## 1. Fullstack feature split
+Use `manual-team` when roles and dependencies matter.
 
 ```bash
-clawteam template fullstack \
-  --agents 4 \
-  --task "Build e-commerce product catalog REST API with PostgreSQL" \
-  --team shop
+clawteam team spawn-team shop -d "Ship invite flow" -n leader
+clawteam spawn tmux claude --team shop --agent-name architect --task "Design invite API and schema"
+clawteam spawn tmux claude --team shop --agent-name backend   --task "Implement invite endpoints"
+clawteam spawn tmux codex  --team shop --agent-name tester    --task "Write integration tests"
 
-# Manual equivalent:
-clawteam spawn claude "Design API contracts and OpenAPI spec"   --team shop --name architect
-clawteam spawn claude "Implement FastAPI endpoints"             --team shop --name backend
-clawteam spawn claude "Build React frontend components"        --team shop --name frontend
-clawteam spawn claude "Write pytest integration tests"         --team shop --name qa
+clawteam task create shop "Design invite API and schema" -o architect
+clawteam task create shop "Implement invite endpoints" -o backend
+clawteam task create shop "Write integration tests" -o tester --blocked-by 2
 
-# Set dependency: backend starts after architect completes spec
-clawteam task block --id backend-impl --blocked-by api-spec
+clawteam board attach shop
 ```
 
-## 3. Investment Analysis (AI Hedge Fund)
-
-7 specialist analysts converge on a recommendation.
+## 2. Product / ops research swarm
+Use `manual-team` when the team needs explicit parallel ownership with synthesis.
 
 ```bash
-clawteam template hedge-fund \
-  --ticker AAPL \
-  --team aapl-2026
+clawteam team spawn-team launch-research -d "Analyze onboarding friction and activation risks" -n leader
+clawteam spawn tmux claude --team launch-research --agent-name user-research   --task "Summarize interview patterns"
+clawteam spawn tmux claude --team launch-research --agent-name analytics       --task "Inspect funnel drop-offs"
+clawteam spawn tmux codex  --team launch-research --agent-name synthesis       --task "Merge findings into one operator memo"
 
-# Spawns 7 agents:
-# growth-analyst    — revenue trends, market expansion
-# technical-analyst — price patterns, momentum indicators
-# fundamental-analyst — P/E, DCF, balance sheet
-# sentiment-analyst  — news, social media, analyst ratings
-# risk-analyst       — volatility, downside scenarios
-# macro-analyst      — interest rates, sector trends
-# synthesizer        — aggregates all reports → final recommendation
+clawteam task create launch-research "Summarize interview patterns" -o user-research
+clawteam task create launch-research "Inspect funnel drop-offs" -o analytics
+clawteam task create launch-research "Merge findings into one memo" -o synthesis --blocked-by 1,2
 ```
 
-## 4. Code Review Team
-
-Parallel specialized reviewers with synthesis.
+## 3. Marketing / content studio
+Use `manual-team` when content creation and QA can run in parallel but still need explicit review handoffs.
 
 ```bash
-clawteam spawn claude "Security review: OWASP Top 10, injection, auth bypass" \
-  --team review --name security-reviewer
-clawteam spawn claude "Performance review: N+1 queries, caching, complexity" \
-  --team review --name perf-reviewer
-clawteam spawn claude "Architecture review: SOLID, coupling, testability" \
-  --team review --name arch-reviewer
-clawteam spawn claude "Synthesize all review findings into PR comment" \
-  --team review --name synthesizer
+clawteam team spawn-team campaign -d "Ship launch-week content pack" -n lead
+clawteam spawn tmux claude --team campaign --agent-name landing-page  --task "Draft landing page updates"
+clawteam spawn tmux claude --team campaign --agent-name email-sequence --task "Draft launch emails"
+clawteam spawn tmux codex  --team campaign --agent-name qa           --task "Check links, UTMs, and publishing checklist"
 
-# Synthesizer blocked until all reviewers complete
-clawteam task block --id synthesis --blocked-by security-review,perf-review,arch-review
+clawteam board serve --port 8080
 ```
 
-## 5. Custom TOML Template
-
-Define reusable team compositions:
-
-```toml
-# ~/.clawteam/templates/my-api-team.toml
-[team]
-name = "api-team"
-description = "Standard API development team"
-
-[[agents]]
-name = "architect"
-agent = "claude"
-task = "Design API contracts and write OpenAPI spec"
-role = "planner"
-
-[[agents]]
-name = "backend"
-agent = "claude"
-task = "Implement all endpoints following the spec"
-blocked_by = ["architect"]
-
-[[agents]]
-name = "tester"
-agent = "codex"
-task = "Write comprehensive test suite"
-blocked_by = ["backend"]
-```
+## 4. Game / simulation milestone swarm
+Use `manual-team` when code, content, QA, and distribution roles all matter.
 
 ```bash
-clawteam template --file ~/.clawteam/templates/my-api-team.toml \
-  --var TASK="Build user authentication API"
+clawteam team spawn-team demo-milestone -d "Prepare streamer-ready demo build" -n lead
+clawteam spawn tmux claude --team demo-milestone --agent-name gameplay  --task "Polish tutorial and controller support"
+clawteam spawn tmux claude --team demo-milestone --agent-name build      --task "Prepare and package the demo build"
+clawteam spawn tmux codex  --team demo-milestone --agent-name qa         --task "Run smoke checks and capture release blockers"
 ```
+
+## 5. One-command template launch
+Use `launch-template` when the built-in archetype already fits.
+
+```bash
+clawteam template list
+clawteam launch hedge-fund --team fund1 --goal "Analyze AAPL, MSFT, NVDA for Q2 2026"
+clawteam board attach fund1
+```
+
+## 6. Provider-aware runtime setup
+Use `profile-setup` when the runtime configuration is the actual blocker.
+
+```bash
+clawteam preset list
+clawteam preset show moonshot-cn
+clawteam preset generate-profile moonshot-cn claude --name claude-kimi
+clawteam profile doctor claude
+MOONSHOT_API_KEY=*** clawteam profile test claude-kimi
+```
+
+## Notes
+- Prefer template launch when the archetype is already known.
+- Prefer manual teams when dependencies, ownership, or mixed agents need to be explicit.
+- Use monitoring commands (`board show/live/attach/serve`) as the verification path, not just raw spawn output.

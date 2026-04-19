@@ -382,7 +382,7 @@ If no → skip silently. Never re-ask.
 | `game-demo-feedback-triage` | `playtest feedback`, `demo feedback`, `steam feedback triage` | Cluster demo/playtest/community feedback into fix-first priorities and explicit handoffs |
 | `game-performance-profiler` | `frame time`, `unity profiler`, `unreal insights` | Turn Unity/Unreal perf packets into one bottleneck-first profiling brief with next captures, benchmark routes, device review, and route-outs |
 | `steam-store-launch-ops` | `steam launch`, `steam page`, `wishlist funnel` | Diagnose whether a Steam launch/store problem is visibility, page promise, demo proof, event timing, or launch ops |
-| `clawteam` | `clawteam`, `agent swarm`, `spawn agents` | Framework-agnostic multi-agent CLI — file-based state, task queues, inboxes, kanban |
+| `clawteam` | `clawteam`, `agent swarm`, `spawn agents` | ClawTeam operator router — manual team control, template launch, monitoring/recovery, profile setup |
 | `autoresearch` | `autoresearch`, `autonomous ml experiments`, `val_bpb` | Karpathy autonomous ML front door — choose setup / `program.md` / bounded loop / results interpretation / constrained-hardware mode, preserve immutable `prepare.py` + 300s + `val_bpb`, not for prompt/skill eval |
 | `skill-autoresearch` | `skill-autoresearch`, `optimize this skill`, `eval my skill` | Repo-local skill ratcheting — freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces if the core change holds |
 | `scrapling` | `scrapling`, `adaptive scraping`, `stealthy fetch`, `selector drift` | Routing-first adaptive web scraping — choose parser-only, HTTP fetch, JS browser, stealth escalation, MCP, or spiders from one intake packet |

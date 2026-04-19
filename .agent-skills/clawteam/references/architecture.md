@@ -1,108 +1,76 @@
-# ClawTeam Architecture
+# ClawTeam architecture
 
 ## Overview
+ClawTeam is a filesystem-first swarm runner. It combines:
+- **team state** (`team`, `task`, `inbox`, `workspace`, `lifecycle` commands)
+- **worker runtime backends** (`tmux` or `subprocess`)
+- **workspace isolation** (typically git worktrees)
+- **monitoring surfaces** (`board show/live/attach/serve`)
+- **provider/runtime profiles** (`preset`, `profile`)
 
-ClawTeam uses a filesystem-first architecture with no external database.
-All state persists as JSON in `~/.clawteam/{team}/`.
+## Core operator surfaces
 
+### Team lifecycle
+```bash
+clawteam team spawn-team my-team -d "Build the auth module" -n leader
+clawteam team discover
+clawteam team status my-team
+clawteam team cleanup my-team --force
 ```
-~/.clawteam/
-└── {team-name}/
-    ├── tasks.json         # task list with dependencies
-    ├── inbox/             # per-agent message queues
-    │   ├── leader.json
-    │   └── {worker}.json
-    ├── snapshots/         # periodic state snapshots
-    ├── costs.json         # token/API cost tracking
-    └── workers.json       # registered workers
+
+### Worker spawning
+```bash
+# tmux backend
+clawteam spawn tmux claude --team my-team --agent-name architect --task "Design the API schema"
+clawteam spawn tmux codex  --team my-team --agent-name tester   --task "Write integration tests"
+
+# subprocess backend
+clawteam spawn subprocess cursor --team my-team --agent-name reviewer --task "Review the landing page copy"
 ```
 
-## Workspace Isolation
+### Task and inbox state
+```bash
+clawteam task create my-team "Implement auth flow" -o backend
+clawteam task update my-team 2 --status in_progress
+clawteam task update my-team 2 --status completed
+clawteam task list my-team --status blocked
 
-Each worker operates in a dedicated git worktree:
+clawteam inbox send my-team backend "Wait for API spec handoff"
+clawteam inbox receive my-team
+clawteam inbox peek my-team
+```
+
+### Monitoring
+```bash
+clawteam board show my-team
+clawteam board live my-team --interval 3
+clawteam board attach my-team
+clawteam board serve --port 8080
+```
+
+## Workspace isolation
+Typical runs give each worker its own git worktree / isolated workspace so parallel workers can operate without stomping on each other.
+
+Useful commands:
+```bash
+clawteam workspace list my-team
+clawteam workspace checkpoint my-team backend
+clawteam workspace merge my-team backend
+clawteam workspace cleanup my-team backend
+```
+
+## Runtime settings
+Provider/model/runtime settings increasingly flow through presets and profiles rather than ad hoc environment juggling.
 
 ```bash
-# Branch pattern: clawteam/{team}/{worker}
-git worktree add .worktrees/api-build/auth-worker clawteam/api-build/auth-worker
+clawteam preset list
+clawteam preset show moonshot-cn
+clawteam preset generate-profile moonshot-cn claude --name claude-kimi
+clawteam profile doctor claude
+clawteam profile test claude-kimi
 ```
 
-Benefits:
-- No file conflicts between parallel workers
-- Each worker has independent working directory
-- Clean merge strategy: review each branch individually
-- Automatic cleanup on `clawteam teardown`
-
-## Transport Layer
-
-### FileTransport (default)
-- Atomic writes via tmp file + rename (POSIX atomic)
-- Works on any filesystem, no network required
-- JSON inbox files per agent
-- Suitable for single-machine teams
-
-### P2PTransport (ZeroMQ)
-- TCP direct connections between agents
-- Sub-millisecond latency for high-frequency messaging
-- Graceful degradation to FileTransport when peer offline
-- Required for cross-machine teams
-
-```bash
-# Enable P2P transport
-export CLAWTEAM_TRANSPORT=p2p
-# Or in ~/.clawteam/config.toml:
-[transport]
-type = "p2p"
-```
-
-## Task State Machine
-
-```
-pending → in_progress → completed
-              ↑
-           blocked ──────────┘ (when blocking task completes, auto-unblocks)
-```
-
-Task dependency graph prevents out-of-order execution:
-```bash
-# Task B blocked until Task A completes
-clawteam task add "Implement API endpoints" --team myteam --id task-a
-clawteam task add "Write integration tests" --team myteam --id task-b
-clawteam task block --id task-b --blocked-by task-a
-# task-b auto-transitions pending when task-a completes
-```
-
-## Agent Spawning (tmux Backend)
-
-1. `clawteam spawn` creates new tmux session `ct-{team}-{worker}`
-2. Git worktree created at `clawteam/{team}/{worker}` branch
-3. Coordination prompt injected into agent's initial message
-4. Agent receives task list and inbox location
-5. Worker operates autonomously; leader monitors via `clawteam status`
-
-## Inter-Agent Messaging
-
-```
-Worker → clawteam send --to leader "Task complete"
-           │
-           └─→ ~/.clawteam/{team}/inbox/leader.json (appended)
-
-Leader → clawteam broadcast --team myteam "New priority: focus on auth"
-           │
-           └─→ All workers' inbox files updated
-```
-
-## Cost Tracking
-
-ClawTeam tracks token usage and API costs per agent:
-```bash
-clawteam costs --team myteam
-# Output:
-# Worker          Tokens    Cost
-# auth-worker     45,230    $0.54
-# crud-worker     38,100    $0.46
-# test-worker     22,450    $0.27
-# ─────────────────────────────
-# Total           105,780   $1.27
-```
-
-Set budget limits in `~/.clawteam/config.toml` to prevent runaway costs.
+## Operational caveats
+- Long-running worker persistence is not guaranteed in all backends. Upstream issue #148 documents keepalive problems for ongoing-job subprocess patterns.
+- Parsed agent-definition/config files may not fully apply at runtime. Upstream issue #146 documents gaps between parsed definitions and actual spawn behavior.
+- ClawTeam is strongest when the user truly wants explicit team/task/inbox/worktree state; generic orchestration requests may belong elsewhere.

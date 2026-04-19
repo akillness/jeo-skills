@@ -471,7 +471,7 @@
     },
     {
       "name": "clawteam",
-      "description": "Multi-agent swarm orchestration where AI agents spawn, coordinate, and self-organize into collaborative teams. Use when running parallel AI agent tasks, orchestrating multi-agent workflows across Claude Code / Codex / Cursor / custom agents, isolating agent workspaces via git worktrees, tracking task dependencies across agents, or running autonomous experiments. Triggers on: clawteam, agent swarm, spawn agents, multi-agent team, agent orchestration, parallel agents, agent coordination, swarm intelligence, agent spawn, clawteam spawn, agent worktree, agentic team, ml agent experiments, autonomous agents, agent team.",
+      "description": "Route ClawTeam operator requests into the right mode before touching commands: manual team control, one-command template launch, monitoring/recovery, or provider/runtime profile setup. Use when the user explicitly wants the ClawTeam task/inbox/worktree swarm workflow for parallel developer work, fullstack delivery, product/ops research teams, marketing/content studios, or game and simulation squads. Not for generic multi-agent routing when jeo, omc, omx, ohmg, vibe-kanban, or simple subtask delegation already fit.",
       "path": "clawteam/SKILL.md",
       "tags": [
         "clawteam",

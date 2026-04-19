@@ -1,0 +1,4 @@
+# Triage
+- Problem: `clawteam` is a high-utility multi-agent orchestration skill, but its front door still behaves like a broad feature tour and several examples/support docs no longer match the upstream CLI. The next bounded improvement is structural hardening: turn it into a routing-first operator skill with truthful command paths and explicit route-outs.
+- Audience: Agents and maintainers using `oh-my-skills` for parallel developer workflows, web/fullstack delivery, product/ops swarms, marketing/content teams, and game-production coordination.
+- Why now: `clawteam` is one of the repo's largest utility skills (329 lines), is already promoted in README/setup surfaces, and upstream ClawTeam has evolved toward `team spawn-team`, `launch`, `board attach/serve`, `inbox send`, `task create/update`, `profile`, and `preset` workflows that the current skill only partially reflects.
