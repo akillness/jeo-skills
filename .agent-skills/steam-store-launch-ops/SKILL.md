@@ -1,92 +1,87 @@
 ---
 name: steam-store-launch-ops
 description: >
-  Diagnose Steam launch/store bottlenecks for indie games across store-page conversion,
-  wishlist underperformance, demo / Steam Next Fest readiness, and launch-ops checkpoints.
-  Use when a solo dev, small studio, publisher helper, or founder-marketer needs to decide
-  whether the real problem is visibility, page promise, demo proof, event timing, or launch
-  readiness — even if they only say "help my Steam page", "wishlists are weak", "are we
-  ready for Next Fest", "review our capsule/trailer/tags", "should we launch this demo",
-  or "give me a Steam launch checklist".
+  Turn Steam store-page, wishlist, demo, Next Fest, and launch-window ambiguity into
+  one packet-first Steam launch brief. Use when an indie dev, small studio,
+  founder-marketer, or publisher helper needs to decide whether the next move is a
+  page-promise audit, wishlist-signal check, demo-readiness gate, event-timing
+  workback, or launch-ops runbook — especially when they say "help my Steam page",
+  "wishlists are weak", "is our demo ready", "should we do Next Fest", or "give me
+  a Steam launch checklist". Route broad non-game GTM work to `marketing-automation`
+  and player-feedback/build-performance issues to the game specialist skills.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
-  Best for repos, briefs, screenshots, trailers, Steam page URLs, launch plans, demo notes,
-  or lightweight KPI context. Works as a diagnosis-and-brief workflow, not an automatic
-  Steam publisher, ad-buying system, or full GTM replacement.
+  Best for Steam page URLs or screenshots, trailer and tag packets, demo status,
+  wishlist/traffic context, event timing notes, creator/outreach prep, and launch
+  checklists. Works as a Steam-specific diagnosis and packet-selection workflow,
+  not as a generic marketing strategist, PR CRM, or build-debugging system.
 metadata:
   tags: steam, indie-games, game-marketing, launch-ops, next-fest, wishlists, store-page, demos
-  version: "1.1"
+  version: "1.2"
   source: akillness/oh-my-skills
 ---
 
 # Steam Store Launch Ops
 
-Use this skill to turn messy Steam launch questions into **one bottleneck diagnosis and one next artifact**.
+Use this skill as a **packet-first Steam launch router**.
 
-The job is not to dump general marketing advice. The job is to decide whether the current pain is mainly about:
-- **visibility** — the right players are not reaching the page
-- **promise** — the page/trailer/capsule do not sell the game clearly
-- **proof** — the demo or public proof is not strong enough yet
-- **timing** — an event or release hook is being used at the wrong moment
-- **ops** — launch steps, materials, or ownership are too fragmented
+The job is not to dump generic marketing advice. The job is to:
+1. identify the current Steam hook,
+2. choose the single best packet,
+3. separate visibility, promise, proof, timing, and ops honestly,
+4. make one-shot Steam constraints explicit,
+5. route broader marketing, player-feedback, build, or performance work outward when those are the real problems.
 
-Read these first when needed:
+Read these when needed:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
 - [references/diagnostic-model.md](references/diagnostic-model.md)
 - [references/event-hooks.md](references/event-hooks.md)
 - [references/checklists.md](references/checklists.md)
 
 ## When to use this skill
-- Steam coming-soon or store-page review for an indie game
-- Wishlist funnel triage when the team has some traffic but weak conversion
-- Demo / Steam Next Fest readiness review before a public beat
-- Steam launch readiness or launch-adjacent checklist work
-- Creator/press/store asset coordination when the team needs the next ops artifact fast
-- Game-specific store-launch requests that should **not** be absorbed by `marketing-automation`
+- Review a Steam Coming Soon or live store page before a meaningful public beat
+- Diagnose weak wishlist complaints without confusing traffic, conversion, proof, and timing
+- Decide whether a demo is ready for public exposure or likely to weaken trust
+- Decide whether a Steam Next Fest or similar public beat fits actual readiness
+- Turn late-stage Steam launch stress into one checklist/runbook packet instead of a giant marketing rewrite
+- Triage Steam-facing creator/outreach readiness only far enough to choose the right next packet
 
 ## When not to use this skill
-- Raw playtest/demo/community feedback needs weighting and fix-first prioritization → use `game-demo-feedback-triage`
-- The main problem is demo UX clarity, player confusion, or onboarding quality inside the build → use `game-demo-feedback-triage`
-- The user needs generic growth planning, broad campaign strategy, or non-game GTM work → use `marketing-automation`
-- The user mainly needs trailer/capsule production or general content creation → route to the relevant creative/content skill after this diagnosis
+- The main job is broad non-game launch/GTM/lifecycle/acquisition work → `marketing-automation`
+- The main job is prioritizing player/demo feedback, confusion, bugs, or playtest notes → `game-demo-feedback-triage`
+- The main job is a red build, packaging failure, or CI/editor log → `game-build-log-triage`
+- The main job is runtime profiling, frame-time diagnosis, Steam Deck perf, or platform bottlenecks → `game-performance-profiler`
+- The main job is milestone coordination across the whole game project rather than Steam-facing launch/store work → `bmad-gds`
 
 ## Instructions
 
-### Step 1: Label the immediate goal and hook
-Start by naming **what the team is trying to accomplish right now**.
+### Step 1: Classify the request into one packet
+Choose the single best packet before giving advice.
 
-Possible goals:
-- `improve-store-conversion`
-- `diagnose-weak-wishlists`
-- `decide-demo-readiness`
-- `prepare-for-next-fest`
-- `de-risk-launch`
-- `mixed-steam-review`
+**Packets**
+- `page-promise-audit` — the main risk is page conversion: capsule, screenshots, trailer, short description, tags
+- `wishlist-signal-check` — the user says wishlists are weak and you must separate traffic weakness from conversion weakness
+- `demo-readiness-gate` — the key question is whether the demo helps or hurts the current public beat
+- `event-timing-workback` — the team needs a Next Fest / showcase / timing decision with readiness tradeoffs
+- `launch-ops-runbook` — the page is mostly set, but release timing, creator readiness, review/release controls, or ownership are scattered
 
-Capture the current hook:
-- `coming-soon-page`
-- `traffic-spike-or-drop`
-- `demo-ship-update-decision`
-- `next-fest-or-public-event`
-- `launch-window`
-- `unknown`
+If the request mixes several concerns, still choose one **primary packet** and name one secondary concern.
 
-Record the smallest useful evidence packet:
-- Steam page URL or screenshots
-- capsule art / key art
-- trailer link or trailer notes
-- top screenshots and short description
-- top tags / genre framing
-- demo status and build confidence
-- traffic/wishlist context if known
-- launch or event timing
-- creator / press / ops notes if relevant
+### Step 2: Capture the smallest credible Steam packet
+Pull only the minimum evidence that supports a real decision:
+- current hook: Coming Soon, weak wishlists, demo publish/update, Next Fest, launch window, or unknown
+- page evidence: URL or screenshots, capsule, first screenshots, short description, tags
+- proof evidence: trailer link/opening notes, demo status, public-build confidence
+- signal context: traffic weak, conversion weak, both unclear, or unknown
+- timing context: festival deadline, launch target, demo timing, review/release constraints
+- ops context: creator/press materials, keys/outreach, ownership gaps, launch checklist gaps
 
-If evidence is thin, say so and keep confidence low.
+If the evidence is thin, keep confidence low and choose the smallest safe packet.
 
-### Step 2: Separate the bottleneck before recommending fixes
-Classify one **primary bottleneck** and optionally one secondary bottleneck.
+### Step 3: Name the primary bottleneck
+Use the existing diagnostic model, but keep one primary bottleneck.
 
-**Primary bottleneck buckets**
+**Primary bottlenecks**
 - `visibility-acquisition`
 - `promise-clarity`
 - `proof-demo-readiness`
@@ -94,179 +89,216 @@ Classify one **primary bottleneck** and optionally one secondary bottleneck.
 - `launch-ops-readiness`
 - `evidence-gap`
 
-**Typical mappings**
-- "Wishlists are weak and traffic is also weak" → `visibility-acquisition`
-- "People click through but do not wishlist" → `promise-clarity`
-- "The page looks okay but we are unsure whether the demo is good enough for public exposure" → `proof-demo-readiness`
+Typical mappings:
+- "Wishlists are weak and traffic is weak too" → `visibility-acquisition`
+- "Some people click through but do not wishlist" → `promise-clarity`
+- "The page is okay but the demo may be rough" → `proof-demo-readiness`
 - "Should we do Next Fest now or wait?" → `timing-hook-fit`
 - "We are near launch and materials/checklists feel scattered" → `launch-ops-readiness`
-- "We only have a vague complaint and almost no evidence" → `evidence-gap`
+- "We barely have evidence" → `evidence-gap`
 
-Do **not** flatten everything into generic marketing. A weak Steam result can be a traffic problem, a conversion problem, a proof problem, a timing problem, or an ops problem.
+### Step 4: Apply the one-shot Steam rules
+Before recommending anything, check the constraints that are easy to miss:
+- a pre-release public demo depends on the base game page already being visible as Coming Soon
+- the first public demo release gets a limited one-shot notify window to wishlisters/followers
+- Next Fest requires a public page, a publicly playable demo by the event start, and current store assets
+- Steam review and release still carry manual timing/risk; do not assume everything is automatic
 
-### Step 3: Audit through five short lenses
-Use these lenses to justify the bottleneck.
+If the recommendation would spend one of these beats on a weak package, say so directly.
 
-1. **Visibility**
-   - Is the page getting qualified traffic at all?
-   - Is the problem really awareness rather than conversion?
+### Step 5: Choose the packet-specific intervention
+Use one packet and one intervention.
 
-2. **Promise**
-   - Can a player tell what the game is quickly?
-   - Do the capsule, screenshots, trailer opening, short description, and tags describe the same game?
+#### `page-promise-audit`
+Use when the page package is the likely bottleneck.
 
-3. **Proof**
-   - Does the demo or public build strengthen confidence, or would it damage trust right now?
-   - Is there enough playable proof for the current marketing beat?
+Focus on:
+- capsule readability
+- screenshot ordering and gameplay proof
+- trailer opening
+- short-description specificity
+- tag coherence
 
-4. **Timing**
-   - Does the current event/release hook fit the team’s actual readiness?
-   - Is the team about to spend a visibility beat on a weak build or weak page?
+Good next artifacts:
+- `page rewrite brief`
+- `screenshot reorder brief`
+- `trailer hook brief`
+- `tag audit`
 
-5. **Ops**
-   - Are assets, links, ownership, creator materials, and launch steps organized enough to execute cleanly?
-   - Is the team missing one obvious checklist or runbook?
+#### `wishlist-signal-check`
+Use when the team is overfitting to weak wishlist results.
 
-### Step 4: Build the Steam ops brief
-Return a concise report with this exact structure:
+Focus on:
+- low traffic vs weak conversion
+- whether the page package actually matches the audience promise
+- whether the demo/proof is missing or weak
+- whether a timing/event problem is hiding inside the wishlist complaint
+
+Good next artifacts:
+- `wishlist signal memo`
+- `page rewrite brief`
+- `visibility push check`
+- `demo readiness checklist`
+
+#### `demo-readiness-gate`
+Use when the demo is the public proof question.
+
+Focus on:
+- whether the demo strengthens trust
+- whether first-session quality matches the current page promise
+- whether the notify/event timing is being spent too early
+- whether the better move is polish, delay, narrow the beat, or proceed
+
+Good next artifacts:
+- `demo readiness checklist`
+- `proof-gap notes`
+- `event timing memo`
+
+#### `event-timing-workback`
+Use when the main decision is whether a public beat fits actual readiness.
+
+Focus on:
+- Next Fest or showcase fit
+- page/trailer/tag/demo readiness as a set
+- whether the event is being treated as a readiness gate or wishful discovery play
+- immediate workback tasks before the deadline
+
+Good next artifacts:
+- `Next Fest runbook`
+- `event timing decision memo`
+- `asset lock checklist`
+
+#### `launch-ops-runbook`
+Use when the core page/demo are mostly acceptable, but launch execution is fragmented.
+
+Focus on:
+- review/release timing
+- creator/press readiness and key/outreach packet hygiene
+- ownership gaps
+- launch-day checklist and contingency points
+
+Good next artifacts:
+- `launch checklist`
+- `launch-day runbook`
+- `creator/outreach prep packet`
+
+### Step 6: Add route-outs before scope drifts
+Route out instead of absorbing adjacent work when:
+- the user needs broad acquisition/content/lifecycle/measurement strategy beyond Steam-facing launch/store work → `marketing-automation`
+- the evidence is mostly playtest quotes, user confusion, or mixed demo feedback → `game-demo-feedback-triage`
+- the issue is one broken build, packaging failure, or CI/editor log → `game-build-log-triage`
+- the real blocker is runtime perf, Steam Deck, frame-time, or platform bottlenecks → `game-performance-profiler`
+- the work is broader milestone coordination, milestone risk, or producer-style sequencing → `bmad-gds`
+
+A trustworthy front door narrows the next move. It does not claim every neighboring game-marketing job.
+
+### Step 7: Return one Steam launch packet
+Return one concise packet, not a giant essay.
 
 ```markdown
-# Steam Launch Ops Brief
+# Steam Launch Packet
 
-## Goal and hook
-- Goal: ...
+## Packet choice
+- Primary packet: page-promise-audit | wishlist-signal-check | demo-readiness-gate | event-timing-workback | launch-ops-runbook
+- Secondary concern: optional
 - Current hook: ...
 - Confidence: high | medium | low
 
-## Evidence snapshot
-- What was reviewed: ...
+## Evidence used
+- Page / asset evidence: ...
+- Demo / proof evidence: ...
+- Signal context: ...
+- Timing / ops context: ...
 - Missing but important: ...
 
 ## Primary bottleneck
-- Bucket: ...
+- Bucket: visibility-acquisition | promise-clarity | proof-demo-readiness | timing-hook-fit | launch-ops-readiness | evidence-gap
 - Why it matters now: ...
 - Evidence: ...
 
-## Secondary bottleneck
-- Bucket: ...
-- Why it matters now: ...
-
 ## Recommended intervention
-- Choose one: visibility push check | page promise rewrite | demo readiness pass | event timing decision | launch checklist pass
-- Why this is the shortest path to validated learning or lower launch risk: ...
+- One intervention: ...
+- Why this is the shortest credible move: ...
 
-## Priority fixes
+## Priority checks
 1. ...
 2. ...
 3. ...
 
-## Asset / page checks
-- Capsule: ...
-- Screenshots: ...
-- Trailer: ...
-- Short description: ...
-- Tags: ...
-- Demo / proof: ...
-
-## Event / launch ops checks
-- Timing or event-fit: ...
-- Creator / press readiness: ...
-- Checklist / ownership gaps: ...
-
 ## Recommended next artifact
-- Choose one: page rewrite brief | screenshot reorder brief | trailer hook brief | tag audit | demo readiness checklist | Next Fest runbook | launch checklist | wishlist spike log
+- Choose one: page rewrite brief | screenshot reorder brief | trailer hook brief | tag audit | wishlist signal memo | visibility push check | demo readiness checklist | event timing decision memo | Next Fest runbook | asset lock checklist | launch checklist | launch-day runbook | creator/outreach prep packet
+
+## Route-outs
+- Skill: ...
+- Why: ...
+- Packet to pass: ...
 
 ## What not to do yet
-- 1-3 bullets that prevent wasted effort or premature spend
+- 1-3 bullets that prevent folklore, wasted spend, or premature scope drift
 ```
 
-### Step 5: Tailor the brief to the request type
-**For store-page conversion reviews:**
-- focus on promise clarity before growth tactics
-- separate clickthrough traffic from wishlist conversion
-- prioritize first-impression readability over exhaustive feature listing
-
-**For weak-wishlist cases:**
-- decide whether the issue is traffic, promise, or proof before changing everything
-- do not invent analytics certainty that the evidence does not support
-- recommend a small validation move when evidence is mixed
-
-**For demo / Next Fest cases:**
-- treat the event as a readiness hook, not just free exposure
-- check whether the demo helps prove the promise or risks undermining it
-- call out if the best move is to wait, polish, or narrow the event goal
-
-**For launch-checklist cases:**
-- focus on missing runbook/checklist ownership, asset consistency, and timing risks
-- prefer one launch packet over a giant strategy rewrite
-
-### Step 6: Ask for the minimum missing evidence when needed
-If confidence is low, request the smallest next packet that would improve the diagnosis:
-1. Steam page URL or screenshots of the top sections
-2. capsule art plus trailer link/opening notes
-3. short description and top tags
-4. demo status and target event / launch window
-5. whether traffic is low, conversion is low, or both
-
-Do not ask for a giant marketing dossier.
+### Step 8: Verify the boundary before finalizing
+Check:
+- did you pick one packet instead of mixing page audit, demo QA, outreach CRM, and broad GTM strategy together?
+- did you separate traffic weakness from conversion weakness before prescribing page changes?
+- did you treat demos and Next Fest as readiness gates rather than generic visibility freebies?
+- did you make one-shot timing/review constraints visible when they matter?
+- did you route feedback/build/perf work outward instead of stretching this skill?
 
 ## Output format
-Always return a short operations brief, not a broad essay.
+Always return a **short Steam Launch Packet**.
 
 Required qualities:
-- identify the single strongest bottleneck first
-- distinguish visibility, promise, proof, timing, and ops
-- stay around 300-550 words unless the user asks for more
-- recommend one next artifact, not a whole GTM stack
-- stay honest about evidence quality and uncertainty
+- one primary packet
+- one primary bottleneck
+- one next artifact
+- explicit uncertainty when evidence is thin
+- route-outs when the real job belongs elsewhere
+- no giant generic marketing sermon
 
 ## Examples
 
-### Example 1: Low wishlists with some traffic
+### Example 1: weak wishlists with some traffic
 **Input**
-> Our Steam page gets some clicks from social posts, but wishlists are still weak. Review our capsule, screenshots, trailer, and tags.
+> Our Steam page gets clicks from social posts, but wishlists are still weak. Review our capsule, screenshots, short description, and tags.
 
-**Output sketch**
-- Goal: `diagnose-weak-wishlists`
-- Hook: `traffic-spike-or-drop`
-- Primary bottleneck: `promise-clarity`
-- Secondary bottleneck: optional `proof-demo-readiness`
-- Recommended intervention: `page promise rewrite`
-- Recommended next artifact: `page rewrite brief` or `screenshot reorder brief`
+**Good response direction**
+- packet: `wishlist-signal-check`
+- bottleneck: likely `promise-clarity`
+- next artifact: `page rewrite brief` or `screenshot reorder brief`
+- avoids pretending traffic is the only issue
 
-### Example 2: Next Fest readiness
+### Example 2: Next Fest decision
 **Input**
-> We want to join Next Fest. The page is live and the trailer is decent, but I am nervous the demo is still rough.
+> We want to do Next Fest. The page is up and the trailer is decent, but I am nervous the demo is still rough.
 
-**Output sketch**
-- Goal: `prepare-for-next-fest`
-- Hook: `next-fest-or-public-event`
-- Primary bottleneck: `proof-demo-readiness`
-- Recommended intervention: `demo readiness pass`
-- Recommended next artifact: `demo readiness checklist` or `Next Fest runbook`
-- What not to do yet: do not spend the event on a build that weakens trust
+**Good response direction**
+- packet: `event-timing-workback` or `demo-readiness-gate`
+- bottleneck: `proof-demo-readiness`
+- calls out that Next Fest is a readiness gate
+- next artifact: `demo readiness checklist` or `Next Fest runbook`
 
-### Example 3: Launch checklist
+### Example 3: launch checklist ask
 **Input**
 > Give me a Steam launch checklist. We have a page, trailer, demo, and a small creator list.
 
-**Output sketch**
-- Goal: `de-risk-launch`
-- Hook: `launch-window`
-- Primary bottleneck: `launch-ops-readiness`
-- Recommended intervention: `launch checklist pass`
-- Recommended next artifact: `launch checklist`
+**Good response direction**
+- packet: `launch-ops-runbook`
+- bottleneck: `launch-ops-readiness`
+- next artifact: `launch checklist` or `launch-day runbook`
+- keeps page conversion and creator prep in scope only as launch ops, not a full GTM rewrite
 
 ## Best practices
-1. **Diagnose before prescribing** — weak results can come from traffic, promise, proof, timing, or ops.
-2. **Treat the demo as proof, not just an extra asset** — sometimes the right answer is to improve or delay the demo instead of rewriting the page.
-3. **Use event hooks explicitly** — Next Fest and launch windows should change the recommendation.
-4. **Prefer one next artifact** over a giant marketing rewrite.
-5. **Stay game-specific** — this skill is the Steam/game launch exception, not a generic growth wrapper.
-6. **Be honest about weak evidence** — do not pretend to know conversion causes from one vague sentence.
+1. **Choose the packet first** — the front door should narrow the task immediately.
+2. **Separate signal from folklore** — wishlists, demos, and Next Fest all attract bad default advice.
+3. **Treat the demo as public proof** — not just another asset.
+4. **Treat Steam timing as a constraint system** — Coming Soon, demo notify timing, review/release, and Next Fest all matter.
+5. **Prefer one next artifact** over a giant launch theory dump.
+6. **Stay Steam-specific** — this is the repo’s game-launch exception, not a generic marketing wrapper.
 
 ## References
-- [Steamworks Documentation — Store Page](https://partner.steamgames.com/doc/store/page)
+- [Steamworks Documentation — Visibility on Steam](https://partner.steamgames.com/doc/marketing/visibility)
+- [Steamworks Documentation — Coming Soon](https://partner.steamgames.com/doc/store/coming_soon)
 - [Steamworks Documentation — Demos](https://partner.steamgames.com/doc/store/application/demos)
 - [Steamworks Documentation — Steam Next Fest](https://partner.steamgames.com/doc/marketing/upcoming_events/nextfest)
 - [Steamworks Documentation — Release Process](https://partner.steamgames.com/doc/store/releasing)

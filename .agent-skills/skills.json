@@ -2820,7 +2820,7 @@
     },
     {
       "name": "steam-store-launch-ops",
-      "description": "Diagnose Steam launch/store bottlenecks for indie games across store-page conversion, wishlist underperformance, demo / Steam Next Fest readiness, and launch-ops checkpoints. Use when a solo dev, small studio, publisher helper, or founder-marketer needs to decide whether the real problem is visibility, page promise, demo proof, event timing, or launch readiness — even if they only say \"help my Steam page\", \"wishlists are weak\", \"are we ready for Next Fest\", \"review our capsule/trailer/tags\", \"should we launch this demo\", or \"give me a Steam launch checklist\".",
+      "description": "Turn Steam store-page, wishlist, demo, Next Fest, and launch-window ambiguity into one packet-first Steam launch brief. Use when an indie dev, small studio, founder-marketer, or publisher helper needs to decide whether the next move is a page-promise audit, wishlist-signal check, demo-readiness gate, event-timing workback, or launch-ops runbook — especially when they say \"help my Steam page\", \"wishlists are weak\", \"is our demo ready\", \"should we do Next Fest\", or \"give me a Steam launch checklist\". Route broad non-game GTM work to `marketing-automation` and player-feedback/build-performance issues to the game specialist skills.",
       "path": "steam-store-launch-ops/SKILL.md",
       "tags": [
         "steam",

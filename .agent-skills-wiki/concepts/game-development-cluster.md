@@ -1,7 +1,7 @@
 ---
 title: Game Development Cluster
 created: 2026-04-12
-updated: 2026-04-19
+updated: 2026-04-20
 type: concept
 tags: [skills, consolidation, trigger-design, game-dev]
 sources: [graphify-out/GRAPH_REPORT.md, .survey/bmad-gds-modernization-20260412/context.md, .survey/bmad-gds-modernization-20260412/solutions.md]
@@ -21,6 +21,7 @@ Recent refinement:
 - The 2026-04-18 structural-hardening pass then shrank `game-performance-profiler` from 296 to 231 lines, added a dedicated mode-selection / route-out reference, and removed it from the oversized front-door watchlist without changing the cluster boundary.
 - The four specialist game-support skills now all ship compact discovery variants, so the game lane is no longer an outlier against the repo's tiered discovery model.
 - `steam-store-launch-ops` is strongest as a bottleneck-first public-facing router: keep it focused on Steam-specific visibility, page promise, demo proof, event timing, and launch-ops readiness instead of letting it drift into generic marketing advice or playtest-feedback synthesis.
+- The 2026-04-20 packet-first follow-up tightened `steam-store-launch-ops` again: choose one Steam packet first (`page-promise-audit`, `wishlist-signal-check`, `demo-readiness-gate`, `event-timing-workback`, or `launch-ops-runbook`), keep one-shot Steam timing constraints visible, and route broader marketing, feedback, build, and perf work outward instead of expanding the lane.
 - The 2026-04-19 hardening pass moved `game-ci-cd-pipeline` into the same routing-first pattern: choose one pipeline packet, keep one red build in `game-build-log-triage`, and treat cache/toolchain/artifact concerns as distinct structural decisions instead of one giant CI essay.
 
 ## Durable finding

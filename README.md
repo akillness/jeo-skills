@@ -83,6 +83,12 @@ graph TD
 | **sprint-retrospective: structural hardening** | Tightened `sprint-retrospective` into a routing-first PM anchor for sprint retros, milestone postmortems, remote/hybrid facilitation, and dead-action-item recovery across software, product/ops, marketing/GTM, and game-delivery work. The front door now picks one retrospective mode, reviews prior commitments before new actions, keeps action counts brutally small, routes planning/sizing/daily-sync work outward, and adds `references/action-review-and-packet-shapes.md`, refreshed `evals/evals.json`, and synced compact/manifest discovery wording. |
 | **autoresearch: routing-first structural hardening** | Tightened `autoresearch` into a smaller Karpathy ML search front door. It now chooses one mode (`setup readiness`, `program.md` authoring, bounded run loop, results interpretation, or constrained-hardware adaptation), keeps the immutable `prepare.py` / 300-second / `val_bpb` contract explicit, adds `references/operating-modes-and-route-outs.md`, refreshes `evals/evals.json`, and sharpens route-outs to `skill-autoresearch` plus app-level eval / observability tools instead of acting like a giant end-to-end explainer. |
 
+## 🆕 What's New in v2026-04-20
+
+| Change | Details |
+|--------|---------|
+| **steam-store-launch-ops: packet-first structural hardening** | Tightened `steam-store-launch-ops` into a smaller packet-first Steam launch router. It now chooses one primary packet (`page-promise-audit`, `wishlist-signal-check`, `demo-readiness-gate`, `event-timing-workback`, or `launch-ops-runbook`), adds `references/intake-packets-and-route-outs.md`, expands `evals/evals.json` with route-out and broad-GTM boundary cases, refreshes `SKILL.toon`, and syncs README/setup/manifest wording so the game lane stays Steam-specific instead of drifting into generic marketing or demo-feedback work. |
+
 ## 🆕 What's New in v2026-04-17
 
 | Change | Details |
@@ -390,7 +396,7 @@ setup omc
 | `game-ci-cd-pipeline` | Game pipeline packet router — setup plans, stage splits, cache policy, preflight checks, artifact/release hygiene, and CI-signal hardening | All |
 | `game-demo-feedback-triage` | Turn playtest/demo/community feedback into weighted themes, fix-first priorities, and explicit handoffs | All |
 | `game-performance-profiler` | Unity/Unreal frame-time triage — bottleneck-first profiling brief, quick packets, benchmark routes, target-device review, and deliberate profiler escalation | All |
-| `steam-store-launch-ops` | Diagnose Steam launch/store bottlenecks — visibility, page promise, demo proof, event timing, and launch-readiness ops | All |
+| `steam-store-launch-ops` | Packet-first Steam launch router — choose page-promise audit, wishlist signal check, demo readiness, event timing workback, or launch-ops runbook | All |
 
 ### 🔧 Utilities (11)
 
