@@ -362,7 +362,7 @@ If no → skip silently. Never re-ask.
 
 | Skill | Activation Keyword | Description |
 |-------|-------------------|-------------|
-| `jeo` | `jeo` | Integrated orchestration with `.jeo` ledger — Plan→Execute→Verify→Cleanup. Requires `plannotator` + `agentation`. **Claude Code**: requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` |
+| `jeo` | `jeo` | Packet-first orchestration with `.jeo` ledger — plan gate → runtime handoff → verify → cleanup. Routes to `plannotator`, runtime skills, `agent-browser`, and `agentation` instead of owning their internals. **Claude Code**: requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` |
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude-first OMC router — distinguish Claude Code slash skills from the `omc` shell CLI, then handle setup/recovery/state issues or route adjacent work outward |
 | `ralph` | `ralph`, `ooo`, `ooo ralph`, `ooo interview` | Ouroboros spec-first method anchor — Interview→Seed→Execute→Evaluate→Evolve, immutable seed/spec, and persistent completion until verification passes |
 | `ralphmode` | `ralphmode` | Automation permission profiles — repo boundary, sandbox-first, secret denylist |

@@ -1324,7 +1324,7 @@
     },
     {
       "name": "jeo",
-      "description": "Run the integrated multi-agent delivery loop: plan with ralph and plannotator, execute with the platform runtime (omc, omx, ohmg) or bmad, verify browser behavior with agent-browser, apply submit-gated UI feedback with agentation, and finish with cleanup while maintaining a project-local .jeo ledger and resumable state. Use when the user wants one orchestration surface for planning, implementation, QA, resume/recovery, and durable task history across Claude Code, Codex CLI, Gemini CLI, or OpenCode.",
+      "description": "Turn integrated agent delivery into one packet-first orchestration decision. Use when the user wants a single front door for plan approval, runtime handoff, browser/UI verification, resume or recovery, and durable .jeo task history across Claude Code, Codex CLI, Gemini CLI, or OpenCode. Route spec-first loops to ralph, plan review to plannotator, runtime-native execution to omc / omx / ohmg, browser verification to agent-browser, submit-gated UI review to agentation, and trust-posture tuning to ralphmode.",
       "category": "core-orchestration",
       "path": "jeo/SKILL.md",
       "tags": [

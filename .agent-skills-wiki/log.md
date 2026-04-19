@@ -1072,3 +1072,11 @@
 - Accepted: tighten `backend-testing` into a packet-first backend test router, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a contract-protection case, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording.
 - Rejected: adding another flake-testing or contract-testing wrapper; broadening `backend-testing` into org-wide testing policy; pulling API redesign or auth implementation back into the testing skill.
 - Wiki files created/updated: `queries/backend-testing-structural-hardening-2026-04-20.md`, `concepts/backend-api-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-20] query | jeo structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack delivery, PM/ops execution and approval gates, marketing/content automation, and game-production orchestration, with the best bounded follow-up landing on the existing `jeo` skill rather than another orchestration wrapper.
+- Survey files created under `.survey/jeo-structural-hardening-20260420/`; primary evidence came from official Claude Code, Codex CLI, Gemini CLI, LangGraph, CrewAI, Mastra, AutoGen, OpenHands, Anthropic, Humanloop, and Stack Overflow survey material, using direct primary-source retrieval because normal `web_search` / `web_extract` remained unavailable in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: tighten `jeo` into a packet-first orchestration front door, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a runtime-route-out case, sync `SKILL.toon` / `skills.json` / `skills.toon`, refresh README / README.ko / setup discovery wording, and ratchet the updated orchestration boundary into the wiki.
+- Rejected: adding another orchestration wrapper; re-expanding runtime-specific hook/config detail inline; pretending Claude/Codex/Gemini have symmetric hook parity; pulling browser verification or submit-gated annotation mechanics back into `jeo`.
+- Wiki files created/updated: `queries/jeo-structural-hardening-2026-04-20.md`, `concepts/core-orchestration-platform-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
