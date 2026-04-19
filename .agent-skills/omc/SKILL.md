@@ -1,50 +1,128 @@
 ---
 name: omc
-description: "Use when you need Teams-first multi-agent orchestration in Claude Code. Triggers on: omc, autopilot, ralph, ulw, ccg, team. 29+ specialized agents, smart model routing (Haiku→Opus), persistent execution loops, skill layers, real-time HUD."
+description: >
+  Route Claude Code–first orchestration to the right OMC surface before giving commands.
+  Use when the user wants oh-my-claudecode / OMC in Claude Code, needs to choose
+  between plugin slash skills and the `omc` shell CLI, or needs truthful guidance on
+  `/team`, `/autopilot`, `/ralph`, `/ultrawork`, `omc setup`, `omc team`, `omc ask`,
+  updates, plugin-dir behavior, worktree/state issues, HUD/hooks, or adjacent route-outs.
+  Triggers on: omc, oh-my-claudecode, Claude Code team mode, autopilot, /team, ralph,
+  ultrawork, CCG, omc team, omc ask, omc setup, OMC HUD, OMC hooks.
 allowed-tools: Read Write Bash Grep Glob Edit Agent
 metadata:
-  tags: omc, oh-my-claudecode, claude-code, multi-agent, orchestration, team, autopilot, ralph, ultrawork, ccg, pipeline
+  tags: omc, oh-my-claudecode, claude-code, multi-agent, orchestration, team, autopilot, ralph, ultrawork, ccg, hooks, hud
   platforms: Claude Code
   keyword: omc
-  version: 4.9.3
+  version: 4.13.0
   source: Yeachan-Heo/oh-my-claudecode
 ---
 
-
-# omc (oh-my-claudecode) — Claude Code Multi-Agent Orchestration
+# omc — Claude-first orchestration router for oh-my-claudecode
 
 ## When to use this skill
 
-- You want Teams-first multi-agent orchestration inside Claude Code
-- You need 29+ specialized agents with smart model routing (Haiku → Opus)
-- Complex tasks that benefit from parallel agent execution with verify/fix loops
-- Any Claude Code workflow that needs persistent, guaranteed-completion execution
-- You want skill layers: Guarantee (ralph) → Enhancement (ultrawork) → Execution
-- You need 3-model synthesis with Codex + Gemini + Claude (CCG mode)
+- The user wants **Claude Code–native orchestration** through OMC / oh-my-claudecode
+- The user needs to choose between **plugin slash skills** and the **`omc` terminal CLI**
+- The user asks about `/team`, `/autopilot`, `/ralph`, `/ultrawork`, `/deep-interview`, `omc team`, `omc ask`, `omc setup`, `omc update`, or OMC HUD/hooks behavior
+- The user is hitting **setup drift**, **duplicate install paths**, **plugin-dir confusion**, **worktree/state collisions**, or **rate-limit / HUD / resume issues** in OMC
+- The user really wants Claude-first orchestration, not a Codex-first (`omx`) or Gemini/portable-harness (`ohmg`) runtime
 
----
+## Instructions
 
-## 1. Installation (3 Steps)
+### Step 1: Classify the request into one packet first
 
-**Step 1: Install plugin**
+Pick the smallest truthful packet before explaining commands:
+
+1. **plugin-setup** — install or repair the Claude Code plugin surface
+2. **in-session-runtime** — choose the right slash skill inside Claude Code
+3. **terminal-runtime** — choose the right `omc ...` shell command
+4. **recovery-and-update** — fix setup drift, state issues, plugin-dir duplication, or resume/HUD trouble
+5. **boundary-and-route-out** — the user actually needs `jeo`, `ralphmode`, `plannotator`, browser-review skills, or another platform runtime
+
+Lead with the packet name mentally, then give only the commands and caveats that fit that packet.
+
+### Step 2: Tell the operator which surface they are on
+
+OMC has **two different surfaces**. Do not collapse them into one mental model.
+
+#### A. Plugin / in-session surface
+
+Use this when the user is already **inside Claude Code** and wants slash skills, hooks, HUD, or native-team behavior.
+
+Examples:
+
+```text
+/team 3:executor "fix all TypeScript errors"
+/autopilot "build a REST API for managing tasks"
+/ralph "keep going until the tests pass"
+/ultrawork "parallelize this cleanup"
+/deep-interview "help me clarify the feature"
+```
+
+This surface owns:
+- slash skills
+- hooks and HUD behavior
+- native team orchestration inside Claude Code
+- in-session execution keywords like `autopilot:` or `ralph:`
+
+#### B. Terminal CLI surface
+
+Use this when the user wants **shell-side setup, updates, provider consultation, tmux workers, or runtime management**.
+
+Examples:
+
+```bash
+omc setup
+omc update
+omc ask codex "review this patch"
+omc team 2:codex "review auth flow"
+omc team status review-auth-flow
+```
+
+This surface owns:
+- `omc setup` / `omc update`
+- `omc ask`
+- `omc team` tmux workers
+- shell-side runtime management
+
+Important truth:
+- `/team` and `omc team` are both real, but they are **different runtimes**
+- `/autopilot`, `/ralph`, and `/ultrawork` are **in-session skills**, not normal `omc` CLI subcommands
+- the npm package name is **`oh-my-claude-sisyphus`**, not `oh-my-claudecode`
+
+### Step 3: Use the right packet
+
+#### Packet: plugin-setup
+
+Use when the user needs installation, first-time setup, or a repair of the Claude Code plugin path.
+
+Recommended plugin-first path:
+
 ```bash
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
 /plugin install oh-my-claudecode
 ```
 
-**Step 2: Run setup**
-```bash
+Then run one setup entrypoint inside Claude Code:
+
+```text
+setup omc
+```
+
+or:
+
+```text
 /oh-my-claudecode:omc-setup
 ```
 
-**Step 3: Build something**
-```text
-autopilot: build a REST API for managing tasks
+If the user also wants shell-side commands like `omc setup`, `omc update`, `omc ask`, or `omc team`, add the optional CLI install:
+
+```bash
+npm i -g oh-my-claude-sisyphus@latest
 ```
 
-> **npm alternative**: `npm install -g oh-my-claude-sisyphus`
+Enable native teams in `~/.claude/settings.json`:
 
-**Enable native teams** (`~/.claude/settings.json`):
 ```json
 {
   "env": {
@@ -53,220 +131,134 @@ autopilot: build a REST API for managing tasks
 }
 ```
 
----
+If the user runs OMC via a local checkout or `--plugin-dir`, mention plugin-dir decisions and route them to [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md) and [references/cli-reference.md](references/cli-reference.md) instead of guessing a duplicate-install fix from memory.
 
-## 2. Orchestration Modes
+#### Packet: in-session-runtime
 
-| Mode | What it is | Use For |
-|------|-----------|---------|
-| **Team** (canonical) | 5-stage pipeline: `plan → prd → exec → verify → fix` | Coordinated agents on shared task list |
-| **Autopilot** | Full autonomous 5-stage pipeline | End-to-end feature work (idea → code) |
-| **Ultrawork** | Maximum parallelism burst | Fast fixes/refactors across codebase |
-| **Ralph** | Persistent loop: execute → verify → fix | Tasks that must complete fully, no partials |
-| **Pipeline** | Sequential staged processing | Strict ordering / multi-step transforms |
-| **CCG** | 3-model synthesis (Codex + Gemini + Claude) | Mixed backend + UI work |
-| **omc team (CLI)** | tmux workers with Codex/Gemini/Claude | Cross-model code review, security, design |
+Use when the user wants the best **Claude Code slash-skill** for the job.
 
-### Skill Layer Composition
+Start with the smallest truthful recommendation:
 
-```
-┌──────────────────────────────────────────┐
-│ GUARANTEE LAYER (optional)               │
-│ ralph — won't stop until verified done   │
-└──────────────────────────────────────────┘
-                    │
-                    ▼
-┌──────────────────────────────────────────┐
-│ ENHANCEMENT LAYER (0–N skills)           │
-│ ultrawork (parallel) | git-master (VCS)  │
-└──────────────────────────────────────────┘
-                    │
-                    ▼
-┌──────────────────────────────────────────┐
-│ EXECUTION LAYER (primary skill)          │
-│ default (build) | planner | orchestrate  │
-└──────────────────────────────────────────┘
-```
+| Need | Use | Why |
+|------|-----|-----|
+| Shared in-session multi-agent work | `/team ...` | Canonical Claude-native team workflow |
+| End-to-end build from a fuzzy request | `/autopilot ...` or `autopilot: ...` | Single lead agent, idea → implementation |
+| Must keep going until verified done | `/ralph ...` or `ralph: ...` | Persistent execute → verify → fix loop |
+| Burst parallel work | `/ultrawork ...` or `ulw ...` | High parallelism without the full team workflow |
+| Requirements clarification first | `/deep-interview ...` | Clarify before planning or execution |
+| Cross-model synthesis | `ccg: ...` when upstream/runtime supports it | Claude + Codex + Gemini mixed workload path |
 
----
+Do not dump all modes by default. Pick the one that matches the user's real task and mention only 1–2 nearby alternatives when they materially differ.
 
-## 3. Magic Keywords (Auto-Detection)
+#### Packet: terminal-runtime
 
-| Keyword | Effect |
-|---------|--------|
-| `autopilot`, `build me`, `I want a` | Full autonomous pipeline |
-| `ralph`, `don't stop`, `must complete` | Persistent loop until verified |
-| `ulw`, `ultrawork` | Maximum parallelism |
-| `ccg`, `claude-codex-gemini` | 3-model synthesis |
-| `ralplan` | Consensus-based iterative planning |
-| `deep interview`, `ouroboros` | Socratic requirements clarification |
-| `deepsearch` | Codebase-focused deep search |
-| `deepanalyze`, `deep-analyze` | Deep analysis mode |
-| `ultrathink` | Deep reasoning mode |
-| `tdd`, `test first` | TDD workflow |
-| `deslop`, `anti-slop` | Clean AI expression patterns |
-| `cancelomc`, `stopomc` | Cancel active execution mode |
-| `plan` | Planning interview |
+Use when the user wants the **shell CLI** rather than the in-session plugin surface.
 
----
+Common mappings:
 
-## 4. Team Mode (Canonical)
+| Need | Use |
+|------|-----|
+| Initial shell-side install/repair | `omc setup` |
+| Refresh after updates | `omc update` |
+| Provider consultation | `omc ask <provider> "..."` |
+| tmux-based worker teams | `omc team <N>:<provider> "<task>"` |
+| Team runtime status | `omc team status <session>` |
+| Team runtime shutdown | `omc team shutdown <session>` |
 
-```bash
-/oh-my-claudecode:team 3:executor "fix all TypeScript errors"
-```
+If the user says “team mode” but is already inside Claude Code, prefer `/team`.
+If the user says “team mode” and clearly wants shell/tmux workers, prefer `omc team`.
 
-5-stage pipeline:
-```
-team-plan → team-prd → team-exec → team-verify → team-fix (loop)
-```
+#### Packet: recovery-and-update
 
-- **team-plan**: Planning agent creates task list
-- **team-prd**: Architect designs solution
-- **team-exec**: N parallel executor agents implement
-- **team-verify**: Verifier confirms completion
-- **team-fix**: If verification fails, fix loop repeats
+Use when the job is not choosing a mode, but **repairing OMC**.
 
----
+Common truth-first fixes:
 
-## 5. Agent System (29+ Specialized Agents)
+- **Duplicate or conflicting install paths** → check whether plugin and CLI/local-checkout/plugin-dir installs are overlapping
+- **Setup drift after upgrade** → rerun setup with the truthful current surface (`setup omc`, `/oh-my-claudecode:omc-setup`, or `omc update` / `omc setup` depending on the runtime)
+- **Team mode not working** → verify `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
+- **Worktree/state weirdness** → inspect `.omc/state/`, team names, plugin-dir choices, and worktree-specific namespace behavior
+- **HUD / rate-limit / ephemeral environment trouble** → treat it as environment/runtime recovery, not as a mode-selection question
+- **Generated file confusion (`CLAUDE.md`, agents, hooks)** → prefer doctor/update/setup and source-backed plugin-dir guidance instead of ad hoc cleanup instructions
 
-**Build / Analysis Lane:**
-`explore` (haiku) · `analyst` (opus) · `planner` (opus) · `architect` (opus) · `debugger` (sonnet) · `executor` (sonnet) · `verifier` (sonnet) · `tracer` (sonnet)
+When the fix gets detailed, route to the relevant reference:
+- [references/cli-reference.md](references/cli-reference.md)
+- [references/hooks-reference.md](references/hooks-reference.md)
+- [references/modes-reference.md](references/modes-reference.md)
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
 
-**Review Lane:**
-`code-reviewer` (opus) · `security-reviewer` (sonnet) · `critic` (opus) · `code-simplifier` (opus)
+#### Packet: boundary-and-route-out
 
-**Domain Specialists:**
-`test-engineer` · `designer` · `writer` · `qa-tester` · `scientist` · `git-master` · `document-specialist`
+Do not force OMC when another skill owns the job better.
 
-Invoke via: `/oh-my-claudecode:<agent-name>` or delegated through Task tool.
+Route out when:
 
-See [references/agents-catalog.md](references/agents-catalog.md) for full profiles.
+- **long-lived plan / execution ledger, resumable delivery loop, multi-skill coordination** → `jeo`
+- **spec-first persistence and keep-going-until-verified method beyond OMC runtime detail** → `ralph`
+- **approval posture, permissions, trusted-folder / bypass policy** → `ralphmode`
+- **plan review / approval gate** → `plannotator`
+- **fresh-session browser verification** → `agent-browser`
+- **running authenticated browser reuse** → `playwriter`
+- **exact rendered-UI critique / annotation handoff** → `agentation`
+- **Codex-first runtime orchestration** → `omx`
+- **Gemini / Antigravity portable harness adoption** → `ohmg`
 
----
+### Step 4: Keep the answer truthful about volatility
 
-## 6. CLI Tools
+OMC is a fast-moving upstream project. Prefer:
+- current surface distinctions
+- current install/setup commands
+- current route-outs
+- reference docs for deeper operator detail
 
-### omc team (tmux Workers)
-```bash
-omc team 2:codex "review auth module for security"
-omc team 2:gemini "redesign UI components"
-omc team status <session>
-omc team shutdown <session>
-```
-
-### omc ask (Provider Advisor)
-```bash
-omc ask claude "review this migration plan"
-omc ask codex --prompt "identify architecture risks"
-omc ask gemini --prompt "propose UI polish ideas"
-```
-
-### omc wait (Rate Limit Auto-Resume)
-```bash
-omc wait              # Check status
-omc wait --start      # Enable auto-resume daemon
-omc wait --stop       # Disable daemon
-```
-
-### Notifications
-```bash
-omc config-stop-callback telegram --enable --token <bot> --chat <id>
-omc config-stop-callback discord --enable --webhook <url>
-omc config-stop-callback slack --enable --webhook <url>
-```
-
----
-
-## 7. Updating
-
-```bash
-# Sync latest version
-/plugin marketplace update omc
-
-# Re-run setup
-/oh-my-claudecode:omc-setup
-
-# If issues after update
-/oh-my-claudecode:omc-doctor
-```
-
----
-
-## 8. Optional: Multi-AI Orchestration
-
-| Provider | Install | What it enables |
-|----------|---------|----------------|
-| Gemini CLI | `npm install -g @google/gemini-cli` | Design review, UI consistency (1M token context) |
-| Codex CLI | `npm install -g @openai/codex` | Architecture validation, code review cross-check |
-
----
-
-## Instructions
-
-1. **Detect intent** — match user request to the best orchestration mode (Team, Autopilot, Ralph, Ultrawork, CCG)
-2. **Provide install path** — if OMC is not yet installed, give the 3-step install sequence
-3. **Show the invocation** — give the exact command or magic keyword for the chosen mode
-4. **Set expectations** — explain what the mode does (pipeline stages, loop behavior, parallelism)
-5. **Surface relevant CLI** — mention `omc team`, `omc ask`, or `omc wait` if they apply
-6. **Link to references** — point to the appropriate references/ file for deep-dive details
-
----
+Avoid:
+- pretending all commands live on one surface
+- treating `/team` and `omc team` as interchangeable
+- claiming there is a general `omc autopilot` CLI when the real runtime is in-session
+- copying giant keyword tables when one mode recommendation is enough
+- absorbing browser review, approval, or cross-platform orchestration into OMC
 
 ## Examples
 
-### Example 1: Multi-agent team task
-**User:** "여러 에이전트가 병렬로 TypeScript 에러 전부 고쳐줘"
-**Response:** Use Team mode — `/oh-my-claudecode:team 3:executor "fix all TypeScript errors"`. Runs 3 parallel executors through plan→prd→exec→verify→fix pipeline.
+### Example 1: Claude Code team orchestration
+**User:** "Claude Code에서 여러 에이전트가 같이 작업하게 하고 싶어"
 
-### Example 2: Guaranteed completion
-**User:** "테스트 전부 통과할 때까지 멈추지 마"
-**Response:** Use Ralph mode — `ralph: fix all failing tests`. Persistent execute→verify→fix loop until all tests pass. Won't stop until verified.
+**Response:** Use the **in-session-runtime** packet. Recommend `/team 3:executor "..."` if they are already inside Claude Code. Mention `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` if native teams are not enabled yet.
 
-### Example 3: New installation
-**User:** "OMC 설치하고 싶어"
-**Response:** 3-step install: `/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode` → `/plugin install oh-my-claudecode` → `/oh-my-claudecode:omc-setup`. Enable native teams in `~/.claude/settings.json`.
+### Example 2: Shell-side worker team
+**User:** "tmux로 codex 두 명 붙여서 리뷰 돌리고 싶어"
 
----
+**Response:** Use the **terminal-runtime** packet. Recommend `omc team 2:codex "review auth flow"`, then mention `omc team status <session>` for monitoring.
+
+### Example 3: First install
+**User:** "OMC 설치하고 setup까지 하고 싶어"
+
+**Response:** Use the **plugin-setup** packet. Give plugin install first, then `setup omc` or `/oh-my-claudecode:omc-setup`, then optionally `npm i -g oh-my-claude-sisyphus@latest` if they also want shell-side `omc` commands.
+
+### Example 4: Persistent delivery loop, not runtime setup
+**User:** "기획부터 실행, 검증, 재개까지 하나의 장기 루프로 굴리고 싶어"
+
+**Response:** Use the **boundary-and-route-out** packet. Route to `jeo` as the long-loop coordination layer, and mention OMC only as the Claude-first runtime that `jeo` may compose with.
+
+### Example 5: OMC keeps behaving strangely after upgrade
+**User:** "업데이트 후에 팀 명령이 꼬였고 worktree에서도 상태가 이상해"
+
+**Response:** Use the **recovery-and-update** packet. Tell them to inspect the runtime surface, rerun the correct update/setup path, verify team env/settings, and review plugin-dir/state/worktree behavior rather than switching modes blindly.
 
 ## Best practices
 
-- **Default to Team mode** for multi-agent work — swarm/ultrapilot are legacy and route to Team
-- **Enable `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`** in `~/.claude/settings.json` before using Team mode
-- **Use ralph for critical tasks** — it composes automatically with ultrawork for parallel+persistent execution
-- **Use CCG for mixed workloads** — backend execution (Codex) + large-context analysis (Gemini) + orchestration (Claude)
-- **Re-run `/oh-my-claudecode:omc-setup`** after every plugin update to refresh hooks and CLAUDE.md
-- **npm package name differs** — it's `oh-my-claude-sisyphus`, not `oh-my-claudecode`
-- **Cancel safely** — use `cancelomc` keyword or `/oh-my-claudecode:cancel`; state is preserved for resume
-
----
-
-## Quick Reference
-
-| Action | Command |
-|--------|---------|
-| Install | `/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode` |
-| Setup | `/oh-my-claudecode:omc-setup` |
-| Team mode | `/oh-my-claudecode:team N:executor "task"` |
-| Autopilot | `autopilot: <task>` |
-| Ralph loop | `ralph: <task>` |
-| Ultrawork | `ulw <task>` |
-| CCG synthesis | `ccg: <task>` |
-| Deep interview | `deep interview: <topic>` |
-| Cancel | `cancelomc` |
-| Update | `/plugin marketplace update omc && /oh-my-claudecode:omc-setup` |
-| Debug | `/oh-my-claudecode:omc-doctor` |
-
-→ [Full documentation](https://yeachan-heo.github.io/oh-my-claudecode-website) · [GitHub](https://github.com/Yeachan-Heo/oh-my-claudecode)
-
----
+1. Start by naming the **packet** and **surface** before giving commands.
+2. Prefer one recommended mode plus one nearby alternative, not a giant catalog dump.
+3. Treat `/team` and `omc team` as related but different runtimes.
+4. Keep the npm/package-name mismatch explicit: `oh-my-claude-sisyphus` provides the `omc` CLI.
+5. Mention native-team setup only when team-mode success depends on it.
+6. Route long-lived orchestration, approvals, browser review, and other platform runtimes outward instead of stretching OMC.
+7. Use references for volatile operator detail; keep the front door focused on correct routing.
 
 ## References
 
-| File | Contents |
-|------|---------|
-| [references/agents-catalog.md](references/agents-catalog.md) | All 29+ agent profiles, tiers, delegation rules |
-| [references/modes-reference.md](references/modes-reference.md) | Mode deep-dives, skill layer composition |
-| [references/hooks-reference.md](references/hooks-reference.md) | Hook events, injection patterns, kill switches |
-| [references/cli-reference.md](references/cli-reference.md) | Full CLI syntax: omc team/ask/wait/config |
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/modes-reference.md](references/modes-reference.md)
+- [references/hooks-reference.md](references/hooks-reference.md)
+- [references/cli-reference.md](references/cli-reference.md)
+- [references/agents-catalog.md](references/agents-catalog.md)

@@ -1886,7 +1886,7 @@
     },
     {
       "name": "omc",
-      "description": "oh-my-claudecode — Teams-first multi-agent orchestration layer for Claude Code. 32 specialized agents, smart model routing, persistent execution loops, and real-time HUD visibility. Zero learning curve.",
+      "description": "Claude-first OMC router for oh-my-claudecode. Distinguishes plugin slash skills (`/team`, `/autopilot`, `/ralph`, `/ultrawork`) from the `omc` shell CLI (`omc setup`, `omc team`, `omc ask`), handles setup/recovery/state issues, and routes adjacent work to `jeo`, `ralphmode`, `omx`, `ohmg`, and browser-review skills.",
       "category": "core-orchestration",
       "tags": [
         "omc",
@@ -1897,7 +1897,11 @@
         "team",
         "autopilot",
         "ralph",
-        "ultrawork"
+        "ultrawork",
+        "/team",
+        "omc team",
+        "omc ask",
+        "cancelomc"
       ],
       "platforms": [
         "Claude Code"
@@ -1907,15 +1911,15 @@
       "install_commands": [
         {
           "command": "/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode",
-          "source": "utilities/omc/SKILL.md"
+          "source": "omc/SKILL.md"
         },
         {
           "command": "/plugin install oh-my-claudecode",
-          "source": "utilities/omc/SKILL.md"
+          "source": "omc/SKILL.md"
         },
         {
-          "command": "/omc:omc-setup",
-          "source": "utilities/omc/SKILL.md"
+          "command": "setup omc",
+          "source": "omc/SKILL.md"
         }
       ],
       "allowed_tools": [

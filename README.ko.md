@@ -42,7 +42,7 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 
 | 플랫폼 | 첫 번째 명령 |
 |--------|------------|
-| Claude Code | `jeo "작업 설명"` 또는 `/omc:team "작업"` |
+| Claude Code | `jeo "작업 설명"` 또는 `/team "작업"` |
 | Gemini CLI | `/jeo "작업 설명"` |
 | Codex CLI | `/jeo "작업 설명"` |
 | OpenCode | `/jeo "작업 설명"` |
@@ -114,6 +114,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **omc: routing-first 구조적 하드닝** | `omc`를 더 작은 Claude-first 오케스트레이션 라우터로 압축했습니다. 이제 플러그인 slash skill (`/team`, `/autopilot`, `/ralph`, `/ultrawork`)과 셸 측 `omc` CLI (`omc setup`, `omc team`, `omc ask`)를 명확히 구분하고, `references/intake-packets-and-route-outs.md`를 추가했으며, plugin-vs-CLI / recovery 사례로 eval을 보강하고, `docs/omc/README.md`에서 더 이상 오래된 `/omc:*` 예시를 쓰지 않도록 갱신했습니다. 또한 README / setup / manifest discovery 문구를 새 경계에 맞춰 동기화해 OMC가 거대한 명령 카탈로그가 아니라 사실적인 런타임 라우터로 보이게 했습니다. |
 | **ui-component-patterns: 구조적 하드닝** | `ui-component-patterns`를 routing-first 재사용 컴포넌트 아키텍처 스킬로 더 압축했습니다. 이제 props를 제안하기 전에 `primitive-boundary`, `slot-anatomy`, `controlled-ownership`, `alternate-root-composition`, `docs-verification` 중 하나의 기본 패킷을 선택하고, `references/intake-packets-and-route-outs.md`를 추가했으며, alternate-root 조합과 Storybook/docs 검증 경계 사례를 eval에 넣고, `SKILL.toon` / manifest / README discovery 문구를 새 트리거 표면에 맞춰 갱신했습니다. 또한 `design-system`, `web-accessibility`, `responsive-design`, `state-management`, `react-best-practices`로의 route-out을 명확히 유지해 다시 일반적인 컴포넌트 베스트 프랙티스 모음으로 흐르지 않도록 했습니다. |
 | **responsive-design: 구조적 하드닝** | `responsive-design`를 CSS 예시 모음이 아니라 하나의 반응형 전략 패킷을 고르는 routing-first 스킬로 더 압축했습니다. 이제 CSS를 제안하기 전에 `page-layout`, `component-slot`, `dense-data`, `media-behavior`, `verification-reflow` 중 하나의 기본 패킷을 선택하고, 패킷 라우팅은 `references/intake-packets-and-route-outs.md`로 옮겼습니다. 또한 launch-readiness 경계 사례를 eval에 추가하고, `SKILL.toon`과 manifest/README discovery 문구를 새 트리거 표면에 맞춰 갱신했으며, `ui-component-patterns`, `web-accessibility`, `design-system`, `web-design-guidelines`로의 route-out을 명시적으로 유지해 프런트엔드 만능 스킬로 다시 비대해지지 않도록 했습니다. |
 | **testing-strategies: 구조적 하드닝** | `testing-strategies`를 패킷 우선 validation-policy 라우터로 더 압축했습니다. 이제 `change-risk`, `gate-design`, `flake-cost`, `release-readiness`, `incident-ratchet` 중 하나의 정책 패킷에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, release-readiness와 accessibility 경계 사례까지 eval 범위를 넓히고 `SKILL.toon` / manifest discovery 문구를 새 트리거 표면에 맞춰 갱신했습니다. 또한 `backend-testing`, `debugging`, `code-review`, `web-accessibility`, `performance-optimization`으로의 route-out을 명시적으로 유지해 다시 거대한 일반론적 테스트 매니페스토로 돌아가지 않게 했습니다. |
@@ -232,7 +233,8 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 # oh-my-claudecode
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/oh-my-claudecode:omc-setup
+/plugin install oh-my-claudecode
+setup omc
 ```
 
 ---
@@ -246,7 +248,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | 스킬 | 키워드 | 플랫폼 | 설명 |
 |------|--------|--------|------|
 | `jeo` | `jeo`, `annotate` | 전체 | `.jeo` ledger 기반 통합 오케스트레이션: 기획→개발→QA→정리 |
-| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `deep interview`, `deslop`, `cancelomc` | Claude | 29+ 에이전트 오케스트레이션 레이어 (v4.9.3) — Teams/Autopilot/Ralph/Ultrawork/CCG 모드, 스마트 모델 라우팅, 스킬 레이어, 실시간 HUD |
+| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | oh-my-claudecode용 Claude-first 오케스트레이션 라우터 — plugin slash skill과 `omc` 셸 CLI를 구분하고, setup/recovery/state 문제를 다루며, 인접 작업은 `jeo`, `ralphmode`, `omx`, `ohmg`, 브라우저 검토 스킬로 route-out합니다 |
 | `harness` | `harness`, `build a harness` | 전체 | 메타스킬: 도메인 전용 에이전트 팀 설계, `.claude/agents/`·`.claude/skills/` 생성, harness 검증 |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Codex CLI용 멀티에이전트 워크플로우 레이어 (v0.11.10) — 30+ 에이전트, 35+ 스킬, tmux 팀 런타임, omx explore/sparkshell |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | 휴대형 `oh-my-agent` 하네스용 Gemini / Antigravity 진입 스킬 (`.agents` 소스 오브 트루스, Gemini 네이티브 투영, 크로스벤더 확장 가능) |

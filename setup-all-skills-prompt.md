@@ -191,9 +191,10 @@ fi
 **Claude Code additional setup:**
 
 ```bash
-# oh-my-claudecode plugin (optional — adds /oh-my-claudecode:* commands)
+# oh-my-claudecode plugin (optional — adds Claude Code slash skills plus the shell-side `omc` runtime if installed separately)
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/oh-my-claudecode:omc-setup
+/plugin install oh-my-claudecode
+setup omc
 
 # agentation Official Skill (recommended for UI annotation)
 npx skills add benjitaylor/agentation -g
@@ -362,7 +363,7 @@ If no → skip silently. Never re-ask.
 | Skill | Activation Keyword | Description |
 |-------|-------------------|-------------|
 | `jeo` | `jeo` | Integrated orchestration with `.jeo` ledger — Plan→Execute→Verify→Cleanup. Requires `plannotator` + `agentation`. **Claude Code**: requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` |
-| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `deep interview`, `deslop`, `cancelomc` | Claude Code multi-agent orchestration (v4.9.3, 29+ agents) — Teams/Autopilot/Ralph/Ultrawork/CCG |
+| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude-first OMC router — distinguish Claude Code slash skills from the `omc` shell CLI, then handle setup/recovery/state issues or route adjacent work outward |
 | `ralph` | `ralph`, `ooo`, `ooo ralph`, `ooo interview` | Ouroboros spec-first method anchor — Interview→Seed→Execute→Evaluate→Evolve, immutable seed/spec, and persistent completion until verification passes |
 | `ralphmode` | `ralphmode` | Automation permission profiles — repo boundary, sandbox-first, secret denylist |
 | `plannotator` | `plan` | Visual approval gate for agent plans/diffs — annotate, approve, request changes, or save reviewed plans |

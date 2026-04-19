@@ -1,61 +1,60 @@
 # omc — oh-my-claudecode Guide
 
-> **oh-my-claudecode**는 Claude Code 전용 Teams-first 멀티 에이전트 오케스트레이션 레이어입니다.
-> `omc` 키워드로 활성화하며, 32개 전문 에이전트와 스마트 모델 라우팅을 제공합니다.
+> **OMC / oh-my-claudecode** is the Claude-first orchestration layer in this repo.
+> The first job is choosing the right surface: **Claude Code slash skills** vs the **`omc` shell CLI**.
 
 ← [Back to README](../../README.md)
 
 ---
 
-## Installation (3 Steps)
+## 1. Two real surfaces
 
-**Step 1: Install plugin**
+| Surface | Use when | Real entrypoints |
+|---|---|---|
+| **Claude Code plugin / in-session** | You are already inside Claude Code and want native team mode, Autopilot, Ralph, Ultrawork, hooks, or HUD behavior | `setup omc`, `/oh-my-claudecode:omc-setup`, `/team`, `/autopilot`, `/ralph`, `/ultrawork` |
+| **Terminal CLI** | You want shell-side setup, updates, provider consultation, or tmux workers | `omc setup`, `omc update`, `omc ask`, `omc team` |
+
+Important:
+- `/team` and `omc team` are both real, but they are **different runtimes**
+- `/autopilot`, `/ralph`, and `/ultrawork` are **in-session skills**, not ordinary `omc` CLI subcommands
+- The npm package name is **`oh-my-claude-sisyphus`**, while the runtime command is `omc`
+
+---
+
+## 2. Install / setup
+
+### Plugin-first path (recommended for Claude Code users)
+
+Inside Claude Code:
+
 ```bash
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
 /plugin install oh-my-claudecode
 ```
 
-**Step 2: Run setup**
-```bash
-/omc:omc-setup
-```
+Then run one setup entrypoint:
 
-**Step 3: Build something**
 ```text
-autopilot: build a REST API for managing tasks
+setup omc
 ```
 
-> **npm alternative**: `npm install -g oh-my-claude-sisyphus`
+or:
 
----
+```text
+/oh-my-claudecode:omc-setup
+```
 
-## Orchestration Modes
+### Optional CLI install
 
-| Mode | What it is | Use For |
-|------|-----------|---------|
-| **Team** (recommended) | Staged pipeline: `team-plan → team-prd → team-exec → team-verify → team-fix` | Coordinated agents on shared task list |
-| **Autopilot** | Autonomous single lead agent | End-to-end feature work |
-| **Ultrawork** | Maximum parallelism (non-team) | Burst parallel fixes/refactors |
-| **Ralph** | Persistent mode with verify/fix loops | Tasks that must complete fully |
-| **Pipeline** | Sequential staged processing | Multi-step transformations |
-| **Swarm/Ultrapilot** | Legacy facades → route to Team | Existing workflows |
-
----
-
-## Team Mode (Canonical)
+If you also want `omc setup`, `omc update`, `omc ask`, or `omc team` from the shell:
 
 ```bash
-/omc:team 3:executor "fix all TypeScript errors"
+npm i -g oh-my-claude-sisyphus@latest
 ```
 
-Runs as a staged pipeline:
-```
-team-plan → team-prd → team-exec → team-verify → team-fix (loop)
-```
+### Native teams setting
 
-### Enable Claude Code Native Teams
-
-Add to `~/.claude/settings.json`:
+Enable Claude Code native teams in `~/.claude/settings.json`:
 
 ```json
 {
@@ -67,84 +66,61 @@ Add to `~/.claude/settings.json`:
 
 ---
 
-## Magic Keywords
+## 3. Choose the right mode
 
-| Keyword | Effect | Example |
-|---------|--------|---------|
-| `team` | Canonical Team orchestration | `/omc:team 3:executor "fix all TypeScript errors"` |
-| `autopilot` | Full autonomous execution | `autopilot: build a todo app` |
-| `ralph` | Persistence mode | `ralph: refactor auth module` |
-| `ulw` | Maximum parallelism | `ulw fix all errors` |
-| `plan` | Planning interview | `plan the API architecture` |
-| `ralplan` | Iterative planning consensus | `ralplan this feature` |
-| `swarm` | Legacy (routes to Team) | `swarm 5 agents: fix lint errors` |
-| `ultrapilot` | Legacy (routes to Team) | `ultrapilot: build a fullstack app` |
-
-> **Note**: `ralph` includes ultrawork — activating ralph mode automatically includes ultrawork's parallel execution.
+| Need | Use |
+|---|---|
+| Shared Claude Code multi-agent execution | `/team 3:executor "task"` |
+| End-to-end build from a vague ask | `/autopilot "task"` or `autopilot: task` |
+| Keep going until verified complete | `/ralph "task"` or `ralph: task` |
+| Burst parallel work | `/ultrawork "task"` or `ulw task` |
+| Clarify requirements first | `/deep-interview "topic"` |
+| Shell-side tmux workers | `omc team 2:codex "task"` |
+| Shell-side provider consultation | `omc ask codex "task"` |
 
 ---
 
-## Why omc?
+## 4. Recovery quick checks
 
-- **Zero configuration** — Works out of the box with intelligent defaults
-- **Team-first orchestration** — Team is the canonical multi-agent surface
-- **Natural language interface** — No commands to memorize
-- **Automatic parallelization** — Complex tasks distributed across 32 specialized agents
-- **Persistent execution** — Won't stop until the job is verified complete
-- **Cost optimization** — Smart model routing saves 30–50% on tokens
-- **Real-time visibility** — HUD statusline shows what's happening under the hood
+Use these when OMC feels broken instead of switching modes blindly:
 
----
-
-## Requirements
-
-- Claude Code CLI
-- Claude Max/Pro subscription **or** Anthropic API key
+- Re-run the truthful setup/update path for the surface you are using
+- Check `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` when native team mode is expected
+- Inspect plugin-dir / local-checkout overlap if duplicate commands or files appear
+- Treat worktree/state collisions as runtime/state issues, not as a reason to abandon Team mode
+- Treat HUD/rate-limit issues as environment/recovery problems, especially in ephemeral environments
 
 ---
 
-## Optional: Multi-AI Orchestration
+## 5. Route-outs
 
-OMC can optionally delegate to external AI providers for cross-validation:
+Do **not** force OMC when another skill owns the job better:
 
-| Provider | Install | What it enables |
-|----------|---------|----------------|
-| Gemini CLI | `npm install -g @google/gemini-cli` | Design review, UI consistency (1M token context) |
-| Codex CLI | `npm install -g @openai/codex` | Architecture validation, code review cross-check |
-
----
-
-## Utilities
-
-### Rate Limit Wait
-Auto-resume Claude Code sessions when rate limits reset:
-```bash
-omc wait          # Check status, get guidance
-omc wait --start  # Enable auto-resume daemon
-omc wait --stop   # Disable daemon
-```
-
-### Notifications (Telegram/Discord)
-```bash
-omc config-stop-callback telegram --enable --token <bot_token> --chat <chat_id>
-omc config-stop-callback discord --enable --webhook <url>
-```
-
----
+| If the real job is... | Route to |
+|---|---|
+| Long-lived plan → execute → verify ledger | `jeo` |
+| Spec-first persistence method | `ralph` |
+| Approval posture / trust / bypass policy | `ralphmode` |
+| Plan approval / review gate | `plannotator` |
+| Fresh-session browser verification | `agent-browser` |
+| Running authenticated browser reuse | `playwriter` |
+| Exact rendered-UI critique / annotations | `agentation` |
+| Codex-first orchestration | `omx` |
+| Gemini / Antigravity portable harness | `ohmg` |
 
 ---
 
 ## Quick Reference
 
 | Action | Command |
-|--------|---------|
-| Install | `/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode` |
-| Setup | `/omc:omc-setup` |
-| Team mode | `/omc:team N:executor "task"` |
-| Autopilot | `autopilot: <task>` |
-| Ralph loop | `ralph: <task>` |
-| Ultrawork | `ulw <task>` |
-| Update | `/plugin marketplace update omc && /omc:omc-setup` |
-| Debug | `/omc:omc-doctor` |
-
-→ [Full documentation](https://yeachan-heo.github.io/oh-my-claudecode-website) · [GitHub](https://github.com/Yeachan-Heo/oh-my-claudecode)
+|---|---|
+| Plugin install | `/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode` |
+| Plugin setup | `setup omc` or `/oh-my-claudecode:omc-setup` |
+| Optional CLI install | `npm i -g oh-my-claude-sisyphus@latest` |
+| Native team mode | `/team N:executor "task"` |
+| Autopilot | `/autopilot "task"` |
+| Ralph | `/ralph "task"` |
+| Shell-side team runtime | `omc team N:provider "task"` |
+| Shell-side provider ask | `omc ask <provider> "task"` |
+| Update | `omc update` |
+| Full docs | [oh-my-claudecode upstream](https://github.com/Yeachan-Heo/oh-my-claudecode) |
