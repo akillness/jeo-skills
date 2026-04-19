@@ -341,7 +341,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `sprint-retrospective` | 스프린트 회고, 마일스톤 포스트모템, 원격/하이브리드 진행, 죽은 액션아이템 복구를 담당하는 라우팅 우선 회고 앵커 | 전체 |
-| `standup-meeting` | 일일 스탠드업, 비동기 체크인, 보드 워크, 블로커 트리아지 진행 | 전체 |
+| `standup-meeting` | 보드 워크, 블로커 우선, 비동기, 하이브리드 스탠드업을 후속 허들 라우트아웃과 함께 다루는 라우팅 우선 일일 조정 앵커 | 전체 |
 | `task-estimation` | software, GTM, game work 전반에서 스토리 포인트, T셔츠 사이징, split/spike 판단, 예측 안전형 불확실성 프레이밍을 담은 estimate packet anchor | 전체 |
 | `task-planning` | software, GTM, game work 전반에서 백로그 정리, 기능 분해, 릴리스 패킷, 마일스톤 준비를 담당하는 라우팅 우선 planning anchor | 전체 |
 

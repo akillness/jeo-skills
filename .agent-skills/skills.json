@@ -2732,7 +2732,7 @@
     },
     {
       "name": "standup-meeting",
-      "description": "Facilitate useful daily standups, daily scrums, async check-ins, or walk-the-board delivery syncs without turning them into manager-facing status theater. Use when the user needs a short daily coordination ritual, blocker triage, async standup format, remote-team check-in, or help converting a verbose standup into a board-first or blocker-first flow.",
+      "description": "Turn messy daily-sync requests into one coordination packet: choose the right standup mode, gather the smallest work-state evidence, keep blockers and handoffs visible, and move deep dives into follow-up huddles instead of status theater. Use when the user needs a daily scrum, async check-in, board-walk, blocker-first sync, remote-team standup, or help fixing an overlong or low-signal standup. Route backlog planning to task-planning, sizing to task-estimation, retrospective process repair to sprint-retrospective, and incident-command work to debugging or launch-specific skills.",
       "category": "project-management",
       "path": "standup-meeting/SKILL.md",
       "tags": [

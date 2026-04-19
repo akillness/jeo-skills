@@ -341,7 +341,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `sprint-retrospective` | Routing-first retrospective anchor for sprint retros, milestone postmortems, remote/hybrid facilitation, and dead-action-item recovery | All |
-| `standup-meeting` | Daily standups, async check-ins, walk-the-board syncs, and blocker triage | All |
+| `standup-meeting` | Routing-first daily coordination anchor for board-walk, blocker-first, async, and hybrid standups with follow-up-huddle route-outs | All |
 | `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Routing-first planning anchor for backlog cleanup, feature slicing, release packets, and milestone prep across software, GTM, and game work | All |
 
