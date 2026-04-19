@@ -1,39 +1,39 @@
 N:obsidian-cli
-D:[obsidian-cli] Install, enable, and operate Obsidian CLI for terminal-driven note automation against a running Obsidian app. Covers single-command mode, the interactive TUI, vault and file targeting, daily notes, search, developer commands, and obsidian:// URI workflows.
-G:obsidian cli terminal automation vault uri developer-tools notes tui
+D:[obsidian-cli] Route Obsidian desktop automation to the right first-party surface: official Obsidian CLI for terminal/TUI commands against a running app, official obsidian:// URIs for launcher/callback handoff, and explicit route-outs for headless sync, filesystem writes, or richer plugin/API automation.
+G:obsidian cli obsidian uri vault notes automation callbacks developer-tools headless route-out tui
 
 U[8]:
-  Enable and verify the official Obsidian CLI registration inside the desktop app
-  Run one-shot commands or open the interactive TUI with autocomplete and history
-  Target a specific vault with vault=name or vault=id
-  Target a specific note with file=name or path=exact/path.md
-  Automate daily notes search create read tags tasks and diff workflows
-  Use developer commands such as devtools plugin:reload dev:screenshot and eval
-  Copy output with --copy and use format parameters on listing commands
-  Launch obsidian:// URIs with encoded values paneType and callback parameters
+  Enable and verify the official Obsidian CLI inside the desktop app
+  Run one-shot commands or the interactive TUI against a running Obsidian instance
+  Target a specific vault and note with vault= file= or exact path=
+  Use daily search read create tags tasks diff and command-palette execution from the shell
+  Use developer commands such as plugin:reload devtools dev:screenshot and eval
+  Launch official obsidian:// open new daily unique search and hook-get-address flows
+  Explain callback and encoding rules for URI handoff workflows
+  Route headless sync raw markdown writes or richer plugin/API automation away from this skill
 
 S[6]{n,action,details}:
-  1,Enable,bash scripts/install.sh and confirm Command line interface is enabled in Settings -> General
-  2,Choose mode,use bash scripts/run-command.sh for one-shot commands or no args for the TUI
-  3,Target correctly,put vault= first then use file= for wikilink resolution or path= for exact vault-root paths
-  4,Operate,run daily search read create tags tasks or diff based on the job
-  5,Develop,use plugin:reload devtools dev:screenshot and eval for plugin or theme work
-  6,Integrate,use bash scripts/open-uri.sh with obsidian://open new daily unique or search actions when external apps are involved
+  1,Classify primary surface,choose cli-command cli-tui cli-developer uri-handoff or an explicit route-out before giving commands
+  2,Verify desktop runtime,use bash scripts/install.sh and confirm Settings -> General -> Command line interface is enabled
+  3,Target deterministically,put vault= first and prefer exact path= when file= could be ambiguous
+  4,Operate,run official CLI commands for shell-visible daily search read create tags tasks diff or command id flows
+  5,Handoff,use bash scripts/open-uri.sh with official obsidian:// actions when another app or callback is involved
+  6,Route out,send headless sync to Obsidian Headless and richer external automation to filesystem or plugin/API workflows instead of overclaiming CLI coverage
 
 R[8]:
-  The CLI is for the desktop app and Headless Sync is a separate workflow
-  The app must be running or the first CLI command will launch it
-  Official docs currently mention the Obsidian 1.12 installer and early access 1.12.x requirements
+  Obsidian CLI controls the desktop app and current docs say installer version 1.12.7+ is required
+  The app must be desktop-accessible and the first CLI command can launch it if closed
   vault= must come before the command when targeting a non-default vault
-  file= uses wikilink-style resolution while path= requires the exact vault-root path
-  --copy is the simplest way to hand output to other tools
+  Prefer exact path= over file= for agent-safe deterministic targeting
+  daily and unique depend on their respective plugins being enabled
   URI values must be encoded and paneType=window is desktop-only
-  daily and unique URI actions depend on their respective plugins being enabled
+  Developer commands are stateful app operations and should be treated deliberately
+  Headless sync publish or richer external CRUD automation are route-outs not hidden sub-modes of this skill
 
 E[6]{type,command}:
   Verify,bash scripts/install.sh
-  TUI,bash scripts/run-command.sh
-  Daily,bash scripts/run-command.sh daily
-  Search,bash scripts/run-command.sh vault="My Vault" search query="meeting notes"
-  Plugin reload,bash scripts/run-command.sh plugin:reload id=my-plugin
+  Search,obsidian vault="My Vault" search query="meeting notes"
+  Read,obsidian vault="My Vault" read path="Projects/Roadmap.md"
+  Developer,obsidian plugin:reload id=my-plugin
   URI,bash scripts/open-uri.sh 'obsidian://open?vault=my%20vault&file=my%20note'
+  Route-out,Use Obsidian Headless or a plugin/API workflow when no desktop app or richer external control is required

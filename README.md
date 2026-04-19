@@ -149,7 +149,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
-| **obsidian-cli: terminal automation for Obsidian** | Added a dedicated `obsidian-cli` skill for enabling and operating the official Obsidian CLI: installer and registration preflight, TUI vs one-shot usage, `vault=` / `file=` / `path=` targeting, `--copy`, everyday note workflows, plugin and theme control, developer commands like `plugin:reload` and `dev:screenshot`, plus platform troubleshooting references. 79 → **80 skills**. |
+| **obsidian-cli: routing-first Obsidian desktop automation** | Hardened `obsidian-cli` into a routing-first front door for official Obsidian desktop automation: choose CLI command/TUI mode, developer-command mode, or official `obsidian://` URI handoff first; prefer deterministic `vault=` + `path=` targeting; and route headless sync, raw filesystem writes, or richer plugin/API automation away instead of overclaiming CLI coverage. Refreshed install/troubleshooting guidance plus new intake/route-out reference included. |
 | **scrapling: routing-first adaptive web scraping skill** | Added and then hardened the dedicated `scrapling` skill so it now routes users into the lightest workable mode first: parser-only HTML, HTTP fetch, JS-rendered browser fetch, protected-target stealth, CLI/MCP operator flows, or full spiders. The implementation includes install/extract/MCP wrapper scripts plus focused references for fetchers, parser behavior, CLI/MCP, spiders, and intake-packet route-outs. 78 → **79 skills**. |
 | **strix: AI-driven application security testing skill** | Added a dedicated `strix` skill for operating the Strix CLI end-to-end: install and Docker preflight, `STRIX_LLM` provider setup, local/GitHub/live target scans, quick/standard/deep mode selection, headless CI/CD usage, and clear separation between this repo's skill and Strix internal security skills. 77 → **78 skills**. |
 
@@ -394,7 +394,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `graphify` | Routing-first durable graph skill — choose assistant-native install, local build, refresh, graph query, or structural fallback for repo/corpus graphs and persistent `GRAPH_REPORT.md` / `graph.json` outputs | All |
 | `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |
 | `npm-git-install` | Routing-first Node package delivery skill for npm / pnpm / Yarn / Bun — choose temporary Git bridge, SHA pin, tarball, workspace, or publish-first handoff safely | All |
-| `obsidian-cli` | Operate the official Obsidian CLI — enablement, TUI, note and task automation, vault and file targeting, plugin reload, developer commands | All |
+| `obsidian-cli` | Route Obsidian desktop automation — official CLI command/TUI mode, developer commands, official `obsidian://` handoff, and explicit route-outs for headless or plugin/API-heavy jobs | All |
 | `obsidian-plugin` | Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility, submission validation | All |
 | `opencontext` | Project/repo memory and cross-agent handoff with OpenContext — searchable decisions, manifests, stable links, and load→search→store workflows | All |
 | `workflow-automation` | Routing-first repo workflow automation — choose one mode for task-entrypoints, bootstrap/onboarding, local-CI parity, hook guardrails, maintenance bots, or workflow cleanup without drifting into environment/deploy work | All |

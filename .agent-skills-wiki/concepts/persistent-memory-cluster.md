@@ -28,6 +28,7 @@ Current cluster shape:
 - If the question is **"build and maintain a compounding markdown knowledge base"** → `llm-wiki`
 - If the question is **"map the repo/corpus structure and trace relationships"** → `graphify`
 - If the question is **"organize my notes or vault"** → note/vault skills
+- 2026-04-19 ratchet: `obsidian-cli` belongs in the note/vault bucket only when the job is **desktop Obsidian control or official `obsidian://` handoff**. It should route headless sync outward instead of drifting into a generic memory or note-backend skill.
 
 ## Structural note
 The graph refresh after the `opencontext` modernization showed another repeatable maintenance pattern: upgrading a high-utility support-gap skill with references, evals, and sharper route-outs is more valuable than creating another overlapping memory wrapper.

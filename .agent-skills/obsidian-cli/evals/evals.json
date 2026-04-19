@@ -4,10 +4,10 @@
     {
       "id": 1,
       "prompt": "Obsidian CLI를 처음 쓰려는데 어떻게 켜고 확인해야 해?",
-      "expected_output": "The skill explains that CLI support is enabled from the desktop app and verified from the shell.",
+      "expected_output": "The skill explains official desktop CLI enablement and verification.",
       "assertions": [
         "The response mentions enabling Command line interface from Obsidian settings",
-        "The response includes `obsidian help` or `bash scripts/install.sh`"
+        "The response includes `bash scripts/install.sh` or `obsidian help`"
       ]
     },
     {
@@ -22,7 +22,7 @@
     {
       "id": 3,
       "prompt": "매일 노트에 할 일 추가하고 결과를 클립보드로 복사하고 싶어.",
-      "expected_output": "The skill uses daily note commands and `--copy` correctly.",
+      "expected_output": "The skill stays in CLI command mode and uses daily-note plus copy behavior.",
       "assertions": [
         "The response mentions `daily:append`",
         "The response mentions `--copy`"
@@ -31,7 +31,7 @@
     {
       "id": 4,
       "prompt": "내가 개발 중인 Obsidian 플러그인을 CLI로 리로드하고 스크린샷도 찍고 싶어.",
-      "expected_output": "The skill provides the developer command family and treats it as app-stateful tooling.",
+      "expected_output": "The skill switches to developer mode and treats the commands as stateful.",
       "assertions": [
         "The response mentions `plugin:reload`",
         "The response mentions `dev:screenshot` or `devtools`"
@@ -40,7 +40,7 @@
     {
       "id": 5,
       "prompt": "외부 앱에서 obsidian:// 링크로 노트 열고 새 노트 만들고 싶은데 callback도 가능해?",
-      "expected_output": "The skill explains URI actions, encoding, and callbacks.",
+      "expected_output": "The skill switches to URI handoff mode and explains callbacks.",
       "assertions": [
         "The response mentions `obsidian://open` or `obsidian://new`",
         "The response mentions URI encoding and `x-success` or `x-error`"
@@ -49,10 +49,19 @@
     {
       "id": 6,
       "prompt": "데스크톱 앱 없이 CLI만으로 sync하고 싶어.",
-      "expected_output": "The skill distinguishes the desktop CLI from Headless workflows.",
+      "expected_output": "The skill routes the user away from desktop CLI to Obsidian Headless.",
       "assertions": [
-        "The response states that standard CLI targets the desktop app",
+        "The response states that standard CLI controls the desktop app",
         "The response points the user to Obsidian Headless as the separate workflow"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "외부 스크립트에서 vault frontmatter를 읽고 바꾸고 workspace까지 전환하고 싶어. 공식 CLI로 충분해?",
+      "expected_output": "The skill refuses to overclaim and routes to a plugin/API workflow instead of forcing first-party CLI coverage.",
+      "assertions": [
+        "The response states that this exceeds the first-party CLI/URI front door",
+        "The response routes to a plugin/API workflow such as Local REST API or Advanced URI"
       ]
     }
   ]
