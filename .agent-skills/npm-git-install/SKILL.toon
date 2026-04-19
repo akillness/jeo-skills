@@ -1,28 +1,29 @@
 N:npm-git-install
-D:Choose the safest way to consume a Node package from GitHub or another Git remote: direct Git install, SHA pin, private auth, tarball, workspace/file link, or publish-first alternative.
+D:Route Node package-delivery ambiguity into one install packet: temporary Git bridge, SHA-pinned shared bridge, private-auth Git path, tarball / `npm pack` artifact, workspace / `file:` inner-loop, or publish-first registry handoff.
 G:npm pnpm yarn bun git github package-management node monorepo private-packages tarball workspace
 
 U[6]:
-  Install an unpublished fix or fork from GitHub safely
-  Decide whether to use a branch, tag, or SHA for a Git dependency
-  Handle private Git package auth and CI constraints
-  Choose tarball or `npm pack` artifacts instead of raw Git when packaging is safer
+  Choose the safest way to consume an unpublished fix, fork, private repo package, or monorepo package
+  Decide whether a Git dependency should stay a Git ref at all
+  Handle private Git package auth and CI parity without treating credentials as the whole answer
+  Prefer tarball or `npm pack` artifacts when raw Git installs are too brittle
   Prefer workspace or `file:` links for local co-development
-  Recommend publish-first/private-registry paths when the dependency becomes durable
+  Move durable shared packages toward publish-first / registry paths instead of floating branch installs
 
-S[7]{n,action,details}:
-  1,Normalize,Capture package manager, package state, ref type, audience, auth mode, and reproducibility need
-  2,Choose mode,Pick one path: direct Git, SHA-pinned Git, private Git, tarball/pack, workspace/file, or publish-first
-  3,Decide durability,Prefer publish-first for teammate/CI/production use; treat Git refs as bridges
-  4,Pick syntax,Give only the needed npm/pnpm/Yarn/Bun command for the chosen path
-  5,Flag auth,Explain SSH vs token vs registry auth and CI parity requirements
-  6,Flag build risk,Call out source-build/prepare behavior and monorepo/package-root caveats
-  7,Exit plan,State when to replace the temporary Git path with tarball, workspace, or registry publish
+S[8]{n,action,details}:
+  1,Normalize packet,Capture package manager, packet shape, current ref, audience, auth path, lifecycle/build risk, and durability tier
+  2,Choose mode,Pick exactly one path: direct Git bridge, SHA-pinned shared bridge, private-auth Git, tarball/pack artifact, workspace/file link, or publish-first registry
+  3,Classify durability,Separate local-only, team/CI bridge, durable shared package, and production-facing infrastructure
+  4,Pick safest packet,Prefer publish-first or workspace when honest; use SHA pin over floating branches for shared bridges
+  5,Tailor commands,Give only the needed npm/pnpm/Yarn/Bun syntax for the chosen path
+  6,Flag consequences,Explain auth parity, install-time build/lifecycle behavior, deterministic lockfile expectations, and exit strategy
+  7,Route out,Send Git history issues, repo/package admin, repo automation, or environment setup to neighboring skills
+  8,Return brief,Produce one concise install brief with commands, notes, and next owner
 
 R[6]:
+  Treat Git refs as bridges, not a default release channel
   Prefer SHA pins over floating branches whenever a Git dependency will be shared
   Do not recommend committed secrets in manifests or docs
   Use workspace/file links for local co-development, not remote third-party distribution
   Recommend tarball or publish-first when raw Git install is too brittle or too durable for the use case
-  Tailor commands to the package manager already in use instead of dumping every syntax variant
   Always leave a clear exit strategy for temporary Git-based dependencies
