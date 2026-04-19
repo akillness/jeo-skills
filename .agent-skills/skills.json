@@ -1510,7 +1510,7 @@
     },
     {
       "name": "log-analysis",
-      "description": "Triage application, infrastructure, browser, API, CI, and general runtime logs into the first actionable failure, repeated patterns, likely scope, and next read-only checks. Use when the user shares raw log text, access/error logs, JSON logs, stack traces, pod/container output, browser console or network errors, or asks which lines actually matter.",
+      "description": "Route runtime-log requests into one evidence packet before diagnosing anything: app-runtime, container-runtime, browser-plus-api, ci-cascade, structured-json, or security-signal. Use when the user shares app/server/container/browser/CI/JSON log output and wants the first actionable blocker, repeated signature, blast radius, or safest next read-only checks.",
       "category": "search-analysis",
       "path": "log-analysis/SKILL.md",
       "tags": [
