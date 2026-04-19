@@ -991,3 +991,11 @@
 - Accepted: shrink `standup-meeting` into a routing-first daily coordination anchor, add `references/intake-packets-and-route-outs.md`, expand evals with a stale-board / `task-planning` route-out case, sync `SKILL.toon` / `skills.toon` / `skills.json`, update README / README.ko / setup discovery wording, and ratchet the PM-cluster boundary into the wiki.
 - Rejected: adding an async-standup wrapper; broadening the skill into backlog planning, estimation, retrospective work, or incident command; solving stale-board pain by making the standup longer.
 - Wiki files created/updated: `queries/standup-meeting-structural-hardening-2026-04-19.md`, `concepts/project-management-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | scrapling structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack extraction, product/ops research collection, marketing/content scraping, and game/business intelligence gathering, with the best bounded follow-up landing on the existing `scrapling` skill rather than a new scraping wrapper.
+- Survey files created under `.survey/scrapling-structural-hardening-20260419/`; GitHub raw/API retrieval, direct documentation pages, and issue/discussion evidence were used because `web_search` / `web_extract` returned invalid API-key errors in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `scrapling` into an intake-packet router, add `references/intake-packets-and-route-outs.md`, expand eval coverage with direct-API and managed-unblocker route-out cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the result into the wiki.
+- Rejected: adding another generic scraping wrapper; treating stealth as guaranteed; forcing DOM scraping when direct API interception is the real source of truth; making MCP or spiders the default path for one-page jobs.
+- Wiki files created/updated: `queries/scrapling-structural-hardening-2026-04-19.md`, `index.md`, `log.md`

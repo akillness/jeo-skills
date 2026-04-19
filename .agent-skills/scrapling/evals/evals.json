@@ -4,9 +4,9 @@
     {
       "id": 1,
       "prompt": "Scrapling으로 정적 사이트에서 글 목록만 빨리 긁고 싶은데 어떤 방식으로 시작해야 해?",
-      "expected_output": "The skill starts with Fetcher or CLI get mode, not browser or stealth by default.",
+      "expected_output": "The skill starts with parser-only or plain HTTP, not browser or stealth by default.",
       "assertions": [
-        "The response recommends `Fetcher` or `scrapling extract get` first",
+        "The response recommends `Selector`, `Fetcher`, or `scrapling extract get` first",
         "The response treats static scraping as the lightest path"
       ]
     },
@@ -22,10 +22,11 @@
     {
       "id": 3,
       "prompt": "Cloudflare Turnstile이 있는 사이트를 Scrapling으로 처리하고 싶어.",
-      "expected_output": "The skill escalates to stealth mode and mentions Cloudflare solving options.",
+      "expected_output": "The skill escalates to stealth mode but keeps the success claim honest.",
       "assertions": [
         "The response recommends `StealthyFetcher`, `StealthySession`, or `stealthy-fetch`",
-        "The response mentions `solve_cloudflare` or equivalent stealth controls"
+        "The response mentions `solve_cloudflare` or equivalent stealth controls",
+        "The response does not promise guaranteed bypass success"
       ]
     },
     {
@@ -53,6 +54,24 @@
       "assertions": [
         "The response recommends Scrapling spiders",
         "The response mentions concurrency, follow-up requests, or `crawldir` checkpointing"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "브라우저에서 보는 대시보드보다 내부 JSON API가 진짜 데이터야. Scrapling으로 어떻게 접근하는 게 좋아?",
+      "expected_output": "The skill routes toward the real source of truth instead of forcing DOM scraping.",
+      "assertions": [
+        "The response says direct API or request interception may be better than DOM scraping",
+        "The response does not force `DynamicFetcher` as the only answer"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "StealthyFetcher도 계속 막히는데 그냥 옵션 더 넣으면 되나?",
+      "expected_output": "The skill gives an honest route-out to managed unblockers or another stack when Scrapling is no longer enough.",
+      "assertions": [
+        "The response says stealth is not guaranteed",
+        "The response suggests escalating to proxies, managed unblockers, or another stack if needed"
       ]
     }
   ]

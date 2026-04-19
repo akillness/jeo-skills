@@ -2548,7 +2548,7 @@
     },
     {
       "name": "scrapling",
-      "description": "Install, configure, and operate Scrapling for adaptive web scraping with parser-first HTML extraction, fast HTTP fetchers, browser rendering, stealth anti-bot options, CLI extraction, and optional MCP or spider workflows. Use when you need to scrape or crawl websites, choose between static, JavaScript-rendered, or protected targets, parse HTML with CSS or XPath, write Python scrapers, or run Scrapling from the terminal. Triggers on: scrapling, scrape website, crawl site, adaptive scraping, stealthy fetch, cloudflare scraping, mcp scraping server, browser scraping cli, scrapling spider.",
+      "description": "Route web-scraping work into the lightest workable Scrapling mode instead of defaulting to a browser. Use when the user needs HTML extraction, JS-rendered page retrieval, protected-target escalation, quick CLI scraping, agent-facing MCP access, or a larger crawl with Scrapling spiders. Triggers on: scrapling, scrape website, crawl site, adaptive scraping, selector drift, stealthy fetch, browser scraping, scrape to markdown, scrapling mcp, scrapling spider.",
       "category": "infrastructure",
       "path": "scrapling/SKILL.md",
       "tags": [

@@ -13,9 +13,9 @@
 - Graph edges: 1071
 
 ## Strongest structural findings
-1. Discovery docs are still the highest-degree nodes because README / setup / manifest surfaces continue to index nearly the full live catalog.
-2. Support coverage remains effectively complete across the live skill set, so the best maintenance wins still come from tightening dense front-door skills instead of adding wrappers.
-3. `standup-meeting` now matches the PM cluster's routing-first shape: choose one daily-sync mode, gather one small coordination packet, keep blocker and handoff routing visible, and push deep dives into follow-up huddles.
+1. Discovery docs remain the highest-degree nodes because README / setup / manifest surfaces still index nearly the full live catalog.
+2. Support coverage remains effectively complete across the live skill set, so the highest-value maintenance wins still come from shrinking dense front-door skills instead of adding wrappers.
+3. `scrapling` now matches the repo's routing-first pattern more closely: intake packet first, parser/HTTP before browser, stealth as a later escalation, and honest route-outs to APIs, managed unblockers, or crawler frameworks.
 4. The next best maintenance wins still look like oversized or high-degree routers whose contracts are stable enough to shrink without changing ownership.
 
 ## Highest-degree nodes
@@ -27,7 +27,6 @@
 
 ## Oversized front-door watchlist
 - clawteam: 329 lines in SKILL.md
-- scrapling: 319 lines in SKILL.md
 - task-planning: 294 lines in SKILL.md
 - jeo: 288 lines in SKILL.md
 - obsidian-cli: 286 lines in SKILL.md
@@ -36,11 +35,12 @@
 - steam-store-launch-ops: 272 lines in SKILL.md
 - state-management: 272 lines in SKILL.md
 - omc: 272 lines in SKILL.md
+- opencontext: 270 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- The PM cluster now has structural hardening across task-planning, task-estimation, sprint-retrospective, and standup-meeting; new ceremony wrappers remain lower value than keeping those route boundaries sharp.
-- `standup-meeting` should stay distinct from `task-planning`, `task-estimation`, and `sprint-retrospective` by owning daily coordination mode choice, blocker / handoff routing, and follow-up-huddle boundaries rather than scope slicing, sizing, or process reflection.
-- Discovery docs remain the highest-degree maintenance nodes, so README/setup/manifest sync is still required whenever a skill boundary or trigger surface changes materially.
+- `scrapling` should stay distinct from general browser automation, crawler frameworks, and agent-facing scrape APIs by owning mode selection inside the Scrapling ecosystem rather than trying to absorb every scraping-adjacent stack.
+- The durable gap in this lane is truthful routing: parser-only vs HTTP vs dynamic browser vs stealth vs MCP vs spiders, with explicit route-outs to direct API interception, managed unblockers, or larger crawl frameworks.
+- Discovery docs remain high-degree maintenance nodes, so README/setup/manifest sync is still required whenever a skill boundary or trigger surface changes materially.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree or oversized front-door skills whose contracts are stable enough to validate mechanically.

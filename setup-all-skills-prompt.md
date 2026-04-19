@@ -385,7 +385,7 @@ If no → skip silently. Never re-ask.
 | `clawteam` | `clawteam`, `agent swarm`, `spawn agents` | Framework-agnostic multi-agent CLI — file-based state, task queues, inboxes, kanban |
 | `autoresearch` | `autoresearch`, `autonomous ml experiments`, `val_bpb` | Karpathy autonomous ML front door — choose setup / `program.md` / bounded loop / results interpretation / constrained-hardware mode, preserve immutable `prepare.py` + 300s + `val_bpb`, not for prompt/skill eval |
 | `skill-autoresearch` | `skill-autoresearch`, `optimize this skill`, `eval my skill` | Repo-local skill ratcheting — freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces if the core change holds |
-| `scrapling` | `scrapling`, `adaptive scraping`, `stealthy fetch` | Adaptive web scraping — parser-first HTML, fetcher escalation, CLI extraction, MCP/spider |
+| `scrapling` | `scrapling`, `adaptive scraping`, `stealthy fetch`, `selector drift` | Routing-first adaptive web scraping — choose parser-only, HTTP fetch, JS browser, stealth escalation, MCP, or spiders from one intake packet |
 | `rtk` | `rtk`, `rust token killer`, `rtk init`, `rtk gain` | RTK install and agent integration — verify correct package, choose init mode, and use compact shell wrappers |
 | `strix` | `strix`, `ai pentest`, `vulnerability scan cli` | AI-driven appsec testing — Docker sandbox, LLM provider, local/GitHub/live scans, CI/CD |
 | `research-paper-writing` | `research paper`, `academic paper` | ML/CV/NLP paper + rebuttal workflow — abstract/introduction/method/experiments, figure-table support, reviewer response, camera-ready revision |
