@@ -115,6 +115,7 @@ graph TD
 |--------|---------|
 | **ui-component-patterns: structural hardening** | Tightened `ui-component-patterns` into a routing-first reusable-component architecture skill. It now classifies one primary packet (`primitive-boundary`, `slot-anatomy`, `controlled-ownership`, `alternate-root-composition`, or `docs-verification`) before suggesting props, adds `references/intake-packets-and-route-outs.md`, expands eval coverage with alternate-root and Storybook/docs-verification cases, refreshes `SKILL.toon` / manifest discovery wording, and keeps `design-system`, `web-accessibility`, `responsive-design`, `state-management`, and `react-best-practices` as explicit route-outs instead of drifting back to a generic component-best-practices catch-all. |
 | **responsive-design: structural hardening** | Tightened `responsive-design` into a routing-first responsive strategy skill that chooses one primary packet (`page-layout`, `component-slot`, `dense-data`, `media-behavior`, or `verification-reflow`) before suggesting CSS. The skill now moves packet routing into `references/intake-packets-and-route-outs.md`, expands eval coverage with a launch-readiness boundary case, refreshes `SKILL.toon` / manifest discovery surfaces, and keeps `ui-component-patterns`, `web-accessibility`, `design-system`, and `web-design-guidelines` as explicit route-outs instead of letting responsive work sprawl into a generic frontend catch-all. |
+| **testing-strategies: structural hardening** | Tightened `testing-strategies` into a packet-first validation-policy router. It now starts from one policy packet (`change-risk`, `gate-design`, `flake-cost`, `release-readiness`, or `incident-ratchet`), adds `references/intake-packets-and-route-outs.md`, expands eval coverage with release-readiness and accessibility-boundary cases, refreshes `SKILL.toon` / manifest discovery wording, and keeps `backend-testing`, `debugging`, `code-review`, `web-accessibility`, and `performance-optimization` as explicit route-outs instead of drifting back into a giant generic testing manifesto. |
 
 ## 🆕 What's New in v2026-04-13
 
@@ -305,7 +306,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `code-review` | Evidence-first diff / PR review with severity, missing-proof checks, and route-outs | All |
 | `debugging` | Routing-first diagnosis for concrete bugs, regressions, flaky failures, and env-specific behavior; routes raw logs to `log-analysis` and perf-only work to `performance-optimization` | All |
 | `performance-optimization` | Artifact-first measurement-led bottleneck analysis and tuning across latency, throughput, memory, bundle, CWV, and frame-budget work | All |
-| `testing-strategies` | Risk-based validation policy, merge/release gates, flaky-suite policy | All |
+| `testing-strategies` | Packet-first validation policy for change risk, gate design, flaky-suite policy, and release confidence | All |
 
 ### 🏗 Infrastructure (13)
 

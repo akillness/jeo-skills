@@ -10,20 +10,20 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 386
-- Graph edges: 1067
+- Graph edges: 1071
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
 2. Support coverage remains effectively complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. `game-ci-cd-pipeline` now follows the routing-first game-cluster pattern: choose one packet type, keep one-off red-build diagnosis out of scope, and push packet detail into dedicated support docs.
+3. `testing-strategies` now follows the packet-first code-quality pattern: start from the policy packet already in hand, keep one primary mode, and route implementation / debugging / review / accessibility / performance work out explicitly.
 4. The next best maintenance wins still look like high-degree or oversized routers whose contracts are stable enough to tighten without adding overlapping skills.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
-- README.ko.md: degree 88
-- README.md: degree 88
-- setup-all-skills-prompt.md: degree 88
-- .agent-skills/skills.toon: degree 82
+- .agent-skills/skills.toon: degree 89
+- README.ko.md: degree 89
+- README.md: degree 89
+- setup-all-skills-prompt.md: degree 89
 
 ## Oversized front-door watchlist
 - clawteam: 329 lines in SKILL.md
@@ -32,14 +32,14 @@
 - jeo: 288 lines in SKILL.md
 - obsidian-cli: 286 lines in SKILL.md
 - autoresearch: 284 lines in SKILL.md
-- omc: 272 lines in SKILL.md
-- state-management: 272 lines in SKILL.md
+- testing-strategies: 274 lines in SKILL.md
 - steam-store-launch-ops: 272 lines in SKILL.md
-- npm-git-install: 271 lines in SKILL.md
+- state-management: 272 lines in SKILL.md
+- omc: 272 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- The game-development lane still benefits more from sharper boundaries than from adding new wrappers.
-- `game-ci-cd-pipeline` should stay distinct from `game-build-log-triage` by owning repeated structural pipeline decisions rather than one failing-log diagnosis.
+- The code-quality lane still benefits more from sharper packet boundaries than from adding new wrappers.
+- `testing-strategies` should stay distinct from `backend-testing`, `debugging`, and `code-review` by owning confidence policy rather than concrete implementation, diagnosis, or approval judgment.
 - Duplicate pressure still rises more from oversized front doors than from missing support coverage; keep shrinking stable routers rather than expanding the catalog.
 
 ## Recommended maintenance direction

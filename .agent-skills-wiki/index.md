@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-19 | Total pages: 132
+> Last updated: 2026-04-19 | Total pages: 133
 
 ## Entities
 
@@ -105,6 +105,7 @@
 - [[code-review-modernization-2026-04-13]] — Why the best bounded code-quality improvement was modernizing `code-review` into a workflow-aware review anchor instead of adding another review-adjacent wrapper.
 - [[code-review-structural-hardening-2026-04-18]] — Why the best bounded next code-quality improvement was shrinking `code-review` into an evidence-first review front door with explicit packet routing and repo-admin/gameplay eval coverage instead of adding another review wrapper.
 - [[testing-strategies-modernization-2026-04-13]] — Why the best bounded testing-policy improvement was rewriting `testing-strategies` into a risk-based validation-policy anchor instead of leaving it as a generic test-pyramid skill.
+- [[testing-strategies-structural-hardening-2026-04-19]] — Why the best bounded next code-quality improvement was shrinking `testing-strategies` into a packet-first validation-policy router instead of adding another QA/release wrapper or leaving release-readiness and flaky-suite policy as side notes.
 - [[code-refactoring-modernization-2026-04-14]] — Why the best bounded next code-quality improvement was rewriting `code-refactoring` into the behavior-preserving structural-cleanup anchor instead of adding another cleanup wrapper.
 - [[video-production-canonicalization-2026-04-14]] — Why the best bounded creative-media improvement was canonicalizing `video-production` and narrowing `remotion-video-production` into a compatibility alias instead of keeping two equal Remotion clones.
 - [[skill-catalog-sync-hardening-2026-04-14]] — Why the best bounded post-modernization maintenance move was making runtime discovery filesystem-first, validating catalog sync explicitly, and surfacing the game-development lane in top-level inventories.

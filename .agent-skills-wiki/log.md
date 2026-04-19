@@ -967,3 +967,11 @@
 - Accepted: shrink `game-ci-cd-pipeline` into a routing-first packet selector, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a route-to-log-triage case, sync `SKILL.toon` / `skills.json`, update README / README.ko / setup discovery wording, and ratchet the game-cluster boundary into the wiki.
 - Rejected: adding a separate Unity CI wrapper or Unreal release wrapper; letting the skill absorb first-pass log debugging; keeping the old checklist-heavy front door after the repo already converged on packet-first skills.
 - Wiki files created/updated: `concepts/game-development-cluster.md`, `queries/game-ci-cd-pipeline-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | Testing strategies structural hardening
+- Area researched: testing-policy packets across change-risk, merge/release gate design, flaky-suite quarantine policy, release-readiness checklists, and escaped-bug ratchets
+- Survey files created under `.survey/testing-strategies-structural-hardening-20260419/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `testing-strategies` into a packet-first validation-policy router, add `references/intake-packets-and-route-outs.md`, expand evals for release-readiness and accessibility-boundary cases, and sync compact/discovery surfaces
+- Rejected: adding another QA/release wrapper; turning the skill into test-implementation guidance; treating release checklist and flaky-suite policy as unstructured side notes
+- Wiki files created/updated: `queries/testing-strategies-structural-hardening-2026-04-19.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`

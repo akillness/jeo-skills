@@ -1,7 +1,7 @@
 ---
 title: Code Quality Cluster
 created: 2026-04-13
-updated: 2026-04-18
+updated: 2026-04-19
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
 sources: [.survey/testing-strategies-modernization-20260413/context.md, .survey/testing-strategies-modernization-20260413/solutions.md, .survey/code-refactoring-modernization-20260414/context.md, .survey/code-refactoring-modernization-20260414/solutions.md, .survey/performance-optimization-modernization-20260414/context.md, .survey/performance-optimization-modernization-20260414/solutions.md, graphify-out/GRAPH_REPORT.md]
@@ -44,6 +44,8 @@ The 2026-04-18 `code-review` structural-hardening pass applied the same pattern 
 
 The 2026-04-18 `code-refactoring` structural-hardening pass completed the same ratchet for cleanup work: start from the cleanup packet already in hand (local cleanup, fragile legacy area, repeated migration, or diff shaping), make one behavior guardrail explicit, keep one primary refactor mode per run, and sync compact/discovery surfaces so fast skill selection does not regress to stale DRY/SOLID pattern-language.
 
+The 2026-04-19 `testing-strategies` structural-hardening pass completed the same ratchet for the policy lane itself: start from the validation packet already in hand (`change-risk`, `gate-design`, `flake-cost`, `release-readiness`, or `incident-ratchet`), choose one primary policy mode, keep release-checklist and flaky-suite handling inside the same confidence contract, and route implementation, debugging, review, accessibility, and performance work out instead of turning the skill back into a giant testing manifesto.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[backend-api-cluster]]
@@ -51,6 +53,7 @@ The 2026-04-18 `code-refactoring` structural-hardening pass completed the same r
 - [[debugging-structural-hardening-2026-04-18]]
 - [[code-review-modernization-2026-04-13]]
 - [[testing-strategies-modernization-2026-04-13]]
+- [[testing-strategies-structural-hardening-2026-04-19]]
 - [[code-refactoring-modernization-2026-04-14]]
 - [[code-refactoring-structural-hardening-2026-04-18]]
 - [[performance-optimization-modernization-2026-04-14]]

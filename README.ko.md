@@ -115,6 +115,7 @@ graph TD
 |------|------|
 | **ui-component-patterns: 구조적 하드닝** | `ui-component-patterns`를 routing-first 재사용 컴포넌트 아키텍처 스킬로 더 압축했습니다. 이제 props를 제안하기 전에 `primitive-boundary`, `slot-anatomy`, `controlled-ownership`, `alternate-root-composition`, `docs-verification` 중 하나의 기본 패킷을 선택하고, `references/intake-packets-and-route-outs.md`를 추가했으며, alternate-root 조합과 Storybook/docs 검증 경계 사례를 eval에 넣고, `SKILL.toon` / manifest / README discovery 문구를 새 트리거 표면에 맞춰 갱신했습니다. 또한 `design-system`, `web-accessibility`, `responsive-design`, `state-management`, `react-best-practices`로의 route-out을 명확히 유지해 다시 일반적인 컴포넌트 베스트 프랙티스 모음으로 흐르지 않도록 했습니다. |
 | **responsive-design: 구조적 하드닝** | `responsive-design`를 CSS 예시 모음이 아니라 하나의 반응형 전략 패킷을 고르는 routing-first 스킬로 더 압축했습니다. 이제 CSS를 제안하기 전에 `page-layout`, `component-slot`, `dense-data`, `media-behavior`, `verification-reflow` 중 하나의 기본 패킷을 선택하고, 패킷 라우팅은 `references/intake-packets-and-route-outs.md`로 옮겼습니다. 또한 launch-readiness 경계 사례를 eval에 추가하고, `SKILL.toon`과 manifest/README discovery 문구를 새 트리거 표면에 맞춰 갱신했으며, `ui-component-patterns`, `web-accessibility`, `design-system`, `web-design-guidelines`로의 route-out을 명시적으로 유지해 프런트엔드 만능 스킬로 다시 비대해지지 않도록 했습니다. |
+| **testing-strategies: 구조적 하드닝** | `testing-strategies`를 패킷 우선 validation-policy 라우터로 더 압축했습니다. 이제 `change-risk`, `gate-design`, `flake-cost`, `release-readiness`, `incident-ratchet` 중 하나의 정책 패킷에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, release-readiness와 accessibility 경계 사례까지 eval 범위를 넓히고 `SKILL.toon` / manifest discovery 문구를 새 트리거 표면에 맞춰 갱신했습니다. 또한 `backend-testing`, `debugging`, `code-review`, `web-accessibility`, `performance-optimization`으로의 route-out을 명시적으로 유지해 다시 거대한 일반론적 테스트 매니페스토로 돌아가지 않게 했습니다. |
 
 ## 🆕 v2026-04-13 업데이트
 
@@ -305,7 +306,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `code-review` | 심각도·증거 공백 점검·route-out을 포함한 evidence-first diff / PR 리뷰 | 전체 |
 | `debugging` | 구체적인 버그·회귀·flaky 실패·환경별 이상 동작을 위한 routing-first 진단 스킬; raw log는 `log-analysis`, 순수 성능 작업은 `performance-optimization`으로 라우팅 | 전체 |
 | `performance-optimization` | trace·보고서·query plan 같은 현재 아티팩트에서 출발해 지연시간·처리량·메모리·번들·CWV·프레임 예산 병목을 측정 중심으로 분석하고 튜닝 | 전체 |
-| `testing-strategies` | 리스크 기반 검증 정책, 머지/릴리즈 게이트, flaky 스위트 정책 | 전체 |
+| `testing-strategies` | change risk, gate design, flaky-suite, release confidence를 다루는 패킷 우선 검증 정책 | 전체 |
 
 ### 🏗 인프라 (13개)
 

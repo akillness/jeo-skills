@@ -1,269 +1,274 @@
 ---
 name: testing-strategies
 description: >
-  Design a risk-based validation policy for software changes across unit,
-  integration, contract, smoke, exploratory, and release checks. Use when the
-  user needs to decide what test layers are required, how much evidence is enough
-  before merge or release, how to control flaky or expensive suites, or how to
-  route work between testing policy, backend test implementation, debugging, and
-  code review. Triggers on: test strategy, testing pyramid/trophy, coverage plan,
-  regression policy, flaky suite policy, release confidence, and what should we
-  test for this change.
+  Turn test-policy ambiguity into one packet-first validation brief. Use when the
+  main job is deciding what evidence is required for a change, which test layers
+  belong in local vs PR vs release vs scheduled gates, how flaky or expensive
+  suites should be handled, and whether the next owner is `backend-testing`,
+  `debugging`, `code-review`, `web-accessibility`, or `performance-optimization`
+  instead of absorbing all test work here. Triggers on: test strategy, merge
+  gate, release gate, flaky-suite policy, regression policy, validation brief,
+  release confidence, and what should we test for this change.
 allowed-tools: Read Write Bash Grep Glob
 compatibility: >
-  Best for CLI/dev workflow, backend, frontend, and fullstack repos that need a
-  reusable test-policy layer. Not for stack-specific test implementation,
-  root-cause debugging, or line-by-line PR review.
+  Best for CLI/dev workflow, backend, frontend, and fullstack repos where the
+  main question is policy, confidence, or gate design. Not for stack-specific
+  test implementation, root-cause debugging, or line-by-line diff review.
 metadata:
   tags: testing, test-strategy, risk-based-testing, regression-policy, flaky-tests, release-confidence
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.0"
+  version: "2.1"
   source: akillness/oh-my-skills
 ---
 
 # Testing Strategies
 
-Use this skill when the main question is **"what validation is actually required for this change, and when should it run?"**
+Use this skill when the main question is **"what validation packet do we trust, what confidence level do we actually need, and what should the team do next?"**
 
-The job is not to dump sample unit, integration, or Playwright code.
+The job is not to dump a generic pyramid/trophy manifesto or write test code.
 The job is to:
-1. classify the change and its risk,
-2. choose the minimum convincing mix of test layers,
-3. separate local / PR / release expectations,
-4. define exceptions and residual risk clearly,
-5. route implementation or failure analysis to the right neighboring skill.
+1. normalize the current policy packet,
+2. choose one primary policy mode,
+3. name the smallest convincing layer mix,
+4. separate local / PR / release / scheduled expectations,
+5. state exception and flake rules honestly,
+6. route implementation, debugging, review, accessibility, or performance work out immediately.
 
-Read [references/validation-matrix.md](references/validation-matrix.md) before handling an unfamiliar architecture or release-critical change.
+Read [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md) before handling an unfamiliar policy packet.
+Read [references/validation-matrix.md](references/validation-matrix.md) when choosing the minimum convincing layer mix.
 Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `testing-strategies`, `backend-testing`, `debugging`, `code-review`, `performance-optimization`, or `web-accessibility` should own the next step.
 
 ## When to use this skill
-- Define or repair a repo-wide testing policy instead of only writing one test file
-- Decide which validation layers a feature, refactor, migration, API change, or bugfix actually needs
-- Turn vague requests like “improve our tests” or “what should we test here?” into a risk-based plan
-- Choose merge-gate versus release-gate coverage expectations
-- Reduce flaky or expensive suites by changing policy, scope, or test-layer mix
-- Define how regression coverage should be added after escaped bugs or incidents
-- Create a reusable validation brief for developers, reviewers, or release owners
+- The team needs one change-based validation brief instead of vague “add more tests” advice
+- A developer or reviewer is asking what should run locally, on PR, before release, or on scheduled/nightly cadence
+- You need to decide whether unit, integration, contract, smoke, exploratory, or manual checks are actually required
+- A flaky or expensive suite problem is really a gate-policy problem
+- An escaped bug or incident needs the right regression ratchet without blindly expanding broad E2E coverage
+- Release-readiness or QA-signoff work needs to be tied back to the real change risk
 
 ## When not to use this skill
-- **The main task is implementing backend/API/database tests, fixtures, mocks, or testcontainers** → use `backend-testing`
-- **The main task is reproducing a failure, isolating root cause, or understanding why a test is red** → use `debugging`
-- **The main task is reviewing a specific PR or judging whether a diff’s evidence is convincing** → use `code-review`
-- **The main task is performance benchmarking or load/perf tuning** → use `performance-optimization`
-- **The main task is accessibility-specific verification or visual QA policy** → use `web-accessibility` or `web-design-guidelines`
-- **There is no meaningful change or risk decision yet**; in that case define the open questions first instead of pretending a detailed strategy already exists
+- **The main task is implementing API/service/database/browser tests, fixtures, mocks, or testcontainers** → use `backend-testing` or the stack-specific implementation skill
+- **The main task is reproducing a failure, isolating why a test is red, or debugging flaky behavior** → use `debugging`
+- **The main task is judging one specific PR, diff, or merge request** → use `code-review`
+- **The main task is accessibility-heavy verification or visual review policy** → use `web-accessibility` or `web-design-guidelines`
+- **The dominant risk is performance benchmarking, load testing, or frame-budget policy** → use `performance-optimization` or `game-performance-profiler`
+- **There is no real change or decision point yet**; first define what changed and what confidence decision must be made
 
 ## Instructions
 
-### Step 1: Frame the change and confidence target
-Before choosing test layers, define what changed and what failure would hurt.
+### Step 1: Start from the policy packet already in hand
+Use [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-Capture:
-- change type: feature, refactor, bugfix, migration, API/schema change, UI workflow change, config/deploy change, incident follow-up
-- affected surfaces: logic, API, persistence, auth, state sync, jobs, browser behavior, analytics, integrations, release process
-- failure cost: annoyance, feature break, data loss, security risk, rollout risk, customer-visible regression
-- users and paths that matter most
-- current evidence already available: existing tests, screenshots, logs, previews, contract diffs, release notes
-- required decision point: local confidence, PR merge confidence, release confidence, or post-incident regression protection
+Normalize the current packet into one of these shapes:
+- `change-risk-packet` — a feature, bugfix, migration, API change, auth change, UI flow change, config/deploy change, or incident follow-up
+- `gate-design-packet` — the team is arguing about what belongs in local, PR, release, or scheduled gates
+- `flake-cost-packet` — the suite is slow, noisy, brittle, or expensive and policy is unclear
+- `release-readiness-packet` — staging smoke, signoff, rollout, or checklist work is present but layer ownership is fuzzy
+- `incident-ratchet-packet` — an escaped bug or outage fix needs the smallest lasting regression protection
 
-Quick frame:
+Capture the minimum useful frame:
 ```markdown
+Packet: change-risk-packet
 Change type: API contract + DB migration
-Hotspots: compatibility, backfill safety, permission checks
-Failure cost: high — bad rows and client breakage
-Decision point: pre-merge + release confidence
-Existing evidence: unit tests only
+Hotspots: compatibility, migration safety, permissions
+Decision point: PR + release
+Current evidence: unit tests only
 ```
 
-### Step 2: Classify the risk tier
-Do not treat every change the same.
+Rule: start from the packet the user already has. Do not demand an ideal QA template before doing useful work.
 
-Use a simple tiering model:
+### Step 2: Choose one primary policy mode
+Pick exactly one primary mode:
+- `layer-selection` — what validation layers prove the changed behavior?
+- `gate-shaping` — what belongs in local vs PR vs release vs scheduled loops?
+- `flake-and-cost-policy` — what should block, quarantine, move, or become informational?
+- `incident-regression-ratchet` — what is the lowest layer that would have caught the escaped bug?
+- `release-confidence` — what final smoke, checklist, or rollout proof is still honestly needed?
 
-- **Tier 0 — low risk**
-  - docs-only, comments, dead-code deletion, isolated rename, build metadata with obvious verification
-- **Tier 1 — ordinary product change**
-  - typical feature work, non-critical UI behavior, internal logic, low-blast-radius refactors
-- **Tier 2 — high risk**
-  - public API changes, migrations, auth/permissions, billing, state machines, background jobs, external integrations, concurrency
-- **Tier 3 — release-critical / incident-linked**
-  - recently escaped bugs, critical journeys, outage fixes, rollback-sensitive deploy paths, high-value customer workflows
+Optional: name one secondary mode, but do not flatten every testing conversation into the same checklist.
+
+### Step 3: Classify the risk tier and critical path
+Use a small risk model:
+- **Tier 0 — low risk:** docs, comments, dead code deletion, isolated rename, obvious config metadata
+- **Tier 1 — ordinary product change:** routine feature or refactor with limited blast radius
+- **Tier 2 — high risk:** public API, migration, auth, billing, external integrations, state machines, concurrency, background jobs
+- **Tier 3 — release-critical / incident-linked:** escaped bugs, outage fixes, rollback-sensitive deploy paths, or critical customer journeys
+
+Capture:
+- critical paths and users affected
+- failure cost: annoyance, feature break, trust damage, data loss, rollout risk, security risk
+- evidence already present: tests, screenshots, previews, logs, contract notes, rollout notes, checklists
+- the decision point: local confidence, PR/merge confidence, release confidence, or long-running scheduled breadth
 
 If the change spans multiple tiers, plan for the highest one.
 
-### Step 3: Choose the right validation layers
-Prefer the lowest-cost test that still provides credible confidence.
+### Step 4: Choose the smallest convincing layer mix
+Use [references/validation-matrix.md](references/validation-matrix.md).
 
-#### Use unit or component/service tests when
-- the main risk is logic, validation, branching, mapping, or error handling
-- behavior can be isolated without losing the truth of the change
-- fast feedback is more valuable than full-environment realism
+Default layer choices:
+- **Unit / component / service** when logic, validation, branching, or mapping is the main risk
+- **Integration** when wiring, DB semantics, middleware, serialization, jobs, or real dependency behavior matters
+- **Contract / API-level** when response shapes, schemas, events, or cross-service/client boundaries changed
+- **Smoke / selective E2E** when multiple layers must prove one critical end-to-end journey together
+- **Manual exploratory / checklist validation** when visual nuance, device variation, operational edge cases, or human signoff is still the honest answer
 
-#### Use integration tests when
-- database, framework wiring, serialization, queue behavior, auth middleware, or transaction boundaries matter
-- a bug could hide in real dependency wiring even if pure logic is correct
+Always say both:
+- what **is required now**
+- what is **intentionally out of scope for now** and why
 
-#### Use contract or API-level checks when
-- response shapes, events, status codes, schemas, or client/server expectations changed
-- multiple teams or services depend on an interface
-- full E2E would be too broad for the confidence needed
+Examples:
+- “integration + contract now; no broad browser E2E because the user journey is unchanged”
+- “release smoke plus rollout checklist; no new unit tests because the only risk lives in staging config and deployment behavior”
 
-#### Use smoke or selective E2E checks when
-- the risk spans multiple layers that must work together in a realistic flow
-- auth/session/bootstrap, checkout, signup, publishing, or similar critical journeys need proof
-- release confidence matters more than local developer-loop speed
+### Step 5: Separate local, PR, release, and scheduled expectations
+A useful policy brief does not pretend one suite fits every loop.
 
-#### Use manual exploratory or checklist validation when
-- visual nuance, browser/device variation, operational edge cases, or human judgment matter
-- the path is too rare or unstable to justify permanent automation yet
-- you need a release-note or QA checklist item even after automation exists
+Define the smallest truthful gate split:
+- **Local** — fast, cheap, developer-loop proof
+- **PR / merge** — changed-surface confidence for risky paths
+- **Release** — production-facing smoke, migration safety, rollout checks, or manual signoff items
+- **Scheduled / nightly** — broad matrices, expensive combinations, compatibility sweeps, long-running suites
 
-Name both what **is** and **is not** in scope. A useful plan says, for example, “integration + contract now, no broad E2E because the user journey is unchanged.”
+Rules of thumb:
+- if a suite is too slow or flaky for PRs, move it deliberately instead of silently rerunning it forever
+- if a release checklist exists, tie it back to the specific risk that still needs human proof
+- if the packet is really just release coordination, say so instead of pretending every item is a test-layer choice
 
-### Step 4: Separate local, PR, and release expectations
-A strong strategy does not pretend one suite fits every loop.
+### Step 6: Write explicit exception and flake rules
+This step is where strategy becomes operational.
 
-Define:
-- **Local loop** — fast developer confidence: narrow unit/component/service checks, focused integration, lint/type/static checks
-- **PR / merge gate** — branch-level confidence: critical automated coverage for changed risk areas, selective integration/contract checks, proof artifacts for omitted layers
-- **Release / deploy gate** — production-facing confidence: smoke tests, migration validation, rollout checks, critical-journey verification, manual checklist items if needed
-- **Scheduled / nightly** — broad or expensive suites, compatibility matrices, resilience checks, longer-running combinations
-
-If a suite is too slow or flaky for PRs, move it deliberately instead of silently forcing every branch through unreliable gates.
-
-### Step 5: Set rules for flaky, expensive, or skipped tests
-Strategy quality often shows up in the exception policy.
-
-Define:
-- which tests are blocking versus informational
-- when a flaky test should be quarantined, fixed, re-scoped, or removed from the gate
-- when a risky change can ship with manual verification plus follow-up automation
+State:
+- which checks are blocking vs informational
+- when a flaky test should be quarantined, fixed, moved to scheduled, or removed from the gate
 - what explanation is required when no new regression coverage is added
-- whether coverage percentages are guardrails, reporting signals, or non-goals for this decision
+- whether coverage percentages matter here or are just background reporting
+- whether manual verification is temporary, release-only, or an intentional long-term choice
 
-Good default rules:
-- treat repeated flake as a policy problem, not just a rerun ritual
-- do not accept “coverage went up” as proof that the right scenarios are protected
-- if a bug escaped, add the lowest-layer regression check that would have caught it
-- if a migration, auth, or public-contract change is present, require stronger-than-unit evidence
+Good defaults:
+- repeated flake is a policy problem, not just a rerun ritual
+- quarantining can reduce CI noise, but must keep owner + timeout + follow-up visible
+- “coverage went up” is not proof that the risky scenario is protected
+- escaped bugs should ratchet in the lowest-layer regression that would actually have caught them
 
-### Step 6: Route implementation and diagnosis correctly
-This skill owns policy and orchestration, not every downstream action.
+### Step 7: Route the next owner immediately
+This skill owns policy and confidence decisions, not all downstream work.
 
-Typical handoffs:
-- **`backend-testing`** — implement API/service/database/fixture/contract coverage once the strategy is chosen
-- **`debugging`** — investigate why a current failure is happening or why a suite is red/flaky
-- **`code-review`** — judge whether a specific diff’s tests and evidence are convincing
-- **`performance-optimization`** — handle load/perf test policy only when performance is the main risk
-- **`web-accessibility` / `web-design-guidelines`** — handle accessibility or visual validation policy when that is the real review surface
+Typical route-outs:
+- `backend-testing` — write or repair the chosen API/service/database/fixture/contract tests
+- `debugging` — investigate why a suite is red, flaky, or environment-specific right now
+- `code-review` — judge whether one diff’s current evidence is good enough to approve
+- `web-accessibility` / `web-design-guidelines` — handle accessibility-heavy or visual-governance validation packets
+- `performance-optimization` / `game-performance-profiler` — handle benchmark, load, latency, or frame-budget policy when performance is the actual dominant risk
 
-If the user asks “what should we test?” stay here. If they ask “how do I write or stabilize those tests?” route out.
+If the user asks “what should we test?” stay here.
+If they ask “how do we write or stabilize those tests?” route out.
 
-### Step 7: Produce the validation brief
-Return a concise artifact that someone can act on immediately.
-
+### Step 8: Produce one concise validation brief
 Preferred format:
 ```markdown
 # Validation Strategy Brief
 
-## Change frame
-- Type:
+## Policy packet
+- Packet:
+- Primary mode:
 - Risk tier:
-- Critical paths:
-- Decision point: local / PR / release
+- Decision point:
 
-## Required validation
+## Required validation now
 1. [Layer] ... because ...
 2. [Layer] ... because ...
 3. [Manual / release check] ... because ...
 
-## Out of scope for now
-- ...
-
-## Gate policy
+## Gate split
 - Local:
 - PR:
 - Release:
 - Scheduled:
 
-## Exceptions / residual risk
+## Out of scope for now
+- ...
+
+## Exception / flake policy
 - ...
 
 ## Next owner
 - `backend-testing` / `debugging` / `code-review` / other
 ```
 
-If the answer is “do less, but at the right layer,” say that explicitly.
+A short, explicit brief beats a giant testing manifesto.
+If the honest answer is “do less, but at the right layer,” say that directly.
 
 ## Output format
-Always return a **validation strategy brief**, **testing policy packet**, or **change-based coverage recommendation**.
+Always return a **validation strategy brief**, **gate-shaping memo**, or **regression-ratchet brief**.
 
 Required qualities:
-- classify the change and risk tier
-- choose explicit validation layers rather than generic “add tests” advice
+- identify the packet already in hand
+- choose one primary policy mode
+- classify risk and critical path explicitly
 - separate local, PR, release, and scheduled expectations when relevant
-- explain why certain layers are intentionally excluded
-- call out flaky/expensive-suite policy when it affects the decision
-- route implementation or diagnosis to the correct neighboring skill
+- explain intentional exclusions instead of hand-waving them away
+- route implementation, debugging, review, accessibility, or performance work to the correct neighboring skill
 
 ## Examples
 
-### Example 1: API + migration change
+### Example 1: API + migration packet
 **Input**
-> This PR changes an API response shape and adds a DB migration. What testing strategy should we require before merge?
+> This PR changes an API contract and adds a DB migration. What validation should be required before merge?
 
 **Output sketch**
+- Packet: `change-risk-packet`
+- Primary mode: `layer-selection`
 - Risk tier: 2
 - Required validation:
-  1. integration test covering migration read/write path
+  1. integration test for migration read/write path
   2. contract/API check for response compatibility
-  3. release smoke covering the highest-value consumer path
-- Out of scope: broad browser E2E because the user-facing flow is unchanged
+  3. release smoke on the highest-value consumer path
+- Out of scope: broad browser E2E because the user flow is unchanged
 - Next owner: `backend-testing`
 
-### Example 2: Flaky browser suite
+### Example 2: Flaky browser suite packet
 **Input**
 > Our Playwright suite is slow and keeps flaking. What testing strategy should this repo adopt?
 
 **Output sketch**
-- Risk tier: mixed, but current policy problem is flake and cost
+- Packet: `flake-cost-packet`
+- Primary mode: `flake-and-cost-policy`
 - Required change:
   1. narrow PR browser coverage to critical journeys only
-  2. move broader combinations to scheduled/nightly
-  3. shift more confidence to lower-level integration/component checks
-  4. define quarantine/fix rules for flaky tests
-- Next owner: `backend-testing` for service/API coverage; `debugging` for red/flaky root cause
+  2. move broader combinations to scheduled runs
+  3. define quarantine/fix rules for repeated flake
+  4. shift confidence to lower-level integration/component checks where honest
+- Next owner: `backend-testing` for implementation, `debugging` for current flake root cause
 
-### Example 3: Bugfix regression decision
+### Example 3: Release-readiness packet
 **Input**
-> We fixed a bug where expired sessions still allowed export downloads. What test should be required?
+> Engineering says tests are green, but should we require anything else before this release?
 
 **Output sketch**
-- Risk tier: 2 because auth/session behavior is involved
+- Packet: `release-readiness-packet`
+- Primary mode: `release-confidence`
 - Required validation:
-  1. regression test at the lowest layer that can prove denied access logic
-  2. integration/auth check if middleware wiring is part of the risk
-  3. no full broad E2E unless export flow depends on multi-step browser state not covered below
-- Next owner: `backend-testing`
+  1. targeted staging smoke for the changed customer journey
+  2. migration / rollback checklist item if deploy shape changed
+  3. explicit note that no new broad regression sweep is required beyond scheduled coverage
+- Route-out: accessibility-specific signoff to `web-accessibility` if the change is UI-state heavy
 
 ## Best practices
-1. Start from risk and change surface, not from a favorite testing slogan.
-2. Prefer the cheapest test layer that still proves the risky behavior.
-3. Keep local, PR, release, and scheduled validation loops distinct.
+1. Start from the packet already in hand, not from a favorite testing slogan.
+2. Prefer the cheapest layer that still proves the risky behavior.
+3. Keep local, PR, release, and scheduled loops distinct.
 4. Treat flaky tests as a policy smell, not just a rerun inconvenience.
-5. Coverage percentages can support the conversation, but they do not replace scenario-based confidence.
-6. State intentional exclusions so the team knows what risk remains.
+5. Tie release checklists back to actual risk instead of treating them as a separate universe.
+6. State intentional exclusions so residual risk is visible.
 7. Use escaped bugs to ratchet in the lowest-layer regression that would have caught them.
-8. Route implementation to `backend-testing`, diagnosis to `debugging`, and review judgment to `code-review`.
-9. For release-critical work, include manual or checklist validation when human judgment is still the honest answer.
-10. A short, explicit validation brief beats a giant generic testing manifesto.
+8. Route implementation to `backend-testing`, diagnosis to `debugging`, review judgment to `code-review`, and accessibility-heavy validation to `web-accessibility`.
+9. Use manual validation when it is the honest answer, not as a shameful fallback.
+10. One concise validation brief is more reusable than a giant testing manifesto.
 
 ## References
 - [Martin Fowler — Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html)
 - [Martin Fowler — The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html)
-- [Martin Fowler — Testing Strategies in a Microservice Architecture](https://martinfowler.com/articles/microservice-testing/)
-- [Martin Fowler — Consumer-Driven Contracts](https://martinfowler.com/articles/consumerDrivenContracts.html)
 - [Google Testing Blog — Just Say No to More End-to-End Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html)
-- [Software Engineering at Google — Testing Overview](https://abseil.io/resources/swe-book/html/ch11.html)
-- [Playwright — Best Practices](https://playwright.dev/docs/best-practices)
 - [Selenium — Test Practices](https://www.selenium.dev/documentation/test_practices/)
+- [Playwright — Best Practices](https://playwright.dev/docs/best-practices)
+- [Pact Docs](https://docs.pact.io/)
