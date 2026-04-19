@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-20 | Total pages: 152
+> Last updated: 2026-04-20 | Total pages: 153
 
 ## Entities
 
@@ -127,6 +127,7 @@
 - [[skill-standardization-validator-hardening-2026-04-19]] — Why the best bounded follow-up was repairing `validate_skill.sh` so valid folded descriptions with apostrophes remain valid input, plus adding a durable regression script, instead of teaching authors to rewrite natural-language descriptions for shell compatibility.
 - [[state-management-modernization-2026-04-13]] — Why the best bounded frontend architecture improvement was rewriting `state-management` into a decision-first state-boundary anchor instead of leaving it as a generic library-tour skill.
 - [[state-management-structural-hardening-2026-04-18]] — Why the best bounded frontend follow-up was shrinking `state-management` into an ownership-packet router with router-native data guidance and stronger route-outs instead of adding another React state wrapper.
+- [[state-management-next-ratchet-2026-04-20]] — Why the best bounded next frontend follow-up was making `state-management` faster: force one primary packet, name the likely wrong owner, and compare client stores only after URL/form/server packets are removed.
 - [[ui-component-patterns-modernization-2026-04-13]] — Why the best bounded frontend reusable-component improvement was rewriting `ui-component-patterns` into a reusable primitive / variant / slot API anchor instead of modernizing `responsive-design` first.
 - [[ui-component-patterns-structural-hardening-2026-04-19]] — Why the best bounded frontend follow-up was shrinking `ui-component-patterns` into a routing-first reusable-component packet anchor instead of adding another component-library wrapper.
 - [[responsive-design-modernization-2026-04-13]] — Why the best bounded next frontend modernization was rewriting `responsive-design` into a mobile-first, container-aware layout adaptation + verification anchor.

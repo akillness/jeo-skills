@@ -2789,7 +2789,7 @@
     },
     {
       "name": "state-management",
-      "description": "Classify React/fullstack state ownership before picking libraries. Use when deciding whether data should stay local, be shared via Context, live in URL or form state, use a client store like Zustand / Redux Toolkit / Jotai, or stay in a server-state cache such as TanStack Query or a router-native data layer.",
+      "description": "Choose the smallest viable React/fullstack state owner before comparing libraries. Use when deciding whether a request is local UI state, shared-subtree/Context state, URL or form state, server-state cache ownership, or leftover client workflow state that may justify Zustand / Redux Toolkit / Jotai.",
       "category": "frontend",
       "path": "state-management/SKILL.md",
       "tags": [

@@ -1096,3 +1096,11 @@
 - Accepted: shrink `task-planning` from 294 to 287 lines, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a pre-planning concept-framing boundary case, sync `SKILL.toon` / `skills.json` / `skills.toon`, refresh README / README.ko / setup discovery wording, and file the next-ratchet decision back into the wiki.
 - Rejected: adding another backlog/sprint wrapper; letting `task-planning` absorb board control, plan review, or ceremony work; pretending thin indexed-search evidence justified a broader market claim than the repo-local structural evidence supported.
 - Wiki files created/updated: `queries/task-planning-packet-ratchet-2026-04-20.md`, `index.md`, `log.md`
+
+## [2026-04-20] query | state-management next ratchet
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow prompts, web/fullstack frontend architecture, PM/ops handoff clarity, marketing/content app-state questions, and game UI/tooling flows, with the best bounded follow-up landing on the existing `state-management` skill rather than another React state wrapper.
+- Survey files created under `.survey/state-management-next-ratchet-20260420/`; primary evidence came from direct primary-source retrieval and browser-rendered page evidence for React, React Router, TanStack Query, Redux Toolkit, Zustand, and Jotai plus repo-local wiki/graph context after normal `web_search` / `web_extract` failed in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `state-management` from 272 to 211 lines, force one primary packet before tool comparisons, add an explicit wrong-owner check, expand evals with React Router misuse and debugging-boundary cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and file the packet-first ratchet back into the wiki.
+- Rejected: adding another router-state or global-state wrapper; re-expanding the skill into a broader library tour; treating active broken-state diagnosis as a store-choice problem.
+- Wiki files created/updated: `queries/state-management-next-ratchet-2026-04-20.md`, `concepts/frontend-skill-canonicalization.md`, `index.md`, `log.md`
