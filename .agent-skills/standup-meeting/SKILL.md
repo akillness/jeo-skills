@@ -1,64 +1,69 @@
 ---
 name: standup-meeting
 description: >
-  Facilitate useful daily standups, daily scrums, async check-ins, or walk-the-board
-  delivery syncs without turning them into manager-facing status theater. Use when
-  the user needs a short daily coordination ritual, blocker triage, async standup
-  format, remote-team check-in, or help converting a verbose standup into a board-
-  first / blocker-first flow. Not for backlog decomposition, story-point sizing, or
-  retrospective analysis.
+  Turn messy daily-sync requests into one coordination packet: choose the right
+  standup mode, gather the smallest work-state evidence, keep blockers and
+  handoffs visible, and move deep dives into follow-up huddles instead of status
+  theater. Use when the user needs a daily scrum, async check-in, board-walk,
+  blocker-first sync, remote-team standup, or help fixing an overlong / low-
+  signal standup. Route backlog planning to `task-planning`, sizing to
+  `task-estimation`, retrospective process repair to `sprint-retrospective`, and
+  incident-command work to debugging / launch-specific skills.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
-  Best for software, product, design, and cross-functional delivery teams working
-  synchronously, asynchronously, or across time zones. This skill helps choose and
-  run the right daily-sync mode; it is not a project-management system of record.
+  Best for software, product, design, ops, and game-delivery teams running
+  synchronous, asynchronous, or hybrid daily coordination. This skill helps pick
+  one standup mode and one escalation path; it is not a project-management
+  system of record or a people-performance reporting tool.
+license: MIT
 metadata:
-  tags: standup, daily-scrum, async-standup, blocker-triage, agile, project-management, delivery-sync
-  version: "1.1"
+  tags: standup, daily-scrum, async-standup, blocker-triage, agile, project-management, delivery-sync, hybrid-teams
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0.0"
   source: akillness/oh-my-skills
+  modernization: 2026-04-12
+  hardening: 2026-04-19
 ---
 
 # Standup Meeting
 
-Use this skill to turn a vague “run our standup” request into a **short, useful daily coordination ritual**.
+Use this skill when the job is to turn vague daily coordination into **one sync mode, one small evidence packet, and one follow-up path**.
 
-The goal is not to force every team into the same three-question script. The goal is to:
-- choose the right standup mode for the team shape and work state
-- surface blockers and dependency risks quickly
-- keep the ritual tied to work movement, not personal performance theater
-- route deeper planning, estimation, and retrospective work to adjacent skills
+`standup-meeting` owns:
+- daily coordination around live work
+- standup mode selection
+- blocker / handoff visibility
+- short facilitation flow and update templates
+- clear separation between the core sync and follow-up huddles
+- anti-status-theater guardrails
 
-Read [references/facilitation-modes.md](references/facilitation-modes.md) before unusual cases or when choosing between live, async, and hybrid patterns.
-
-If the user mainly needs:
-- **backlog breakdown or sprint-candidate planning** → route to `task-planning`
-- **story points, t-shirt sizing, or capacity/sizing work** → route to `task-estimation`
-- **process reflection after the sprint or after a failed iteration** → route to `sprint-retrospective`
+Read these references before unusual cases or when the request starts to sprawl:
+- [references/facilitation-modes.md](references/facilitation-modes.md)
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
 
 ## When to use this skill
-- Run or redesign a daily standup / daily scrum / daily sync for a software or product team
-- Switch a bloated person-by-person standup into a walk-the-board or blocker-first format
-- Decide whether a remote or distributed team should use async, live, or hybrid check-ins
-- Produce a short facilitation script, standup template, or sync note format tied to actual work
-- Tighten a ritual that is drifting into management status reporting, side quests, or meeting sprawl
-- Create a lightweight escalation path for blockers, handoffs, and follow-up huddles
+- A user asks for a daily standup, daily scrum, daily sync, or async check-in format.
+- A team needs to choose between board-walk, blocker-first, async, hybrid, or classic three-question standups.
+- A daily ritual is running too long, drifting into status reporting, or generating too many side discussions.
+- A remote or hybrid team needs a lighter way to coordinate blockers and handoffs.
+- The best next artifact is a **Daily Sync Brief** with one mode, one template, and one escalation path.
 
 ## When not to use this skill
-- The real task is decomposing work into ready tasks, stories, or sprint slices → use `task-planning`
-- The real task is estimating size, effort, or confidence → use `task-estimation`
-- The real task is reviewing what the team learned or which process changes to keep → use `sprint-retrospective`
-- The main problem is incident response, outage coordination, or release war-room work → use a debugging / incident / launch-specific skill instead of daily-ceremony guidance
+- **The real job is backlog decomposition, sprint prep, or execution-ready slicing** → `task-planning`.
+- **The real job is sizing, confidence framing, or capacity disagreement** → `task-estimation`.
+- **The real job is process reflection, recurring ceremony pain, or action follow-through after delivery** → `sprint-retrospective`.
+- **The real job is outage command, release war room, or incident triage** → debugging / incident / launch-specific skills.
+- **The user mainly wants manager-facing status collection or performance reporting**. This skill is for lateral coordination, not upward theater.
 
 ## Instructions
 
-### Step 1: Classify the standup mode
-Normalize the request into this intake first:
+### Step 1: Classify one primary standup mode
+Normalize the request before suggesting any format.
 
 ```yaml
 standup_intake:
-  team_shape: colocated | hybrid | distributed | unknown
-  cadence_need: daily | near-daily | unclear
-  current_style: three-questions | board-walk | async-thread | mixed | broken
+  primary_mode: board-walk | blocker-first | async-check-in | hybrid-async-plus-live | classic-three-questions
+  team_shape: colocated | hybrid | distributed | cross-functional | unknown
   work_source: jira | linear | github-projects | trello | docs | mixed | unknown
   main_problem:
     - blockers-hidden
@@ -68,61 +73,70 @@ standup_intake:
     - board-stale
     - too-many-side-discussions
     - unclear
-  active_risk: low | medium | high
-  sprint_or_delivery_goal: "..."
+  current_signal: strong-board | weak-board | weak-updates | mixed | unknown
+  delivery_risk: low | medium | high
+  output_shape: daily-sync-brief | template-only | facilitation-reset | unknown
 ```
 
-Then choose exactly one primary mode:
-- `board-walk`
-- `blocker-first`
-- `async-check-in`
-- `hybrid-async-plus-live`
-- `classic-three-questions` (only when the team is small and the format is still serving real coordination)
+Use exactly one primary mode per run:
+- `board-walk` — the board should drive the conversation
+- `blocker-first` — today’s main job is surfacing impediments and routing help fast
+- `async-check-in` — written updates are the default and live talk is optional
+- `hybrid-async-plus-live` — written visibility first, short live escalation second
+- `classic-three-questions` — only when the team is small and the format still carries real signal
 
-### Step 2: Pick the right mode deliberately
-Use these selection rules:
+Do not blend several modes into one mushy answer.
 
-1. **Board-walk**
-   - Best when the team already uses a shared board and the meeting should follow work movement
-   - Preferred when person-by-person updates are repetitive or disconnected from current risk
+### Step 2: Gather the smallest credible coordination packet
+Use [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-2. **Blocker-first**
-   - Best when the team is in a sprint crunch, release push, or dependency-heavy period
-   - Use when the highest value is exposing impediments and routing follow-up quickly
+Minimum evidence packet:
+- current board / issue tracker / document source
+- in-progress and blocked work
+- near-term delivery goal or sprint goal if known
+- obvious handoffs or dependencies
+- timezone / hybrid constraints if relevant
+- whether the board is trusted, stale, or missing key work
 
-3. **Async check-in**
-   - Best for distributed teams, timezone spread, or heavy maker-schedule cost
-   - Use when written updates are acceptable and live discussion is only needed for exceptions
+If evidence is thin, lower confidence instead of inventing certainty.
 
-4. **Hybrid async + live escalation**
-   - Best when the team wants written visibility plus a short live sync for risky work
-   - Good default for hybrid teams with occasional blockers and handoffs
+### Step 3: Pick the lightest mode that still catches risk
+Default rules:
+- **trusted board + multiple active items** → `board-walk`
+- **blocked work or dependency pressure dominates** → `blocker-first`
+- **timezone spread or maker-time cost dominates** → `async-check-in`
+- **team wants written visibility plus a short exception-only sync** → `hybrid-async-plus-live`
+- **small colocated team, still high-signal, little ceremony drift** → `classic-three-questions`
 
-5. **Classic three questions**
-   - Use only when the team is small, the updates remain high-signal, and the format is not drifting into status-report theater
+If the board is stale, call that out as part of the diagnosis. A standup cannot compensate forever for a broken source of truth.
 
-### Step 3: Keep the ritual bounded
-Apply these rules regardless of mode:
-- Keep the core sync to **10-15 minutes max**
-- Discuss **movement of work, blockers, and near-term risk**, not every detail of yesterday
-- Move deep problem solving to a **follow-up huddle** with only the relevant people
-- Speak to the **team and the work**, not upward to management
-- If the board is stale, call that out explicitly; bad source-of-truth hygiene is itself a blocker
+### Step 4: Keep the core sync bounded
+Regardless of mode:
+- keep the core sync to **10-15 minutes max**
+- focus on work movement, blockers, handoffs, and near-term delivery risk
+- move deep problem-solving into a **follow-up huddle** with only the relevant people
+- speak to the team and the work, not upward to management
+- say explicitly when the board, ticket hygiene, or update discipline is itself the blocker
 
-### Step 4: Produce the daily-sync brief
-Return this exact structure:
+### Step 5: Produce one Daily Sync Brief
+Return one compact packet, not a general agile tutorial.
 
 ```markdown
 # Daily Sync Brief
 
 ## Recommended mode
-- Mode: board-walk | blocker-first | async-check-in | hybrid-async-plus-live | classic-three-questions
-- Why this mode fits: ...
+- Mode:
+- Why this mode fits:
 
 ## Goal for this sync
 - ...
 
-## Facilitation flow
+## Evidence used
+- Work source:
+- Strongest signals:
+- Missing but important:
+
+## Core facilitation flow
 1. ...
 2. ...
 3. ...
@@ -130,10 +144,10 @@ Return this exact structure:
 ## What each person should report
 - ...
 
-## Blockers / risk routing
-- What belongs in the core sync: ...
-- What moves to follow-up: ...
-- Who should stay after: ...
+## Blocker / handoff routing
+- Keep in core sync:
+- Move to follow-up huddle:
+- Who should stay after:
 
 ## Template
 ```text
@@ -150,83 +164,74 @@ Return this exact structure:
 - Use `sprint-retrospective` when ...
 ```
 
-### Step 5: Tailor the template to the mode
-**For board-walk:**
-- Use the work board as the agenda
-- Review in-progress, blocked, and ready-for-review items first
-- Ask who owns the next move, not for a generic personal diary entry
+### Step 6: Tailor the packet to the chosen mode
+Use [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md) for stable packet shapes.
 
-**For blocker-first:**
-- Start with anything blocked, aging, or at delivery risk
-- Keep each blocker to triage: owner, missing input, next action, follow-up huddle
-- Avoid solving the issue inside the core standup
+Mode reminders:
+- **board-walk** — review blocked, aging, in-progress, and ready-for-review work before asking for personal diaries
+- **blocker-first** — name owner, missing input, and next action quickly; do not solve the blocker in the room
+- **async-check-in** — prefer prompts like “What moved?”, “What is stuck?”, and “What needs help today?” over ritualized filler
+- **hybrid-async-plus-live** — treat written updates as the base layer and the live sync as escalation only
+- **classic-three-questions** — keep only if it still stays short, lateral, and work-focused
 
-**For async check-in:**
-- Ask for yesterday / today / blockers only if it still adds signal
-- Prefer prompts like “What moved?”, “What is stuck?”, and “What needs help today?”
-- Require a clear escalation path for anything that cannot wait 24 hours
-
-**For hybrid async + live:**
-- Use written updates as the base layer
-- Reserve the live portion for blockers, handoffs, and sprint-goal risks
-- Skip re-reading everything already written unless clarification is needed
-
-### Step 6: Route adjacent PM work explicitly
-Before finalizing, state when the user should switch skills:
-- If the team keeps discovering vague work that is not ready to execute, recommend `task-planning`
-- If the team is arguing about size, risk, or capacity, recommend `task-estimation`
-- If the team wants to turn repeated standup pain into process improvements, recommend `sprint-retrospective`
+### Step 7: Route adjacent PM work explicitly
+Before finalizing, say when the next job changed:
+- use `task-planning` for backlog cleanup, sprint prep, or scope slicing
+- use `task-estimation` for effort, confidence, or capacity disputes
+- use `sprint-retrospective` when repeated daily-sync pain should become a process change
+- do **not** turn this skill into roadmap planning, status theater, or incident command
 
 ## Output format
-Always return a compact **Daily Sync Brief**, not a generic agile tutorial.
-
-Required qualities:
-- choose one mode instead of mixing everything together
-- keep the meeting tied to real work movement and blocker handling
-- separate core-sync content from follow-up huddle content
-- keep the template short enough to use immediately
-- preserve routing boundaries to the rest of the PM cluster
+Always return a **Daily Sync Brief** with these qualities:
+- exactly one primary mode
+- one small evidence packet
+- explicit separation between core sync and follow-up huddle
+- visible blocker / handoff routing
+- short reusable template
+- clear route-outs to the rest of the PM cluster when the job changes
 
 ## Examples
 
-### Example 1: sprint team with blockers
+### Example 1: Overlong sprint standup
 **Input**
-> Tomorrow’s standup keeps running 25 minutes because everyone gives long updates. We have two blocked tickets and one item waiting for review.
+> Tomorrow’s standup keeps running 25 minutes because everyone gives long updates. We have two blockers and one item waiting for review.
 
-**Output sketch**
-- Mode: `board-walk`
-- Flow starts with blocked and in-progress items
-- Follow-up huddle only for the two blocked tickets
-- Anti-pattern callout: no round-robin biographies
+**Good output direction**
+- mode: `board-walk` or `blocker-first`
+- blocked and in-progress work comes first
+- follow-up huddle only for the blocked items
+- anti-pattern callout: no round-robin biographies
 
-### Example 2: distributed team across time zones
+### Example 2: Distributed team
 **Input**
-> We have engineers in California, Europe, and Korea. Should our standup be async?
+> We have engineers in California, Europe, and Korea. Should our daily standup be async?
 
-**Output sketch**
-- Mode: `hybrid-async-plus-live` or `async-check-in`
-- Written template centers on movement, blockers, and help-needed
-- Live escalation only for urgent dependency or delivery risk
+**Good output direction**
+- mode: `async-check-in` or `hybrid-async-plus-live`
+- written template centered on movement, blockers, and help needed
+- explicit escalation path for urgent coordination
 
-### Example 3: status-theater complaint
+### Example 3: Manager-facing status theater
 **Input**
-> Our daily scrum feels like reporting to the manager. Fix it.
+> Our daily scrum feels like reporting to the manager. Fix it without changing our whole process.
 
-**Output sketch**
-- Mode: `blocker-first` or `board-walk`
-- Anti-patterns: manager-facing updates, deep dives in the room, stale board
-- Adjacent handoff: use `sprint-retrospective` if they want durable process changes after trying the new flow
+**Good output direction**
+- mode: `board-walk` or `blocker-first`
+- names status theater directly
+- keeps the sync lateral and work-focused
+- routes recurring ceremony pain to `sprint-retrospective`
 
 ## Best practices
-1. **Optimize for coordination, not recital** — the best standup reduces ambiguity about today’s work.
+1. **Optimize for work movement, not recital** — the ritual should clarify today’s coordination job.
 2. **Choose the lightest mode that still catches risk** — not every team needs the same ceremony weight.
-3. **Escalate blockers fast, solve them elsewhere** — triage in the standup, fix in a smaller huddle.
-4. **Protect maker time** — async or hybrid formats are often better for distributed teams.
-5. **Treat stale work tracking as a first-class problem** — a standup cannot compensate for a broken source of truth.
-6. **Route out of the ceremony when the need changes** — planning, estimation, and retrospectives are distinct skills.
+3. **Triage blockers in the sync, solve them elsewhere** — follow-up huddles are a feature, not a failure.
+4. **Protect maker time** — async or hybrid modes often beat default live meetings for distributed teams.
+5. **Treat source-of-truth hygiene as a first-class issue** — stale boards and missing updates are real blockers.
+6. **Route repeated pain outward** — planning, estimation, retrospectives, and incident work are different jobs.
 
 ## References
 - Scrum Guide — https://scrumguides.org/scrum-guide.html
 - Scrum.org, *What is a Daily Scrum?* — https://www.scrum.org/resources/what-is-a-daily-scrum
 - Atlassian, *Standups for agile teams* — https://www.atlassian.com/agile/scrum/standups
 - GitLab Handbook, *Asynchronous communication* — https://handbook.gitlab.com/handbook/company/culture/all-remote/asynchronous/
+- Martin Fowler / Jason Yip, *It’s Not Just Standing Up* — https://martinfowler.com/articles/itsNotJustStandingUp.html

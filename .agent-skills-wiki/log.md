@@ -983,3 +983,11 @@
 - Accepted: shrink `npm-git-install` into a routing-first packet selector, add `references/intake-packets-and-route-outs.md`, expand eval coverage with a shared internal tooling case, sync `SKILL.toon` / `skills.toon` / `skills.json`, update README / README.ko / setup discovery wording, and ratchet the developer-workflow boundary into the wiki.
 - Rejected: adding another package-install wrapper; keeping the more verbose front door just because support coverage already existed; broadening the skill into Git repair, package-host admin, or machine setup.
 - Wiki files created/updated: `queries/npm-git-install-structural-hardening-2026-04-19.md`, `concepts/developer-workflow-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | standup-meeting structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack delivery rituals, PM/ops coordination, marketing launch syncs, and game-delivery team ceremonies, with the best bounded follow-up landing on the existing `standup-meeting` skill rather than another PM ceremony wrapper.
+- Survey files created under `.survey/standup-meeting-structural-hardening-20260419/`; repo-local wiki/graph evidence plus direct primary-source retrieval from Scrum Guide, Scrum.org, Atlassian, GitLab async communication guidance, Martin Fowler / Jason Yip, and practitioner Q&A were used because `web_search` and `web_extract` returned invalid API-key errors in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `standup-meeting` into a routing-first daily coordination anchor, add `references/intake-packets-and-route-outs.md`, expand evals with a stale-board / `task-planning` route-out case, sync `SKILL.toon` / `skills.toon` / `skills.json`, update README / README.ko / setup discovery wording, and ratchet the PM-cluster boundary into the wiki.
+- Rejected: adding an async-standup wrapper; broadening the skill into backlog planning, estimation, retrospective work, or incident command; solving stale-board pain by making the standup longer.
+- Wiki files created/updated: `queries/standup-meeting-structural-hardening-2026-04-19.md`, `concepts/project-management-cluster.md`, `index.md`, `log.md`

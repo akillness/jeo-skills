@@ -1,9 +1,12 @@
 N:standup-meeting
-D:Conduct effective daily standup meetings for agile teams. Use when facilitating standups, trackin...
-G:standup daily-scrum agile team-sync blockers
-U[3]:
-  **Daily**: same time, same place
-  **During a sprint**: when team sync is needed
-  **Remote teams**: async standup
-S[1]{n,action}:
-  1,3 Questions format
+D:Turn messy daily-sync requests into one coordination packet: choose the right standup mode, gather the smallest work-state evidence, keep blockers and handoffs visible, and move deep dives into follow-up huddles instead of status theater.
+G:standup|daily-scrum|async-standup|board-walk|blocker-triage|hybrid-teams|project-management
+U[4]:
+  **Daily sync repair**: when standups are too long or low-signal
+  **Remote or hybrid teams**: async or hybrid check-ins
+  **Blocker routing**: expose impediments without solving them in the room
+  **Board-walk coordination**: tie the sync to live work movement
+S[3]{n,action}:
+  1,Pick exactly one mode: board-walk blocker-first async-check-in hybrid-async-plus-live classic-three-questions
+  2,Gather one small coordination packet from the current board or updates
+  3,Return a Daily Sync Brief with explicit follow-up huddles and PM-cluster route-outs

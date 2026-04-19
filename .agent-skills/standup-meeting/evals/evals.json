@@ -3,32 +3,42 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Run tomorrow's standup as a walk-the-board sync for a sprint team with two blockers and one item waiting for review.",
-      "expected_output": "Returns a Daily Sync Brief that selects board-walk mode, keeps blockers in triage form, and routes deeper work out of the meeting.",
+      "prompt": "Tomorrow's standup keeps running 25 minutes because everyone gives long updates. We have two blockers and one item waiting for review.",
+      "expected_output": "Returns a Daily Sync Brief that chooses one primary mode, keeps blocked/in-progress work central, and separates the core sync from follow-up huddles.",
       "assertions": [
-        "Output names a specific mode such as board-walk or blocker-first",
-        "Output includes a section or content for blocker/risk routing",
-        "Output distinguishes core sync content from follow-up work"
+        "Output names exactly one primary mode such as board-walk or blocker-first",
+        "Output includes a blocker or handoff routing section",
+        "Output separates core sync content from follow-up huddle work"
       ]
     },
     {
       "id": 2,
-      "prompt": "We're remote across California, Europe, and Korea. Should our daily standup be async, and what format should we use?",
-      "expected_output": "Returns a Daily Sync Brief that recommends async-check-in or hybrid-async-plus-live and explains the choice for a distributed team.",
+      "prompt": "We have engineers in California, Europe, and Korea. Should our daily standup be async, and what format should we use?",
+      "expected_output": "Returns a Daily Sync Brief that recommends async-check-in or hybrid-async-plus-live, gives a short reusable written template, and defines an escalation path for urgent coordination.",
       "assertions": [
         "Output recommends async-check-in or hybrid-async-plus-live",
         "Output includes a short reusable template for updates",
-        "Output mentions an escalation path for blockers or urgent coordination"
+        "Output mentions an escalation path or follow-up huddle trigger"
       ]
     },
     {
       "id": 3,
       "prompt": "Our daily scrum feels like reporting to the manager. Fix it without changing our whole process.",
-      "expected_output": "Returns a Daily Sync Brief that calls out status-report theater, recommends a lighter coordination mode, and preserves boundaries to planning and retrospectives.",
+      "expected_output": "Returns a Daily Sync Brief that calls out manager-facing status theater, keeps the ritual lateral and work-focused, and routes recurring process repair to retrospectives rather than broadening the standup.",
       "assertions": [
         "Output identifies manager-facing status theater as an anti-pattern",
         "Output includes anti-patterns to avoid",
-        "Output includes adjacent handoffs to task-planning, task-estimation, or sprint-retrospective"
+        "Output routes recurring process change to sprint-retrospective"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our board is stale and people keep discovering in standup that tasks are not ready yet. Should we just extend the standup?",
+      "expected_output": "Does not recommend extending the standup. It identifies stale board / not-ready work as the issue and routes decomposition or backlog prep to task-planning.",
+      "assertions": [
+        "Output identifies source-of-truth hygiene or stale board as a problem",
+        "Output does not solve the issue by expanding the standup into a long meeting",
+        "Output routes backlog cleanup, slicing, or task readiness to task-planning"
       ]
     }
   ]
