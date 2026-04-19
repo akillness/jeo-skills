@@ -1,19 +1,19 @@
 N:game-ci-cd-pipeline
-D:Design, audit, and harden CI/CD pipelines for Unity and Unreal projects, including build matrices, cache strategy, artifact naming, packaging stages, platform SDK/toolchain checks, and smoke-test gates. Use when a game team needs to set up or repair GitHub Actions or other CI for engine builds, even if they only say "our Unity cloud/GitHub build keeps breaking", "help with Unreal packaging CI", "make our game builds reproducible", "speed up cook / package jobs", or "turn this manual release process into a pipeline".
+D:Turn messy Unity or Unreal build/release automation into one bounded pipeline packet: setup plan, stage split, cache policy, preflight checklist, artifact/release hygiene, or CI-signal hardening. Use when a game team needs to design or repair GitHub Actions, Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds — especially when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook / package cycles, artifact confusion, SDK/signing drift, or a manual game release process that should become reproducible. Route one red log first-pass diagnosis to `game-build-log-triage`.
 G:game-development unity unreal ci-cd github-actions build-pipeline release-engineering
 
-U[6]:
-  Unity or Unreal teams setting up CI/CD from scratch
-  GitHub Actions, Build Automation, or other CI pipelines that are flaky, slow, or hard to debug
-  Manual game release processes that need reproducible build, package, and artifact steps
-  Requests about cache strategy, large binaries, artifact naming, matrix builds, smoke tests, or packaging gates
-  Teams that keep fixing the same cook/package/build problem without changing the pipeline structure
-  Publisher, contractor, or technical-lead audits where the team wants a short pipeline hardening brief instead of generic infrastructure advice
+U[5]:
+  Unity or Unreal teams setting up CI/CD from scratch without overengineering it
+  Pipelines that are repeatedly flaky, slow, or opaque because workflow structure is weak
+  Build, cook/package, cache, artifact, or release handoff issues that keep breaking trust
+  Small studios still making demo/review/release builds manually
+  Contractor or technical-lead audits that need a compact game-pipeline brief
 
-S[6]{n,action,details}:
-  1,Identify the pipeline scope,Label the request before proposing fixes.
-  2,Audit the pipeline through six lenses,Find the weakest lens first.
-  3,Classify the primary blocker,Map the situation to one primary blocker and optional secondary blocker.
-  4,Build the pipeline brief,Return a concise report with this exact structure:
-  5,Tailor the advice to the engine,**For Unity, focus on:** - engine/editor version pinning - package restore stability and Packages/manifest.json / lockfile drift - whether editor-only code or platform defines leak
-  6,Ask for the minimum missing evidence when needed,If confidence is low, request the smallest next packet that would materially improve the audit: 1. current workflow file or CI job outline 2. engine version and target platforms 3.
+S[7]{n,action,details}:
+  1,Choose one primary packet type,Normalize the request into exactly one packet: pipeline-setup, stage-split, cache-policy, preflight-readiness, artifact-release, ci-signal-hardening, or route-to-log-triage.
+  2,Gather the minimum credible evidence,Collect engine/version, CI surface, target platforms, repeated failure pattern, manual steps outside CI, and one failed job/log if relevant.
+  3,Classify the primary blocker,Pick one primary blocker and at most one secondary blocker.
+  4,Run the boundary check,Verify whether this is structural pipeline work or should route to `game-build-log-triage`.
+  5,Build the packet brief,Return the exact Game CI/CD Brief with packet choice, evidence, blockers, recommended shape, route-outs, and one next artifact.
+  6,Tailor the packet to the engine,Use Unity- or Unreal-specific guidance without bloating the front door.
+  7,Ask for the smallest missing packet,Request only the missing inputs that change the decision.

@@ -4,23 +4,23 @@
     {
       "id": 1,
       "prompt": "Our Unity build passes locally but fails in GitHub Actions after package updates. We keep deleting caches and rerunning until it works. Give me a CI/CD hardening brief.",
-      "expected_output": "A Game CI/CD Brief that classifies the issue as dependency/cache policy and reproducibility drift, recommends a pipeline shape, and suggests one concrete next artifact such as a cache-key policy.",
+      "expected_output": "A Game CI/CD Brief that chooses a cache-policy packet, classifies the issue as dependency/cache policy plus reproducibility drift, and recommends one concrete next artifact such as a cache-key policy.",
       "assertions": [
         "Output contains the heading 'Game CI/CD Brief'",
+        "Output includes a 'Packet choice' section",
         "Output identifies Unity as the engine",
         "Output includes a 'Primary blocker' section with dependency-cache-policy or reproducibility-drift",
-        "Output includes 'Stage-by-stage checks'",
-        "Output includes a 'Recommended next artifact' section"
+        "Output includes a 'Recommended next artifact' section naming cache-key policy"
       ]
     },
     {
       "id": 2,
       "prompt": "We have an Unreal GitHub Action but packaging takes forever and failures show up as one giant log blob. Tell me what to change first.",
-      "expected_output": "A concise pipeline brief that treats stage boundaries and feedback confidence as the main issue, with Unreal-specific checks around UBT/UHT, cook/package, and AutomationTool visibility.",
+      "expected_output": "A concise pipeline brief that chooses a stage-split packet, treats stage boundaries and feedback confidence as the main issue, and keeps Unreal-specific checks around UBT/UHT, cook/package, or AutomationTool visibility.",
       "assertions": [
         "Output identifies Unreal as the engine",
         "Output classifies the issue as stage-boundary-blur or feedback-speed-confidence",
-        "Output separates build/compile from cook/package concerns",
+        "Output recommends a workflow stage split brief or equivalent stage-separation artifact",
         "Output includes Unreal-specific checks",
         "Output does not collapse the answer into generic web-app CI advice"
       ]
@@ -28,12 +28,23 @@
     {
       "id": 3,
       "prompt": "We're still making Windows demo builds by hand for our small studio. Give me a sane pipeline setup plan without overengineering it.",
-      "expected_output": "A pipeline-setup oriented brief that focuses on reproducibility, artifact hygiene, and one next artifact such as a build matrix plan or release artifact checklist.",
+      "expected_output": "A pipeline-setup oriented brief that focuses on reproducibility, artifact hygiene, and one next artifact such as a pipeline setup plan or artifact/release checklist.",
       "assertions": [
         "Output includes a 'Recommended pipeline shape' section",
         "Output includes an artifact or release hygiene recommendation",
         "Output recommends one concrete next artifact",
         "Output includes a 'What not to do yet' section"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our Unreal Android packaging job failed last night. Here's the AutomationTool output — can you tell me what broke?",
+      "expected_output": "A routing-first answer that identifies the request as a single-log-not-pipeline case, emits a log-triage handoff packet, and routes to game-build-log-triage instead of pretending to redesign the whole pipeline first.",
+      "assertions": [
+        "Output includes 'Packet type' or equivalent packet choice showing route-to-log-triage",
+        "Output identifies single-log-not-pipeline or clearly states this is one failing log rather than a structural pipeline problem",
+        "Output routes to `game-build-log-triage`",
+        "Output requests or passes the failing stage, target platform, and exact log excerpt as the handoff packet"
       ]
     }
   ]

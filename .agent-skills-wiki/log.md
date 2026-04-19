@@ -959,3 +959,11 @@
 - Accepted: shrink `pattern-detection` into a routing-first packet selector, add `references/intake-packets-and-route-outs.md`, expand eval coverage for alert-noise handoff, and sync compact/discovery surfaces
 - Rejected: adding another anomaly wrapper; expanding the skill into full KPI explanation, log RCA, or security remediation
 - Wiki files created/updated: `queries/pattern-detection-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | game-ci-cd-pipeline structural hardening
+- Area researched: required cross-domain opportunity scan across game build/release workflow, Unity/Unreal CI structure, cache policy, packaging-stage visibility, artifact/release handoff, and release-confidence operations, with the best bounded follow-up landing on the existing `game-ci-cd-pipeline` skill rather than a new game DevOps wrapper.
+- Survey files created under `.survey/game-ci-cd-pipeline-structural-hardening-20260419/`; repo-local wiki/graph evidence plus direct primary-source retrieval from Unity, Unreal, Semaphore, and Simon Hesjevik pipeline docs, along with Yahoo Japan indexed snippets for Reddit/Unity Discussions/Unreal forum workflow evidence, were used because `web_search` and `web_extract` returned invalid API-key errors in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `game-ci-cd-pipeline` into a routing-first packet selector, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a route-to-log-triage case, sync `SKILL.toon` / `skills.json`, update README / README.ko / setup discovery wording, and ratchet the game-cluster boundary into the wiki.
+- Rejected: adding a separate Unity CI wrapper or Unreal release wrapper; letting the skill absorb first-pass log debugging; keeping the old checklist-heavy front door after the repo already converged on packet-first skills.
+- Wiki files created/updated: `concepts/game-development-cluster.md`, `queries/game-ci-cd-pipeline-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
