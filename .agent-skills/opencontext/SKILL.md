@@ -38,6 +38,7 @@ The job is to:
 Read [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md) before handling an unfamiliar memory request.
 Read [references/memory-layer-decision-guide.md](references/memory-layer-decision-guide.md) when the first question is which memory layer should own the job.
 Read [references/load-search-store-playbook.md](references/load-search-store-playbook.md) when the task is active project-memory operation.
+Read [references/trust-precedence-and-freshness.md](references/trust-precedence-and-freshness.md) when multiple memory artifacts disagree or branch freshness is unclear.
 Read [references/setup-and-integration.md](references/setup-and-integration.md) when the real task is installing or wiring OpenContext.
 
 ## When to use this skill
@@ -115,6 +116,12 @@ Look for:
 - the folder that already owns the project/topic memory
 - existing decision logs, pitfalls, acceptance notes, or handoff docs
 - the smallest useful set of files the next agent should read first
+- the most trustworthy source if several notes overlap
+
+Run one fast trust check before you load or search further:
+- **precedence:** prefer canonical repo docs and current decision logs over stale summaries
+- **provenance:** say whether a note came from a human-maintained doc, a current handoff, a previous agent summary, or an inferred heuristic
+- **freshness:** check whether branch, release, migration, or incident state may have invalidated the note
 
 Default rule: update existing memory docs before creating a parallel doc with the same purpose.
 
@@ -128,11 +135,14 @@ Typical outputs:
 - one manifest command or read-first packet
 - one folder recommendation
 - one short list of docs to read first
+- one trust note naming the highest-confidence source and any stale-risk warning
 
 Questions to answer:
 - Which folder is the project-memory home?
 - Which 3–10 docs should be read first?
 - Which constraints or pitfalls already exist?
+- Which source currently wins if docs disagree?
+- Does branch or release state make any saved note risky?
 
 #### B. `search-context`
 Use when current work would otherwise rely on guesswork.
@@ -161,6 +171,7 @@ A useful stored note usually contains:
 - why that choice was made
 - what to verify next
 - the smallest evidence links/citations needed later
+- which source won if artifacts conflicted, plus any branch/freshness warning for the next session
 
 ### Step 6: Handle setup and integration cleanly
 Use [references/setup-and-integration.md](references/setup-and-integration.md).
@@ -217,6 +228,11 @@ Preferred format:
 - Search terms:
 - Note to update or create:
 
+## Trust check
+- Highest-confidence source:
+- Provenance:
+- Freshness / branch warning:
+
 ## Route-outs
 - ...
 ```
@@ -231,6 +247,8 @@ Required qualities:
 - choose one primary mode
 - explain whether OpenContext owns the job or should route out
 - keep the answer focused on the smallest truthful manifest/search/store packet
+- state the highest-confidence source when overlapping notes exist
+- mention freshness / branch risk when it could invalidate saved memory
 - mention embeddings/index builds only as an escalation path
 - name the next owner when another memory or tooling layer is a better fit
 
@@ -275,19 +293,32 @@ Required qualities:
 - Primary mode: `route-out`
 - Route to Repomix / Gitingest / Code2Prompt-style workflow instead of pretending OpenContext is the right tool
 
+### Example 5: Conflicting memory artifacts on a release branch
+**Input**
+> `README.md` says one deploy step, `CLAUDE.md` says another, and we just switched to a release branch. What should the next agent trust?
+
+**Output sketch**
+- Packet: `load-context-packet` or `search-context-packet`
+- Name the highest-confidence source instead of flattening both notes together
+- Explain provenance and note that branch/release state may invalidate the older instruction
+- Store a compact handoff note describing which source won and what still needs verification
+
 ## Best practices
 1. Pick OpenContext because the workflow needs **active project/repo memory**, not because the word “memory” appeared.
 2. Prefer updating existing docs over creating duplicates.
 3. Load the minimum useful context first; manifests beat giant indiscriminate reads.
-4. Store decisions after meaningful work so the next session starts with less ambiguity.
-5. Keep document shapes predictable (`decision-log`, `pitfalls`, `handoff`, `acceptance-criteria`, `release-notes`).
-6. Treat embeddings/index builds as an escalation, not the default.
-7. Route wiki, graph, vault, and repo-packer requests out early instead of flattening them into one skill.
+4. State which source currently wins when memory artifacts overlap, and why.
+5. Treat branch/release/incident state as a freshness check, not background trivia.
+6. Store decisions after meaningful work so the next session starts with less ambiguity.
+7. Keep document shapes predictable (`decision-log`, `pitfalls`, `handoff`, `acceptance-criteria`, `release-notes`).
+8. Treat embeddings/index builds as an escalation, not the default.
+9. Route wiki, graph, vault, and repo-packer requests out early instead of flattening them into one skill.
 
 ## References
 - [Intake Packets and Route-outs](references/intake-packets-and-route-outs.md)
 - [Memory Layer Decision Guide](references/memory-layer-decision-guide.md)
 - [Load/Search/Store Playbook](references/load-search-store-playbook.md)
+- [Trust, Precedence, and Freshness](references/trust-precedence-and-freshness.md)
 - [Setup and Integration Notes](references/setup-and-integration.md)
 - [OpenContext README](https://raw.githubusercontent.com/0xranx/OpenContext/main/README.md)
 - [OpenContext usage docs](https://0xranx.github.io/OpenContext/en/usage/)

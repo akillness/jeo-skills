@@ -37,6 +37,8 @@ The graph refresh after the `opencontext` modernization showed another repeatabl
 
 2026-04-19 ratchet: after `graphify` and `obsidian-cli` clarified the neighboring layers, the remaining high-value `opencontext` improvement was not another memory abstraction. It was a packet-first front door that chooses between memory-layer choice, load-context, search-context, store-conclusions, setup, and repo-packer route-out while keeping manifests/stable links as the distinctive contract.
 
+2026-04-20 ratchet: the next bounded `opencontext` win was not a broader memory taxonomy. It was a **trust packet**: when repo-visible memory artifacts overlap, `opencontext` should name the highest-confidence source, say where it came from, warn when branch/release state may make it stale, and store that resolution in the next handoff note.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[opencontext-modernization-2026-04-15]]

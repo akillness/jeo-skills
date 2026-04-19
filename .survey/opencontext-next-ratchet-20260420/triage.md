@@ -1,0 +1,4 @@
+# Triage
+- Problem: The existing `opencontext` skill already cleanly owns active project/repo memory, but its next bounded improvement is unclear: the front door still lacks an explicit trust model for precedence, provenance, freshness, and branch-aware handoff.
+- Audience: CLI/IDE agent operators, repo maintainers, recurring coding/review/release agents, and cross-agent handoff workflows.
+- Why now: `opencontext` is still on the oversized-front-door watchlist, the wiki/graph layers already clarified neighboring memory lanes, and real-world practice still falls back to repo-local markdown handoffs plus manual “what should the next agent trust?” decisions.

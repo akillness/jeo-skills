@@ -1112,3 +1112,11 @@
 - Accepted: tighten `clawteam` into a packet-first runtime router, add `references/intake-packets-and-route-outs.md`, expand evals with a board-governance route-out case, sync `SKILL.toon` / `skills.json`, refresh README / README.ko / setup discovery wording, and file the packet-ratchet finding back into the wiki.
 - Rejected: adding another swarm/orchestration wrapper; re-expanding `clawteam` into a command encyclopedia; hiding tmux/worktree/manual-recovery reality behind a broader abstraction; treating board governance as ClawTeam runtime ownership.
 - Wiki files created/updated: `queries/clawteam-packet-ratchet-2026-04-20.md`, `concepts/developer-workflow-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-20] query | opencontext trust packet
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow memory surfaces, web/fullstack repo handoffs, PM/ops continuity docs, marketing/content handoff notes, and game/release branch state, with the best bounded follow-up landing on the existing `opencontext` skill rather than another memory wrapper.
+- Survey files created under `.survey/opencontext-next-ratchet-20260420/`; primary evidence came from direct page retrieval and linked official docs for Claude Code memory, Cursor Rules, Cline Memory Bank, Aider repo map, Repomix, llms.txt, and Mem0 plus repo-local wiki/graph context after normal `web_search` / `web_extract` failed in this environment.
+- Structural graph artifacts were not refreshed; this was a bounded trust/freshness ratchet on an existing memory skill rather than a structural-catalog change.
+- Accepted: add explicit precedence / provenance / freshness checks to `opencontext`, add `references/trust-precedence-and-freshness.md`, expand evals with a conflicting-memory-on-release-branch case, sync `SKILL.toon` / `skills.json` / `skills.toon`, refresh README / README.ko / setup discovery wording, and file the trust-packet finding back into the wiki.
+- Rejected: adding another memory/handoff wrapper; re-broadening `opencontext` into a generic memory-layer lecture; refreshing the graph for a wording-only ratchet.
+- Wiki files created/updated: `queries/opencontext-trust-packet-2026-04-20.md`, `concepts/persistent-memory-cluster.md`, `index.md`, `log.md`

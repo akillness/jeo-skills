@@ -47,6 +47,18 @@
         "Output names at least one repo-packing alternative such as Repomix, Gitingest, or Code2Prompt",
         "Output does not describe this as a long-term project-memory workflow"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "`README.md` says one deploy step, `CLAUDE.md` says another, and we just switched to a release branch. What should the next agent trust and what should we store after resolving it?",
+      "expected_output": "Treats this as an active project-memory trust/freshness problem, names the highest-confidence source, explains provenance and branch freshness, and stores a compact handoff note saying which source won and what still needs verification.",
+      "assertions": [
+        "Output identifies a load-context or search-context style packet for the conflict",
+        "Output states a highest-confidence source instead of flattening both notes together",
+        "Output mentions provenance or source origin explicitly",
+        "Output warns that branch or release state can invalidate older memory",
+        "Output includes storing or updating a compact handoff/decision note after resolution"
+      ]
     }
   ]
 }
