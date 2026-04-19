@@ -20,6 +20,7 @@ bash scripts/validate_skill.sh ../<skill-name>
 - required frontmatter (`name`, `description`)
 - name format and directory match
 - description length and imperative trigger phrasing
+- quote-safe folded-description extraction for ordinary prose (apostrophes, backticks, shell-like text)
 - recommended sections
 - file-length warning
 
@@ -27,6 +28,7 @@ bash scripts/validate_skill.sh ../<skill-name>
 - whether route-outs are truthful
 - whether examples match the repo's actual workflow
 - whether `SKILL.toon` / `SKILL.compact.md` need refresh after a material rewrite
+- whether a new parser edge case deserves a durable regression check such as `scripts/regression_folded_description_quotes.sh`
 
 ## Mode 2 — Create or rewrite a SKILL.md
 Use when there is no good `SKILL.md` yet or the current one is too weak to keep.

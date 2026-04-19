@@ -57,6 +57,10 @@ The validator checks:
 - recommended sections
 - file-length warning
 
+Repo-specific validator nuance:
+- `validate_skill.sh` is expected to accept valid multiline `description: >` blocks that contain ordinary apostrophes or shell-like text. If it still fails on prose-level quoting, treat that as a validator bug to repair, not as a reason to weaken the skill description.
+- Prefer fixing the validator or adding a regression case before rewriting natural language just to appease shell parsing.
+
 ### Step 3: Fix or write the primary `SKILL.md`
 When creating or rewriting the skill:
 - keep the description trigger-oriented and specific about when to use the skill
@@ -144,6 +148,7 @@ Keep the pass only if the result is more truthful and transferable than the base
 - `bash .agent-skills/skill-standardization/scripts/validate_skill.sh <skill-dir>` — validate one skill
 - `bash .agent-skills/skill-standardization/scripts/validate_skill.sh --all .agent-skills/` — batch validation
 - `python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --repo-root /path/to/repo` — compare live folders against catalog/discovery surfaces
+- `bash .agent-skills/skill-standardization/scripts/regression_folded_description_quotes.sh [repo-root]` — regression-check folded descriptions with apostrophes / shell-like text
 
 ## Examples
 

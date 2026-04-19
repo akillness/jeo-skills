@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-19 | Total pages: 136
+> Last updated: 2026-04-19 | Total pages: 137
 
 ## Entities
 
@@ -117,6 +117,7 @@
 - [[skill-standardization-variant-sync-2026-04-15]] — Why the best bounded follow-up to catalog-sync hardening was teaching `skill-standardization` to review `SKILL.toon` / `SKILL.compact.md` drift after material rewrites instead of relying on ad hoc memory.
 - [[ralph-structural-hardening-2026-04-18]] — Why the best bounded next core-orchestration improvement was shrinking `ralph` into a cleaner spec-first method anchor with runtime-boundary references and corrected Codex guidance instead of adding another persistent-loop wrapper.
 - [[skill-standardization-structural-hardening-2026-04-17]] — Why the best bounded next maintenance-layer improvement was shrinking `skill-standardization` into a truthful repo-root router with derived-surface sync instead of adding another validation/meta wrapper.
+- [[skill-standardization-validator-hardening-2026-04-19]] — Why the best bounded follow-up was repairing `validate_skill.sh` so valid folded descriptions with apostrophes remain valid input, plus adding a durable regression script, instead of teaching authors to rewrite natural-language descriptions for shell compatibility.
 - [[state-management-modernization-2026-04-13]] — Why the best bounded frontend architecture improvement was rewriting `state-management` into a decision-first state-boundary anchor instead of leaving it as a generic library-tour skill.
 - [[state-management-structural-hardening-2026-04-18]] — Why the best bounded frontend follow-up was shrinking `state-management` into an ownership-packet router with router-native data guidance and stronger route-outs instead of adding another React state wrapper.
 - [[ui-component-patterns-modernization-2026-04-13]] — Why the best bounded frontend reusable-component improvement was rewriting `ui-component-patterns` into a reusable primitive / variant / slot API anchor instead of modernizing `responsive-design` first.

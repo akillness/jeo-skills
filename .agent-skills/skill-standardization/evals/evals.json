@@ -80,6 +80,16 @@
         "The output distinguishes repo-root execution from skill-local execution or notes the working-directory dependency",
         "The output names at least one manual review item beyond the scripts, such as SKILL.toon freshness, manifest command residue, or README/setup discovery wording"
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "A valid SKILL.md uses `description: >` and says `ClawTeam's operator guide` in the folded description. Validate it without telling me to rewrite the prose just to appease shell parsing.",
+      "expected_output": "A response that treats folded descriptions with apostrophes as valid input, keeps the validator bug/repair path in scope if parsing fails, and avoids author-side wording downgrades as the default fix.",
+      "assertions": [
+        "The output accepts ordinary apostrophes inside valid folded descriptions as something the validator should handle",
+        "The output frames shell-quote failures as validator bugs or regression cases to repair, not as a reason to rewrite natural language",
+        "The output keeps repo-root validator usage in scope when explaining the validation path"
+      ]
     }
   ]
 }
