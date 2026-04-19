@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-19 | Total pages: 140
+> Last updated: 2026-04-19 | Total pages: 141
 
 ## Entities
 
@@ -133,6 +133,7 @@
 - [[workflow-automation-modernization-2026-04-13]] — Why the best bounded utilities/developer-workflow improvement was modernizing `workflow-automation` into a repo-scoped recurring-workflow anchor instead of adding another automation wrapper.
 - [[workflow-automation-structural-hardening-2026-04-18]] — Why the best bounded next developer-workflow improvement was shrinking `workflow-automation` into a routing-first repo-automation anchor with explicit maintenance-bot and workflow-diagnosis packets instead of adding another automation wrapper.
 - [[plannotator-modernization-2026-04-13]] — Why the best bounded planning-review improvement was modernizing `plannotator` into a visual approval gate instead of adding another wrapper around planning or orchestration flows.
+- [[plannotator-structural-hardening-2026-04-19]] — Why the best bounded browser-review follow-up was tightening `plannotator` into a review-packet router with explicit native-hook vs manual-review boundaries instead of adding another plan-review or browser wrapper.
 - [[technical-writing-modernization-2026-04-13]] — Why the best bounded documentation-cluster improvement was modernizing `technical-writing` into the internal technical-docs anchor instead of adding another generic docs wrapper.
 - [[technical-writing-structural-hardening-2026-04-17]] — Why the best bounded documentation-cluster follow-up after the API-doc pass was shrinking `technical-writing` into a cleaner routing-first anchor with support-owned mode skeletons instead of adding another internal-docs wrapper.
 - [[user-guide-writing-modernization-2026-04-13]] — Why the best bounded next documentation-cluster improvement was modernizing `user-guide-writing` into the end-user-docs anchor instead of adding another help-center wrapper.

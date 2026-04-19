@@ -1,17 +1,18 @@
 # Notes and troubleshooting
 
-## Notes export
-Use note export only after confirming the review flow itself works.
+## Secondary note export
+Treat note export as a **secondary follow-up**, not the primary packet.
 
 ### Obsidian / Bear export
-- Obsidian/Bear saving is optional; review/approval can still happen without it.
-- Save reviewed plans when the goal is team reference, future retrieval, or lightweight archiving.
-- If the user needs a broader note taxonomy, vault automation, or wiki curation workflow, route to `obsidian` or `llm-wiki`.
+- Saving reviewed artifacts is optional; review/approval can still happen without it.
+- Save reviewed plans or specs when the goal is team reference, auditability, or lightweight archiving.
+- If the user needs broader vault taxonomy, wiki curation, or ongoing note automation, route to `obsidian` or `llm-wiki`.
 
-## Known caveats
-- Diff review requires a git repo or commit range.
-- Manual review mode may not push feedback directly into the active agent session the same way a hook-driven plan-review flow does.
-- Note export depends on the mode/environment being configured correctly; verify before treating note save as a guaranteed output.
+## Current caveats that should stay visible
+- Diff review requires a git repo, PR URL, or explicit commit range.
+- Markdown/spec review may not have the same approve/request-changes semantics as native plan-review flows on every runtime.
+- Codex setup currently has more manual/partial edges than Claude or Gemini in upstream `plannotator` docs.
+- OpenCode users may prefer manual review control when auto-invocation is too eager.
 - Remote/container/WSL flows often need explicit port and environment setup before the browser UI behaves predictably.
 
 ## Useful commands
@@ -25,7 +26,7 @@ bash scripts/review.sh
 # review a specific commit
 bash scripts/review.sh HEAD~1
 
-# configure remote mode
+# configure remote mode / stable port behavior
 bash scripts/configure-remote.sh
 ```
 
@@ -33,16 +34,23 @@ bash scripts/configure-remote.sh
 1. **Nothing opens / review fails to launch**
    - run `bash scripts/check-status.sh`
    - confirm the platform-specific integration is actually configured
-   - confirm the artifact exists (plan, diff, or file to annotate)
-2. **Diff review is failing**
-   - confirm you are inside a git repo
-   - try a specific commit or diff range instead of an ambiguous state
-3. **Remote session is flaky**
+   - confirm the artifact exists (plan, diff, PR, or markdown file)
+2. **The wrong review mode is triggering**
+   - confirm whether the runtime is using native hooks or a manual review path
+   - if auto-review is too eager, switch to the smallest manual trigger the platform supports
+3. **Diff review is failing**
+   - confirm you are inside a git repo or have an explicit PR/commit target
+   - try a specific commit or diff range instead of an ambiguous working tree
+4. **Markdown/spec review is awkward**
+   - confirm the artifact path and the platform's current approval limitations
+   - be explicit if the workflow is annotation-only rather than true approve/request-changes
+5. **Remote session is flaky**
    - run `bash scripts/configure-remote.sh`
    - verify the expected port/environment settings
-4. **Notes are not saving**
+   - prefer stable ports/URLs when another human or agent must revisit the review session
+6. **Notes are not saving**
    - confirm note integration is configured
    - treat note export as secondary to the review flow; if review itself is broken, fix that first
 
 ## Decision rule
-If troubleshooting turns into platform orchestration, environment setup, or a wider note-management task, hand off to the specialized neighboring skill instead of stretching `plannotator` further.
+If troubleshooting turns into platform ownership, environment setup, merge policy, or a wider note-management task, hand off to the specialized neighboring skill instead of stretching `plannotator` further.

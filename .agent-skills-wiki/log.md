@@ -1049,6 +1049,14 @@
 - Rejected: adding another orchestration wrapper; pretending `/team` and `omc team` are interchangeable; keeping stale `/omc:*` examples in the repo; letting `omc` absorb `jeo`, `ralphmode`, browser-review, or non-Claude runtime ownership.
 - Wiki files created/updated: `queries/omc-structural-hardening-2026-04-19.md`, `concepts/core-orchestration-platform-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
 
+## [2026-04-19] query | plannotator structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack agent-review loops, PM/spec review workflows, marketing/content artifact review, and game-production planning checkpoints, with the best bounded follow-up landing on the existing `plannotator` skill rather than another browser-review wrapper.
+- Survey files created under `.survey/plannotator-structural-hardening-20260419/`; GitHub raw/API retrieval, official runtime docs, issue threads, and repo-local wiki/graph evidence were used because normal `web_search` / `web_extract` reliability remained weak in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: tighten `plannotator` into a review-packet router, add `references/intake-packets-and-route-outs.md`, refresh platform/troubleshooting docs around native-hook vs manual-review reality, expand eval coverage with markdown-review and Codex setup truthfulness, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording.
+- Rejected: adding another plan-review/browser wrapper; letting `plannotator` absorb planning/spec creation, orchestration state, or broad PR policy; pretending all runtimes have the same plan-review maturity; keeping note export as the main trigger surface.
+- Wiki files created/updated: `queries/plannotator-structural-hardening-2026-04-19.md`, `concepts/browser-review-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
 ## [2026-04-19] query | skill-autoresearch structural hardening
 - Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack AI app iteration, PM/ops postmortem and SOP maintenance, marketing/content automation, and game-production documentation loops, with the best bounded follow-up landing on the existing `skill-autoresearch` skill rather than another eval helper.
 - Survey files created under `.survey/skill-autoresearch-structural-hardening-20260419/`; GitHub Models, Genkit, Atlassian, HubSpot, HacknPlan, Promptfoo, LangSmith, Braintrust, Weave, and repo-local wiki/graph evidence were used after `web_search` / `web_extract` failed with invalid API-key errors.

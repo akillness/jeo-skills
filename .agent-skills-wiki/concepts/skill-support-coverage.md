@@ -17,7 +17,7 @@ Current structural snapshot from the graph-style scan:
 - 90 live manifest-indexed skills in `.agent-skills/skills.json` categories
 - 90 live skills with `references/`
 - 90 live skills with `evals/`
-- 24 live skills with `scripts/`
+- 25 live skills with `scripts/`
 - 90 live skills with a compact discovery variant
 
 Recent ratchets:
@@ -46,6 +46,7 @@ Recent ratchets:
 - The `workflow-automation` structural-hardening pass then shrank the front door from 273 to 213 lines, added `references/mode-packets-and-route-outs.md`, expanded eval coverage for scheduled-maintenance ownership, refreshed compact/discovery wording, and updated the graph layer, which matters because post-support-coverage improvements now depend on smaller routing-first anchors rather than more support-folder expansion.
 - The `responsive-design` modernization pass added both `references/` and `evals/`, which matters because the remaining legacy frontend layout anchor now owns mobile-first, container-aware adaptation plus overflow/reflow verification instead of remaining a generic CSS/example dump.
 - The `plannotator` modernization pass added both `references/` and `evals/`, which matters because a highly indexed planning-review anchor now behaves like a clear visual approval gate with explicit route-outs instead of a 600-line mixed install/setup/review dump.
+- The 2026-04-19 `plannotator` structural-hardening follow-up then shrank the front door to 222 lines, added `references/intake-packets-and-route-outs.md`, expanded eval coverage for markdown-review and Codex setup truthfulness, refreshed compact/discovery wording, and kept native-hook vs manual-review reality explicit, which matters because this cluster's next wins now come from truthful packet routing rather than another review wrapper.
 - The `technical-writing` modernization pass added both `references/` and `evals/`, which matters because the documentation cluster now has a sharper internal-docs anchor for specs, ADRs, architecture docs, runbooks, and migration guides instead of a catch-all skill that overlapped with API docs, user guides, and changelog hygiene.
 - The `user-guide-writing` modernization pass added both `references/` and `evals/`, which matters because the documentation cluster now has a sharper end-user-docs anchor for onboarding guides, tutorials, help-center articles, FAQs, and release-facing help updates instead of a legacy example dump with weak trigger boundaries.
 - The `api-documentation` modernization pass added both `references/` and `evals/`, which matters because the documentation/backend boundary now has a sharper developer-facing API-docs anchor for reference portals, quickstarts, SDK/webhook guidance, truthful examples, and auth/error guidance instead of a legacy OpenAPI-heavy example dump.
@@ -151,6 +152,7 @@ When a legacy skill is materially upgraded, prefer adding at least one of:
 - [[workflow-automation-modernization-2026-04-13]]
 - [[responsive-design-modernization-2026-04-13]]
 - [[plannotator-modernization-2026-04-13]]
+- [[plannotator-structural-hardening-2026-04-19]]
 - [[documentation-cluster]]
 - [[technical-writing-modernization-2026-04-13]]
 - [[user-guide-writing-modernization-2026-04-13]]

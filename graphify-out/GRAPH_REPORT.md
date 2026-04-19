@@ -10,21 +10,21 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 90
 - Skills missing compact variants: 0
 - Graph nodes: 390
-- Graph edges: 1102
+- Graph edges: 1093
 
 ## Strongest structural findings
 1. Discovery docs still dominate the graph because README / setup / manifest surfaces index nearly the full live catalog, so documentation sync remains mandatory whenever a skill boundary changes materially.
 2. Support coverage remains effectively complete across the live skill set, so the highest-value maintenance wins still come from tightening dense front-door skills instead of adding wrappers.
-3. `skill-autoresearch` is now a packet-first repo-local ratcheting router: start from `benchmark-readiness`, `charter-freeze`, `baseline-score`, `one-change-mutation`, `support-sync`, `final-report`, or `route-out` instead of treating the skill like a generic eval-platform explainer.
-4. The refreshed `skill-autoresearch` lane now calls hosted dashboards/traces and GPU-bound `autoresearch` out explicitly, which keeps markdown/git artifact ratcheting as the distinctive contract of the search-analysis maintenance layer.
+3. `plannotator` is now a clearer review-packet router: it separates plan review, diff review, markdown/spec review, platform setup, and troubleshooting instead of blending note export and platform nuance into one front door.
+4. The refreshed `plannotator` lane now keeps native-hook vs manual-review reality explicit, especially for Codex and OpenCode, which should reduce over-triggering and false parity claims in the planning-review cluster.
 5. The next best maintenance wins still look like oversized routers whose contracts are stable enough to shrink without changing ownership.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 90
-- .agent-skills/skills.toon: degree 90
-- README.ko.md: degree 90
-- README.md: degree 90
-- setup-all-skills-prompt.md: degree 90
+- README.ko.md: degree 89
+- README.md: degree 89
+- setup-all-skills-prompt.md: degree 89
+- .agent-skills/skills.toon: degree 82
 
 ## Oversized front-door watchlist
 - clawteam: 300 lines in SKILL.md
@@ -36,12 +36,12 @@
 - skill-autoresearch: 273 lines in SKILL.md
 - steam-store-launch-ops: 272 lines in SKILL.md
 - state-management: 272 lines in SKILL.md
-- plannotator: 266 lines in SKILL.md
+- fabric: 265 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- `skill-autoresearch` should stay distinct from `autoresearch` by owning repo-local markdown/git ratchets rather than GPU-bound ML search loops.
-- `skill-autoresearch` should also stay distinct from hosted eval/observability products such as Promptfoo, LangSmith, Braintrust, and Weave by owning append-only repo artifacts, support-surface sync, and PR-reviewable keep/revert history.
+- `plannotator` should stay distinct from `task-planning`, `ralph`, `agentation`, `agent-browser`, `code-review`, and orchestration skills by owning concrete visual review packets rather than planning, UI bug critique, clean-browser verification, or merge policy.
 - Discovery docs remain the highest-degree maintenance nodes, so README/setup/manifest sync is still required whenever a skill boundary or trigger surface changes materially.
+- The planning-review cluster still benefits more from front-door hardening than from adding another review wrapper.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree or oversized front-door skills whose contracts are stable enough to validate mechanically.
