@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-89-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-90-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**89개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
+**90개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**89개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
+**90개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 89개 AI 에이전트 스킬 컬렉션입니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 90개 AI 에이전트 스킬 컬렉션입니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -74,6 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **graphify: 라이브 스킬 승격 + 구조 강화** | 숨겨진 `utilities/graphify` 중첩 폴더에 있던 `graphify`를 실제 라이브 top-level 스킬 카탈로그로 승격하고, 라우팅-우선 graph front door로 다듬었습니다. `references/mode-packets-and-route-outs.md`와 `references/build-and-fallback-recipes.md`를 추가하고, `SKILL.toon`, `evals/evals.json`, README/setup/manifest surface까지 함께 동기화해 durable graph 레인이 실제로 설치·검색 가능하도록 맞췄습니다. |
 | **looker-studio-bigquery: packet-first 구조 강화** | `looker-studio-bigquery`를 더 작은 리포팅 front door로 다듬었습니다. 이제 `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, `exec-handoff` 중 하나의 packet에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, Connected Sheets / exec-handoff 케이스까지 `evals/evals.json`을 넓혔습니다. 또한 BigQuery 리포팅 레인이 긴 BI 기능 투어처럼 보이지 않도록 `SKILL.toon` / `skills.toon` / `skills.json`과 README/setup 문구도 함께 동기화했습니다. |
 | **web-accessibility: 라우팅 우선 구조 강화** | `web-accessibility`를 더 작은 routing-first 접근성 수정 앵커로 다듬었습니다. 이제 하나의 primary accessibility packet(`semantics-structure`, `keyboard-focus`, `labels-announcements`, `visual-perception-reflow`, `media-alternatives`, `routed-navigation-feedback`)에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, routed-app / responsive-boundary 케이스까지 `evals/evals.json`을 넓혔습니다. 또한 discovery surface가 다시 generic WCAG/ARIA 튜토리얼로 흐르지 않도록 `SKILL.toon` / `skills.toon` / `skills.json`과 README/setup 문구도 함께 동기화했습니다. |
 | **marketing-automation: 구조 강화** | `marketing-automation`를 broad marketing front door로 더 날카롭게 다듬었습니다. 이제 `launch-orchestration`, `conversion-surface`, `lifecycle-retention`, `acquisition-content`, `measurement-experiment` 중 하나의 operating mode를 먼저 고른 뒤, 하나의 primary lane과 하나의 handoff packet만 남기도록 라우팅합니다. `references/operating-modes-and-route-outs.md`를 추가하고 `evals/evals.json`, `SKILL.toon`, manifest wording을 동기화했으며, `steam-store-launch-ops`와 `task-planning`으로의 route-out도 더 선명하게 만들었습니다. |
@@ -238,7 +239,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 89개 로컬 스킬 폴더 = 총 89개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 90개 로컬 스킬 폴더 = 총 90개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (11개)
 
@@ -390,6 +391,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `git-submodule` | 라우팅-우선 Git 서브모듈 워크플로 — submodule vs subtree/vendor/package delivery 선택, 재귀 부트스트랩, 안전한 포인터 동기화/업데이트, detached HEAD 방지, CI / hosted-platform checkout 제약 처리 | 전체 |
 | `git-workflow` | 라우팅 우선 로컬 Git 워크플로 — 브랜치 정리, 선택적 staging, 커밋 정리, merge-vs-rebase 선택, 충돌 해결, `--force-with-lease` 기반 안전 푸시, 복구 | 전체 |
 | `google-workspace` | 결정-우선 Google Workspace 운영 스킬 — Apps Script vs REST API vs Admin SDK, 인증 방식, Docs/Sheets/Slides/Drive/Gmail/Calendar/Chat/Forms 교차 워크플로를 먼저 고릅니다 | 전체 |
+| `graphify` | 라우팅-우선 durable graph 스킬 — assistant-native install, local build, refresh, graph query, structural fallback 중 하나를 골라 repo/corpus 그래프와 `GRAPH_REPORT.md` / `graph.json` 산출물을 만듭니다 | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
 | `npm-git-install` | npm / pnpm / Yarn / Bun용 라우팅-우선 Node 패키지 전달 스킬 — temporary Git bridge, SHA pin, tarball, workspace, publish-first handoff를 안전하게 선택 | 전체 |
 | `obsidian-cli` | 공식 Obsidian CLI 운영 — 활성화, TUI, 노트/작업 자동화, vault·file 타기팅, plugin reload, 개발자 명령 | 전체 |

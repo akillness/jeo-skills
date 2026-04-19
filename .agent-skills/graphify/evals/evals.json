@@ -1,0 +1,44 @@
+{
+  "skill_name": "graphify",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Map this repository with Graphify so I can understand the architecture before editing anything.",
+      "expected_output": "The skill classifies the request as a repo-structure packet, chooses one honest graph mode, scopes the repo, and reports durable graph artifacts.",
+      "assertions": [
+        "Response identifies a packet or equivalent mode classification for repo structure work",
+        "Response mentions GRAPH_REPORT.md, graph.json, or graph.html",
+        "Response scopes the repo or subtree explicitly instead of assuming the whole repo by default"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We already have graphify-out. What connects AuthModule to BillingService?",
+      "expected_output": "The skill uses graph-query follow-up behavior, reads the existing report/graph first, and avoids an unnecessary rebuild.",
+      "assertions": [
+        "Response starts from existing graph artifacts rather than forcing a rebuild",
+        "Response mentions query, path, or explain usage",
+        "Response references GRAPH_REPORT.md as the first reading surface"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Turn this docs + screenshots + notes folder into a persistent graph we can reuse next week.",
+      "expected_output": "The skill treats this as a mixed-corpus memory packet and chooses between local Graphify and structural fallback honestly.",
+      "assertions": [
+        "Response recognizes a mixed-corpus graphing request",
+        "Response mentions local build or structural fallback rather than only assistant-native install",
+        "Response labels fallback truthfully if native extraction is weak"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I just need to find where this config is defined and who references it.",
+      "expected_output": "The skill routes the request to codebase-search instead of forcing Graphify.",
+      "assertions": [
+        "Response routes simple locate/reference work to codebase-search or an equivalent neighboring search skill",
+        "Response does not insist on building a graph for a search-first request"
+      ]
+    }
+  ]
+}

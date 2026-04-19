@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-19 | Total pages: 134
+> Last updated: 2026-04-19 | Total pages: 135
 
 ## Entities
 
@@ -73,6 +73,7 @@
 - [[react-skill-canonicalization-2026-04-12]] — Why the best bounded frontend change was canonicalizing the React pair instead of adding another frontend skill.
 - [[react-best-practices-support-hardening-2026-04-16]] — Why the best bounded next frontend support upgrade was hardening `react-best-practices` with a measurement-led reference bundle instead of adding another React wrapper or relying only on `AGENTS.md`.
 - [[frontend-alias-support-hardening-2026-04-16]] — Why the best bounded remaining frontend support fix was hardening the two legacy aliases with alias-side references and compact-surface sync instead of deleting them or re-promoting them as peer skills.
+- [[graphify-structural-hardening-2026-04-19]] — Why the best bounded structural-memory follow-up was promoting the hidden `graphify` skill into the live top-level catalog and shrinking it into a routing-first graph front door instead of adding another graph/memory wrapper.
 - [[remotion-video-production-support-hardening-2026-04-16]] — Why the best bounded next creative-media improvement after the frontend alias PR merged was hardening `remotion-video-production` with alias-side references and route-out coverage instead of reviving duplicate Remotion peers.
 - [[codebase-search-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `codebase-search` into an evidence-first repo-navigation anchor instead of adding another search wrapper.
 - [[codebase-search-structural-hardening-2026-04-19]] — Why the best bounded search-analysis follow-up was shrinking `codebase-search` into a routing-first packet selector with config/content and hosted-search coverage instead of adding another search wrapper.
