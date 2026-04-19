@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `testing-strategies/SKILL.md` | A packet-first front door will improve trigger precision and reduce front-door sprawl without changing the lane boundary | Reframe the skill around intake packets, one primary policy mode, and one concise output contract; add a dedicated packet reference and eval coverage for release/accessibility boundaries | pass (`validate_skill.sh`, catalog sync, residue scan) | Keep | Front door now routes by packet, keeps one concise output contract, and syncs compact/discovery surfaces |

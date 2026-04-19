@@ -3,35 +3,46 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "We keep adding flaky Playwright flows for every feature. What testing strategy should this repo adopt?",
-      "expected_output": "A validation strategy brief that narrows browser coverage, separates PR vs scheduled scope, and treats flake as a policy problem.",
+      "prompt": "Our Playwright suite is slow and keeps flaking. What testing strategy should this repo adopt?",
+      "expected_output": "A packet-first flake-policy brief that narrows PR browser coverage, separates PR vs scheduled scope, and treats quarantine as a policy tool rather than the whole answer.",
       "assertions": [
-        "Explains that not every feature needs broad browser E2E coverage",
-        "Separates local/PR or PR/scheduled expectations",
-        "Mentions flaky-test policy or quarantine/fix rules",
-        "Routes stack-specific implementation or failure investigation to another skill when appropriate"
+        "Classifies the request as a flaky-suite or equivalent packet instead of a generic testing lecture",
+        "Separates local/PR/release/scheduled expectations where relevant",
+        "Mentions blocking vs informational or quarantine/fix rules",
+        "Routes root-cause investigation or stack-specific implementation to another skill when appropriate"
       ]
     },
     {
       "id": 2,
       "prompt": "This PR changes an API contract and a DB migration. What validation layers should be required before merge?",
-      "expected_output": "A risk-based coverage recommendation that includes stronger-than-unit evidence and explains why.",
+      "expected_output": "A change-risk packet brief that requires stronger-than-unit evidence and explains why broad browser E2E may still be unnecessary.",
       "assertions": [
-        "Classifies the change as high risk or equivalent",
+        "Classifies the packet as a concrete change-risk or equivalent",
+        "Marks the change as high risk or equivalent",
         "Requires integration, contract, migration, or similar stronger-than-unit validation",
-        "Explains why broad browser E2E may be unnecessary if the user flow is unchanged",
         "Provides a next-owner handoff such as backend-testing"
       ]
     },
     {
       "id": 3,
-      "prompt": "Should this bugfix get a unit test, integration test, or just manual QA?",
-      "expected_output": "A brief that says the answer depends on risk and the lowest layer that can prove the bug is fixed.",
+      "prompt": "Engineering says tests are green, but should we require anything else before this release?",
+      "expected_output": "A release-readiness brief that names any remaining smoke/checklist proof honestly instead of defaulting to a generic full regression run.",
       "assertions": [
-        "Does not give a one-size-fits-all answer",
-        "Uses a risk- or change-based decision rule",
-        "Mentions lowest-cost convincing validation",
-        "Can include manual or checklist validation only when it is justified"
+        "Identifies a release-confidence or release-readiness mode/packet",
+        "Separates release expectations from PR/local expectations",
+        "Can recommend targeted smoke or checklist validation instead of blanket more-tests advice",
+        "Routes release execution or visual/accessibility-heavy signoff away when appropriate"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We fixed a keyboard navigation bug in a settings page. Should this live here or under accessibility, and what validation should we require?",
+      "expected_output": "A brief that recognizes the accessibility-heavy surface, still frames the confidence decision, and routes deeper remediation ownership to web-accessibility.",
+      "assertions": [
+        "Recognizes accessibility or UI-state verification as a neighboring-skill boundary",
+        "Still gives a concise validation recommendation for the current change",
+        "Routes accessibility-heavy follow-through to web-accessibility or web-design-guidelines",
+        "Does not collapse the entire task into backend-testing or generic code review"
       ]
     }
   ]
