@@ -2153,7 +2153,7 @@
     },
     {
       "name": "plannotator",
-      "description": "Visual approval gate for AI agent plans and diffs. Review in a browser UI, annotate specific issues, approve or request changes, and optionally save reviewed plans to Obsidian/Bear.",
+      "description": "Routing-first visual approval gate for AI agent plans, markdown specs, and diffs. Use when a human needs to review a concrete plan before execution, inspect a targeted diff in a browser, mark up a spec/PRD/architecture note, or set up the review loop on Claude Code, Gemini CLI, Codex CLI, or OpenCode. Route planning/spec creation to task-planning or ralph, broad PR policy to code-review, rendered-UI critique to agentation, and fresh-session browser verification to agent-browser.",
       "category": "planning-review",
       "path": "plannotator/SKILL.md",
       "tags": [

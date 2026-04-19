@@ -366,7 +366,7 @@ If no → skip silently. Never re-ask.
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude-first OMC router — distinguish Claude Code slash skills from the `omc` shell CLI, then handle setup/recovery/state issues or route adjacent work outward |
 | `ralph` | `ralph`, `ooo`, `ooo ralph`, `ooo interview` | Ouroboros spec-first method anchor — Interview→Seed→Execute→Evaluate→Evolve, immutable seed/spec, and persistent completion until verification passes |
 | `ralphmode` | `ralphmode` | Automation permission profiles — repo boundary, sandbox-first, secret denylist |
-| `plannotator` | `plan` | Visual approval gate for agent plans/diffs — annotate, approve, request changes, or save reviewed plans |
+| `plannotator` | `plan` | Routing-first visual approval gate for concrete plans, markdown specs, and diffs — choose one review packet, keep native-hook vs manual-review reality explicit, and route planning / PR policy / UI critique outward |
 | `harness` | `harness`, `build a harness`, `agent team architect` | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/`, validate harness |
 | `survey` | `survey` | Bounded cross-platform landscape scan before planning or implementation — classify one survey mode, preserve the 4-lane `.survey/{slug}/` artifact contract, and normalize platform topics as `settings/rules/hooks` |
 | `agentation` | `annotate`, `UI검토`, `agentui` | Exact rendered-UI feedback router → choose copy-paste review, watch-loop sync, self-driving critique, or platform setup. MCP: `npx add-mcp "npx -y agentation-mcp server"` |

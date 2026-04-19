@@ -1,7 +1,7 @@
 N:plannotator
-D:[plan] Review AI agent plans or diffs in a visual browser UI, then approve, request changes, or archive the result with structured feedback. Use when a human needs a plan-review gate before implementation, wants visual diff review after coding, or needs to save reviewed plans to Obsidian/Bear. Route planning/spec creation to task-planning or ralph; route broad PR judgment to code-review; route UI screenshot annotation to agentation.
-G:plan planning planno plannotator plan-review diff-review code-review approve-plan request-changes visual-review annotate-plan review-agent-plan obsidian bear-notes design-review 계획검토 설계검토 차이검토
-U[10]:
+D:[plan] Routing-first visual approval gate for AI agent plans, markdown specs, and diffs. Use when a human needs to review a concrete plan before execution, inspect a targeted diff in a browser, mark up a spec/PRD/architecture note, or set up the review loop on Claude Code, Gemini CLI, Codex CLI, or OpenCode. Route planning/spec creation to task-planning or ralph; broad PR policy to code-review; rendered-UI critique to agentation; fresh-session browser verification to agent-browser.
+G:plan planning planno plannotator plan-review diff-review markdown-review spec-review approve-plan request-changes visual-review annotate-plan review-agent-plan codex gemini opencode claude-code 계획검토 설계검토 명세검토 차이검토
+U[11]:
   scripts/install.sh — Install plannotator CLI and optional integrations
   scripts/setup-hook.sh — Configure Claude Code hook flow
   scripts/setup-gemini-hook.sh — Configure Gemini integration
@@ -10,20 +10,23 @@ U[10]:
   scripts/check-status.sh — Verify CLI/integration status
   scripts/configure-remote.sh — Configure remote/devcontainer/WSL mode
   scripts/review.sh — Launch diff review UI
-  references/review-modes-and-boundaries.md — Choose review mode and route-outs
-  references/platform-setup.md — Platform-specific setup guide
-S[5]{n,action,details}:
-  1,Classify mode,Choose plan-review / diff-review / note-export / platform-setup / troubleshooting
-  2,Verify artifact,Confirm plan or diff exists before opening review
-  3,Run review,Use platform hook flow or scripts/review.sh for diff review
-  4,Decide outcome,Approve or request changes with concrete annotations
-  5,Route out,Hand planning/spec/orchestration/note-management to neighboring skills when appropriate
+  references/intake-packets-and-route-outs.md — Choose the primary review packet and route-outs
+  references/platform-setup.md — Platform-specific setup and capability matrix
+  references/notes-and-troubleshooting.md — Remote/manual-review caveats and troubleshooting ladder
+S[6]{n,action,details}:
+  1,Classify packet,Choose plan-review / diff-review / markdown-review / platform-setup / troubleshooting
+  2,Verify artifact,Confirm a concrete plan diff PR or markdown artifact exists before review
+  3,Check platform reality,Decide native-hook vs manual-review truthfully for the current runtime
+  4,Run review,Use the smallest review path or setup command sequence
+  5,Decide outcome,Approve request changes annotate only or archive explicitly
+  6,Route out,Hand planning PR policy browser verification UI critique and note management to neighboring skills
 R[4]:
-  Keep one annotation per issue whenever possible
-  Treat plannotator as the human approval gate, not the planning engine
-  Use scripts/check-status.sh before deep troubleshooting
-  Use note export only after review flow and save prerequisites are confirmed
-E[3]{desc,in,out}:
-  "Plan review gate","Existing implementation plan needs human approval before coding","Open visual review, annotate, then approve or request changes"
-  "Diff review","Code already changed and reviewer wants markup on main...HEAD","Run scripts/review.sh with target diff and leave targeted feedback"
-  "Note export","Reviewed plan should be saved to Obsidian or Bear","Confirm save prerequisites and archive the reviewed artifact"
+  Keep one packet and one concrete artifact per run whenever possible
+  Treat plannotator as the human approval gate not the planning engine
+  Keep manual-review vs native-hook differences explicit
+  Treat note export as secondary to the review packet
+E[4]{desc,in,out}:
+  "Plan review gate","Existing implementation plan needs human approval before coding","Open the runtime's real review path annotate and end with approve or request changes"
+  "Diff review","Code already changed and reviewer wants markup on main...HEAD","Run scripts/review.sh with a concrete diff target and leave targeted feedback"
+  "Markdown/spec review","Architecture note or PRD needs visual markup before work continues","Review the concrete markdown artifact and explain approval limitations honestly"
+  "Codex setup reality","Need plannotator on Codex without fake parity promises","Run install plus status checks and explain current manual or partial review reality"
