@@ -1963,7 +1963,7 @@
     },
     {
       "name": "opencontext",
-      "description": "Routing-first active project/repo memory skill — choose one packet for memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out when agents need manifests, stable links, searchable decisions, and small read-this-first handoff packets across sessions.",
+      "description": "Routing-first active project/repo memory skill — choose one packet for memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out when agents need manifests, stable links, searchable decisions, small read-this-first handoff packets, and a highest-confidence source/freshness warning for overlapping notes across sessions.",
       "category": "utilities",
       "path": "opencontext/SKILL.md",
       "tags": [
