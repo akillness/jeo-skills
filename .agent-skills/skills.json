@@ -3009,7 +3009,7 @@
     },
     {
       "name": "task-planning",
-      "description": "Turn vague features, bugs, roadmap items, launch work, or playtest findings into execution-ready planning packets with horizon choice, slice boundaries, dependencies, acceptance criteria, blockers, and one clear next move. Use when the user needs backlog grooming, sprint or milestone preparation, roadmap-to-delivery translation, or a practical planning pass across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work.",
+      "description": "Turn vague features, bug clusters, roadmap items, launch work, or playtest findings into one execution-ready planning packet by choosing the right packet type, separating discovery from delivery, and making blockers, dependencies, and the next move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or milestone prep, release planning, or roadmap-to-delivery translation across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work.",
       "category": "project-management",
       "path": "task-planning/SKILL.md",
       "tags": [

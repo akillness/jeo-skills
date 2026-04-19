@@ -1,15 +1,15 @@
 N:task-planning
-D:Turn vague features, bugs, roadmap items, launch work, or playtest findings into execution-ready planning packets with horizon choice, slice boundaries, dependencies, acceptance criteria, blockers, and one clear next move. Use when the user needs backlog grooming, sprint or milestone preparation, roadmap-to-delivery translation, or a practical "what should we actually do next?" planning pass across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route sizing to task-estimation, board control to vibe-kanban, plan review to plannotator, daily cadence to standup-meeting, and retros to sprint-retrospective.
+D:Turn vague features, bug clusters, roadmap items, launch work, or playtest findings into one execution-ready planning packet by choosing the right packet type, separating discovery from delivery, and making blockers, dependencies, and the next move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or milestone prep, release planning, or roadmap-to-delivery translation across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route sizing to task-estimation, board/worktree control to vibe-kanban, plan review to plannotator, daily syncs to standup-meeting, retros to sprint-retrospective, and pre-planning concept framing to bmad, bmad-idea, or bmad-gds.
 G:task-planning backlog-grooming sprint-planning milestone-planning roadmap-slicing feature-breakdown launch-planning game-development
 U[6]:
   Backlog cleanup and ready-vs-not-ready triage
   Feature and bug-cluster decomposition
   Sprint-candidate preparation
-  Release and launch slicing
+  Release and launch packet shaping
   Cross-discipline milestone planning
-  Boundary routing across planning, board, review, and ceremony skills
+  Boundary routing across planning, boards, review, and ceremonies
 S[4]{n,action}:
-  1,Classify one primary planning mode
+  1,Choose one intake packet
   2,Gather the minimum credible evidence
   3,Split discovery from delivery and choose the smallest packet shape
-  4,Run the boundary check and end with one next move
+  4,Run the route-out check and end with one next move
