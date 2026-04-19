@@ -1367,7 +1367,7 @@
     },
     {
       "name": "langsmith",
-      "description": "Instrument, trace, evaluate, and review LLM applications with LangSmith by choosing the right workflow first: debugging traces, offline evals, online feedback/review queues, prompt-registry work, or multi-service trace propagation. Use when the user needs LangSmith for LLM observability, LangChain tracing, `@traceable` / `traceable`, provider wrappers like `wrap_openai` / `wrapOpenAI`, dataset-backed regression checks, annotation queues, experiment comparison, or prompt/version review; even if they only mention trace IDs, LLM judge scores, human feedback, run trees, prompt hub, or production confidence for an AI feature. Not for generic alerting/SLO design, deployment orchestration, or runtime guardrails outside LangSmith.",
+      "description": "Route LangSmith work into one workflow packet before touching SDK code. Use when the user needs LangSmith tracing, offline evals, annotation/review queues, prompt-registry decisions, audit/gap review, or cross-service trace propagation for an LLM app or agent workflow. Choose one packet: trace-debug, eval, review, prompt-registry, propagation, or audit. Triggers on: LangSmith, LangChain tracing, `@traceable` / `traceable`, `wrap_openai` / `wrapOpenAI`, datasets, experiments, annotation queues, feedback criteria, Prompt Hub, run trees, or trace IDs. Not for generic alerting/SLO design, deployment orchestration, or runtime guardrails outside LangSmith.",
       "category": "search-analysis",
       "path": "langsmith/SKILL.md",
       "tags": [
@@ -1995,26 +1995,29 @@
     },
     {
       "name": "pattern-detection",
-      "description": "Mode-selecting pattern and anomaly hunting across code, logs, telemetry, and datasets. Use for reusable rule scans, suspicious repeated shapes, and first-pass outlier triage; routes deep log forensics to log-analysis, business explanation to data-analysis, and remediation to specialist skills.",
+      "description": "Routing-first pattern and anomaly hunting that chooses one packet — text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly — before suggesting tools or fixes. Use for reusable scans, suspicious repeated shapes, grouped outlier candidates, and first-pass anomaly triage across code, logs/events, telemetry, and metric tables; route root-cause log work to log-analysis, KPI explanation to data-analysis, remediation to specialist skills, and alert operations to monitoring-observability.",
       "category": "search-analysis",
       "path": "pattern-detection/SKILL.md",
       "tags": [
         "patterns",
         "anomalies",
-        "regex",
-        "code-analysis",
-        "security",
-        "trends"
+        "outliers",
+        "structural-search",
+        "telemetry",
+        "detection",
+        "routing"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
         "Read",
         "Grep",
-        "Glob"
+        "Glob",
+        "Bash"
       ],
       "commands": [
         {

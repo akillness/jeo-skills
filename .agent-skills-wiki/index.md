@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-19 | Total pages: 131
+> Last updated: 2026-04-19 | Total pages: 132
 
 ## Entities
 
@@ -77,6 +77,7 @@
 - [[codebase-search-structural-hardening-2026-04-19]] — Why the best bounded search-analysis follow-up was shrinking `codebase-search` into a routing-first packet selector with config/content and hosted-search coverage instead of adding another search wrapper.
 - [[data-analysis-modernization-2026-04-14]] — Why the best bounded search-analysis improvement was modernizing `data-analysis` into the decision-first dataset-reasoning anchor instead of adding another analytics wrapper.
 - [[pattern-detection-modernization-2026-04-14]] — Why the best bounded next search-analysis improvement was modernizing `pattern-detection` into the repeatable rule/anomaly-hunting anchor instead of adding another overlapping wrapper.
+- [[pattern-detection-structural-hardening-2026-04-19]] — Why the best bounded search-analysis follow-up was shrinking `pattern-detection` into a routing-first packet selector with synced compact/discovery surfaces instead of adding another anomaly or observability wrapper.
 - [[sprint-retrospective-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `sprint-retrospective` into a mode-selecting reflection and follow-through skill.
 - [[sprint-retrospective-structural-hardening-2026-04-18]] — Why the best bounded PM-cluster follow-up was shrinking `sprint-retrospective` into a routing-first retrospective anchor with a dedicated action-review packet instead of adding another ceremony wrapper.
 - [[standup-meeting-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `standup-meeting` into a mode-selecting daily coordination skill.
@@ -91,6 +92,7 @@
 - [[log-analysis-structural-hardening-2026-04-19]] — Why the best bounded next search-analysis follow-up was shrinking `log-analysis` into a routing-first evidence-packet anchor instead of adding another incident or log wrapper.
 - [[looker-studio-bigquery-modernization-2026-04-15]] — Why the best bounded BigQuery reporting improvement was modernizing `looker-studio-bigquery` into the stakeholder dashboard/reporting anchor instead of adding another BI wrapper or merging it into dataset analysis.
 - [[looker-studio-bigquery-structural-hardening-2026-04-19]] — Why the best bounded follow-up was shrinking `looker-studio-bigquery` into a packet-first reporting front door with synced discovery surfaces instead of adding another BI/reporting wrapper.
+- [[langsmith-structural-hardening-2026-04-19]] — Why the best bounded next search-analysis improvement was shrinking `langsmith` into a routing-first LangSmith packet selector instead of adding another LLM observability wrapper.
 - [[lmstudio-cli-modernization-2026-04-15]] — Why the best bounded LM Studio improvement was modernizing `lmstudio-cli` into the LM Studio operator anchor instead of adding another generic local-LLM wrapper or leaving it as a thin command list.
 - [[langsmith-hardening-2026-04-16]] — Why the best bounded next search-analysis / AI-ops improvement was modernizing `langsmith` into a mode-selecting trace/eval/review anchor instead of leaving it as a feature tour or splitting it into overlapping wrappers.
 - [[autoresearch-hardening-2026-04-16]] — Why the best bounded follow-up after `skill-autoresearch` was hardening `autoresearch` around the ML-specific `program.md` / `train.py` / `val_bpb` boundary instead of broadening it into generic eval tooling.

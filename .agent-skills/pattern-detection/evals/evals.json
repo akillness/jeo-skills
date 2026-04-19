@@ -30,6 +30,16 @@
         "Response includes an instrumentation or data-quality caveat",
         "Response stays in detection/triage mode rather than promising a full game-balance fix"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "We keep getting noisy anomaly alerts on one metric; should I debug the threshold, inspect the pattern, or write a dashboard summary?",
+      "expected_output": "Starts with metric-anomaly packet selection, names seasonality/history/denominator risks, and routes alert operations to monitoring-observability while routing KPI narrative to data-analysis.",
+      "assertions": [
+        "Response chooses metric-anomaly or an equivalent first-pass detection packet before proposing tools",
+        "Response mentions at least one alert-noise caveat such as seasonality, low history, sparse data, or denominator context",
+        "Response routes alert tuning to monitoring-observability and summary/reporting work to data-analysis"
+      ]
     }
   ]
 }
