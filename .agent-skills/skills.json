@@ -1959,14 +1959,14 @@
     },
     {
       "name": "opencontext",
-      "description": "Project/repo memory and cross-agent handoff using OpenContext. Use for searchable decisions, manifests, stable links, and load→search→store workflows when active delivery work needs durable context across sessions.",
+      "description": "Routing-first active project/repo memory skill — choose one packet for memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out when agents need manifests, stable links, searchable decisions, and small read-this-first handoff packets across sessions.",
       "category": "utilities",
       "path": "opencontext/SKILL.md",
       "tags": [
         "opencontext",
         "context-management",
         "memory",
-        "knowledge-base",
+        "project-memory",
         "multi-agent"
       ],
       "platforms": [
@@ -1986,43 +1986,43 @@
       "commands": [
         {
           "command": "npm install -g @aicontextlab/cli",
-          "source": "utilities/opencontext/SKILL.md"
+          "source": "opencontext/SKILL.md"
         },
         {
           "command": "npx @aicontextlab/cli <command>",
-          "source": "utilities/opencontext/SKILL.md"
+          "source": "opencontext/SKILL.md"
         },
         {
           "command": "cd your-project",
-          "source": "utilities/opencontext/SKILL.md"
+          "source": "opencontext/SKILL.md"
         },
         {
           "command": "oc init",
-          "source": "utilities/opencontext/SKILL.md"
+          "source": "opencontext/SKILL.md"
         },
         {
           "command": "oc folder ls --all",
-          "source": "utilities/opencontext/SKILL.md"
+          "source": "opencontext/SKILL.md"
         },
         {
           "command": "oc folder create project-a -d \"My project\"",
-          "source": "utilities/opencontext/SKILL.md"
+          "source": "opencontext/SKILL.md"
         },
         {
           "command": "oc doc create project-a design.md -d \"Design doc\"",
-          "source": "utilities/opencontext/SKILL.md"
+          "source": "opencontext/SKILL.md"
         },
         {
           "command": "oc doc ls project-a",
-          "source": "utilities/opencontext/SKILL.md"
+          "source": "opencontext/SKILL.md"
         },
         {
           "command": "oc search \"your query\" --mode keyword --format json",
-          "source": "utilities/opencontext/SKILL.md"
+          "source": "opencontext/SKILL.md"
         },
         {
           "command": "oc context manifest project-a --limit 10",
-          "source": "utilities/opencontext/SKILL.md"
+          "source": "opencontext/SKILL.md"
         }
       ]
     },

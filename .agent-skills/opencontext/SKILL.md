@@ -1,95 +1,108 @@
 ---
 name: opencontext
 description: >
-  Project/repo memory and cross-agent handoff using OpenContext. Use when an
-  agent needs durable context across sessions, searchable decisions/lessons,
-  manifests or stable links for what to read next, or a load → search → store
-  workflow for active delivery work. Triggers on: persistent memory, project
-  context, repo memory, handoff notes, agent continuity, context manifest,
-  stable links, OpenContext setup.
+  Route active project/repo memory requests into one honest packet: memory-layer
+  choice, load-context, search-context, store-conclusions, setup-integration, or
+  repo-packer route-out. Use when agents need searchable decisions, manifests,
+  stable links, handoff notes, and small “read this first” packets across
+  sessions. Route long-lived markdown knowledge bases to `llm-wiki`, structural
+  graph memory to `graphify`, human-authored vault organization to note/vault
+  skills, and one-shot repo packing to tools like Repomix, Gitingest, or
+  Code2Prompt.
 allowed-tools: Read Write Bash Grep Glob
 compatibility: >
-  Best for active project/repo memory in CLI-centric agent workflows. Pair with
-  `llm-wiki` for long-lived markdown knowledge bases, `graphify` for structural
-  graph memory, and human-authored vault skills when the primary job is manual
-  note-taking.
+  Best for CLI-centric project/repo workflows where the main job is preserving,
+  finding, or handing off active delivery context. Not for long-form wiki
+  maintenance, graph construction, human-first note curation, or one-shot repo
+  prompt packing.
 metadata:
   tags: opencontext, context-management, memory, project-memory, multi-agent, handoff, stable-links, manifests
   platforms: Claude, Gemini, ChatGPT, Codex, Cursor
-  version: "2.0"
+  version: "2.1"
   source: OpenContext Multi-Agent Workflow Guide + upstream OpenContext README
 ---
 
 # OpenContext
 
-Use this skill when the real question is **"how do we keep the next agent from starting cold?"**
+Use this skill when the real question is **"what project-memory packet should the next agent load, search, or leave behind?"**
 
-The job is not to dump commands from the `oc` CLI.
+The job is not to dump the whole `oc` CLI.
 The job is to:
-1. choose OpenContext when project/repo memory is the right layer,
-2. load the minimum useful context before work starts,
-3. search prior decisions or pitfalls when uncertainty appears,
-4. store conclusions and handoff notes after meaningful work,
-5. route wiki-style or graph-style requests to the right neighboring skill.
+1. classify the memory need honestly,
+2. choose one primary packet,
+3. load the minimum useful context,
+4. search old decisions only when needed,
+5. store reusable conclusions after meaningful work,
+6. route wiki / graph / vault / repo-packer requests away immediately.
 
-Read [references/memory-layer-decision-guide.md](references/memory-layer-decision-guide.md) before choosing the memory layer.
-Read [references/load-search-store-playbook.md](references/load-search-store-playbook.md) before capturing or reusing project context.
-Read [references/setup-and-integration.md](references/setup-and-integration.md) when the task is installing, initializing, or wiring OpenContext into an agent workflow.
+Read [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md) before handling an unfamiliar memory request.
+Read [references/memory-layer-decision-guide.md](references/memory-layer-decision-guide.md) when the first question is which memory layer should own the job.
+Read [references/load-search-store-playbook.md](references/load-search-store-playbook.md) when the task is active project-memory operation.
+Read [references/setup-and-integration.md](references/setup-and-integration.md) when the real task is installing or wiring OpenContext.
 
 ## When to use this skill
-- Preserve repo/project background so future sessions do not need the same explanation again
-- Store decisions, constraints, pitfalls, or acceptance notes in a searchable project-memory layer
-- Hand off context between planning, coding, testing, and review agents
-- Generate a manifest or stable links that tell the next agent what to read first
-- Initialize or integrate OpenContext into a repo that should support cross-session agent memory
-- Decide whether a request belongs in OpenContext, a wiki, a graph layer, or a human-authored note vault
+- The next agent should not start cold and needs a compact project-memory packet first
+- Repo or project decisions, pitfalls, acceptance notes, or constraints should be searchable across sessions
+- A team needs a durable cross-agent handoff that points to the right docs instead of pasting giant transcripts
+- The work needs manifests or stable links that say what to read now
+- OpenContext itself needs setup, repo initialization, or integration guidance
+- The user is choosing between OpenContext, a wiki, a graph layer, a vault, or a repo-packer workflow
 
 ## When not to use this skill
-- **The user wants a long-lived markdown knowledge base or research wiki** → use `llm-wiki`
-- **The user wants a codebase/corpus relationship map, `graph.json`, or `GRAPH_REPORT.md`** → use `graphify`
-- **The user wants to organize a human-authored vault or note-taking workflow** → use the relevant note/vault skill
+- **The main task is building a long-lived markdown knowledge base or research wiki** → use `llm-wiki`
+- **The main task is mapping code/docs/media structure, generating `GRAPH_REPORT.md`, or tracing relationships** → use `graphify`
+- **The main task is organizing human-authored notes or vault workflows** → use the relevant note/vault skill
+- **The main task is flattening a repo into a single prompt/digest for one-shot model context** → use the repo-packer tool or skill that owns that flow
 - **The main task is repo automation, scripts, hooks, or recurring commands** → use `workflow-automation`
-- **The main task is repo structure or folder boundaries** → use `file-organization`
-
-## Core idea
-OpenContext is the **lightweight project-memory layer** in a broader memory stack:
-
-- **OpenContext** = active repo/project memory, handoff notes, searchable decisions, manifests, stable links
-- **llm-wiki** = long-lived synthesized markdown knowledge base
-- **graphify** = structural memory and relationship tracing
-- **human note/vault tools** = human-first note-taking and editorial control
-
-Think in this lifecycle:
-
-```text
-Load context → do the work → search when unsure → store conclusions
-```
 
 ## Instructions
 
-### Step 1: Classify the memory job first
-Normalize the request into this intake before choosing a tool:
+### Step 1: Start from the packet already in hand
+Use [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-```yaml
-opencontext_intake:
-  primary_need: session-continuity | searchable-decisions | handoff-packet | setup-integration | memory-layer-choice | unknown
-  horizon: one-run | active-project | multi-project | evergreen-knowledge | unknown
-  artifact_shape: short-docs | manifests | stable-links | wiki-pages | graph-artifacts | mixed
-  consumers: one-agent | many-agents | human-plus-agent | mixed
-  current_pain:
-    - repeated-background
-    - lost-decisions
-    - poor-handoff
-    - hard-to-find-lessons
-    - missing-context-before-work
-    - unknown
+Normalize the request into one of these packet shapes:
+- `memory-layer-choice-packet` — the user is deciding between OpenContext, wiki, graph, vault, or repo-packer layers
+- `load-context-packet` — the next agent needs the smallest truthful read-first context before work starts
+- `search-context-packet` — the current task needs prior decisions, constraints, pitfalls, or acceptance notes
+- `store-conclusions-packet` — meaningful work finished and reusable outcomes should be saved
+- `setup-integration-packet` — OpenContext itself needs install/init/integration guidance
+- `repo-packer-route-out-packet` — the request is really about one-shot repo-to-prompt packing, not ongoing project memory
+
+Capture the minimum useful frame:
+
+```markdown
+Packet: load-context-packet
+Project scope: active repo
+Goal: prepare the next coding agent
+Current pain: repeated background + cold starts
+Artifact preference: manifest + stable links
 ```
 
-Use OpenContext when the dominant need is **active project/repo memory for agents**.
-If the request is really about deep narrative synthesis, graph structure, or human note curation, route out early.
+Rule: start with the packet the user already has. Do not force every request through a full memory-taxonomy lecture.
 
-### Step 2: Orient the existing memory store before creating anything new
-If OpenContext is already in use:
+### Step 2: Choose one primary mode
+Pick exactly one primary mode for the run:
+- `memory-layer-choice`
+- `load-context`
+- `search-context`
+- `store-conclusions`
+- `setup-integration`
+- `route-out`
+
+Optional: name one secondary mode, but do not flatten load/search/store/setup into one giant answer.
+
+### Step 3: Decide whether OpenContext should own the job at all
+Use this quick ownership test:
+- **OpenContext owns it** when the dominant need is active project/repo memory for agents: small read-first packets, searchable decisions, handoff notes, manifests, stable links
+- **`llm-wiki` owns it** when the dominant need is long-lived synthesized markdown knowledge
+- **`graphify` owns it** when the dominant need is structure graphs, relationship tracing, or graph artifacts
+- **Vault / note tools own it** when the dominant workflow is human-authored notes and editorial control
+- **Repo packers own it** when the real request is “turn this repo into one prompt/digest right now”
+
+If OpenContext is not the right owner, route out immediately instead of describing it as the universal memory layer.
+
+### Step 4: Load before you create
+If OpenContext already exists, orient first:
 
 ```bash
 oc folder ls --all
@@ -99,62 +112,44 @@ oc context manifest <folder> --limit 10
 ```
 
 Look for:
-- project folders that already exist
-- decision logs, pitfalls, acceptance notes, or handoff docs that can be updated
-- the minimum set of files the next agent should read first
+- the folder that already owns the project/topic memory
+- existing decision logs, pitfalls, acceptance notes, or handoff docs
+- the smallest useful set of files the next agent should read first
 
-Do not create duplicate documents until you check what is already there.
+Default rule: update existing memory docs before creating a parallel doc with the same purpose.
 
-### Step 3: Choose the right workflow mode
-Pick one primary mode for the run:
+### Step 5: Run the load → search → store loop
+Use [references/load-search-store-playbook.md](references/load-search-store-playbook.md).
 
-1. **load-context mode**
-   - Use before coding, planning, debugging, or reviewing when background matters.
-   - Goal: identify which docs or manifests the next agent should read.
+#### A. `load-context`
+Use when the next agent needs the smallest truthful startup packet.
 
-2. **search-context mode**
-   - Use during work when you need to confirm prior decisions, constraints, or lessons.
-   - Goal: avoid re-deciding or re-explaining something already captured.
-
-3. **store-conclusions mode**
-   - Use after meaningful work to record decisions, outcomes, verification notes, and follow-ups.
-   - Goal: leave the next session with less ambiguity than you started with.
-
-4. **setup-integration mode**
-   - Use when OpenContext itself needs installation, repo initialization, slash-command setup, MCP wiring, or search configuration.
-   - Goal: make the memory layer available and predictable.
-
-Return the chosen mode explicitly before continuing.
-
-### Step 4: Apply the load → search → store loop
-
-#### A. Load before work
-Good commands:
-```bash
-oc folder ls --all
-oc context manifest <folder> --limit 10
-oc search "<topic>" --mode keyword --format json
-```
+Typical outputs:
+- one manifest command or read-first packet
+- one folder recommendation
+- one short list of docs to read first
 
 Questions to answer:
 - Which folder is the project-memory home?
-- Which 3-10 docs should be read first?
-- Are there known pitfalls or constraints already recorded?
+- Which 3–10 docs should be read first?
+- Which constraints or pitfalls already exist?
 
-#### B. Search during work
-Search when a task would otherwise rely on memory or guesswork.
+#### B. `search-context`
+Use when current work would otherwise rely on guesswork.
 
 Typical search targets:
 - prior decisions
-- architectural constraints
-- environment quirks
 - acceptance criteria
-- incident or release notes
+- environment quirks
+- architecture constraints
+- release notes or incident learnings
 
-#### C. Store after meaningful work
-Capture reusable outcomes, not every keystroke.
+Default: try keyword search and manifests first. Do not jump straight to embeddings/index builds unless the corpus and failure mode justify it.
 
-Strong document shapes:
+#### C. `store-conclusions`
+Use after meaningful work, not after every tiny edit.
+
+Good document shapes:
 - `decision-log.md`
 - `pitfalls.md`
 - `acceptance-criteria.md`
@@ -165,10 +160,12 @@ A useful stored note usually contains:
 - what changed
 - why that choice was made
 - what to verify next
-- source links or evidence
+- the smallest evidence links/citations needed later
 
-### Step 5: Initialize or wire OpenContext when setup is the real task
-Core commands:
+### Step 6: Handle setup and integration cleanly
+Use [references/setup-and-integration.md](references/setup-and-integration.md).
+
+Core commands worth surfacing:
 
 ```bash
 npm install -g @aicontextlab/cli
@@ -177,7 +174,6 @@ npx @aicontextlab/cli <command>
 
 cd your-project
 oc init
-
 oc folder ls --all
 oc doc create <folder> <doc>.md -d "Description"
 oc search "query" --mode keyword --format json
@@ -185,86 +181,115 @@ oc context manifest <folder> --limit 10
 oc doc link <doc_path>
 ```
 
-Use `oc init` when the repo should gain OpenContext-aware setup, command surfaces, or MCP integration.
+Escalate to embeddings/indexing only when keyword search and manifests are not enough and the indexing cost is justified.
 
-### Step 6: Escalate search depth only when needed
-Default to keyword search and manifests first.
+### Step 7: Route out honestly
+Typical route-outs:
+- **`llm-wiki`** — narrative synthesis, entity/concept pages, index/log/schema discipline
+- **`graphify`** — graph artifacts, structural repo/corpus mapping, relationship tracing
+- **Vault/note skills** — human-first note organization and editing
+- **Repo packers (Repomix / Gitingest / Code2Prompt-style workflows)** — one-shot repo-to-prompt context packing
+- **`workflow-automation`** — recurring scripts, repo hooks, and automation that are not really about memory ownership
 
-Only escalate to semantic search / embeddings when:
-- keyword search misses obviously relevant documents,
-- the doc set is large enough that semantic retrieval materially helps,
-- there is a clear reason to pay the indexing/setup cost.
+If the user says “package this repo for one model prompt,” that is not an `opencontext` job.
+If they say “make sure the next agent knows what to load, what we already decided, and what to store after the task,” that is.
 
-Typical semantic-search setup:
-```bash
-oc config set EMBEDDING_API_KEY "<key>"
-oc config set EMBEDDING_API_BASE "https://api.openai.com/v1"
-oc config set EMBEDDING_MODEL "text-embedding-3-small"
-oc index build
+### Step 8: Return one concise project-memory brief
+Preferred format:
+
+```markdown
+# Project Memory Brief
+
+## Packet
+- Packet:
+- Primary mode:
+- Project horizon:
+- Why OpenContext owns this (or route-out):
+
+## Do now
+1. ...
+2. ...
+3. ...
+
+## Read / search / store targets
+- Folder:
+- Docs to read first:
+- Search terms:
+- Note to update or create:
+
+## Route-outs
+- ...
 ```
 
-Do not treat `oc index build` as mandatory for every repo.
+Short, deterministic packets beat giant CLI encyclopedias.
 
-### Step 7: Use stable links and manifests for handoff
-If another agent needs context, prefer:
-- a compact manifest of what to read first, and/or
-- stable links for durable references.
+## Output format
+Always return a **project-memory brief**, **memory-layer choice memo**, or **OpenContext setup note**.
 
-Examples:
-```bash
-oc context manifest <folder> --limit 10
-oc doc link <doc_path>
-```
-
-This keeps handoffs smaller and more deterministic than dumping entire folders blindly.
-
-### Step 8: Route out honestly
-- If the request becomes **"build and maintain a compounding wiki"** → move to `llm-wiki`
-- If the request becomes **"map relationships across code/docs/media"** → move to `graphify`
-- If the request becomes **"organize my notes/vault"** → move to a vault/note skill
+Required qualities:
+- identify the packet already in hand
+- choose one primary mode
+- explain whether OpenContext owns the job or should route out
+- keep the answer focused on the smallest truthful manifest/search/store packet
+- mention embeddings/index builds only as an escalation path
+- name the next owner when another memory or tooling layer is a better fit
 
 ## Examples
 
-### Example 1: Repo continuity before implementation
-**Input:** "We keep losing project background between agent sessions. I need the next agent to load the right docs before touching this repo."
+### Example 1: Load project memory before coding
+**Input**
+> We keep losing repo background between agent sessions. I need the next coding agent to load the right docs before touching this repo.
 
-**Output shape:**
-- select OpenContext as the project-memory layer
-- identify the folder/docs to load first
-- use manifest/search to gather the minimum relevant context
-- leave a post-run handoff note after implementation
+**Output sketch**
+- Packet: `load-context-packet`
+- Primary mode: `load-context`
+- OpenContext owns the job because the need is an active repo-memory startup packet
+- Action: identify folder, generate manifest, list the 3–10 docs to read first, and leave a handoff note after the task
 
 ### Example 2: Memory-layer choice
-**Input:** "Should we use OpenContext, a markdown wiki, or a graph tool for our ongoing product work?"
+**Input**
+> Should we use OpenContext, a wiki, Obsidian, or a graph tool for this product work?
 
-**Output shape:**
-- distinguish project-memory vs wiki vs graph responsibilities
-- recommend OpenContext for active delivery memory if that is the actual need
-- route long-lived narrative synthesis to `llm-wiki`
-- route structure mapping to `graphify`
+**Output sketch**
+- Packet: `memory-layer-choice-packet`
+- Primary mode: `memory-layer-choice`
+- Distinguish project-memory vs wiki vs graph vs human-vault roles
+- Keep OpenContext only for active project/repo memory and handoff packets
 
-### Example 3: Setup and search-depth choice
-**Input:** "Set up OpenContext in this repo and tell me when embeddings are worth it."
+### Example 3: Search old decisions during work
+**Input**
+> Before we change this release flow, search whether we already recorded deployment constraints or rollback notes.
 
-**Output shape:**
-- install/init guidance
-- core commands for folders, docs, search, manifests, and links
-- a conditional rule for escalating from keyword search to embeddings/index builds
+**Output sketch**
+- Packet: `search-context-packet`
+- Primary mode: `search-context`
+- Search existing decision logs / release notes first
+- Prefer keyword search + manifest before any indexing escalation
+
+### Example 4: One-shot repo packing is the real task
+**Input**
+> Turn this repo into a single prompt I can paste into a model right now.
+
+**Output sketch**
+- Packet: `repo-packer-route-out-packet`
+- Primary mode: `route-out`
+- Route to Repomix / Gitingest / Code2Prompt-style workflow instead of pretending OpenContext is the right tool
 
 ## Best practices
-1. Pick OpenContext because the workflow needs **active project memory**, not because it is the newest tool in the stack.
+1. Pick OpenContext because the workflow needs **active project/repo memory**, not because the word “memory” appeared.
 2. Prefer updating existing docs over creating duplicates.
 3. Load the minimum useful context first; manifests beat giant indiscriminate reads.
-4. Store decisions after meaningful work so the next session starts with better context.
-5. Keep document shapes predictable (`decision-log`, `pitfalls`, `handoff`, `acceptance-criteria`, etc.).
-6. Route deep knowledge-base building to `llm-wiki` instead of forcing OpenContext to do everything.
-7. Route structural graph questions to `graphify` instead of flattening them into note storage.
-8. Treat embeddings/index builds as an escalation, not the default first step.
+4. Store decisions after meaningful work so the next session starts with less ambiguity.
+5. Keep document shapes predictable (`decision-log`, `pitfalls`, `handoff`, `acceptance-criteria`, `release-notes`).
+6. Treat embeddings/index builds as an escalation, not the default.
+7. Route wiki, graph, vault, and repo-packer requests out early instead of flattening them into one skill.
 
 ## References
+- [Intake Packets and Route-outs](references/intake-packets-and-route-outs.md)
 - [Memory Layer Decision Guide](references/memory-layer-decision-guide.md)
 - [Load/Search/Store Playbook](references/load-search-store-playbook.md)
 - [Setup and Integration Notes](references/setup-and-integration.md)
 - [OpenContext README](https://raw.githubusercontent.com/0xranx/OpenContext/main/README.md)
+- [OpenContext usage docs](https://0xranx.github.io/OpenContext/en/usage/)
 - [Karpathy LLM Wiki gist](https://gist.githubusercontent.com/karpathy/442a6bf555914893e9891c11519de94f/raw)
 - [Graphify README](https://raw.githubusercontent.com/safishamsi/graphify/main/README.md)
