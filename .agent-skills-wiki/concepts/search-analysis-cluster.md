@@ -4,7 +4,7 @@ created: 2026-04-14
 updated: 2026-04-19
 type: concept
 tags: [skills, search-analysis, trigger-design, skill-quality, graphify]
-sources: [.survey/codebase-search-modernization-20260414/context.md, .survey/codebase-search-modernization-20260414/solutions.md, .survey/looker-studio-bigquery-structural-hardening-20260419/context.md, .survey/looker-studio-bigquery-structural-hardening-20260419/solutions.md, .survey/log-analysis-structural-hardening-20260419/context.md, .survey/log-analysis-structural-hardening-20260419/solutions.md, .survey/langsmith-structural-hardening-20260419/context.md, .survey/langsmith-structural-hardening-20260419/solutions.md, .agent-skills/codebase-search/SKILL.md, .agent-skills/log-analysis/SKILL.md, .agent-skills/looker-studio-bigquery/SKILL.md, .agent-skills/langsmith/SKILL.md]
+sources: [.survey/codebase-search-modernization-20260414/context.md, .survey/codebase-search-modernization-20260414/solutions.md, .survey/looker-studio-bigquery-structural-hardening-20260419/context.md, .survey/looker-studio-bigquery-structural-hardening-20260419/solutions.md, .survey/log-analysis-structural-hardening-20260419/context.md, .survey/log-analysis-structural-hardening-20260419/solutions.md, .survey/langsmith-structural-hardening-20260419/context.md, .survey/langsmith-structural-hardening-20260419/solutions.md, .survey/skill-autoresearch-structural-hardening-20260419/context.md, .survey/skill-autoresearch-structural-hardening-20260419/solutions.md, .agent-skills/codebase-search/SKILL.md, .agent-skills/log-analysis/SKILL.md, .agent-skills/looker-studio-bigquery/SKILL.md, .agent-skills/langsmith/SKILL.md, .agent-skills/skill-autoresearch/SKILL.md]
 ---
 
 # Search Analysis Cluster
@@ -17,6 +17,7 @@ The search-analysis lane works best when each skill owns a different stage of th
 - `pattern-detection` = mode-selecting repeated pattern/rule/anomaly hunting across code, logs/events, telemetry, and metrics, with confidence labels and explicit route-outs instead of a regex-heavy catch-all
 - `looker-studio-bigquery` = packet-first BigQuery stakeholder dashboard delivery, including `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, and `exec-handoff` work on top of curated warehouse data
 - `langsmith` = LangSmith-specific packet selection across `trace-debug`, `eval`, `review`, `prompt-registry`, `propagation`, and `audit`, with hard route-outs to generic observability, debugging, deployment, and analytics skills
+- `skill-autoresearch` = repo-local artifact ratcheting that starts from one packet (`benchmark-readiness`, `charter-freeze`, `baseline-score`, `one-change-mutation`, `support-sync`, `final-report`, or `route-out`) and keeps hosted eval platforms plus GPU-bound ML `autoresearch` outside the markdown/git maintenance boundary
 
 ## Boundary that matters
 `codebase-search` should stay discovery-first.
@@ -37,8 +38,9 @@ It becomes weak when it tries to absorb:
 - Keep `pattern-detection` focused on mode selection, confidence labeling, and repeatable rule/anomaly hunting; route root-cause forensics to `log-analysis` and remediation/reporting to adjacent specialist skills.
 - Keep `looker-studio-bigquery` focused on thin dashboards over curated BigQuery data; start from one intake packet, keep exec-handoff separate from KPI interpretation, and route KPI explanation back to `data-analysis`, telemetry/alerting coverage to `monitoring-observability`, and stack-choice comparisons to `survey`.
 - Keep `langsmith` narrow: choose the LangSmith packet first, keep SDK specifics in references, and route generic telemetry, bug forensics, rollout work, and KPI interpretation out immediately.
+- Keep `skill-autoresearch` narrow: choose one repo-local ratchet packet first, keep verbose mutation detail in support references, and route hosted dashboards / traces plus GPU-bound `autoresearch` loops out immediately.
 - Prefer support bundles that teach search-mode choice, packet choice, config/content ownership, and evidence-map output instead of giant command catalogs.
-- Re-check discovery wording in README/setup surfaces whenever `codebase-search`, `log-analysis`, `data-analysis`, `pattern-detection`, `looker-studio-bigquery`, or `langsmith` is materially repositioned.
+- Re-check discovery wording in README/setup surfaces whenever `codebase-search`, `log-analysis`, `data-analysis`, `pattern-detection`, `looker-studio-bigquery`, `langsmith`, or `skill-autoresearch` is materially repositioned.
 
 ## Related pages
 - [[code-quality-cluster]]

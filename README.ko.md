@@ -74,6 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **skill-autoresearch: packet-first 구조 강화** | `skill-autoresearch`를 더 작은 repo-local ratcheting front door로 다듬었습니다. 이제 `benchmark-readiness`, `charter-freeze`, `baseline-score`, `one-change-mutation`, `support-sync`, `final-report`, `route-out` 중 하나의 packet을 먼저 고르고, `references/run-packets-and-route-outs.md`를 추가했으며, hosted-platform / self-application 케이스까지 `evals/evals.json`을 넓혔습니다. 또한 repo가 `skill-autoresearch`를 generic eval platform이 아니라 markdown/git ratchet로 광고하도록 compact/manifest/setup wording도 함께 동기화했습니다. |
 | **graphify: 라이브 스킬 승격 + 구조 강화** | 숨겨진 `utilities/graphify` 중첩 폴더에 있던 `graphify`를 실제 라이브 top-level 스킬 카탈로그로 승격하고, 라우팅-우선 graph front door로 다듬었습니다. `references/mode-packets-and-route-outs.md`와 `references/build-and-fallback-recipes.md`를 추가하고, `SKILL.toon`, `evals/evals.json`, README/setup/manifest surface까지 함께 동기화해 durable graph 레인이 실제로 설치·검색 가능하도록 맞췄습니다. |
 | **looker-studio-bigquery: packet-first 구조 강화** | `looker-studio-bigquery`를 더 작은 리포팅 front door로 다듬었습니다. 이제 `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, `exec-handoff` 중 하나의 packet에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, Connected Sheets / exec-handoff 케이스까지 `evals/evals.json`을 넓혔습니다. 또한 BigQuery 리포팅 레인이 긴 BI 기능 투어처럼 보이지 않도록 `SKILL.toon` / `skills.toon` / `skills.json`과 README/setup 문구도 함께 동기화했습니다. |
 | **web-accessibility: 라우팅 우선 구조 강화** | `web-accessibility`를 더 작은 routing-first 접근성 수정 앵커로 다듬었습니다. 이제 하나의 primary accessibility packet(`semantics-structure`, `keyboard-focus`, `labels-announcements`, `visual-perception-reflow`, `media-alternatives`, `routed-navigation-feedback`)에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, routed-app / responsive-boundary 케이스까지 `evals/evals.json`을 넓혔습니다. 또한 discovery surface가 다시 generic WCAG/ARIA 튜토리얼로 흐르지 않도록 `SKILL.toon` / `skills.toon` / `skills.json`과 README/setup 문구도 함께 동기화했습니다. |
@@ -353,7 +354,7 @@ setup omc
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `autoresearch` | Karpathy 자율 ML 탐색 front door — setup / `program.md` / bounded loop / 결과 해석 / constrained-hardware mode 중 하나를 고르고, 불변 `prepare.py` + 300초 + `val_bpb` 계약을 지키며, 프롬프트/스킬 eval은 별도 라우팅 | 전체 |
-| `skill-autoresearch` | eval을 고정하고 한 번에 한 가지씩만 바꾸며 점수로 keep/revert를 결정하는 repo-local 스킬 ratcheting 루프. 핵심 경계가 입증된 뒤에만 support surface를 동기화합니다 | 전체 |
+| `skill-autoresearch` | 하나의 packet(ready/charter/baseline/mutation/support-sync/final report)을 먼저 고르고, eval을 고정한 뒤 점수로 keep/revert를 결정하며, hosted eval / ML autoresearch 작업은 바깥으로 라우팅하는 repo-local 스킬 ratcheting 루프 | 전체 |
 | `codebase-search` | 디버깅/리팩터링으로 넘어가기 전에 정의/참조, config·콘텐츠 소유면, 엔트리포인트, 영향 범위를 찾도록 한 가지 검색 packet을 고르는 라우팅형 리포 탐색 | 전체 |
 | `data-analysis` | 내보내기 데이터, 실험, 텔레메트리, KPI 설명을 위한 의사결정 중심 데이터 분석 | 전체 |
 | `langsmith` | SDK 코드로 곧장 가지 않고 trace-debug, 평가, 리뷰 큐, 프롬프트 레지스트리, 멀티서비스 전파 중 한 packet을 먼저 고르는 라우팅형 LangSmith 스킬 | 전체 |

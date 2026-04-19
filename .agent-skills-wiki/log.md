@@ -1048,3 +1048,11 @@
 - Accepted: shrink `omc` into a routing-first Claude-first runtime skill, add `references/intake-packets-and-route-outs.md`, refresh evals with plugin-vs-CLI and recovery cases, rewrite `docs/omc/README.md` against the current upstream command surfaces, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording.
 - Rejected: adding another orchestration wrapper; pretending `/team` and `omc team` are interchangeable; keeping stale `/omc:*` examples in the repo; letting `omc` absorb `jeo`, `ralphmode`, browser-review, or non-Claude runtime ownership.
 - Wiki files created/updated: `queries/omc-structural-hardening-2026-04-19.md`, `concepts/core-orchestration-platform-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | skill-autoresearch structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack AI app iteration, PM/ops postmortem and SOP maintenance, marketing/content automation, and game-production documentation loops, with the best bounded follow-up landing on the existing `skill-autoresearch` skill rather than another eval helper.
+- Survey files created under `.survey/skill-autoresearch-structural-hardening-20260419/`; GitHub Models, Genkit, Atlassian, HubSpot, HacknPlan, Promptfoo, LangSmith, Braintrust, Weave, and repo-local wiki/graph evidence were used after `web_search` / `web_extract` failed with invalid API-key errors.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `skill-autoresearch` into a packet-first repo-local ratcheting front door, add `references/run-packets-and-route-outs.md`, expand `evals/evals.json` with hosted-platform and self-application cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the sharper boundary into the search-analysis wiki.
+- Rejected: adding another prompt-eval wrapper; stretching the skill into hosted observability/tracing; blurring the boundary with GPU-bound `autoresearch`; starting with broad doc churn before the main ratchet held.
+- Wiki files created/updated: `queries/skill-autoresearch-structural-hardening-2026-04-19.md`, `concepts/search-analysis-cluster.md`, `index.md`, `log.md`
