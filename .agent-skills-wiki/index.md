@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-20 | Total pages: 150
+> Last updated: 2026-04-20 | Total pages: 151
 
 ## Entities
 
@@ -155,6 +155,7 @@
 - [[game-performance-profiler-structural-hardening-2026-04-18]] — Why the best bounded follow-up after modernization was shrinking `game-performance-profiler` into a routing-first profiling anchor with a dedicated mode-selection / route-out reference instead of adding another game-performance wrapper.
 - [[game-ci-cd-pipeline-structural-hardening-2026-04-19]] — Why the best bounded next game/developer-workflow improvement was shrinking `game-ci-cd-pipeline` into a packet-first pipeline router with explicit log-triage handoffs instead of adding another game DevOps wrapper.
 - [[steam-store-launch-ops-structural-hardening-2026-04-17]] — Why the best bounded game/marketing crossover follow-up was hardening `steam-store-launch-ops` into a bottleneck-first Steam launch/store router instead of adding another wishlist/Next Fest wrapper.
+- [[steam-store-launch-ops-packet-first-hardening-2026-04-20]] — Why the best bounded next improvement after the bottleneck rewrite was tightening `steam-store-launch-ops` into a packet-first Steam launch router with sharper route-outs and one-shot timing warnings instead of adding another Steam marketing wrapper.
 - [[react-grab-structural-hardening-2026-04-16]] — Why the best bounded next frontend/browser maintenance move was shrinking `react-grab` into a routing-first skill, adding focused support docs, and syncing stale helper-script prerequisites to the upstream Node.js >=22 reality instead of adding another wrapper.
 - [[fabric-modernization-2026-04-15]] — Why the best bounded utilities/developer-workflow improvement was modernizing `fabric` into the pattern-first CLI transform anchor instead of leaving it as a broad AI-CLI feature tour or adding another adjacent prompt wrapper.
 - [[fabric-structural-hardening-2026-04-18]] — Why the best bounded utilities follow-up after modernization was shrinking `fabric` into a routing-first operator front door with a dedicated packet/route-out reference instead of adding another Fabric helper or leaving the long feature-tour shape intact.

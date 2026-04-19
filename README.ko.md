@@ -83,6 +83,12 @@ graph TD
 | **sprint-retrospective: 구조 강화** | `sprint-retrospective`를 software, product/ops, marketing/GTM, game-delivery work 전반에서 쓰는 라우팅 우선 retrospective anchor로 다듬었습니다. 이제 하나의 retrospective mode를 고르고, 이전 액션을 새 액션보다 먼저 검토하고, action count를 작게 유지하며, planning/sizing/daily-sync 작업을 바깥으로 route-out합니다. 또한 `references/action-review-and-packet-shapes.md`, 갱신된 `evals/evals.json`, 동기화된 compact/manifest discovery wording을 추가했습니다. |
 | **autoresearch: 라우팅형 구조 강화** | `autoresearch`를 더 작은 Karpathy ML 탐색 front door로 다듬었습니다. 이제 `setup readiness`, `program.md` 작성, bounded run loop, 결과 해석, constrained-hardware adaptation 중 하나의 mode를 먼저 고르고, 불변 `prepare.py` / 300초 / `val_bpb` 계약을 계속 드러내며, `references/operating-modes-and-route-outs.md`와 갱신된 `evals/evals.json`을 추가하고, 거대한 설명형 스킬이 되지 않도록 `skill-autoresearch` 및 앱 단위 eval / observability 도구로의 route-out도 더 선명하게 만들었습니다. |
 
+## 🆕 v2026-04-20 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **steam-store-launch-ops: packet-first 구조 강화** | `steam-store-launch-ops`를 더 작은 packet-first Steam launch router로 다듬었습니다. 이제 `page-promise-audit`, `wishlist-signal-check`, `demo-readiness-gate`, `event-timing-workback`, `launch-ops-runbook` 중 하나의 primary packet을 먼저 고르고, `references/intake-packets-and-route-outs.md`를 추가했으며, `evals/evals.json`에 route-out / broad-GTM 경계 케이스를 더하고, `SKILL.toon`과 README/setup/manifest 문구를 함께 동기화해 이 레인이 generic marketing이나 demo-feedback 쪽으로 흐르지 않도록 했습니다. |
+
 ## 🆕 v2026-04-17 업데이트
 
 | 변경 | 내용 |
@@ -390,7 +396,7 @@ setup omc
 | `game-ci-cd-pipeline` | 게임 파이프라인 packet 라우터 — setup plan, stage split, cache 정책, preflight 점검, artifact/release hygiene, CI 신뢰도 강화 | 전체 |
 | `game-demo-feedback-triage` | 플레이테스트/데모/커뮤니티 피드백을 가중치 테마와 fix-first 우선순위로 정리 | 전체 |
 | `game-performance-profiler` | Unity/Unreal frame-time 트리아지 — bottleneck-first profiling brief, quick packet, benchmark route, target-device 검토, profiler escalation | 전체 |
-| `steam-store-launch-ops` | Steam 출시/상점 병목 진단 — visibility, 페이지 promise, demo proof, event timing, launch-readiness ops | 전체 |
+| `steam-store-launch-ops` | Packet-first Steam launch router — page-promise audit, wishlist signal check, demo readiness, event timing workback, launch-ops runbook 중 하나를 고름 | 전체 |
 
 ### 🔧 유틸리티 (11개)
 

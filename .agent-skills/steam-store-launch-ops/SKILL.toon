@@ -1,19 +1,21 @@
 N:steam-store-launch-ops
-D:Diagnose Steam launch/store bottlenecks for indie games across store-page conversion, wishlist underperformance, demo / Steam Next Fest readiness, and launch-ops checkpoints. Use when a solo dev, small studio, publisher helper, or founder-marketer needs to decide whether the real problem is visibility, page promise, demo proof, event timing, or launch readiness — even if they only say "help my Steam page", "wishlists are weak", "are we ready for Next Fest", "review our capsule/trailer/tags", "should we launch this demo", or "give me a Steam launch checklist".
+D:Turn Steam store-page, wishlist, demo, Next Fest, and launch-window ambiguity into one packet-first Steam launch brief. Use when an indie dev, small studio, founder-marketer, or publisher helper needs to decide whether the next move is a page-promise audit, wishlist-signal check, demo-readiness gate, event-timing workback, or launch-ops runbook — especially when they say "help my Steam page", "wishlists are weak", "is our demo ready", "should we do Next Fest", or "give me a Steam launch checklist". Route broad non-game GTM work to marketing-automation and player-feedback/build-performance issues to the game specialist skills.
 G:steam indie-games game-marketing launch-ops next-fest wishlists store-page demos
 
 U[6]:
-  Steam coming-soon or store-page review for an indie game
-  Wishlist funnel triage when the team has some traffic but weak conversion
-  Demo / Steam Next Fest readiness review before a public beat
-  Steam launch readiness or launch-adjacent checklist work
-  Creator/press/store asset coordination when the team needs the next ops artifact fast
-  Game-specific store-launch requests that should not be absorbed by marketing-automation
+  Review a Steam Coming Soon or live store page before a meaningful public beat
+  Diagnose weak wishlist complaints without confusing traffic, conversion, proof, and timing
+  Decide whether a demo is ready for public exposure or likely to weaken trust
+  Decide whether a Steam Next Fest or similar public beat fits actual readiness
+  Turn late-stage Steam launch stress into one checklist/runbook packet instead of a giant marketing rewrite
+  Triage Steam-facing creator/outreach readiness only far enough to choose the right next packet
 
-S[6]{n,action,details}:
-  1,Label the immediate goal and hook,Name what the team is trying to accomplish right now and capture the current launch/event hook.
-  2,Separate the bottleneck before recommending fixes,Classify one primary bottleneck: visibility-acquisition, promise-clarity, proof-demo-readiness, timing-hook-fit, launch-ops-readiness, or evidence-gap.
-  3,Audit through five short lenses,Use visibility, promise, proof, timing, and ops lenses to justify the bottleneck.
-  4,Build the Steam ops brief,Return the exact Steam Launch Ops Brief structure with goal/hook, evidence snapshot, bottlenecks, intervention, checks, and next artifact.
-  5,Tailor the brief to the request type,Adjust emphasis for store-page conversion, weak-wishlist, demo/Next Fest, or launch-checklist cases.
-  6,Ask for the minimum missing evidence when needed,Request only the smallest packet that improves the diagnosis and keep confidence low when evidence is thin.
+S[8]{n,action,details}:
+  1,Classify the request into one packet,Choose page-promise-audit wishlist-signal-check demo-readiness-gate event-timing-workback or launch-ops-runbook.
+  2,Capture the smallest credible Steam packet,Collect current hook page assets demo status traffic/wishlist context timing and ops evidence.
+  3,Name the primary bottleneck,Choose visibility-acquisition promise-clarity proof-demo-readiness timing-hook-fit launch-ops-readiness or evidence-gap.
+  4,Apply the one-shot Steam rules,Check Coming Soon dependency demo notify timing Next Fest requirements and review/release timing risk.
+  5,Choose the packet-specific intervention,Recommend one intervention and one next artifact matched to the packet.
+  6,Add route-outs before scope drifts,Send broad marketing player-feedback build and perf work to the stronger sibling skills.
+  7,Return one Steam launch packet,Use the Steam Launch Packet structure with packet choice evidence bottleneck intervention artifact and route-outs.
+  8,Verify the boundary before finalizing,Keep one packet one bottleneck and one next artifact without expanding into a giant GTM plan.

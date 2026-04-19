@@ -1080,3 +1080,11 @@
 - Accepted: tighten `jeo` into a packet-first orchestration front door, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a runtime-route-out case, sync `SKILL.toon` / `skills.json` / `skills.toon`, refresh README / README.ko / setup discovery wording, and ratchet the updated orchestration boundary into the wiki.
 - Rejected: adding another orchestration wrapper; re-expanding runtime-specific hook/config detail inline; pretending Claude/Codex/Gemini have symmetric hook parity; pulling browser verification or submit-gated annotation mechanics back into `jeo`.
 - Wiki files created/updated: `queries/jeo-structural-hardening-2026-04-20.md`, `concepts/core-orchestration-platform-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
+
+## [2026-04-20] query | steam-store-launch-ops packet-first hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack launch tooling, PM/ops checklist substitutes, marketing/outreach stacks, and game-production launch readiness, with the best bounded follow-up landing on the existing `steam-store-launch-ops` skill rather than another Steam/game-marketing wrapper.
+- Survey files created under `.survey/steam-store-launch-ops-structural-hardening-20260420/`; primary evidence came from Steamworks docs, current Steam marketing research, creator/outreach tools, repo-local wiki context, and a deterministic graph refresh after normal `web_search` / `web_extract` failed in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: tighten `steam-store-launch-ops` into a packet-first Steam launch router, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with route-out and broad-GTM boundary cases, sync `SKILL.toon`, `skills.json`, README / README.ko / setup discovery wording, and file the packet-first finding back into the wiki.
+- Rejected: adding another Steam marketing / creator-outreach wrapper; pulling broad GTM back into the Steam lane; pulling demo-feedback, build, or perf diagnosis back into this skill; treating wishlist tools as the answer instead of evidence aids.
+- Wiki files created/updated: `queries/steam-store-launch-ops-packet-first-hardening-2026-04-20.md`, `concepts/game-development-cluster.md`, `index.md`, `log.md`

@@ -3,46 +3,56 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Audit my Steam page before Next Fest and tell me what to fix first. We have a trailer, screenshots, and a demo, but I'm worried the build is still rough.",
-      "expected_output": "A Steam Launch Ops Brief that classifies the request as event/demo readiness, identifies proof/demo readiness as the likely bottleneck, and recommends one concrete next artifact.",
+      "prompt": "Our Steam page gets clicks from social posts, but wishlists are still weak. Review our capsule, screenshots, short description, and tags.",
+      "expected_output": "A Steam Launch Packet that chooses wishlist-signal-check, distinguishes traffic from page promise, and recommends one bounded page-side artifact.",
       "assertions": [
-        "Output contains the heading 'Steam Launch Ops Brief'",
-        "Output includes a 'Goal and hook' section",
-        "Output identifies 'proof-demo-readiness' or an equivalent demo-readiness bottleneck",
-        "Output includes a 'Recommended next artifact' section"
+        "Output contains the heading 'Steam Launch Packet'",
+        "Output includes a 'Packet choice' section",
+        "Output identifies 'wishlist-signal-check' as the primary packet or clearly performs that role",
+        "Output identifies 'promise-clarity' or explicitly separates conversion weakness from traffic weakness",
+        "Output recommends one next artifact rather than a broad multi-track plan"
       ]
     },
     {
       "id": 2,
-      "prompt": "Our Steam coming-soon page has low wishlists even though some people click through from social posts. Review our capsule, screenshots, short description, and tags.",
-      "expected_output": "A weak-wishlist diagnosis that separates page promise from traffic and recommends a bounded page-side artifact instead of generic growth advice.",
+      "prompt": "We want to do Next Fest. The page is up and the trailer is decent, but I'm nervous the demo is still rough. Should we go for it?",
+      "expected_output": "A Steam Launch Packet that treats Next Fest as a readiness gate, chooses an event-timing or demo-readiness packet, and warns against spending the beat on a weak demo.",
       "assertions": [
-        "Output identifies 'promise-clarity' or an equivalent page-conversion bottleneck",
-        "Output includes an 'Asset / page checks' section",
-        "Output includes a 'Recommended intervention' section",
-        "Output does not rely on invented analytics numbers"
-      ]
-    },
-    {
-      "id": 3,
-      "prompt": "Give me a launch readiness checklist for our indie game's Steam release. We already have a page, trailer, capsule art, and a small creator list.",
-      "expected_output": "A launch-readiness brief that emphasizes ops readiness, creator materials, timing/checklist risk, and one concrete launch artifact.",
-      "assertions": [
-        "Output identifies 'launch-ops-readiness' or an equivalent late-stage coordination bottleneck",
-        "Output includes an 'Event / launch ops checks' section",
-        "Output mentions creator, press, or outreach readiness",
+        "Output identifies 'event-timing-workback' or 'demo-readiness-gate' as the primary packet",
+        "Output identifies 'proof-demo-readiness' or 'timing-hook-fit' as the primary bottleneck",
+        "Output explicitly treats Next Fest as a readiness gate rather than generic free exposure",
         "Output includes a 'What not to do yet' section"
       ]
     },
     {
-      "id": 4,
-      "prompt": "Wishlists are weak and honestly traffic is weak too. Should we rewrite the Steam page, push a demo, or focus on outreach first?",
-      "expected_output": "A diagnosis that keeps traffic/visibility separate from page conversion, stays honest about evidence quality, and recommends one shortest-path intervention.",
+      "id": 3,
+      "prompt": "Give me a Steam launch checklist. We have a page, trailer, demo, and a small creator list, but ownership feels messy.",
+      "expected_output": "A launch-ops packet focused on execution readiness, creator/outreach prep, and one runbook artifact.",
       "assertions": [
-        "Output identifies 'visibility-acquisition' or clearly distinguishes traffic weakness from conversion weakness",
-        "Output includes an 'Evidence snapshot' section",
-        "Output recommends one intervention rather than a giant multi-track plan",
-        "Output does not assume the page rewrite is automatically the first move"
+        "Output identifies 'launch-ops-runbook' as the primary packet or clearly performs that role",
+        "Output identifies 'launch-ops-readiness' or equivalent execution-fragmentation language",
+        "Output mentions review/release timing, creator/outreach prep, or ownership gaps",
+        "Output recommends 'launch checklist', 'launch-day runbook', or 'creator/outreach prep packet'"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our demo got rough streamer reactions and a bunch of players were confused in the first ten minutes. What should we fix before the next build?",
+      "expected_output": "A short Steam-facing handoff that routes the work to game-demo-feedback-triage instead of absorbing player-feedback prioritization into this skill.",
+      "assertions": [
+        "Output includes a 'Route-outs' section",
+        "Output routes to 'game-demo-feedback-triage'",
+        "Output does not pretend the main answer is a store-page rewrite or generic Steam marketing plan"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I mostly need a broad launch and acquisition strategy for our game's website, email list, creators, Steam page, and post-launch campaigns.",
+      "expected_output": "A route-out to marketing-automation because the ask is broader than Steam-specific launch/store operations.",
+      "assertions": [
+        "Output routes to 'marketing-automation'",
+        "Output makes clear that the request is broader than this skill's Steam-specific boundary",
+        "Output does not present steam-store-launch-ops as the primary owner of the whole GTM stack"
       ]
     }
   ]
