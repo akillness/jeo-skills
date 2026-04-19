@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-20 | Total pages: 151
+> Last updated: 2026-04-20 | Total pages: 152
 
 ## Entities
 
@@ -98,6 +98,7 @@
 - [[task-estimation-structural-hardening-2026-04-19]] — Why the best bounded PM-cluster follow-up was shrinking `task-estimation` into a routing-first estimate-packet anchor with synced compact/discovery surfaces instead of adding another planning or forecasting wrapper.
 - [[task-planning-modernization-2026-04-12]] — Why the best move was upgrading `task-planning` instead of adding another overlapping PM skill.
 - [[task-planning-structural-hardening-2026-04-18]] — Why the best bounded next PM-cluster improvement was shrinking `task-planning` into a routing-first planning anchor and syncing stale compact/manifest discovery surfaces instead of adding another wrapper.
+- [[task-planning-packet-ratchet-2026-04-20]] — Why the best bounded next PM-cluster improvement after the first hardening pass was shrinking `task-planning` further into a packet-first front door with explicit intake packets and route-outs instead of adding another wrapper.
 - [[log-analysis-modernization-2026-04-13]] — Why the best bounded search-analysis upgrade was rewriting `log-analysis` into a root-cause-first triage skill instead of adding another logging wrapper.
 - [[log-analysis-structural-hardening-2026-04-19]] — Why the best bounded next search-analysis follow-up was shrinking `log-analysis` into a routing-first evidence-packet anchor instead of adding another incident or log wrapper.
 - [[looker-studio-bigquery-modernization-2026-04-15]] — Why the best bounded BigQuery reporting improvement was modernizing `looker-studio-bigquery` into the stakeholder dashboard/reporting anchor instead of adding another BI wrapper or merging it into dataset analysis.
