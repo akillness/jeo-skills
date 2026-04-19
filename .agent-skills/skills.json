@@ -1995,26 +1995,29 @@
     },
     {
       "name": "pattern-detection",
-      "description": "Mode-selecting pattern and anomaly hunting across code, logs, telemetry, and datasets. Use for reusable rule scans, suspicious repeated shapes, and first-pass outlier triage; routes deep log forensics to log-analysis, business explanation to data-analysis, and remediation to specialist skills.",
+      "description": "Routing-first pattern and anomaly hunting that chooses one packet — text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly — before suggesting tools or fixes. Use for reusable scans, suspicious repeated shapes, grouped outlier candidates, and first-pass anomaly triage across code, logs/events, telemetry, and metric tables; route root-cause log work to log-analysis, KPI explanation to data-analysis, remediation to specialist skills, and alert operations to monitoring-observability.",
       "category": "search-analysis",
       "path": "pattern-detection/SKILL.md",
       "tags": [
         "patterns",
         "anomalies",
-        "regex",
-        "code-analysis",
-        "security",
-        "trends"
+        "outliers",
+        "structural-search",
+        "telemetry",
+        "detection",
+        "routing"
       ],
       "platforms": [
         "Claude",
         "ChatGPT",
-        "Gemini"
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
         "Read",
         "Grep",
-        "Glob"
+        "Glob",
+        "Bash"
       ],
       "commands": [
         {

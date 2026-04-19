@@ -1,182 +1,174 @@
 ---
 name: pattern-detection
 description: >
-  Hunt for repeated rules, suspicious shapes, and anomalies across code, logs,
-  telemetry, and structured datasets. Use when the user wants reusable pattern
-  scans, outlier triage, or recurring-issue detection — even if they ask in
-  domain language like smell, anti-pattern, suspicious spike, repeated bug,
-  odd cohort, noisy event, fraud signal, duplicate shape, or anomaly. Choose
-  the right mode (text prefilter, structural code rule, log/event pattern, or
-  metric anomaly), label confidence and false-positive risk, and route deep log
-  forensics, stakeholder analysis, or full security remediation to adjacent
-  specialist skills.
+  Route repeated pattern, rule, and anomaly work into one detection packet before
+  suggesting tools or fixes. Use when the user needs reusable scans, suspicious
+  repeated shapes, grouped outlier candidates, or first-pass anomaly triage across
+  code, logs/events, telemetry, and metric tables. Choose one packet:
+  text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly.
+  Triggers on: repeated bug, suspicious spike, odd cohort, noisy event, code
+  smell family, rule pack, anti-pattern, outlier, anomaly, fraud signal, or
+  recurring issue. Route root-cause incident work to log-analysis, KPI/business
+  explanation to data-analysis, repo tracing to codebase-search, remediation to
+  specialist skills, and alert/incident operations to monitoring-observability.
 allowed-tools: Read Grep Glob Bash
 metadata:
-  tags: patterns, anomalies, outliers, structural-search, telemetry, detection
+  tags: patterns, anomalies, outliers, structural-search, telemetry, detection, routing
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.0"
+  version: "2.1"
 ---
 
 # Pattern Detection
 
 ## When to use this skill
-- The user needs to **find recurring shapes or suspicious repeats**, not just inspect one isolated incident.
-- The task is to **scan code for repeatable risky structures**, migration candidates, duplicate logic, or reusable query/rule ideas.
-- The task is to **spot anomalies in logs, telemetry, or tabular data** before deeper diagnosis or reporting.
-- The user wants a **detection workflow with confidence notes and false-positive handling**, not a pile of raw regex snippets.
-- The request mentions **patterns, anomalies, outliers, repeated failures, suspicious spikes, odd cohorts, rule packs, signatures, code smells, or recurring event shapes**.
+- The main job is **finding repeated shapes or suspicious irregularities**, not fully explaining or fixing them yet.
+- The user needs a **reusable scan**, shortlist, grouped candidate set, or anomaly triage across **code, logs/events, telemetry, or metric tables**.
+- The prompt is really asking **"what patterns keep showing up?"**, **"what looks off?"**, or **"what should we inspect first?"** even if it never says "pattern detection".
+- The user needs **confidence notes, false-positive risks, or the fastest validation step**, not a raw wall of hits.
+- The request mentions **patterns, anomalies, outliers, repeated failures, suspicious spikes, odd cohorts, rule packs, signatures, code smells, anti-patterns, fraud signals, or recurring issue families**.
 
 Do **not** use this skill as the main workflow when:
-- The real job is **root-cause log triage** for a concrete incident → use `log-analysis`.
-- The real job is **decision-ready dataset explanation, KPI storytelling, experiment analysis, or stakeholder reporting** → use `data-analysis`.
-- The real job is **repo navigation / call-site tracing / metric-definition lookup** → use `codebase-search`.
-- The real job is **security hardening, policy design, or full vulnerability remediation** → use `security-best-practices` or `code-review`.
+- The real job is **root-cause incident reconstruction** from logs or traces → `log-analysis`
+- The real job is **decision-ready KPI explanation, experiment analysis, or stakeholder reporting** → `data-analysis`
+- The real job is **repo tracing, ownership lookup, or metric-definition search** → `codebase-search`
+- The real job is **security remediation, policy design, or vulnerability hardening** → `security-best-practices` or `code-review`
+- The real job is **alert tuning, telemetry coverage, or incident operations** → `monitoring-observability`
 
 ## Core idea
-Pattern detection is a **mode-selection problem** before it is a tooling problem.
+`pattern-detection` should behave like a **detection packet router**, not a giant bag of regexes.
 
-Use the cheapest reliable detection mode that matches the unit of evidence:
-1. **Text prefilter** — fast grep/regex/glob pass to narrow the search space
-2. **Structural code rule** — AST/query/pattern rule when text matching becomes brittle
-3. **Log / event pattern** — repeated error shape, noisy event cluster, parser-aware field checks
-4. **Metric anomaly** — outlier, spike, drift, cohort irregularity, seasonal deviation
+1. Normalize the prompt into **one primary detection packet**.
+2. Pick the **cheapest evidence mode** that can surface trustworthy candidates.
+3. Return grouped findings with **confidence and false-positive notes**.
+4. Give one fastest validation step.
+5. Route out aggressively once the bottleneck becomes diagnosis, explanation, remediation, or operations.
 
-The skill succeeds when it surfaces a **small set of explainable candidates** with confidence, false-positive risk, and the next handoff.
+Read these support docs before choosing the packet:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/detection-modes.md](references/detection-modes.md)
+- [references/confidence-and-false-positive-checklist.md](references/confidence-and-false-positive-checklist.md)
 
 ## Instructions
 
-### Step 1: Frame the detection job
-Before scanning, define:
-- **Object of detection** — code blocks, log lines, event records, rows, metrics, cohorts, sessions, builds
-- **Pattern type** — repeated structure, forbidden shape, anomaly, outlier, drift, cluster, signature
-- **Why it matters** — correctness, security, reliability, cost, player experience, growth, fraud, migration effort
-- **Expected output** — ranked candidates, counts, suspicious segments, reusable rule draft, or triage shortlist
-- **Acceptance threshold** — what would count as interesting enough to escalate?
+### Step 1: Normalize the request
+Convert the prompt into this intake shape first:
 
-Restate the task in one line:
-> "We need to detect [pattern/anomaly] across [scope] so we can [decision/action]."
+```yaml
+pattern_detection_packet:
+  primary_packet: text-prefilter | structural-code-rule | log-event-pattern | metric-anomaly
+  evidence_shape: code | configs | logs | events | telemetry | tables | time-series | mixed | unknown
+  detection_goal: repeated-shape | risky-structure | noisy-family | suspicious-spike | drift | outlier | rule-draft | shortlist
+  grouping_key: file-path | symbol-shape | error-family | event-name | build-version | environment | browser-device | cohort | metric-segment | unknown
+  trust_risk: broad-match | parser-drift | instrumentation-change | denominator-gap | seasonality | sample-size | none | mixed | unknown
+  route_after: stay-here | log-analysis | data-analysis | codebase-search | security-best-practices | monitoring-observability | code-review
+```
 
-### Step 2: Run a trust and scope check
-Always inspect the evidence source before claiming a pattern.
+Choose **one** primary packet for the run. If two are plausible, pick the one that reduces uncertainty fastest.
 
-#### Minimum checks
-- coverage of files / logs / rows / time window
-- whether the data is complete enough for comparison
-- schema or field availability
-- obvious parser / instrumentation issues
-- sample size or count context
-- whether seasonality, deploy timing, or environment split could explain the signal
+### Step 2: Choose the packet
 
-If trust is low, switch the deliverable from **pattern found** to **candidate signal with caveats**.
+| Packet | Use when | Best fits | Typical outputs |
+|---|---|---|---|
+| `text-prefilter` | You need a cheap first pass to narrow a big scope | TODO/FIXME clusters, repeated strings, suspicious config values, broad error families | candidate files/lines, counts, and next packet suggestion |
+| `structural-code-rule` | Syntax or call shape matters more than plain text | risky API usage, duplicate branching/error shapes, migration candidates, rule drafts | grouped match families, exclusions, reusable rule idea |
+| `log-event-pattern` | Repeated signals show up in logs or event records | noisy retries, browser/build splits, repeated errors, suspicious event families | grouped clusters, spread/count context, likely segmentation keys |
+| `metric-anomaly` | The pattern lives in aggregates or time windows | KPI spikes/drops, retention or funnel anomalies, suspicious spend or telemetry shifts | suspicious segments/windows, baseline note, confidence and caveats |
 
-### Step 3: Choose the right detection mode
+Packet rules:
+- Prefer `text-prefilter` when the fastest win is to narrow the search space cheaply.
+- Prefer `structural-code-rule` when plain text matching is too noisy or misses true code shape.
+- Prefer `log-event-pattern` when volume, spread, parser quality, or cohort grouping matters more than single-line reading.
+- Prefer `metric-anomaly` when the user cares about spikes, drift, cohorts, or time-window irregularities.
 
-| Mode | Use when | Typical evidence | Good tools / tactics | Output |
-|---|---|---|---|---|
-| Text prefilter | You need a cheap first pass | source files, configs, logs | grep / ripgrep / globs / regex | shortlist of files or lines worth deeper inspection |
-| Structural code rule | The pattern is code-shaped and syntax matters | functions, AST nodes, call shapes, API misuse | AST-aware search, code-query rules, structured search | reusable rule idea + prioritized matches |
-| Log / event pattern | The issue is repeated across logs, traces, or events | error lines, event names, payload fields, browser/build splits | parsing, field grouping, regex where appropriate, windowing | grouped suspicious clusters with counts and context |
-| Metric anomaly | The signal is in rates, volumes, cohorts, or time series | KPI tables, retention, funnels, spend, telemetry metrics | SQL/statistics/notebook checks, rolling baselines, segmentation | suspicious segments or windows with confidence notes |
+### Step 3: Narrow the evidence before claiming a pattern
+Apply at least one narrowing move before interpreting results:
+- limit by file/path/language scope
+- limit by time window, deploy window, or experiment window
+- group by one stable key: message family, event name, exception class, browser/device, build, cohort, metric segment
+- separate one noisy source from a broad multi-source spread
+- compare a suspicious window with a baseline window
+- note whether parser, schema, or instrumentation drift could dominate the signal
 
-If more than one mode is needed, use them in order:
-1. prefilter
-2. structured/grouped detection
-3. quantify the suspicious subset
+Useful heuristics by packet:
+- **text-prefilter** → counts + representative examples before deeper claims
+- **structural-code-rule** → describe the shape in words before drafting a rule
+- **log-event-pattern** → separate volume from spread and isolate cohort/environment differences
+- **metric-anomaly** → include denominator, baseline, and segment context before calling something abnormal
 
-### Step 4: Apply the mode-specific workflow
+### Step 4: Surface grouped candidates, not a raw hit list
+Use this order:
+1. **Candidate family** — what repeated shape or anomaly exists?
+2. **Why it matters** — correctness, reliability, security, cost, UX, or player/product impact
+3. **Confidence** — high / medium / low
+4. **False-positive risk** — what could make it misleading?
+5. **Next check** — the fastest validation or route-out
 
-#### Mode A — Text prefilter
-Use for broad narrowing only.
+Do **not** silently turn detection into a full diagnosis, code rewrite, dashboard memo, or alert rollout.
 
-Checklist:
-1. define file/time/path scope
-2. search for the cheapest candidate signature first
-3. capture counts and representative examples
-4. note why text matching may over-match or under-match
-5. escalate if syntax or field structure matters
+### Step 5: Use packet-specific heuristics
 
-Good use cases:
-- repeated error string families
-- TODO/FIXME/HACK clusters
-- suspicious hard-coded values or feature flags
-- initial narrowing before AST or parser-aware work
+#### For `text-prefilter`
+- Use it only as a cheap narrowing pass.
+- Capture counts and representative examples, not every hit.
+- Explicitly note when syntax/context is too important for plain text alone.
+- Escalate to `structural-code-rule` or `log-event-pattern` when the match quality is too noisy.
 
-#### Mode B — Structural code rule
-Use when plain text matching is too noisy.
+#### For `structural-code-rule`
+- Describe the code shape in words before reaching for tooling.
+- Group matches by family, not by file order.
+- Call out likely exclusions and false positives.
+- Route actual remediation or security hardening outward once the family is identified.
 
-Checklist:
-1. describe the code shape in words before writing any rule
-2. identify the required structure and allowed variants
-3. note likely false positives and safe exclusions
-4. group matches by pattern family, not just raw file list
-5. decide whether the next step is review, refactor, or security escalation
+#### For `log-event-pattern`
+- Normalize one grouping unit first: error family, event name, exception class, browser, build, region, feature flag, tenant.
+- Separate repeated fallout from the likely primary family.
+- Flag parser or instrumentation drift explicitly.
+- Route root-cause reconstruction to `log-analysis` once the user needs the actual incident story.
 
-Good use cases:
-- repeated unsafe call shapes
-- duplicate branching/error-handling structures
-- legacy API migration candidates
-- anti-pattern families that need a reusable rule
+#### For `metric-anomaly`
+- Name baseline vs comparison window.
+- Compare absolute and relative change with denominator context.
+- Test whether the anomaly is broad or concentrated in one segment.
+- Flag seasonality, low sample size, or instrumentation changes before implying business meaning.
+- Route deeper explanation, recommendations, or experiment narration to `data-analysis`.
 
-#### Mode C — Log / event pattern
-Use when repeated signals show up in logs or telemetry records.
+### Step 6: Return one compact detection brief
+Default response shape:
 
-Checklist:
-1. normalize the unit of grouping (message family, event name, exception class, browser, build, region, feature flag)
-2. separate volume from spread (one noisy source vs many sources)
-3. compare across environments / cohorts / time windows
-4. flag parser or instrumentation drift explicitly
-5. hand off root-cause reconstruction to `log-analysis` if the task becomes incident diagnosis
+```markdown
+## Detection brief
+- Packet: text-prefilter | structural-code-rule | log-event-pattern | metric-anomaly
+- Scope: [files / logs / rows / metrics / time window]
+- Grouping key: [file family / symbol shape / error family / cohort / segment]
+- Trust level: high | medium | low
 
-Good use cases:
-- repeated browser/version crash signatures
-- noisy retry/error families
-- suspicious event spam after a release
-- gameplay telemetry clusters by build or player segment
+## Candidate findings
+1. [pattern family or anomaly]
+   - Why it matters: ...
+   - Confidence: high | medium | low
+   - False-positive risk: ...
+   - Next check: ...
+2. ...
 
-#### Mode D — Metric anomaly
-Use when the pattern is in aggregates rather than raw lines.
+## Route-out
+- stay here | log-analysis | data-analysis | codebase-search | security-best-practices | monitoring-observability | code-review
+```
 
-Checklist:
-1. define baseline and comparison window
-2. compare absolute change, relative change, and denominator context
-3. segment by the strongest likely drivers
-4. test whether the anomaly is broad or concentrated
-5. distinguish data-quality issues from genuine behavior change
-6. hand off deeper explanation and recommendation writing to `data-analysis` if needed
+Keep it compact. The point is to leave the user with the smallest trustworthy shortlist, not a giant implementation memo.
 
-Good use cases:
-- KPI spikes/drops
-- retention or funnel anomalies
-- suspicious spend / conversion swings
-- telemetry economy or progression outliers
+### Step 7: Route out aggressively
+Switch when the next job is no longer first-pass detection:
+- **Root-cause incident or outage reconstruction** → `log-analysis`
+- **KPI explanation, experiment readout, or business narrative** → `data-analysis`
+- **Repo tracing, ownership lookup, or metric-definition hunting** → `codebase-search`
+- **Security remediation or hardening design** → `security-best-practices`
+- **Judgment-heavy patch / PR review** → `code-review`
+- **Alert routing, telemetry coverage, incident ops, or monitoring policy** → `monitoring-observability`
 
-### Step 5: Label confidence and false-positive risk
-For every finding, include:
-- **Confidence:** high / medium / low
-- **Why:** evidence quality, sample size, structural specificity, or consistency across segments
-- **False-positive risk:** what could make this signal misleading?
-- **Next best check:** the fastest way to validate or falsify the finding
-
-Default heuristics:
-- **High confidence** — repeated signal, good coverage, strong grouping/structure, low ambiguity
-- **Medium confidence** — plausible signal but one major caveat remains
-- **Low confidence** — thin data, broad regex, weak baseline, or likely parser/instrumentation drift
-
-### Step 6: Keep detection separate from remediation
-Return three layers:
-1. **Detected pattern / anomaly** — what repeated shape or irregularity you found
-2. **Why it is interesting** — risk, cost, severity, or likely impact
-3. **What should happen next** — validate, inspect, route to another skill, or promote to a reusable rule
-
-Do **not** silently turn detection into a full diagnosis, code rewrite, or stakeholder memo.
-
-### Step 7: Route out when another job starts
-Hand off when detection is no longer the bottleneck:
-- **Root-cause incident reconstruction** → `log-analysis`
-- **Stakeholder-ready KPI explanation / experiments / business narrative** → `data-analysis`
-- **Repo tracing / ownership / instrumentation lookup** → `codebase-search`
-- **Security hardening or remediation plan** → `security-best-practices`
-- **Judgment-heavy review of a concrete diff or patch** → `code-review`
+If the evidence is too thin:
+1. mark confidence low
+2. ask for the smallest missing anchor only if required: scope, time window, grouping key, or baseline
+3. do not pretend certainty from one noisy excerpt or thin sample
 
 ## Examples
 
@@ -185,46 +177,46 @@ Hand off when detection is no longer the bottleneck:
 > Scan this repo for repeated risky error-handling patterns and tell me what to inspect first.
 
 **Good response shape:**
-- choose text prefilter + structural code rule
-- group matches by pattern family
-- explain likely false positives
-- recommend review or refactor handoff, not automatic remediation
+- choose `text-prefilter` or `structural-code-rule`
+- group matches by family
+- include confidence and false-positive notes
+- route remediation to review/refactor/security skills instead of fixing everything in place
 
 ### Example 2: KPI spike triage
 **Prompt:**
 > We have a KPI spike in a CSV export. Is this pattern-detection or data-analysis?
 
 **Good response shape:**
-- use metric anomaly mode for first-pass detection
-- check baseline, coverage, and denominator context
-- if the user needs explanation/recommendations, route to `data-analysis`
+- choose `metric-anomaly` for first-pass detection
+- name baseline, denominator, and trust checks
+- route explanation and recommendations to `data-analysis`
 
 ### Example 3: Gameplay telemetry outliers
 **Prompt:**
 > Look for suspicious gameplay telemetry outliers after yesterday's update.
 
 **Good response shape:**
-- choose log/event or metric anomaly mode depending on the data
-- segment by build, player cohort, region, or item/class
-- call out instrumentation caveats and follow-up validation
+- choose `log-event-pattern` or `metric-anomaly`
+- segment by build, cohort, region, or item/class
+- include instrumentation caveats
+- stay in detection mode instead of promising a full balance fix
 
-### Example 4: Reusable rule hunting
+### Example 4: Alert or anomaly?
 **Prompt:**
-> I need reusable rules for finding unsafe code shapes, not a full security audit.
+> We keep getting noisy anomaly alerts on one metric; should I debug the threshold, inspect the pattern, or write a dashboard summary?
 
 **Good response shape:**
-- define the unsafe structure in words first
-- propose a structural rule direction
-- report likely match families and false-positive controls
-- route remediation to `security-best-practices` only if the user wants the hardening plan
+- start with `metric-anomaly` to classify whether there is a real suspicious window or just alert noise
+- call out seasonality / low-history / denominator risks
+- route alert tuning to `monitoring-observability` and KPI explanation to `data-analysis`
 
 ## Best practices
-1. Start with the **unit of evidence** (code shape, log family, metric series), not the tool name.
-2. Use the **cheapest reliable mode** before escalating to heavier analysis.
-3. Always include **confidence and false-positive risk**.
-4. Group findings into **pattern families**, not just raw hit lists.
-5. Distinguish **detection** from **diagnosis, remediation, and reporting**.
-6. Treat parser, instrumentation, and baseline problems as first-class caveats.
+1. Start with the **unit of evidence** and **grouping key**, not the tool name.
+2. Use the **cheapest trustworthy packet** before escalating.
+3. Always include **confidence**, **false-positive risk**, and **one next check**.
+4. Group findings into **candidate families**, not raw hit lists.
+5. Distinguish **detection** from **diagnosis, remediation, explanation, and alert operations**.
+6. Treat parser, instrumentation, seasonality, and denominator issues as first-class caveats.
 7. Prefer reusable rule thinking when the same pattern is likely to recur.
 
 ## References
@@ -235,25 +227,3 @@ Hand off when detection is no longer the bottleneck:
 - [Datadog regex/grok parsing guide](https://docs.datadoghq.com/logs/guide/regex_log_parsing/)
 - [OpenSearch anomaly dashboards](https://docs.opensearch.org/latest/observing-your-data/ad/dashboards-anomaly-detection/)
 - [scikit-learn outlier detection](https://scikit-learn.org/stable/modules/outlier_detection.html)
-
-## Output format
-Use a concise detection brief:
-
-```markdown
-## Detection brief
-- Goal: [pattern/anomaly to detect]
-- Scope: [files / logs / rows / metrics / time window]
-- Mode used: text prefilter | structural code rule | log/event pattern | metric anomaly
-- Trust level: high | medium | low
-
-## Candidate findings
-1. [pattern family or anomaly] — confidence: high/medium/low
-2. [pattern family or anomaly] — confidence: high/medium/low
-
-## False-positive risks
-- [risk]
-- [risk]
-
-## Next checks / handoff
-- [validate / inspect / route to adjacent skill]
-```

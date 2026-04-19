@@ -951,3 +951,11 @@
 - Accepted: shrink `langsmith` into a routing-first packet selector, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a prompt-registry ownership case, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the hardened LangSmith boundary into the search-analysis wiki note.
 - Rejected: adding another generic LLM observability / eval wrapper; letting `langsmith` absorb generic dashboards, deployment choreography, or runtime-policy ownership; keeping the old oversized feature-tour front door.
 - Wiki files created/updated: `concepts/search-analysis-cluster.md`, `queries/langsmith-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | Pattern-detection structural hardening
+- Area researched: repeated pattern/rule/anomaly hunting across code scanning, log/event clustering, product analytics, and game telemetry, with indexed-snippet and primary-doc fallback because `web_search` and `web_extract` returned invalid API-key errors
+- Survey files created under `.survey/pattern-detection-structural-hardening-20260419/`
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: shrink `pattern-detection` into a routing-first packet selector, add `references/intake-packets-and-route-outs.md`, expand eval coverage for alert-noise handoff, and sync compact/discovery surfaces
+- Rejected: adding another anomaly wrapper; expanding the skill into full KPI explanation, log RCA, or security remediation
+- Wiki files created/updated: `queries/pattern-detection-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
