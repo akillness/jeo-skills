@@ -42,7 +42,7 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 
 | Platform | First Command |
 |----------|--------------|
-| Claude Code | `jeo "task description"` or `/omc:team "task"` |
+| Claude Code | `jeo "task description"` or `/team "task"` |
 | Gemini CLI | `/jeo "task description"` |
 | Codex CLI | `/jeo "task description"` |
 | OpenCode | `/jeo "task description"` |
@@ -114,6 +114,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
+| **omc: routing-first structural hardening** | Tightened `omc` into a smaller Claude-first orchestration router. It now distinguishes plugin slash skills (`/team`, `/autopilot`, `/ralph`, `/ultrawork`) from the shell-side `omc` CLI (`omc setup`, `omc team`, `omc ask`), adds `references/intake-packets-and-route-outs.md`, refreshes eval coverage for plugin-vs-CLI and recovery cases, updates the detailed `docs/omc/README.md` guide to stop using stale `/omc:*` examples, and syncs README/setup/manifest discovery wording so users see OMC as a truthful runtime router instead of a giant command catalog. |
 | **ui-component-patterns: structural hardening** | Tightened `ui-component-patterns` into a routing-first reusable-component architecture skill. It now classifies one primary packet (`primitive-boundary`, `slot-anatomy`, `controlled-ownership`, `alternate-root-composition`, or `docs-verification`) before suggesting props, adds `references/intake-packets-and-route-outs.md`, expands eval coverage with alternate-root and Storybook/docs-verification cases, refreshes `SKILL.toon` / manifest discovery wording, and keeps `design-system`, `web-accessibility`, `responsive-design`, `state-management`, and `react-best-practices` as explicit route-outs instead of drifting back to a generic component-best-practices catch-all. |
 | **responsive-design: structural hardening** | Tightened `responsive-design` into a routing-first responsive strategy skill that chooses one primary packet (`page-layout`, `component-slot`, `dense-data`, `media-behavior`, or `verification-reflow`) before suggesting CSS. The skill now moves packet routing into `references/intake-packets-and-route-outs.md`, expands eval coverage with a launch-readiness boundary case, refreshes `SKILL.toon` / manifest discovery surfaces, and keeps `ui-component-patterns`, `web-accessibility`, `design-system`, and `web-design-guidelines` as explicit route-outs instead of letting responsive work sprawl into a generic frontend catch-all. |
 | **testing-strategies: structural hardening** | Tightened `testing-strategies` into a packet-first validation-policy router. It now starts from one policy packet (`change-risk`, `gate-design`, `flake-cost`, `release-readiness`, or `incident-ratchet`), adds `references/intake-packets-and-route-outs.md`, expands eval coverage with release-readiness and accessibility-boundary cases, refreshes `SKILL.toon` / manifest discovery wording, and keeps `backend-testing`, `debugging`, `code-review`, `web-accessibility`, and `performance-optimization` as explicit route-outs instead of drifting back into a giant generic testing manifesto. |
@@ -232,7 +233,8 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 # oh-my-claudecode
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/oh-my-claudecode:omc-setup
+/plugin install oh-my-claudecode
+setup omc
 ```
 
 ---
@@ -246,7 +248,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
 | `jeo` | `jeo`, `annotate` | All | Integrated orchestration with `.jeo` ledger: Planning→Development→QA→Cleanup |
-| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `deep interview`, `deslop`, `cancelomc` | Claude | 29+ agent orchestration layer (v4.9.3) — Teams/Autopilot/Ralph/Ultrawork/CCG modes, smart model routing, skill layers, real-time HUD |
+| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | Claude-first orchestration router for oh-my-claudecode — distinguishes plugin slash skills from the `omc` shell CLI, handles setup/recovery/state issues, and routes adjacent work to `jeo`, `ralphmode`, `omx`, `ohmg`, and browser-review skills |
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Multi-agent workflow layer for Codex CLI (v0.11.10) — 30+ agents, 35+ skills, tmux team runtime, omx explore/sparkshell |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | Gemini / Antigravity entry for the portable `oh-my-agent` harness (`.agents` source of truth, native Gemini projection, cross-vendor-ready layout) |

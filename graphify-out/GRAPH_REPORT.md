@@ -10,13 +10,13 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 90
 - Skills missing compact variants: 0
 - Graph nodes: 390
-- Graph edges: 1152
+- Graph edges: 1146
 
 ## Strongest structural findings
 1. Discovery docs still dominate the graph because README / setup / manifest surfaces index nearly the full live catalog, so documentation sync remains mandatory whenever a skill boundary changes materially.
 2. Support coverage remains effectively complete across the live skill set, so the highest-value maintenance wins still come from tightening dense front-door skills instead of adding wrappers.
-3. `opencontext` is now a packet-first active project-memory router: the front door chooses memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out instead of behaving like a long OpenContext CLI catalog.
-4. The refreshed `opencontext` lane now calls out repo packers explicitly as a neighboring one-shot snapshot workflow, which keeps manifests/stable links/handoff packets as the distinctive contract of the project-memory layer.
+3. `omc` is now a routing-first Claude-first orchestration front door: the skill starts by choosing plugin setup, in-session runtime, terminal runtime, recovery/update, or boundary route-out instead of mixing plugin docs, CLI manual, and adjacent ownership in one surface.
+4. The refreshed `omc` lane now makes the plugin-vs-CLI split explicit (`/team` vs `omc team`, in-session Autopilot/Ralph/Ultrawork vs shell-side `omc` commands), which is more stable than copying volatile upstream command catalogs into the front door.
 5. The next best maintenance wins still look like oversized routers whose contracts are stable enough to shrink without changing ownership.
 
 ## Highest-degree nodes
@@ -27,21 +27,21 @@
 - .agent-skills/skills.toon: degree 83
 
 ## Oversized front-door watchlist
-- clawteam: 300 lines in SKILL.md
-- opencontext: 295 lines in SKILL.md
-- task-planning: 294 lines in SKILL.md
-- jeo: 288 lines in SKILL.md
-- autoresearch: 284 lines in SKILL.md
-- testing-strategies: 274 lines in SKILL.md
-- steam-store-launch-ops: 272 lines in SKILL.md
-- state-management: 272 lines in SKILL.md
-- omc: 272 lines in SKILL.md
-- skill-autoresearch: 267 lines in SKILL.md
+- clawteam: 301 lines in SKILL.md
+- opencontext: 296 lines in SKILL.md
+- task-planning: 295 lines in SKILL.md
+- jeo: 289 lines in SKILL.md
+- autoresearch: 285 lines in SKILL.md
+- testing-strategies: 275 lines in SKILL.md
+- state-management: 273 lines in SKILL.md
+- steam-store-launch-ops: 273 lines in SKILL.md
+- skill-autoresearch: 268 lines in SKILL.md
+- plannotator: 267 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- `opencontext` should stay distinct from `llm-wiki`, `graphify`, and note/vault skills by owning active project-memory packets, manifests, stable links, and cross-agent handoff rather than narrative wiki maintenance, structural graph memory, or human-authored note organization.
-- `opencontext` should also stay distinct from repo packers such as Repomix / Gitingest / Code2Prompt by owning durable load/search/store loops instead of one-shot repo-to-prompt snapshots.
+- `omc` should stay distinct from `jeo`, `ralphmode`, `omx`, `ohmg`, `plannotator`, `agent-browser`, `playwriter`, and `agentation` by owning Claude-first runtime routing instead of long-loop orchestration, permissions, review gates, browser verification, or non-Claude runtime adoption.
 - Discovery docs remain the highest-degree maintenance nodes, so README/setup/manifest sync is still required whenever a skill boundary or trigger surface changes materially.
+- Plugin slash skills and the `omc` terminal CLI should be described as adjacent surfaces, not as one interchangeable command family.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree or oversized front-door skills whose contracts are stable enough to validate mechanically.

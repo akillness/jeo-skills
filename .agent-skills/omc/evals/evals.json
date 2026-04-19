@@ -3,52 +3,52 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "oh-my-claudecode 설치하고 싶어. 어떻게 해?",
-      "expected_output": "The skill provides 3-step installation: /plugin marketplace add, /plugin install, /oh-my-claudecode:omc-setup",
+      "prompt": "OMC 설치하고 Claude Code 안에서 바로 팀 모드까지 쓰고 싶어. 어떻게 시작해?",
+      "expected_output": "The skill uses the plugin-setup packet, gives the plugin install path plus `setup omc` or `/oh-my-claudecode:omc-setup`, and mentions `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` for native teams.",
       "assertions": [
         "The response includes /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode",
-        "The response includes /oh-my-claudecode:omc-setup",
+        "The response includes setup omc or /oh-my-claudecode:omc-setup",
         "The response mentions CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS or native teams setup"
       ]
     },
     {
       "id": 2,
-      "prompt": "여러 에이전트가 동시에 작업하게 하고 싶어. 어떤 모드를 써야 해?",
-      "expected_output": "The skill recommends Team mode as canonical, explains the 5-stage pipeline, and provides the /oh-my-claudecode:team command.",
+      "prompt": "Claude Code 안에서 여러 에이전트가 동시에 작업하게 하고 싶어. /team이랑 omc team 중 뭐 써야 해?",
+      "expected_output": "The skill distinguishes the in-session-runtime and terminal-runtime surfaces, recommends `/team` for Claude Code, and explains that `omc team` is the shell/tmux worker runtime.",
       "assertions": [
-        "The response identifies Team mode as canonical or recommended",
-        "The response describes the pipeline: plan → prd → exec → verify → fix",
-        "The response includes the /oh-my-claudecode:team N:executor command syntax"
+        "The response states that /team and omc team are different runtimes",
+        "The response recommends /team for the in-session Claude Code case",
+        "The response identifies omc team as the shell or tmux worker surface"
       ]
     },
     {
       "id": 3,
-      "prompt": "작업이 끝날 때까지 멈추지 않게 하고 싶어. ralph 모드가 뭐야?",
-      "expected_output": "The skill explains ralph as a persistent execute→verify→fix loop that guarantees completion, and covers skill layer composition.",
+      "prompt": "shell에서 codex 두 명 붙여서 auth 플로우 리뷰 돌리고 싶어",
+      "expected_output": "The skill uses the terminal-runtime packet, recommends `omc team 2:codex ...`, and keeps the answer on the CLI runtime instead of drifting into in-session slash skills.",
       "assertions": [
-        "The response describes ralph as a persistent loop that won't stop until verified complete",
-        "The response mentions the execute → verify → fix loop structure",
-        "The response notes that ralph includes ultrawork (parallel execution)"
+        "The response includes omc team 2:codex",
+        "The response does not frame /team as the primary answer",
+        "The response mentions shell, tmux, or CLI runtime context"
       ]
     },
     {
       "id": 4,
-      "prompt": "CCG 모드는 뭐야? 어떤 상황에서 써야 해?",
-      "expected_output": "The skill explains CCG as Codex+Gemini+Claude 3-model synthesis, best for complex tasks spanning execution, analysis, and orchestration.",
+      "prompt": "작업이 진짜 끝날 때까지 계획-실행-검증 루프를 장기적으로 유지하고 싶어. OMC가 맞아?",
+      "expected_output": "The skill uses the boundary-and-route-out packet, routes the long-loop ledger job to `jeo`, and treats OMC as the Claude-first runtime layer rather than the main owner.",
       "assertions": [
-        "The response expands CCG as Codex + Gemini + Claude",
-        "The response describes what each model contributes (execution/analysis/orchestration)",
-        "The response gives a use case where CCG is appropriate"
+        "The response routes the request to jeo",
+        "The response keeps OMC as a runtime layer or adjacent tool rather than the sole answer",
+        "The response distinguishes long-loop orchestration from OMC runtime guidance"
       ]
     },
     {
       "id": 5,
-      "prompt": "OMC에서 사용할 수 있는 magic keyword 목록 알려줘. cancelomc도 포함해서.",
-      "expected_output": "The skill lists all magic keywords including the v4.9.3 additions: deepsearch, deepanalyze, ultrathink, tdd, deslop, cancelomc.",
+      "prompt": "업데이트 후 worktree마다 팀 상태가 꼬이고 HUD도 이상해. 뭘 먼저 봐야 해?",
+      "expected_output": "The skill uses the recovery-and-update packet, tells the operator to inspect the runtime surface, state/worktree/plugin-dir behavior, and recovery/update paths instead of just listing modes.",
       "assertions": [
-        "The response includes cancelomc or stopomc",
-        "The response includes at least 3 of: deepsearch, deepanalyze, ultrathink, tdd, deslop",
-        "The response includes the classic keywords: autopilot, ralph, ulw, ccg, ralplan"
+        "The response treats this as recovery or update work rather than mode selection",
+        "The response mentions state, worktree, plugin-dir, HUD, or setup/update investigation",
+        "The response references a recovery path such as omc setup, omc update, doctor, or the routing reference"
       ]
     }
   ]

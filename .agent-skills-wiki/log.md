@@ -1040,3 +1040,11 @@
 - Accepted: shrink `opencontext` into a packet-first project-memory router, add `references/intake-packets-and-route-outs.md`, expand evals with a repo-packer route-out case, sync `SKILL.toon` / `skills.json` / `skills.toon`, fix stale `utilities/opencontext` source paths, and update README / README.ko / setup discovery wording.
 - Rejected: adding another persistent-memory wrapper; pretending repo packers are the same workflow as durable project memory; re-expanding `opencontext` into a giant command catalog that absorbs wiki, graph, or vault jobs.
 - Wiki files created/updated: `queries/opencontext-structural-hardening-2026-04-19.md`, `concepts/persistent-memory-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | omc structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack delivery, PM/ops coordination, marketing/content automation, and game-production collaboration, with the best bounded follow-up landing on the existing `omc` skill rather than another orchestration wrapper.
+- Survey files created under `.survey/omc-structural-hardening-20260419/`; primary evidence came from the local repo, upstream oh-my-claudecode README/docs/issues/PRs, and repo-local graph/wiki context because `web_search` / `web_extract` remained unreliable in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `omc` into a routing-first Claude-first runtime skill, add `references/intake-packets-and-route-outs.md`, refresh evals with plugin-vs-CLI and recovery cases, rewrite `docs/omc/README.md` against the current upstream command surfaces, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording.
+- Rejected: adding another orchestration wrapper; pretending `/team` and `omc team` are interchangeable; keeping stale `/omc:*` examples in the repo; letting `omc` absorb `jeo`, `ralphmode`, browser-review, or non-Claude runtime ownership.
+- Wiki files created/updated: `queries/omc-structural-hardening-2026-04-19.md`, `concepts/core-orchestration-platform-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
