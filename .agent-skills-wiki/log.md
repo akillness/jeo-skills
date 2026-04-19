@@ -1064,3 +1064,11 @@
 - Accepted: shrink `skill-autoresearch` into a packet-first repo-local ratcheting front door, add `references/run-packets-and-route-outs.md`, expand `evals/evals.json` with hosted-platform and self-application cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the sharper boundary into the search-analysis wiki.
 - Rejected: adding another prompt-eval wrapper; stretching the skill into hosted observability/tracing; blurring the boundary with GPU-bound `autoresearch`; starting with broad doc churn before the main ratchet held.
 - Wiki files created/updated: `queries/skill-autoresearch-structural-hardening-2026-04-19.md`, `concepts/search-analysis-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-20] query | backend-testing structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack backend delivery, PM/ops execution policy, marketing/content automation, and game-production support lanes, with the best bounded follow-up landing on the existing `backend-testing` skill rather than another testing wrapper.
+- Survey files created under `.survey/backend-testing-structural-hardening-20260420/`; primary evidence came from direct page retrieval on Testcontainers, Pact, pytest, GitHub Actions, and Martin Fowler, plus DuckDuckGo HTML indexed snippets for flaky-test workflow evidence because normal `web_search` / `web_extract` remained unavailable in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: tighten `backend-testing` into a packet-first backend test router, add `references/intake-packets-and-route-outs.md`, expand `evals/evals.json` with a contract-protection case, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording.
+- Rejected: adding another flake-testing or contract-testing wrapper; broadening `backend-testing` into org-wide testing policy; pulling API redesign or auth implementation back into the testing skill.
+- Wiki files created/updated: `queries/backend-testing-structural-hardening-2026-04-20.md`, `concepts/backend-api-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`

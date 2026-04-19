@@ -112,6 +112,12 @@ graph TD
 | **code-refactoring: packet-first structural hardening** | Tightened `code-refactoring` into a smaller routing-first cleanup anchor. It now starts from the cleanup packet teams actually have (local cleanup, fragile legacy area, repeated migration / codemod, or cleanup-heavy diff shaping), adds `references/intake-packets-and-route-outs.md`, expands eval coverage with a search-first blast-radius route-out, and syncs `SKILL.toon` / `skills.toon` / `skills.json` so compact discovery no longer advertises a stale generic DRY/SOLID design-pattern helper. |
 | **changelog-maintenance: packet-first hardening** | Tightened `changelog-maintenance` into a smaller routing-first release-writing anchor. It now chooses one primary mode plus the smallest truthful output packet (`single-entry`, `summary-plus-links`, `migration-brief`, `patch-note-brief`, or `sync-packet`), adds `references/output-packets-and-channel-handoffs.md`, expands eval coverage with a release-notes + migration-window + sync-followups case, and syncs compact/discovery wording so the skill no longer drifts back to a generic changelog / semver template dump. |
 
+## 🆕 What's New in v2026-04-20
+
+| Change | Details |
+|--------|---------|
+| **backend-testing: packet-first structural hardening** | Tightened `backend-testing` into a packet-first backend test router. It now starts by classifying one backend testing packet (`coverage-plan`, `fixture-and-reset-plan`, `contract-and-api-checks`, `flake-stabilization`, or `execution-lane-split`), adds `references/intake-packets-and-route-outs.md`, expands eval coverage with a contract-protection case, and syncs `SKILL.toon` / README / setup / manifest wording so the skill stops drifting back to a generic “write some backend tests” catch-all. |
+
 ## 🆕 What's New in v2026-04-19
 
 | Change | Details |
@@ -285,7 +291,7 @@ setup omc
 | `api-design` | Contract-first REST/GraphQL API design, compatibility review, and handoff | All |
 | `api-documentation` | Developer-facing API docs anchor for reference portals, quickstarts, SDK/webhook guides, truthful examples, and auth/error guidance | All |
 | `authentication-setup` | Product-auth setup routing across hosted/framework-native/platform-native auth, sessions/JWTs, org data, and enterprise SSO handoff | All |
-| `backend-testing` | Backend coverage planning for API, integration, contract, fixture, and CI-vs-local test layers | All |
+| `backend-testing` | Packet-first backend testing for coverage plans, fixture/reset strategy, contract/API protection, flaky-suite stabilization, and local-vs-CI lane splits | All |
 | `database-schema-design` | Packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible fields, and route-outs to API/auth/testing/reporting neighbors | All |
 
 ### 🎨 Frontend (10)

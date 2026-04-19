@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-19 | Total pages: 141
+> Last updated: 2026-04-20 | Total pages: 149
 
 ## Entities
 
@@ -46,6 +46,7 @@
 - [[deployment-automation-structural-hardening-2026-04-16]] — Why the best bounded follow-up after the deployment modernization pass was shrinking `deployment-automation` into a tighter routing-first anchor with focused packet references instead of adding another deployment wrapper.
 - [[debugging-structural-hardening-2026-04-18]] — Why the best bounded next code-quality improvement was shrinking `debugging` into a routing-first diagnosis anchor with mode-selection packets and synced discovery surfaces instead of adding another troubleshooting wrapper.
 - [[backend-testing-modernization-2026-04-12]] — Why the best bounded backend verification fix was modernizing `backend-testing` into a layer-selecting, fixture-aware coverage skill instead of adding another testing wrapper.
+- [[backend-testing-structural-hardening-2026-04-20]] — Why the best bounded backend/code-quality follow-up was tightening `backend-testing` into a packet-first backend test router instead of adding another flake-testing or contract-testing wrapper.
 - [[bmad-gds-modernization-2026-04-12]] — Why the best bounded game-cluster fix was modernizing `bmad-gds` into a coordinating producer/orchestrator skill.
 - [[code-refactoring-modernization-2026-04-14]] — Why the best bounded fix for the code-quality pair was modernizing `code-refactoring` into a behavior-preserving structural-cleanup anchor instead of adding another refactoring wrapper.
 - [[code-refactoring-structural-hardening-2026-04-18]] — Why the best bounded code-quality follow-up was shrinking `code-refactoring` into a packet-first cleanup anchor with synced compact/discovery surfaces instead of adding another cleanup or codemod wrapper.

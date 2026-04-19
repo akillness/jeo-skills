@@ -1,7 +1,7 @@
 ---
 title: Backend API Cluster
 created: 2026-04-12
-updated: 2026-04-18
+updated: 2026-04-20
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
 sources: [.survey/api-design-modernization-20260412/context.md, .survey/database-schema-design-structural-hardening-20260419/context.md, .survey/database-schema-design-structural-hardening-20260419/solutions.md, graphify-out/GRAPH_REPORT.md]
@@ -35,6 +35,7 @@ The stronger pattern is:
 Recent ratchets:
 - after the 2026-04-17 structural-hardening pass, `authentication-setup` is a tighter router with the enterprise/migration nuance pushed into a focused support packet instead of keeping that rollout detail in the main front door.
 - after the 2026-04-18 structural-hardening pass, `database-schema-design` is a smaller packet-first router with a dedicated intake/route-out reference instead of a longer all-in-one backend storage explainer.
+- after the 2026-04-20 structural-hardening pass, `backend-testing` now starts from one backend test packet (`coverage-plan`, `fixture-and-reset-plan`, `contract-and-api-checks`, `flake-stabilization`, or `execution-lane-split`) instead of a generic backend-testing catch-all, which makes its boundary with `testing-strategies`, `api-design`, and `authentication-setup` much clearer.
 
 ## Operational rule
 When upgrading backend contract skills:
@@ -47,5 +48,6 @@ When upgrading backend contract skills:
 - [[skill-support-coverage]]
 - [[api-design-modernization-2026-04-12]]
 - [[backend-testing-modernization-2026-04-12]]
+- [[backend-testing-structural-hardening-2026-04-20]]
 - [[authentication-setup-modernization-2026-04-14]]
 - [[authentication-setup-structural-hardening-2026-04-17]]

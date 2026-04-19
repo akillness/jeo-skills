@@ -112,6 +112,12 @@ graph TD
 | **code-refactoring: 패킷 우선 구조 강화** | `code-refactoring`을 더 작은 routing-first cleanup 앵커로 다듬었습니다. 이제 팀이 실제로 가진 cleanup packet(local cleanup, fragile legacy area, repeated migration / codemod, cleanup-heavy diff shaping)에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, search-first blast-radius route-out 케이스까지 eval 범위를 넓혔습니다. 또한 `SKILL.toon` / `skills.toon` / `skills.json`을 동기화해 compact discovery가 더 이상 낡은 DRY/SOLID design-pattern helper처럼 보이지 않게 했습니다. |
 | **changelog-maintenance: 패킷 우선 강화** | `changelog-maintenance`를 더 작은 routing-first 릴리스 작성 앵커로 다듬었습니다. 이제 하나의 primary mode와 가장 작은 truthful output packet(`single-entry`, `summary-plus-links`, `migration-brief`, `patch-note-brief`, `sync-packet`)을 고르고, `references/output-packets-and-channel-handoffs.md`를 추가했으며, 릴리스 노트 + 마이그레이션 기한 + downstream sync follow-up 케이스까지 eval 범위를 넓혔습니다. 또한 compact/discovery 문구를 맞춰 스킬이 다시 generic changelog / semver 템플릿 덤프로 흐르지 않게 했습니다. |
 
+## 🆕 v2026-04-20 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **backend-testing: 패킷 우선 구조적 하드닝** | `backend-testing`를 패킷 우선 백엔드 테스트 라우터로 더 압축했습니다. 이제 `coverage-plan`, `fixture-and-reset-plan`, `contract-and-api-checks`, `flake-stabilization`, `execution-lane-split` 중 하나의 기본 패킷에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, 계약 보호 케이스까지 eval 범위를 넓히고 `SKILL.toon` / README / setup / manifest 문구를 동기화해 스킬이 다시 막연한 “백엔드 테스트 좀 써줘” 만능 설명으로 흐르지 않게 했습니다. |
+
 ## 🆕 v2026-04-19 업데이트
 
 | 변경 | 내용 |
@@ -285,7 +291,7 @@ setup omc
 | `api-design` | 계약 중심 REST/GraphQL API 설계, 호환성 검토, 후속 핸드오프 | 전체 |
 | `api-documentation` | 레퍼런스 포털·퀵스타트·SDK/웹훅 가이드·검증된 예시·인증/에러 안내를 다루는 개발자용 API 문서 앵커 | 전체 |
 | `authentication-setup` | hosted/framework-native/platform-native 인증 선택, 세션/JWT 경계, 조직 데이터, 엔터프라이즈 SSO 핸드오프를 다루는 제품 인증 설정 라우터 | 전체 |
-| `backend-testing` | API·통합·계약·fixture·로컬/CI 분리를 포함한 백엔드 테스트 커버리지 설계 | 전체 |
+| `backend-testing` | 커버리지 계획, fixture/reset 전략, 계약/API 보호, flaky-suite 안정화, 로컬-vs-CI lane 분리를 다루는 패킷 우선 백엔드 테스트 스킬 | 전체 |
 | `database-schema-design` | 관계형·문서형·하이브리드 스키마, queryable-vs-flexible 필드 판단, 단계적 스키마 변경, 그리고 API/인증/테스트/리포팅 인접 스킬 route-out을 다루는 패킷형 스토리지 모델 설계 | 전체 |
 
 ### 🎨 프론트엔드 (10개)

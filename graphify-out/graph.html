@@ -1,26 +1,406 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>graphify-out</title>
-<style>body{font-family:system-ui,sans-serif;max-width:1000px;margin:40px auto;padding:0 20px}table{border-collapse:collapse;width:100%;margin:16px 0}td,th{border:1px solid #ccc;padding:8px;text-align:left}code{background:#f4f4f4;padding:2px 4px}</style>
+<style>body{font-family:Arial,sans-serif;margin:24px;line-height:1.4} code{background:#f4f4f4;padding:2px 4px} .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}</style>
 </head><body>
-<h1>graphify-out structural snapshot</h1>
-<p>Live skills: 90 | Nodes: 390 | Edges: 1093</p>
-<h2>Highest-degree nodes</h2><table><tr><th>Node</th><th>Degree</th></tr><tr><td>.agent-skills/skills.json</td><td>90</td></tr>
-<tr><td>README.ko.md</td><td>89</td></tr>
-<tr><td>README.md</td><td>89</td></tr>
-<tr><td>setup-all-skills-prompt.md</td><td>89</td></tr>
-<tr><td>.agent-skills/skills.toon</td><td>82</td></tr>
-<tr><td>task-planning</td><td>31</td></tr>
-<tr><td>plannotator</td><td>27</td></tr>
-<tr><td>monitoring-observability</td><td>26</td></tr></table>
-<h2>Oversized front-door watchlist</h2><table><tr><th>Skill</th><th>SKILL.md lines</th></tr><tr><td>clawteam</td><td>300</td></tr>
-<tr><td>opencontext</td><td>295</td></tr>
-<tr><td>task-planning</td><td>294</td></tr>
-<tr><td>jeo</td><td>288</td></tr>
-<tr><td>autoresearch</td><td>284</td></tr>
-<tr><td>testing-strategies</td><td>274</td></tr>
-<tr><td>skill-autoresearch</td><td>273</td></tr>
-<tr><td>steam-store-launch-ops</td><td>272</td></tr>
-<tr><td>state-management</td><td>272</td></tr>
-<tr><td>fabric</td><td>265</td></tr></table>
-<p>Primary current note: <code>plannotator</code> now separates plan review, diff review, markdown/spec review, platform setup, and troubleshooting.</p>
+<h1>Graphify Structural Graph</h1>
+<p>Generated from .agent-skills and repository discovery docs.</p>
+<div class="grid"><section><h2>Nodes (390)</h2><ol><li><strong>README.md</strong> <code>discovery</code></li>
+<li><strong>README.ko.md</strong> <code>discovery</code></li>
+<li><strong>setup-all-skills-prompt.md</strong> <code>discovery</code></li>
+<li><strong>.agent-skills/skills.json</strong> <code>discovery</code></li>
+<li><strong>.agent-skills/skills.toon</strong> <code>discovery</code></li>
+<li><strong>agent-browser</strong> <code>skill</code></li>
+<li><strong>agent-browser/references</strong> <code>support</code></li>
+<li><strong>agent-browser/evals</strong> <code>support</code></li>
+<li><strong>agent-browser/compact</strong> <code>support</code></li>
+<li><strong>agentation</strong> <code>skill</code></li>
+<li><strong>agentation/references</strong> <code>support</code></li>
+<li><strong>agentation/evals</strong> <code>support</code></li>
+<li><strong>agentation/scripts</strong> <code>support</code></li>
+<li><strong>agentation/compact</strong> <code>support</code></li>
+<li><strong>api-design</strong> <code>skill</code></li>
+<li><strong>api-design/references</strong> <code>support</code></li>
+<li><strong>api-design/evals</strong> <code>support</code></li>
+<li><strong>api-design/compact</strong> <code>support</code></li>
+<li><strong>api-documentation</strong> <code>skill</code></li>
+<li><strong>api-documentation/references</strong> <code>support</code></li>
+<li><strong>api-documentation/evals</strong> <code>support</code></li>
+<li><strong>api-documentation/compact</strong> <code>support</code></li>
+<li><strong>authentication-setup</strong> <code>skill</code></li>
+<li><strong>authentication-setup/references</strong> <code>support</code></li>
+<li><strong>authentication-setup/evals</strong> <code>support</code></li>
+<li><strong>authentication-setup/compact</strong> <code>support</code></li>
+<li><strong>autoresearch</strong> <code>skill</code></li>
+<li><strong>autoresearch/references</strong> <code>support</code></li>
+<li><strong>autoresearch/evals</strong> <code>support</code></li>
+<li><strong>autoresearch/scripts</strong> <code>support</code></li>
+<li><strong>autoresearch/compact</strong> <code>support</code></li>
+<li><strong>backend-testing</strong> <code>skill</code></li>
+<li><strong>backend-testing/references</strong> <code>support</code></li>
+<li><strong>backend-testing/evals</strong> <code>support</code></li>
+<li><strong>backend-testing/compact</strong> <code>support</code></li>
+<li><strong>bmad</strong> <code>skill</code></li>
+<li><strong>bmad/references</strong> <code>support</code></li>
+<li><strong>bmad/evals</strong> <code>support</code></li>
+<li><strong>bmad/scripts</strong> <code>support</code></li>
+<li><strong>bmad/compact</strong> <code>support</code></li>
+<li><strong>bmad-gds</strong> <code>skill</code></li>
+<li><strong>bmad-gds/references</strong> <code>support</code></li>
+<li><strong>bmad-gds/evals</strong> <code>support</code></li>
+<li><strong>bmad-gds/compact</strong> <code>support</code></li>
+<li><strong>bmad-idea</strong> <code>skill</code></li>
+<li><strong>bmad-idea/references</strong> <code>support</code></li>
+<li><strong>bmad-idea/evals</strong> <code>support</code></li>
+<li><strong>bmad-idea/compact</strong> <code>support</code></li>
+<li><strong>changelog-maintenance</strong> <code>skill</code></li>
+<li><strong>changelog-maintenance/references</strong> <code>support</code></li>
+<li><strong>changelog-maintenance/evals</strong> <code>support</code></li>
+<li><strong>changelog-maintenance/compact</strong> <code>support</code></li>
+<li><strong>clawteam</strong> <code>skill</code></li>
+<li><strong>clawteam/references</strong> <code>support</code></li>
+<li><strong>clawteam/evals</strong> <code>support</code></li>
+<li><strong>clawteam/scripts</strong> <code>support</code></li>
+<li><strong>clawteam/compact</strong> <code>support</code></li>
+<li><strong>code-refactoring</strong> <code>skill</code></li>
+<li><strong>code-refactoring/references</strong> <code>support</code></li>
+<li><strong>code-refactoring/evals</strong> <code>support</code></li>
+<li><strong>code-refactoring/compact</strong> <code>support</code></li>
+<li><strong>code-review</strong> <code>skill</code></li>
+<li><strong>code-review/references</strong> <code>support</code></li>
+<li><strong>code-review/evals</strong> <code>support</code></li>
+<li><strong>code-review/compact</strong> <code>support</code></li>
+<li><strong>codebase-search</strong> <code>skill</code></li>
+<li><strong>codebase-search/references</strong> <code>support</code></li>
+<li><strong>codebase-search/evals</strong> <code>support</code></li>
+<li><strong>codebase-search/compact</strong> <code>support</code></li>
+<li><strong>data-analysis</strong> <code>skill</code></li>
+<li><strong>data-analysis/references</strong> <code>support</code></li>
+<li><strong>data-analysis/evals</strong> <code>support</code></li>
+<li><strong>data-analysis/compact</strong> <code>support</code></li>
+<li><strong>database-schema-design</strong> <code>skill</code></li>
+<li><strong>database-schema-design/references</strong> <code>support</code></li>
+<li><strong>database-schema-design/evals</strong> <code>support</code></li>
+<li><strong>database-schema-design/compact</strong> <code>support</code></li>
+<li><strong>debugging</strong> <code>skill</code></li>
+<li><strong>debugging/references</strong> <code>support</code></li>
+<li><strong>debugging/evals</strong> <code>support</code></li>
+<li><strong>debugging/compact</strong> <code>support</code></li>
+<li><strong>deployment-automation</strong> <code>skill</code></li>
+<li><strong>deployment-automation/references</strong> <code>support</code></li>
+<li><strong>deployment-automation/evals</strong> <code>support</code></li>
+<li><strong>deployment-automation/compact</strong> <code>support</code></li>
+<li><strong>design-system</strong> <code>skill</code></li>
+<li><strong>design-system/references</strong> <code>support</code></li>
+<li><strong>design-system/evals</strong> <code>support</code></li>
+<li><strong>design-system/compact</strong> <code>support</code></li>
+<li><strong>environment-setup</strong> <code>skill</code></li>
+<li><strong>environment-setup/references</strong> <code>support</code></li>
+<li><strong>environment-setup/evals</strong> <code>support</code></li>
+<li><strong>environment-setup/compact</strong> <code>support</code></li>
+<li><strong>fabric</strong> <code>skill</code></li>
+<li><strong>fabric/references</strong> <code>support</code></li>
+<li><strong>fabric/evals</strong> <code>support</code></li>
+<li><strong>fabric/compact</strong> <code>support</code></li>
+<li><strong>file-organization</strong> <code>skill</code></li>
+<li><strong>file-organization/references</strong> <code>support</code></li>
+<li><strong>file-organization/evals</strong> <code>support</code></li>
+<li><strong>file-organization/compact</strong> <code>support</code></li>
+<li><strong>firebase-ai-logic</strong> <code>skill</code></li>
+<li><strong>firebase-ai-logic/references</strong> <code>support</code></li>
+<li><strong>firebase-ai-logic/evals</strong> <code>support</code></li>
+<li><strong>firebase-ai-logic/compact</strong> <code>support</code></li>
+<li><strong>firebase-cli</strong> <code>skill</code></li>
+<li><strong>firebase-cli/references</strong> <code>support</code></li>
+<li><strong>firebase-cli/evals</strong> <code>support</code></li>
+<li><strong>firebase-cli/scripts</strong> <code>support</code></li>
+<li><strong>firebase-cli/compact</strong> <code>support</code></li>
+<li><strong>frontend-design-system</strong> <code>skill</code></li>
+<li><strong>frontend-design-system/references</strong> <code>support</code></li>
+<li><strong>frontend-design-system/evals</strong> <code>support</code></li>
+<li><strong>frontend-design-system/compact</strong> <code>support</code></li>
+<li><strong>game-build-log-triage</strong> <code>skill</code></li>
+<li><strong>game-build-log-triage/references</strong> <code>support</code></li>
+<li><strong>game-build-log-triage/evals</strong> <code>support</code></li>
+<li><strong>game-build-log-triage/compact</strong> <code>support</code></li>
+<li><strong>game-ci-cd-pipeline</strong> <code>skill</code></li>
+<li><strong>game-ci-cd-pipeline/references</strong> <code>support</code></li>
+<li><strong>game-ci-cd-pipeline/evals</strong> <code>support</code></li>
+<li><strong>game-ci-cd-pipeline/compact</strong> <code>support</code></li>
+<li><strong>game-demo-feedback-triage</strong> <code>skill</code></li>
+<li><strong>game-demo-feedback-triage/references</strong> <code>support</code></li>
+<li><strong>game-demo-feedback-triage/evals</strong> <code>support</code></li>
+<li><strong>game-demo-feedback-triage/compact</strong> <code>support</code></li>
+<li><strong>game-performance-profiler</strong> <code>skill</code></li>
+<li><strong>game-performance-profiler/references</strong> <code>support</code></li>
+<li><strong>game-performance-profiler/evals</strong> <code>support</code></li>
+<li><strong>game-performance-profiler/compact</strong> <code>support</code></li>
+<li><strong>genkit</strong> <code>skill</code></li>
+<li><strong>genkit/references</strong> <code>support</code></li>
+<li><strong>genkit/evals</strong> <code>support</code></li>
+<li><strong>genkit/compact</strong> <code>support</code></li>
+<li><strong>git-submodule</strong> <code>skill</code></li>
+<li><strong>git-submodule/references</strong> <code>support</code></li>
+<li><strong>git-submodule/evals</strong> <code>support</code></li>
+<li><strong>git-submodule/compact</strong> <code>support</code></li>
+<li><strong>git-workflow</strong> <code>skill</code></li>
+<li><strong>git-workflow/references</strong> <code>support</code></li>
+<li><strong>git-workflow/evals</strong> <code>support</code></li>
+<li><strong>git-workflow/compact</strong> <code>support</code></li>
+<li><strong>google-workspace</strong> <code>skill</code></li>
+<li><strong>google-workspace/references</strong> <code>support</code></li>
+<li><strong>google-workspace/evals</strong> <code>support</code></li>
+<li><strong>google-workspace/scripts</strong> <code>support</code></li>
+<li><strong>google-workspace/compact</strong> <code>support</code></li>
+<li><strong>harness</strong> <code>skill</code></li>
+<li><strong>harness/references</strong> <code>support</code></li>
+<li><strong>harness/evals</strong> <code>support</code></li>
+<li><strong>harness/scripts</strong> <code>support</code></li>
+<li><strong>harness/compact</strong> <code>support</code></li>
+<li><strong>jeo</strong> <code>skill</code></li>
+<li><strong>jeo/references</strong> <code>support</code></li>
+<li><strong>jeo/evals</strong> <code>support</code></li>
+<li><strong>jeo/scripts</strong> <code>support</code></li>
+<li><strong>jeo/compact</strong> <code>support</code></li>
+<li><strong>langsmith</strong> <code>skill</code></li>
+<li><strong>langsmith/references</strong> <code>support</code></li>
+<li><strong>langsmith/evals</strong> <code>support</code></li>
+<li><strong>langsmith/scripts</strong> <code>support</code></li>
+<li><strong>langsmith/compact</strong> <code>support</code></li>
+<li><strong>graphify</strong> <code>skill</code></li>
+<li><strong>graphify/references</strong> <code>support</code></li>
+<li><strong>graphify/evals</strong> <code>support</code></li>
+<li><strong>graphify/compact</strong> <code>support</code></li>
+<li><strong>llm-wiki</strong> <code>skill</code></li>
+<li><strong>llm-wiki/references</strong> <code>support</code></li>
+<li><strong>llm-wiki/evals</strong> <code>support</code></li>
+<li><strong>llm-wiki/scripts</strong> <code>support</code></li>
+<li><strong>llm-wiki/compact</strong> <code>support</code></li>
+<li><strong>lmstudio-cli</strong> <code>skill</code></li>
+<li><strong>lmstudio-cli/references</strong> <code>support</code></li>
+<li><strong>lmstudio-cli/evals</strong> <code>support</code></li>
+<li><strong>lmstudio-cli/scripts</strong> <code>support</code></li>
+<li><strong>lmstudio-cli/compact</strong> <code>support</code></li>
+<li><strong>log-analysis</strong> <code>skill</code></li>
+<li><strong>log-analysis/references</strong> <code>support</code></li>
+<li><strong>log-analysis/evals</strong> <code>support</code></li>
+<li><strong>log-analysis/compact</strong> <code>support</code></li>
+<li><strong>looker-studio-bigquery</strong> <code>skill</code></li>
+<li><strong>looker-studio-bigquery/references</strong> <code>support</code></li>
+<li><strong>looker-studio-bigquery/evals</strong> <code>support</code></li>
+<li><strong>looker-studio-bigquery/compact</strong> <code>support</code></li>
+<li><strong>marketing-automation</strong> <code>skill</code></li>
+<li><strong>marketing-automation/references</strong> <code>support</code></li>
+<li><strong>marketing-automation/evals</strong> <code>support</code></li>
+<li><strong>marketing-automation/compact</strong> <code>support</code></li>
+<li><strong>marketing-skills-collection</strong> <code>skill</code></li>
+<li><strong>marketing-skills-collection/references</strong> <code>support</code></li>
+<li><strong>marketing-skills-collection/evals</strong> <code>support</code></li>
+<li><strong>marketing-skills-collection/compact</strong> <code>support</code></li>
+<li><strong>monitoring-observability</strong> <code>skill</code></li>
+<li><strong>monitoring-observability/references</strong> <code>support</code></li>
+<li><strong>monitoring-observability/evals</strong> <code>support</code></li>
+<li><strong>monitoring-observability/compact</strong> <code>support</code></li>
+<li><strong>npm-git-install</strong> <code>skill</code></li>
+<li><strong>npm-git-install/references</strong> <code>support</code></li>
+<li><strong>npm-git-install/evals</strong> <code>support</code></li>
+<li><strong>npm-git-install/compact</strong> <code>support</code></li></ol></section><section><h2>Edges (1147)</h2><ol><li><code>agent-browser</code> → <code>agent-browser:references</code> <em>has-support</em></li>
+<li><code>agent-browser</code> → <code>agent-browser:evals</code> <em>has-support</em></li>
+<li><code>agent-browser</code> → <code>agent-browser:compact</code> <em>has-support</em></li>
+<li><code>agent-browser</code> → <code>agentation</code> <em>mentions-skill</em></li>
+<li><code>agent-browser</code> → <code>debugging</code> <em>mentions-skill</em></li>
+<li><code>agent-browser</code> → <code>plannotator</code> <em>mentions-skill</em></li>
+<li><code>agent-browser</code> → <code>playwriter</code> <em>mentions-skill</em></li>
+<li><code>agentation</code> → <code>agentation:references</code> <em>has-support</em></li>
+<li><code>agentation</code> → <code>agentation:evals</code> <em>has-support</em></li>
+<li><code>agentation</code> → <code>agentation:scripts</code> <em>has-support</em></li>
+<li><code>agentation</code> → <code>agentation:compact</code> <em>has-support</em></li>
+<li><code>agentation</code> → <code>agent-browser</code> <em>mentions-skill</em></li>
+<li><code>agentation</code> → <code>design-system</code> <em>mentions-skill</em></li>
+<li><code>agentation</code> → <code>plannotator</code> <em>mentions-skill</em></li>
+<li><code>agentation</code> → <code>playwriter</code> <em>mentions-skill</em></li>
+<li><code>api-design</code> → <code>api-design:references</code> <em>has-support</em></li>
+<li><code>api-design</code> → <code>api-design:evals</code> <em>has-support</em></li>
+<li><code>api-design</code> → <code>api-design:compact</code> <em>has-support</em></li>
+<li><code>api-design</code> → <code>api-documentation</code> <em>mentions-skill</em></li>
+<li><code>api-design</code> → <code>authentication-setup</code> <em>mentions-skill</em></li>
+<li><code>api-design</code> → <code>backend-testing</code> <em>mentions-skill</em></li>
+<li><code>api-design</code> → <code>database-schema-design</code> <em>mentions-skill</em></li>
+<li><code>api-documentation</code> → <code>api-documentation:references</code> <em>has-support</em></li>
+<li><code>api-documentation</code> → <code>api-documentation:evals</code> <em>has-support</em></li>
+<li><code>api-documentation</code> → <code>api-documentation:compact</code> <em>has-support</em></li>
+<li><code>api-documentation</code> → <code>api-design</code> <em>mentions-skill</em></li>
+<li><code>api-documentation</code> → <code>authentication-setup</code> <em>mentions-skill</em></li>
+<li><code>api-documentation</code> → <code>changelog-maintenance</code> <em>mentions-skill</em></li>
+<li><code>api-documentation</code> → <code>technical-writing</code> <em>mentions-skill</em></li>
+<li><code>api-documentation</code> → <code>user-guide-writing</code> <em>mentions-skill</em></li>
+<li><code>authentication-setup</code> → <code>authentication-setup:references</code> <em>has-support</em></li>
+<li><code>authentication-setup</code> → <code>authentication-setup:evals</code> <em>has-support</em></li>
+<li><code>authentication-setup</code> → <code>authentication-setup:compact</code> <em>has-support</em></li>
+<li><code>authentication-setup</code> → <code>api-design</code> <em>mentions-skill</em></li>
+<li><code>authentication-setup</code> → <code>api-documentation</code> <em>mentions-skill</em></li>
+<li><code>authentication-setup</code> → <code>backend-testing</code> <em>mentions-skill</em></li>
+<li><code>authentication-setup</code> → <code>database-schema-design</code> <em>mentions-skill</em></li>
+<li><code>authentication-setup</code> → <code>security-best-practices</code> <em>mentions-skill</em></li>
+<li><code>autoresearch</code> → <code>autoresearch:references</code> <em>has-support</em></li>
+<li><code>autoresearch</code> → <code>autoresearch:evals</code> <em>has-support</em></li>
+<li><code>autoresearch</code> → <code>autoresearch:scripts</code> <em>has-support</em></li>
+<li><code>autoresearch</code> → <code>autoresearch:compact</code> <em>has-support</em></li>
+<li><code>autoresearch</code> → <code>harness</code> <em>mentions-skill</em></li>
+<li><code>autoresearch</code> → <code>langsmith</code> <em>mentions-skill</em></li>
+<li><code>autoresearch</code> → <code>skill-autoresearch</code> <em>mentions-skill</em></li>
+<li><code>autoresearch</code> → <code>survey</code> <em>mentions-skill</em></li>
+<li><code>backend-testing</code> → <code>backend-testing:references</code> <em>has-support</em></li>
+<li><code>backend-testing</code> → <code>backend-testing:evals</code> <em>has-support</em></li>
+<li><code>backend-testing</code> → <code>backend-testing:compact</code> <em>has-support</em></li>
+<li><code>backend-testing</code> → <code>api-design</code> <em>mentions-skill</em></li>
+<li><code>backend-testing</code> → <code>authentication-setup</code> <em>mentions-skill</em></li>
+<li><code>backend-testing</code> → <code>debugging</code> <em>mentions-skill</em></li>
+<li><code>backend-testing</code> → <code>testing-strategies</code> <em>mentions-skill</em></li>
+<li><code>bmad</code> → <code>bmad:references</code> <em>has-support</em></li>
+<li><code>bmad</code> → <code>bmad:evals</code> <em>has-support</em></li>
+<li><code>bmad</code> → <code>bmad:scripts</code> <em>has-support</em></li>
+<li><code>bmad</code> → <code>bmad:compact</code> <em>has-support</em></li>
+<li><code>bmad</code> → <code>bmad-gds</code> <em>mentions-skill</em></li>
+<li><code>bmad</code> → <code>bmad-idea</code> <em>mentions-skill</em></li>
+<li><code>bmad</code> → <code>fabric</code> <em>mentions-skill</em></li>
+<li><code>bmad</code> → <code>harness</code> <em>mentions-skill</em></li>
+<li><code>bmad</code> → <code>ohmg</code> <em>mentions-skill</em></li>
+<li><code>bmad</code> → <code>omc</code> <em>mentions-skill</em></li>
+<li><code>bmad</code> → <code>omx</code> <em>mentions-skill</em></li>
+<li><code>bmad</code> → <code>plannotator</code> <em>mentions-skill</em></li>
+<li><code>bmad</code> → <code>ralph</code> <em>mentions-skill</em></li>
+<li><code>bmad</code> → <code>task-planning</code> <em>mentions-skill</em></li>
+<li><code>bmad-gds</code> → <code>bmad-gds:references</code> <em>has-support</em></li>
+<li><code>bmad-gds</code> → <code>bmad-gds:evals</code> <em>has-support</em></li>
+<li><code>bmad-gds</code> → <code>bmad-gds:compact</code> <em>has-support</em></li>
+<li><code>bmad-gds</code> → <code>bmad</code> <em>mentions-skill</em></li>
+<li><code>bmad-gds</code> → <code>bmad-idea</code> <em>mentions-skill</em></li>
+<li><code>bmad-gds</code> → <code>debugging</code> <em>mentions-skill</em></li>
+<li><code>bmad-gds</code> → <code>game-build-log-triage</code> <em>mentions-skill</em></li>
+<li><code>bmad-gds</code> → <code>game-demo-feedback-triage</code> <em>mentions-skill</em></li>
+<li><code>bmad-gds</code> → <code>game-performance-profiler</code> <em>mentions-skill</em></li>
+<li><code>bmad-gds</code> → <code>steam-store-launch-ops</code> <em>mentions-skill</em></li>
+<li><code>bmad-gds</code> → <code>task-planning</code> <em>mentions-skill</em></li>
+<li><code>bmad-idea</code> → <code>bmad-idea:references</code> <em>has-support</em></li>
+<li><code>bmad-idea</code> → <code>bmad-idea:evals</code> <em>has-support</em></li>
+<li><code>bmad-idea</code> → <code>bmad-idea:compact</code> <em>has-support</em></li>
+<li><code>bmad-idea</code> → <code>bmad</code> <em>mentions-skill</em></li>
+<li><code>bmad-idea</code> → <code>bmad-gds</code> <em>mentions-skill</em></li>
+<li><code>bmad-idea</code> → <code>marketing-automation</code> <em>mentions-skill</em></li>
+<li><code>bmad-idea</code> → <code>task-planning</code> <em>mentions-skill</em></li>
+<li><code>changelog-maintenance</code> → <code>changelog-maintenance:references</code> <em>has-support</em></li>
+<li><code>changelog-maintenance</code> → <code>changelog-maintenance:evals</code> <em>has-support</em></li>
+<li><code>changelog-maintenance</code> → <code>changelog-maintenance:compact</code> <em>has-support</em></li>
+<li><code>changelog-maintenance</code> → <code>api-documentation</code> <em>mentions-skill</em></li>
+<li><code>changelog-maintenance</code> → <code>deployment-automation</code> <em>mentions-skill</em></li>
+<li><code>changelog-maintenance</code> → <code>marketing-automation</code> <em>mentions-skill</em></li>
+<li><code>changelog-maintenance</code> → <code>technical-writing</code> <em>mentions-skill</em></li>
+<li><code>changelog-maintenance</code> → <code>user-guide-writing</code> <em>mentions-skill</em></li>
+<li><code>clawteam</code> → <code>clawteam:references</code> <em>has-support</em></li>
+<li><code>clawteam</code> → <code>clawteam:evals</code> <em>has-support</em></li>
+<li><code>clawteam</code> → <code>clawteam:scripts</code> <em>has-support</em></li>
+<li><code>clawteam</code> → <code>clawteam:compact</code> <em>has-support</em></li>
+<li><code>clawteam</code> → <code>debugging</code> <em>mentions-skill</em></li>
+<li><code>clawteam</code> → <code>jeo</code> <em>mentions-skill</em></li>
+<li><code>clawteam</code> → <code>ohmg</code> <em>mentions-skill</em></li>
+<li><code>clawteam</code> → <code>omc</code> <em>mentions-skill</em></li>
+<li><code>clawteam</code> → <code>omx</code> <em>mentions-skill</em></li>
+<li><code>clawteam</code> → <code>plannotator</code> <em>mentions-skill</em></li>
+<li><code>clawteam</code> → <code>ralph</code> <em>mentions-skill</em></li>
+<li><code>clawteam</code> → <code>survey</code> <em>mentions-skill</em></li>
+<li><code>clawteam</code> → <code>task-planning</code> <em>mentions-skill</em></li>
+<li><code>clawteam</code> → <code>vibe-kanban</code> <em>mentions-skill</em></li>
+<li><code>code-refactoring</code> → <code>code-refactoring:references</code> <em>has-support</em></li>
+<li><code>code-refactoring</code> → <code>code-refactoring:evals</code> <em>has-support</em></li>
+<li><code>code-refactoring</code> → <code>code-refactoring:compact</code> <em>has-support</em></li>
+<li><code>code-refactoring</code> → <code>code-review</code> <em>mentions-skill</em></li>
+<li><code>code-refactoring</code> → <code>codebase-search</code> <em>mentions-skill</em></li>
+<li><code>code-refactoring</code> → <code>debugging</code> <em>mentions-skill</em></li>
+<li><code>code-refactoring</code> → <code>performance-optimization</code> <em>mentions-skill</em></li>
+<li><code>code-refactoring</code> → <code>testing-strategies</code> <em>mentions-skill</em></li>
+<li><code>code-review</code> → <code>code-review:references</code> <em>has-support</em></li>
+<li><code>code-review</code> → <code>code-review:evals</code> <em>has-support</em></li>
+<li><code>code-review</code> → <code>code-review:compact</code> <em>has-support</em></li>
+<li><code>code-review</code> → <code>debugging</code> <em>mentions-skill</em></li>
+<li><code>code-review</code> → <code>git-workflow</code> <em>mentions-skill</em></li>
+<li><code>code-review</code> → <code>performance-optimization</code> <em>mentions-skill</em></li>
+<li><code>code-review</code> → <code>testing-strategies</code> <em>mentions-skill</em></li>
+<li><code>code-review</code> → <code>web-accessibility</code> <em>mentions-skill</em></li>
+<li><code>code-review</code> → <code>web-design-guidelines</code> <em>mentions-skill</em></li>
+<li><code>codebase-search</code> → <code>codebase-search:references</code> <em>has-support</em></li>
+<li><code>codebase-search</code> → <code>codebase-search:evals</code> <em>has-support</em></li>
+<li><code>codebase-search</code> → <code>codebase-search:compact</code> <em>has-support</em></li>
+<li><code>codebase-search</code> → <code>code-refactoring</code> <em>mentions-skill</em></li>
+<li><code>codebase-search</code> → <code>code-review</code> <em>mentions-skill</em></li>
+<li><code>codebase-search</code> → <code>debugging</code> <em>mentions-skill</em></li>
+<li><code>codebase-search</code> → <code>graphify</code> <em>mentions-skill</em></li>
+<li><code>codebase-search</code> → <code>log-analysis</code> <em>mentions-skill</em></li>
+<li><code>data-analysis</code> → <code>data-analysis:references</code> <em>has-support</em></li>
+<li><code>data-analysis</code> → <code>data-analysis:evals</code> <em>has-support</em></li>
+<li><code>data-analysis</code> → <code>data-analysis:compact</code> <em>has-support</em></li>
+<li><code>data-analysis</code> → <code>codebase-search</code> <em>mentions-skill</em></li>
+<li><code>data-analysis</code> → <code>log-analysis</code> <em>mentions-skill</em></li>
+<li><code>data-analysis</code> → <code>looker-studio-bigquery</code> <em>mentions-skill</em></li>
+<li><code>data-analysis</code> → <code>pattern-detection</code> <em>mentions-skill</em></li>
+<li><code>database-schema-design</code> → <code>database-schema-design:references</code> <em>has-support</em></li>
+<li><code>database-schema-design</code> → <code>database-schema-design:evals</code> <em>has-support</em></li>
+<li><code>database-schema-design</code> → <code>database-schema-design:compact</code> <em>has-support</em></li>
+<li><code>database-schema-design</code> → <code>api-design</code> <em>mentions-skill</em></li>
+<li><code>database-schema-design</code> → <code>api-documentation</code> <em>mentions-skill</em></li>
+<li><code>database-schema-design</code> → <code>authentication-setup</code> <em>mentions-skill</em></li>
+<li><code>database-schema-design</code> → <code>backend-testing</code> <em>mentions-skill</em></li>
+<li><code>database-schema-design</code> → <code>looker-studio-bigquery</code> <em>mentions-skill</em></li>
+<li><code>database-schema-design</code> → <code>monitoring-observability</code> <em>mentions-skill</em></li>
+<li><code>database-schema-design</code> → <code>security-best-practices</code> <em>mentions-skill</em></li>
+<li><code>debugging</code> → <code>debugging:references</code> <em>has-support</em></li>
+<li><code>debugging</code> → <code>debugging:evals</code> <em>has-support</em></li>
+<li><code>debugging</code> → <code>debugging:compact</code> <em>has-support</em></li>
+<li><code>debugging</code> → <code>code-review</code> <em>mentions-skill</em></li>
+<li><code>debugging</code> → <code>log-analysis</code> <em>mentions-skill</em></li>
+<li><code>debugging</code> → <code>monitoring-observability</code> <em>mentions-skill</em></li>
+<li><code>debugging</code> → <code>performance-optimization</code> <em>mentions-skill</em></li>
+<li><code>debugging</code> → <code>testing-strategies</code> <em>mentions-skill</em></li>
+<li><code>deployment-automation</code> → <code>deployment-automation:references</code> <em>has-support</em></li>
+<li><code>deployment-automation</code> → <code>deployment-automation:evals</code> <em>has-support</em></li>
+<li><code>deployment-automation</code> → <code>deployment-automation:compact</code> <em>has-support</em></li>
+<li><code>deployment-automation</code> → <code>environment-setup</code> <em>mentions-skill</em></li>
+<li><code>deployment-automation</code> → <code>monitoring-observability</code> <em>mentions-skill</em></li>
+<li><code>deployment-automation</code> → <code>system-environment-setup</code> <em>mentions-skill</em></li>
+<li><code>deployment-automation</code> → <code>vercel-deploy</code> <em>mentions-skill</em></li>
+<li><code>deployment-automation</code> → <code>workflow-automation</code> <em>mentions-skill</em></li>
+<li><code>design-system</code> → <code>design-system:references</code> <em>has-support</em></li>
+<li><code>design-system</code> → <code>design-system:evals</code> <em>has-support</em></li>
+<li><code>design-system</code> → <code>design-system:compact</code> <em>has-support</em></li>
+<li><code>design-system</code> → <code>frontend-design-system</code> <em>mentions-skill</em></li>
+<li><code>design-system</code> → <code>responsive-design</code> <em>mentions-skill</em></li>
+<li><code>design-system</code> → <code>ui-component-patterns</code> <em>mentions-skill</em></li>
+<li><code>design-system</code> → <code>web-accessibility</code> <em>mentions-skill</em></li>
+<li><code>design-system</code> → <code>web-design-guidelines</code> <em>mentions-skill</em></li>
+<li><code>environment-setup</code> → <code>environment-setup:references</code> <em>has-support</em></li>
+<li><code>environment-setup</code> → <code>environment-setup:evals</code> <em>has-support</em></li>
+<li><code>environment-setup</code> → <code>environment-setup:compact</code> <em>has-support</em></li>
+<li><code>environment-setup</code> → <code>deployment-automation</code> <em>mentions-skill</em></li>
+<li><code>environment-setup</code> → <code>security-best-practices</code> <em>mentions-skill</em></li>
+<li><code>environment-setup</code> → <code>system-environment-setup</code> <em>mentions-skill</em></li>
+<li><code>fabric</code> → <code>fabric:references</code> <em>has-support</em></li>
+<li><code>fabric</code> → <code>fabric:evals</code> <em>has-support</em></li>
+<li><code>fabric</code> → <code>fabric:compact</code> <em>has-support</em></li>
+<li><code>fabric</code> → <code>survey</code> <em>mentions-skill</em></li>
+<li><code>file-organization</code> → <code>file-organization:references</code> <em>has-support</em></li>
+<li><code>file-organization</code> → <code>file-organization:evals</code> <em>has-support</em></li>
+<li><code>file-organization</code> → <code>file-organization:compact</code> <em>has-support</em></li>
+<li><code>file-organization</code> → <code>bmad</code> <em>mentions-skill</em></li>
+<li><code>file-organization</code> → <code>bmad-gds</code> <em>mentions-skill</em></li>
+<li><code>file-organization</code> → <code>codebase-search</code> <em>mentions-skill</em></li>
+<li><code>file-organization</code> → <code>design-system</code> <em>mentions-skill</em></li>
+<li><code>file-organization</code> → <code>environment-setup</code> <em>mentions-skill</em></li>
+<li><code>file-organization</code> → <code>state-management</code> <em>mentions-skill</em></li>
+<li><code>file-organization</code> → <code>system-environment-setup</code> <em>mentions-skill</em></li>
+<li><code>file-organization</code> → <code>workflow-automation</code> <em>mentions-skill</em></li>
+<li><code>firebase-ai-logic</code> → <code>firebase-ai-logic:references</code> <em>has-support</em></li>
+<li><code>firebase-ai-logic</code> → <code>firebase-ai-logic:evals</code> <em>has-support</em></li>
+<li><code>firebase-ai-logic</code> → <code>firebase-ai-logic:compact</code> <em>has-support</em></li>
+<li><code>firebase-ai-logic</code> → <code>firebase-cli</code> <em>mentions-skill</em></li>
+<li><code>firebase-ai-logic</code> → <code>genkit</code> <em>mentions-skill</em></li>
+<li><code>firebase-cli</code> → <code>firebase-cli:references</code> <em>has-support</em></li></ol></section></div>
 </body></html>
