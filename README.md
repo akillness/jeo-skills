@@ -87,6 +87,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
+| **testing-strategies: gate-truth handoff ratchet** | Tightened `testing-strategies` around **which gate is actually being decided** before expanding into layer talk. It now names `merge-gate-truth`, `release-gate-truth`, or `scheduled-breadth-truth`, adds `references/gate-truth-and-release-handovers.md`, expands `evals/evals.json` with protected-branch and Steam/build-checklist boundary cases, refreshes `SKILL.toon`, and syncs README/setup/manifest wording so the skill stops blurring PR blockers with release-only or platform-launch proof. |
 | **steam-store-launch-ops: packet-first structural hardening** | Tightened `steam-store-launch-ops` into a smaller packet-first Steam launch router. It now chooses one primary packet (`page-promise-audit`, `wishlist-signal-check`, `demo-readiness-gate`, `event-timing-workback`, or `launch-ops-runbook`), adds `references/intake-packets-and-route-outs.md`, expands `evals/evals.json` with route-out and broad-GTM boundary cases, refreshes `SKILL.toon`, and syncs README/setup/manifest wording so the game lane stays Steam-specific instead of drifting into generic marketing or demo-feedback work. |
 
 ## 🆕 What's New in v2026-04-17
@@ -323,7 +324,7 @@ setup omc
 | `code-review` | Evidence-first diff / PR review with severity, missing-proof checks, and route-outs | All |
 | `debugging` | Routing-first diagnosis for concrete bugs, regressions, flaky failures, and env-specific behavior; routes raw logs to `log-analysis` and perf-only work to `performance-optimization` | All |
 | `performance-optimization` | Artifact-first measurement-led bottleneck analysis and tuning across latency, throughput, memory, bundle, CWV, and frame-budget work | All |
-| `testing-strategies` | Packet-first validation policy for change risk, gate design, flaky-suite policy, and release confidence | All |
+| `testing-strategies` | Packet-first validation policy for merge-gate truth, release-only proof, scheduled breadth, and cross-domain test-policy handoffs | All |
 
 ### 🏗 Infrastructure (13)
 
