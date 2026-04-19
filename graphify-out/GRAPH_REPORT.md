@@ -10,38 +10,38 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 90
 - Skills missing compact variants: 0
 - Graph nodes: 390
-- Graph edges: 1146
+- Graph edges: 1102
 
 ## Strongest structural findings
 1. Discovery docs still dominate the graph because README / setup / manifest surfaces index nearly the full live catalog, so documentation sync remains mandatory whenever a skill boundary changes materially.
 2. Support coverage remains effectively complete across the live skill set, so the highest-value maintenance wins still come from tightening dense front-door skills instead of adding wrappers.
-3. `omc` is now a routing-first Claude-first orchestration front door: the skill starts by choosing plugin setup, in-session runtime, terminal runtime, recovery/update, or boundary route-out instead of mixing plugin docs, CLI manual, and adjacent ownership in one surface.
-4. The refreshed `omc` lane now makes the plugin-vs-CLI split explicit (`/team` vs `omc team`, in-session Autopilot/Ralph/Ultrawork vs shell-side `omc` commands), which is more stable than copying volatile upstream command catalogs into the front door.
+3. `skill-autoresearch` is now a packet-first repo-local ratcheting router: start from `benchmark-readiness`, `charter-freeze`, `baseline-score`, `one-change-mutation`, `support-sync`, `final-report`, or `route-out` instead of treating the skill like a generic eval-platform explainer.
+4. The refreshed `skill-autoresearch` lane now calls hosted dashboards/traces and GPU-bound `autoresearch` out explicitly, which keeps markdown/git artifact ratcheting as the distinctive contract of the search-analysis maintenance layer.
 5. The next best maintenance wins still look like oversized routers whose contracts are stable enough to shrink without changing ownership.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 90
-- README.ko.md: degree 89
-- README.md: degree 89
-- setup-all-skills-prompt.md: degree 89
-- .agent-skills/skills.toon: degree 83
+- .agent-skills/skills.toon: degree 90
+- README.ko.md: degree 90
+- README.md: degree 90
+- setup-all-skills-prompt.md: degree 90
 
 ## Oversized front-door watchlist
-- clawteam: 301 lines in SKILL.md
-- opencontext: 296 lines in SKILL.md
-- task-planning: 295 lines in SKILL.md
-- jeo: 289 lines in SKILL.md
-- autoresearch: 285 lines in SKILL.md
-- testing-strategies: 275 lines in SKILL.md
-- state-management: 273 lines in SKILL.md
-- steam-store-launch-ops: 273 lines in SKILL.md
-- skill-autoresearch: 268 lines in SKILL.md
-- plannotator: 267 lines in SKILL.md
+- clawteam: 300 lines in SKILL.md
+- opencontext: 295 lines in SKILL.md
+- task-planning: 294 lines in SKILL.md
+- jeo: 288 lines in SKILL.md
+- autoresearch: 284 lines in SKILL.md
+- testing-strategies: 274 lines in SKILL.md
+- skill-autoresearch: 273 lines in SKILL.md
+- steam-store-launch-ops: 272 lines in SKILL.md
+- state-management: 272 lines in SKILL.md
+- plannotator: 266 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- `omc` should stay distinct from `jeo`, `ralphmode`, `omx`, `ohmg`, `plannotator`, `agent-browser`, `playwriter`, and `agentation` by owning Claude-first runtime routing instead of long-loop orchestration, permissions, review gates, browser verification, or non-Claude runtime adoption.
+- `skill-autoresearch` should stay distinct from `autoresearch` by owning repo-local markdown/git ratchets rather than GPU-bound ML search loops.
+- `skill-autoresearch` should also stay distinct from hosted eval/observability products such as Promptfoo, LangSmith, Braintrust, and Weave by owning append-only repo artifacts, support-surface sync, and PR-reviewable keep/revert history.
 - Discovery docs remain the highest-degree maintenance nodes, so README/setup/manifest sync is still required whenever a skill boundary or trigger surface changes materially.
-- Plugin slash skills and the `omc` terminal CLI should be described as adjacent surfaces, not as one interchangeable command family.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree or oversized front-door skills whose contracts are stable enough to validate mechanically.

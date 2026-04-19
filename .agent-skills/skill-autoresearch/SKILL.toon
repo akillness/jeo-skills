@@ -1,32 +1,33 @@
 N:skill-autoresearch
-D:Improve an existing SKILL.md through a bounded eval-driven mutation loop with a frozen evaluator, one meaningful change at a time, explicit keep-or-revert decisions, and append-only experiment logs.
+D:Route reusable skill-improvement work into one bounded repo-local ratcheting packet: benchmark readiness, loop charter freeze, baseline scoring, one-change mutation, support-surface sync, or final keep/revert report. Use when a SKILL.md, SOP, prompt, or workflow doc needs a frozen local benchmark and append-only experiment logs. Route GPU-bound `autoresearch` runs and hosted eval/observability platforms outward.
 G:skill-autoresearch skill-optimization evals prompt-iteration benchmark mutation-loop ratcheting autoresearch
 
 U[5]:
-  Improve a reusable SKILL.md with measured iterations instead of ad hoc rewriting
-  Freeze prompts and evals before mutating the skill
-  Compare baseline versus mutations and keep only score-improving changes
-  Add or refresh support files and discovery surfaces when the main boundary is proven
-  Preserve append-only logs so future maintainers can reuse or reject prior mutations
+  Improve a reusable repo artifact with a frozen local benchmark instead of ad hoc rewriting
+  Choose one packet before editing: readiness, charter, baseline, mutation, support-sync, final report, or route-out
+  Keep one primary mutable artifact and one meaningful change per iteration
+  Sync compact/docs/manifests only after the core ratchet holds
+  Preserve append-only keep/revert history in repo-visible artifacts
 
 S[7]{n,action,details}:
-  1,ConfirmInputs,Collect target skill path; 3-5 representative prompts; 3-6 binary evals; runs per experiment; budget cap; supporting files in scope
-  2,ReadSkill,Read SKILL.md plus linked references; identify triggers; route-outs; failure modes; missing support coverage
-  3,FreezeEvaluator,Write loop-charter.md with goal; baseline; mutable artifact; fixed harness; constraints; rejected directions
-  4,Baseline,Create skill-autoresearch-[skill-name] artifacts and record experiment 0 on the fixed prompt set
-  5,MutateLoop,Change one meaningful thing; rerun the same harness; keep only score improvements; revert ties or regressions
-  6,SyncSupport,Update evals; compact variants; discovery manifests; docs/setup surfaces only if positioning changed materially
-  7,Deliver,Report baseline-to-final score; keep-vs-revert count; top changes; remaining failures; artifact paths
+  1,ChoosePacket,Normalize the request into benchmark-readiness; charter-freeze; baseline-score; one-change-mutation; support-sync; final-report; or route-out
+  2,ReadTarget,Read the primary artifact and only the neighboring support/discovery surfaces that matter for this run
+  3,FreezeEvaluator,Write loop-charter.md with goal; baseline; fixed harness; scope; constraints; rejected directions
+  4,Baseline,Create a baseline copy and record experiment 0 on the frozen harness
+  5,MutateOnce,Make one meaningful change; rerun the same harness; keep only score-improving changes; revert ties or regressions unless the charter says otherwise
+  6,SyncSupport,Update evals; compact variants; manifests; README/setup surfaces only after the main ratchet is justified
+  7,Deliver,Report baseline-to-final delta; keep-vs-revert count; remaining failures; artifact paths
 
 R[7]:
-  Do not start without target skill, representative prompts, and binary evals
-  Freeze the evaluator before the first mutation
-  Change one meaningful thing at a time so results stay attributable
-  Keep or revert by measured score, not intuition
-  Log every experiment, including reverts
-  Treat hosted eval platforms as references, not substitutes for repo-local artifacts
-  Start a new comparison track if prompts, evals, or scoring rules change
+  Do not start without representative prompts or scenarios plus binary evals
+  Do not change prompts; eval wording; or scoring rules mid-run
+  Keep one primary mutable artifact even if support files are later in scope
+  Change one meaningful thing at a time so the result stays attributable
+  Log both keeps and reverts
+  Route hosted eval/tracing work outward instead of stretching this skill
+  Apply the same frozen-harness rule when the target is skill-autoresearch itself
 
-E[2]{desc,in,out}:
-  "Trigger precision ratchet","Baseline a stale skill, rewrite the description only, and rerun the fixed eval suite","improved trigger precision without changing the evaluator; keep or revert decision logged"
-  "Support-surface sync","After a justified main-skill improvement, update compact/discovery/docs surfaces that changed materially","support files and manifests synced after the core mutation proved out"
+E[3]{desc,in,out}:
+  "Trigger repair","A reusable skill over-triggers and needs a bounded loop","packet chosen; evaluator frozen; one wording mutation kept or reverted by score"
+  "Benchmark drift repair","The maintainer keeps changing tests while editing the skill","run halted into readiness/charter packet until the evaluator is frozen or a new comparison track begins"
+  "Support-surface follow-up","The main skill improved and README/setup/compact wording may now be stale","support-sync happens only after the core ratchet is proven"

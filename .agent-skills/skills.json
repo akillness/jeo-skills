@@ -2667,7 +2667,7 @@
     },
     {
       "name": "skill-autoresearch",
-      "description": "Improve an existing `SKILL.md` through a bounded eval-driven mutation loop. Use when a reusable skill needs sharper triggers, clearer instructions, or stronger support files and you want a frozen evaluation harness, one meaningful change per iteration, explicit keep-or-revert decisions, and append-only experiment logs instead of ad hoc rewriting. Triggers on: optimize this skill, eval my skill, improve this skill, benchmark this skill, skill mutation loop, ratchet this skill, run autoresearch on this skill.",
+      "description": "Route reusable skill-improvement work into one bounded repo-local ratcheting packet: benchmark readiness, loop charter freeze, baseline scoring, one-change mutation, support-surface sync, or final keep/revert report. Use when a `SKILL.md`, SOP, prompt, or workflow doc needs a frozen local benchmark and append-only experiment logs. Route GPU-bound `autoresearch` runs and hosted eval/observability platforms outward.",
       "category": "search-analysis",
       "path": "skill-autoresearch/SKILL.md",
       "tags": [
