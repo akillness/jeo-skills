@@ -1,10 +1,10 @@
 ---
 title: Developer Workflow Cluster
 created: 2026-04-13
-updated: 2026-04-19
+updated: 2026-04-20
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality]
-sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/workflow-automation-structural-hardening-20260418/context.md, .survey/workflow-automation-structural-hardening-20260418/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, .survey/fabric-modernization-20260415/context.md, .survey/fabric-modernization-20260415/solutions.md, .survey/lmstudio-cli-modernization-20260415/context.md, .survey/lmstudio-cli-modernization-20260415/solutions.md, .survey/file-organization-structural-hardening-20260417/context.md, .survey/file-organization-structural-hardening-20260417/solutions.md, .survey/git-workflow-structural-hardening-20260418/context.md, .survey/git-workflow-structural-hardening-20260418/solutions.md, .survey/git-submodule-structural-hardening-20260418/context.md, .survey/git-submodule-structural-hardening-20260418/solutions.md, .survey/clawteam-structural-hardening-20260419/context.md, .survey/clawteam-structural-hardening-20260419/solutions.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/workflow-automation-modernization-20260413/context.md, .survey/workflow-automation-modernization-20260413/solutions.md, .survey/workflow-automation-structural-hardening-20260418/context.md, .survey/workflow-automation-structural-hardening-20260418/solutions.md, .survey/npm-git-install-modernization-20260415/context.md, .survey/npm-git-install-modernization-20260415/solutions.md, .survey/fabric-modernization-20260415/context.md, .survey/fabric-modernization-20260415/solutions.md, .survey/lmstudio-cli-modernization-20260415/context.md, .survey/lmstudio-cli-modernization-20260415/solutions.md, .survey/file-organization-structural-hardening-20260417/context.md, .survey/file-organization-structural-hardening-20260417/solutions.md, .survey/git-workflow-structural-hardening-20260418/context.md, .survey/git-workflow-structural-hardening-20260418/solutions.md, .survey/git-submodule-structural-hardening-20260418/context.md, .survey/git-submodule-structural-hardening-20260418/solutions.md, .survey/clawteam-structural-hardening-20260419/context.md, .survey/clawteam-structural-hardening-20260419/solutions.md, .survey/clawteam-packet-ratchet-20260420/context.md, .survey/clawteam-packet-ratchet-20260420/solutions.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Developer Workflow Cluster
@@ -53,6 +53,8 @@ The `workflow-automation` structural-hardening pass extended the same pattern to
 The 2026-04-19 `npm-git-install` structural-hardening pass applied the same rule to package delivery choice. The lane stays cleaner when `npm-git-install` starts from the delivery packet already in hand—temporary bridge, shared bridge, private-auth, artifact fallback, workspace inner loop, or durable distribution—and routes Git repair, package-host admin, repo glue, and environment setup out immediately instead of keeping a larger syntax-heavy front door.
 
 The 2026-04-19 `clawteam` structural-hardening pass extended the same dense-anchor rule to multi-agent developer tooling. The lane stays cleaner when `clawteam` acts as the ClawTeam-specific operator router—manual team control, template launch, monitoring/recovery, and profile setup—while generic orchestration, planning, and board governance keep routing to their neighboring skills instead of being absorbed into another swarm wrapper.
+
+The 2026-04-20 packet-ratchet pass tightened the same boundary again. The durable lesson is that ClawTeam-style workflows are still operator-heavy: tmux/worktree visibility, runtime caveats, and honest wrong-owner checks matter more than a larger abstraction-first front door. In this lane, the better maintenance move is to expose one operator packet early and route generic orchestration or queue governance outward, not to add another swarm wrapper.
 
 ## Related pages
 - [[skill-support-coverage]]

@@ -55,6 +55,16 @@
         "explains that clawteam is the ClawTeam-specific operator surface",
         "does not force ClawTeam commands for a generic orchestration request"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "I need a Kanban-style board for coding tasks, review queues, and worktree handoff — not ClawTeam runtime commands.",
+      "expected_output": "Routes away from clawteam to vibe-kanban or another board/governance owner instead of forcing ClawTeam board commands.",
+      "assertions": [
+        "route-out to vibe-kanban or equivalent board-governance owner provided",
+        "explains that clawteam owns the runtime/operator surface rather than generic board governance",
+        "does not present ClawTeam board commands as the default answer"
+      ]
     }
   ]
 }

@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-20 | Total pages: 153
+> Last updated: 2026-04-20 | Total pages: 154
 
 ## Entities
 
@@ -41,6 +41,7 @@
 - [[changelog-maintenance-modernization-2026-04-14]] — Why the best bounded documentation-cluster improvement was modernizing `changelog-maintenance` into the release-history / release-notes anchor instead of adding another release-note wrapper.
 - [[changelog-maintenance-structural-hardening-2026-04-18]] — Why the best bounded documentation-cluster follow-up was shrinking `changelog-maintenance` into a routing-first release-writing anchor with packet selection and channel handoffs instead of adding another release-note helper.
 - [[clawteam-structural-hardening-2026-04-19]] — Why the best bounded developer-workflow follow-up was shrinking `clawteam` into a ClawTeam-specific operator router with truthful upstream command families instead of adding another swarm wrapper.
+- [[clawteam-packet-ratchet-2026-04-20]] — Why the best bounded next developer-workflow follow-up was tightening `clawteam` into a packet-first runtime router with earlier wrong-owner checks and tmux/worktree reality instead of adding another swarm wrapper.
 - [[monitoring-observability-modernization-2026-04-14]] — Why the best bounded infrastructure improvement was modernizing `monitoring-observability` into the telemetry design/review anchor instead of adding another dashboard-only, alerting-only, or vendor wrapper.
 - [[monitoring-observability-structural-hardening-2026-04-18]] — Why the best bounded infrastructure follow-up was shrinking `monitoring-observability` into a packet-first routing anchor with synced compact discovery surfaces instead of adding another monitoring or alerting wrapper.
 - [[deployment-automation-modernization-2026-04-13]] — Why the best bounded infrastructure/developer-workflow improvement was modernizing `deployment-automation` into the release-execution anchor instead of adding another CI/CD or rollout wrapper.
