@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-04-18T15:11:29Z",
-  "skill_count": 89,
+  "generated": "2026-04-19T06:22:16Z",
+  "skill_count": 90,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -78,6 +78,7 @@
       "git-submodule",
       "git-workflow",
       "google-workspace",
+      "graphify",
       "llm-wiki",
       "lmstudio-cli",
       "npm-git-install",
@@ -1392,6 +1393,34 @@
         "WebFetch"
       ],
       "commands": []
+    },
+    {
+      "name": "graphify",
+      "description": "Route durable graph-building requests into one honest mode: assistant-native install, local Python build, incremental refresh, graph query follow-up, or a graphify-style structural fallback for markdown-heavy corpora. Use when the user wants `GRAPH_REPORT.md`, `graph.json`, `graph.html`, repo/corpus relationship tracing, mixed code+docs+asset graphing, or graph-backed architecture understanding that should persist across sessions. Route simple locate/reference work to `codebase-search`, narrative knowledge-base work to `llm-wiki`, and project-memory handoff to `opencontext`.",
+      "tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Grep",
+        "Glob"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "path": "graphify",
+      "tags": [
+        "knowledge-graph",
+        "codebase-analysis",
+        "graphrag",
+        "architecture",
+        "graphify",
+        "corpus-analysis",
+        "persistent-memory"
+      ]
     },
     {
       "name": "llm-wiki",

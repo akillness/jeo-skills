@@ -1,0 +1,29 @@
+N:graphify
+D:Route durable graph-building requests into one honest mode: assistant-native install, local Python build, incremental refresh, graph query follow-up, or a graphify-style structural fallback for markdown-heavy corpora. Use when the user wants `GRAPH_REPORT.md`, `graph.json`, `graph.html`, repo/corpus relationship tracing, mixed code+docs+asset graphing, or graph-backed architecture understanding that should persist across sessions.
+G:knowledge-graph codebase-analysis graphrag architecture graphify corpus-analysis persistent-memory
+
+U[6]:
+  Build persistent graph artifacts for a repo or mixed corpus
+  Choose between assistant-native install, local build, refresh, query, or structural fallback
+  Trace relationships with graph-backed query/path/explain flows
+  Refresh an existing graph without rebuilding blindly
+  Handle markdown-heavy or weak-extraction cases honestly with structural fallback
+  Route search-only, wiki-only, or project-memory work to neighboring skills
+
+S[8]{n,action,details}:
+  1,Normalize packet,Classify the request as repo-structure, relationship-trace, mixed-corpus-memory, assistant-install, or refresh/fallback
+  2,Choose mode,Pick one primary mode: assistant-native-install, local-python-build, incremental-refresh, graph-query-followup, or structural-fallback
+  3,Scope corpus,Choose the smallest path or existing graph outputs that answer the question
+  4,Verify runtime,Preserve the `graphifyy` package / `graphify` CLI distinction and tell the truth about assistant-native vs local execution
+  5,Run narrow recipe,Use the smallest honest install/build/query/fallback recipe for the chosen mode
+  6,Read artifacts,Prefer `GRAPH_REPORT.md` then `graph.html` then `graph.json`
+  7,Route out,Send simple locate/reference work to codebase-search, narrative knowledge-base work to llm-wiki, and project-memory handoff to opencontext
+  8,Return brief,Produce one concise graph brief with scope, artifacts, fallback truth, and next steps
+
+R[6]:
+  Do not force Graphify when the real bottleneck is search-first repo navigation
+  Keep assistant-native install, local build, refresh, query, and fallback as distinct modes
+  Use the smallest scope that answers the question
+  Treat structural fallback as an honest first-class mode when native extraction is weak
+  Read `GRAPH_REPORT.md` before over-using raw `graph.json`
+  Label portability/path-leak limitations honestly when artifacts are machine-specific

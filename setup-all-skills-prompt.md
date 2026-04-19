@@ -84,7 +84,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 89 skills to global store, link shared skills to all detected agents
+# Install ALL 90 skills to global store, link shared skills to all detected agents
 # Platform-specific skills (omc, ohmg, omx, ralphmode) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
@@ -333,7 +333,7 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (89 skills)
+## Skill Inventory (90 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
@@ -353,7 +353,7 @@ If no → skip silently. Never re-ask.
 | **Creative Media** | remotion-video-production *(compatibility alias for video-production when legacy tooling or explicit Remotion naming still expects the old skill)*, video-production *(canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs)* | All (`*`) |
 | **Marketing** | marketing-automation *(broad marketing front door for choosing one operating mode, one primary lane, and one handoff packet across launch, conversion, lifecycle, acquisition/content, and measurement work)*, marketing-skills-collection *(compatibility alias for marketing-automation)* | All (`*`) |
 | **Game Development** | game-build-log-triage *(Unity/Unreal build-log triage)*, game-ci-cd-pipeline *(routing-first game pipeline packets for setup, stage split, cache policy, preflight, artifact/release hygiene, and CI signal)*, game-demo-feedback-triage *(demo/playtest feedback synthesis)*, game-performance-profiler *(Unity/Unreal frame-time triage: bottleneck-first profiling brief, quick packets, benchmark routes, target-device review, and deliberate profiler escalation)*, steam-store-launch-ops *(Steam visibility / page promise / demo proof / event timing / launch-ops diagnosis)* | All (`*`) |
-| **Utilities** | clawteam, fabric *(routing-first Fabric operator skill for reusable stdin/file/transcript/log transforms, custom pattern packs, shell pipelines, and `fabric --serve`; not generic chat prompting or coding-assistant work)*, file-organization *(repo structure decisions: framework defaults vs feature folders vs monorepo boundaries vs docs taxonomy vs engine-aware game layouts)*, git-submodule *(submodule-vs-subtree/vendor/package delivery choice, recursive bootstrap, safe pointer sync/update, detached-HEAD handling, and CI / hosted-platform checkout limits)*, git-workflow *(routing-first local Git workflow: branch hygiene, selective staging, commit cleanup, merge-vs-rebase choice, conflict resolution, lease-safe pushes, and recovery)*, google-workspace *(choose Apps Script vs REST API vs Admin SDK, auth model, and multi-app Workspace workflow shape before implementation)*, llm-wiki, npm-git-install *(routing-first Node package delivery: temporary Git bridge, SHA pin, private-auth, tarball/pack artifact, workspace/file inner-loop, or publish-first handoff)*, obsidian-cli, obsidian-plugin, opencontext *(project/repo memory + cross-agent handoff via searchable decisions, manifests, and stable links; routes long-lived wiki building to llm-wiki and structure mapping to graphify)*, workflow-automation *(routing-first repo workflow automation for task-entrypoints, bootstrap, local-CI parity, hook guardrails, maintenance bots, and workflow cleanup)* | All (`*`) |
+| **Utilities** | clawteam, fabric *(routing-first Fabric operator skill for reusable stdin/file/transcript/log transforms, custom pattern packs, shell pipelines, and `fabric --serve`; not generic chat prompting or coding-assistant work)*, file-organization *(repo structure decisions: framework defaults vs feature folders vs monorepo boundaries vs docs taxonomy vs engine-aware game layouts)*, git-submodule *(submodule-vs-subtree/vendor/package delivery choice, recursive bootstrap, safe pointer sync/update, detached-HEAD handling, and CI / hosted-platform checkout limits)*, git-workflow *(routing-first local Git workflow: branch hygiene, selective staging, commit cleanup, merge-vs-rebase choice, conflict resolution, lease-safe pushes, and recovery)*, google-workspace *(choose Apps Script vs REST API vs Admin SDK, auth model, and multi-app Workspace workflow shape before implementation)*, graphify *(routing-first durable graph lane for assistant-native install vs local build vs refresh vs query vs structural fallback; routes search-first work to codebase-search and narrative/project memory outward)*, llm-wiki, npm-git-install *(routing-first Node package delivery: temporary Git bridge, SHA pin, private-auth, tarball/pack artifact, workspace/file inner-loop, or publish-first handoff)*, obsidian-cli, obsidian-plugin, opencontext *(project/repo memory + cross-agent handoff via searchable decisions, manifests, and stable links; routes long-lived wiki building to llm-wiki and structure mapping to graphify)*, workflow-automation *(routing-first repo workflow automation for task-entrypoints, bootstrap, local-CI parity, hook guardrails, maintenance bots, and workflow cleanup)* | All (`*`) |
 
 ---
 

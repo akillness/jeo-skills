@@ -1,7 +1,7 @@
 ---
 title: Skill Support Coverage
 created: 2026-04-12
-updated: 2026-04-18
+updated: 2026-04-19
 type: concept
 tags: [skills, skill-quality, graphify]
 sources: [graphify-out/GRAPH_REPORT.md, .survey/marketing-skills-collection-support-hardening-20260416/context.md, .survey/marketing-skills-collection-support-hardening-20260416/solutions.md, .survey/frontend-alias-support-hardening-20260416/context.md, .survey/frontend-alias-support-hardening-20260416/solutions.md, .survey/remotion-video-production-support-hardening-20260416/context.md, .survey/remotion-video-production-support-hardening-20260416/solutions.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/solutions.md, .survey/jeo-structural-hardening-20260416/context.md, .survey/jeo-structural-hardening-20260416/solutions.md, .survey/design-system-structural-hardening-20260416/context.md, .survey/design-system-structural-hardening-20260416/solutions.md, .survey/firebase-cli-structural-hardening-20260416/context.md, .survey/firebase-cli-structural-hardening-20260416/solutions.md, .survey/authentication-setup-structural-hardening-20260417/context.md, .survey/authentication-setup-structural-hardening-20260417/solutions.md, .survey/file-organization-structural-hardening-20260417/context.md, .survey/file-organization-structural-hardening-20260417/solutions.md, .survey/technical-writing-structural-hardening-20260417/context.md, .survey/technical-writing-structural-hardening-20260417/solutions.md, .survey/user-guide-writing-structural-hardening-20260417/context.md, .survey/user-guide-writing-structural-hardening-20260417/solutions.md, .survey/skill-standardization-structural-hardening-20260417/context.md, .survey/skill-standardization-structural-hardening-20260417/solutions.md, .survey/debugging-structural-hardening-20260418/context.md, .survey/debugging-structural-hardening-20260418/solutions.md, .survey/sprint-retrospective-structural-hardening-20260418/context.md, .survey/sprint-retrospective-structural-hardening-20260418/solutions.md]
@@ -13,12 +13,12 @@ sources: [graphify-out/GRAPH_REPORT.md, .survey/marketing-skills-collection-supp
 Baseline support coverage is now complete across the live `.agent-skills` corpus, so the next structural wins come from high-visibility trigger, boundary, and maintenance-shape improvements rather than missing `references/` or `evals/` folders.
 
 Current structural snapshot from the graph-style scan:
-- 89 filesystem skills with `SKILL.md`
-- 89 live manifest-indexed skills in `.agent-skills/skills.json` categories
-- 89 live skills with `references/`
-- 89 live skills with `evals/`
+- 90 filesystem skills with `SKILL.md`
+- 90 live manifest-indexed skills in `.agent-skills/skills.json` categories
+- 90 live skills with `references/`
+- 90 live skills with `evals/`
 - 24 live skills with `scripts/`
-- 89 live skills with a compact discovery variant
+- 90 live skills with a compact discovery variant
 
 Recent ratchets:
 - The React canonical/alias pair both include `evals/`, which raised support coverage in a high-visibility frontend lane without adding a new skill.
@@ -112,6 +112,7 @@ Recent ratchets:
 - The `survey` structural-hardening pass applied that same pattern to the research layer: shrink the front door from 392 to 309 lines, keep the 4-lane `.survey/{slug}` contract intact, move `settings / rules / hooks` portability detail into `references/platform-adapter-and-artifact-contract.md`, expand evals for repo-maintenance and platform-map cases, and refresh README/setup/manifest surfaces instead of adding another research wrapper.
 
 - The compact-variant completion pass closed the last 8 missing `SKILL.toon` gaps (`clawteam`, `game-build-log-triage`, `game-ci-cd-pipeline`, `game-demo-feedback-triage`, `lmstudio-cli`, `obsidian-plugin`, `research-paper-writing`, `steam-store-launch-ops`), which matters because the repo docs and runtime guidance can once again treat the compact layer as a fully shipped surface instead of an aspirational one.
+- The `graphify` structural-hardening pass then promoted a previously nested utility into the live top-level catalog, added packet/fallback references plus `SKILL.toon`, refreshed evals and discovery surfaces, and refreshed `graphify-out`, which matters because support coverage only helps if the skill is actually discoverable by the repo's runtime surfaces.
 
 ## Why it matters
 - Missing references weaken reuse and make trigger boundaries harder to maintain.

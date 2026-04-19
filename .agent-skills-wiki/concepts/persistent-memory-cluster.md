@@ -1,7 +1,7 @@
 ---
 title: Persistent Memory Cluster
 created: 2026-04-15
-updated: 2026-04-15
+updated: 2026-04-19
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality, graphify]
 sources: [.survey/opencontext-modernization-20260415/context.md, .survey/opencontext-modernization-20260415/solutions.md, .survey/opencontext-modernization-20260415/platform-map.md, graphify-out/GRAPH_REPORT.md]
@@ -31,6 +31,8 @@ Current cluster shape:
 
 ## Structural note
 The graph refresh after the `opencontext` modernization showed another repeatable maintenance pattern: upgrading a high-utility support-gap skill with references, evals, and sharper route-outs is more valuable than creating another overlapping memory wrapper.
+
+2026-04-19 ratchet: `graphify` was still hiding under a nested `utilities/graphify` folder even though the memory cluster already treated it as the structural layer. Promoting it into the live top-level catalog mattered more than inventing another graph wrapper, because runtime discoverability is part of the memory contract.
 
 ## Related pages
 - [[skill-support-coverage]]

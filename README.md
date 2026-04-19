@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-89-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-90-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**89 AI agent skills · TOON Format · Cross-platform**
+**90 AI agent skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**89 AI agent skills · TOON Format · Cross-platform**
+**90 AI agent skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection of 89 AI agent skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
+Agent Skills is a curated collection of 90 AI agent skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -74,6 +74,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
+| **graphify: live-skill promotion + structural hardening** | Promoted `graphify` from the hidden nested `utilities/graphify` folder into the live top-level skill catalog, tightened it into a routing-first graph front door, added `references/mode-packets-and-route-outs.md` plus `references/build-and-fallback-recipes.md`, added `SKILL.toon`, refreshed `evals/evals.json`, and synced README/setup/manifest surfaces so the durable graph lane is actually installable and discoverable. |
 | **looker-studio-bigquery: packet-first structural hardening** | Tightened `looker-studio-bigquery` into a smaller reporting front door. It now starts from one packet (`dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, or `exec-handoff`), adds `references/intake-packets-and-route-outs.md`, expands `evals/evals.json` with a Connected Sheets / exec-handoff case, and syncs `SKILL.toon` / `skills.toon` / `skills.json` plus README/setup wording so the repo advertises the BigQuery reporting lane as packet-first instead of a long BI feature tour. |
 | **web-accessibility: routing-first structural hardening** | Tightened `web-accessibility` into a smaller routing-first remediation anchor. It now starts from one primary accessibility packet (`semantics-structure`, `keyboard-focus`, `labels-announcements`, `visual-perception-reflow`, `media-alternatives`, or `routed-navigation-feedback`), adds `references/intake-packets-and-route-outs.md`, expands `evals/evals.json` with routed-app and responsive-boundary cases, and syncs `SKILL.toon` / `skills.toon` / `skills.json` plus README/setup wording so discovery surfaces stop drifting back to a generic WCAG/ARIA tutorial. |
 | **marketing-automation: structural hardening** | Tightened `marketing-automation` into a broader marketing front door that first chooses one operating mode (`launch-orchestration`, `conversion-surface`, `lifecycle-retention`, `acquisition-content`, or `measurement-experiment`), then one primary lane and one handoff packet instead of dumping channel soup. Added `references/operating-modes-and-route-outs.md`, refreshed `evals/evals.json`, synced `SKILL.toon` / manifest wording, and sharpened route-outs to `steam-store-launch-ops` and `task-planning`. |
@@ -238,7 +239,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 89 local skill folders = 89 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 90 local skill folders = 90 total installable skills
 
 ### 🎯 Core Orchestration (11)
 
@@ -390,6 +391,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | `git-submodule` | Routing-first Git submodule workflow — choose submodule vs subtree/vendor/package delivery, bootstrap recursively, sync or advance pointers safely, avoid detached-HEAD traps, and handle CI / hosted-platform checkout limits | All |
 | `git-workflow` | Routing-first local Git workflow — branch hygiene, selective staging, commit cleanup, merge-vs-rebase choice, conflict resolution, lease-safe pushes, and recovery | All |
 | `google-workspace` | Decision-first Google Workspace operations — choose Apps Script vs REST API vs Admin SDK, auth model, and cross-service flows across Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, and Forms | All |
+| `graphify` | Routing-first durable graph skill — choose assistant-native install, local build, refresh, graph query, or structural fallback for repo/corpus graphs and persistent `GRAPH_REPORT.md` / `graph.json` outputs | All |
 | `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |
 | `npm-git-install` | Routing-first Node package delivery skill for npm / pnpm / Yarn / Bun — choose temporary Git bridge, SHA pin, tarball, workspace, or publish-first handoff safely | All |
 | `obsidian-cli` | Operate the official Obsidian CLI — enablement, TUI, note and task automation, vault and file targeting, plugin reload, developer commands | All |
@@ -480,7 +482,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 89 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 90 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ralph, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

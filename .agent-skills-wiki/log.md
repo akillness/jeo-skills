@@ -999,3 +999,11 @@
 - Accepted: shrink `scrapling` into an intake-packet router, add `references/intake-packets-and-route-outs.md`, expand eval coverage with direct-API and managed-unblocker route-out cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, update README / README.ko / setup discovery wording, and ratchet the result into the wiki.
 - Rejected: adding another generic scraping wrapper; treating stealth as guaranteed; forcing DOM scraping when direct API interception is the real source of truth; making MCP or spiders the default path for one-page jobs.
 - Wiki files created/updated: `queries/scrapling-structural-hardening-2026-04-19.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | graphify structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack repo understanding, PM/ops knowledge bases, marketing/content corpora, and game-adjacent mixed-language repos, with the best bounded persistent-memory follow-up landing on the existing `graphify` skill rather than a new graph or GraphRAG wrapper
+- Survey files created under `.survey/graphify-structural-hardening-20260419/`; repo-local wiki/graph evidence plus primary-source retrieval from Graphify upstream docs/issues and adjacent repo-understanding tools were used after `web_search` / `web_extract` failed with invalid API-key errors
+- Structural graph artifacts refreshed under `graphify-out/`
+- Accepted: promote `graphify` from nested `utilities/graphify` into live top-level `.agent-skills/graphify`, shrink the front door into a routing-first graph mode selector, add packet/fallback references, add `SKILL.toon`, expand evals, sync README / README.ko / setup / manifest surfaces, and ratchet the runtime-discovery lesson into the wiki
+- Rejected: adding another graph/GraphRAG wrapper; treating search-first repo navigation as part of `graphify`; leaving the skill nested and off-catalog
+- Wiki files created/updated: `queries/graphify-structural-hardening-2026-04-19.md`, `concepts/persistent-memory-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`, `log.md`
