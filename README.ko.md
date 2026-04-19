@@ -179,7 +179,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
-| **clawteam: ClawTeam 운영 라우터** | `clawteam`을 라우팅 중심 운영 스킬로 다듬었습니다. 수동 팀 제어, 원커맨드 템플릿 실행, 모니터링/복구, provider/runtime profile 설정 중 맞는 모드를 먼저 고른 뒤 tmux/subprocess 워커 팀과 task/inbox/worktree 상태를 다룹니다. |
+| **clawteam: ClawTeam 런타임 운영 라우터** | `clawteam`을 packet-first ClawTeam 런타임 스킬로 더 좁혔습니다. 명령을 늘어놓기 전에 `manual-team`, `template-launch`, `monitor-recover`, `profile-setup` 중 하나의 운영 패킷을 먼저 고르고, tmux/worktree 런타임 현실을 숨기지 않으며, 일반 오케스트레이션이나 보드 거버넌스 요청은 바깥으로 라우팅합니다. |
 | **obsidian-plugin: Obsidian 플러그인 개발 스킬** | Obsidian 플러그인 빌드, 검증, 커뮤니티 디렉토리 제출. `eslint-plugin-obsidianmd` 27개 규칙 전체 커버, 대화형 보일러플레이트 생성기(`create-plugin.js`), 메모리 관리, 타입 안전성, 접근성(MANDATORY), CSS 변수, Vault API, 제출 검증. 75 → **76개** |
 | **jeo v1.6.0: `.jeo` 계획 ledger 플로우** | JEO가 이제 프로젝트 로컬 `.jeo/` 폴더를 만들고 장기계획(`long-term.md`), 단기계획(`short-term.md`), 예정 작업(`planned.md`), 진행상황(`progress.md`), 이력(`history.md`), queued/active 작업 파일을 함께 관리합니다. 완료된 작업 파일은 history에 요약한 뒤 제거하고, follow-up 작업은 workflow를 초기화하지 않고 계속 추가할 수 있습니다. |
 | **skill-autoresearch: eval 기반 스킬 최적화** | 기존 `SKILL.md` 를 바이너리 eval, mutation loop, baseline scoring, dashboard/changelog 산출물로 반복 개선하는 신규 스킬. 기존 ML용 `autoresearch` 와는 별도 용도입니다. 76 → **77개** |

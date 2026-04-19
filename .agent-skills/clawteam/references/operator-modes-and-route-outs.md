@@ -1,5 +1,7 @@
 # ClawTeam operator modes and route-outs
 
+Start with [intake-packets-and-route-outs.md](intake-packets-and-route-outs.md) when you need the fastest packet choice. Use this document when the packet is already known and you want the more detailed mode table.
+
 ## Choose one mode first
 
 | Mode | Use when | Core commands | Do not blur into |

@@ -471,7 +471,7 @@
     },
     {
       "name": "clawteam",
-      "description": "Route ClawTeam operator requests into the right mode before touching commands: manual team control, one-command template launch, monitoring/recovery, or provider/runtime profile setup. Use when the user explicitly wants the ClawTeam task/inbox/worktree swarm workflow for parallel developer work, fullstack delivery, product/ops research teams, marketing/content studios, or game and simulation squads. Not for generic multi-agent routing when jeo, omc, omx, ohmg, vibe-kanban, or simple subtask delegation already fit.",
+      "description": "Route explicit ClawTeam runtime requests into one honest operator packet before touching commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer work, product/ops research, content operations, or game-production coordination. Not for generic multi-agent routing, board-only governance, or lightweight subtask fan-out when jeo, omc, omx, ohmg, vibe-kanban, or built-in delegation already fit.",
       "path": "clawteam/SKILL.md",
       "tags": [
         "clawteam",

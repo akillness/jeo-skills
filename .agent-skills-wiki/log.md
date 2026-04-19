@@ -1104,3 +1104,11 @@
 - Accepted: shrink `state-management` from 272 to 211 lines, force one primary packet before tool comparisons, add an explicit wrong-owner check, expand evals with React Router misuse and debugging-boundary cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, and file the packet-first ratchet back into the wiki.
 - Rejected: adding another router-state or global-state wrapper; re-expanding the skill into a broader library tour; treating active broken-state diagnosis as a store-choice problem.
 - Wiki files created/updated: `queries/state-management-next-ratchet-2026-04-20.md`, `concepts/frontend-skill-canonicalization.md`, `index.md`, `log.md`
+
+## [2026-04-20] query | clawteam packet ratchet
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow swarms, web/fullstack delivery, PM/ops coordination, marketing/content operations, and game-production teamwork, with the best bounded follow-up landing on the existing `clawteam` skill rather than another swarm wrapper.
+- Survey files created under `.survey/clawteam-packet-ratchet-20260420/`; primary evidence came from direct GitHub primary-source retrieval on ClawTeam, OpenHands, CrewAI, AutoGen, OpenAI Swarm, claude-swarm, wt, Legio, and Goblin Forge after normal `web_search` / `web_extract` failed in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: tighten `clawteam` into a packet-first runtime router, add `references/intake-packets-and-route-outs.md`, expand evals with a board-governance route-out case, sync `SKILL.toon` / `skills.json`, refresh README / README.ko / setup discovery wording, and file the packet-ratchet finding back into the wiki.
+- Rejected: adding another swarm/orchestration wrapper; re-expanding `clawteam` into a command encyclopedia; hiding tmux/worktree/manual-recovery reality behind a broader abstraction; treating board governance as ClawTeam runtime ownership.
+- Wiki files created/updated: `queries/clawteam-packet-ratchet-2026-04-20.md`, `concepts/developer-workflow-cluster.md`, `index.md`, `log.md`

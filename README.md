@@ -179,7 +179,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
-| **clawteam: ClawTeam operator router** | Refined `clawteam` into a routing-first ClawTeam operator skill: choose manual team control, one-command template launch, monitoring/recovery, or provider/runtime profile setup for tmux/subprocess worker teams with task/inbox/worktree state. |
+| **clawteam: ClawTeam runtime operator router** | Tightened `clawteam` into a packet-first ClawTeam runtime skill: choose one honest operator packet (`manual-team`, `template-launch`, `monitor-recover`, or `profile-setup`) before commands, keep tmux/worktree runtime reality explicit, and route generic orchestration or board-governance requests outward. |
 | **obsidian-plugin: Obsidian plugin development skill** | Build, validate, and publish Obsidian plugins. Covers all 27 `eslint-plugin-obsidianmd` rules, interactive boilerplate generator (`create-plugin.js`), memory management, type safety, accessibility (MANDATORY), CSS variables, vault API, and community submission validation. 75 → **76 skills**. |
 | **jeo v1.6.0: `.jeo` planning ledger flow** | JEO now creates a project-local `.jeo/` folder and uses it as a durable planning/development/QA ledger: `long-term.md`, `short-term.md`, `planned.md`, `progress.md`, `history.md`, plus queued/active task files. Completed task files are summarized into history then removed; follow-up work can be queued without resetting the workflow. |
 | **skill-autoresearch: eval-driven skill optimization** | New skill for improving an existing `SKILL.md` with binary evals, mutation loops, baseline scoring, and dashboard/changelog artifacts. Keeps the original `autoresearch` ML workflow separate. 76 → **77 skills**. |

@@ -1,223 +1,181 @@
 ---
 name: clawteam
 description: >
-  Route ClawTeam operator requests into the right mode before touching commands:
-  manual team control, one-command template launch, monitoring/recovery, or
-  provider/runtime profile setup. Use when the user explicitly wants the ClawTeam
-  task/inbox/worktree swarm workflow for parallel developer work, fullstack
-  delivery, product/ops research teams, marketing/content studios, or game and
-  simulation squads. Not for generic multi-agent routing when `jeo`, `omc`,
-  `omx`, `ohmg`, `vibe-kanban`, or simple subtask delegation already fit.
+  Route explicit ClawTeam runtime requests into one honest operator packet before
+  touching commands: manual-team, template-launch, monitor-recover, or
+  profile-setup. Use when the user specifically wants ClawTeam's
+  team/task/inbox/worktree/board workflow for parallel developer work,
+  product/ops research, content operations, or game-production coordination.
+  Not for generic multi-agent routing, board-only governance, or lightweight
+  subtask fan-out when `jeo`, `omc`, `omx`, `ohmg`, `vibe-kanban`, or built-in
+  delegation already fit.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 license: MIT
 metadata:
   tags: clawteam, multi-agent, swarm, orchestration, tmux, git-worktree, autonomous, python, routing
-  version: "1.1"
+  version: "1.2"
   source: https://github.com/HKUDS/ClawTeam
 ---
 
-# clawteam — ClawTeam operator router
+# clawteam — ClawTeam runtime operator router
 
-Use this skill when the user explicitly wants **ClawTeam itself** — not just any multi-agent workflow.
+Use this skill when the real question is **"which ClawTeam operator packet do I need right now?"**
 
-`clawteam` owns the ClawTeam-specific operator surface:
-- leader + worker teams
-- git worktree isolation
-- task / inbox state
-- tmux or subprocess spawn backends
-- board / web UI monitoring
+`clawteam` owns the **ClawTeam-specific runtime surface**:
+- team / task / inbox state
+- worker spawning through `tmux` or `subprocess`
+- workspace or git-worktree isolation
+- board visibility and recovery flows
 - template launches
-- provider profiles and presets
+- provider / preset / profile setup tied to spawn behavior
 
-Read these support docs before choosing a path:
+It does **not** own generic multi-agent orchestration, board governance, or lightweight subtask fan-out.
+
+Read these support docs before stretching the boundary:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
 - [references/operator-modes-and-route-outs.md](references/operator-modes-and-route-outs.md)
 - [references/architecture.md](references/architecture.md)
 - [references/agent-types.md](references/agent-types.md)
 - [references/use-cases.md](references/use-cases.md)
 
 ## When to use this skill
-- The user says `clawteam`, `agent swarm`, `spawn agents`, or wants ClawTeam's team/task/inbox model.
-- One leader should coordinate multiple CLI agents with explicit task ownership.
-- The user wants worktree-isolated parallel implementation, research, or analysis workers.
-- The user wants ClawTeam monitoring surfaces such as `board attach`, `board serve`, or task/inbox inspection.
-- The user needs ClawTeam runtime setup for non-default providers/models via `profile` and `preset`.
-- The job spans developer workflow, web/fullstack, product/ops, marketing/content, or game/team simulation work **and** the chosen execution surface is ClawTeam.
+- The user explicitly says `clawteam` or clearly wants ClawTeam's team/task/inbox/worktree runtime
+- A leader should coordinate named workers with explicit task ownership and message passing
+- The user wants ClawTeam board commands such as `board attach`, `board live`, or `board serve`
+- The user wants a built-in ClawTeam template launch
+- The real blocker is provider/model/profile setup *inside ClawTeam* before spawn
+- The workflow spans developer delivery, product/ops research, content operations, or game work **and** the chosen runtime is ClawTeam
 
 ## When not to use this skill
-- **The user only wants a generic integrated delivery loop with planning + implementation + QA** → `jeo`, `omc`, `omx`, or `ohmg`.
-- **The main job is board/work queue control, not ClawTeam runtime control** → `vibe-kanban`.
-- **The main job is lightweight subtask fan-out without team/task/inbox/worktree state** → use built-in delegation / subagents instead.
-- **The main job is repo planning or approval gates** → `task-planning`, `plannotator`, or `ralph`.
-- **The user wants a broader multi-agent framework comparison rather than ClawTeam operation** → `survey`.
+- **Generic multi-agent implementation loop with planning + QA** → `jeo`, `omc`, `omx`, or `ohmg`
+- **Board/work queue control outside the ClawTeam runtime** → `vibe-kanban`
+- **Lightweight parallel subtasks with no team/task/inbox/worktree state** → built-in delegation / subagents
+- **Planning or decomposition** → `task-planning`
+- **Tool comparison or platform survey** → `survey`
 
 ## Instructions
 
-### Step 1: Classify one operating mode
-Start with one primary mode.
+### Step 1: Start from the packet already in hand
+Use [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
+
+Normalize the request into one packet first:
 
 ```yaml
-clawteam_mode:
-  primary_mode: manual-team | launch-template | monitor-recover | profile-setup
+clawteam_packet:
+  primary_packet: manual-team | template-launch | monitor-recover | profile-setup | route-out
   backend: tmux | subprocess | unknown
-  audience: developer-workflow | web-fullstack | product-ops | marketing-content | game-simulation | mixed
-  runtime_need: team-state | quick-launch | visibility | provider-setup
+  audience: developer-workflow | product-ops | marketing-content | game-production | mixed
+  current_pain: ownership-split | quick-start | stuck-runtime | provider-setup | wrong-tool
   confidence: high | medium | low
 ```
 
-Choose only one primary mode first:
-- `manual-team` — explicit team lifecycle, worker spawning, tasks, inboxes, board use
-- `launch-template` — one-command template/team launch
-- `monitor-recover` — inspect teams, workers, board state, inbox/task flow, runtime caveats
-- `profile-setup` — presets, profiles, provider/model/runtime configuration
+Choose one primary packet only:
+- `manual-team` — explicit team lifecycle, worker roles, tasks, inboxes, dependencies
+- `template-launch` — launch a prebuilt ClawTeam team and monitor it
+- `monitor-recover` — inspect a running/stuck team, board, inbox, tasks, workspaces, or lifecycle state
+- `profile-setup` — preset/profile/provider/model/runtime setup before spawn
+- `route-out` — the request is not really about ClawTeam's runtime
 
-### Step 2: Verify the minimal prerequisites
-Check what already works **before** wrapping it with ClawTeam.
+Rule: if the user really means “multiple agents” rather than “ClawTeam,” route out immediately.
+
+### Step 2: Verify the minimal runtime before giving deeper commands
+Check what already works **before** assuming ClawTeam will smooth it over.
 
 ```bash
 python3 --version
-
-tmux -V
 clawteam --help
 
-# Replace with the real agent command the user wants to run:
+tmux -V
+
+# Replace with the agent CLI the user actually wants to run:
 claude --version
 codex --version
 ```
 
 Rules:
-1. If the underlying agent CLI fails by itself, do not pretend `clawteam spawn` will fix it.
-2. Prefer `tmux` when the user wants live monitoring and interactive panes.
-3. Prefer `subprocess` when tmux is unavailable or when headless/background execution is the real need.
-4. If provider/model customization matters, route to **profile-setup** before large spawn examples.
+1. If the underlying agent CLI does not work by itself, do not pretend `clawteam spawn` will fix it.
+2. Prefer `tmux` for visible interactive workers and live operator control.
+3. Prefer `subprocess` only when headless/background execution is the real need.
+4. If provider/model customization is the blocker, choose `profile-setup` before large spawn examples.
 
-### Step 3: Use the right command family for the chosen mode
+### Step 3: Return the smallest useful command packet
 
-#### Mode A — manual team control
-Use this when the user wants explicit ownership over team lifecycle, workers, tasks, and inboxes.
+#### Packet A — manual-team
+Use this when ownership and dependencies must stay explicit.
 
 ```bash
-# 1. Create the team
 clawteam team spawn-team my-team -d "Build the auth module" -n leader
-
-# 2. Spawn workers (tmux backend examples)
 clawteam spawn tmux claude --team my-team --agent-name architect --task "Design the API schema"
-clawteam spawn tmux claude --team my-team --agent-name backend --task "Implement the auth flow"
-clawteam spawn tmux codex  --team my-team --agent-name tester   --task "Write integration tests"
-
-# 3. Create and update tasks
-clawteam task create my-team "Design API schema" -o architect
-clawteam task create my-team "Implement auth flow" -o backend
-clawteam task create my-team "Write integration tests" -o tester --blocked-by 2
-clawteam task list my-team --owner backend
-clawteam task update my-team 2 --status in_progress
-clawteam task update my-team 2 --status completed
-
-# 4. Coordinate via inbox
-clawteam inbox send my-team backend "Wait for architect handoff before finalizing handlers"
-clawteam inbox receive my-team
-
-# 5. Watch progress
+clawteam spawn tmux codex --team my-team --agent-name tester --task "Write integration tests"
+clawteam task create my-team "Design the API schema" -o architect
+clawteam inbox send my-team tester "Wait for API handoff before final checks"
 clawteam board attach my-team
-# or
-clawteam board serve --port 8080
 ```
 
-Prefer this mode when users need **explicit worker roles, manual dependency control, or mixed agent types**.
+Use [references/use-cases.md](references/use-cases.md) if the user needs fuller examples for fullstack, research, content, or game-production splits.
 
-#### Mode B — launch a prebuilt template
-Use this when the user wants a fast start and the template shape already fits.
+#### Packet B — template-launch
+Use this when a built-in template already matches the job.
 
 ```bash
-# Discover available templates
 clawteam template list
-
-# Launch a built-in team
 clawteam launch hedge-fund --team fund1 --goal "Analyze AAPL, MSFT, NVDA for Q2 2026"
-
-# Then monitor it
 clawteam board attach fund1
-# or
-clawteam board serve --port 8080
 ```
 
-Prefer this mode when the user says things like:
-- "Use the built-in team"
-- "Launch the hedge-fund / research template"
-- "I want one command, then I just watch"
+Do **not** bury this in a full manual-team walkthrough unless the template clearly fails to fit.
 
-#### Mode C — monitor, inspect, and recover
-Use this when a team already exists or the question is operational.
+#### Packet C — monitor-recover
+Use this when a team already exists or runtime truth is the real question.
 
 ```bash
 clawteam team discover
 clawteam team status my-team
 clawteam board show my-team
-clawteam board live my-team --interval 3
-clawteam board attach my-team
-clawteam board serve --port 8080
 clawteam task list my-team --status blocked
 clawteam inbox peek my-team
 clawteam workspace list my-team
-clawteam lifecycle idle my-team
 ```
 
-Reality checks:
-- Do not oversell long-running worker persistence. Upstream issue #148 documents worker keepalive / ongoing-job failures in some subprocess flows.
-- Do not assume agent-definition/config features are fully applied without verification. Upstream issue #146 documents gaps between parsed definitions and runtime behavior.
-- If the question becomes broader runtime debugging or platform comparison, route to `survey` or the relevant orchestration/runtime skill instead of expanding this skill endlessly.
+Use this packet to inspect stuck workers, blocked tasks, missing inbox activity, or workspace drift.
 
-#### Mode D — provider/runtime profile setup
-Use this when the real problem is **which provider/model/runtime configuration should ClawTeam use?**
+#### Packet D — profile-setup
+Use this when the runtime/provider setup is the actual blocker.
 
 ```bash
-# Inspect built-in presets
 clawteam preset list
 clawteam preset show moonshot-cn
-
-# Generate reusable runtime profiles
 clawteam preset generate-profile moonshot-cn claude --name claude-kimi
-clawteam preset generate-profile minimax-global claude --name claude-minimax
-
-# Interactive setup + health checks
-clawteam profile wizard
 clawteam profile doctor claude
 MOONSHOT_API_KEY=*** clawteam profile test claude-kimi
-
-# Spawn using the profile
 clawteam spawn tmux --profile claude-kimi --team my-team --agent-name researcher --task "Compare onboarding flows"
 ```
 
-Prefer this mode when the user mentions:
-- custom providers/models
-- non-default gateways
-- fresh-machine setup
-- preset/profile generation
-- provider-specific failures before spawn
+Use this packet before large team examples when the question is really about provider/model/runtime configuration.
 
-### Step 4: Keep the boundary honest
-Before finalizing instructions, check that `clawteam` still owns the job.
+### Step 4: Keep the runtime reality honest
+ClawTeam-style workflows are still operator-heavy.
 
-Keep it inside `clawteam` when the user needs:
-- ClawTeam CLI commands
-- team/task/inbox/worktree state
-- template launches
-- ClawTeam board/runtime visibility
-- provider profiles tied to ClawTeam spawn
+State these realities when relevant:
+- `tmux` + worktree/session inspection is often part of the real workflow, not an implementation detail
+- long-running worker persistence may be fragile in some flows; do not oversell it
+- trust prompts, permission flows, and backend-specific quirks can still leak through the abstraction
+- manual cleanup, merge, or workspace hygiene may still matter after a run
 
-Route outward when the user mainly needs:
-- generic multi-agent repo delivery → `jeo`, `omc`, `omx`, `ohmg`
-- planning / decomposition → `task-planning`
-- visual coding board control → `vibe-kanban`
-- tool/platform comparison → `survey`
+Important upstream caveats:
+- issue #148 documents worker keepalive problems in ongoing-job subprocess patterns
+- issue #146 documents gaps between parsed agent definitions/configs and applied runtime behavior
 
-### Step 5: Return the smallest useful operator packet
-Default shape:
+If the user wants generic orchestration policy, board governance, or lightweight built-in delegation, route outward instead of growing this skill.
+
+### Step 5: Return one concise operator brief
+Preferred format:
 
 ```markdown
-# ClawTeam Operator Packet
+# ClawTeam Operator Brief
 
-## Mode
-- Primary mode:
+## Packet
+- Packet:
 - Why it fits:
 - Backend:
 
@@ -230,7 +188,7 @@ Default shape:
 2. ...
 3. ...
 
-## Monitoring / verification
+## Monitoring / recovery
 - ...
 
 ## Caveats
@@ -240,60 +198,63 @@ Default shape:
 - ...
 ```
 
+Short, truthful packets beat giant command dumps.
+
 ## Examples
 
 ### Example 1: Fullstack feature split
 **Input**
-> Use ClawTeam to split a full-stack feature across multiple agents.
+> Use ClawTeam to split a full-stack feature across a leader and two workers.
 
 **Good output direction**
 - choose `manual-team`
-- create the team first with `team spawn-team`
-- spawn architect/backend/tester workers with `spawn tmux ...`
-- use `task create` / `task update`
-- finish with `board attach` or `board serve`
+- verify the runtime and worker CLI first
+- create the team, spawn workers, create explicit tasks, and end with a board command
+- keep planning/review policy outside this skill
 
-### Example 2: One-command launch
+### Example 2: Template first
 **Input**
-> Launch a prebuilt ClawTeam team for market analysis and let me watch it.
+> Launch a built-in ClawTeam team and let me watch it.
 
 **Good output direction**
-- choose `launch-template`
+- choose `template-launch`
 - use `template list` if needed
-- use `launch hedge-fund --team ... --goal ...`
+- use `launch ... --team ... --goal ...`
 - monitor with `board attach` or `board serve`
 
-### Example 3: Provider setup first
+### Example 3: Runtime recovery
 **Input**
-> I want ClawTeam to run Claude through a non-default provider model.
+> A ClawTeam worker keeps dying after its first turn. What should I check?
 
 **Good output direction**
-- choose `profile-setup`
-- use `preset list/show`, `preset generate-profile`, `profile doctor/test`
-- only then show `spawn tmux --profile ...`
+- choose `monitor-recover`
+- inspect team, board, task, inbox, and workspace state
+- mention that long-running worker persistence is not guaranteed in every flow
+- avoid pretending a generic orchestration skill owns the problem
 
 ### Example 4: Honest route-out
 **Input**
 > I just need a generic multi-agent implementation loop with planning and QA.
 
 **Good output direction**
-- route away from `clawteam`
+- choose `route-out`
 - recommend `jeo`, `omc`, `omx`, or `ohmg`
-- explain that `clawteam` is the ClawTeam CLI operator surface, not the generic router for every orchestration ask
+- explain that `clawteam` is the ClawTeam runtime/operator surface, not the generic answer to every multi-agent request
 
 ## Best practices
-1. Pick one operating mode first instead of dumping every ClawTeam command.
-2. Verify the underlying agent CLI before wrapping it in `spawn`.
-3. Prefer `tmux` for visible interactive teams and `subprocess` for headless cases.
-4. Use `launch` when a template truly fits; use `manual-team` when ownership and dependencies must be explicit.
-5. Treat provider/model setup as its own path via `preset` and `profile`.
-6. Keep long-running worker claims honest; note upstream caveats when persistence matters.
-7. Keep `clawteam` distinct from generic orchestration, planning, and board-control skills.
+1. Pick one packet first instead of dumping every ClawTeam command family.
+2. Verify the underlying agent CLI and backend before spawning workers.
+3. Prefer `tmux` for visible operator control; use `subprocess` only when headless execution is the real need.
+4. Use template launch only when the built-in archetype actually fits.
+5. Treat provider/profile setup as its own path.
+6. Keep worker persistence and config-application caveats explicit.
+7. Keep `clawteam` distinct from orchestration routers, planning skills, and board-governance tools.
 8. Update compact and discovery surfaces when the trigger wording changes materially.
 
 ## References
 - [ClawTeam README](https://github.com/HKUDS/ClawTeam)
 - [PyPI: clawteam](https://pypi.org/project/clawteam/)
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
 - [references/operator-modes-and-route-outs.md](references/operator-modes-and-route-outs.md)
 - [references/architecture.md](references/architecture.md)
 - [references/agent-types.md](references/agent-types.md)
