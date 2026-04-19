@@ -1,25 +1,26 @@
 N:backend-testing
-D:Design and implement backend test coverage for APIs, services, auth flows, data ac...
-G:testing backend api-test integration-test contract-test testcontainers ci
+D:Turn backend test ambiguity into one practical backend test packet. Use when the user needs API/service/repository/auth-flow coverage design, fixture or seed/reset strategy, container-vs-mock dependency choices, contract/API compatibility checks, or flaky backend-suite stabilization across local and CI.
+G:testing backend api-test integration-test contract-test testcontainers ci flaky-tests fixtures
 U[6]:
-  Add or repair backend coverage for APIs, service objects, repositories, workers, or auth flows
-  Choose the right mix of unit, integration, contract, smoke, or selective end-to-end tests
-  Design fixture, factory, seed, or test-data reset strategy for a service
-  Decide whether dependencies should be mocked, stubbed, containerized, or hit for real
-  Triage flaky backend tests, CI-only failures, or environment drift between local and CI runs
-  Review whether a backend suite is too broad, too slow, too brittle, or too mock-heavy
-S[7]{n,action}:
-  1,Frame the backend test target
-  2,Choose the right test layers
-  3,Decide mock vs real dependency strategy
-  4,Design fixtures, data, and environment control
-  5,Shape the local and CI workflow separately
-  6,Produce the backend test packet
-  7,Review for trustworthiness and scope control
+  Add or repair backend coverage for APIs, services, repositories, workers, integrations, or auth flows
+  Choose whether the primary packet is coverage-plan, fixture-and-reset-plan, contract-and-api-checks, flake-stabilization, or execution-lane-split
+  Decide whether dependencies should be mocked, faked, containerized, or hit for real
+  Design fixture, factory, seed/reset, auth bootstrap, or environment-control strategy
+  Stabilize CI-only backend flakiness and local-vs-CI drift
+  Route org-wide test policy, API shape work, and auth implementation to neighboring skills
+S[8]{n,action}:
+  1,Classify the request into one packet
+  2,Frame the backend surface and risk
+  3,Choose the right test layers
+  4,Decide dependency realism on purpose
+  5,Define fixture data auth and environment control
+  6,Split the execution lanes
+  7,Produce one backend test packet
+  8,Verify scope boundaries before finalizing
 R[6]:
-  Protect real backend regression risk before chasing coverage percentages
+  Start from the packet not from the framework
+  Protect the real backend regression risk before coverage vanity
   Prefer layered backend coverage over giant brittle end-to-end suites
-  Make fixture, seed, and auth bootstrap strategy explicit
-  Split local-fast, PR, and scheduled coverage lanes intentionally
-  Use real dependencies when wire behavior matters
-  Hand off broad QA policy, contract design, and auth implementation intentionally
+  Split local-fast PR scheduled and release lanes intentionally
+  Treat flaky tests as a trust problem
+  Route policy contract-shape and auth-implementation ownership away

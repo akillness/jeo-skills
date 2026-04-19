@@ -294,7 +294,7 @@
     },
     {
       "name": "backend-testing",
-      "description": "Design and implement backend test coverage for APIs, services, auth flows, data access, and integration boundaries. Use when the user needs unit/service/API/contract coverage, fixture strategy, dependency realism, flaky test triage, or local-vs-CI test layering for backend changes.",
+      "description": "Turn backend test ambiguity into one practical backend test packet. Use when the user needs API/service/repository/auth-flow coverage design, fixture or seed/reset strategy, container-vs-mock dependency choices, contract/API compatibility checks, or flaky backend-suite stabilization across local and CI.",
       "category": "backend",
       "path": "backend-testing/SKILL.md",
       "tags": [
