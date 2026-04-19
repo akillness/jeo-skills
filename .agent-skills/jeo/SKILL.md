@@ -1,80 +1,87 @@
 ---
 name: jeo
-description: "Run the repo's integrated multi-agent delivery loop: plan with ralph and plannotator, execute with the platform runtime (omc, omx, ohmg) or bmad, verify browser behavior with agent-browser, apply submit-gated UI feedback with agentation, and finish with cleanup while maintaining a project-local .jeo ledger and resumable state. Use when the user wants one orchestration surface for planning, implementation, QA, resume/recovery, and durable task history across Claude Code, Codex CLI, Gemini CLI, or OpenCode. Triggers on: jeo, annotate, ui-review, multi-agent orchestration, resume this workflow, continue from .jeo, end-to-end agent loop."
-compatibility: "Requires git, node>=18, bash. Optional: bun, docker."
+description: >
+  Turn integrated agent delivery into one packet-first orchestration decision. Use
+  when the user wants a single front door for plan approval, runtime handoff,
+  browser/UI verification, resume or recovery, and durable `.jeo` task history
+  across Claude Code, Codex CLI, Gemini CLI, or OpenCode. Route spec-first
+  execution loops to `ralph`, visual plan review to `plannotator`, runtime-native
+  execution to `omc` / `omx` / `ohmg`, browser verification to `agent-browser`,
+  submit-gated UI feedback to `agentation`, and trust/approval posture tuning to
+  `ralphmode`.
+compatibility: >
+  Requires git, node>=18, bash, and the repo's supporting JEO scripts. Runtime
+  setup differs across Claude, Codex, Gemini, and OpenCode; keep those details in
+  the platform references and sibling runtime skills.
 allowed-tools: Read Write Bash Grep Glob Task
 metadata:
-  tags: jeo, orchestration, ralph, plannotator, agentation, annotate, agentui, UI-review, team, bmad, omc, omx, ohmg, agent-browser, multi-agent, workflow, worktree-cleanup, browser-verification, ui-feedback
+  tags: jeo, orchestration, ralph, plannotator, agentation, annotate, agentui, UI-review, team, bmad, omc, omx, ohmg, agent-browser, multi-agent, workflow, worktree-cleanup, browser-verification, ui-feedback, resume, ledger
   platforms: Claude, Codex, Gemini, OpenCode
   keyword: jeo
-  version: 1.6.2
+  version: 1.6.3
   source: akillness/oh-my-skills
 ---
 
 # JEO — Integrated Agent Orchestration
 
-> Keyword: `jeo` · `annotate` · `UI-review` · `agentui (deprecated)` | Platforms: Claude Code · Codex CLI · Gemini CLI · OpenCode
->
-> Planning (`ralph` + `plannotator`) → Development (`omc` / `omx` / `ohmg` / `bmad`) → QA (`agent-browser` + optional `agentation`) → Cleanup, backed by a persistent `.jeo/` project ledger.
+> Keyword: `jeo` · `annotate` · `ui-review` · `agentui (deprecated)` | Platforms: Claude Code · Codex CLI · Gemini CLI · OpenCode
+
+Use JEO as a **packet-first orchestration router**.
+
+The job is not to re-explain every runtime, hook, or browser integration inline. The job is to:
+1. classify the request into the right orchestration packet,
+2. keep the shared plan / execute / verify / cleanup contract honest,
+3. preserve durable `.jeo/` history and resumable machine state,
+4. hand runtime-specific work to the runtime skill that actually owns it,
+5. require evidence before completion.
+
+Read these when needed:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/FLOW.md](references/FLOW.md)
+- [references/DOT_JEO_LEDGER.md](references/DOT_JEO_LEDGER.md)
+- [references/PLATFORM_SETUP.md](references/PLATFORM_SETUP.md)
+- [references/STATE_AND_TROUBLESHOOTING.md](references/STATE_AND_TROUBLESHOOTING.md)
 
 ## When to use this skill
+- Run an end-to-end repo delivery loop with explicit planning, execution, verification, and cleanup gates
+- Keep a project-local `.jeo/` ledger with long-term rules, short-term plans, queued work, active work, progress notes, and append-only history
+- Resume a previous integrated workflow instead of rebuilding state from scratch
+- Add browser verification or submit-gated UI review to a broader delivery loop
+- Decide which sibling skill owns the next part of the orchestration flow while preserving one shared workflow contract
 
-- Run an end-to-end multi-agent workflow with an explicit planning gate
-- Keep long-term rules, short-term system/test plans, queued work, live progress, and append-only history in `.jeo/`
-- Resume a previous project-local delivery loop instead of restarting orchestration from scratch
-- Add a browser-backed UI review loop with `annotate` / `ui-review`
-- Coordinate plan approval, execution, verification, and cleanup in one skill while preserving neighboring skill boundaries
+## When not to use this skill
+- The task is mainly spec-first clarification, immutable plan seeding, or persistent completion until verification passes → use `ralph`
+- The task is mainly visual plan approval or diff review → use `plannotator`
+- The task is mainly browser verification without the full delivery loop → use `agent-browser`
+- The task is mainly rendered UI annotation feedback on an existing app → use `agentation`
+- The task is mainly runtime-native orchestration or setup → use `omc` (Claude), `omx` (Codex), or `ohmg` (Gemini / portable harness)
+- The task is mainly trust posture, approval mode, or lower-friction safe automation configuration → use `ralphmode`
 
-## When **not** to use this skill
-
-- If the task is mainly **spec-first clarification or persistent completion until verification passes** → use `ralph`
-- If the task is mainly **visual plan approval or diff review** → use `plannotator`
-- If the task is mainly **browser verification without the full delivery loop** → use `agent-browser`
-- If the task is mainly **rendered UI annotation feedback on an existing app** → use `agentation`
-- If the task is mainly **platform-native runtime orchestration** → use `omc` (Claude), `omx` (Codex), or `ohmg` (Gemini/Antigravity)
-- If the task is mainly **lower-friction trusted automation / approval posture** → use `ralphmode`
-
-## Rules (always enforced)
-
-1. Do not reopen the PLAN gate when the current plan hash already has a terminal result
-2. Only a revised plan resets `plan_gate_status` to `pending`
-3. Do not process agentation annotations before explicit submit/onSubmit opens the submit gate
-4. **NEVER** enter EXECUTE without `plan_approved: true`
-5. **NEVER** run plannotator or agentation with `&` (background)
-6. **NEVER** reopen an unchanged plan after `approved`, `manual_approved`, `feedback_required`, or `infrastructure_blocked`
-
-Authoritative machine state: `.omc/state/jeo-state.json`
-
-## State + ledger overview
-
-JEO uses two persistence layers together:
-
-| Layer | Path | Purpose |
-|------|------|---------|
-| Machine state | `.omc/state/jeo-state.json` | Current phase, plan-gate status, retries, submit-gate state, resume checkpoint |
-| Human ledger | `.jeo/` | Durable project intent, current scope, queued/active tasks, progress notes, completion history |
-
-Common commands:
-
-```bash
-# Initialize or resume state
-python3 scripts/jeo-state-update.py init "<task>"
-python3 scripts/jeo-state-update.py resume
-
-# Initialize or inspect the project ledger
-python3 scripts/jeo-project-sync.py init "<task>"
-python3 scripts/jeo-project-sync.py status
-python3 scripts/jeo-project-sync.py start-next
-```
-
-Ledger details live in [references/DOT_JEO_LEDGER.md](references/DOT_JEO_LEDGER.md).
-State fields, troubleshooting, and platform-specific config snippets live in [references/STATE_AND_TROUBLESHOOTING.md](references/STATE_AND_TROUBLESHOOTING.md) and [references/PLATFORM_SETUP.md](references/PLATFORM_SETUP.md).
+## Shared invariants
+1. Never enter EXECUTE without plan approval.
+2. An unchanged approved plan does not reopen the plan gate.
+3. Do not process annotation work before the explicit submit / onSubmit gate opens.
+4. Completion requires QA evidence or an explicit skip reason.
+5. Persist durable human context in `.jeo/` and resumable machine state in the configured runtime state file before leaving a phase.
+6. JEO is the router and ledger contract, not the owner of runtime internals.
 
 ## Instructions
 
-> Execute the steps in order. Each step only proceeds after the previous one completes.
+### Step 1: Classify the request into one orchestration packet
+Choose the single best entry packet before doing anything else.
 
-### STEP 0: Bootstrap / Resume
+**Packets**
+- `bootstrap-or-resume` — initialize or recover `.jeo` + machine state
+- `planning-gate` — create / revise the plan and get approval
+- `runtime-handoff` — send approved work to the correct execution runtime
+- `verification-loop` — gather browser / QA evidence and decide whether `annotate` is required
+- `annotate-submit-loop` — run submit-gated agentation review on browser-visible work
+- `cleanup-and-closeout` — summarize, queue follow-up work, and clean worktrees safely
+
+If the request mixes several concerns, name the **primary packet** and one secondary concern.
+
+### Step 2: Bootstrap or resume durable state
+Always ground the workflow before routing further.
 
 ```bash
 mkdir -p .omc/state .omc/plans .omc/logs
@@ -83,13 +90,40 @@ python3 scripts/jeo-project-sync.py init "<detected task>"
 python3 scripts/jeo-project-sync.py start-next
 ```
 
-Then:
-1. Read the current `.jeo/long-term.md`, `.jeo/short-term.md`, `.jeo/planned.md`, `.jeo/progress.md`, and `.jeo/history.md` if they already exist.
-2. Run the platform setup relevant to the current runtime if it has not been installed yet. See [references/PLATFORM_SETUP.md](references/PLATFORM_SETUP.md).
-3. If Claude Code hooks look wrong, run `bash scripts/setup-claude.sh` before continuing.
-4. Notify the user that JEO is active and whether `annotate` is part of the run.
+Then read the current ledger if it exists:
+- `.jeo/long-term.md`
+- `.jeo/short-term.md`
+- `.jeo/planned.md`
+- `.jeo/progress.md`
+- `.jeo/history.md`
+- one active task file under `.jeo/tasks/active/`
 
-### STEP 1: PLAN / Planning (never skip)
+If resuming, use:
+
+```bash
+python3 scripts/jeo-state-update.py resume
+python3 scripts/jeo-project-sync.py status
+python3 scripts/jeo-project-sync.py start-next
+```
+
+### Step 3: Keep the shared phase contract explicit
+JEO owns the shared contract even when execution routes outward.
+
+| Phase | What JEO owns | Typical route-out |
+|------|----------------|-------------------|
+| PLAN | plan gate, plan hash, checklist/progress update | `ralph` + `plannotator` |
+| EXECUTE | approved-task handoff, active-task tracking, ledger updates | `omc`, `omx`, `ohmg`, or `bmad` |
+| VERIFY | evidence collection requirement, browser-verification decision | `agent-browser` |
+| VERIFY_UI | submit-gate enforcement, annotation queue ownership decision | `agentation` |
+| CLEANUP | summary, follow-up queueing, worktree cleanup, final phase state | JEO scripts + git cleanup |
+
+If a request cannot name the current phase, infer the earliest incomplete phase and say so.
+
+### Step 4: Route to the real owner skill
+Use the smallest honest route-out.
+
+#### Planning gate
+Use when the main job is writing or revising the approved plan.
 
 ```bash
 python3 scripts/jeo-state-update.py checkpoint plan
@@ -97,23 +131,12 @@ python3 scripts/jeo-project-sync.py stage planning
 python3 scripts/jeo-project-sync.py progress "Entered planning gate."
 ```
 
-1. Review the existing `.jeo` ledger before changing scope.
-2. Write `plan.md` with goal, steps, risks, completion criteria, and the current planning/development/QA expectations from `.jeo/short-term.md`.
-3. Update `.jeo/short-term.md` with:
-   - the system slice for this run
-   - the unit-test plan
-   - the flow/browser verification plan
-4. Invoke **plannotator** per platform:
-   - **Claude Code**: `EnterPlanMode` → write plan → `ExitPlanMode`; the hook fires `claude-plan-gate.py`
-   - **Codex / Gemini / OpenCode**: run `bash scripts/plannotator-plan-loop.sh plan.md <feedback-file> 3` in blocking mode after `ensure-plannotator.sh`
-5. Check the result:
-   - `approved` → proceed to EXECUTE
-   - feedback → revise `plan.md`, loop back
-   - `infrastructure_blocked` → surface the plan for manual approval and wait
-   - repeated exits / retry ceiling → ask whether to abort
-6. Append a progress note describing what is ready to build and what QA must prove.
+Then route to:
+- `ralph` for spec-first plan shaping
+- `plannotator` for plan review / approval
 
-### STEP 2: EXECUTE / Development
+#### Runtime handoff
+Use when the plan is approved and implementation should start.
 
 ```bash
 python3 scripts/jeo-state-update.py checkpoint execute
@@ -122,22 +145,16 @@ python3 scripts/jeo-project-sync.py stage development
 python3 scripts/jeo-project-sync.py progress "Development started from the approved plan."
 ```
 
-1. Detect the runtime path:
-   - `next_mode == "ralphmode"` → use `ralphmode`
-   - Claude Code + `omc` team available → `/omc:team 3:executor "<task>"`
-   - Codex / Gemini / OpenCode → BMAD fallback (`/workflow-init` then `/workflow-status`)
-2. Keep the active `.jeo/tasks/active/*.md` file current while work progresses.
-3. Mark planning and development checklist items as they complete:
+Then route to:
+- `omc` for Claude-native execution
+- `omx` for Codex-native execution
+- `ohmg` for Gemini / portable `.agents` execution
+- `bmad` only when the runtime fallback is the truthful path
 
-```bash
-python3 scripts/jeo-project-sync.py update-checklist planning "Scope captured in plan.md" --done
-python3 scripts/jeo-project-sync.py update-checklist development "System changes implemented" --done
-python3 scripts/jeo-project-sync.py update-checklist development "Unit tests added or updated" --done
-```
+Do not keep runtime-specific hook, config, or slash-command detail in the main JEO answer; point to the runtime skill or platform reference instead.
 
-4. **NEVER** fall back to single-agent execution in Claude Code when team mode is the required path.
-
-### STEP 3: VERIFY / QA
+#### Verification loop
+Use when the main job is proving behavior before closeout.
 
 ```bash
 python3 scripts/jeo-state-update.py checkpoint verify
@@ -146,143 +163,142 @@ python3 scripts/jeo-project-sync.py stage qa
 python3 scripts/jeo-project-sync.py progress "Entered QA verification."
 ```
 
-1. For browser-visible work, verify behavior with `agent-browser`.
-2. Record QA evidence in `.jeo/short-term.md` and the active task file.
-3. Mark QA checklist items complete.
-4. If `annotate` / `ui-review` is part of the run, continue to **STEP 3.1**.
-5. Otherwise, continue to **STEP 4**.
+Then:
+- use `agent-browser` for browser-visible verification
+- record evidence in `.jeo/short-term.md` and the active task file
+- decide whether `annotate` / `ui-review` requires the submit-gated UI loop
 
-Useful commands:
+#### Annotate submit loop
+Use only when explicit submit-gated UI review is requested.
 
-```bash
-agent-browser snapshot http://localhost:3000
-python3 scripts/jeo-project-sync.py record-evidence "unit tests: X passing, Y added"
-python3 scripts/jeo-project-sync.py record-evidence "flow check: <description>"
-python3 scripts/jeo-project-sync.py record-evidence "browser verification: <outcome>"
-python3 scripts/jeo-project-sync.py update-checklist qa "Flow or integration checks recorded" --done
-python3 scripts/jeo-project-sync.py update-checklist qa "Browser / annotation verification recorded when applicable" --done
-```
+- set `phase=verify_ui`
+- require submit / onSubmit before processing annotations
+- route the actual annotation watch / ack / resolve behavior to `agentation`
+- record any follow-up work in the queue before cleanup
 
-### STEP 3.1: VERIFY_UI (only when `annotate` / `ui-review` is detected)
-
-1. Run the preflight check. If `agentation-mcp` is unavailable, record the skip and continue to cleanup.
-2. Set `phase=verify_ui`, `agentation.active=true`, and `agentation.submit_gate_status=waiting_for_submit`.
-3. Wait for explicit human submit:
-   - Claude Code: `UserPromptSubmit` hook
-   - Others: explicit ready/submit handoff (`ANNOTATE_READY` or `AGENTUI_READY` alias)
-4. After submit, process annotations in blocking mode:
-   - Claude Code: `agentation_watch_annotations`
-   - Others: HTTP polling fallback
-5. Per annotation: acknowledge → navigate using `elementPath` → apply fix → resolve.
-6. If QA discovers follow-up work, queue it immediately.
-7. When the queue is empty or the timeout hits, continue to cleanup.
-
-### STEP 4: CLEANUP
+#### Cleanup and closeout
+Use when the loop is ready to summarize and exit.
 
 ```bash
 python3 scripts/jeo-state-update.py checkpoint cleanup
 python3 scripts/jeo-state-update.py set phase cleanup
 python3 scripts/jeo-project-sync.py stage done
-```
-
-1. Check for uncommitted changes and warn if present.
-2. Complete the active `.jeo` task and write the permanent summary:
-
-```bash
 python3 scripts/jeo-project-sync.py complete <slug> "<what shipped, what QA proved, what follow-up remains>"
 ```
 
-3. Queue follow-up work before leaving cleanup if more work remains:
+If follow-up work remains:
 
 ```bash
 python3 scripts/jeo-project-sync.py queue next-step "<follow-up work>"
 ```
 
-4. Run worktree cleanup:
+Then clean worktrees:
 
 ```bash
 bash scripts/worktree-cleanup.sh || git worktree prune
 ```
 
-5. Set `phase=done`.
+### Step 5: Produce one orchestration packet
+Return one concise orchestration packet, not a giant platform encyclopedia.
 
-## Quick Start
+Minimum packet contents:
+- primary packet and any secondary concern
+- current phase or inferred next phase
+- ledger/state status
+- sibling skill route-outs
+- required evidence or approval gates
+- next command block or action block
 
+### Step 6: Verify boundaries before finalizing
+Check:
+- did you keep runtime-native config, hook, and setup detail in the references or sibling runtime skills?
+- did you keep browser verification in `agent-browser` and submit-gated UI review in `agentation`?
+- did you keep trust/approval posture tuning in `ralphmode`?
+- did you preserve `.jeo/` history and active-task truth instead of inventing ephemeral state?
+- does the packet make the next honest handoff obvious?
+
+## Output format
+
+```markdown
+## JEO Packet: [Task or Phase]
+
+### Packet choice
+- Primary packet: bootstrap-or-resume | planning-gate | runtime-handoff | verification-loop | annotate-submit-loop | cleanup-and-closeout
+- Secondary concern: optional
+- Current phase: plan | execute | verify | verify_ui | cleanup | done | unknown
+- Confidence: high | medium | low
+
+### State snapshot
+- Durable ledger: initialized | missing | needs resume | active
+- Machine state: initialized | resumed | missing | blocked
+- Active task: ...
+- Plan gate: pending | approved | feedback_required | infrastructure_blocked
+- Submit gate: not-needed | waiting_for_submit | submitted | complete
+
+### Route-outs
+- Planning owner: `ralph` / `plannotator` / not-needed
+- Runtime owner: `omc` / `omx` / `ohmg` / `bmad` / not-needed
+- Browser verification owner: `agent-browser` / not-needed
+- UI feedback owner: `agentation` / not-needed
+- Trust posture owner: `ralphmode` / not-needed
+
+### Actions
+1. ...
+2. ...
+3. ...
+
+### Commands
 ```bash
-# Install JEO
-npx skills add https://github.com/akillness/oh-my-skills --skill jeo
-
-# Full install (all tools + components)
-bash scripts/install.sh --all
-
-# Check status
-bash scripts/check-status.sh
-
-# Per-platform setup
-bash scripts/setup-claude.sh
-bash scripts/setup-codex.sh
-bash scripts/setup-gemini.sh
-bash scripts/setup-opencode.sh
+# minimal next commands only
 ```
 
-For config snippets and runtime-specific notes, see [references/PLATFORM_SETUP.md](references/PLATFORM_SETUP.md).
-
-## Supporting references
-
-- [references/FLOW.md](references/FLOW.md) — detailed phase flow, submit-gate behavior, and platform execution paths
-- [references/DOT_JEO_LEDGER.md](references/DOT_JEO_LEDGER.md) — `.jeo/` ledger structure and operating rules
-- [references/PLATFORM_SETUP.md](references/PLATFORM_SETUP.md) — Claude/Codex/Gemini/OpenCode config surfaces and install notes
-- [references/STATE_AND_TROUBLESHOOTING.md](references/STATE_AND_TROUBLESHOOTING.md) — state-field reference and common failure recovery
+### Exit criteria
+- ...
+```
 
 ## Examples
 
-### Example 1: New feature with `.jeo` ledger
+### Example 1: new cross-platform delivery loop
+**Input:** “jeo로 이 기능을 진행하는데 Claude에서도 이어서 하고 나중에 Codex에서도 resume할 수 있게 .jeo 문서까지 같이 관리해줘.”
 
-```bash
-python3 scripts/jeo-project-sync.py init "Build exportable analytics dashboard"
-python3 scripts/jeo-project-sync.py start-next
-python3 scripts/jeo-project-sync.py stage planning
-```
+**Good response shape:**
+- chooses `bootstrap-or-resume` or `planning-gate`
+- initializes `.jeo/` and machine state
+- keeps planning with `ralph` + `plannotator`
+- routes runtime-specific execution to the correct runtime skill instead of expanding all runtime setup inline
 
-Then run the normal JEO flow: plan approval → development → QA → cleanup. When done:
+### Example 2: browser-visible feature with annotate review
+**Input:** “annotate 포함 jeo 플로우로 UI 기능을 만들고 브라우저 검증이랑 submit-gated 리뷰까지 같이 관리해줘.”
 
-```bash
-python3 scripts/jeo-project-sync.py complete 000-primary "Dashboard shipped with unit tests, flow checks, and browser verification."
-```
+**Good response shape:**
+- chooses `verification-loop` with secondary `annotate-submit-loop`
+- records the QA evidence requirement
+- routes browser verification to `agent-browser`
+- waits for explicit submit before `agentation` processing
 
-### Example 2: Add follow-up work discovered during QA
+### Example 3: resume and queue follow-up work
+**Input:** “이전에 끝낸 작업을 history로 참고하면서 새 follow-up 작업을 .jeo에 추가해 이어서 진행해줘.”
 
-```bash
-python3 scripts/jeo-project-sync.py queue qa-follow-up "Fix chart legend overlap on small screens"
-python3 scripts/jeo-project-sync.py progress "Queued QA follow-up from annotate review."
-```
-
-### Example 3: Resume an existing workflow without rebuilding the ledger
-
-```bash
-python3 scripts/jeo-state-update.py resume
-python3 scripts/jeo-project-sync.py status
-python3 scripts/jeo-project-sync.py start-next
-```
-
-Use the saved phase, active task, and `.jeo/history.md` context to continue the loop instead of recreating plan and task structure from scratch.
+**Good response shape:**
+- resumes state instead of rebuilding it
+- uses `.jeo/history.md` as durable context
+- queues the follow-up item before execution or cleanup
+- preserves append-only history and one active task file
 
 ## Best practices
-
-1. **Plan first**: always review the plan with `ralph` + `plannotator` before executing.
-2. **Keep JEO as the router**: let `ralph`, `plannotator`, `agent-browser`, `agentation`, `omc`, `omx`, `ohmg`, and `ralphmode` own their specialist surfaces.
-3. **Keep `.jeo` honest**: long-term is durable, short-term is current, history is append-only.
-4. **One active task file**: keep only one file under `.jeo/tasks/active/` at a time.
-5. **Complete means summarize + delete task file**: write history first, then remove the task file.
-6. **Worktree cleanup matters**: run `worktree-cleanup.sh` immediately after work completes.
-7. **Respect submit gating**: do not process annotations before explicit submit/onSubmit.
-8. **Use the reference docs** for config, state fields, and troubleshooting instead of re-expanding the main skill file.
+1. Keep JEO as the front door, not the whole runtime stack.
+2. Use one primary packet per response; name secondary concerns explicitly instead of blending everything together.
+3. Keep `.jeo` honest: durable long-term rules, current short-term plan, explicit queued/active work, append-only history.
+4. Prefer references and sibling skills over re-expanding platform setup or hook internals in `SKILL.md`.
+5. Require QA evidence before cleanup claims success.
+6. Queue follow-up work before leaving the loop when verification finds more work.
+7. Keep one active task file at a time.
+8. Treat runtime parity honestly; shared rules belong in JEO, runtime-specific mechanics do not.
 
 ## References
-
 - [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) — Claude Code multi-agent runtime
 - [plannotator](https://plannotator.ai) — visual plan/diff review
 - [BMAD Method](https://github.com/bmad-dev/BMAD-METHOD) — structured AI development workflow
 - [Agent Skills Spec](https://agentskills.io/specification) — skill format specification
 - [agentation](https://github.com/benjitaylor/agentation) — UI annotation → agent code fix
-- [`.jeo` ledger reference](references/DOT_JEO_LEDGER.md) — project-local planning, development, and QA ledger
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md) — packet selection and sibling-skill boundaries

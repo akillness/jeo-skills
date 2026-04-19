@@ -1,10 +1,10 @@
 ---
 title: Core Orchestration Platform Cluster
 created: 2026-04-15
-updated: 2026-04-19
+updated: 2026-04-20
 type: concept
 tags: [skills, consolidation, trigger-design, graphify]
-sources: [.survey/ohmg-modernization-20260415/context.md, .survey/ohmg-modernization-20260415/platform-map.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/platform-map.md, .survey/jeo-structural-hardening-20260416/context.md, .survey/jeo-structural-hardening-20260416/platform-map.md, .survey/survey-structural-hardening-20260418/context.md, .survey/survey-structural-hardening-20260418/platform-map.md, .survey/omc-structural-hardening-20260419/context.md, .survey/omc-structural-hardening-20260419/platform-map.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/ohmg-modernization-20260415/context.md, .survey/ohmg-modernization-20260415/platform-map.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/platform-map.md, .survey/jeo-structural-hardening-20260416/context.md, .survey/jeo-structural-hardening-20260416/platform-map.md, .survey/survey-structural-hardening-20260418/context.md, .survey/survey-structural-hardening-20260418/platform-map.md, .survey/omc-structural-hardening-20260419/context.md, .survey/omc-structural-hardening-20260419/platform-map.md, .survey/jeo-structural-hardening-20260420/context.md, .survey/jeo-structural-hardening-20260420/platform-map.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Core Orchestration Platform Cluster
@@ -40,7 +40,7 @@ The `ralph` support-hardening pass reinforced that same rule inside the core-orc
 
 The `ralph` structural-hardening pass pushed the next step further: once support coverage was complete, the best bounded move was shrinking the front door, correcting stale Codex compensation-only wording, and moving runtime ownership into references and sibling skills instead of letting the portable method surface absorb Claude / Codex / Gemini execution details.
 
-The `jeo` structural-hardening pass extends the same pattern to the repo's front-door router: once support coverage is complete, the best bounded move is shrinking the trigger surface, pushing config/state/troubleshooting detail into references, and preserving clean route-outs to the specialist runtime and review skills.
+The 2026-04-20 `jeo` structural-hardening follow-up extends the same pattern to the repo's front-door router: once support coverage is complete, the best bounded move is tightening `jeo` into a packet-first orchestration front door, keeping the shared ledger/phase contract central, and pushing runtime/browser specifics into references and sibling skills instead of re-expanding them inline.
 
 The `omc` structural-hardening pass completed the same cleanup on the Claude-first runtime anchor: the stable contract is now the plugin-vs-CLI split plus explicit route-outs. `omc` should explain when to use plugin setup, in-session slash skills, terminal CLI commands, or recovery/state guidance, but it should not flatten those surfaces into one giant command catalog or absorb `jeo`, `ralphmode`, browser-review, or non-Claude runtime ownership.
 
@@ -51,6 +51,7 @@ The `survey` structural-hardening pass extended that same rule to the research l
 - [[ohmg-modernization-2026-04-15]]
 - [[ralph-support-hardening-2026-04-16]]
 - [[jeo-structural-hardening-2026-04-16]]
+- [[jeo-structural-hardening-2026-04-20]]
 - [[omc-structural-hardening-2026-04-19]]
 - [[survey-structural-hardening-2026-04-18]]
 - [[developer-workflow-cluster]]

@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-20 | Total pages: 149
+> Last updated: 2026-04-20 | Total pages: 150
 
 ## Entities
 
@@ -26,6 +26,7 @@
 ## Comparisons
 
 ## Queries
+- [[jeo-structural-hardening-2026-04-20]] — Why the best bounded next core-orchestration improvement was tightening `jeo` into a packet-first orchestration front door with clearer runtime/browser route-outs instead of adding another orchestration wrapper.
 - [[marketing-automation-structural-hardening-2026-04-18]] — Why the best bounded marketing follow-up was tightening `marketing-automation` into an operating-mode front door with sharper route-outs instead of adding another broad wrapper.
 - [[compact-variant-gap-2026-04-15]] — Why the best bounded fix for the remaining repo-wide compact-discovery drift was finishing the last 8 `SKILL.toon` gaps instead of downgrading docs or building a generator first.
 - [[api-design-modernization-2026-04-12]] — Why the best bounded backend-cluster improvement was modernizing `api-design` into a contract-first anchor instead of adding a new overlapping API skill.

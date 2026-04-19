@@ -7,8 +7,8 @@
       "expected_output": "The skill creates and maintains a .jeo ledger with long-term, short-term, planned, progress, and history docs.",
       "assertions": [
         "The workflow mentions `.jeo/long-term.md`, `.jeo/short-term.md`, `.jeo/planned.md`, `.jeo/progress.md`, and `.jeo/history.md`.",
-        "The workflow includes an initialization command for `.jeo`.",
-        "The workflow explains that completed task files are removed after history is written."
+        "The workflow includes an initialization or resume command for `.jeo` and machine state.",
+        "The workflow treats JEO as the ledger contract rather than a full runtime manual."
       ]
     },
     {
@@ -18,7 +18,7 @@
       "assertions": [
         "The workflow explicitly maps PLAN to planning, EXECUTE to development, and VERIFY/VERIFY_UI to QA.",
         "The workflow updates `.jeo/progress.md` or the active task file on each stage transition.",
-        "The workflow still preserves agentation and plannotator gate rules."
+        "The workflow still preserves the submit gate before agentation processing."
       ]
     },
     {
@@ -29,6 +29,16 @@
         "The workflow includes a command or step for queueing additional work items.",
         "The workflow keeps `history.md` append-only.",
         "The workflow supports starting the next queued item without rebuilding the whole ledger."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "jeo로 이 작업을 Codex에서 진행하고 싶은데 runtime 설정 설명까지 jeo 안에 다 넣지 말고 다음에 어떤 스킬로 넘길지 먼저 정리해줘",
+      "expected_output": "The skill chooses a packet, preserves the shared JEO contract, and routes Codex-native execution to the correct sibling skill instead of re-expanding Codex runtime setup inline.",
+      "assertions": [
+        "The workflow names a primary packet such as `runtime-handoff` or `planning-gate`.",
+        "The workflow routes Codex-native execution to `omx` or the platform reference rather than pretending JEO owns Codex runtime internals.",
+        "The workflow still mentions the durable `.jeo` ledger or machine-state contract."
       ]
     }
   ]

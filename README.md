@@ -255,7 +255,7 @@ setup omc
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
-| `jeo` | `jeo`, `annotate` | All | Integrated orchestration with `.jeo` ledger: Planning→Development→QA→Cleanup |
+| `jeo` | `jeo`, `annotate` | All | Packet-first orchestration front door with `.jeo` ledger: plan gate → runtime handoff → verify → cleanup |
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | Claude-first orchestration router for oh-my-claudecode — distinguishes plugin slash skills from the `omc` shell CLI, handles setup/recovery/state issues, and routes adjacent work to `jeo`, `ralphmode`, `omx`, `ohmg`, and browser-review skills |
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Multi-agent workflow layer for Codex CLI (v0.11.10) — 30+ agents, 35+ skills, tmux team runtime, omx explore/sparkshell |
@@ -431,16 +431,18 @@ TOON (Token-Oriented Object Notation) compresses the skill catalog and auto-inje
 ### jeo — Integrated Agent Orchestration
 > Keyword: `jeo` · `annotate` | Platforms: Claude · Codex · Gemini · OpenCode
 
-Complete integrated delivery loop: Plan (ralph+plannotator) → Execute (platform runtime or bmad) → Verify (agent-browser) → optional submit-gated UI Feedback (agentation) → Cleanup.
+Packet-first orchestration front door: choose the right JEO packet, preserve `.jeo` ledger truth, and hand work to the correct owner instead of expanding every runtime inline.
 
-JEO also maintains a project-local `.jeo/` ledger plus resumable `.omc/state/jeo-state.json`, so the workflow keeps durable long-term rules, short-term system/test plans, queued work, live progress notes, and append-only history across sessions.
+JEO keeps the shared contract — plan gate, runtime handoff, verification requirements, submit-gated UI review, cleanup, and resumable `.jeo` / machine state — while routing specialist work to sibling skills.
 
-| Phase | Tool | Description |
-|-------|------|-------------|
-| Plan / Planning | ralph + plannotator + `.jeo/short-term.md` | Visual plan review plus system/unit/flow test planning |
-| Execute / Development | omc team / bmad + `.jeo/tasks/active/*.md` | Parallel agent execution with active work-item tracking |
-| Verify / QA | agent-browser + agentation (`annotate`) | Browser behavior verification, annotation fixes, QA evidence |
-| Cleanup | worktree-cleanup.sh | Auto worktree cleanup |
+| Packet / Phase | Owner | Description |
+|----------------|-------|-------------|
+| Bootstrap / Resume | JEO scripts + `.jeo/` | Initialize or recover durable ledger and machine state |
+| Plan / Planning | `ralph` + `plannotator` | Shape the plan and get approval without reopening unchanged work |
+| Runtime handoff / Execute | `omc` / `omx` / `ohmg` / truthful `bmad` fallback | Keep runtime-native config and execution in the runtime skill |
+| Verify / QA | `agent-browser` | Record browser / QA evidence before claiming completion |
+| Verify UI / annotate | `agentation` | Wait for explicit submit, then process UI feedback |
+| Cleanup | JEO scripts + `worktree-cleanup.sh` | Summarize, queue follow-up work, and clean worktrees |
 
 ### plannotator — Visual Plan Review
 > Keyword: `plan` | [Docs](docs/plannotator/README.md) | [GitHub](https://github.com/backnotprop/plannotator)
