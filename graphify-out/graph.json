@@ -1,2523 +1,2150 @@
 {
+  "meta": {
+    "path": ".agent-skills/",
+    "live_skill_count": 89,
+    "manifest_skill_count": 89,
+    "support_counts": {
+      "references": 89,
+      "evals": 89,
+      "scripts": 25,
+      "compact": 89
+    },
+    "node_count": 386,
+    "edge_count": 1071
+  },
   "nodes": [
     {
-      "id": "doc:README.md",
-      "label": "README.md",
-      "kind": "discovery-doc",
-      "path": "README.md"
+      "id": "README.md",
+      "kind": "discovery",
+      "label": "README.md"
     },
     {
-      "id": "doc:README.ko.md",
-      "label": "README.ko.md",
-      "kind": "discovery-doc",
-      "path": "README.ko.md"
+      "id": "README.ko.md",
+      "kind": "discovery",
+      "label": "README.ko.md"
     },
     {
-      "id": "doc:setup-all-skills-prompt.md",
-      "label": "setup-all-skills-prompt.md",
-      "kind": "discovery-doc",
-      "path": "setup-all-skills-prompt.md"
+      "id": "setup-all-skills-prompt.md",
+      "kind": "discovery",
+      "label": "setup-all-skills-prompt.md"
     },
     {
-      "id": "doc:.agent-skills/skills.json",
-      "label": ".agent-skills/skills.json",
-      "kind": "discovery-doc",
-      "path": ".agent-skills/skills.json"
+      "id": ".agent-skills/skills.toon",
+      "kind": "discovery",
+      "label": ".agent-skills/skills.toon"
     },
     {
-      "id": "doc:.agent-skills/skills.toon",
-      "label": ".agent-skills/skills.toon",
-      "kind": "discovery-doc",
-      "path": ".agent-skills/skills.toon"
+      "id": ".agent-skills/skills.json",
+      "kind": "discovery",
+      "label": ".agent-skills/skills.json"
     },
     {
       "id": "skill:agent-browser",
-      "label": "agent-browser",
       "kind": "skill",
+      "label": "agent-browser",
       "path": ".agent-skills/agent-browser/SKILL.md",
-      "category": "planning-review",
-      "line_count": 239
+      "lines": 239
     },
     {
       "id": "support:agent-browser:references",
-      "label": "agent-browser/references",
       "kind": "support",
-      "path": ".agent-skills/agent-browser/references"
+      "label": "agent-browser/references"
     },
     {
       "id": "support:agent-browser:evals",
-      "label": "agent-browser/evals",
       "kind": "support",
-      "path": ".agent-skills/agent-browser/evals"
+      "label": "agent-browser/evals"
     },
     {
       "id": "support:agent-browser:compact",
-      "label": "agent-browser/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/agent-browser/SKILL.toon"
+      "label": "agent-browser/compact"
     },
     {
       "id": "skill:agentation",
-      "label": "agentation",
       "kind": "skill",
+      "label": "agentation",
       "path": ".agent-skills/agentation/SKILL.md",
-      "category": "planning-review",
-      "line_count": 223
+      "lines": 223
     },
     {
       "id": "support:agentation:references",
-      "label": "agentation/references",
       "kind": "support",
-      "path": ".agent-skills/agentation/references"
+      "label": "agentation/references"
     },
     {
       "id": "support:agentation:evals",
-      "label": "agentation/evals",
       "kind": "support",
-      "path": ".agent-skills/agentation/evals"
+      "label": "agentation/evals"
     },
     {
       "id": "support:agentation:scripts",
-      "label": "agentation/scripts",
       "kind": "support",
-      "path": ".agent-skills/agentation/scripts"
+      "label": "agentation/scripts"
     },
     {
       "id": "support:agentation:compact",
-      "label": "agentation/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/agentation/SKILL.toon"
+      "label": "agentation/compact"
     },
     {
       "id": "skill:api-design",
-      "label": "api-design",
       "kind": "skill",
+      "label": "api-design",
       "path": ".agent-skills/api-design/SKILL.md",
-      "category": "backend",
-      "line_count": 243
+      "lines": 243
     },
     {
       "id": "support:api-design:references",
-      "label": "api-design/references",
       "kind": "support",
-      "path": ".agent-skills/api-design/references"
+      "label": "api-design/references"
     },
     {
       "id": "support:api-design:evals",
-      "label": "api-design/evals",
       "kind": "support",
-      "path": ".agent-skills/api-design/evals"
+      "label": "api-design/evals"
     },
     {
       "id": "support:api-design:compact",
-      "label": "api-design/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/api-design/SKILL.toon"
+      "label": "api-design/compact"
     },
     {
       "id": "skill:api-documentation",
-      "label": "api-documentation",
       "kind": "skill",
+      "label": "api-documentation",
       "path": ".agent-skills/api-documentation/SKILL.md",
-      "category": "backend",
-      "line_count": 201
+      "lines": 201
     },
     {
       "id": "support:api-documentation:references",
-      "label": "api-documentation/references",
       "kind": "support",
-      "path": ".agent-skills/api-documentation/references"
+      "label": "api-documentation/references"
     },
     {
       "id": "support:api-documentation:evals",
-      "label": "api-documentation/evals",
       "kind": "support",
-      "path": ".agent-skills/api-documentation/evals"
+      "label": "api-documentation/evals"
     },
     {
       "id": "support:api-documentation:compact",
-      "label": "api-documentation/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/api-documentation/SKILL.toon"
+      "label": "api-documentation/compact"
     },
     {
       "id": "skill:authentication-setup",
-      "label": "authentication-setup",
       "kind": "skill",
+      "label": "authentication-setup",
       "path": ".agent-skills/authentication-setup/SKILL.md",
-      "category": "backend",
-      "line_count": 251
+      "lines": 251
     },
     {
       "id": "support:authentication-setup:references",
-      "label": "authentication-setup/references",
       "kind": "support",
-      "path": ".agent-skills/authentication-setup/references"
+      "label": "authentication-setup/references"
     },
     {
       "id": "support:authentication-setup:evals",
-      "label": "authentication-setup/evals",
       "kind": "support",
-      "path": ".agent-skills/authentication-setup/evals"
+      "label": "authentication-setup/evals"
     },
     {
       "id": "support:authentication-setup:compact",
-      "label": "authentication-setup/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/authentication-setup/SKILL.toon"
+      "label": "authentication-setup/compact"
     },
     {
       "id": "skill:autoresearch",
-      "label": "autoresearch",
       "kind": "skill",
+      "label": "autoresearch",
       "path": ".agent-skills/autoresearch/SKILL.md",
-      "category": "search-analysis",
-      "line_count": 284
+      "lines": 284
     },
     {
       "id": "support:autoresearch:references",
-      "label": "autoresearch/references",
       "kind": "support",
-      "path": ".agent-skills/autoresearch/references"
+      "label": "autoresearch/references"
     },
     {
       "id": "support:autoresearch:evals",
-      "label": "autoresearch/evals",
       "kind": "support",
-      "path": ".agent-skills/autoresearch/evals"
+      "label": "autoresearch/evals"
     },
     {
       "id": "support:autoresearch:scripts",
-      "label": "autoresearch/scripts",
       "kind": "support",
-      "path": ".agent-skills/autoresearch/scripts"
+      "label": "autoresearch/scripts"
     },
     {
       "id": "support:autoresearch:compact",
-      "label": "autoresearch/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/autoresearch/SKILL.toon"
+      "label": "autoresearch/compact"
     },
     {
       "id": "skill:backend-testing",
-      "label": "backend-testing",
       "kind": "skill",
+      "label": "backend-testing",
       "path": ".agent-skills/backend-testing/SKILL.md",
-      "category": "backend",
-      "line_count": 254
+      "lines": 254
     },
     {
       "id": "support:backend-testing:references",
-      "label": "backend-testing/references",
       "kind": "support",
-      "path": ".agent-skills/backend-testing/references"
+      "label": "backend-testing/references"
     },
     {
       "id": "support:backend-testing:evals",
-      "label": "backend-testing/evals",
       "kind": "support",
-      "path": ".agent-skills/backend-testing/evals"
+      "label": "backend-testing/evals"
     },
     {
       "id": "support:backend-testing:compact",
-      "label": "backend-testing/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/backend-testing/SKILL.toon"
+      "label": "backend-testing/compact"
     },
     {
       "id": "skill:bmad",
-      "label": "bmad",
       "kind": "skill",
+      "label": "bmad",
       "path": ".agent-skills/bmad/SKILL.md",
-      "category": null,
-      "line_count": 229
+      "lines": 229
     },
     {
       "id": "support:bmad:references",
-      "label": "bmad/references",
       "kind": "support",
-      "path": ".agent-skills/bmad/references"
+      "label": "bmad/references"
     },
     {
       "id": "support:bmad:evals",
-      "label": "bmad/evals",
       "kind": "support",
-      "path": ".agent-skills/bmad/evals"
+      "label": "bmad/evals"
     },
     {
       "id": "support:bmad:scripts",
-      "label": "bmad/scripts",
       "kind": "support",
-      "path": ".agent-skills/bmad/scripts"
+      "label": "bmad/scripts"
     },
     {
       "id": "support:bmad:compact",
-      "label": "bmad/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/bmad/SKILL.toon"
+      "label": "bmad/compact"
     },
     {
       "id": "skill:bmad-gds",
-      "label": "bmad-gds",
       "kind": "skill",
+      "label": "bmad-gds",
       "path": ".agent-skills/bmad-gds/SKILL.md",
-      "category": "core-orchestration",
-      "line_count": 230
+      "lines": 230
     },
     {
       "id": "support:bmad-gds:references",
-      "label": "bmad-gds/references",
       "kind": "support",
-      "path": ".agent-skills/bmad-gds/references"
+      "label": "bmad-gds/references"
     },
     {
       "id": "support:bmad-gds:evals",
-      "label": "bmad-gds/evals",
       "kind": "support",
-      "path": ".agent-skills/bmad-gds/evals"
+      "label": "bmad-gds/evals"
     },
     {
       "id": "support:bmad-gds:compact",
-      "label": "bmad-gds/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/bmad-gds/SKILL.toon"
+      "label": "bmad-gds/compact"
     },
     {
       "id": "skill:bmad-idea",
-      "label": "bmad-idea",
       "kind": "skill",
+      "label": "bmad-idea",
       "path": ".agent-skills/bmad-idea/SKILL.md",
-      "category": "core-orchestration",
-      "line_count": 255
+      "lines": 255
     },
     {
       "id": "support:bmad-idea:references",
-      "label": "bmad-idea/references",
       "kind": "support",
-      "path": ".agent-skills/bmad-idea/references"
+      "label": "bmad-idea/references"
     },
     {
       "id": "support:bmad-idea:evals",
-      "label": "bmad-idea/evals",
       "kind": "support",
-      "path": ".agent-skills/bmad-idea/evals"
+      "label": "bmad-idea/evals"
     },
     {
       "id": "support:bmad-idea:compact",
-      "label": "bmad-idea/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/bmad-idea/SKILL.toon"
+      "label": "bmad-idea/compact"
     },
     {
       "id": "skill:changelog-maintenance",
-      "label": "changelog-maintenance",
       "kind": "skill",
+      "label": "changelog-maintenance",
       "path": ".agent-skills/changelog-maintenance/SKILL.md",
-      "category": "documentation",
-      "line_count": 230
+      "lines": 230
     },
     {
       "id": "support:changelog-maintenance:references",
-      "label": "changelog-maintenance/references",
       "kind": "support",
-      "path": ".agent-skills/changelog-maintenance/references"
+      "label": "changelog-maintenance/references"
     },
     {
       "id": "support:changelog-maintenance:evals",
-      "label": "changelog-maintenance/evals",
       "kind": "support",
-      "path": ".agent-skills/changelog-maintenance/evals"
+      "label": "changelog-maintenance/evals"
     },
     {
       "id": "support:changelog-maintenance:compact",
-      "label": "changelog-maintenance/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/changelog-maintenance/SKILL.toon"
+      "label": "changelog-maintenance/compact"
     },
     {
       "id": "skill:clawteam",
-      "label": "clawteam",
       "kind": "skill",
+      "label": "clawteam",
       "path": ".agent-skills/clawteam/SKILL.md",
-      "category": null,
-      "line_count": 329
+      "lines": 329
     },
     {
       "id": "support:clawteam:references",
-      "label": "clawteam/references",
       "kind": "support",
-      "path": ".agent-skills/clawteam/references"
+      "label": "clawteam/references"
     },
     {
       "id": "support:clawteam:evals",
-      "label": "clawteam/evals",
       "kind": "support",
-      "path": ".agent-skills/clawteam/evals"
+      "label": "clawteam/evals"
     },
     {
       "id": "support:clawteam:scripts",
-      "label": "clawteam/scripts",
       "kind": "support",
-      "path": ".agent-skills/clawteam/scripts"
+      "label": "clawteam/scripts"
     },
     {
       "id": "support:clawteam:compact",
-      "label": "clawteam/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/clawteam/SKILL.toon"
+      "label": "clawteam/compact"
     },
     {
       "id": "skill:code-refactoring",
-      "label": "code-refactoring",
       "kind": "skill",
+      "label": "code-refactoring",
       "path": ".agent-skills/code-refactoring/SKILL.md",
-      "category": "code-quality",
-      "line_count": 263
+      "lines": 263
     },
     {
       "id": "support:code-refactoring:references",
-      "label": "code-refactoring/references",
       "kind": "support",
-      "path": ".agent-skills/code-refactoring/references"
+      "label": "code-refactoring/references"
     },
     {
       "id": "support:code-refactoring:evals",
-      "label": "code-refactoring/evals",
       "kind": "support",
-      "path": ".agent-skills/code-refactoring/evals"
+      "label": "code-refactoring/evals"
     },
     {
       "id": "support:code-refactoring:compact",
-      "label": "code-refactoring/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/code-refactoring/SKILL.toon"
+      "label": "code-refactoring/compact"
     },
     {
       "id": "skill:code-review",
-      "label": "code-review",
       "kind": "skill",
+      "label": "code-review",
       "path": ".agent-skills/code-review/SKILL.md",
-      "category": "code-quality",
-      "line_count": 255
+      "lines": 255
     },
     {
       "id": "support:code-review:references",
-      "label": "code-review/references",
       "kind": "support",
-      "path": ".agent-skills/code-review/references"
+      "label": "code-review/references"
     },
     {
       "id": "support:code-review:evals",
-      "label": "code-review/evals",
       "kind": "support",
-      "path": ".agent-skills/code-review/evals"
+      "label": "code-review/evals"
     },
     {
       "id": "support:code-review:compact",
-      "label": "code-review/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/code-review/SKILL.toon"
+      "label": "code-review/compact"
     },
     {
       "id": "skill:codebase-search",
-      "label": "codebase-search",
       "kind": "skill",
+      "label": "codebase-search",
       "path": ".agent-skills/codebase-search/SKILL.md",
-      "category": "search-analysis",
-      "line_count": 224
+      "lines": 224
     },
     {
       "id": "support:codebase-search:references",
-      "label": "codebase-search/references",
       "kind": "support",
-      "path": ".agent-skills/codebase-search/references"
+      "label": "codebase-search/references"
     },
     {
       "id": "support:codebase-search:evals",
-      "label": "codebase-search/evals",
       "kind": "support",
-      "path": ".agent-skills/codebase-search/evals"
+      "label": "codebase-search/evals"
     },
     {
       "id": "support:codebase-search:compact",
-      "label": "codebase-search/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/codebase-search/SKILL.toon"
+      "label": "codebase-search/compact"
     },
     {
       "id": "skill:data-analysis",
-      "label": "data-analysis",
       "kind": "skill",
+      "label": "data-analysis",
       "path": ".agent-skills/data-analysis/SKILL.md",
-      "category": "search-analysis",
-      "line_count": 245
+      "lines": 245
     },
     {
       "id": "support:data-analysis:references",
-      "label": "data-analysis/references",
       "kind": "support",
-      "path": ".agent-skills/data-analysis/references"
+      "label": "data-analysis/references"
     },
     {
       "id": "support:data-analysis:evals",
-      "label": "data-analysis/evals",
       "kind": "support",
-      "path": ".agent-skills/data-analysis/evals"
+      "label": "data-analysis/evals"
     },
     {
       "id": "support:data-analysis:compact",
-      "label": "data-analysis/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/data-analysis/SKILL.toon"
+      "label": "data-analysis/compact"
     },
     {
       "id": "skill:database-schema-design",
-      "label": "database-schema-design",
       "kind": "skill",
+      "label": "database-schema-design",
       "path": ".agent-skills/database-schema-design/SKILL.md",
-      "category": "backend",
-      "line_count": 245
+      "lines": 245
     },
     {
       "id": "support:database-schema-design:references",
-      "label": "database-schema-design/references",
       "kind": "support",
-      "path": ".agent-skills/database-schema-design/references"
+      "label": "database-schema-design/references"
     },
     {
       "id": "support:database-schema-design:evals",
-      "label": "database-schema-design/evals",
       "kind": "support",
-      "path": ".agent-skills/database-schema-design/evals"
+      "label": "database-schema-design/evals"
     },
     {
       "id": "support:database-schema-design:compact",
-      "label": "database-schema-design/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/database-schema-design/SKILL.toon"
+      "label": "database-schema-design/compact"
     },
     {
       "id": "skill:debugging",
-      "label": "debugging",
       "kind": "skill",
+      "label": "debugging",
       "path": ".agent-skills/debugging/SKILL.md",
-      "category": "code-quality",
-      "line_count": 251
+      "lines": 251
     },
     {
       "id": "support:debugging:references",
-      "label": "debugging/references",
       "kind": "support",
-      "path": ".agent-skills/debugging/references"
+      "label": "debugging/references"
     },
     {
       "id": "support:debugging:evals",
-      "label": "debugging/evals",
       "kind": "support",
-      "path": ".agent-skills/debugging/evals"
+      "label": "debugging/evals"
     },
     {
       "id": "support:debugging:compact",
-      "label": "debugging/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/debugging/SKILL.toon"
+      "label": "debugging/compact"
     },
     {
       "id": "skill:deployment-automation",
-      "label": "deployment-automation",
       "kind": "skill",
+      "label": "deployment-automation",
       "path": ".agent-skills/deployment-automation/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 213
+      "lines": 213
     },
     {
       "id": "support:deployment-automation:references",
-      "label": "deployment-automation/references",
       "kind": "support",
-      "path": ".agent-skills/deployment-automation/references"
+      "label": "deployment-automation/references"
     },
     {
       "id": "support:deployment-automation:evals",
-      "label": "deployment-automation/evals",
       "kind": "support",
-      "path": ".agent-skills/deployment-automation/evals"
+      "label": "deployment-automation/evals"
     },
     {
       "id": "support:deployment-automation:compact",
-      "label": "deployment-automation/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/deployment-automation/SKILL.toon"
+      "label": "deployment-automation/compact"
     },
     {
       "id": "skill:design-system",
-      "label": "design-system",
       "kind": "skill",
+      "label": "design-system",
       "path": ".agent-skills/design-system/SKILL.md",
-      "category": "frontend",
-      "line_count": 257
+      "lines": 257
     },
     {
       "id": "support:design-system:references",
-      "label": "design-system/references",
       "kind": "support",
-      "path": ".agent-skills/design-system/references"
+      "label": "design-system/references"
     },
     {
       "id": "support:design-system:evals",
-      "label": "design-system/evals",
       "kind": "support",
-      "path": ".agent-skills/design-system/evals"
+      "label": "design-system/evals"
     },
     {
       "id": "support:design-system:compact",
-      "label": "design-system/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/design-system/SKILL.toon"
+      "label": "design-system/compact"
     },
     {
       "id": "skill:environment-setup",
-      "label": "environment-setup",
       "kind": "skill",
+      "label": "environment-setup",
       "path": ".agent-skills/environment-setup/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 199
+      "lines": 199
     },
     {
       "id": "support:environment-setup:references",
-      "label": "environment-setup/references",
       "kind": "support",
-      "path": ".agent-skills/environment-setup/references"
+      "label": "environment-setup/references"
     },
     {
       "id": "support:environment-setup:evals",
-      "label": "environment-setup/evals",
       "kind": "support",
-      "path": ".agent-skills/environment-setup/evals"
+      "label": "environment-setup/evals"
     },
     {
       "id": "support:environment-setup:compact",
-      "label": "environment-setup/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/environment-setup/SKILL.toon"
+      "label": "environment-setup/compact"
     },
     {
       "id": "skill:fabric",
-      "label": "fabric",
       "kind": "skill",
+      "label": "fabric",
       "path": ".agent-skills/fabric/SKILL.md",
-      "category": "utilities",
-      "line_count": 265
+      "lines": 265
     },
     {
       "id": "support:fabric:references",
-      "label": "fabric/references",
       "kind": "support",
-      "path": ".agent-skills/fabric/references"
+      "label": "fabric/references"
     },
     {
       "id": "support:fabric:evals",
-      "label": "fabric/evals",
       "kind": "support",
-      "path": ".agent-skills/fabric/evals"
+      "label": "fabric/evals"
     },
     {
       "id": "support:fabric:compact",
-      "label": "fabric/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/fabric/SKILL.toon"
+      "label": "fabric/compact"
     },
     {
       "id": "skill:file-organization",
-      "label": "file-organization",
       "kind": "skill",
+      "label": "file-organization",
       "path": ".agent-skills/file-organization/SKILL.md",
-      "category": "utilities",
-      "line_count": 233
+      "lines": 233
     },
     {
       "id": "support:file-organization:references",
-      "label": "file-organization/references",
       "kind": "support",
-      "path": ".agent-skills/file-organization/references"
+      "label": "file-organization/references"
     },
     {
       "id": "support:file-organization:evals",
-      "label": "file-organization/evals",
       "kind": "support",
-      "path": ".agent-skills/file-organization/evals"
+      "label": "file-organization/evals"
     },
     {
       "id": "support:file-organization:compact",
-      "label": "file-organization/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/file-organization/SKILL.toon"
+      "label": "file-organization/compact"
     },
     {
       "id": "skill:firebase-ai-logic",
-      "label": "firebase-ai-logic",
       "kind": "skill",
+      "label": "firebase-ai-logic",
       "path": ".agent-skills/firebase-ai-logic/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 185
+      "lines": 185
     },
     {
       "id": "support:firebase-ai-logic:references",
-      "label": "firebase-ai-logic/references",
       "kind": "support",
-      "path": ".agent-skills/firebase-ai-logic/references"
+      "label": "firebase-ai-logic/references"
     },
     {
       "id": "support:firebase-ai-logic:evals",
-      "label": "firebase-ai-logic/evals",
       "kind": "support",
-      "path": ".agent-skills/firebase-ai-logic/evals"
+      "label": "firebase-ai-logic/evals"
     },
     {
       "id": "support:firebase-ai-logic:compact",
-      "label": "firebase-ai-logic/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/firebase-ai-logic/SKILL.toon"
+      "label": "firebase-ai-logic/compact"
     },
     {
       "id": "skill:firebase-cli",
-      "label": "firebase-cli",
       "kind": "skill",
+      "label": "firebase-cli",
       "path": ".agent-skills/firebase-cli/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 199
+      "lines": 199
     },
     {
       "id": "support:firebase-cli:references",
-      "label": "firebase-cli/references",
       "kind": "support",
-      "path": ".agent-skills/firebase-cli/references"
+      "label": "firebase-cli/references"
     },
     {
       "id": "support:firebase-cli:evals",
-      "label": "firebase-cli/evals",
       "kind": "support",
-      "path": ".agent-skills/firebase-cli/evals"
+      "label": "firebase-cli/evals"
     },
     {
       "id": "support:firebase-cli:scripts",
-      "label": "firebase-cli/scripts",
       "kind": "support",
-      "path": ".agent-skills/firebase-cli/scripts"
+      "label": "firebase-cli/scripts"
     },
     {
       "id": "support:firebase-cli:compact",
-      "label": "firebase-cli/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/firebase-cli/SKILL.toon"
+      "label": "firebase-cli/compact"
     },
     {
       "id": "skill:frontend-design-system",
-      "label": "frontend-design-system",
       "kind": "skill",
+      "label": "frontend-design-system",
       "path": ".agent-skills/frontend-design-system/SKILL.md",
-      "category": "frontend",
-      "line_count": 79
+      "lines": 79
     },
     {
       "id": "support:frontend-design-system:references",
-      "label": "frontend-design-system/references",
       "kind": "support",
-      "path": ".agent-skills/frontend-design-system/references"
+      "label": "frontend-design-system/references"
     },
     {
       "id": "support:frontend-design-system:evals",
-      "label": "frontend-design-system/evals",
       "kind": "support",
-      "path": ".agent-skills/frontend-design-system/evals"
+      "label": "frontend-design-system/evals"
     },
     {
       "id": "support:frontend-design-system:compact",
-      "label": "frontend-design-system/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/frontend-design-system/SKILL.toon"
+      "label": "frontend-design-system/compact"
     },
     {
       "id": "skill:game-build-log-triage",
-      "label": "game-build-log-triage",
       "kind": "skill",
+      "label": "game-build-log-triage",
       "path": ".agent-skills/game-build-log-triage/SKILL.md",
-      "category": null,
-      "line_count": 230
+      "lines": 230
     },
     {
       "id": "support:game-build-log-triage:references",
-      "label": "game-build-log-triage/references",
       "kind": "support",
-      "path": ".agent-skills/game-build-log-triage/references"
+      "label": "game-build-log-triage/references"
     },
     {
       "id": "support:game-build-log-triage:evals",
-      "label": "game-build-log-triage/evals",
       "kind": "support",
-      "path": ".agent-skills/game-build-log-triage/evals"
+      "label": "game-build-log-triage/evals"
     },
     {
       "id": "support:game-build-log-triage:compact",
-      "label": "game-build-log-triage/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/game-build-log-triage/SKILL.toon"
+      "label": "game-build-log-triage/compact"
     },
     {
       "id": "skill:game-ci-cd-pipeline",
-      "label": "game-ci-cd-pipeline",
       "kind": "skill",
+      "label": "game-ci-cd-pipeline",
       "path": ".agent-skills/game-ci-cd-pipeline/SKILL.md",
-      "category": null,
-      "line_count": 258
+      "lines": 258
     },
     {
       "id": "support:game-ci-cd-pipeline:references",
-      "label": "game-ci-cd-pipeline/references",
       "kind": "support",
-      "path": ".agent-skills/game-ci-cd-pipeline/references"
+      "label": "game-ci-cd-pipeline/references"
     },
     {
       "id": "support:game-ci-cd-pipeline:evals",
-      "label": "game-ci-cd-pipeline/evals",
       "kind": "support",
-      "path": ".agent-skills/game-ci-cd-pipeline/evals"
+      "label": "game-ci-cd-pipeline/evals"
     },
     {
       "id": "support:game-ci-cd-pipeline:compact",
-      "label": "game-ci-cd-pipeline/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/game-ci-cd-pipeline/SKILL.toon"
+      "label": "game-ci-cd-pipeline/compact"
     },
     {
       "id": "skill:game-demo-feedback-triage",
-      "label": "game-demo-feedback-triage",
       "kind": "skill",
+      "label": "game-demo-feedback-triage",
       "path": ".agent-skills/game-demo-feedback-triage/SKILL.md",
-      "category": null,
-      "line_count": 220
+      "lines": 220
     },
     {
       "id": "support:game-demo-feedback-triage:references",
-      "label": "game-demo-feedback-triage/references",
       "kind": "support",
-      "path": ".agent-skills/game-demo-feedback-triage/references"
+      "label": "game-demo-feedback-triage/references"
     },
     {
       "id": "support:game-demo-feedback-triage:evals",
-      "label": "game-demo-feedback-triage/evals",
       "kind": "support",
-      "path": ".agent-skills/game-demo-feedback-triage/evals"
+      "label": "game-demo-feedback-triage/evals"
     },
     {
       "id": "support:game-demo-feedback-triage:compact",
-      "label": "game-demo-feedback-triage/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/game-demo-feedback-triage/SKILL.toon"
+      "label": "game-demo-feedback-triage/compact"
     },
     {
       "id": "skill:game-performance-profiler",
-      "label": "game-performance-profiler",
       "kind": "skill",
+      "label": "game-performance-profiler",
       "path": ".agent-skills/game-performance-profiler/SKILL.md",
-      "category": null,
-      "line_count": 231
+      "lines": 231
     },
     {
       "id": "support:game-performance-profiler:references",
-      "label": "game-performance-profiler/references",
       "kind": "support",
-      "path": ".agent-skills/game-performance-profiler/references"
+      "label": "game-performance-profiler/references"
     },
     {
       "id": "support:game-performance-profiler:evals",
-      "label": "game-performance-profiler/evals",
       "kind": "support",
-      "path": ".agent-skills/game-performance-profiler/evals"
+      "label": "game-performance-profiler/evals"
     },
     {
       "id": "support:game-performance-profiler:compact",
-      "label": "game-performance-profiler/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/game-performance-profiler/SKILL.toon"
+      "label": "game-performance-profiler/compact"
     },
     {
       "id": "skill:genkit",
-      "label": "genkit",
       "kind": "skill",
+      "label": "genkit",
       "path": ".agent-skills/genkit/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 251
+      "lines": 251
     },
     {
       "id": "support:genkit:references",
-      "label": "genkit/references",
       "kind": "support",
-      "path": ".agent-skills/genkit/references"
+      "label": "genkit/references"
     },
     {
       "id": "support:genkit:evals",
-      "label": "genkit/evals",
       "kind": "support",
-      "path": ".agent-skills/genkit/evals"
+      "label": "genkit/evals"
     },
     {
       "id": "support:genkit:compact",
-      "label": "genkit/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/genkit/SKILL.toon"
+      "label": "genkit/compact"
     },
     {
       "id": "skill:git-submodule",
-      "label": "git-submodule",
       "kind": "skill",
+      "label": "git-submodule",
       "path": ".agent-skills/git-submodule/SKILL.md",
-      "category": "utilities",
-      "line_count": 207
+      "lines": 207
     },
     {
       "id": "support:git-submodule:references",
-      "label": "git-submodule/references",
       "kind": "support",
-      "path": ".agent-skills/git-submodule/references"
+      "label": "git-submodule/references"
     },
     {
       "id": "support:git-submodule:evals",
-      "label": "git-submodule/evals",
       "kind": "support",
-      "path": ".agent-skills/git-submodule/evals"
+      "label": "git-submodule/evals"
     },
     {
       "id": "support:git-submodule:compact",
-      "label": "git-submodule/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/git-submodule/SKILL.toon"
+      "label": "git-submodule/compact"
     },
     {
       "id": "skill:git-workflow",
-      "label": "git-workflow",
       "kind": "skill",
+      "label": "git-workflow",
       "path": ".agent-skills/git-workflow/SKILL.md",
-      "category": "utilities",
-      "line_count": 258
+      "lines": 258
     },
     {
       "id": "support:git-workflow:references",
-      "label": "git-workflow/references",
       "kind": "support",
-      "path": ".agent-skills/git-workflow/references"
+      "label": "git-workflow/references"
     },
     {
       "id": "support:git-workflow:evals",
-      "label": "git-workflow/evals",
       "kind": "support",
-      "path": ".agent-skills/git-workflow/evals"
+      "label": "git-workflow/evals"
     },
     {
       "id": "support:git-workflow:compact",
-      "label": "git-workflow/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/git-workflow/SKILL.toon"
+      "label": "git-workflow/compact"
     },
     {
       "id": "skill:google-workspace",
-      "label": "google-workspace",
       "kind": "skill",
+      "label": "google-workspace",
       "path": ".agent-skills/google-workspace/SKILL.md",
-      "category": "utilities",
-      "line_count": 212
+      "lines": 212
     },
     {
       "id": "support:google-workspace:references",
-      "label": "google-workspace/references",
       "kind": "support",
-      "path": ".agent-skills/google-workspace/references"
+      "label": "google-workspace/references"
     },
     {
       "id": "support:google-workspace:evals",
-      "label": "google-workspace/evals",
       "kind": "support",
-      "path": ".agent-skills/google-workspace/evals"
+      "label": "google-workspace/evals"
     },
     {
       "id": "support:google-workspace:scripts",
-      "label": "google-workspace/scripts",
       "kind": "support",
-      "path": ".agent-skills/google-workspace/scripts"
+      "label": "google-workspace/scripts"
     },
     {
       "id": "support:google-workspace:compact",
-      "label": "google-workspace/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/google-workspace/SKILL.toon"
+      "label": "google-workspace/compact"
     },
     {
       "id": "skill:harness",
-      "label": "harness",
       "kind": "skill",
+      "label": "harness",
       "path": ".agent-skills/harness/SKILL.md",
-      "category": "core-orchestration",
-      "line_count": 213
+      "lines": 213
     },
     {
       "id": "support:harness:references",
-      "label": "harness/references",
       "kind": "support",
-      "path": ".agent-skills/harness/references"
+      "label": "harness/references"
     },
     {
       "id": "support:harness:evals",
-      "label": "harness/evals",
       "kind": "support",
-      "path": ".agent-skills/harness/evals"
+      "label": "harness/evals"
     },
     {
       "id": "support:harness:scripts",
-      "label": "harness/scripts",
       "kind": "support",
-      "path": ".agent-skills/harness/scripts"
+      "label": "harness/scripts"
     },
     {
       "id": "support:harness:compact",
-      "label": "harness/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/harness/SKILL.toon"
+      "label": "harness/compact"
     },
     {
       "id": "skill:jeo",
-      "label": "jeo",
       "kind": "skill",
+      "label": "jeo",
       "path": ".agent-skills/jeo/SKILL.md",
-      "category": "core-orchestration",
-      "line_count": 288
+      "lines": 288
     },
     {
       "id": "support:jeo:references",
-      "label": "jeo/references",
       "kind": "support",
-      "path": ".agent-skills/jeo/references"
+      "label": "jeo/references"
     },
     {
       "id": "support:jeo:evals",
-      "label": "jeo/evals",
       "kind": "support",
-      "path": ".agent-skills/jeo/evals"
+      "label": "jeo/evals"
     },
     {
       "id": "support:jeo:scripts",
-      "label": "jeo/scripts",
       "kind": "support",
-      "path": ".agent-skills/jeo/scripts"
+      "label": "jeo/scripts"
     },
     {
       "id": "support:jeo:compact",
-      "label": "jeo/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/jeo/SKILL.toon"
+      "label": "jeo/compact"
     },
     {
       "id": "skill:langsmith",
-      "label": "langsmith",
       "kind": "skill",
+      "label": "langsmith",
       "path": ".agent-skills/langsmith/SKILL.md",
-      "category": "search-analysis",
-      "line_count": 262
+      "lines": 262
     },
     {
       "id": "support:langsmith:references",
-      "label": "langsmith/references",
       "kind": "support",
-      "path": ".agent-skills/langsmith/references"
+      "label": "langsmith/references"
     },
     {
       "id": "support:langsmith:evals",
-      "label": "langsmith/evals",
       "kind": "support",
-      "path": ".agent-skills/langsmith/evals"
+      "label": "langsmith/evals"
     },
     {
       "id": "support:langsmith:scripts",
-      "label": "langsmith/scripts",
       "kind": "support",
-      "path": ".agent-skills/langsmith/scripts"
+      "label": "langsmith/scripts"
     },
     {
       "id": "support:langsmith:compact",
-      "label": "langsmith/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/langsmith/SKILL.toon"
+      "label": "langsmith/compact"
     },
     {
       "id": "skill:llm-wiki",
-      "label": "llm-wiki",
       "kind": "skill",
+      "label": "llm-wiki",
       "path": ".agent-skills/llm-wiki/SKILL.md",
-      "category": "utilities",
-      "line_count": 201
+      "lines": 201
     },
     {
       "id": "support:llm-wiki:references",
-      "label": "llm-wiki/references",
       "kind": "support",
-      "path": ".agent-skills/llm-wiki/references"
+      "label": "llm-wiki/references"
     },
     {
       "id": "support:llm-wiki:evals",
-      "label": "llm-wiki/evals",
       "kind": "support",
-      "path": ".agent-skills/llm-wiki/evals"
+      "label": "llm-wiki/evals"
     },
     {
       "id": "support:llm-wiki:scripts",
-      "label": "llm-wiki/scripts",
       "kind": "support",
-      "path": ".agent-skills/llm-wiki/scripts"
+      "label": "llm-wiki/scripts"
     },
     {
       "id": "support:llm-wiki:compact",
-      "label": "llm-wiki/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/llm-wiki/SKILL.toon"
+      "label": "llm-wiki/compact"
     },
     {
       "id": "skill:lmstudio-cli",
-      "label": "lmstudio-cli",
       "kind": "skill",
+      "label": "lmstudio-cli",
       "path": ".agent-skills/lmstudio-cli/SKILL.md",
-      "category": "utilities",
-      "line_count": 196
+      "lines": 196
     },
     {
       "id": "support:lmstudio-cli:references",
-      "label": "lmstudio-cli/references",
       "kind": "support",
-      "path": ".agent-skills/lmstudio-cli/references"
+      "label": "lmstudio-cli/references"
     },
     {
       "id": "support:lmstudio-cli:evals",
-      "label": "lmstudio-cli/evals",
       "kind": "support",
-      "path": ".agent-skills/lmstudio-cli/evals"
+      "label": "lmstudio-cli/evals"
     },
     {
       "id": "support:lmstudio-cli:scripts",
-      "label": "lmstudio-cli/scripts",
       "kind": "support",
-      "path": ".agent-skills/lmstudio-cli/scripts"
+      "label": "lmstudio-cli/scripts"
     },
     {
       "id": "support:lmstudio-cli:compact",
-      "label": "lmstudio-cli/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/lmstudio-cli/SKILL.toon"
+      "label": "lmstudio-cli/compact"
     },
     {
       "id": "skill:log-analysis",
-      "label": "log-analysis",
       "kind": "skill",
+      "label": "log-analysis",
       "path": ".agent-skills/log-analysis/SKILL.md",
-      "category": "search-analysis",
-      "line_count": 241
+      "lines": 241
     },
     {
       "id": "support:log-analysis:references",
-      "label": "log-analysis/references",
       "kind": "support",
-      "path": ".agent-skills/log-analysis/references"
+      "label": "log-analysis/references"
     },
     {
       "id": "support:log-analysis:evals",
-      "label": "log-analysis/evals",
       "kind": "support",
-      "path": ".agent-skills/log-analysis/evals"
+      "label": "log-analysis/evals"
     },
     {
       "id": "support:log-analysis:compact",
-      "label": "log-analysis/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/log-analysis/SKILL.toon"
+      "label": "log-analysis/compact"
     },
     {
       "id": "skill:looker-studio-bigquery",
-      "label": "looker-studio-bigquery",
       "kind": "skill",
+      "label": "looker-studio-bigquery",
       "path": ".agent-skills/looker-studio-bigquery/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 196
+      "lines": 196
     },
     {
       "id": "support:looker-studio-bigquery:references",
-      "label": "looker-studio-bigquery/references",
       "kind": "support",
-      "path": ".agent-skills/looker-studio-bigquery/references"
+      "label": "looker-studio-bigquery/references"
     },
     {
       "id": "support:looker-studio-bigquery:evals",
-      "label": "looker-studio-bigquery/evals",
       "kind": "support",
-      "path": ".agent-skills/looker-studio-bigquery/evals"
+      "label": "looker-studio-bigquery/evals"
     },
     {
       "id": "support:looker-studio-bigquery:compact",
-      "label": "looker-studio-bigquery/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/looker-studio-bigquery/SKILL.toon"
+      "label": "looker-studio-bigquery/compact"
     },
     {
       "id": "skill:marketing-automation",
-      "label": "marketing-automation",
       "kind": "skill",
+      "label": "marketing-automation",
       "path": ".agent-skills/marketing-automation/SKILL.md",
-      "category": "marketing",
-      "line_count": 255
+      "lines": 255
     },
     {
       "id": "support:marketing-automation:references",
-      "label": "marketing-automation/references",
       "kind": "support",
-      "path": ".agent-skills/marketing-automation/references"
+      "label": "marketing-automation/references"
     },
     {
       "id": "support:marketing-automation:evals",
-      "label": "marketing-automation/evals",
       "kind": "support",
-      "path": ".agent-skills/marketing-automation/evals"
+      "label": "marketing-automation/evals"
     },
     {
       "id": "support:marketing-automation:compact",
-      "label": "marketing-automation/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/marketing-automation/SKILL.toon"
+      "label": "marketing-automation/compact"
     },
     {
       "id": "skill:marketing-skills-collection",
-      "label": "marketing-skills-collection",
       "kind": "skill",
+      "label": "marketing-skills-collection",
       "path": ".agent-skills/marketing-skills-collection/SKILL.md",
-      "category": "marketing",
-      "line_count": 91
+      "lines": 91
     },
     {
       "id": "support:marketing-skills-collection:references",
-      "label": "marketing-skills-collection/references",
       "kind": "support",
-      "path": ".agent-skills/marketing-skills-collection/references"
+      "label": "marketing-skills-collection/references"
     },
     {
       "id": "support:marketing-skills-collection:evals",
-      "label": "marketing-skills-collection/evals",
       "kind": "support",
-      "path": ".agent-skills/marketing-skills-collection/evals"
+      "label": "marketing-skills-collection/evals"
     },
     {
       "id": "support:marketing-skills-collection:compact",
-      "label": "marketing-skills-collection/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/marketing-skills-collection/SKILL.toon"
+      "label": "marketing-skills-collection/compact"
     },
     {
       "id": "skill:monitoring-observability",
-      "label": "monitoring-observability",
       "kind": "skill",
+      "label": "monitoring-observability",
       "path": ".agent-skills/monitoring-observability/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 226
+      "lines": 226
     },
     {
       "id": "support:monitoring-observability:references",
-      "label": "monitoring-observability/references",
       "kind": "support",
-      "path": ".agent-skills/monitoring-observability/references"
+      "label": "monitoring-observability/references"
     },
     {
       "id": "support:monitoring-observability:evals",
-      "label": "monitoring-observability/evals",
       "kind": "support",
-      "path": ".agent-skills/monitoring-observability/evals"
+      "label": "monitoring-observability/evals"
     },
     {
       "id": "support:monitoring-observability:compact",
-      "label": "monitoring-observability/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/monitoring-observability/SKILL.toon"
+      "label": "monitoring-observability/compact"
     },
     {
       "id": "skill:npm-git-install",
-      "label": "npm-git-install",
       "kind": "skill",
+      "label": "npm-git-install",
       "path": ".agent-skills/npm-git-install/SKILL.md",
-      "category": "utilities",
-      "line_count": 246
+      "lines": 246
     },
     {
       "id": "support:npm-git-install:references",
-      "label": "npm-git-install/references",
       "kind": "support",
-      "path": ".agent-skills/npm-git-install/references"
+      "label": "npm-git-install/references"
     },
     {
       "id": "support:npm-git-install:evals",
-      "label": "npm-git-install/evals",
       "kind": "support",
-      "path": ".agent-skills/npm-git-install/evals"
+      "label": "npm-git-install/evals"
     },
     {
       "id": "support:npm-git-install:compact",
-      "label": "npm-git-install/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/npm-git-install/SKILL.toon"
+      "label": "npm-git-install/compact"
     },
     {
       "id": "skill:obsidian-cli",
-      "label": "obsidian-cli",
       "kind": "skill",
+      "label": "obsidian-cli",
       "path": ".agent-skills/obsidian-cli/SKILL.md",
-      "category": "utilities",
-      "line_count": 286
+      "lines": 286
     },
     {
       "id": "support:obsidian-cli:references",
-      "label": "obsidian-cli/references",
       "kind": "support",
-      "path": ".agent-skills/obsidian-cli/references"
+      "label": "obsidian-cli/references"
     },
     {
       "id": "support:obsidian-cli:evals",
-      "label": "obsidian-cli/evals",
       "kind": "support",
-      "path": ".agent-skills/obsidian-cli/evals"
+      "label": "obsidian-cli/evals"
     },
     {
       "id": "support:obsidian-cli:scripts",
-      "label": "obsidian-cli/scripts",
       "kind": "support",
-      "path": ".agent-skills/obsidian-cli/scripts"
+      "label": "obsidian-cli/scripts"
     },
     {
       "id": "support:obsidian-cli:compact",
-      "label": "obsidian-cli/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/obsidian-cli/SKILL.toon"
+      "label": "obsidian-cli/compact"
     },
     {
       "id": "skill:obsidian-plugin",
-      "label": "obsidian-plugin",
       "kind": "skill",
+      "label": "obsidian-plugin",
       "path": ".agent-skills/obsidian-plugin/SKILL.md",
-      "category": "utilities",
-      "line_count": 244
+      "lines": 244
     },
     {
       "id": "support:obsidian-plugin:references",
-      "label": "obsidian-plugin/references",
       "kind": "support",
-      "path": ".agent-skills/obsidian-plugin/references"
+      "label": "obsidian-plugin/references"
     },
     {
       "id": "support:obsidian-plugin:evals",
-      "label": "obsidian-plugin/evals",
       "kind": "support",
-      "path": ".agent-skills/obsidian-plugin/evals"
+      "label": "obsidian-plugin/evals"
     },
     {
       "id": "support:obsidian-plugin:scripts",
-      "label": "obsidian-plugin/scripts",
       "kind": "support",
-      "path": ".agent-skills/obsidian-plugin/scripts"
+      "label": "obsidian-plugin/scripts"
     },
     {
       "id": "support:obsidian-plugin:compact",
-      "label": "obsidian-plugin/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/obsidian-plugin/SKILL.toon"
+      "label": "obsidian-plugin/compact"
     },
     {
       "id": "skill:ohmg",
-      "label": "ohmg",
       "kind": "skill",
+      "label": "ohmg",
       "path": ".agent-skills/ohmg/SKILL.md",
-      "category": "core-orchestration",
-      "line_count": 214
+      "lines": 214
     },
     {
       "id": "support:ohmg:references",
-      "label": "ohmg/references",
       "kind": "support",
-      "path": ".agent-skills/ohmg/references"
+      "label": "ohmg/references"
     },
     {
       "id": "support:ohmg:evals",
-      "label": "ohmg/evals",
       "kind": "support",
-      "path": ".agent-skills/ohmg/evals"
+      "label": "ohmg/evals"
     },
     {
       "id": "support:ohmg:compact",
-      "label": "ohmg/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/ohmg/SKILL.toon"
+      "label": "ohmg/compact"
     },
     {
       "id": "skill:omc",
-      "label": "omc",
       "kind": "skill",
+      "label": "omc",
       "path": ".agent-skills/omc/SKILL.md",
-      "category": "core-orchestration",
-      "line_count": 272
+      "lines": 272
     },
     {
       "id": "support:omc:references",
-      "label": "omc/references",
       "kind": "support",
-      "path": ".agent-skills/omc/references"
+      "label": "omc/references"
     },
     {
       "id": "support:omc:evals",
-      "label": "omc/evals",
       "kind": "support",
-      "path": ".agent-skills/omc/evals"
+      "label": "omc/evals"
     },
     {
       "id": "support:omc:scripts",
-      "label": "omc/scripts",
       "kind": "support",
-      "path": ".agent-skills/omc/scripts"
+      "label": "omc/scripts"
     },
     {
       "id": "support:omc:compact",
-      "label": "omc/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/omc/SKILL.toon"
+      "label": "omc/compact"
     },
     {
       "id": "skill:omx",
-      "label": "omx",
       "kind": "skill",
+      "label": "omx",
       "path": ".agent-skills/omx/SKILL.md",
-      "category": "core-orchestration",
-      "line_count": 240
+      "lines": 240
     },
     {
       "id": "support:omx:references",
-      "label": "omx/references",
       "kind": "support",
-      "path": ".agent-skills/omx/references"
+      "label": "omx/references"
     },
     {
       "id": "support:omx:evals",
-      "label": "omx/evals",
       "kind": "support",
-      "path": ".agent-skills/omx/evals"
+      "label": "omx/evals"
     },
     {
       "id": "support:omx:scripts",
-      "label": "omx/scripts",
       "kind": "support",
-      "path": ".agent-skills/omx/scripts"
+      "label": "omx/scripts"
     },
     {
       "id": "support:omx:compact",
-      "label": "omx/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/omx/SKILL.toon"
+      "label": "omx/compact"
     },
     {
       "id": "skill:opencontext",
-      "label": "opencontext",
       "kind": "skill",
+      "label": "opencontext",
       "path": ".agent-skills/opencontext/SKILL.md",
-      "category": "utilities",
-      "line_count": 270
+      "lines": 270
     },
     {
       "id": "support:opencontext:references",
-      "label": "opencontext/references",
       "kind": "support",
-      "path": ".agent-skills/opencontext/references"
+      "label": "opencontext/references"
     },
     {
       "id": "support:opencontext:evals",
-      "label": "opencontext/evals",
       "kind": "support",
-      "path": ".agent-skills/opencontext/evals"
+      "label": "opencontext/evals"
     },
     {
       "id": "support:opencontext:compact",
-      "label": "opencontext/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/opencontext/SKILL.toon"
+      "label": "opencontext/compact"
     },
     {
       "id": "skill:pattern-detection",
-      "label": "pattern-detection",
       "kind": "skill",
+      "label": "pattern-detection",
       "path": ".agent-skills/pattern-detection/SKILL.md",
-      "category": "search-analysis",
-      "line_count": 229
+      "lines": 229
     },
     {
       "id": "support:pattern-detection:references",
-      "label": "pattern-detection/references",
       "kind": "support",
-      "path": ".agent-skills/pattern-detection/references"
+      "label": "pattern-detection/references"
     },
     {
       "id": "support:pattern-detection:evals",
-      "label": "pattern-detection/evals",
       "kind": "support",
-      "path": ".agent-skills/pattern-detection/evals"
+      "label": "pattern-detection/evals"
     },
     {
       "id": "support:pattern-detection:compact",
-      "label": "pattern-detection/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/pattern-detection/SKILL.toon"
+      "label": "pattern-detection/compact"
     },
     {
       "id": "skill:performance-optimization",
-      "label": "performance-optimization",
       "kind": "skill",
+      "label": "performance-optimization",
       "path": ".agent-skills/performance-optimization/SKILL.md",
-      "category": "code-quality",
-      "line_count": 246
+      "lines": 246
     },
     {
       "id": "support:performance-optimization:references",
-      "label": "performance-optimization/references",
       "kind": "support",
-      "path": ".agent-skills/performance-optimization/references"
+      "label": "performance-optimization/references"
     },
     {
       "id": "support:performance-optimization:evals",
-      "label": "performance-optimization/evals",
       "kind": "support",
-      "path": ".agent-skills/performance-optimization/evals"
+      "label": "performance-optimization/evals"
     },
     {
       "id": "support:performance-optimization:compact",
-      "label": "performance-optimization/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/performance-optimization/SKILL.toon"
+      "label": "performance-optimization/compact"
     },
     {
       "id": "skill:plannotator",
-      "label": "plannotator",
       "kind": "skill",
+      "label": "plannotator",
       "path": ".agent-skills/plannotator/SKILL.md",
-      "category": "planning-review",
-      "line_count": 266
+      "lines": 266
     },
     {
       "id": "support:plannotator:references",
-      "label": "plannotator/references",
       "kind": "support",
-      "path": ".agent-skills/plannotator/references"
+      "label": "plannotator/references"
     },
     {
       "id": "support:plannotator:evals",
-      "label": "plannotator/evals",
       "kind": "support",
-      "path": ".agent-skills/plannotator/evals"
+      "label": "plannotator/evals"
     },
     {
       "id": "support:plannotator:scripts",
-      "label": "plannotator/scripts",
       "kind": "support",
-      "path": ".agent-skills/plannotator/scripts"
+      "label": "plannotator/scripts"
     },
     {
       "id": "support:plannotator:compact",
-      "label": "plannotator/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/plannotator/SKILL.toon"
+      "label": "plannotator/compact"
     },
     {
       "id": "skill:playwriter",
-      "label": "playwriter",
       "kind": "skill",
+      "label": "playwriter",
       "path": ".agent-skills/playwriter/SKILL.md",
-      "category": "planning-review",
-      "line_count": 236
+      "lines": 236
     },
     {
       "id": "support:playwriter:references",
-      "label": "playwriter/references",
       "kind": "support",
-      "path": ".agent-skills/playwriter/references"
+      "label": "playwriter/references"
     },
     {
       "id": "support:playwriter:evals",
-      "label": "playwriter/evals",
       "kind": "support",
-      "path": ".agent-skills/playwriter/evals"
+      "label": "playwriter/evals"
     },
     {
       "id": "support:playwriter:compact",
-      "label": "playwriter/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/playwriter/SKILL.toon"
+      "label": "playwriter/compact"
     },
     {
       "id": "skill:presentation-builder",
-      "label": "presentation-builder",
       "kind": "skill",
+      "label": "presentation-builder",
       "path": ".agent-skills/presentation-builder/SKILL.md",
-      "category": "documentation",
-      "line_count": 233
+      "lines": 233
     },
     {
       "id": "support:presentation-builder:references",
-      "label": "presentation-builder/references",
       "kind": "support",
-      "path": ".agent-skills/presentation-builder/references"
+      "label": "presentation-builder/references"
     },
     {
       "id": "support:presentation-builder:evals",
-      "label": "presentation-builder/evals",
       "kind": "support",
-      "path": ".agent-skills/presentation-builder/evals"
+      "label": "presentation-builder/evals"
     },
     {
       "id": "support:presentation-builder:compact",
-      "label": "presentation-builder/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/presentation-builder/SKILL.toon"
+      "label": "presentation-builder/compact"
     },
     {
       "id": "skill:prompt-repetition",
-      "label": "prompt-repetition",
       "kind": "skill",
+      "label": "prompt-repetition",
       "path": ".agent-skills/prompt-repetition/SKILL.md",
-      "category": "agent-development",
-      "line_count": 178
+      "lines": 178
     },
     {
       "id": "support:prompt-repetition:references",
-      "label": "prompt-repetition/references",
       "kind": "support",
-      "path": ".agent-skills/prompt-repetition/references"
+      "label": "prompt-repetition/references"
     },
     {
       "id": "support:prompt-repetition:evals",
-      "label": "prompt-repetition/evals",
       "kind": "support",
-      "path": ".agent-skills/prompt-repetition/evals"
+      "label": "prompt-repetition/evals"
     },
     {
       "id": "support:prompt-repetition:compact",
-      "label": "prompt-repetition/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/prompt-repetition/SKILL.toon"
+      "label": "prompt-repetition/compact"
     },
     {
       "id": "skill:ralph",
-      "label": "ralph",
       "kind": "skill",
+      "label": "ralph",
       "path": ".agent-skills/ralph/SKILL.md",
-      "category": "core-orchestration",
-      "line_count": 236
+      "lines": 236
     },
     {
       "id": "support:ralph:references",
-      "label": "ralph/references",
       "kind": "support",
-      "path": ".agent-skills/ralph/references"
+      "label": "ralph/references"
     },
     {
       "id": "support:ralph:evals",
-      "label": "ralph/evals",
       "kind": "support",
-      "path": ".agent-skills/ralph/evals"
+      "label": "ralph/evals"
     },
     {
       "id": "support:ralph:scripts",
-      "label": "ralph/scripts",
       "kind": "support",
-      "path": ".agent-skills/ralph/scripts"
+      "label": "ralph/scripts"
     },
     {
       "id": "support:ralph:compact",
-      "label": "ralph/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/ralph/SKILL.toon"
+      "label": "ralph/compact"
     },
     {
       "id": "skill:ralphmode",
-      "label": "ralphmode",
       "kind": "skill",
+      "label": "ralphmode",
       "path": ".agent-skills/ralphmode/SKILL.md",
-      "category": "core-orchestration",
-      "line_count": 187
+      "lines": 187
     },
     {
       "id": "support:ralphmode:references",
-      "label": "ralphmode/references",
       "kind": "support",
-      "path": ".agent-skills/ralphmode/references"
+      "label": "ralphmode/references"
     },
     {
       "id": "support:ralphmode:evals",
-      "label": "ralphmode/evals",
       "kind": "support",
-      "path": ".agent-skills/ralphmode/evals"
+      "label": "ralphmode/evals"
     },
     {
       "id": "support:ralphmode:compact",
-      "label": "ralphmode/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/ralphmode/SKILL.toon"
+      "label": "ralphmode/compact"
     },
     {
       "id": "skill:react-best-practices",
-      "label": "react-best-practices",
       "kind": "skill",
+      "label": "react-best-practices",
       "path": ".agent-skills/react-best-practices/SKILL.md",
-      "category": "frontend",
-      "line_count": 254
+      "lines": 254
     },
     {
       "id": "support:react-best-practices:references",
-      "label": "react-best-practices/references",
       "kind": "support",
-      "path": ".agent-skills/react-best-practices/references"
+      "label": "react-best-practices/references"
     },
     {
       "id": "support:react-best-practices:evals",
-      "label": "react-best-practices/evals",
       "kind": "support",
-      "path": ".agent-skills/react-best-practices/evals"
+      "label": "react-best-practices/evals"
     },
     {
       "id": "support:react-best-practices:compact",
-      "label": "react-best-practices/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/react-best-practices/SKILL.toon"
+      "label": "react-best-practices/compact"
     },
     {
       "id": "skill:react-grab",
-      "label": "react-grab",
       "kind": "skill",
+      "label": "react-grab",
       "path": ".agent-skills/react-grab/SKILL.md",
-      "category": "frontend",
-      "line_count": 213
+      "lines": 213
     },
     {
       "id": "support:react-grab:references",
-      "label": "react-grab/references",
       "kind": "support",
-      "path": ".agent-skills/react-grab/references"
+      "label": "react-grab/references"
     },
     {
       "id": "support:react-grab:evals",
-      "label": "react-grab/evals",
       "kind": "support",
-      "path": ".agent-skills/react-grab/evals"
+      "label": "react-grab/evals"
     },
     {
       "id": "support:react-grab:scripts",
-      "label": "react-grab/scripts",
       "kind": "support",
-      "path": ".agent-skills/react-grab/scripts"
+      "label": "react-grab/scripts"
     },
     {
       "id": "support:react-grab:compact",
-      "label": "react-grab/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/react-grab/SKILL.toon"
+      "label": "react-grab/compact"
     },
     {
       "id": "skill:remotion-video-production",
-      "label": "remotion-video-production",
       "kind": "skill",
+      "label": "remotion-video-production",
       "path": ".agent-skills/remotion-video-production/SKILL.md",
-      "category": "creative-media",
-      "line_count": 91
+      "lines": 91
     },
     {
       "id": "support:remotion-video-production:references",
-      "label": "remotion-video-production/references",
       "kind": "support",
-      "path": ".agent-skills/remotion-video-production/references"
+      "label": "remotion-video-production/references"
     },
     {
       "id": "support:remotion-video-production:evals",
-      "label": "remotion-video-production/evals",
       "kind": "support",
-      "path": ".agent-skills/remotion-video-production/evals"
+      "label": "remotion-video-production/evals"
     },
     {
       "id": "support:remotion-video-production:compact",
-      "label": "remotion-video-production/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/remotion-video-production/SKILL.toon"
+      "label": "remotion-video-production/compact"
     },
     {
       "id": "skill:research-paper-writing",
-      "label": "research-paper-writing",
       "kind": "skill",
+      "label": "research-paper-writing",
       "path": ".agent-skills/research-paper-writing/SKILL.md",
-      "category": "documentation",
-      "line_count": 252
+      "lines": 252
     },
     {
       "id": "support:research-paper-writing:references",
-      "label": "research-paper-writing/references",
       "kind": "support",
-      "path": ".agent-skills/research-paper-writing/references"
+      "label": "research-paper-writing/references"
     },
     {
       "id": "support:research-paper-writing:evals",
-      "label": "research-paper-writing/evals",
       "kind": "support",
-      "path": ".agent-skills/research-paper-writing/evals"
+      "label": "research-paper-writing/evals"
     },
     {
       "id": "support:research-paper-writing:compact",
-      "label": "research-paper-writing/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/research-paper-writing/SKILL.toon"
+      "label": "research-paper-writing/compact"
     },
     {
       "id": "skill:responsive-design",
-      "label": "responsive-design",
       "kind": "skill",
+      "label": "responsive-design",
       "path": ".agent-skills/responsive-design/SKILL.md",
-      "category": "frontend",
-      "line_count": 244
+      "lines": 244
     },
     {
       "id": "support:responsive-design:references",
-      "label": "responsive-design/references",
       "kind": "support",
-      "path": ".agent-skills/responsive-design/references"
+      "label": "responsive-design/references"
     },
     {
       "id": "support:responsive-design:evals",
-      "label": "responsive-design/evals",
       "kind": "support",
-      "path": ".agent-skills/responsive-design/evals"
+      "label": "responsive-design/evals"
     },
     {
       "id": "support:responsive-design:compact",
-      "label": "responsive-design/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/responsive-design/SKILL.toon"
+      "label": "responsive-design/compact"
     },
     {
       "id": "skill:rtk",
-      "label": "rtk",
       "kind": "skill",
+      "label": "rtk",
       "path": ".agent-skills/rtk/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 226
+      "lines": 226
     },
     {
       "id": "support:rtk:references",
-      "label": "rtk/references",
       "kind": "support",
-      "path": ".agent-skills/rtk/references"
+      "label": "rtk/references"
     },
     {
       "id": "support:rtk:evals",
-      "label": "rtk/evals",
       "kind": "support",
-      "path": ".agent-skills/rtk/evals"
+      "label": "rtk/evals"
     },
     {
       "id": "support:rtk:scripts",
-      "label": "rtk/scripts",
       "kind": "support",
-      "path": ".agent-skills/rtk/scripts"
+      "label": "rtk/scripts"
     },
     {
       "id": "support:rtk:compact",
-      "label": "rtk/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/rtk/SKILL.toon"
+      "label": "rtk/compact"
     },
     {
       "id": "skill:scrapling",
-      "label": "scrapling",
       "kind": "skill",
+      "label": "scrapling",
       "path": ".agent-skills/scrapling/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 319
+      "lines": 264
     },
     {
       "id": "support:scrapling:references",
-      "label": "scrapling/references",
       "kind": "support",
-      "path": ".agent-skills/scrapling/references"
+      "label": "scrapling/references"
     },
     {
       "id": "support:scrapling:evals",
-      "label": "scrapling/evals",
       "kind": "support",
-      "path": ".agent-skills/scrapling/evals"
+      "label": "scrapling/evals"
     },
     {
       "id": "support:scrapling:scripts",
-      "label": "scrapling/scripts",
       "kind": "support",
-      "path": ".agent-skills/scrapling/scripts"
+      "label": "scrapling/scripts"
     },
     {
       "id": "support:scrapling:compact",
-      "label": "scrapling/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/scrapling/SKILL.toon"
+      "label": "scrapling/compact"
     },
     {
       "id": "skill:security-best-practices",
-      "label": "security-best-practices",
       "kind": "skill",
+      "label": "security-best-practices",
       "path": ".agent-skills/security-best-practices/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 232
+      "lines": 232
     },
     {
       "id": "support:security-best-practices:references",
-      "label": "security-best-practices/references",
       "kind": "support",
-      "path": ".agent-skills/security-best-practices/references"
+      "label": "security-best-practices/references"
     },
     {
       "id": "support:security-best-practices:evals",
-      "label": "security-best-practices/evals",
       "kind": "support",
-      "path": ".agent-skills/security-best-practices/evals"
+      "label": "security-best-practices/evals"
     },
     {
       "id": "support:security-best-practices:compact",
-      "label": "security-best-practices/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/security-best-practices/SKILL.toon"
+      "label": "security-best-practices/compact"
     },
     {
       "id": "skill:skill-autoresearch",
-      "label": "skill-autoresearch",
       "kind": "skill",
+      "label": "skill-autoresearch",
       "path": ".agent-skills/skill-autoresearch/SKILL.md",
-      "category": "search-analysis",
-      "line_count": 267
+      "lines": 267
     },
     {
       "id": "support:skill-autoresearch:references",
-      "label": "skill-autoresearch/references",
       "kind": "support",
-      "path": ".agent-skills/skill-autoresearch/references"
+      "label": "skill-autoresearch/references"
     },
     {
       "id": "support:skill-autoresearch:evals",
-      "label": "skill-autoresearch/evals",
       "kind": "support",
-      "path": ".agent-skills/skill-autoresearch/evals"
+      "label": "skill-autoresearch/evals"
     },
     {
       "id": "support:skill-autoresearch:compact",
-      "label": "skill-autoresearch/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/skill-autoresearch/SKILL.toon"
+      "label": "skill-autoresearch/compact"
     },
     {
       "id": "skill:skill-standardization",
-      "label": "skill-standardization",
       "kind": "skill",
+      "label": "skill-standardization",
       "path": ".agent-skills/skill-standardization/SKILL.md",
-      "category": "agent-development",
-      "line_count": 201
+      "lines": 201
     },
     {
       "id": "support:skill-standardization:references",
-      "label": "skill-standardization/references",
       "kind": "support",
-      "path": ".agent-skills/skill-standardization/references"
+      "label": "skill-standardization/references"
     },
     {
       "id": "support:skill-standardization:evals",
-      "label": "skill-standardization/evals",
       "kind": "support",
-      "path": ".agent-skills/skill-standardization/evals"
+      "label": "skill-standardization/evals"
     },
     {
       "id": "support:skill-standardization:scripts",
-      "label": "skill-standardization/scripts",
       "kind": "support",
-      "path": ".agent-skills/skill-standardization/scripts"
+      "label": "skill-standardization/scripts"
     },
     {
       "id": "support:skill-standardization:compact",
-      "label": "skill-standardization/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/skill-standardization/SKILL.toon"
+      "label": "skill-standardization/compact"
     },
     {
       "id": "skill:sprint-retrospective",
-      "label": "sprint-retrospective",
       "kind": "skill",
+      "label": "sprint-retrospective",
       "path": ".agent-skills/sprint-retrospective/SKILL.md",
-      "category": "project-management",
-      "line_count": 263
+      "lines": 263
     },
     {
       "id": "support:sprint-retrospective:references",
-      "label": "sprint-retrospective/references",
       "kind": "support",
-      "path": ".agent-skills/sprint-retrospective/references"
+      "label": "sprint-retrospective/references"
     },
     {
       "id": "support:sprint-retrospective:evals",
-      "label": "sprint-retrospective/evals",
       "kind": "support",
-      "path": ".agent-skills/sprint-retrospective/evals"
+      "label": "sprint-retrospective/evals"
     },
     {
       "id": "support:sprint-retrospective:compact",
-      "label": "sprint-retrospective/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/sprint-retrospective/SKILL.toon"
+      "label": "sprint-retrospective/compact"
     },
     {
       "id": "skill:standup-meeting",
-      "label": "standup-meeting",
       "kind": "skill",
+      "label": "standup-meeting",
       "path": ".agent-skills/standup-meeting/SKILL.md",
-      "category": "project-management",
-      "line_count": 237
+      "lines": 237
     },
     {
       "id": "support:standup-meeting:references",
-      "label": "standup-meeting/references",
       "kind": "support",
-      "path": ".agent-skills/standup-meeting/references"
+      "label": "standup-meeting/references"
     },
     {
       "id": "support:standup-meeting:evals",
-      "label": "standup-meeting/evals",
       "kind": "support",
-      "path": ".agent-skills/standup-meeting/evals"
+      "label": "standup-meeting/evals"
     },
     {
       "id": "support:standup-meeting:compact",
-      "label": "standup-meeting/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/standup-meeting/SKILL.toon"
+      "label": "standup-meeting/compact"
     },
     {
       "id": "skill:state-management",
-      "label": "state-management",
       "kind": "skill",
+      "label": "state-management",
       "path": ".agent-skills/state-management/SKILL.md",
-      "category": "frontend",
-      "line_count": 272
+      "lines": 272
     },
     {
       "id": "support:state-management:references",
-      "label": "state-management/references",
       "kind": "support",
-      "path": ".agent-skills/state-management/references"
+      "label": "state-management/references"
     },
     {
       "id": "support:state-management:evals",
-      "label": "state-management/evals",
       "kind": "support",
-      "path": ".agent-skills/state-management/evals"
+      "label": "state-management/evals"
     },
     {
       "id": "support:state-management:compact",
-      "label": "state-management/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/state-management/SKILL.toon"
+      "label": "state-management/compact"
     },
     {
       "id": "skill:steam-store-launch-ops",
-      "label": "steam-store-launch-ops",
       "kind": "skill",
+      "label": "steam-store-launch-ops",
       "path": ".agent-skills/steam-store-launch-ops/SKILL.md",
-      "category": null,
-      "line_count": 272
+      "lines": 272
     },
     {
       "id": "support:steam-store-launch-ops:references",
-      "label": "steam-store-launch-ops/references",
       "kind": "support",
-      "path": ".agent-skills/steam-store-launch-ops/references"
+      "label": "steam-store-launch-ops/references"
     },
     {
       "id": "support:steam-store-launch-ops:evals",
-      "label": "steam-store-launch-ops/evals",
       "kind": "support",
-      "path": ".agent-skills/steam-store-launch-ops/evals"
+      "label": "steam-store-launch-ops/evals"
     },
     {
       "id": "support:steam-store-launch-ops:compact",
-      "label": "steam-store-launch-ops/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/steam-store-launch-ops/SKILL.toon"
+      "label": "steam-store-launch-ops/compact"
     },
     {
       "id": "skill:strix",
-      "label": "strix",
       "kind": "skill",
+      "label": "strix",
       "path": ".agent-skills/strix/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 202
+      "lines": 202
     },
     {
       "id": "support:strix:references",
-      "label": "strix/references",
       "kind": "support",
-      "path": ".agent-skills/strix/references"
+      "label": "strix/references"
     },
     {
       "id": "support:strix:evals",
-      "label": "strix/evals",
       "kind": "support",
-      "path": ".agent-skills/strix/evals"
+      "label": "strix/evals"
     },
     {
       "id": "support:strix:scripts",
-      "label": "strix/scripts",
       "kind": "support",
-      "path": ".agent-skills/strix/scripts"
+      "label": "strix/scripts"
     },
     {
       "id": "support:strix:compact",
-      "label": "strix/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/strix/SKILL.toon"
+      "label": "strix/compact"
     },
     {
       "id": "skill:survey",
-      "label": "survey",
       "kind": "skill",
+      "label": "survey",
       "path": ".agent-skills/survey/SKILL.md",
-      "category": "core-orchestration",
-      "line_count": 245
+      "lines": 245
     },
     {
       "id": "support:survey:references",
-      "label": "survey/references",
       "kind": "support",
-      "path": ".agent-skills/survey/references"
+      "label": "survey/references"
     },
     {
       "id": "support:survey:evals",
-      "label": "survey/evals",
       "kind": "support",
-      "path": ".agent-skills/survey/evals"
+      "label": "survey/evals"
     },
     {
       "id": "support:survey:scripts",
-      "label": "survey/scripts",
       "kind": "support",
-      "path": ".agent-skills/survey/scripts"
+      "label": "survey/scripts"
     },
     {
       "id": "support:survey:compact",
-      "label": "survey/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/survey/SKILL.toon"
+      "label": "survey/compact"
     },
     {
       "id": "skill:system-environment-setup",
-      "label": "system-environment-setup",
       "kind": "skill",
+      "label": "system-environment-setup",
       "path": ".agent-skills/system-environment-setup/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 218
+      "lines": 218
     },
     {
       "id": "support:system-environment-setup:references",
-      "label": "system-environment-setup/references",
       "kind": "support",
-      "path": ".agent-skills/system-environment-setup/references"
+      "label": "system-environment-setup/references"
     },
     {
       "id": "support:system-environment-setup:evals",
-      "label": "system-environment-setup/evals",
       "kind": "support",
-      "path": ".agent-skills/system-environment-setup/evals"
+      "label": "system-environment-setup/evals"
     },
     {
       "id": "support:system-environment-setup:compact",
-      "label": "system-environment-setup/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/system-environment-setup/SKILL.toon"
+      "label": "system-environment-setup/compact"
     },
     {
       "id": "skill:task-estimation",
-      "label": "task-estimation",
       "kind": "skill",
+      "label": "task-estimation",
       "path": ".agent-skills/task-estimation/SKILL.md",
-      "category": "project-management",
-      "line_count": 249
+      "lines": 249
     },
     {
       "id": "support:task-estimation:references",
-      "label": "task-estimation/references",
       "kind": "support",
-      "path": ".agent-skills/task-estimation/references"
+      "label": "task-estimation/references"
     },
     {
       "id": "support:task-estimation:evals",
-      "label": "task-estimation/evals",
       "kind": "support",
-      "path": ".agent-skills/task-estimation/evals"
+      "label": "task-estimation/evals"
     },
     {
       "id": "support:task-estimation:compact",
-      "label": "task-estimation/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/task-estimation/SKILL.toon"
+      "label": "task-estimation/compact"
     },
     {
       "id": "skill:task-planning",
-      "label": "task-planning",
       "kind": "skill",
+      "label": "task-planning",
       "path": ".agent-skills/task-planning/SKILL.md",
-      "category": "project-management",
-      "line_count": 294
+      "lines": 294
     },
     {
       "id": "support:task-planning:references",
-      "label": "task-planning/references",
       "kind": "support",
-      "path": ".agent-skills/task-planning/references"
+      "label": "task-planning/references"
     },
     {
       "id": "support:task-planning:evals",
-      "label": "task-planning/evals",
       "kind": "support",
-      "path": ".agent-skills/task-planning/evals"
+      "label": "task-planning/evals"
     },
     {
       "id": "support:task-planning:compact",
-      "label": "task-planning/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/task-planning/SKILL.toon"
+      "label": "task-planning/compact"
     },
     {
       "id": "skill:technical-writing",
-      "label": "technical-writing",
       "kind": "skill",
+      "label": "technical-writing",
       "path": ".agent-skills/technical-writing/SKILL.md",
-      "category": "documentation",
-      "line_count": 220
+      "lines": 220
     },
     {
       "id": "support:technical-writing:references",
-      "label": "technical-writing/references",
       "kind": "support",
-      "path": ".agent-skills/technical-writing/references"
+      "label": "technical-writing/references"
     },
     {
       "id": "support:technical-writing:evals",
-      "label": "technical-writing/evals",
       "kind": "support",
-      "path": ".agent-skills/technical-writing/evals"
+      "label": "technical-writing/evals"
     },
     {
       "id": "support:technical-writing:compact",
-      "label": "technical-writing/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/technical-writing/SKILL.toon"
+      "label": "technical-writing/compact"
     },
     {
       "id": "skill:testing-strategies",
-      "label": "testing-strategies",
       "kind": "skill",
+      "label": "testing-strategies",
       "path": ".agent-skills/testing-strategies/SKILL.md",
-      "category": "code-quality",
-      "line_count": 274
+      "lines": 274
     },
     {
       "id": "support:testing-strategies:references",
-      "label": "testing-strategies/references",
       "kind": "support",
-      "path": ".agent-skills/testing-strategies/references"
+      "label": "testing-strategies/references"
     },
     {
       "id": "support:testing-strategies:evals",
-      "label": "testing-strategies/evals",
       "kind": "support",
-      "path": ".agent-skills/testing-strategies/evals"
+      "label": "testing-strategies/evals"
     },
     {
       "id": "support:testing-strategies:compact",
-      "label": "testing-strategies/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/testing-strategies/SKILL.toon"
+      "label": "testing-strategies/compact"
     },
     {
       "id": "skill:ui-component-patterns",
-      "label": "ui-component-patterns",
       "kind": "skill",
+      "label": "ui-component-patterns",
       "path": ".agent-skills/ui-component-patterns/SKILL.md",
-      "category": "frontend",
-      "line_count": 230
+      "lines": 230
     },
     {
       "id": "support:ui-component-patterns:references",
-      "label": "ui-component-patterns/references",
       "kind": "support",
-      "path": ".agent-skills/ui-component-patterns/references"
+      "label": "ui-component-patterns/references"
     },
     {
       "id": "support:ui-component-patterns:evals",
-      "label": "ui-component-patterns/evals",
       "kind": "support",
-      "path": ".agent-skills/ui-component-patterns/evals"
+      "label": "ui-component-patterns/evals"
     },
     {
       "id": "support:ui-component-patterns:compact",
-      "label": "ui-component-patterns/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/ui-component-patterns/SKILL.toon"
+      "label": "ui-component-patterns/compact"
     },
     {
       "id": "skill:user-guide-writing",
-      "label": "user-guide-writing",
       "kind": "skill",
+      "label": "user-guide-writing",
       "path": ".agent-skills/user-guide-writing/SKILL.md",
-      "category": "documentation",
-      "line_count": 235
+      "lines": 235
     },
     {
       "id": "support:user-guide-writing:references",
-      "label": "user-guide-writing/references",
       "kind": "support",
-      "path": ".agent-skills/user-guide-writing/references"
+      "label": "user-guide-writing/references"
     },
     {
       "id": "support:user-guide-writing:evals",
-      "label": "user-guide-writing/evals",
       "kind": "support",
-      "path": ".agent-skills/user-guide-writing/evals"
+      "label": "user-guide-writing/evals"
     },
     {
       "id": "support:user-guide-writing:compact",
-      "label": "user-guide-writing/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/user-guide-writing/SKILL.toon"
+      "label": "user-guide-writing/compact"
     },
     {
       "id": "skill:vercel-deploy",
-      "label": "vercel-deploy",
       "kind": "skill",
+      "label": "vercel-deploy",
       "path": ".agent-skills/vercel-deploy/SKILL.md",
-      "category": "infrastructure",
-      "line_count": 244
+      "lines": 244
     },
     {
       "id": "support:vercel-deploy:references",
-      "label": "vercel-deploy/references",
       "kind": "support",
-      "path": ".agent-skills/vercel-deploy/references"
+      "label": "vercel-deploy/references"
     },
     {
       "id": "support:vercel-deploy:evals",
-      "label": "vercel-deploy/evals",
       "kind": "support",
-      "path": ".agent-skills/vercel-deploy/evals"
+      "label": "vercel-deploy/evals"
     },
     {
       "id": "support:vercel-deploy:scripts",
-      "label": "vercel-deploy/scripts",
       "kind": "support",
-      "path": ".agent-skills/vercel-deploy/scripts"
+      "label": "vercel-deploy/scripts"
     },
     {
       "id": "support:vercel-deploy:compact",
-      "label": "vercel-deploy/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/vercel-deploy/SKILL.toon"
+      "label": "vercel-deploy/compact"
     },
     {
       "id": "skill:vercel-react-best-practices",
-      "label": "vercel-react-best-practices",
       "kind": "skill",
+      "label": "vercel-react-best-practices",
       "path": ".agent-skills/vercel-react-best-practices/SKILL.md",
-      "category": "frontend",
-      "line_count": 81
+      "lines": 81
     },
     {
       "id": "support:vercel-react-best-practices:references",
-      "label": "vercel-react-best-practices/references",
       "kind": "support",
-      "path": ".agent-skills/vercel-react-best-practices/references"
+      "label": "vercel-react-best-practices/references"
     },
     {
       "id": "support:vercel-react-best-practices:evals",
-      "label": "vercel-react-best-practices/evals",
       "kind": "support",
-      "path": ".agent-skills/vercel-react-best-practices/evals"
+      "label": "vercel-react-best-practices/evals"
     },
     {
       "id": "support:vercel-react-best-practices:compact",
-      "label": "vercel-react-best-practices/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/vercel-react-best-practices/SKILL.toon"
+      "label": "vercel-react-best-practices/compact"
     },
     {
       "id": "skill:vibe-kanban",
-      "label": "vibe-kanban",
       "kind": "skill",
+      "label": "vibe-kanban",
       "path": ".agent-skills/vibe-kanban/SKILL.md",
-      "category": "planning-review",
-      "line_count": 195
+      "lines": 195
     },
     {
       "id": "support:vibe-kanban:references",
-      "label": "vibe-kanban/references",
       "kind": "support",
-      "path": ".agent-skills/vibe-kanban/references"
+      "label": "vibe-kanban/references"
     },
     {
       "id": "support:vibe-kanban:evals",
-      "label": "vibe-kanban/evals",
       "kind": "support",
-      "path": ".agent-skills/vibe-kanban/evals"
+      "label": "vibe-kanban/evals"
     },
     {
       "id": "support:vibe-kanban:scripts",
-      "label": "vibe-kanban/scripts",
       "kind": "support",
-      "path": ".agent-skills/vibe-kanban/scripts"
+      "label": "vibe-kanban/scripts"
     },
     {
       "id": "support:vibe-kanban:compact",
-      "label": "vibe-kanban/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/vibe-kanban/SKILL.toon"
+      "label": "vibe-kanban/compact"
     },
     {
       "id": "skill:video-production",
-      "label": "video-production",
       "kind": "skill",
+      "label": "video-production",
       "path": ".agent-skills/video-production/SKILL.md",
-      "category": "creative-media",
-      "line_count": 225
+      "lines": 225
     },
     {
       "id": "support:video-production:references",
-      "label": "video-production/references",
       "kind": "support",
-      "path": ".agent-skills/video-production/references"
+      "label": "video-production/references"
     },
     {
       "id": "support:video-production:evals",
-      "label": "video-production/evals",
       "kind": "support",
-      "path": ".agent-skills/video-production/evals"
+      "label": "video-production/evals"
     },
     {
       "id": "support:video-production:compact",
-      "label": "video-production/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/video-production/SKILL.toon"
+      "label": "video-production/compact"
     },
     {
       "id": "skill:web-accessibility",
-      "label": "web-accessibility",
       "kind": "skill",
+      "label": "web-accessibility",
       "path": ".agent-skills/web-accessibility/SKILL.md",
-      "category": "frontend",
-      "line_count": 231
+      "lines": 231
     },
     {
       "id": "support:web-accessibility:references",
-      "label": "web-accessibility/references",
       "kind": "support",
-      "path": ".agent-skills/web-accessibility/references"
+      "label": "web-accessibility/references"
     },
     {
       "id": "support:web-accessibility:evals",
-      "label": "web-accessibility/evals",
       "kind": "support",
-      "path": ".agent-skills/web-accessibility/evals"
+      "label": "web-accessibility/evals"
     },
     {
       "id": "support:web-accessibility:compact",
-      "label": "web-accessibility/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/web-accessibility/SKILL.toon"
+      "label": "web-accessibility/compact"
     },
     {
       "id": "skill:web-design-guidelines",
-      "label": "web-design-guidelines",
       "kind": "skill",
+      "label": "web-design-guidelines",
       "path": ".agent-skills/web-design-guidelines/SKILL.md",
-      "category": "frontend",
-      "line_count": 261
+      "lines": 261
     },
     {
       "id": "support:web-design-guidelines:references",
-      "label": "web-design-guidelines/references",
       "kind": "support",
-      "path": ".agent-skills/web-design-guidelines/references"
+      "label": "web-design-guidelines/references"
     },
     {
       "id": "support:web-design-guidelines:evals",
-      "label": "web-design-guidelines/evals",
       "kind": "support",
-      "path": ".agent-skills/web-design-guidelines/evals"
+      "label": "web-design-guidelines/evals"
     },
     {
       "id": "support:web-design-guidelines:compact",
-      "label": "web-design-guidelines/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/web-design-guidelines/SKILL.toon"
+      "label": "web-design-guidelines/compact"
     },
     {
       "id": "skill:workflow-automation",
-      "label": "workflow-automation",
       "kind": "skill",
+      "label": "workflow-automation",
       "path": ".agent-skills/workflow-automation/SKILL.md",
-      "category": "utilities",
-      "line_count": 212
+      "lines": 212
     },
     {
       "id": "support:workflow-automation:references",
-      "label": "workflow-automation/references",
       "kind": "support",
-      "path": ".agent-skills/workflow-automation/references"
+      "label": "workflow-automation/references"
     },
     {
       "id": "support:workflow-automation:evals",
-      "label": "workflow-automation/evals",
       "kind": "support",
-      "path": ".agent-skills/workflow-automation/evals"
+      "label": "workflow-automation/evals"
     },
     {
       "id": "support:workflow-automation:compact",
-      "label": "workflow-automation/SKILL.toon",
       "kind": "support",
-      "path": ".agent-skills/workflow-automation/SKILL.toon"
+      "label": "workflow-automation/compact"
     }
   ],
   "edges": [
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:agent-browser",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:agent-browser",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:agent-browser",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:agent-browser",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:agent-browser",
       "kind": "indexes"
     },
@@ -2552,27 +2179,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:agentation",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:agentation",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:agentation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:agentation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:agentation",
       "kind": "indexes"
     },
@@ -2612,27 +2239,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:api-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:api-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:api-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:api-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:api-design",
       "kind": "indexes"
     },
@@ -2672,27 +2299,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:api-documentation",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:api-documentation",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:api-documentation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:api-documentation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:api-documentation",
       "kind": "indexes"
     },
@@ -2737,27 +2364,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:authentication-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:authentication-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:authentication-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:authentication-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:authentication-setup",
       "kind": "indexes"
     },
@@ -2802,27 +2429,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:autoresearch",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:autoresearch",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:autoresearch",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:autoresearch",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:autoresearch",
       "kind": "indexes"
     },
@@ -2852,27 +2479,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:backend-testing",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:backend-testing",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:backend-testing",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:backend-testing",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:backend-testing",
       "kind": "indexes"
     },
@@ -2917,27 +2544,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:bmad",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:bmad",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:bmad",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:bmad",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:bmad",
       "kind": "indexes"
     },
@@ -2997,27 +2624,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:bmad-gds",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:bmad-gds",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:bmad-gds",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:bmad-gds",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:bmad-gds",
       "kind": "indexes"
     },
@@ -3067,27 +2694,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:bmad-idea",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:bmad-idea",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:bmad-idea",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:bmad-idea",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:bmad-idea",
       "kind": "indexes"
     },
@@ -3127,27 +2754,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:changelog-maintenance",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:changelog-maintenance",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:changelog-maintenance",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:changelog-maintenance",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:changelog-maintenance",
       "kind": "indexes"
     },
@@ -3192,27 +2819,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:clawteam",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:clawteam",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:clawteam",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:clawteam",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:clawteam",
       "kind": "indexes"
     },
@@ -3237,27 +2864,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:code-refactoring",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:code-refactoring",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:code-refactoring",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:code-refactoring",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:code-refactoring",
       "kind": "indexes"
     },
@@ -3302,27 +2929,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:code-review",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:code-review",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:code-review",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:code-review",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:code-review",
       "kind": "indexes"
     },
@@ -3372,27 +2999,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:codebase-search",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:codebase-search",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:codebase-search",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:codebase-search",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:codebase-search",
       "kind": "indexes"
     },
@@ -3432,27 +3059,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:data-analysis",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:data-analysis",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:data-analysis",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:data-analysis",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:data-analysis",
       "kind": "indexes"
     },
@@ -3492,27 +3119,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:database-schema-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:database-schema-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:database-schema-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:database-schema-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:database-schema-design",
       "kind": "indexes"
     },
@@ -3567,27 +3194,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:debugging",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:debugging",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:debugging",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:debugging",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:debugging",
       "kind": "indexes"
     },
@@ -3632,27 +3259,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:deployment-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:deployment-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:deployment-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:deployment-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:deployment-automation",
       "kind": "indexes"
     },
@@ -3692,27 +3319,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:design-system",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:design-system",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:design-system",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:design-system",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:design-system",
       "kind": "indexes"
     },
@@ -3757,27 +3384,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:environment-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:environment-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:environment-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:environment-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:environment-setup",
       "kind": "indexes"
     },
@@ -3812,27 +3439,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:fabric",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:fabric",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:fabric",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:fabric",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:fabric",
       "kind": "indexes"
     },
@@ -3852,27 +3479,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:file-organization",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:file-organization",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:file-organization",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:file-organization",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:file-organization",
       "kind": "indexes"
     },
@@ -3922,27 +3549,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:firebase-ai-logic",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:firebase-ai-logic",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:firebase-ai-logic",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:firebase-ai-logic",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:firebase-ai-logic",
       "kind": "indexes"
     },
@@ -3972,27 +3599,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:firebase-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:firebase-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:firebase-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:firebase-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:firebase-cli",
       "kind": "indexes"
     },
@@ -4042,27 +3669,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:frontend-design-system",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:frontend-design-system",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:frontend-design-system",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:frontend-design-system",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:frontend-design-system",
       "kind": "indexes"
     },
@@ -4087,27 +3714,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:game-build-log-triage",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:game-build-log-triage",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:game-build-log-triage",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:game-build-log-triage",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:game-build-log-triage",
       "kind": "indexes"
     },
@@ -4132,27 +3759,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:game-ci-cd-pipeline",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:game-ci-cd-pipeline",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:game-ci-cd-pipeline",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:game-ci-cd-pipeline",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:game-ci-cd-pipeline",
       "kind": "indexes"
     },
@@ -4192,27 +3819,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:game-demo-feedback-triage",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:game-demo-feedback-triage",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:game-demo-feedback-triage",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:game-demo-feedback-triage",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:game-demo-feedback-triage",
       "kind": "indexes"
     },
@@ -4257,27 +3884,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:game-performance-profiler",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:game-performance-profiler",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:game-performance-profiler",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:game-performance-profiler",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:game-performance-profiler",
       "kind": "indexes"
     },
@@ -4317,27 +3944,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:genkit",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:genkit",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:genkit",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:genkit",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:genkit",
       "kind": "indexes"
     },
@@ -4372,27 +3999,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:git-submodule",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:git-submodule",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:git-submodule",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:git-submodule",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:git-submodule",
       "kind": "indexes"
     },
@@ -4432,27 +4059,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:git-workflow",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:git-workflow",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:git-workflow",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:git-workflow",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:git-workflow",
       "kind": "indexes"
     },
@@ -4487,27 +4114,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:google-workspace",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:google-workspace",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:google-workspace",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:google-workspace",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:google-workspace",
       "kind": "indexes"
     },
@@ -4532,27 +4159,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:harness",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:harness",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:harness",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:harness",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:harness",
       "kind": "indexes"
     },
@@ -4577,27 +4204,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:jeo",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:jeo",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:jeo",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:jeo",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:jeo",
       "kind": "indexes"
     },
@@ -4667,27 +4294,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:langsmith",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:langsmith",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:langsmith",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:langsmith",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:langsmith",
       "kind": "indexes"
     },
@@ -4737,27 +4364,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:llm-wiki",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:llm-wiki",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:llm-wiki",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:llm-wiki",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:llm-wiki",
       "kind": "indexes"
     },
@@ -4782,27 +4409,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:lmstudio-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:lmstudio-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:lmstudio-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:lmstudio-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:lmstudio-cli",
       "kind": "indexes"
     },
@@ -4832,27 +4459,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:log-analysis",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:log-analysis",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:log-analysis",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:log-analysis",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:log-analysis",
       "kind": "indexes"
     },
@@ -4892,27 +4519,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:looker-studio-bigquery",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:looker-studio-bigquery",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:looker-studio-bigquery",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:looker-studio-bigquery",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:looker-studio-bigquery",
       "kind": "indexes"
     },
@@ -4952,27 +4579,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:marketing-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:marketing-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:marketing-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:marketing-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:marketing-automation",
       "kind": "indexes"
     },
@@ -5002,27 +4629,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:marketing-skills-collection",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:marketing-skills-collection",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:marketing-skills-collection",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:marketing-skills-collection",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:marketing-skills-collection",
       "kind": "indexes"
     },
@@ -5052,27 +4679,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:monitoring-observability",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:monitoring-observability",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:monitoring-observability",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:monitoring-observability",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:monitoring-observability",
       "kind": "indexes"
     },
@@ -5132,27 +4759,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:npm-git-install",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:npm-git-install",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:npm-git-install",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:npm-git-install",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:npm-git-install",
       "kind": "indexes"
     },
@@ -5187,27 +4814,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:obsidian-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:obsidian-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:obsidian-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:obsidian-cli",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:obsidian-cli",
       "kind": "indexes"
     },
@@ -5232,27 +4859,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:obsidian-plugin",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:obsidian-plugin",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:obsidian-plugin",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:obsidian-plugin",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:obsidian-plugin",
       "kind": "indexes"
     },
@@ -5277,27 +4904,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:ohmg",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:ohmg",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:ohmg",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:ohmg",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:ohmg",
       "kind": "indexes"
     },
@@ -5327,27 +4954,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:omc",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:omc",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:omc",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:omc",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:omc",
       "kind": "indexes"
     },
@@ -5377,27 +5004,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:omx",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:omx",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:omx",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:omx",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:omx",
       "kind": "indexes"
     },
@@ -5432,27 +5059,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:opencontext",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:opencontext",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:opencontext",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:opencontext",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:opencontext",
       "kind": "indexes"
     },
@@ -5487,27 +5114,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:pattern-detection",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:pattern-detection",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:pattern-detection",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:pattern-detection",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:pattern-detection",
       "kind": "indexes"
     },
@@ -5557,27 +5184,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:performance-optimization",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:performance-optimization",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:performance-optimization",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:performance-optimization",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:performance-optimization",
       "kind": "indexes"
     },
@@ -5642,27 +5269,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:plannotator",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:plannotator",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:plannotator",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:plannotator",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:plannotator",
       "kind": "indexes"
     },
@@ -5727,27 +5354,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:playwriter",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:playwriter",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:playwriter",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:playwriter",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:playwriter",
       "kind": "indexes"
     },
@@ -5772,27 +5399,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:presentation-builder",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:presentation-builder",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:presentation-builder",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:presentation-builder",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:presentation-builder",
       "kind": "indexes"
     },
@@ -5832,27 +5459,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:prompt-repetition",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:prompt-repetition",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:prompt-repetition",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:prompt-repetition",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:prompt-repetition",
       "kind": "indexes"
     },
@@ -5872,27 +5499,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:ralph",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:ralph",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:ralph",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:ralph",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:ralph",
       "kind": "indexes"
     },
@@ -5947,27 +5574,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:ralphmode",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:ralphmode",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:ralphmode",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:ralphmode",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:ralphmode",
       "kind": "indexes"
     },
@@ -5997,27 +5624,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:react-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:react-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:react-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:react-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:react-best-practices",
       "kind": "indexes"
     },
@@ -6062,27 +5689,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:react-grab",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:react-grab",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:react-grab",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:react-grab",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:react-grab",
       "kind": "indexes"
     },
@@ -6137,27 +5764,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:remotion-video-production",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:remotion-video-production",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:remotion-video-production",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:remotion-video-production",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:remotion-video-production",
       "kind": "indexes"
     },
@@ -6182,27 +5809,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:research-paper-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:research-paper-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:research-paper-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:research-paper-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:research-paper-writing",
       "kind": "indexes"
     },
@@ -6247,27 +5874,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:responsive-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:responsive-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:responsive-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:responsive-design",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:responsive-design",
       "kind": "indexes"
     },
@@ -6312,27 +5939,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:rtk",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:rtk",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:rtk",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:rtk",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:rtk",
       "kind": "indexes"
     },
@@ -6357,27 +5984,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:scrapling",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:scrapling",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:scrapling",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:scrapling",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:scrapling",
       "kind": "indexes"
     },
@@ -6402,27 +6029,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:security-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:security-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:security-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:security-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:security-best-practices",
       "kind": "indexes"
     },
@@ -6482,27 +6109,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:skill-autoresearch",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:skill-autoresearch",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:skill-autoresearch",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:skill-autoresearch",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:skill-autoresearch",
       "kind": "indexes"
     },
@@ -6522,27 +6149,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:skill-standardization",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:skill-standardization",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:skill-standardization",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:skill-standardization",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:skill-standardization",
       "kind": "indexes"
     },
@@ -6567,27 +6194,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:sprint-retrospective",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:sprint-retrospective",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:sprint-retrospective",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:sprint-retrospective",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:sprint-retrospective",
       "kind": "indexes"
     },
@@ -6622,27 +6249,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:standup-meeting",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:standup-meeting",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:standup-meeting",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:standup-meeting",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:standup-meeting",
       "kind": "indexes"
     },
@@ -6677,27 +6304,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:state-management",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:state-management",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:state-management",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:state-management",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:state-management",
       "kind": "indexes"
     },
@@ -6747,27 +6374,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:steam-store-launch-ops",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:steam-store-launch-ops",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:steam-store-launch-ops",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:steam-store-launch-ops",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:steam-store-launch-ops",
       "kind": "indexes"
     },
@@ -6797,27 +6424,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:strix",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:strix",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:strix",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:strix",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:strix",
       "kind": "indexes"
     },
@@ -6842,27 +6469,27 @@
       "kind": "has-support"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:survey",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:survey",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:survey",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:survey",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:survey",
       "kind": "indexes"
     },
@@ -6897,27 +6524,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:system-environment-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:system-environment-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:system-environment-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:system-environment-setup",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:system-environment-setup",
       "kind": "indexes"
     },
@@ -6962,27 +6589,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:task-estimation",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:task-estimation",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:task-estimation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:task-estimation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:task-estimation",
       "kind": "indexes"
     },
@@ -7017,27 +6644,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:task-planning",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:task-planning",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:task-planning",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:task-planning",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:task-planning",
       "kind": "indexes"
     },
@@ -7102,27 +6729,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:technical-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:technical-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:technical-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:technical-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:technical-writing",
       "kind": "indexes"
     },
@@ -7177,27 +6804,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:testing-strategies",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:testing-strategies",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:testing-strategies",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:testing-strategies",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:testing-strategies",
       "kind": "indexes"
     },
@@ -7252,27 +6879,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:ui-component-patterns",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:ui-component-patterns",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:ui-component-patterns",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:ui-component-patterns",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:ui-component-patterns",
       "kind": "indexes"
     },
@@ -7317,27 +6944,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:user-guide-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:user-guide-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:user-guide-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:user-guide-writing",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:user-guide-writing",
       "kind": "indexes"
     },
@@ -7382,27 +7009,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:vercel-deploy",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:vercel-deploy",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:vercel-deploy",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:vercel-deploy",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:vercel-deploy",
       "kind": "indexes"
     },
@@ -7452,27 +7079,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:vercel-react-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:vercel-react-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:vercel-react-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:vercel-react-best-practices",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:vercel-react-best-practices",
       "kind": "indexes"
     },
@@ -7497,27 +7124,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:vibe-kanban",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:vibe-kanban",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:vibe-kanban",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:vibe-kanban",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:vibe-kanban",
       "kind": "indexes"
     },
@@ -7602,27 +7229,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:video-production",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:video-production",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:video-production",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:video-production",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:video-production",
       "kind": "indexes"
     },
@@ -7647,27 +7274,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:web-accessibility",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:web-accessibility",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:web-accessibility",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:web-accessibility",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:web-accessibility",
       "kind": "indexes"
     },
@@ -7712,27 +7339,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:web-design-guidelines",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:web-design-guidelines",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:web-design-guidelines",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:web-design-guidelines",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:web-design-guidelines",
       "kind": "indexes"
     },
@@ -7782,27 +7409,27 @@
       "kind": "mentions"
     },
     {
-      "source": "doc:README.md",
+      "source": "README.md",
       "target": "skill:workflow-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:README.ko.md",
+      "source": "README.ko.md",
       "target": "skill:workflow-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:setup-all-skills-prompt.md",
+      "source": "setup-all-skills-prompt.md",
       "target": "skill:workflow-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.json",
+      "source": ".agent-skills/skills.toon",
       "target": "skill:workflow-automation",
       "kind": "indexes"
     },
     {
-      "source": "doc:.agent-skills/skills.toon",
+      "source": ".agent-skills/skills.json",
       "target": "skill:workflow-automation",
       "kind": "indexes"
     },

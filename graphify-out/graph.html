@@ -1,22 +1,43 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>oh-my-skills structural graph</title>
-<style>body{font-family:system-ui,sans-serif;max-width:1100px;margin:40px auto;padding:0 20px;line-height:1.45}code{background:#f4f4f4;padding:2px 4px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f7f7f7}ul{margin-top:0}</style>
-</head><body>
-<h1>oh-my-skills structural graph</h1>
-<p>Generated from <code>.agent-skills/skills.json</code>, skill directories, and discovery docs.</p>
-<h2>Summary</h2>
-<ul>
-<li>Total skills: 89</li>
-<li>Nodes: 386</li>
-<li>Edges: 1071</li>
-<li>References coverage: 89/89</li>
-<li>Evals coverage: 89/89</li>
-<li>Compact coverage: 89/89</li>
-</ul>
-<h2>Current focus</h2>
-<p><code>standup-meeting</code> now follows the routing-first PM-cluster pattern: one chosen daily-sync mode, one evidence packet, and one follow-up-huddle boundary.</p>
-<h2>Oversized front-door watchlist</h2>
-<table><thead><tr><th>Skill</th><th>SKILL.md lines</th></tr></thead><tbody><tr><td>clawteam</td><td>329</td></tr><tr><td>scrapling</td><td>319</td></tr><tr><td>task-planning</td><td>294</td></tr><tr><td>jeo</td><td>288</td></tr><tr><td>obsidian-cli</td><td>286</td></tr><tr><td>autoresearch</td><td>284</td></tr><tr><td>testing-strategies</td><td>274</td></tr><tr><td>steam-store-launch-ops</td><td>272</td></tr><tr><td>state-management</td><td>272</td></tr><tr><td>omc</td><td>272</td></tr></tbody></table>
-<h2>Discovery nodes</h2>
-<ul><li>README.md</li><li>README.ko.md</li><li>setup-all-skills-prompt.md</li><li>.agent-skills/skills.json</li><li>.agent-skills/skills.toon</li></ul>
-</body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>oh-my-skills structural graph</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 2rem auto; max-width: 1000px; line-height: 1.5; }
+    code { background: #f4f4f4; padding: 0.1rem 0.3rem; border-radius: 4px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    pre { background: #111; color: #eee; padding: 1rem; overflow: auto; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>oh-my-skills structural graph</h1>
+  <p>Deterministic graphify-style fallback over discovery docs, live skills, and support surfaces.</p>
+  <div class="grid">
+    <section>
+      <h2>Top degree nodes</h2>
+      <ul><li><code>setup-all-skills-prompt.md</code> — degree 89</li><li><code>README.md</code> — degree 89</li><li><code>README.ko.md</code> — degree 89</li><li><code>.agent-skills/skills.toon</code> — degree 89</li><li><code>.agent-skills/skills.json</code> — degree 89</li><li><code>vibe-kanban</code> — degree 21</li><li><code>task-planning</code> — degree 21</li><li><code>code-review</code> — degree 21</li><li><code>monitoring-observability</code> — degree 20</li><li><code>jeo</code> — degree 20</li></ul>
+    </section>
+    <section>
+      <h2>Oversized front-door watchlist</h2>
+      <ul><li><code>clawteam</code> — 329 lines</li><li><code>task-planning</code> — 294 lines</li><li><code>jeo</code> — 288 lines</li><li><code>obsidian-cli</code> — 286 lines</li><li><code>autoresearch</code> — 284 lines</li><li><code>testing-strategies</code> — 274 lines</li><li><code>steam-store-launch-ops</code> — 272 lines</li><li><code>state-management</code> — 272 lines</li><li><code>omc</code> — 272 lines</li><li><code>opencontext</code> — 270 lines</li></ul>
+    </section>
+  </div>
+  <h2>Structural note</h2>
+  <p><code>scrapling</code> dropped out of the top oversized watchlist entries after this run because its front door now follows the repo's routing-first pattern more closely.</p>
+  <h2>Graph summary JSON</h2>
+  <pre>{
+  &quot;path&quot;: &quot;.agent-skills/&quot;,
+  &quot;live_skill_count&quot;: 89,
+  &quot;manifest_skill_count&quot;: 89,
+  &quot;support_counts&quot;: {
+    &quot;references&quot;: 89,
+    &quot;evals&quot;: 89,
+    &quot;scripts&quot;: 25,
+    &quot;compact&quot;: 89
+  },
+  &quot;node_count&quot;: 386,
+  &quot;edge_count&quot;: 1071
+}</pre>
+</body>
+</html>

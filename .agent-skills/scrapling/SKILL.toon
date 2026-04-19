@@ -1,37 +1,37 @@
 N:scrapling
-D:[scrapling] Install, configure, and operate Scrapling for adaptive web scraping with parser-first HTML extraction, fast HTTP fetchers, browser rendering, stealth anti-bot options, CLI extraction, and optional MCP or spider workflows.
-G:scrapling web-scraping crawling adaptive-scraping mcp cli playwright cloudflare spiders python
+D:[scrapling] Route web-scraping work into the lightest workable Scrapling mode instead of defaulting to a browser. Use when the user needs HTML extraction, JS-rendered page retrieval, protected-target escalation, quick CLI scraping, agent-facing MCP access, or a larger crawl with Scrapling spiders.
+G:scrapling web-scraping crawling adaptive-scraping mcp cli playwright cloudflare spiders python selector-drift
 
 U[8]:
-  Install Scrapling with parser-only or extras-based profiles and download browser dependencies when needed
-  Start with Selector for known HTML and choose Fetcher DynamicFetcher or StealthyFetcher only when live fetching is required
-  Reuse session classes for repeated requests instead of one-off browser launches
-  Parse with CSS, XPath, ::text, ::attr, text search, regex, and similar-element lookup
-  Enable adaptive scraping with adaptive=True, auto_save=True, retrieve, and relocate
-  Use the CLI for get post put delete fetch stealthy-fetch and shell prototyping
-  Treat MCP and spiders as secondary workflows once parser and fetcher behavior is proven
-  Build Scrapy-like spiders with concurrency follow links and pause or resume checkpoints when crawl scope expands
+  Capture one intake packet: target class, output, scope, and constraints before choosing tools
+  Start with Selector or Fetcher and escalate to DynamicFetcher or StealthyFetcher only on evidence
+  Use adaptive scraping for selector drift, not as a blanket fix for auth or anti-bot failures
+  Prefer direct API or request interception when the DOM is not the real source of truth
+  Use CLI and shell for quick probes and bounded extraction output
+  Use MCP when the goal is agent-facing web tools rather than custom scraper code
+  Switch to spiders only when crawl state, queues, retries, or checkpoints are the real problem
+  Route honestly to managed unblockers or other stacks when Scrapling is no longer the best fit
 
 S[6]{n,action,details}:
-  1,Install,bash scripts/install.sh --profile parser|fetchers|shell|ai|all and run browser install only when needed
-  2,Parse first,use Selector for local HTML and known DOM extraction before escalating to live fetchers
-  3,Choose fetcher,start with Fetcher then escalate to DynamicFetcher or StealthyFetcher only on JS or protection needs
-  4,Parse and adapt,use Response and Selector APIs with CSS XPath text regex and adaptive matching
-  5,Prototype,run bash scripts/run-extract.sh and scrapling shell for quick checks
-  6,Extend,use bash scripts/run-mcp.sh or Spider Request Response only when the task grows beyond normal extraction
+  1,Intake,capture target class output scope constraints and source-of-truth before choosing a mode
+  2,Install,bash scripts/install.sh --profile parser|fetchers|shell|ai|all and run scrapling install only for browser-backed paths
+  3,Choose extraction,use Selector or Fetcher first then escalate to DynamicFetcher or StealthyFetcher only when evidence requires it
+  4,Handle drift,use adaptive=True and auto_save or retrieve or relocate only for brittle selectors
+  5,Choose surface,use bash scripts/run-extract.sh or bash scripts/run-mcp.sh when CLI or agent access is better than bespoke code
+  6,Scale or route out,move to spiders for crawl state and route to direct API interception browser automation or managed unblockers when Scrapling is the wrong layer
 
 R[8]:
-  Prefer Selector or the lightest fetcher that works and escalate only on real rendering or protection needs
-  Session classes are better than repeated one-off fetches for multi-page jobs
-  Adaptive scraping is opt-in and should be enabled only where selector brittleness matters
-  Use CSS selectors and markdown or text output to reduce token and storage overhead
-  Browser-backed features require extras plus scrapling install to download Playwright or Patchright dependencies
-  Scrapling is documented for HTML parsing and does not currently focus on XML feeds
-  MCP stdio is the simplest local integration; add --http only when you need streamable HTTP
-  Respect target authorization boundaries robots terms and rate limits
+  The lightest workable mode beats browser-first scraping most of the time
+  Adaptive scraping helps with selector drift not auth or protection guarantees
+  Session reuse is better than repeated one-off browser launches for multi-page work
+  CSS selectors plus md or txt outputs reduce token and storage overhead
+  MCP is the simplest local agent integration when the user wants tool exposure not scraper design
+  Spiders are justified when queueing traversal retries and checkpoints become the job
+  Stealth is a later escalation not a guaranteed bypass
+  If the real data is an API response route there instead of forcing DOM scraping
 
 E[6]{type,command}:
-  Install,bash scripts/install.sh
+  Parser,python -c 'from scrapling import Selector; page=Selector("<html></html>", url="https://example.com")'
   Static CLI,bash scripts/run-extract.sh get "https://example.com" content.md --css-selector "article"
   Dynamic CLI,bash scripts/run-extract.sh fetch "https://app.example.com" content.md --network-idle
   Stealth CLI,bash scripts/run-extract.sh stealth "https://protected.example.com" content.md --solve-cloudflare
