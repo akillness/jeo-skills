@@ -982,7 +982,7 @@
     },
     {
       "name": "game-ci-cd-pipeline",
-      "description": "Design, audit, and harden CI/CD pipelines for Unity and Unreal projects, including build matrices, cache strategy, artifact naming, packaging stages, platform SDK/toolchain checks, and smoke-test gates. Use when a game team needs to set up or repair GitHub Actions or other CI for engine builds, even if they only say \"our Unity cloud/GitHub build keeps breaking\", \"help with Unreal packaging CI\", \"make our game builds reproducible\", \"speed up cook / package jobs\", or \"turn this manual release process into a pipeline\".",
+      "description": "Turn messy Unity or Unreal build/release automation into one bounded pipeline packet: setup plan, stage split, cache policy, preflight checklist, artifact/release hygiene, or CI-signal hardening. Use when a game team needs to design or repair GitHub Actions, Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds — especially when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook / package cycles, artifact confusion, SDK/signing drift, or a manual game release process that should become reproducible. Route one red log first-pass diagnosis to `game-build-log-triage`.",
       "path": "game-ci-cd-pipeline/SKILL.md",
       "tags": [
         "game-development",

@@ -1,101 +1,93 @@
 ---
 name: game-ci-cd-pipeline
 description: >
-  Design, audit, and harden CI/CD pipelines for Unity and Unreal projects,
-  including build matrices, cache strategy, artifact naming, packaging stages,
-  platform SDK/toolchain checks, and smoke-test gates. Use when a game team
-  needs to set up or repair GitHub Actions or other CI for engine builds, even
-  if they only say "our Unity cloud/GitHub build keeps breaking", "help with
-  Unreal packaging CI", "make our game builds reproducible", "speed up cook /
-  package jobs", or "turn this manual release process into a pipeline".
+  Turn messy Unity or Unreal build/release automation into one bounded pipeline packet:
+  setup plan, stage split, cache policy, preflight checklist, artifact/release hygiene,
+  or CI-signal hardening. Use when a game team needs to design or repair GitHub Actions,
+  Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds — especially
+  when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook /
+  package cycles, artifact confusion, SDK/signing drift, or a manual game release process
+  that should become reproducible. Route one red log first-pass diagnosis to
+  `game-build-log-triage`.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
-  Best for repositories or conversations that include Unity or Unreal projects,
-  GitHub Actions / CI config, build logs, release checklists, or platform build
-  requirements. Works as an audit-and-plan workflow, not an automatic deployer
-  or secret-rotating system.
+  Best for Unity or Unreal repositories, workflow files, job logs, release checklists,
+  platform/toolchain notes, or manual build procedures that need to become a reliable
+  pipeline. Works as a pipeline audit-and-brief workflow, not an automatic deployer or
+  secret-rotation system.
 metadata:
   tags: game-development, unity, unreal, ci-cd, github-actions, build-pipeline, release-engineering
-  version: "1.0"
+  version: "1.1"
   source: akillness/oh-my-skills
 ---
 
 # Game CI/CD Pipeline
 
-Use this skill to turn messy Unity or Unreal build automation into a concrete pipeline brief.
+Use this skill when the job is **choosing the next game-pipeline artifact**, not dumping a generic DevOps essay.
 
-The goal is not to dump generic DevOps advice. The goal is to identify the weakest structural part of the game pipeline, explain why it causes repeated build pain, and return the next practical pipeline artifact or checklist.
+`game-ci-cd-pipeline` should answer one question per run:
+- do we need a **pipeline setup plan**,
+- a **stage split / workflow rewrite**,
+- a **cache-key policy**,
+- a **platform preflight checklist**,
+- an **artifact / release hygiene packet**,
+- or a **CI-signal hardening brief**?
 
-Read [references/pipeline-patterns.md](references/pipeline-patterns.md) before handling unfamiliar engine-specific packaging or cache questions.
+Read these before choosing the packet:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/pipeline-patterns.md](references/pipeline-patterns.md)
 
 ## When to use this skill
-- Unity or Unreal teams setting up CI/CD from scratch
-- GitHub Actions, Build Automation, or other CI pipelines that are flaky, slow, or hard to debug
-- Manual game release processes that need reproducible build, package, and artifact steps
-- Requests about cache strategy, large binaries, artifact naming, matrix builds, smoke tests, or packaging gates
-- Teams that keep fixing the same cook/package/build problem without changing the pipeline structure
-- Publisher, contractor, or technical-lead audits where the team wants a short pipeline hardening brief instead of generic infrastructure advice
+- A Unity or Unreal team needs to set up CI/CD from scratch without overengineering it.
+- A pipeline is repeatedly flaky, slow, or opaque, and the real problem is workflow structure rather than one isolated log.
+- Build, cook/package, cache, artifact, or release-hand-off steps keep breaking trust in the pipeline.
+- A team still ships demo/review/release builds manually and needs the first reproducible pipeline packet.
+- A publisher helper, contractor, or technical lead needs a compact game-pipeline audit brief.
 
-If the user already has one failing log excerpt and mostly needs the first root-cause diagnosis, route that to `game-build-log-triage` first or alongside this skill.
+## When not to use this skill
+- The main job is identifying the first actionable failure inside one specific Unity/Unreal build log → `game-build-log-triage`.
+- The main job is milestone coordination across design, QA, build pressure, and launch timing → `bmad-gds`.
+- The main job is runtime profiling or frame-time bottleneck diagnosis → `game-performance-profiler`.
+- The main job is Steam page / wishlist / launch-store operations → `steam-store-launch-ops`.
+- The main job is generic non-game CI/CD for ordinary web/backend repos → use the repo's broader DevOps skills instead.
 
 ## Instructions
 
-### Step 1: Identify the pipeline scope
-Label the request before proposing fixes.
+### Step 1: Choose one primary packet type
+Normalize the request into exactly one primary packet.
 
-Possible scopes:
-- `pipeline-setup`
-- `pipeline-audit`
-- `pipeline-hardening`
-- `speed-and-cache-review`
-- `release-checklist`
-- `mixed-pipeline-review`
+```yaml
+game_pipeline_packet:
+  packet_type: pipeline-setup | stage-split | cache-policy | preflight-readiness | artifact-release | ci-signal-hardening | route-to-log-triage
+  engine: Unity | Unreal | mixed | unknown
+  ci_surface: GitHub Actions | Unity Build Automation | Jenkins | TeamCity | other | unknown
+  target_platforms: Windows | macOS | Linux | Android | iOS | console | mixed | unknown
+  release_context: prototype | internal QA | demo | playtest | certification | launch | live patch | unknown
+  evidence_level: strong | partial | thin
+```
 
-Record the available evidence:
-- engine: Unity | Unreal | mixed | unknown
-- CI surface: GitHub Actions | Unity Build Automation | Jenkins | TeamCity | other
-- target platforms: Windows | macOS | Linux | Android | iOS | console | mixed
-- repo constraints: large binaries, Git LFS, generated content, plugins, private packages
-- current stages: build, test, cook, package, sign, upload, deploy
-- repeated failure modes: compile, package dependency, cook, SDK/toolchain, cache, artifact confusion, secrets/auth
-- whether the team wants diagnosis, prevention, speed, or release confidence
+Packet meanings:
+- `pipeline-setup` — first reproducible pipeline plan for a team still doing too much by hand
+- `stage-split` — separate restore/build/test/cook/package/publish so the first failing stage is visible
+- `cache-policy` — stop superstition around `Library`, `Intermediate`, `Saved`, DDC, or package caches
+- `preflight-readiness` — surface SDK/signing/toolchain/platform prerequisites before expensive packaging
+- `artifact-release` — fix artifact naming, retention, candidate-vs-release clarity, and QA handoff
+- `ci-signal-hardening` — improve feedback speed and trust without rewriting everything
+- `route-to-log-triage` — the request is mostly one red build/log and should move to `game-build-log-triage`
 
-If evidence is thin, keep confidence low and avoid pretending the pipeline architecture is known.
+### Step 2: Gather the minimum credible evidence
+Pull only the smallest packet needed to justify the decision:
+- engine and version if known
+- current CI surface or workflow file
+- target platforms and release context
+- repeated failure pattern: compile, package, toolchain, cache, artifact confusion, speed, or trust
+- what still happens manually after CI finishes
+- one recent failing job/log if the team keeps pointing at a single red build
 
-### Step 2: Audit the pipeline through six lenses
-Find the weakest lens first.
-
-1. **Reproducibility**
-   - Can the same branch produce the same build artifacts reliably?
-   - Are engine version, packages/plugins, and SDK/toolchain assumptions pinned enough?
-   - Are local-only fixes doing work the pipeline should own?
-
-2. **Stage boundaries**
-   - Are compile, test, cook/package, smoke-test, and artifact-publish steps separated clearly?
-   - Does the pipeline surface the first failing stage instead of collapsing everything into one long job?
-   - Are retries and caches scoped per stage rather than masking failures?
-
-3. **Dependency and cache policy**
-   - Are package/plugin restores explicit?
-   - Are large caches useful, bounded, and invalidated on the right keys?
-   - Is the team deleting everything on every failure because cache policy is unclear?
-
-4. **Artifact and release hygiene**
-   - Are build outputs named consistently by branch, platform, and configuration?
-   - Are artifacts retained long enough for QA/review?
-   - Is there a clear handoff between build success and release readiness?
-
-5. **Platform/toolchain readiness**
-   - Are SDKs, signing, provisioning, or platform-specific requirements treated as preflight checks?
-   - Are Unity/Unreal engine prerequisites visible early rather than discovered at package time?
-
-6. **Feedback speed and confidence**
-   - Do failures show the right logs/artifacts quickly?
-   - Are smoke tests, editor tests, unit tests, or packaging sanity checks catching regressions before launch branches?
-   - Is the team optimizing for a red/green signal they can actually trust?
+If evidence is thin, keep confidence low and prefer `route-to-log-triage` or a narrow packet over a fake full redesign.
 
 ### Step 3: Classify the primary blocker
-Map the situation to one primary blocker and optional secondary blocker.
+Choose one primary blocker and at most one secondary blocker.
 
 **Primary blockers**
 - `reproducibility-drift`
@@ -104,157 +96,163 @@ Map the situation to one primary blocker and optional secondary blocker.
 - `artifact-release-hygiene`
 - `platform-toolchain-readiness`
 - `feedback-speed-confidence`
+- `single-log-not-pipeline`
 - `unknown-needs-more-evidence`
 
-**Typical mappings**
+Typical mappings:
 - "Works on one machine but not in CI" → `reproducibility-drift`
-- "Our GitHub Action is one giant build job and we can't tell what failed" → `stage-boundary-blur`
-- "We keep deleting Library / Intermediate / Saved / caches to make builds pass" → `dependency-cache-policy`
-- "We produce builds but no one knows which artifact is the right one" → `artifact-release-hygiene`
-- "Android/iOS/console packaging keeps failing late" → `platform-toolchain-readiness`
-- "Builds are too slow and we still don't trust them" → `feedback-speed-confidence`
+- "Our workflow is one giant job and we cannot tell what failed" → `stage-boundary-blur`
+- "We keep deleting caches until it passes" → `dependency-cache-policy`
+- "QA never knows which build is correct" → `artifact-release-hygiene`
+- "Android/iOS/console packaging fails late" → `platform-toolchain-readiness`
+- "Builds are slow and nobody trusts the signal" → `feedback-speed-confidence`
+- "Here is one failing packaging log" → `single-log-not-pipeline`
 
-Do not flatten everything into generic DevOps. Separate game-engine pipeline structure from one-off build debugging.
+### Step 4: Run the boundary check
+Before writing advice, verify the lane:
+1. Is this a structural pipeline question or just a failing log?
+2. Is the best next artifact one of the packet types above?
+3. Are you staying inside game-engine pipeline work instead of drifting into generic web-app DevOps?
+4. Are engine-specific details helping the diagnosis rather than bloating the front door?
 
-### Step 4: Build the pipeline brief
-Return a concise report with this exact structure:
+If the answer is mostly "this is one failing log", route to `game-build-log-triage` and leave a short handoff packet.
+
+### Step 5: Build the packet brief
+Return this exact structure:
 
 ```markdown
 # Game CI/CD Brief
 
-## Scope
-- Review type: ...
+## Packet choice
+- Packet type: ...
 - Engine: ...
 - CI surface: ...
-- Target platforms: ...
+- Release context: ...
 - Confidence: high | medium | low
 
-## Current strongest signal
-- 1-2 bullets on what already looks healthy
+## Evidence used
+- Workflow / system context: ...
+- Repeated failure pattern: ...
+- Manual steps still outside CI: ...
+- Gaps / assumptions: ...
 
 ## Primary blocker
 - Bucket: ...
-- Why it matters: ...
+- Why it matters now: ...
 - Evidence: ...
 
 ## Secondary blocker
 - Bucket: ...
-- Why it matters: ...
+- Why it matters now: ...
 
 ## Recommended pipeline shape
 1. ...
 2. ...
 3. ...
 
-## Stage-by-stage checks
-- Restore / dependency step: ...
-- Build / compile step: ...
-- Test / smoke step: ...
-- Cook / package step: ...
-- Artifact publish step: ...
-
-## Engine-specific checks
-- Unity / Unreal specific: ...
-- Platform SDK / signing / toolchain: ...
-- Cache policy: ...
+## Engine and platform checks
+- Unity / Unreal specifics: ...
+- SDK / signing / toolchain: ...
+- Cache or artifact policy: ...
 
 ## Recommended next artifact
-- Choose one: workflow rewrite brief | cache-key policy | build matrix plan | release artifact checklist | preflight checklist
+- Choose one: pipeline setup plan | workflow stage split brief | cache-key policy | platform preflight checklist | artifact/release checklist | CI-signal hardening plan | log-triage handoff packet
+
+## Route-outs
+- Skill: ...
+- Why: ...
+- Packet to pass: ...
 
 ## What not to do yet
-- 1-3 bullets that prevent brittle or expensive pipeline changes
+- 1-3 bullets that avoid brittle rewrites or cargo-cult caching
 ```
 
-### Step 5: Tailor the advice to the engine
-**For Unity, focus on:**
-- engine/editor version pinning
-- package restore stability and `Packages/manifest.json` / lockfile drift
-- whether editor-only code or platform defines leak into builds
-- cache strategy around `Library/`, package downloads, and platform toolchains
-- whether test/build/package steps are separated enough to isolate red builds
+### Step 6: Tailor the packet to the engine
+**For Unity**
+- watch engine/editor version pinning
+- ask whether `Packages/manifest.json` / lock inputs and platform modules are stable
+- separate package restore, build, test, and package stages
+- treat `Library/` and package caches as explicit policy, not ritual cleanup
 
-**For Unreal, focus on:**
-- UBT/UHT vs cook/package stage boundaries
-- plugin/module enablement and generated-code assumptions
-- content redirects, asset moves, and package-stage fallout
-- `Intermediate/`, `Saved/`, Derived Data Cache, and what should or should not be treated as cache
-- platform packaging prerequisites and AutomationTool visibility
+**For Unreal**
+- keep UBT/UHT, cook, package, and publish mentally separate
+- call out plugin/module drift, asset redirect fallout, and AutomationTool visibility
+- distinguish DDC/cache questions from packaging/log-root-cause work
+- make platform packaging prerequisites visible before late-stage failure
 
-**For release-checklist cases, focus on:**
-- artifact naming and branch/channel clarity
-- retention and distribution for QA/review builds
-- minimum smoke-test or launch-gate checks before publishing a candidate
-- making sure the team can reproduce the exact shipped build later
-
-### Step 6: Ask for the minimum missing evidence when needed
-If confidence is low, request the smallest next packet that would materially improve the audit:
-1. current workflow file or CI job outline
+### Step 7: Ask for the smallest missing packet
+If confidence is low, request only what changes the decision:
+1. current workflow file or job outline
 2. engine version and target platforms
-3. one recent failing log or job URL
-4. artifact/output naming conventions if any
-5. what the team still does manually after CI finishes
-
-Do not ask for the entire infrastructure stack unless the user explicitly wants that.
+3. one recent failed job/log if the issue may be `single-log-not-pipeline`
+4. current artifact naming / retention pattern
+5. what still happens manually after CI completes
 
 ## Output format
-Always return a short pipeline brief, not a generic DevOps essay.
+Always return a **short game pipeline brief**.
 
 Required qualities:
-- prioritize the single biggest structural blocker first
-- distinguish recurring pipeline issues from one-off log triage
-- stay around 350-550 words unless the user asks for more
-- recommend one next artifact or policy, not ten simultaneous rebuilds
-- keep suggestions safe and incremental before proposing a full pipeline rewrite
+- choose one primary packet type
+- separate structural pipeline work from one-off log triage
+- recommend one next artifact, not a full platform rewrite
+- stay around 300-550 words unless the user asks for more
+- keep release/demo context visible when it changes the priority
 
 ## Examples
 
-### Example 1: Unity GitHub Actions drift
+### Example 1: Unity cache superstition
 **Input**
-> Our Unity build keeps passing locally but failing in GitHub Actions after package updates. We also keep deleting caches to get green builds.
+> Our Unity GitHub Actions build passes locally but fails after package updates. We keep deleting caches and rerunning until it works.
 
-**Output sketch**
-- Scope: `pipeline-hardening`
-- Primary blocker: `dependency-cache-policy`
-- Secondary blocker: `reproducibility-drift`
-- Recommended pipeline shape:
-  1. isolate restore/build/test/package stages
-  2. key caches on engine version + package lock inputs
-  3. promote package/config drift to a preflight check
-- Recommended next artifact: cache-key policy
+**Good output direction**
+- packet type: `cache-policy`
+- primary blocker: `dependency-cache-policy`
+- secondary blocker: `reproducibility-drift`
+- next artifact: `cache-key policy`
+- route-out remains optional unless one specific log becomes the real question
 
-### Example 2: Unreal packaging CI
+### Example 2: Unreal giant job blob
 **Input**
-> We have an Unreal GitHub Action, but packaging takes forever and when it fails we only get one giant log blob.
+> We have an Unreal pipeline but packaging takes forever and failures show up as one giant log blob.
 
-**Output sketch**
-- Scope: `speed-and-cache-review`
-- Primary blocker: `stage-boundary-blur`
-- Secondary blocker: `feedback-speed-confidence`
-- Priority view: split UBT/UHT, cook/package, and artifact publication so the first failing stage is obvious
-- Recommended next artifact: workflow rewrite brief
+**Good output direction**
+- packet type: `stage-split`
+- primary blocker: `stage-boundary-blur`
+- secondary blocker: `feedback-speed-confidence`
+- next artifact: `workflow stage split brief`
 
-### Example 3: Manual release process
+### Example 3: One failing packaging log
 **Input**
-> We're still making Windows and Steam demo builds by hand. Give me a sane CI/CD plan for our small studio.
+> Our Unreal Android packaging job failed last night. Here's the AutomationTool output.
 
-**Output sketch**
-- Scope: `pipeline-setup`
-- Primary blocker: `reproducibility-drift`
-- Recommended pipeline shape covers restore, build, smoke, package, and artifact publishing
-- Recommended next artifact: build matrix plan or release artifact checklist
+**Good output direction**
+- packet type: `route-to-log-triage`
+- primary blocker: `single-log-not-pipeline`
+- route to `game-build-log-triage`
+- pass along the failing stage, engine version, target platform, and exact log excerpt
+
+### Example 4: Manual demo build process
+**Input**
+> We're still building Windows demo and review builds by hand for our small studio. Give me a sane CI/CD path without overengineering it.
+
+**Good output direction**
+- packet type: `pipeline-setup`
+- primary blocker: `reproducibility-drift`
+- next artifact: `pipeline setup plan`
+- keep artifact naming and review-build retention explicit
 
 ## Best practices
-1. **Separate diagnosis from prevention** — use log triage for one failure, pipeline design to stop repeated failures.
-2. **Expose stage boundaries** — game pipelines become unreadable when compile, cook, sign, and publish are fused.
-3. **Treat caches as policy, not magic** — unclear cache rules create superstition and brittle cleanup habits.
-4. **Name artifacts like releases matter** — branch, platform, and configuration should be obvious from the output.
-5. **Promote platform prerequisites to preflight checks** — do not discover SDK/signing drift at the very end.
-6. **Prefer one next artifact** over a full infrastructure sermon.
-7. **Use engine-native language** — `Editor.log`, Build Automation, UBT/UHT, AutomationTool, cook/package, Derived Data Cache.
+1. **Act like a release engineer, not a generic infra lecturer** — choose the next packet that reduces repeat pain.
+2. **Preserve the log/pipeline boundary** — one red build often needs `game-build-log-triage` before a structural rewrite.
+3. **Treat caches as policy** — define what is keyed, shared, invalidated, and intentionally regenerated.
+4. **Expose stage boundaries** — compile, test, cook/package, and publish should not collapse into one unreadable blob.
+5. **Keep release context visible** — prototype, demo, certification, and launch demand different tradeoffs.
+6. **Prefer one next artifact** over a sprawling CI/CD manifesto.
 
 ## References
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/pipeline-patterns.md](references/pipeline-patterns.md)
 - [Unity Docs — Troubleshoot common issues • Build Automation • Unity Docs](https://docs.unity.com/en-us/build-automation/check-build-results/troubleshoot-build-failures/overview)
-- [Unity Manual — Log files](https://docs.unity3d.com/2022.3/Documentation/Manual/LogFiles.html)
-- [Epic Docs — Logging in Unreal Engine](https://dev.epicgames.com/documentation/en-us/unreal-engine/logging-in-unreal-engine)
+- [Unity Scriptable Build Pipeline — Cache Server Client](https://docs.unity3d.com/Packages/com.unity.scriptablebuildpipeline@2.0/manual/CacheServerClient.html)
 - [Epic Docs — Packaging Your Project](https://dev.epicgames.com/documentation/en-us/unreal-engine/packaging-your-project)
-- [Semaphore — How to Manage CI/CD for Game Development (Unity, Unreal, Large Binaries)](https://semaphore.io/how-to-manage-ci-cd-for-game-development-unity,-unreal,-large-binaries)
+- [Epic Docs — Logging in Unreal Engine](https://dev.epicgames.com/documentation/en-us/unreal-engine/logging-in-unreal-engine)

@@ -1,7 +1,7 @@
 # GRAPH_REPORT
 ## Scope
 - Path analyzed: `.agent-skills/` plus repository discovery docs
-- Method: custom graphify-style structural graph over skill metadata, support-file presence, compact-variant coverage, discovery indexing, and skill-to-skill mentions
+- Method: custom graphify-style structural graph over skill metadata, support-file presence, compact-variant coverage, discovery indexing, and support-file links
 - Total skills: 89
 - Manifest skills in `.agent-skills/skills.json`: 89
 - Skills with references/: 89
@@ -10,14 +10,13 @@
 - Skills with compact variants (`SKILL.toon` or `SKILL.compact.md`): 89
 - Skills missing compact variants: 0
 - Graph nodes: 386
-- Graph edges: 1057
-- Category counts: agent-development=2, backend=5, code-quality=5, core-orchestration=10, creative-media=2, documentation=5, frontend=10, infrastructure=13, marketing=2, planning-review=5, project-management=4, search-analysis=7, uncategorized=7, utilities=12
+- Graph edges: 1067
 
 ## Strongest structural findings
 1. Discovery docs remain the highest-degree maintenance nodes because README / setup / manifest surfaces still index nearly the whole live catalog.
-2. Support coverage remains complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
-3. `pattern-detection` now follows the routing-first packet pattern and no longer relies on stale generic compact descriptions.
-4. The next best maintenance wins still look like high-degree or oversized routers with stable contracts that can be tightened further without changing the catalog shape.
+2. Support coverage remains effectively complete across the live skill set, so dense-anchor cleanup still matters more than adding another wrapper skill.
+3. `game-ci-cd-pipeline` now follows the routing-first game-cluster pattern: choose one packet type, keep one-off red-build diagnosis out of scope, and push packet detail into dedicated support docs.
+4. The next best maintenance wins still look like high-degree or oversized routers whose contracts are stable enough to tighten without adding overlapping skills.
 
 ## Highest-degree nodes
 - .agent-skills/skills.json: degree 89
@@ -39,11 +38,11 @@
 - npm-git-install: 271 lines in SKILL.md
 
 ## Duplicate / consolidation notes
-- No new anomaly or detection wrapper is justified: the bounded win was tightening `pattern-detection` in place and syncing compact/discovery surfaces.
-- `pattern-detection` should stay distinct from `log-analysis`, `data-analysis`, `codebase-search`, `security-best-practices`, and `monitoring-observability` by owning first-pass packet selection only.
-- Duplicate pressure still rises more from oversized front doors than from missing support coverage; keep shrinking stable routers rather than adding adjacent wrappers.
+- The game-development lane still benefits more from sharper boundaries than from adding new wrappers.
+- `game-ci-cd-pipeline` should stay distinct from `game-build-log-triage` by owning repeated structural pipeline decisions rather than one failing-log diagnosis.
+- Duplicate pressure still rises more from oversized front doors than from missing support coverage; keep shrinking stable routers rather than expanding the catalog.
 
 ## Recommended maintenance direction
 - Keep targeting high-degree or oversized front-door skills whose contracts are stable enough to validate mechanically.
-- Prefer support-packet improvements and synced discovery surfaces over creating another neighboring wrapper.
-- Re-run catalog/runtime sync validation whenever README/setup, compact wording, or validator/support scripts change materially.
+- Prefer support-packet improvements and synced discovery surfaces over creating adjacent wrappers.
+- Re-run catalog/runtime sync validation whenever README/setup or discovery wording changes materially.

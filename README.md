@@ -375,7 +375,7 @@ bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `game-build-log-triage` | Unity/Unreal build, cook, package, editor, signing, and CI log triage — isolate the first actionable engine/build failure | All |
-| `game-ci-cd-pipeline` | Game CI/CD design and hardening — build matrices, artifact flow, cache policy, packaging stages, and release gates | All |
+| `game-ci-cd-pipeline` | Game pipeline packet router — setup plans, stage splits, cache policy, preflight checks, artifact/release hygiene, and CI-signal hardening | All |
 | `game-demo-feedback-triage` | Turn playtest/demo/community feedback into weighted themes, fix-first priorities, and explicit handoffs | All |
 | `game-performance-profiler` | Unity/Unreal frame-time triage — bottleneck-first profiling brief, quick packets, benchmark routes, target-device review, and deliberate profiler escalation | All |
 | `steam-store-launch-ops` | Diagnose Steam launch/store bottlenecks — visibility, page promise, demo proof, event timing, and launch-readiness ops | All |
