@@ -193,7 +193,7 @@
       "id": "bmad",
       "kind": "skill",
       "label": "bmad",
-      "category": "unknown",
+      "category": null,
       "lines": 229
     },
     {
@@ -286,7 +286,7 @@
       "id": "clawteam",
       "kind": "skill",
       "label": "clawteam",
-      "category": "unknown",
+      "category": null,
       "lines": 300
     },
     {
@@ -626,7 +626,7 @@
       "id": "game-build-log-triage",
       "kind": "skill",
       "label": "game-build-log-triage",
-      "category": "unknown",
+      "category": null,
       "lines": 230
     },
     {
@@ -648,7 +648,7 @@
       "id": "game-ci-cd-pipeline",
       "kind": "skill",
       "label": "game-ci-cd-pipeline",
-      "category": "unknown",
+      "category": null,
       "lines": 258
     },
     {
@@ -670,7 +670,7 @@
       "id": "game-demo-feedback-triage",
       "kind": "skill",
       "label": "game-demo-feedback-triage",
-      "category": "unknown",
+      "category": null,
       "lines": 220
     },
     {
@@ -692,7 +692,7 @@
       "id": "game-performance-profiler",
       "kind": "skill",
       "label": "game-performance-profiler",
-      "category": "unknown",
+      "category": null,
       "lines": 231
     },
     {
@@ -888,7 +888,7 @@
       "id": "graphify",
       "kind": "skill",
       "label": "graphify",
-      "category": "unknown",
+      "category": null,
       "lines": 228
     },
     {
@@ -1227,7 +1227,7 @@
       "kind": "skill",
       "label": "opencontext",
       "category": "utilities",
-      "lines": 270
+      "lines": 295
     },
     {
       "id": "opencontext/references",
@@ -1740,7 +1740,7 @@
       "id": "steam-store-launch-ops",
       "kind": "skill",
       "label": "steam-store-launch-ops",
-      "category": "unknown",
+      "category": null,
       "lines": 272
     },
     {
@@ -2175,17 +2175,22 @@
     {
       "source": "agent-browser",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "agent-browser",
+      "target": "debugging",
+      "kind": "mentions-skill"
     },
     {
       "source": "agent-browser",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "agent-browser",
       "target": "playwriter",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2235,17 +2240,22 @@
     {
       "source": "agentation",
       "target": "agent-browser",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "agentation",
+      "target": "design-system",
+      "kind": "mentions-skill"
     },
     {
       "source": "agentation",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "agentation",
       "target": "playwriter",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2290,22 +2300,27 @@
     {
       "source": "api-design",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-design",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-design",
       "target": "backend-testing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-design",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "api-design",
+      "target": "harness",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2350,27 +2365,27 @@
     {
       "source": "api-documentation",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-documentation",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-documentation",
       "target": "changelog-maintenance",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-documentation",
       "target": "technical-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "api-documentation",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2415,27 +2430,27 @@
     {
       "source": "authentication-setup",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "authentication-setup",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "authentication-setup",
       "target": "backend-testing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "authentication-setup",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "authentication-setup",
       "target": "security-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2484,8 +2499,18 @@
     },
     {
       "source": "autoresearch",
+      "target": "harness",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "autoresearch",
       "target": "skill-autoresearch",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "autoresearch",
+      "target": "survey",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2530,27 +2555,27 @@
     {
       "source": "backend-testing",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "backend-testing",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "backend-testing",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "backend-testing",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "backend-testing",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2600,37 +2625,47 @@
     {
       "source": "bmad",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "bmad-idea",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "bmad",
+      "target": "harness",
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "ohmg",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "omc",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "omx",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "bmad",
+      "target": "ralph",
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2674,33 +2709,43 @@
     },
     {
       "source": "bmad-gds",
+      "target": "bmad",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "bmad-gds",
       "target": "bmad-idea",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "bmad-gds",
+      "target": "debugging",
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "game-build-log-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "game-demo-feedback-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "game-performance-profiler",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "steam-store-launch-ops",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-gds",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2745,22 +2790,22 @@
     {
       "source": "bmad-idea",
       "target": "bmad",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-idea",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-idea",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "bmad-idea",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2805,27 +2850,27 @@
     {
       "source": "changelog-maintenance",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "changelog-maintenance",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "changelog-maintenance",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "changelog-maintenance",
       "target": "technical-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "changelog-maintenance",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2869,48 +2914,53 @@
     },
     {
       "source": "clawteam",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "clawteam",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "clawteam",
       "target": "ohmg",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "clawteam",
       "target": "omc",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "clawteam",
       "target": "omx",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "clawteam",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "clawteam",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "clawteam",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "clawteam",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "clawteam",
       "target": "vibe-kanban",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -2955,27 +3005,27 @@
     {
       "source": "code-refactoring",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-refactoring",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-refactoring",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-refactoring",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-refactoring",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3020,32 +3070,37 @@
     {
       "source": "code-review",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "code-review",
+      "target": "game-performance-profiler",
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "git-workflow",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "code-review",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3090,27 +3145,27 @@
     {
       "source": "codebase-search",
       "target": "code-refactoring",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "codebase-search",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "codebase-search",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "codebase-search",
       "target": "graphify",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "codebase-search",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3155,22 +3210,22 @@
     {
       "source": "data-analysis",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "data-analysis",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "data-analysis",
       "target": "looker-studio-bigquery",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "data-analysis",
       "target": "pattern-detection",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3215,37 +3270,37 @@
     {
       "source": "database-schema-design",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "backend-testing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "looker-studio-bigquery",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "database-schema-design",
       "target": "security-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3289,28 +3344,43 @@
     },
     {
       "source": "debugging",
+      "target": "code-refactoring",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "debugging",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "debugging",
+      "target": "game-performance-profiler",
+      "kind": "mentions-skill"
     },
     {
       "source": "debugging",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "debugging",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "debugging",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "debugging",
+      "target": "system-environment-setup",
+      "kind": "mentions-skill"
     },
     {
       "source": "debugging",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3355,22 +3425,22 @@
     {
       "source": "deployment-automation",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "deployment-automation",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "deployment-automation",
       "target": "vercel-deploy",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "deployment-automation",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3415,27 +3485,27 @@
     {
       "source": "design-system",
       "target": "frontend-design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "design-system",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "design-system",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "design-system",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "design-system",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3480,17 +3550,17 @@
     {
       "source": "environment-setup",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "environment-setup",
       "target": "security-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "environment-setup",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3531,6 +3601,26 @@
       "source": "fabric",
       "target": "fabric/compact",
       "kind": "has-support"
+    },
+    {
+      "source": "fabric",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "fabric",
+      "target": "log-analysis",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "fabric",
+      "target": "survey",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "fabric",
+      "target": "workflow-automation",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3575,32 +3665,32 @@
     {
       "source": "file-organization",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "state-management",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "file-organization",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3645,12 +3735,12 @@
     {
       "source": "firebase-ai-logic",
       "target": "firebase-cli",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "firebase-ai-logic",
       "target": "genkit",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3700,27 +3790,37 @@
     {
       "source": "firebase-cli",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "firebase-cli",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "firebase-cli",
+      "target": "debugging",
+      "kind": "mentions-skill"
     },
     {
       "source": "firebase-cli",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "firebase-cli",
       "target": "firebase-ai-logic",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "firebase-cli",
       "target": "genkit",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "firebase-cli",
+      "target": "harness",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3765,7 +3865,22 @@
     {
       "source": "frontend-design-system",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "responsive-design",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "ui-component-patterns",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "frontend-design-system",
+      "target": "web-accessibility",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3804,8 +3919,13 @@
     },
     {
       "source": "game-build-log-triage",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "game-build-log-triage",
       "target": "game-ci-cd-pipeline",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3845,22 +3965,22 @@
     {
       "source": "game-ci-cd-pipeline",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-ci-cd-pipeline",
       "target": "game-build-log-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-ci-cd-pipeline",
       "target": "game-performance-profiler",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-ci-cd-pipeline",
       "target": "steam-store-launch-ops",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3900,27 +4020,32 @@
     {
       "source": "game-demo-feedback-triage",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "game-build-log-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "game-performance-profiler",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "steam-store-launch-ops",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "game-demo-feedback-triage",
+      "target": "survey",
+      "kind": "mentions-skill"
     },
     {
       "source": "game-demo-feedback-triage",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -3965,22 +4090,22 @@
     {
       "source": "game-performance-profiler",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-performance-profiler",
       "target": "game-build-log-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-performance-profiler",
       "target": "game-demo-feedback-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "game-performance-profiler",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4025,17 +4150,22 @@
     {
       "source": "genkit",
       "target": "firebase-ai-logic",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "genkit",
       "target": "firebase-cli",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "genkit",
+      "target": "monitoring-observability",
+      "kind": "mentions-skill"
     },
     {
       "source": "genkit",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4080,22 +4210,22 @@
     {
       "source": "git-submodule",
       "target": "git-workflow",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-submodule",
       "target": "npm-git-install",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-submodule",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-submodule",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4140,17 +4270,17 @@
     {
       "source": "git-workflow",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-workflow",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "git-workflow",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4198,6 +4328,11 @@
       "kind": "has-support"
     },
     {
+      "source": "google-workspace",
+      "target": "survey",
+      "kind": "mentions-skill"
+    },
+    {
       "source": "README.md",
       "target": "harness",
       "kind": "indexes"
@@ -4241,6 +4376,16 @@
       "source": "harness",
       "target": "harness/compact",
       "kind": "has-support"
+    },
+    {
+      "source": "harness",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "harness",
+      "target": "strix",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4290,47 +4435,47 @@
     {
       "source": "jeo",
       "target": "agent-browser",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "bmad",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "ohmg",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "omc",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "omx",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "jeo",
       "target": "ralphmode",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4380,27 +4525,27 @@
     {
       "source": "langsmith",
       "target": "data-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "langsmith",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "langsmith",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "langsmith",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "langsmith",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4445,22 +4590,22 @@
     {
       "source": "graphify",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "graphify",
       "target": "llm-wiki",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "graphify",
       "target": "opencontext",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "graphify",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4508,6 +4653,11 @@
       "kind": "has-support"
     },
     {
+      "source": "llm-wiki",
+      "target": "scrapling",
+      "kind": "mentions-skill"
+    },
+    {
       "source": ".agent-skills/skills.json",
       "target": "lmstudio-cli",
       "kind": "indexes"
@@ -4534,8 +4684,18 @@
     },
     {
       "source": "lmstudio-cli",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "lmstudio-cli",
       "target": "strix",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "lmstudio-cli",
+      "target": "survey",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4580,22 +4740,22 @@
     {
       "source": "log-analysis",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "log-analysis",
       "target": "game-build-log-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "log-analysis",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "log-analysis",
       "target": "pattern-detection",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4640,22 +4800,22 @@
     {
       "source": "looker-studio-bigquery",
       "target": "data-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "looker-studio-bigquery",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "looker-studio-bigquery",
       "target": "pattern-detection",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "looker-studio-bigquery",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4699,13 +4859,18 @@
     },
     {
       "source": "marketing-automation",
+      "target": "marketing-skills-collection",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "marketing-automation",
       "target": "steam-store-launch-ops",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "marketing-automation",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4750,12 +4915,12 @@
     {
       "source": "marketing-skills-collection",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "marketing-skills-collection",
       "target": "steam-store-launch-ops",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4800,42 +4965,52 @@
     {
       "source": "monitoring-observability",
       "target": "data-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "game-performance-profiler",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "langsmith",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "looker-studio-bigquery",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "monitoring-observability",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "monitoring-observability",
+      "target": "steam-store-launch-ops",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "monitoring-observability",
+      "target": "system-environment-setup",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4880,17 +5055,17 @@
     {
       "source": "npm-git-install",
       "target": "git-workflow",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "npm-git-install",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "npm-git-install",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -4936,6 +5111,11 @@
       "source": "obsidian-cli",
       "target": "obsidian-cli/compact",
       "kind": "has-support"
+    },
+    {
+      "source": "obsidian-cli",
+      "target": "debugging",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5024,13 +5204,28 @@
     },
     {
       "source": "ohmg",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "ohmg",
+      "target": "harness",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "ohmg",
       "target": "omc",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ohmg",
       "target": "omx",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "ohmg",
+      "target": "ralph",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5079,8 +5274,13 @@
     },
     {
       "source": "omc",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "omc",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5130,12 +5330,17 @@
     {
       "source": "omx",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "omx",
+      "target": "debugging",
+      "kind": "mentions-skill"
     },
     {
       "source": "omx",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5180,22 +5385,22 @@
     {
       "source": "opencontext",
       "target": "file-organization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "opencontext",
       "target": "graphify",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "opencontext",
       "target": "llm-wiki",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "opencontext",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5240,32 +5445,32 @@
     {
       "source": "pattern-detection",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "pattern-detection",
       "target": "codebase-search",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "pattern-detection",
       "target": "data-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "pattern-detection",
       "target": "log-analysis",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "pattern-detection",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "pattern-detection",
       "target": "security-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5310,47 +5515,52 @@
     {
       "source": "performance-optimization",
       "target": "code-refactoring",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "game-performance-profiler",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "state-management",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "performance-optimization",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "performance-optimization",
+      "target": "workflow-automation",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5400,42 +5610,57 @@
     {
       "source": "plannotator",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "bmad",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "plannotator",
+      "target": "debugging",
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "llm-wiki",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "plannotator",
+      "target": "survey",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "plannotator",
+      "target": "system-environment-setup",
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "plannotator",
       "target": "vibe-kanban",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5480,7 +5705,7 @@
     {
       "source": "playwriter",
       "target": "agent-browser",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5525,22 +5750,22 @@
     {
       "source": "presentation-builder",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "presentation-builder",
       "target": "research-paper-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "presentation-builder",
       "target": "technical-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "presentation-builder",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5629,33 +5854,43 @@
     },
     {
       "source": "ralph",
+      "target": "harness",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "ralph",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "ohmg",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "omc",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "omx",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "ralph",
+      "target": "plannotator",
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "ralphmode",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralph",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5700,12 +5935,12 @@
     {
       "source": "ralphmode",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ralphmode",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5750,27 +5985,27 @@
     {
       "source": "react-best-practices",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-best-practices",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-best-practices",
       "target": "state-management",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-best-practices",
       "target": "vercel-react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-best-practices",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5820,32 +6055,37 @@
     {
       "source": "react-grab",
       "target": "agent-browser",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-grab",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "react-grab",
+      "target": "debugging",
+      "kind": "mentions-skill"
     },
     {
       "source": "react-grab",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-grab",
       "target": "playwriter",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-grab",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "react-grab",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5890,7 +6130,7 @@
     {
       "source": "remotion-video-production",
       "target": "video-production",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -5935,27 +6175,27 @@
     {
       "source": "research-paper-writing",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "research-paper-writing",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "research-paper-writing",
       "target": "presentation-builder",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "research-paper-writing",
       "target": "technical-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "research-paper-writing",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6000,27 +6240,27 @@
     {
       "source": "responsive-design",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "responsive-design",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "responsive-design",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "responsive-design",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "responsive-design",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6150,42 +6390,52 @@
     {
       "source": "security-best-practices",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "authentication-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "backend-testing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "database-schema-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "security-best-practices",
+      "target": "deployment-automation",
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "security-best-practices",
+      "target": "monitoring-observability",
+      "kind": "mentions-skill"
     },
     {
       "source": "security-best-practices",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6226,6 +6476,21 @@
       "source": "skill-autoresearch",
       "target": "skill-autoresearch/compact",
       "kind": "has-support"
+    },
+    {
+      "source": "skill-autoresearch",
+      "target": "autoresearch",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "skill-autoresearch",
+      "target": "harness",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "skill-autoresearch",
+      "target": "langsmith",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6314,18 +6579,23 @@
     },
     {
       "source": "sprint-retrospective",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "sprint-retrospective",
       "target": "standup-meeting",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "sprint-retrospective",
       "target": "task-estimation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "sprint-retrospective",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6369,18 +6639,23 @@
     },
     {
       "source": "standup-meeting",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "standup-meeting",
       "target": "sprint-retrospective",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "standup-meeting",
       "target": "task-estimation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "standup-meeting",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6425,32 +6700,32 @@
     {
       "source": "state-management",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "state-management",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6490,12 +6765,12 @@
     {
       "source": "steam-store-launch-ops",
       "target": "game-demo-feedback-triage",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "steam-store-launch-ops",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6589,13 +6864,33 @@
     },
     {
       "source": "survey",
+      "target": "harness",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "survey",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "survey",
+      "target": "ohmg",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "survey",
+      "target": "omc",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "survey",
+      "target": "omx",
+      "kind": "mentions-skill"
     },
     {
       "source": "survey",
       "target": "ralph",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6640,27 +6935,27 @@
     {
       "source": "system-environment-setup",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "system-environment-setup",
       "target": "environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "system-environment-setup",
       "target": "security-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "system-environment-setup",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "system-environment-setup",
       "target": "vercel-deploy",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6705,17 +7000,17 @@
     {
       "source": "task-estimation",
       "target": "sprint-retrospective",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-estimation",
       "target": "standup-meeting",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-estimation",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6760,47 +7055,47 @@
     {
       "source": "task-planning",
       "target": "bmad",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "bmad-idea",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "sprint-retrospective",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "standup-meeting",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "task-estimation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "task-planning",
       "target": "vibe-kanban",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6845,37 +7140,37 @@
     {
       "source": "technical-writing",
       "target": "api-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "changelog-maintenance",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "presentation-builder",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "technical-writing",
       "target": "user-guide-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6920,37 +7215,47 @@
     {
       "source": "testing-strategies",
       "target": "backend-testing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "testing-strategies",
+      "target": "deployment-automation",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "testing-strategies",
+      "target": "design-system",
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "game-performance-profiler",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "testing-strategies",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -6994,28 +7299,33 @@
     },
     {
       "source": "ui-component-patterns",
+      "target": "code-review",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "ui-component-patterns",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ui-component-patterns",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ui-component-patterns",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ui-component-patterns",
       "target": "state-management",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "ui-component-patterns",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -7060,27 +7370,27 @@
     {
       "source": "user-guide-writing",
       "target": "api-documentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "user-guide-writing",
       "target": "changelog-maintenance",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "user-guide-writing",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "user-guide-writing",
       "target": "presentation-builder",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "user-guide-writing",
       "target": "technical-writing",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -7130,27 +7440,27 @@
     {
       "source": "vercel-deploy",
       "target": "debugging",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-deploy",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-deploy",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-deploy",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vercel-deploy",
       "target": "workflow-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -7194,8 +7504,28 @@
     },
     {
       "source": "vercel-react-best-practices",
+      "target": "performance-optimization",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "vercel-react-best-practices",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "responsive-design",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "state-management",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "vercel-react-best-practices",
+      "target": "web-accessibility",
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -7245,62 +7575,62 @@
     {
       "source": "vibe-kanban",
       "target": "agent-browser",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "agentation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "bmad-gds",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "code-review",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "jeo",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "marketing-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "plannotator",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "playwriter",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "sprint-retrospective",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "standup-meeting",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "survey",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "vibe-kanban",
       "target": "task-planning",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -7345,7 +7675,7 @@
     {
       "source": "video-production",
       "target": "remotion-video-production",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -7390,27 +7720,27 @@
     {
       "source": "web-accessibility",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-accessibility",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-accessibility",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-accessibility",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-accessibility",
       "target": "web-design-guidelines",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -7454,33 +7784,38 @@
     },
     {
       "source": "web-design-guidelines",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "web-design-guidelines",
       "target": "design-system",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "performance-optimization",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "react-best-practices",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "responsive-design",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "ui-component-patterns",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "web-design-guidelines",
       "target": "web-accessibility",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "README.md",
@@ -7524,33 +7859,38 @@
     },
     {
       "source": "workflow-automation",
+      "target": "debugging",
+      "kind": "mentions-skill"
+    },
+    {
+      "source": "workflow-automation",
       "target": "deployment-automation",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "git-workflow",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "monitoring-observability",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "system-environment-setup",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "testing-strategies",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     },
     {
       "source": "workflow-automation",
       "target": "vercel-deploy",
-      "kind": "mentions"
+      "kind": "mentions-skill"
     }
   ]
 }

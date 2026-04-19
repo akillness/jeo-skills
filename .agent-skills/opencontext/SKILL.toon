@@ -1,9 +1,9 @@
 N:opencontext
-D:Project/repo memory and cross-agent handoff using OpenContext. Use when an agent needs durable context across sessions, searchable decisions/lessons, manifests or stable links for what to read next, or a load→search→store workflow for active delivery work. Route long-lived narrative knowledge bases to llm-wiki, structural repo mapping to graphify, and human-authored vault organization to note/vault skills.
-G:opencontext context-management memory project-memory multi-agent handoff stable-links manifests
+D:Route active project/repo memory requests into one honest packet: memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out. Use when agents need searchable decisions, manifests, stable links, handoff notes, and small read-this-first packets across sessions. Route long-lived markdown knowledge bases to llm-wiki, structural graph memory to graphify, human-authored vault organization to note/vault skills, and one-shot repo packing to Repomix/Gitingest/Code2Prompt-style workflows.
+G:opencontext|context-management|memory|project-memory|multi-agent|handoff|stable-links|manifests
 U[5]:
-  When repo or project context must survive across sessions
-  When decisions, pitfalls, or acceptance notes should be searchable later
-  When another agent needs a compact handoff packet or reading manifest
-  When OpenContext setup, MCP integration, or stable links are the actual task
-  When the user is deciding between OpenContext, a wiki, a graph layer, or a note vault
+  When the next agent should not start cold and needs a compact project-memory packet first
+  When decisions, pitfalls, or acceptance notes should be searchable across sessions
+  When a team needs manifests or stable links that say what to read now
+  When OpenContext setup, repo initialization, or search-depth choices are the real task
+  When the request might actually belong to llm-wiki, graphify, vault tools, or repo packers instead

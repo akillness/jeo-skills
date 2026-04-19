@@ -1032,3 +1032,11 @@
 - Accepted: shrink `obsidian-cli` into a routing-first desktop-automation front door, add `references/intake-packets-and-route-outs.md`, refresh install guidance against current official docs (`1.12.7+`, macOS `/usr/local/bin/obsidian`, Linux `~/.local/bin/obsidian`), add eval coverage for plugin/API route-outs, sync `SKILL.toon` / `skills.json` / `skills.toon`, and update README / README.ko / setup discovery wording.
 - Rejected: adding a generic note-automation wrapper; pretending first-party CLI covers headless Sync/Publish or richer external CRUD/frontmatter/workspace automation; keeping stale packaging-specific troubleshooting guesses.
 - Wiki files created/updated: `queries/obsidian-cli-structural-hardening-2026-04-19.md`, `concepts/persistent-memory-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-19] query | opencontext structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack delivery, PM/ops coordination, marketing/content automation, and game-production knowledge flows, with the best bounded follow-up landing on the existing `opencontext` skill rather than another memory wrapper.
+- Survey files created under `.survey/opencontext-structural-hardening-20260419/`; OpenContext primary docs, Claude/GitHub instruction-memory docs, ADR/runbook/style-guide/GDD references, HN workflow evidence, repo-packer tools, and repo-local wiki/graph context were used. Normal `web_search` / `web_extract` reliability remained weak, so primary-source retrieval and indexed/public APIs were used.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `opencontext` into a packet-first project-memory router, add `references/intake-packets-and-route-outs.md`, expand evals with a repo-packer route-out case, sync `SKILL.toon` / `skills.json` / `skills.toon`, fix stale `utilities/opencontext` source paths, and update README / README.ko / setup discovery wording.
+- Rejected: adding another persistent-memory wrapper; pretending repo packers are the same workflow as durable project memory; re-expanding `opencontext` into a giant command catalog that absorbs wiki, graph, or vault jobs.
+- Wiki files created/updated: `queries/opencontext-structural-hardening-2026-04-19.md`, `concepts/persistent-memory-cluster.md`, `index.md`, `log.md`

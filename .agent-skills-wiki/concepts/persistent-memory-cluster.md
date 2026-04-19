@@ -4,7 +4,7 @@ created: 2026-04-15
 updated: 2026-04-19
 type: concept
 tags: [skills, consolidation, trigger-design, skill-quality, graphify]
-sources: [.survey/opencontext-modernization-20260415/context.md, .survey/opencontext-modernization-20260415/solutions.md, .survey/opencontext-modernization-20260415/platform-map.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/opencontext-modernization-20260415/context.md, .survey/opencontext-modernization-20260415/solutions.md, .survey/opencontext-modernization-20260415/platform-map.md, .survey/opencontext-structural-hardening-20260419/context.md, .survey/opencontext-structural-hardening-20260419/solutions.md, .survey/opencontext-structural-hardening-20260419/platform-map.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Persistent Memory Cluster
@@ -35,8 +35,11 @@ The graph refresh after the `opencontext` modernization showed another repeatabl
 
 2026-04-19 ratchet: `graphify` was still hiding under a nested `utilities/graphify` folder even though the memory cluster already treated it as the structural layer. Promoting it into the live top-level catalog mattered more than inventing another graph wrapper, because runtime discoverability is part of the memory contract.
 
+2026-04-19 ratchet: after `graphify` and `obsidian-cli` clarified the neighboring layers, the remaining high-value `opencontext` improvement was not another memory abstraction. It was a packet-first front door that chooses between memory-layer choice, load-context, search-context, store-conclusions, setup, and repo-packer route-out while keeping manifests/stable links as the distinctive contract.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[opencontext-modernization-2026-04-15]]
+- [[opencontext-structural-hardening-2026-04-19]]
 - [[developer-workflow-cluster]]
 - [[search-analysis-cluster]]
