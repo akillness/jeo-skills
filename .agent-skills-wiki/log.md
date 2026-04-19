@@ -975,3 +975,11 @@
 - Accepted: shrink `testing-strategies` into a packet-first validation-policy router, add `references/intake-packets-and-route-outs.md`, expand evals for release-readiness and accessibility-boundary cases, and sync compact/discovery surfaces
 - Rejected: adding another QA/release wrapper; turning the skill into test-implementation guidance; treating release checklist and flaky-suite policy as unstructured side notes
 - Wiki files created/updated: `queries/testing-strategies-structural-hardening-2026-04-19.md`, `concepts/code-quality-cluster.md`, `concepts/skill-support-coverage.md`, `index.md`
+
+## [2026-04-19] query | npm-git-install structural hardening
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack delivery, product/ops automation repos, marketing/content pipelines, and game-tooling package reuse, with the best bounded follow-up landing on the existing `npm-git-install` skill rather than another package-management wrapper.
+- Survey files created under `.survey/npm-git-install-structural-hardening-20260419/`; repo-local wiki/graph evidence, DuckDuckGo HTML indexed snippets for CI/auth workflow pain, and direct primary-source retrieval from npm, pnpm, Yarn, Bun, npm pack, and GitHub Packages docs were used for this run.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: shrink `npm-git-install` into a routing-first packet selector, add `references/intake-packets-and-route-outs.md`, expand eval coverage with a shared internal tooling case, sync `SKILL.toon` / `skills.toon` / `skills.json`, update README / README.ko / setup discovery wording, and ratchet the developer-workflow boundary into the wiki.
+- Rejected: adding another package-install wrapper; keeping the more verbose front door just because support coverage already existed; broadening the skill into Git repair, package-host admin, or machine setup.
+- Wiki files created/updated: `queries/npm-git-install-structural-hardening-2026-04-19.md`, `concepts/developer-workflow-cluster.md`, `index.md`, `log.md`

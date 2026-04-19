@@ -33,6 +33,17 @@
         "Output chooses one primary mode",
         "Output warns that Git install is not always the best durable answer"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our marketing automation repo and game build tools both depend on the same internal Node package, and we still install it from main. Should we keep doing that or finally package it properly?",
+      "expected_output": "Treats the package as durable shared infrastructure, rejects floating-branch installs as the long-term answer, and recommends publish-first or artifact-based distribution with a clear handoff.",
+      "assertions": [
+        "Output identifies the dependency as durable shared usage rather than a temporary bridge",
+        "Output warns against continuing to install from a floating branch",
+        "Output recommends publish-first or tarball/artifact distribution as the primary path",
+        "Output routes package-host or release administration to github-repo-management when needed"
+      ]
     }
   ]
 }

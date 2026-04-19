@@ -50,6 +50,8 @@ The `git-submodule` structural-hardening pass applied the same dense-anchor rule
 
 The `workflow-automation` structural-hardening pass extended the same pattern to recurring repo glue itself. The lane stays cleaner when `workflow-automation` acts as a routing-first front door for task-entrypoints, bootstrap, local-CI parity, hooks, maintenance bots, and workflow cleanup while leaving machine setup, deploy execution, Git policy, and test-policy questions to neighboring skills.
 
+The 2026-04-19 `npm-git-install` structural-hardening pass applied the same rule to package delivery choice. The lane stays cleaner when `npm-git-install` starts from the delivery packet already in hand—temporary bridge, shared bridge, private-auth, artifact fallback, workspace inner loop, or durable distribution—and routes Git repair, package-host admin, repo glue, and environment setup out immediately instead of keeping a larger syntax-heavy front door.
+
 ## Related pages
 - [[skill-support-coverage]]
 - [[file-organization-modernization-2026-04-15]]
@@ -59,6 +61,7 @@ The `workflow-automation` structural-hardening pass extended the same pattern to
 - [[git-submodule-modernization-2026-04-15]]
 - [[git-submodule-structural-hardening-2026-04-18]]
 - [[npm-git-install-modernization-2026-04-15]]
+- [[npm-git-install-structural-hardening-2026-04-19]]
 - [[fabric-modernization-2026-04-15]]
 - [[lmstudio-cli-modernization-2026-04-15]]
 - [[workflow-automation-modernization-2026-04-13]]
