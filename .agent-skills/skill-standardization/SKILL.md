@@ -105,6 +105,7 @@ When two skills cover the same default job closely enough that their `name + des
 3. convert the overlapping skill into a narrow compatibility alias when old workflows or exact-name installs still depend on it
 4. add evals for both sides
 5. sync discovery surfaces in the same change so users do not see two false peers
+6. if the alias includes support docs or examples that restate the canonical contract, refresh those alias-side docs too so they do not keep advertising the pre-ratchet packet shape
 
 Hard deletion is usually a later step, not the first move.
 
@@ -126,6 +127,7 @@ Treat the catalog validator as a guardrail, not the whole job. It checks members
 ### Step 8: Sync derived discovery surfaces when the rewrite was material
 If `SKILL.md` changed the job-to-be-done, route-outs, or supported use-cases materially, review and refresh as needed:
 - skill-local `SKILL.toon` / `SKILL.compact.md`
+- alias-side support docs or checklists that mirror the canonical contract
 - `.agent-skills/skills.json`
 - `.agent-skills/skills.toon`
 - `README.md`
@@ -195,7 +197,8 @@ allowed-tools: Bash Read Write
 5. **Add evals before publishing** — cover should-trigger, should-not-trigger, and structural-change cases
 6. **Treat compact/discovery files as derived artifacts** — refresh them after material rewrites or document why not
 7. **Canonicalize duplicates instead of multiplying peers** — prefer one default skill plus a compatibility alias
-8. **Run residue scans after structural rewrites** — passing validators can still leave stale filenames, commands, or discovery copy behind
+8. **Sync alias-side support when the canonical contract changes** — if the alias has checklists, references, or examples that restate the old packet shape, update them in the same pass so the alias does not quietly preserve stale guidance
+9. **Run residue scans after structural rewrites** — passing validators can still leave stale filenames, commands, or discovery copy behind
 
 ## References
 

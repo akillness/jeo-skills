@@ -84,6 +84,7 @@ Use when two skills compete for the same default job.
 - narrow the legacy/exact-name skill into a compatibility alias
 - add evals that prove canonical-vs-alias behavior
 - sync discovery surfaces in the same pass
+- if the alias has support docs, examples, or checklists that restate the canonical packet, refresh those alias-side docs too
 
 ## Mode 4 — Structural catalog / discovery sync
 Use after add / rename / remove / alias / major repositioning work.
@@ -107,6 +108,7 @@ python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --r
 ### What you still review manually
 - `SKILL.toon` / `SKILL.compact.md` freshness after material rewrites
 - alias wording and discovery copy quality
+- alias-side support docs/checklists/examples that may still mirror the pre-ratchet canonical packet
 - stale manifest command examples or other support-file residue
 - runtime/query tooling behavior when a change affects discovery semantics
 
@@ -115,6 +117,7 @@ Use when `SKILL.md` changed the trigger surface, route-outs, or supported use-ca
 
 Check these surfaces together:
 - skill-local `SKILL.toon` / `SKILL.compact.md`
+- alias-side support docs/checklists/examples when a compatibility alias mirrors the canonical contract
 - `.agent-skills/skills.json`
 - `.agent-skills/skills.toon`
 - `README.md`
