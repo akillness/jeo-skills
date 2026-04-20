@@ -90,6 +90,16 @@
         "The output frames shell-quote failures as validator bugs or regression cases to repair, not as a reason to rewrite natural language",
         "The output keeps repo-root validator usage in scope when explaining the validation path"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "I tightened the canonical skill and refreshed skills.json plus README/setup, but the compatibility alias still has a checklist and reference packet. What else must I review before calling the standardization pass done?",
+      "expected_output": "A response that treats alias-side support docs/checklists/examples as derived surfaces whenever they mirror the canonical contract, not just top-level discovery files.",
+      "assertions": [
+        "The output explicitly tells the maintainer to review alias-side support docs, checklists, or examples when a compatibility alias mirrors the canonical packet",
+        "The output distinguishes alias-side support sync from only refreshing skills.json, README/setup, or SKILL.toon",
+        "The output frames stale alias support docs as a real residue risk even if catalog validators pass"
+      ]
     }
   ]
 }
