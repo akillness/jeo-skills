@@ -323,7 +323,7 @@
     },
     {
       "name": "bmad",
-      "description": "Route BMAD/BMM phase-based development by choosing project level, identifying the current phase, selecting the next artifact, and handing detailed work to the right downstream skill. Use when the user wants a structured BMAD workflow, asks what phase comes next, or needs a portable BMAD entrypoint across Claude, Codex, Gemini, or OpenCode.",
+      "description": "Route BMAD/BMM work from the packet the user already has now: idea notes, product brief, PRD, architecture draft, review feedback, existing repo state, or milestone pressure. Use when the user wants a structured BMAD workflow, asks what phase or artifact comes next, or needs a portable BMAD entrypoint before routing review, execution slicing, runtime setup, or game-production work outward.",
       "path": "bmad/SKILL.md",
       "tags": [
         "bmad",

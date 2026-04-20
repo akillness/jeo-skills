@@ -371,7 +371,7 @@ If no → skip silently. Never re-ask.
 | `survey` | `survey` | Bounded cross-platform landscape scan before planning or implementation — classify one survey mode, preserve the 4-lane `.survey/{slug}/` artifact contract, and normalize platform topics as `settings/rules/hooks` |
 | `agentation` | `annotate`, `UI검토`, `agentui` | Exact rendered-UI feedback router → choose copy-paste review, watch-loop sync, self-driving critique, or platform setup. MCP: `npx add-mcp "npx -y agentation-mcp server"` |
 | `vibe-kanban` | `kanbanview` | Coding-board control plane — bounded coding cards, tracker-linked workspaces, review queues, worktree isolation, and PR handoff |
-| `bmad` | `bmad`, `workflow-init`, `workflow-status` | Portable BMAD/BMM core router — choose project level, identify the current phase, recommend the next artifact, and route runtime-specific depth outward |
+| `bmad` | `bmad`, `workflow-init`, `workflow-status` | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
 | `bmad-gds` | `bmad-gds` | Game-production orchestrator for ideas, GDDs, playtest notes, bugs, and launch beats |
 | `bmad-idea` | `bmad-idea` | Pre-planning idea router for product, GTM, consulting, and game concepts → choose one framing mode and one concept artifact |
 | `agent-browser` | `agent-browser` | Fresh-session browser verification anchor — choose a clean disposable browser, use snapshot refs, and prove before/after state with explicit evidence |

@@ -1,6 +1,6 @@
 # bmad — BMAD Core Workflow Router
 
-> **bmad** is the repository's portable BMAD/BMM core router. It helps you choose project level, identify the current phase, select the next artifact, and hand runtime-specific or specialist depth to the right neighboring skill.
+> **bmad** is the repository's packet-first BMAD/BMM front door. It helps you classify the packet already in hand, choose project level, infer the likely current phase, select the next artifact or gate, and hand runtime-specific or specialist depth to the right neighboring skill.
 
 [![GitHub Releases](https://img.shields.io/badge/GitHub-Releases-blue)](https://github.com/akillness/oh-my-skills/releases)
 [![Release Notes](https://img.shields.io/badge/release-notes-blue)](https://github.com/akillness/oh-my-skills/releases)
@@ -45,7 +45,7 @@ Use the bmad skill and remember it.
 Use bmad. What phase are we in, and what artifact should we create next?
 ```
 
-The modern `bmad` flow is level-first and artifact-first: it picks the likely BMAD phase, recommends one next artifact, and routes review/runtime detail to the correct neighboring skill.
+The modern `bmad` flow is packet-first, then level-first: it starts from the evidence already in hand, picks the likely BMAD phase, recommends one next artifact or gate, and routes review/runtime detail to the correct neighboring skill.
 
 ## Codex 사용성
 

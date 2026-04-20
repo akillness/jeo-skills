@@ -3,10 +3,11 @@
 Use `bmad` as the **common-layer BMAD/BMM router**.
 
 ## Canonical job
-1. Determine project level (`0`–`4`)
-2. Determine current phase (`analysis`, `planning`, `solutioning`, `implementation`)
-3. Choose the **single next artifact**
-4. Route detailed follow-up to the correct adjacent skill or module
+1. Determine the **primary intake packet** the user actually has now
+2. Determine project level (`0`–`4`)
+3. Determine current phase (`analysis`, `planning`, `solutioning`, `implementation`, `mixed`, or `unknown`)
+4. Choose the **single next artifact or gate**
+5. Route detailed follow-up to the correct adjacent skill or module
 
 ## Phase ladder
 | Phase | Main question | Typical artifact |

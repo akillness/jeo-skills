@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-20 | Total pages: 155
+> Last updated: 2026-04-20 | Total pages: 156
 
 ## Entities
 
@@ -150,6 +150,7 @@
 - [[vercel-deploy-structural-hardening-2026-04-18]] — Why the best bounded next Vercel follow-up was shrinking `vercel-deploy` into a routing-first operator anchor and syncing stale compact/discovery surfaces instead of adding another Vercel helper.
 - [[ohmg-modernization-2026-04-15]] — Why the best bounded orchestration-platform improvement was modernizing `ohmg` into the Gemini / Antigravity entrypoint for the portable `oh-my-agent` harness instead of adding another platform wrapper.
 - [[bmad-modernization-2026-04-15]] — Why the best bounded core-BMAD improvement was modernizing `bmad` into the level/phase/next-artifact router instead of keeping a giant command dump or adding another BMAD wrapper.
+- [[bmad-packet-ratchet-2026-04-20]] — Why the best bounded next core-BMAD improvement was tightening `bmad` into a packet-first front door with brownfield resume handling and earlier route-outs instead of adding another BMAD wrapper.
 - [[bmad-idea-modernization-2026-04-15]] — Why the best bounded pre-planning creativity improvement was modernizing `bmad-idea` into the concept-routing anchor instead of leaving it as a command/persona catalog or adding another ideation wrapper.
 - [[playwriter-modernization-2026-04-15]] — Why the best bounded browser-tooling improvement was modernizing `playwriter` into the running-browser / authenticated-session reuse anchor instead of adding another browser wrapper or letting it blur into `agent-browser`.
 - [[agentation-modernization-2026-04-15]] — Why the best bounded planning-review/browser-follow-up improvement was modernizing `agentation` into the exact rendered-UI feedback router instead of adding another browser or QA wrapper.

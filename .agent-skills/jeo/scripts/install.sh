@@ -201,8 +201,8 @@ fi
 # ── 7. bmad ───────────────────────────────────────────────────────────────────
 if $INSTALL_BMAD; then
   echo ""
-  info "Configuring BMAD orchestrator..."
-  BMAD_SKILL="$SKILLS_ROOT/bmad-orchestrator/SKILL.md"
+  info "Configuring BMAD..."
+  BMAD_SKILL="$SKILLS_ROOT/bmad/SKILL.md"
   if [[ -f "$BMAD_SKILL" ]]; then
     ok "BMAD skill available at: $BMAD_SKILL"
   else

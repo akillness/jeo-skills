@@ -1128,3 +1128,11 @@
 - Accepted: make `testing-strategies` name merge-gate truth vs release-only proof vs scheduled breadth before layer selection, add `references/gate-truth-and-release-handovers.md`, expand `evals/evals.json` with protected-branch and Steam/build-checklist boundary cases, sync `SKILL.toon` / `skills.json` / `skills.toon`, refresh README / README.ko / setup discovery wording, and file the gate-truth finding back into the wiki.
 - Rejected: adding another release-readiness or QA-governance wrapper; re-expanding `testing-strategies` into a generic test-pyramid lecture; letting launch/platform checklist work silently grow PR blockers.
 - Wiki files created/updated: `queries/testing-strategies-gate-truth-ratchet-2026-04-20.md`, `concepts/code-quality-cluster.md`, `index.md`, `log.md`
+
+## [2026-04-20] query | bmad packet ratchet
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow, web/fullstack planning, PM/ops artifact handoffs, marketing/GTM adjacent pre-planning boundaries, and game-production milestone routing, with the best bounded follow-up landing on the existing `bmad` skill rather than another BMAD or planning wrapper.
+- Survey files created under `.survey/bmad-packet-ratchet-20260420/`; primary evidence came from direct BMAD/BMGD GitHub primary-source retrieval, upstream issue threads on brownfield/state pain, repo-local wiki context, and a deterministic graph refresh after normal `web_search` / `web_extract` failed in this environment.
+- Structural graph artifacts refreshed under `graphify-out/`.
+- Accepted: tighten `bmad` into a packet-first front door with brownfield resume handling and one-next-artifact routing, add `references/intake-packets-and-route-outs.md`, expand evals with a mixed-state boundary case, sync `SKILL.toon` / `skills.json` / `skills.toon`, refresh README / README.ko / setup and `docs/bmad` wording, fix the stale BMAD installer path in `.agent-skills/jeo/scripts/install.sh`, and file the packet-ratchet finding back into the wiki.
+- Rejected: adding another BMAD-adjacent wrapper; re-expanding `bmad` into a command catalog or runtime setup guide; turning this run into a full repo-wide `bmad-orchestrator` docs migration.
+- Wiki files created/updated: `queries/bmad-packet-ratchet-2026-04-20.md`, `index.md`, `log.md`
