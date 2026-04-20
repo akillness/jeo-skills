@@ -4,8 +4,10 @@ Use this reference when the user has a standup-shaped complaint but the best ans
 
 ## Quick chooser
 
-| Primary mode | Smallest useful packet | Best when | Watch out for |
+| Cadence / mode | Smallest useful packet | Best when | Watch out for |
 |---|---|---|---|
+| `less-frequent-sync` | current board/doc + top risks + next checkpoint + escalation rule | a recurring checkpoint still helps, but daily is overkill | turning "lighter cadence" into vague drift with no real owner |
+| `no-recurring-standup` | source-of-truth artifact + blocker channel + response expectation + cadence review trigger | daily ritual is unjustified and blockers should escalate ad hoc | hiding risk behind weak boards or no escalation rule |
 | `board-walk` | board link + blocked/in-progress/review items + sprint or delivery goal | the board is trusted and work movement should drive the sync | stale boards, reading every ticket aloud |
 | `blocker-first` | blocked items + owners + missing input + next decision point | the team is under delivery pressure or dependency drag | solving the blocker in the room |
 | `async-check-in` | written updates + blocker prompt + escalation rule + response window | timezone spread or maker-time protection dominates | hidden urgency and silent blockers |
@@ -13,6 +15,30 @@ Use this reference when the user has a standup-shaped complaint but the best ans
 | `classic-three-questions` | yesterday/today/blockers prompts + tight timebox | a small team still gets real signal from a lightweight round-robin | status theater and repetitive diary entries |
 
 ## Packet details
+
+### 0. `less-frequent-sync`
+**Collect:**
+- current board or status doc
+- top two or three risks since the last checkpoint
+- next checkpoint date / owner
+- escalation rule for blockers that cannot wait
+
+**Good brief shape:**
+- keep the recurring checkpoint intentional and light
+- preserve an immediate unblock path between checkpoints
+- say when the team should temporarily raise cadence again
+
+### 0b. `no-recurring-standup`
+**Collect:**
+- board/doc/tool that now replaces the ritual
+- blocker channel or escalation path
+- response expectation
+- condition that would justify temporary daily cadence again
+
+**Good brief shape:**
+- remove the recurring meeting explicitly instead of letting it fade ambiguously
+- keep blockers out of the ritual by escalating them when they happen
+- set a review trigger so the team can raise cadence again if risk changes
 
 ### 1. `board-walk`
 **Collect:**

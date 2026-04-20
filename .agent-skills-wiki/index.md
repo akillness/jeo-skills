@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-20 | Total pages: 157
+> Last updated: 2026-04-20 | Total pages: 158
 
 ## Entities
 
@@ -94,6 +94,7 @@
 - [[sprint-retrospective-structural-hardening-2026-04-18]] — Why the best bounded PM-cluster follow-up was shrinking `sprint-retrospective` into a routing-first retrospective anchor with a dedicated action-review packet instead of adding another ceremony wrapper.
 - [[standup-meeting-modernization-2026-04-12]] — Why the best bounded PM-cluster fix was modernizing `standup-meeting` into a mode-selecting daily coordination skill.
 - [[standup-meeting-structural-hardening-2026-04-19]] — Why the best bounded PM-cluster follow-up was shrinking `standup-meeting` into a routing-first daily coordination anchor with one evidence packet and explicit follow-up-huddle route-outs instead of adding another ceremony wrapper.
+- [[standup-cadence-gate-ratchet-2026-04-20]] — Why the best bounded next PM-cluster improvement was making `standup-meeting` decide whether daily cadence is justified at all before choosing a standup mode.
 - [[survey-evidence-recovery-2026-04-12]] — Why the best bounded research-layer change was hardening `survey` with an explicit evidence-recovery ladder and support files.
 - [[survey-structural-hardening-2026-04-18]] — Why the best bounded next research-layer improvement was shrinking `survey` into a routing-first artifact-contract anchor instead of adding another research wrapper.
 - [[survey-artifact-validator-hardening-2026-04-19]] — Why the best bounded follow-up was finishing the artifact-contract story: move verbose output templates into a dedicated reference and add a portable validator for `.survey/{slug}/` folders.
