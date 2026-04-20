@@ -87,6 +87,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **testing-strategies: gate-truth handoff 래칫** | `testing-strategies`를 레이어 이야기를 늘어놓기 전에 **지금 실제로 어떤 gate를 결정하는지** 먼저 밝히는 방향으로 더 다듬었습니다. 이제 `merge-gate-truth`, `release-gate-truth`, `scheduled-breadth-truth`를 먼저 이름 붙이고, `references/gate-truth-and-release-handovers.md`를 추가했으며, protected-branch / Steam 빌드 체크리스트 경계 케이스를 `evals/evals.json`에 더하고, `SKILL.toon` 및 README/setup/manifest 문구를 동기화해 PR blocker와 release-only / platform-launch proof를 다시 섞지 않게 했습니다. |
 | **steam-store-launch-ops: packet-first 구조 강화** | `steam-store-launch-ops`를 더 작은 packet-first Steam launch router로 다듬었습니다. 이제 `page-promise-audit`, `wishlist-signal-check`, `demo-readiness-gate`, `event-timing-workback`, `launch-ops-runbook` 중 하나의 primary packet을 먼저 고르고, `references/intake-packets-and-route-outs.md`를 추가했으며, `evals/evals.json`에 route-out / broad-GTM 경계 케이스를 더하고, `SKILL.toon`과 README/setup/manifest 문구를 함께 동기화해 이 레인이 generic marketing이나 demo-feedback 쪽으로 흐르지 않도록 했습니다. |
 
 ## 🆕 v2026-04-17 업데이트
@@ -323,7 +324,7 @@ setup omc
 | `code-review` | 심각도·증거 공백 점검·route-out을 포함한 evidence-first diff / PR 리뷰 | 전체 |
 | `debugging` | 구체적인 버그·회귀·flaky 실패·환경별 이상 동작을 위한 routing-first 진단 스킬; raw log는 `log-analysis`, 순수 성능 작업은 `performance-optimization`으로 라우팅 | 전체 |
 | `performance-optimization` | trace·보고서·query plan 같은 현재 아티팩트에서 출발해 지연시간·처리량·메모리·번들·CWV·프레임 예산 병목을 측정 중심으로 분석하고 튜닝 | 전체 |
-| `testing-strategies` | change risk, gate design, flaky-suite, release confidence를 다루는 패킷 우선 검증 정책 | 전체 |
+| `testing-strategies` | merge-gate truth, release-only proof, scheduled breadth, cross-domain handoff를 다루는 패킷 우선 검증 정책 | 전체 |
 
 ### 🏗 인프라 (13개)
 

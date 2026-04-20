@@ -2,13 +2,14 @@
 name: testing-strategies
 description: >
   Turn test-policy ambiguity into one packet-first validation brief. Use when the
-  main job is deciding what evidence is required for a change, which test layers
-  belong in local vs PR vs release vs scheduled gates, how flaky or expensive
-  suites should be handled, and whether the next owner is `backend-testing`,
-  `debugging`, `code-review`, `web-accessibility`, or `performance-optimization`
+  main job is deciding which gate is actually being shaped (merge, release, or
+  scheduled), what evidence a change needs, how flaky or expensive suites should
+  be handled, and whether the next owner is `backend-testing`, `debugging`,
+  `code-review`, `deployment-automation`, `steam-store-launch-ops`,
+  `game-ci-cd-pipeline`, `web-accessibility`, or `performance-optimization`
   instead of absorbing all test work here. Triggers on: test strategy, merge
-  gate, release gate, flaky-suite policy, regression policy, validation brief,
-  release confidence, and what should we test for this change.
+  gate, required status checks, release gate, flaky-suite policy, regression
+  policy, validation brief, release confidence, and what should we test.
 allowed-tools: Read Write Bash Grep Glob
 compatibility: >
   Best for CLI/dev workflow, backend, frontend, and fullstack repos where the
@@ -28,13 +29,15 @@ Use this skill when the main question is **"what validation packet do we trust, 
 The job is not to dump a generic pyramid/trophy manifesto or write test code.
 The job is to:
 1. normalize the current policy packet,
-2. choose one primary policy mode,
-3. name the smallest convincing layer mix,
-4. separate local / PR / release / scheduled expectations,
-5. state exception and flake rules honestly,
-6. route implementation, debugging, review, accessibility, or performance work out immediately.
+2. name which gate is actually being decided,
+3. choose one primary policy mode,
+4. name the smallest convincing layer mix,
+5. separate local / PR / release / scheduled expectations,
+6. state exception and flake rules honestly,
+7. route implementation, debugging, release execution, accessibility, game launch, or performance work out immediately.
 
 Read [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md) before handling an unfamiliar policy packet.
+Read [references/gate-truth-and-release-handovers.md](references/gate-truth-and-release-handovers.md) when the ambiguity is really about branch blockers vs release-only or platform-launch proof.
 Read [references/validation-matrix.md](references/validation-matrix.md) when choosing the minimum convincing layer mix.
 Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `testing-strategies`, `backend-testing`, `debugging`, `code-review`, `performance-optimization`, or `web-accessibility` should own the next step.
 
@@ -77,7 +80,18 @@ Current evidence: unit tests only
 
 Rule: start from the packet the user already has. Do not demand an ideal QA template before doing useful work.
 
-### Step 2: Choose one primary policy mode
+### Step 2: Name the gate truth before choosing layers
+Say which decision point is real right now:
+- `merge-gate-truth` — branch-blocking evidence, required status checks, or review-blocking proof
+- `release-gate-truth` — staging smoke, rollout safety, rollback notes, permissions, packaging, or human signoff
+- `scheduled-breadth-truth` — nightly/cron/matrix coverage that improves confidence but should not block every PR
+
+Rules:
+- Do not let protected-branch tooling masquerade as the whole test strategy; it only enforces the blocking subset.
+- Do not let release/platform checklists silently expand the PR gate when they are really launch or rollout ownership.
+- If more than one gate is present, name the primary gate and the follow-up gate explicitly.
+
+### Step 3: Choose one primary policy mode
 Pick exactly one primary mode:
 - `layer-selection` — what validation layers prove the changed behavior?
 - `gate-shaping` — what belongs in local vs PR vs release vs scheduled loops?
@@ -87,7 +101,7 @@ Pick exactly one primary mode:
 
 Optional: name one secondary mode, but do not flatten every testing conversation into the same checklist.
 
-### Step 3: Classify the risk tier and critical path
+### Step 4: Classify the risk tier and critical path
 Use a small risk model:
 - **Tier 0 — low risk:** docs, comments, dead code deletion, isolated rename, obvious config metadata
 - **Tier 1 — ordinary product change:** routine feature or refactor with limited blast radius
@@ -102,7 +116,7 @@ Capture:
 
 If the change spans multiple tiers, plan for the highest one.
 
-### Step 4: Choose the smallest convincing layer mix
+### Step 5: Choose the smallest convincing layer mix
 Use [references/validation-matrix.md](references/validation-matrix.md).
 
 Default layer choices:
@@ -120,7 +134,7 @@ Examples:
 - “integration + contract now; no broad browser E2E because the user journey is unchanged”
 - “release smoke plus rollout checklist; no new unit tests because the only risk lives in staging config and deployment behavior”
 
-### Step 5: Separate local, PR, release, and scheduled expectations
+### Step 6: Separate local, PR, release, and scheduled expectations
 A useful policy brief does not pretend one suite fits every loop.
 
 Define the smallest truthful gate split:
@@ -131,10 +145,12 @@ Define the smallest truthful gate split:
 
 Rules of thumb:
 - if a suite is too slow or flaky for PRs, move it deliberately instead of silently rerunning it forever
+- if branch protection / required status checks are in play, name only the checks that truly must block merge
 - if a release checklist exists, tie it back to the specific risk that still needs human proof
+- if store/platform launch checklists are now the dominant work, route to the launch or delivery owner instead of stuffing them back into merge coverage
 - if the packet is really just release coordination, say so instead of pretending every item is a test-layer choice
 
-### Step 6: Write explicit exception and flake rules
+### Step 7: Write explicit exception and flake rules
 This step is where strategy becomes operational.
 
 State:
@@ -150,26 +166,30 @@ Good defaults:
 - “coverage went up” is not proof that the risky scenario is protected
 - escaped bugs should ratchet in the lowest-layer regression that would actually have caught them
 
-### Step 7: Route the next owner immediately
+### Step 8: Route the next owner immediately
 This skill owns policy and confidence decisions, not all downstream work.
 
 Typical route-outs:
 - `backend-testing` — write or repair the chosen API/service/database/fixture/contract tests
 - `debugging` — investigate why a suite is red, flaky, or environment-specific right now
 - `code-review` — judge whether one diff’s current evidence is good enough to approve
+- `deployment-automation` — own rollout execution, staging/prod verification sequencing, rollback steps, or release runbooks once the gate is chosen
+- `game-ci-cd-pipeline` — own engine/build pipeline implementation or stabilization when the problem is a game CI/CD surface, not policy selection
+- `steam-store-launch-ops` — own Steam-specific launch/store/runbook work when the remaining proof is release checklist, page readiness, or launch timing rather than merge confidence
 - `web-accessibility` / `web-design-guidelines` — handle accessibility-heavy or visual-governance validation packets
 - `performance-optimization` / `game-performance-profiler` — handle benchmark, load, latency, or frame-budget policy when performance is the actual dominant risk
 
 If the user asks “what should we test?” stay here.
 If they ask “how do we write or stabilize those tests?” route out.
 
-### Step 8: Produce one concise validation brief
+### Step 9: Produce one concise validation brief
 Preferred format:
 ```markdown
 # Validation Strategy Brief
 
 ## Policy packet
 - Packet:
+- Gate truth:
 - Primary mode:
 - Risk tier:
 - Decision point:
@@ -203,6 +223,7 @@ Always return a **validation strategy brief**, **gate-shaping memo**, or **regre
 
 Required qualities:
 - identify the packet already in hand
+- name the real gate being decided before expanding into more layers
 - choose one primary policy mode
 - classify risk and critical path explicitly
 - separate local, PR, release, and scheduled expectations when relevant
@@ -217,6 +238,7 @@ Required qualities:
 
 **Output sketch**
 - Packet: `change-risk-packet`
+- Gate truth: `merge-gate-truth`
 - Primary mode: `layer-selection`
 - Risk tier: 2
 - Required validation:
@@ -232,6 +254,7 @@ Required qualities:
 
 **Output sketch**
 - Packet: `flake-cost-packet`
+- Gate truth: `merge-gate-truth` with `scheduled-breadth-truth` follow-up
 - Primary mode: `flake-and-cost-policy`
 - Required change:
   1. narrow PR browser coverage to critical journeys only
@@ -246,12 +269,25 @@ Required qualities:
 
 **Output sketch**
 - Packet: `release-readiness-packet`
+- Gate truth: `release-gate-truth`
 - Primary mode: `release-confidence`
 - Required validation:
   1. targeted staging smoke for the changed customer journey
   2. migration / rollback checklist item if deploy shape changed
   3. explicit note that no new broad regression sweep is required beyond scheduled coverage
 - Route-out: accessibility-specific signoff to `web-accessibility` if the change is UI-state heavy
+
+### Example 4: Game launch checklist packet
+**Input**
+> Our build passed CI, but we still have Steam release checklist items and packaging work. Does this stay here?
+
+**Output sketch**
+- Packet: `release-readiness-packet`
+- Gate truth: `release-gate-truth`
+- Primary mode: `release-confidence`
+- Required validation: targeted final smoke plus the minimum proof that launch/build checklist items are satisfied
+- Out of scope: expanding branch-blocking PR checks just because store/platform launch work remains
+- Next owner: `steam-store-launch-ops` and/or `game-ci-cd-pipeline`
 
 ## Best practices
 1. Start from the packet already in hand, not from a favorite testing slogan.
@@ -261,9 +297,10 @@ Required qualities:
 5. Tie release checklists back to actual risk instead of treating them as a separate universe.
 6. State intentional exclusions so residual risk is visible.
 7. Use escaped bugs to ratchet in the lowest-layer regression that would have caught them.
-8. Route implementation to `backend-testing`, diagnosis to `debugging`, review judgment to `code-review`, and accessibility-heavy validation to `web-accessibility`.
-9. Use manual validation when it is the honest answer, not as a shameful fallback.
-10. One concise validation brief is more reusable than a giant testing manifesto.
+8. Make merge blockers, release-only proof, and scheduled breadth explicit instead of blending them together.
+9. Route implementation to `backend-testing`, diagnosis to `debugging`, rollout execution to `deployment-automation`, platform/game launch work to `steam-store-launch-ops` or `game-ci-cd-pipeline`, and accessibility-heavy validation to `web-accessibility`.
+10. Use manual validation when it is the honest answer, not as a shameful fallback.
+11. One concise validation brief is more reusable than a giant testing manifesto.
 
 ## References
 - [Martin Fowler — Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html)

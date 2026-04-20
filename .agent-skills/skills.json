@@ -3069,7 +3069,7 @@
     },
     {
       "name": "testing-strategies",
-      "description": "Turn test-policy ambiguity into one packet-first validation brief. Use when the main job is deciding what evidence is required for a change, which test layers belong in local vs PR vs release vs scheduled gates, how flaky or expensive suites should be handled, and whether the next owner is `backend-testing`, `debugging`, `code-review`, `web-accessibility`, or `performance-optimization` instead of absorbing all test work here. Triggers on: test strategy, merge gate, release gate, flaky-suite policy, regression policy, validation brief, release confidence, and what should we test for this change.",
+      "description": "Turn test-policy ambiguity into one packet-first validation brief. Use when the main job is deciding which gate is actually being shaped (merge, release, or scheduled), what evidence a change needs, how flaky or expensive suites should be handled, and whether the next owner is `backend-testing`, `debugging`, `code-review`, `deployment-automation`, `steam-store-launch-ops`, `game-ci-cd-pipeline`, `web-accessibility`, or `performance-optimization` instead of absorbing all test work here. Triggers on: test strategy, merge gate, required status checks, release gate, flaky-suite policy, regression policy, validation brief, release confidence, and what should we test.",
       "category": "code-quality",
       "path": "testing-strategies/SKILL.md",
       "tags": [

@@ -44,6 +44,28 @@
         "Routes accessibility-heavy follow-through to web-accessibility or web-design-guidelines",
         "Does not collapse the entire task into backend-testing or generic code review"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our build passed CI, but we still have Steam release checklist items and packaging work. Should we add more PR blockers or route this elsewhere?",
+      "expected_output": "A release-gate-truth brief that keeps PR blockers narrow, names the remaining release-only proof, and routes Steam/build pipeline ownership outward.",
+      "assertions": [
+        "Identifies release-gate truth or equivalent rather than treating this as a generic merge gate question",
+        "Explicitly avoids expanding branch-blocking PR checks just because launch checklist work remains",
+        "Routes the next owner to steam-store-launch-ops, game-ci-cd-pipeline, deployment-automation, or an equivalent release owner",
+        "Still gives a concise statement of what release-only proof is required now"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "We use protected branches with required status checks, but our nightly compatibility suite is too flaky to block merges. What should be mandatory?",
+      "expected_output": "A merge-gate-truth brief that keeps only the smallest blocking set in protected branches and moves broader flaky coverage to scheduled runs with explicit visibility.",
+      "assertions": [
+        "Recognizes the request as merge-gate truth or equivalent",
+        "Separates blocking status checks from scheduled or informational coverage",
+        "Treats flaky nightly breadth as non-blocking unless a stronger case is stated",
+        "Does not answer with a generic test pyramid lecture alone"
+      ]
     }
   ]
 }
