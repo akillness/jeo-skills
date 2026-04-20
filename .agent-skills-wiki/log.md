@@ -1176,3 +1176,11 @@
 - Accepted: make `skill-standardization` treat alias-side support docs/checklists/examples as derived surfaces when a compatibility alias mirrors the canonical contract, update `references/working-modes.md`, expand `evals/evals.json` with an alias-support-sync case, refresh `SKILL.toon`, and file the decision back into the wiki.
 - Rejected: building a new validator first; creating another alias-maintenance skill; refreshing README / README.ko / setup prompt when the public discovery wording for `skill-standardization` did not materially change.
 - Wiki files created/updated: `queries/skill-standardization-alias-support-sync-2026-04-20.md`, `index.md`, `log.md`
+
+## [2026-04-20] query | game-ci signal tier ratchet
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow CI lane separation, web/fullstack deployment promotion lanes, PM/ops release candidate handoff truth, marketing/demo review packets, and Unity/Unreal game build workflows, with the best bounded follow-up landing on the existing `game-ci-cd-pipeline` skill rather than another game DevOps wrapper.
+- Survey files created under `.survey/game-ci-signal-tier-ratchet-20260420/`; primary evidence came from GameCI, Unity Build Automation, GitHub Actions, TeamCity, Unreal docs, and practitioner issue/forum evidence after `web_search` / `web_extract` failed with API-key errors in this environment.
+- Structural graph artifacts were reviewed from the current `graphify-out/GRAPH_REPORT.md` and not refreshed; this was a bounded game-cluster contract ratchet rather than a structural catalog change.
+- Accepted: make `game-ci-cd-pipeline` classify `branch-gate`, `nightly-package-candidate`, or `release-certification-candidate` before packet routing, add `references/signal-tiers-and-promotion-lanes.md`, expand `evals/evals.json` with branch/nightly/release lane cases, sync `SKILL.toon` / `skills.json`, refresh README / README.ko / setup discovery wording, and file the signal-tier finding back into the wiki.
+- Rejected: adding a separate branch-CI or release-candidate wrapper; letting `game-ci-cd-pipeline` absorb pure release-gate policy work; refreshing graph outputs for a wording-only ratchet.
+- Wiki files created/updated: `queries/game-ci-signal-tier-ratchet-2026-04-20.md`, `concepts/game-development-cluster.md`, `index.md`, `log.md`

@@ -23,6 +23,7 @@ Recent refinement:
 - `steam-store-launch-ops` is strongest as a bottleneck-first public-facing router: keep it focused on Steam-specific visibility, page promise, demo proof, event timing, and launch-ops readiness instead of letting it drift into generic marketing advice or playtest-feedback synthesis.
 - The 2026-04-20 packet-first follow-up tightened `steam-store-launch-ops` again: choose one Steam packet first (`page-promise-audit`, `wishlist-signal-check`, `demo-readiness-gate`, `event-timing-workback`, or `launch-ops-runbook`), keep one-shot Steam timing constraints visible, and route broader marketing, feedback, build, and perf work outward instead of expanding the lane.
 - The 2026-04-19 hardening pass moved `game-ci-cd-pipeline` into the same routing-first pattern: choose one pipeline packet, keep one red build in `game-build-log-triage`, and treat cache/toolchain/artifact concerns as distinct structural decisions instead of one giant CI essay.
+- The 2026-04-20 signal-tier ratchet tightened that lane again: name `branch-gate`, `nightly-package-candidate`, or `release-certification-candidate` before choosing the packet so fast CI, heavier QA/demo candidates, and approval-heavy release candidates stop collapsing into one generic game CI answer.
 
 ## Durable finding
 - The cluster did not need another new game skill in this run.
@@ -35,6 +36,7 @@ Recent refinement:
 - `game-performance-profiler` should own runtime frame-time triage plus next-capture choice; it should not collapse into generic app tuning or absorb broader player-feedback prioritization.
 - `log-analysis` can support mixed app/infra/browser/CI log triage around game projects, but Unity/Unreal editor/build/package logs should still route to `game-build-log-triage`.
 - `game-ci-cd-pipeline` should own repeated structural pipeline questions: setup shape, stage separation, cache policy, preflight checks, artifact hygiene, and CI trust — not first-pass log debugging.
+- `game-ci-cd-pipeline` should now classify signal tier before packet routing: fast branch gates, heavier nightly/demo candidates, and protected release/certification candidates need different assumptions even when the tool surface is the same.
 - Discovery surfaces matter: the top-level README/setup inventory should continue listing the game specialist lane explicitly so those skills are not discoverable only through cross-links inside `bmad-gds`.
 - Future game-cluster work should prefer support upgrades and clearer boundaries over catalog expansion.
 - Steam-specific public launch work should stay distinct from `game-demo-feedback-triage`: the former chooses launch/store interventions, the latter weighs gameplay/player-feedback evidence.
@@ -44,4 +46,5 @@ Recent refinement:
 - [[bmad-gds-modernization-2026-04-12]]
 - [[log-analysis-modernization-2026-04-13]]
 - [[game-ci-cd-pipeline-structural-hardening-2026-04-19]]
+- [[game-ci-signal-tier-ratchet-2026-04-20]]
 - [[steam-store-launch-ops-structural-hardening-2026-04-17]]
