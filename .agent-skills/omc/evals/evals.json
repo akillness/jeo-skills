@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "OMC 설치하고 Claude Code 안에서 바로 팀 모드까지 쓰고 싶어. 어떻게 시작해?",
-      "expected_output": "The skill uses the plugin-setup packet, gives the plugin install path plus `setup omc` or `/oh-my-claudecode:omc-setup`, and mentions `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` for native teams.",
+      "expected_output": "The skill uses the install-topology packet with marketplace-plugin topology, gives the plugin install path plus `setup omc` or `/oh-my-claudecode:omc-setup`, and mentions `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` for native teams.",
       "assertions": [
         "The response includes /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode",
         "The response includes setup omc or /oh-my-claudecode:omc-setup",
@@ -14,7 +14,7 @@
     {
       "id": 2,
       "prompt": "Claude Code 안에서 여러 에이전트가 동시에 작업하게 하고 싶어. /team이랑 omc team 중 뭐 써야 해?",
-      "expected_output": "The skill distinguishes the in-session-runtime and terminal-runtime surfaces, recommends `/team` for Claude Code, and explains that `omc team` is the shell/tmux worker runtime.",
+      "expected_output": "The skill distinguishes the in-session-runtime and terminal-runtime surfaces, recommends `/team` for the in-session Claude Code case, and explains that `omc team` is the shell/tmux worker runtime.",
       "assertions": [
         "The response states that /team and omc team are different runtimes",
         "The response recommends /team for the in-session Claude Code case",
@@ -23,6 +23,16 @@
     },
     {
       "id": 3,
+      "prompt": "로컬 checkout으로 OMC 수정 중인데 marketplace 쪽 캐시 때문에 예전 동작이 남아. plugin-dir 기준으로 어떻게 잡아야 해?",
+      "expected_output": "The skill uses the install-topology packet with local-plugin-dir topology, points to `--plugin-dir`, `OMC_PLUGIN_ROOT`, and `omc setup --plugin-dir-mode`, and does not treat the request like a normal marketplace reinstall.",
+      "assertions": [
+        "The response mentions local-plugin-dir, --plugin-dir, or OMC_PLUGIN_ROOT",
+        "The response mentions omc setup --plugin-dir-mode or a truthful plugin-dir setup path",
+        "The response does not present marketplace install as the primary fix"
+      ]
+    },
+    {
+      "id": 4,
       "prompt": "shell에서 codex 두 명 붙여서 auth 플로우 리뷰 돌리고 싶어",
       "expected_output": "The skill uses the terminal-runtime packet, recommends `omc team 2:codex ...`, and keeps the answer on the CLI runtime instead of drifting into in-session slash skills.",
       "assertions": [
@@ -32,7 +42,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 5,
       "prompt": "작업이 진짜 끝날 때까지 계획-실행-검증 루프를 장기적으로 유지하고 싶어. OMC가 맞아?",
       "expected_output": "The skill uses the boundary-and-route-out packet, routes the long-loop ledger job to `jeo`, and treats OMC as the Claude-first runtime layer rather than the main owner.",
       "assertions": [
@@ -42,13 +52,13 @@
       ]
     },
     {
-      "id": 5,
-      "prompt": "업데이트 후 worktree마다 팀 상태가 꼬이고 HUD도 이상해. 뭘 먼저 봐야 해?",
-      "expected_output": "The skill uses the recovery-and-update packet, tells the operator to inspect the runtime surface, state/worktree/plugin-dir behavior, and recovery/update paths instead of just listing modes.",
+      "id": 6,
+      "prompt": "업데이트 후 slash command가 중복으로 보이고 worktree마다 팀 상태도 이상해. 뭘 먼저 봐야 해?",
+      "expected_output": "The skill uses the recovery-and-update packet with mixed-or-unknown topology, treats duplicate installs as recovery work first, and mentions state/worktree/plugin-dir investigation plus a truthful setup/update path.",
       "assertions": [
         "The response treats this as recovery or update work rather than mode selection",
-        "The response mentions state, worktree, plugin-dir, HUD, or setup/update investigation",
-        "The response references a recovery path such as omc setup, omc update, doctor, or the routing reference"
+        "The response mentions duplicate installs, plugin-dir, state, worktree, HUD, or setup/update investigation",
+        "The response references a recovery path such as setup omc, omc setup, omc update, doctor, or the install-topology reference"
       ]
     }
   ]

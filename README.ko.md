@@ -263,7 +263,7 @@ setup omc
 | 스킬 | 키워드 | 플랫폼 | 설명 |
 |------|--------|--------|------|
 | `jeo` | `jeo`, `annotate` | 전체 | `.jeo` ledger 기반 packet-first 오케스트레이션: 계획 게이트 → 런타임 handoff → 검증 → 정리 |
-| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | oh-my-claudecode용 Claude-first 오케스트레이션 라우터 — plugin slash skill과 `omc` 셸 CLI를 구분하고, setup/recovery/state 문제를 다루며, 인접 작업은 `jeo`, `ralphmode`, `omx`, `ohmg`, 브라우저 검토 스킬로 route-out합니다 |
+| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | oh-my-claudecode용 Claude-first 오케스트레이션 라우터 — 먼저 marketplace plugin / 셸 CLI / 로컬 `--plugin-dir` 토폴로지를 식별하고, plugin slash skill과 `omc` 셸 CLI를 구분하며, 중복 설치·recovery·state 문제를 다루고, 인접 작업은 `jeo`, `ralphmode`, `omx`, `ohmg`, 브라우저 검토 스킬로 route-out합니다 |
 | `harness` | `harness`, `build a harness` | 전체 | 메타스킬: 도메인 전용 에이전트 팀 설계, `.claude/agents/`·`.claude/skills/` 생성, harness 검증 |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Codex CLI용 멀티에이전트 워크플로우 레이어 (v0.11.10) — 30+ 에이전트, 35+ 스킬, tmux 팀 런타임, omx explore/sparkshell |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | 휴대형 `oh-my-agent` 하네스용 Gemini / Antigravity 진입 스킬 (`.agents` 소스 오브 트루스, Gemini 네이티브 투영, 크로스벤더 확장 가능) |

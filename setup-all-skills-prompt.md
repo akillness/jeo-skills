@@ -191,7 +191,7 @@ fi
 **Claude Code additional setup:**
 
 ```bash
-# oh-my-claudecode plugin (optional — adds Claude Code slash skills plus the shell-side `omc` runtime if installed separately)
+# oh-my-claudecode plugin (optional — adds Claude Code slash skills; install the shell-side `omc` runtime separately when you truly need `omc ...` CLI commands)
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
 /plugin install oh-my-claudecode
 setup omc

@@ -4,7 +4,7 @@ created: 2026-04-15
 updated: 2026-04-20
 type: concept
 tags: [skills, consolidation, trigger-design, graphify]
-sources: [.survey/ohmg-modernization-20260415/context.md, .survey/ohmg-modernization-20260415/platform-map.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/platform-map.md, .survey/jeo-structural-hardening-20260416/context.md, .survey/jeo-structural-hardening-20260416/platform-map.md, .survey/survey-structural-hardening-20260418/context.md, .survey/survey-structural-hardening-20260418/platform-map.md, .survey/omc-structural-hardening-20260419/context.md, .survey/omc-structural-hardening-20260419/platform-map.md, .survey/jeo-structural-hardening-20260420/context.md, .survey/jeo-structural-hardening-20260420/platform-map.md, graphify-out/GRAPH_REPORT.md]
+sources: [.survey/ohmg-modernization-20260415/context.md, .survey/ohmg-modernization-20260415/platform-map.md, .survey/ralph-support-hardening-20260416/context.md, .survey/ralph-support-hardening-20260416/platform-map.md, .survey/jeo-structural-hardening-20260416/context.md, .survey/jeo-structural-hardening-20260416/platform-map.md, .survey/survey-structural-hardening-20260418/context.md, .survey/survey-structural-hardening-20260418/platform-map.md, .survey/omc-structural-hardening-20260419/context.md, .survey/omc-structural-hardening-20260419/platform-map.md, .survey/jeo-structural-hardening-20260420/context.md, .survey/jeo-structural-hardening-20260420/platform-map.md, .survey/omc-packet-ratchet-20260420/context.md, .survey/omc-packet-ratchet-20260420/platform-map.md, graphify-out/GRAPH_REPORT.md]
 ---
 
 # Core Orchestration Platform Cluster
@@ -42,7 +42,9 @@ The `ralph` structural-hardening pass pushed the next step further: once support
 
 The 2026-04-20 `jeo` structural-hardening follow-up extends the same pattern to the repo's front-door router: once support coverage is complete, the best bounded move is tightening `jeo` into a packet-first orchestration front door, keeping the shared ledger/phase contract central, and pushing runtime/browser specifics into references and sibling skills instead of re-expanding them inline.
 
-The `omc` structural-hardening pass completed the same cleanup on the Claude-first runtime anchor: the stable contract is now the plugin-vs-CLI split plus explicit route-outs. `omc` should explain when to use plugin setup, in-session slash skills, terminal CLI commands, or recovery/state guidance, but it should not flatten those surfaces into one giant command catalog or absorb `jeo`, `ralphmode`, browser-review, or non-Claude runtime ownership.
+The `omc` structural-hardening pass completed the first cleanup on the Claude-first runtime anchor: the stable contract became the plugin-vs-CLI split plus explicit route-outs. `omc` should explain when to use plugin setup, in-session slash skills, terminal CLI commands, or recovery/state guidance, but it should not flatten those surfaces into one giant command catalog or absorb `jeo`, `ralphmode`, browser-review, or non-Claude runtime ownership.
+
+The 2026-04-20 `omc` install-topology ratchet pushed that boundary one step further: once the plugin-vs-CLI split was clear, the next durable ambiguity was **install topology**. The stable front door is now marketplace plugin vs shell CLI vs local `--plugin-dir` vs mixed/unknown overlap first, then packet routing second. That keeps duplicate-install, local-checkout, and setup-drift questions inside `omc` without turning the skill into another generic orchestration wrapper.
 
 The `survey` structural-hardening pass extended that same rule to the research layer that sits just ahead of planning/orchestration work: keep the 4-lane `.survey/{slug}` contract, but move slower-changing Claude / Codex / Gemini portability detail into a focused reference so the front door stays portable without becoming another oversized orchestration manual.
 
@@ -53,5 +55,6 @@ The `survey` structural-hardening pass extended that same rule to the research l
 - [[jeo-structural-hardening-2026-04-16]]
 - [[jeo-structural-hardening-2026-04-20]]
 - [[omc-structural-hardening-2026-04-19]]
+- [[omc-install-topology-ratchet-2026-04-20]]
 - [[survey-structural-hardening-2026-04-18]]
 - [[developer-workflow-cluster]]
