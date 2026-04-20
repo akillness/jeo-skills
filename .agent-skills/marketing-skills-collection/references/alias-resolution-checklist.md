@@ -15,8 +15,8 @@ Preserve backward compatibility without reviving `marketing-skills-collection` a
 ## What must stay the same
 - One primary lane, not multiple equal plans.
 - One primary KPI.
-- One next implementation-ready packet.
-- Explicit assumptions and measurement logic.
+- One next reusable operator packet.
+- Explicit assumptions plus owner/dependency/proof logic.
 
 ## What must not happen
 - Do not invent a separate sub-skill inventory here.

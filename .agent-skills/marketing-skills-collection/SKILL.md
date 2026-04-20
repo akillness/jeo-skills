@@ -47,8 +47,8 @@ Start with the focused alias support docs before opening the full canonical skil
 Use the same process as `marketing-automation`:
 1. normalize the marketing brief,
 2. choose one primary lane,
-3. return one implementation-ready packet,
-4. include KPI, handoff, and measurement logic.
+3. return one reusable operator packet,
+4. include owner/dependencies plus proof logic.
 
 ### Step 5: Keep route-outs explicit
 If the request is really game-store / wishlist / Steam festival launch work, or another clearly narrower specialist workflow, preserve the alias note but route execution to the stronger specialist skill instead of forcing the general marketing router to absorb it.
