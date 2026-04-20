@@ -2770,7 +2770,7 @@
     },
     {
       "name": "standup-meeting",
-      "description": "Turn messy daily-sync requests into one coordination packet: choose the right standup mode, gather the smallest work-state evidence, keep blockers and handoffs visible, and move deep dives into follow-up huddles instead of status theater. Use when the user needs a daily scrum, async check-in, board-walk, blocker-first sync, remote-team standup, or help fixing an overlong or low-signal standup. Route backlog planning to task-planning, sizing to task-estimation, retrospective process repair to sprint-retrospective, and incident-command work to debugging or launch-specific skills.",
+      "description": "Turn messy daily-sync requests into one honest coordination-cadence packet: decide whether live-daily, async-daily, hybrid-daily, less-frequent syncs, or no recurring standup is justified, then pick the lightest standup mode that still catches blockers and handoffs. Use when the user needs a daily scrum, async check-in, board-walk, blocker-first sync, remote-team standup, launch-week cadence reset, or help fixing an overlong or low-signal standup. Route backlog planning to task-planning, sizing to task-estimation, retrospective process repair to sprint-retrospective, and incident-command work to debugging or launch-specific skills.",
       "category": "project-management",
       "path": "standup-meeting/SKILL.md",
       "tags": [

@@ -1,12 +1,12 @@
 N:standup-meeting
-D:Turn messy daily-sync requests into one coordination packet: choose the right standup mode, gather the smallest work-state evidence, keep blockers and handoffs visible, and move deep dives into follow-up huddles instead of status theater.
+D:Turn messy daily-sync requests into one honest coordination-cadence packet: decide whether live-daily, async-daily, hybrid-daily, less-frequent syncs, or no recurring standup is justified, then pick the lightest standup mode that still catches blockers and handoffs.
 G:standup|daily-scrum|async-standup|board-walk|blocker-triage|hybrid-teams|project-management
 U[4]:
-  **Daily sync repair**: when standups are too long or low-signal
-  **Remote or hybrid teams**: async or hybrid check-ins
+  **Cadence reset**: decide whether daily is still justified
+  **Remote or hybrid teams**: async or hybrid check-ins with escalation rules
   **Blocker routing**: expose impediments without solving them in the room
-  **Board-walk coordination**: tie the sync to live work movement
+  **Ritual cleanup**: replace low-signal standups with lighter cadence or explicit no-meeting paths
 S[3]{n,action}:
-  1,Pick exactly one mode: board-walk blocker-first async-check-in hybrid-async-plus-live classic-three-questions
-  2,Gather one small coordination packet from the current board or updates
-  3,Return a Daily Sync Brief with explicit follow-up huddles and PM-cluster route-outs
+  1,Pick exactly one cadence decision first: live-daily async-daily hybrid-daily less-frequent-sync no-recurring-standup
+  2,Choose one standup mode only if cadence still justifies a recurring sync and gather one small coordination packet
+  3,Return a Coordination Cadence Brief with explicit blocker escalation follow-up huddles and PM-cluster route-outs

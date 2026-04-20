@@ -359,7 +359,7 @@ setup omc
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `sprint-retrospective` | Routing-first retrospective anchor for sprint retros, milestone postmortems, remote/hybrid facilitation, and dead-action-item recovery | All |
-| `standup-meeting` | Routing-first daily coordination anchor for board-walk, blocker-first, async, and hybrid standups with follow-up-huddle route-outs | All |
+| `standup-meeting` | Routing-first coordination-cadence anchor for deciding whether daily, async, hybrid, lighter, or no recurring standup is justified before choosing a standup mode | All |
 | `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing | All |
 

@@ -1,6 +1,6 @@
 # Standup Facilitation Modes
 
-Use this reference when the right standup pattern is unclear.
+Use this reference after cadence is justified. If the team may not need a recurring daily standup at all, start with `cadence-gates-and-exceptions.md` first.
 
 ## Quick chooser
 
