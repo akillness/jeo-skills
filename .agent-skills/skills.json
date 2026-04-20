@@ -2668,7 +2668,7 @@
     },
     {
       "name": "skill-autoresearch",
-      "description": "Route reusable skill-improvement work into one bounded repo-local ratcheting packet: benchmark readiness, loop charter freeze, baseline scoring, one-change mutation, support-surface sync, or final keep/revert report. Use when a `SKILL.md`, SOP, prompt, or workflow doc needs a frozen local benchmark and append-only experiment logs. Route GPU-bound `autoresearch` runs and hosted eval/observability platforms outward.",
+      "description": "Route reusable skill-improvement work into one bounded repo-local ratcheting packet: ratchet eligibility, benchmark readiness, loop charter freeze, baseline scoring, one-change mutation, support-surface sync, or final keep/revert report. Use when a `SKILL.md`, SOP, prompt, or workflow doc may need a frozen local benchmark and append-only experiment logs, or when you need to prove no ratchet is justified yet. Route GPU-bound `autoresearch` runs and hosted eval/observability platforms outward.",
       "category": "search-analysis",
       "path": "skill-autoresearch/SKILL.md",
       "tags": [

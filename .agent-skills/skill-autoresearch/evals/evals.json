@@ -24,15 +24,25 @@
     {
       "id": 3,
       "prompt": "I updated the main SKILL.md and now I think the README, setup prompt, and compact variant might be out of sync. What should the loop do?",
-      "expected_output": "The skill treats docs/setup/discovery updates as a support-sync packet that happens only after the main ratchet is justified.",
+      "expected_output": "The skill treats docs/setup/discovery updates as a support-sync packet and can take that path when the main artifact is already fine.",
       "assertions": [
         "The skill explicitly mentions support-surface sync for compact variants, manifests, or README/setup surfaces when positioning changed materially.",
-        "The skill keeps the primary mutable artifact focused even when support files are allowed.",
-        "The skill does not start with broad multi-file churn before proving the main skill change."
+        "The skill allows support-sync when the main artifact is already good and only support surfaces drifted.",
+        "The skill keeps the primary mutable artifact focused even when support files are allowed."
       ]
     },
     {
       "id": 4,
+      "prompt": "This skill already passes our frozen checks and reviewer feedback is good. Should we ratchet it anyway or stop?",
+      "expected_output": "The skill uses a ratchet-eligibility or equivalent gate and can conclude that no ratchet is justified.",
+      "assertions": [
+        "The skill explicitly allows a no-ratchet-justified outcome before mutation.",
+        "The skill does not force charter, baseline, or mutation work when the baseline already passes and there is no material drift.",
+        "The skill protects the passing baseline from unnecessary churn unless concrete evidence-backed headroom exists."
+      ]
+    },
+    {
+      "id": 5,
       "prompt": "I need hosted traces, dataset comparisons, and experiment dashboards for our production AI app. Should I use this skill?",
       "expected_output": "The skill routes the request outward to hosted eval or observability tools instead of stretching the repo-local ratchet loop.",
       "assertions": [
@@ -42,7 +52,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": 6,
       "prompt": "We want to improve skill-autoresearch itself. What extra rule should apply?",
       "expected_output": "The skill applies its own frozen-harness and keep-or-revert discipline to itself instead of exempting the meta-skill.",
       "assertions": [

@@ -1137,6 +1137,14 @@
 - Rejected: adding another BMAD-adjacent wrapper; re-expanding `bmad` into a command catalog or runtime setup guide; turning this run into a full repo-wide `bmad-orchestrator` docs migration.
 - Wiki files created/updated: `queries/bmad-packet-ratchet-2026-04-20.md`, `index.md`, `log.md`
 
+## [2026-04-20] query | skill-autoresearch baseline gate ratchet
+- Area researched: required cross-domain opportunity scan across CLI/dev workflow prompt/version loops, web/fullstack artifact maintenance, PM/ops checklist gates, marketing/content revision control, and game-production lock/milestone behavior, with the best bounded follow-up landing on the existing `skill-autoresearch` skill rather than another eval wrapper.
+- Survey files created under `.survey/skill-autoresearch-baseline-gate-ratchet-20260420/`; primary evidence came from browser-rendered Promptfoo, LangSmith, Braintrust, Weave, OpenAI Evals, and `karpathy/autoresearch` pages plus repo-local wiki/graph context after normal `web_search` / `web_extract` failed in this environment.
+- Structural graph artifacts were not refreshed; this was a bounded contract ratchet on an existing front-door skill rather than a structural-catalog change.
+- Accepted: add `ratchet-eligibility` and an explicit `no ratchet justified` outcome to `skill-autoresearch`, clarify support-sync-only routing when the main artifact already passes, expand evals, sync `SKILL.toon` / `skills.json` / `skills.toon`, refresh README / README.ko / setup discovery wording, and file the baseline-gate decision back into the wiki.
+- Rejected: adding another benchmark helper or hosted-eval wrapper; forcing every run into charter/baseline/mutation mode; treating support-surface drift as proof that the main artifact must change.
+- Wiki files created/updated: `queries/skill-autoresearch-baseline-gate-ratchet-2026-04-20.md`, `index.md`, `log.md`
+
 ## [2026-04-20] query | omc install topology ratchet
 - Area researched: required cross-domain opportunity scan across CLI/dev workflow orchestration, web/fullstack runtime handoff, PM/ops automation boundaries, marketing/content operating loops, and game-production coordination, with the best bounded follow-up landing on the existing `omc` skill rather than another orchestration wrapper.
 - Survey files created under `.survey/omc-packet-ratchet-20260420/`; primary evidence came from direct GitHub and docs retrieval on oh-my-claudecode, Claude Code, Codex/OMX, Gemini/OHMG, and repo-local wiki/graph context after normal `web_search` / `web_extract` failed in this environment.
