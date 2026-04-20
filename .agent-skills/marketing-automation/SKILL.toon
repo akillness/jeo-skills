@@ -1,28 +1,28 @@
 N:marketing-automation
-D:Route broad product and growth marketing asks into one operating mode, one primary lane, and one implementation-ready packet across launch planning, conversion surfaces, lifecycle/retention, acquisition/content, and measurement/experiments.
+D:Route broad product and growth marketing asks into one operating mode, one primary lane, and one reusable operator packet across launch planning, conversion surfaces, lifecycle/retention, acquisition/content, and measurement/experiments.
 G:marketing|growth|cro|copywriting|seo|analytics|pricing|launch|retention|experiments|routing
 F:Claude|ChatGPT|Gemini|Codex
 
 U[5]:
   Turn a messy marketing ask into one clear operating mode and one primary lane
-  Choose one packet instead of channel soup
-  Attach KPI and leading-signal measurement handoff to every packet
+  Choose one reusable operator packet instead of channel soup
+  Attach owner, dependencies, approvals, KPI, and leading-signal proof to every packet
   Route Steam/store-page game launch work to steam-store-launch-ops
   Route backlog or milestone shaping to task-planning when marketing is not the real bottleneck
 
 S[6]{n,action,details}:
-  1,Normalize,Capture primary_mode primary_lane objective audience stage surface_or_channel offer measurement_maturity and main_question in a compact marketing_router_profile
-  2,Evidence,Pull the smallest credible brief with bottleneck audience surface constraints and current KPI or proxy
+  1,Normalize,Capture primary_mode primary_lane objective audience stage surface_or_channel offer measurement_maturity main_question delivery_owner dependencies_or_approvals and proof_assets_available in a compact marketing_router_profile
+  2,Evidence,Pull the smallest credible brief with bottleneck audience surface constraints current KPI or proxy owner and blocking dependencies
   3,ChooseMode,Pick exactly one operating mode: launch-orchestration conversion-surface lifecycle-retention acquisition-content or measurement-experiment
-  4,ChoosePacket,Map the mode to one primary lane and one packet that can actually be handed off
-  5,Measure,Include one primary KPI one leading signal one baseline or assumption one success threshold and one next owner
+  4,ChoosePacket,Map the mode to one primary lane and one reusable operator packet that can actually be handed off
+  5,Proof,Include one primary KPI one leading signal one baseline or assumption one success threshold one readout window and one next owner
   6,RouteOut,Escalate game-store launch ops to steam-store-launch-ops and execution/backlog coordination to task-planning when those lanes dominate
 
 R[4]:
   One primary mode one primary lane and one primary packet per response
   Prefer explicit assumptions over stalling on missing context
   Keep general marketing routing distinct from planning and game-store specialists
-  Always leave a measurement handoff with ownership
+  Always leave an owner plus dependency visibility and proof handoff
 
 E[2]{desc,in,out}:
   "Broad launch ask","We are launching a new SaaS workflow next month and need help with messaging, landing page copy, onboarding emails, and how to measure whether it worked.","Marketing Routing Brief with launch-orchestration mode, Strategy and growth lane, one launch packet, and KPI plus leading-signal handoff"

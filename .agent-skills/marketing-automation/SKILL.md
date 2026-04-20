@@ -2,15 +2,16 @@
 name: marketing-automation
 description: >
   Route broad product and growth marketing asks into one operating mode, one
-  primary lane, and one implementation-ready packet across launch planning,
+  primary lane, and one reusable operator packet across launch planning,
   conversion surfaces, lifecycle/retention, acquisition/content, and
   measurement/experiments. Use when the user needs general marketing help for a
   website, SaaS product, funnel, onboarding flow, pricing page, campaign, or
-  launch and the first job is deciding the right next brief instead of producing
-  channel soup. Triggers on: marketing plan, GTM help, launch brief, pricing
-  page refresh, lifecycle email strategy, conversion help, campaign measurement,
-  content plan. Route Steam/store-page game launch work to
-  `steam-store-launch-ops` and backlog/milestone shaping to `task-planning`.
+  launch and the first job is deciding the right next brief with owner,
+  dependencies, approvals, and proof instead of producing channel soup.
+  Triggers on: marketing plan, GTM help, launch brief, pricing page refresh,
+  lifecycle email strategy, conversion help, campaign measurement, content
+  plan. Route Steam/store-page game launch work to `steam-store-launch-ops` and
+  backlog/milestone shaping to `task-planning`.
 allowed-tools: Write Read WebSearch WebFetch Task
 compatibility: >
   General marketing front door for SaaS, product, web, and lifecycle work.
@@ -30,13 +31,14 @@ Use this skill as the **canonical broad marketing front door** when the real job
 The job is not to generate a giant campaign brainstorm. The job is to:
 1. classify the ask into one operating mode,
 2. choose one primary lane,
-3. produce one implementation-ready packet,
-4. leave a KPI + leading-signal measurement handoff,
+3. produce one reusable operator packet,
+4. name the owner, dependencies, approvals, and proof stack,
 5. route out when the request is actually planning, game-store launch ops, or another narrower specialist workflow.
 
 Read these support docs before finalizing the packet:
 - [references/operating-modes-and-route-outs.md](references/operating-modes-and-route-outs.md)
 - [references/routing-heuristics.md](references/routing-heuristics.md)
+- [references/operator-packet-and-proof-stack.md](references/operator-packet-and-proof-stack.md)
 - [references/measurement-handoff.md](references/measurement-handoff.md)
 
 ## When to use this skill
@@ -89,6 +91,11 @@ marketing_router_profile:
   offer_or_motion: "product / feature / campaign / launch motion"
   measurement_maturity: clear | partial | weak
   main_question: "what needs to be decided next?"
+  delivery_owner: "who will carry the packet next"
+  dependencies_or_approvals:
+    - "design / analytics / engineering / legal / partner / none"
+  proof_assets_available:
+    - "dashboard / baseline export / campaign data / user feedback / none"
   constraints:
     timeline: immediate | this-week | this-month | longer
     brand_or_compliance_notes: "limits or promises"
@@ -104,6 +111,8 @@ Do not route from vibes alone. Pull the smallest packet that supports a real dec
 - surface, campaign, or lifecycle moment
 - available proof points or constraints
 - current KPI or best available proxy
+- who owns the next move
+- which dependencies or approvals can block execution
 - what is still missing that could change the lane choice
 
 ### Step 3: Choose one mode, one lane, one packet
@@ -131,6 +140,8 @@ Route out instead of absorbing adjacent work when:
 A good front door narrows the next move. It does not win by claiming every neighboring job.
 
 ### Step 5: Build the operator brief
+Use [references/operator-packet-and-proof-stack.md](references/operator-packet-and-proof-stack.md).
+
 Return this structure:
 
 ```markdown
@@ -151,6 +162,12 @@ Return this structure:
 - Packet type: launch/growth brief | channel-ready brief | copy/messaging packet | measurement + experiment packet | marketing-routing brief
 - Why this packet now: ...
 
+## Operator packet
+- Primary owner: ...
+- Dependencies / approvals: ...
+- Required assets or inputs: ...
+- Delivery horizon: ...
+
 ## Priority decisions
 | Decision | Why now | Owner | Risk if delayed |
 |----------|---------|-------|-----------------|
@@ -161,11 +178,12 @@ Return this structure:
 2. ...
 3. ...
 
-## Measurement handoff
+## Proof stack
 - Primary KPI: ...
 - Leading signal: ...
 - Baseline or assumption: ...
 - Success threshold: ...
+- Readout window: ...
 - Next owner / workflow: ...
 
 ## Secondary handoffs
@@ -176,15 +194,16 @@ Return this structure:
 - 1-3 bullets that prevent scope drift
 ```
 
-### Step 6: Keep measurement attached to the packet
+### Step 6: Keep proof attached to the packet
 Every output must name:
 - one primary KPI
 - one leading signal
 - one baseline or explicit assumption
 - one success threshold
+- one readout window or review checkpoint
 - one next owner or downstream workflow
 
-Use [references/measurement-handoff.md](references/measurement-handoff.md) for lane-specific KPI examples.
+Use [references/operator-packet-and-proof-stack.md](references/operator-packet-and-proof-stack.md) for the operator packet shape and [references/measurement-handoff.md](references/measurement-handoff.md) for lane-specific KPI examples.
 
 ## Output format
 Always return a **short operator-style Marketing Routing Brief**.
@@ -194,8 +213,9 @@ Required qualities:
 - one primary lane
 - one packet that can actually be handed off
 - explicit assumptions when context is thin
+- named owner plus dependency/approval visibility
 - route-outs when the ask is not really this skill
-- measurement logic attached to the packet, not bolted on later
+- proof logic attached to the packet, not bolted on later
 
 ## Examples
 
@@ -208,7 +228,8 @@ Required qualities:
 - Lane: `Strategy & growth`
 - Packet: `launch/growth brief`
 - Secondary handoffs mention copy/messaging and lifecycle execution
-- Measurement handoff names one launch KPI and one leading signal
+- Operator packet names one owner plus likely dependencies or approvals
+- Proof stack names one launch KPI and one leading signal
 
 ### Example 2: pricing-page refresh
 **Input**
@@ -228,7 +249,8 @@ Required qualities:
 - Mode: `lifecycle-retention`
 - Lane: `Strategy & growth` or `Copy & messaging`
 - Packet: `channel-ready brief`
-- Measurement handoff names activation or retained-usage KPI plus a leading signal
+- Operator packet names the lifecycle owner and any analytics or product dependency
+- Proof stack names activation or retained-usage KPI plus a leading signal
 
 ### Example 4: game-store launch near miss
 **Input**
@@ -243,12 +265,14 @@ Required qualities:
 1. **Act like a front-door router, not a generic growth advisor.**
 2. **Choose one mode before you choose tactics.**
 3. **Choose one packet before you list channels.**
-4. **Keep launch/planning/game-store boundaries explicit.**
-5. **Attach measurement and ownership to every packet.**
+4. **Keep owner, approvals, and dependencies visible instead of assuming automation removes them.**
+5. **Keep launch/planning/game-store boundaries explicit.**
+6. **Attach proof and ownership to every packet.**
 
 ## References
 - [references/operating-modes-and-route-outs.md](references/operating-modes-and-route-outs.md)
 - [references/routing-heuristics.md](references/routing-heuristics.md)
+- [references/operator-packet-and-proof-stack.md](references/operator-packet-and-proof-stack.md)
 - [references/measurement-handoff.md](references/measurement-handoff.md)
 - `../marketing-skills-collection/SKILL.md`
 - `../steam-store-launch-ops/SKILL.md`

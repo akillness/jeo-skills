@@ -1638,7 +1638,7 @@
     },
     {
       "name": "marketing-automation",
-      "description": "Canonical broad marketing front door that turns vague product and growth asks into one operating mode, one primary lane, and one implementation-ready packet across launch planning, conversion surfaces, lifecycle/retention, acquisition/content, and measurement/experiments.",
+      "description": "Canonical broad marketing front door that turns vague product and growth asks into one operating mode, one primary lane, and one reusable operator packet with owner, dependencies, approvals, and proof across launch planning, conversion surfaces, lifecycle/retention, acquisition/content, and measurement/experiments.",
       "category": "marketing",
       "path": "marketing-automation/SKILL.md",
       "tags": [
