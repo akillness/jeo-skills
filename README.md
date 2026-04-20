@@ -144,7 +144,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
-| **bmad: core BMAD router modernization** | Reframed `bmad` into the portable BMAD/BMM core router: it now chooses project level, identifies the current phase, recommends one next artifact, and routes runtime-specific or specialist depth to `plannotator`, `task-planning`, `omc`, `omx`, `ohmg`, or `bmad-gds` instead of acting like a giant command dump. Added `references/core-routing.md`, `references/status-and-review.md`, `references/runtime-and-module-boundaries.md`, and `evals/evals.json`, while keeping the existing helper scripts. |
+| **bmad: packet-first BMAD router ratchet** | Tightened `bmad` into a packet-first BMAD/BMM front door. It now starts from the packet already in hand (idea notes, PRD, architecture draft, review feedback, brownfield repo state, or milestone pressure), chooses one next artifact or gate, keeps review/runtime boundaries explicit, adds `references/intake-packets-and-route-outs.md`, expands evals with a brownfield mixed-state case, and refreshes discovery wording so `bmad` stops reading like a generic phase catalog. |
 | **bmad-gds: game producer/orchestration rewrite** | Reframed `bmad-gds` from a generic phase catalog into a practical game-production coordination skill. It now acts as the repo's game-cluster orchestrator: normalizes mixed packets (idea, GDD, playtest notes, bug/build issues, launch targets), chooses one operating mode, produces one milestone-aware coordination brief, and routes detailed work to `game-demo-feedback-triage`, `game-build-log-triage`, `game-performance-profiler`, `steam-store-launch-ops`, `task-planning`, or `bmad-idea` as needed. Added `references/operating-modes.md`, `references/scope-boundaries.md`, and `evals/evals.json` without increasing the skill count. |
 
 ## 🆕 What's New in v2026-04-08
@@ -269,7 +269,7 @@ setup omc
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | Gemini / Antigravity entry for the portable `oh-my-agent` harness (`.agents` source of truth, native Gemini projection, cross-vendor-ready layout) |
 | `ralph` | `ralph`, `ooo` | All | Ouroboros spec-first method anchor — Socratic clarification, immutable seed/spec, drift-aware execution, and persistent completion until verification passes |
 | `ralphmode` | `ralphmode` | All | Automation permission profile — repo-local settings, boundary rules, and hook-backed checkpoints for trusted repos vs sandbox-only YOLO |
-| `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Portable BMAD/BMM core router — choose project level, identify the current phase, recommend the next artifact, and route runtime-specific depth outward |
+| `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |
 | `survey` | `survey` | All | Bounded pre-implementation landscape scan with reusable `.survey/{slug}/` artifacts plus validator-backed artifact-contract checks |

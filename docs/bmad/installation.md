@@ -1,4 +1,4 @@
-# bmad-orchestrator — Installation & Setup
+# bmad — Installation & Setup
 
 → [Overview](./README.md) · [Workflow Guide](./workflow.md) · [Configuration](./configuration.md) · [Examples](./examples.md)
 
@@ -16,14 +16,14 @@
 ## Step 1: Install the Skill
 
 ```bash
-# Install bmad-orchestrator only
-npx skills add https://github.com/akillness/oh-my-skills --skill bmad-orchestrator
+# Install bmad only
+npx skills add https://github.com/akillness/oh-my-skills --skill bmad
 
 # Or install all 60 core skills at once
 npx skills add https://github.com/akillness/oh-my-skills
 ```
 
-This installs the skill to `~/.agents/skills/bmad-orchestrator/`.
+This installs the skill to `~/.agents/skills/bmad/`.
 
 ---
 
@@ -43,7 +43,7 @@ bmad 스킬을 설정하고 사용해줘. 기억해.
 
 Claude will confirm setup with something like:
 ```
-✓ bmad-orchestrator skill loaded
+✓ bmad skill loaded
 ✓ Configuration saved to CLAUDE.md
 Ready to use BMAD workflows
 ```
@@ -105,7 +105,7 @@ Phase 4: Implementation
 
 ```bash
 # Reinstall to get latest version
-npx skills add https://github.com/akillness/oh-my-skills --skill bmad-orchestrator
+npx skills add https://github.com/akillness/oh-my-skills --skill bmad
 
 # Then re-activate in Claude Code
 bmad 스킬을 설정하고 사용해줘. 기억해.
@@ -117,10 +117,10 @@ bmad 스킬을 설정하고 사용해줘. 기억해.
 
 ```bash
 # Remove the skill
-rm -rf ~/.agents/skills/bmad-orchestrator
+rm -rf ~/.agents/skills/bmad
 ```
 
-Then remove any `bmad-orchestrator` references from your project's `CLAUDE.md`.
+Then remove any `bmad` references from your project's `CLAUDE.md`.
 
 ---
 
