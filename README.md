@@ -263,7 +263,7 @@ setup omc
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
 | `jeo` | `jeo`, `annotate` | All | Packet-first orchestration front door with `.jeo` ledger: plan gate → runtime handoff → verify → cleanup |
-| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | Claude-first orchestration router for oh-my-claudecode — distinguishes plugin slash skills from the `omc` shell CLI, handles setup/recovery/state issues, and routes adjacent work to `jeo`, `ralphmode`, `omx`, `ohmg`, and browser-review skills |
+| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | Claude-first orchestration router for oh-my-claudecode — identifies marketplace plugin vs shell CLI vs local `--plugin-dir` topology first, distinguishes plugin slash skills from the `omc` shell CLI, handles duplicate-install/recovery/state issues, and routes adjacent work to `jeo`, `ralphmode`, `omx`, `ohmg`, and browser-review skills |
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Multi-agent workflow layer for Codex CLI (v0.11.10) — 30+ agents, 35+ skills, tmux team runtime, omx explore/sparkshell |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | Gemini / Antigravity entry for the portable `oh-my-agent` harness (`.agents` source of truth, native Gemini projection, cross-vendor-ready layout) |

@@ -1886,7 +1886,7 @@
     },
     {
       "name": "omc",
-      "description": "Claude-first OMC router for oh-my-claudecode. Distinguishes plugin slash skills (`/team`, `/autopilot`, `/ralph`, `/ultrawork`) from the `omc` shell CLI (`omc setup`, `omc team`, `omc ask`), handles setup/recovery/state issues, and routes adjacent work to `jeo`, `ralphmode`, `omx`, `ohmg`, and browser-review skills.",
+      "description": "Claude-first OMC router for oh-my-claudecode. Identifies marketplace plugin vs shell CLI vs local `--plugin-dir` topology first, distinguishes plugin slash skills (`/team`, `/autopilot`, `/ralph`, `/ultrawork`) from the `omc` shell CLI (`omc setup`, `omc team`, `omc ask`), handles duplicate-install/recovery/state issues, and routes adjacent work to `jeo`, `ralphmode`, `omx`, `ohmg`, and browser-review skills.",
       "category": "core-orchestration",
       "tags": [
         "omc",
@@ -1901,7 +1901,8 @@
         "/team",
         "omc team",
         "omc ask",
-        "cancelomc"
+        "cancelomc",
+        "plugin-dir"
       ],
       "platforms": [
         "Claude Code"

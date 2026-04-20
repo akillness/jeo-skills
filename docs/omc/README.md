@@ -21,9 +21,9 @@ Important:
 
 ---
 
-## 2. Install / setup
+## 2. Install / setup topology
 
-### Plugin-first path (recommended for Claude Code users)
+### A. Marketplace plugin path
 
 Inside Claude Code:
 
@@ -44,13 +44,24 @@ or:
 /oh-my-claudecode:omc-setup
 ```
 
-### Optional CLI install
+Use this when the operator mainly wants slash skills and other in-session OMC behavior.
+
+### B. Optional shell CLI path
 
 If you also want `omc setup`, `omc update`, `omc ask`, or `omc team` from the shell:
 
 ```bash
 npm i -g oh-my-claude-sisyphus@latest
 ```
+
+### C. Local checkout / `--plugin-dir` path
+
+Use this when the operator is testing or modifying a local OMC checkout and does not want marketplace cache lag to hide changes.
+
+Key truths:
+- `--plugin-dir` / `OMC_PLUGIN_ROOT` are part of the real install topology
+- `omc setup --plugin-dir-mode` is the truthful setup flow for this case
+- duplicate commands after local testing usually mean the topology is mixed, not that another runtime should be chosen
 
 ### Native teams setting
 
@@ -84,9 +95,9 @@ Enable Claude Code native teams in `~/.claude/settings.json`:
 
 Use these when OMC feels broken instead of switching modes blindly:
 
-- Re-run the truthful setup/update path for the surface you are using
+- Re-run the truthful setup/update path for the topology and surface you are using
 - Check `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` when native team mode is expected
-- Inspect plugin-dir / local-checkout overlap if duplicate commands or files appear
+- Inspect marketplace plugin vs npm CLI vs local-checkout/plugin-dir overlap if duplicate commands or files appear
 - Treat worktree/state collisions as runtime/state issues, not as a reason to abandon Team mode
 - Treat HUD/rate-limit issues as environment/recovery problems, especially in ephemeral environments
 
@@ -117,6 +128,7 @@ Do **not** force OMC when another skill owns the job better:
 | Plugin install | `/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode` |
 | Plugin setup | `setup omc` or `/oh-my-claudecode:omc-setup` |
 | Optional CLI install | `npm i -g oh-my-claude-sisyphus@latest` |
+| Local checkout setup | `omc --plugin-dir <path> setup --plugin-dir-mode` |
 | Native team mode | `/team N:executor "task"` |
 | Autopilot | `/autopilot "task"` |
 | Ralph | `/ralph "task"` |

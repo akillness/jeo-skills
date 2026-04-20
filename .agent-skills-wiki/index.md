@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-20 | Total pages: 156
+> Last updated: 2026-04-20 | Total pages: 157
 
 ## Entities
 
@@ -75,6 +75,7 @@
 - [[opencontext-structural-hardening-2026-04-19]] — Why the best bounded persistent-memory follow-up was shrinking `opencontext` into a packet-first project-memory router with repo-packer route-outs and synced discovery surfaces instead of adding another memory wrapper.
 - [[opencontext-trust-packet-2026-04-20]] — Why the next bounded persistent-memory ratchet was making `opencontext` name the highest-confidence source, provenance, and stale-branch warning when overlapping memory artifacts disagree.
 - [[omc-structural-hardening-2026-04-19]] — Why the best bounded orchestration-platform follow-up was shrinking `omc` into a routing-first Claude-first runtime skill with an explicit plugin-vs-CLI split instead of adding another orchestration wrapper.
+- [[omc-install-topology-ratchet-2026-04-20]] — Why the best bounded next `omc` improvement was making install topology explicit — marketplace plugin vs shell CLI vs local `--plugin-dir` vs mixed overlap — instead of adding another orchestration wrapper.
 - [[agent-browser-modernization-2026-04-15]] — Why the best bounded next browser-review improvement was modernizing `agent-browser` into the fresh-session deterministic browser verification anchor instead of adding another overlapping browser or QA wrapper.
 - [[marketing-skill-canonicalization-2026-04-12]] — Why the best bounded marketing change was canonicalizing `marketing-automation` and narrowing `marketing-skills-collection` into a compatibility alias.
 - [[marketing-skills-collection-support-hardening-2026-04-16]] — Why the best bounded next marketing support upgrade was adding a tiny alias packet plus compact-surface sync instead of reviving the old 23-sub-skill framing or adding another broad marketing wrapper.
