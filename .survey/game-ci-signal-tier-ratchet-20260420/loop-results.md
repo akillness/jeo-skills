@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | game-ci-cd-pipeline/SKILL.md | Naming the signal tier before packet choice will make branch CI, nightly/package-candidate, and release/certification work more truthful without expanding the lane | Add signal-tier classification to the front door, add one supporting reference, expand evals for branch/nightly/release cases, and sync discovery wording only if the main contract improves | `validate_skill.sh` passed; eval JSON and `skills.json` both parsed; residue scan found no stale repo-level game-ci discovery wording | Keep | Bounded ratchet only: no new skill, no broad game DevOps rewrite |

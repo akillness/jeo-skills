@@ -1,6 +1,17 @@
 # Game CI/CD intake packets and route-outs
 
-Use this reference to keep `game-ci-cd-pipeline` compact and routing-first.
+Use this reference to keep `game-ci-cd-pipeline` compact and routing-first. Start by naming the signal tier (`branch-gate`, `nightly-package-candidate`, or `release-certification-candidate`), then choose the packet type.
+
+## Signal tiers
+
+### `branch-gate`
+Fast merge/commit validation. Use when the pain is slow PR feedback, packaging on every branch, or weak developer trust in quick CI.
+
+### `nightly-package-candidate`
+Heavier scheduled/manual QA, demo, or review builds. Use when candidate packaging should exist, but not on every merge.
+
+### `release-certification-candidate`
+Protected, signed, store-bound, or certification-bound candidates. Use when approval, retention, or promotion rules are part of the pain.
 
 ## Primary packet types
 

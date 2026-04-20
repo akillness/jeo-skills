@@ -983,7 +983,7 @@
     },
     {
       "name": "game-ci-cd-pipeline",
-      "description": "Turn messy Unity or Unreal build/release automation into one bounded pipeline packet: setup plan, stage split, cache policy, preflight checklist, artifact/release hygiene, or CI-signal hardening. Use when a game team needs to design or repair GitHub Actions, Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds — especially when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook / package cycles, artifact confusion, SDK/signing drift, or a manual game release process that should become reproducible. Route one red log first-pass diagnosis to `game-build-log-triage`.",
+      "description": "Turn messy Unity or Unreal build/release automation into one bounded game-pipeline packet after naming the signal tier first: fast branch-gate CI, nightly/package-candidate builds, or release/certification candidates. Use when a game team needs to design or repair GitHub Actions, Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds — especially when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook/package cycles, artifact confusion, SDK/signing drift, or manual candidate promotion that should become reproducible. Route one red log first-pass diagnosis to `game-build-log-triage`.",
       "path": "game-ci-cd-pipeline/SKILL.md",
       "tags": [
         "game-development",
@@ -992,7 +992,8 @@
         "ci-cd",
         "github-actions",
         "build-pipeline",
-        "release-engineering"
+        "release-engineering",
+        "release-candidates"
       ],
       "keywords": [
         "game-ci-cd-pipeline",

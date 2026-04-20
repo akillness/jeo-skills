@@ -1,19 +1,20 @@
 N:game-ci-cd-pipeline
-D:Turn messy Unity or Unreal build/release automation into one bounded pipeline packet: setup plan, stage split, cache policy, preflight checklist, artifact/release hygiene, or CI-signal hardening. Use when a game team needs to design or repair GitHub Actions, Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds — especially when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook / package cycles, artifact confusion, SDK/signing drift, or a manual game release process that should become reproducible. Route one red log first-pass diagnosis to `game-build-log-triage`.
-G:game-development unity unreal ci-cd github-actions build-pipeline release-engineering
+D:Turn messy Unity or Unreal build/release automation into one bounded game-pipeline packet after naming the signal tier first: fast branch-gate CI, nightly/package-candidate builds, or release/certification candidates. Use when a game team needs to design or repair GitHub Actions, Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds — especially when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook/package cycles, artifact confusion, SDK/signing drift, or manual candidate promotion that should become reproducible. Route one red log first-pass diagnosis to `game-build-log-triage`.
+G:game-development unity unreal ci-cd github-actions build-pipeline release-engineering release-candidates
 
 U[5]:
   Unity or Unreal teams setting up CI/CD from scratch without overengineering it
   Pipelines that are repeatedly flaky, slow, or opaque because workflow structure is weak
   Build, cook/package, cache, artifact, or release handoff issues that keep breaking trust
-  Small studios still making demo/review/release builds manually
+  Teams that need to separate fast branch validation from heavier nightly/package or release-candidate lanes
   Contractor or technical-lead audits that need a compact game-pipeline brief
 
-S[7]{n,action,details}:
-  1,Choose one primary packet type,Normalize the request into exactly one packet: pipeline-setup, stage-split, cache-policy, preflight-readiness, artifact-release, ci-signal-hardening, or route-to-log-triage.
-  2,Gather the minimum credible evidence,Collect engine/version, CI surface, target platforms, repeated failure pattern, manual steps outside CI, and one failed job/log if relevant.
-  3,Classify the primary blocker,Pick one primary blocker and at most one secondary blocker.
-  4,Run the boundary check,Verify whether this is structural pipeline work or should route to `game-build-log-triage`.
-  5,Build the packet brief,Return the exact Game CI/CD Brief with packet choice, evidence, blockers, recommended shape, route-outs, and one next artifact.
-  6,Tailor the packet to the engine,Use Unity- or Unreal-specific guidance without bloating the front door.
-  7,Ask for the smallest missing packet,Request only the missing inputs that change the decision.
+S[8]{n,action,details}:
+  1,Classify the signal tier first,Choose exactly one lane: branch-gate, nightly-package-candidate, release-certification-candidate, or unknown.
+  2,Choose one primary packet type,Pick exactly one packet: pipeline-setup, stage-split, cache-policy, preflight-readiness, artifact-release, ci-signal-hardening, or route-to-log-triage.
+  3,Gather the minimum credible evidence,Collect engine/version, CI surface, trigger shape, target platforms, repeated failure pattern, manual steps outside CI, artifact naming/retention/approvals, and one failed job/log if relevant.
+  4,Choose the primary blocker,Pick one primary blocker and at most one secondary blocker.
+  5,Run the boundary check,Verify this is structural game-pipeline work, not just one failing log or pure release-gate policy.
+  6,Build the packet brief,Return the Game CI/CD Brief with signal tier, packet choice, evidence, blockers, recommended shape, route-outs, and one next artifact.
+  7,Tailor the packet to engine and tier,Use Unity/Unreal guidance and keep branch-gate vs nightly/release expectations explicit.
+  8,Ask for the smallest missing packet,Request only the missing inputs that would change the lane or packet decision.
