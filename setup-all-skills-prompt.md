@@ -388,4 +388,96 @@ If no → skip silently. Never re-ask.
 
 ---
 
+---
+
+## Step 6 — Post-Install Workflow Rules (Per-Prompt Knowledge Loop)
+
+After installation, apply the following rules **on every prompt** to continuously refine, compress, and accumulate knowledge:
+
+> **For AI Agents**: These rules are permanent operating directives. Apply them automatically without being asked.
+
+### Rule 1 — Graphify (Knowledge Graph Refinement)
+After every prompt response, invoke `/graphify` to distill the interaction into a structured knowledge graph node.
+
+```bash
+# Trigger: any input → structured knowledge graph
+# Activation: /graphify
+# Purpose: extract entities, relationships, and concepts from every interaction
+```
+
+### Rule 2 — RTK Compression (Token Optimization)
+Use `/rtk` to compress context and outputs, minimizing token usage while preserving semantic density.
+
+```bash
+# Install RTK integration (if not already done)
+rtk init          # initialize RTK in current project
+rtk gain          # verify compression is active
+
+# RTK wraps agent outputs — run once after graphify each turn
+```
+
+### Rule 3 — Obsidian File Management
+Use `/obsidian-cli` and `/obsidian-plugin` to persist files, notes, and artifacts into your Obsidian vault.
+
+```bash
+# obsidian-cli: TUI vault/file targeting, note automation, plugin reload
+# Activation keyword: "obsidian cli", "obsidian terminal", "obsidian plugin reload"
+
+# obsidian-plugin: Obsidian plugin development — 27 ESLint rules, boilerplate
+# Activation keyword: "obsidian plugin", "create obsidian plugin"
+
+# Recommended vault structure for skill knowledge:
+# vault/
+# ├── skills/          ← per-skill notes synced from ~/.agents/skills/
+# ├── sessions/        ← per-session graphify outputs
+# └── wiki/            ← llm-wiki mirror
+```
+
+### Rule 4 — LLM Wiki Knowledge Accumulation
+Use `/llm-wiki` to ingest every significant discovery, decision, or pattern into the persistent wiki.
+
+```bash
+# Activation keywords: "llm-wiki", "obsidian wiki", "research vault"
+# Wiki layers: raw/ (source) → wiki/ (processed)
+# Operations: bootstrap, ingest, query, lint
+
+# Auto-ingest pattern (run after each session):
+# llm-wiki "/path/to/vault" ingest "session summary"
+```
+
+### Per-Prompt Execution Order
+
+```
+[1] Receive prompt
+[2] /graphify    → extract knowledge graph from interaction
+[3] /rtk gain    → compress output tokens
+[4] /obsidian-cli → persist artifacts to vault
+[5] /llm-wiki    → ingest significant discoveries into wiki
+[6] Respond
+```
+
+### Setup Script (run once after Step 5)
+
+```bash
+SKILLS_ROOT="$HOME/.agents/skills"
+
+# Verify all four workflow skills are installed
+for skill in graphify rtk obsidian-cli obsidian-plugin llm-wiki; do
+  [ -f "$SKILLS_ROOT/$skill/SKILL.md" ] \
+    && echo "✅ $skill" \
+    || echo "❌ $skill — run: skills add -g $REPO_URL --skill $skill --yes --copy"
+done
+
+# Initialize RTK
+command -v rtk &>/dev/null && rtk init || echo "⚠️  RTK not found — check rtk skill install"
+
+echo ""
+echo "✅ Per-prompt knowledge loop configured"
+echo "   Every prompt will: graphify → compress (rtk) → persist (obsidian) → wiki (llm-wiki)"
+```
+
+> **Note**: `/graphify` and `/rtk` run as lightweight post-processing steps. `/obsidian-cli` and `/llm-wiki` are triggered explicitly when file persistence or knowledge ingestion is needed.
+
+---
+
 > Full skill list → [README.md](README.md) · Korean guide → [README.ko.md](README.ko.md)
