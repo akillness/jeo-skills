@@ -1,9 +1,12 @@
 N:standup-meeting
-D:Conduct effective daily standup meetings for agile teams. Use when facilitating standups, trackin...
-G:standup daily-scrum agile team-sync blockers
-U[3]:
-  **Daily**: same time, same place
-  **During a sprint**: when team sync is needed
-  **Remote teams**: async standup
-S[1]{n,action}:
-  1,3 Questions format
+D:Turn messy daily-sync requests into one honest coordination-cadence packet: decide whether live-daily, async-daily, hybrid-daily, less-frequent syncs, or no recurring standup is justified, then pick the lightest standup mode that still catches blockers and handoffs.
+G:standup|daily-scrum|async-standup|board-walk|blocker-triage|hybrid-teams|project-management
+U[4]:
+  **Cadence reset**: decide whether daily is still justified
+  **Remote or hybrid teams**: async or hybrid check-ins with escalation rules
+  **Blocker routing**: expose impediments without solving them in the room
+  **Ritual cleanup**: replace low-signal standups with lighter cadence or explicit no-meeting paths
+S[3]{n,action}:
+  1,Pick exactly one cadence decision first: live-daily async-daily hybrid-daily less-frequent-sync no-recurring-standup
+  2,Choose one standup mode only if cadence still justifies a recurring sync and gather one small coordination packet
+  3,Return a Coordination Cadence Brief with explicit blocker escalation follow-up huddles and PM-cluster route-outs

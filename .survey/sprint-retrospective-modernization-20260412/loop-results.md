@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | sprint-retrospective/SKILL.md | Rewriting the skill around facilitation modes, action review, and PM-cluster boundaries will improve trigger clarity and reuse more than adding more example templates | Rewrote `SKILL.md`; added `references/facilitation-modes.md`, `evals/evals.json`, and refreshed discovery surfaces in `skills.json`, `README.md`, and `README.ko.md` | Passed `validate_skill.sh`; `evals/evals.json` valid JSON; `skills.json` valid JSON | Keep | Improvement transfers across software, product, and game milestone retros without overlapping planning or standup skills |

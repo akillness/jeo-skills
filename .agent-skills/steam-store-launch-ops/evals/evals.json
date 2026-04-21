@@ -1,0 +1,59 @@
+{
+  "skill_name": "steam-store-launch-ops",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our Steam page gets clicks from social posts, but wishlists are still weak. Review our capsule, screenshots, short description, and tags.",
+      "expected_output": "A Steam Launch Packet that chooses wishlist-signal-check, distinguishes traffic from page promise, and recommends one bounded page-side artifact.",
+      "assertions": [
+        "Output contains the heading 'Steam Launch Packet'",
+        "Output includes a 'Packet choice' section",
+        "Output identifies 'wishlist-signal-check' as the primary packet or clearly performs that role",
+        "Output identifies 'promise-clarity' or explicitly separates conversion weakness from traffic weakness",
+        "Output recommends one next artifact rather than a broad multi-track plan"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We want to do Next Fest. The page is up and the trailer is decent, but I'm nervous the demo is still rough. Should we go for it?",
+      "expected_output": "A Steam Launch Packet that treats Next Fest as a readiness gate, chooses an event-timing or demo-readiness packet, and warns against spending the beat on a weak demo.",
+      "assertions": [
+        "Output identifies 'event-timing-workback' or 'demo-readiness-gate' as the primary packet",
+        "Output identifies 'proof-demo-readiness' or 'timing-hook-fit' as the primary bottleneck",
+        "Output explicitly treats Next Fest as a readiness gate rather than generic free exposure",
+        "Output includes a 'What not to do yet' section"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Give me a Steam launch checklist. We have a page, trailer, demo, and a small creator list, but ownership feels messy.",
+      "expected_output": "A launch-ops packet focused on execution readiness, creator/outreach prep, and one runbook artifact.",
+      "assertions": [
+        "Output identifies 'launch-ops-runbook' as the primary packet or clearly performs that role",
+        "Output identifies 'launch-ops-readiness' or equivalent execution-fragmentation language",
+        "Output mentions review/release timing, creator/outreach prep, or ownership gaps",
+        "Output recommends 'launch checklist', 'launch-day runbook', or 'creator/outreach prep packet'"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our demo got rough streamer reactions and a bunch of players were confused in the first ten minutes. What should we fix before the next build?",
+      "expected_output": "A short Steam-facing handoff that routes the work to game-demo-feedback-triage instead of absorbing player-feedback prioritization into this skill.",
+      "assertions": [
+        "Output includes a 'Route-outs' section",
+        "Output routes to 'game-demo-feedback-triage'",
+        "Output does not pretend the main answer is a store-page rewrite or generic Steam marketing plan"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I mostly need a broad launch and acquisition strategy for our game's website, email list, creators, Steam page, and post-launch campaigns.",
+      "expected_output": "A route-out to marketing-automation because the ask is broader than Steam-specific launch/store operations.",
+      "assertions": [
+        "Output routes to 'marketing-automation'",
+        "Output makes clear that the request is broader than this skill's Steam-specific boundary",
+        "Output does not present steam-store-launch-ops as the primary owner of the whole GTM stack"
+      ]
+    }
+  ]
+}

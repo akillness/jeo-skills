@@ -1,0 +1,63 @@
+{
+  "skill_name": "monitoring-observability",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up observability for a new backend API before launch. We need to know what to instrument and what should page us.",
+      "expected_output": "Chooses service reliability as the primary mode, starts from the current launch packet, includes signal-plan elements, and distinguishes paging from non-paging checks.",
+      "assertions": [
+        "Output identifies service reliability or equivalent as the primary mode.",
+        "Output distinguishes page-now alerts from non-paging checks.",
+        "Output includes ownership or route-outs instead of turning into generic debugging advice."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our Monday morning growth dashboard is stale again. We need observability for freshness, schema drift, and downstream ownership — not another spreadsheet workaround.",
+      "expected_output": "Chooses data/pipeline observability mode and covers freshness, schema, volume or lineage, and ownership by layer.",
+      "assertions": [
+        "Output identifies data or pipeline observability as the primary mode.",
+        "Output mentions freshness and schema drift explicitly.",
+        "Output assigns ownership or handoff by pipeline/job/dashboard layer."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We have lots of alerts and dashboards but nobody trusts them. Help us decide what to keep, delete, or fix.",
+      "expected_output": "Chooses review/gap-audit mode and returns keep/fix/delete/add style decisions with alert-noise and ownership checks.",
+      "assertions": [
+        "Output identifies review, audit, or gap assessment as the primary mode.",
+        "Output includes keep/fix/delete/add or an equivalent remediation ordering.",
+        "Output calls out noisy alerts, ownerless dashboards, or missing metamonitoring."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We need crash alerts and session visibility for our Unity launch weekend, but this is not a frame-time profiler question yet.",
+      "expected_output": "Chooses game/live-ops visibility mode, covers crash context and launch-event telemetry, and routes frame-time work to the profiler skill.",
+      "assertions": [
+        "Output identifies game/live-ops visibility as the primary mode.",
+        "Output includes build, platform, session, or crash-context fields.",
+        "Output routes engine-only performance diagnosis to game-performance-profiler."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We just deployed and need a step-by-step promotion or rollback checklist with post-deploy checks.",
+      "expected_output": "Routes the execution workflow to deployment-automation rather than treating observability as the primary owner.",
+      "assertions": [
+        "Output routes the task to deployment-automation or says rollout execution is not the primary observability workflow.",
+        "Output does not present a full observability buildout as the first response."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Here are the outage logs. Find the root cause.",
+      "expected_output": "Refuses to use monitoring-observability as the main workflow and routes to log-analysis.",
+      "assertions": [
+        "Output routes the task to log-analysis or says this is not the primary skill.",
+        "Output does not present a full observability implementation plan as the first response."
+      ]
+    }
+  ]
+}

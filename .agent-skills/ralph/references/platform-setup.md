@@ -1,152 +1,85 @@
 # Platform Setup Guide
 
-> Multi-platform configuration for ralph-ooo on Claude Code, Codex CLI, Gemini CLI, and OpenCode.
-
----
+> Runtime notes for using the `ralph` method on Claude Code, Codex CLI, Gemini CLI, and OpenCode.
+>
+> Use this file for **current local setup reality**.
+> Use [runtime-boundaries.md](./runtime-boundaries.md) for ownership boundaries.
 
 ## Platform Support Matrix
 
-| Platform | Support Level | Mechanism | ooo Commands | Auto Loop |
-|----------|:-------------:|-----------|:-----------:|:---------:|
-| **Claude Code** | Full | Skills system + UserPromptSubmit hook | All `ooo` commands | Via hooks |
-| **Codex CLI** | Adapted | bash loop + `/prompts:ralph-ooo` | Via conversation | Manual state file |
-| **Gemini CLI** | Native | AfterAgent hook | All `ooo` commands | Via hook |
-| **OpenCode** | Native | Skills system | All `ooo` commands | Via loop |
+| Platform | Support level | Local repo guidance | Notes |
+|----------|---------------|---------------------|-------|
+| **Claude Code** | Full | Install `ralph` and use Claude-native hooks / runtime surfaces | Detailed orchestration belongs to `omc` |
+| **Codex CLI** | Partial / evolving | Repo ships a fallback setup script; native Codex hooks now exist experimentally | Detailed Codex-native runtime behavior belongs to `omx` |
+| **Gemini CLI** | Full | Repo ships hook-based local setup | Harness / projection details belong to `ohmg` |
+| **OpenCode** | Full | Skills system picks up `ralph` directly | Minimal extra setup |
 
----
+## Claude Code
 
-## Claude Code (Full Mode)
-
-### Option A: Ouroboros native plugin
+### Install
 
 ```bash
-# Install
+npx skills add https://github.com/akillness/oh-my-skills --skill ralph
+```
+
+You can also use the upstream Ouroboros plugin path:
+
+```bash
 claude plugin marketplace add Q00/ouroboros
 claude plugin install ouroboros@ouroboros
-
-# One-time setup (inside Claude Code session)
 ooo setup
 ```
 
-### Option B: oh-my-skills integration
+### What `ralph` expects here
+- hook-capable runtime
+- repo-local verification commands
+- explicit seed / drift / completion discipline
+
+### What stays outside this file
+- team / autopilot / Claude-native orchestration depth → `omc`
+- approval posture / sandbox policy → `ralphmode`
+
+## Codex CLI
+
+### Current repo-local helper path
+
+The repo currently ships a **fallback helper** that installs developer instructions and prompt scaffolding:
 
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill ralph-ooo
-```
-
-### Hooks
-
-Claude Code hooks auto-activate on install. Configured at `${CLAUDE_PLUGIN_ROOT}/hooks/hooks.json`:
-
-```json
-{
-  "hooks": {
-    "SessionStart": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/session-start.mjs\"",
-        "timeout": 5
-      }]
-    }],
-    "UserPromptSubmit": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/keyword-detector.mjs\"",
-        "timeout": 5
-      }]
-    }],
-    "PostToolUse": [{
-      "matcher": "Write|Edit",
-      "hooks": [{
-        "type": "command",
-        "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/drift-monitor.mjs\"",
-        "timeout": 3
-      }]
-    }]
-  }
-}
-```
-
-Hook behaviors:
-- `SessionStart` → initializes session state
-- `UserPromptSubmit` → keyword-detector triggers `ooo` commands automatically
-- `PostToolUse(Write|Edit)` → drift-monitor tracks deviation from seed
-
-### Usage
-
-```
-ooo interview "I want to build a task CLI"
-ooo seed
-ooo run
-ooo evaluate <session_id>
-ooo ralph "fix all failing tests"
-```
-
----
-
-## Codex CLI (Adapted Mode)
-
-Codex CLI has no native AfterAgent hooks. Ralph loop uses conversation-level promise detection.
-
-### Setup
-
-```bash
-bash .agent-skills/ralph-ooo/scripts/setup-codex-hook.sh
+bash .agent-skills/ralph/scripts/setup-codex-hook.sh
 ```
 
 This configures:
-1. `~/.codex/config.toml` — adds `developer_instructions` with ooo command contract
-2. `~/.codex/prompts/ralph-ooo.md` — load via `/prompts:ralph-ooo`
-3. `~/.codex/prompts/ouroboros.md` — load via `/prompts:ouroboros`
+1. `~/.codex/config.toml` with `developer_instructions`
+2. `~/.codex/prompts/ralph-ooo.md`
+3. `~/.codex/prompts/ouroboros.md`
 
-### Manual config.toml
+### Important correction
 
-```toml
-developer_instructions = """
-Ouroboros specification-first workflow active. ooo command contract:
+Older repo-local docs treated Codex as having **no native hook story**.
+That is no longer fully true.
+Current official Codex docs expose:
+- native **experimental hooks**
+- `.rules`
+- sandbox / approval controls
+- profiles and advanced config
 
-COMMANDS:
-  ooo interview [topic]   - Socratic questioning until Ambiguity≤0.2
-  ooo seed                - Crystallize into immutable YAML spec
-  ooo run [seed.yaml]     - Execute via Double Diamond
-  ooo evaluate <id>       - 3-stage: Mechanical→Semantic→Consensus
-  ooo evolve [topic]      - Evolutionary loop until Similarity≥0.95
-  ooo unstuck [persona]   - Lateral thinking
-  ooo status [id]         - Drift check
-  ooo ralph "task"        - Persistent loop until verified
+So the truthful position is:
+- the repo **does provide** a local fallback helper today
+- Codex **also has** native hook capabilities upstream
+- concrete Codex-native runtime ownership belongs to `omx`, not the `ralph` front door
 
-RALPH LOOP CONTRACT:
-  /ralph "<task>" [--completion-promise=TEXT] [--max-iterations=N]
-  Signal: <promise>DONE</promise>
-  Default promise: DONE. Default max: 10.
-  State: .omc/state/ralph-ooo-state.json
-  The boulder never stops.
-"""
-```
+### Practical use
 
-### Usage
+If you only need the current local fallback flow:
 
 ```bash
-# Start Codex
 codex
-
-# Load ralph-ooo context
 /prompts:ralph-ooo
-
-# Start ralph loop
 /ralph "fix all TypeScript errors" --max-iterations=10
 ```
 
-### Ralph loop contract (Codex)
-
-1. Treat `/ralph "<task>"` as a binding contract command
-2. Keep original task unchanged across all retries
-3. Detect completion: `<promise>DONE</promise>` in output
-4. If promise missing and iteration < max → continue immediately
-5. If promise found or max reached → finish with status report
-6. Update `.omc/state/ralph-ooo-state.json` each iteration
+If you need native Codex runtime behavior, rules, approvals, or hook wiring, route to `omx`.
 
 ### High-autonomy mode
 
@@ -158,25 +91,25 @@ codex --dangerously-bypass-approvals-and-sandbox \
   -c model_reasoning_summary="detailed"
 ```
 
----
+## Gemini CLI
 
-## Gemini CLI (AfterAgent Hook Mode)
+### Local helper path
 
-### Install via extensions
+```bash
+bash .agent-skills/ralph/scripts/setup-gemini-hook.sh
+```
+
+Or install the upstream extension directly:
 
 ```bash
 gemini extensions install https://github.com/Q00/ouroboros
 ```
 
-Or use setup script:
+### Required settings shape
 
-```bash
-bash .agent-skills/ralph-ooo/scripts/setup-gemini-hook.sh
-```
-
-### Required settings.json
-
-Add to `~/.gemini/settings.json`:
+Add the relevant hook and include-directory entries to `~/.gemini/settings.json`.
+The repo-local helper script is the easiest path.
+A typical shape is:
 
 ```json
 {
@@ -185,93 +118,68 @@ Add to `~/.gemini/settings.json`:
     "includeDirectories": ["~/.gemini/extensions/ralph-ooo"]
   },
   "hooks": {
-    "AfterAgent": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "bash ~/.gemini/hooks/ralph-ooo-check.sh",
-        "timeout": 10
-      }]
-    }]
+    "AfterAgent": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.gemini/hooks/ralph-ooo-check.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }
 ```
 
-### Ralph-ooo AfterAgent hook script
+### Current local caveat
 
-Location: `~/.gemini/hooks/ralph-ooo-check.sh`
+The repo documents a Gemini v0.30.0 bug where `stop_hook_active` stays `false`.
+The shipped workaround is to read `.omc/state/ralph-ooo-state.json` directly inside the continuation helper.
 
-```bash
-#!/usr/bin/env bash
-# Reads .omc/state/ralph-ooo-state.json to decide whether to continue the loop.
-# Workaround for Gemini v0.30.0 bug: stop_hook_active is always false in hook JSON.
-
-STATE_FILE=".omc/state/ralph-ooo-state.json"
-
-if [ ! -f "$STATE_FILE" ]; then
-  exit 0
-fi
-
-STATUS=$(python3 -c "import json,sys; d=json.load(open('$STATE_FILE')); print(d.get('status',''))")
-ITER=$(python3 -c "import json,sys; d=json.load(open('$STATE_FILE')); print(d.get('iteration',0))")
-MAX=$(python3 -c "import json,sys; d=json.load(open('$STATE_FILE')); print(d.get('max_iterations',10))")
-
-if [ "$STATUS" = "complete" ] || [ "$STATUS" = "cancelled" ]; then
-  exit 0
-fi
-
-if [ "$ITER" -ge "$MAX" ]; then
-  exit 0
-fi
-
-# Inject continuation prompt
-echo "CONTINUE_RALPH: Ralph-OOO iteration $ITER/$MAX still running. Continue with ooo ralph loop."
-exit 1   # non-zero exit re-triggers agent
-```
-
-### ⚠️ Gemini v0.30.0 Bug
-
-`stop_hook_active` is always `false` in hook JSON. **Do not rely on it.**
-
-Workaround: read `.omc/state/ralph-ooo-state.json` directly to determine loop state.
-
-### Recommended Gemini run mode
+### Recommended run mode
 
 ```bash
-gemini -s -y   # sandbox + YOLO (no confirmation prompts)
+gemini -s -y
 ```
 
----
+Use `ohmg` when the real question is Gemini / Antigravity harness projection rather than the `ralph` method itself.
 
 ## OpenCode
 
-OpenCode natively supports the skills system. No additional setup required.
+OpenCode picks up skills directly from `.agent-skills/`.
+No extra repo-local helper is required.
 
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": "Use ooo commands for specification-first development. ooo interview to start."
+  "instructions": "Use ooo commands for specification-first development. Start with ooo interview when ambiguity is high."
 }
 ```
 
-Skills auto-load from the `.agent-skills/` directory.
+## Local helper state
 
----
+The repo-local helper scripts use:
 
-## State File Location
-
-Across all platforms, ralph-ooo state lives at:
-
-```
+```text
 .omc/state/ralph-ooo-state.json
 ```
 
-Use the state utility script to manage it:
+You can inspect or reset that helper state with:
 
 ```bash
-bash .agent-skills/ralph-ooo/scripts/ooo-state.sh init "fix all tests"
-bash .agent-skills/ralph-ooo/scripts/ooo-state.sh status
-bash .agent-skills/ralph-ooo/scripts/ooo-state.sh checkpoint
-bash .agent-skills/ralph-ooo/scripts/ooo-state.sh reset
-bash .agent-skills/ralph-ooo/scripts/ooo-state.sh resume
+bash .agent-skills/ralph/scripts/ooo-state.sh init "fix all tests"
+bash .agent-skills/ralph/scripts/ooo-state.sh status
+bash .agent-skills/ralph/scripts/ooo-state.sh checkpoint
+bash .agent-skills/ralph/scripts/ooo-state.sh reset
+bash .agent-skills/ralph/scripts/ooo-state.sh resume
 ```
+
+## Official references
+
+- Claude Code settings / hooks docs
+- OpenAI Codex config / hooks / rules / approvals docs
+- Gemini CLI settings / hooks / trusted-folders docs
+- Upstream Ouroboros runtime guides

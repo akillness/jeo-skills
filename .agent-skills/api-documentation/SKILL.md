@@ -1,390 +1,201 @@
 ---
 name: api-documentation
-description: Create comprehensive API documentation for developers. Use when documenting REST APIs, GraphQL schemas, or SDK methods. Handles OpenAPI/Swagger, interactive docs, examples, and API reference guides.
+description: >
+  Publish or refresh developer-facing API documentation for REST, GraphQL, webhook,
+  SDK, and developer-portal surfaces: reference docs, quickstarts, task guides,
+  auth/setup notes for API consumers, truthful example requests, error/retry/limit
+  guidance, and migration updates. Use when the contract already exists and the
+  main job is helping integrators succeed with the API, not designing resources or
+  versioning strategy. Triggers on: API docs, developer portal, OpenAPI reference,
+  SDK docs, webhook docs, quickstart, integration guide, endpoint reference,
+  pagination docs, rate-limit docs, migration note, and partner API guide. Route
+  contract design to `api-design`, internal specs/runbooks to `technical-writing`,
+  end-user UI help to `user-guide-writing`, auth implementation to
+  `authentication-setup`, and release-note hygiene to `changelog-maintenance`.
+allowed-tools: Read Write Edit Glob Grep
+compatibility: >
+  Best for docs-as-code repos, developer portals, OpenAPI/GraphQL references, SDK
+  docs, and integration guides where the output helps external or internal
+  integrators use an API safely and successfully.
+license: MIT
 metadata:
-  tags: API-documentation, OpenAPI, Swagger, REST, GraphQL, developer-docs
+  tags: api-documentation, developer-docs, openapi, swagger, graphql, webhooks, sdk-docs, developer-portal, integration-guides
   platforms: Claude, ChatGPT, Gemini
+  version: "2.1.0"
+  modernization: 2026-04-13
+  structural_hardening: 2026-04-17
 ---
-
 
 # API Documentation
 
+Use this skill when the main job is **publishing or refreshing developer-facing API docs that help integrators reach first success, understand reference truth, and stay unblocked as the API evolves**.
+
+`api-documentation` is the documentation-cluster anchor for:
+- endpoint / schema reference docs
+- quickstarts and first-success flows
+- task-oriented integration guides
+- SDK guides
+- webhook delivery / verification docs
+- developer-portal navigation and grouped reference surfaces
+- migration updates attached to the docs surface
+
+Read these support docs before choosing the mode or output packet:
+- [references/documentation-modes-and-boundaries.md](references/documentation-modes-and-boundaries.md)
+- [references/output-packets-and-navigation.md](references/output-packets-and-navigation.md)
+- [references/example-and-reference-checklist.md](references/example-and-reference-checklist.md)
+- [references/publishing-and-drift-control.md](references/publishing-and-drift-control.md)
 
 ## When to use this skill
+- A team needs API reference, quickstarts, or portal pages that external developers, partners, or internal integrators can actually use.
+- An OpenAPI or schema artifact already exists, but the docs need structure, examples, auth/setup guidance, error handling, or clearer navigation.
+- Existing API docs drifted after auth, versioning, retry, pagination, webhook, or SDK changes.
+- A public, partner, or internal API launch needs developer-facing guides, migration notes, or trustworthy examples.
+- A large API surface needs grouping, selective publishing, or cleaner portal structure instead of one giant reference dump.
 
-- **API Development**: When adding new endpoints
-- **External Release**: Public API launch
-- **Team Collaboration**: Frontend-backend interface definition
+## When not to use this skill
+- **The main job is designing resources, endpoint shape, schema rules, or versioning strategy** → use `api-design`.
+- **The main job is writing internal specs, ADRs, runbooks, rollout docs, or system migration procedures** → use `technical-writing`.
+- **The main job is end-user/product UI onboarding, screenshots, tutorials, or help-center docs** → use `user-guide-writing`.
+- **The main job is implementing auth/session/provider behavior rather than documenting how API consumers authenticate** → use `authentication-setup`.
+- **The main job is release-note, semver, or changelog hygiene** → use `changelog-maintenance`.
+- **There is no credible source of truth for the API behavior yet** → route missing contract questions back to `api-design` instead of inventing docs from vibes.
 
 ## Instructions
 
-### Step 1: OpenAPI (Swagger) Spec
+### Step 1: Classify the API-doc job
+Normalize the request before drafting.
 
 ```yaml
-openapi: 3.0.0
-info:
-  title: User Management API
-  version: 1.0.0
-  description: API for managing users
-  contact:
-    email: api@example.com
-
-servers:
-  - url: https://api.example.com/v1
-    description: Production
-  - url: https://staging-api.example.com/v1
-    description: Staging
-
-paths:
-  /users:
-    get:
-      summary: List all users
-      description: Retrieve a paginated list of users
-      tags:
-        - Users
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            default: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 20
-            maximum: 100
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/User'
-                  pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-    post:
-      summary: Create a new user
-      tags:
-        - Users
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateUserRequest'
-      responses:
-        '201':
-          description: User created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-
-components:
-  schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        email:
-          type: string
-          format: email
-        name:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-      required:
-        - id
-        - email
-        - name
-
-    CreateUserRequest:
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-        name:
-          type: string
-          minLength: 2
-          maxLength: 50
-        password:
-          type: string
-          minLength: 8
-      required:
-        - email
-        - name
-        - password
-
-    Pagination:
-      type: object
-      properties:
-        page:
-          type: integer
-        limit:
-          type: integer
-        total:
-          type: integer
-
-  responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: "Authentication required"
-
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: "Invalid input"
-
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
-security:
-  - bearerAuth: []
+api_documentation_mode:
+  primary_mode: reference | quickstart | task-guide | sdk-guide | webhook-guide | migration-update
+  api_style: rest | graphql | webhook | sdk | mixed | unknown
+  audience: external-developers | internal-integrators | partners | mixed | unknown
+  source_of_truth: openapi | graphql-schema | code-annotations | tests | mixed | unknown
+  docs_surface: developer-portal | docs-site | repo-markdown | sdk-site | internal-catalog | unknown
+  navigation_scope: single-operation | grouped-resource | large-api-surface | portal-section | unknown
+  maintenance_state: new-docs | refresh | drift-fix | launch-critical
 ```
 
-### Step 2: Generate Documentation from Code (JSDoc/Decorators)
+Choose one **primary mode** per run:
+- `reference` → endpoint/schema truth with parameters, fields, errors, limits, and examples
+- `quickstart` → fastest path to first successful API call or webhook receipt
+- `task-guide` → one workflow or integration outcome
+- `sdk-guide` → language/client-library guidance plus examples and caveats
+- `webhook-guide` → delivery, verification, retry, and local-debug guidance
+- `migration-update` → changed behavior and transition path on the docs surface
 
-**Express + TypeScript**:
-```typescript
-/**
- * @swagger
- * /api/users:
- *   post:
- *     summary: Create a new user
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - name
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *               name:
- *                 type: string
- *               password:
- *                 type: string
- *                 minLength: 8
- *     responses:
- *       201:
- *         description: User created successfully
- *       400:
- *         description: Invalid input
- */
-router.post('/users', async (req, res) => {
-  const { email, name, password } = req.body;
-  const user = await userService.createUser({ email, name, password });
-  res.status(201).json(user);
-});
-```
+If the surface is large, also decide whether the task is about **grouping/navigation** as much as prose. Do not hide large-surface information architecture inside a generic “write docs” request.
 
-### Step 3: Interactive Documentation
+### Step 2: Confirm boundary skills and the real developer job
+Answer these four questions before writing:
+1. Who is integrating with this API, and what exact job should they complete after reading?
+2. What artifact is the real contract source of truth today?
+3. Which docs surface are you updating: portal, repo docs, SDK site, internal catalog, or mixed?
+4. Which neighboring skills must stay out of scope?
 
-**Swagger UI Setup**:
-```typescript
-import swaggerUi from 'swagger-ui-express';
-import YAML from 'yamljs';
+Quick route-out table:
 
-const swaggerDocument = YAML.load('./openapi.yaml');
+| If the request sounds like... | Use |
+|---|---|
+| "Design the endpoints / resources / schema before coding" | `api-design` |
+| "Write the architecture doc / ADR / rollout plan / runbook" | `technical-writing` |
+| "Write customer help docs for using the product UI" | `user-guide-writing` |
+| "Explain provider setup / session middleware / token implementation" | `authentication-setup` |
+| "Summarize what shipped in the release" | `changelog-maintenance` |
+| "Write the developer portal / OpenAPI docs / quickstart / webhook guide" | `api-documentation` |
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: "My API Documentation"
-}));
-```
+### Step 3: Gather the smallest truthful evidence set
+Do not write API docs from an outdated spec alone. Pull the minimum credible evidence first:
+- current OpenAPI / GraphQL schema / endpoint list / SDK surface
+- auth requirements: keys, headers, scopes, signing, sandbox vs production, callback/webhook verification
+- example requests and responses that match current behavior
+- common errors, retries, limits, pagination/cursor behavior, and idempotency expectations
+- versioning, deprecation, and migration notes
+- tests, fixtures, or verified requests that keep examples honest
+- publishing constraints: portal nav, selective publishing needs, docs-site structure, or internal-catalog grouping
 
-### Step 4: Examples & Guides
+If details are incomplete, label assumptions clearly and produce a docs-gap list instead of faking certainty.
 
-```markdown
-## API Documentation
+### Step 4: Choose the smallest useful packet
+Match the output to the developer job. Do **not** dump quickstart, reference, SDK docs, and migration notes into one giant page by default.
 
-### Authentication
+Common packet choices:
+- one quickstart page
+- one grouped reference section
+- one task/integration guide
+- one SDK guide
+- one webhook guide
+- one migration-update note
+- one docs-gap / drift checklist for unresolved truth-source issues
+- one navigation/grouping proposal for a large API surface
 
-All API requests require authentication using JWT tokens.
+Use [references/output-packets-and-navigation.md](references/output-packets-and-navigation.md) for mode skeletons and portal/grouping guidance.
 
-#### Getting a Token
-\`\`\`bash
-curl -X POST https://api.example.com/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email": "user@example.com", "password": "yourpassword"}'
-\`\`\`
+### Step 5: Apply API-doc rules instead of generic writing advice
+Use these rules aggressively:
+- **Lead with the developer task and integration surface**, not marketing copy.
+- **State auth and environment assumptions early**.
+- **Keep examples truthful**: prefer tests, verified requests, or real fixture shapes.
+- **Document operational realities**: errors, retries, limits, pagination, webhook replay, eventual consistency, idempotency.
+- **Separate reference truth from workflow guidance**.
+- **Expose navigation decisions** on large APIs: grouping, selective publishing, and related-guide links matter.
+- **Link outward deliberately**: quickstarts point to deeper reference; reference points to task guides; migration updates point to changelog/release notes rather than replacing them.
 
-Response:
-\`\`\`json
-{
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "refreshToken": "..."
-}
-\`\`\`
+### Step 6: Protect against drift on purpose
+Before finalizing, record:
+- contract source of truth
+- example source of truth
+- publishing surface
+- review trigger
+- drift hotspots: auth, limits, retries, versioning, webhook fields, SDK examples, migration notes
+- companion docs that must stay aligned: quickstarts, SDK pages, changelog entries, Postman collections, portal navigation
 
-#### Using the Token
-\`\`\`bash
-curl -X GET https://api.example.com/v1/users \
-  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
-\`\`\`
+Use [references/publishing-and-drift-control.md](references/publishing-and-drift-control.md) as the anti-drift checklist.
 
-### Creating a User
-
-**Endpoint**: `POST /v1/users`
-
-**Request Body**:
-\`\`\`json
-{
-  "email": "john@example.com",
-  "name": "John Doe",
-  "password": "SecurePass123!"
-}
-\`\`\`
-
-**Success Response** (201):
-\`\`\`json
-{
-  "id": "123e4567-e89b-12d3-a456-426614174000",
-  "email": "john@example.com",
-  "name": "John Doe",
-  "createdAt": "2025-01-15T10:00:00Z"
-}
-\`\`\`
-
-**Error Response** (400):
-\`\`\`json
-{
-  "error": "Email already exists"
-}
-\`\`\`
-
-### Rate Limiting
-- 100 requests per 15 minutes per IP
-- Header: `X-RateLimit-Remaining`
-
-### Pagination
-\`\`\`
-GET /v1/users?page=2&limit=20
-\`\`\`
-
-Response includes pagination info:
-\`\`\`json
-{
-  "data": [...],
-  "pagination": {
-    "page": 2,
-    "limit": 20,
-    "total": 157,
-    "pages": 8
-  }
-}
-\`\`\`
-
-### Error Codes
-- `400` - Bad Request (validation error)
-- `401` - Unauthorized (missing/invalid token)
-- `403` - Forbidden (insufficient permissions)
-- `404` - Not Found
-- `409` - Conflict (duplicate resource)
-- `429` - Too Many Requests (rate limit)
-- `500` - Internal Server Error
-```
-
-## Output format
-
-### API Documentation Structure
-
-```
-docs/
-├── README.md                    # Overview
-├── getting-started.md           # Quick start guide
-├── authentication.md            # Auth guide
-├── api-reference/
-│   ├── users.md                 # Users endpoints
-│   ├── auth.md                  # Auth endpoints
-│   └── products.md              # Products endpoints
-├── guides/
-│   ├── pagination.md
-│   ├── error-handling.md
-│   └── rate-limiting.md
-├── examples/
-│   ├── curl.md
-│   ├── javascript.md
-│   └── python.md
-└── openapi.yaml                 # OpenAPI spec
-```
-
-## Constraints
-
-### Required Rules (MUST)
-
-1. **Real Examples**: Provide working code examples
-2. **Error Cases**: Document not only success but also failure cases
-3. **Keep Updated**: Update documentation when API changes
-
-### Prohibited (MUST NOT)
-
-1. **Real Keys in Examples**: Do not use real API keys/passwords in examples
-2. **Vague Descriptions**: Unclear descriptions like "returns data"
-
-## Best practices
-
-1. **Try It Out**: Provide interactive documentation (Swagger UI)
-2. **Provide SDK**: SDK and examples for major languages
-3. **Changelog**: Document API changes
-
-## References
-
-- [OpenAPI Specification](https://swagger.io/specification/)
-- [Swagger UI](https://swagger.io/tools/swagger-ui/)
-- [Redoc](https://redocly.com/)
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2025-01-01
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Tags
-`#API-documentation` `#OpenAPI` `#Swagger` `#REST` `#developer-docs` `#documentation`
+### Step 7: Verify output quality
+Before shipping, check:
+1. Could a new integrator reach first success with this doc set?
+2. Are auth and environment assumptions visible before the first call?
+3. Do examples match real behavior?
+4. Are errors, limits, retries, pagination, or verification notes present where needed?
+5. Is the output packet small enough for the request?
+6. Are route-outs to `api-design`, `technical-writing`, `user-guide-writing`, `authentication-setup`, and `changelog-maintenance` still explicit?
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Partner API quickstart
+**Input:** “Write the quickstart for our Orders API so partners can create an API key, send the first `POST /orders`, and verify the returned order ID.”
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good output shape:** chooses `quickstart`, shows prerequisites and auth early, gives one first-success request plus a success check, and links to the deeper reference surface.
+
+### Example 2: Large reference cleanup
+**Input:** “Our developer portal publishes one huge OpenAPI collection; help us regroup endpoints, expose only partner-safe sections, and add navigation that developers can scan.”
+
+**Good output shape:** treats this as `reference` plus `navigation/grouping` work, proposes grouped sections or selective publishing, preserves truthful reference links, and does not pretend auto-generation alone solves the structure problem.
+
+### Example 3: Webhook change notice
+**Input:** “Update our webhook docs because `invoice.paid` now retries for 24 hours, includes `attempt_count`, and requires HMAC verification on every delivery.”
+
+**Good output shape:** chooses `webhook-guide` or `migration-update`, documents retry and verification behavior, updates affected examples, and keeps implementation details and release-note hygiene out of scope.
+
+### Example 4: Route-out to API design
+**Input:** “We haven’t decided whether this should be REST or GraphQL, and we need a resource model and pagination plan.”
+
+**Good output shape:** routes the task to `api-design`, explains that contract/interface work must happen before docs publication, and may note what docs surfaces will be needed later.
+
+## Best practices
+1. Treat API docs as developer workflow artifacts, not as schema rendering alone.
+2. Keep contract design separate from developer-facing publication.
+3. Prefer small, truthful packets over one giant portal page.
+4. Make auth, examples, limits, retries, pagination, and webhook behavior explicit early.
+5. Document navigation/grouping decisions for large surfaces instead of burying them in prose.
+6. Tie docs maintenance to real truth sources so refreshes do not drift.
+7. Route adjacent writing, auth implementation, and release hygiene tasks to the right neighboring skill.
+
+## References
+- [OpenAPI Initiative](https://www.openapis.org/)
+- [Stripe API Reference](https://docs.stripe.com/api)
+- [GitHub REST API docs](https://docs.github.com/en/rest?apiVersion=2022-11-28)
+- [ReadMe Guides](https://docs.readme.com/main/docs/guides)
+- [Redocly docs](https://redocly.com/docs/)
+- [Postman API documentation](https://www.postman.com/api-platform/api-documentation/)

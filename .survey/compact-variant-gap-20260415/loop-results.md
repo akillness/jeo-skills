@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | Remaining compact variants | Finishing the last missing `SKILL.toon` files will restore runtime/docs truth more cleanly than downgrading docs or starting with automation. | Added 8 `SKILL.toon` files, refreshed graph/wiki survey artifacts, and kept `SKILL.md` boundaries intact. | Missing compact-variant count reached 0; `validate_catalog_sync.py` passed; changed skill directories still passed `validate_skill.sh` (with pre-existing warnings noted for `lmstudio-cli` / `obsidian-plugin`). | Keep | Bounded support-completion ratchet; no new overlapping skills added. |

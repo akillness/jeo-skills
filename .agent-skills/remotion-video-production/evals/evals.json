@@ -1,0 +1,35 @@
+{
+  "skill_name": "remotion-video-production",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use remotion-video-production to help us plan a reusable launch video template.",
+      "expected_output": "Maps the alias to video-production, keeps the canonical packet shape, and locks the mode to code-first programmable video.",
+      "assertions": [
+        "Output notes that remotion-video-production maps to video-production or is a compatibility alias",
+        "Output selects Code-first programmable video as the primary mode",
+        "Output returns a Video Production Brief or equivalent canonical packet"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We need a Remotion composition plan for weekly feature-announcement videos.",
+      "expected_output": "Uses Remotion-specific workflow language without inventing a competing skill or packet format.",
+      "assertions": [
+        "Output mentions Remotion, scenes, compositions, or rendering",
+        "Output keeps the response aligned with the canonical video-production workflow",
+        "Output includes asset or QA guidance"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our ops team asked for remotion-video-production, but the real job is generating thousands of recap videos from spreadsheet rows with minimal engineering overhead.",
+      "expected_output": "Acknowledges the alias while routing the workflow back to a broader template/API automation path under video-production instead of forcing a Remotion codebase.",
+      "assertions": [
+        "Output notes that remotion-video-production is a compatibility alias or maps to video-production",
+        "Output explicitly says template/API automation or a broader video-production mode is a better fit than a Remotion codebase",
+        "Output still returns one coherent implementation-ready packet rather than multiple competing plans"
+      ]
+    }
+  ]
+}

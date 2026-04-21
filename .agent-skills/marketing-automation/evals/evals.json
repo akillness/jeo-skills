@@ -1,0 +1,62 @@
+{
+  "skill_name": "marketing-automation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We are launching a new SaaS workflow next month and need help with messaging, landing page copy, onboarding emails, and how to measure whether it worked. Use marketing-automation.",
+      "expected_output": "A Marketing Routing Brief that chooses one primary mode, one primary lane, one reusable operator packet, and includes a proof stack with KPI plus measurement logic.",
+      "assertions": [
+        "Output includes the heading 'Marketing Routing Brief'",
+        "Output includes an intake or summary section that names a mode and a primary lane",
+        "Output selects a launch-oriented mode such as launch-orchestration instead of listing many unrelated channels",
+        "Output includes an Operator packet section with a primary owner and dependencies or approvals",
+        "Output includes a Proof stack section with KPI, leading signal, and readout window"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our pricing page gets traffic, but upgrades are weak. We need help with the page and what to test. Use marketing-automation.",
+      "expected_output": "A conversion-surface marketing brief with a CRO-oriented experiment packet.",
+      "assertions": [
+        "Output selects the conversion-surface mode or clearly frames the work as a page/flow conversion problem",
+        "Output selects CRO or clearly frames the lane as conversion optimization",
+        "Output includes immediate next steps",
+        "Output includes an Operator packet section with an owner and likely dependencies such as design or analytics",
+        "Output includes at least one conversion-oriented measurement signal such as upgrade rate, CTA clicks, or signup completion"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Trial users activate once and disappear. We need onboarding and lifecycle help, plus a sensible KPI. Use marketing-automation.",
+      "expected_output": "A lifecycle-retention brief that chooses one packet and leaves activation/retention measurement guidance.",
+      "assertions": [
+        "Output selects the lifecycle-retention mode or clearly frames the work as onboarding/retention",
+        "Output includes a single packet instead of many unrelated deliverables",
+        "Output includes an Operator packet section with the lifecycle owner and dependencies or approvals if relevant",
+        "Output includes a KPI and leading signal tied to activation, retention, or repeat usage"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We need Steam capsule copy and Next Fest marketing help for our game demo. Use marketing-automation.",
+      "expected_output": "A short brief that routes execution toward steam-store-launch-ops instead of absorbing the whole niche workflow.",
+      "assertions": [
+        "Output references steam-store-launch-ops as the preferred downstream skill or workflow",
+        "Output does not present the task as a normal canonical marketing-automation packet",
+        "Output leaves a concise handoff rather than a giant generic marketing plan"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We are launching a pricing-page refresh tied to a webinar campaign, but legal still needs to approve claims and analytics has not confirmed the event naming. Use marketing-automation.",
+      "expected_output": "A conversion or launch-oriented brief that keeps one primary packet, surfaces the owner, dependencies/approvals, and proof stack instead of burying coordination risk.",
+      "assertions": [
+        "Output includes an Operator packet section",
+        "Output names a primary owner for the packet",
+        "Output surfaces legal and analytics as dependencies or approvals rather than hiding them in generic notes",
+        "Output includes a Proof stack section with KPI, leading signal, and readout timing",
+        "Output still chooses one primary mode and one primary lane"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "skill_name": "design-system",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We need one design system for our marketing site and B2B dashboard so tokens, typography, and motion feel related without making both surfaces identical.",
+      "expected_output": "Choose cross-surface alignment mode, define shared foundations plus surface-specific differences, and leave a compact design-system packet.",
+      "assertions": [
+        "Classifies the request as a design-system problem rather than only a page mock",
+        "Defines shared foundations or cross-surface consistency rules",
+        "Produces or frames a compact design-system packet"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our team keeps adding random colors and spacing values. We need naming rules and a review policy for shared primitives.",
+      "expected_output": "Choose foundations or primitive governance mode and focus on token naming, primitive promotion, and review thresholds.",
+      "assertions": [
+        "Keeps the answer in design-system",
+        "Mentions token naming or governance rules",
+        "Mentions primitive promotion or review thresholds"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Can you redesign our Button and Modal APIs with better variants, slots, and controlled vs uncontrolled rules?",
+      "expected_output": "Route the implementation-level API architecture to ui-component-patterns while keeping only system-level naming guidance in design-system if needed.",
+      "assertions": [
+        "Routes the main job to `ui-component-patterns`",
+        "Does not pretend component API architecture is fully owned by design-system",
+        "Keeps any retained guidance at the system naming/policy level"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Should the dashboard and mobile web app share one breakpoint policy, and how should the layout collapse on small screens?",
+      "expected_output": "Keep shared breakpoint or density policy in design-system, but route the actual collapse strategy and verification to responsive-design.",
+      "assertions": [
+        "Keeps shared breakpoint policy in design-system",
+        "Routes layout adaptation or verification to `responsive-design`",
+        "Makes the split explicit instead of absorbing both jobs"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We already have tokens, but our forms still fail focus visibility and error-state accessibility. What should we do?",
+      "expected_output": "State the design-system baseline briefly, then route remediation and manual verification to web-accessibility.",
+      "assertions": [
+        "Routes the main remediation task to `web-accessibility`",
+        "Keeps only baseline accessibility expectations in design-system",
+        "Avoids absorbing the full remediation workflow"
+      ]
+    }
+  ]
+}

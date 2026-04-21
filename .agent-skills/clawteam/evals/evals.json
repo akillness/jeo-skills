@@ -3,56 +3,67 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "I need to run parallel ML experiments with 4 agents on different hyperparameter configurations",
-      "expected_output": "Uses clawteam spawn to create 4 worker agents, each assigned different hyperparameter configs, with task dependency tracking and clawteam monitor for progress",
+      "prompt": "Use ClawTeam to split a full-stack feature across multiple agents.",
+      "expected_output": "Chooses manual-team mode, creates a team with team spawn-team, spawns workers with clawteam spawn tmux ..., uses task create/update or inbox commands, and finishes with board attach or board serve.",
       "assertions": [
-        "clawteam spawn command used",
-        "Multiple workers spawned in parallel",
-        "Tasks assigned to specific workers",
-        "Monitoring command provided"
+        "manual-team mode selected or clearly implied",
+        "team spawn-team command shown",
+        "spawn tmux command shown",
+        "task create or task update command shown",
+        "board attach or board serve command shown"
       ]
     },
     {
       "id": 2,
-      "prompt": "Spawn a full-stack development team to build a REST API",
-      "expected_output": "Uses clawteam template fullstack or spawns specialized workers: api-designer, backend-dev, frontend-dev, test-engineer with task dependencies",
+      "prompt": "How do I launch a prebuilt ClawTeam team and watch it live?",
+      "expected_output": "Chooses launch-template mode, uses template list or launch <template>, and includes a monitoring command such as board attach or board serve.",
       "assertions": [
-        "clawteam template fullstack or manual spawn used",
-        "Specialized agent roles assigned",
-        "Task dependencies set between workers",
-        "clawteam board or monitor for progress tracking"
+        "launch-template mode selected or clearly implied",
+        "template list or launch command shown",
+        "board attach or board serve command shown",
+        "does not bury the answer in manual-team setup unless justified"
       ]
     },
     {
       "id": 3,
-      "prompt": "How do I check what my ClawTeam agents are working on right now?",
-      "expected_output": "Provides clawteam status and clawteam board commands with team name parameter",
+      "prompt": "Set up ClawTeam with a non-default provider/model profile before spawning workers.",
+      "expected_output": "Chooses profile-setup mode and uses preset/profile commands before spawn.",
       "assertions": [
-        "clawteam status command shown",
-        "clawteam board --port option mentioned",
-        "Team name parameter explained"
+        "profile-setup mode selected or clearly implied",
+        "preset list/show or preset generate-profile command shown",
+        "profile doctor or profile test command shown",
+        "spawn with --profile shown or described"
       ]
     },
     {
       "id": 4,
-      "prompt": "Set up ClawTeam to analyze TSLA stock with multiple specialist agents",
-      "expected_output": "Uses clawteam template hedge-fund with --ticker TSLA, or manually spawns growth/technical/fundamental/sentiment/risk analyst agents",
+      "prompt": "A ClawTeam worker keeps dying after its first turn. What should I check?",
+      "expected_output": "Chooses monitor-recover mode, gives board/team/task/inbox inspection commands, and mentions that long-running worker persistence may be fragile rather than guaranteed.",
       "assertions": [
-        "hedge-fund template or manual spawn used",
-        "Multiple analyst agent types mentioned",
-        "Synthesis agent included",
-        "Task coordination between analysts explained"
+        "monitor-recover mode selected or clearly implied",
+        "team status or board show/live/attach/serve command shown",
+        "task or inbox inspection command shown",
+        "caveat about long-running worker behavior mentioned"
       ]
     },
     {
       "id": 5,
-      "prompt": "Install and set up ClawTeam for the first time",
-      "expected_output": "pip install clawteam, clawteam doctor to verify setup, explains tmux requirement and compatible agents",
+      "prompt": "I just need a generic multi-agent implementation loop with planning and QA.",
+      "expected_output": "Routes away from clawteam to a more appropriate orchestration skill such as jeo, omc, omx, or ohmg.",
       "assertions": [
-        "pip install clawteam command provided",
-        "Python 3.10+ requirement mentioned",
-        "tmux requirement mentioned",
-        "clawteam doctor verification step included"
+        "route-out to neighboring orchestration skill provided",
+        "explains that clawteam is the ClawTeam-specific operator surface",
+        "does not force ClawTeam commands for a generic orchestration request"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I need a Kanban-style board for coding tasks, review queues, and worktree handoff — not ClawTeam runtime commands.",
+      "expected_output": "Routes away from clawteam to vibe-kanban or another board/governance owner instead of forcing ClawTeam board commands.",
+      "assertions": [
+        "route-out to vibe-kanban or equivalent board-governance owner provided",
+        "explains that clawteam owns the runtime/operator surface rather than generic board governance",
+        "does not present ClawTeam board commands as the default answer"
       ]
     }
   ]

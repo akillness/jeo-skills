@@ -1,356 +1,235 @@
 ---
 name: user-guide-writing
-description: Write clear and helpful user guides and tutorials for end users. Use when creating onboarding docs, how-to guides, or FAQ pages. Handles user-focused documentation, screenshots, step-by-step instructions.
+description: >
+  Write user-facing documentation for onboarding, tutorials, task how-to guides,
+  FAQs, help-center updates, and release-facing help refreshes. Use when the main
+  job is helping end users or admins complete a product workflow, recover from a
+  blocker, or understand a changed UI path. Triggers on: user guide, tutorial,
+  getting started, onboarding doc, help article, how-to, FAQ, knowledge-base
+  article, support doc, release help update, and customer-facing documentation.
+  Route internal specs/runbooks to `technical-writing`, API portals/SDK docs to
+  `api-documentation`, and release-note hygiene to `changelog-maintenance`.
+allowed-tools: Read Write Edit Glob Grep
+compatibility: >
+  Best for Markdown, help-center, docs-site, or knowledge-base workflows where the
+  output teaches someone how to complete a task in the product rather than how the
+  underlying system is implemented.
+license: MIT
 metadata:
-  tags: user-guides, tutorials, documentation, onboarding, how-to, FAQ
+  tags: user-guides, tutorials, documentation, onboarding, how-to, faq, help-center, customer-docs, product-education
   platforms: Claude, ChatGPT, Gemini
+  version: "2.1.0"
+  modernization: 2026-04-13
+  hardening: 2026-04-17
 ---
-
 
 # User Guide Writing
 
+Use this skill when the deliverable is **customer-facing or admin-facing documentation that helps someone complete a workflow in the product**.
+
+`user-guide-writing` is the documentation-cluster anchor for:
+- getting-started / first-success guides
+- tutorials and guided walkthroughs
+- task-based how-to articles
+- FAQs and support-oriented answer sets
+- release-facing help updates after shipped UI/workflow changes
+- small guide sets that combine one primary page with the minimum supporting companion docs
+
+Read these support docs before choosing the mode or boundary:
+- [references/document-modes-and-boundaries.md](references/document-modes-and-boundaries.md)
+- [references/mode-structures.md](references/mode-structures.md)
+- [references/workflow-checklist.md](references/workflow-checklist.md)
+- [references/maintenance-signals.md](references/maintenance-signals.md)
 
 ## When to use this skill
+- A product needs a getting-started guide that gets a new user to the first successful outcome.
+- A feature launch needs a tutorial or how-to article for real product users.
+- A help center needs a task-based article, FAQ, or troubleshooting-friendly walkthrough.
+- Support pain keeps recurring and the answer should become durable customer-facing documentation.
+- A workflow changed and the existing user-facing steps, screenshots, warnings, or prerequisites need to be updated.
+- A request really needs one guide plus a tiny companion packet instead of a huge mixed-purpose document.
 
-- **New Features**: Introduce new features to users
-- **Onboarding**: Train new users
-- **FAQ**: Organize frequently asked questions
+## When not to use this skill
+- **The main job is an internal spec, architecture doc, ADR, runbook, migration plan, or builder-facing implementation guide** → use `technical-writing`.
+- **The main job is API reference, SDK docs, webhook docs, developer quickstarts, or developer-portal content** → use `api-documentation`.
+- **The main job is release notes, `CHANGELOG.md`, migration announcements, or shipped-change summaries** → use `changelog-maintenance`.
+- **The main job is a deck, launch presentation, workshop slide set, or visual review artifact** → use `presentation-builder`.
+- **The main job is product positioning, marketing messaging, lifecycle email copy, or launch copy** → use `marketing-automation`.
+- **The main job is building in-app onboarding mechanics or product-tour UX** → use the relevant product/UX skill first, then use this skill for the durable written companion docs.
 
 ## Instructions
 
-### Step 1: Quick Start Guide
+### Step 1: Classify one primary mode
+Normalize the request before drafting.
+
+```yaml
+user_guide_mode:
+  primary_mode: getting-started | tutorial | how-to | faq | release-help-update
+  audience: end-user | admin | manager | mixed | unknown
+  experience_level: first-time | familiar | advanced | mixed | unknown
+  docs_surface: help-center | docs-site | in-app-companion | pdf | unknown
+  source_of_truth: product-ui | release-notes | support-tickets | sme-notes | mixed | unknown
+  maintenance_need: one-off | recurring | stale-doc-rewrite | launch-critical
+  output_shape: single-page | guide-plus-faq | refresh-packet | guide-set | unknown
+```
+
+Use one primary mode per run:
+- `getting-started` → shortest path to first success
+- `tutorial` → guided learning with context and milestones
+- `how-to` → one practical task completed quickly
+- `faq` → concise repeated questions plus route-outs to deeper guides
+- `release-help-update` → patch user-facing docs after shipped UI or workflow change
+
+### Step 2: Confirm audience, task, and route-outs
+Answer these before writing:
+1. Who will follow the doc, and what role or permissions do they have?
+2. What exact task or outcome should they achieve?
+3. Which prerequisites, plan limits, or environment assumptions could break the flow?
+4. Which neighboring skills must stay out of scope?
+
+Quick route-out table:
+
+| If the request sounds like... | Use |
+|---|---|
+| "Write the architecture doc / runbook / migration plan" | `technical-writing` |
+| "Write the developer portal / SDK quickstart / webhook docs" | `api-documentation` |
+| "Summarize what shipped this release" | `changelog-maintenance` |
+| "Write onboarding docs / tutorial / FAQ / help article" | `user-guide-writing` |
+| "Make a launch deck / training deck / walkthrough presentation" | `presentation-builder` |
+
+### Step 3: Gather the minimum user-facing evidence
+Do not draft from vibes alone. Pull the smallest credible evidence set first:
+- current UI labels, navigation, and states
+- prerequisites, permissions, and plan / edition assumptions
+- expected result after each important step
+- likely blockers, empty states, and branching conditions
+- screenshots or screenshot placeholders only where they reduce confusion
+- support questions, search terms, or recurring failure signals if available
+- release changes that made the current guide stale
+
+If details are incomplete, label assumptions explicitly instead of pretending the guide is verified.
+
+### Step 4: Choose the smallest fitting structure
+Use [references/mode-structures.md](references/mode-structures.md) and keep only the sections the chosen mode needs.
+
+Rules:
+- If the request is one user outcome, prefer a **single page**.
+- If the task needs one main guide plus recurring blockers, use **guide plus FAQ**.
+- If the real work is patching stale pages after a release, use a **refresh packet** instead of rewriting a whole manual.
+- If one draft starts doing onboarding, daily usage, troubleshooting, and release notes all at once, split it into a **small guide set**.
+
+### Step 5: Emit the smallest useful artifact packet
+Default output shapes:
+- `single-page` → one getting-started guide, tutorial, how-to, or FAQ page
+- `guide-plus-faq` → one main guide plus a short FAQ or troubleshooting appendix
+- `refresh-packet` → changed steps, stale screenshot list, affected companion docs, and assumptions to verify
+- `guide-set` → a bounded set such as getting-started + FAQ or tutorial + how-to follow-up
+
+Do not ship a broad handbook when the request only needs one page and a short sync list.
+
+### Step 6: Apply user-doc writing rules
+- **Lead with the task and audience**, not implementation details.
+- **Name prerequisites early**: role, permissions, plan limits, data required, browser/app/version assumptions.
+- **Prefer observable actions**: what the user clicks, types, sees, and receives.
+- **Keep one major outcome per page**.
+- **Call out branching conditions** like role-specific UI or alternate paths.
+- **Give the user a success check** so they know the task worked.
+- **Keep troubleshooting near the task** instead of burying it in a generic appendix.
+- **Use screenshots intentionally** at confusing transitions, not after every click.
+- **Link outward deliberately**: FAQ → full guide, release-help update → affected articles, getting-started → next task.
+
+### Step 7: Run the maintenance and sync check
+Use [references/workflow-checklist.md](references/workflow-checklist.md) and [references/maintenance-signals.md](references/maintenance-signals.md) before finalizing.
+
+Verify:
+1. The page type matches the user job.
+2. Prerequisites and blockers appear before risky steps.
+3. Screenshot placeholders are justified and trackable.
+4. Related guides, FAQs, release updates, or support macros that must stay in sync are named.
+5. Route-outs to `technical-writing`, `api-documentation`, and `changelog-maintenance` remain explicit when the request drifts.
+
+### Step 8: Return a brief or the finished artifact
+Preferred brief shape before full drafting:
 
 ```markdown
-# Getting Started with MyApp
+# User Guide Writing Brief
 
-Welcome to MyApp! This guide will help you get up and running in 5 minutes.
+## Mode
+- Primary mode:
+- Why it fits:
+- Audience:
+- Output shape:
 
-## Step 1: Create an Account
+## Source material used
+- Product truth / UI evidence:
+- Support or release signals:
+- Assumptions / gaps:
 
-1. Go to [https://myapp.com/signup](https://myapp.com/signup)
-2. Enter your email and create a password
-   - Password must be at least 8 characters
-   - Include uppercase, lowercase, and numbers
-3. Click "Sign Up"
-4. Check your email for verification link
-5. Click the link to verify your account
+## Planned artifact packet
+1. main page
+2. companion FAQ / refresh list / sync note
 
-![Sign Up Form](images/signup.png)
-
-## Step 2: Complete Your Profile
-
-1. Click on your avatar in the top-right corner
-2. Select "Profile Settings"
-3. Add your name and profile picture
-4. Click "Save Changes"
-
-## Step 3: Create Your First Project
-
-1. Click the "+ New Project" button
-2. Enter a project name
-3. Choose a template (or start from scratch)
-4. Click "Create"
-
-🎉 Congratulations! You're ready to start using MyApp.
-
-## Next Steps
-
-- [Watch the video tutorial](https://youtube.com/watch?v=xxx)
-- [Explore features](docs/features.md)
-- [Join our community](https://community.myapp.com)
-
-## Need Help?
-
-- 📧 Email: support@myapp.com
-- 💬 Live chat: Available 9 AM - 5 PM EST
-- 📚 [Help Center](https://help.myapp.com)
+## Writing notes
+- Key user outcome:
+- Known blockers / branching conditions:
+- Route-outs kept out of scope:
 ```
 
-### Step 2: How-To Guide (Task-Focused)
-
-```markdown
-# How to Export Your Data
-
-This guide shows you how to export all your data from MyApp.
-
-## Before You Start
-
-- Exporting data may take 5-10 minutes depending on size
-- You'll receive an email when the export is ready
-- Exported data is in JSON format
-
-## Step-by-Step Instructions
-
-### 1. Navigate to Settings
-
-Click on your profile picture in the top-right corner and select **Settings**.
-
-![Settings Menu](images/settings-menu.png)
-
-### 2. Go to Data Export
-
-In the left sidebar, click on **Privacy & Data**.
-
-Then scroll down to the **Export Data** section.
-
-![Privacy & Data Page](images/privacy-data.png)
-
-### 3. Request Export
-
-Click the **Request Export** button.
-
-A confirmation dialog will appear:
-
-> **Export Your Data**
->
-> We'll send you an email with a download link when your export is ready.
-> This usually takes 5-10 minutes.
->
-> [Cancel] [Confirm]
-
-Click **Confirm** to proceed.
-
-### 4. Check Your Email
-
-You'll receive an email at your registered address with subject:
-**"Your Data Export is Ready"**
-
-The email contains a secure download link that expires in 7 days.
-
-### 5. Download Your Data
-
-Click the download link in the email.
-
-A ZIP file will be downloaded containing:
-- `profile.json` - Your profile information
-- `projects.json` - All your projects
-- `files/` - Uploaded files
-
-## Troubleshooting
-
-**Problem**: I didn't receive the email
-- Check your spam folder
-- Make sure your email is correct in Settings
-- Try requesting again (you can request once per day)
-
-**Problem**: Download link expired
-- Request a new export from Settings
-
-**Problem**: Export file is corrupted
-- Try downloading again
-- If issue persists, contact support@myapp.com
-
-## Related Guides
-
-- [How to Delete Your Account](delete-account.md)
-- [Privacy Policy](privacy-policy.md)
-- [Data Security](data-security.md)
-```
-
-### Step 3: FAQ (Frequently Asked Questions)
-
-```markdown
-# Frequently Asked Questions (FAQ)
-
-## Account & Billing
-
-### How do I change my email address?
-
-1. Go to **Settings** > **Account**
-2. Click **Change Email**
-3. Enter your new email and password
-4. Click **Update**
-5. Verify your new email
-
-### Can I use MyApp for free?
-
-Yes! MyApp has a free tier that includes:
-- Up to 3 projects
-- 1 GB storage
-- Basic features
-
-[Compare plans](https://myapp.com/pricing)
-
-### How do I cancel my subscription?
-
-1. Go to **Settings** > **Billing**
-2. Click **Cancel Subscription**
-3. Follow the prompts
-
-Your subscription will remain active until the end of the billing period.
-
-## Features
-
-### How do I collaborate with team members?
-
-1. Open your project
-2. Click the **Share** button
-3. Enter team member's email
-4. Choose their permission level (View, Edit, Admin)
-5. Click **Send Invite**
-
-They'll receive an email invitation.
-
-### Can I export my projects?
-
-Yes, see our [Export Guide](export-data.md).
-
-### What file formats are supported?
-
-- Images: JPG, PNG, GIF, SVG
-- Documents: PDF, DOCX, TXT, MD
-- Code: All text files
-
-## Technical
-
-### Is my data secure?
-
-Yes! We use:
-- 256-bit SSL encryption
-- Regular security audits
-- SOC 2 Type II certified
-- GDPR compliant
-
-[Read our Security Page](security.md)
-
-### Can I use MyApp offline?
-
-Currently, MyApp requires an internet connection. Offline mode is planned for Q2 2025.
-
-### Browser compatibility?
-
-MyApp works best on:
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-## Still Have Questions?
-
-- 📧 Email: support@myapp.com
-- 💬 Live Chat (9 AM - 5 PM EST)
-- 🎓 [Video Tutorials](tutorials.md)
-- 👥 [Community Forum](https://community.myapp.com)
-```
-
-### Step 4: Tutorial (Learning-Focused)
-
-```markdown
-# Tutorial: Build Your First Dashboard
-
-In this tutorial, you'll learn how to create a beautiful dashboard with charts and widgets.
-
-**Time**: 15 minutes
-**Difficulty**: Beginner
-**Prerequisites**: MyApp account
-
-## What You'll Build
-
-![Final Dashboard](images/tutorial-dashboard.png)
-
-## Step 1: Create a New Dashboard
-
-Click **+ New Dashboard** and name it "Sales Dashboard".
-
-## Step 2: Add a Chart Widget
-
-1. Click **Add Widget** → **Chart**
-2. Select **Bar Chart**
-3. Configure data source:
-   - Data: Monthly Sales
-   - X-axis: Month
-   - Y-axis: Revenue
-4. Click **Add to Dashboard**
-
-![Adding Chart Widget](images/add-chart.gif)
-
-## Step 3: Add a Stats Widget
-
-1. Click **Add Widget** → **Stat Card**
-2. Choose metric: Total Revenue
-3. Set comparison: vs. Last Month
-4. Click **Add to Dashboard**
-
-## Step 4: Arrange Widgets
-
-Drag and drop widgets to arrange them.
-
-**Pro Tip**: Hold Shift while resizing for precise control.
-
-## Step 5: Save and Share
-
-1. Click **Save Dashboard**
-2. Click **Share** to invite team members
-
-## Next Steps
-
-Now that you've created your first dashboard, try:
-
-- [Adding filters](filters.md)
-- [Scheduling reports](reports.md)
-- [Customizing themes](themes.md)
-
-## Congratulations!
-
-You've completed the tutorial. Happy dashboard building! 🎉
-```
-
-## Output format
-
-```
-docs/
-├── getting-started.md      # Quick start
-├── how-to/
-│   ├── export-data.md
-│   ├── invite-team.md
-│   └── create-project.md
-├── tutorials/
-│   ├── first-dashboard.md
-│   └── advanced-features.md
-├── faq.md
-└── images/
-    ├── signup.png
-    └── dashboard.png
-```
-
-## Constraints
-
-### Required Rules (MUST)
-
-1. **Include Screenshots**: Visual guides
-2. **Step-by-Step Instructions**: 1, 2, 3 format
-3. **User Language**: Avoid technical jargon
-
-### Forbidden (MUST NOT)
-
-1. **Technical Jargon Overload**: API, endpoint, etc.
-2. **Long Paragraphs**: Keep short and clear
-
-## Best practices
-
-1. **User-Centric**: Write from the user's perspective
-2. **Show, Don't Tell**: Screenshots, GIFs, videos
-3. **Update Regularly**: Update docs when UI changes
-
-## References
-
-- [Docs as Code](https://www.writethedocs.org/guide/docs-as-code/)
-- [Good Docs Project](https://thegooddocsproject.dev/)
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2025-01-01
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Tags
-`#user-guides` `#tutorials` `#documentation` `#onboarding` `#how-to` `#FAQ`
+If the user already asked for the finished artifact, produce the selected page or packet directly with the matching structure.
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: First-success onboarding
+**Input**
+> Write a getting-started guide for new workspace admins inviting their team and creating the first project.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good output direction**
+- mode: `getting-started`
+- output shape: `single-page`
+- include prerequisites, step order, success check, and next steps
+- keep internal implementation notes out of scope
+
+### Example 2: Release-driven doc refresh
+**Input**
+> Update our help-center article for exporting reports because the Export button moved into the Reports header and only admins can choose XLSX now.
+
+**Good output direction**
+- mode: `release-help-update`
+- output shape: `refresh-packet`
+- call out changed UI, role differences, screenshot refreshes, and affected companion docs
+- keep release-note summarization out of scope
+
+### Example 3: Support-to-FAQ conversion
+**Input**
+> Turn these repeated billing support replies into a short FAQ for workspace owners.
+
+**Good output direction**
+- mode: `faq`
+- output shape: `single-page` or `guide-plus-faq`
+- keep answers short and link to the deeper task guide where needed
+- surface role / plan caveats early
+
+### Example 4: Boundary with developer docs
+**Input**
+> Refresh our public webhook quickstart and auth troubleshooting page for external developers.
+
+**Good output direction**
+- route to `api-documentation`
+- explain that the main job is published developer-facing API docs, not end-user product guidance
+
+## Best practices
+1. Choose the page type before writing the body.
+2. Prefer one user outcome per page and one primary mode per run.
+3. Use the smallest useful packet instead of a giant all-in-one guide.
+4. Put prerequisites, permissions, and blockers before the user gets stuck.
+5. Keep screenshots intentional and easy to refresh.
+6. Use support/search/release signals to decide what to patch next.
+7. Route internal docs, API docs, and release notes out instead of stretching the skill boundary.
+8. Split mixed-purpose drafts into a guide set when the page starts teaching too many jobs.
+
+## References
+- [Diátaxis](https://diataxis.fr/)
+- [Google developer documentation style guide](https://developers.google.com/style)
+- [Microsoft Writing Style Guide](https://learn.microsoft.com/style-guide/welcome/)
+- [GitLab documentation workflow](https://docs.gitlab.com/development/documentation/)
+- [Write the Docs — Docs as Code](https://www.writethedocs.org/guide/docs-as-code/)

@@ -1,0 +1,67 @@
+{
+  "skill_name": "standup-meeting",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Tomorrow's standup keeps running 25 minutes because everyone gives long updates. We have two blockers and one item waiting for review.",
+      "expected_output": "Returns a Coordination Cadence Brief that chooses one cadence decision and one primary mode, keeps blocked/in-progress work central, and separates the core sync from follow-up huddles.",
+      "assertions": [
+        "Output names exactly one cadence decision such as live-daily",
+        "Output names exactly one primary mode such as board-walk or blocker-first",
+        "Output includes a blocker or handoff routing section",
+        "Output separates core sync content from follow-up huddle work"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We have engineers in California, Europe, and Korea. Should our daily standup be async, and what format should we use?",
+      "expected_output": "Returns a Coordination Cadence Brief that recommends async-daily or hybrid-daily, gives a short reusable written template, and defines an escalation path for urgent coordination.",
+      "assertions": [
+        "Output recommends async-daily or hybrid-daily",
+        "Output recommends async-check-in or hybrid-async-plus-live",
+        "Output includes a short reusable template for updates",
+        "Output mentions an escalation path or follow-up huddle trigger"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our daily scrum feels like reporting to the manager. Fix it without changing our whole process.",
+      "expected_output": "Returns a Coordination Cadence Brief that calls out manager-facing status theater, keeps the ritual lateral and work-focused, and routes recurring process repair to retrospectives rather than broadening the standup.",
+      "assertions": [
+        "Output identifies manager-facing status theater as an anti-pattern",
+        "Output includes anti-patterns to avoid",
+        "Output routes recurring process change to sprint-retrospective"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our board is stale and people keep discovering in standup that tasks are not ready yet. Should we just extend the standup?",
+      "expected_output": "Does not recommend extending the standup. It identifies stale board / not-ready work as the issue and routes decomposition or backlog prep to task-planning.",
+      "assertions": [
+        "Output identifies source-of-truth hygiene or stale board as a problem",
+        "Output does not solve the issue by expanding the standup into a long meeting",
+        "Output routes backlog cleanup, slicing, or task readiness to task-planning"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Most of our work is independent and already tracked in Linear. The daily standup feels like obligation, not coordination. Should we keep it?",
+      "expected_output": "Returns a Coordination Cadence Brief that recommends less-frequent-sync or no-recurring-standup, uses mode 'none' when the ritual should disappear, and names the replacement artifact plus blocker escalation rule.",
+      "assertions": [
+        "Output recommends less-frequent-sync or no-recurring-standup",
+        "Output uses mode none if the answer removes the recurring standup",
+        "Output names a replacement artifact or channel and a blocker escalation rule"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Launch week starts tomorrow and engineering, product, and marketing all need tighter coordination for five days. We normally do weekly check-ins.",
+      "expected_output": "Returns a Coordination Cadence Brief that recommends a temporary higher cadence, explains why the daily window is temporary, and says when to ratchet back down after launch week.",
+      "assertions": [
+        "Output recommends a temporary daily cadence such as live-daily or hybrid-daily",
+        "Output explicitly says the higher cadence is temporary",
+        "Output includes a review trigger for returning to a lighter cadence after launch"
+      ]
+    }
+  ]
+}

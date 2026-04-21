@@ -1,0 +1,4 @@
+# Triage
+- Problem: `google-workspace` is a 745-line legacy skill with no `references/`, weak routing structure, missing standard sections, and a broad encyclopedia-style body that makes activation and reuse worse than it should be.
+- Audience: Agents and operators automating Google Workspace workflows across Docs, Sheets, Slides, Drive, Gmail, Calendar, Forms, Chat, and Admin SDK for product ops, marketing ops, internal tooling, and lightweight developer automation.
+- Why now: Graph support-coverage scan shows `google-workspace` is one of the few remaining high-utility skills still missing `references/`, and `validate_skill.sh` warns on file length plus missing standard sections.

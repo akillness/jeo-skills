@@ -1,0 +1,54 @@
+{
+  "skill_name": "git-workflow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I rebased my feature branch onto main and now I need to push it safely without overwriting teammates.",
+      "expected_output": "Chooses push-safety mode, distinguishes collaboration risk, recommends force-with-lease only when appropriate, and warns against raw force push.",
+      "assertions": [
+        "Output chooses `push-safety` as the main mode.",
+        "Output mentions `--force-with-lease` or clearly describes lease-safe push behavior.",
+        "Output includes a watch-out about shared branches or overwrite risk."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Help me clean up my local commits and get this branch ready for review.",
+      "expected_output": "Chooses commit-shaping mode and recommends commit cleanup without drifting into full PR review commentary.",
+      "assertions": [
+        "Output chooses `commit-shaping` as the main mode.",
+        "Output mentions `git commit --amend`, `git rebase -i`, or equivalent local history cleanup commands.",
+        "Output keeps the task focused on preparing the branch rather than reviewing code quality."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I think I hard-reset the wrong branch. Can Git recover this?",
+      "expected_output": "Chooses undo-and-recovery mode, starts with reflog/rescue-branch thinking, and avoids more destructive commands first.",
+      "assertions": [
+        "Output chooses `undo-and-recovery` as the main mode.",
+        "Output mentions `git reflog`.",
+        "Output suggests a rescue branch or another reversible first step before more destructive cleanup."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review this PR and tell me if the architecture is okay.",
+      "expected_output": "Routes away from git-workflow because the main need is review judgment, not local Git state management.",
+      "assertions": [
+        "Output routes to `code-review` or explicitly states that review quality is outside the main scope of `git-workflow`.",
+        "Output does not frame the request as a branch/rebase/recovery workflow."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our shared release branch is behind main. I need to sync it, but I do not want to surprise the rest of the team with rewritten history.",
+      "expected_output": "Chooses sync-with-base mode, names the branch as shared-risk, and prefers merge over rebase unless the user explicitly accepts rewrite risk.",
+      "assertions": [
+        "Output chooses `sync-with-base` as the main mode.",
+        "Output identifies the branch as shared or otherwise high collaboration risk.",
+        "Output prefers merge or explicitly warns against rebasing a shared branch by default."
+      ]
+    }
+  ]
+}

@@ -1,20 +1,29 @@
 N:workflow-automation
-D:Automate repetitive development tasks and workflows. Use when creating build scripts, automating ...
-G:automation scripts workflow npm-scripts Makefile
-U[3]:
-  **Repetitive tasks**: running the same commands every time
-  **Complex builds**: multi-step build processes
-  **Team onboarding**: a consistent development environment
-S[5]{n,action}:
-  1,npm scripts
-  2,Makefile
-  3,Husky + lint-staged (Git Hooks)
-  4,Task Runner scripts
-  5,GitHub Actions workflow automation
-R[6]:
+D:Routing-first skill for repo-scoped recurring workflow automation: task-entrypoint design, bootstrap/onboarding commands, local-CI parity wrappers, hook guardrails, maintenance bots, and workflow-diagnosis cleanup.
+G:automation task-runner bootstrap ci-parity dev-workflow hooks repo-maintenance
+U[7]:
+  replace README command sprawl with one repo-owned front door
+  choose between package scripts Make just Task hooks CI wrappers and maintenance bots
+  design setup dev test lint verify and ci entrypoints
+  tighten local workflow glue versus hosted CI enforcement
+  decide whether a chore belongs in hooks task runners or schedules
+  diagnose messy workflow layers spread across docs scripts hooks and CI
+  route environment deployment Git policy and observability away
+S[8]{n,action}:
+  1,normalize the recurring workflow request
+  2,choose one primary mode
+  3,pick the smallest automation surface
+  4,keep local commands hooks CI and schedules honest about boundaries
+  5,build a workflow automation packet
+  6,use mode packets not a giant tool catalog
+  7,make route-outs explicit
+  8,simplify and dedupe before adding another layer
+R[8]:
   uses
-  name
-  name
-  name
-  name
-  name
+  references/automation-modes.md
+  references/mode-packets-and-route-outs.md
+  references/handoff-boundaries.md
+  task-entrypoints
+  bootstrap-onboarding
+  local-ci-parity
+  workflow-diagnosis

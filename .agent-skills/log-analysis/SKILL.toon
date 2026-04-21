@@ -1,14 +1,18 @@
 N:log-analysis
-D:Analyze application logs to identify errors, performance issues, and security anomalies. Use when...
-G:logs analysis debugging monitoring grep
-U[4]:
-  **Error debugging**: analyze the root cause of application errors
-  **Performance analysis**: analyze response times and throughput
-  **Security audit**: detect anomalous access patterns
-  **Incident response**: investigate the root cause during an outage
-S[5]{n,action}:
-  1,Locate Log Files
-  2,Search for Error Patterns
-  3,Pattern Analysis
-  4,Performance Analysis
-  5,Security Analysis
+D:Route runtime-log requests into one evidence packet before diagnosing anything: app-runtime, container-runtime, browser-plus-api, ci-cascade, structured-json, or security-signal. Use when the user shares app/server/container/browser/CI/JSON log output and wants the first actionable blocker, repeated signature, blast radius, or safest next read-only checks. Route Unity/Unreal logs to game-build-log-triage, observability design to monitoring-observability, and remediation/debug hypotheses to debugging.
+G:logs triage incident ci browser kubectl docker jq rg packet-routing
+U[6]:
+  App, proxy, worker, or API logs where the real error is buried under retries or stack noise
+  Container or pod logs where restart timing, env mismatch, or dependency failure matters
+  Browser plus backend evidence where client symptoms need server confirmation
+  CI transcripts where a generic abort hides the first failing import/build/test step
+  Structured JSON or webhook logs that need grouping by request, trace, or message family
+  Suspicious auth/access patterns that need read-only triage before security or observability escalation
+S[7]{n,action}:
+  1,Normalize the request into one primary log packet
+  2,Choose the packet and likely route-out
+  3,Narrow the slice by time window or anchor
+  4,Isolate the first actionable failure
+  5,Group the repeated signature and classify it
+  6,Return a concise triage brief
+  7,Route out aggressively when the work becomes debugging, observability, anomaly hunting, or engine-specific triage

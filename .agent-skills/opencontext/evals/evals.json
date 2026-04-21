@@ -1,0 +1,64 @@
+{
+  "skill_name": "opencontext",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We keep losing repo background between agent sessions. I need a persistent memory layer so the next coding agent can load the right docs, avoid repeated explanations, and store the conclusion after the task.",
+      "expected_output": "Selects a load-context or project-memory packet, keeps OpenContext as the active repo-memory fit, explains a load → search → store workflow, and mentions manifests or stable links plus post-run capture.",
+      "assertions": [
+        "Output selects OpenContext or active project/repo memory as the primary fit",
+        "Output includes a named packet or primary mode for the request",
+        "Output includes a load/search/store or equivalent lifecycle",
+        "Output mentions a manifest, stable link, folder scan, or targeted document search",
+        "Output includes storing conclusions or handoff notes after meaningful work"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I want one place for persistent AI memory, but I'm not sure whether I should use OpenContext, a markdown wiki, Obsidian, or a graph tool for this project and future research.",
+      "expected_output": "Uses a memory-layer choice packet, compares the layers, keeps OpenContext for active project memory only, and routes wiki, graph, and human-authored vault needs outward.",
+      "assertions": [
+        "Output identifies a memory-layer-choice style packet or mode",
+        "Output distinguishes OpenContext from llm-wiki or a markdown wiki",
+        "Output distinguishes OpenContext from graph-style structure mapping",
+        "Output mentions a human-authored note or vault surface such as Obsidian when relevant",
+        "Output avoids claiming that OpenContext replaces every adjacent memory layer"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Set up OpenContext in our repo and tell me when I should bother with embeddings or semantic search instead of simple keyword search.",
+      "expected_output": "Uses setup-integration mode, provides installation/init guidance, core commands, and a bounded rule for escalating from keyword search to embeddings/index builds.",
+      "assertions": [
+        "Output identifies setup-integration as the primary packet or mode",
+        "Output includes install and/or `oc init` guidance",
+        "Output includes at least one core OpenContext command such as `oc search` or `oc context manifest`",
+        "Output states that keyword search should be tried before escalating to embeddings or index builds",
+        "Output treats semantic search setup as conditional rather than mandatory"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Turn this repository into a single prompt I can paste into a model right now.",
+      "expected_output": "Identifies that this is a repo-packer route-out, not an ongoing OpenContext memory job, and routes to a repo-packing workflow such as Repomix, Gitingest, or Code2Prompt instead of forcing OpenContext.",
+      "assertions": [
+        "Output identifies a route-out or repo-packer packet",
+        "Output says OpenContext is not the best primary owner for this request",
+        "Output names at least one repo-packing alternative such as Repomix, Gitingest, or Code2Prompt",
+        "Output does not describe this as a long-term project-memory workflow"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "`README.md` says one deploy step, `CLAUDE.md` says another, and we just switched to a release branch. What should the next agent trust and what should we store after resolving it?",
+      "expected_output": "Treats this as an active project-memory trust/freshness problem, names the highest-confidence source, explains provenance and branch freshness, and stores a compact handoff note saying which source won and what still needs verification.",
+      "assertions": [
+        "Output identifies a load-context or search-context style packet for the conflict",
+        "Output states a highest-confidence source instead of flattening both notes together",
+        "Output mentions provenance or source origin explicitly",
+        "Output warns that branch or release state can invalidate older memory",
+        "Output includes storing or updating a compact handoff/decision note after resolution"
+      ]
+    }
+  ]
+}

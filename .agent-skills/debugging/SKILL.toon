@@ -1,16 +1,19 @@
 N:debugging
-D:Systematically debug code issues using proven methodologies. Use when encountering errors, unexpe...
-G:debugging troubleshooting error-analysis bug-fixing problem-solving
+D:Run a reproduce → isolate → verify debugging workflow for concrete bugs, regressions, flaky failures, and environment-specific behavior. Use when the user already has a failing command, test, request, UI flow, or narrowed symptom and needs root-cause diagnosis or fix verification rather than raw log-line selection, broad test-policy design, PR review, or generic performance tuning.
+G:debugging regression-isolation reproduction flaky-tests git-bisect root-cause env-diff
 U[6]:
-  Encountering runtime errors or exceptions
-  Code produces unexpected output or behavior
-  Performance degradation or memory issues
-  Intermittent or hard-to-reproduce bugs
-  Understanding unfamiliar error messages
-S[6]{n,action}:
-  1,Gather Information
-  2,Reproduce the Issue
-  3,Isolate the Problem
-  4,Analyze Root Cause
-  5,Implement Fix
-  6,Verify and Prevent
+  Concrete failing command/test/request/UI flow that needs diagnosis
+  Reproducible or near-reproducible bug that needs narrowing before patching
+  Regression with a last-known-good state or suspect change window
+  Flaky failure that needs repeated-run evidence and stabilization of one case
+  CI/staging/prod-only behavior that now has enough evidence for env/config comparison
+  Requests to reproduce, isolate, bisect, confirm, or verify a bug fix
+S[8]{n,action}:
+  1,Freeze the failure definition
+  2,Choose the right first evidence source
+  3,Build the smallest reliable reproducer
+  4,Isolate the boundary before proposing fixes
+  5,Run one discriminating check per hypothesis
+  6,Use the right mode packet
+  7,Fix the cause then prove it
+  8,Escalate honestly when evidence is still weak

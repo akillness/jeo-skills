@@ -1,0 +1,56 @@
+{
+  "skill_name": "authentication-setup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up auth for a Next.js SaaS app with email login, Google OAuth, org roles, and an admin panel.",
+      "expected_output": "The skill classifies the auth lane, compares realistic stack options, defines app-owned org/role data, and notes SSR/middleware/cookie boundaries instead of dumping generic JWT code.",
+      "assertions": [
+        "Output classifies the request into an auth lane such as hosted or framework-native.",
+        "Output mentions app-owned organizations, memberships, or roles.",
+        "Output includes session/cookie or middleware/runtime considerations.",
+        "Output routes security hardening or deeper authorization/testing work to neighboring skills when relevant."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We already use Supabase. Decide what auth pieces should live in Supabase vs our app DB, and how to think about roles.",
+      "expected_output": "The skill chooses the platform-native lane first, separates provider identity from app-owned authorization/data, and avoids pretending Supabase removes the need for local tables or policy design.",
+      "assertions": [
+        "Output treats Supabase as the platform-native starting point.",
+        "Output distinguishes provider-owned identity from app-owned profiles, memberships, roles, or entitlements.",
+        "Output acknowledges that deeper authorization or RLS design may need a separate handoff."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We already have login. Now add enterprise SSO and SCIM for B2B customers without rewriting our whole auth stack.",
+      "expected_output": "The skill recognizes enterprise identity as a distinct branch, discusses account mapping and provisioning boundaries, and does not flatten SSO/SCIM into the same path as basic social login.",
+      "assertions": [
+        "Output classifies the request as an enterprise add-on or equivalent distinct auth lane.",
+        "Output mentions SSO and SCIM as separate rollout/provisioning concerns.",
+        "Output mentions account linking, org/domain mapping, or migration-sensitive rollout notes.",
+        "Output does not present the work as merely adding another OAuth provider button."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We're replacing a homegrown auth system with Keycloak for an on-prem deployment and need to avoid breaking existing users.",
+      "expected_output": "The skill recognizes self-hosted plus migration work, calls out operational ownership and user/account cutover risks, and treats the move as more than a library swap.",
+      "assertions": [
+        "Output identifies self-hosted auth as the main lane or primary candidate.",
+        "Output mentions migration or cutover concerns such as canonical user IDs, session invalidation, or rollback.",
+        "Output mentions operational/admin burden associated with self-hosted identity."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Harden cookies, CSRF, and abuse controls on our auth endpoints.",
+      "expected_output": "The skill should recognize adjacent security-hardening work and route the main request to security-best-practices instead of claiming the whole problem.",
+      "assertions": [
+        "Output routes the primary task to `security-best-practices` or explicitly marks it as adjacent security-hardening work.",
+        "Output avoids framing the request as a pure auth-lane selection problem."
+      ]
+    }
+  ]
+}

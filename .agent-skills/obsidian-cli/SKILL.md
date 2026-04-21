@@ -1,182 +1,171 @@
 ---
 name: obsidian-cli
 description: >
-  Install, enable, and operate Obsidian CLI for terminal-driven note automation against a
-  running Obsidian app. Use when you need to run Obsidian commands from a shell or TUI,
-  target a specific vault or file, automate daily notes, search, tags, tasks, or file
-  operations, use developer commands such as plugin reload and screenshots, or launch
-  `obsidian://` URIs with callback parameters. Triggers on: obsidian cli, obsidian command
-  line, obsidian uri, obsidian daily note command, obsidian plugin reload cli, obsidian
-  dev screenshot, obsidian vault command.
+  Route Obsidian desktop automation to the right first-party surface: official
+  Obsidian CLI for terminal/TUI commands against a running app, official
+  `obsidian://` URIs for launcher/callback handoff, and explicit route-outs when
+  the real need is headless sync, filesystem writes, or richer plugin/API
+  automation. Use when the user wants vault or note targeting, daily-note/search
+  flows, plugin reload/dev screenshots, command-palette execution, or URI-based
+  open/new/search callbacks from scripts, shortcuts, browsers, or agent loops.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
-compatibility: Requires the desktop Obsidian app with Command line interface enabled from Settings -> General. Official docs state CLI support requires the Obsidian 1.12 installer and a current early access build; the app must be running or will be launched by the first CLI command.
+compatibility: >
+  Requires desktop Obsidian with Command line interface enabled in Settings ->
+  General. Current official docs say Obsidian CLI requires the installer version
+  1.12.7+ and controls the desktop app from the terminal; Obsidian Headless is a
+  separate standalone client for Sync/Publish without the desktop app.
 license: Proprietary docs, skill authored for oh-my-skills
 metadata:
   tags: obsidian, cli, terminal, automation, vault, uri, developer-tools, notes, tui
-  version: "1.0"
+  version: "2.0.0"
   source: https://obsidian.md/help/cli
+  modernization: 2026-04-19
+  hardening: 2026-04-19
 ---
 
-# obsidian-cli - Control Obsidian from the Terminal
+# obsidian-cli - Route Obsidian desktop automation correctly
 
-> **Keyword**: `obsidian cli` · `obsidian uri` · `obsidian daily note command` · `obsidian plugin reload cli`
->
-> Use this skill for the official desktop CLI. If the user needs sync without the desktop app, that is Obsidian Headless, not this skill.
+Use this skill when the request is really about **driving desktop Obsidian from the terminal or a URI handoff**, not generic note taking.
 
-Obsidian CLI is the official command line interface for controlling a running Obsidian app from the terminal. It supports single commands, an interactive TUI, vault and file targeting, note operations, search, tags, tasks, and developer commands. Official docs also link it closely with the `obsidian://` URI protocol for cross-app automation.
+`obsidian-cli` owns official CLI enablement, one-shot/TUI usage, deterministic `vault=` / `file=` / `path=` targeting, developer-command execution, official `obsidian://` handoff, and honest route-outs when the job is really headless sync, raw filesystem writing, or richer plugin/API automation.
+
+Read these support docs before unusual cases or when the request starts to sprawl:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/installation-and-troubleshooting.md](references/installation-and-troubleshooting.md)
+- [references/vault-and-file-targeting.md](references/vault-and-file-targeting.md)
+- [references/commands-and-developer-tools.md](references/commands-and-developer-tools.md)
+- [references/uri-and-callbacks.md](references/uri-and-callbacks.md)
 
 ## When to use this skill
+- The user wants to enable or verify the **official Obsidian CLI**.
+- The job is to run `obsidian` one-shot commands or use the TUI against a running desktop app.
+- The workflow needs explicit vault or note targeting via `vault=`, `file=`, or `path=`.
+- The user wants daily-note, search, read, create, tags, tasks, diff, or command-palette workflows from the shell.
+- The user is developing an Obsidian plugin/theme and needs `plugin:reload`, `devtools`, `dev:screenshot`, `eval`, or `command id=...`.
+- Another app, launcher, shortcut, browser, or agent loop needs **official `obsidian://` URI** handoff or callback behavior.
 
-- Enable and verify the official Obsidian CLI registration
-- Run one-shot commands such as `obsidian help`, `obsidian daily`, `obsidian read`, or `obsidian search`
-- Open the interactive TUI with autocomplete and history
-- Target a specific vault with `vault=<name>` or `vault=<id>`
-- Target a specific note with `file=<name>` or `path=<path>`
-- Copy command output with `--copy`
-- Use developer commands for plugin and theme work such as `devtools`, `plugin:reload`, `dev:screenshot`, and `eval`
-- Launch or generate `obsidian://` URIs for open, new, daily, unique, search, and callback-based workflows
+## When not to use this skill
+- **The main job is headless Sync/Publish without the desktop app** → route to Obsidian Headless, not this skill.
+- **The main job is generic markdown file editing in a vault path** → direct filesystem writes may be simpler and more truthful.
+- **The main job needs richer external CRUD/frontmatter/workspace automation than first-party CLI/URI cover** → use a plugin/API route such as Local REST API or Advanced URI instead of pretending the official CLI is enough.
+- **The user wants a shell-native notes backend independent of Obsidian** → an adjacent note CLI such as Joplin Terminal, `nb`, or `zk` is a better fit.
 
 ## Instructions
 
-### Step 1: Enable and verify the CLI
+### Step 1: Classify the primary automation surface
+Normalize the request before reaching for commands.
 
-Use the official app flow first:
+```yaml
+obsidian_automation_intake:
+  primary_surface: cli-command | cli-tui | cli-developer | uri-handoff | headless-route-out | filesystem-route-out | plugin-api-route-out
+  environment: desktop-local | launcher-shortcut | browser-callback | headless-server | unknown
+  target_shape: vault-and-note | command-id | uri-action | sync-service | raw-markdown-write
+  plugin_dependencies: none | daily-notes | unique-note-creator | plugin-command | unknown
+```
 
-1. Upgrade to the installer and early access versions required by the docs
-2. In Obsidian, go to `Settings -> General`
-3. Enable `Command line interface`
-4. Follow the prompt to register the CLI
+Use one primary surface per run:
+- `cli-command` — one-shot terminal command against the running app
+- `cli-tui` — interactive `obsidian` shell with history/autocomplete
+- `cli-developer` — plugin/theme/dev commands or command-palette execution
+- `uri-handoff` — `obsidian://` open/new/daily/search/hook callbacks from another app
+- `headless-route-out` — Sync/Publish without the desktop app
+- `filesystem-route-out` — direct markdown writes are more honest than app control
+- `plugin-api-route-out` — first-party CLI/URI are too narrow for the requested automation
 
-Run the local helper:
+Do not mix several primary surfaces into one answer.
+
+### Step 2: Verify the desktop runtime before using the CLI
+Use [references/installation-and-troubleshooting.md](references/installation-and-troubleshooting.md).
+
+Minimum checks:
+- desktop Obsidian is installed
+- CLI is enabled in `Settings -> General -> Command line interface`
+- official docs currently require installer version `1.12.7+`
+- the machine actually has desktop access; do not force this onto CI or headless servers
+
+Quick local check:
 
 ```bash
 bash scripts/install.sh
 ```
 
-What to remember:
+If the desktop app is absent or the task is explicitly no-GUI, switch immediately to `headless-route-out` or `filesystem-route-out`.
 
-- The docs currently say CLI usage requires the Obsidian `1.12` installer
-- The same page also says to upgrade to the latest installer `1.11.7` and the latest early access `1.12.x`
-- The app must be running, or the first CLI command launches it
-- Linux packaging may need extra symlink or PATH work
+### Step 3: Make targeting deterministic
+Use [references/vault-and-file-targeting.md](references/vault-and-file-targeting.md).
 
-Treat those version strings exactly as current official docs, not as inferred packaging logic.
+Rules:
+- `vault=<name>` or `vault=<id>` must come **before** the command when targeting a non-default vault
+- prefer `path=<exact/path.md>` when duplicate note names are possible
+- use `file=<name>` only when wikilink-style resolution is acceptable
+- avoid relying on active vault / active file unless the task is explicitly interactive
 
-### Step 2: Choose single-command mode or the TUI
+Examples:
 
-Run a single command:
+```bash
+obsidian vault="My Vault" search query="meeting notes"
+obsidian vault="My Vault" read path="Projects/Roadmap.md"
+obsidian vault=Notes command id=editor:focus-top
+```
+
+### Step 4: Choose the smallest truthful packet
+Use [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
+
+Default selection:
+- **CLI command packet** for read/search/create/tasks/daily work where terminal output matters
+- **TUI packet** for interactive exploration and history
+- **Developer packet** for plugin reload, screenshots, `eval`, or command-palette execution
+- **URI packet** for launchers, shortcuts, browser callbacks, and app handoff
+- **Route-out packet** for headless sync, raw file writes, or plugin/API-level automation
+
+### Step 5: Use official CLI flows when the app itself is the runtime
+Use [references/commands-and-developer-tools.md](references/commands-and-developer-tools.md).
+
+Safe first commands:
 
 ```bash
 obsidian help
+obsidian version
 ```
 
-Open the terminal interface:
+Common one-shot flows:
 
 ```bash
-obsidian
-help
+obsidian daily
+obsidian daily:append content="- [ ] Follow up"
+obsidian search query="TODO"
+obsidian read path="Inbox/Capture.md"
+obsidian create name="Trip to Paris" template=Travel
+obsidian tags counts
+obsidian tasks daily
+obsidian diff file=README from=1 to=3
 ```
 
-Use the TUI when the user wants autocomplete, command history, and reverse search. Use single-command mode for scripts, automation, and shell aliases.
-
-### Step 3: Target the right vault and file
-
-Vault targeting rules:
-
-- If the current working directory is a vault, that vault is used by default
-- Otherwise, the active vault is used
-- `vault=<name>` or `vault=<id>` must be the first parameter before the command
-
-Examples:
+Use `--copy` when another tool needs the result:
 
 ```bash
-obsidian vault=Notes daily
-obsidian vault="My Vault" search query="meeting notes"
+obsidian read path="Inbox/Capture.md" --copy
+obsidian search query="launch checklist" --copy
 ```
 
-File targeting rules:
-
-- `file=<name>` uses wikilink-style resolution by file name
-- `path=<path>` requires the exact path from the vault root
-- If neither is provided, many commands default to the active file
-
-Examples:
+### Step 6: Treat developer commands as a separate mode
+Developer commands are real supported use cases, but they are stateful.
 
 ```bash
-obsidian read file=Recipe
-obsidian read path="Templates/Recipe.md"
+obsidian devtools
+obsidian plugin:reload id=my-plugin
+obsidian dev:screenshot path=screenshot.png
+obsidian eval code="app.vault.getFiles().length"
+obsidian commands
+obsidian command id=workspace:open-settings
 ```
 
-Move the targeting details into [references/vault-and-file-targeting.md](references/vault-and-file-targeting.md).
+Use this mode when the job is plugin/theme work, command discovery, or app-state inspection.
 
-### Step 4: Use the command families that match the job
+### Step 7: Use official URI flows for handoff and callbacks
+Use [references/uri-and-callbacks.md](references/uri-and-callbacks.md).
 
-Start with the everyday commands:
-
-- `daily`
-- `daily:append`
-- `search`
-- `read`
-- `create`
-- `tags`
-- `tasks`
-- `diff`
-
-General commands:
-
-- `help`
-- `version`
-- `reload`
-- `restart`
-
-Developer-oriented commands:
-
-- `devtools`
-- `plugin:reload`
-- `dev:screenshot`
-- `eval`
-
-These developer commands are especially useful for plugin and theme workflows because the docs explicitly position them for automatic testing and debugging.
-
-See [references/commands-and-developer-tools.md](references/commands-and-developer-tools.md) for a compact command map.
-
-### Step 5: Use flags and output features deliberately
-
-Parameter rules:
-
-- Parameters use `name=value`
-- Wrap values with spaces in quotes
-- Boolean switches are bare flags such as `open` or `overwrite`
-- Use `\n` for newlines and `\t` for tabs in content strings
-
-Examples:
-
-```bash
-obsidian create
-obsidian create name=Note content="Hello world"
-obsidian create name=Note content="Hello" open overwrite
-obsidian create name=Note content="# Title\n\nBody text"
-```
-
-Output helper:
-
-```bash
-obsidian read --copy
-obsidian search query="TODO" --copy
-```
-
-Many listing commands also expose `format=` parameters such as `json`, `tsv`, `csv`, `md`, or `paths`.
-
-### Step 6: Use `obsidian://` URI workflows for external automation
-
-The official URI actions include:
-
-- `open`
-- `new`
-- `daily`
-- `unique`
-- `search`
-- `choose-vault`
+Keep these official URI actions at the front door: `open`, `new`, `daily`, `unique`, `search`, `choose-vault`, `hook-get-address`.
 
 Examples:
 
@@ -185,96 +174,83 @@ obsidian://open?vault=my%20vault&file=my%20note
 obsidian://new?vault=my%20vault&name=my%20note
 obsidian://daily?vault=my%20vault
 obsidian://search?vault=my%20vault&query=Obsidian
+obsidian://hook-get-address?x-success=myapp://x-callback-url
 ```
 
-Important URI rules:
-
-- Encode values properly, especially spaces and `/`
+Rules:
+- percent-encode values correctly
 - `path=` overrides `vault` and `file`
-- `paneType=tab|split|window` controls opening location
 - `paneType=window` is desktop-only
-- `x-success` and `x-error` support callback flows on supported endpoints
+- `daily` requires the Daily notes plugin
+- `unique` requires the Unique note creator plugin
+- callback support is endpoint-specific; prefer it when another app must continue after Obsidian responds
 
-Use [references/uri-and-callbacks.md](references/uri-and-callbacks.md) for the URI-specific behavior and Hook integration notes.
-
-### Step 7: Respect the limitations
-
-- CLI automation is for the desktop app, not headless sync
-- `daily` requires the Daily notes plugin to be enabled
-- `unique` requires the Unique note creator plugin to be enabled
-- Linux registration may require manual symlinks, PATH updates, or packaging-specific fixes
-- Developer commands can change app or plugin state, so use them intentionally
-
-## Examples
-
-### Example 1: Verify CLI registration
-
-```bash
-bash scripts/install.sh
-```
-
-### Example 2: Open the TUI
-
-```bash
-bash scripts/run-command.sh
-```
-
-### Example 3: Open today's daily note
-
-```bash
-bash scripts/run-command.sh daily
-```
-
-### Example 4: Append a task to today's daily note
-
-```bash
-bash scripts/run-command.sh daily:append content="- [ ] Buy groceries"
-```
-
-### Example 5: Search a specific vault
-
-```bash
-bash scripts/run-command.sh vault="My Vault" search query="meeting notes"
-```
-
-### Example 6: Read a file by name or exact path
-
-```bash
-bash scripts/run-command.sh read file=Recipe
-bash scripts/run-command.sh read path="Templates/Recipe.md" --copy
-```
-
-### Example 7: Reload a plugin you are developing
-
-```bash
-bash scripts/run-command.sh plugin:reload id=my-plugin
-```
-
-### Example 8: Take a screenshot from the app
-
-```bash
-bash scripts/run-command.sh dev:screenshot path=screenshot.png
-```
-
-### Example 9: Open a note via URI
+Helper:
 
 ```bash
 bash scripts/open-uri.sh 'obsidian://open?vault=my%20vault&file=my%20note'
 ```
 
-## Best practices
+### Step 8: Route away when the request changed
+Say the route-out explicitly:
+- **Headless Sync/Publish without desktop app** → Obsidian Headless
+- **Write markdown to a vault on disk and stop** → direct filesystem write
+- **Need richer external CRUD/frontmatter/workspace control** → plugin/API workflow such as Local REST API or Advanced URI
+- **Need a shell-native note system, not Obsidian** → Joplin Terminal, `nb`, or `zk`
 
-1. Start with `obsidian help` or the TUI before assuming a command family name.
-2. Put `vault=` first when you need deterministic multi-vault automation.
-3. Prefer `path=` when duplicate file names make wikilink-style `file=` resolution ambiguous.
-4. Use `--copy` when the result needs to feed another tool or model without extra shell parsing.
-5. Treat developer commands like `plugin:reload`, `eval`, and `dev:screenshot` as operational tools, not casual shortcuts.
-6. Keep CLI automation separate from Headless Sync workflows; they solve different problems.
-7. URI values must be encoded correctly or the action may be misinterpreted.
-8. On Linux, check registration, symlinks, and `PATH` before assuming the CLI is broken.
+The skill gets better by refusing the wrong jobs quickly, not by pretending every note workflow belongs here.
+
+## Output format
+
+Use one compact packet:
+- **Primary surface** — CLI command, TUI, developer mode, URI handoff, or route-out
+- **Runtime checks** — desktop requirement, CLI enabled state, plugin prerequisites
+- **Targeting** — vault and note target, with determinism notes when needed
+- **Recommended command or URI** — the smallest truthful command/URI for the job
+- **Important constraints** — encoding, plugin dependency, desktop-only behavior, or statefulness
+- **If this is actually a different job** — explicit route-out and why
+
+## Examples
+
+### Example 1: Verify official CLI registration
+**Input**: Obsidian CLI를 처음 쓰려는데 어떻게 켜고 확인해야 해?
+- use `bash scripts/install.sh`
+- mention `Settings -> General -> Command line interface`
+- keep the answer on official desktop CLI
+
+### Example 2: Deterministic vault/path targeting
+**Input**: 특정 vault에서 검색하고 특정 노트를 읽고 싶어. file이랑 path는 뭐가 달라?
+- explain `vault=` must precede the command
+- contrast wikilink-style `file=` vs exact `path=`
+- prefer exact `path=` when ambiguity matters
+
+### Example 3: Developer loop
+**Input**: 내가 개발 중인 Obsidian 플러그인을 CLI로 리로드하고 스크린샷도 찍고 싶어.
+- switch to developer mode
+- mention `plugin:reload` and `dev:screenshot`
+
+### Example 4: URI callback workflow
+**Input**: 외부 앱에서 obsidian:// 링크로 노트 열고 새 노트 만들고 싶은데 callback도 가능해?
+- use official `obsidian://open` / `obsidian://new`
+- explain encoding and `x-success` / `x-error`
+
+### Example 5: No-desktop sync request
+**Input**: 데스크톱 앱 없이 CLI만으로 sync하고 싶어.
+- explicitly route out to Obsidian Headless
+- state that Obsidian CLI controls the desktop app and is not the right tool here
+
+## Best practices
+1. Start by classifying **CLI command vs URI handoff vs route-out**, not by listing every command family.
+2. Prefer exact `vault=` + `path=` for agent-safe deterministic targeting.
+3. Use `commands` / `command id=...` when the real behavior comes from a plugin command.
+4. Use `--copy` or structured output formats when another tool needs the result.
+5. Treat `plugin:reload`, `eval`, `dev:screenshot`, and `devtools` as privileged developer operations.
+6. Keep URI answers strict about encoding, plugin prerequisites, and desktop-only callback details.
+7. Do not send headless/server jobs through this skill just because the phrase “Obsidian CLI” appeared.
+8. Re-check installation guidance against current official docs when OS-specific registration behavior changes.
 
 ## References
-
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
 - [references/installation-and-troubleshooting.md](references/installation-and-troubleshooting.md)
 - [references/vault-and-file-targeting.md](references/vault-and-file-targeting.md)
 - [references/commands-and-developer-tools.md](references/commands-and-developer-tools.md)
@@ -284,3 +260,4 @@ bash scripts/open-uri.sh 'obsidian://open?vault=my%20vault&file=my%20note'
 - [scripts/open-uri.sh](scripts/open-uri.sh)
 - [Obsidian CLI](https://obsidian.md/help/cli)
 - [Obsidian URI](https://obsidian.md/help/uri)
+- [Obsidian Headless](https://obsidian.md/help/Extending%20Obsidian/Obsidian%20Headless)

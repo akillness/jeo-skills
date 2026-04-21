@@ -1,678 +1,251 @@
 ---
 name: genkit
-description: Build production-ready AI workflows using Firebase Genkit. Use when creating flows, tool-calling agents, RAG pipelines, multi-agent systems, or deploying AI to Firebase/Cloud Run. Supports TypeScript, Go, and Python with Gemini, OpenAI, Anthropic, Ollama, and Vertex AI plugins.
+description: >
+  Route server-owned AI workflow work into one Genkit implementation brief.
+  Use when the main job is deciding whether a web/backend/fullstack feature needs
+  reusable flows, tools, retrieval, prompt files, typed contracts, evals,
+  observability, or deployment across Firebase / Cloud Run / another backend
+  runtime. Choose among flow-foundation, tool-and-agent, retrieval-and-prompt,
+  evaluation-and-observability, and deployment-runtime modes; keep direct
+  Firebase app/client SDK integration routed to `firebase-ai-logic`, Firebase
+  platform/operator work routed to `firebase-cli`, and framework-choice
+  comparisons routed to `survey`.
+allowed-tools: Read Write Bash Grep Glob
+compatibility: >
+  Best for repository packets, backend route handlers, API/service notes,
+  Firebase app backends, Cloud Run service plans, flow/eval docs, and launch
+  readiness reviews where the real decision is whether Genkit should own a
+  server-side capability or the work belongs to a neighboring skill or simpler
+  fallback.
 metadata:
-  tags: genkit, firebase, ai, llm, flows, agents, rag, gemini, typescript, google-cloud
+  tags: genkit, firebase, ai-workflows, flows, tool-calling, rag, evaluation, observability, cloud-run, fullstack, backend
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: 1.0.0
+  version: "2.1"
+  source: Firebase Genkit docs + Genkit official docs
+  modernization: 2026-04-15
 ---
 
+# Genkit
 
-# Firebase Genkit
+Use this skill when the main question is **"should this feature become a reusable server-owned AI workflow, and if so what is the smallest Genkit shape worth owning?"**
+
+The job is not to dump a long Genkit tutorial, CLI catalog, or Firebase product tour.
+The job is to frame the current packet, choose one operating mode, define one backend flow boundary, decide whether Genkit is actually the right layer, and route adjacent work away before the skill turns into app SDK wiring, Firebase ops, or generic framework comparison.
+
+Read [references/intake-packets-and-fallbacks.md](references/intake-packets-and-fallbacks.md) before handling mixed or ambiguous requests.
+Read [references/modes-and-routing.md](references/modes-and-routing.md) before choosing a primary mode.
+Read [references/deployment-and-runtime-boundaries.md](references/deployment-and-runtime-boundaries.md) when runtime choice is the real open question.
+Read [references/evals-and-observability.md](references/evals-and-observability.md) when the workflow already exists and confidence is the bottleneck.
 
 ## When to use this skill
+- A backend or full-stack feature needs a **reusable AI flow** instead of one-off provider calls scattered through route handlers
+- The work needs **typed input/output contracts**, flow ownership, or one AI capability reused across multiple clients, jobs, or surfaces
+- The workflow needs **tool calling, retrieval, prompt files, structured outputs, evaluation, or local tracing** under a server-owned boundary
+- The request is clearly about **Genkit** or **server-side Firebase AI workflow design**, not direct app/client SDK integration
+- The open question is how to structure, debug, evaluate, or deploy an existing Genkit flow to Firebase, Cloud Run, or another backend runtime
 
-- **AI workflow orchestration**: Building multi-step AI pipelines with type-safe inputs/outputs
-- **Flow-based APIs**: Wrapping LLM calls into deployable HTTP endpoints
-- **Tool calling / agents**: Equipping models with custom tools and implementing agentic loops
-- **RAG pipelines**: Retrieval-augmented generation with vector databases (Pinecone, pgvector, Firestore, Chroma, etc.)
-- **Multi-agent systems**: Coordinating multiple specialized AI agents
-- **Streaming responses**: Real-time token-by-token output for chat or long-form content
-- **Firebase/Cloud Run deployment**: Deploying AI functions to Google Cloud
-- **Prompt management**: Managing prompts as versioned `.prompt` files with Dotprompt
+## When not to use this skill
+- **The main job is direct mobile/web app integration with Firebase AI Logic client SDKs** → `firebase-ai-logic`
+- **The main job is Firebase bootstrap, emulator usage, hosting/functions deploy, auth/login, or admin CLI work** → `firebase-cli`
+- **The request is mostly frontend streaming/rendering/app wiring without backend workflow ownership** → relevant frontend/web skill
+- **The real question is framework choice (`Genkit` vs `Firebase AI Logic` vs `Vercel AI SDK` vs direct SDKs)** → `survey`
+- **A plain provider SDK or simple route handler is probably enough and the user is not asking for reusable workflow structure** → note the fallback and keep the answer lightweight
 
----
+## Instructions
 
-## Installation & Setup
+### Step 1: Frame the current packet
+Record the smallest useful intake before recommending Genkit.
 
-### Step 1: Install the Genkit CLI
+Capture:
+- app shape: web | mobile | backend | fullstack | mixed | unknown
+- ownership: client feature | backend capability | mixed | unknown
+- packet: route handler | feature brief | architecture note | deployed flow | eval/trace complaint | deploy plan | none
+- workflow need: simple generation | structured output | tools | retrieval | prompt files | evals | observability | deployment | unknown
+- delivery pressure: single endpoint | multi-surface reuse | launch readiness | migration | reliability concern | unknown
 
-```bash
-# npm (recommended for JavaScript/TypeScript)
-npm install -g genkit-cli
-
-# macOS/Linux binary
-curl -sL cli.genkit.dev | bash
+Quick frame:
+```markdown
+App shape: fullstack
+Ownership: backend capability
+Packet: existing API route + support feature brief
+Workflow need: retrieval + one ticket tool + evals later
+Delivery pressure: reuse across web app and internal ops panel
 ```
 
-### Step 2: Create a TypeScript project
+### Step 2: Choose the intake packet first
+Use [references/intake-packets-and-fallbacks.md](references/intake-packets-and-fallbacks.md).
 
-```bash
-mkdir my-genkit-app && cd my-genkit-app
-npm init -y
-npm pkg set type=module
-npm install -D typescript tsx
-npx tsc --init
-mkdir src && touch src/index.ts
+Pick the packet the user actually has now:
+- new backend capability packet
+- existing route/handler packet
+- deployed flow quality packet
+- deployment/runtime packet
+- comparison/fallback packet
+- no usable packet yet
+
+Output this step as:
+```markdown
+## Intake Packet
+- Current packet:
+- Why it is enough (or not enough):
+- Missing context to collect next:
 ```
 
-### Step 3: Install Genkit core and a model plugin
+Rule: do not force Genkit just because the app already uses Firebase.
 
-```bash
-# Core + Google AI (Gemini) — free tier, no credit card required
-npm install genkit @genkit-ai/google-genai
+### Step 3: Decide whether Genkit is the right layer
+Make the ownership decision explicit before choosing a mode.
 
-# Or: Vertex AI (requires GCP project)
-npm install genkit @genkit-ai/vertexai
+Choose **Genkit** when the dominant need is:
+- a reusable server-side AI contract
+- typed flow input/output boundaries
+- one place to own tool/retrieval/prompt orchestration
+- evaluation, tracing, or deployment support for a maintained backend feature
 
-# Or: OpenAI
-npm install genkit genkitx-openai
+Do **not** force Genkit when the request is mainly:
+- direct client/mobile/web SDK usage
+- a thin one-off model call that can stay in a normal backend route
+- a generic framework comparison with no chosen ownership layer yet
+- a reliability/durability question better owned by queue/job/workflow infrastructure
 
-# Or: Anthropic (Claude)
-npm install genkit genkitx-anthropic
-
-# Or: Ollama (local models)
-npm install genkit genkitx-ollama
+State the decision in one line:
+```markdown
+## Layer Decision
+- Use Genkit: yes | no | maybe-after-survey
+- Why:
 ```
 
-### Step 4: Configure API Key
+### Step 4: Choose one primary operating mode
+Pick one primary mode from [references/modes-and-routing.md](references/modes-and-routing.md).
 
-```bash
-# Google AI (Gemini)
-export GEMINI_API_KEY=your_key_here
+Primary modes:
+- `flow-foundation`
+- `tool-and-agent`
+- `retrieval-and-prompt`
+- `evaluation-and-observability`
+- `deployment-runtime`
+- `comparison-or-fallback`
 
-# OpenAI
-export OPENAI_API_KEY=your_key_here
+Rule: one primary mode, optional secondary mode.
+Do not mix backend flow design, frontend app wiring, deployment ops, and architecture comparison into one blob.
 
-# Anthropic
-export ANTHROPIC_API_KEY=your_key_here
+### Step 5: Freeze one smallest flow boundary
+If Genkit is the right layer, define the smallest useful workflow contract:
+- one named backend capability
+- one input/output schema or contract
+- what must remain server-side
+- where tools/retrieval belong, if anywhere
+- which client(s) or jobs call it
+
+Good boundary examples:
+- support reply + ticket action flow shared by web app and internal admin tools
+- document-grounded answer flow with one retrieval source and schema-valid output
+- existing flow that now needs eval coverage before a Cloud Run rollout
+
+Bad boundary examples:
+- every AI feature in one mega-flow
+- client-side app integration disguised as a server workflow
+- adding tools, retrieval, and multi-agent logic before one basic flow works
+
+### Step 6: Name the fallback or route-out honestly
+Use [references/intake-packets-and-fallbacks.md](references/intake-packets-and-fallbacks.md).
+
+Common route-outs:
+- direct Firebase app/client SDK integration → `firebase-ai-logic`
+- Firebase CLI / emulator / deploy / admin work → `firebase-cli`
+- frontend streaming/rendering/app wiring → relevant frontend/web skill
+- framework comparison or architecture uncertainty → `survey`
+- thin synchronous model call that can stay inside one existing route → note plain provider SDK / route-handler fallback instead of forcing Genkit
+- durability / retries / background orchestration dominating the problem → note queue/job/workflow substrate as a complement or better first layer
+
+### Step 7: Pick the smallest next slice
+Do not jump to a giant system diagram.
+Return the smallest next slice that makes Genkit real:
+- define one flow contract
+- wrap one existing route into a flow
+- add one tool boundary
+- add one retrieval boundary
+- add one eval set with representative inputs
+- choose one runtime/deploy shape
+
+### Step 8: Use evals and traces when confidence is the bottleneck
+Use [references/evals-and-observability.md](references/evals-and-observability.md).
+
+When the workflow already exists, prefer:
+1. representative inputs
+2. local trace review / Developer UI inspection
+3. small eval set
+4. contract / prompt / tool cleanup
+5. rollout only after the evidence loop is good enough
+
+### Step 9: Return the Genkit brief
+```markdown
+# Genkit Brief
+
+## Scope
+- App shape:
+- Ownership:
+- Intake packet:
+- Primary mode:
+- Confidence:
+
+## Layer Decision
+- Use Genkit: yes | no | maybe-after-survey
+- Why:
+
+## Backend Flow Boundary
+- Capability:
+- Input / output contract:
+- Server-only responsibilities:
+- Tools / retrieval / prompt-file needs:
+
+## Smallest Next Slice
+1. ...
+2. ...
+3. ...
+
+## Route-outs / Fallbacks
+- ...
 ```
-
----
-
-## Core Concepts
-
-### Initializing Genkit
-
-```typescript
-import { googleAI } from '@genkit-ai/google-genai';
-import { genkit } from 'genkit';
-
-const ai = genkit({
-  plugins: [googleAI()],
-  model: googleAI.model('gemini-2.5-flash'), // default model
-});
-```
-
-### Defining Flows
-
-Flows are the core primitive: type-safe, observable, deployable AI functions.
-
-```typescript
-import { genkit, z } from 'genkit';
-import { googleAI } from '@genkit-ai/google-genai';
-
-const ai = genkit({ plugins: [googleAI()] });
-
-// Input/output schemas with Zod
-const SummaryInputSchema = z.object({
-  text: z.string().describe('Text to summarize'),
-  maxWords: z.number().optional().default(100),
-});
-
-const SummaryOutputSchema = z.object({
-  summary: z.string(),
-  keyPoints: z.array(z.string()),
-});
-
-export const summarizeFlow = ai.defineFlow(
-  {
-    name: 'summarizeFlow',
-    inputSchema: SummaryInputSchema,
-    outputSchema: SummaryOutputSchema,
-  },
-  async ({ text, maxWords }) => {
-    const { output } = await ai.generate({
-      model: googleAI.model('gemini-2.5-flash'),
-      prompt: `Summarize the following text in at most ${maxWords} words and extract key points:\n\n${text}`,
-      output: { schema: SummaryOutputSchema },
-    });
-
-    if (!output) throw new Error('No output generated');
-    return output;
-  }
-);
-
-// Call the flow
-const result = await summarizeFlow({
-  text: 'Long article content here...',
-  maxWords: 50,
-});
-console.log(result.summary);
-```
-
-### Generating Content
-
-```typescript
-// Simple text generation
-const { text } = await ai.generate({
-  model: googleAI.model('gemini-2.5-flash'),
-  prompt: 'Explain quantum computing in one sentence.',
-});
-
-// Structured output
-const { output } = await ai.generate({
-  prompt: 'List 3 programming languages with their use cases',
-  output: {
-    schema: z.object({
-      languages: z.array(z.object({
-        name: z.string(),
-        useCase: z.string(),
-      })),
-    }),
-  },
-});
-
-// With system prompt
-const { text: response } = await ai.generate({
-  system: 'You are a senior TypeScript engineer. Be concise.',
-  prompt: 'What is the difference between interface and type in TypeScript?',
-});
-
-// Multimodal (image + text)
-const { text: description } = await ai.generate({
-  prompt: [
-    { text: 'What is in this image?' },
-    { media: { url: 'https://example.com/image.jpg', contentType: 'image/jpeg' } },
-  ],
-});
-```
-
-### Streaming Flows
-
-```typescript
-export const streamingFlow = ai.defineFlow(
-  {
-    name: 'streamingFlow',
-    inputSchema: z.object({ topic: z.string() }),
-    streamSchema: z.string(),        // type of each chunk
-    outputSchema: z.object({ full: z.string() }),
-  },
-  async ({ topic }, { sendChunk }) => {
-    const { stream, response } = ai.generateStream({
-      prompt: `Write a detailed essay about ${topic}.`,
-    });
-
-    for await (const chunk of stream) {
-      sendChunk(chunk.text);         // stream each token to client
-    }
-
-    const { text } = await response;
-    return { full: text };
-  }
-);
-
-// Client-side consumption
-const stream = streamingFlow.stream({ topic: 'AI ethics' });
-for await (const chunk of stream.stream) {
-  process.stdout.write(chunk);
-}
-const finalOutput = await stream.output;
-```
-
-### Tool Calling (Agents)
-
-```typescript
-import { z } from 'genkit';
-
-// Define tools
-const getWeatherTool = ai.defineTool(
-  {
-    name: 'getWeather',
-    description: 'Get current weather for a city',
-    inputSchema: z.object({ city: z.string() }),
-    outputSchema: z.object({ temp: z.number(), condition: z.string() }),
-  },
-  async ({ city }) => {
-    // Call real weather API
-    return { temp: 22, condition: 'sunny' };
-  }
-);
-
-const searchWebTool = ai.defineTool(
-  {
-    name: 'searchWeb',
-    description: 'Search the web for information',
-    inputSchema: z.object({ query: z.string() }),
-    outputSchema: z.string(),
-  },
-  async ({ query }) => {
-    // Call search API
-    return `Search results for: ${query}`;
-  }
-);
-
-// Agent flow with tools
-export const agentFlow = ai.defineFlow(
-  {
-    name: 'agentFlow',
-    inputSchema: z.object({ question: z.string() }),
-    outputSchema: z.string(),
-  },
-  async ({ question }) => {
-    const { text } = await ai.generate({
-      prompt: question,
-      tools: [getWeatherTool, searchWebTool],
-      returnToolRequests: false, // auto-execute tools
-    });
-    return text;
-  }
-);
-```
-
-### Prompts with Dotprompt
-
-Manage prompts as versioned `.prompt` files:
-
-```
-# src/prompts/summarize.prompt
----
-model: googleai/gemini-2.5-flash
-input:
-  schema:
-    text: string
-    style?: string
-output:
-  schema:
-    summary: string
-    sentiment: string
----
-Summarize the following text in a {{style, default: "professional"}} tone:
-
-{{text}}
-
-Return JSON with summary and sentiment (positive/negative/neutral).
-```
-
-```typescript
-// Load and use dotprompt
-const summarizePrompt = ai.prompt('summarize');
-const { output } = await summarizePrompt({
-  text: 'Article content here...',
-  style: 'casual',
-});
-```
-
-### RAG — Retrieval-Augmented Generation
-
-```typescript
-import { devLocalVectorstore } from '@genkit-ai/dev-local-vectorstore';
-import { textEmbedding004 } from '@genkit-ai/google-genai';
-
-const ai = genkit({
-  plugins: [
-    googleAI(),
-    devLocalVectorstore([{
-      indexName: 'documents',
-      embedder: textEmbedding004,
-    }]),
-  ],
-});
-
-// Index documents
-await ai.index({
-  indexer: devLocalVectorstoreIndexer('documents'),
-  docs: [
-    { content: [{ text: 'Document 1 content...' }], metadata: { source: 'doc1' } },
-    { content: [{ text: 'Document 2 content...' }], metadata: { source: 'doc2' } },
-  ],
-});
-
-// RAG flow
-export const ragFlow = ai.defineFlow(
-  {
-    name: 'ragFlow',
-    inputSchema: z.object({ question: z.string() }),
-    outputSchema: z.string(),
-  },
-  async ({ question }) => {
-    // Retrieve relevant documents
-    const docs = await ai.retrieve({
-      retriever: devLocalVectorstoreRetriever('documents'),
-      query: question,
-      options: { k: 3 },
-    });
-
-    // Generate answer grounded in retrieved docs
-    const { text } = await ai.generate({
-      system: 'Answer questions using only the provided context.',
-      prompt: question,
-      docs,
-    });
-
-    return text;
-  }
-);
-```
-
-### Chat Sessions
-
-```typescript
-export const chatFlow = ai.defineFlow(
-  {
-    name: 'chatFlow',
-    inputSchema: z.object({ message: z.string(), sessionId: z.string() }),
-    outputSchema: z.string(),
-  },
-  async ({ message, sessionId }) => {
-    const session = ai.loadSession(sessionId) ?? ai.createSession({ sessionId });
-    const chat = session.chat({
-      system: 'You are a helpful assistant.',
-    });
-
-    const { text } = await chat.send(message);
-    return text;
-  }
-);
-```
-
-### Multi-Agent Systems
-
-```typescript
-// Specialist agents
-const researchAgent = ai.defineFlow(
-  { name: 'researchAgent', inputSchema: z.string(), outputSchema: z.string() },
-  async (query) => {
-    const { text } = await ai.generate({
-      system: 'You are a research expert. Gather facts and cite sources.',
-      prompt: query,
-      tools: [searchWebTool],
-    });
-    return text;
-  }
-);
-
-const writerAgent = ai.defineFlow(
-  { name: 'writerAgent', inputSchema: z.string(), outputSchema: z.string() },
-  async (brief) => {
-    const { text } = await ai.generate({
-      system: 'You are a professional writer. Write clear, engaging content.',
-      prompt: brief,
-    });
-    return text;
-  }
-);
-
-// Orchestrator delegates to specialists
-export const contentPipelineFlow = ai.defineFlow(
-  {
-    name: 'contentPipelineFlow',
-    inputSchema: z.object({ topic: z.string() }),
-    outputSchema: z.string(),
-  },
-  async ({ topic }) => {
-    const research = await researchAgent(`Research: ${topic}`);
-    const article = await writerAgent(`Write an article based on: ${research}`);
-    return article;
-  }
-);
-```
-
----
-
-## Developer Tools
-
-### CLI Commands
-
-```bash
-# Start Developer UI + connect to your app
-genkit start -- npx tsx --watch src/index.ts
-genkit start -o -- npx tsx src/index.ts    # auto-open browser
-
-# Run a specific flow from CLI
-genkit flow:run summarizeFlow '{"text": "Hello world", "maxWords": 10}'
-
-# Run with streaming output
-genkit flow:run streamingFlow '{"topic": "AI"}' -s
-
-# Evaluate a flow
-genkit eval:flow ragFlow --input eval-inputs.json
-
-# View all commands
-genkit --help
-
-# Disable analytics telemetry
-genkit config set analyticsOptOut true
-```
-
-### Developer UI
-
-The Developer UI runs at **http://localhost:4000** and provides:
-
-- **Flow runner**: Execute flows with custom JSON inputs
-- **Trace inspector**: Visualize each step (generate, embed, retrieve, tool calls)
-- **Prompt playground**: Test prompts interactively
-- **Model tester**: Compare outputs across different models
-- **Evaluator**: Run evaluation datasets against flows
-
-```bash
-# Add npm script for convenience
-# package.json
-"scripts": {
-  "genkit:dev": "genkit start -- npx tsx --watch src/index.ts"
-}
-
-npm run genkit:dev
-```
-
----
-
-## Deployment
-
-### Firebase Cloud Functions
-
-```typescript
-import { onCallGenkit } from 'firebase-functions/https';
-import { defineSecret } from 'firebase-functions/params';
-
-const apiKey = defineSecret('GOOGLE_AI_API_KEY');
-
-export const summarize = onCallGenkit(
-  { secrets: [apiKey] },
-  summarizeFlow
-);
-```
-
-```bash
-firebase deploy --only functions
-```
-
-### Express.js Server
-
-```typescript
-import express from 'express';
-import { expressHandler } from 'genkit/express';
-
-const app = express();
-app.use(express.json());
-
-app.post('/summarize', expressHandler(summarizeFlow));
-app.post('/chat', expressHandler(chatFlow));
-
-app.listen(3000, () => console.log('Server running on port 3000'));
-```
-
-### Cloud Run
-
-```bash
-# Build and deploy
-gcloud run deploy genkit-app \
-  --source . \
-  --region us-central1 \
-  --set-env-vars GEMINI_API_KEY=$GEMINI_API_KEY
-```
-
----
-
-## Supported Plugins
-
-### Model Providers
-
-| Plugin | Package | Models |
-|--------|---------|--------|
-| Google AI | `@genkit-ai/google-genai` | Gemini 2.5 Flash/Pro |
-| Vertex AI | `@genkit-ai/vertexai` | Gemini, Imagen, Claude |
-| OpenAI | `genkitx-openai` | GPT-4o, o1, etc. |
-| Anthropic | `genkitx-anthropic` | Claude 3.5/3 |
-| AWS Bedrock | `genkitx-aws-bedrock` | Claude, Titan, etc. |
-| Ollama | `genkitx-ollama` | Local models |
-| DeepSeek | `genkitx-deepseek` | DeepSeek-R1 |
-| xAI (Grok) | `genkitx-xai` | Grok models |
-
-### Vector Databases
-
-| Plugin | Package |
-|--------|---------|
-| Dev Local (testing) | `@genkit-ai/dev-local-vectorstore` |
-| Pinecone | `genkitx-pinecone` |
-| pgvector | `genkitx-pgvector` |
-| Chroma | `genkitx-chroma` |
-| Cloud Firestore | `@genkit-ai/firebase` |
-| LanceDB | `genkitx-lancedb` |
-
----
-
-## Best Practices
-
-1. **Always define input/output schemas** — Use Zod objects for Dev UI labeled fields and API safety
-2. **Use flows for all AI logic** — Even simple calls; flows give you tracing and deployment for free
-3. **Store API keys in environment variables** — Never hardcode; use Firebase Secrets for production
-4. **Use `ai.run()` to trace custom steps** — Wrap non-Genkit code in `ai.run()` for trace visibility
-5. **Stream long-form content** — Use `defineFlow` with `streamSchema` + `sendChunk` for better UX
-6. **Separate concerns with agents** — Specialized subflows > one monolithic flow
-7. **Use Dotprompt for team prompts** — `.prompt` files enable versioning, review, and reuse
-
-## Constraints
-
-### Must Do
-- Define schemas for all flow inputs and outputs
-- Handle `null` output from `generate()` — throw meaningful errors
-- Set `GENKIT_ENV=dev` when running flows separately from the dev server
-- Use `onCallGenkit` (not raw Cloud Functions) when deploying to Firebase
-
-### Must Not Do
-- Never hardcode API keys in source code
-- Do not use `generate()` outside a flow if you need tracing/observability
-- Do not call `genkit start` without a command — always pass `-- <your-run-command>`
-- Avoid blocking the event loop in tool handlers — use `async/await`
-
----
-
-## References
-
-- [Official Docs](https://genkit.dev/docs/overview/)
-- [Get Started Guide](https://genkit.dev/docs/get-started/)
-- [Developer Tools](https://genkit.dev/docs/devtools/)
-- [Flows Reference](https://genkit.dev/docs/flows/)
-- [Tool Calling](https://genkit.dev/docs/tool-calling/)
-- [RAG Guide](https://genkit.dev/docs/rag/)
-- [Multi-Agent Systems](https://genkit.dev/docs/multi-agent/)
-- [Dotprompt](https://genkit.dev/docs/dotprompt/)
-- [GitHub Repository](https://github.com/firebase/genkit)
-- [API References](https://genkit.dev/docs/api-references/)
 
 ## Examples
 
-### Example 1: Minimal Flow
+### Example 1: Reusable backend support workflow
+**Input:** “Build a Genkit backend flow for our support app: retrieve help articles, call one ticket tool, and expose one server endpoint the web app can reuse.”
 
-```typescript
-import { googleAI } from '@genkit-ai/google-genai';
-import { genkit, z } from 'genkit';
+**Expected shape:** `tool-and-agent` or `retrieval-and-prompt`, explicit server-owned flow boundary, one tool/retrieval plan, no route to `firebase-ai-logic`.
 
-const ai = genkit({ plugins: [googleAI()] });
+### Example 2: Direct Firebase app feature
+**Input:** “Add Gemini-powered summaries directly inside our Firebase web app with the Firebase SDK.”
 
-export const helloFlow = ai.defineFlow(
-  {
-    name: 'helloFlow',
-    inputSchema: z.object({ name: z.string() }),
-    outputSchema: z.string(),
-  },
-  async ({ name }) => {
-    const { text } = await ai.generate(`Say hello to ${name} in a creative way.`);
-    return text;
-  }
-);
+**Expected shape:** route to `firebase-ai-logic` unless the request clearly adds a server-owned workflow requirement.
 
-// Run it
-const greeting = await helloFlow({ name: 'World' });
-console.log(greeting);
-```
+### Example 3: Existing flow needs confidence before launch
+**Input:** “Our Genkit flows work locally, but we need a practical eval and observability plan before deploying to Cloud Run.”
 
-### Example 2: Full RAG + Agent Pipeline
+**Expected shape:** `evaluation-and-observability`, small evidence loop, route runtime specifics through the deployment boundary without turning the answer into Firebase CLI ops.
 
-```typescript
-import { googleAI, textEmbedding004 } from '@genkit-ai/google-genai';
-import { devLocalVectorstore } from '@genkit-ai/dev-local-vectorstore';
-import { genkit, z } from 'genkit';
+### Example 4: Framework choice is still unclear
+**Input:** “Should we use Genkit, Firebase AI Logic, Vercel AI SDK, or just direct SDK calls for this Firebase app?”
 
-const ai = genkit({
-  plugins: [
-    googleAI(),
-    devLocalVectorstore([{ indexName: 'kb', embedder: textEmbedding004 }]),
-  ],
-});
+**Expected shape:** `comparison-or-fallback`, route to `survey`, and only return to `genkit` if the chosen ownership layer is a reusable backend workflow.
 
-// Index knowledge base documents
-const indexKnowledgeBase = ai.defineFlow(
-  { name: 'indexKB', inputSchema: z.array(z.string()) },
-  async (texts) => {
-    await ai.index({
-      indexer: devLocalVectorstoreIndexer('kb'),
-      docs: texts.map(text => ({ content: [{ text }] })),
-    });
-  }
-);
+## Best practices
+1. Choose Genkit because you need a **server-owned workflow layer**, not just because the product uses Firebase.
+2. Start from the packet and ownership decision before naming tools or models.
+3. Prefer one crisp flow boundary over a giant AI feature bucket.
+4. Keep direct app/client SDK work routed to `firebase-ai-logic`.
+5. Acknowledge plain route-handler / provider-SDK fallbacks when they are enough.
+6. Treat runtime choice as an architecture decision, not proof that Genkit is mandatory.
+7. Use traces and evals before widening rollout.
+8. Sync compact discovery surfaces whenever the front-door boundary changes.
 
-// Answer questions using RAG
-export const answerFlow = ai.defineFlow(
-  {
-    name: 'answerFlow',
-    inputSchema: z.object({ question: z.string() }),
-    outputSchema: z.object({ answer: z.string(), sources: z.number() }),
-  },
-  async ({ question }) => {
-    const docs = await ai.retrieve({
-      retriever: devLocalVectorstoreRetriever('kb'),
-      query: question,
-      options: { k: 5 },
-    });
-
-    const { text } = await ai.generate({
-      system: 'Answer only from the provided context. If unsure, say so.',
-      prompt: question,
-      docs,
-    });
-
-    return { answer: text, sources: docs.length };
-  }
-);
-```
-
-### Example 3: Multi-Model Comparison
-
-```typescript
-import { googleAI } from '@genkit-ai/google-genai';
-import { openAI } from 'genkitx-openai';
-import { genkit, z } from 'genkit';
-
-const ai = genkit({ plugins: [googleAI(), openAI()] });
-
-export const compareModelsFlow = ai.defineFlow(
-  {
-    name: 'compareModelsFlow',
-    inputSchema: z.object({ prompt: z.string() }),
-    outputSchema: z.object({ gemini: z.string(), gpt4o: z.string() }),
-  },
-  async ({ prompt }) => {
-    const [geminiResult, gptResult] = await Promise.all([
-      ai.generate({ model: googleAI.model('gemini-2.5-flash'), prompt }),
-      ai.generate({ model: 'openai/gpt-4o', prompt }),
-    ]);
-
-    return {
-      gemini: geminiResult.text,
-      gpt4o: gptResult.text,
-    };
-  }
-);
-```
+## References
+- Firebase Genkit docs: https://firebase.google.com/docs/genkit
+- Genkit docs: https://genkit.dev/docs/
+- Genkit flows docs: https://genkit.dev/docs/js/flows/
+- Genkit client access docs: https://genkit.dev/docs/client/
+- Firebase AI Logic docs: https://firebase.google.com/docs/ai-logic
+- `../firebase-ai-logic/SKILL.md`
+- `../firebase-cli/SKILL.md`
+- `../survey/SKILL.md`

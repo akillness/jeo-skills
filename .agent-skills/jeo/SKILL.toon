@@ -1,33 +1,33 @@
 N:jeo
-D:[jeo] Integrated AI orchestration. ralph+plannotator planning -> team/bmad execution -> agent-browser browser verification -> agentation submit-gated UI feedback -> automatic worktree cleanup. PLAN never reopens for the same reviewed hash. Supports all platforms: Claude/Codex/Gemini/OpenCode. Installation: omc omx ohmg bmad ralph plannotator agent-browser agentation.
-G:jeo orchestration ralph plannotator agentation annotate agentui team bmad omc omx ohmg agent-browser multi-agent workflow worktree cleanup browser-verification ui-feedback submit-gate onsubmit plan-hash 오케스튤 계획 실행 검증 정리
+D:[jeo] Packet-first integrated agent orchestration router. Use when the user wants one front door for plan approval, runtime handoff, browser/UI verification, resume or recovery, and durable `.jeo` task history across Claude Code, Codex CLI, Gemini CLI, or OpenCode. Route spec-first loops to `ralph`, plan review to `plannotator`, runtime-native execution to `omc` / `omx` / `ohmg`, browser verification to `agent-browser`, submit-gated UI review to `agentation`, and trust-posture tuning to `ralphmode`.
+G:jeo orchestration annotate ui-review agentui ralph plannotator omc omx ohmg bmad agent-browser agentation multi-agent workflow resume recovery ledger phase-router packet-router cleanup browser-verification ui-feedback submit-gate onsubmit 오케스트레이션 계획 실행 검증 정리 재개
 
 U[5]:
-  Automate the full flow for multi-agent tasks: plan -> execute -> browser verification -> UI feedback (agentui) -> cleanup
-  Visually review and approve plans with ralph+plannotator before coding starts
-  Execute agents in parallel via team (Claude) or bmad (fallback)
-  Verify browser-based behavior with agent-browser (snapshot, screenshot, UI checks) - default behavior
-  Run the same workflow plugin across Claude/Codex/Gemini/OpenCode
+  Use one orchestration front door while keeping runtime-native execution in sibling skills
+  Maintain a durable `.jeo` ledger plus resumable machine state across planning, execution, verification, and cleanup
+  Resume previous work instead of rebuilding plan/task structure from scratch
+  Add browser verification and optional submit-gated UI review when the delivery loop needs it
+  Keep honest route-outs to `ralph`, `plannotator`, `omc`, `omx`, `ohmg`, `agent-browser`, `agentation`, and `ralphmode`
 
 S[8]{n,action,details}:
-  1,Install,bash scripts/install.sh --all (install all: ralph omc omx ohmg bmad plannotator agent-browser)
-  2,Setup-Claude,bash scripts/setup-claude.sh (/plugin install oh-my-claudecode + plannotator hook setup)
-  3,Setup-Codex,bash scripts/setup-codex.sh (~/.codex/config.toml developer_instructions + /prompts:jeo)
-  4,Setup-Gemini,bash scripts/setup-gemini.sh (~/.gemini/settings.json hook + GEMINI.md instructions)
-  5,Setup-OpenCode,bash scripts/setup-opencode.sh (opencode.json plugin registration + slash commands)
-  6,Plan,ralph+plannotator planning: /ralph "jeo-plan: <task>" -> run plannotator in blocking mode (no `&`) -> same reviewed hash skips re-entry -> Approve("approved":true) or Feedback -> replanning loop
-  7,Execute,team first: /omc:team 3:executor "<task>" / if team unavailable: /workflow-init (BMAD)
-  8,Verify-Cleanup,agent-browser snapshot <url> -> UI verification -> wait for Send Annotations/onSubmit -> agentation ack->fix->resolve -> bash scripts/worktree-cleanup.sh
+  1,Bootstrap-or-Resume,initialize or recover `.jeo` and machine state with jeo-state-update.py + jeo-project-sync.py
+  2,Choose-Packet,classify the request as bootstrap-or-resume / planning-gate / runtime-handoff / verification-loop / annotate-submit-loop / cleanup-and-closeout
+  3,Plan-Gate,checkpoint plan state and route plan shaping/review to `ralph` + `plannotator`
+  4,Runtime-Handoff,checkpoint execute state and hand approved work to `omc` / `omx` / `ohmg` or truthful `bmad` fallback
+  5,Verify,checkpoint verify state and collect QA evidence with `agent-browser` when browser-visible behavior matters
+  6,Annotate-Loop,only after explicit submit/onSubmit, route UI annotation processing to `agentation`
+  7,Cleanup,complete task summary, queue follow-up work if needed, and run worktree cleanup
+  8,Boundary-Check,keep runtime config/hooks in references or sibling skills instead of re-expanding the main skill
 
-R[5]:
-  Review plans first with ralph+plannotator - block wrong directions before coding starts
-  Plannotator must run in blocking mode (no `&`) - enter EXECUTE only after "approved":true / same plan hash must not reopen the gate
-  annotate/agentui behavior: wait for explicit Send Annotations/onSubmit, then run blocking `agentation_watch_annotations` or HTTP fallback
-  Claude+omc: team first / Codex·Gemini·OpenCode: use bmad fallback
-  For browser-related work, verify UI behavior with `agent-browser snapshot` (default)
-  Persist state across sessions in {worktree}/.omc/state/jeo-state.json
+R[6]:
+  Never enter EXECUTE without plan approval
+  Never reopen an unchanged approved plan
+  Never process annotations before explicit submit/onSubmit
+  Completion requires QA evidence or an explicit skip reason
+  Persist durable context in `.jeo/` and resumable machine state before leaving a phase
+  JEO is the router and ledger contract, not the owner of runtime internals
 
 E[3]{desc,in,out}:
-  "Full install","bash scripts/install.sh --all && bash scripts/check-status.sh","All components installed + all AI tool integrations verified"
-  "Plan->Execute->Verify","jeo 'implement new feature' -> ralph plan -> Approve -> team execution -> agent-browser snapshot","Browser behavior verification complete and screenshot saved"
-  "Cleanup","bash scripts/worktree-cleanup.sh","git worktree prune completed"
+  "Resume existing workflow","python3 scripts/jeo-state-update.py resume && python3 scripts/jeo-project-sync.py status","Current phase, active task, and ledger status recovered"
+  "Cross-platform delivery loop","jeo 'ship analytics dashboard with annotate'","Packet chooses plan/runtime/verify owners, preserves `.jeo`, and routes runtime-specific work honestly"
+  "Queue follow-up after QA","python3 scripts/jeo-project-sync.py queue qa-follow-up 'Fix chart legend overlap'","New queued work item added without rebuilding the ledger"

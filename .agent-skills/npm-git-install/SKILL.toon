@@ -1,9 +1,29 @@
 N:npm-git-install
-D:Install npm packages directly from GitHub repositories using git URLs. Use when installing packag...
-G:npm git github install package-management
+D:Route Node package-delivery ambiguity into one install packet: temporary Git bridge, SHA-pinned shared bridge, private-auth Git path, tarball / `npm pack` artifact, workspace / `file:` inner-loop, or publish-first registry handoff.
+G:npm pnpm yarn bun git github package-management node monorepo private-packages tarball workspace
+
 U[6]:
-  **Packages Not on npm**: Install packages not yet published
-  **Specific Branch/Tag**: Install main, develop, specific release tags
-  **Private Repositories**: Install packages within an organization
-  **Forked Packages**: Use a modified fork version
-  **Test Latest Commits**: Test the latest code before a release
+  Choose the safest way to consume an unpublished fix, fork, private repo package, or monorepo package
+  Decide whether a Git dependency should stay a Git ref at all
+  Handle private Git package auth and CI parity without treating credentials as the whole answer
+  Prefer tarball or `npm pack` artifacts when raw Git installs are too brittle
+  Prefer workspace or `file:` links for local co-development
+  Move durable shared packages toward publish-first / registry paths instead of floating branch installs
+
+S[8]{n,action,details}:
+  1,Normalize packet,Capture package manager, packet shape, current ref, audience, auth path, lifecycle/build risk, and durability tier
+  2,Choose mode,Pick exactly one path: direct Git bridge, SHA-pinned shared bridge, private-auth Git, tarball/pack artifact, workspace/file link, or publish-first registry
+  3,Classify durability,Separate local-only, team/CI bridge, durable shared package, and production-facing infrastructure
+  4,Pick safest packet,Prefer publish-first or workspace when honest; use SHA pin over floating branches for shared bridges
+  5,Tailor commands,Give only the needed npm/pnpm/Yarn/Bun syntax for the chosen path
+  6,Flag consequences,Explain auth parity, install-time build/lifecycle behavior, deterministic lockfile expectations, and exit strategy
+  7,Route out,Send Git history issues, repo/package admin, repo automation, or environment setup to neighboring skills
+  8,Return brief,Produce one concise install brief with commands, notes, and next owner
+
+R[6]:
+  Treat Git refs as bridges, not a default release channel
+  Prefer SHA pins over floating branches whenever a Git dependency will be shared
+  Do not recommend committed secrets in manifests or docs
+  Use workspace/file links for local co-development, not remote third-party distribution
+  Recommend tarball or publish-first when raw Git install is too brittle or too durable for the use case
+  Always leave a clear exit strategy for temporary Git-based dependencies

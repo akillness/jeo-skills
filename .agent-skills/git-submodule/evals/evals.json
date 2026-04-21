@@ -1,0 +1,56 @@
+{
+  "skill_name": "git-submodule",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I cloned a repo and the third_party/sdk directory is empty. There is a .gitmodules file. What should I do?",
+      "expected_output": "Chooses bootstrap-and-clone mode, recommends recursive init/update or clone --recurse-submodules, and explains that this restores the pinned contents rather than upgrading anything.",
+      "assertions": [
+        "Response identifies bootstrap/clone as the primary mode",
+        "Response includes `git submodule update --init --recursive` or `git clone --recurse-submodules`",
+        "Response mentions pinned commit or recorded state rather than treating this as an upgrade"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We track another repo as a submodule and want to move it to the latest commit on its main branch. What is the safe flow?",
+      "expected_output": "Chooses advance-tracked-branch mode, makes branch tracking explicit, runs update --remote, and commits the resulting pointer change in the superproject.",
+      "assertions": [
+        "Response identifies advance-tracked-branch as the primary mode",
+        "Response references `.gitmodules` branch tracking or `git submodule set-branch`",
+        "Response stages and commits the submodule path in the superproject after update"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Should we use a submodule or subtree for a shared internal component repo? We want exact pins, but teammates hate clone/setup friction.",
+      "expected_output": "Chooses boundary-decision mode, compares separate-history/pinning value against clone simplicity, and recommends the better fit instead of defaulting to submodule blindly.",
+      "assertions": [
+        "Response identifies boundary decision rather than jumping into add commands",
+        "Response compares submodule with subtree directly",
+        "Response includes at least one trade-off about recursive bootstrap, exact commit pinning, or separate history"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our GitHub Actions build can't find the private ui-kit submodule. How should checkout be configured?",
+      "expected_output": "Chooses ci-checkout mode, uses actions/checkout submodule configuration, and calls out auth for the private repo.",
+      "assertions": [
+        "Response identifies ci-checkout as the primary mode",
+        "Response includes `actions/checkout` with `submodules: recursive` or equivalent",
+        "Response mentions SSH key or token access for the private submodule"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our GitHub Pages build uses a private docs-theme submodule and keeps failing. Can we just add auth and keep going?",
+      "expected_output": "Chooses hosted-constraint mode, explains GitHub Pages' public https-only submodule limitation, and routes away from pretending private-submodule auth will work there.",
+      "assertions": [
+        "Response identifies hosted-constraint as the primary mode",
+        "Response mentions GitHub Pages specifically",
+        "Response explains that the submodule must be public and use https or equivalent public-read-only wording",
+        "Response does not present a normal CI token or SSH workaround as a sufficient fix"
+      ]
+    }
+  ]
+}

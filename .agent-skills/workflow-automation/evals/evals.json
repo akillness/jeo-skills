@@ -1,0 +1,45 @@
+{
+  "skill_name": "workflow-automation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "This repo has README commands, a stale Makefile, and random shell scripts. We need one repeatable automation layer for dev, test, and lint without turning it into a deployment project.",
+      "expected_output": "The skill activates in workflow-diagnosis or task-entrypoints mode, recommends a thin repo-local entrypoint layer, and routes deployment concerns away.",
+      "assertions": [
+        "Response classifies the workflow before prescribing tools",
+        "Response recommends one human-facing command layer such as Make, just, Task, or package scripts",
+        "Response explicitly routes deployment architecture away from workflow-automation"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Developers keep pushing just to discover CI failures. I want a local command that mirrors CI enough to catch problems earlier, but we still use GitHub Actions as the real gate.",
+      "expected_output": "The skill activates in local-ci-parity mode and distinguishes local feedback commands from hosted CI enforcement.",
+      "assertions": [
+        "Response names local-CI parity as the primary mode or equivalent",
+        "Response recommends a local ci wrapper command and keeps hosted CI as enforcement",
+        "Response calls out parity limits such as secrets, images, or service topology"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "New contributors need to install tools, copy env files, seed data, and start services before they can run tests. Should this be one bootstrap script or part of our environment setup?",
+      "expected_output": "The skill activates, recommends an idempotent bootstrap entrypoint for repo-scoped steps, and routes broader machine/service provisioning to system-environment-setup when needed.",
+      "assertions": [
+        "Response identifies bootstrap-onboarding as the primary mode or equivalent",
+        "Response requires idempotent and non-interactive behavior for the bootstrap path",
+        "Response explicitly distinguishes repo automation from broader environment provisioning"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Dependency update PRs, stale cleanup, and release-prep chores keep slipping. We have a few scripts already, but I need to know whether this should become a scheduled bot workflow and what humans still own.",
+      "expected_output": "The skill activates in repo-maintenance mode, recommends a scheduled or bot-owned maintenance surface, and defines review/noise-control guardrails instead of treating automation as fully autonomous.",
+      "assertions": [
+        "Response identifies repo-maintenance as the primary mode or equivalent",
+        "Response distinguishes scheduled automation from daily human-invoked commands",
+        "Response includes review cadence, batching, ownership, or noise-control guidance"
+      ]
+    }
+  ]
+}

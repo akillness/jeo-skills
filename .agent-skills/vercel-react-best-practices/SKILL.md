@@ -1,215 +1,81 @@
 ---
 name: vercel-react-best-practices
-description: React and Next.js performance optimization guidelines from Vercel Engineering. Use when writing, reviewing, or refactoring React/Next.js code to ensure optimal performance patterns. Triggers on tasks involving React components, Next.js pages, data fetching, bundle optimization, or performance improvements.
+description: >
+  Compatibility alias for `react-best-practices`. Use when an existing workflow,
+  setup script, or user explicitly asks for `vercel-react-best-practices`; route
+  general React and Next.js performance work to `react-best-practices` instead.
+  Triggers on: legacy skill name, Vercel React best practices alias, exact-folder
+  compatibility.
 allowed-tools: Read Write Edit
 license: MIT
 metadata:
-  tags: React, Next.js, performance, optimization, vercel, waterfalls, bundle-size, RSC
+  tags: React, Next.js, performance, optimization, vercel, alias, compatibility
   platforms: Claude, ChatGPT, Gemini
   author: vercel
-  version: "1.0.0"
+  version: "1.1.0"
 ---
-
-> **Note:** This skill is a platform-specific variant of `react-best-practices`. Prefer `react-best-practices` for general use; use `vercel-react-best-practices` when targeting platform-specific configurations.
 
 # Vercel React Best Practices
 
-Comprehensive performance optimization guide for React and Next.js applications, maintained by Vercel. Contains 45 rules across 8 categories, prioritized by impact to guide automated refactoring and code generation.
+This skill is a compatibility wrapper around `react-best-practices`. It exists so older workflows and platform-specific setups can keep working without making the React performance lane look like two equally preferred default skills.
 
-## When to Apply
+## When to use this skill
 
-Reference these guidelines when:
-- Writing new React components or Next.js pages
-- Implementing data fetching (client or server-side)
-- Reviewing code for performance issues
-- Refactoring existing React/Next.js code
-- Optimizing bundle size or load times
+- A user or tool explicitly asks for `vercel-react-best-practices`
+- A setup or sync process expects the legacy folder/name to exist
+- You need to preserve backward compatibility while routing the real work to `react-best-practices`
 
-## Rule Categories by Priority
+Do **not** choose this skill as the default for general React or Next.js performance help.
 
-| Priority | Category | Impact | Prefix |
-|----------|----------|--------|--------|
-| 1 | Eliminating Waterfalls | CRITICAL | `async-` |
-| 2 | Bundle Size Optimization | CRITICAL | `bundle-` |
-| 3 | Server-Side Performance | HIGH | `server-` |
-| 4 | Client-Side Data Fetching | MEDIUM-HIGH | `client-` |
-| 5 | Re-render Optimization | MEDIUM | `rerender-` |
-| 6 | Rendering Performance | MEDIUM | `rendering-` |
-| 7 | JavaScript Performance | LOW-MEDIUM | `js-` |
-| 8 | Advanced Patterns | LOW | `advanced-` |
+## Instructions
 
-## Quick Reference
+### Step 1: Confirm alias intent
+Check whether the request truly depends on the exact alias name.
 
-### 1. Eliminating Waterfalls (CRITICAL)
+Use this alias only when:
+- the user names it directly
+- a script/tooling surface references it literally
+- a migration or compatibility concern is part of the task
 
-- `async-defer-await` - Move await into branches where actually used
-- `async-parallel` - Use Promise.all() for independent operations
-- `async-dependencies` - Use better-all for partial dependencies
-- `async-api-routes` - Start promises early, await late in API routes
-- `async-suspense-boundaries` - Use Suspense to stream content
+Otherwise, switch to `../react-best-practices/SKILL.md`.
 
-### 2. Bundle Size Optimization (CRITICAL)
+### Step 2: Redirect to the canonical skill
+Use the alias-side packet first, then jump to the canonical React performance guidance:
+- Alias routing notes: `./references/alias-routing.md`
+- Measurement + route-out notes: `./references/measurement-route-outs.md`
+- Canonical skill: `../react-best-practices/SKILL.md`
+- Deep reference: `../react-best-practices/AGENTS.md`
+- Nearby boundaries:
+  - `../state-management/SKILL.md` for global state architecture
+  - `../web-accessibility/SKILL.md` for accessibility remediation
+  - `../performance-optimization/SKILL.md` for non-React-wide performance problems
 
-- `bundle-barrel-imports` - Import directly, avoid barrel files
-- `bundle-dynamic-imports` - Use next/dynamic for heavy components
-- `bundle-defer-third-party` - Load analytics/logging after hydration
-- `bundle-conditional` - Load modules only when feature is activated
-- `bundle-preload` - Preload on hover/focus for perceived speed
+### Step 3: Preserve compatibility in outputs
+If you were activated via the alias name, mention that the canonical guidance now lives in `react-best-practices` so future maintenance converges on one primary entry.
 
-### 3. Server-Side Performance (HIGH)
+## Examples
 
-- `server-cache-react` - Use React.cache() for per-request deduplication
-- `server-cache-lru` - Use LRU cache for cross-request caching
-- `server-serialization` - Minimize data passed to client components
-- `server-parallel-fetching` - Restructure components to parallelize fetches
-- `server-after-nonblocking` - Use after() for non-blocking operations
+### Example 1: explicit legacy-name request
+Input: "Use `vercel-react-best-practices` to audit our slow Next.js dashboard."
+Output: Acknowledge the alias, then apply the canonical `react-best-practices` guidance for waterfalls, bundle size, and RSC boundaries.
 
-### 4. Client-Side Data Fetching (MEDIUM-HIGH)
+### Example 2: general React performance question
+Input: "Our React app rerenders too much and the Next.js page is slow."
+Output: Do **not** stay in the alias. Route to `react-best-practices` directly.
 
-- `client-swr-dedup` - Use SWR for automatic request deduplication
-- `client-event-listeners` - Deduplicate global event listeners
+## Best practices
 
-### 5. Re-render Optimization (MEDIUM)
-
-- `rerender-defer-reads` - Don't subscribe to state only used in callbacks
-- `rerender-memo` - Extract expensive work into memoized components
-- `rerender-dependencies` - Use primitive dependencies in effects
-- `rerender-derived-state` - Subscribe to derived booleans, not raw values
-- `rerender-functional-setstate` - Use functional setState for stable callbacks
-- `rerender-lazy-state-init` - Pass function to useState for expensive values
-- `rerender-transitions` - Use startTransition for non-urgent updates
-
-### 6. Rendering Performance (MEDIUM)
-
-- `rendering-animate-svg-wrapper` - Animate div wrapper, not SVG element
-- `rendering-content-visibility` - Use content-visibility for long lists
-- `rendering-hoist-jsx` - Extract static JSX outside components
-- `rendering-svg-precision` - Reduce SVG coordinate precision
-- `rendering-hydration-no-flicker` - Use inline script for client-only data
-- `rendering-activity` - Use Activity component for show/hide
-- `rendering-conditional-render` - Use ternary, not && for conditionals
-
-### 7. JavaScript Performance (LOW-MEDIUM)
-
-- `js-batch-dom-css` - Group CSS changes via classes or cssText
-- `js-index-maps` - Build Map for repeated lookups
-- `js-cache-property-access` - Cache object properties in loops
-- `js-cache-function-results` - Cache function results in module-level Map
-- `js-cache-storage` - Cache localStorage/sessionStorage reads
-- `js-combine-iterations` - Combine multiple filter/map into one loop
-- `js-length-check-first` - Check array length before expensive comparison
-- `js-early-exit` - Return early from functions
-- `js-hoist-regexp` - Hoist RegExp creation outside loops
-- `js-min-max-loop` - Use loop for min/max instead of sort
-- `js-set-map-lookups` - Use Set/Map for O(1) lookups
-- `js-tosorted-immutable` - Use toSorted() for immutability
-
-### 8. Advanced Patterns (LOW)
-
-- `advanced-event-handler-refs` - Store event handlers in refs
-- `advanced-use-latest` - useLatest for stable callback refs
-
-## How to Use
-
-For detailed explanations and code examples, read the full compiled document: `AGENTS.md`
-
-Each rule contains:
-- Brief explanation of why it matters
-- Incorrect code example with explanation
-- Correct code example with explanation
-- Additional context and references
-
-## Key Examples
-
-### Promise.all for Independent Operations (CRITICAL)
-
-```typescript
-// ❌ Sequential: 3 round trips
-const user = await fetchUser()
-const posts = await fetchPosts()
-const comments = await fetchComments()
-
-// ✅ Parallel: 1 round trip
-const [user, posts, comments] = await Promise.all([
-  fetchUser(),
-  fetchPosts(),
-  fetchComments()
-])
-```
-
-### Avoid Barrel File Imports (CRITICAL)
-
-```tsx
-// ❌ Imports entire library (200-800ms import cost)
-import { Check, X, Menu } from 'lucide-react'
-
-// ✅ Imports only what you need
-import Check from 'lucide-react/dist/esm/icons/check'
-import X from 'lucide-react/dist/esm/icons/x'
-```
-
-### Dynamic Imports for Heavy Components (CRITICAL)
-
-```tsx
-// ❌ Monaco bundles with main chunk ~300KB
-import { MonacoEditor } from './monaco-editor'
-
-// ✅ Monaco loads on demand
-import dynamic from 'next/dynamic'
-const MonacoEditor = dynamic(
-  () => import('./monaco-editor').then(m => m.MonacoEditor),
-  { ssr: false }
-)
-```
-
-### Use Functional setState (MEDIUM)
-
-```tsx
-// ❌ Requires state as dependency, stale closure risk
-const addItems = useCallback((newItems) => {
-  setItems([...items, ...newItems])
-}, [items])
-
-// ✅ Stable callback, no stale closures
-const addItems = useCallback((newItems) => {
-  setItems(curr => [...curr, ...newItems])
-}, [])
-```
-
-## Constraints
-
-### Required Rules (MUST)
-
-1. **Eliminate waterfalls**: Use Promise.all and Suspense
-2. **Optimize bundles**: No barrel imports, use dynamic imports
-3. **RSC boundaries**: Serialize only the necessary data
-
-### Prohibited Patterns (MUST NOT)
-
-1. **Sequential await**: Do not execute independent fetches sequentially
-2. **Array mutations**: Use toSorted() instead of sort()
-3. **Inline objects in React.cache**: Causes cache misses
+1. Treat this as a redirect layer, not an independent knowledge base.
+2. Keep trigger wording narrow so the canonical skill wins ordinary React/Next.js requests.
+3. When updating the underlying guidance, update `react-best-practices` first.
+4. Keep docs/setup surfaces explicit about canonical-vs-compatibility status.
 
 ## References
 
-- [React Documentation](https://react.dev)
-- [Next.js Documentation](https://nextjs.org)
-- [SWR](https://swr.vercel.app)
-- [better-all](https://github.com/shuding/better-all)
-- [Vercel Blog: Optimizing Package Imports](https://vercel.com/blog/how-we-optimized-package-imports-in-next-js)
-- [Vercel Blog: Dashboard Performance](https://vercel.com/blog/how-we-made-the-vercel-dashboard-twice-as-fast)
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2026-01-22
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-- **Original Source**: vercel/agent-skills
-
-### Related Skills
-- [performance-optimization](../../code-quality/performance-optimization/SKILL.md): General performance optimization
-- [state-management](../state-management/SKILL.md): State management
-
-### Tags
-`#React` `#Next.js` `#performance` `#optimization` `#vercel` `#waterfalls` `#bundle-size` `#RSC` `#frontend`
+- `./references/alias-routing.md`
+- `./references/measurement-route-outs.md`
+- `../react-best-practices/SKILL.md`
+- `../react-best-practices/AGENTS.md`
+- `../state-management/SKILL.md`
+- `../web-accessibility/SKILL.md`
+- `../performance-optimization/SKILL.md`

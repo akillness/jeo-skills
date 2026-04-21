@@ -1,0 +1,19 @@
+N:research-paper-writing
+D:Draft and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow, reviewer-aware structure, and submission-ready section planning. Use when the user needs help with an abstract, introduction, related work, method, experiments, ablations, figures/tables, checklist coverage, or rebuttal / response-letter writing for a paper. Triggers on: research paper, academic paper, ML paper, NeurIPS paper, ICLR paper, CVPR paper, experiments section, ablation plan, contribution framing, reviewer response, rebuttal, camera-ready revision.
+G:research-paper-writing academic-writing ml cv nlp experiments rebuttal
+
+U[7]:
+  Drafting or rewriting an abstract around concrete claims and measurable evidence
+  Structuring an introduction so motivation, gap, method, and contributions land quickly
+  Turning notes, code results, or slide bullets into a method section with reproducible detail
+  Designing experiment, ablation, error-analysis, or figure/table coverage for a paper
+  Writing related work that positions the paper instead of listing references
+  Tightening a rebuttal, reviewer response, or camera-ready revision plan under strict limits
+  Checking whether the manuscript actually supports each promised contribution
+
+S[5]{n,action,details}:
+  1,Lock the paper contract,Define venue, core claim, required evidence, audience, and format constraints before writing.
+  2,Map each claim to proof,Create a claim/evidence table with figure-table anchors and reviewer risk.
+  3,Draft the stage-specific packet,Choose abstract, intro, method, experiments, figure-table support, rebuttal, or camera-ready.
+  4,Check reviewer-facing completeness,Verify support gaps, overclaim risk, checklist coverage, and caption clarity.
+  5,Return one paper-ready packet,Include stage, core claim, evidence map, recommended draft or revision, reviewer-risk check, and next artifact.

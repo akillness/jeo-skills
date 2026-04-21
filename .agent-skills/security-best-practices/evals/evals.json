@@ -1,0 +1,65 @@
+{
+  "skill_name": "security-best-practices",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We have a Next.js admin app with cookie sessions. Login works, but admin POST routes lack CSRF protection and staging/prod cookie flags differ. Can you harden this safely?",
+      "expected_output": "The skill should choose the session/cookie/CSRF lane, specify cookie flag and CSRF concerns, and avoid drifting into unrelated auth-vendor selection.",
+      "assertions": [
+        "Output identifies session/cookie/CSRF as the primary hardening mode.",
+        "Output mentions CSRF protection and cookie flags such as HttpOnly, Secure, or SameSite.",
+        "Output does not frame the task primarily as hosted-auth vendor selection."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Make our API secure. The real issue is that signup, password reset, and an expensive AI endpoint are getting abused.",
+      "expected_output": "The skill should choose the abuse/rate-limiting lane and separate sensitive workflows instead of dumping generic OWASP bullets.",
+      "assertions": [
+        "Output identifies abuse/rate limiting as the primary mode.",
+        "Output distinguishes login/reset/invite or expensive endpoint controls from generic global limits.",
+        "Output names verification or observability evidence for whether the controls work."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We need to choose between Clerk and Auth.js for our SaaS, and also want secure cookies and CSRF sorted out.",
+      "expected_output": "The skill should recognize that product-auth architecture is the primary request and route that to authentication-setup while noting security-best-practices as an adjacent hardening follow-up.",
+      "assertions": [
+        "Output routes the primary stack-choice problem to `authentication-setup`.",
+        "Output keeps cookie/CSRF hardening as adjacent follow-up work rather than claiming the whole problem.",
+        "Output does not collapse auth architecture and general hardening into one lane."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our scanner report says we have weak CSP and missing security headers. The team already added middleware, but we don't trust the rollout.",
+      "expected_output": "The skill should choose browser-perimeter-policy or review-verification mode, recommend staged rollout/testing, and avoid claiming middleware install equals completion.",
+      "assertions": [
+        "Output identifies browser-perimeter-policy or review-verification as the main mode.",
+        "Output mentions staged rollout, report-only CSP, or verification steps.",
+        "Output explicitly avoids equating middleware installation with full coverage."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our marketing site signup and demo-request forms are still getting spammed even after a honeypot and CAPTCHA. Should we just tighten CSP and call it done?",
+      "expected_output": "The skill should choose abuse-controls mode, keep form abuse separate from generic browser-policy work, and recommend route-aware controls plus monitoring.",
+      "assertions": [
+        "Output identifies abuse-controls as the primary mode.",
+        "Output separates form abuse controls from CSP/header work.",
+        "Output includes monitoring, ownership, or verification evidence for whether the abuse controls work."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "We have a game companion site and backend APIs. I'm worried partner keys and admin tokens are drifting into CI logs and maybe client bundles.",
+      "expected_output": "The skill should choose secrets-runtime-config mode, separate detection from storage/rotation policy, and route environment wiring details outward when needed.",
+      "assertions": [
+        "Output identifies secrets-runtime-config as the primary mode.",
+        "Output distinguishes secret detection from storage, rotation, or revocation policy.",
+        "Output routes environment bootstrapping or injection mechanics to system-environment-setup or environment-setup when appropriate."
+      ]
+    }
+  ]
+}

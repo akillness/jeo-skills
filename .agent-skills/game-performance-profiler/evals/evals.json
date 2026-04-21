@@ -1,0 +1,64 @@
+{
+  "skill_name": "game-performance-profiler",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our Unity game drops from 120 to 45 FPS in combat. We have Profiler screenshots and someone suspects GC spikes. Triage what to look at first.",
+      "expected_output": "A concise Game Performance Profiling Brief that identifies Unity, frames the problem as a likely memory/GC or gameplay CPU issue, recommends specific next captures, and avoids generic rendering advice first.",
+      "assertions": [
+        "Output contains the heading 'Game Performance Profiling Brief'",
+        "Output identifies Unity as the engine",
+        "Output includes an 'Evidence packet' section",
+        "Output includes a 'Primary bottleneck hypothesis' section",
+        "Output classifies the issue as memory-gc-allocation-churn or cpu-gameplay-scripting",
+        "Output includes a 'Recommended next artifact' section"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Unreal is fine indoors but frame time explodes in our open world area. Help me triage whether this is CPU, GPU, streaming, or shaders.",
+      "expected_output": "A concise Unreal profiling brief that recommends stat commands or Unreal Insights, distinguishes likely bottleneck buckets, and asks for a reproducible traversal path instead of guessing fixes.",
+      "assertions": [
+        "Output identifies Unreal as the engine",
+        "Output recommends Unreal-specific checks such as stat unit, stat gpu, GPU Visualizer, or Unreal Insights",
+        "Output includes a 'Next capture' section with numbered items",
+        "Output mentions a reproducible route, traversal path, or benchmark route",
+        "Output does not jump directly to code changes without capture guidance"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We need a Steam Deck performance review plan before our demo release. The editor feels rough but we have not profiled the packaged build on device yet.",
+      "expected_output": "A platform-focused profiling brief that treats target-device capture as the next step, keeps confidence limited, and recommends a device review artifact rather than premature optimization work.",
+      "assertions": [
+        "Output includes Mode and identifies device-review or equivalent device-focused handling",
+        "Output keeps confidence low or medium when device evidence is missing",
+        "Output recommends packaged-build or target-device capture before deep optimization",
+        "Output includes 'What not to do yet' guidance",
+        "Output recommends a device review brief, benchmark route brief, or profiling plan as the next artifact"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I only have a stat unit screenshot, a phone photo of our Steam Deck overlay, and a note that the market square gets bad after two minutes.",
+      "expected_output": "A quick-triage-packet style answer that keeps confidence low, requests route/build/settings context, and turns the complaint into a reusable evidence packet instead of pretending to know the cause.",
+      "assertions": [
+        "Output includes an 'Evidence packet' section",
+        "Output includes a 'Benchmark route / device review' section",
+        "Output mentions screenshot or overlay evidence as partial evidence",
+        "Output asks for or defines route, build, and settings context",
+        "Output recommends a quick triage packet or benchmark route brief as the next artifact"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our Unreal packaged build crashes during cook on CI and we do not even have runtime numbers yet. Can you help with performance?",
+      "expected_output": "A boundary-preserving response that routes the request to game-build-log-triage instead of pretending the problem is already a runtime profiling issue.",
+      "assertions": [
+        "Output explicitly routes or recommends game-build-log-triage",
+        "Output does not present a full Game Performance Profiling Brief as if runtime evidence exists",
+        "Output explains that build or cook failure is the primary problem before frame-time triage"
+      ]
+    }
+  ]
+}

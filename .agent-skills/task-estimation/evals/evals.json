@@ -1,0 +1,54 @@
+{
+  "skill_name": "task-estimation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Estimate adding Slack OAuth login plus account linking for the next sprint. We already have user accounts and one OAuth provider in production.",
+      "expected_output": "A sprint-candidate estimate packet using relative sizing, confidence, rationale, and a handoff to task-planning rather than a date promise.",
+      "assertions": [
+        "Output identifies one primary estimation mode",
+        "Output gives a relative estimate such as story points or t-shirt size",
+        "Output includes confidence or uncertainty language",
+        "Output explains why the work is this size",
+        "Output avoids turning the estimate into a hard deadline",
+        "Output includes an adjacent handoff such as task-planning when relevant"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "How big is a full creator analytics dashboard for Q3? We know we want campaign and revenue views but the exact sources, roles, and metrics are still fuzzy.",
+      "expected_output": "A coarse-triage or discovery-spike recommendation that marks low confidence and resists false precision.",
+      "assertions": [
+        "Output uses a coarse estimate or discovery-spike framing instead of fake precision",
+        "Output marks the confidence as low or similar",
+        "Output identifies key uncertainty drivers",
+        "Output recommends splitting the work or estimating a spike first",
+        "Output states how the estimate should and should not be used"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Estimate adding a tutorial checkpoint system before the public demo build for our indie game. It touches save state, UI messaging, QA regression, and demo flow polish.",
+      "expected_output": "A milestone-cross-functional estimate that includes non-code burden and forecast-safe language.",
+      "assertions": [
+        "Output recognizes the work as cross-functional or milestone-related",
+        "Output includes QA, content, UX, or polish burden rather than only code effort",
+        "Output includes dependencies or uncertainty drivers",
+        "Output includes a split or spike recommendation when appropriate",
+        "Output does not reduce the answer to only a raw number"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We need to estimate a launch-readiness packet for a webinar funnel refresh: landing page edits, CRM tagging, email automation changes, QA, and legal signoff before the campaign starts next month.",
+      "expected_output": "A cross-functional estimate packet that keeps marketing/ops follow-through visible, names approvals, and routes decomposition work elsewhere.",
+      "assertions": [
+        "Output uses one primary mode rather than mixing sprint planning and forecasting",
+        "Output includes non-code burden such as approvals, QA, or automation setup",
+        "Output includes dependencies or approvals explicitly",
+        "Output keeps the estimate separate from a hard campaign promise",
+        "Output suggests task-planning or another next step when decomposition is the next job"
+      ]
+    }
+  ]
+}

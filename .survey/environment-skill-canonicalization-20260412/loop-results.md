@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `system-environment-setup` + `environment-setup` | One canonical broader environment skill plus one narrower app-config alias will improve trigger precision and reduce duplicate infrastructure overlap better than keeping two peer legacy skills. | Rewrote both SKILL.md files, added `references/` + `evals/`, updated README / README.ko / setup prompt / `skills.json`, refreshed graph outputs, and filed wiki/query artifacts. | `validate_skill.sh` passed for both skills; both eval JSON files valid; manifest JSON valid; graph and wiki updated. | Keep | Transferable improvement for future infrastructure/setup work; no new duplicate skill added. |

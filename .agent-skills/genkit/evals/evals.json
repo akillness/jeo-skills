@@ -1,0 +1,53 @@
+{
+  "skill_name": "genkit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a Genkit backend flow for our support app: retrieve help articles, call one ticket tool, and expose one server endpoint the web app can reuse.",
+      "expected_output": "Uses genkit, chooses a backend workflow mode, defines flow/tool/retrieval boundaries, and does not route to firebase-ai-logic.",
+      "assertions": [
+        "Response treats Genkit as a server-owned workflow/orchestration layer",
+        "Response mentions a backend flow contract or typed boundary",
+        "Response does not frame the task as direct client SDK integration"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Add Gemini-powered summaries directly inside our Firebase web app with the Firebase SDK.",
+      "expected_output": "Routes the request to firebase-ai-logic rather than insisting on Genkit.",
+      "assertions": [
+        "Response identifies firebase-ai-logic as the better fit",
+        "Response distinguishes direct app integration from server-side workflow ownership"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our Genkit flows work locally, but we need a practical eval and observability plan before deploying to Cloud Run.",
+      "expected_output": "Uses genkit in evaluation-and-observability mode and proposes a small evidence loop before rollout.",
+      "assertions": [
+        "Response mentions evaluation or traces as first-class Genkit concerns",
+        "Response proposes representative inputs or a small eval set",
+        "Response treats deployment choice as separate from app-side SDK usage"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Should we use Genkit, Firebase AI Logic, or just direct SDK calls for this Firebase app?",
+      "expected_output": "Routes to survey or provides an explicit comparison-first decision rather than blindly choosing Genkit.",
+      "assertions": [
+        "Response acknowledges architecture comparison as the real need",
+        "Response distinguishes Genkit from Firebase AI Logic and direct SDKs"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We already have one simple Next.js route that calls a provider SDK and it works. Do we need Genkit?",
+      "expected_output": "Keeps the plain route-handler fallback visible and only recommends Genkit if reusable workflow structure, tracing, evals, or multi-surface ownership justify it.",
+      "assertions": [
+        "Response explicitly mentions a plain SDK or route-handler fallback",
+        "Response does not force Genkit as mandatory just because the app is fullstack",
+        "Response names the boundary conditions that would justify Genkit later"
+      ]
+    }
+  ]
+}

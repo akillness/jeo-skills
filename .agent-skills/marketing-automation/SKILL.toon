@@ -1,25 +1,29 @@
 N:marketing-automation
-D:Generate marketing deliverables across CRO, copywriting, SEO, analytics, and growth using 23 sub-skills. Produces repeatable, high-quality assets tuned to a single KPI.
-G:marketing cro copywriting seo analytics growth automation
+D:Route broad product and growth marketing asks into one operating mode, one primary lane, and one reusable operator packet across launch planning, conversion surfaces, lifecycle/retention, acquisition/content, and measurement/experiments.
+G:marketing|growth|cro|copywriting|seo|analytics|pricing|launch|retention|experiments|routing
+F:Claude|ChatGPT|Gemini|Codex
 
 U[5]:
-  CRO — page-cro, signup-flow, onboarding, form-optimization, paywall
-  Copywriting — copywriting, copy-editing, email-sequence, social-content
-  SEO — seo-audit, programmatic-seo, comparison-page, schema-markup
-  Ads & Analytics — analytics-tracking, paid-ads, ab-test
-  Strategy & Growth — launch-strategy, pricing-strategy, retention, churn-analysis, growth-experiments, referral-program, content-strategy
-S[5]{n,action,details}:
-  1,Define Brief,marketing_brief YAML — define objective(single KPI)·target_audience·channel·format·offer
-  2,Select Sub-Skill,Select appropriate sub-skill (mapping from 23 across 5 categories)
-  3,Build Prompt,Structure Product Context·Audience·Offer·Constraints·Output Format
-  4,Generate & Validate,Generate asset → Check KPI alignment·audience fit·brand voice·actionability
-  5,Handoff & Measure,Asset publishing·tracking events·success thresholds·A/B test plan
+  Turn a messy marketing ask into one clear operating mode and one primary lane
+  Choose one reusable operator packet instead of channel soup
+  Attach owner, dependencies, approvals, KPI, and leading-signal proof to every packet
+  Route Steam/store-page game launch work to steam-store-launch-ops
+  Route backlog or milestone shaping to task-planning when marketing is not the real bottleneck
+
+S[6]{n,action,details}:
+  1,Normalize,Capture primary_mode primary_lane objective audience stage surface_or_channel offer measurement_maturity main_question delivery_owner dependencies_or_approvals and proof_assets_available in a compact marketing_router_profile
+  2,Evidence,Pull the smallest credible brief with bottleneck audience surface constraints current KPI or proxy owner and blocking dependencies
+  3,ChooseMode,Pick exactly one operating mode: launch-orchestration conversion-surface lifecycle-retention acquisition-content or measurement-experiment
+  4,ChoosePacket,Map the mode to one primary lane and one reusable operator packet that can actually be handed off
+  5,Proof,Include one primary KPI one leading signal one baseline or assumption one success threshold one readout window and one next owner
+  6,RouteOut,Escalate game-store launch ops to steam-store-launch-ops and execution/backlog coordination to task-planning when those lanes dominate
+
 R[4]:
-  Single KPI per deliverable — no mixing multiple objectives
-  Specify audience segment-specific needs and terminology concretely
-  Define tracking events and success thresholds before launch
-  Treat outputs as hypotheses — iterate with data
-E[3]{desc,in,out}:
-  "Landing Page CRO","Optimize the landing page for indie founders building side projects. Offer: AI co-pilot. Output: prioritized CRO changes + A/B tests","CRO checklist (prioritized by impact/effort) + 3 A/B hypotheses + 3 headline/CTA copy variants"
-  "Email Sequence","Create a 5-email welcome sequence for B2B SaaS ops managers. Goal: first workflow setup in 7 days","5 emails (Day 0/1/3/5/7) + subject/goal/CTA + Open Rate/CTR targets"
-  "Programmatic SEO","Create template for [Tool A] vs [Tool B] comparison pages with schema markup","Page template + JSON-LD schema + internal linking strategy + content guide per section"
+  One primary mode one primary lane and one primary packet per response
+  Prefer explicit assumptions over stalling on missing context
+  Keep general marketing routing distinct from planning and game-store specialists
+  Always leave an owner plus dependency visibility and proof handoff
+
+E[2]{desc,in,out}:
+  "Broad launch ask","We are launching a new SaaS workflow next month and need help with messaging, landing page copy, onboarding emails, and how to measure whether it worked.","Marketing Routing Brief with launch-orchestration mode, Strategy and growth lane, one launch packet, and KPI plus leading-signal handoff"
+  "Lifecycle retention ask","Trial users activate once and disappear. We need onboarding and lifecycle help, plus a sensible KPI.","Marketing Routing Brief with lifecycle-retention mode, one chosen lane, one packet, and activation or retention measurement handoff"

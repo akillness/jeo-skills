@@ -149,7 +149,7 @@
       "sourceType": "github",
       "version": "1.0.0",
       "keyword": "survey",
-      "description": "계획이나 구현 전에 문제공간을 조사하는 전 플랫폼 리서치 스킬. 결과물을 .survey/{slug}/에 저장하고 Claude/Codex/Gemini 차이를 settings/rules/hooks로 정규화.",
+      "description": "계획이나 구현 전에 문제공간을 조사하고 `.survey/{slug}/` 결과물을 남기는 전 플랫폼 리서치 스킬. 사용자가 조사·비교·옵션 스캔을 요청할 때 쓰며, Claude/Codex/Gemini 차이를 settings/rules/hooks로 정규화하고 검색/추출 실패 시 증거 복구 사다리를 따른다.",
       "tags": [
         "survey",
         "research",

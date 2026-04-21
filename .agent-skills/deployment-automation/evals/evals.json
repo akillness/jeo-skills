@@ -1,0 +1,49 @@
+{
+  "skill_name": "deployment-automation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We already have builds passing in CI, but production releases are still a Slack checklist and a senior engineer manually clicking promote. Design the safest automation packet for staging to production.",
+      "expected_output": "An environment-promotion release packet with explicit gates, verification, rollback, and route-outs.",
+      "assertions": [
+        "Classifies the work as environment-promotion or an equivalent release/promotion mode",
+        "Names staging and production environments explicitly",
+        "Includes both post-deploy verification and rollback sections",
+        "Routes CI workflow authoring out to workflow-automation rather than absorbing it"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Every PR gets a preview site, but reviewers keep approving broken flows because no one knows what previews are supposed to prove. What should this skill produce?",
+      "expected_output": "A preview-release packet that defines target, verification expectations, and promote/discard rules.",
+      "assertions": [
+        "Classifies the work as preview-release or equivalent",
+        "Defines what reviewers should verify in the preview environment",
+        "Distinguishes preview verification from later staging/production checks",
+        "Mentions provider-specific route-out when deep platform detail is needed"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The latest deploy is timing out in production. We need the safest rollback plan, but the release also included a schema change.",
+      "expected_output": "A rollback-response packet that contains containment steps, rollback path, and schema/data caveats.",
+      "assertions": [
+        "Classifies the work as rollback-response or equivalent",
+        "Separates application rollback from schema or data rollback",
+        "Includes immediate containment and post-recovery verification steps",
+        "Does not prescribe a full observability-stack redesign as the main answer"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We deploy a Next.js app on Vercel and need help with project linking, domains, aliases, and preview environment variables. Should deployment-automation own this?",
+      "expected_output": "A route-out that keeps generic release framing small and sends the Vercel-specific operator work to vercel-deploy.",
+      "assertions": [
+        "Recognizes that the request is centered on Vercel-specific operations",
+        "Routes the main task to vercel-deploy",
+        "Does not turn deployment-automation into a Vercel manual",
+        "Keeps any remaining release-execution advice vendor-neutral"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "skill_name": "web-accessibility",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this checkout modal for accessibility issues and tell me what to test manually after axe.",
+      "expected_output": "Produces an accessibility remediation packet that distinguishes automated findings from manual follow-up and prioritizes keyboard/focus behavior.",
+      "assertions": [
+        "Output classifies the problem as accessibility remediation or audit work.",
+        "Output treats axe or another scanner as an input artifact rather than the finished answer.",
+        "Output includes manual verification after automated tooling.",
+        "Output mentions focus management or keyboard behavior."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Fix keyboard trap and focus return problems in this React modal.",
+      "expected_output": "Keeps ownership inside web-accessibility, prioritizes keyboard/focus fixes, and does not collapse the answer into generic UI review.",
+      "assertions": [
+        "Output keeps the task in web-accessibility rather than routing it away.",
+        "Output prioritizes focus trap or focus return behavior.",
+        "Output prefers remediation guidance over generic WCAG summary."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our button primitive API is messy; should this be web-accessibility or ui-component-patterns?",
+      "expected_output": "Splits accessibility remediation from reusable component API ownership and routes the API-design portion to ui-component-patterns.",
+      "assertions": [
+        "Output distinguishes between accessibility fixes and component API architecture.",
+        "Output routes API design work to ui-component-patterns.",
+        "Output preserves web-accessibility for labels, focus, or accessible-name concerns."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review these UI files against broader design and polish rules, not just WCAG.",
+      "expected_output": "Routes the task to web-design-guidelines instead of over-triggering web-accessibility.",
+      "assertions": [
+        "Output routes broader UI review to web-design-guidelines.",
+        "Output explains that web-accessibility is narrower than a full UI/polish review."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Screen-reader users say our React app changes routes but the new page is not announced and focus stays on the old nav link.",
+      "expected_output": "Chooses routed-navigation-feedback as the primary packet, keeps route-change focus and announcement work explicit, and includes manual AT verification.",
+      "assertions": [
+        "Output identifies routed navigation feedback or an equivalent route-change accessibility packet as the primary issue.",
+        "Output mentions both focus strategy and route-change announcement behavior.",
+        "Output includes manual screen-reader or assistive-technology verification after the fix."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "This mobile dashboard breaks at 400% zoom and touch targets become unreadable. Is this responsive-design or web-accessibility?",
+      "expected_output": "Keeps accessibility remediation for reflow/touch-target consequences visible while routing broader viewport/layout strategy to responsive-design.",
+      "assertions": [
+        "Output distinguishes accessibility remediation from general responsive layout strategy.",
+        "Output routes breakpoint or layout planning work to responsive-design.",
+        "Output preserves manual zoom/reflow verification inside the accessibility packet."
+      ]
+    }
+  ]
+}

@@ -1,472 +1,196 @@
 ---
 name: looker-studio-bigquery
-description: Design and configure Looker Studio dashboards with BigQuery data sources. Use when creating analytics dashboards, connecting BigQuery to visualization tools, or optimizing data pipeline performance. Handles BigQuery connections, custom SQL queries, scheduled queries, dashboard design, and performance optimization.
+description: >
+  Route BigQuery-backed Looker Studio work into one stakeholder-reporting packet:
+  dashboard-spec, slow-dashboard triage, refresh-shape choice, audience split, or
+  exec-handoff. Use when the user needs KPI boards, PM/ops reviews, marketing / GTM
+  reporting, product funnel summaries, or game/live-ops telemetry dashboards on top
+  of curated BigQuery data. Route KPI explanation to `data-analysis`, repeated
+  anomaly hunting to `pattern-detection`, telemetry/alerting coverage to
+  `monitoring-observability`, and semantic-platform choice to `survey`.
+allowed-tools: Read Write Edit Glob Grep
+compatibility: >
+  Best when the workspace can inspect SQL, reporting specs, and repo files tied to
+  dashboard delivery. Assumes BigQuery already exists or can be reasoned about; this
+  is not a full GCP bootstrap skill.
+license: MIT
 metadata:
-  tags: Looker-Studio, BigQuery, dashboard, analytics, visualization, GCP, data-studio, SQL
-  platforms: Claude, ChatGPT, Gemini
+  tags: looker-studio, data-studio, bigquery, dashboard, kpi, analytics, reporting, marketing, pm-ops, live-ops, bi-engine
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.1.0"
+  modernization: 2026-04-15
+  structural_hardening: 2026-04-19
 ---
 
+# Looker Studio + BigQuery
 
-# Looker Studio BigQuery Integration
+Use this skill when the real deliverable is **one trustworthy stakeholder-reporting packet on top of BigQuery**.
+
+`looker-studio-bigquery` owns the reporting layer for:
+- PM / ops KPI review boards
+- product funnel, retention, and rollout dashboards already modeled in BigQuery
+- marketing / GTM channel and revenue reporting
+- game / live-ops / business telemetry review boards
+- refresh, cost, audience, and export-handoff decisions for Looker Studio on curated data
+
+Read these support docs first when needed:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/modeling-refresh-and-cost.md](references/modeling-refresh-and-cost.md)
+- [references/dashboard-delivery-checklist.md](references/dashboard-delivery-checklist.md)
+- [references/modes-and-routing.md](references/modes-and-routing.md)
 
 ## When to use this skill
+- The user explicitly wants **Looker Studio / Data Studio + BigQuery** help.
+- The data already lives in BigQuery, or the dashboard clearly sits on curated BigQuery tables/views.
+- The main job is dashboard structure, refresh/cost shape, audience-specific delivery, or export-ready reporting.
+- The request is about KPI boards, PM/ops reviews, marketing/GTM reporting, product summary dashboards, or game/business telemetry dashboards.
+- The real risk is dashboard trust, refresh design, or mixed-audience sprawl rather than raw SQL interpretation alone.
 
-- **Analytics dashboard creation**: Visualizing BigQuery data to derive business insights
-- **Real-time reporting**: Building auto-refreshing dashboards
-- **Performance optimization**: Optimizing query costs and loading time for large datasets
-- **Data pipeline**: Automating ETL processes with scheduled queries
-- **Team collaboration**: Building shareable interactive dashboards
+## When not to use this skill
+- **The main job is explaining why a KPI moved or what the dataset means** → use `data-analysis`
+- **The main job is repeated anomaly hunting or reusable rule scans across metrics/events** → use `pattern-detection`
+- **The main job is telemetry reliability, alerting, or instrumentation coverage** → use `monitoring-observability`
+- **The main job is choosing a full BI / semantic platform** → use `survey`
+- **The main job is broad GCP/bootstrap/deploy work** → route to the relevant infrastructure skill first
 
 ## Instructions
 
-### Step 1: Prepare GCP BigQuery Environment
+### Step 1: Pick one primary packet before talking about charts
+Normalize the request into one packet.
 
-**Project creation and activation**
-
-Create a new project in Google Cloud Console and enable the BigQuery API.
-
-```bash
-# Create project using gcloud CLI
-gcloud projects create my-analytics-project
-gcloud config set project my-analytics-project
-gcloud services enable bigquery.googleapis.com
+```yaml
+looker_studio_bigquery_packet:
+  primary_packet: dashboard-spec | slow-dashboard | refresh-shape | audience-split | exec-handoff
+  audience: executive | pm-ops | product-analytics | marketing-gtm | game-liveops | mixed | unknown
+  source_shape: curated-table | view | scheduled-query-output | materialized-view | mixed | unknown
+  freshness_need: near-real-time | hourly | daily | weekly | unknown
+  trust_risk: low | medium | high
 ```
 
-**Create dataset and table**
+Pick exactly one `primary_packet`:
+- `dashboard-spec` — build or redesign a stakeholder dashboard
+- `slow-dashboard` — fix a dashboard that is slow, expensive, or brittle
+- `refresh-shape` — decide live vs scheduled vs snapshot vs BI Engine
+- `audience-split` — separate one overloaded report into audience-specific artifacts
+- `exec-handoff` — produce a thin dashboard plus export/sheet/deck handoff for commentary and approvals
 
-```sql
--- Create dataset
-CREATE SCHEMA `my-project.analytics_dataset`
-  OPTIONS(
-    description="Analytics dataset",
-    location="US"
-  );
+If two packets seem plausible, choose the one that removes the biggest delivery risk first.
 
--- Create example table (GA4 data)
-CREATE TABLE `my-project.analytics_dataset.events` (
-  event_date DATE,
-  event_name STRING,
-  user_id INT64,
-  event_value FLOAT64,
-  event_timestamp TIMESTAMP,
-  geo_country STRING,
-  device_category STRING
-);
-```
+### Step 2: Keep the dashboard thin on purpose
+Before designing sections, answer these:
+1. What review ritual or decision does this dashboard support?
+2. What table/view is the source of truth?
+3. Which metrics belong in BigQuery instead of report-level formulas?
+4. Who owns freshness, trust checks, and caveats?
 
-**IAM permission configuration**
+If the request still depends on raw fact tables, unstable joins, or fuzzy metric definitions, say so and push modeling work upstream before polishing the dashboard.
 
-Grant IAM permissions so Looker Studio can access BigQuery:
+### Step 3: Shape the packet, not a generic BI essay
+Use the packet guidance in [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-| Role | Description |
-|------|------|
-| `BigQuery Data Viewer` | Table read permission |
-| `BigQuery User` | Query execution permission |
-| `BigQuery Job User` | Job execution permission |
+Minimum packet expectations:
+- `dashboard-spec` → page structure, KPI set, chart-to-question mapping, and BigQuery contract
+- `slow-dashboard` → bottleneck order, upstream precompute options, and one shortest-path fix
+- `refresh-shape` → live vs scheduled vs snapshot choice tied to the real review cadence
+- `audience-split` → artifact split by stakeholder ritual, trust need, and detail depth
+- `exec-handoff` → thin dashboard plus Connected Sheets / export / slide handoff plan
 
-### Step 2: Connecting BigQuery in Looker Studio
+Do not answer with a generic chart buffet.
 
-**Using native BigQuery connector (recommended)**
-
-1. On Looker Studio homepage, click **+ Create** → **Data Source**
-2. Search for "BigQuery" and select Google BigQuery connector
-3. Authenticate with Google account
-4. Select project, dataset, and table
-5. Click **Connect** to create data source
-
-**Custom SQL query approach**
-
-Write SQL directly when complex data transformation is needed:
-
-```sql
-SELECT
-  event_date,
-  event_name,
-  COUNT(DISTINCT user_id) as unique_users,
-  SUM(event_value) as total_revenue,
-  AVG(event_value) as avg_revenue_per_event
-FROM `my-project.analytics_dataset.events`
-WHERE event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
-GROUP BY event_date, event_name
-ORDER BY event_date DESC
-```
-
-**Advantages:**
-- Handle complex data transformations in SQL
-- Pre-aggregate data in BigQuery to reduce query costs
-- Improved performance by not loading all data every time
-
-**Multiple table join approach**
-
-```sql
-SELECT
-  e.event_date,
-  e.event_name,
-  u.user_country,
-  u.user_tier,
-  COUNT(DISTINCT e.user_id) as unique_users,
-  SUM(e.event_value) as revenue
-FROM `my-project.analytics_dataset.events` e
-LEFT JOIN `my-project.analytics_dataset.users` u
-  ON e.user_id = u.user_id
-WHERE e.event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY)
-GROUP BY e.event_date, e.event_name, u.user_country, u.user_tier
-```
-
-### Step 3: Performance Optimization with Scheduled Queries
-
-Use **scheduled queries** instead of live queries to periodically pre-compute data:
-
-```sql
--- Calculate and store aggregated data daily in BigQuery
-CREATE OR REPLACE TABLE `my-project.analytics_dataset.daily_summary` AS
-SELECT
-  CURRENT_DATE() as report_date,
-  event_name,
-  user_country,
-  COUNT(DISTINCT user_id) as daily_users,
-  SUM(event_value) as daily_revenue,
-  AVG(event_value) as avg_event_value,
-  MAX(event_timestamp) as last_event_time
-FROM `my-project.analytics_dataset.events`
-WHERE event_date = CURRENT_DATE() - 1
-GROUP BY event_name, user_country
-```
-
-Configure as **scheduled query** in BigQuery UI:
-- Runs automatically daily
-- Saves results to a new table
-- Looker Studio connects to the pre-computed table
-
-**Advantages:**
-- Reduce Looker Studio loading time (50-80%)
-- Reduce BigQuery costs (less data scanned)
-- Improved dashboard refresh speed
-
-### Step 4: Dashboard Layout Design
-
-**F-pattern layout**
-
-Use the F-pattern that follows the natural reading flow of users:
-
-```
-┌─────────────────────────────────────┐
-│ Header: Logo | Filters/Date Picker  │  ← Users see this first
-├─────────────────────────────────────┤
-│ KPI 1  │ KPI 2  │ KPI 3  │ KPI 4   │  ← Key metrics (3-4)
-├─────────────────────────────────────┤
-│                                     │
-│ Main Chart (time series/comparison) │  ← Deep insights
-│                                     │
-├─────────────────────────────────────┤
-│ Concrete data table                 │  ← Detailed analysis
-│ (Drilldown enabled)                 │
-├─────────────────────────────────────┤
-│ Additional Insights / Map / Heatmap │
-└─────────────────────────────────────┘
-```
-
-**Dashboard components**
-
-| Element | Purpose | Example |
-|---------|------|------|
-| **Header** | Dashboard title, logo, filter placement | "2026 Q1 Sales Analysis" |
-| **KPI tiles** | Display key metrics at a glance | Total revenue, MoM growth rate, active users |
-| **Trend charts** | Changes over time | Line chart showing daily/weekly revenue trend |
-| **Comparison charts** | Compare across categories | Bar chart comparing sales by region/product |
-| **Distribution charts** | Visualize data distribution | Heatmap, scatter plot, bubble chart |
-| **Detail tables** | Provide exact figures | Conditional formatting to highlight thresholds |
-| **Map** | Geographic data | Revenue distribution by country/region |
-
-**Real example: E-commerce dashboard**
-
-```
-┌──────────────────────────────────────────────────┐
-│ 📊 Jan 2026 Sales Analysis | 🔽 Country | 📅 Date │
-├──────────────────────────────────────────────────┤
-│ Total Revenue: $125,000  │ Orders: 3,200   │ Conversion: 3.5% │
-├──────────────────────────────────────────────────┤
-│         Daily Revenue Trend (Line Chart)          │
-│    ↗ Upward trend: +15% vs last month             │
-├──────────────────────────────────────────────────┤
-│ Sales by Category  │  Top 10 Products             │
-│ (Bar chart)        │  (Table, sortable)           │
-├──────────────────────────────────────────────────┤
-│        Revenue Distribution by Region (Map)       │
-└──────────────────────────────────────────────────┘
-```
-
-### Step 5: Interactive Filters and Controls
-
-**Filter types**
-
-**1. Date range filter** (required)
-- Select specific period via calendar
-- Pre-defined options like "Last 7 days", "This month"
-- Connected to dataset, auto-applied to all charts
-
-**2. Dropdown filter**
-```
-Example: Country selection filter
-- All countries
-- South Korea
-- Japan
-- United States
-Shows only data for the selected country
-```
-
-**3. Advanced filter** (SQL-based)
-```sql
--- Show only customers with revenue >= $10,000
-WHERE customer_revenue >= 10000
-```
-
-**Filter implementation example**
-
-```sql
--- 1. Date filter
-event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL @date_range_days DAY)
-
--- 2. Dropdown filter (user input)
-WHERE country = @selected_country
-
--- 3. Composite filter
-WHERE event_date >= @start_date
-  AND event_date <= @end_date
-  AND country IN (@country_list)
-  AND revenue >= @min_revenue
-```
-
-### Step 6: Query Performance Optimization
-
-**1. Using partition keys**
-
-```sql
--- ❌ Inefficient query
-SELECT * FROM events
-WHERE DATE(event_timestamp) >= '2026-01-01'
-
--- ✅ Optimized query (using partition)
-SELECT * FROM events
-WHERE event_date >= '2026-01-01'  -- use partition key directly
-```
-
-**2. Data extraction (Extract and Load)**
-
-Extract data to a Looker Studio-dedicated table each night:
-
-```sql
--- Scheduled query running at midnight every day
-CREATE OR REPLACE TABLE `my-project.looker_studio_data.dashboard_snapshot` AS
-SELECT
-  event_date,
-  event_name,
-  country,
-  device_category,
-  COUNT(DISTINCT user_id) as users,
-  SUM(event_value) as revenue,
-  COUNT(*) as events
-FROM `my-project.analytics_dataset.events`
-WHERE event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY)
-GROUP BY event_date, event_name, country, device_category;
-```
-
-**3. Caching strategy**
-
-- **Looker Studio default caching**: Automatically caches for 3 hours
-- **BigQuery caching**: Identical queries reuse previous results (6 hours)
-- **Utilizing scheduled queries**: Pre-compute at night
-
-**4. Dashboard complexity management**
-
-- Use a maximum of 20-25 charts per dashboard
-- Distribute across multiple tabs (pages) if many charts
-- Do not group unrelated metrics together
-
-### Step 7: Community Connector Development (Advanced)
-
-Develop a Community Connector for more complex requirements:
-
-```javascript
-// Community Connector example (Apps Script)
-function getConfig() {
-  return {
-    configParams: [
-      {
-        name: 'project_id',
-        displayName: 'BigQuery Project ID',
-        helpText: 'Your GCP Project ID',
-        placeholder: 'my-project-id'
-      },
-      {
-        name: 'dataset_id',
-        displayName: 'Dataset ID'
-      }
-    ]
-  };
-}
-
-function getData(request) {
-  const projectId = request.configParams.project_id;
-  const datasetId = request.configParams.dataset_id;
-
-  // Load data from BigQuery
-  const bq = BigQuery.newDataset(projectId, datasetId);
-  // ... Data processing logic
-
-  return { rows: data };
-}
-```
-
-**Community Connector advantages:**
-- Centralized billing (using service account)
-- Custom caching logic
-- Pre-defined query templates
-- Parameterized user settings
-
-### Step 8: Security and Access Control
-
-**BigQuery-level security**
-
-```sql
--- Grant table access permission to specific users only
-GRANT `roles/bigquery.dataViewer`
-ON TABLE `my-project.analytics_dataset.events`
-TO "user@example.com";
-
--- Row-Level Security
-CREATE OR REPLACE ROW ACCESS POLICY rls_by_country
-ON `my-project.analytics_dataset.events`
-GRANT ('editor@company.com') TO ('KR'),
-      ('viewer@company.com') TO ('US', 'JP');
-```
-
-**Looker Studio-level security**
-
-- Set viewer permissions when sharing dashboards (Viewer/Editor)
-- Share with specific users/groups only
-- Manage permissions per data source
-
-## Output format
-
-### Dashboard Setup Checklist
+### Step 4: Return a delivery brief
+Use this structure:
 
 ```markdown
-## Dashboard Setup Checklist
+# Looker Studio Delivery Brief
 
-### Data Source Configuration
-- [ ] BigQuery project/dataset prepared
-- [ ] IAM permissions configured
-- [ ] Scheduled queries configured (performance optimization)
-- [ ] Data source connection tested
+## Primary packet
+- Packet: ...
+- Audience: ...
+- Confidence: high | medium | low
 
-### Dashboard Design
-- [ ] F-pattern layout applied
-- [ ] KPI tiles placed (3-4)
-- [ ] Main charts added (trend/comparison)
-- [ ] Detail table included
-- [ ] Interactive filters added
+## Review ritual and question
+- Ritual: ...
+- Decisions supported: ...
 
-### Performance Optimization
-- [ ] Partition key usage verified
-- [ ] Query cost optimized
-- [ ] Caching strategy applied
-- [ ] Chart count verified (20-25 or fewer)
+## BigQuery contract
+- Source table/view: ...
+- Grain: ...
+- Core dimensions: ...
+- Core metrics: ...
+- Freshness / owner / caveats: ...
 
-### Sharing and Security
-- [ ] Access permissions configured
-- [ ] Data security reviewed
-- [ ] Sharing link created
+## Recommended dashboard shape
+- Pages or sections: ...
+- KPI and chart-to-question mapping: ...
+- Filters / drilldowns / export needs: ...
+
+## Refresh, cost, and trust plan
+- Preferred refresh shape: ...
+- Heavy logic to move upstream: ...
+- Trust or caveat notes: ...
+
+## Recommended next artifact
+- Choose one: dashboard spec | SQL handoff list | refresh decision memo | audience split brief | export / Connected Sheets handoff
+
+## Route-outs
+- Upstream modeling / KPI interpretation / anomaly hunting / observability / platform comparison as needed
 ```
 
-## Constraints
-
-### Mandatory Rules (MUST)
-
-1. **Date filter required**: Include date range filter in all dashboards
-2. **Use partitions**: Directly use partition keys in BigQuery queries
-3. **Permission separation**: Clearly configure access permissions per data source
-
-### Prohibited (MUST NOT)
-
-1. **Excessive charts**: Do not place more than 25 charts on a single dashboard
-2. **SELECT ***: Select only necessary columns instead of all columns
-3. **Overusing live queries**: Avoid directly connecting to large tables
-
-## Best practices
-
-| Item | Recommendation |
-|------|---------|
-| **Data refresh** | Use scheduled queries, run at night |
-| **Dashboard size** | Max 25 charts, distribute to multiple pages if needed |
-| **Filter configuration** | Date filter required, limit to 3-5 additional filters |
-| **Color palette** | Use only 3-4 company brand colors |
-| **Title/Labels** | Use clear descriptions for intuitiveness |
-| **Chart selection** | Place in order: KPI → Trend → Comparison → Detail |
-| **Response speed** | Target average loading within 2-3 seconds |
-| **Cost management** | Keep monthly BigQuery scanned data within 5TB |
-
-## References
-
-- [Looker Studio Help](https://support.google.com/looker-studio)
-- [BigQuery Documentation](https://cloud.google.com/bigquery/docs)
-- [Connect to BigQuery](https://cloud.google.com/looker/docs/studio/connect-to-google-bigquery)
-- [Community Connectors](https://developers.google.com/looker-studio/connector)
-- [Dashboard Design Best Practices](https://lookercourses.com/dashboard-design-tips-for-looker-studio-how-to-build-clear-effective-reports/)
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2026-01-14
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Related Skills
-- [monitoring-observability](../monitoring-observability/SKILL.md): Data collection and monitoring
-- [database-schema-design](../../backend/database-schema-design/SKILL.md): Data modeling
-
-### Tags
-`#Looker-Studio` `#BigQuery` `#dashboard` `#analytics` `#visualization` `#GCP`
+### Step 5: Route out honestly
+- If the user needs **dataset reasoning or KPI explanation**, route to `data-analysis`.
+- If the user needs **repeated anomaly detection or reusable metric rules**, route to `pattern-detection`.
+- If the user needs **telemetry coverage, alerting, or instrumentation trust**, route to `monitoring-observability`.
+- If the user needs **a heavier BI or semantic-platform decision**, route to `survey`.
 
 ## Examples
 
-### Example 1: Creating a Basic Dashboard
+### Example 1: PM / ops dashboard build
+**Input**
+> Build a leadership-ready PM review dashboard in Looker Studio on top of BigQuery weekly KPIs.
 
-```sql
--- 1. Create daily summary table
-CREATE OR REPLACE TABLE `my-project.looker_data.daily_metrics` AS
-SELECT
-  event_date,
-  COUNT(DISTINCT user_id) as dau,
-  SUM(revenue) as total_revenue,
-  COUNT(*) as total_events
-FROM `my-project.analytics.events`
-WHERE event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
-GROUP BY event_date;
+**Output sketch**
+- Packet: `dashboard-spec`
+- Dashboard shape: KPI scorecards + main trend + one drilldown + owner/freshness notes
+- Next artifact: `dashboard spec`
 
--- 2. Connect to this table in Looker Studio
--- 3. Add KPI scorecards: DAU, total revenue
--- 4. Visualize daily trend with line chart
-```
+### Example 2: Slow marketing board
+**Input**
+> Our marketing funnel dashboard is too slow and expensive whenever people touch filters.
 
-### Example 2: Advanced Analytics Dashboard
+**Output sketch**
+- Packet: `slow-dashboard` or `refresh-shape`
+- Primary recommendation: precompute the repeated funnel logic in BigQuery before styling changes
+- Next artifact: `refresh decision memo` or `SQL handoff list`
 
-```sql
--- Prepare data for cohort analysis
-CREATE OR REPLACE TABLE `my-project.looker_data.cohort_analysis` AS
-WITH user_cohort AS (
-  SELECT
-    user_id,
-    DATE_TRUNC(MIN(event_date), WEEK) as cohort_week
-  FROM `my-project.analytics.events`
-  GROUP BY user_id
-)
-SELECT
-  uc.cohort_week,
-  DATE_DIFF(e.event_date, uc.cohort_week, WEEK) as week_number,
-  COUNT(DISTINCT e.user_id) as active_users
-FROM `my-project.analytics.events` e
-JOIN user_cohort uc ON e.user_id = uc.user_id
-GROUP BY cohort_week, week_number
-ORDER BY cohort_week, week_number;
-```
+### Example 3: Mixed audience dashboard
+**Input**
+> One board is trying to serve executives, PMs, growth, and live-ops. Should we keep patching it?
+
+**Output sketch**
+- Packet: `audience-split`
+- Recommendation: split the artifact by decision ritual and trust needs
+- Next artifact: `audience split brief`
+
+### Example 4: Commentary-friendly handoff
+**Input**
+> Leadership wants a weekly board, but they still annotate numbers in Sheets before the review.
+
+**Output sketch**
+- Packet: `exec-handoff`
+- Recommendation: keep the dashboard thin and define the export / Connected Sheets handoff explicitly
+- Next artifact: `export / Connected Sheets handoff`
+
+## Best practices
+1. Start from the current packet, not from chart types.
+2. Keep heavy logic in BigQuery whenever possible.
+3. Tie freshness to the real review ritual instead of pretending everything must be live.
+4. Split dashboards by audience when one artifact keeps absorbing incompatible needs.
+5. Name the owner, caveats, and trust contract in every serious dashboard handoff.
+6. Prefer route-outs over stuffing analysis, anomaly hunting, or observability into this skill.
+
+## References
+- [BigQuery: Visualize data in Looker Studio](https://cloud.google.com/bigquery/docs/visualize-looker-studio)
+- [BigQuery scheduled queries](https://cloud.google.com/bigquery/docs/scheduling-queries)
+- [BigQuery materialized views](https://cloud.google.com/bigquery/docs/materialized-views-intro)
+- [BigQuery BI Engine](https://cloud.google.com/bigquery/docs/bi-engine-intro)
+- [Connected Sheets for BigQuery](https://cloud.google.com/bigquery/docs/connected-sheets)

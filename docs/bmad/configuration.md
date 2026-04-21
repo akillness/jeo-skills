@@ -1,4 +1,4 @@
-# bmad-orchestrator — Configuration Reference
+# bmad — Configuration Reference
 
 → [Overview](./README.md) · [Installation](./installation.md) · [Workflow Guide](./workflow.md) · [Examples](./examples.md)
 

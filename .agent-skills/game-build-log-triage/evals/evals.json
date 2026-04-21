@@ -1,0 +1,40 @@
+{
+  "skill_name": "game-build-log-triage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Unity build failed after a package update. The log starts with `CS0246: The type or namespace name 'InputSystem' could not be found` and later shows many `NullReferenceException` lines. Triage it.",
+      "expected_output": "A concise Unity triage brief that identifies the compile/package issue as primary, treats the later null refs as cascade noise, and points to manifest/asmdef/settings checks.",
+      "assertions": [
+        "The output identifies Unity as the engine",
+        "The output prioritizes the first actionable failure over later NullReferenceException noise",
+        "The output classifies the issue as a compile-code or package-plugin-config problem",
+        "The output includes at least three concrete next checks",
+        "The output mentions files or settings such as Packages/manifest.json, packages-lock.json, or asmdef references"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our Unreal cook failed in CI after we renamed some content folders. The log shows missing asset warnings, then `Cook failed`, then `AutomationTool exiting with ExitCode=25`. Summarize the root cause and next steps.",
+      "expected_output": "A concise Unreal triage brief that treats the earliest missing asset or redirector problem as the root cause, not the later AutomationTool exit lines.",
+      "assertions": [
+        "The output identifies Unreal as the engine",
+        "The output separates root cause from cascade lines like AutomationTool exiting",
+        "The output classifies the issue as asset-reference or build-pipeline-state",
+        "The output recommends checking redirectors, moved assets, or content paths",
+        "The output provides safe next checks instead of broad destructive cleanup"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "UnrealHeaderTool failed after a refactor. The only excerpt I have is the UHT error and a few follow-on build lines. Please triage this.",
+      "expected_output": "A triage brief that maps the problem to Unreal compile-reflection failure, explains the confidence level from partial evidence, and requests the earliest error cluster if needed.",
+      "assertions": [
+        "The output classifies the problem as compile-reflection",
+        "The output explains that the evidence is partial or confidence-limited when the excerpt is truncated",
+        "The output suggests concrete inspection targets such as headers, macros, module files, or renamed classes",
+        "The output does not claim certainty beyond the provided excerpt"
+      ]
+    }
+  ]
+}

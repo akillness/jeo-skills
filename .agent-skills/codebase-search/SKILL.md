@@ -1,534 +1,224 @@
 ---
 name: codebase-search
-description: Search and navigate large codebases efficiently. Use when finding specific code patterns, tracing function calls, understanding code structure, or locating bugs. Handles semantic search, grep patterns, AST analysis.
+description: >
+  Route repo-navigation requests to the right search packet before editing anything.
+  Use when the user needs to find where something lives, who references it, which
+  files own a config/content surface, what must be inspected before a change, or
+  how to narrow a large repo without drifting into debugging or refactoring.
+  Choose one packet: exact-text, symbol/indexed, structural, config/content,
+  hosted search, or graph/path trace. Triggers on: where is this defined, who uses
+  this, find call sites, config ownership, entry point, impact before refactor,
+  shortcode/frontmatter search, scene/asset reference hunt, repo archaeology.
 allowed-tools: Read Grep Glob Bash
 metadata:
-  tags: codebase-search, grep, code-navigation, pattern-matching
-  platforms: Claude, ChatGPT, Gemini
+  tags: codebase-search, code-navigation, repo-triage, impact-analysis, grep, ripgrep, ast-grep
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.1"
 ---
-
 
 # Codebase Search
 
 ## When to use this skill
-- Finding specific functions or classes
-- Tracing function calls and dependencies
-- Understanding code structure and architecture
-- Finding usage examples
-- Identifying code patterns
-- Locating bugs or issues
-- Code archaeology (understanding legacy code)
-- Impact analysis before changes
+- The main job is **repo navigation before edits**.
+- The user needs to find **definitions, call sites, entry points, config owners, tests, templates, content references, or likely impact surface**.
+- The repo is large enough that random file reading will waste time.
+- The request is really **"where does this live / what uses it / what should I inspect first?"** even if the user never says "search".
+- The repo may be **app code, infra/config, content/templates, or game tooling/assets**, and the first step is still discovery.
+
+Do **not** use this skill as the main workflow when:
+- The user already found the area and now needs root-cause diagnosis → use `debugging` or `log-analysis`.
+- The user wants a behavior-preserving cleanup or migration plan → use `code-refactoring`.
+- The user wants judgment on a concrete diff / PR → use `code-review`.
+- The user wants a persistent whole-repo or mixed-corpus structure map → use `graphify`.
+
+## Core idea
+`codebase-search` should act like a **packet router**, not a giant search tutorial.
+
+1. Normalize the request into **one primary packet**.
+2. Narrow scope before dumping matches.
+3. Read only the winning files.
+4. Return a compact evidence map.
+5. Route out as soon as search is no longer the bottleneck.
+
+Read these support docs before choosing the packet:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/search-modes.md](references/search-modes.md)
+- [references/evidence-map-template.md](references/evidence-map-template.md)
+- [references/handoff-boundaries.md](references/handoff-boundaries.md)
 
 ## Instructions
 
-### Step 1: Understand what you're looking for
+### Step 1: Normalize the request
+Convert the prompt into this intake shape first:
 
-**Feature implementation**:
-- Where is feature X implemented?
-- How does feature Y work?
-- What files are involved in feature Z?
-
-**Bug location**:
-- Where is this error coming from?
-- What code handles this case?
-- Where is this data being modified?
-
-**API usage**:
-- How is this API used?
-- Where is this function called?
-- What are examples of using this?
-
-**Configuration**:
-- Where are settings defined?
-- How is this configured?
-- What are the config options?
-
-### Step 2: Choose search strategy
-
-**Semantic search** (for conceptual questions):
-```
-Use when: You understand what you're looking for conceptually
-Examples:
-- "How do we handle user authentication?"
-- "Where is email validation implemented?"
-- "How do we connect to the database?"
-
-Benefits:
-- Finds relevant code by meaning
-- Works with unfamiliar codebases
-- Good for exploratory searches
+```yaml
+codebase_search_packet:
+  primary_packet: exact-text | symbol-indexed | structural | config-content | hosted-search | graph-path
+  repo_shape: app | infra | content | game | mixed | unknown
+  search_goal: locate | references | ownership | impact | archaeology | unknown
+  scope_hint: path | package | file-type | subsystem | repo-wide | unknown
+  route_after: stay-here | debugging | log-analysis | code-refactoring | code-review | graphify
 ```
 
-**Grep** (for exact text/patterns):
-```
-Use when: You know exact text or patterns
-Examples:
-- Function names: "def authenticate"
-- Class names: "class UserManager"
-- Error messages: "Invalid credentials"
-- Specific strings: "API_KEY"
+Choose **one** primary packet for the run. If two seem plausible, pick the cheaper one that reduces uncertainty fastest.
 
-Benefits:
-- Fast and precise
-- Works with regex patterns
-- Good for known terms
-```
+### Step 2: Choose the packet
 
-**Glob** (for file discovery):
-```
-Use when: You need to find files by pattern
-Examples:
-- "**/*.test.js" (all test files)
-- "**/config*.yaml" (config files)
-- "src/**/*Controller.py" (controllers)
+| Packet | Use when | Best fits | Common tools / shapes |
+|---|---|---|---|
+| `exact-text` | The user knows a string, env var, route, flag, class name spelling, error text, or file fragment | literal lookups, config keys, route paths, import names | `rg`, `git grep`, editor search |
+| `symbol-indexed` | The user needs definitions, references, or call sites | function/class/interface ownership, API tracing, monorepo navigation | LSP/workspace symbol, ctags, indexed repo search |
+| `structural` | Syntax shape matters more than literal text | missing cleanup, unsafe pattern inventories, migration prep | ast-grep, Semgrep, Comby, tree-sitter-style search |
+| `config-content` | The repo surface is config, content, templates, front matter, shortcodes, scenes, assets, or build scripts | Terraform/Kubernetes, Markdown/MDX sites, Hugo/Next content, game packaging/config | file discovery + exact-text + targeted scripts |
+| `hosted-search` | The repo is remote/browser-first or cross-repo lookup matters | PR archaeology, repo you do not have locally, shareable links | GitHub/GitLab hosted search |
+| `graph-path` | The request is really about dependency tracing or persistent structure | call graph, path tracing, architecture map, graph report | `graphify`, code graph/code map tools |
 
-Benefits:
-- Quickly find files by type
-- Discover file structure
-- Locate related files
-```
+Packet rules:
+- Prefer `exact-text` when the user already has a concrete token.
+- Prefer `symbol-indexed` for “where is this defined / referenced?”
+- Prefer `structural` only when regex would be too blunt.
+- Prefer `config-content` when the real surface is not classic source code.
+- Prefer `hosted-search` when local context is missing.
+- Prefer `graph-path` only when ordinary search is no longer enough.
 
-### Step 3: Search workflow
+### Step 3: Narrow scope before reading everything
+Apply at least one narrowing move before reading files:
+- limit by directory or package
+- limit by file type
+- separate authored files from generated/vendor folders
+- start with entry points, loaders, config schemas, tests, examples, or build scripts
+- in content/game repos, search metadata + template/asset surfaces before assuming code owns the answer
 
-**1. Start broad, then narrow**:
-```
-Step 1: Semantic search "How does authentication work?"
-Result: Points to auth/ directory
+Useful heuristics by repo shape:
+- **app** → start with entry point, router/handler, config loader, test
+- **infra** → start with module/overlay/root config, variable/schema, deployment surface
+- **content** → start with content folder, front matter key, partial/include/shortcode/template
+- **game** → start with runtime code, engine config, scene/asset/build script, editor/visual graph references
 
-Step 2: Grep in auth/ for specific function
-Pattern: "def verify_token"
-Result: Found in auth/jwt.py
+### Step 4: Read winners, not the whole match list
+After the search packet returns matches:
+1. pick the most likely definition / ownership file
+2. pick 1–3 important consumers or references
+3. pick 1 config/test/example/build file when setup matters
+4. summarize the flow instead of pasting raw terminal output
 
-Step 3: Read the file
-File: auth/jwt.py
-Result: Understand implementation
-```
+### Step 5: Return an evidence map
+Default response shape:
 
-**2. Use directory targeting**:
-```
-# Start without target (search everywhere)
-Query: "Where is user login implemented?"
-Target: []
+```markdown
+## Search brief
+- Goal: [what I was locating]
+- Packet: exact-text | symbol-indexed | structural | config-content | hosted-search | graph-path
+- Scope: [paths/file types/packages]
 
-# Refine with specific directory
-Query: "Where is login validated?"
-Target: ["backend/auth/"]
-```
+## Best entry points
+- `path/to/file`: why it matters
+- `path/to/other-file`: why it matters
 
-**3. Combine searches**:
-```
-# Find where feature is implemented
-Semantic: "user registration flow"
+## Key evidence
+- `path:line` — what it shows
+- `path:line` — how it connects
 
-# Find all files involved
-Grep: "def register_user"
+## Likely flow / ownership
+- entry → consumer → config/test/content surface
 
-# Find test files
-Glob: "**/*register*test*.py"
-
-# Understand the implementation
-Read: registration.py, test_registration.py
+## Next route-out
+- stay in `codebase-search` or route to the next skill
 ```
 
-### Step 4: Common search patterns
-
-**Find function definition**:
-```bash
-# Python
-grep -n "def function_name" --type py
-
-# JavaScript
-grep -n "function functionName" --type js
-grep -n "const functionName = " --type js
-
-# TypeScript
-grep -n "function functionName" --type ts
-grep -n "export const functionName" --type ts
-
-# Go
-grep -n "func functionName" --type go
-
-# Java
-grep -n "public.*functionName" --type java
-```
-
-**Find class definition**:
-```bash
-# Python
-grep -n "class ClassName" --type py
-
-# JavaScript/TypeScript
-grep -n "class ClassName" --type js,ts
-
-# Java
-grep -n "public class ClassName" --type java
-
-# C++
-grep -n "class ClassName" --type cpp
-```
-
-**Find class/function usage**:
-```bash
-# Python
-grep -n "ClassName(" --type py
-grep -n "function_name(" --type py
-
-# JavaScript
-grep -n "new ClassName" --type js
-grep -n "functionName(" --type js
-```
-
-**Find imports/requires**:
-```bash
-# Python
-grep -n "from.*import.*ModuleName" --type py
-grep -n "import.*ModuleName" --type py
-
-# JavaScript
-grep -n "import.*from.*module-name" --type js
-grep -n "require.*module-name" --type js
-
-# Go
-grep -n "import.*package-name" --type go
-```
-
-**Find configuration**:
-```bash
-# Config files
-glob "**/*config*.{json,yaml,yml,toml,ini}"
-
-# Environment variables
-grep -n "process\\.env\\." --type js
-grep -n "os\\.environ" --type py
-
-# Constants
-grep -n "^[A-Z_]+\\s*=" --type py
-grep -n "const [A-Z_]+" --type js
-```
-
-**Find TODO/FIXME**:
-```bash
-grep -n "TODO|FIXME|HACK|XXX" -i
-```
-
-**Find error handling**:
-```bash
-# Python
-grep -n "try:|except|raise" --type py
-
-# JavaScript
-grep -n "try|catch|throw" --type js
-
-# Go
-grep -n "if err != nil" --type go
-```
-
-### Step 5: Advanced techniques
-
-**Trace data flow**:
-```
-1. Find where data is created
-   Semantic: "Where is user object created?"
-
-2. Search for variable usage
-   Grep: "user\\." with context lines
-
-3. Follow transformations
-   Read: Files that modify user
-
-4. Find where it's consumed
-   Grep: "user\\." in relevant files
-```
-
-**Find all callsites of a function**:
-```
-1. Find function definition
-   Grep: "def process_payment"
-   Result: payments/processor.py:45
-
-2. Find all imports of that module
-   Grep: "from payments.processor import"
-   Result: Multiple files
-
-3. Find all calls to the function
-   Grep: "process_payment\\("
-   Result: All callsites
-
-4. Read each callsite for context
-   Read: Each file with context
-```
-
-**Understand a feature end-to-end**:
-```
-1. Find API endpoint
-   Semantic: "Where is user registration endpoint?"
-   Result: routes/auth.py
-
-2. Trace to controller
-   Read: routes/auth.py
-   Find: Calls to AuthController.register
-
-3. Trace to service
-   Read: controllers/auth.py
-   Find: Calls to UserService.create_user
-
-4. Trace to database
-   Read: services/user.py
-   Find: Database operations
-
-5. Find tests
-   Glob: "**/*auth*test*.py"
-   Read: Test files for examples
-```
-
-**Find related files**:
-```
-1. Start with known file
-   Example: models/user.py
-
-2. Find imports of this file
-   Grep: "from models.user import"
-
-3. Find files this imports
-   Read: models/user.py
-   Note: Import statements
-
-4. Build dependency graph
-   Map: All related files
-```
-
-**Impact analysis**:
-```
-Before changing function X:
-
-1. Find all callsites
-   Grep: "function_name\\("
-
-2. Find all tests
-   Grep: "test.*function_name" -i
-
-3. Check related functionality
-   Semantic: "What depends on X?"
-
-4. Review each usage
-   Read: Each file using function
-
-5. Plan changes
-   Document: Impact and required updates
-```
-
-### Step 6: Search optimization
-
-**Use appropriate context**:
-```bash
-# See surrounding context
-grep -n "pattern" -C 5  # 5 lines before and after
-grep -n "pattern" -B 3  # 3 lines before
-grep -n "pattern" -A 3  # 3 lines after
-```
-
-**Case sensitivity**:
-```bash
-# Case insensitive
-grep -n "pattern" -i
-
-# Case sensitive (default)
-grep -n "Pattern"
-```
-
-**File type filtering**:
-```bash
-# Specific type
-grep -n "pattern" --type py
-
-# Multiple types
-grep -n "pattern" --type py,js,ts
-
-# Exclude types
-grep -n "pattern" --glob "!*.test.js"
-```
-
-**Regex patterns**:
-```bash
-# Any character: .
-grep -n "function.*Name"
-
-# Start of line: ^
-grep -n "^class"
-
-# End of line: $
-grep -n "TODO$"
-
-# Optional: ?
-grep -n "function_name_?()"
-
-# One or more: +
-grep -n "[A-Z_]+"
-
-# Zero or more: *
-grep -n "import.*"
-
-# Alternatives: |
-grep -n "TODO|FIXME"
-
-# Groups: ()
-grep -n "(get|set)_user"
-
-# Escape special chars: \
-grep -n "function\(\)"
-```
-
-## Best practices
-
-1. **Start with semantic search**: For unfamiliar code or conceptual questions
-2. **Use grep for precision**: When you know exact terms
-3. **Combine multiple searches**: Build understanding incrementally
-4. **Read surrounding context**: Don't just look at matching lines
-5. **Check file history**: Use `git blame` for context
-6. **Document findings**: Note important discoveries
-7. **Verify assumptions**: Read actual code, don't assume
-8. **Use directory targeting**: Narrow scope when possible
-9. **Follow the data**: Trace data flow through the system
-10. **Check tests**: Tests often show usage examples
-
-## Common search scenarios
-
-### Scenario 1: Understanding a bug
-```
-1. Find error message
-   Grep: "exact error message"
-
-2. Find where it's thrown
-   Read: File with error
-
-3. Find what triggers it
-   Semantic: "What causes X error?"
-
-4. Find related code
-   Grep: Related function names
-
-5. Check tests
-   Glob: "**/*test*.py"
-   Look: For related test cases
-```
-
-### Scenario 2: Learning a new codebase
-```
-1. Find entry point
-   Semantic: "Where does the application start?"
-   Common files: main.py, index.js, app.py
-
-2. Find main routes/endpoints
-   Grep: "route|endpoint|@app\\."
-
-3. Find data models
-   Semantic: "Where are data models defined?"
-   Common: models/, entities/
-
-4. Find configuration
-   Glob: "**/*config*"
-
-5. Read README and docs
-   Read: README.md, docs/
-```
-
-### Scenario 3: Refactoring preparation
-```
-1. Find all usages
-   Grep: "function_to_change"
-
-2. Find tests
-   Grep: "test.*function_to_change"
-
-3. Find dependencies
-   Semantic: "What does X depend on?"
-
-4. Check imports
-   Grep: "from.*import.*X"
-
-5. Document scope
-   List: All affected files
-```
-
-### Scenario 4: Adding a feature
-```
-1. Find similar features
-   Semantic: "How is similar feature implemented?"
-
-2. Find where to add code
-   Semantic: "Where should new feature go?"
-
-3. Check patterns
-   Read: Similar implementations
-
-4. Find tests to emulate
-   Glob: Test files for similar features
-
-5. Check documentation
-   Grep: "TODO.*new feature" -i
-```
-
-## Tools integration
-
-**Git integration**:
-```bash
-# Who changed this line?
-git blame filename
-
-# History of a file
-git log -p filename
-
-# Find when function was added
-git log -S "function_name" --source --all
-
-# Find commits mentioning X
-git log --grep="feature name"
-```
-
-**IDE integration**:
-- Use "Go to Definition" for quick navigation
-- Use "Find References" for usage
-- Use "Find in Files" for broad search
-- Use symbol search for classes/functions
-
-**Documentation**:
-- Check inline comments
-- Look for docstrings
-- Read README files
-- Check architecture docs
-
-## Troubleshooting
-
-**No results found**:
-- Check spelling and case sensitivity
-- Try semantic search instead of grep
-- Broaden search scope (remove directory target)
-- Try different search terms
-- Check if files are in .gitignore
-
-**Too many results**:
-- Add directory targeting
-- Use more specific patterns
-- Filter by file type
-- Use exact phrases (quotes)
-
-**Wrong results**:
-- Be more specific in query
-- Use grep instead of semantic for exact terms
-- Add context to semantic queries
-- Check file types
-
-## References
-
-- [Ripgrep User Guide](https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md)
-- [Regular Expressions Tutorial](https://regexone.com/)
-- [Git Blame Guide](https://git-scm.com/docs/git-blame)
+### Step 6: Use packet-specific heuristics
+
+#### For bug-location requests
+- start from the error string, route, flag, or recent change token
+- locate the definition plus highest-signal consumers
+- switch to `debugging` once the likely failure path is mapped
+
+#### For impact analysis
+- definition first
+- major consumers second
+- tests/config/docs/content surfaces third
+- separate **must-update** from **maybe-affected**
+- route to `code-refactoring` when the user is ready to change behavior-preserving structure
+
+#### For config/content ownership
+- locate loader/schema/template first
+- then find runtime consumers or referenced pages/assets
+- call out whether ownership sits in config, content metadata, templates, or code
+
+#### For structural search
+- explain the search shape in plain English
+- prefer AST-aware tooling
+- if forced to approximate with regex, label the confidence limit clearly
+
+#### For archaeology requests
+- start from entry points, docs, examples, tests, or build scripts
+- avoid pretending you already understand the architecture after one search
+- route to `graphify` if the user actually wants persistent structure mapping
+
+### Step 7: Route out aggressively
+Switch when the next job is no longer search:
+- **Root cause, reproduction, hypotheses** → `debugging`
+- **Raw log triage** → `log-analysis`
+- **Behavior-preserving cleanup / codemod planning** → `code-refactoring`
+- **Diff / PR judgment** → `code-review`
+- **Persistent architecture graph or path tracing** → `graphify`
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Pre-change discovery
+**Prompt:**
+> Find where auth is implemented and what files I should inspect before changing it.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good response shape:**
+- choose `symbol-indexed` or `exact-text`
+- identify entry points, config, and tests
+- return a compact evidence map
+- route to `code-refactoring` or `debugging` only after the discovery step
+
+### Example 2: Config/content ownership
+**Prompt:**
+> Which MDX pages still use the old pricing CTA shortcode, and where is the shared partial defined?
+
+**Good response shape:**
+- choose `config-content`
+- search content metadata + shortcode/template surfaces
+- identify source partial plus affected pages
+- keep the answer discovery-first
+
+### Example 3: Structural query
+**Prompt:**
+> Find all React effects missing cleanup. I do not want plain grep.
+
+**Good response shape:**
+- choose `structural`
+- prefer AST-aware matching
+- list highest-confidence hits
+- label regex fallback limits if needed
+
+### Example 4: Game/infrastructure archaeology
+**Prompt:**
+> Search this repo for where matchmaking region config is defined and what scenes or services consume it.
+
+**Good response shape:**
+- choose `config-content` or `symbol-indexed` based on repo shape
+- separate config ownership from runtime consumers
+- call out code + asset/build surfaces if they both matter
+
+## Best practices
+1. Choose the **smallest packet** that can answer the question.
+2. Narrow scope before reading large match sets.
+3. Return an evidence map, not a terminal transcript.
+4. Cover config/content/game surfaces honestly; repo navigation is not only source-code lookup.
+5. Separate search from diagnosis, refactoring, review, and persistent graphing.
+6. Label confidence when structural intent is approximated with plain text search.
+7. For monorepos, group findings by package or subsystem.
+
+## References
+- `references/intake-packets-and-route-outs.md`
+- `references/search-modes.md`
+- `references/evidence-map-template.md`
+- `references/handoff-boundaries.md`
+- GitHub Code Search syntax docs: https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax
+- Sourcegraph code search docs: https://sourcegraph.com/docs/code_search
+- ast-grep introduction: https://ast-grep.github.io/guide/introduction.html
+- ripgrep guide: https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md

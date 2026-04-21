@@ -1,14 +1,15 @@
 N:code-refactoring
-D:Simplify and refactor code while preserving behavior, improving clarity, and reducing complexity....
-G:refactoring code-quality DRY SOLID design-patterns
-U[4]:
-  **Code review**: Discovering complex or duplicated code
-  **Before adding new features**: Cleaning up existing code
-  **After bug fixes**: Removing root causes
-  **Resolving technical debt**: Regular refactoring
+D:Turn a cleanup packet into one behavior-preserving refactor brief. Use when simplifying a messy function/component/service, freezing behavior before touching fragile legacy code, splitting a cleanup-heavy diff into reviewable slices, or planning a repeated migration / codemod without changing intended behavior. Route diagnosis to debugging, review judgment to code-review, validation-program design to testing-strategies, bottleneck-led tuning to performance-optimization, and pure symbol inventory to codebase-search.
+G:refactoring code-quality behavior-preservation cleanup codemod migration legacy-code technical-debt
+U[5]:
+  messy function/component/service that needs structural cleanup
+  fragile legacy area that needs freeze-first cleanup
+  repeated API or naming migration across many files
+  cleanup-heavy diff that needs reshaping before review
+  requests to refactor, decompose, deduplicate, rename safely, or stage cleanup
 S[5]{n,action}:
-  1,Extract Method
-  2,Remove Duplication
-  3,Replace Conditional with Polymorphism
-  4,Introduce Parameter Object
-  5,Apply SOLID Principles
+  1,Start from the cleanup packet already available
+  2,Choose one primary refactor mode
+  3,Freeze the behavior guardrail
+  4,Build the smallest credible cleanup plan
+  5,Verify and route remaining work honestly

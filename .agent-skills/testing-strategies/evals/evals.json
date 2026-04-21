@@ -1,0 +1,71 @@
+{
+  "skill_name": "testing-strategies",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our Playwright suite is slow and keeps flaking. What testing strategy should this repo adopt?",
+      "expected_output": "A packet-first flake-policy brief that narrows PR browser coverage, separates PR vs scheduled scope, and treats quarantine as a policy tool rather than the whole answer.",
+      "assertions": [
+        "Classifies the request as a flaky-suite or equivalent packet instead of a generic testing lecture",
+        "Separates local/PR/release/scheduled expectations where relevant",
+        "Mentions blocking vs informational or quarantine/fix rules",
+        "Routes root-cause investigation or stack-specific implementation to another skill when appropriate"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "This PR changes an API contract and a DB migration. What validation layers should be required before merge?",
+      "expected_output": "A change-risk packet brief that requires stronger-than-unit evidence and explains why broad browser E2E may still be unnecessary.",
+      "assertions": [
+        "Classifies the packet as a concrete change-risk or equivalent",
+        "Marks the change as high risk or equivalent",
+        "Requires integration, contract, migration, or similar stronger-than-unit validation",
+        "Provides a next-owner handoff such as backend-testing"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Engineering says tests are green, but should we require anything else before this release?",
+      "expected_output": "A release-readiness brief that names any remaining smoke/checklist proof honestly instead of defaulting to a generic full regression run.",
+      "assertions": [
+        "Identifies a release-confidence or release-readiness mode/packet",
+        "Separates release expectations from PR/local expectations",
+        "Can recommend targeted smoke or checklist validation instead of blanket more-tests advice",
+        "Routes release execution or visual/accessibility-heavy signoff away when appropriate"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We fixed a keyboard navigation bug in a settings page. Should this live here or under accessibility, and what validation should we require?",
+      "expected_output": "A brief that recognizes the accessibility-heavy surface, still frames the confidence decision, and routes deeper remediation ownership to web-accessibility.",
+      "assertions": [
+        "Recognizes accessibility or UI-state verification as a neighboring-skill boundary",
+        "Still gives a concise validation recommendation for the current change",
+        "Routes accessibility-heavy follow-through to web-accessibility or web-design-guidelines",
+        "Does not collapse the entire task into backend-testing or generic code review"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our build passed CI, but we still have Steam release checklist items and packaging work. Should we add more PR blockers or route this elsewhere?",
+      "expected_output": "A release-gate-truth brief that keeps PR blockers narrow, names the remaining release-only proof, and routes Steam/build pipeline ownership outward.",
+      "assertions": [
+        "Identifies release-gate truth or equivalent rather than treating this as a generic merge gate question",
+        "Explicitly avoids expanding branch-blocking PR checks just because launch checklist work remains",
+        "Routes the next owner to steam-store-launch-ops, game-ci-cd-pipeline, deployment-automation, or an equivalent release owner",
+        "Still gives a concise statement of what release-only proof is required now"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "We use protected branches with required status checks, but our nightly compatibility suite is too flaky to block merges. What should be mandatory?",
+      "expected_output": "A merge-gate-truth brief that keeps only the smallest blocking set in protected branches and moves broader flaky coverage to scheduled runs with explicit visibility.",
+      "assertions": [
+        "Recognizes the request as merge-gate truth or equivalent",
+        "Separates blocking status checks from scheduled or informational coverage",
+        "Treats flaky nightly breadth as non-blocking unless a stronger case is stated",
+        "Does not answer with a generic test pyramid lecture alone"
+      ]
+    }
+  ]
+}

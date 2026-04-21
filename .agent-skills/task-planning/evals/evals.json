@@ -1,0 +1,69 @@
+{
+  "skill_name": "task-planning",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Break down a new team-invite feature for our SaaS app before sprint planning. We need email invites, acceptance, and admin visibility.",
+      "expected_output": "Returns a compact planning packet with mode, work slices, readiness, blockers, and a next move rather than generic agile advice.",
+      "assertions": [
+        "Output identifies a planning mode such as sprint-candidate or feature-slice",
+        "Output separates at least three distinct slices such as backend/data, UI flow, and verification or follow-through",
+        "Output includes blockers, assumptions, or missing inputs",
+        "Output does not drift into story-point sizing as the main task"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We have a pile of vague onboarding backlog items. Clean them up so we can decide what is actually ready next week.",
+      "expected_output": "Identifies backlog cleanup, distinguishes ready vs not-ready work, and preserves discovery-first tasks where evidence is thin.",
+      "assertions": [
+        "Output identifies backlog-cleanup or an equivalent planning mode",
+        "Output distinguishes ready and not-ready work",
+        "Output calls out missing scope, ownership, design, or approvals for unclear items",
+        "Output recommends discovery first where certainty is too low"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Plan the next release push for our B2B launch: landing-page updates, email sequence, attribution checks, and launch-day reporting.",
+      "expected_output": "Produces a release packet that separates asset work, review/approval, distribution, measurement, and reporting while keeping messaging depth routed out.",
+      "assertions": [
+        "Output identifies a release-slice or equivalent launch-oriented planning mode",
+        "Output separates asset creation, review or approval, distribution, and measurement/reporting work",
+        "Output includes timing, dependencies, or launch-window constraints",
+        "Output keeps deep copywriting or campaign-strategy execution out of scope for marketing-automation when needed"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Plan the next milestone for our roguelike demo: tutorial polish, controller support, and a streamer-ready build.",
+      "expected_output": "Produces a game-aware milestone packet that separates code/system work, content/polish, QA/playtest, and build or distribution concerns.",
+      "assertions": [
+        "Output identifies a milestone-plan or equivalent milestone-oriented planning mode",
+        "Output contains game-specific slice boundaries or considerations",
+        "Output includes blockers, missing success criteria, or risk notes",
+        "Output keeps broader game-production orchestration routed to bmad-gds when appropriate"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We already agreed on the tasks. Set up the kanban board, worktrees, and review queue for the team.",
+      "expected_output": "Routes the request to vibe-kanban instead of pretending task-planning owns board control.",
+      "assertions": [
+        "Response routes to vibe-kanban or explicitly says the task is board control rather than decomposition",
+        "Response does not present a full planning packet as the primary answer",
+        "Response keeps task-planning positioned as the decomposition and readiness lane"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "We have a loose idea for a creator analytics companion product and some scattered notes, but we have not nailed the audience, positioning, or core workflow yet. Help us figure out the concept before we make a delivery plan.",
+      "expected_output": "Routes the request to a pre-planning concept-framing skill such as bmad or bmad-idea instead of pretending task-planning should decompose a still-fuzzy concept into execution slices.",
+      "assertions": [
+        "Response routes to bmad or bmad-idea or explicitly says the work is still concept framing rather than decomposition",
+        "Response does not fabricate a delivery packet as if the concept were already ready",
+        "Response keeps task-planning positioned as the packet-first decomposition and readiness lane after framing is complete"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "skill_name": "codebase-search",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Find where auth is implemented in this repo and what files I should inspect before changing it.",
+      "expected_output": "A search brief that identifies entry points, important files, key evidence, and a next route-out.",
+      "assertions": [
+        "Response classifies the request as repo navigation / pre-change discovery rather than debugging.",
+        "Response identifies at least two file roles such as entry point, config, consumer, or test.",
+        "Response includes a compact evidence-map-style summary instead of raw unstructured search output."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Trace all call sites of calculatePrice() and summarize the impact before refactoring.",
+      "expected_output": "A symbol/call-site oriented search summary with must-update vs maybe-affected guidance and a handoff to refactoring.",
+      "assertions": [
+        "Response chooses symbol/indexed or exact-text call-site tracing instead of generic architecture advice.",
+        "Response distinguishes impact mapping from actual refactoring execution.",
+        "Response routes the next change-planning step to code-refactoring."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Search this monorepo for config ownership and entry points for S3 uploads.",
+      "expected_output": "A scoped search plan that looks for loaders, schemas, runtime consumers, and deployment/env surfaces.",
+      "assertions": [
+        "Response includes scope narrowing by package, path, or file type.",
+        "Response looks for config loading and validation, not only string matches.",
+        "Response summarizes likely ownership or subsystem boundaries."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I need syntax-aware matching for all React effects missing cleanup, not plain grep.",
+      "expected_output": "A structural-search workflow that prefers AST-aware matching and labels confidence if forced to fall back.",
+      "assertions": [
+        "Response chooses structural search instead of plain exact-text search as the primary lane.",
+        "Response mentions AST-aware tooling such as ast-grep or explicitly labels regex fallback limits.",
+        "Response keeps the task in discovery mode rather than turning it into a refactor plan."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Which MDX pages still use the old pricing CTA shortcode, and where is the shared partial defined?",
+      "expected_output": "A config/content search brief that inspects content files plus shortcode/template ownership instead of pretending the repo is only source code.",
+      "assertions": [
+        "Response chooses a config-content or file-discovery-first packet rather than generic symbol search.",
+        "Response searches both affected content pages and the shared shortcode/partial/template surface.",
+        "Response stays in discovery mode and does not jump straight to content rewrite advice."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Search this game repo for where matchmaking region config is defined and what scenes or services consume it.",
+      "expected_output": "A repo-shape-aware discovery plan that separates config ownership from runtime consumers across code and asset/build surfaces.",
+      "assertions": [
+        "Response chooses config-content or symbol-indexed based on repo shape and explains why.",
+        "Response calls out both config ownership and downstream code/scene/service consumers.",
+        "Response summarizes likely next route-outs without turning the result into debugging or refactoring."
+      ]
+    }
+  ]
+}

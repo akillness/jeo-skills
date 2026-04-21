@@ -1,223 +1,245 @@
 ---
 name: data-analysis
-description: Analyze datasets to extract insights, identify patterns, and generate reports. Use when exploring data, creating visualizations, or performing statistical analysis. Handles CSV, JSON, SQL queries, and Python pandas operations.
+description: >
+  Analyze datasets with a decision-first workflow. Use when the user needs to
+  inspect CSV/JSON/Parquet/SQL extracts, validate data quality, explain trends,
+  compare segments, summarize experiment or telemetry results, or turn raw tables
+  into evidence-backed findings — even if they ask in domain language like KPI,
+  retention, funnel, cohort, revenue, campaign, export, dashboard data, or game
+  telemetry. Choose the right lane (spreadsheet-scale triage, SQL slicing,
+  notebook/statistical analysis, or stakeholder-ready summary) and hand off
+  cleanly to dashboard, anomaly-detection, or implementation skills when needed.
 allowed-tools: Read Grep Glob Bash
 metadata:
-  tags: data, analysis, pandas, statistics, visualization, csv, sql
-  platforms: Claude, ChatGPT, Gemini
+  tags: data-analysis, csv, sql, notebooks, telemetry, experimentation, analytics
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0"
 ---
-
 
 # Data Analysis
 
-
 ## When to use this skill
+- The user has a **dataset, export, report extract, query result, or shaped event / telemetry table** and wants evidence-backed conclusions.
+- The task is to **understand what changed**, compare segments, summarize performance, or explain anomalies in business terms.
+- The request mentions **CSV, JSON, SQL tables, retention, cohorts, funnels, conversion, spend, telemetry, event exports, or KPIs**.
+- The work needs **data-quality checks before conclusions**.
+- The user needs a **concise analysis narrative**, not just raw code snippets.
 
-- **Data exploration**: Understand a new dataset
-- **Report generation**: Derive data-driven insights
-- **Quality validation**: Check data consistency
-- **Decision support**: Make data-driven recommendations
+Do **not** use this skill as the main workflow when:
+- The main goal is repeated anomaly or code-pattern scanning across code/data assets → use `pattern-detection`.
+- The main goal is building or tuning a specific BI dashboard / Looker Studio + BigQuery workflow → use `looker-studio-bigquery`.
+- The task is repository navigation or call-site tracing rather than dataset reasoning → use `codebase-search`.
+- The problem is raw log triage / incident reconstruction rather than dataset analysis → use `log-analysis`.
+
+## Core idea
+Data analysis is a staged reasoning workflow:
+1. clarify the decision question
+2. profile the data and trust level
+3. choose the cheapest analysis lane that can answer it
+4. separate observation from interpretation
+5. finish with evidence, caveats, and next actions
+
+Do **not** jump straight into charts or code. The goal is decision-quality analysis.
 
 ## Instructions
 
-### Step 1: Load and explore data
+### Step 1: Frame the analysis question
+Before touching the data, define:
+- **Decision to support** — what action or judgment depends on this analysis?
+- **Primary metric(s)** — conversion, retention, revenue, latency, churn, balance, spend efficiency, etc.
+- **Dimensions / segments** — time, channel, cohort, region, plan, device, feature flag, player segment
+- **Comparison mode** — before/after, control/treatment, top vs bottom segments, expected vs actual
+- **Time window** — day/week/month/release/experiment period
 
-**Python (Pandas)**:
+If the request is vague, restate it as:
+> "We need to explain [metric/outcome] for [audience] over [time window] and identify the strongest drivers or caveats."
+
+### Step 2: Run a trust check before analysis
+Always start with data-quality triage.
+
+#### Minimum trust checklist
+- row count / extract size
+- schema and types
+- missing values / null-heavy columns
+- duplicates or repeated IDs
+- time range coverage and timezone assumptions
+- segment completeness (channels, countries, devices, builds, player groups)
+- obvious join / aggregation errors
+- outliers or impossible values
+
+Default check pattern:
 ```python
 import pandas as pd
-import numpy as np
 
-# Load CSV
-df = pd.read_csv('data.csv')
-
-# Basic info
-print(df.info())
-print(df.describe())
-print(df.head(10))
-
-# Check missing values
-print(df.isnull().sum())
-
-# Data types
+# df = pd.read_csv(...)
+print(df.shape)
 print(df.dtypes)
+print(df.head())
+print(df.isna().sum().sort_values(ascending=False).head(15))
+print(df.duplicated().sum())
 ```
 
-**SQL**:
-```sql
--- Inspect table schema
-DESCRIBE table_name;
+If trust is low, stop promising conclusions and explicitly switch the output to:
+- what is trustworthy
+- what is suspect
+- what additional cleanup or data is needed
 
--- Sample data
-SELECT * FROM table_name LIMIT 10;
+### Step 3: Choose the analysis lane
 
--- Basic stats
-SELECT
-    COUNT(*) as total_rows,
-    COUNT(DISTINCT column_name) as unique_values,
-    MIN(numeric_column) as min_val,
-    MAX(numeric_column) as max_val,
-    AVG(numeric_column) as avg_val
-FROM table_name;
-```
+| Lane | Use when | Typical tools | What success looks like |
+|---|---|---|---|
+| Spreadsheet-scale triage | Small extracts, PM/ops handoff, quick KPI sanity checks | Sheets / Excel / quick table review | Fast overview, obvious errors and top movements surfaced |
+| SQL slicing | Data already lives in a DB / warehouse or needs grouped filters fast | SQL / DuckDB / warehouse query | Clean aggregates, cohorts, funnels, comparisons |
+| Notebook / statistical analysis | Multiple metrics, cohort logic, experiment reasoning, telemetry or richer transformations | pandas / notebooks / scripts | Reproducible calculations and richer interpretation |
+| Stakeholder-ready summary | The answer is mostly known and needs explanation, not more slicing | markdown memo / report / dashboard handoff | Clear findings, caveats, actions, and open questions |
 
-### Step 2: Data cleaning
+Pick the cheapest lane that can answer the question. Escalate only when needed.
 
-```python
-# Handle missing values
-df['column'].fillna(df['column'].mean(), inplace=True)
-df.dropna(subset=['required_column'], inplace=True)
+### Step 4: Use the right analysis pattern
 
-# Remove duplicates
-df.drop_duplicates(inplace=True)
+#### Pattern A — Change explanation
+Use for: experiments, release effects, KPI jumps/drops, spend shifts, gameplay balance changes.
 
-# Type conversions
-df['date'] = pd.to_datetime(df['date'])
-df['category'] = df['category'].astype('category')
+Checklist:
+1. define baseline and comparison window
+2. confirm denominator / assignment integrity when this is an experiment or rollout comparison
+3. compute absolute + relative deltas
+4. break the change by top segments or drivers
+5. test whether the change is broad or concentrated
+6. call out confounders (seasonality, launch, tracking changes, sample size, significance/confidence limits)
 
-# Remove outliers (IQR method)
-Q1 = df['value'].quantile(0.25)
-Q3 = df['value'].quantile(0.75)
-IQR = Q3 - Q1
-df = df[(df['value'] >= Q1 - 1.5*IQR) & (df['value'] <= Q3 + 1.5*IQR)]
-```
+#### Pattern B — Segment comparison
+Use for: channel quality, user tiers, device classes, regions, player cohorts.
 
-### Step 3: Statistical analysis
+Checklist:
+1. rank segments by the primary metric
+2. include sample size / denominator
+3. compare both rate and volume
+4. watch for Simpson's-paradox-style aggregation traps
+5. explain what likely differentiates top vs bottom groups
 
-```python
-# Descriptive statistics
-print(df['numeric_column'].describe())
+#### Pattern C — Funnel / retention analysis
+Use for: signup, purchase, onboarding, feature adoption, live-ops progression.
 
-# Grouped analysis
-grouped = df.groupby('category').agg({
-    'value': ['mean', 'sum', 'count'],
-    'other': 'nunique'
-})
-print(grouped)
+Checklist:
+1. define each stage/event clearly
+2. compute stage counts and conversion/drop-off rates
+3. segment by acquisition source, cohort, platform, build, or player type
+4. identify the highest-leverage drop-off point
+5. distinguish instrumentation gaps from genuine behavior problems
 
-# Correlation
-correlation = df[['col1', 'col2', 'col3']].corr()
-print(correlation)
+#### Pattern D — Telemetry / event analysis
+Use for: gameplay telemetry, product event streams, operational exports.
 
-# Pivot table
-pivot = pd.pivot_table(df,
-    values='sales',
-    index='region',
-    columns='month',
-    aggfunc='sum'
-)
-```
+Checklist:
+1. map raw events to derived metrics
+2. group by session/build/feature/segment/time
+3. identify spikes, sinkholes, and suspicious clusters
+4. separate normal variation from suspicious outliers
+5. route sustained anomaly-hunting work to `pattern-detection` if the task becomes detection-first
 
-### Step 4: Visualization
+### Step 5: Keep observations separate from interpretation
+Structure findings in three layers:
 
-```python
-import matplotlib.pyplot as plt
-import seaborn as sns
+1. **Observation** — what the data literally shows
+2. **Interpretation** — likely meaning or driver
+3. **Caveat / confidence** — what could weaken the conclusion
 
-# Histogram
-plt.figure(figsize=(10, 6))
-df['value'].hist(bins=30)
-plt.title('Distribution of Values')
-plt.savefig('histogram.png')
+Good example:
+- Observation: conversion dropped 6.2% week-over-week, concentrated in mobile Safari traffic.
+- Interpretation: the decline is likely connected to the recent checkout UI change on smaller screens.
+- Caveat: tracking for one payment method was also modified that week, so attribution is medium confidence.
 
-# Boxplot
-plt.figure(figsize=(10, 6))
-sns.boxplot(x='category', y='value', data=df)
-plt.title('Value by Category')
-plt.savefig('boxplot.png')
-
-# Heatmap (correlation)
-plt.figure(figsize=(10, 8))
-sns.heatmap(correlation, annot=True, cmap='coolwarm')
-plt.title('Correlation Matrix')
-plt.savefig('heatmap.png')
-
-# Time series
-plt.figure(figsize=(12, 6))
-df.groupby('date')['value'].sum().plot()
-plt.title('Time Series of Values')
-plt.savefig('timeseries.png')
-```
-
-### Step 5: Derive insights
-
-```python
-# Top/bottom analysis
-top_10 = df.nlargest(10, 'value')
-bottom_10 = df.nsmallest(10, 'value')
-
-# Trend analysis
-df['month'] = df['date'].dt.to_period('M')
-monthly_trend = df.groupby('month')['value'].sum()
-growth = monthly_trend.pct_change() * 100
-
-# Segment analysis
-segments = df.groupby('segment').agg({
-    'revenue': 'sum',
-    'customers': 'nunique',
-    'orders': 'count'
-})
-segments['avg_order_value'] = segments['revenue'] / segments['orders']
-```
-
-## Output format
-
-### Analysis report structure
+### Step 6: Return a decision-ready output
+Default output shape:
 
 ```markdown
-# Data Analysis Report
+## Analysis brief
+- Goal: [decision question]
+- Data source: [files / tables / export scope]
+- Trust level: high | medium | low
+- Lane used: spreadsheet triage | SQL slicing | notebook/statistical | summary-only
 
-## 1. Dataset overview
-- Dataset: [name]
-- Records: X,XXX
-- Columns: XX
-- Date range: YYYY-MM-DD ~ YYYY-MM-DD
+## Key findings
+1. [finding]
+2. [finding]
+3. [finding]
 
-## 2. Key findings
-- Insight 1
-- Insight 2
-- Insight 3
+## Supporting evidence
+- [metric / segment / comparison]
+- [metric / segment / comparison]
 
-## 3. Statistical summary
-| Metric | Value |
-|------|-----|
-| Mean | X.XX |
-| Median | X.XX |
-| Std dev | X.XX |
+## Caveats
+- [missing data / sample bias / instrumentation / seasonality]
 
-## 4. Recommendations
-1. [Recommendation 1]
-2. [Recommendation 2]
+## Recommended next actions
+- [decision / follow-up slice / dashboard handoff / instrumentation fix]
 ```
 
-## Best practices
+If the user asked for recommendations, tie each recommendation to a specific finding.
+If the user only asked for analysis, stop at evidence + caveats.
 
-1. **Understand the data first**: Learn structure and meaning before analysis
-2. **Incremental analysis**: Move from simple to complex analyses
-3. **Use visualization**: Use a variety of charts to spot patterns
-4. **Validate assumptions**: Always verify assumptions about the data
-5. **Reproducibility**: Document analysis code and results
-
-## Constraints
-
-### Required rules (MUST)
-1. Preserve raw data (work on a copy)
-2. Document the analysis process
-3. Validate results
-
-### Prohibited (MUST NOT)
-1. Do not expose sensitive personal data
-2. Do not draw unsupported conclusions
-
-## References
-
-- [Pandas Documentation](https://pandas.pydata.org/docs/)
-- [Matplotlib Gallery](https://matplotlib.org/stable/gallery/)
-- [Seaborn Tutorial](https://seaborn.pydata.org/tutorial.html)
+### Step 7: Route out when analysis stops being the bottleneck
+Hand off when the next step is a different job:
+- **Repeated anomaly hunting or rule-based scanning** → `pattern-detection`
+- **Dashboard construction / BigQuery-connected reporting** → `looker-studio-bigquery`
+- **Raw log triage before dataset shaping** → `log-analysis`
+- **Repo/code investigation to find instrumentation or metric definitions** → `codebase-search`
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Experiment analysis
+**Prompt:**
+> Analyze this CSV export and tell me what changed after the pricing experiment.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good response shape:**
+- define baseline vs experiment window
+- check data coverage and segment completeness
+- report overall delta plus segment breakdown
+- identify strongest likely drivers and caveats
+
+### Example 2: Marketing + product analysis
+**Prompt:**
+> We have app event logs and marketing spend by channel; find the main retention and CAC patterns.
+
+**Good response shape:**
+- separate acquisition and retention metrics
+- compare rate and volume by channel/cohort
+- note trust limits if joins or attribution windows are unclear
+- summarize high-leverage channel differences
+
+### Example 3: Game telemetry analysis
+**Prompt:**
+> Review this gameplay telemetry extract and summarize balance issues and suspicious outliers.
+
+**Good response shape:**
+- map events to gameplay metrics
+- compare player/build/weapon/level segments
+- separate broad balance patterns from suspicious outliers
+- route repeated anomaly detection to `pattern-detection` if needed
+
+### Example 4: PM / ops export triage
+**Prompt:**
+> I exported a dashboard to CSV; help me explain the KPI drop for leadership.
+
+**Good response shape:**
+- start with trust checks on the export
+- identify the metric, time window, and comparison baseline
+- produce a concise leadership-ready memo with evidence and caveats
+
+## Best practices
+1. Start from the **decision question**, not the chart type.
+2. Run **data-quality checks before interpretation**.
+3. Always include **sample size / denominator context** when comparing segments.
+4. Prefer the **cheapest sufficient lane** instead of defaulting to heavy notebooks.
+5. Separate **observation, interpretation, and caveat** so the analysis stays honest.
+6. Route dashboard-building and anomaly-detection work to adjacent specialist skills when they become the real task.
+
+## References
+- [Project Jupyter](https://jupyter.org/)
+- [Pandas getting started tutorials](https://pandas.pydata.org/docs/getting_started/intro_tutorials/index.html)
+- [DuckDB Jupyter guide](https://duckdb.org/docs/stable/guides/python/jupyter)
+- [GA4 share & export reports](https://support.google.com/analytics/answer/9317657?hl=en)
+
+## Output format
+Use a brief, findings-first summary with trust level, key evidence, caveats, and explicit next actions or handoffs.

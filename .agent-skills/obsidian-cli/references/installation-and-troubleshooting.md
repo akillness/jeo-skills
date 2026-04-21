@@ -1,66 +1,62 @@
 # Installation and Troubleshooting
 
-Obsidian CLI is not a separate package manager install in the official docs. It is enabled from the desktop app.
+Obsidian CLI is not a separate package-manager install. It is bundled with the desktop app and enabled from Obsidian itself.
 
 ## Official prerequisite flow
 
-The CLI help page currently states:
+Current official docs say:
+- upgrade to the latest Obsidian **installer version `1.12.7+`**
+- open Obsidian and go to `Settings -> General`
+- enable **Command line interface**
+- follow the registration prompt
 
-- it requires the Obsidian `1.12` installer
-- you should upgrade to the latest installer version `1.11.7`
-- you should also use the latest early access version `1.12.x`
+Quick verification:
 
-Because that wording is version-sensitive and slightly unusual, keep it as a docs requirement instead of inferring a new rule.
+```bash
+obsidian help
+obsidian version
+```
 
-Enable the CLI from:
-
-1. `Settings -> General`
-2. Enable `Command line interface`
-3. Follow the prompt to register the CLI
+If the CLI binary is still missing, use the checks below before assuming the command surface is unavailable.
 
 ## Runtime behavior
+- Obsidian CLI controls the **desktop app from the terminal**.
+- The app must be installed and desktop-accessible on the current machine.
+- If Obsidian is closed, the first CLI command launches it.
+- If the user wants Sync/Publish without the desktop app, that is an **Obsidian Headless** workflow, not standard CLI usage.
 
-- The desktop app must be running, or the first command launches it
-- The CLI supports single commands and a TUI
-- If the user wants sync without the desktop app, that is an Obsidian Headless workflow, not standard CLI usage
+## Platform notes from current official docs
 
-## Linux troubleshooting
+### Windows
+- Obsidian CLI requires the Obsidian installer `1.12.7+`.
+- The installer adds the `Obsidian.com` terminal redirector next to `Obsidian.exe` so stdin/stdout work properly from the terminal.
 
-The docs call out packaging-specific registration details.
+### macOS
+- CLI registration creates a symlink at `/usr/local/bin/obsidian` pointing to the bundled CLI binary inside the app.
+- This requires administrator privileges and may prompt through a system dialog.
 
-### AppImage
-
-- Registration creates a symlink at `/usr/local/bin/obsidian` and may require `sudo`
-- If `sudo` fails, the symlink may be created at `~/.local/bin/obsidian`
-- If the AppImage is moved or renamed, re-register the CLI or update the symlink manually
-
-Useful checks from the docs:
+Useful checks:
 
 ```bash
 ls -l /usr/local/bin/obsidian
-sudo ln -s /path/to/obsidian /usr/local/bin/obsidian
-export PATH="$PATH:$HOME/.local/bin"
+sudo ln -sf /Applications/Obsidian.app/Contents/MacOS/obsidian-cli /usr/local/bin/obsidian
 ```
 
-### Snap
+### Linux
+- Current docs say CLI registration copies the CLI binary to `~/.local/bin/obsidian`.
+- This avoids persistence problems with install methods that run from temporary directories.
 
-If the CLI cannot detect the insider build data, the docs say to point `XDG_CONFIG_HOME` to the Snap config path:
-
-```bash
-export XDG_CONFIG_HOME="$HOME/snap/obsidian/current/.config"
-```
-
-### Flatpak
-
-The docs provide manual symlink examples:
+Useful checks:
 
 ```bash
-ln -s /var/lib/flatpak/exports/bin/md.obsidian.Obsidian ~/.local/bin/obsidian
-ln -s ~/.local/share/flatpak/exports/bin/md.obsidian.Obsidian ~/.local/bin/obsidian
+ls -l ~/.local/bin/obsidian
+cp /path/to/Obsidian/obsidian-cli ~/.local/bin/obsidian
+chmod 755 ~/.local/bin/obsidian
+export PATH="$HOME/.local/bin:$PATH"
 ```
 
 ## Practical guidance
-
-- Verify `obsidian help` before assuming a command family is unavailable
-- Check `PATH` before troubleshooting the app itself
-- Separate packaging issues from vault or command syntax issues
+- Separate **desktop registration problems** from **vault/command syntax problems**.
+- Check `PATH` before debugging the app itself.
+- Re-check official docs when packaging details change; OS-specific registration behavior can drift.
+- Keep headless/service expectations out of this skill. If the machine has no desktop session, route out early.

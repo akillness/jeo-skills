@@ -1,259 +1,256 @@
 ---
 name: bmad
-description: Orchestrates BMAD workflows for structured AI-driven development. Routes work across Analysis, Planning, Solutioning, and Implementation phases.
+description: >
+  Route BMAD/BMM work from the packet the user already has now: idea notes, product
+  brief, PRD, architecture draft, review feedback, existing repo state, or milestone
+  pressure. Use when the user wants a structured BMAD workflow, asks what phase or
+  artifact comes next, needs a portable front door across Claude/Codex/Gemini/OpenCode,
+  or needs to decide whether the next move is ideation, planning, architecture, review,
+  execution slicing, or a runtime handoff. Triggers on: bmad, BMAD, BMM, workflow-init,
+  workflow-status, what phase are we in, what should we write next, product brief,
+  PRD, architecture next, sprint plan, brownfield planning, existing repo BMAD.
 allowed-tools: Read Write Bash Grep Glob
+compatibility: >
+  Core packet-first BMAD/BMM router for Claude, Codex, Gemini, and OpenCode workflows.
+  Runtime-specific orchestration belongs in `omc`, `omx`, or `ohmg`; approval gates
+  belong in `plannotator`; execution slicing belongs in `task-planning`.
 metadata:
-  tags: bmad, orchestrator, workflow, planning, implementation
+  tags: bmad, workflow, orchestration, phased-development, planning, architecture, implementation
   platforms: Claude, Gemini, Codex, OpenCode
   keyword: bmad
-  version: 1.2.0
-  source: user-installed skill
+  version: "2.1.0"
+  source: akillness/oh-my-skills
 ---
 
+# BMAD Packet-First Router
 
-# bmad - BMAD Workflow Orchestration
+Use `bmad` as the **common-layer BMAD/BMM front door**.
+
+The job is not to dump every phase command or runtime setup rule.
+The job is to:
+1. identify the **packet** the user already has,
+2. choose the project level and likely current phase,
+3. recommend the **single next artifact or gate** that reduces ambiguity now,
+4. route runtime-, review-, execution-, or game-specific detail outward.
+
+Read [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md) first for the fastest routing model. Use [references/core-routing.md](references/core-routing.md), [references/status-and-review.md](references/status-and-review.md), and [references/runtime-and-module-boundaries.md](references/runtime-and-module-boundaries.md) when you need more depth.
 
 ## When to use this skill
+- The user wants to start or resume a BMAD/BMM-style workflow from mixed project state
+- The user asks what phase comes next after idea notes, a PRD, a tech spec, architecture work, or partial implementation
+- The user has an existing repo, issue, review note, or brownfield status and needs the next artifact chosen truthfully
+- The user wants a vendor-neutral BMAD front door before dropping into Claude-, Codex-, or Gemini-specific runtime overlays
+- The user needs help deciding whether the next move is ideation, planning, architecture, approval, execution slicing, or runtime handoff
 
-- Initializing BMAD in a new project
-- Checking and resuming BMAD workflow status
-- Routing work across Analysis, Planning, Solutioning, and Implementation
-- Managing structured handoff between phases
+## When not to use this skill
+- The main need is open-ended concept shaping before project framing exists → use `bmad-idea`
+- The main need is a game-production packet (GDD, playtest notes, build issues, launch beats) → use `bmad-gds`
+- The main need is artifact approval, annotation, or plan review → use `plannotator`
+- The main need is execution-ready backlog slicing after the next artifact is already known → use `task-planning`
+- The main need is runtime-specific orchestration setup for Claude Code → use `omc`
+- The main need is Codex-first workflow runtime behavior → use `omx`
+- The main need is Gemini / Antigravity portable harness setup → use `ohmg`
 
----
+## Instructions
 
-## Installation
-
-```bash
-npx skills add https://github.com/supercent-io/skills-template --skill bmad
-```
-
-## Notes for Codex Usage
-
-`bmad`'s default execution path is Claude Code.
-To run the same flow directly in Codex, we recommend operating BMAD stages via a higher-level orchestration path such as `omx`/`ohmg`.
-
-## Control Model
-
-BMAD phase routing should be treated with the same three-layer abstraction used by OMG:
-
-- `settings`: platform-specific runtime configuration such as Claude hooks, Codex/Gemini instructions, and MCP setup
-- `rules`: phase constraints such as "do not advance before the current phase document is approved" and "do not reopen the same unchanged phase document for review"
-- `hooks`: platform callbacks such as Claude `ExitPlanMode`, Codex `notify`, or Gemini `AfterAgent`
-
-For BMAD phase gates, the intended rule is strict:
-
-- review the current phase document before moving forward
-- if the document hash has not changed since the last terminal review result, do not relaunch plannotator
-- only a revised document resets the gate and permits another review cycle
-
----
-
-## BMAD Execution Commands
-
-## Platform Support Status (Current)
-
-| Platform | Current support mode | Requirements |
-|---|---|---|
-| Gemini CLI | Native (recommended) | Register the `bmad` keyword, then run `/workflow-init` |
-| Claude Code | Native (recommended) | Install skill + `remember` pattern |
-| OpenCode | Orchestration integration | Use an `omx`/`ohmg`/`omx`-style bridge |
-| Codex | Orchestration integration | Use an `omx`/`ohmg`-style bridge |
-
-Possible with `this skill alone`:
-- Gemini CLI/Claude Code: **Yes**
-- OpenCode/Codex: **Yes (via orchestration)**
-
-Use these in your AI session:
-
-```text
-/workflow-init
-/workflow-status
-```
-
-Typical flow:
-
-1. Run `/workflow-init` to bootstrap BMAD config.
-2. Move through phases in order: Analysis -> Planning -> Solutioning -> Implementation.
-3. Run `/workflow-status` any time to inspect current phase and progress.
-
----
-
-## Quick Reference
-
-| Action | Command |
-|--------|---------|
-| Initialize BMAD | `/workflow-init` |
-| Check BMAD status | `/workflow-status` |
-
-
----
-
-## plannotator Integration (Phase Review Gate)
-
-Each BMAD phase produces a key document (PRD, Tech Spec, Architecture). Before transitioning to the next phase, review that document with **plannotator** and auto-save it to Obsidian.
-
-### Why use plannotator with BMAD?
-
-- **Quality gate**: Approve or request changes before locking in a phase deliverable
-- **Obsidian archive**: Every approved phase document auto-saves with YAML frontmatter and `[[BMAD Plans]]` backlink
-- **Team visibility**: Share a plannotator link so stakeholders can annotate the PRD/Architecture before implementation begins
-
-### Phase Review Pattern
-
-After completing any phase document, submit it for review:
-
-```bash
-# After /prd → docs/prd-myapp-2026-02-22.md is created
-bash scripts/phase-gate-review.sh docs/prd-myapp-2026-02-22.md "PRD Review: myapp"
-
-# After /architecture → docs/architecture-myapp-2026-02-22.md is created
-bash scripts/phase-gate-review.sh docs/architecture-myapp-2026-02-22.md "Architecture Review: myapp"
-```
-
-Or submit the plan directly from within your AI session:
-
-```text
-# In Claude Code after /prd completes:
-planno — review the PRD before we proceed to Phase 3
-```
-
-The agent will open the plannotator UI for review. In Claude Code: call `EnterPlanMode` → write plan → call `ExitPlanMode` (hook fires automatically). In OpenCode: the `submit_plan` plugin tool is available directly.
-
-### Phase Gate Flow
-
-```
-/prd completes → docs/prd-myapp.md created
-       ↓
- bash scripts/phase-gate-review.sh docs/prd-myapp.md
-       ↓
- hash guard checks whether this exact document was already reviewed
-       ↓
- unchanged hash? yes → keep previous terminal result, do not reopen UI
-       ↓ no
- plannotator UI opens in browser
-       ↓
-  [Approve]              [Request Changes]
-       ↓                        ↓
- Obsidian saved          Agent revises doc
- bmm-workflow-status     Re-submit for review
- updated automatically
-       ↓
- /architecture (Phase 3)
-```
-
-### Obsidian Save Format
-
-Approved phase documents are saved to your Obsidian vault with:
+### Step 1: Normalize the intake as one primary packet
+Before talking about phases, choose the **single best packet** that describes the current ask:
 
 ```yaml
----
-created: 2026-02-22T22:45:30.000Z
-source: plannotator
-tags: [bmad, phase-2, prd, myapp]
----
-
-[[BMAD Plans]]
-
-# PRD: myapp
-...
+bmad_packet:
+  packet_type:
+    - concept-packet
+    - planning-packet
+    - architecture-packet
+    - review-gate-packet
+    - execution-packet
+    - runtime-handoff-packet
+    - brownfield-resume-packet
+  evidence_in_hand:
+    - idea-notes
+    - product-brief
+    - prd
+    - tech-spec
+    - architecture-draft
+    - review-feedback
+    - active-repo
+    - issue-or-bug-link
+    - sprint-plan
+    - milestone-or-launch-pressure
+  project_type: web-app | backend-api | mobile-app | game | library | automation | unknown
+  project_level: 0 | 1 | 2 | 3 | 4 | unknown
+  runtime_context: claude | codex | gemini | opencode | mixed | unknown
+  main_constraint: ambiguity | review-blocker | execution-readiness | runtime-setup | brownfield-drift | unknown
 ```
 
-### Quick Reference
+Rules:
+- Pick **one primary packet first**, even if the user mentions several artifacts.
+- If the packet is obviously pre-planning, say so and route to `bmad-idea` early.
+- If the packet is mostly game-production coordination, route to `bmad-gds` early.
+- If the request starts from an existing repo, issue, or partial implementation, prefer `brownfield-resume-packet` over pretending the project is greenfield.
 
-| Phase | Document | Gate Command |
-|-------|----------|--------------|
-| Phase 1 → 2 | Product Brief | `bash scripts/phase-gate-review.sh docs/product-brief-*.md` |
-| Phase 2 → 3 | PRD / Tech Spec | `bash scripts/phase-gate-review.sh docs/prd-*.md` |
-| Phase 3 → 4 | Architecture | `bash scripts/phase-gate-review.sh docs/architecture-*.md` |
-| Phase 4 done | Sprint Plan | `bash scripts/phase-gate-review.sh docs/sprint-status.yaml` |
+### Step 2: Choose project level before artifact depth
+Use this scale:
+- **Level 0** — single atomic change, bug fix, config tweak
+- **Level 1** — small feature, limited files, low coordination cost
+- **Level 2** — medium feature set, cross-cutting behavior, clear planning + architecture need
+- **Level 3** — complex integration, multiple subsystems, API/data contracts, multi-sprint delivery
+- **Level 4** — major overhaul, platform migration, enterprise-scale coordination
 
----
+Do not force architecture or heavyweight planning onto level 0–1 work unless the visible packet truly requires it.
 
-## TEA Integration (Test Architect)
+### Step 3: Infer the likely current phase from the packet
+Use the packet to infer the current BMAD phase, not the other way around:
 
-TEA (Test Architect) is an official BMAD v6 external module providing enterprise-grade test strategy and quality gates across all phases. See `resources/tea-workflows.md` for full workflow reference.
+| Packet type | Likely phase | Default next artifact or gate |
+|---|---|---|
+| `concept-packet` | analysis | `product-brief` or route to `bmad-idea` |
+| `planning-packet` | planning | `prd` or `tech-spec` |
+| `architecture-packet` | solutioning | `architecture` or `architecture review gate` |
+| `review-gate-packet` | boundary between phases | `plannotator` review before advancing |
+| `execution-packet` | implementation | `sprint-plan`, `story packet`, or route to `task-planning` |
+| `runtime-handoff-packet` | implementation-ready | runtime route-out to `omc`, `omx`, or `ohmg` |
+| `brownfield-resume-packet` | mixed / unknown | `workflow-status` update, repo-state summary, then the smallest truthful next artifact |
 
-### TEA Integration Points
+Guiding rules:
+- Prefer the **smallest truthful next artifact**.
+- If an artifact already exists but has not been reviewed, the next move is often the **review gate**, not another new document.
+- If the request is really a runtime/setup ask, keep `bmad` short and route outward.
 
-| Phase | TEA Workflow | Command | Level |
-|-------|-------------|---------|-------|
-| Phase 2: Planning | NFR Assessment | `/tea-nfr` | Level 3+ required |
-| Phase 3: Solutioning | Test Design | `/tea-test-design` | Level 2+ recommended |
-| Phase 3: Solutioning | Framework Setup | `/tea-framework` | Level 2+ recommended |
-| Phase 3: Solutioning | CI Integration | `/tea-ci` | Level 2+ recommended |
-| Phase 4: Implementation | ATDD | `/tea-atdd` | Per epic |
-| Phase 4: Implementation | Test Automation | `/tea-automate` | Per epic |
-| Phase 4: Implementation | Test Review | `/tea-review` | Level 2+ required |
-| Phase 4: Implementation | Requirements Tracing | `/tea-trace` | Level 3+ required |
-| Release Gate | Go/No-Go Decision | `/tea-release-gate` | Level 2+ required |
+### Step 4: Choose one next artifact, not a parallel stack
+Pick the **single next artifact or gate** that best reduces ambiguity now:
 
-### TEA Risk Prioritization
+| Current state | Preferred next move |
+|---|---|
+| vague idea, opportunity, user problem | `product-brief` |
+| requirements emerging, implementation shape still unclear | `prd` or `tech-spec` |
+| planning exists, system shape is still fuzzy | `architecture` |
+| architecture exists but approval is missing | `review gate` |
+| approved architecture exists, execution slicing is weak | `sprint-plan` or `story packet` |
+| active implementation exists but status is unclear | `workflow-status` update + next-story recommendation |
+| runtime is the real blocker after approval | runtime handoff to `omc` / `omx` / `ohmg` |
 
-TEA uses risk-based test prioritization: **P0** (critical) → **P1** (high) → **P2** (medium) → **P3** (low), calculated from probability × impact.
+### Step 5: Route specialist work explicitly
+If the front-door decision is made, route the rest clearly:
+- `bmad-idea` → pre-planning concept framing before formal BMAD artifacts exist
+- `plannotator` → review / approval gate for PRD, architecture, sprint plan, or plan diffs
+- `task-planning` → execution-ready slicing after the next artifact is approved or obvious
+- `omc` → Claude-first runtime orchestration, hooks, team mode, stop callbacks
+- `omx` → Codex-first orchestration, AGENTS.md injection, workflow skills, tmux team runtime
+- `ohmg` → Gemini / Antigravity portable harness, `.agents/` source of truth, generated runtime views
+- `bmad-gds` → game-specific production routing
 
----
+Leave a short reason for the route-out. Do not just name the neighboring skill.
 
-## SSD — Spec-Driven Development Path
+### Step 6: Keep state and review visible
+When a project already uses BMAD state files or helper scripts, keep them in the loop:
+- inspect status/config artifacts before recommending a phase leap
+- if a required artifact exists but lacks approval, route to `plannotator`
+- prefer script/status awareness over re-deriving the workflow from scratch
+- use brownfield evidence honestly instead of pretending the project is still at idea stage
 
-SSD (Spec-Driven Development) enforces a spec-first approach: formal machine-readable specifications must be created in Phase 2 **before** Architecture work begins.
+### Step 7: Produce a compact BMAD routing brief
+Always return this structure:
 
-### SSD Workflow Commands
+```markdown
+# BMAD Routing Brief
 
-| Command | Output | When |
-|---------|--------|------|
-| `/spec-openapi` | OpenAPI 3.x spec (docs/spec-openapi-*.yaml) | API projects, Phase 2 |
-| `/spec-schema` | JSON Schema definitions (docs/spec-schema-*.json) | Data-heavy projects, Phase 2 |
-| `/spec-bdd` | Gherkin feature files (docs/stories/*.feature) | All Phase 4 stories |
+## Scope
+- Packet type: ...
+- Project type: ...
+- Project level: 0 | 1 | 2 | 3 | 4
+- Runtime context: ...
+- Confidence: high | medium | low
 
-### SSD Workflow Path (Level 2+)
+## Current phase
+- analysis | planning | solutioning | implementation | mixed | unknown
+- Why: ...
 
+## Recommended next move
+- product-brief | prd | tech-spec | architecture | review gate | sprint-plan | story packet | workflow-status update | runtime handoff
+
+## Why this is next
+- 2-4 bullets grounded in the packet
+
+## Route-outs
+- Skill / module: ...
+- Why: ...
+- What to pass forward: ...
+
+## What not to do yet
+- 1-3 bullets preventing premature detail or the wrong lane
 ```
-Phase 2: PRD → /spec-openapi or /spec-schema → plannotator gate
-Phase 3: Architecture (references spec) → /spec-bdd scenarios
-Phase 4: Dev Story implements spec + passes BDD scenarios
-```
 
-### SSD in Tech Spec (Level 0-1)
+### Step 8: Push detail into references
+Do **not** inflate the main response with every helper script, command family, or runtime rule. Use the references when needed:
+- [intake packets and route-outs](references/intake-packets-and-route-outs.md)
+- [core routing model](references/core-routing.md)
+- [status files, scripts, and review gates](references/status-and-review.md)
+- [runtime and module boundaries](references/runtime-and-module-boundaries.md)
 
-For smaller projects, embed specs inline:
-- Include API contract section in Tech Spec
-- Define acceptance criteria as Given/When/Then scenarios
-- Reference spec file path in story blockedBy
+## Output format
+Return a **short BMAD routing brief**.
 
----
+Required qualities:
+- choose one primary packet before choosing the next artifact
+- make the project-level assumption explicit
+- keep review-gate visibility before phase advancement
+- keep runtime/setup detail separated from the common BMAD layer
+- keep the result under roughly 400-700 words unless the user asks for a full workflow packet
 
-## Fabric Pattern Integration
+## Examples
 
-Use [fabric](https://github.com/danielmiessler/fabric) CLI to analyze and improve BMAD phase documents at each gate.
+### Example 1: brownfield repo, unclear next step
+**Input**
+> Use bmad. We already have a repo and some product notes, but planning drifted and I don't know whether we need a PRD, architecture, or just sprint planning.
 
-### Per-Phase Fabric Commands
+**Output sketch**
+- Packet type: `brownfield-resume-packet`
+- Likely phase: `mixed`
+- Recommended next move: `workflow-status` update, then whichever artifact is actually missing
+- Route-outs only after the missing artifact is identified
 
-```bash
-# Phase 1 — Extract insights from product brief
-cat docs/product-brief-*.md | fabric -p analyze_paper --stream
+### Example 2: architecture exists, execution weak
+**Input**
+> We already wrote the architecture doc for our API migration. What should we do next in BMAD?
 
-# Phase 2 — Review PRD for completeness
-cat docs/prd-*.md | fabric -p extract_wisdom --stream
+**Output sketch**
+- Packet type: `architecture-packet`
+- Current phase: `solutioning`
+- Recommended next move: `review gate` if architecture is unreviewed, otherwise `sprint-plan`
+- Route-out: `plannotator` first, `task-planning` second
 
-# Phase 3 — Summarize architecture decisions
-cat docs/architecture-*.md | fabric -p create_summary
+### Example 3: runtime-specific follow-up
+**Input**
+> I want BMAD for Codex CLI. What should I actually use?
 
-# Phase 4 — Explain implementation changes
-git diff HEAD~1 | fabric -p explain_code
+**Output sketch**
+- Keep `bmad` as the packet/phase router
+- Packet type: `runtime-handoff-packet`
+- Route Codex runtime specifics to `omx`
+- Do not turn `bmad` into a Codex setup guide
 
-# Improve any phase document before review
-cat docs/prd-*.md | fabric -p improve_writing > docs/prd-improved.md
-```
+## Best practices
+1. **Act like a packet-first router** — start from the artifact or evidence the user already has.
+2. **Choose level before depth** — level 0–1 and level 2–4 should not produce the same paperwork.
+3. **Keep review visible** — if approval is the blocker, say so before inventing a new artifact.
+4. **Keep runtime overlays separate** — `omc`, `omx`, and `ohmg` own vendor/runtime specifics.
+5. **Prefer one clear handoff** — one next move plus one or two route-outs beats a giant workflow dump.
+6. **Use references for deep detail** — helper scripts, status rules, and runtime boundaries belong in support docs.
 
-### Integration with plannotator Gate
-
-Before submitting a document to plannotator for phase gate review, run fabric to improve it:
-
-```bash
-# Run fabric improvement, then gate review
-cat docs/architecture-*.md | fabric -p improve_writing > /tmp/arch-improved.md
-bash scripts/phase-gate-review.sh /tmp/arch-improved.md "Architecture Review"
-```
-
-See `resources/fabric-patterns.md` for complete pattern reference.
+## References
+- [Intake packets and route-outs](references/intake-packets-and-route-outs.md)
+- [Core routing model](references/core-routing.md)
+- [Status files, scripts, and review gates](references/status-and-review.md)
+- [Runtime and module boundaries](references/runtime-and-module-boundaries.md)
+- `./scripts/init-project.sh`
+- `./scripts/check-status.sh`
+- `./scripts/phase-gate-review.sh`
+- [Upstream BMAD README](https://github.com/bmad-code-org/BMAD-METHOD/blob/main/README.md)
+- `../bmad-idea/SKILL.md`
+- `../plannotator/SKILL.md`
+- `../task-planning/SKILL.md`
+- `../omc/SKILL.md`
+- `../omx/SKILL.md`
+- `../ohmg/SKILL.md`
+- `../bmad-gds/SKILL.md`

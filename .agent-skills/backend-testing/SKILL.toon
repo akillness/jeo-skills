@@ -1,15 +1,26 @@
 N:backend-testing
-D:Write comprehensive backend tests including unit tests, integration tests, and API tests. Use whe...
-G:testing backend unit-test integration-test API-test
-U[5]:
-  **Developing new features**: Write tests first using Test-Driven Development (TDD)
-  **Adding API endpoints**: Test success/failure cases of REST APIs
-  **Bug fixing**: Add tests to prevent regressions
-  **Before refactoring**: Write tests to ensure existing behavior
-  **CI/CD setup**: Build an automated testing pipeline
-S[5]{n,action}:
-  1,Set up test environment
-  2,Write Unit Tests (business logic)
-  3,Integration Test (API endpoints)
-  4,Authentication/Authorization testing
-  5,Mocking and test isolation
+D:Turn backend test ambiguity into one practical backend test packet. Use when the user needs API/service/repository/auth-flow coverage design, fixture or seed/reset strategy, container-vs-mock dependency choices, contract/API compatibility checks, or flaky backend-suite stabilization across local and CI.
+G:testing backend api-test integration-test contract-test testcontainers ci flaky-tests fixtures
+U[6]:
+  Add or repair backend coverage for APIs, services, repositories, workers, integrations, or auth flows
+  Choose whether the primary packet is coverage-plan, fixture-and-reset-plan, contract-and-api-checks, flake-stabilization, or execution-lane-split
+  Decide whether dependencies should be mocked, faked, containerized, or hit for real
+  Design fixture, factory, seed/reset, auth bootstrap, or environment-control strategy
+  Stabilize CI-only backend flakiness and local-vs-CI drift
+  Route org-wide test policy, API shape work, and auth implementation to neighboring skills
+S[8]{n,action}:
+  1,Classify the request into one packet
+  2,Frame the backend surface and risk
+  3,Choose the right test layers
+  4,Decide dependency realism on purpose
+  5,Define fixture data auth and environment control
+  6,Split the execution lanes
+  7,Produce one backend test packet
+  8,Verify scope boundaries before finalizing
+R[6]:
+  Start from the packet not from the framework
+  Protect the real backend regression risk before coverage vanity
+  Prefer layered backend coverage over giant brittle end-to-end suites
+  Split local-fast PR scheduled and release lanes intentionally
+  Treat flaky tests as a trust problem
+  Route policy contract-shape and auth-implementation ownership away

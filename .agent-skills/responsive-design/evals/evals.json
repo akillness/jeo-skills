@@ -1,0 +1,55 @@
+{
+  "skill_name": "responsive-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our dashboard filter bar and data table force horizontal scrolling on mobile. Help us fix the responsive behavior.",
+      "expected_output": "Keeps ownership in responsive-design, chooses a dense-data packet, proposes a mobile-first layout strategy, and includes verification for overflow/reflow rather than only adding random breakpoints.",
+      "assertions": [
+        "Output classifies the task as responsive layout or dense-data adaptation work",
+        "Output chooses a primary packet or equivalent bounded ownership",
+        "Output discusses mobile-first, layout strategy, or explicit breakpoint/container decisions",
+        "Output includes verification for overflow, wrapping, zoom, or reflow"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The same card lives in a sidebar, a feed, and a 2-column grid. Should we use container queries or more viewport breakpoints?",
+      "expected_output": "Explains when container queries are appropriate, chooses a component-slot packet, and keeps reusable component API questions separate from layout adaptation.",
+      "assertions": [
+        "Output covers container queries or parent-container adaptation",
+        "Output distinguishes responsive layout ownership from ui-component-patterns API ownership",
+        "Output avoids treating viewport breakpoints as the only tool"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our teams all use different breakpoint and spacing rules across products. Is responsive-design the right skill?",
+      "expected_output": "Routes cross-product breakpoint/token governance to design-system instead of over-triggering responsive-design.",
+      "assertions": [
+        "Output routes shared breakpoint or token governance to design-system",
+        "Output explains that responsive-design is narrower than system-level governance"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "This form still breaks at 400% zoom and keyboard users lose context. Should we keep fixing it in responsive-design?",
+      "expected_output": "Distinguishes responsive layout strategy from accessibility remediation, keeps reflow verification explicit, and routes the remediation-heavy portion to web-accessibility.",
+      "assertions": [
+        "Output mentions zoom or reflow verification",
+        "Output routes accessibility-heavy remediation to web-accessibility",
+        "Output preserves responsive-design for layout-adaptation concerns if relevant"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review this pricing page before launch. Cards feel cramped on mobile, but I also want hierarchy, CTA, and polish feedback.",
+      "expected_output": "Keeps responsive-design on the layout-adaptation packet, names the responsive surface clearly, and routes broad UI-review work to web-design-guidelines instead of absorbing the full launch critique.",
+      "assertions": [
+        "Output keeps the main ownership on responsive layout strategy rather than broad UI critique",
+        "Output routes hierarchy, CTA, or polish review to web-design-guidelines",
+        "Output proposes a bounded responsive packet or first slice"
+      ]
+    }
+  ]
+}

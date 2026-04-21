@@ -1,0 +1,55 @@
+{
+  "skill_name": "vibe-kanban",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up a kanban board so Claude and Codex can each take one of these three independent bug fixes, and I can review diffs before opening PRs.",
+      "expected_output": "The skill chooses vibe-kanban, treats the work as bounded coding cards, emphasizes isolated workspaces/worktrees, and frames review before PR handoff.",
+      "assertions": [
+        "Mentions board or workspace control plane for coding tasks",
+        "Keeps one bounded task per card or workspace",
+        "Includes review before PR handoff",
+        "Mentions isolated workspaces, worktrees, or parallel coding agents"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Run two agents against the same API bug so I can compare their diffs and decide which PR to keep.",
+      "expected_output": "The skill uses vibe-kanban in comparison mode and explains review criteria, isolated attempts, and explicit retry/approval choices.",
+      "assertions": [
+        "Mentions comparison between agent attempts",
+        "Preserves isolated workspaces or branches for each attempt",
+        "Explains that human review decides which result to keep"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Help me break this migration into phases and get sign-off before any code is written.",
+      "expected_output": "The skill routes away from vibe-kanban because the request is planning-first and a board/workspace loop is premature.",
+      "assertions": [
+        "Routes to planning or review skills such as task-planning or plannotator",
+        "Explains that vibe-kanban is for running coding-task boards rather than pre-coding planning"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I need a board for launch-copy approvals and content calendar changes across marketing and design.",
+      "expected_output": "The skill routes away from vibe-kanban and explains that the request is marketing/content coordination without coding workspaces, diffs, or PR review.",
+      "assertions": [
+        "Routes to marketing-automation or a PM/content workflow skill",
+        "Explains that vibe-kanban is for coding boards with workspaces/review/PR handoff"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Keep GitHub Projects as the source of truth, but open a coding board for three worktree-isolated feature cards and hand each finished card to PR review.",
+      "expected_output": "The skill keeps the external tracker canonical while using vibe-kanban for coding execution state, isolated workspaces, and explicit review/cleanup handoff.",
+      "assertions": [
+        "Mentions tracker-linked coding board or tracker sync",
+        "Keeps GitHub Projects or the external tracker as the source of truth",
+        "Includes isolated workspaces or worktrees plus PR handoff",
+        "Mentions cleanup ownership or explicit cleanup"
+      ]
+    }
+  ]
+}

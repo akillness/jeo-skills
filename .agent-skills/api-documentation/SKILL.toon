@@ -1,18 +1,20 @@
 N:api-documentation
-D:Create comprehensive API documentation for developers. Use when documenting REST APIs, GraphQL sc...
-G:API-documentation OpenAPI Swagger REST GraphQL
-U[3]:
-  **API Development**: When adding new endpoints
-  **External Release**: Public API launch
-  **Team Collaboration**: Frontend-backend interface definition
-S[4]{n,action}:
-  1,OpenAPI (Swagger) Spec
-  2,Generate Documentation from Code (JSDoc/Decorators)
-  3,Interactive Documentation
-  4,Examples & Guides
+D:Publish or refresh developer-facing API documentation for REST, GraphQL, webhook, SDK, and portal surfaces...
+G:api-documentation developer-docs OpenAPI Swagger GraphQL webhooks SDK quickstart portal migration
+U[4]:
+  Publish or refresh API reference docs, quickstarts, SDK guides, and webhook docs
+  Add truthful examples, auth/setup notes, and error/limit guidance to an existing contract
+  Group large API surfaces into partner-safe or developer-friendly portal/navigation packets
+  Route contract design to api-design and internal/end-user docs to neighboring writing skills
+S[5]{n,action}:
+  1,Classify the docs mode audience and navigation scope
+  2,Gather truthful source-of-truth evidence
+  3,Choose the smallest useful output packet
+  4,Apply example quality and anti-drift rules
+  5,Route adjacent work to the correct neighboring skill
 R[5]:
-  url
-  url
-  name
-  name
-  bearerAuth
+  api-design
+  technical-writing
+  authentication-setup
+  changelog-maintenance
+  user-guide-writing

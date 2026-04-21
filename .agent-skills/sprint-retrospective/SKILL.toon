@@ -1,9 +1,9 @@
 N:sprint-retrospective
-D:Facilitate effective sprint retrospectives for continuous team improvement. Use when conducting t...
-G:retrospective agile scrum team-improvement facilitation
+D:Facilitate sprint retrospectives, milestone postmortems, or iteration reviews by picking one retrospective mode, reviewing prior actions first, and turning completed work into a few owned process improvements. Use when the user needs remote/hybrid retro facilitation, action-item follow-through recovery, or post-sprint/post-milestone reflection. Route planning to task-planning, sizing to task-estimation, and daily coordination to standup-meeting.
+G:retrospective agile scrum postmortem facilitation follow-through
 U[3]:
-  **End of sprint**: at the end of each sprint
-  **Project milestone**: after major releases
-  **Team issues**: when an immediate retrospective is needed
+  **Sprint or milestone reflection**: after a sprint, release, launch slice, or demo milestone
+  **Remote or hybrid retro**: when participation or distributed facilitation needs a better mode
+  **Dead action items**: when retros keep generating actions that never land
 S[1]{n,action}:
-  1,Start-Stop-Continue
+  1,Retrospective-Brief

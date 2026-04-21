@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `authentication-setup/SKILL.md` | Turning the legacy catch-all into a decision-first auth router with explicit route-outs will improve trigger precision and transferability more than adding another backend/auth wrapper. | Rewrote `SKILL.md`; added `references/`, `evals/`, `SKILL.toon`; updated README / README.ko / setup prompt / `skills.json`; refreshed wiki + graph outputs. | Pending skill validation at run end. | Keep | Based on survey evidence plus backend-cluster boundary review. |

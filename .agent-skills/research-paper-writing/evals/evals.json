@@ -1,0 +1,35 @@
+{
+  "skill_name": "research-paper-writing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Rewrite my NeurIPS abstract from these notes and tell me if one contribution is still unsupported by the current benchmark table.",
+      "expected_output": "Returns an abstract-oriented packet with a core claim, evidence mapping, and at least one reviewer-risk / unsupported-claim warning.",
+      "assertions": [
+        "Output identifies a paper stage such as Abstract",
+        "Output includes an evidence map or claim/evidence table",
+        "Output flags at least one support gap or overclaim risk"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I have three claimed contributions and a draft method section. Give me an experiment and ablation plan with figure/table suggestions.",
+      "expected_output": "Returns an experiment + ablation packet that ties claims to evidence and mentions figure/table support rather than generic writing advice.",
+      "assertions": [
+        "Output includes experiments or ablations mapped to claims",
+        "Output mentions figures, tables, or captions explicitly",
+        "Output recommends one next artifact instead of a vague full-paper dump"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Reviewers say our method is under-motivated and one baseline is missing. Draft a rebuttal packet and tell me what can wait for camera-ready.",
+      "expected_output": "Returns a rebuttal-oriented response packet with direct answers, manuscript-change planning, and a clear distinction between current evidence and camera-ready promises.",
+      "assertions": [
+        "Output identifies rebuttal or reviewer response as the stage",
+        "Output separates evidence available now from later revision promises",
+        "Output contains at least one reviewer-risk or missing-proof note"
+      ]
+    }
+  ]
+}

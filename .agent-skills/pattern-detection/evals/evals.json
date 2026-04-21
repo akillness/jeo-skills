@@ -1,0 +1,45 @@
+{
+  "skill_name": "pattern-detection",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Scan this repo for repeated risky error-handling patterns and tell me what to inspect first.",
+      "expected_output": "Chooses text prefilter and/or structural code rule mode, groups matches by pattern family, and includes confidence plus false-positive notes instead of jumping to remediation.",
+      "assertions": [
+        "Response chooses a detection mode before listing findings",
+        "Response includes confidence or false-positive language",
+        "Response routes remediation or deeper review to an adjacent skill when appropriate"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We have a KPI spike in a CSV export — should this be pattern-detection or data-analysis?",
+      "expected_output": "Uses metric anomaly mode for first-pass detection, checks baseline/trust, and routes stakeholder-ready explanation to data-analysis.",
+      "assertions": [
+        "Response distinguishes first-pass anomaly detection from full data analysis",
+        "Response references baseline, denominator, or trust checks",
+        "Response mentions handoff to data-analysis when explanation becomes the main job"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Look for suspicious gameplay telemetry outliers after yesterday's update.",
+      "expected_output": "Chooses log/event pattern or metric anomaly mode, segments by build/cohort/region, and calls out instrumentation caveats.",
+      "assertions": [
+        "Response mentions gameplay telemetry segmentation such as build, cohort, region, or item/class",
+        "Response includes an instrumentation or data-quality caveat",
+        "Response stays in detection/triage mode rather than promising a full game-balance fix"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We keep getting noisy anomaly alerts on one metric; should I debug the threshold, inspect the pattern, or write a dashboard summary?",
+      "expected_output": "Starts with metric-anomaly packet selection, names seasonality/history/denominator risks, and routes alert operations to monitoring-observability while routing KPI narrative to data-analysis.",
+      "assertions": [
+        "Response chooses metric-anomaly or an equivalent first-pass detection packet before proposing tools",
+        "Response mentions at least one alert-noise caveat such as seasonality, low history, sparse data, or denominator context",
+        "Response routes alert tuning to monitoring-observability and summary/reporting work to data-analysis"
+      ]
+    }
+  ]
+}

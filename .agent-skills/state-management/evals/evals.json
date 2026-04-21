@@ -1,0 +1,61 @@
+{
+  "skill_name": "state-management",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Should this React dashboard use Zustand or TanStack Query for API data, filters, and modal state?",
+      "expected_output": "Separates server state from URL/navigation and local UI state, recommends TanStack Query or equivalent for remote data, and warns against mirroring fetched entities into a client store without a reason.",
+      "assertions": [
+        "Output identifies one primary packet instead of starting with a library-only comparison.",
+        "Output classifies API data as server state.",
+        "Output recommends TanStack Query or equivalent query/cache ownership for fetched remote data.",
+        "Output treats filters as URL state when shareable or bookmarkable.",
+        "Output distinguishes modal/client UI state from remote cached data.",
+        "Output names at least one anti-pattern to avoid."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We keep prop drilling theme and auth through five component layers. Do we need Redux?",
+      "expected_output": "Treats the problem as shared-subtree ownership first and recommends Context before Redux unless broader workflow complexity exists.",
+      "assertions": [
+        "Output identifies prop drilling as a shared-state ownership problem.",
+        "Output recommends Context or lifted/shared state before Redux Toolkit.",
+        "Output explains why Redux is not automatically required.",
+        "Output avoids framing the request as server-state or URL-state first."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our app has optimistic updates, undo, cross-page drafts, and complex workflow transitions. Which state approach fits?",
+      "expected_output": "Splits server state from long-lived client workflow state and compares Zustand versus Redux Toolkit based on coordination complexity, with room for explicit workflow/state-machine modeling if transitions dominate.",
+      "assertions": [
+        "Output separates server state from client workflow state.",
+        "Output discusses TanStack Query or router-native data ownership for cache/invalidation or optimistic server data handling.",
+        "Output compares at least two client-state options, including Redux Toolkit or Zustand.",
+        "Output produces a recommendation brief rather than only code snippets."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our React Router app stores filters and loader data in Zustand. Is that fine?",
+      "expected_output": "Recognizes URL/navigation or server-state ownership as primary, moves shareable filters to search params or router ownership, keeps loader/action data in router-native ownership unless a separate cache need exists, and limits Zustand to leftover workflow state.",
+      "assertions": [
+        "Output identifies URL/navigation or server-state as the main packet, not client-workflow by default.",
+        "Output recommends URL/search-param or router-native ownership for shareable filters.",
+        "Output warns against storing loader or action data in Zustand by default.",
+        "Output permits Zustand only for leftover workflow coordination if justified."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "The state code is buggy and optimistic updates are broken—what skill owns the next step?",
+      "expected_output": "Routes the next step to debugging because active failure diagnosis is now primary, while optionally noting api-design if the optimistic-write contract itself is the real disagreement.",
+      "assertions": [
+        "Output routes the active failure diagnosis to debugging.",
+        "Output does not answer only with a store recommendation.",
+        "Output may mention api-design when the contract/boundary is the real issue."
+      ]
+    }
+  ]
+}

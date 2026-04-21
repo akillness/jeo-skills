@@ -1,0 +1,65 @@
+{
+  "skill_name": "ui-component-patterns",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We have three button components and people keep adding one-off props. Help us design a reusable button API.",
+      "expected_output": "Keeps ownership inside ui-component-patterns, chooses a primitive-boundary packet, proposes a reusable primitive with constrained variants/slots, and avoids prop explosion.",
+      "assertions": [
+        "Output classifies the task as reusable component or primitive API work",
+        "Output chooses a primary packet or equivalent bounded ownership",
+        "Output discusses variants, slots, or API shape",
+        "Output warns against too many one-off booleans or escape hatches"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Should our modal stay self-managed or become controlled by the parent workflow?",
+      "expected_output": "Explains controlled-vs-uncontrolled ownership tradeoffs for a reusable component, chooses a controlled-ownership packet, and preserves component-architecture ownership inside ui-component-patterns.",
+      "assertions": [
+        "Output covers controlled vs uncontrolled behavior",
+        "Output keeps the task in ui-component-patterns rather than routing it away immediately",
+        "Output distinguishes reusable component API ownership from app-level state management"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our design-system button sometimes needs to render as a router link. How should we support that without breaking types or semantics?",
+      "expected_output": "Chooses an alternate-root-composition packet, makes ref forwarding / prop spreading / semantic constraints explicit, and avoids collapsing the answer into generic styling advice.",
+      "assertions": [
+        "Output covers alternate-root, asChild, component, wrapper-root, or equivalent composition behavior",
+        "Output mentions semantics, accessibility responsibility, refs, or prop spreading",
+        "Output keeps the work in ui-component-patterns unless accessibility remediation becomes primary"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our design tokens and primitive naming are inconsistent across the whole app suite. Is ui-component-patterns the right skill?",
+      "expected_output": "Routes system-wide token and governance work to design-system instead of over-triggering ui-component-patterns.",
+      "assertions": [
+        "Output routes system-wide token or governance work to design-system",
+        "Output explains that ui-component-patterns is narrower than full system governance"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "This dropdown is inaccessible with keyboard and screen readers. Should we fix it here or elsewhere?",
+      "expected_output": "Distinguishes reusable component API architecture from accessibility remediation and routes the remediation-heavy portion to web-accessibility.",
+      "assertions": [
+        "Output distinguishes component API architecture from accessibility remediation",
+        "Output routes accessibility-heavy work to web-accessibility",
+        "Output preserves ui-component-patterns for reusable primitive/API concerns if relevant"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "The component already exists, but Storybook is missing our loading, empty, and link-wrapper cases. What should we do?",
+      "expected_output": "Chooses a docs-verification packet, defines a minimum state/example matrix, and keeps Storybook/examples as a bounded evidence packet instead of reopening the entire design system.",
+      "assertions": [
+        "Output mentions Storybook, examples, states, variants, or a docs/verification matrix",
+        "Output keeps ownership on ui-component-patterns rather than broad design-system governance",
+        "Output proposes a bounded verification or example packet"
+      ]
+    }
+  ]
+}

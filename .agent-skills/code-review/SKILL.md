@@ -1,392 +1,255 @@
 ---
 name: code-review
-description: Conduct thorough, constructive code reviews for quality and security. Use when reviewing pull requests, checking code quality, identifying bugs, or auditing security. Handles best practices, SOLID principles, security vulnerabilities, performance analysis, and testing coverage.
-allowed-tools: Read Grep Glob
+description: >
+  Turn a PR, diff, merge request, or patch stack into one evidence-first review
+  brief. Use when the main job is deciding approve vs request-changes vs block,
+  naming the highest-risk findings, calling out missing proof for risky paths,
+  and routing Git cleanup, debugging, test-policy, visual-review, or repo-admin
+  work to the right neighboring skill instead of absorbing it.
+allowed-tools: Read Grep Glob Bash Write
+compatibility: >
+  Best for code and change-set review across CLI/dev workflow, backend,
+  frontend, fullstack, and game-programming repos. Not for local Git mechanics,
+  runtime debugging, broad testing-program design, pure UI critique, or hosted
+  PR / repository administration.
 metadata:
-  tags: code-review, code-quality, security, best-practices, PR-review
-  platforms: Claude, ChatGPT, Gemini
+  tags: code-review, pull-request-review, diff-review, security-review, risk-review, pre-merge
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.1"
+  source: akillness/oh-my-skills
 ---
-
 
 # Code Review
 
+Use this skill when the main question is **"is this specific change ready, what evidence do we trust, and what should a reviewer actually say?"**
+
+The job is not to dump a giant clean-code checklist.
+The job is to:
+1. normalize the review packet,
+2. choose the right review mode,
+3. inspect the highest-risk behavior first,
+4. separate missing evidence from proven defects,
+5. classify findings by severity,
+6. route non-review work out immediately.
+
+Read [references/intake-packets-and-escalations.md](references/intake-packets-and-escalations.md) before handling an unfamiliar review packet.
+Read [references/review-modes.md](references/review-modes.md) for deeper heuristics by change type.
+Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `code-review`, `git-workflow`, `debugging`, `testing-strategies`, `web-design-guidelines`, `web-accessibility`, or repo/PR workflow skills should own the next step.
+
 ## When to use this skill
-- Reviewing pull requests
-- Checking code quality
-- Providing feedback on implementations
-- Identifying potential bugs
-- Suggesting improvements
-- Security audits
-- Performance analysis
+- Reviewing a PR, MR, local diff, patch stack, or self-review packet before merge
+- Deciding what reviewer comments matter most and how severe they are
+- Checking a change for correctness, security, migration/rollout risk, maintainability, and missing validation evidence
+- Writing a concise approve / request-changes / block / route-out review brief
+- Reviewing backend, frontend, CLI, fullstack, or game-programming changes where the core task is judgment on the change rather than implementation
+
+## When not to use this skill
+- **The real task is splitting commits, rebasing, conflict resolution, or push recovery** → use `git-workflow`
+- **The real task is reproducing or isolating a live failure** → use `debugging`
+- **The real task is choosing long-term coverage shape, CI gates, or flaky-suite policy** → use `testing-strategies`
+- **The real task is pure design, accessibility, or visual-governance critique** → use `web-design-guidelines` or `web-accessibility`
+- **The real task is reviewer assignment, CODEOWNERS interpretation, labels, merge queue, or repo settings** → use a repo / PR workflow skill
+- **The real task is measurement-led bottleneck analysis or tuning** → use `performance-optimization`
 
 ## Instructions
 
-### Step 1: Understand the context
+### Step 1: Normalize the review packet
+Start from the evidence already present instead of asking for an idealized packet.
 
-**Read the PR description**:
-- What is the goal of this change?
-- Which issues does it address?
-- Are there any special considerations?
+Capture:
+- review surface: PR / MR / local diff / patch stack / self-review
+- goal of the change
+- hotspots: API, UI, schema, auth, config, build/release, game runtime, tooling, unknown
+- packet shape: diff only | diff + tests | schema/auth rollout notes | screenshots/preview | CI bot findings | game/runtime validation notes | mixed
+- obvious evidence present or missing
 
-**Check the scope**:
-- How many files changed?
-- What type of changes? (feature, bugfix, refactor)
-- Are tests included?
-
-### Step 2: High-level review
-
-**Architecture and design**:
-- Does the approach make sense?
-- Is it consistent with existing patterns?
-- Are there simpler alternatives?
-- Is the code in the right place?
-
-**Code organization**:
-- Clear separation of concerns?
-- Appropriate abstraction levels?
-- Logical file/folder structure?
-
-### Step 3: Detailed code review
-
-**Naming**:
-- [ ] Variables: descriptive, meaningful names
-- [ ] Functions: verb-based, clear purpose
-- [ ] Classes: noun-based, single responsibility
-- [ ] Constants: UPPER_CASE for true constants
-- [ ] Avoid abbreviations unless widely known
-
-**Functions**:
-- [ ] Single responsibility
-- [ ] Reasonable length (< 50 lines ideally)
-- [ ] Clear inputs and outputs
-- [ ] Minimal side effects
-- [ ] Proper error handling
-
-**Classes and objects**:
-- [ ] Single responsibility principle
-- [ ] Open/closed principle
-- [ ] Liskov substitution principle
-- [ ] Interface segregation
-- [ ] Dependency inversion
-
-**Error handling**:
-- [ ] All errors caught and handled
-- [ ] Meaningful error messages
-- [ ] Proper logging
-- [ ] No silent failures
-- [ ] User-friendly errors for UI
-
-**Code quality**:
-- [ ] No code duplication (DRY)
-- [ ] No dead code
-- [ ] No commented-out code
-- [ ] No magic numbers
-- [ ] Consistent formatting
-
-### Step 4: Security review
-
-**Input validation**:
-- [ ] All user inputs validated
-- [ ] Type checking
-- [ ] Range checking
-- [ ] Format validation
-
-**Authentication & Authorization**:
-- [ ] Proper authentication checks
-- [ ] Authorization for sensitive operations
-- [ ] Session management
-- [ ] Password handling (hashing, salting)
-
-**Data protection**:
-- [ ] No hardcoded secrets
-- [ ] Sensitive data encrypted
-- [ ] SQL injection prevention
-- [ ] XSS prevention
-- [ ] CSRF protection
-
-**Dependencies**:
-- [ ] No vulnerable packages
-- [ ] Dependencies up-to-date
-- [ ] Minimal dependency usage
-
-### Step 5: Performance review
-
-**Algorithms**:
-- [ ] Appropriate algorithm choice
-- [ ] Reasonable time complexity
-- [ ] Reasonable space complexity
-- [ ] No unnecessary loops
-
-**Database**:
-- [ ] Efficient queries
-- [ ] Proper indexing
-- [ ] N+1 query prevention
-- [ ] Connection pooling
-
-**Caching**:
-- [ ] Appropriate caching strategy
-- [ ] Cache invalidation handled
-- [ ] Memory usage reasonable
-
-**Resource management**:
-- [ ] Files properly closed
-- [ ] Connections released
-- [ ] Memory leaks prevented
-
-### Step 6: Testing review
-
-**Test coverage**:
-- [ ] Unit tests for new code
-- [ ] Integration tests if needed
-- [ ] Edge cases covered
-- [ ] Error cases tested
-
-**Test quality**:
-- [ ] Tests are readable
-- [ ] Tests are maintainable
-- [ ] Tests are deterministic
-- [ ] No test interdependencies
-- [ ] Proper test data setup/teardown
-
-**Test naming**:
-```python
-# Good
-def test_user_creation_with_valid_data_succeeds():
-    pass
-
-# Bad
-def test1():
-    pass
+Minimum frame:
+```markdown
+Review surface: PR
+Goal: add coupon support to checkout
+Hotspots: discount logic, schema migration, auth edge cases
+Packet: diff + tests, no rollout notes
 ```
 
-### Step 7: Documentation review
+If the packet is still mostly branch hygiene or repo-admin work, route out before pretending review has started.
 
-**Code comments**:
-- [ ] Complex logic explained
-- [ ] No obvious comments
-- [ ] TODOs have tickets
-- [ ] Comments are accurate
+### Step 2: Choose one primary review mode
+Pick one primary mode from [references/review-modes.md](references/review-modes.md):
+- general change review
+- backend / platform review
+- frontend / UX-adjacent review
+- game-programming / engine review
+- policy / meta review
 
-**Function documentation**:
-```python
-def calculate_total(items: List[Item], tax_rate: float) -> Decimal:
-    """
-    Calculate the total price including tax.
+Rule: one primary mode, optional secondary mode.
+Do not flatten every diff into the same checklist.
 
-    Args:
-        items: List of items to calculate total for
-        tax_rate: Tax rate as decimal (e.g., 0.1 for 10%)
+### Step 3: Inspect the highest-risk path first
+Prioritize in this order:
+1. broken correctness or edge-case handling
+2. security / privacy / trust-boundary mistakes
+3. schema, migration, config, rollout, or compatibility risk
+4. missing or misleading tests / screenshots / previews / rollout proof
+5. maintainability problems that will slow future work
+6. style and readability nits
 
-    Returns:
-        Total price including tax
+High-value questions:
+- Can the change behave incorrectly even if current tests are green?
+- Did a trust boundary, permission rule, secret path, or user-controlled input change?
+- Did the change alter schemas, contracts, jobs, rollout behavior, or game/runtime state without enough safeguards?
+- Is the packet missing the one artifact needed to judge the risky path honestly?
 
-    Raises:
-        ValueError: If tax_rate is negative
-    """
-    pass
+### Step 4: Separate findings from missing evidence
+A review can fail because the code is wrong **or** because the packet is not convincing enough.
+
+Evidence sources to check:
+- the diff itself
+- nearby code paths and existing invariants
+- tests and fixtures
+- schema / contract / migration notes
+- screenshots, recordings, or preview links for behavior/layout-sensitive frontend work
+- rollout notes, config changes, and CI bot findings
+- playtest or engine-validation notes for game/runtime work
+
+Good finding shape:
+```markdown
+[Blocker] The new API still trusts the client-provided discount amount. Recompute discount server-side and add a regression test for mismatched input.
 ```
 
-**README/docs**:
-- [ ] README updated if needed
-- [ ] API docs updated
-- [ ] Migration guide if breaking changes
-
-### Step 8: Provide feedback
-
-**Be constructive**:
-```
-✅ Good:
-"Consider extracting this logic into a separate function for better
-testability and reusability:
-
-def validate_email(email: str) -> bool:
-    return '@' in email and '.' in email.split('@')[1]
-
-This would make it easier to test and reuse across the codebase."
-
-❌ Bad:
-"This is wrong. Rewrite it."
+Good missing-evidence shape:
+```markdown
+[Major] The diff changes responsive navigation states, but the packet has no screenshots or preview link for mobile/tablet open-close behavior.
 ```
 
-**Be specific**:
-```
-✅ Good:
-"On line 45, this query could cause N+1 problem. Consider using
-.select_related('author') to fetch related objects in a single query."
+### Step 5: Classify severity and route-outs
+Use a small, explicit severity model.
 
-❌ Bad:
-"Performance issues here."
-```
+- **Blocker** — merge should not proceed: correctness break, security issue, data loss, broken migration, or clearly missing validation for a risky path
+- **Major** — important but fixable in the current review round: missing tests/evidence for a core path, incomplete rollout/migration story, or a high-maintenance design choice
+- **Minor** — readability, naming, local cleanup, optional simplification
+- **Route-out** — the concern is real, but another skill owns the next step
 
-**Prioritize issues**:
-- 🔴 Critical: Security, data loss, major bugs
-- 🟡 Important: Performance, maintainability
-- 🟢 Nice-to-have: Style, minor improvements
+Typical route-outs:
+- commit cleanup / rebase / push safety → `git-workflow`
+- reproduce and isolate live failure → `debugging`
+- broader coverage policy or flaky-suite direction → `testing-strategies`
+- visual/accessibility/product polish review → `web-design-guidelines` or `web-accessibility`
+- reviewer assignment, CODEOWNERS, branch rules, merge queue, PR operations → repo / PR workflow skill
 
-**Acknowledge good work**:
-```
-"Nice use of the strategy pattern here! This makes it easy to add
-new payment methods in the future."
-```
+### Step 6: Produce a reviewer-grade decision brief
+Preferred shape:
+```markdown
+# Code Review Brief
 
-## Review checklist
+## Decision
+- Approve | Request changes | Block pending investigation | Needs follow-up from another skill
 
-### Functionality
-- [ ] Code does what it's supposed to do
-- [ ] Edge cases handled
-- [ ] Error cases handled
-- [ ] No obvious bugs
+## Review frame
+- Surface:
+- Goal:
+- Primary mode:
+- Packet:
 
-### Code Quality
-- [ ] Clear, descriptive naming
-- [ ] Functions are small and focused
-- [ ] No code duplication
-- [ ] Consistent with codebase style
-- [ ] No code smells
+## Key findings
+1. [Severity] ...
+2. [Severity] ...
+3. [Route-out] ...
 
-### Security
-- [ ] Input validation
-- [ ] No hardcoded secrets
-- [ ] Authentication/authorization
-- [ ] No SQL injection vulnerabilities
-- [ ] No XSS vulnerabilities
+## Missing evidence
+- ...
 
-### Performance
-- [ ] No obvious bottlenecks
-- [ ] Efficient algorithms
-- [ ] Proper database queries
-- [ ] Resource management
-
-### Testing
-- [ ] Tests included
-- [ ] Good test coverage
-- [ ] Tests are maintainable
-- [ ] Edge cases tested
-
-### Documentation
-- [ ] Code is self-documenting
-- [ ] Comments where needed
-- [ ] Docs updated
-- [ ] Breaking changes documented
-
-## Common issues
-
-### Anti-patterns
-
-**God class**:
-```python
-# Bad: One class doing everything
-class UserManager:
-    def create_user(self): pass
-    def send_email(self): pass
-    def process_payment(self): pass
-    def generate_report(self): pass
+## Recommended next step
+- merge
+- patch specific issues
+- collect one missing artifact
+- split the diff
+- route next to another skill
 ```
 
-**Magic numbers**:
-```python
-# Bad
-if user.age > 18:
-    pass
+If approving, say why the change looks safe:
+- risky areas reviewed
+- evidence that exists
+- residual concerns, if any
 
-# Good
-MINIMUM_AGE = 18
-if user.age > MINIMUM_AGE:
-    pass
-```
+### Step 7: Escalate confidence honestly
+- If the diff is too large, say review confidence is limited and focus on the highest-risk slice.
+- If frontend or marketing-site behavior depends on rendering states, ask for preview evidence instead of bluffing.
+- If backend or rollout risk is high, demand migration/config/rollback proof before approval.
+- If game/runtime behavior still needs playtest or engine validation, state that clearly.
+- If bot findings exist (reviewdog, CI comments, static-analysis annotations), treat them as evidence inputs, not as the final review judgment.
 
-**Deep nesting**:
-```python
-# Bad
-if condition1:
-    if condition2:
-        if condition3:
-            if condition4:
-                # deeply nested code
+## Output format
+Always return a concise review brief or review-comment set.
 
-# Good (early returns)
-if not condition1:
-    return
-if not condition2:
-    return
-if not condition3:
-    return
-if not condition4:
-    return
-# flat code
-```
-
-### Security vulnerabilities
-
-**SQL Injection**:
-```python
-# Bad
-query = f"SELECT * FROM users WHERE id = {user_id}"
-
-# Good
-query = "SELECT * FROM users WHERE id = %s"
-cursor.execute(query, (user_id,))
-```
-
-**XSS**:
-```javascript
-// Bad
-element.innerHTML = userInput;
-
-// Good
-element.textContent = userInput;
-```
-
-**Hardcoded secrets**:
-```python
-# Bad
-API_KEY = "sk-1234567890abcdef"
-
-# Good
-API_KEY = os.environ.get("API_KEY")
-```
-
-## Best practices
-
-1. **Review promptly**: Don't make authors wait
-2. **Be respectful**: Focus on code, not the person
-3. **Explain why**: Don't just say what's wrong
-4. **Suggest alternatives**: Show better approaches
-5. **Use examples**: Code examples clarify feedback
-6. **Pick your battles**: Focus on important issues
-7. **Acknowledge good work**: Positive feedback matters
-8. **Review your own code first**: Catch obvious issues
-9. **Use automated tools**: Let tools catch style issues
-10. **Be consistent**: Apply same standards to all code
-
-## Tools to use
-
-**Linters**:
-- Python: pylint, flake8, black
-- JavaScript: eslint, prettier
-- Go: golint, gofmt
-- Rust: clippy, rustfmt
-
-**Security**:
-- Bandit (Python)
-- npm audit (Node.js)
-- OWASP Dependency-Check
-
-**Code quality**:
-- SonarQube
-- CodeClimate
-- Codacy
-
-## References
-
-- [Google Code Review Guidelines](https://google.github.io/eng-practices/review/)
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [Clean Code by Robert C. Martin](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)
+Required qualities:
+- identify the review surface and change goal
+- focus on the highest-risk findings first
+- separate concrete defects from missing evidence
+- choose an explicit decision
+- name the correct neighboring skill when the task has shifted
+- avoid generic checklist filler
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Backend PR with migration risk
+**Input**
+> Review this PR that adds coupon support to the checkout API. There is a schema migration and a few tests.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Output sketch**
+- Decision: Request changes
+- Review frame: backend / platform review, packet = diff + tests + migration
+- Key findings:
+  1. [Blocker] discount value is still accepted from the client instead of recomputed server-side
+  2. [Major] migration lacks rollback/backfill notes and no compatibility test covers old rows
+  3. [Major] no test for invalid or expired coupon race conditions
+- Recommended next step: patch validation + add migration/test evidence, then re-review
+
+### Example 2: Frontend diff that needs preview evidence
+**Input**
+> Can you code-review this responsive navbar change before I merge it?
+
+**Output sketch**
+- Decision: Needs follow-up before approval
+- Summary: implementation may be maintainable, but behavior cannot be fully judged from the diff alone
+- Key findings:
+  1. [Major] missing mobile/tablet screenshots or preview link for menu states
+  2. [Minor] duplicated breakpoint logic should be centralized
+  3. [Route-out] accessibility or visual-polish checks should go through `web-design-guidelines` / `web-accessibility`
+
+### Example 3: Request that should route away
+**Input**
+> Before review, help me split this huge branch into smaller commits and rebase it cleanly.
+
+**Output sketch**
+- Decision: Route out
+- Summary: this is primarily a Git-structure problem, not review judgment yet
+- Route: `git-workflow`
+
+### Example 4: Review packet with bot annotations
+**Input**
+> reviewdog already commented on the lint and static-analysis issues. Can you do the final review pass?
+
+**Output sketch**
+- Treat the bot comments as inputs, not the full answer
+- Re-check the risky behavior, missing evidence, and merge decision
+- Route repo-admin follow-up elsewhere if the request shifts into PR operations
+
+## Best practices
+1. Review the highest-risk behavior before style or formatting.
+2. Tie every serious finding to evidence from the diff, nearby code, tests, or one clearly missing artifact.
+3. Distinguish missing evidence from proven bugs.
+4. Use severity labels so authors know what blocks merge.
+5. Keep one primary review mode instead of flattening every diff into one checklist.
+6. Ask for previews/screenshots when rendered behavior matters.
+7. Demand rollout or migration proof when backend/platform risk is high.
+8. Treat CI bots and static-analysis comments as evidence inputs, not as the reviewer.
+9. Route Git, debugging, test-policy, UI-governance, and repo-admin tasks out instead of absorbing everything.
+10. If approving, say why the change looks safe — not just "LGTM".
+
+## References
+- [GitHub Docs — About pull request reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews)
+- [GitHub Docs — About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+- [GitHub Docs — About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+- [GitLab Docs — Merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
+- [reviewdog](https://github.com/reviewdog/reviewdog)
+- [Danger JS](https://danger.systems/js/)

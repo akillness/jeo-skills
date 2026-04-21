@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `playwriter/SKILL.md` | Making `playwriter` a running-browser decision router with explicit route-outs, upstream-correct workflow, and support files will improve trigger precision and dry-run usefulness | Rewrote `SKILL.md`, added `references/` + `evals/`, refreshed `SKILL.toon`, updated README / README.ko / setup prompt / `skills.json`, and refreshed graph/wiki artifacts | `validate_skill.sh` passed with 0 errors / 0 warnings; evals JSON and skills.json parse passed; boundary with `agent-browser` is now explicit in skill + docs | Keep | Transferable improvement with clearer runtime routing and higher support coverage |

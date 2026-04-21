@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/workflow-automation/SKILL.md` | Rewriting `workflow-automation` as a repo-scoped recurring-workflow anchor with explicit route-outs and support files will improve trigger precision and transfer better than adding another automation wrapper | Replaced the legacy example dump with mode-based guidance, added `references/`, added `evals/`, refreshed discovery surfaces, and regenerated graph outputs | Passed `validate_skill.sh`; `skills.json` and `evals.json` parse cleanly | Keep | Matches the repo's recent high-traffic modernization pattern |

@@ -1,0 +1,48 @@
+{
+  "skill_name": "plannotator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The agent already proposed a plan. I want to inspect it visually, mark up two risky steps, and either approve it or send the corrections back before implementation starts.",
+      "expected_output": "The skill activates in plan-review mode, verifies the plan already exists, identifies native-hook vs manual-review reality, and describes an approve vs request-changes flow with structured annotations.",
+      "assertions": [
+        "Response identifies plan-review as the primary packet or equivalent",
+        "Response requires a concrete existing plan before opening review",
+        "Response names whether the runtime path is native-hook or manual-review",
+        "Response ends with an explicit approve vs request-changes outcome"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The agent already changed three files. Open the visual diff review for main...HEAD and help me leave targeted feedback.",
+      "expected_output": "The skill activates in diff-review mode, uses the diff review launcher, and keeps broader PR-review policy routed away.",
+      "assertions": [
+        "Response identifies diff-review as the primary packet or equivalent",
+        "Response uses or recommends `bash scripts/review.sh main...HEAD` or an equivalent targeted diff review command",
+        "Response routes broad approval-policy work to `code-review` rather than absorbing it into plannotator"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want to mark up this architecture note and either accept it or send revision feedback before we continue. If the real job is note-system organization, don't pretend this skill owns that.",
+      "expected_output": "The skill activates in markdown-review mode, confirms the artifact exists, explains any platform approval limitation honestly, and routes broader note management away.",
+      "assertions": [
+        "Response identifies markdown-review as the primary packet or equivalent",
+        "Response requires a concrete markdown/spec artifact before review",
+        "Response is explicit about approval vs annotation-only limitations when relevant",
+        "Response routes broader note/vault/wiki management to `obsidian` or `llm-wiki`"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Set up plannotator for Codex so I can review plans before code runs, but don't claim capabilities the upstream docs don't currently support.",
+      "expected_output": "The skill activates in platform-setup mode, starts with install/status checks, and explains the current Codex manual/partial review reality honestly.",
+      "assertions": [
+        "Response identifies platform-setup as the primary packet or equivalent",
+        "Response starts with install and/or status verification commands",
+        "Response explicitly describes Codex plan-review support as manual, partial, or gap-constrained rather than guaranteed parity",
+        "Response keeps broader runtime ownership routed to adjacent platform skills when needed"
+      ]
+    }
+  ]
+}

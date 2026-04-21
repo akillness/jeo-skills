@@ -1,285 +1,91 @@
 ---
 name: remotion-video-production
-description: Produce programmable videos with Remotion using scene planning, asset orchestration, and validation gates for automated, brand-consistent video content.
-allowed-tools: Bash Write Read Task
+description: >
+  Compatibility alias for `video-production` when a prompt, setup surface, or
+  legacy workflow explicitly asks for Remotion video production. Use when the
+  request names Remotion, React-based video rendering, compositions, scene
+  components, or a legacy `remotion-video-production` catalog entry, but the real
+  workflow is still the canonical programmable-video lane. Prefer
+  `video-production` for general use. Triggers on: remotion-video-production,
+  Remotion render pipeline, React video composition, migrate old Remotion skill.
+allowed-tools: Write Read WebSearch WebFetch Task
 metadata:
-  tags: video, remotion, animation, storytelling, automation, react
+  tags: video, remotion, alias, compatibility, automation
   platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0"
 ---
 
-> **Note:** This skill is a platform-specific variant of `video-production`. Prefer `video-production` for general use; use `remotion-video-production` when targeting platform-specific configurations.
+> **Note:** This skill is a compatibility wrapper for `video-production`. Use it when the environment still references the Remotion-specific name, but execute the same canonical programmable-video workflow with the **code-first programmable video** mode selected.
 
 # Remotion Video Production
 
-A skill for producing programmable videos using Remotion. Generate automated videos from text instructions and produce brand-consistent videos at scale.
+Read [references/alias-routing.md](references/alias-routing.md) and [references/remotion-route-outs.md](references/remotion-route-outs.md) before handling broad or ambiguous Remotion requests.
 
 ## When to use this skill
+- A legacy prompt, installed catalog, or setup surface still calls `remotion-video-production`
+- The user explicitly names Remotion, React-based video composition, scenes, compositions, or rendering from code
+- The safest behavior is to preserve backward compatibility while steering future usage toward `video-production`
 
-- **Automated video generation**: Create videos from text instructions
-- **Brand video production**: Consistent-style videos at scale
-- **Programmable content**: Integrated narration, visuals, and animation
-- **Marketing content**: Product introductions, onboarding, and promotional videos
-
----
+## When not to use this skill
+- The user can already adopt `video-production` directly with no compatibility concern
+- The request is really template/API automation with no Remotion-specific stack need
+- The task is only manual finishing or editorial polish with no code-first render layer
 
 ## Instructions
 
-### Step 1: Define the Video Spec
+### Step 1: Resolve to the canonical skill
+Immediately map this alias to `video-production`.
 
-```yaml
-video_spec:
-  audience: [target audience]
-  goal: [video purpose]
-  duration: [total length - 30s, 60s, 90s]
-  aspect_ratio: "16:9" | "1:1" | "9:16"
-  tone: "fast" | "calm" | "cinematic"
-  voice:
-    style: [narration style]
-    language: [language]
-```
+### Step 2: Lock the mode to code-first programmable video
+Run the canonical workflow, but choose **Code-first programmable video** unless the request clearly says the stack assumption is wrong.
 
-### Step 2: Outline Scenes
+### Step 3: Preserve the legacy / explicit reference in the response
+If helpful, note that `remotion-video-production` is the legacy-compatible or explicit-stack alias for `video-production`.
 
-Scene structure template:
+### Step 4: Reuse the canonical packet shape
+Use the same process as `video-production`:
+1. normalize the video brief,
+2. choose the packet type,
+3. return one implementation-ready brief,
+4. include assets, QA risks, and handoffs.
 
-```markdown
-## Scene Plan
+### Step 5: Keep alternative modes visible
+If the ask sounds like bulk personalization, spreadsheet-driven generation, or vendor/API automation rather than a React video codebase, say so explicitly and route back through the relevant `video-production` mode instead of over-committing to Remotion.
 
-### Scene 1: Hook (0:00 - 0:05)
-- **Visual**: Product logo fade-in
-- **Audio**: Upbeat intro
-- **Text**: "Transform Your Workflow"
-- **Transition**: Fade → Scene 2
+### Step 6: Avoid becoming a competing skill
+Do not invent separate heuristics, outputs, or support rules here. This alias exists to reduce migration friction and catch explicit Remotion naming, not to compete with the canonical skill.
 
-### Scene 2: Problem (0:05 - 0:15)
-- **Visual**: Problem scenario illustration
-- **Audio**: Narration begins
-- **Text**: Key message overlay
-- **Transition**: Slide left
-
-### Scene 3: Solution (0:15 - 0:30)
-...
-```
-
-### Step 3: Prepare Assets
-
-```bash
-# Asset checklist
-assets/
-├── logos/
-│   ├── logo-main.svg
-│   └── logo-white.svg
-├── screenshots/
-│   ├── dashboard.png
-│   └── feature-1.png
-├── audio/
-│   ├── bgm.mp3
-│   └── narration.mp3
-└── fonts/
-    └── brand-font.woff2
-```
-
-**Asset preparation rules**:
-- Logos: SVG or high-resolution PNG
-- Screenshots: Normalized to match aspect ratio
-- Audio: MP3 or WAV, volume normalized
-- Fonts: Web fonts or local font files
-
-### Step 4: Implement Remotion Composition
-
-```tsx
-// src/Video.tsx
-import { Composition } from 'remotion';
-import { IntroScene } from './scenes/IntroScene';
-import { ProblemScene } from './scenes/ProblemScene';
-import { SolutionScene } from './scenes/SolutionScene';
-import { CTAScene } from './scenes/CTAScene';
-
-export const RemotionVideo: React.FC = () => {
-  return (
-    <>
-      <Composition
-        id="ProductIntro"
-        component={ProductIntro}
-        durationInFrames={1800} // 60s at 30fps
-        fps={30}
-        width={1920}
-        height={1080}
-      />
-    </>
-  );
-};
-
-// Scene Component Example
-const IntroScene: React.FC<{ frame: number }> = ({ frame }) => {
-  const opacity = interpolate(frame, [0, 30], [0, 1]);
-
-  return (
-    <AbsoluteFill style={{ opacity }}>
-      <Logo />
-      <Title>Transform Your Workflow</Title>
-    </AbsoluteFill>
-  );
-};
-```
-
-### Step 5: Render and QA
-
-```bash
-# 1. Preview render (low quality)
-npx remotion preview src/Video.tsx
-
-# 2. QA checks
-- [ ] Timing verification
-- [ ] Audio sync
-- [ ] Text readability
-- [ ] Smooth transitions
-
-# 3. Final render
-npx remotion render src/Video.tsx ProductIntro out/video.mp4
-```
-
----
+## Output format
+Return the same **Video Production Brief** used by `video-production`, with a Remotion-flavored stack recommendation when applicable.
 
 ## Examples
 
-### Example 1: Product Intro Video
+### Example 1: legacy setup surface
+**Input**
+> Use remotion-video-production to help us plan a reusable product video template.
 
-**Prompt**:
-```
-Create a 60s product intro video with 6 scenes,
-upbeat tone, and 16:9 output. Include a CTA at the end.
-```
+**Expected behavior**
+- Briefly note that the request maps to `video-production`
+- Use the code-first programmable-video mode
+- Return a canonical Video Production Brief
 
-**Expected output**:
-```markdown
-## Scene Breakdown
-1. Hook (0:00-0:05): Logo + tagline
-2. Problem (0:05-0:15): Pain point visualization
-3. Solution (0:15-0:30): Product demo
-4. Features (0:30-0:45): Key benefits (3 items)
-5. Social Proof (0:45-0:55): Testimonial/stats
-6. CTA (0:55-1:00): Call to action + contact
+### Example 2: explicit stack request
+**Input**
+> We need a Remotion composition plan for weekly feature-announcement videos.
 
-## Remotion Structure
-- src/scenes/HookScene.tsx
-- src/scenes/ProblemScene.tsx
-- src/scenes/SolutionScene.tsx
-- src/scenes/FeaturesScene.tsx
-- src/scenes/SocialProofScene.tsx
-- src/scenes/CTAScene.tsx
-```
-
-### Example 2: Onboarding Walkthrough
-
-**Prompt**:
-```
-Generate a 45s onboarding walkthrough using screenshots,
-with callouts and 9:16 format for mobile.
-```
-
-**Expected output**:
-- Scene plan with 5 steps
-- Asset list (screenshots, callout arrows)
-- Text overlays and transitions
-- Mobile-safe margins applied
-
----
+**Expected behavior**
+- Treat the stack choice as explicit
+- Use scene/template/rendering language
+- Keep the packet shape aligned with the canonical skill
 
 ## Best practices
+1. Keep the alias lightweight and explicit.
+2. Preserve backward compatibility without duplicating the full canonical instructions.
+3. Nudge future discovery toward `video-production` whenever naming or setup surfaces are being updated.
+4. Reuse the canonical `video-production` support packet instead of improvising a second media workflow here.
+5. Make route-outs explicit when a request is better served by template/API automation than by a Remotion codebase.
 
-1. **Short scenes**: Keep scenes clear at 5-10 seconds each
-2. **Consistent typography**: Define a typography scale
-3. **Audio sync**: Align narration cues with visuals
-4. **Template reuse**: Save reusable compositions
-5. **Safe zones**: Ensure margins for mobile aspect ratios
-
----
-
-## Common pitfalls
-
-- **Text overload**: Limit the amount of text per scene
-- **Ignoring mobile safe zones**: Check edges for 9:16 aspect ratio
-- **Final render before QA**: Always check preview first
-
----
-
-## Troubleshooting
-
-### Issue: Audio and visuals out of sync
-**Cause**: Frame timing mismatch
-**Solution**: Recalculate frames and align timestamps
-
-### Issue: Render is slow or fails
-**Cause**: Heavy assets or effects
-**Solution**: Compress assets and simplify animations
-
-### Issue: Text unreadable
-**Cause**: Insufficient font size or contrast
-**Solution**: Use minimum 24px font and high-contrast colors
-
----
-
-## Output format
-
-```markdown
-## Video Production Report
-
-### Spec
-- Duration: 60s
-- Aspect Ratio: 16:9
-- FPS: 30
-
-### Scene Plan
-| Scene | Duration | Visual | Audio | Transition |
-|-------|----------|--------|-------|------------|
-| Hook  | 0:00-0:05 | Logo fade | BGM start | Fade |
-| ...   | ...      | ...    | ...   | ...  |
-
-### Assets
-- [ ] logo.svg
-- [ ] screenshots (3)
-- [ ] bgm.mp3
-- [ ] narration.mp3
-
-### Render Checklist
-- [ ] Preview QA passed
-- [ ] Audio sync verified
-- [ ] Safe zones checked
-- [ ] Final render complete
-```
-
----
-
-## Multi-Agent Workflow
-
-### Validation & Retrospectives
-
-- **Round 1 (Orchestrator)**: Spec completeness, scene coverage
-- **Round 2 (Analyst)**: Narrative consistency, pacing review
-- **Round 3 (Executor)**: Render readiness checklist verification
-
-### Agent Roles
-
-| Agent | Role |
-|-------|------|
-| Claude | Scene planning, script writing |
-| Gemini | Asset analysis, optimization suggestions |
-| Codex | Remotion code generation, render execution |
-
----
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2026-01-21
-- **Compatible Platforms**: Claude, ChatGPT, Gemini, Codex
-
-### Related Skills
-- [image-generation](../image-generation/SKILL.md)
-- [presentation-builder](../../documentation/presentation-builder/SKILL.md)
-- [frontend-design](../../frontend/design-system/SKILL.md)
-
-### Tags
-`#video` `#remotion` `#animation` `#storytelling` `#automation` `#react`
+## References
+- `../video-production/SKILL.md`
+- `references/alias-routing.md`
+- `references/remotion-route-outs.md`

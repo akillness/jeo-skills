@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `monitoring-observability/SKILL.md` | A mode-selecting rewrite with explicit route-outs will improve trigger precision and reuse more than another vendor-heavy example refresh. | Rewrote the skill around service reliability, telemetry foundation, data/pipeline observability, game/live-ops visibility, and review/gap-audit modes; added three reference docs, evals, and docs-surface updates. | `validate_skill.sh` pass, catalog sync pass, JSON parse pass, and dry-run prompts now map cleanly to distinct modes. | Keep | Transferable across web/backend, PM/ops/marketing data, and game live-ops workflows without adding a duplicate skill. |

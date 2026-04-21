@@ -1,24 +1,25 @@
 N:vercel-react-best-practices
-D:React and Next.js performance optimization guidelines from Vercel Engineering. Use when writing, reviewing, or refactoring React and Next.js code for waterfalls, bundle size, caching, rendering, and re-render performance.
-G:react next.js nextjs vercel performance optimization waterfalls bundle-size rsc suspense dynamic-import cache rendering
-F:Claude|ChatGPT|Gemini
-T:Read|Write|Edit
+D:Compatibility alias for react-best-practices. Use when a legacy workflow, setup script, or exact-name request still depends on vercel-react-best-practices; route ordinary React and Next.js performance audits to react-best-practices instead.
+G:React Next.js performance vercel alias compatibility migration routing profiler web-vitals
 
-U[5]:
-  Review React or Next.js code for performance regressions
-  Eliminate data-fetch waterfalls with Promise.all and Suspense
-  Reduce bundle size with direct imports and dynamic loading
-  Improve server and client caching patterns for repeated requests
-  Refactor rendering and state updates to reduce unnecessary re-renders
+U[4]:
+  Exact-name legacy workflow compatibility for vercel-react-best-practices
+  Migration-safe routing from old Vercel React prompts to the canonical react-best-practices skill
+  Folder-name preservation for setup/sync surfaces that still expect the alias
+  Boundary clarification so ordinary React/Next.js performance work does not stay in the alias
 
 S[4]{n,action,details}:
-  1,Inspect,Read the target components or routes and identify the slow path category first
-  2,Prioritize,Fix CRITICAL waterfall and bundle issues before lower-priority rendering cleanups
-  3,Refactor,Apply the Vercel guideline that matches the concrete bottleneck
-  4,Verify,Check loading behavior, bundle impact, and rendering results after the change
+  1,Confirm Alias Intent,Use the alias only when the exact legacy name matters for the request or tooling surface
+  2,Load Alias Packet,Read references/alias-routing.md and references/measurement-route-outs.md before redirecting
+  3,Redirect to Canonical,Route substantive React and Next.js performance work to ../react-best-practices/SKILL.md and its support files
+  4,Preserve Compatibility,Keep the alias name only where migration-safe outputs or exact-name references require it
 
 R[4]:
-  Prefer parallel fetching over sequential await chains for independent work
-  Avoid barrel imports when direct imports reduce bundle size
-  Keep server-to-client serialization minimal across RSC boundaries
-  Use transitions, caching, and dynamic imports only where they solve a real bottleneck
+  Never present vercel-react-best-practices as a peer canonical skill
+  Ordinary React and Next.js performance work belongs in react-best-practices
+  Keep compact/discovery wording aligned with skills.json and README surfaces
+  Update the canonical skill first when the underlying performance guidance changes
+
+E[2]{desc,in,out}:
+  "Explicit alias request","Use vercel-react-best-practices for our slow Next.js dashboard","Acknowledge alias compatibility and continue with canonical react-best-practices guidance"
+  "Migration-safe tooling","Our setup script still expects a vercel-react-best-practices folder","Preserve exact-name compatibility while steering future maintenance to react-best-practices"

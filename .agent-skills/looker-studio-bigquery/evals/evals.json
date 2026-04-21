@@ -1,0 +1,53 @@
+{
+  "skill_name": "looker-studio-bigquery",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a PM review dashboard in Looker Studio on top of BigQuery events. Leadership wants KPI scorecards, a weekly trend, and one drilldown page.",
+      "expected_output": "Uses the skill in dashboard-spec mode, defines a stakeholder dashboard packet, and keeps heavy metric logic in BigQuery rather than chart formulas.",
+      "assertions": [
+        "Response frames the task as a BigQuery-backed stakeholder dashboard/reporting packet.",
+        "Response mentions a page or section structure tied to KPI scorecards and trends.",
+        "Response keeps heavy logic or unstable metric definitions in BigQuery rather than only report-level calculated fields."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our marketing funnel dashboard in Looker Studio is too slow and expensive because it queries BigQuery every time people change filters.",
+      "expected_output": "Uses slow-dashboard or refresh-shape routing and recommends upstream modeling or scheduled-query patterns before cosmetic chart changes.",
+      "assertions": [
+        "Response treats refresh/cost design as the core problem.",
+        "Response mentions scheduled queries, curated marts/views, materialized views, or BI Engine as candidates.",
+        "Response does not reduce the answer to chart styling tips."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Explain why our KPI dropped in this dashboard export and tell leadership what changed.",
+      "expected_output": "Routes the request to data-analysis because the real job is evidence interpretation, not dashboard build-out.",
+      "assertions": [
+        "Response identifies data-analysis as the better fit.",
+        "Response distinguishes dashboard/reporting build-out from KPI interpretation."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We have one giant dashboard for executives, PMs, growth, and game live-ops. Should we keep patching it or split it?",
+      "expected_output": "Uses audience-split routing and recommends splitting by stakeholder ritual when one report is serving incompatible needs.",
+      "assertions": [
+        "Response recognizes audience-split or stakeholder split as the real issue.",
+        "Response distinguishes executive and operator or analyst needs instead of forcing one artifact."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Leadership still annotates weekly numbers in Sheets after we publish the Looker Studio board. Help me decide whether to keep the board thin and ship a Connected Sheets handoff.",
+      "expected_output": "Uses exec-handoff routing, keeps the dashboard thin, and names an export or Connected Sheets handoff artifact.",
+      "assertions": [
+        "Response identifies exec-handoff, export, or Connected Sheets as the right packet.",
+        "Response keeps the dashboard thin instead of turning the answer into a generic BI platform debate.",
+        "Response includes a concrete next artifact for the handoff."
+      ]
+    }
+  ]
+}

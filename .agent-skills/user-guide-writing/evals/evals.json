@@ -1,0 +1,78 @@
+{
+  "skill_name": "user-guide-writing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write a getting-started guide for new workspace admins inviting their team and creating the first project.",
+      "expected_output": "The skill activates in getting-started mode, uses a first-success structure, and includes prerequisites, steps, success check, and next steps instead of internal implementation detail.",
+      "assertions": [
+        "Response classifies the request as getting-started, onboarding, or first-success work",
+        "Response includes prerequisites or assumptions before major steps",
+        "Response includes a success check or first-success state",
+        "Response does not route the task to technical-writing or api-documentation"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Update our help-center article for exporting reports because the Export button moved into the Reports header and only admins can choose XLSX now.",
+      "expected_output": "The skill activates as a release-help update, emits a refresh-packet-style response, calls out changed UI, role differences, screenshot refresh needs, and affected companion docs, and treats the task as customer-facing documentation maintenance.",
+      "assertions": [
+        "Response mentions changed UI or stale-doc update work",
+        "Response mentions role, permission, or plan assumptions",
+        "Response includes screenshot refresh notes or UI callout guidance",
+        "Response includes a refresh packet, affected docs list, or equivalent maintenance output",
+        "Response keeps release-note hygiene separate from the user article"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Turn these repeated billing support replies into a short FAQ for workspace owners.",
+      "expected_output": "The skill activates in FAQ mode, clusters recurring questions, keeps answers concise, and links to deeper task guides when needed.",
+      "assertions": [
+        "Response chooses FAQ mode or equivalent repeated-question structure",
+        "Response keeps answers short and scannable",
+        "Response mentions linking to deeper how-to guides for longer tasks"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We redesigned the account settings area and now need a getting-started guide for new admins plus a short FAQ for the two most common permission blockers.",
+      "expected_output": "The skill should keep one primary mode while acknowledging a bounded multi-artifact packet, such as a getting-started guide plus FAQ companion.",
+      "assertions": [
+        "Response names one primary mode and an output shape such as guide-plus-faq or guide set",
+        "Response keeps the main guide focused on first-success onboarding",
+        "Response treats recurring blockers as a companion FAQ rather than bloating the main guide"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Write the architecture document for our new billing export pipeline and capture rollback steps for operators.",
+      "expected_output": "The skill should identify that this is not a user-guide-writing task and route it to technical-writing.",
+      "assertions": [
+        "Response routes the request to technical-writing",
+        "Response explains that the audience is builders/operators rather than end users",
+        "Response does not treat the request as a tutorial or help-center article"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Refresh our public webhook quickstart and auth troubleshooting page for external developers using the new signing flow.",
+      "expected_output": "The skill should identify that this is a published developer-docs task and route it to api-documentation.",
+      "assertions": [
+        "Response routes the request to api-documentation",
+        "Response explains that the audience is external developers integrating through code rather than end users clicking the UI",
+        "Response does not frame the request as end-user onboarding, FAQ, or help-center work"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Update our release notes and changelog to explain the new billing export limits and highlight the renamed CSV/XLSX options.",
+      "expected_output": "The skill should route the request to changelog-maintenance because the main job is release communication rather than customer task guidance.",
+      "assertions": [
+        "Response routes the request to changelog-maintenance",
+        "Response explains the boundary with release notes or changelog upkeep",
+        "Response does not claim the request is primarily a user guide or FAQ artifact"
+      ]
+    }
+  ]
+}

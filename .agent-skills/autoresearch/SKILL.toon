@@ -1,28 +1,29 @@
 N:autoresearch
-D:Autonomous ML experimentation framework by Andrej Karpathy. AI agent modifies train.py, runs 5-minute GPU experiments, evaluates with val_bpb, and commits only improvements via git ratcheting for overnight autonomous research.
+D:Run Karpathy-style autonomous ML search on a real training repo: choose the right mode (setup, program.md, bounded loop, results interpretation, or constrained-hardware adaptation), preserve the immutable prepare.py / 300-second / val_bpb contract, and route prompt/skill eval work away to LangSmith, Promptfoo, Braintrust, or skill-autoresearch.
 G:autoresearch ml-experiments autonomous-research karpathy gpu train val-bpb overnight ratcheting
 
 U[5]:
-  Set up autoresearch repo on a GPU machine and run first baseline experiment
-  Write effective program.md research directives for the autonomous agent
-  Run overnight autonomous experiment loop with git ratcheting
-  Interpret results.tsv to understand what improvements the agent found
-  Configure MAX_SEQ_LEN and EVAL_TOKENS for constrained-VRAM GPUs
+  Set up karpathy/autoresearch on a real GPU machine and verify the first baseline run
+  Write or refine a program.md charter with baseline, priorities, tried-already notes, and constraints
+  Run a bounded overnight train.py search loop with keep/revert ratcheting
+  Interpret results.tsv to identify real gains, repeated crashes, and next experiment families
+  Adapt the workflow to constrained VRAM without mutating the evaluator mid-session
 
 S[5]{n,action,details}:
-  1,Setup,Install uv; git clone karpathy/autoresearch; uv sync; uv run prepare.py (or bash scripts/setup.sh --seq-len N)
-  2,Baseline,Run uv run train.py; grep val_bpb and peak_vram_mb from run.log to confirm setup works
-  3,AuthorProgram,Write program.md with goal, current baseline val_bpb, prioritized directions, constraints (VRAM, TIME_BUDGET), and what has already been tried
-  4,RunLoop,Point AI agent at repo with program.md context; loop: modify train.py → commit → run 300s → eval → keep/revert → log to results.tsv
-  5,Analyze,Use bash scripts/show-results.sh to view improvement timeline, best val_bpb, and experiment statistics
+  1,ChooseMode,Pick exactly one mode first: setup readiness, program.md authoring, bounded run loop, results interpretation, or constrained-hardware adaptation
+  2,FreezeHarness,Restate the immutable contract: human-authored program.md, train.py mutable, prepare.py read-only, TIME_BUDGET=300, val_bpb keep/revert, results.tsv append-only
+  3,ExecuteMode,Use the smallest relevant script or reference: check-hardware/setup, program-md-guide, run-loop, show-results, or hardware-config
+  4,RouteOut,Send prompt/app eval and repo-local SKILL.md optimization to LangSmith/Promptfoo/Braintrust or skill-autoresearch instead of stretching this skill
+  5,Summarize,Return an Autoresearch Run Brief with chosen mode, immutable rules, next command/file, and any route-outs
 
 R[5]:
-  Never modify prepare.py or constants.py — they define the immutable evaluation harness
-  Never change TIME_BUDGET (300s) — this is required for all experiment results to be comparable
-  Never add new packages — pyproject.toml is locked; agent can only use what is already installed
-  Record what has been tried in program.md to prevent redundant experiments
-  Always run check-hardware.sh before a session to verify GPU VRAM and CUDA availability
+  Never modify prepare.py during an active session; start a new comparison track if the evaluator must change
+  Never change TIME_BUDGET=300 inside the session
+  Never treat prompt or SKILL.md optimization as part of this ML lane
+  Prefer one meaningful train.py experiment at a time; clean ablations beat bundled rewrites
+  Keep results.tsv append-only because discarded runs still matter
 
-E[2]{desc,in,out}:
-  "Overnight GPU session","bash scripts/run-loop.sh --max 100 --desc session-1","results.tsv with 100 experiments, improvements kept via git ratchet, best val_bpb logged"
-  "Hardware check","bash scripts/check-hardware.sh","JSON with gpu_name, vram_mb, cuda_version, ready flag"
+E[3]{desc,in,out}:
+  "First 40GB GPU session","Help me run Karpathy autoresearch on a 40GB GPU","Chooses setup-readiness mode, verifies hardware/deps, runs one baseline, then points to program.md authoring"
+  "Weak program.md","My repo runs but my program.md just says try improvements","Chooses program.md authoring mode and rewrites the charter with baseline, priorities, and constraints"
+  "Wrong lane","Can autoresearch help me improve this SKILL.md with binary evals?","Routes immediately to skill-autoresearch and explains the ML-specific boundary"

@@ -1,18 +1,24 @@
 N:testing-strategies
-D:Design comprehensive testing strategies for software quality assurance. Use when planning test co...
-G:testing test-strategy TDD unit-test integration-test
-U[4]:
-  **New project**: define a testing strategy
-  **Quality issues**: bugs happen frequently
-  **Before refactoring**: build a safety net
-  **CI/CD setup**: automated tests
-S[5]{n,action}:
-  1,Understand the Test Pyramid
-  2,Unit testing strategy
-  3,Integration Testing
-  4,E2E Testing (Playwright)
-  5,TDD (Test-Driven Development)
-R[3]:
-  Unit
-  Integration
-  E2E
+D:Turn test-policy ambiguity into one packet-first validation brief for merge-gate truth, release-only proof, scheduled breadth, and cross-domain test policy handoffs.
+G:testing test-strategy regression-policy flaky-tests release-confidence
+U[5]:
+  Choose the right validation packet
+  Pick one primary policy mode
+  Separate local, PR, release, and scheduled gates
+  Define flaky-suite / quarantine / exception policy
+  Route implementation, debugging, review, accessibility, or performance work out
+S[8]{n,action}:
+  1,Start from the policy packet already in hand
+  2,Choose one primary policy mode
+  3,Classify the risk tier and critical path
+  4,Choose the smallest convincing layer mix
+  5,Separate local PR release and scheduled expectations
+  6,Write explicit exception and flake rules
+  7,Route the next owner immediately
+  8,Produce one concise validation brief
+R[5]:
+  backend-testing
+  debugging
+  code-review
+  web-accessibility
+  performance-optimization

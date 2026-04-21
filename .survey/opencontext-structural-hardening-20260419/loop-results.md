@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/opencontext/SKILL.md` | A packet-first front door with explicit repo-packer route-outs will improve trigger precision more than keeping a longer command-heavy explainer. | Rewrote `SKILL.md`, added `references/intake-packets-and-route-outs.md`, expanded evals, and synced README / README.ko / setup / manifest / compact surfaces. | `validate_skill.sh` passed; JSON validation passed; catalog-sync validator reported no drift; stale `utilities/opencontext` residue removed. | Keep | Transferable improvement for other memory / router skills: smaller packet vocabulary + honest neighboring-tool route-outs. |

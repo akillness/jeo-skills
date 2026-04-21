@@ -1,0 +1,47 @@
+{
+  "skill_name": "sprint-retrospective",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our sprint retros are repetitive and remote teammates barely talk. Give me a better retro plan for next week.",
+      "expected_output": "Selects async-first-retro or hybrid-retro, reviews previous actions first, and returns a bounded Retrospective Brief instead of a generic template dump.",
+      "assertions": [
+        "Output chooses one primary mode rather than mixing several modes together",
+        "Output includes a review of previous actions before new action creation",
+        "Output limits agreed actions to a small owned set with due dates or checkpoints",
+        "Output does not turn the task into backlog planning or estimation"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We just finished a game demo milestone. QA found issues late, art handoffs slipped, and production wants a postmortem format that isn't just software Scrum jargon.",
+      "expected_output": "Uses milestone-postmortem framing, includes cross-discipline prompts, and keeps the result focused on workflow learning plus a few owned changes.",
+      "assertions": [
+        "Output can choose milestone-postmortem mode",
+        "Output mentions cross-functional or game-specific prompts such as handoffs, QA timing, asset dependency, or release readiness",
+        "Output separates team-owned actions from escalations or broader constraints"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Every retrospective ends with five action items and none of them happen. Fix the ritual.",
+      "expected_output": "Chooses action-review-reset mode, audits why previous actions failed, and sharply constrains the next action count.",
+      "assertions": [
+        "Output can choose action-review-reset mode",
+        "Output diagnoses previous-action failure reasons such as no owner, no due date, no authority, or too much scope",
+        "Output recommends 1-3 actions maximum",
+        "Output preserves boundaries to task-planning, task-estimation, and standup-meeting when relevant"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Help me plan our next sprint stories and decide what we can fit after yesterday's retro.",
+      "expected_output": "Routes the user to task-planning rather than pretending sprint-retrospective should handle backlog decomposition.",
+      "assertions": [
+        "Output explicitly says the main job is planning, not retrospective facilitation",
+        "Output routes to task-planning",
+        "Output does not emit a full Retrospective Brief as if the wrong skill were selected"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "skill_name": "database-schema-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design the schema for a B2B SaaS app with users, organizations, memberships, subscriptions, invoices, and audit logs. We use Postgres and need an implementation-ready storage plan.",
+      "expected_output": "A relational-first storage design packet with entity boundaries, integrity rules, indexing guidance, lifecycle notes, and explicit route-outs for auth and API work.",
+      "assertions": [
+        "Chooses a relational-first or equivalent lane with rationale",
+        "Separates users, organizations, memberships, subscriptions, and invoices into distinct entities or tables",
+        "Mentions constraints or uniqueness rules",
+        "Routes auth-provider/session ownership to authentication-setup"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We currently store product metadata in one JSON column, but search, moderation, and filters now depend on stable fields. Plan a safe production migration without downtime.",
+      "expected_output": "A staged migration plan that identifies which fields should graduate from JSON, describes expand-and-contract sequencing, and routes verification to backend-testing.",
+      "assertions": [
+        "Describes a staged or expand-and-contract migration sequence",
+        "Mentions backfill, dual read/write, or cleanup/removal conditions",
+        "Justifies which fields stay flexible versus become first-class columns",
+        "Routes migration verification or regression coverage to backend-testing"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We ingest highly variable page-builder content with nested blocks, but ownership, drafts, and search still matter. Should this be relational, document-heavy, or hybrid?",
+      "expected_output": "A lane-selection answer that distinguishes stable ownership data from flexible content payloads and names which fields still need queryable indexes or extracted columns.",
+      "assertions": [
+        "Chooses relational, document-heavy, or hybrid explicitly with reasoning",
+        "Separates stable ownership/account structures from flexible content payloads",
+        "Mentions indexing or queryability for search-critical fields",
+        "Avoids collapsing the task into API design or docs writing"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Plan the storage model for a marketing attribution system with accounts, campaigns, touchpoints, and flexible channel metadata. The growth team still needs clean reporting fields for dashboards.",
+      "expected_output": "A packet that preserves queryable customer/account/event structure, keeps only justified metadata flexible, and routes dashboard/reporting follow-through to looker-studio-bigquery when appropriate.",
+      "assertions": [
+        "Names a relational-first or hybrid lane with rationale",
+        "Calls out which attribution or reporting fields must stay queryable",
+        "Avoids turning the answer into dashboard implementation work",
+        "Routes reporting presentation or stakeholder dashboard work to looker-studio-bigquery when relevant"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We need a live-ops schema for player inventory, seasonal event progress, and telemetry events for our multiplayer game. Keep gameplay state reliable, but we also need runtime visibility later.",
+      "expected_output": "A packet that separates transactional player state from telemetry/reporting concerns, keeps storage integrity in scope, and routes telemetry visibility follow-through to monitoring-observability when needed.",
+      "assertions": [
+        "Separates player-owned state from telemetry or reporting data",
+        "Mentions lifecycle or retention rules for live-ops entities",
+        "Does not absorb alerting or observability implementation into the schema packet",
+        "Routes telemetry freshness, alerting, or runtime visibility to monitoring-observability when relevant"
+      ]
+    }
+  ]
+}

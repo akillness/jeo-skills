@@ -1,74 +1,60 @@
 {
   "skill_name": "google-workspace",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "evals": [
     {
       "id": 1,
-      "prompt": "Create a Google Doc titled 'Q1 2026 Report' and add a section header 'Executive Summary' with the text 'This report covers Q1 2026 performance.'",
-      "expected_behavior": "Creates a Google Doc, returns documentId and URL, inserts the header and body text using batchUpdate",
+      "prompt": "I need an internal approvals workflow where a Google Form writes to Sheets, reviewers get reminder emails, and approved rows create calendar events. What Workspace surface should own this and what auth model should I start with?",
+      "expected_behavior": "Treats the request as a multi-service workflow, identifies Forms + Sheets + Gmail + Calendar, chooses Apps Script or a lightweight backend based on runtime ownership, and explains the auth choice before any API-specific code.",
       "assertions": [
-        "Google Doc is created with correct title",
-        "documentId is returned",
-        "URL in format https://docs.google.com/document/d/<id>/edit is returned",
-        "batchUpdate is called to insert text content"
+        "Classifies the job as a cross-service workflow rather than a single API call",
+        "Names the relevant Workspace products",
+        "Chooses an execution surface with rationale",
+        "States an auth model and why it fits"
       ]
     },
     {
       "id": 2,
-      "prompt": "Create a Google Sheet with the name 'Sales Data' and populate it with headers Name, Region, Revenue and add 3 rows of sample data",
-      "expected_behavior": "Creates a new spreadsheet, writes headers and data rows using values().update with USER_ENTERED input option",
+      "prompt": "Create a Google Doc titled 'Q1 2026 Report', replace {{owner}} with 'Alice', and store the document in a shared Drive folder for the team.",
+      "expected_behavior": "Routes to Docs plus Drive, identifies required object IDs or lookup steps, and produces an execution packet covering document creation, placeholder replacement, destination folder, and sharing/ownership considerations.",
       "assertions": [
-        "Spreadsheet is created with correct title",
-        "spreadsheetId is returned",
-        "Header row contains Name, Region, Revenue",
-        "3 data rows are written",
-        "spreadsheetUrl is returned"
+        "Routes to Docs as the primary content surface and Drive as the storage/sharing surface",
+        "Mentions document creation plus placeholder replacement or batch update",
+        "Calls out the destination folder / shared Drive requirement",
+        "Notes ownership or permission considerations"
       ]
     },
     {
       "id": 3,
-      "prompt": "Send an email to test@example.com with subject 'Weekly Update' and body 'Here is this week's summary.'",
-      "expected_behavior": "Builds MIME message, base64url encodes it, calls gmail.users().messages().send",
+      "prompt": "We run a backend service that sends weekly Gmail summaries and updates a Sheet with delivery status. Should this live in Apps Script or direct REST APIs?",
+      "expected_behavior": "Prefers direct REST APIs for a backend-owned scheduled integration, explains why Apps Script is less ideal here, and names Gmail plus Sheets as the service bundle.",
       "assertions": [
-        "MIME message is constructed correctly",
-        "base64url encoding is applied",
-        "gmail messages.send is called with userId='me'",
-        "Message ID is returned on success"
+        "Chooses direct REST APIs or an equivalent backend-owned route",
+        "Explains why Apps Script is not the best default for this case",
+        "Names Gmail and Sheets",
+        "Mentions scheduling / backend ownership as decision factors"
       ]
     },
     {
       "id": 4,
-      "prompt": "Schedule a Google Calendar event 'Team Meeting' for tomorrow at 10 AM Seoul time for 1 hour and invite alice@example.com",
-      "expected_behavior": "Creates event with correct dateTime (Asia/Seoul timezone), adds attendee, includes conferenceData for Meet link",
+      "prompt": "Suspend a departing employee, move them to a different org unit, and review their group memberships across the Workspace domain.",
+      "expected_behavior": "Routes immediately to Admin SDK / admin APIs, separates admin identity from ordinary content operations, and calls out delegated admin or domain-wide delegation needs.",
       "assertions": [
-        "Event is created with 'Team Meeting' as summary",
-        "Start time is tomorrow 10:00 Seoul time (UTC+9)",
-        "End time is 1 hour after start",
-        "alice@example.com is in attendees list",
-        "Event ID and htmlLink are returned"
+        "Routes to Admin SDK rather than Docs/Drive/Gmail content APIs",
+        "Separates admin operations from ordinary content tasks",
+        "Calls out delegated admin or domain-wide delegation",
+        "Mentions users, groups, or org units explicitly"
       ]
     },
     {
       "id": 5,
-      "prompt": "Create a Google Form survey with the title 'Employee Satisfaction' and add a 1-5 scale question 'How satisfied are you with your work environment?' and a text question 'Any suggestions?'",
-      "expected_behavior": "Creates form, adds scaleQuestion (low=1, high=5) and textQuestion via batchUpdate",
+      "prompt": "구글 스프레드시트 승인 큐를 만들고 상태가 바뀌면 지메일 알림을 보내고 싶어. Apps Script로 끝내도 될까?",
+      "expected_behavior": "Understands the Korean prompt, treats it as a Sheets + Gmail approvals workflow, evaluates whether Apps Script is sufficient, and mentions quota/runtime considerations for trigger-heavy flows.",
       "assertions": [
-        "Form is created with correct title",
-        "formId is returned",
-        "Scale question with range 1-5 is added",
-        "Text (paragraph) question is added",
-        "Form responderUri is available"
-      ]
-    },
-    {
-      "id": 6,
-      "prompt": "구글 드라이브에 'Project Files' 폴더를 만들고, test.txt 파일을 업로드한 후 bob@example.com과 공유해줘",
-      "expected_behavior": "Creates folder with Korean/English name, uploads file into folder, shares with bob@example.com as writer",
-      "assertions": [
-        "Folder is created with name 'Project Files'",
-        "File is uploaded to the folder",
-        "Permission is created for bob@example.com with role=writer",
-        "Folder and file IDs are returned"
+        "Correctly identifies Sheets and Gmail from the Korean prompt",
+        "Evaluates Apps Script as a possible route rather than blindly assuming it",
+        "Mentions trigger or quota/runtime considerations",
+        "Produces a workflow-oriented answer instead of isolated API snippets"
       ]
     }
   ]

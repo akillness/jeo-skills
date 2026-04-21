@@ -1,496 +1,263 @@
 ---
 name: code-refactoring
-description: Simplify and refactor code while preserving behavior, improving clarity, and reducing complexity. Use when simplifying complex code, removing duplication, or applying design patterns. Handles Extract Method, DRY principle, SOLID principles, behavior validation, and refactoring patterns.
+description: >
+  Turn a cleanup packet into one behavior-preserving refactor brief. Use when the
+  user needs to simplify a messy function, component, service, script, or module;
+  split an oversized diff into safer cleanup slices; freeze behavior before
+  touching fragile legacy code; or plan a repeated migration / codemod without
+  changing intended behavior. Route diagnosis to `debugging`, review judgment to
+  `code-review`, validation-program design to `testing-strategies`, bottleneck-led
+  tuning to `performance-optimization`, and pure symbol inventory or impact mapping
+  to `codebase-search`.
+allowed-tools: Read Grep Glob Bash Write
+compatibility: >
+  Best for CLI, backend, frontend, fullstack, and game-programming codebases where
+  the main task is structural cleanup with explicit verification. Not for proving a
+  bug exists, approving a PR, choosing org-wide test policy, or isolating a
+  performance bottleneck from traces or benchmarks.
 metadata:
-  tags: refactoring, code-quality, DRY, SOLID, design-patterns, clean-code, simplification, behavior-preservation
+  tags: refactoring, code-quality, behavior-preservation, cleanup, codemod, migration, technical-debt, legacy-code
   platforms: Claude, ChatGPT, Gemini, Codex
-allowed-tools: Read Edit Write Bash
+  version: "2.1"
+  source: akillness/oh-my-skills
+  modernization: 2026-04-14
+  hardening: 2026-04-18
 ---
-
 
 # Code Refactoring
 
+Use this skill when the job is to **improve structure without changing intended behavior**.
+
+The center of the skill should stay small and repeatable:
+1. identify the cleanup packet you actually have,
+2. choose one refactor mode,
+3. make the behavior guardrail explicit,
+4. stage the work in reviewable slices,
+5. verify and route remaining work honestly.
+
+Read these support docs before handling unfamiliar cleanup work:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/refactor-modes.md](references/refactor-modes.md)
+- [references/handoff-boundaries.md](references/handoff-boundaries.md)
+- [references/safe-refactor-checklist.md](references/safe-refactor-checklist.md)
 
 ## When to use this skill
+- A function, component, service, script, or module is too tangled and needs structural cleanup without a behavior change.
+- A legacy area needs a **freeze-first** cleanup because the current behavior is fragile or poorly understood.
+- The same API, naming, or structure change repeats across many files and needs a codemod / migration brief.
+- A diff mixes cleanup with too much semantic work and needs to be split into smaller reviewable slices.
+- The user asks to refactor, decompose, deduplicate, rename safely, stage a cleanup, or plan a behavior-preserving migration.
 
-- **Code review**: Discovering complex or duplicated code
-- **Before adding new features**: Cleaning up existing code
-- **After bug fixes**: Removing root causes
-- **Resolving technical debt**: Regular refactoring
+## When not to use this skill
+- **The main job is proving why behavior is wrong, reproducing a failure, or isolating a regression** → `debugging`
+- **The main job is deciding whether a concrete diff / PR is safe to merge** → `code-review`
+- **The main job is choosing org-wide validation depth, benchmark policy, or release gates** → `testing-strategies`
+- **The main job is finding the bottleneck from traces, flamegraphs, CWV reports, or profiler output** → `performance-optimization`
+- **The main job is finding symbols, call sites, or impact scope before any cleanup tactic is chosen** → `codebase-search`
 
 ## Instructions
 
-### Step 1: Extract Method
+### Step 1: Start from the cleanup packet
+Use [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-**Before (long function)**:
-```typescript
-function processOrder(order: Order) {
-  // Validation
-  if (!order.items || order.items.length === 0) {
-    throw new Error('Order must have items');
-  }
-  if (!order.customerId) {
-    throw new Error('Order must have customer');
-  }
+Choose the packet the user already has:
+- one messy file / component / service
+- a fragile legacy area with weak confidence in current behavior
+- a repeated migration pattern across many files
+- a cleanup-heavy diff that needs reshaping before review
+- only a vague desire to “find all the places first”
 
-  // Price calculation
-  let total = 0;
-  for (const item of order.items) {
-    total += item.price * item.quantity;
-  }
-  const tax = total * 0.1;
-  const shipping = total > 100 ? 0 : 10;
-  const finalTotal = total + tax + shipping;
+Output the intake briefly:
 
-  // Inventory check
-  for (const item of order.items) {
-    const product = await db.product.findUnique({ where: { id: item.productId } });
-    if (product.stock < item.quantity) {
-      throw new Error(`Insufficient stock for ${product.name}`);
-    }
-  }
-
-  // Create order
-  const newOrder = await db.order.create({
-    data: {
-      customerId: order.customerId,
-      items: order.items,
-      total: finalTotal,
-      status: 'pending'
-    }
-  });
-
-  return newOrder;
-}
+```markdown
+## Cleanup Packet
+- Current artifact:
+- Why it is enough (or not enough):
+- Missing evidence to collect next:
 ```
 
-**After (method extraction)**:
-```typescript
-async function processOrder(order: Order) {
-  validateOrder(order);
-  const total = calculateTotal(order);
-  await checkInventory(order);
-  return await createOrder(order, total);
-}
+Rule: do not force a giant refactor plan when the immediate need is only search, diagnosis, review, or performance evidence.
 
-function validateOrder(order: Order) {
-  if (!order.items || order.items.length === 0) {
-    throw new Error('Order must have items');
-  }
-  if (!order.customerId) {
-    throw new Error('Order must have customer');
-  }
-}
+### Step 2: Choose one primary refactor mode
+Pick exactly one primary mode from [references/refactor-modes.md](references/refactor-modes.md).
 
-function calculateTotal(order: Order): number {
-  const subtotal = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const tax = subtotal * 0.1;
-  const shipping = subtotal > 100 ? 0 : 10;
-  return subtotal + tax + shipping;
-}
+Primary modes:
+- `local-safe-refactor`
+- `behavior-freeze-first`
+- `repetitive-migration-codemod`
+- `diff-shaping-cleanup`
 
-async function checkInventory(order: Order) {
-  for (const item of order.items) {
-    const product = await db.product.findUnique({ where: { id: item.productId } });
-    if (product.stock < item.quantity) {
-      throw new Error(`Insufficient stock for ${product.name}`);
-    }
-  }
-}
+Quick selector:
+| Signal | Mode |
+|---|---|
+| One file or narrow module, clear intent, at least one fast guardrail exists | `local-safe-refactor` |
+| Fragile legacy area, hidden invariants, weak test trust | `behavior-freeze-first` |
+| Same API or structure repeats across many files | `repetitive-migration-codemod` |
+| Cleanup is mixed into a risky review diff and needs smaller slices | `diff-shaping-cleanup` |
 
-async function createOrder(order: Order, total: number) {
-  return await db.order.create({
-    data: {
-      customerId: order.customerId,
-      items: order.items,
-      total,
-      status: 'pending'
-    }
-  });
-}
+Rule: one primary mode, optional secondary note. Do not mix every cleanup tactic into one answer.
+
+### Step 3: Freeze the behavior guardrail
+Before broad edits, decide how you will prove intent stayed the same.
+
+Guardrail sources can include:
+- existing unit / integration / end-to-end tests
+- typecheck and linter
+- characterization tests or captured examples
+- fixture snapshots or golden outputs
+- screenshots / preview captures for UI work
+- before/after sample input-output tables
+- manual smoke steps when automation is thin
+
+Minimum rule:
+- **Local cleanup** → at least one fast verification path
+- **Fragile legacy cleanup** → freeze behavior first
+- **Repeated migration** → pilot on a small representative sample first
+- **Diff reshaping** → separate mechanical cleanup from semantic follow-up
+
+If the user mainly needs help designing the entire validation program, route to `testing-strategies`.
+
+### Step 4: Build the smallest credible cleanup plan
+Keep the plan reviewable.
+
+Preferred slices:
+1. rename / move / extract work
+2. duplicated or dead-code cleanup
+3. mechanical migration or codemod rollout
+4. semantic follow-up only if still needed
+5. verification + handoff
+
+For each slice, capture:
+- goal
+- behavior to preserve
+- evidence / guardrail
+- risk edge
+- whether another skill owns the next step
+
+Rules:
+- Prefer a sequence of boring diffs over one heroic rewrite.
+- Keep structural cleanup and semantic behavior changes separate when possible.
+- For migrations, define source pattern, target pattern, known exceptions, and rollback path before scaling up.
+
+### Step 5: Use the right mode packet
+Use the matching packet in [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md):
+- local cleanup packet
+- fragile legacy / freeze-first packet
+- repeated migration / codemod packet
+- diff-shaping packet
+
+Good moves by mode:
+- `local-safe-refactor` → rename unclear concepts, extract pure logic, move side effects to edges, collapse close duplication
+- `behavior-freeze-first` → capture examples, add characterization tests, identify one seam, refactor behind that seam
+- `repetitive-migration-codemod` → define source/target pattern, sample first, inspect false positives, expand only after the pilot is trustworthy
+- `diff-shaping-cleanup` → split cleanup from semantic changes, isolate generated or mechanical edits, leave review notes about remaining hotspots
+
+### Step 6: Verify and route remaining work
+Do not stop at “looks cleaner.”
+
+Verification brief:
+```markdown
+## Refactor Brief
+- Primary mode:
+- Behavior to preserve:
+- Guardrail used:
+- Smallest planned slices:
+- Risks still open:
+- Recommended next move:
 ```
 
-### Step 2: Remove Duplication
-
-**Before (duplication)**:
-```typescript
-async function getActiveUsers() {
-  return await db.user.findMany({
-    where: { status: 'active', deletedAt: null },
-    select: { id: true, name: true, email: true }
-  });
-}
-
-async function getActivePremiumUsers() {
-  return await db.user.findMany({
-    where: { status: 'active', deletedAt: null, plan: 'premium' },
-    select: { id: true, name: true, email: true }
-  });
-}
-```
-
-**After (extract common logic)**:
-```typescript
-type UserFilter = {
-  plan?: string;
-};
-
-async function getActiveUsers(filter: UserFilter = {}) {
-  return await db.user.findMany({
-    where: {
-      status: 'active',
-      deletedAt: null,
-      ...filter
-    },
-    select: { id: true, name: true, email: true }
-  });
-}
-
-// Usage
-const allActiveUsers = await getActiveUsers();
-const premiumUsers = await getActiveUsers({ plan: 'premium' });
-```
-
-### Step 3: Replace Conditional with Polymorphism
-
-**Before (long if-else)**:
-```typescript
-class PaymentProcessor {
-  process(payment: Payment) {
-    if (payment.method === 'credit_card') {
-      // Credit card processing
-      const cardToken = this.tokenizeCard(payment.card);
-      const charge = this.chargeCreditCard(cardToken, payment.amount);
-      return charge;
-    } else if (payment.method === 'paypal') {
-      // PayPal processing
-      const paypalOrder = this.createPayPalOrder(payment.amount);
-      const approval = this.getPayPalApproval(paypalOrder);
-      return approval;
-    } else if (payment.method === 'bank_transfer') {
-      // Bank transfer processing
-      const transfer = this.initiateBankTransfer(payment.account, payment.amount);
-      return transfer;
-    }
-  }
-}
-```
-
-**After (polymorphism)**:
-```typescript
-interface PaymentMethod {
-  process(payment: Payment): Promise<PaymentResult>;
-}
-
-class CreditCardPayment implements PaymentMethod {
-  async process(payment: Payment): Promise<PaymentResult> {
-    const cardToken = await this.tokenizeCard(payment.card);
-    return await this.chargeCreditCard(cardToken, payment.amount);
-  }
-}
-
-class PayPalPayment implements PaymentMethod {
-  async process(payment: Payment): Promise<PaymentResult> {
-    const order = await this.createPayPalOrder(payment.amount);
-    return await this.getPayPalApproval(order);
-  }
-}
-
-class BankTransferPayment implements PaymentMethod {
-  async process(payment: Payment): Promise<PaymentResult> {
-    return await this.initiateBankTransfer(payment.account, payment.amount);
-  }
-}
-
-class PaymentProcessor {
-  private methods: Map<string, PaymentMethod> = new Map([
-    ['credit_card', new CreditCardPayment()],
-    ['paypal', new PayPalPayment()],
-    ['bank_transfer', new BankTransferPayment()]
-  ]);
-
-  async process(payment: Payment): Promise<PaymentResult> {
-    const method = this.methods.get(payment.method);
-    if (!method) {
-      throw new Error(`Unknown payment method: ${payment.method}`);
-    }
-    return await method.process(payment);
-  }
-}
-```
-
-### Step 4: Introduce Parameter Object
-
-**Before (many parameters)**:
-```typescript
-function createUser(
-  name: string,
-  email: string,
-  password: string,
-  age: number,
-  country: string,
-  city: string,
-  postalCode: string,
-  phoneNumber: string
-) {
-  // ...
-}
-```
-
-**After (grouped into object)**:
-```typescript
-interface UserProfile {
-  name: string;
-  email: string;
-  password: string;
-  age: number;
-}
-
-interface Address {
-  country: string;
-  city: string;
-  postalCode: string;
-}
-
-interface CreateUserParams {
-  profile: UserProfile;
-  address: Address;
-  phoneNumber: string;
-}
-
-function createUser(params: CreateUserParams) {
-  const { profile, address, phoneNumber } = params;
-  // ...
-}
-
-// Usage
-createUser({
-  profile: { name: 'John', email: 'john@example.com', password: 'xxx', age: 30 },
-  address: { country: 'US', city: 'NYC', postalCode: '10001' },
-  phoneNumber: '+1234567890'
-});
-```
-
-### Step 5: Apply SOLID Principles
-
-**Single Responsibility**:
-```typescript
-// ❌ Bad example: multiple responsibilities
-class User {
-  constructor(public name: string, public email: string) {}
-
-  save() {
-    // Save to DB
-  }
-
-  sendEmail(subject: string, body: string) {
-    // Send email
-  }
-
-  generateReport() {
-    // Generate report
-  }
-}
-
-// ✅ Good example: separated responsibilities
-class User {
-  constructor(public name: string, public email: string) {}
-}
-
-class UserRepository {
-  save(user: User) {
-    // Save to DB
-  }
-}
-
-class EmailService {
-  send(to: string, subject: string, body: string) {
-    // Send email
-  }
-}
-
-class UserReportGenerator {
-  generate(user: User) {
-    // Generate report
-  }
-}
-```
+Always call out:
+- what behavior was intended to stay the same
+- what evidence was used to verify that
+- what still remains risky or out of scope
+- which neighboring skill should own the next step when the job shifts
 
 ## Output format
 
-### Refactoring Checklist
-
 ```markdown
-- [ ] Function does one thing only (SRP)
-- [ ] Function name clearly describes what it does
-- [ ] Function is 20 lines or fewer (guideline)
-- [ ] 3 or fewer parameters
-- [ ] No duplicate code (DRY)
-- [ ] if nesting is 2 levels or fewer
-- [ ] No magic numbers (extract as constants)
-- [ ] Understandable without comments (self-documenting)
+## Cleanup Packet
+- Current artifact:
+- Primary mode:
+- Why this mode fits:
+
+## Behavior Guardrail
+- Intended behavior to preserve:
+- Evidence available:
+- Missing evidence:
+
+## Planned slices
+1. ...
+2. ...
+3. ...
+
+## Verification
+- Fast checks:
+- Higher-risk checks:
+
+## Route-outs
+- Use `debugging` for:
+- Use `code-review` for:
+- Use `testing-strategies` for:
+- Use `performance-optimization` for:
+- Use `codebase-search` for:
 ```
-
-## Constraints
-
-### Mandatory Rules (MUST)
-
-1. **Test first**: Write tests before refactoring
-2. **Small steps**: Change one thing at a time
-3. **Behavior preservation**: No functional changes
-
-### Prohibited (MUST NOT)
-
-1. **Multiple tasks simultaneously**: No refactoring + feature addition at the same time
-2. **Refactoring without tests**: Risk of regression
-
-## Best practices
-
-1. **Boy Scout Rule**: Leave code cleaner than you found it
-2. **Refactoring timing**: Red-Green-Refactor (TDD)
-3. **Incremental improvement**: Consistency over perfection
-4. **Behavior preservation**: Refactoring involves no functional changes
-5. **Small commits**: Commit in focused units
-
----
-
-## Behavior Validation (Code Simplifier Integration)
-
-### Step A: Understand Current Behavior
-
-Fully understand current behavior before refactoring:
-
-```markdown
-## Behavior Analysis
-
-### Inputs
-- [list of input parameters]
-- [types and constraints]
-
-### Outputs
-- [return values]
-- [side effects]
-
-### Invariants
-- [conditions that must always be true]
-- [edge cases]
-
-### Dependencies
-- [external dependencies]
-- [state dependencies]
-```
-
-### Step B: Validate After Refactoring
-
-```bash
-# 1. Run tests
-npm test -- --coverage
-
-# 2. Type check
-npx tsc --noEmit
-
-# 3. Lint check
-npm run lint
-
-# 4. Compare with previous behavior (snapshot tests)
-npm test -- --updateSnapshot
-```
-
-### Step C: Document Changes
-
-```markdown
-## Refactoring Summary
-
-### Changes Made
-1. [Change 1]: [reason]
-2. [Change 2]: [reason]
-
-### Behavior Preserved
-- [x] Same input → same output
-- [x] Same side effects
-- [x] Same error handling
-
-### Risks & Follow-ups
-- [potential risks]
-- [follow-up tasks]
-
-### Test Status
-- [ ] Unit tests: passing
-- [ ] Integration tests: passing
-- [ ] E2E tests: passing
-```
-
----
-
-## Troubleshooting
-
-### Issue: Tests fail after refactor
-**Cause**: Behavior change occurred
-**Solution**: Revert and isolate the change, then retry
-
-### Issue: Code still complex
-**Cause**: Multiple responsibilities mixed in one function
-**Solution**: Extract into smaller units with clear boundaries
-
-### Issue: Performance regression
-**Cause**: Inefficient abstraction introduced
-**Solution**: Profile and optimize the hot path
-
----
-
-## Multi-Agent Workflow
-
-### Validation & Retrospectives
-
-- **Round 1 (Orchestrator)**: Validate behavior preservation checklist
-- **Round 2 (Analyst)**: Complexity and duplication analysis
-- **Round 3 (Executor)**: Test or static analysis verification
-
-### Agent Roles
-
-| Agent | Role |
-|-------|------|
-| Claude | Refactoring plan, code transformation |
-| Gemini | Large-scale codebase analysis, pattern detection |
-| Codex | Test execution, build verification |
-
-### Workflow Example
-
-```bash
-# 1. Gemini: Codebase analysis
-ask-gemini "@src/ extract list of high-complexity functions"
-
-# 2. Claude: Refactoring plan and execution
-# Work based on IMPLEMENTATION_PLAN.md
-
-# 3. Codex: Verification
-codex-cli shell "npm test && npm run lint"
-```
-
-## References
-
-- [Refactoring (Martin Fowler)](https://refactoring.com/)
-- [Clean Code (Robert C. Martin)](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)
-- [SOLID Principles](https://en.wikipedia.org/wiki/SOLID)
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2025-01-01
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Related Skills
-- [code-review](../code-review/SKILL.md)
-- [backend-testing](../../backend/testing/SKILL.md)
-
-### Tags
-`#refactoring` `#code-quality` `#DRY` `#SOLID` `#design-patterns` `#clean-code`
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Oversized service handler
+**Input:** "Refactor this 180-line checkout handler into something readable without changing behavior."
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good response shape:**
+- choose `local-safe-refactor`
+- preserve coupon / tax / out-of-stock behavior explicitly
+- extract validation, pricing, and persistence helpers
+- keep tests / typecheck as guardrails
+- split structural cleanup from later semantic follow-up
+
+### Example 2: Fragile legacy module
+**Input:** "This reporting service is impossible to maintain, but we barely trust the tests. Help me refactor it safely."
+
+**Good response shape:**
+- choose `behavior-freeze-first`
+- capture characterization cases before broad cleanup
+- identify one seam at a time instead of redesigning everything
+- route deep failure investigation to `debugging` if expected behavior is still unclear
+
+### Example 3: Repeated API migration
+**Input:** "We need to replace a deprecated client API across 220 TypeScript files before the framework upgrade."
+
+**Good response shape:**
+- choose `repetitive-migration-codemod`
+- define source and target patterns
+- pilot the transform on a subset first
+- keep mechanical rewrite separate from semantic follow-up
+- verify with tests, typecheck, and repo search
+
+### Example 4: Search-first route-out
+**Input:** "Before we refactor anything, find every call site and wrapper around this old helper so we can see the blast radius."
+
+**Good response shape:**
+- route the primary task to `codebase-search`
+- do not present a full refactor plan as the main answer
+- keep `code-refactoring` positioned as the cleanup lane after the impact map exists
+
+## Best practices
+1. Start from the packet the user actually has, not an idealized cleanup workflow.
+2. Pick one primary mode before proposing actions.
+3. Make behavior preservation explicit; do not assume it.
+4. Prefer small, reviewable slices over one giant cleanup diff.
+5. Use codemods or structural rewrites only when repetition justifies the setup cost.
+6. Keep diagnosis, review judgment, test-policy design, performance tuning, and symbol inventory routed to neighboring skills instead of absorbing them.
+7. Preserve evidence of what was verified and what still remains risky.
+
+## References
+- [Intake packets and route-outs](references/intake-packets-and-route-outs.md)
+- [Refactor modes](references/refactor-modes.md)
+- [Handoff boundaries](references/handoff-boundaries.md)
+- [Safe refactor checklist](references/safe-refactor-checklist.md)
+- [Martin Fowler — Refactoring](https://martinfowler.com/books/refactoring.html)
+- [VS Code refactoring docs](https://code.visualstudio.com/docs/editor/refactoring)
+- [IntelliJ IDEA refactoring docs](https://www.jetbrains.com/help/idea/refactoring-source-code.html)
+- [OpenRewrite docs](https://docs.openrewrite.org/)
+- [jscodeshift](https://github.com/facebook/jscodeshift)
+- [ast-grep](https://ast-grep.github.io/)

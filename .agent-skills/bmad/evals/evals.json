@@ -1,0 +1,47 @@
+{
+  "skill_name": "bmad",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use bmad. We have a vague SaaS feature idea for team billing and audit logs, but no PRD yet. What should come next?",
+      "expected_output": "Chooses a primary packet, makes a project-level assumption, identifies the likely current phase as analysis or planning, recommends one next artifact such as a product brief or PRD, and routes deeper follow-up rather than dumping every BMAD command.",
+      "assertions": [
+        "Output identifies one primary packet or equivalent intake classification",
+        "Output identifies exactly one primary next artifact or gate",
+        "Output makes a level assumption explicit",
+        "Output includes at least one route-out or boundary note"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We already finished an architecture doc for our backend migration. Use bmad to tell us what to do next.",
+      "expected_output": "Recognizes that the project is in solutioning or at the solutioning-to-implementation boundary, keeps review-gate visibility, and recommends either plannotator review or a sprint-plan/story-packet handoff.",
+      "assertions": [
+        "Output references current phase or boundary explicitly",
+        "Output does not jump backwards to a vague ideation artifact without justification",
+        "Output mentions review-gate logic or plannotator when appropriate"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want BMAD for Codex CLI. Should I use bmad or omx?",
+      "expected_output": "Keeps bmad as the core packet/phase router while routing Codex-first runtime specifics to omx.",
+      "assertions": [
+        "Output preserves bmad as the common-layer BMAD router",
+        "Output routes Codex runtime details to omx",
+        "Output avoids presenting bmad as a Claude-only skill"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Use bmad. We already have a repo, a half-written architecture doc, and a few review comments. I do not know whether to write a PRD, rewrite the architecture, or start sprint planning.",
+      "expected_output": "Treats this as a brownfield or review-gate packet, avoids pretending the project is greenfield, recommends the smallest truthful next move such as an architecture review gate or workflow-status update, and names the boundary to plannotator or task-planning.",
+      "assertions": [
+        "Output recognizes a brownfield, mixed-state, or review-gate packet",
+        "Output does not jump straight back to product brief without justification",
+        "Output recommends one next artifact or gate",
+        "Output mentions plannotator or task-planning only with a short why"
+      ]
+    }
+  ]
+}

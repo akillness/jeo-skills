@@ -1,14 +1,15 @@
 N:performance-optimization
-D:Optimize application performance for speed, efficiency, and scalability. Use when improving page ...
-G:performance optimization React lazy-loading caching
-U[4]:
-  **Slow page loads**: low Lighthouse score
-  **Slow rendering**: delayed user interactions
-  **Large bundle size**: increased download time
-  **Slow queries**: database bottlenecks
+D:Route performance work from the artifact people already have into one measurement-led tuning brief. Use when the main job is locating the tightest latency, throughput, memory, bundle-size, or frame-budget bottleneck; choosing the right trace, query plan, load-test result, profiler capture, or CWV report; naming one bottleneck; and recommending one or two bounded optimizations with before/after verification. Route telemetry rollout to monitoring-observability, correctness diagnosis to debugging, structural cleanup to code-refactoring, validation-policy design to testing-strategies, and engine-specific capture interpretation to game-performance-profiler.
+G:performance optimization profiling bottleneck-analysis latency throughput memory bundle-size frame-budget query-plans web-vitals flamegraphs
+U[5]:
+  performance complaint arrives as trace/report/plan/profiler packet
+  bottleneck not yet isolated
+  need one or two bounded tuning moves
+  need before/after verification packet
+  need route-out to observability/debugging/refactoring/game profiler
 S[5]{n,action}:
-  1,Measure performance
-  2,Optimize React
-  3,Optimize bundle size
-  4,Optimize images
-  5,Optimize database queries
+  1,Frame the complaint and decision target
+  2,Start from the intake packet already available
+  3,Choose one primary tuning mode
+  4,Name one bottleneck and recommend at most two changes
+  5,Verify before/after impact and route remaining work

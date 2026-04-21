@@ -1,30 +1,33 @@
 N:skill-autoresearch
-D:Autonomously optimize an existing AI skill by running repeatable eval-driven experiments, mutating one instruction at a time, and keeping only changes that improve binary pass rate.
-G:skill-autoresearch skill-optimization evals prompt-iteration benchmark mutation-loop autoresearch
+D:Route reusable skill-improvement work into one bounded repo-local ratcheting packet: ratchet eligibility, benchmark readiness, loop charter freeze, baseline scoring, one-change mutation, support-surface sync, or final keep/revert report. Use when a SKILL.md, SOP, prompt, or workflow doc may need a frozen local benchmark and append-only experiment logs, or when you need to prove no ratchet is justified yet. Route GPU-bound `autoresearch` runs and hosted eval/observability platforms outward.
+G:skill-autoresearch skill-optimization evals prompt-iteration benchmark mutation-loop ratcheting autoresearch
 
 U[5]:
-  Improve an underperforming SKILL.md with measured iterations
-  Build binary evals for prompt or skill quality
-  Compare baseline vs mutation scores before keeping changes
-  Generate dashboard, results log, and changelog artifacts for a skill
-  Continue improving a skill from prior experiment history
+  Improve a reusable repo artifact with a frozen local benchmark instead of ad hoc rewriting
+  Choose one packet before editing: readiness, charter, baseline, mutation, support-sync, final report, or route-out
+  Keep one primary mutable artifact and one meaningful change per iteration
+  Sync compact/docs/manifests only after the core ratchet holds
+  Preserve append-only keep/revert history in repo-visible artifacts
 
-S[6]{n,action,details}:
-  1,ConfirmInputs,Collect target skill path; 3-5 test inputs; 3-6 binary evals; runs per experiment; interval; budget cap
-  2,ReadSkill,Read SKILL.md and linked references; identify job, output format, and failure modes
-  3,CreateWorkspace,Create skill-autoresearch-[skill-name] with dashboard.html; results.json; results.tsv; changelog.md; SKILL.md.baseline
-  4,Baseline,Run the target skill as-is N times; score all outputs; record experiment 0
-  5,MutateLoop,Change one instruction at a time; rerun; keep only score improvements; log keep and discard outcomes
-  6,Deliver,Report baseline-to-final improvement; keep rate; top fixes; remaining failures; artifact paths
+S[7]{n,action,details}:
+  1,ChoosePacket,Normalize the request into benchmark-readiness; charter-freeze; baseline-score; one-change-mutation; support-sync; final-report; or route-out
+  2,ReadTarget,Read the primary artifact and only the neighboring support/discovery surfaces that matter for this run
+  3,FreezeEvaluator,Write loop-charter.md with goal; baseline; fixed harness; scope; constraints; rejected directions
+  4,Baseline,Create a baseline copy and record experiment 0 on the frozen harness
+  5,MutateOnce,Make one meaningful change; rerun the same harness; keep only score-improving changes; revert ties or regressions unless the charter says otherwise
+  6,SyncSupport,Update evals; compact variants; manifests; README/setup surfaces only after the main ratchet is justified
+  7,Deliver,Report baseline-to-final delta; keep-vs-revert count; remaining failures; artifact paths
 
-R[6]:
-  Do not start without target skill, test inputs, and binary evals
-  Use yes-no evals only; never use scales
-  Change one thing at a time so results stay attributable
-  Keep or discard by measured score, not intuition
-  Log every experiment, including discarded mutations
-  Stop only on manual stop, budget cap, or clear score plateau
+R[7]:
+  Do not start without representative prompts or scenarios plus binary evals
+  Do not change prompts; eval wording; or scoring rules mid-run
+  Keep one primary mutable artifact even if support files are later in scope
+  Change one meaningful thing at a time so the result stays attributable
+  Log both keeps and reverts
+  Route hosted eval/tracing work outward instead of stretching this skill
+  Apply the same frozen-harness rule when the target is skill-autoresearch itself
 
-E[2]{desc,in,out}:
-  "Baseline benchmark","Run the target skill 5 times on the fixed test set and score each output","results.tsv baseline row; results.json baseline state; dashboard bootstrapped"
-  "Mutation experiment","Edit one instruction; rerun the same eval suite","keep or discard decision with changelog entry and updated pass-rate history"
+E[3]{desc,in,out}:
+  "Trigger repair","A reusable skill over-triggers and needs a bounded loop","packet chosen; evaluator frozen; one wording mutation kept or reverted by score"
+  "Benchmark drift repair","The maintainer keeps changing tests while editing the skill","run halted into readiness/charter packet until the evaluator is frozen or a new comparison track begins"
+  "Support-surface follow-up","The main skill improved and README/setup/compact wording may now be stale","support-sync happens only after the core ratchet is proven"

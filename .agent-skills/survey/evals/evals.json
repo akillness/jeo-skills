@@ -1,0 +1,65 @@
+{
+  "skill_name": "survey",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "survey this workflow: our normal web search API is returning 401 errors, but we still need a landscape scan of browser automation tools before planning implementation",
+      "expected_output": "The survey run keeps the 4-lane structure, writes `.survey/{slug}/` artifacts, and explicitly falls back from broken search/extract tooling to direct retrieval or labeled downgrade paths instead of stopping.",
+      "assertions": [
+        "Mentions direct primary-page retrieval or another explicit fallback after search/extract failure",
+        "Preserves the `.survey/{slug}/` artifact structure",
+        "Keeps the task in research mode rather than implementation mode"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "survey which existing skill in this repo is the best bounded maintenance target next, using the graph report and wiki first",
+      "expected_output": "A repo-maintenance survey that classifies the run, reuses repo-local evidence, and writes factual triage/context/solutions artifacts before any implementation starts.",
+      "assertions": [
+        "Classifies the request as repo-maintenance or equivalent",
+        "Uses repo-local evidence such as graph/wiki/skill files before broad external search",
+        "Does not jump straight into rewriting the target skill inside the survey step"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "survey how Claude Code, Codex, and Gemini CLI differ for hooks, approvals, and research-worker setup before we standardize one survey workflow",
+      "expected_output": "A platform-comparison survey that writes `platform-map.md` and normalizes the answer into `settings`, `rules`, `hooks`, and portability gaps rather than dumping vendor trivia.",
+      "assertions": [
+        "Includes `settings`, `rules`, and `hooks` as the comparison frame",
+        "Creates or explicitly requires `platform-map.md` for the topic",
+        "Calls out at least one portability gap instead of pretending the platforms are identical"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "fix this one-line TypeScript error in src/auth.ts",
+      "expected_output": "A response that does not activate a full survey flow when the task is just a narrow implementation fix.",
+      "assertions": [
+        "States that survey is not the right mode for a tiny bugfix or narrow code change",
+        "Routes to implementation or a more direct debugging/coding path",
+        "Does not prescribe full `.survey/{slug}/` artifact creation for the one-line fix"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "survey this repo-maintenance question, then leave the findings in a reusable folder for later automation",
+      "expected_output": "The survey writes the canonical `.survey/{slug}/` files and explicitly validates the artifact folder before handing off to planning or implementation.",
+      "assertions": [
+        "Mentions validating the artifact contract after writing files",
+        "Uses the repo-local validator script or equivalent validation command",
+        "Keeps the survey output in the canonical filenames instead of inventing a new folder layout"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "survey Claude Code vs Codex vs Gemini CLI for hooks and worker orchestration, and make the result portable for a cron loop",
+      "expected_output": "The survey requires `platform-map.md`, preserves the fixed headings, and treats hooks as optional accelerators around a portable artifact contract rather than the only source of truth.",
+      "assertions": [
+        "Requires `platform-map.md` or validates with a platform-topic mode",
+        "States that repo-local artifact files remain the durable source of truth",
+        "Treats hooks as optional runtime wrappers instead of assuming hook parity across platforms"
+      ]
+    }
+  ]
+}

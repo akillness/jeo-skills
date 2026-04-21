@@ -4,19 +4,19 @@
     {
       "id": 1,
       "prompt": "Check if my SKILL.md file follows the Agent Skills specification format. The file is at .agent-skills/my-skill/SKILL.md",
-      "expected_output": "A validation report listing any issues with frontmatter fields, name format, description length, and recommended sections",
+      "expected_output": "A validation report listing any issues with frontmatter fields, name format, description length, imperative trigger phrasing, and recommended sections.",
       "assertions": [
         "The output checks for the required 'name' field",
         "The output checks for the required 'description' field",
         "The output verifies the name follows lowercase hyphenated format",
         "The output checks description length is under 1024 characters",
-        "The output checks for recommended sections (When to use, Instructions, Examples)"
+        "The output checks for recommended sections such as When to use this skill, Instructions, and Examples"
       ]
     },
     {
       "id": 2,
       "prompt": "Create a new SKILL.md for a git-workflow skill that handles committing, branching, and PR creation",
-      "expected_output": "A properly formatted SKILL.md with correct frontmatter and all recommended sections",
+      "expected_output": "A properly formatted SKILL.md with correct frontmatter, a trigger-oriented description, and the standard sections.",
       "assertions": [
         "The output includes YAML frontmatter between --- delimiters",
         "The frontmatter contains a 'name' field set to 'git-workflow'",
@@ -31,10 +31,10 @@
     {
       "id": 3,
       "prompt": "My skill description is 'Helps with CSV files.' — improve it so the skill triggers more reliably",
-      "expected_output": "An improved description with imperative phrasing, specific operations, trigger keywords, under 1024 characters",
+      "expected_output": "An improved description with imperative phrasing, specific operations, trigger keywords, and route-aware wording under 1024 characters.",
       "assertions": [
         "The improved description contains 'Use when' or similar imperative phrasing",
-        "The improved description lists specific operations (not just 'helps with')",
+        "The improved description lists specific operations instead of generic help wording",
         "The improved description is under 1024 characters",
         "The improved description includes trigger keywords or synonyms"
       ]
@@ -42,11 +42,63 @@
     {
       "id": 4,
       "prompt": "Validate all the skills in the .agent-skills directory and give me a summary of which ones have issues",
-      "expected_output": "A per-skill validation report showing errors and warnings for each skill, with a total summary",
+      "expected_output": "A per-skill validation report showing errors and warnings for each skill, with a total summary.",
       "assertions": [
         "The output covers multiple skills",
         "The output distinguishes between errors and warnings",
         "The output includes a total or summary count"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We renamed one skill, removed another, and added a new game skill. Check whether skills.json and the README/setup inventory are still in sync with the .agent-skills folders.",
+      "expected_output": "A response that validates catalog/discovery surfaces, compares live folders against skills.json and README/setup counts, and identifies stale or missing entries.",
+      "assertions": [
+        "The output checks live skill folders against skills.json",
+        "The output checks README or setup inventory counts after structural changes",
+        "The output flags stale manifest-only names or missing live skills",
+        "The output treats catalog sync as part of the standardization workflow"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I rewrote a skill's SKILL.md description and route-outs, but I also ship SKILL.toon for runtime discovery. What should I validate before I call the standardization pass done?",
+      "expected_output": "A response that treats SKILL.toon / SKILL.compact.md as derived discovery surfaces, checks whether compact variants need refresh after material trigger-surface changes, and keeps catalog/runtime sync in scope.",
+      "assertions": [
+        "The output mentions refreshing or reviewing SKILL.toon or SKILL.compact.md after material rewrites",
+        "The output distinguishes compact-variant sync from only checking skills.json and README/setup counts",
+        "The output keeps runtime discovery or query/list tooling in scope",
+        "The output frames compact files as derived artifacts, not independent source of truth"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "I'm at the repo root of oh-my-skills. What exact command should I run to validate .agent-skills/skill-standardization, and what still needs manual review after the scripts pass?",
+      "expected_output": "A response that gives the truthful repo-root validator command, distinguishes repo-root from skill-local execution, and lists manual review items such as compact-surface freshness or stale discovery copy.",
+      "assertions": [
+        "The output uses the nested repo-root path .agent-skills/skill-standardization/scripts/validate_skill.sh instead of bare scripts/validate_skill.sh",
+        "The output distinguishes repo-root execution from skill-local execution or notes the working-directory dependency",
+        "The output names at least one manual review item beyond the scripts, such as SKILL.toon freshness, manifest command residue, or README/setup discovery wording"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "A valid SKILL.md uses `description: >` and says `ClawTeam's operator guide` in the folded description. Validate it without telling me to rewrite the prose just to appease shell parsing.",
+      "expected_output": "A response that treats folded descriptions with apostrophes as valid input, keeps the validator bug/repair path in scope if parsing fails, and avoids author-side wording downgrades as the default fix.",
+      "assertions": [
+        "The output accepts ordinary apostrophes inside valid folded descriptions as something the validator should handle",
+        "The output frames shell-quote failures as validator bugs or regression cases to repair, not as a reason to rewrite natural language",
+        "The output keeps repo-root validator usage in scope when explaining the validation path"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "I tightened the canonical skill and refreshed skills.json plus README/setup, but the compatibility alias still has a checklist and reference packet. What else must I review before calling the standardization pass done?",
+      "expected_output": "A response that treats alias-side support docs/checklists/examples as derived surfaces whenever they mirror the canonical contract, not just top-level discovery files.",
+      "assertions": [
+        "The output explicitly tells the maintainer to review alias-side support docs, checklists, or examples when a compatibility alias mirrors the canonical packet",
+        "The output distinguishes alias-side support sync from only refreshing skills.json, README/setup, or SKILL.toon",
+        "The output frames stale alias support docs as a real residue risk even if catalog validators pass"
       ]
     }
   ]

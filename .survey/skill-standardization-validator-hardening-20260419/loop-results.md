@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/skill-standardization/scripts/validate_skill.sh` | Replacing `xargs` with quote-safe whitespace normalization will stop false failures on folded descriptions with apostrophes while preserving current checks. | Replaced multiline description flattening with quote-safe Python normalization; added supporting docs/evals/regression script. | `scripts/regression_folded_description_quotes.sh` now passes; `validate_skill.sh .agent-skills/skill-standardization` passes with 0 errors / 0 warnings; catalog sync still reports no drift. | Keep | Baseline repro had failed on `ClawTeam's`; repaired evaluator now accepts the same prose-level input. |

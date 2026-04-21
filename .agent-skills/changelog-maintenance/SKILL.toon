@@ -1,9 +1,11 @@
 N:changelog-maintenance
-D:Maintain a clear and informative changelog for software releases. Use when documenting version ch...
-G:changelog release-notes versioning semantic-versioning documentation
-U[3]:
-  **Before release**: organize changes before shipping a version
-  **Continuous**: update whenever significant changes occur
-  **Migration guide**: document breaking changes
-S[1]{n,action}:
-  1,Keep a Changelog format
+D:Write and maintain release-history artifacts for shipped changes. Use when the main job is turning shipped evidence into the smallest truthful changelog, release-note, migration-update, or game patch-note packet; routes internal docs to technical-writing, API docs to api-documentation, end-user help to user-guide-writing, rollout execution to deployment-automation, and launch messaging to marketing-automation.
+G:changelog release-notes patch-notes migration-update deprecation what's-new release-history
+U[4]:
+  **CHANGELOG.md refresh**: update durable repo history from shipped work
+  **Customer or developer release notes**: summarize impact and link deeper docs
+  **Breaking-change notice**: publish migration/deprecation update with deadlines
+  **Game patch notes**: keep player-facing update concise and truthful
+S[2]{n,action}:
+  1,Classify one primary mode plus the smallest output packet
+  2,Verify shipped evidence and route deeper docs to neighboring skills

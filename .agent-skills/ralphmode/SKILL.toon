@@ -1,29 +1,30 @@
 N:ralphmode
-D:[ralphmode] Permission profile for Claude Code, Codex CLI, and Gemini CLI to reduce approval popups for ralph/jeo automation. Key idea: don't globally allow everything; first define repo or disposable sandbox boundaries, and keep blocking secrets and destructive commands.
-G:ralph permissions automation claude-code codex-cli gemini-cli sandbox bypass trusted-folders denylist jeo
+D:[ralphmode] Cross-platform permission profile for Claude Code, Codex CLI, and Gemini CLI that lowers approval friction for `ralph` / `jeo` loops by separating repo-local settings, explicit rules, and hook-backed checkpoints. Key idea: use trusted repo-safe presets for normal work, reserve full bypass / YOLO for disposable sandboxes, and keep secrets plus destructive commands behind hard checkpoints.
+G:ralph permissions automation claude-code codex-cli gemini-cli sandbox bypass trusted-folders approval-policy hooks jeo
 
 U[5]:
   When approval popups break flow while repeatedly running ralph or jeo
-  When you need to align Claude Code, Codex CLI, and Gemini CLI settings for the same repo
-  When you must separate repo-scoped automation from true YOLO mode
-  When expanding automation while keeping guardrails for .env/secrets/destructive shell commands
-  When you need to summarize the latest permission model differences by platform
+  When you need one portable mental model for Claude Code, Codex CLI, and Gemini CLI permission behavior
+  When you must separate repo-safe automation from true sandbox-only YOLO mode
+  When expanding automation while keeping guardrails for .env, secrets, force-pushes, sudo, or destructive DB commands
+  When you need to explain why Codex relies more on approval policy + prompt contracts while Claude/Gemini can use pre-tool hooks
 
-S[5]{n,action,details}:
-  1,Define-Boundary,Lock down the project root and denylist (.env secrets rm -rf sudo) first
-  2,Choose-Profile,Choose: Claude acceptEdits or bypassPermissions; Codex approval_policy+sandbox_mode; Gemini Trusted Folder
-  3,Apply-Local,Apply only to project-local settings when possible; limit global defaults to sandbox-only
-  4,Run-Ralph,Run in order: boundary check -> permission profile -> ralph or jeo -> verify
-  5,Review-Revert,If this was a temporary bypass, revert after work and document the applied profile for the team
+S[6]{n,action,details}:
+  1,Define-Boundary,Lock down the project root and denylist (.env secrets rm -rf sudo force-push destructive DB commands) first
+  2,Choose-Settings,Choose a repo-safe vs sandbox-only preset for Claude Code Codex CLI or Gemini CLI
+  3,Apply-Local,Prefer project-local config and trusted-folder or trusted-project scope over broad global defaults
+  4,Write-Rules,Keep repo-only mutation scope secret/path denylists and CHECKPOINT_NEEDED rules separate from the preset
+  5,Run-Verify,Run in order: boundary check -> settings preset -> rules contract -> ralph or jeo -> verify
+  6,Review-Revert,If this was a temporary bypass revert it after work and document the applied profile for the team
 
 R[4]:
-  For detailed templates, read only the required sections per platform in references/permission-profiles.md
-  For Codex sandbox runs use: codex -c model_reasoning_effort="high" --dangerously-bypass-approvals-and-sandbox -c model_reasoning_summary="detailed" -c model_supports_reasoning_summaries=true
-  Gemini now supports --yolo flag for sandbox YOLO mode (combines sandbox + auto-approve); use only in disposable environments
-  Use full bypass only in a disposable sandbox and never as the default for day-to-day repo work
+  Portable model: settings choose the preset, rules define the boundary, hooks enforce the dangerous edges when available
+  Claude and Gemini can use pre-tool hooks; Codex should rely on approval_policy + sandbox_mode + prompt-contract fallback
+  For detailed per-platform templates, read only the required sections in references/permission-profiles.md
+  Use full bypass only in disposable sandbox environments and never as the default for day-to-day repo work
 
 E[4]{desc,in,out}:
-  "Claude sandbox preset","claude --dangerously-skip-permissions in disposable sandbox","Fully bypasses approval prompts; combine with repo boundary and denylist"
-  "Codex CLI sandbox flags","codex -c model_reasoning_effort=high --dangerously-bypass-approvals-and-sandbox -c model_reasoning_summary=detailed -c model_supports_reasoning_summaries=true","Bypasses sandbox and approvals with high-reasoning mode; use only in disposable environments"
-  "Gemini YOLO mode","gemini --yolo","Combines sandbox + auto-approve for disposable-sandbox ralph runs"
-  "Gemini trust-only","Trust only the repo root folder","Fewer approvals when re-entering the same folder"
+  "Cross-platform repo-safe setup","Make ralph low-friction in one repo across Claude Code Codex and Gemini while keeping .env and destructive commands blocked","Chooses repo-local settings for each platform and preserves denylist plus checkpoint rules"
+  "Codex checkpoint fallback","Codex should stop before force-push or sudo even when approval prompts are reduced","Uses approval_policy + sandbox_mode + CHECKPOINT_NEEDED prompt contract instead of pretending Codex has Claude-style pre-tool blocking"
+  "Portable abstraction","Explain ralphmode in one model that covers Claude Codex and Gemini","Names settings rules hooks and shows at least one important platform difference"
+  "False-positive route-out","I need Claude team orchestration or /autopilot behavior","Routes to omc because ralphmode is the permission/profile layer rather than the runtime anchor"

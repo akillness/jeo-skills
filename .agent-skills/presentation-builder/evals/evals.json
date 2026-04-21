@@ -1,0 +1,56 @@
+{
+  "skill_name": "presentation-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Turn this product brief into a 10-slide investor deck. Show me the outline first, then generate the deck in decks/series-a and hand off an editable PPTX after visual review.",
+      "expected_output": "The skill classifies the request as an investor deck, chooses an outline-first or outline-brief packet before slide generation, uses a `decks/series-a/` workspace, and preserves PPTX handoff as a post-review step.",
+      "assertions": [
+        "Mentions investor or fundraising deck mode explicitly",
+        "Includes a smallest useful packet such as outline-brief or storyboard before export",
+        "Uses a deck workspace path such as decks/series-a/",
+        "Treats PPTX as the last-mile handoff surface after review"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Build an 8-slide architecture review deck for our browser automation service. Use screenshots, flow diagrams, and one slide on failure handling. I need a reviewable HTML deck first and a PDF for async review.",
+      "expected_output": "The skill routes this to architecture-demo mode, focuses on evidence-rich technical slides, chooses a review-ready HTML packet before export, and preserves PDF as the async-review surface.",
+      "assertions": [
+        "Mentions architecture-demo or equivalent technical presentation mode",
+        "Calls for screenshots, diagrams, or technical evidence rather than generic marketing slides",
+        "Includes review-ready HTML or visual review before export",
+        "Reports PDF as an async-review handoff target"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Create a publisher pitch deck for our indie tactics game. Include hook, audience, gameplay loop, milestone plan, budget ask, and next step. Keep the deck source in decks/tactics-pitch and expect cleanup in Google Slides after export.",
+      "expected_output": "The skill chooses game-pitch mode, structures the deck around gameplay proof and budget/ask, keeps a stable deck workspace, and makes Google Slides the explicit last-mile cleanup surface instead of pretending the browser deck is the final destination.",
+      "assertions": [
+        "Mentions game-pitch or publisher pitch mode",
+        "Includes gameplay, audience, milestones, and budget/ask in the structure",
+        "Keeps the deck source in decks/tactics-pitch or equivalent stable workspace",
+        "Calls out Google Slides as a downstream handoff or cleanup surface"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Help me figure out the launch messaging, channel plan, and owners for next month's release.",
+      "expected_output": "The skill should route away from presentation-builder and recommend marketing-automation because the main artifact is launch planning and messaging, not a deck.",
+      "assertions": [
+        "Routes to marketing-automation or explicitly says presentation-builder is not the right skill",
+        "Explains that the artifact is planning/messaging rather than a deck file"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Write internal technical docs for our rollout plan, migration risks, and rollback steps.",
+      "expected_output": "The skill should route away from presentation-builder and recommend technical-writing because the main artifact is a technical document, not a deck.",
+      "assertions": [
+        "Routes to technical-writing or explicitly says presentation-builder is not the right skill",
+        "Explains that the artifact is a technical document rather than a slide deck"
+      ]
+    }
+  ]
+}

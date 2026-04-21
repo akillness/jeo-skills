@@ -125,10 +125,32 @@ validate_skill() {
   # --- Check: description field ---
   local desc
   desc=$(extract_fm_field "$fm_content" "description") || true
-  # For block scalars, also collect continuation lines
+  # For block scalars, also collect continuation lines.
+  # Important: do not use xargs for trimming here. xargs performs shell-like
+  # quote parsing and can abort on ordinary apostrophes in valid prose such as
+  # "ClawTeam's" with `xargs: unterminated quote`.
   if [[ -z "$desc" ]] || [[ "$desc" == ">" ]] || [[ "$desc" == "|" ]]; then
-    # Try to get multi-line description
-    desc=$(awk '/^description:/{found=1; next} found && /^  /{printf "%s ", $0; next} found{exit}' "$skill_md" | xargs)
+    desc=$(python3 - "$skill_md" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+text = Path(sys.argv[1]).read_text(encoding='utf-8')
+match = re.search(r'^description:\s*[>|]\s*\n((?:  .*\n?)*)', text, re.M)
+if not match:
+    print('')
+    raise SystemExit(0)
+
+parts = []
+for raw_line in match.group(1).splitlines():
+    line = raw_line[2:] if raw_line.startswith('  ') else raw_line.lstrip()
+    stripped = line.strip()
+    if stripped:
+        parts.append(stripped)
+
+print(' '.join(parts))
+PY
+)
   fi
 
   if [[ -n "$desc" ]]; then

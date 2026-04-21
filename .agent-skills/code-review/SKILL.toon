@@ -1,25 +1,24 @@
 N:code-review
-D:Conduct thorough, constructive code reviews for quality and security. Use when reviewing pull req...
-G:code-review code-quality security best-practices PR-review
-U[7]:
-  Reviewing pull requests
-  Checking code quality
-  Providing feedback on implementations
-  Identifying potential bugs
-  Suggesting improvements
-S[8]{n,action}:
-  1,Understand the context
-  2,High-level review
-  3,Detailed code review
-  4,Security review
-  5,Performance review
-  6,Testing review
-  7,Documentation review
-  8,Provide feedback
+D:Turn a PR, diff, merge request, or patch stack into one evidence-first review brief with severity, missing-proof checks, and route-outs.
+G:code-review code-quality security-review risk-review pull-request-review diff-review pre-merge missing-evidence
+U[5]:
+  Review a pull request or diff before merge
+  Decide approve vs request changes vs block
+  Check correctness, security, rollout risk, and missing evidence
+  Self-review a change before requesting teammates
+  Route Git, debugging, UI review, or repo-admin work correctly
+S[7]{n,action}:
+  1,Normalize the review packet
+  2,Choose the primary review mode
+  3,Inspect the highest-risk path first
+  4,Separate findings from missing evidence
+  5,Classify severity and route-outs
+  6,Produce a reviewer-grade decision brief
+  7,Escalate confidence honestly
 R[6]:
-  [ ] Variables
-  [ ] Functions
-  [ ] Classes
-  [ ] Constants
-  🔴 Critical
-  🟡 Important
+  correctness
+  security or trust boundaries
+  migration or rollout risk
+  missing test or preview proof
+  maintainability
+  repo-admin route-outs

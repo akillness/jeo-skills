@@ -1,0 +1,56 @@
+{
+  "skill_name": "debugging",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "This profile save bug started after a refactor. Saving without a new avatar clears the old avatar. Help me debug it.",
+      "expected_output": "A debugging brief that defines the failure, proposes a minimal reproducer, isolates the likely update path/regression boundary, and suggests verification with a regression test.",
+      "assertions": [
+        "Output defines expected vs actual behavior in a testable way",
+        "Output proposes a minimal reproducer or focused failing test",
+        "Output uses regression isolation language such as recent changes, last-known-good, or git bisect",
+        "Output includes fix verification or regression-guard guidance"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "A checkout test passes locally but fails in CI about one out of every eight runs. What should I do?",
+      "expected_output": "A debugging plan that treats the issue as a flaky-failure mode, recommends repeated runs and isolation of timing/shared-state/environment differences, and only escalates to testing-strategies if the request turns into broader flake policy work.",
+      "assertions": [
+        "Output recognizes the failure as flaky or nondeterministic",
+        "Output recommends repeated-run, timing, order, shared-state, or environment-diff checks",
+        "Output does not jump straight to broad test-program design as the first move"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The worker only crashes in staging. I already have the first failing request payload and a diff of the env vars from local. Debug it.",
+      "expected_output": "A debugging plan that treats the issue as env/config mismatch debugging, compares staging and local facts before speculative code edits, and keeps the verification tied to the same payload/runtime context.",
+      "assertions": [
+        "Output explicitly compares staging vs local/runtime facts such as env vars, flags, versions, or config branches",
+        "Output uses the existing failing payload or runtime context as the main reproducer",
+        "Output avoids jumping straight to broad environment-setup redesign unless the task clearly shifts there"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "This page feels slow and we need to improve p95 latency. Can you debug it?",
+      "expected_output": "A response that recognizes the request as primarily a performance/bottleneck problem and routes to performance-optimization unless there is a concrete broken behavior that still needs diagnosis.",
+      "assertions": [
+        "Output identifies that the request is mainly about measurement or optimization tradeoffs",
+        "Output routes to performance-optimization or clearly performs the equivalent handoff",
+        "Output avoids presenting generic bug-root-cause steps as if a concrete failing behavior were already defined"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I pasted 500 lines of CI stack traces and retries. Can you debug this and tell me what's wrong?",
+      "expected_output": "A response that routes symptom-first log work to log-analysis before pretending a root-cause debugging loop can start.",
+      "assertions": [
+        "Output explicitly states that the first actionable failure still needs to be identified",
+        "Output routes to log-analysis or clearly performs the equivalent symptom-triage handoff",
+        "Output avoids presenting a full code-fix workflow as if the causal boundary were already known"
+      ]
+    }
+  ]
+}

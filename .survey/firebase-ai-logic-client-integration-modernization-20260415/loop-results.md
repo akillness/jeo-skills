@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `firebase-ai-logic/SKILL.md` | Converting the skill from a stale example dump into a client-integration router with support files will improve trigger precision and preserve the `firebase-ai-logic` ↔ `genkit` boundary. | Rewrote the skill around app/client integration modes, added three `references/` docs, added `evals/evals.json`, refreshed `SKILL.toon`, synced discovery manifests, and updated README / README.ko wording. | `validate_skill.sh` pass, catalog-sync pass, JSON parse pass, and graph/wiki refresh completed. | Keep | Improvement transferred cleanly across the whole Firebase AI lane instead of adding another wrapper. |

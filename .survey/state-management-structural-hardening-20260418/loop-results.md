@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `state-management/SKILL.md` | A packet-first, routing-first front door with stronger URL/router and boundary guidance will improve trigger precision and reduce overlap with adjacent frontend skills. | Rewrote the core skill, updated decision/handoff refs, added `ownership-packets-and-route-outs.md`, expanded evals with a responsive-layout near miss, and synced compact/discovery surfaces. | `validate_skill.sh` passed with 0 errors / 0 warnings; JSON/catalog surfaces parse; graph and wiki updates recorded the same boundary shift. | Keep | Line count dropped from 290 to 273 while preserving full support coverage and improving route-outs. |

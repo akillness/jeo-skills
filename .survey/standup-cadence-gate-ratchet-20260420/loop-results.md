@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | standup-meeting/SKILL.md | Adding a cadence gate before standup-mode selection will improve trigger truth and reduce forced-daily recommendations across PM, GTM, and game-delivery prompts | Add cadence outcome to the front door, sync reference/evals/discovery wording only if the main contract improves | `validate_skill.sh` passed; eval JSON and `skills.json` both parsed; residue scan found no stale `Daily Sync Brief` or old discovery wording in live surfaces | Keep | The ratchet stayed bounded: one new cadence gate, one new support reference, and synced discovery surfaces |

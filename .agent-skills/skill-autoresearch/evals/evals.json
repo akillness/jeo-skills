@@ -1,0 +1,65 @@
+{
+  "skill_name": "skill-autoresearch",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Improve this stale SKILL.md. I want a bounded loop with clear prompts, fixed evals, and a keep-or-revert decision instead of a rewrite.",
+      "expected_output": "The skill activates as a repo-local ratcheting workflow, freezes the evaluator before edits, chooses a packet, and uses one-change iterations with append-only logging.",
+      "assertions": [
+        "The workflow requires a frozen evaluation harness or loop charter before mutations start.",
+        "The workflow chooses one primary packet or one primary mutable artifact before editing.",
+        "The workflow changes one meaningful thing at a time and records keep-or-revert history in append-only artifacts."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My prompt benchmark is weak and I keep changing the tests while rewriting the skill. Help me optimize the skill anyway.",
+      "expected_output": "The skill stops the run at benchmark readiness or charter freeze, refuses evaluator drift, and tells the maintainer to freeze the judge or start a new comparison track.",
+      "assertions": [
+        "The skill warns against changing the evaluator mid-run.",
+        "The skill routes the request to a readiness or charter-freeze packet instead of pretending the loop can continue normally.",
+        "The skill does not treat ad hoc rewriting without a stable benchmark as acceptable autoresearch."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I updated the main SKILL.md and now I think the README, setup prompt, and compact variant might be out of sync. What should the loop do?",
+      "expected_output": "The skill treats docs/setup/discovery updates as a support-sync packet and can take that path when the main artifact is already fine.",
+      "assertions": [
+        "The skill explicitly mentions support-surface sync for compact variants, manifests, or README/setup surfaces when positioning changed materially.",
+        "The skill allows support-sync when the main artifact is already good and only support surfaces drifted.",
+        "The skill keeps the primary mutable artifact focused even when support files are allowed."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "This skill already passes our frozen checks and reviewer feedback is good. Should we ratchet it anyway or stop?",
+      "expected_output": "The skill uses a ratchet-eligibility or equivalent gate and can conclude that no ratchet is justified.",
+      "assertions": [
+        "The skill explicitly allows a no-ratchet-justified outcome before mutation.",
+        "The skill does not force charter, baseline, or mutation work when the baseline already passes and there is no material drift.",
+        "The skill protects the passing baseline from unnecessary churn unless concrete evidence-backed headroom exists."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I need hosted traces, dataset comparisons, and experiment dashboards for our production AI app. Should I use this skill?",
+      "expected_output": "The skill routes the request outward to hosted eval or observability tools instead of stretching the repo-local ratchet loop.",
+      "assertions": [
+        "The skill explicitly routes hosted app-scale eval or observability work to LangSmith, Promptfoo, Braintrust, Weave, or similar tools.",
+        "The skill keeps repo-local markdown or git-based ratcheting as its own narrower niche.",
+        "The skill does not claim to replace production tracing or hosted experiment platforms."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "We want to improve skill-autoresearch itself. What extra rule should apply?",
+      "expected_output": "The skill applies its own frozen-harness and keep-or-revert discipline to itself instead of exempting the meta-skill.",
+      "assertions": [
+        "The skill includes a rule that it must validate itself under the same frozen-evaluator regime when it is the target.",
+        "The skill preserves append-only logs and explicit keep-or-revert decisions even for self-modification.",
+        "The skill does not exempt the meta-skill from its own rubric."
+      ]
+    }
+  ]
+}

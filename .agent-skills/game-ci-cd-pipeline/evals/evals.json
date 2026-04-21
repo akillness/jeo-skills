@@ -1,0 +1,75 @@
+{
+  "skill_name": "game-ci-cd-pipeline",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our Unity build passes locally but fails in GitHub Actions after package updates. We keep deleting caches and rerunning until it works. Give me a CI/CD hardening brief.",
+      "expected_output": "A Game CI/CD Brief that chooses a cache-policy packet, classifies the issue as dependency/cache policy plus reproducibility drift, and recommends one concrete next artifact such as a cache-key policy.",
+      "assertions": [
+        "Output contains the heading 'Game CI/CD Brief'",
+        "Output includes a 'Packet choice' section",
+        "Output identifies Unity as the engine",
+        "Output includes a 'Primary blocker' section with dependency-cache-policy or reproducibility-drift",
+        "Output includes a 'Recommended next artifact' section naming cache-key policy"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our PR pipeline takes 70 minutes because Android packaging runs on every branch. What should change first?",
+      "expected_output": "A concise game pipeline brief that identifies the branch-gate signal tier, avoids treating every merge like a release candidate, and recommends a CI-signal-hardening or stage-split artifact that moves heavier packaging into a separate candidate lane.",
+      "assertions": [
+        "Output contains the heading 'Game CI/CD Brief'",
+        "Output includes a 'Packet choice' section with a signal tier of branch-gate or equivalent wording",
+        "Output identifies feedback-speed-confidence, stage-boundary-blur, or similar fast-signal concern",
+        "Output recommends a CI-signal hardening plan or workflow stage split brief",
+        "Output says or clearly implies that full packaging should not run on every branch by default"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We have an Unreal GitHub Action but packaging takes forever and failures show up as one giant log blob. Tell me what to change first.",
+      "expected_output": "A concise pipeline brief that chooses a stage-split packet, usually identifies a heavier candidate lane rather than default branch CI, treats stage boundaries and feedback confidence as the main issue, and keeps Unreal-specific checks around UBT/UHT, cook/package, or AutomationTool visibility.",
+      "assertions": [
+        "Output identifies Unreal as the engine",
+        "Output classifies the issue as stage-boundary-blur or feedback-speed-confidence",
+        "Output includes a signal tier or equivalent lane distinction rather than leaving all CI work undifferentiated",
+        "Output recommends a workflow stage split brief or equivalent stage-separation artifact",
+        "Output includes Unreal-specific checks",
+        "Output does not collapse the answer into generic web-app CI advice"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We already have a quick branch build, but QA needs a nightly Windows + Steam Deck candidate with clear artifact names.",
+      "expected_output": "A game pipeline brief that identifies the nightly/package-candidate tier, keeps the branch build separate, and recommends an artifact/release or setup artifact that clarifies naming, retention, and consumer handoff.",
+      "assertions": [
+        "Output includes a signal tier of nightly-package-candidate or equivalent wording",
+        "Output includes an artifact or release hygiene recommendation",
+        "Output recommends one concrete next artifact",
+        "Output keeps the fast branch lane distinct from the nightly candidate lane"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We're preparing a signed console release candidate and need stricter approvals than our normal CI lane.",
+      "expected_output": "A concise brief that identifies the release-certification-candidate tier, keeps governance-vs-implementation truth explicit, and recommends a preflight or artifact/release packet while routing pure release-gate policy to testing-strategies if needed.",
+      "assertions": [
+        "Output includes a signal tier of release-certification-candidate or equivalent wording",
+        "Output mentions approvals, signing, retention, or promotion truth",
+        "Output recommends a preflight-readiness, artifact-release, or pipeline-setup next artifact",
+        "Output routes policy-only gate design to testing-strategies when appropriate"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Our Unreal Android packaging job failed last night. Here's the AutomationTool output — can you tell me what broke?",
+      "expected_output": "A routing-first answer that identifies the request as a single-log-not-pipeline case, emits a log-triage handoff packet, and routes to game-build-log-triage instead of pretending to redesign the whole pipeline first.",
+      "assertions": [
+        "Output includes 'Packet type' or equivalent packet choice showing route-to-log-triage",
+        "Output identifies single-log-not-pipeline or clearly states this is one failing log rather than a structural pipeline problem",
+        "Output routes to `game-build-log-triage`",
+        "Output requests or passes the failing stage, target platform, and exact log excerpt as the handoff packet"
+      ]
+    }
+  ]
+}

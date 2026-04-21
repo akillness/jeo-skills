@@ -1,261 +1,287 @@
 ---
 name: task-planning
-description: Plan and organize software development tasks effectively. Use when breaking down features, creating user stories, or planning sprints. Handles task breakdown, user stories, acceptance criteria, and backlog management.
+description: >
+  Turn vague features, bug clusters, roadmap items, launch work, or playtest findings
+  into one execution-ready planning packet by choosing the right packet type,
+  separating discovery from delivery, and making blockers, dependencies, and the next
+  move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or
+  milestone prep, release planning, or roadmap-to-delivery translation across
+  developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route
+  sizing to `task-estimation`, board/worktree control to `vibe-kanban`, plan review
+  to `plannotator`, daily syncs to `standup-meeting`, retros to
+  `sprint-retrospective`, and pre-planning concept framing to `bmad`, `bmad-idea`, or
+  `bmad-gds`.
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: >
+  Best for repositories, issue lists, specs, PRDs, GDDs, launch notes, playtest
+  feedback, or chat context that must become a compact execution packet. This is a
+  planning and decomposition workflow, not the long-term system of record.
+license: MIT
 metadata:
-  tags: task-planning, user-stories, backlog, sprint-planning, agile
-  platforms: Claude, ChatGPT, Gemini
+  tags: task-planning, backlog-grooming, sprint-planning, milestone-planning, roadmap-slicing, feature-breakdown, launch-planning, game-development
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.1.0"
+  source: akillness/oh-my-skills
+  modernization: 2026-04-12
+  hardening: 2026-04-18
+  ratchet: 2026-04-20
 ---
-
 
 # Task Planning
 
+Use this skill when the job is **turning messy context into one small planning packet that a team can actually act on**.
+
+`task-planning` is the PM front door for backlog cleanup, feature decomposition, sprint-candidate prep, release slicing, milestone packets, and roadmap-to-delivery translation before estimation, boards, review, or execution.
+
+Core references:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/packet-shapes.md](references/packet-shapes.md)
+- [references/readiness-checklist.md](references/readiness-checklist.md)
+- [references/planning-patterns.md](references/planning-patterns.md)
 
 ## When to use this skill
+- The request is too vague, too large, or too mixed to hand straight to implementation.
+- A backlog needs to be cleaned into ready vs not-ready work.
+- A roadmap item, feature, bug cluster, launch beat, or playtest finding needs execution slices.
+- A team needs one compact packet that names dependencies, blockers, and acceptance criteria.
+- The packet spans multiple disciplines: frontend/backend, PM/ops, GTM/content, or code/content/build/playtest work.
+- The key question is "what should we actually do next?" rather than "how big is it?" or "what board should we use?"
 
-- **Feature development**: Break down a new feature into small tasks
-- **Sprint Planning**: Select work to include in the sprint
-- **Backlog Grooming**: Clean up the backlog and set priorities
+## When not to use this skill
+- **The main job is sizing, forecasting, or story-point language** → `task-estimation`.
+- **The work already exists and the real job is board/worktree/queue control** → `vibe-kanban`.
+- **The plan already exists and the real job is review/approval or diff markup** → `plannotator`.
+- **The main job is daily status coordination** → `standup-meeting`.
+- **The main job is reflection on completed work** → `sprint-retrospective`.
+- **The work is still concept framing, scope shaping, or game-production orchestration before decomposition** → `bmad`, `bmad-idea`, or `bmad-gds` first.
 
 ## Instructions
 
-### Step 1: Write User Stories (INVEST)
+### Step 1: Choose one intake packet
+Use [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md) and pick exactly one primary packet:
 
-**INVEST principles**:
-- **I**ndependent: Independent
-- **N**egotiable: Negotiable
-- **V**aluable: Valuable
-- **E**stimable: Estimable
-- **S**mall: Small
-- **T**estable: Testable
-
-**Template**:
-```markdown
-## User Story: [title]
-
-**As a** [user type]
-**I want** [feature]
-**So that** [value/reason]
-
-### Acceptance Criteria
-- [ ] Given [context] When [action] Then [outcome]
-- [ ] Given [context] When [action] Then [outcome]
-- [ ] Given [context] When [action] Then [outcome]
-
-### Technical Notes
-- API endpoint: POST /api/users
-- Database: users table
-- Frontend: React component
-
-### Estimation
-- Story Points: 5
-- T-Shirt: M
-
-### Dependencies
-- User authentication must be completed first
-
-### Priority
-- MoSCoW: Must Have
-- Business Value: High
+```yaml
+task_planning_packet:
+  packet: backlog-cleanup | feature-slice | sprint-candidate | release-packet | milestone-packet | discovery-first
+  domain: developer-workflow | web-fullstack | product-ops | marketing-gtm | game-development | mixed
+  source_material: repo/issues | prd/spec | gdd/playtest | launch-notes | chat-context | mixed | unknown
+  readiness_state: mostly-ready | mixed | mostly-fuzzy
+  output_shape: single-packet | slice-table-plus-not-ready | release-packet | milestone-packet | discovery-packet
 ```
 
-**Example**:
-```markdown
-## User Story: User Registration
+Packet meanings:
+- `backlog-cleanup` — clarify, dedupe, and separate ready from not-ready work.
+- `feature-slice` — turn one feature or bug cluster into assignable slices.
+- `sprint-candidate` — prepare the next iteration's ready work.
+- `release-packet` — shape launch, rollout, campaign, or go-live work.
+- `milestone-packet` — coordinate cross-discipline milestone or demo work, especially for games.
+- `discovery-first` — expose unknowns before pretending implementation is ready.
 
-**As a** new visitor
-**I want** to create an account
-**So that** I can access personalized features
+### Step 2: Gather the minimum credible evidence
+Do not plan from vibes alone. Pull the smallest packet that supports decomposition:
+- goal or problem statement
+- user, business, team, or player outcome
+- current artifacts: issues, spec/PRD, GDD, launch notes, playtest notes, bug list, or chat context
+- timeline or trigger: sprint, release, milestone, event, or dependency window
+- obvious constraints: owner, platform, environment, approvals, external dependencies
+- missing details that could make the packet fake-ready
 
-### Acceptance Criteria
-- [ ] Given valid email and password When user submits form Then account is created
-- [ ] Given duplicate email When user submits Then error message is shown
-- [ ] Given weak password When user submits Then validation error is shown
-- [ ] Given successful registration When account created Then welcome email is sent
+If evidence is thin, say so and choose `discovery-first` instead of inventing certainty.
 
-### Technical Notes
-- Hash password with bcrypt
-- Validate email format
-- Send welcome email via SendGrid
-- Store user in PostgreSQL
+### Step 3: Split discovery from delivery early
+Before you write slices, separate:
+1. **Discovery** — unanswered questions, validation, missing decisions
+2. **Foundation** — setup, architecture, shared assets, tooling, environments
+3. **Delivery** — user-facing or system-facing implementation slices
+4. **Verification** — QA, analytics, review, smoke tests, playtests, launch checks
+5. **Follow-through** — docs, enablement, rollout, reporting, monitoring, distribution
 
-### Estimation
-- Story Points: 5
+Do not bury research or unresolved decisions inside build tickets.
 
-### Dependencies
-- Email service integration (#123)
+### Step 4: Choose the smallest packet shape
+Use [references/packet-shapes.md](references/packet-shapes.md).
 
-### Priority
-- MoSCoW: Must Have
-```
+Rules:
+- If the user needs one next-action set, prefer a **single packet**.
+- If the main need is ready vs not-ready triage, use **slice table plus not-ready list**.
+- If the work is tied to a launch window, use a **release packet**.
+- If the work is milestone-heavy and cross-discipline, use a **milestone packet**.
+- If the packet starts doing decomposition, estimation, board control, review, and ceremony work at once, split responsibilities and route outward.
 
-### Step 2: Decompose Epic → Story → Task
+### Step 5: Build slices with readiness fields
+Every slice should have:
+- title
+- outcome
+- owner role
+- dependencies
+- inputs required
+- acceptance criteria
+- risk / uncertainty
+- ready? yes / no
+- if not ready, what is missing?
 
-```markdown
-## Epic: User Management System
+Use short, testable acceptance criteria. Avoid vague statements like "works better" or "launch ready".
 
-### Story 1: User Registration
-- **Points**: 5
-- Tasks:
-  - [ ] Design registration form UI (2h)
-  - [ ] Create POST /api/users endpoint (3h)
-  - [ ] Implement email validation (1h)
-  - [ ] Add password strength checker (2h)
-  - [ ] Write unit tests (2h)
-  - [ ] Integration testing (2h)
+### Step 6: Surface sequence and blockers
+Explicitly name:
+- what can run in parallel
+- what must happen in order
+- what is blocked
+- what should be deferred
 
-### Story 2: User Login
-- **Points**: 3
-- Tasks:
-  - [ ] Design login form (2h)
-  - [ ] Create POST /api/auth/login endpoint (2h)
-  - [ ] Implement JWT token generation (2h)
-  - [ ] Add "Remember Me" functionality (1h)
-  - [ ] Write tests (2h)
+Use blocker buckets from [references/readiness-checklist.md](references/readiness-checklist.md):
+- `missing-scope`
+- `missing-design`
+- `missing-data`
+- `external-dependency`
+- `environment-access`
+- `approval-needed`
+- `cross-team-handoff`
 
-### Story 3: Password Reset
-- **Points**: 5
-- Tasks:
-  - [ ] "Forgot Password" UI (2h)
-  - [ ] Generate reset token (2h)
-  - [ ] Send reset email (1h)
-  - [ ] Reset password form (2h)
-  - [ ] Update password API (2h)
-  - [ ] Tests (2h)
-```
+### Step 7: Run the route-out check
+Verify all of these:
+1. The chosen packet matches the real planning job.
+2. Discovery is separated from implementation when confidence is low.
+3. The packet does not silently absorb sizing, board control, plan review, standups, or retros.
+4. Cross-domain nuance survives without turning the output into a tutorial.
+5. The packet ends with one clear next move.
 
-### Step 3: MoSCoW prioritization
+Route-outs to keep explicit:
+- sizing → `task-estimation`
+- board/worktree/queue control → `vibe-kanban`
+- plan review / approval → `plannotator`
+- daily coordination → `standup-meeting`
+- completed-work reflection → `sprint-retrospective`
+- concept framing / strategy shaping → `bmad`, `bmad-idea`, `bmad-gds`
 
-```markdown
-## Feature Prioritization (MoSCoW)
-
-### Must Have (Sprint 1)
-- User Registration
-- User Login
-- Basic Profile Page
-
-### Should Have (Sprint 2)
-- Password Reset
-- Email Verification
-- Profile Picture Upload
-
-### Could Have (Sprint 3)
-- Two-Factor Authentication
-- Social Login (Google, GitHub)
-- Account Deletion
-
-### Won't Have (This Release)
-- Biometric Authentication
-- Multiple Sessions Management
-```
-
-### Step 4: Sprint Planning
+### Step 8: Return the brief or the final packet
+Preferred brief shape before full drafting:
 
 ```markdown
-## Sprint 10 Planning
+# Task Planning Brief
 
-**Sprint Goal**: Complete user authentication system
+## Packet choice
+- Packet:
+- Domain:
+- Why it fits:
+- Output shape:
 
-**Duration**: 2 weeks
-**Team Capacity**: 40 hours × 4 people = 160 hours
-**Estimated Velocity**: 30 story points
+## Source material used
+- Main evidence:
+- Constraints / dependencies:
+- Assumptions / gaps:
 
-### Selected Stories
-1. User Registration (5 points) - Must Have
-2. User Login (3 points) - Must Have
-3. Password Reset (5 points) - Must Have
-4. Email Verification (3 points) - Should Have
-5. Profile Edit (5 points) - Should Have
-6. JWT Refresh Token (3 points) - Should Have
-7. Rate Limiting (2 points) - Should Have
-8. Security Audit (4 points) - Must Have
+## Planned slices
+1. slice
+2. slice
+3. slice
 
-**Total**: 30 points
-
-### Sprint Backlog
-- [ ] User Registration (#101)
-- [ ] User Login (#102)
-- [ ] Password Reset (#103)
-- [ ] Email Verification (#104)
-- [ ] Profile Edit (#105)
-- [ ] JWT Refresh Token (#106)
-- [ ] Rate Limiting (#107)
-- [ ] Security Audit (#108)
-
-### Definition of Done
-- [ ] Code written and reviewed
-- [ ] Unit tests passing (80%+ coverage)
-- [ ] Integration tests passing
-- [ ] Documentation updated
-- [ ] Deployed to staging
-- [ ] QA approved
+## Route-out notes
+- Out of scope:
+- Not-ready work kept separate:
+- Recommended next move:
 ```
+
+If the user already asked for the final artifact, return a compact planning packet directly.
 
 ## Output format
+Default packet shape:
 
-### Task board structure
+```markdown
+# Planning Packet
 
+## Planning horizon
+- Packet:
+- Domain:
+- Confidence: high | medium | low
+
+## Goal
+- ...
+
+## Assumptions
+- ...
+
+## Work slices
+| Slice | Outcome | Owner role | Dependencies | Ready? |
+|------|---------|------------|--------------|--------|
+| ... | ... | ... | ... | yes/no |
+
+## Slice details
+### 1. [Slice name]
+- Inputs required:
+- Acceptance criteria:
+  - [ ] ...
+- Risks / uncertainty:
+- Notes:
+
+## Sequencing
+1. ...
+2. ...
+
+## Blockers / not-ready items
+- Bucket:
+- Missing:
+- Next action:
+
+## Recommended next move
+- start implementation | run discovery first | groom with owners | estimate now | defer until dependency clears
 ```
-Backlog → To Do → In Progress → Review → Done
-
-Backlog:
-- Sorted by priority
-- Groomed stories
-
-To Do:
-- Work selected for the sprint
-- Owner assigned
-
-In Progress:
-- WIP Limit: 2 per person
-- Work in progress
-
-Review:
-- Waiting for code review
-- In QA testing
-
-Done:
-- Meets DoD
-- Deployed
-```
-
-## Constraints
-
-### Required rules (MUST)
-
-1. **Clear AC**: Acceptance Criteria required
-2. **Estimation done**: Assign points to every story
-3. **Dependencies identified**: Specify prerequisite work
-
-### Prohibited (MUST NOT)
-
-1. **Stories too large**: Split anything 13+ points
-2. **Vague requirements**: Avoid "improve" and "optimize"
-
-## Best practices
-
-1. **INVEST**: Write good user stories
-2. **Definition of Ready**: Ready before sprint start
-3. **Definition of Done**: Clear completion criteria
-
-## References
-
-- [User Story Guide](https://www.atlassian.com/agile/project-management/user-stories)
-- [MoSCoW Prioritization](https://www.productplan.com/glossary/moscow-prioritization/)
-
-## Metadata
-
-### Version
-- **Current version**: 1.0.0
-- **Last updated**: 2025-01-01
-- **Compatible platforms**: Claude, ChatGPT, Gemini
-
-### Tags
-`#task-planning` `#user-stories` `#backlog` `#sprint-planning` `#agile` `#project-management`
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Fullstack feature slicing
+**Input**
+> Break down a new team-invite flow for our SaaS app. We need email invites, acceptance, and admin visibility before sprint planning.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good output direction**
+- packet: `sprint-candidate`
+- domain: `web-fullstack`
+- split backend/data, invite acceptance flow, admin visibility, verification, and follow-through
+- keep story points out of scope
+
+### Example 2: Backlog cleanup
+**Input**
+> We have a pile of vague onboarding backlog items. Clean them up so we can see what is actually ready next week.
+
+**Good output direction**
+- packet: `backlog-cleanup`
+- output shape: `slice-table-plus-not-ready`
+- mark missing scope, ownership, or approvals explicitly
+- separate discovery tickets from implementation tickets
+
+### Example 3: Marketing / launch packet
+**Input**
+> Plan the next release push for our B2B launch: landing-page updates, email sequence, attribution checks, and launch-day reporting.
+
+**Good output direction**
+- packet: `release-packet`
+- domain: `marketing-gtm`
+- separate asset creation, review/approval, distribution, measurement, and reporting
+- route deep copywriting/campaign execution to `marketing-automation`
+
+### Example 4: Game milestone packet
+**Input**
+> Plan the next milestone for our roguelike demo: tutorial polish, controller support, and a streamer-ready build.
+
+**Good output direction**
+- packet: `milestone-packet`
+- domain: `game-development`
+- separate code/system work, content/polish, build/QA, and playtest/distribution concerns
+- keep broader game-production orchestration routed to `bmad-gds` when needed
+
+## Best practices
+1. Choose one primary packet before decomposing the work.
+2. Keep discovery separate from delivery whenever requirements are unstable.
+3. Prefer small, reviewable slices over broad work categories.
+4. Surface blockers and missing inputs explicitly instead of burying them in notes.
+5. Preserve domain nuance for developer workflow, web/fullstack, product/ops, marketing/GTM, and game work without bloating the front door.
+6. Route sizing, board control, review, daily cadence, and retrospectives out instead of stretching the skill boundary.
+7. Keep the packet compact enough that a team can act on it immediately.
+8. Update compact and manifest discovery surfaces when the role wording changes materially.
+
+## References
+- [Atlassian — Backlog refinement](https://www.atlassian.com/agile/scrum/backlog-refinement)
+- [Atlassian — Sprint planning](https://www.atlassian.com/agile/scrum/sprint-planning)
+- [GitHub Docs — About Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects)
+- [GitHub Docs — About milestones](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/about-milestones)
+- [HacknPlan Docs](https://hacknplan.com/docs/milestones-and-deadlines/)

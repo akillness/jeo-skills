@@ -1,169 +1,241 @@
 ---
 name: log-analysis
-description: Analyze application logs to identify errors, performance issues, and security anomalies. Use when debugging issues, monitoring system health, or investigating incidents. Handles various log formats including Apache, Nginx, application logs, and JSON logs.
-allowed-tools: Read Grep Glob
+description: >
+  Route runtime-log requests into one evidence packet before diagnosing anything.
+  Use when the user shares app/server/container/browser/CI/JSON log output and
+  wants the first actionable blocker, repeated signature, likely blast radius,
+  or safest next read-only checks. Choose one packet: app-runtime,
+  container-runtime, browser-plus-api, ci-cascade, structured-json, or
+  security-signal. Triggers on: check the logs, which line matters, real error,
+  first blocker, noisy stack trace, retry storm, browser 401/500, pod logs,
+  worker crash, CI abort, webhook failure. Route engine-specific Unity/Unreal
+  logs to `game-build-log-triage`, observability design to
+  `monitoring-observability`, and remediation/debug hypotheses to `debugging`.
+allowed-tools: Bash Read Grep Glob
+compatibility: >
+  Best for repositories, incidents, or pasted excerpts where the main task is
+  read-only log triage rather than observability platform setup or code changes.
 metadata:
-  tags: logs, analysis, debugging, monitoring, grep, patterns
-  platforms: Claude, ChatGPT, Gemini
+  tags: logs, triage, debugging, observability, incidents, ci, browser, grep
+  version: "2.1"
+  source: akillness/oh-my-skills
 ---
-
 
 # Log Analysis
 
-
 ## When to use this skill
+- The main job is **read-only log triage**, not code changes or monitoring design.
+- The user wants the **first actionable blocker**, not a paraphrase of every line.
+- The evidence is **application, API, worker, proxy, container, pod, browser, CI, or JSON logs**.
+- The user needs the **repeated signature or blast radius** summarized after the first failure is isolated.
+- The prompt is really **"which lines matter / what is the real error / where does the cascade start?"** even if the user never says "triage".
 
-- **Error debugging**: analyze the root cause of application errors
-- **Performance analysis**: analyze response times and throughput
-- **Security audit**: detect anomalous access patterns
-- **Incident response**: investigate the root cause during an outage
+Do **not** use this skill as the main workflow when:
+- The logs are **Unity / Unreal build, cook, package, editor, or player logs** → use `game-build-log-triage`.
+- The real job is **instrumentation, dashboards, alerting, ingestion, retention, or observability coverage** → use `monitoring-observability`.
+- The likely blocker is already known and the user now needs **reproduction, hypotheses, or fixes** → use `debugging`.
+- The main job is **repeated anomaly/rule hunting across logs or telemetry families** rather than first-failure triage → use `pattern-detection`.
+
+## Core idea
+`log-analysis` should act like a **packet router**, not a giant troubleshooting encyclopedia.
+
+1. Normalize the request into **one primary log packet**.
+2. Narrow the evidence slice before interpreting it.
+3. Isolate the **earliest actionable failure**.
+4. Group repeated fallout into a **pattern / blast radius** note.
+5. Route out as soon as the work becomes debugging, observability design, anomaly hunting, or engine-specialist triage.
+
+Read these support docs before choosing the packet:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/triage-playbook.md](references/triage-playbook.md)
+- [references/source-boundaries.md](references/source-boundaries.md)
 
 ## Instructions
 
-### Step 1: Locate Log Files
+### Step 1: Normalize the request
+Convert the prompt into this intake shape first:
 
-```bash
-# Common log locations
-/var/log/                    # System logs
-/var/log/nginx/              # Nginx logs
-/var/log/apache2/            # Apache logs
-./logs/                      # Application logs
+```yaml
+log_analysis_packet:
+  primary_packet: app-runtime | container-runtime | browser-plus-api | ci-cascade | structured-json | security-signal
+  source_shape: app | proxy | worker | browser | ci | container | pod | json | mixed | unknown
+  environment: local | ci | staging | production | browser | container | pod | unknown
+  failure_goal: first-blocker | cascade-start | repeated-signature | blast-radius | suspicious-access | unknown
+  anchor: timestamp | request-id | trace-id | job-build-id | browser-route | none | unknown
+  route_after: stay-here | debugging | monitoring-observability | pattern-detection | game-build-log-triage
 ```
 
-### Step 2: Search for Error Patterns
+Choose **one** primary packet for the run. If two seem plausible, pick the cheaper packet that reduces uncertainty fastest.
 
-**Common error search**:
-```bash
-# Search ERROR-level logs
-grep -i "error\|exception\|fail" application.log
+### Step 2: Choose the packet
 
-# Recent errors (last 100 lines)
-tail -100 application.log | grep -i error
+| Packet | Use when | Best fits | Typical anchors |
+|---|---|---|---|
+| `app-runtime` | The key evidence is app/API/worker/proxy text logs | crashes, stack traces, request failures, queue poison messages | earliest fatal/error line, route, service, request ID |
+| `container-runtime` | The evidence comes from `docker logs`, `kubectl logs`, pod output, or deploy-window restarts | container crashes, env/config mismatch, dependency connectivity, restart loops | pod/container name, deploy window, host, request ID |
+| `browser-plus-api` | Browser console/network symptoms need server-side confirmation | 401/403/500 flows, failed fetch, CORS/auth mismatch, SSR/client divergence | route, request ID, timestamp, browser/network trace |
+| `ci-cascade` | CI output contains many secondary failures after one blocker | install/import/test/build cascades, missing dependency/config, runner mismatch | job name, step name, stage, earliest stack trace/import error |
+| `structured-json` | The logs are JSON or field-rich event records | grouped error families, request/trace correlation, worker/event triage | level, service, request ID, trace ID, tenant, event name |
+| `security-signal` | Access/error logs suggest suspicious probing or auth/permission anomalies | repeated 401/403/404 probes, token misuse, rate-limit storms | IP/user/session, route family, status code, time window |
 
-# Errors with timestamps
-grep -E "^\[.*ERROR" application.log
-```
+Packet rules:
+- Prefer `app-runtime` for plain text stack traces and server logs.
+- Prefer `container-runtime` when restart timing, pod identity, or env/deploy context matters.
+- Prefer `browser-plus-api` when frontend symptoms are not sufficient on their own.
+- Prefer `ci-cascade` when the visible failure may be generic abort noise.
+- Prefer `structured-json` when fields make grouping and correlation cheaper than free-text scanning.
+- Prefer `security-signal` only when suspicious access/auth behavior is the main job; otherwise keep security-looking noise inside the packet that owns the first blocker.
 
-**HTTP error codes**:
-```bash
-# 5xx server errors
-grep -E "HTTP/[0-9.]+ 5[0-9]{2}" access.log
+### Step 3: Narrow the slice before reading everything
+Apply at least one narrowing move before interpreting the logs:
+- limit by time window
+- limit by request / trace / job / build / session / tenant identifier
+- separate fatal/actionable lines from retries and fallout
+- separate one noisy source from many affected sources
+- separate browser symptom lines from server-side blocker lines
+- in CI, locate the earliest failing step before summarizing the full transcript
 
-# 4xx client errors
-grep -E "HTTP/[0-9.]+ 4[0-9]{2}" access.log
+Useful heuristics by packet:
+- **app-runtime** → exception / fatal / failed / timeout / refusal first
+- **container-runtime** → restart window + dependency/connectivity/env mismatch first
+- **browser-plus-api** → backend auth/config/runtime evidence before generic client symptoms
+- **ci-cascade** → earliest import/config/build/test failure before abort/footer lines
+- **structured-json** → group by message family, exception class, request ID, or service before reading raw rows
+- **security-signal** → distinguish broad probing from one broken client before escalating
 
-# Specific error code
-grep "HTTP/1.1\" 500" access.log
-```
+### Step 4: Isolate the first actionable failure
+Use this order:
+1. **Hard stop** — crash, panic, uncaught exception, process exit, build failure
+2. **Dependency / environment blocker** — missing config, secret, DNS, file, service, auth, or connection
+3. **Request / runtime failure** — `500`, timeout, rejected promise, queue poison message, parser failure
+4. **Fallout** — retries, secondary warnings, repeated health-check failures, broad abort text
 
-### Step 3: Pattern Analysis
+Do **not** report 20 repeated downstream lines as 20 different causes.
 
-**Time-based analysis**:
-```bash
-# Error count by time window
-grep -i error application.log | cut -d' ' -f1,2 | sort | uniq -c | sort -rn
+### Step 5: Correlate and classify
+If the evidence spans more than one source, correlate instead of concatenating.
 
-# Logs for a specific time window
-grep "2025-01-05 14:" application.log
-```
+Primary classification buckets:
+- `missing-config-or-secret`
+- `dependency-or-connection`
+- `auth-or-permission`
+- `request-or-runtime-error`
+- `data-shape-or-validation`
+- `resource-or-capacity`
+- `browser-network-mismatch`
+- `ci-build-test-failure`
+- `security-or-suspicious-pattern`
+- `unknown-needs-more-context`
 
-**IP-based analysis**:
-```bash
-# Request count by IP
-awk '{print $1}' access.log | sort | uniq -c | sort -rn | head -20
+Correlation anchors to prefer:
+- timestamp window
+- request / trace / correlation ID
+- job/build ID or CI step
+- service / worker / pod / container name
+- route, browser action, or API endpoint
+- user / tenant / session identifier when safe to mention
 
-# Activity for a specific IP
-grep "192.168.1.100" access.log
-```
-
-### Step 4: Performance Analysis
-
-**Response time analysis**:
-```bash
-# Extract response times from Nginx logs
-awk '{print $NF}' access.log | sort -n | tail -20
-
-# Slow requests (>= 1 second)
-awk '$NF > 1.0 {print $0}' access.log
-```
-
-**Traffic volume analysis**:
-```bash
-# Requests per minute
-awk '{print $4}' access.log | cut -d: -f1,2,3 | uniq -c
-
-# Requests per endpoint
-awk '{print $7}' access.log | sort | uniq -c | sort -rn | head -20
-```
-
-### Step 5: Security Analysis
-
-**Suspicious patterns**:
-```bash
-# SQL injection attempts
-grep -iE "(union|select|insert|update|delete|drop).*--" access.log
-
-# XSS attempts
-grep -iE "<script|javascript:|onerror=" access.log
-
-# Directory traversal
-grep -E "\.\./" access.log
-
-# Brute force attack
-grep -E "POST.*/login" access.log | awk '{print $1}' | sort | uniq -c | sort -rn
-```
-
-## Output format
-
-### Analysis report structure
+### Step 6: Return a triage brief
+Default response shape:
 
 ```markdown
-# Log analysis report
+# Log Triage
 
-## Summary
-- Analysis window: YYYY-MM-DD HH:MM ~ YYYY-MM-DD HH:MM
-- Total log lines: X,XXX
-- Error count: XXX
-- Warning count: XXX
+## Source
+- Packet: app-runtime | container-runtime | browser-plus-api | ci-cascade | structured-json | security-signal
+- Environment: local | CI | staging | production | browser | container | pod
+- Confidence: high | medium | low
 
-## Error analysis
-| Error type | Occurrences | Last seen |
-|----------|-----------|----------|
-| Error A  | 150       | 2025-01-05 14:30 |
-| Error B  | 45        | 2025-01-05 14:25 |
+## First actionable failure
+- Line or excerpt: `...`
+- Why it matters: ...
+- Why later lines look secondary: ...
 
-## Recommended actions
-1. [Action 1]
-2. [Action 2]
+## Pattern / blast radius
+- Repeated signature: ...
+- Scope: one request | repeated requests | one worker | one deploy window | one environment | broad
+
+## Classification
+- Primary bucket: ...
+- Secondary bucket: ...
+
+## Likely root cause
+- 1-3 sentence explanation grounded in the evidence
+
+## Next read-only checks
+1. ...
+2. ...
+3. ...
+
+## Route-out
+- stay in `log-analysis` | `debugging` | `monitoring-observability` | `pattern-detection` | `game-build-log-triage`
 ```
 
-## Best practices
+### Step 7: Route out aggressively
+Switch when the next job is no longer first-failure log triage:
+- **Reproduction, hypotheses, code/config fixes** → `debugging`
+- **Dashboards, alerts, ingestion, telemetry coverage, retention** → `monitoring-observability`
+- **Repeated signature hunting across many windows or datasets** → `pattern-detection`
+- **Unity / Unreal build/editor/package logs** → `game-build-log-triage`
 
-1. **Set time range**: clearly define the time window to analyze
-2. **Save patterns**: script common grep patterns
-3. **Check context**: review logs around the error too (`-A`, `-B` options)
-4. **Log rotation**: search compressed logs with zgrep as well
-
-## Constraints
-
-### Required Rules (MUST)
-1. Perform read-only operations only
-2. Mask sensitive information (passwords, tokens)
-
-### Prohibited (MUST NOT)
-1. Do not modify log files
-2. Do not expose sensitive information externally
-
-## References
-
-- [grep manual](https://www.gnu.org/software/grep/manual/)
-- [awk guide](https://www.gnu.org/software/gawk/manual/)
-- [Log analysis best practices](https://www.loggly.com/ultimate-guide/)
+If the excerpt is too short or starts mid-cascade:
+1. mark confidence low
+2. ask for the earliest error cluster or 20-80 lines around the first blocker
+3. ask for one anchor only if needed: time window, request ID, job/build, pod/container, or browser route
+4. do not pretend certainty from a truncated excerpt
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Container dependency failure
+**Prompt:**
+> `kubectl logs` shows `Error: connect ECONNREFUSED redis:6379` and then dozens of `job retry failed` lines.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good response shape:**
+- choose `container-runtime`
+- identify the Redis connection failure as the first actionable blocker
+- group later retry lines as fallout
+- route next to `debugging` or `monitoring-observability` only after the blocker is isolated
+
+### Example 2: Browser + API mismatch
+**Prompt:**
+> Browser console says `Failed to fetch`, the network tab shows 401 on `/api/session`, and the server log says `JWT audience invalid`.
+
+**Good response shape:**
+- choose `browser-plus-api`
+- identify backend auth validation as the actionable blocker
+- treat browser failure as a symptom, not the cause
+- route next to `debugging` once the config/code suspect is clear
+
+### Example 3: CI cascade
+**Prompt:**
+> CI ends with `test suite aborted`, but earlier there is `ModuleNotFoundError: No module named 'dotenv'`.
+
+**Good response shape:**
+- choose `ci-cascade`
+- isolate the earliest import failure
+- treat the abort/footer text as fallout
+- route next to `debugging` after the failing dependency path is known
+
+### Example 4: Automation/webhook JSON logs
+**Prompt:**
+> These JSON webhook logs show repeated `status=429` retries after one `invalid API key` response. What actually matters?
+
+**Good response shape:**
+- choose `structured-json` or `security-signal` depending on whether auth abuse or one bad credential is the primary job
+- isolate the first credential/auth failure
+- summarize retry volume separately
+- route repeated pattern hunting to `pattern-detection` only if the user wants broader anomaly work
+
+## Best practices
+1. Choose the **smallest packet** that can answer the question.
+2. Lead with the **earliest blocker**, not the loudest line.
+3. Group repeated fallout into one signature or blast-radius summary.
+4. Correlate browser/network/app evidence instead of summarizing each source independently.
+5. Keep all suggested checks **read-only** inside this skill.
+6. Treat engine-specific logs as a hard specialist boundary.
+7. Route out as soon as the work becomes debugging, observability design, or anomaly hunting.
+
+## References
+- `references/intake-packets-and-route-outs.md`
+- `references/triage-playbook.md`
+- `references/source-boundaries.md`

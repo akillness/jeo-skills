@@ -1,0 +1,59 @@
+{
+  "skill_name": "vercel-deploy",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Deploy this linked Next.js app to a Vercel preview URL and give me a stable alias for QA.",
+      "expected_output": "Selects preview-deploy mode, uses Vercel-specific steps, and includes alias handling rather than generic CI advice.",
+      "assertions": [
+        "Response identifies preview deployment as the primary mode",
+        "Response includes a Vercel deployment command path such as `vercel deploy` or `vercel deploy --prebuilt`",
+        "Response includes stable alias handling such as `vercel alias set`",
+        "Response does not route the whole task to generic `deployment-automation`"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "This Vercel preview deployment already passed QA. Promote it to production and verify it.",
+      "expected_output": "Selects promote-preview mode, verifies the target deployment, promotes it, and separates post-promotion verification from the promotion command.",
+      "assertions": [
+        "Response identifies preview-to-production promotion as the primary mode",
+        "Response includes inspection or smoke-test steps before promotion",
+        "Response includes `vercel promote` or equivalent promotion handling",
+        "Response includes a production verification step after promotion"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The env var is visible in the Vercel UI, but the deployment cannot read it. Fix the Vercel side first.",
+      "expected_output": "Selects env-sync mode, checks environment scoping and redeploy requirements, and uses Vercel-specific verification instead of assuming the UI is correct.",
+      "assertions": [
+        "Response identifies environment-variable troubleshooting as the primary mode",
+        "Response mentions that env-var changes apply to new deployments rather than old ones",
+        "Response includes a Vercel-specific verification step such as `vercel env ls` or `vercel pull --environment=...`",
+        "Response distinguishes Vercel env scope from app-level configuration if relevant"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our production deploy is broken on Vercel. Roll back safely and tell me what still needs manual verification.",
+      "expected_output": "Selects rollback-response mode, identifies the rollback target, calls out plan/config caveats, and includes post-rollback verification instead of treating rollback as complete by itself.",
+      "assertions": [
+        "Response identifies rollback or production recovery as the primary mode",
+        "Response mentions stale config, plan eligibility, cron, or similar rollback caveats",
+        "Response includes post-rollback verification such as health or log checks",
+        "Response does not present rollback as a lossless or fully sufficient fix by itself"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Help me design a staging-to-production rollout policy with canary rules across providers, and maybe later we can wire Vercel into it.",
+      "expected_output": "Routes the main job to deployment-automation instead of pretending this is a Vercel-specific operator task.",
+      "assertions": [
+        "Response routes the main planning/policy job to `deployment-automation`",
+        "Response does not frame Vercel as the sole or primary owner of cross-provider rollout design",
+        "Response preserves `vercel-deploy` only for any explicitly Vercel-specific follow-up"
+      ]
+    }
+  ]
+}

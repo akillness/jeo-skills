@@ -1,349 +1,91 @@
 ---
 name: marketing-skills-collection
-description: Generate marketing deliverables across CRO, copywriting, SEO, analytics, and growth using 23 specialized sub-skills with clear objectives, constraints, and validation.
+description: >
+  Compatibility alias for `marketing-automation`. Use when an existing prompt,
+  setup surface, workflow, or legacy catalog entry explicitly references
+  `marketing-skills-collection` but the real need is still broad product or growth
+  marketing routing across CRO, copywriting, SEO, lifecycle messaging, analytics,
+  pricing, launches, retention, and experiments. Prefer `marketing-automation`
+  for canonical general use. Triggers on: marketing-skills-collection, legacy
+  marketing skill name, old marketing prompt pack, migrate marketing alias.
 allowed-tools: Write Read WebSearch WebFetch Task
 metadata:
-  tags: marketing, cro, copywriting, seo, analytics, growth, automation
+  tags: marketing, automation, alias, compatibility
   platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.0"
 ---
 
-> **Note:** This skill is a platform-specific variant of `marketing-automation`. Prefer `marketing-automation` for general use; use `marketing-skills-collection` when targeting platform-specific configurations.
+> **Note:** This skill is a compatibility wrapper for `marketing-automation`. Use it when the environment still references the legacy name, but execute the same routing logic and produce the same packet shape as the canonical skill.
 
 # Marketing Skills Collection
 
-A collection of 23 sub-skills for marketing deliverables. Generates repeatable, high-quality outputs across CRO, copywriting, SEO, analytics, and growth domains.
-
 ## When to use this skill
+- A legacy prompt, installed catalog, or setup surface still calls `marketing-skills-collection`
+- The real task is still a broad marketing-routing request rather than a niche specialist workflow
+- The safest behavior is to preserve backward compatibility while steering users toward the canonical name
 
-- **Marketing deliverables needed**: CRO, copy, SEO, analytics, and growth outputs
-- **Repeatable, high-quality outputs**: Asset generation aligned to a single KPI
-- **Business goal → skill mapping**: Convert objectives into specific marketing sub-skills
-
----
-
-## 23 Sub-Skills Overview
-
-### CRO (Conversion Rate Optimization)
-| Sub-Skill | Description |
-|-----------|-------------|
-| `page-cro` | Landing page conversion rate optimization |
-| `signup-flow` | Signup flow optimization |
-| `onboarding` | Onboarding experience improvement |
-| `form-optimization` | Form optimization (fields, UX) |
-| `paywall` | Paywall/pricing page optimization |
-
-### Copywriting
-| Sub-Skill | Description |
-|-----------|-------------|
-| `copywriting` | Ad/marketing copy creation |
-| `copy-editing` | Existing copy improvement |
-| `email-sequence` | Email sequence design |
-| `social-content` | Social media content |
-
-### SEO
-| Sub-Skill | Description |
-|-----------|-------------|
-| `seo-audit` | SEO audit and improvement recommendations |
-| `programmatic-seo` | Programmatic SEO pages |
-| `comparison-page` | Comparison page creation |
-| `schema-markup` | Structured data markup |
-
-### Ads & Analytics
-| Sub-Skill | Description |
-|-----------|-------------|
-| `analytics-tracking` | Analytics tracking setup |
-| `paid-ads` | Paid advertising strategy/copy |
-| `ab-test` | A/B test design |
-
-### Strategy & Growth
-| Sub-Skill | Description |
-|-----------|-------------|
-| `launch-strategy` | Product launch strategy |
-| `pricing-strategy` | Pricing strategy |
-| `retention` | Retention improvement strategy |
-| `churn-analysis` | Churn analysis |
-| `growth-experiments` | Growth experiment design |
-| `referral-program` | Referral program design |
-| `content-strategy` | Content strategy development |
-
----
+## When not to use this skill
+- The user can already adopt `marketing-automation` directly
+- The request is actually a niche workflow with a stronger dedicated skill
+- The task is game-specific Steam/store-page or festival launch operations → prefer `steam-store-launch-ops`
 
 ## Instructions
 
-### Step 1: Define Objective and Constraints
+### Step 1: Resolve to the canonical skill
+Immediately map this alias to `marketing-automation`.
 
-```yaml
-marketing_brief:
-  objective: [single KPI - conversion rate, CTR, activation]
-  target_audience:
-    segment: [customer segment]
-    pain_points: [key pain points]
-    terminology: [terms they use]
-  channel: [LP, email, social, SEO, ads]
-  format: [format]
-  offer:
-    value_prop: [value proposition]
-    positioning: [positioning]
-    proof_points: [proof points]
-```
+### Step 2: Preserve the legacy reference in the response
+If helpful, note that `marketing-skills-collection` is a legacy-compatible alias for `marketing-automation`.
 
-### Step 2: Select the Sub-Skill
+### Step 3: Use the smallest alias support packet that answers the question
+Start with the focused alias support docs before opening the full canonical skill:
+- `references/alias-resolution-checklist.md` — when to preserve the old name, how to announce the mapping, and what not to change
+- `references/legacy-intake-and-route-outs.md` — how to translate legacy asks into the canonical brief and when to route out to `steam-store-launch-ops` or other specialists
+- `../marketing-automation/SKILL.md` — only when the task needs the full canonical routing flow
 
-Select the sub-skill that fits the situation:
+### Step 4: Run the canonical routing flow
+Use the same process as `marketing-automation`:
+1. normalize the marketing brief,
+2. choose one primary lane,
+3. return one reusable operator packet,
+4. include owner/dependencies plus proof logic.
 
-```bash
-# For CRO needs
-→ page-cro, signup-flow, onboarding, form-optimization, paywall
+### Step 5: Keep route-outs explicit
+If the request is really game-store / wishlist / Steam festival launch work, or another clearly narrower specialist workflow, preserve the alias note but route execution to the stronger specialist skill instead of forcing the general marketing router to absorb it.
 
-# For copy needs
-→ copywriting, copy-editing, email-sequence, social-content
+### Step 6: Avoid drifting into a second independent skill
+Do not invent different heuristics, deliverables, sub-skill inventories, or a separate discovery story here. This alias exists to reduce migration friction, not to become a competing general marketing skill.
 
-# For SEO needs
-→ seo-audit, programmatic-seo, comparison-page, schema-markup
-
-# For ads/analytics needs
-→ analytics-tracking, paid-ads, ab-test
-
-# For strategy/growth needs
-→ launch-strategy, pricing-strategy, retention, churn-analysis, growth-experiments
-```
-
-### Step 3: Build the Prompt
-
-Create a structured prompt:
-
-```markdown
-## Marketing Asset Request
-
-### Product Context
-- **Product**: [product name]
-- **Category**: [category]
-- **Stage**: [stage - early, growth, mature]
-
-### Audience
-- **Segment**: [target segment]
-- **Pain Points**: [1-3 pain points]
-- **Current State**: [current solution in use]
-
-### Offer
-- **Value Prop**: [core value proposition]
-- **Differentiator**: [differentiating point]
-- **Proof**: [trust factors - numbers, clients, awards]
-
-### Constraints
-- **Tone**: [tone - professional, casual, bold]
-- **Brand Voice**: [brand voice guide]
-- **Do NOT**: [things to avoid]
-
-### Output Format
-- [desired format - table, checklist, bullets]
-```
-
-### Step 4: Generate and Validate
-
-```bash
-# Generate
-claude task "Generate marketing asset using sub-skill name"
-
-# Validation checklist
-- [ ] KPI alignment
-- [ ] Target audience fit
-- [ ] Brand voice consistency
-- [ ] Actionable output
-```
-
-### Step 5: Handoff + Measurement
-
-```markdown
-## Implementation Checklist
-- [ ] Asset publishing
-- [ ] Tracking event setup
-- [ ] Success threshold definition
-
-## Tracking Events
-| Event | Description | Success Threshold |
-|-------|-------------|-------------------|
-| page_view | Page view | baseline |
-| cta_click | CTA click | +20% vs control |
-| signup_complete | Signup complete | +15% vs control |
-
-## A/B Test Proposals
-1. [Hypothesis 1]: [variant] vs [control]
-2. [Hypothesis 2]: [variant] vs [control]
-```
-
----
+## Output format
+Return the same **Marketing Routing Brief** used by `marketing-automation`.
 
 ## Examples
 
-### Example 1: Landing Page CRO
+### Example 1: legacy prompt pack
+**Input**
+> Use marketing-skills-collection to help me decide what to do with our signup funnel and onboarding emails.
 
-**Prompt**:
-```
-Optimize the landing page for higher signup conversion.
-Audience: indie founders building side projects.
-Offer: AI co-pilot for product launches.
-Output: prioritized CRO changes + A/B tests.
-```
+**Expected behavior**
+- Briefly note that the legacy name maps to `marketing-automation`
+- Choose one primary lane for the current packet
+- Return a canonical Marketing Routing Brief
 
-**Expected output**:
-- CRO checklist prioritized by impact/effort
-- 3 A/B test hypotheses with expected lift
-- Hero + CTA copy suggestions (3 variants each)
+### Example 2: migration-safe usage
+**Input**
+> Our team docs still mention marketing-skills-collection. Can you use it for this launch brief?
 
-### Example 2: Email Sequence
-
-**Prompt**:
-```
-Create a 5-email welcome sequence for a B2B SaaS.
-Audience: ops managers at 50-500 employee companies.
-Goal: drive first workflow setup within 7 days.
-```
-
-**Expected output**:
-```markdown
-## Welcome Sequence
-
-### Email 1: Welcome (Day 0)
-- **Subject**: Welcome to [Product] - Let's get started
-- **Goal**: Account confirmation + quick win
-- **CTA**: Complete profile
-
-### Email 2: Value Demo (Day 1)
-- **Subject**: See what [Product] can do in 2 minutes
-- **Goal**: Feature awareness
-- **CTA**: Watch demo video
-
-### Email 3: First Workflow (Day 3)
-- **Subject**: Create your first workflow (step-by-step)
-- **Goal**: Activation milestone
-- **CTA**: Create workflow
-
-### Email 4: Use Case (Day 5)
-- **Subject**: How [Customer] saved 10 hours/week
-- **Goal**: Social proof + inspiration
-- **CTA**: Try this template
-
-### Email 5: Check-in (Day 7)
-- **Subject**: Need help getting started?
-- **Goal**: Rescue non-activated users
-- **CTA**: Book a call / Reply for help
-
-## Metrics
-| Email | Open Rate Target | CTR Target |
-|-------|------------------|------------|
-| Email 1 | 60%+ | 30%+ |
-| Email 2 | 45%+ | 15%+ |
-| Email 3 | 40%+ | 20%+ |
-| Email 4 | 35%+ | 12%+ |
-| Email 5 | 40%+ | 15%+ |
-```
-
-### Example 3: Programmatic SEO
-
-**Prompt**:
-```
-Create a programmatic SEO template for comparison pages.
-Target: "[Tool A] vs [Tool B]" searches.
-Include: H1, meta description, comparison table, CTA.
-```
-
-**Expected output**:
-- Page template with placeholders
-- Schema markup (JSON-LD)
-- Internal linking strategy
-- Content guidelines per section
-
----
+**Expected behavior**
+- Treat the request as valid
+- Execute the canonical marketing-routing workflow
+- Prefer `marketing-automation` in any forward-looking recommendation
 
 ## Best practices
+1. Keep the alias lightweight and explicit.
+2. Preserve backward compatibility without duplicating the full canonical instructions.
+3. Nudge future usage toward `marketing-automation` whenever discovery wording matters.
 
-1. **One KPI per deliverable**: Avoid mixed objectives
-2. **Audience specificity**: Use segment-specific needs and terminology
-3. **Instrument measurement**: Set up tracking before launch
-4. **Iterate with data**: Treat outputs as hypotheses
-
----
-
-## Common pitfalls
-
-- **Mixing multiple objectives**: Multiple goals in a single asset
-- **Missing audience context**: Unclear who the asset is for
-- **No tracking/validation plan**: Unable to measure effectiveness
-
----
-
-## Troubleshooting
-
-### Issue: Output is generic
-**Cause**: Vague product/audience information
-**Solution**: Provide positioning, competitors, and proof points
-
-### Issue: Output conflicts with brand voice
-**Cause**: No tone/voice constraints provided
-**Solution**: Provide brand do/don't list and sample copy
-
-### Issue: Can't measure impact
-**Cause**: Tracking events not defined
-**Solution**: Define events and success thresholds in advance
-
----
-
-## Output format
-
-```markdown
-## Marketing Asset Report
-
-### Brief Summary
-- **Sub-Skill Used**: [sub-skill]
-- **Objective**: [KPI]
-- **Audience**: [segment]
-
-### Deliverable
-[generated asset]
-
-### Implementation Checklist
-- [ ] Asset ready
-- [ ] Tracking configured
-- [ ] Success criteria defined
-
-### A/B Test Plan
-| Test | Hypothesis | Metric | Expected Lift |
-|------|------------|--------|---------------|
-| Test A | [hypothesis] | [metric] | [%] |
-```
-
----
-
-## Multi-Agent Workflow
-
-### Validation & Retrospectives
-
-- **Round 1 (Orchestrator)**: Coverage of 23 sub-skills across 5 categories
-- **Round 2 (Analyst)**: KPI alignment, prompt structure review
-- **Round 3 (Executor)**: Output format, actionability check
-
-### Agent Roles
-
-| Agent | Role |
-|-------|------|
-| Claude | Brief composition, asset generation |
-| Gemini | Competitor research, trend analysis |
-| Codex | Tracking code generation, automation |
-
----
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2026-01-21
-- **Compatible Platforms**: Claude, ChatGPT, Gemini, Codex
-
-### Related Skills
-- [presentation-builder](../../documentation/presentation-builder/SKILL.md)
-- [frontend-design](../../frontend/design-system/SKILL.md)
-- [image-generation](../../creative-media/image-generation/SKILL.md)
-
-### Tags
-`#marketing` `#cro` `#copywriting` `#seo` `#analytics` `#growth` `#automation`
+## References
+- `references/alias-resolution-checklist.md`
+- `references/legacy-intake-and-route-outs.md`
+- `../marketing-automation/SKILL.md`
+- `../steam-store-launch-ops/SKILL.md`

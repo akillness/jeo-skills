@@ -1,0 +1,57 @@
+{
+  "skill_name": "api-documentation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the developer quickstart for our Orders REST API so partners can create an API key, send their first POST /orders request, and verify the returned order ID.",
+      "expected_output": "The skill activates in quickstart mode, includes auth/environment prerequisites, a first-success request, and a success check, and treats the task as developer-facing API documentation rather than contract design.",
+      "assertions": [
+        "Response chooses quickstart, getting-started, or first-success framing for API consumers",
+        "Response includes auth or credential prerequisites before the first request",
+        "Response includes a success check or expected response outcome",
+        "Response does not route the task to api-design or user-guide-writing"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Update our webhook docs because invoice.paid now retries for 24 hours, includes attempt_count, and requires HMAC signature verification on every delivery.",
+      "expected_output": "The skill activates in webhook-guide or migration-update mode, documents retry and verification behavior, and keeps release-note hygiene separate from the API docs task.",
+      "assertions": [
+        "Response mentions webhook verification or signature handling",
+        "Response mentions retry, replay, or idempotency behavior",
+        "Response treats the task as API documentation maintenance rather than changelog-only work"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We need Python SDK docs that show installation, configuring the client with an API key, pagination examples, and how to handle rate-limit errors.",
+      "expected_output": "The skill activates in sdk-guide mode, includes install/config/example/error-handling structure, and links SDK guidance back to the API reference surface.",
+      "assertions": [
+        "Response chooses SDK or client-library guidance mode",
+        "Response includes install or configuration guidance",
+        "Response mentions pagination and rate-limit handling",
+        "Response links or routes to deeper reference docs where appropriate"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our developer portal publishes one huge OpenAPI collection with public, partner-only, and internal endpoints mixed together. Help regroup the docs, expose only partner-safe sections, and make navigation easier to scan.",
+      "expected_output": "The skill should treat this as developer-facing API documentation with a navigation/grouping packet, not as contract redesign or a generic static-site rewrite.",
+      "assertions": [
+        "Response keeps the task in api-documentation rather than routing it away by default",
+        "Response proposes grouping, selective publishing, navigation, or portal-section structure",
+        "Response preserves truthful linkage to deeper reference content instead of replacing it with generic marketing copy"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We have not decided whether this new inventory integration should be REST or GraphQL, and we need someone to propose the resource model, versioning plan, and pagination semantics.",
+      "expected_output": "The skill should identify that the main job is contract/interface design and route the request to api-design instead of pretending to write docs first.",
+      "assertions": [
+        "Response routes the task to api-design",
+        "Response explains that the unresolved contract design comes before API documentation",
+        "Response does not produce a full developer-portal doc structure as if the contract already existed"
+      ]
+    }
+  ]
+}

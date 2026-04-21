@@ -1,36 +1,33 @@
 N:genkit
-D:Build production-ready AI workflows using Firebase Genkit. Use when creating type-safe flows, tool-calling agents, RAG pipelines, streaming responses, or deploying AI to Firebase/Cloud Run. Supports TypeScript, Go, and Python with Gemini, OpenAI, Anthropic, and Ollama plugins.
-G:genkit firebase ai flows agents rag streaming gemini typescript google-cloud llm tool-calling
+D:Route server-owned AI workflow work into one Genkit implementation brief. Use when the main job is deciding whether a web/backend/fullstack feature needs reusable flows, tools, retrieval, prompt files, typed contracts, evals, observability, or deployment across Firebase / Cloud Run / another backend runtime. Keep direct Firebase app/client SDK integration routed to `firebase-ai-logic`, Firebase platform/operator work routed to `firebase-cli`, and framework-choice comparisons routed to `survey`.
+G:genkit firebase ai-workflows flows tool-calling rag evaluation observability cloud-run fullstack backend developer-ui dotprompt
 
-U[8]:
-  **AI Flows**: Wrap LLM logic in type-safe, observable, deployable flow functions
-  **Tool Calling / Agents**: Equip models with custom tools and implement agentic loops
-  **RAG Pipelines**: Retrieval-augmented generation with Pinecone, pgvector, Firestore, Chroma
-  **Streaming**: Real-time token streaming for chat and long-form content
-  **Multi-Agent Systems**: Orchestrate multiple specialized AI subflows
-  **Prompt Management**: Version-controlled prompts using Dotprompt .prompt files
-  **Firebase Deployment**: Deploy flows as Cloud Functions or Cloud Run services
-  **Developer UI**: Local visual tool at localhost:4000 for testing, tracing, and debugging
+U[6]:
+  **Backend workflow ownership**: choose Genkit when the capability should live server-side and be reused across routes, clients, or jobs
+  **Mode selection**: pick flow-foundation / tool-and-agent / retrieval-and-prompt / evaluation-and-observability / deployment-runtime / comparison-or-fallback
+  **Flow contract**: define one smallest input/output boundary and what must remain server-side
+  **Fallback honesty**: keep plain provider SDK + route-handler fallbacks visible when a framework layer is overkill
+  **Deployment decision**: choose Firebase vs Cloud Run vs another backend runtime deliberately
+  **Routing boundary**: send direct Firebase app SDK work to `firebase-ai-logic` and framework comparisons to `survey`
 
 S[6]{n,action,details}:
-  1,Install CLI,npm install -g genkit-cli (or: curl -sL cli.genkit.dev | bash)
-  2,Create Project,npm init -y && npm install genkit @genkit-ai/google-genai && export GEMINI_API_KEY=...
-  3,Initialize Genkit,const ai = genkit({ plugins: [googleAI()], model: googleAI.model('gemini-2.5-flash') })
-  4,Define Flow,ai.defineFlow({ name, inputSchema: z.object({...}), outputSchema: z.object({...}) }, async (input) => { ... })
-  5,Start Dev UI,genkit start -- npx tsx --watch src/index.ts  → opens http://localhost:4000
-  6,Deploy,onCallGenkit() for Firebase Functions / expressHandler() for Express / Cloud Run
+  1,Frame packet,Capture app shape, ownership, current packet, workflow need, and delivery pressure
+  2,Decide layer,Choose whether Genkit is actually the right layer or a fallback/neighboring skill is better
+  3,Choose mode,Pick one primary operating mode before naming tools or models
+  4,Freeze boundary,Define one named backend capability with a typed contract and server-only responsibilities
+  5,Name next slice,Pick the smallest implementation/eval/deployment slice worth doing now
+  6,Route out honestly,Send app SDK work to firebase-ai-logic, Firebase ops to firebase-cli, and framework choice to survey
 
-R[8]:
-  Always define Zod input/output schemas for every flow — enables Dev UI labeled fields and runtime validation
-  Use flows for all AI logic — even simple generate() calls benefit from tracing and deployment
-  Use ai.run() to wrap non-Genkit code for trace visibility in Dev UI
-  Store API keys in env vars; use Firebase Secrets (defineSecret) for production deployments
-  Handle null output from generate() — always throw a meaningful error if output is null
-  Use streamSchema + sendChunk for long-form content to improve perceived responsiveness
-  Set GENKIT_ENV=dev environment variable when running runtime separately from genkit start
-  Use onCallGenkit() (not raw Cloud Functions handlers) when deploying flows to Firebase
+R[6]:
+  Choose Genkit because you need a server-owned workflow layer, not just because the app uses Firebase
+  Start from the packet and ownership decision before naming tools or models
+  Prefer one crisp flow boundary over a giant AI feature bucket
+  Use traces and evals when confidence is the bottleneck
+  Keep plain SDK and route-handler fallbacks visible when they are enough
+  Treat runtime choice as an architecture decision, not proof that Genkit is mandatory
 
-E[3]{desc,in,out}:
-  "Basic flow","ai.defineFlow({ name: 'hello', inputSchema: z.object({ name: z.string() }), outputSchema: z.string() }, async ({ name }) => { const { text } = await ai.generate('Say hello to ' + name); return text; })","Type-safe flow callable as API endpoint with full Dev UI tracing"
-  "Tool-calling agent","ai.defineTool({ name: 'getWeather', inputSchema: z.object({ city: z.string() }), outputSchema: z.object({ temp: z.number() }) }, async ({ city }) => fetchWeather(city)) then use tools: [getWeatherTool] in generate()","Agent automatically calls tools and synthesizes final answer"
-  "Run flow via CLI","genkit flow:run myFlow '{\"input\": \"value\"}' -s","Executes flow from terminal with streaming output, no server needed"
+E[4]{desc,in,out}:
+  "Reusable backend assistant","Support app needs retrieval + one ticket tool + one endpoint reused by the web app","Use genkit with a server-owned flow boundary and explicit tool/retrieval plan"
+  "Direct Firebase app feature","Add Gemini summaries directly inside a Firebase web app with the Firebase SDK","Route to firebase-ai-logic instead of forcing Genkit"
+  "Launch-readiness loop","Existing Genkit flows need evals and observability before Cloud Run rollout","Use genkit with an evidence-first eval and trace plan"
+  "Framework-choice packet","Should we use Genkit, Firebase AI Logic, Vercel AI SDK, or direct SDK calls?","Route to survey unless the backend workflow layer is already chosen"

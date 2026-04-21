@@ -1,0 +1,29 @@
+N:game-performance-profiler
+D:Route Unity and Unreal frame-time complaints into one bottleneck-first profiling brief. Use when the main job is interpreting profiler screenshots, `stat unit` / `stat gpu` output, benchmark-route complaints, or Steam Deck / target-device review packets; choosing the smallest useful next capture; naming one bottleneck family; and deciding whether to stay with quick packets, move to an engine-native profiler, or escalate further.
+G:game-development unity unreal profiling performance frame-time hitch stat-unit stat-gpu unreal-insights steam-deck benchmark-route device-review quick-triage-packet
+
+U[6]:
+  Turn vague performance complaints into one normalized evidence packet and next capture choice
+  Classify likely bottlenecks across CPU gameplay, render-thread, GPU, memory/GC, streaming, physics, and device-specific risk
+  Define reproducible routes, save slots, warm-up passes, and repeat counts for benchmark work
+  Review Steam Deck or other target-device packets without trusting editor numbers as final truth
+  Choose whether to stay with stat/screenshots, move to engine-native profilers, or escalate to GPU tools
+  Produce one profiling artifact: quick triage packet, profiling plan, benchmark route brief, CPU/GPU split note, or device review brief
+
+S[8]{n,action,details}:
+  1,Frame,Record engine target environment symptom evidence route and quality variables first
+  2,Mode,Choose one primary mode: quick-triage-packet bottleneck-classification benchmark-route-plan device-review or tool-escalation
+  3,Classify,Pick one primary bottleneck family and optional secondary family before discussing fixes
+  4,Capture,Recommend the smallest next capture that can disambiguate the likely causes
+  5,Route,Define save slot traversal path warm-up pass repeat count and packaged-vs-editor context when reproducibility is weak
+  6,Escalate,Prefer engine-native profilers before GPU-vendor tools unless render-path ambiguity is already clear
+  7,Route-out,Send build failures to game-build-log-triage generic app tuning to performance-optimization and broader production coordination to bmad-gds
+  8,Brief,Return a Game Performance Profiling Brief with Evidence packet Next capture Benchmark route/device review Escalation path and one recommended next artifact
+
+R[6]:
+  Keep confidence low when the packet is screenshot-only or missing packaged/device context
+  Do not jump to optimization advice before classifying CPU GPU memory streaming or platform/device risk
+  Treat editor-vs-packaged as an explicit branch, not a footnote
+  Prefer one repeatable route or save-based pass over vague location descriptions
+  Use engine-native language first: Unity Profiler Frame Debugger Unreal Insights stat unit stat gpu
+  Do not let game-performance triage sprawl into build-log diagnosis generic app tuning or broad milestone coordination

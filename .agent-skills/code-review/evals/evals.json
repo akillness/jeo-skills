@@ -1,0 +1,57 @@
+{
+  "skill_name": "code-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this backend PR for the new coupon API. It changes discount validation, adds a migration, and I want to know if it is safe to merge.",
+      "expected_output": "A workflow-aware review brief that decides approve/request changes/block, prioritizes correctness and migration risk, and mentions missing validation evidence.",
+      "assertions": [
+        "Output explicitly frames the task as reviewing a PR or diff",
+        "Output includes severity or priority framing for findings",
+        "Output checks backend-specific risks such as validation, migration, compatibility, auth, or rollout safety",
+        "Output mentions missing tests or evidence if the prompt lacks them"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Can you code-review this responsive navbar diff before merge? I changed breakpoints and menu states but only pasted the code.",
+      "expected_output": "A review brief that still evaluates maintainability and correctness but asks for screenshots, recordings, or preview links because behavior cannot be fully judged from the diff alone.",
+      "assertions": [
+        "Output recognizes this as a frontend/UI-adjacent review",
+        "Output asks for screenshots, recordings, or preview evidence when behavior matters",
+        "Output keeps code-review focused on implementation risk rather than pure design critique",
+        "Output can route accessibility or visual-governance concerns to neighboring skills"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Before review, help me split this huge branch into smaller commits, rebase it, and clean up the history so reviewers can read it.",
+      "expected_output": "A route-out response that identifies the real task as Git mechanics and sends it to git-workflow rather than pretending review has already started.",
+      "assertions": [
+        "Output routes the request to git-workflow or equivalent local Git workflow guidance",
+        "Output explains that review quality depends on a cleaner diff or commit structure",
+        "Output does not treat the request as a completed code review"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Can you review this PR and also figure out who to request based on CODEOWNERS, then set labels and merge queue options?",
+      "expected_output": "A split response that keeps the actual diff-review judgment inside code-review but routes reviewer assignment, CODEOWNERS handling, labels, and merge-queue administration to a repo/PR workflow skill.",
+      "assertions": [
+        "Output distinguishes review judgment from repo or PR administration",
+        "Output routes CODEOWNERS, reviewer assignment, labels, or merge queue work to a repo/PR workflow skill",
+        "Output does not pretend repository administration is owned by code-review"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "reviewdog already posted lint and static-analysis comments on this gameplay PR. Can you do the final review pass before we merge?",
+      "expected_output": "A review brief that treats bot findings as evidence inputs, still judges the riskiest gameplay/runtime behavior, and notes when playtest or engine validation is still required.",
+      "assertions": [
+        "Output treats reviewdog or CI annotations as inputs rather than the entire review",
+        "Output still performs a human or agent merge-readiness judgment",
+        "Output can mention gameplay, runtime, playtest, or engine-validation evidence when the change is game-related"
+      ]
+    }
+  ]
+}

@@ -1,9 +1,12 @@
 N:task-estimation
-D:Estimate software development tasks accurately using various techniques. Use when planning sprint...
-G:estimation agile sprint-planning story-points planning-poker
-U[3]:
-  **Sprint Planning**: Decide what work to include in the sprint
-  **Roadmap creation**: Build long-term plans
-  **Resource planning**: Estimate team size and schedule
-S[1]{n,action}:
-  1,Story Points (relative estimation)
+D:Turn fuzzy work into one honest estimate packet by choosing the right sizing horizon, naming confidence and uncertainty, and separating discovery from delivery before anyone treats the number like a promise. Use for story points, t-shirt sizing, planning-poker prep, forecast-safe language, split-or-spike guidance, and cross-functional sizing across software, product/ops, GTM, or game work.
+G:task-estimation story-points t-shirt-sizing planning-poker forecasting uncertainty project-management game-development
+U[4]:
+  **Sprint candidate sizing**: relative estimate + anchors + handoff to planning
+  **Roadmap triage**: coarse bucket + uncertainty drivers + spike recommendation
+  **Forecast support**: range/assumptions note without converting the estimate into a promise
+  **Milestone or game work**: include QA/content/release burden instead of only code effort
+S[3]{n,action}:
+  1,Classify one primary mode
+  2,Choose the lightest honest estimate unit
+  3,Return one compact estimate packet with route-outs

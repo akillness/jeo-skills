@@ -1,4 +1,4 @@
-# bmad-orchestrator — Practical Examples
+# bmad — Practical Examples
 
 → [Overview](./README.md) · [Installation](./installation.md) · [Workflow Guide](./workflow.md) · [Configuration](./configuration.md)
 

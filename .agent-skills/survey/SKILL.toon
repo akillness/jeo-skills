@@ -1,26 +1,27 @@
 N:survey
-D:Cross-platform landscape scan before planning or implementation. Research context, workarounds, existing solutions, and structural gaps, then save reusable survey artifacts for OMC, OMX, OHMG, and general agent workflows.
+D:Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform patterns map before deciding what to build. Produce reusable .survey/{slug}/ artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.
 G:survey landscape-scan research discovery groundwork omc omx ohmg claude codex gemini hooks rules settings
 U[5]:
-  Run a problem-space scan before planning or coding
-  Compare existing tools, workflows, and market gaps
-  Normalize agent-platform differences into settings rules hooks
-  Produce reusable research artifacts in a neutral shared folder
-  Hand off clean discovery outputs to plan jeo ralph or implementation
-S[6]{n,action,details}:
-  1,Triage,Clarify what who why and reuse-or-overwrite existing .survey/{slug} results
-  2,Choose adapter,Map execution to OMC OMX OHMG or generic web-capable agents without changing output shape
-  3,Run context lane,Research workflow context affected users workarounds adjacent problems and user voices
-  4,Run solutions lane,Find products plugins libraries SaaS curated lists pricing and repeated limitations
-  5,Run behavior lane,Separate marketed claims from what people actually use in practice
-  6,Synthesize,Write triage.md context.md solutions.md and platform-map.md for agent-platform topics then summarize facts only
+  Produce reusable .survey/{slug}/ artifacts before planning or implementation
+  Compare solutions workarounds and repeated complaints without drifting into coding
+  Normalize platform topics into settings rules hooks and platform gaps
+  Use a cheap-first evidence recovery ladder when search or extract tooling is weak
+  Validate the artifact contract before handing off to planning or execution
+S[7]{n,action,details}:
+  1,Classify mode,Choose one primary survey mode and decide whether platform-map.md is required
+  2,Freeze evidence rules,Set the source quality floor labels and recovery order before searching
+  3,Triage and reuse,Extract what who why and check whether an existing .survey/{slug} should be reused
+  4,Run 4 lanes,Research context solutions actual behavior and alternatives-or-platform-map in parallel
+  5,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
+  6,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
+  7,Summarize,Return a short factual survey summary and route planning or implementation outward
 R[6]:
   Never write implementation code in survey mode
-  Search in English for breadth unless the user requires another language
-  Save outputs in the user's language by default
-  Run all four lanes in parallel whenever possible
-  Deduplicate solution names and include source links for claims
-  Use settings rules hooks as the common abstraction for Claude Codex Gemini comparisons
+  Search broadly in English unless the user requires another language
+  Keep claims source-backed and label downgraded evidence clearly
+  Preserve the same artifact filenames and headings across platforms
+  Deduplicate solution names and keep one bounded question per survey artifact
+  Use settings rules hooks as the common layer for Claude Codex Gemini comparisons
 E[2]{desc,in,out}:
-  "Product discovery","survey AI ad creative analysis for mobile games","Creates .survey/ai-ad-creative-analysis/ with triage context and solution landscape files"
-  "Agent-platform comparison","survey cross-platform hook rule setting abstraction for Claude Codex Gemini","Creates platform-map.md normalizing vendor features into settings rules hooks and highlights portability gaps"
+  "Repo maintenance","survey which existing skill in this repo is the best bounded maintenance target next","Creates triage context and solutions artifacts, then validates the output folder before any skill rewrite starts"
+  "Platform comparison","survey how Claude Code Codex and Gemini CLI differ for hooks approvals and research-worker setup","Creates platform-map.md using settings rules hooks, validates with the platform-topic contract, and records portability gaps"

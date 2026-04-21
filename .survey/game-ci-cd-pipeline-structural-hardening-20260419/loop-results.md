@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `.agent-skills/game-ci-cd-pipeline/SKILL.md` | A routing-first packet model will improve trigger precision and reduce overlap with `game-build-log-triage` | Rewrote the front door around one packet type, one blocker classification, one next artifact, and explicit route-outs; added `references/intake-packets-and-route-outs.md`; expanded evals with a log-triage route-out case; synced README/setup/manifest wording | `validate_skill.sh` passed; `validate_catalog_sync.py --repo-root .` passed; discovery surfaces remain in sync | Keep | Transferable improvement for other game / ops front-door skills |

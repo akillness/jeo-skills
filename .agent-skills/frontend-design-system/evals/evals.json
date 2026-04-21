@@ -1,0 +1,25 @@
+{
+  "skill_name": "frontend-design-system",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use frontend-design-system to update the design system for our app.",
+      "expected_output": "The alias should activate only because the exact legacy name was requested, then redirect to design-system.",
+      "assertions": [
+        "Acknowledges the frontend-design-system alias",
+        "Routes substantive guidance to design-system",
+        "Explains that the alias exists for compatibility"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our setup script still expects a folder named frontend-design-system during migration.",
+      "expected_output": "The alias should remain valid for compatibility and migration workflows.",
+      "assertions": [
+        "Keeps the alias available for exact-name compatibility",
+        "Does not present the alias as the default choice for ordinary UI-system work",
+        "Points future maintenance toward design-system"
+      ]
+    }
+  ]
+}

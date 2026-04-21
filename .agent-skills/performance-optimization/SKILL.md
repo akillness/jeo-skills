@@ -1,309 +1,246 @@
 ---
 name: performance-optimization
-description: Optimize application performance for speed, efficiency, and scalability. Use when improving page load times, reducing bundle size, optimizing database queries, or fixing performance bottlenecks. Handles React optimization, lazy loading, caching, code splitting, and profiling.
+description: >
+  Route performance work from the artifact people already have into one measurement-led
+  tuning brief. Use when the main job is locating the tightest latency, throughput,
+  memory, bundle-size, or frame-budget bottleneck; choosing the right trace, query
+  plan, load-test result, profiler capture, or CWV report; naming one bottleneck;
+  and recommending one or two bounded optimizations with before/after verification.
+  Route telemetry rollout to monitoring-observability, correctness diagnosis to
+  debugging, structural cleanup to code-refactoring, validation-policy design to
+  testing-strategies, and engine-specific capture interpretation to
+  game-performance-profiler.
+allowed-tools: Read Grep Glob Bash Write
+compatibility: >
+  Best for repositories, traces, benchmarks, query plans, flame graphs, browser
+  profiles, load-test outputs, CWV reports, profiler screenshots, and runtime notes
+  where the main decision is what evidence means, what to tune first, and how to
+  prove improvement. Not for observability platform setup, generic refactoring, or
+  correctness-first debugging.
 metadata:
-  tags: performance, optimization, React, lazy-loading, caching, profiling, web-vitals
-  platforms: Claude, ChatGPT, Gemini
-allowed-tools: Read Edit Bash Write
+  tags: performance, profiling, bottleneck-analysis, latency, throughput, memory, bundle-size, query-plans, web-vitals, flamegraphs
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.1"
+  source: akillness/oh-my-skills
 ---
-
 
 # Performance Optimization
 
+Use this skill when the main question is **"what artifact do we trust, where is the actual bottleneck, and what is the smallest tuning move worth trying first?"**
+
+The job is not to dump generic React, SQL, caching, or game-performance tips.
+The job is to classify the complaint, normalize the current artifact into one tuning brief, pick one primary mode, name one bottleneck, recommend one or two high-leverage changes, then verify before/after impact and route remaining work correctly.
+
+Read [references/intake-packets-and-escalations.md](references/intake-packets-and-escalations.md) before handling an unfamiliar artifact packet.
+Read [references/tuning-modes.md](references/tuning-modes.md) before handling an unfamiliar performance complaint.
+Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `performance-optimization`, `monitoring-observability`, `debugging`, `testing-strategies`, `code-refactoring`, or `game-performance-profiler` should own the next step.
+Read [references/measurement-checklist.md](references/measurement-checklist.md) before writing a benchmark or profiling plan.
 
 ## When to use this skill
+- Slow interactions, page loads, route transitions, API hot paths, query plans, memory growth, bundle regressions, or frame-budget complaints where the bottleneck is not yet isolated
+- Performance packets that arrive as traces, Lighthouse/CWV reports, flamegraphs, query plans, load-test diffs, profiler screenshots, benchmark notes, or stakeholder dashboards
+- Cross-domain performance asks spanning CLI/dev workflow, web/fullstack, product/ops, marketing/content performance, or game-adjacent routing where the next owner is still unclear
+- Situations where you need one bounded tuning brief instead of a generic performance tip dump
 
-- **Slow page loads**: low Lighthouse score
-- **Slow rendering**: delayed user interactions
-- **Large bundle size**: increased download time
-- **Slow queries**: database bottlenecks
+## When not to use this skill
+- **The main task is rolling out dashboards, alerts, metrics, traces, or log pipelines** → use `monitoring-observability`
+- **The main task is reproducing a correctness bug, isolating a regression, or understanding why behavior is wrong** → use `debugging`
+- **The main task is safe structural cleanup, decomposition, or codemod planning without performance evidence** → use `code-refactoring`
+- **The main task is choosing org-wide test layers, merge/release gates, or benchmark policy** → use `testing-strategies`
+- **The bottleneck is clearly inside a Unity/Unreal/Godot capture and engine-specific interpretation is the main job** → use `game-performance-profiler`
+- **The bottleneck is already isolated and the next task is stack-specific implementation detail**; route to the implementation skill after framing the tuning brief
 
 ## Instructions
 
-### Step 1: Measure performance
+### Step 1: Frame the complaint
+Capture the smallest useful statement of the problem before prescribing fixes.
 
-**Lighthouse (Chrome DevTools)**:
-```bash
-# CLI
-npm install -g lighthouse
-lighthouse https://example.com --view
+Record:
+- surface: CLI/dev | frontend/page-load | API/service | database | async/capacity | report/dashboard | runtime/game | unknown
+- symptom: high latency | low throughput | memory growth | CPU saturation | slow query | large bundle | weak CWV | frame spike | unknown
+- decision target: p50/p95/p99 latency, throughput, bundle size, memory ceiling, frame budget, CWV metric, or benchmark duration
+- environment: local | CI benchmark | staging | production | target device/hardware | mixed/unknown
+- whether this is a regression, chronic hotspot, or vague complaint
 
-# Automate in CI
-lighthouse https://example.com --output=json --output-path=./report.json
+Quick frame:
+```markdown
+Surface: API + database
+Symptom: p95 latency jumped from 180ms to 850ms on order search
+Decision target: restore p95 < 250ms
+Environment: production-like staging
+Regression: yes, after filter expansion
 ```
 
-**Measure Web Vitals** (React):
-```typescript
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+### Step 2: Start from the intake packet
+Use [references/intake-packets-and-escalations.md](references/intake-packets-and-escalations.md).
 
-function sendToAnalytics(metric: any) {
-  // Send to Google Analytics, Datadog, etc.
-  console.log(metric);
-}
+Choose the packet the user actually has now:
+- browser trace / DevTools recording
+- Lighthouse, WebPageTest, or CWV report
+- APM trace, flamegraph, profiler output, or benchmark diff
+- `EXPLAIN` / query-plan / slow-query artifact
+- profiler screenshot / stat overlay / engine capture
+- spreadsheet, dashboard, report summary, or no usable artifact yet
 
-getCLS(sendToAnalytics);
-getFID(sendToAnalytics);
-getFCP(sendToAnalytics);
-getLCP(sendToAnalytics);
-getTTFB(sendToAnalytics);
+Output this step as:
+```markdown
+## Intake Packet
+- Current artifact:
+- Why it is enough (or not enough):
+- Missing context to collect next:
 ```
 
-### Step 2: Optimize React
+Rule: do not force users into an ideal measurement flow if the current artifact already narrows the next decision.
 
-**React.memo (prevent unnecessary re-renders)**:
-```tsx
-// ❌ Bad: child re-renders whenever the parent re-renders
-function ExpensiveComponent({ data }: { data: Data }) {
-  return <div>{/* complex rendering */}</div>;
-}
+### Step 3: Choose one primary tuning mode
+Pick one primary mode from [references/tuning-modes.md](references/tuning-modes.md).
 
-// ✅ Good: re-render only when props change
-const ExpensiveComponent = React.memo(({ data }: { data: Data }) => {
-  return <div>{/* complex rendering */}</div>;
-});
-```
+Primary modes:
+- `interaction-and-rendering`
+- `page-load-and-bundle`
+- `api-latency-and-hot-paths`
+- `database-plan-and-data-access`
+- `throughput-and-capacity`
+- `memory-and-allocation`
+- `runtime-frame-budget`
+- `unknown-needs-better-measurement`
 
-**useMemo & useCallback**:
-```tsx
-function ProductList({ products, category }: Props) {
-  // ✅ Memoize filtered results
-  const filteredProducts = useMemo(() => {
-    return products.filter(p => p.category === category);
-  }, [products, category]);
+Rule: one primary mode, optional secondary mode.
+Do not mix every possible optimization axis into one answer.
 
-  // ✅ Memoize callback
-  const handleAddToCart = useCallback((id: string) => {
-    addToCart(id);
-  }, []);
+### Step 4: Name the bottleneck before proposing fixes
+Translate the evidence into one bottleneck statement.
 
-  return (
-    <div>
-      {filteredProducts.map(product => (
-        <ProductCard key={product.id} product={product} onAdd={handleAddToCart} />
-      ))}
-    </div>
-  );
-}
-```
+Good bottleneck statements:
+- “The endpoint is CPU-bound inside JSON serialization after DB work already returned.”
+- “The search query plan is doing a wide sort + filter because the composite index does not match the predicate.”
+- “Interaction delay is dominated by one long task plus layout thrash in the results panel.”
+- “Frame spikes line up with asset streaming bursts on target hardware.”
+- “The CWV report shows LCP dominated by image payload and render-blocking script cost, not server latency.”
 
-**Lazy Loading & Code Splitting**:
-```tsx
-import { lazy, Suspense } from 'react';
+Avoid vague statements like “performance is bad overall.”
 
-// ✅ Route-based code splitting
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const Profile = lazy(() => import('./pages/Profile'));
-const Settings = lazy(() => import('./pages/Settings'));
+### Step 5: Recommend one or two high-leverage changes
+Prioritize the smallest credible move that attacks the named bottleneck directly.
 
-function App() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/settings" element={<Settings />} />
-      </Routes>
-    </Suspense>
-  );
-}
+Candidate moves by mode:
+- `interaction-and-rendering`: reduce rerender scope, defer non-critical work, avoid layout thrash, virtualize heavy lists, cut synchronous main-thread work
+- `page-load-and-bundle`: split routes/modules, reduce JS, optimize asset delivery, compress/resize images, trim third-party cost, cache aggressively
+- `api-latency-and-hot-paths`: remove blocking work, cache expensive responses, reduce serialization cost, parallelize safe downstream calls, precompute heavy transforms
+- `database-plan-and-data-access`: fix query shape, add/adjust indexes, remove N+1 access, push filters earlier, change pagination strategy, reduce row width
+- `throughput-and-capacity`: tune concurrency limits, queue shape, worker pool size, connection pool size, batch size, or cache hit path
+- `memory-and-allocation`: reduce churn, bound caches, reuse buffers/objects where appropriate, stream instead of buffering, shrink payloads
+- `runtime-frame-budget`: reduce per-frame work, spread expensive tasks, lower draw/overdraw pressure, defer streaming bursts, simplify expensive effects
+- `unknown-needs-better-measurement`: do not guess; ask for the cheapest artifact that can separate likely causes
 
-// ✅ Component-based lazy loading
-const HeavyChart = lazy(() => import('./components/HeavyChart'));
+Rule of thumb: recommend at most two candidate changes unless the next move is gathering better evidence.
 
-function Dashboard() {
-  return (
-    <div>
-      <h1>Dashboard</h1>
-      <Suspense fallback={<Skeleton />}>
-        <HeavyChart data={data} />
-      </Suspense>
-    </div>
-  );
-}
-```
+### Step 6: State tradeoffs and route-outs
+Every tuning suggestion should include what could get worse.
 
-### Step 3: Optimize bundle size
+Examples:
+- caching may improve latency but increase staleness or memory pressure
+- batching may improve throughput but hurt tail latency
+- pagination/index changes may speed one query while complicating writes
+- lazy loading or splitting may improve initial load but increase later interaction latency
+- image compression or asset simplification may reduce quality or require content/design signoff
 
-**Webpack Bundle Analyzer**:
-```bash
-npm install --save-dev webpack-bundle-analyzer
+Route implementation when needed:
+- component/state architecture cleanup → `react-best-practices`, `state-management`, or `ui-component-patterns`
+- schema/index/data-model redesign → `database-schema-design`
+- telemetry rollout or ongoing alerting → `monitoring-observability`
+- benchmark-gate policy → `testing-strategies`
+- engine-specific profiler interpretation → `game-performance-profiler`
+- correctness-first reproduction or environment drift → `debugging`
 
-# package.json
-{
-  "scripts": {
-    "analyze": "webpack-bundle-analyzer build/stats.json"
-  }
-}
-```
+### Step 7: Verify before/after impact
+Use [references/measurement-checklist.md](references/measurement-checklist.md).
 
-**Tree Shaking (remove unused code)**:
-```typescript
-// ❌ Bad: import entire library
-import _ from 'lodash';
+Verification packet should include:
+- baseline metric and environment
+- changed variable(s)
+- after metric under comparable conditions
+- whether the main bottleneck moved or disappeared
+- residual risk / follow-up measurement
 
-// ✅ Good: import only what you need
-import debounce from 'lodash/debounce';
-```
-
-**Dynamic Imports**:
-```typescript
-// ✅ Load only when needed
-button.addEventListener('click', async () => {
-  const { default: Chart } = await import('chart.js');
-  new Chart(ctx, config);
-});
-```
-
-### Step 4: Optimize images
-
-**Next.js Image component**:
-```tsx
-import Image from 'next/image';
-
-function ProductImage() {
-  return (
-    <Image
-      src="/product.jpg"
-      alt="Product"
-      width={500}
-      height={500}
-      priority  // for the LCP image
-      placeholder="blur"  // blur placeholder
-      sizes="(max-width: 768px) 100vw, 50vw"
-    />
-  );
-}
-```
-
-**Use WebP format**:
-```html
-<picture>
-  <source srcset="image.webp" type="image/webp">
-  <source srcset="image.jpg" type="image/jpeg">
-  <img src="image.jpg" alt="Fallback">
-</picture>
-```
-
-### Step 5: Optimize database queries
-
-**Fix the N+1 query problem**:
-```typescript
-// ❌ Bad: N+1 queries
-const posts = await db.post.findMany();
-for (const post of posts) {
-  const author = await db.user.findUnique({ where: { id: post.authorId } });
-  // 101 queries (1 + 100)
-}
-
-// ✅ Good: JOIN or include
-const posts = await db.post.findMany({
-  include: {
-    author: true
-  }
-});
-// 1 query
-```
-
-**Add indexes**:
-```sql
--- Identify slow queries
-EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@example.com';
-
--- Add index
-CREATE INDEX idx_users_email ON users(email);
-
--- Composite index
-CREATE INDEX idx_orders_user_date ON orders(user_id, created_at);
-```
-
-**Caching (Redis)**:
-```typescript
-async function getUserProfile(userId: string) {
-  // 1. Check cache
-  const cached = await redis.get(`user:${userId}`);
-  if (cached) {
-    return JSON.parse(cached);
-  }
-
-  // 2. Query DB
-  const user = await db.user.findUnique({ where: { id: userId } });
-
-  // 3. Store in cache (1 hour)
-  await redis.setex(`user:${userId}`, 3600, JSON.stringify(user));
-
-  return user;
-}
+Good verification brief:
+```markdown
+Baseline: p95 search latency 850ms on staging replay dataset
+Change: added `(team_id, status, created_at)` index and removed N+1 author lookup
+After: p95 230ms, DB time down 68%, CPU flat
+Residual risk: cache-miss path still spikes at 400ms for very wide date ranges
+Next if needed: cap date window or async export path
 ```
 
 ## Output format
 
-### Performance optimization checklist
-
 ```markdown
-## Frontend
-- [ ] Prevent unnecessary re-renders with React.memo
-- [ ] Use useMemo/useCallback appropriately
-- [ ] Lazy loading & Code splitting
-- [ ] Optimize images (WebP, lazy loading)
-- [ ] Analyze and reduce bundle size
+## Performance Brief
+- Surface:
+- Symptom:
+- Decision target:
+- Primary mode:
+- Current artifact:
 
-## Backend
-- [ ] Remove N+1 queries
-- [ ] Add database indexes
-- [ ] Redis caching
-- [ ] Compress API responses (gzip)
-- [ ] Use a CDN
+## Bottleneck Hypothesis
+- Primary bottleneck:
+- Confidence:
+- Why:
 
-## Measurement
-- [ ] Lighthouse score 90+
-- [ ] LCP < 2.5s
-- [ ] FID < 100ms
-- [ ] CLS < 0.1
+## Highest-Leverage Changes
+1. ...
+2. ...
+
+## Tradeoffs / Risks
+- ...
+
+## Verification Plan
+- Baseline:
+- After:
+- Guardrail:
+
+## Route-outs
+- ...
 ```
-
-## Constraints
-
-### Required rules (MUST)
-
-1. **Measure first**: profile, don't guess
-2. **Incremental improvements**: optimize one thing at a time
-3. **Performance monitoring**: track continuously
-
-### Prohibited items (MUST NOT)
-
-1. **Premature optimization**: don't optimize when there is no bottleneck
-2. **Sacrificing readability**: don't make code complex for performance
-
-## Best practices
-
-1. **80/20 rule**: 80% improvement with 20% effort
-2. **User-centered**: focus on improving real user experience
-3. **Automation**: performance regression tests in CI
-
-## References
-
-- [web.dev/vitals](https://web.dev/vitals/)
-- [React Optimization](https://react.dev/learn/render-and-commit#optimizing-performance)
-- [Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)
-
-## Metadata
-
-### Version
-- **Current version**: 1.0.0
-- **Last updated**: 2025-01-01
-- **Compatible platforms**: Claude, ChatGPT, Gemini
-
-### Related skills
-- [database-schema-design](../database-schema-design/SKILL.md)
-- [ui-components](../ui-component-patterns/SKILL.md)
-
-### Tags
-`#performance` `#optimization` `#React` `#caching` `#lazy-loading` `#web-vitals` `#code-quality`
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: API + DB latency regression
+**Input:** “Our order search endpoint is suddenly slow after adding more filters. We have `EXPLAIN ANALYZE` output and slow query logs.”
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Expected shape:** classify as `database-plan-and-data-access` with an API secondary mode, use the current artifacts instead of asking for generic telemetry first, isolate the hottest query or serialization layer, propose one or two targeted changes, then define before/after verification.
+
+### Example 2: Marketing / content performance report
+**Input:** “Our landing-page CWV report shows poor LCP and INP. We have Lighthouse and field data but not a profiler trace yet.”
+
+**Expected shape:** classify as `page-load-and-bundle`, treat the report as a real intake packet, separate likely asset/render-blocking causes from telemetry gaps, recommend one or two bounded next moves, and note when additional traces would be worth collecting.
+
+### Example 3: Route-out to observability setup
+**Input:** “We need dashboards, traces, and alerts so we can catch slow endpoints before users complain.”
+
+**Expected shape:** route to `monitoring-observability` instead of pretending the main task is already optimization.
+
+### Example 4: Route-out to game engine profiler skill
+**Input:** “Unreal is hitching on Steam Deck and I have an Insights capture. Can you help interpret it?”
+
+**Expected shape:** acknowledge the broader performance context but route engine-specific capture interpretation to `game-performance-profiler`.
+
+## Best practices
+1. Start from the artifact the user already has; normalize it into a tuning brief instead of discarding it.
+2. Measure first, then tune.
+3. Name one primary bottleneck before prescribing changes.
+4. Keep recommendations bounded: one or two high-leverage moves beat a giant checklist.
+5. Compare like-for-like environments when verifying impact.
+6. Be explicit about tradeoffs, especially cache, consistency, memory, and content-quality costs.
+7. Route telemetry setup, debugging, refactoring, and engine-specific profiler reading to neighboring skills instead of absorbing everything.
+
+## References
+- [Chrome DevTools Performance](https://developer.chrome.com/docs/devtools/performance)
+- [Lighthouse overview](https://developer.chrome.com/docs/lighthouse/overview)
+- [Core Web Vitals](https://web.dev/articles/vitals)
+- [PostgreSQL EXPLAIN](https://www.postgresql.org/docs/current/using-explain.html)
+- [pg_stat_statements](https://www.postgresql.org/docs/current/pgstatstatements.html)
+- [Flame Graphs](https://www.brendangregg.com/flamegraphs.html)
+- [Unity Profiler](https://docs.unity3d.com/Manual/Profiler.html)
+- [Unreal Insights](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-insights-in-unreal-engine)
+- [Godot Profiler](https://docs.godotengine.org/en/stable/tutorials/scripting/debug/the_profiler.html)

@@ -1,9 +1,9 @@
 N:opencontext
-D:AI agent persistent memory and context management using OpenContext. Provides workflows for maintaining context across sessions/repos/dates, storing conclusions, and searching documents.
-G:opencontext context-management memory knowledge-base multi-agent
-U[6]:
-  When context needs to be maintained across sessions
-  When project background/decisions need to be recorded
-  When previous conclusions/lessons need to be searched
-  When knowledge sharing is required in multi-agent workflows
-  When repetitive background explanations should be reduced
+D:Route active project/repo memory requests into one honest packet: memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out. Use when agents need searchable decisions, manifests, stable links, handoff notes, and small read-this-first packets across sessions — especially when overlapping notes need a highest-confidence source and freshness warning. Route long-lived markdown knowledge bases to llm-wiki, structural graph memory to graphify, human-authored vault organization to note/vault skills, and one-shot repo packing to Repomix/Gitingest/Code2Prompt-style workflows.
+G:opencontext|context-management|memory|project-memory|multi-agent|handoff|stable-links|manifests
+U[5]:
+  When the next agent should not start cold and needs a compact project-memory packet first
+  When decisions, pitfalls, or acceptance notes should be searchable across sessions
+  When a team needs manifests or stable links that say what to read now
+  When OpenContext setup, repo initialization, or search-depth choices are the real task
+  When the request might actually belong to llm-wiki, graphify, vault tools, or repo packers instead

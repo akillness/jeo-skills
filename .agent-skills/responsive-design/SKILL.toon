@@ -1,14 +1,14 @@
 N:responsive-design
-D:Create responsive web designs that work across all devices and screen sizes. Use when building mo...
-G:responsive mobile-first CSS Flexbox Grid
+D:Routing-first responsive layout strategy and verification for web interfaces. Use when the main job is classifying whether the failure is page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, or reflow verification, then turning vague "breaks on mobile" requests into one concrete strategy packet.
+G:responsive mobile-first layout container-queries breakpoints overflow reflow frontend css
 U[4]:
-  **New website/app**: Layout design for combined mobile-desktop use
-  **Legacy improvement**: Converting fixed layouts to responsive
-  **Performance optimization**: Image optimization per device
-  **Multiple screens**: Tablet, desktop, and large screen support
+  Fix page-shell, dashboard, form, nav, card-grid, or table behavior that breaks across widths
+  Choose between intrinsic layout, viewport queries, container queries, dense-data fallbacks, and responsive media behavior
+  Define zoom/reflow, overflow, wrapping, and long-copy verification before release
+  Route component API design to ui-component-patterns, accessibility-heavy remediation to web-accessibility, and system-wide breakpoint policy to design-system
 S[5]{n,action}:
-  1,Mobile-First Approach
-  2,Flexbox/Grid Layout
-  3,Responsive Images
-  4,Responsive Typography
-  5,Container Queries (New Feature)
+  1,Frame the responsive job before naming CSS
+  2,Choose exactly one primary responsive packet
+  3,Keep the invariants visible
+  4,Build the responsive strategy packet
+  5,Route adjacent work explicitly

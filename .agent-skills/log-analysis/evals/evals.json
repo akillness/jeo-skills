@@ -1,0 +1,45 @@
+{
+  "skill_name": "log-analysis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Check these Kubernetes worker logs and tell me the real issue. I see `Error: connect ECONNREFUSED redis:6379` followed by dozens of `job retry failed` lines.",
+      "expected_output": "A short triage brief that chooses the container-runtime packet, identifies the Redis connection failure as the first actionable blocker, and treats later retry lines as fallout.",
+      "assertions": [
+        "Output identifies the earliest actionable failure instead of summarizing the retry storm as the root cause",
+        "Output classifies the failure as dependency/connection related or equivalent",
+        "Output includes read-only next checks such as comparing env/config or service availability"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The browser console only says `Failed to fetch`, but the network tab shows 401 on /api/session and the server log says `JWT audience invalid`. Which lines matter?",
+      "expected_output": "A mixed-source triage brief that chooses the browser-plus-api packet, correlates browser and server evidence, and names the backend auth validation failure as the actionable cause.",
+      "assertions": [
+        "Output correlates browser/network symptoms with server logs instead of treating them separately",
+        "Output identifies the JWT audience validation failure as the key signal",
+        "Output recommends read-only follow-up checks such as environment or auth configuration comparison"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Here is a Unity Editor.log excerpt with package import errors and BuildPipeline failures. Please analyze the log.",
+      "expected_output": "A response that recognizes Unity-specific engine logs and hands off to `game-build-log-triage` instead of pretending the general skill should own it.",
+      "assertions": [
+        "Output explicitly recognizes Unity/Unreal build or editor logs as out of scope for the general skill",
+        "Output routes to `game-build-log-triage`",
+        "Output avoids presenting a full general log-analysis workflow as if no specialist skill existed"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "These JSON webhook logs show one `invalid API key` response and then a flood of `status=429 retrying delivery` entries across the same job. What actually matters first?",
+      "expected_output": "A triage brief that chooses the structured-json packet, isolates the earliest auth/credential failure, summarizes the retry flood as fallout, and keeps the follow-up read-only.",
+      "assertions": [
+        "Output isolates the first credential or auth blocker before discussing the later retries",
+        "Output treats the retry flood as repeated fallout or blast radius rather than independent root causes",
+        "Output keeps the next checks read-only and does not drift into full observability design or code remediation"
+      ]
+    }
+  ]
+}

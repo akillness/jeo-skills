@@ -1,236 +1,265 @@
 ---
 name: fabric
-description: AI prompt orchestration CLI using reusable Patterns. Use for YouTube summarization, document analysis, content extraction, code explanation, writing assistance, and any AI task via stdin/stdout piping across 20+ providers.
+description: >
+  Routing-first Fabric operator skill for reusable named AI transforms over stdin,
+  files, transcripts, notes, logs, and cleaned web text. Use when the user wants
+  Fabric patterns, custom pattern packs, shell-pipe composition, or `fabric --serve`
+  workflows — not generic one-off chat prompting, repo-aware coding, or fully
+  deterministic automation.
+allowed-tools: Read Write Bash Grep Glob
+compatibility: >
+  Works on macOS, Linux, and Windows where the Fabric CLI can be installed and
+  configured. Best for CLI-centric users who already have provider keys or local
+  model access and want repeatable prompt transforms rather than ad hoc chat.
 license: CC-BY-4.0
-compatibility: All platforms. Requires fabric CLI installed (Go-based binary or Homebrew). Works with OpenAI, Anthropic, Google, Azure, Bedrock, Groq, Ollama, and 20+ other AI providers.
 metadata:
-  version: 1.1.0
+  version: "2.1.0"
   author: supercent-io
   keyword: fabric
   platforms: All platforms
-  tags: fabric, patterns, ai-prompts, youtube, summarize, extract-wisdom, piping, cli, multi-provider, openai, claude, gemini, ollama
-allowed-tools: Read Write Bash Grep Glob
+  tags: fabric, patterns, ai-prompts, prompt-orchestration, content-transforms, cli, piping, summarize, extract, custom-patterns, multi-provider
+  source: Daniel Miessler Fabric README + REST API docs + GitHub issue survey (2026-04-18)
 ---
 
 # Fabric
 
-Fabric is an open-source AI prompt orchestration framework by Daniel Miessler. It provides a library of reusable AI prompts called **Patterns** — each designed for a specific real-world task — wired into a simple Unix pipeline with stdin/stdout.
+Use this skill when the real job is **running a reusable named AI transform over existing text/content with Fabric**.
+
+Fabric is strongest when three things are true:
+1. the input already exists or can be cleaned first,
+2. the transform is repeatable enough to deserve a named pattern,
+3. the output should be delivered through a CLI, shell pipeline, or lightweight HTTP surface.
+
+Read these support docs before going deeper:
+- [references/routing-and-mode-selection.md](references/routing-and-mode-selection.md)
+- [references/operator-packets-and-route-outs.md](references/operator-packets-and-route-outs.md)
+- [references/install-and-provider-setup.md](references/install-and-provider-setup.md)
+- [references/pattern-workflow-recipes.md](references/pattern-workflow-recipes.md)
 
 ## When to use this skill
+- The user explicitly wants **Fabric**.
+- The user wants a **named pattern** instead of improvising a fresh prompt every time.
+- The job is a repeatable transform over **stdin, files, transcripts, clipboard text, notes, logs, or cleaned article text**.
+- The user wants a **custom pattern pack** for recurring work.
+- Fabric should sit inside a **shell pipeline** or a small local toolchain.
+- Another tool needs **Fabric server mode** via `fabric --serve`.
+- The boundary between **Fabric vs general LLM CLI vs coding assistant** is unclear.
 
-- Summarize or extract insights from YouTube videos, articles, or documents
-- Apply any of 250+ pre-built AI patterns to content via Unix piping
-- Route different patterns to different AI providers (OpenAI, Claude, Gemini, etc.)
-- Create custom patterns for repeatable AI workflows
-- Run Fabric as a REST API server for integration with other tools
-- Process command output, files, or clipboard content through AI patterns
-- Use as an AI agent utility — pipe any tool output through patterns for intelligent summarization
+## When not to use this skill
+- **One-off chat prompting in the current session** → use the current model directly.
+- **Repo-aware coding, editing, or git implementation** → use a coding-assistant skill.
+- **Scraping, OCR, transcript recovery, or file conversion is still the hard part** → fix the upstream input layer first.
+- **Deterministic multi-step automation is the real job** → use scripts or workflow automation, with Fabric only as one step if needed.
+- **Provider/platform setup is the whole question and not Fabric-specific** → use the more relevant platform/provider skill first.
+
+## Core boundary
+- **Fabric** = reusable pattern-driven transforms on external text/content.
+- **General LLM CLI** = ad hoc prompting without strong pattern-library expectations.
+- **Coding assistant** = repo-aware editing, implementation, and git workflows.
+- **Workflow automation / scripts** = deterministic orchestration where Fabric may be one stage.
 
 ## Instructions
 
-### Step 1: Install Fabric
+### Step 1: Classify the request into one primary lane
+Choose exactly one lane:
 
-```bash
-# macOS/Linux (one-liner)
-curl -fsSL https://raw.githubusercontent.com/danielmiessler/fabric/main/scripts/installer/install.sh | bash
-
-# macOS via Homebrew
-brew install fabric-ai
-
-# Windows
-winget install danielmiessler.Fabric
-
-# After install — configure API keys and default model
-fabric --setup
+```yaml
+fabric_intake:
+  primary_lane: quick-transform | pattern-selection | custom-pattern | shell-pipeline | serve-api | boundary-review
+  input_shape: stdin-text | file | clipboard | transcript | url-derived-text | logs | code-snippet | mixed | unknown
+  output_shape: summary | extraction | rewrite | explanation | classification | structured-markdown | custom
+  repetition_level: one-off | recurring | team-shared | embedded-in-script
+  provider_need: default | specific-provider | local-model | server-mode | unknown
+  input_ready: yes | no | unclear
 ```
 
-### Step 2: Learn the core pipeline workflow
+Lane chooser:
+- `quick-transform` → the text is already available and one strong Fabric pass is enough.
+- `pattern-selection` → the user needs the right built-in pattern or family.
+- `custom-pattern` → the workflow repeats and needs a stable output shape.
+- `shell-pipeline` → Fabric is one step inside a larger terminal workflow.
+- `serve-api` → another local tool or script should call Fabric over HTTP.
+- `boundary-review` → the user is deciding among Fabric, a general LLM CLI, or a coding assistant.
 
-Fabric works as a Unix pipe. Feed content through stdin and specify a pattern:
+### Step 2: Verify the input layer before talking about patterns
+Answer these first:
+1. Where does the text come from?
+2. Is the text already clean enough for Fabric?
+3. Is this a one-shot transform or a reusable workflow?
+4. Is provider/model setup already available?
 
+If the text is still messy HTML, OCR noise, bad transcripts, or missing entirely, say so explicitly. Do not pretend Fabric owns the upstream cleanup problem.
+
+### Step 3: Run the correct lane
+
+#### A. Quick-transform
+Return:
+- one recommended pattern,
+- one exact command,
+- expected output shape,
+- one optional follow-up chain only if it materially helps.
+
+Examples:
 ```bash
-# Summarize a file
-cat article.txt | fabric -p summarize
-
-# Stream output in real time
-cat document.txt | fabric -p extract_wisdom --stream
-
-# Pipe any command output through a pattern
-git log --oneline -20 | fabric -p summarize
-
-# Process clipboard (macOS)
-pbpaste | fabric -p summarize
-
-# Pipe from curl
-curl -s https://example.com/article | fabric -p summarize
-```
-
-### Step 3: Discover patterns
-
-```bash
-# List all available patterns
-fabric -l
-
-# Update patterns from the repository
-fabric -u
-
-# Search patterns by keyword
-fabric -l | grep summary
-fabric -l | grep code
-fabric -l | grep security
-```
-
-Key patterns:
-
-| Pattern | Purpose |
-|---------|---------|
-| `summarize` | Summarize any content into key points |
-| `extract_wisdom` | Extract insights, quotes, habits, and lessons |
-| `analyze_paper` | Break down academic papers into actionable insights |
-| `explain_code` | Explain code in plain language |
-| `write_essay` | Write essays from a topic or rough notes |
-| `clean_text` | Remove noise and formatting from raw text |
-| `analyze_claims` | Fact-check and assess credibility of claims |
-| `create_summary` | Create a structured, markdown summary |
-| `rate_content` | Rate and score content quality |
-| `label_and_rate` | Categorize and score content |
-| `improve_writing` | Polish and improve text clarity |
-| `create_tags` | Generate relevant tags for content |
-| `ask_secure_by_design` | Review code or systems for security issues |
-| `capture_thinkers_work` | Extract the core ideas of a thinker or author |
-| `create_investigation_visualization` | Create a visual map of complex investigations |
-
-### Step 4: Process YouTube videos
-
-```bash
-# Summarize a YouTube video
-fabric -y "https://youtube.com/watch?v=VIDEO_ID" -p summarize
-
-# Extract key insights from a video
-fabric -y "https://youtube.com/watch?v=VIDEO_ID" -p extract_wisdom
-
-# Get transcript only (no pattern applied)
-fabric -y "https://youtube.com/watch?v=VIDEO_ID" --transcript
-
-# Transcript with timestamps
-fabric -y "https://youtube.com/watch?v=VIDEO_ID" --transcript-with-timestamps
-```
-
-### Step 5: Create custom patterns
-
-Each pattern is a directory with a `system.md` file inside `~/.config/fabric/patterns/`. The body should follow this structure:
-
-```bash
-mkdir -p ~/.config/fabric/patterns/my-pattern
-cat > ~/.config/fabric/patterns/my-pattern/system.md << 'EOF'
-# IDENTITY AND PURPOSE
-
-You are an expert at [task]. Your job is to [specific goal].
-
-Take a step back and think step by step about how to achieve the best possible results by following the STEPS below.
-
-# STEPS
-
-1. [Step 1]
-2. [Step 2]
-
-# OUTPUT INSTRUCTIONS
-
-- Only output Markdown.
-- [Format instruction 2]
-- Do not give warnings or notes; only output the requested sections.
-
-# INPUT
-
-INPUT:
-EOF
-```
-
-Use it immediately:
-
-```bash
-echo "input text" | fabric -p my-pattern
-cat file.txt | fabric -p my-pattern --stream
-```
-
-### Step 6: Multi-provider routing and advanced usage
-
-```bash
-# Run as REST API server (port 8080 by default)
-fabric --serve
-
-# Use web search capability
-fabric -p analyze_claims --search "claim to verify"
-
-# Per-pattern model routing in ~/.config/fabric/.env
-FABRIC_MODEL_PATTERN_SUMMARIZE=anthropic|claude-opus-4-5
-FABRIC_MODEL_PATTERN_EXTRACT_WISDOM=openai|gpt-4o
-FABRIC_MODEL_PATTERN_EXPLAIN_CODE=google|gemini-2.0-flash
-
-# Create shell aliases for frequently used patterns
-alias summarize="fabric -p summarize"
-alias wisdom="fabric -p extract_wisdom"
-alias explain="fabric -p explain_code"
-
-# Chain patterns
-cat paper.txt | fabric -p summarize | fabric -p extract_wisdom
-
-# Save output
-cat document.txt | fabric -p extract_wisdom > insights.md
-```
-
-### Step 7: Use in AI agent workflows
-
-Fabric is a powerful utility for AI agents — pipe any tool output through patterns for intelligent analysis:
-
-```bash
-# Analyze test failures
-npm test 2>&1 | fabric -p analyze_logs
-
-# Summarize git history for a PR description
-git log --oneline origin/main..HEAD | fabric -p create_summary
-
-# Explain a code diff
+cat transcript.txt | fabric -p summarize
+pbpaste | fabric -p extract_wisdom
 git diff HEAD~1 | fabric -p explain_code
-
-# Summarize build errors
-make build 2>&1 | fabric -p summarize
-
-# Analyze security vulnerabilities in code
-cat src/auth.py | fabric -p ask_secure_by_design
-
-# Process log files
-cat /var/log/app.log | tail -100 | fabric -p analyze_logs
 ```
 
-#### REST API server mode
+#### B. Pattern-selection
+Return the top **1-3** plausible patterns and why.
 
-Run Fabric as a microservice and call it from other tools:
+Use job shape, not novelty:
+- **summarize** → compress source into a readable brief
+- **extract / wisdom / questions / claims** → pull structured ideas out
+- **explain / analyze** → interpret code, prose, logs, incidents, or decisions
+- **rewrite / improve / repurpose** → convert one artifact into another tone or shape
 
+Do not dump the whole catalog.
+
+#### C. Custom-pattern
+Use when the workflow will recur.
+
+Minimum scaffold:
+```text
+IDENTITY AND PURPOSE
+STEPS
+OUTPUT INSTRUCTIONS
+INPUT
+```
+
+Good custom-pattern output includes:
+- pattern name,
+- exact use case,
+- `system.md` skeleton,
+- example invocation,
+- note on when to fork vs reuse a stock pattern.
+
+#### D. Shell-pipeline
+Treat Fabric as one stage in a pipeline:
+
+```text
+fetch or prepare input → optional cleanup → fabric pattern → save / chain / post-edit
+```
+
+Return:
+- what creates the input,
+- where Fabric sits,
+- where output goes,
+- what still needs human review or another tool.
+
+#### E. Serve-api
+Use when another app/script needs HTTP access.
+
+Baseline commands:
 ```bash
-# Start server
-fabric --serve --port 8080
-
-# Call via HTTP
-curl -X POST http://localhost:8080/chat \
-  -H "Content-Type: application/json" \
-  -d '{"prompts":[{"userInput":"Summarize this","patternName":"summarize"}]}'
+fabric --serve
+curl http://localhost:8080/patterns/names
 ```
+
+Also call out:
+- whether `--api-key` is needed,
+- local-only vs shared-machine assumptions,
+- whether the caller needs pattern CRUD, listing, apply endpoints, or plain chat completion.
+
+#### F. Boundary-review
+Compare by workflow shape:
+- **Fabric** → repeatable named transforms over external text/content
+- **general LLM CLI** → flexible ad hoc prompting
+- **coding assistant** → repo-aware code work
+- **workflow automation** → deterministic multi-step logic
+
+If the user is mixing use cases, keep Fabric only for the transform layer.
+
+### Step 4: Return a short operator packet
+Default output should contain:
+- chosen lane,
+- input source and cleanup assumptions,
+- recommended pattern(s) or custom-pattern path,
+- exact command(s) or artifact layout,
+- realistic friction note,
+- route-out if Fabric is not the whole answer.
+
+Use this structure:
+
+```text
+# Fabric Workflow Packet
+
+## Lane
+- quick-transform | pattern-selection | custom-pattern | shell-pipeline | serve-api | boundary-review
+
+## Input
+- source: ...
+- cleanup needed: ...
+- assumptions: ...
+
+## Recommended Fabric move
+- pattern / custom pattern / server mode: ...
+- why this fits: ...
+
+## Command or artifact
+- exact command(s) or `system.md` scaffold
+
+## Output shape
+- summary / extraction / rewrite / explanation / structured markdown / custom
+
+## Friction
+- provider setup / token limits / noisy input / post-editing / custom-pattern drift
+
+## Route-outs
+- next tool or workflow layer if Fabric is not the whole answer
+```
+
+### Step 5: Keep the advice reusable
+Prefer:
+- one primary lane,
+- one top recommendation over a laundry list,
+- a reusable custom-pattern scaffold over a clever one-off prompt,
+- honest route-outs when Fabric is not the whole answer.
+
+## Examples
+
+### Example 1: Transcript summary
+**Input**
+> I already have transcript.txt. Show me how to use Fabric to summarize it and keep the workflow reusable.
+
+**Output sketch**
+- Lane: `quick-transform`
+- Command: `cat transcript.txt | fabric -p summarize`
+- Output: markdown summary
+- Route-out: only add another extraction pass if action items matter
+
+### Example 2: Weekly custom pattern
+**Input**
+> We summarize competitor articles every week. Help me make a reusable Fabric pattern pack.
+
+**Output sketch**
+- Lane: `custom-pattern`
+- Deliver `system.md` scaffold plus invocation
+- Explain why a custom pattern beats repeating a one-off prompt
+
+### Example 3: Fabric or something else?
+**Input**
+> Should I use Fabric, a general LLM CLI, or a coding assistant for this workflow?
+
+**Output sketch**
+- Lane: `boundary-review`
+- Keep repeatable text transforms in Fabric
+- Route repo-aware editing to a coding assistant
 
 ## Best practices
-
-- Run `fabric -u` before first use and regularly to get the latest community patterns.
-- Use `--stream` for long content to see results progressively instead of waiting.
-- Create shell aliases (`alias wisdom="fabric -p extract_wisdom"`) for your most-used patterns.
-- Use per-pattern model routing to optimize cost vs. quality for each task type.
-- Keep custom patterns in `~/.config/fabric/patterns/` — they persist across updates.
-- For YouTube, transcript extraction works best with videos that have captions enabled.
-- Chain patterns with Unix pipes for multi-step processing workflows.
-- Follow the IDENTITY → STEPS → OUTPUT INSTRUCTIONS structure when creating custom patterns.
+1. Treat Fabric as a **pattern-first transform layer**, not a generic terminal chatbot.
+2. Solve messy input acquisition before blaming the pattern.
+3. Return the top 1-3 pattern choices instead of the full catalog.
+4. Fork a custom pattern when the workflow repeats or the output shape must stay stable.
+5. Only recommend `fabric --serve` when another tool genuinely needs HTTP access.
+6. Keep provider/setup friction explicit instead of hiding it behind pattern talk.
+7. If the task is really coding-assistant work or deterministic automation, route out early.
 
 ## References
-
-- [Fabric GitHub](https://github.com/danielmiessler/Fabric)
-- [Pattern Library](https://github.com/danielmiessler/Fabric/tree/main/patterns)
-- [Installation Guide](https://github.com/danielmiessler/Fabric#installation)
-- [Custom Pattern Guide](https://github.com/danielmiessler/Fabric/blob/main/patterns/README.md)
+- [Fabric upstream README](https://github.com/danielmiessler/Fabric/blob/main/README.md)
+- [Fabric REST API docs](https://raw.githubusercontent.com/danielmiessler/Fabric/main/docs/rest-api.md)
+- [references/routing-and-mode-selection.md](references/routing-and-mode-selection.md)
+- [references/operator-packets-and-route-outs.md](references/operator-packets-and-route-outs.md)
+- [references/install-and-provider-setup.md](references/install-and-provider-setup.md)
+- [references/pattern-workflow-recipes.md](references/pattern-workflow-recipes.md)

@@ -1,0 +1,4 @@
+# Triage
+- Problem: The existing `steam-store-launch-ops` skill is useful but still too page-centric for real indie launch workflows; it needs a sharper diagnostic model for store-page conversion vs traffic/visibility vs demo proof vs event timing vs launch-ops readiness.
+- Audience: Solo developers, small indie studios, publisher/helpers, and founder-marketers handling Steam pages, wishlists, demos, Steam Next Fest, and launch checklists.
+- Why now: The repo already has strong support coverage, so the next leverage comes from tightening dense front-door skills in place instead of adding another overlapping game-marketing wrapper.

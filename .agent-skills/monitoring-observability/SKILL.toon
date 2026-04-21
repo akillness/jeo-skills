@@ -1,21 +1,15 @@
 N:monitoring-observability
-D:Set up monitoring, logging, and observability for applications and infrastructure. Use when imple...
-G:monitoring observability logging metrics Prometheus
-U[4]:
-  **Before Production Deployment**: Essential monitoring system setup
-  **Performance Issues**: Identify bottlenecks
-  **Incident Response**: Quick root cause identification
-  **SLA Compliance**: Track availability/response times
+D:Route observability work from the current packet into one monitoring brief. Use when the main job is deciding service-health signals, telemetry rollout, dashboard/alert coverage, pipeline freshness/schema monitoring, or game live-ops visibility; choosing between service reliability, telemetry foundation, review audit, data/pipeline, and live-ops modes; and naming one smallest implementation slice. Route outage-log root cause to `log-analysis`, bottleneck tuning to `performance-optimization`, rollout execution to `deployment-automation`, LLM-specific tracing to `langsmith`, and engine-profiler interpretation to `game-performance-profiler`.
+G:observability monitoring telemetry alerts dashboards slos traces metrics pipeline-freshness live-ops
+U[5]:
+  service health or launch-readiness packet needs signals and alerts
+  telemetry rollout or instrumentation ownership is unclear
+  stale dashboard / noisy-alert audit needs keep-fix-delete-add decisions
+  pipeline freshness or schema monitoring needs an observability brief
+  game live-ops visibility needs crash/session/build coverage without profiler work
 S[5]{n,action}:
-  1,Metrics Collection (Prometheus)
-  2,Alert Rules
-  3,Log Aggregation (Structured Logging)
-  4,Grafana Dashboard
-  5,Health Checks
-R[6]:
-  job_name
-  targets
-  job_name
-  targets
-  static_configs
-  targets
+  1,Frame the packet and ownership
+  2,Choose the current intake packet
+  3,Pick one primary observability mode
+  4,Define the smallest signal plan and alert thresholds
+  5,Return the brief with route-outs

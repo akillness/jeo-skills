@@ -1,50 +1,156 @@
 ---
 name: omc
-description: "Use when you need Teams-first multi-agent orchestration in Claude Code. Triggers on: omc, autopilot, ralph, ulw, ccg, team. 29+ specialized agents, smart model routing (Haiku→Opus), persistent execution loops, skill layers, real-time HUD."
+description: >
+  Route Claude Code–first orchestration to the truthful OMC install topology and runtime
+  before giving commands. Use when the user wants oh-my-claudecode / OMC in Claude Code,
+  needs to choose between marketplace plugin, shell-side `omc` CLI, or local-checkout
+  `--plugin-dir` usage, or needs accurate guidance on `/team`, `/autopilot`, `/ralph`,
+  `/ultrawork`, `omc setup`, `omc team`, `omc ask`, updates, HUD/hooks, duplicate installs,
+  worktree/state drift, or adjacent route-outs. Triggers on: omc, oh-my-claudecode, Claude
+  Code team mode, autopilot, /team, ralph, ultrawork, ccg, omc team, omc ask, omc setup,
+  plugin-dir, OMC HUD, OMC hooks.
 allowed-tools: Read Write Bash Grep Glob Edit Agent
 metadata:
-  tags: omc, oh-my-claudecode, claude-code, multi-agent, orchestration, team, autopilot, ralph, ultrawork, ccg, pipeline
+  tags: omc, oh-my-claudecode, claude-code, multi-agent, orchestration, team, autopilot, ralph, ultrawork, ccg, hooks, hud
   platforms: Claude Code
   keyword: omc
-  version: 4.9.3
+  version: 4.14.0
   source: Yeachan-Heo/oh-my-claudecode
 ---
 
-
-# omc (oh-my-claudecode) — Claude Code Multi-Agent Orchestration
+# omc — Claude-first topology-aware router for oh-my-claudecode
 
 ## When to use this skill
 
-- You want Teams-first multi-agent orchestration inside Claude Code
-- You need 29+ specialized agents with smart model routing (Haiku → Opus)
-- Complex tasks that benefit from parallel agent execution with verify/fix loops
-- Any Claude Code workflow that needs persistent, guaranteed-completion execution
-- You want skill layers: Guarantee (ralph) → Enhancement (ultrawork) → Execution
-- You need 3-model synthesis with Codex + Gemini + Claude (CCG mode)
+- The user wants **Claude Code–native orchestration** through OMC / oh-my-claudecode
+- The user needs to choose between the **marketplace plugin**, the **`omc` shell CLI**, or a **local checkout / `--plugin-dir`** workflow
+- The user asks about `/team`, `/autopilot`, `/ralph`, `/ultrawork`, `omc team`, `omc ask`, `omc setup`, `omc update`, hooks, HUD, or OMC state behavior
+- The user is hitting **duplicate installs**, **plugin-dir confusion**, **worktree/state collisions**, **setup drift**, or **HUD / rate-limit / resume trouble**
+- The user really wants a **Claude-first runtime owner**, not `jeo`, `ralphmode`, `omx`, `ohmg`, or browser-review skills
 
----
+## Instructions
 
-## 1. Installation (3 Steps)
+### Step 1: Identify the install topology before the packet
 
-**Step 1: Install plugin**
+Before suggesting commands, identify which OMC topology the operator is actually using:
+
+1. **marketplace-plugin** — Claude Code plugin / slash-skill surface installed from the marketplace
+2. **shell-cli** — npm-installed `omc` command for shell-side setup, tmux workers, or provider asks
+3. **local-plugin-dir** — local checkout / `--plugin-dir` / `OMC_PLUGIN_ROOT` workflow
+4. **mixed-or-unknown** — overlapping plugin + CLI + local checkout, duplicate commands, or unclear setup state
+
+If the topology is `mixed-or-unknown`, prefer recovery and topology clarification before recommending more commands.
+
+### Step 2: Pick one request packet
+
+After topology is clear enough, classify the actual job into one packet:
+
+1. **install-topology** — install, first-run setup, or local-checkout / plugin-dir decisions
+2. **in-session-runtime** — choose the right slash skill inside Claude Code
+3. **terminal-runtime** — choose the right `omc ...` shell command
+4. **recovery-and-update** — fix duplicate installs, setup drift, worktree/state trouble, HUD/hooks, or resume issues
+5. **boundary-and-route-out** — the request really belongs to `jeo`, `ralphmode`, `plannotator`, browser-review skills, or another runtime
+
+Lead with the topology and packet mentally, then give only the commands that fit that combination.
+
+### Step 3: Tell the operator which surface they are on
+
+OMC has **two real runtime surfaces**. Do not flatten them.
+
+#### A. Claude Code plugin / in-session surface
+
+Use this when the user is already **inside Claude Code** and wants slash skills, hooks, HUD, or native team behavior.
+
+Examples:
+
+```text
+/team 3:executor "fix all TypeScript errors"
+/autopilot "build a REST API for tasks"
+/ralph "keep going until verified done"
+/ultrawork "parallelize this cleanup"
+/deep-interview "help me clarify the feature"
+```
+
+This surface owns:
+- slash skills
+- hooks and HUD behavior
+- native team orchestration inside Claude Code
+- in-session keywords like `autopilot:` or `ralph:`
+
+#### B. Terminal CLI surface
+
+Use this when the user wants **shell-side setup, updates, provider consultation, tmux workers, or runtime management**.
+
+Examples:
+
+```bash
+omc setup
+omc update
+omc ask codex "review this patch"
+omc team 2:codex "review auth flow"
+omc team status review-auth-flow
+```
+
+This surface owns:
+- `omc setup` / `omc update`
+- `omc ask`
+- `omc team` tmux workers
+- shell-side runtime management
+
+Important truth:
+- `/team` and `omc team` are **different runtimes**
+- `/autopilot`, `/ralph`, and `/ultrawork` are **in-session skills**, not normal `omc` CLI subcommands
+- the npm package name is **`oh-my-claude-sisyphus`**, not `oh-my-claudecode`
+
+### Step 4: Use the right topology + packet pair
+
+#### Packet: install-topology
+
+Use when the user needs installation, setup, or topology cleanup.
+
+**marketplace-plugin**
+
+Inside Claude Code:
+
 ```bash
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
 /plugin install oh-my-claudecode
 ```
 
-**Step 2: Run setup**
-```bash
+Then run one setup entrypoint inside Claude Code:
+
+```text
+setup omc
+```
+
+or:
+
+```text
 /oh-my-claudecode:omc-setup
 ```
 
-**Step 3: Build something**
-```text
-autopilot: build a REST API for managing tasks
+**shell-cli**
+
+If they also want `omc` shell commands:
+
+```bash
+npm i -g oh-my-claude-sisyphus@latest
 ```
 
-> **npm alternative**: `npm install -g oh-my-claude-sisyphus`
+**local-plugin-dir**
 
-**Enable native teams** (`~/.claude/settings.json`):
+Do not pretend the marketplace flow is enough. Point them to the plugin-dir / local-checkout path and the dedicated reference before improvising cleanup:
+- `omc --plugin-dir <path> ...`
+- `OMC_PLUGIN_ROOT`
+- `omc setup --plugin-dir-mode`
+- [references/install-topology-and-recovery.md](references/install-topology-and-recovery.md)
+
+**mixed-or-unknown**
+
+Treat duplicate commands, duplicate slash skills, or unclear state as a recovery problem first. Do not stack more installs on top of an ambiguous topology.
+
+Enable native teams in `~/.claude/settings.json` when Claude-native teams are expected:
+
 ```json
 {
   "env": {
@@ -53,220 +159,128 @@ autopilot: build a REST API for managing tasks
 }
 ```
 
----
+#### Packet: in-session-runtime
 
-## 2. Orchestration Modes
+Use when the user wants the best **Claude Code slash skill** for the job.
 
-| Mode | What it is | Use For |
-|------|-----------|---------|
-| **Team** (canonical) | 5-stage pipeline: `plan → prd → exec → verify → fix` | Coordinated agents on shared task list |
-| **Autopilot** | Full autonomous 5-stage pipeline | End-to-end feature work (idea → code) |
-| **Ultrawork** | Maximum parallelism burst | Fast fixes/refactors across codebase |
-| **Ralph** | Persistent loop: execute → verify → fix | Tasks that must complete fully, no partials |
-| **Pipeline** | Sequential staged processing | Strict ordering / multi-step transforms |
-| **CCG** | 3-model synthesis (Codex + Gemini + Claude) | Mixed backend + UI work |
-| **omc team (CLI)** | tmux workers with Codex/Gemini/Claude | Cross-model code review, security, design |
+| Need | Use | Why |
+|------|-----|-----|
+| Shared in-session multi-agent work | `/team ...` | Canonical Claude-native team workflow |
+| End-to-end build from a fuzzy request | `/autopilot ...` or `autopilot: ...` | Single lead agent, idea → implementation |
+| Must keep going until verified done | `/ralph ...` or `ralph: ...` | Persistent execute → verify → fix loop |
+| Burst parallel work | `/ultrawork ...` or `ulw ...` | High parallelism without full team overhead |
+| Requirements clarification first | `/deep-interview ...` | Clarify before planning or execution |
+| Cross-model synthesis | `ccg: ...` when upstream/runtime supports it | Advisory synthesis path |
 
-### Skill Layer Composition
+Pick one truthful recommendation plus at most 1 nearby alternative.
 
-```
-┌──────────────────────────────────────────┐
-│ GUARANTEE LAYER (optional)               │
-│ ralph — won't stop until verified done   │
-└──────────────────────────────────────────┘
-                    │
-                    ▼
-┌──────────────────────────────────────────┐
-│ ENHANCEMENT LAYER (0–N skills)           │
-│ ultrawork (parallel) | git-master (VCS)  │
-└──────────────────────────────────────────┘
-                    │
-                    ▼
-┌──────────────────────────────────────────┐
-│ EXECUTION LAYER (primary skill)          │
-│ default (build) | planner | orchestrate  │
-└──────────────────────────────────────────┘
-```
+#### Packet: terminal-runtime
 
----
+Use when the user wants the **shell CLI** rather than the in-session plugin surface.
 
-## 3. Magic Keywords (Auto-Detection)
+| Need | Use |
+|------|-----|
+| Initial shell-side install/repair | `omc setup` |
+| Refresh after updates | `omc update` |
+| Provider consultation | `omc ask <provider> "..."` |
+| tmux-based worker teams | `omc team <N>:<provider> "<task>"` |
+| Team runtime status | `omc team status <session>` |
+| Team runtime shutdown | `omc team shutdown <session>` |
 
-| Keyword | Effect |
-|---------|--------|
-| `autopilot`, `build me`, `I want a` | Full autonomous pipeline |
-| `ralph`, `don't stop`, `must complete` | Persistent loop until verified |
-| `ulw`, `ultrawork` | Maximum parallelism |
-| `ccg`, `claude-codex-gemini` | 3-model synthesis |
-| `ralplan` | Consensus-based iterative planning |
-| `deep interview`, `ouroboros` | Socratic requirements clarification |
-| `deepsearch` | Codebase-focused deep search |
-| `deepanalyze`, `deep-analyze` | Deep analysis mode |
-| `ultrathink` | Deep reasoning mode |
-| `tdd`, `test first` | TDD workflow |
-| `deslop`, `anti-slop` | Clean AI expression patterns |
-| `cancelomc`, `stopomc` | Cancel active execution mode |
-| `plan` | Planning interview |
+If the user says “team mode” but is already inside Claude Code, prefer `/team`.
+If the user says “team mode” and clearly wants shell/tmux workers, prefer `omc team`.
 
----
+#### Packet: recovery-and-update
 
-## 4. Team Mode (Canonical)
+Use when the real job is repairing OMC.
 
-```bash
-/oh-my-claudecode:team 3:executor "fix all TypeScript errors"
-```
+Top recovery patterns:
+- **Duplicate install / duplicate commands** → inspect whether marketplace plugin, npm CLI, and local-checkout/plugin-dir installs are overlapping
+- **Setup drift after upgrade** → rerun the truthful setup/update path for the current topology (`setup omc`, `/oh-my-claudecode:omc-setup`, `omc update`, `omc setup`)
+- **Local checkout not behaving like marketplace install** → verify `--plugin-dir`, `OMC_PLUGIN_ROOT`, and plugin-dir mode instead of reinstalling blindly
+- **Team mode not working** → verify `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
+- **Worktree/state weirdness** → inspect `.omc/state/`, worktree namespace behavior, and team/session names
+- **HUD / rate-limit / ephemeral-environment trouble** → treat it as environment/runtime recovery, not a mode-selection question
 
-5-stage pipeline:
-```
-team-plan → team-prd → team-exec → team-verify → team-fix (loop)
-```
+When the fix gets detailed, route to:
+- [references/install-topology-and-recovery.md](references/install-topology-and-recovery.md)
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/cli-reference.md](references/cli-reference.md)
+- [references/hooks-reference.md](references/hooks-reference.md)
 
-- **team-plan**: Planning agent creates task list
-- **team-prd**: Architect designs solution
-- **team-exec**: N parallel executor agents implement
-- **team-verify**: Verifier confirms completion
-- **team-fix**: If verification fails, fix loop repeats
+#### Packet: boundary-and-route-out
 
----
+Do not force OMC when another skill owns the job better.
 
-## 5. Agent System (29+ Specialized Agents)
+Route out when:
+- **long-lived plan / execution ledger / resumable multi-skill loop** → `jeo`
+- **spec-first persistence method beyond OMC runtime detail** → `ralph`
+- **approval posture, trusted-folder / bypass policy, permission surface** → `ralphmode`
+- **plan review / approval gate** → `plannotator`
+- **fresh-session browser verification** → `agent-browser`
+- **running authenticated browser reuse** → `playwriter`
+- **exact rendered-UI critique / annotation handoff** → `agentation`
+- **Codex-first runtime orchestration** → `omx`
+- **Gemini / Antigravity portable harness adoption** → `ohmg`
 
-**Build / Analysis Lane:**
-`explore` (haiku) · `analyst` (opus) · `planner` (opus) · `architect` (opus) · `debugger` (sonnet) · `executor` (sonnet) · `verifier` (sonnet) · `tracer` (sonnet)
+### Step 5: Keep the answer truthful about volatility
 
-**Review Lane:**
-`code-reviewer` (opus) · `security-reviewer` (sonnet) · `critic` (opus) · `code-simplifier` (opus)
+OMC is a fast-moving upstream project. Prefer:
+- topology truth first
+- current surface distinctions
+- current install/setup commands
+- current route-outs
+- reference docs for deeper operator detail
 
-**Domain Specialists:**
-`test-engineer` · `designer` · `writer` · `qa-tester` · `scientist` · `git-master` · `document-specialist`
-
-Invoke via: `/oh-my-claudecode:<agent-name>` or delegated through Task tool.
-
-See [references/agents-catalog.md](references/agents-catalog.md) for full profiles.
-
----
-
-## 6. CLI Tools
-
-### omc team (tmux Workers)
-```bash
-omc team 2:codex "review auth module for security"
-omc team 2:gemini "redesign UI components"
-omc team status <session>
-omc team shutdown <session>
-```
-
-### omc ask (Provider Advisor)
-```bash
-omc ask claude "review this migration plan"
-omc ask codex --prompt "identify architecture risks"
-omc ask gemini --prompt "propose UI polish ideas"
-```
-
-### omc wait (Rate Limit Auto-Resume)
-```bash
-omc wait              # Check status
-omc wait --start      # Enable auto-resume daemon
-omc wait --stop       # Disable daemon
-```
-
-### Notifications
-```bash
-omc config-stop-callback telegram --enable --token <bot> --chat <id>
-omc config-stop-callback discord --enable --webhook <url>
-omc config-stop-callback slack --enable --webhook <url>
-```
-
----
-
-## 7. Updating
-
-```bash
-# Sync latest version
-/plugin marketplace update omc
-
-# Re-run setup
-/oh-my-claudecode:omc-setup
-
-# If issues after update
-/oh-my-claudecode:omc-doctor
-```
-
----
-
-## 8. Optional: Multi-AI Orchestration
-
-| Provider | Install | What it enables |
-|----------|---------|----------------|
-| Gemini CLI | `npm install -g @google/gemini-cli` | Design review, UI consistency (1M token context) |
-| Codex CLI | `npm install -g @openai/codex` | Architecture validation, code review cross-check |
-
----
-
-## Instructions
-
-1. **Detect intent** — match user request to the best orchestration mode (Team, Autopilot, Ralph, Ultrawork, CCG)
-2. **Provide install path** — if OMC is not yet installed, give the 3-step install sequence
-3. **Show the invocation** — give the exact command or magic keyword for the chosen mode
-4. **Set expectations** — explain what the mode does (pipeline stages, loop behavior, parallelism)
-5. **Surface relevant CLI** — mention `omc team`, `omc ask`, or `omc wait` if they apply
-6. **Link to references** — point to the appropriate references/ file for deep-dive details
-
----
+Avoid:
+- pretending all commands live on one surface
+- treating `/team` and `omc team` as interchangeable
+- claiming there is a general `omc autopilot` CLI
+- stacking installs when duplicate-path symptoms suggest recovery first
+- absorbing browser review, approvals, or non-Claude runtime ownership into OMC
 
 ## Examples
 
-### Example 1: Multi-agent team task
-**User:** "여러 에이전트가 병렬로 TypeScript 에러 전부 고쳐줘"
-**Response:** Use Team mode — `/oh-my-claudecode:team 3:executor "fix all TypeScript errors"`. Runs 3 parallel executors through plan→prd→exec→verify→fix pipeline.
+### Example 1: Marketplace plugin install
+**User:** "OMC 설치하고 Claude Code 안에서 바로 팀 모드까지 쓰고 싶어"
 
-### Example 2: Guaranteed completion
-**User:** "테스트 전부 통과할 때까지 멈추지 마"
-**Response:** Use Ralph mode — `ralph: fix all failing tests`. Persistent execute→verify→fix loop until all tests pass. Won't stop until verified.
+**Response:** Use the **install-topology** packet with **marketplace-plugin** topology. Give the plugin install path, then `setup omc` or `/oh-my-claudecode:omc-setup`, and mention `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` when native teams are expected.
 
-### Example 3: New installation
-**User:** "OMC 설치하고 싶어"
-**Response:** 3-step install: `/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode` → `/plugin install oh-my-claudecode` → `/oh-my-claudecode:omc-setup`. Enable native teams in `~/.claude/settings.json`.
+### Example 2: Local checkout / plugin-dir
+**User:** "로컬 checkout으로 OMC 수정 중인데 Claude plugin cache 때문에 계속 예전 동작이 남아. plugin-dir 쪽으로 어떻게 잡아야 해?"
 
----
+**Response:** Use the **install-topology** packet with **local-plugin-dir** topology. Point to `--plugin-dir`, `OMC_PLUGIN_ROOT`, and `omc setup --plugin-dir-mode`, then send the operator to the install-topology reference instead of treating this like a normal marketplace install.
+
+### Example 3: Shell-side worker team
+**User:** "shell에서 codex 두 명 붙여서 auth 플로우 리뷰 돌리고 싶어"
+
+**Response:** Use the **terminal-runtime** packet. Recommend `omc team 2:codex "review auth flow"`, keep the answer on the CLI runtime, and mention status/shutdown commands only if helpful.
+
+### Example 4: Long-loop orchestration boundary
+**User:** "기획부터 실행, 검증, 재개까지 하나의 장기 루프로 굴리고 싶어"
+
+**Response:** Use the **boundary-and-route-out** packet. Route to `jeo` as the long-loop coordination layer, and mention OMC only as the Claude-first runtime that `jeo` may compose with.
+
+### Example 5: Mixed duplicate install symptoms
+**User:** "업데이트 후 slash command가 중복으로 보이고 worktree마다 상태도 이상해"
+
+**Response:** Use the **recovery-and-update** packet with **mixed-or-unknown** topology. Tell them to inspect overlapping plugin/CLI/plugin-dir installs, then rerun the truthful setup/update path and inspect worktree/state behavior before choosing another mode.
 
 ## Best practices
 
-- **Default to Team mode** for multi-agent work — swarm/ultrapilot are legacy and route to Team
-- **Enable `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`** in `~/.claude/settings.json` before using Team mode
-- **Use ralph for critical tasks** — it composes automatically with ultrawork for parallel+persistent execution
-- **Use CCG for mixed workloads** — backend execution (Codex) + large-context analysis (Gemini) + orchestration (Claude)
-- **Re-run `/oh-my-claudecode:omc-setup`** after every plugin update to refresh hooks and CLAUDE.md
-- **npm package name differs** — it's `oh-my-claude-sisyphus`, not `oh-my-claudecode`
-- **Cancel safely** — use `cancelomc` keyword or `/oh-my-claudecode:cancel`; state is preserved for resume
-
----
-
-## Quick Reference
-
-| Action | Command |
-|--------|---------|
-| Install | `/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode` |
-| Setup | `/oh-my-claudecode:omc-setup` |
-| Team mode | `/oh-my-claudecode:team N:executor "task"` |
-| Autopilot | `autopilot: <task>` |
-| Ralph loop | `ralph: <task>` |
-| Ultrawork | `ulw <task>` |
-| CCG synthesis | `ccg: <task>` |
-| Deep interview | `deep interview: <topic>` |
-| Cancel | `cancelomc` |
-| Update | `/plugin marketplace update omc && /oh-my-claudecode:omc-setup` |
-| Debug | `/oh-my-claudecode:omc-doctor` |
-
-→ [Full documentation](https://yeachan-heo.github.io/oh-my-claudecode-website) · [GitHub](https://github.com/Yeachan-Heo/oh-my-claudecode)
-
----
+1. Name the **topology** before the packet when install or recovery is involved.
+2. Prefer one recommended mode plus one nearby alternative, not a giant command dump.
+3. Treat `/team` and `omc team` as related but different runtimes.
+4. Keep the npm/package-name mismatch explicit: `oh-my-claude-sisyphus` provides the `omc` CLI.
+5. Do not improvise over `--plugin-dir` or duplicate-install symptoms; route to the topology reference.
+6. Route long-loop orchestration, approval posture, browser review, and other runtime ownership outward.
+7. Use references for volatile operator detail; keep the front door focused on truthful routing.
 
 ## References
 
-| File | Contents |
-|------|---------|
-| [references/agents-catalog.md](references/agents-catalog.md) | All 29+ agent profiles, tiers, delegation rules |
-| [references/modes-reference.md](references/modes-reference.md) | Mode deep-dives, skill layer composition |
-| [references/hooks-reference.md](references/hooks-reference.md) | Hook events, injection patterns, kill switches |
-| [references/cli-reference.md](references/cli-reference.md) | Full CLI syntax: omc team/ask/wait/config |
+- [references/install-topology-and-recovery.md](references/install-topology-and-recovery.md)
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/modes-reference.md](references/modes-reference.md)
+- [references/hooks-reference.md](references/hooks-reference.md)
+- [references/cli-reference.md](references/cli-reference.md)
+- [references/agents-catalog.md](references/agents-catalog.md)

@@ -1,0 +1,67 @@
+{
+  "skill_name": "performance-optimization",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The dashboard feels laggy when filters change. I have a Chrome trace and want to know what to optimize first.",
+      "expected_output": "Classifies the request as interaction/rendering performance work, uses the existing trace as the intake packet, isolates a likely bottleneck, proposes one or two focused changes, and includes verification steps.",
+      "assertions": [
+        "Selects a measurement-led performance mode rather than generic refactoring advice",
+        "Mentions the current browser trace as the intake artifact",
+        "Limits recommendations to one or two highest-leverage changes",
+        "Includes a before/after verification plan"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our order search endpoint p95 jumped after adding new filters. We have EXPLAIN ANALYZE output and slow query logs.",
+      "expected_output": "Frames the problem as API/database performance tuning, uses the current query-plan artifacts, identifies the narrowest bottleneck class, proposes a small set of targeted changes, and notes tradeoffs.",
+      "assertions": [
+        "Routes the request into a database-plan or API-latency mode",
+        "References EXPLAIN or slow-query evidence already in hand",
+        "States a primary bottleneck hypothesis",
+        "Includes tradeoffs and verification rather than only a code snippet"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our landing-page CWV report shows poor LCP and INP. We have Lighthouse and field data but not a profiler trace yet.",
+      "expected_output": "Treats the CWV/Lighthouse report as a real intake packet, frames the problem as page-load-and-bundle work, recommends one or two bounded next moves, and notes when deeper traces would help.",
+      "assertions": [
+        "Classifies the request as page-load-and-bundle work",
+        "Uses the existing report as the current artifact instead of discarding it",
+        "Keeps the recommendation bounded",
+        "Includes verification or follow-up measurement guidance"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We need dashboards, traces, and alerts so we can catch slow endpoints before users complain.",
+      "expected_output": "Routes the request to monitoring-observability instead of pretending the main task is already performance tuning.",
+      "assertions": [
+        "Routes telemetry setup to monitoring-observability",
+        "Does not present the task as a normal optimization brief"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Unreal is hitching on Steam Deck and I have an Insights capture. Can you help interpret it?",
+      "expected_output": "Acknowledges that this is performance-related but routes engine-specific capture interpretation to game-performance-profiler.",
+      "assertions": [
+        "Mentions game-performance-profiler as the engine-specific next step",
+        "Avoids answering as if generic web/backend perf guidance is sufficient"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Our CI benchmark got 40% slower after a dependency upgrade. I only have the before/after benchmark timings so far.",
+      "expected_output": "Treats the benchmark diff as the current intake packet, chooses a throughput or unknown-needs-better-measurement mode as appropriate, and asks for the cheapest next artifact instead of jumping straight to rewrites.",
+      "assertions": [
+        "Uses the benchmark diff as the existing artifact",
+        "Chooses a bounded primary mode",
+        "Avoids generic code-cleanup advice without evidence",
+        "Asks for a concrete next measurement when needed"
+      ]
+    }
+  ]
+}

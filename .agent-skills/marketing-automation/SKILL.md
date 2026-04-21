@@ -1,347 +1,279 @@
 ---
 name: marketing-automation
-description: Generate marketing deliverables across CRO, copywriting, SEO, analytics, and growth using 23 specialized sub-skills with clear objectives, constraints, and validation.
+description: >
+  Route broad product and growth marketing asks into one operating mode, one
+  primary lane, and one reusable operator packet across launch planning,
+  conversion surfaces, lifecycle/retention, acquisition/content, and
+  measurement/experiments. Use when the user needs general marketing help for a
+  website, SaaS product, funnel, onboarding flow, pricing page, campaign, or
+  launch and the first job is deciding the right next brief with owner,
+  dependencies, approvals, and proof instead of producing channel soup.
+  Triggers on: marketing plan, GTM help, launch brief, pricing page refresh,
+  lifecycle email strategy, conversion help, campaign measurement, content
+  plan. Route Steam/store-page game launch work to `steam-store-launch-ops` and
+  backlog/milestone shaping to `task-planning`.
+allowed-tools: Write Read WebSearch WebFetch Task
+compatibility: >
+  General marketing front door for SaaS, product, web, and lifecycle work.
+  Prefer narrower skills when the request is already clearly specialist or
+  domain-specific.
 metadata:
   tags: marketing, cro, copywriting, seo, analytics, growth, automation
   platforms: Claude, ChatGPT, Gemini, Codex
+  version: "2.1"
+  hardening: 2026-04-18
 ---
 
+# Marketing Automation
 
-# Marketing Skills Collection
+Use this skill as the **canonical broad marketing front door** when the real job is choosing the right next marketing packet.
 
-A collection of 23 sub-skills for marketing deliverables. Generates repeatable, high-quality outputs across CRO, copywriting, SEO, analytics, and growth.
+The job is not to generate a giant campaign brainstorm. The job is to:
+1. classify the ask into one operating mode,
+2. choose one primary lane,
+3. produce one reusable operator packet,
+4. name the owner, dependencies, approvals, and proof stack,
+5. route out when the request is actually planning, game-store launch ops, or another narrower specialist workflow.
+
+Read these support docs before finalizing the packet:
+- [references/operating-modes-and-route-outs.md](references/operating-modes-and-route-outs.md)
+- [references/routing-heuristics.md](references/routing-heuristics.md)
+- [references/operator-packet-and-proof-stack.md](references/operator-packet-and-proof-stack.md)
+- [references/measurement-handoff.md](references/measurement-handoff.md)
 
 ## When to use this skill
+- The user asks for broad marketing help and the right next packet is still ambiguous.
+- A product, website, funnel, launch, onboarding flow, or pricing surface needs one structured marketing brief before detailed execution starts.
+- The request mixes strategy, surface choice, messaging, content, channels, and measurement.
+- The user needs a reusable operator brief, not a pile of disconnected suggestions.
 
-- **Marketing Deliverables Needed**: CRO, copy, SEO, analytics, growth outputs
-- **Repeatable High-Quality Outputs**: Generate assets tuned to a single KPI
-- **Business Goal → Skill Mapping**: Convert goals to specific marketing sub-skills
+## When not to use this skill
+- **The ask is already clearly Steam/store-page/festival/game launch work** → `steam-store-launch-ops`.
+- **The real job is backlog shaping, milestone coordination, or cross-functional implementation slicing** → `task-planning`.
+- **The user wants only one atomic copy rewrite or finished content asset with no broader routing layer** → use the narrower writing/execution workflow directly.
+- **The request is mostly product strategy, UX research, or technical implementation rather than marketing routing** → route to the stronger adjacent skill.
 
----
+## Core routing model
 
-## 23 Sub-Skills Overview
+### Operating modes
+Use one primary mode per run:
+- `launch-orchestration` — broad launch, GTM, pricing, or rollout sequencing across multiple surfaces
+- `conversion-surface` — landing page, pricing page, signup flow, paywall, or onboarding conversion friction
+- `lifecycle-retention` — onboarding, activation, retention, churn, lifecycle email, re-engagement, or user education motion
+- `acquisition-content` — SEO, content strategy, comparison pages, organic acquisition, or channel-facing discovery work
+- `measurement-experiment` — analytics setup, attribution, KPI cleanup, campaign readout, or experiment/backlog instrumentation
 
-### CRO (Conversion Rate Optimization)
-| Sub-Skill | Description |
-|-----------|-------------|
-| `page-cro` | Landing page conversion rate optimization |
-| `signup-flow` | Signup flow optimization |
-| `onboarding` | Onboarding experience improvement |
-| `form-optimization` | Form optimization (fields, UX) |
-| `paywall` | Paywall/pricing page optimization |
+### Primary lanes
+After choosing the mode, still choose one primary lane:
+- `CRO`
+- `Copy & messaging`
+- `SEO & content`
+- `Ads & analytics`
+- `Strategy & growth`
 
-### Copywriting
-| Sub-Skill | Description |
-|-----------|-------------|
-| `copywriting` | Ad/marketing copy writing |
-| `copy-editing` | Improve existing copy |
-| `email-sequence` | Email sequence design |
-| `social-content` | Social media content |
-
-### SEO
-| Sub-Skill | Description |
-|-----------|-------------|
-| `seo-audit` | SEO audit and improvements |
-| `programmatic-seo` | Programmatic SEO pages |
-| `comparison-page` | Comparison page writing |
-| `schema-markup` | Structured data markup |
-
-### Ads & Analytics
-| Sub-Skill | Description |
-|-----------|-------------|
-| `analytics-tracking` | Analytics tracking setup |
-| `paid-ads` | Paid ads strategy/copy |
-| `ab-test` | A/B test design |
-
-### Strategy & Growth
-| Sub-Skill | Description |
-|-----------|-------------|
-| `launch-strategy` | Product launch strategy |
-| `pricing-strategy` | Pricing strategy |
-| `retention` | Retention improvement strategy |
-| `churn-analysis` | Churn analysis |
-| `growth-experiments` | Growth experiment design |
-| `referral-program` | Referral program design |
-| `content-strategy` | Content strategy |
-
----
+The mode explains **what kind of situation this is**.
+The lane explains **which marketing discipline owns the next packet**.
 
 ## Instructions
 
-### Step 1: Define Objective and Constraints
+### Step 1: Normalize the intake into one routing profile
+Capture the request in this compact form before choosing the packet:
 
 ```yaml
-marketing_brief:
-  objective: [single KPI - conversion rate, CTR, activation]
-  target_audience:
-    segment: [customer segment]
-    pain_points: [key pain points]
-    terminology: [terms they use]
-  channel: [LP, email, social, SEO, ads]
-  format: [format]
-  offer:
-    value_prop: [value proposition]
-    positioning: [positioning]
-    proof_points: [proof points]
+marketing_router_profile:
+  primary_mode: launch-orchestration | conversion-surface | lifecycle-retention | acquisition-content | measurement-experiment
+  primary_lane: CRO | Copy & messaging | SEO & content | Ads & analytics | Strategy & growth | unknown
+  objective: acquisition | activation | conversion | retention | revenue | awareness | unknown
+  audience:
+    segment: "who this is for"
+    stage: unaware | problem-aware | evaluating | active-user | churn-risk | unknown
+  surface_or_channel: landing-page | pricing-page | signup-flow | onboarding | lifecycle-email | seo-page | campaign | dashboard | launch | unknown
+  offer_or_motion: "product / feature / campaign / launch motion"
+  measurement_maturity: clear | partial | weak
+  main_question: "what needs to be decided next?"
+  delivery_owner: "who will carry the packet next"
+  dependencies_or_approvals:
+    - "design / analytics / engineering / legal / partner / none"
+  proof_assets_available:
+    - "dashboard / baseline export / campaign data / user feedback / none"
+  constraints:
+    timeline: immediate | this-week | this-month | longer
+    brand_or_compliance_notes: "limits or promises"
+    domain_specificity: general | specialist | game-store
 ```
 
-### Step 2: Select the Sub-Skill
+If detail is missing, proceed with explicit assumptions instead of stalling.
 
-Select the appropriate sub-skill for the situation:
+### Step 2: Gather the minimum credible evidence
+Do not route from vibes alone. Pull the smallest packet that supports a real decision:
+- objective and current bottleneck
+- audience / segment / funnel stage
+- surface, campaign, or lifecycle moment
+- available proof points or constraints
+- current KPI or best available proxy
+- who owns the next move
+- which dependencies or approvals can block execution
+- what is still missing that could change the lane choice
 
-```bash
-# When CRO is needed
-→ page-cro, signup-flow, onboarding, form-optimization, paywall
+### Step 3: Choose one mode, one lane, one packet
+Use [references/operating-modes-and-route-outs.md](references/operating-modes-and-route-outs.md).
 
-# When copy is needed
-→ copywriting, copy-editing, email-sequence, social-content
+Default packet mapping:
+- `launch-orchestration` → usually `Strategy & growth` → `launch/growth brief`
+- `conversion-surface` → usually `CRO` or `Copy & messaging` → `measurement + experiment packet`
+- `lifecycle-retention` → usually `Strategy & growth` or `Copy & messaging` → `channel-ready brief`
+- `acquisition-content` → usually `SEO & content` → `channel-ready brief`
+- `measurement-experiment` → usually `Ads & analytics` → `measurement + experiment packet`
 
-# When SEO is needed
-→ seo-audit, programmatic-seo, comparison-page, schema-markup
+Rules:
+- Choose **one primary mode**.
+- Choose **one primary lane**.
+- Return **one primary packet**.
+- Mention secondary handoffs only after the main packet is chosen.
 
-# When ads/analytics are needed
-→ analytics-tracking, paid-ads, ab-test
+### Step 4: Add route-outs before the packet sprawls
+Route out instead of absorbing adjacent work when:
+- the ask is really Steam wishlists / capsules / Next Fest / store visibility → `steam-store-launch-ops`
+- the ask is really execution slicing / backlog organization / milestone coordination → `task-planning`
+- the ask is already a narrow specialist workflow with a better dedicated skill
 
-# When strategy/growth is needed
-→ launch-strategy, pricing-strategy, retention, churn-analysis, growth-experiments
-```
+A good front door narrows the next move. It does not win by claiming every neighboring job.
 
-### Step 3: Build the Prompt
+### Step 5: Build the operator brief
+Use [references/operator-packet-and-proof-stack.md](references/operator-packet-and-proof-stack.md).
 
-Build structured prompt:
+Return this structure:
 
 ```markdown
-## Marketing Asset Request
+# Marketing Routing Brief
 
-### Product Context
-- **Product**: [product name]
-- **Category**: [category]
-- **Stage**: [stage - early, growth, mature]
+## Intake summary
+- Mode: ...
+- Primary lane: ...
+- Objective: ...
+- Audience / stage: ...
+- Surface / channel: ...
+- Confidence: high | medium | low
 
-### Audience
-- **Segment**: [target segment]
-- **Pain Points**: [1-3 pain points]
-- **Current State**: [solution they currently use]
+## What matters most now
+- 2-4 bullets
 
-### Offer
-- **Value Prop**: [core value proposition]
-- **Differentiator**: [differentiation point]
-- **Proof**: [trust elements - numbers, clients, awards]
+## Recommended packet
+- Packet type: launch/growth brief | channel-ready brief | copy/messaging packet | measurement + experiment packet | marketing-routing brief
+- Why this packet now: ...
 
-### Constraints
-- **Tone**: [tone - professional, casual, bold]
-- **Brand Voice**: [brand voice guide]
-- **Do NOT**: [things to avoid]
+## Operator packet
+- Primary owner: ...
+- Dependencies / approvals: ...
+- Required assets or inputs: ...
+- Delivery horizon: ...
 
-### Output Format
-- [desired format - table, checklist, bullets]
+## Priority decisions
+| Decision | Why now | Owner | Risk if delayed |
+|----------|---------|-------|-----------------|
+| ... | ... | ... | ... |
+
+## Immediate next steps
+1. ...
+2. ...
+3. ...
+
+## Proof stack
+- Primary KPI: ...
+- Leading signal: ...
+- Baseline or assumption: ...
+- Success threshold: ...
+- Readout window: ...
+- Next owner / workflow: ...
+
+## Secondary handoffs
+- Skill / workflow: ...
+- Why: ...
+
+## Not yet
+- 1-3 bullets that prevent scope drift
 ```
 
-### Step 4: Generate and Validate
+### Step 6: Keep proof attached to the packet
+Every output must name:
+- one primary KPI
+- one leading signal
+- one baseline or explicit assumption
+- one success threshold
+- one readout window or review checkpoint
+- one next owner or downstream workflow
 
-```bash
-# Generate
-claude task "generate marketing asset with sub-skill name"
+Use [references/operator-packet-and-proof-stack.md](references/operator-packet-and-proof-stack.md) for the operator packet shape and [references/measurement-handoff.md](references/measurement-handoff.md) for lane-specific KPI examples.
 
-# Validation checklist
-- [ ] KPI alignment
-- [ ] Target audience fit
-- [ ] Brand voice consistency
-- [ ] Actionability
-```
+## Output format
+Always return a **short operator-style Marketing Routing Brief**.
 
-### Step 5: Handoff + Measurement
-
-```markdown
-## Implementation Checklist
-- [ ] Asset publishing
-- [ ] Tracking event setup
-- [ ] Success threshold definition
-
-## Tracking Events
-| Event | Description | Success Threshold |
-|-------|-------------|-------------------|
-| page_view | Page view | baseline |
-| cta_click | CTA click | +20% vs control |
-| signup_complete | Signup complete | +15% vs control |
-
-## A/B Test Proposals
-1. [Hypothesis 1]: [variant] vs [control]
-2. [Hypothesis 2]: [variant] vs [control]
-```
-
----
+Required qualities:
+- one primary mode
+- one primary lane
+- one packet that can actually be handed off
+- explicit assumptions when context is thin
+- named owner plus dependency/approval visibility
+- route-outs when the ask is not really this skill
+- proof logic attached to the packet, not bolted on later
 
 ## Examples
 
-### Example 1: Landing Page CRO
+### Example 1: broad launch ask
+**Input**
+> We are launching a new SaaS workflow next month and need help with messaging, landing page copy, onboarding emails, and how to measure whether it worked.
 
-**Prompt**:
-```
-Optimize the landing page for higher signup conversion.
-Audience: indie founders building side projects.
-Offer: AI co-pilot for product launches.
-Output: prioritized CRO changes + A/B tests.
-```
+**Output sketch**
+- Mode: `launch-orchestration`
+- Lane: `Strategy & growth`
+- Packet: `launch/growth brief`
+- Secondary handoffs mention copy/messaging and lifecycle execution
+- Operator packet names one owner plus likely dependencies or approvals
+- Proof stack names one launch KPI and one leading signal
 
-**Expected output**:
-- CRO checklist prioritized by impact/effort
-- 3 A/B test hypotheses with expected lift
-- Hero + CTA copy suggestions (3 variants each)
+### Example 2: pricing-page refresh
+**Input**
+> Our pricing page gets traffic, but upgrades are weak. We need help with the page and what to test.
 
-### Example 2: Email Sequence
+**Output sketch**
+- Mode: `conversion-surface`
+- Lane: `CRO`
+- Packet: `measurement + experiment packet`
+- Priority decisions cover offer clarity, CTA hierarchy, proof, and friction
 
-**Prompt**:
-```
-Create a 5-email welcome sequence for a B2B SaaS.
-Audience: ops managers at 50-500 employee companies.
-Goal: drive first workflow setup within 7 days.
-```
+### Example 3: lifecycle / onboarding ask
+**Input**
+> Trial users activate once and disappear. We need onboarding and lifecycle help, plus a sensible KPI.
 
-**Expected output**:
-```markdown
-## Welcome Sequence
+**Output sketch**
+- Mode: `lifecycle-retention`
+- Lane: `Strategy & growth` or `Copy & messaging`
+- Packet: `channel-ready brief`
+- Operator packet names the lifecycle owner and any analytics or product dependency
+- Proof stack names activation or retained-usage KPI plus a leading signal
 
-### Email 1: Welcome (Day 0)
-- **Subject**: Welcome to [Product] - Let's get started
-- **Goal**: Account confirmation + quick win
-- **CTA**: Complete profile
+### Example 4: game-store launch near miss
+**Input**
+> We need Steam capsule copy and Next Fest marketing help for our game demo.
 
-### Email 2: Value Demo (Day 1)
-- **Subject**: See what [Product] can do in 2 minutes
-- **Goal**: Feature awareness
-- **CTA**: Watch demo video
-
-### Email 3: First Workflow (Day 3)
-- **Subject**: Create your first workflow (step-by-step)
-- **Goal**: Activation milestone
-- **CTA**: Create workflow
-
-### Email 4: Use Case (Day 5)
-- **Subject**: How [Customer] saved 10 hours/week
-- **Goal**: Social proof + inspiration
-- **CTA**: Try this template
-
-### Email 5: Check-in (Day 7)
-- **Subject**: Need help getting started?
-- **Goal**: Rescue non-activated users
-- **CTA**: Book a call / Reply for help
-
-## Metrics
-| Email | Open Rate Target | CTR Target |
-|-------|------------------|------------|
-| Email 1 | 60%+ | 30%+ |
-| Email 2 | 45%+ | 15%+ |
-| Email 3 | 40%+ | 20%+ |
-| Email 4 | 35%+ | 12%+ |
-| Email 5 | 40%+ | 15%+ |
-```
-
-### Example 3: Programmatic SEO
-
-**Prompt**:
-```
-Create a programmatic SEO template for comparison pages.
-Target: "[Tool A] vs [Tool B]" searches.
-Include: H1, meta description, comparison table, CTA.
-```
-
-**Expected output**:
-- Page template with placeholders
-- Schema markup (JSON-LD)
-- Internal linking strategy
-- Content guidelines per section
-
----
+**Output sketch**
+- Keep the response short
+- Route execution to `steam-store-launch-ops`
+- Leave only a concise handoff note instead of a giant generic marketing plan
 
 ## Best practices
+1. **Act like a front-door router, not a generic growth advisor.**
+2. **Choose one mode before you choose tactics.**
+3. **Choose one packet before you list channels.**
+4. **Keep owner, approvals, and dependencies visible instead of assuming automation removes them.**
+5. **Keep launch/planning/game-store boundaries explicit.**
+6. **Attach proof and ownership to every packet.**
 
-1. **One KPI per deliverable**: Avoid mixed objectives
-2. **Audience specificity**: Use segment-specific needs and terminology
-3. **Instrument measurement**: Set up tracking before launch
-4. **Iterate with data**: Treat outputs as hypotheses
-
----
-
-## Common pitfalls
-
-- **Mixed Objectives**: Multiple goals in one asset
-- **Missing Audience Context**: Unclear who it's for
-- **No Tracking/Validation Plan**: Unable to measure impact
-
----
-
-## Troubleshooting
-
-### Issue: Output is generic
-**Cause**: Vague product/audience information
-**Solution**: Provide positioning, competitors, proof points
-
-### Issue: Output conflicts with brand voice
-**Cause**: No tone/voice constraints
-**Solution**: Provide brand do/don't list and sample copy
-
-### Issue: Can't measure impact
-**Cause**: Tracking events not defined
-**Solution**: Define events and success thresholds in advance
-
----
-
-## Output format
-
-```markdown
-## Marketing Asset Report
-
-### Brief Summary
-- **Sub-Skill Used**: [sub-skill]
-- **Objective**: [KPI]
-- **Audience**: [segment]
-
-### Deliverable
-[generated asset]
-
-### Implementation Checklist
-- [ ] Asset ready
-- [ ] Tracking configured
-- [ ] Success criteria defined
-
-### A/B Test Plan
-| Test | Hypothesis | Metric | Expected Lift |
-|------|------------|--------|---------------|
-| Test A | [hypothesis] | [metric] | [%] |
-```
-
----
-
-## Multi-Agent Workflow
-
-### Validation & Retrospectives
-
-- **Round 1 (Orchestrator)**: Coverage of 23 sub-skills across 5 categories
-- **Round 2 (Analyst)**: KPI alignment, prompt structure review
-- **Round 3 (Executor)**: Output format, actionability check
-
-### Agent Roles
-
-| Agent | Role |
-|-------|------|
-| Claude | Brief composition, asset generation |
-| Gemini | Competitor research, trend analysis |
-| Codex | Tracking code generation, automation |
-
----
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2026-01-21
-- **Compatible Platforms**: Claude, ChatGPT, Gemini, Codex
-
-### Related Skills
-- [presentation-builder](../../documentation/presentation-builder/SKILL.md)
-- [frontend-design](../../frontend/design-system/SKILL.md)
-- [image-generation](../../creative-media/image-generation/SKILL.md)
-
-### Tags
-`#marketing` `#cro` `#copywriting` `#seo` `#analytics` `#growth` `#automation`
+## References
+- [references/operating-modes-and-route-outs.md](references/operating-modes-and-route-outs.md)
+- [references/routing-heuristics.md](references/routing-heuristics.md)
+- [references/operator-packet-and-proof-stack.md](references/operator-packet-and-proof-stack.md)
+- [references/measurement-handoff.md](references/measurement-handoff.md)
+- `../marketing-skills-collection/SKILL.md`
+- `../steam-store-launch-ops/SKILL.md`
+- `../task-planning/SKILL.md`

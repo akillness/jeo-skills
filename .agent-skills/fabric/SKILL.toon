@@ -1,32 +1,32 @@
 N:fabric
-D:AI prompt orchestration CLI by Daniel Miessler. Apply 250+ reusable Patterns via stdin/stdout piping for YouTube summarization, document analysis, content extraction, code explanation, and more. Supports 20+ AI providers (OpenAI, Claude, Gemini, Ollama, etc.). Use in agent workflows to pipe any tool output through intelligent patterns.
-G:fabric patterns ai-prompts youtube summarize extract-wisdom piping cli multi-provider openai claude gemini ollama agent-workflow
+D:Routing-first Fabric operator skill for reusable named AI transforms over stdin, files, transcripts, notes, logs, and cleaned web text. Use when the user wants Fabric patterns, custom pattern packs, shell-pipe composition, or fabric --serve workflows—not generic one-off chat prompting, repo-aware coding, or deterministic automation.
+G:fabric patterns prompt-orchestration cli piping summarize extract custom-patterns stdin transcripts logs rest-api
 
 U[6]:
-  Summarize YouTube videos or documents with a single pipe command
-  Apply 250+ pre-built AI patterns to any text content
-  Extract insights, wisdom, or structure from articles and papers
-  Route different patterns to different AI providers for cost/quality optimization
-  Create and share custom patterns for repeatable AI workflows
-  Use as AI agent utility — pipe command output (logs, git diff, test results) through patterns
+  Run a reusable named transform over stdin, files, clipboard text, transcripts, notes, logs, or cleaned article text
+  Pick the right built-in Fabric pattern instead of improvising a fresh prompt every time
+  Create a custom pattern pack for recurring team or operator workflows
+  Place Fabric cleanly inside a shell pipeline with explicit input/output assumptions
+  Expose Fabric through fabric --serve when another local tool needs HTTP access
+  Compare Fabric vs a general LLM CLI vs a coding assistant when the tool boundary is unclear
 
 S[6]{n,action,details}:
-  1,Install,curl -fsSL https://raw.githubusercontent.com/danielmiessler/fabric/main/scripts/installer/install.sh | bash; then fabric --setup to configure API keys and default model
-  2,Discover,fabric -u to update patterns from repo; fabric -l to list patterns; fabric -l | grep <term> to search by keyword
-  3,Pipe,cat file.txt | fabric -p <pattern> --stream or echo "text" | fabric -p summarize; use --stream for progressive output on long content
-  4,YouTube,fabric -y "https://youtube.com/watch?v=ID" -p extract_wisdom; --transcript for raw text; --transcript-with-timestamps for timestamped output
-  5,Custom,mkdir -p ~/.config/fabric/patterns/my-pattern; write system.md with IDENTITY/STEPS/OUTPUT INSTRUCTIONS sections
-  6,Agent workflow,git diff HEAD~1 | fabric -p explain_code; npm test 2>&1 | fabric -p analyze_logs; fabric --serve for REST API mode
+  1,Classify,Choose one lane: quick-transform | pattern-selection | custom-pattern | shell-pipeline | serve-api | boundary-review
+  2,Verify input,Confirm where the text comes from and whether it is already clean enough for Fabric
+  3,Pick move,Recommend the top 1-3 patterns or a custom pattern path based on the real job
+  4,Invoke,Give the exact Fabric command, server setup, or system.md scaffold instead of generic product description
+  5,Surface friction,Call out provider config, long-input, or post-editing risks when relevant
+  6,Route out,Send repo editing to coding assistants and deterministic batch logic to scripts/workflow automation
 
 R[5]:
-  Run fabric -u before first use and regularly to get latest community patterns
-  Use --stream for long documents to see output progressively instead of waiting
-  Create shell aliases (alias wisdom="fabric -p extract_wisdom") for most-used patterns
-  Chain patterns with pipes: cat doc.txt | fabric -p summarize | fabric -p extract_wisdom
-  Follow IDENTITY→STEPS→OUTPUT INSTRUCTIONS structure when creating custom patterns
+  Treat Fabric as a reusable pattern layer, not a generic terminal chatbot
+  Do not dump the full pattern catalog; return the top 1-3 choices and why
+  Fork a custom pattern when the workflow repeats or output shape matters
+  Be explicit about upstream input-cleaning steps before blaming the pattern
+  Only recommend fabric --serve when another app truly needs HTTP access
 
 E[4]{desc,in,out}:
-  "YouTube summary","fabric -y https://youtube.com/watch?v=ID -p summarize","Structured summary with key points, takeaways, and timestamps"
-  "Document wisdom","cat article.txt | fabric -p extract_wisdom --stream","Ideas, insights, quotes, habits, and facts extracted from the text"
-  "Agent log analysis","npm test 2>&1 | fabric -p analyze_logs","Structured failure analysis with root causes and suggested fixes"
-  "Custom pattern","echo 'code snippet' | fabric -p explain_code","Plain-language explanation of what the code does and why"
+  "Transcript summary","cat transcript.txt | fabric -p summarize","Markdown summary packet over existing transcript text"
+  "Pattern choice","Choose the best Fabric pattern for logs or notes","Top 1-3 patterns plus why"
+  "Custom pattern pack","Weekly competitor-article digest workflow","system.md scaffold plus invocation and reuse guidance"
+  "Boundary review","Fabric vs general LLM CLI vs coding assistant","Keeps repeatable text transforms in Fabric and routes repo editing elsewhere"

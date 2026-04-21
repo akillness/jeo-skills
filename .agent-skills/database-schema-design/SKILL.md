@@ -1,694 +1,245 @@
 ---
 name: database-schema-design
-description: Design and optimize database schemas for SQL and NoSQL databases. Use when creating new databases, designing tables, defining relationships, indexing strategies, or database migrations. Handles PostgreSQL, MySQL, MongoDB, normalization, and performance optimization.
+description: >
+  Design storage-model and migration-safety packets for relational, document-heavy,
+  and hybrid data systems. Use when the user needs entity ownership, constraints,
+  indexes, multi-tenant or audit boundaries, staged schema changes, or queryable-vs-
+  flexible field decisions across backend/fullstack products, internal ops tools,
+  marketing/customer-data workflows, or game/live-ops systems. Route API contracts
+  to `api-design`, auth-owned identity/session modeling to `authentication-setup`,
+  verification to `backend-testing`, and reporting/telemetry follow-through to
+  `looker-studio-bigquery` or `monitoring-observability`.
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: >
+  Best for backend and fullstack systems where schema choices must balance integrity,
+  query shape, lifecycle rules, and rollout safety across PostgreSQL, MySQL, SQLite,
+  MongoDB, Firestore, and similar stacks.
+license: MIT
 metadata:
-  tags: database, schema, SQL, NoSQL, PostgreSQL, MySQL, MongoDB, migration
+  version: "2.1.0"
+  modernization: 2026-04-14
+  hardening: 2026-04-19
+  tags: database, schema-design, migrations, indexing, constraints, relational, nosql, backend
   platforms: Claude, ChatGPT, Gemini
 ---
 
-
 # Database Schema Design
 
+Use this skill when the main job is **choosing and evolving the storage model**, not dumping generic SQL or ORM snippets.
+
+`database-schema-design` is the backend storage-design anchor for:
+- choosing between relational-first, document-heavy, and hybrid models
+- turning domain entities into tables, collections, ownership boundaries, and lifecycle rules
+- justifying constraints, indexes, tenant scope, history/audit structures, and deletion/retention behavior
+- planning staged schema evolution so migrations, backfills, and cleanup are believable
+- handing downstream teams one compact storage-design packet before implementation, verification, reporting, or observability work branches out
+
+Read these support docs before handling larger or riskier work:
+- [references/storage-decision-matrix.md](references/storage-decision-matrix.md)
+- [references/schema-review-checklist.md](references/schema-review-checklist.md)
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
 
 ## When to use this skill
+- Design a new schema for a product feature, internal tool, admin workflow, customer-data surface, or live-ops/game backend system.
+- Refactor an existing storage model with weak constraints, naming drift, poor cardinality modeling, or untrusted indexing.
+- Decide which fields must be first-class columns or indexed document fields versus flexible metadata payloads.
+- Plan multi-tenant, audit-log, entitlement, status-history, retention, or soft-delete boundaries.
+- Review whether a migration is safe, staged realistically, and honest about backfills, compatibility windows, and cleanup.
+- Produce one bounded storage packet before implementation or while a risky backend change is being shaped.
 
-Lists specific situations where this skill should be triggered:
-
-- **New Project**: Database schema design for a new application
-- **Schema Refactoring**: Redesigning an existing schema for performance or scalability
-- **Relationship Definition**: Implementing 1:1, 1:N, N:M relationships between tables
-- **Migration**: Safely applying schema changes
-- **Performance Issues**: Index and schema optimization to resolve slow queries
-
-## Input Format
-
-The required and optional input information to collect from the user:
-
-### Required Information
-- **Database Type**: PostgreSQL, MySQL, MongoDB, SQLite, etc.
-- **Domain Description**: What data will be stored (e.g., e-commerce, blog, social media)
-- **Key Entities**: Core data objects (e.g., User, Product, Order)
-
-### Optional Information
-- **Expected Data Volume**: Small (<10K rows), Medium (10K-1M), Large (>1M) (default: Medium)
-- **Read/Write Ratio**: Read-heavy, Write-heavy, Balanced (default: Balanced)
-- **Transaction Requirements**: Whether ACID is required (default: true)
-- **Sharding/Partitioning**: Whether large data distribution is needed (default: false)
-
-### Input Example
-
-```
-Design a database for an e-commerce platform:
-- DB: PostgreSQL
-- Entities: User, Product, Order, Review
-- Relationships:
-  - A User can have multiple Orders
-  - An Order contains multiple Products (N:M)
-  - A Review is linked to a User and a Product
-- Expected data: 100,000 users, 10,000 products
-- Read-heavy (frequent product lookups)
-```
+## When not to use this skill
+- **The main job is REST/GraphQL contract shape, endpoint behavior, webhook semantics, or versioning** → `api-design`.
+- **The main job is identity/session/provider setup or auth-owned user/org boundaries** → `authentication-setup`.
+- **The main job is migration verification, repository coverage, or contract/regression tests** → `backend-testing`.
+- **The main job is published docs, quickstarts, or developer-facing schema/API explanations** → `api-documentation`.
+- **The main job is broad hardening beyond data integrity, like secret handling, CSRF, cookies, or abuse controls** → `security-best-practices`.
+- **The main job is dashboard/reporting presentation or telemetry/alert coverage on top of already-modeled data** → `looker-studio-bigquery` or `monitoring-observability`.
+- The request has no real domain, access pattern, or lifecycle context yet; in that case return the missing questions instead of pretending the schema is settled.
 
 ## Instructions
 
-Specifies the step-by-step task sequence to follow precisely.
+### Step 1: Classify one primary storage-design packet
+Use one primary lane and one smallest useful artifact.
 
-### Step 1: Define Entities and Attributes
-
-Identify core data objects and their attributes.
-
-**Tasks**:
-- Extract nouns from business requirements → entities
-- List each entity's attributes (columns)
-- Determine data types (VARCHAR, INTEGER, TIMESTAMP, JSON, etc.)
-- Designate Primary Keys (UUID vs Auto-increment ID)
-
-**Example** (E-commerce):
-```
-Users
-- id: UUID PRIMARY KEY
-- email: VARCHAR(255) UNIQUE NOT NULL
-- username: VARCHAR(50) UNIQUE NOT NULL
-- password_hash: VARCHAR(255) NOT NULL
-- created_at: TIMESTAMP DEFAULT NOW()
-- updated_at: TIMESTAMP DEFAULT NOW()
-
-Products
-- id: UUID PRIMARY KEY
-- name: VARCHAR(255) NOT NULL
-- description: TEXT
-- price: DECIMAL(10, 2) NOT NULL
-- stock: INTEGER DEFAULT 0
-- category_id: UUID REFERENCES Categories(id)
-- created_at: TIMESTAMP DEFAULT NOW()
-
-Orders
-- id: UUID PRIMARY KEY
-- user_id: UUID REFERENCES Users(id)
-- total_amount: DECIMAL(10, 2) NOT NULL
-- status: VARCHAR(20) DEFAULT 'pending'
-- created_at: TIMESTAMP DEFAULT NOW()
-
-OrderItems (Junction table)
-- id: UUID PRIMARY KEY
-- order_id: UUID REFERENCES Orders(id) ON DELETE CASCADE
-- product_id: UUID REFERENCES Products(id)
-- quantity: INTEGER NOT NULL
-- price: DECIMAL(10, 2) NOT NULL
+```yaml
+schema_packet:
+  workload_shape: oltp | analytics-adjacent | event-log | content-heavy | mixed | unknown
+  data_lane: relational-first | document-heavy | hybrid | unknown
+  change_type: greenfield | incremental | migration | cleanup | scale-fix
+  ownership_focus: product-core | internal-ops | marketing-customer-data | game-live-ops | mixed
+  durability_needs: basic | transactional | audit-heavy | compliance-sensitive | unknown
+  hottest_risk: integrity | queryability | migration-safety | lifecycle-drift | unclear
+  output_packet: design-memo | schema-review | migration-rollout | erd-plus-decisions | unknown
 ```
 
-### Step 2: Design Relationships and Normalization
+Normalize first:
+1. What are the real business entities or aggregates?
+2. Which reads, writes, filters, joins, or reports are highest value?
+3. Is this greenfield design, live-system change, or schema cleanup?
+4. Which rules are true business invariants versus temporary implementation convenience?
+5. Which platform constraints already exist (database engine, ORM, hosted service, compliance, scale)?
 
-Define relationships between tables and apply normalization.
+### Step 2: Gather the minimum credible evidence
+Do not design storage from vibes alone. Pull the smallest packet that supports real decisions:
+- product/domain objective
+- current schema, models, or representative records if they exist
+- known reads/writes, filters, joins, search/reporting needs, and retention rules
+- tenant/ownership, audit/history, and deletion expectations
+- rollout constraints: traffic, migration windows, lock risk, compatibility concerns, downstream consumers
+- open questions that would make the design fake-ready
 
-**Tasks**:
-- 1:1 relationship: Foreign Key + UNIQUE constraint
-- 1:N relationship: Foreign Key
-- N:M relationship: Create junction table
-- Determine normalization level (1NF ~ 3NF)
+If the evidence is thin, say so explicitly and keep the packet at review/memo level instead of pretending it is implementation-ready.
 
-**Decision Criteria**:
-- OLTP systems → normalize to 3NF (data integrity)
-- OLAP/analytics systems → denormalization allowed (query performance)
-- Read-heavy → minimize JOINs with partial denormalization
-- Write-heavy → full normalization to eliminate redundancy
+### Step 3: Choose the data lane deliberately
+Use [references/storage-decision-matrix.md](references/storage-decision-matrix.md).
 
-**Example** (ERD Mermaid):
-```mermaid
-erDiagram
-    Users ||--o{ Orders : places
-    Orders ||--|{ OrderItems : contains
-    Products ||--o{ OrderItems : "ordered in"
-    Categories ||--o{ Products : categorizes
-    Users ||--o{ Reviews : writes
-    Products ||--o{ Reviews : "reviewed by"
+- **Relational-first** when integrity, transactions, shared invariants, joins, or reporting matter most.
+- **Document-heavy** when one aggregate is usually read/written together and the shape varies enough that strict relational modeling would be fake precision.
+- **Hybrid** when the transactional core is stable but some metadata/content payloads are legitimately flexible.
 
-    Users {
-        uuid id PK
-        string email UK
-        string username UK
-        string password_hash
-        timestamp created_at
-    }
+State the reason in one or two sentences. “Because the stack already uses it” is useful context, not the whole rationale.
 
-    Products {
-        uuid id PK
-        string name
-        decimal price
-        int stock
-        uuid category_id FK
-    }
+### Step 4: Model ownership, lifecycle, and query-critical fields
+For each core entity/collection/aggregate, define:
+- purpose and ownership boundary
+- identifier strategy
+- required vs optional attributes
+- lifecycle states and timestamps
+- relationships or reference direction
+- tenant/org ownership if relevant
+- deletion, archival, retention, and history rules
+- which fields must stay queryable, unique, or reportable
+- which fields can remain flexible metadata without harming search/reporting/ops
 
-    Orders {
-        uuid id PK
-        uuid user_id FK
-        decimal total_amount
-        string status
-        timestamp created_at
-    }
+Watch for these traps:
+- mirroring UI objects instead of business concepts
+- hiding many-to-many or history in JSON blobs or ad hoc arrays
+- collapsing mutable state, audit history, and derived/cache data into one table/document
+- letting auth/profile/session ownership blur into unrelated product entities
+- storing analytics, telemetry, or campaign attributes in opaque payloads when they already drive filtering, reporting, or live-ops decisions
 
-    OrderItems {
-        uuid id PK
-        uuid order_id FK
-        uuid product_id FK
-        int quantity
-        decimal price
-    }
-```
+### Step 5: Design integrity and access rules together
+A schema is only as good as the invariants it can defend.
 
-### Step 3: Establish Indexing Strategy
+Name:
+- keys and ownership rules
+- uniqueness / nullability / defaults / state constraints
+- hottest reads, writes, filters, joins, or aggregate lookups
+- indexes and why each one exists
+- intentional denormalization or flexible fields and the reason they stay flexible
 
-Design indexes for query performance.
+If you cannot name the main query shapes, the indexing guidance is probably fake.
 
-**Tasks**:
-- Primary Keys automatically create indexes
-- Columns frequently used in WHERE clauses → add indexes
-- Foreign Keys used in JOINs → indexes
-- Consider composite indexes (WHERE col1 = ? AND col2 = ?)
-- UNIQUE indexes (email, username, etc.)
+### Step 6: Plan rollout and route-outs
+For incremental or live-system changes, define:
+- additive vs destructive changes
+- expand-and-contract, backfill, dual-read/write, or shadow-read phases if needed
+- when indexes/constraints become safe to enforce
+- rollback or stop conditions
+- cleanup conditions for old columns/tables/doc fields
 
-**Checklist**:
-- [x] Indexes on frequently queried columns
-- [x] Indexes on Foreign Key columns
-- [x] Composite index order optimized (high selectivity columns first)
-- [x] Avoid excessive indexes (degrades INSERT/UPDATE performance)
+Then route adjacent work clearly using [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md):
+- `api-design` for interface or contract changes that depend on the model
+- `authentication-setup` for identity/session/provider ownership
+- `backend-testing` for migration verification and regression coverage
+- `looker-studio-bigquery` when the main job is stakeholder dashboards/reporting over curated data
+- `monitoring-observability` when the main job is telemetry freshness, alert coverage, or runtime visibility
+- `security-best-practices` when the concern goes beyond data integrity into broader app/web hardening
 
-**Example** (PostgreSQL):
-```sql
--- Primary Keys (auto-indexed)
-CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email VARCHAR(255) UNIQUE NOT NULL,  -- UNIQUE = auto-indexed
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
+### Step 7: Run the boundary check
+Use [references/schema-review-checklist.md](references/schema-review-checklist.md) before finalizing.
 
--- Foreign Keys + explicit indexes
-CREATE TABLE orders (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    total_amount DECIMAL(10, 2) NOT NULL,
-    status VARCHAR(20) DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX idx_orders_user_id ON orders(user_id);
-CREATE INDEX idx_orders_status ON orders(status);
-CREATE INDEX idx_orders_created_at ON orders(created_at);
-
--- Composite index (status and created_at frequently queried together)
-CREATE INDEX idx_orders_status_created ON orders(status, created_at DESC);
-
--- Products table
-CREATE TABLE products (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
-    stock INTEGER DEFAULT 0 CHECK (stock >= 0),
-    category_id UUID REFERENCES categories(id),
-    created_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX idx_products_category ON products(category_id);
-CREATE INDEX idx_products_price ON products(price);  -- price range search
-CREATE INDEX idx_products_name ON products(name);    -- product name search
-
--- Full-text search (PostgreSQL)
-CREATE INDEX idx_products_name_fts ON products USING GIN(to_tsvector('english', name));
-CREATE INDEX idx_products_description_fts ON products USING GIN(to_tsvector('english', description));
-```
-
-### Step 4: Set Up Constraints and Triggers
-
-Add constraints to ensure data integrity.
-
-**Tasks**:
-- NOT NULL: required columns
-- UNIQUE: columns that must be unique
-- CHECK: value range constraints (e.g., price >= 0)
-- Foreign Key + CASCADE option
-- Set default values
-
-**Example**:
-```sql
-CREATE TABLE products (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(255) NOT NULL,
-    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
-    stock INTEGER DEFAULT 0 CHECK (stock >= 0),
-    discount_percent INTEGER CHECK (discount_percent >= 0 AND discount_percent <= 100),
-    category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
--- Trigger: auto-update updated_at
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER update_products_updated_at
-BEFORE UPDATE ON products
-FOR EACH ROW
-EXECUTE FUNCTION update_updated_at_column();
-```
-
-### Step 5: Write Migration Scripts
-
-Write migrations that safely apply schema changes.
-
-**Tasks**:
-- UP migration: apply changes
-- DOWN migration: rollback
-- Wrap in transactions
-- Prevent data loss (use ALTER TABLE carefully)
-
-**Example** (SQL migration):
-```sql
--- migrations/001_create_initial_schema.up.sql
-BEGIN;
-
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
-CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email VARCHAR(255) UNIQUE NOT NULL,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE TABLE categories (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(100) UNIQUE NOT NULL,
-    parent_id UUID REFERENCES categories(id)
-);
-
-CREATE TABLE products (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
-    stock INTEGER DEFAULT 0 CHECK (stock >= 0),
-    category_id UUID REFERENCES categories(id),
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX idx_products_category ON products(category_id);
-CREATE INDEX idx_products_price ON products(price);
-
-COMMIT;
-
--- migrations/001_create_initial_schema.down.sql
-BEGIN;
-
-DROP TABLE IF EXISTS products CASCADE;
-DROP TABLE IF EXISTS categories CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
-
-COMMIT;
-```
+Verify:
+1. One data lane and one output packet were chosen.
+2. Ownership, lifecycle, and query-critical fields are explicit.
+3. Flexible metadata is justified instead of acting as deferred modeling debt.
+4. Migration safety is believable for a live system.
+5. API/auth/testing/reporting/observability work was routed out instead of silently absorbed.
+6. The packet ends with the next concrete move.
 
 ## Output format
 
-Defines the exact format that deliverables should follow.
-
-### Basic Structure
-
-```
-project/
-├── database/
-│   ├── schema.sql                    # full schema
-│   ├── migrations/
-│   │   ├── 001_create_users.up.sql
-│   │   ├── 001_create_users.down.sql
-│   │   ├── 002_create_products.up.sql
-│   │   └── 002_create_products.down.sql
-│   ├── seeds/
-│   │   └── sample_data.sql           # test data
-│   └── docs/
-│       ├── ERD.md                     # Mermaid ERD diagram
-│       └── SCHEMA.md                  # schema documentation
-└── README.md
-```
-
-### ERD Diagram (Mermaid Format)
-
 ```markdown
-# Database Schema
+## Storage Design Packet: [System or Feature]
 
-## Entity Relationship Diagram
+### Packet framing
+- Workload shape:
+- Chosen data lane:
+- Change type:
+- Ownership focus:
+- Why this lane fits:
 
-\`\`\`mermaid
-erDiagram
-    Users ||--o{ Orders : places
-    Orders ||--|{ OrderItems : contains
-    Products ||--o{ OrderItems : "ordered in"
+### Evidence used
+- Current artifacts:
+- Query/reporting needs:
+- Lifecycle or retention constraints:
+- Assumptions / gaps:
 
-    Users {
-        uuid id PK
-        string email UK
-        string username UK
-    }
+### Entity / collection map
+| Entity | Purpose | Key fields | Relationships / ownership | Lifecycle notes |
+|--------|---------|------------|----------------------------|-----------------|
+| ... | ... | ... | ... | ... |
 
-    Products {
-        uuid id PK
-        string name
-        decimal price
-    }
-\`\`\`
+### Integrity and access rules
+- Required constraints:
+- Uniqueness / nullability notes:
+- Indexes and why:
+- Flexible metadata that stays flexible:
 
-## Table Descriptions
+### Rollout / migration plan
+- Sequence:
+- Backfill / compatibility notes:
+- Cleanup conditions:
+- Stop / rollback signals:
 
-### users
-- **Purpose**: Store user account information
-- **Indexes**: email, username
-- **Estimated rows**: 100,000
+### Route-outs
+- API / contract:
+- Auth / identity:
+- Verification:
+- Reporting / observability:
 
-### products
-- **Purpose**: Product catalog
-- **Indexes**: category_id, price, name
-- **Estimated rows**: 10,000
+### Recommended next move
+- draft migration plan | review with owners | hand off to API/auth/testing/reporting | defer until missing evidence is gathered
 ```
-
-## Constraints
-
-Specifies mandatory rules and prohibited actions.
-
-### Mandatory Rules (MUST)
-
-1. **Primary Key Required**: Define a Primary Key on every table
-   - Unique record identification
-   - Ensures referential integrity
-
-2. **Explicit Foreign Keys**: Tables with relationships must define Foreign Keys
-   - Specify ON DELETE CASCADE/SET NULL options
-   - Prevent orphan records
-
-3. **Use NOT NULL Appropriately**: Required columns must be NOT NULL
-   - Clearly specify nullable vs. non-nullable
-   - Providing defaults is recommended
-
-### Prohibited Actions (MUST NOT)
-
-1. **Avoid EAV Pattern Abuse**: Use the Entity-Attribute-Value pattern only in special cases
-   - Query complexity increases dramatically
-   - Performance degradation
-
-2. **Excessive Denormalization**: Be careful when denormalizing for performance
-   - Data consistency issues
-   - Risk of update anomalies
-
-3. **No Plaintext Storage of Sensitive Data**: Never store passwords, card numbers, etc. in plaintext
-   - Hashing/encryption is mandatory
-   - Legal liability issues
-
-### Security Rules
-
-- **Principle of Least Privilege**: Grant only the necessary permissions to application DB accounts
-- **SQL Injection Prevention**: Use Prepared Statements / Parameterized Queries
-- **Encrypt Sensitive Columns**: Consider encrypting personally identifiable information at rest
 
 ## Examples
 
-Demonstrates how to apply the skill through real-world use cases.
+### Example 1: SaaS core model
+**Input:** "We need schema help for a B2B SaaS app with users, organizations, memberships, subscriptions, invoices, and audit logs. We use Postgres and need something implementation-ready."
 
-### Example 1: Blog Platform Schema
+**Good output direction**
+- chooses `relational-first`
+- separates users, organizations, memberships, subscriptions, and immutable invoice records clearly
+- treats audit/history separately from mutable entity state
+- routes session/provider details to `authentication-setup`
 
-**Situation**: Database design for a Medium-style blog platform
+### Example 2: Flexible metadata migration
+**Input:** "Our marketplace stores product metadata in one JSON column, but search, moderation, and filters now depend on stable fields. Plan a safe migration."
 
-**User Request**:
-```
-Design a PostgreSQL schema for a blog platform:
-- Users can write multiple posts
-- Posts can have multiple tags (N:M)
-- Users can like and bookmark posts
-- Comment feature (with nested replies)
-```
+**Good output direction**
+- chooses `hybrid`
+- identifies which fields must graduate from JSON into first-class columns or indexed fields
+- proposes staged rollout, backfill, and cleanup conditions
+- routes verification to `backend-testing`
 
-**Final Result**:
-```sql
--- Users
-CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email VARCHAR(255) UNIQUE NOT NULL,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    bio TEXT,
-    avatar_url VARCHAR(500),
-    created_at TIMESTAMP DEFAULT NOW()
-);
+### Example 3: Game live-ops boundary
+**Input:** "We need to model player inventory, seasonal event progress, and telemetry for a live game without burying reporting needs in opaque blobs."
 
--- Posts
-CREATE TABLE posts (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    title VARCHAR(255) NOT NULL,
-    slug VARCHAR(255) UNIQUE NOT NULL,
-    content TEXT NOT NULL,
-    published_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX idx_posts_author ON posts(author_id);
-CREATE INDEX idx_posts_published ON posts(published_at);
-CREATE INDEX idx_posts_slug ON posts(slug);
-
--- Tags
-CREATE TABLE tags (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(50) UNIQUE NOT NULL,
-    slug VARCHAR(50) UNIQUE NOT NULL
-);
-
--- Post-Tag relationship (N:M)
-CREATE TABLE post_tags (
-    post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
-    tag_id UUID REFERENCES tags(id) ON DELETE CASCADE,
-    PRIMARY KEY (post_id, tag_id)
-);
-
-CREATE INDEX idx_post_tags_post ON post_tags(post_id);
-CREATE INDEX idx_post_tags_tag ON post_tags(tag_id);
-
--- Likes
-CREATE TABLE post_likes (
-    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT NOW(),
-    PRIMARY KEY (user_id, post_id)
-);
-
--- Bookmarks
-CREATE TABLE post_bookmarks (
-    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT NOW(),
-    PRIMARY KEY (user_id, post_id)
-);
-
--- Comments (self-referencing for nested comments)
-CREATE TABLE comments (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
-    author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    parent_comment_id UUID REFERENCES comments(id) ON DELETE CASCADE,
-    content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX idx_comments_post ON comments(post_id);
-CREATE INDEX idx_comments_author ON comments(author_id);
-CREATE INDEX idx_comments_parent ON comments(parent_comment_id);
-```
-
-### Example 2: MongoDB Schema (NoSQL)
-
-**Situation**: MongoDB schema for a real-time chat app
-
-**User Request**:
-```
-Design a MongoDB schema for a real-time chat app.
-Reads are very frequent, and message history needs to be retrieved quickly.
-```
-
-**Final Result**:
-```javascript
-// users collection
-{
-  _id: ObjectId,
-  username: String,  // indexed, unique
-  email: String,     // indexed, unique
-  avatar_url: String,
-  status: String,    // 'online', 'offline', 'away'
-  last_seen: Date,
-  created_at: Date
-}
-
-// conversations collection (denormalized - read-optimized)
-{
-  _id: ObjectId,
-  participants: [    // indexed
-    {
-      user_id: ObjectId,
-      username: String,
-      avatar_url: String
-    }
-  ],
-  last_message: {    // denormalized for fast recent-message retrieval
-    content: String,
-    sender_id: ObjectId,
-    sent_at: Date
-  },
-  unread_counts: {   // unread message count per participant
-    "user_id_1": 5,
-    "user_id_2": 0
-  },
-  created_at: Date,
-  updated_at: Date
-}
-
-// messages collection
-{
-  _id: ObjectId,
-  conversation_id: ObjectId,  // indexed
-  sender_id: ObjectId,
-  content: String,
-  attachments: [
-    {
-      type: String,  // 'image', 'file', 'video'
-      url: String,
-      filename: String
-    }
-  ],
-  read_by: [ObjectId],  // array of user IDs who have read the message
-  sent_at: Date,        // indexed
-  edited_at: Date
-}
-
-// Indexes
-db.users.createIndex({ username: 1 }, { unique: true });
-db.users.createIndex({ email: 1 }, { unique: true });
-
-db.conversations.createIndex({ "participants.user_id": 1 });
-db.conversations.createIndex({ updated_at: -1 });
-
-db.messages.createIndex({ conversation_id: 1, sent_at: -1 });
-db.messages.createIndex({ sender_id: 1 });
-```
-
-**Design Highlights**:
-- Denormalization for read optimization (embedding last_message)
-- Indexes on frequently accessed fields
-- Using array fields (participants, read_by)
+**Good output direction**
+- separates player-owned transactional state from telemetry/reporting concerns
+- keeps one storage packet focused on state integrity and lifecycle
+- routes dashboard/telemetry follow-through to `looker-studio-bigquery` or `monitoring-observability`
 
 ## Best practices
-
-### Quality Improvement
-
-1. **Naming Convention Consistency**: Use snake_case for table/column names
-   - users, post_tags, created_at
-   - Be consistent with plurals/singulars (tables plural, columns singular, etc.)
-
-2. **Consider Soft Delete**: Use logical deletion instead of physical deletion for important data
-   - deleted_at TIMESTAMP (NULL = active, NOT NULL = deleted)
-   - Allows recovery of accidentally deleted data
-   - Audit trail
-
-3. **Timestamps Required**: Include created_at and updated_at in most tables
-   - Data tracking and debugging
-   - Time-series analysis
-
-### Efficiency Improvements
-
-- **Partial Indexes**: Minimize index size with conditional indexes
-  ```sql
-  CREATE INDEX idx_posts_published ON posts(published_at) WHERE published_at IS NOT NULL;
-  ```
-- **Materialized Views**: Cache complex aggregate queries as Materialized Views
-- **Partitioning**: Partition large tables by date/range
-
-## Common Issues
-
-### Issue 1: N+1 Query Problem
-
-**Symptom**: Multiple DB calls when a single query would suffice
-
-**Cause**: Individual lookups in a loop without JOINs
-
-**Solution**:
-```sql
--- ❌ Bad example: N+1 queries
-SELECT * FROM posts;  -- 1 time
--- for each post
-SELECT * FROM users WHERE id = ?;  -- N times
-
--- ✅ Good example: 1 query
-SELECT posts.*, users.username, users.avatar_url
-FROM posts
-JOIN users ON posts.author_id = users.id;
-```
-
-### Issue 2: Slow JOINs Due to Unindexed Foreign Keys
-
-**Symptom**: JOIN queries are very slow
-
-**Cause**: Missing index on Foreign Key column
-
-**Solution**:
-```sql
-CREATE INDEX idx_orders_user_id ON orders(user_id);
-CREATE INDEX idx_order_items_order_id ON order_items(order_id);
-CREATE INDEX idx_order_items_product_id ON order_items(product_id);
-```
-
-### Issue 3: UUID vs Auto-increment Performance
-
-**Symptom**: Insert performance degradation when using UUID Primary Keys
-
-**Cause**: UUIDs are random, causing index fragmentation
-
-**Solution**:
-- PostgreSQL: Use `uuid_generate_v7()` (time-ordered UUID)
-- MySQL: Use `UUID_TO_BIN(UUID(), 1)`
-- Or consider using Auto-increment BIGINT
+1. Start from business invariants and access patterns, not table aesthetics.
+2. Treat migration safety as part of schema design, not a later ops chore.
+3. Keep flexible metadata honest: useful when justified, dangerous when it hides query-critical fields.
+4. Separate mutable state, history/audit, and derived/reporting data.
+5. Route adjacent API/auth/testing/reporting work outward instead of turning this into a generic backend mega-skill.
+6. Prefer a durable packet over giant vendor-specific example dumps.
 
 ## References
-
-### Official Documentation
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-- [MySQL Documentation](https://dev.mysql.com/doc/)
-- [MongoDB Schema Design Best Practices](https://www.mongodb.com/docs/manual/core/data-modeling-introduction/)
-
-### Tools
-- [dbdiagram.io](https://dbdiagram.io/) - ERD diagram creation
-- [PgModeler](https://pgmodeler.io/) - PostgreSQL modeling tool
-- [Prisma](https://www.prisma.io/) - ORM + migrations
-
-### Learning Resources
-- [Database Design Course (freecodecamp)](https://www.youtube.com/watch?v=ztHopE5Wnpc)
-- [Use The Index, Luke](https://use-the-index-luke.com/) - SQL indexing guide
-
-## Metadata
-
-### Version
-- **Current Version**: 1.0.0
-- **Last Updated**: 2025-01-01
-- **Compatible Platforms**: Claude, ChatGPT, Gemini
-
-### Related Skills
-- [api-design](../api-design/SKILL.md): Schema design alongside API design
-- [performance-optimization](../../code-quality/performance-optimization/SKILL.md): Query performance optimization
-
-### Tags
-`#database` `#schema` `#PostgreSQL` `#MySQL` `#MongoDB` `#SQL` `#NoSQL` `#migration` `#ERD`
+- [PostgreSQL Data Definition docs](https://www.postgresql.org/docs/current/ddl.html)
+- [Prisma Data Guide — Making Connections](https://www.prisma.io/dataguide/datamodeling/making-connections)
+- [MongoDB data modeling docs](https://www.mongodb.com/docs/manual/data-modeling/)
+- [Firestore structure-data guide](https://firebase.google.com/docs/firestore/manage-data/structure-data)

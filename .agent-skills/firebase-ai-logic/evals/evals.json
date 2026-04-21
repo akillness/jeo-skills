@@ -1,0 +1,35 @@
+{
+  "skill_name": "firebase-ai-logic",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We have a Firebase web app and want to add streaming Gemini summaries to article cards without building a separate backend workflow yet.",
+      "expected_output": "Routes to firebase-ai-logic as the primary lane and gives app-layer integration plus App Check/quota guidance.",
+      "assertions": [
+        "Response identifies Firebase AI Logic as the main lane for the request.",
+        "Response mentions streaming and app/client integration concerns.",
+        "Response mentions at least one Firebase-specific production control such as App Check, quotas, or monitoring.",
+        "Response does not claim that tool calling or RAG should stay in the client layer."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our mobile Firebase app needs chat with retrieval over private knowledge and server-side observability. Should we use Firebase AI Logic or Genkit?",
+      "expected_output": "Splits the packet and routes retrieval/observability/backend orchestration to genkit instead of keeping everything in firebase-ai-logic.",
+      "assertions": [
+        "Response explicitly routes backend retrieval or observability work to genkit.",
+        "Response preserves firebase-ai-logic only for app/client edge work if relevant.",
+        "Response does not present firebase-ai-logic as the owner of RAG plus observability."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Can you help me set up Firebase hosting deploys and emulators for our AI app?",
+      "expected_output": "Routes operator/deploy tasks to firebase-cli instead of pretending firebase-ai-logic owns Firebase project operations.",
+      "assertions": [
+        "Response routes deploy, emulator, or operator tasks to firebase-cli.",
+        "Response does not present hosting/emulator setup as core firebase-ai-logic guidance."
+      ]
+    }
+  ]
+}

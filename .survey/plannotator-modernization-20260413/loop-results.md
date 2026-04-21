@@ -1,0 +1,3 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 1 | `plannotator/SKILL.md` + support/docs files | A shorter decision-first skill plus support files will improve trigger clarity and spec compliance without losing practical setup value | Rewrote `SKILL.md` as a visual approval-gate skill, added 3 reference docs + evals, updated `SKILL.toon`, and refreshed discovery descriptions in README/README.ko/setup prompt/skills.json | `validate_skill.sh` passed with 0 warnings; JSON parse checks passed; skill now 266 lines | Keep | Route-outs to `task-planning`, `code-review`, `agentation`, `jeo`, `vibe-kanban`, and note skills are explicit |

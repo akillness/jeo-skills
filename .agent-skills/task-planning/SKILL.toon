@@ -1,16 +1,15 @@
 N:task-planning
-D:Plan and organize software development tasks effectively. Use when breaking down features, creati...
-G:task-planning user-stories backlog sprint-planning agile
-U[3]:
-  **Feature development**: Break down a new feature into small tasks
-  **Sprint Planning**: Select work to include in the sprint
-  **Backlog Grooming**: Clean up the backlog and set priorities
-S[1]{n,action}:
-  1,Write User Stories (INVEST)
-R[6]:
-  **I**ndependent
-  **N**egotiable
-  **V**aluable
-  **E**stimable
-  **S**mall
-  **T**estable
+D:Turn vague features, bug clusters, roadmap items, launch work, or playtest findings into one execution-ready planning packet by choosing the right packet type, separating discovery from delivery, and making blockers, dependencies, and the next move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or milestone prep, release planning, or roadmap-to-delivery translation across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route sizing to task-estimation, board/worktree control to vibe-kanban, plan review to plannotator, daily syncs to standup-meeting, retros to sprint-retrospective, and pre-planning concept framing to bmad, bmad-idea, or bmad-gds.
+G:task-planning backlog-grooming sprint-planning milestone-planning roadmap-slicing feature-breakdown launch-planning game-development
+U[6]:
+  Backlog cleanup and ready-vs-not-ready triage
+  Feature and bug-cluster decomposition
+  Sprint-candidate preparation
+  Release and launch packet shaping
+  Cross-discipline milestone planning
+  Boundary routing across planning, boards, review, and ceremonies
+S[4]{n,action}:
+  1,Choose one intake packet
+  2,Gather the minimum credible evidence
+  3,Split discovery from delivery and choose the smallest packet shape
+  4,Run the route-out check and end with one next move

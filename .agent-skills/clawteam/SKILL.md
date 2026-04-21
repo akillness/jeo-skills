@@ -1,329 +1,261 @@
 ---
 name: clawteam
 description: >
-  Multi-agent swarm orchestration where AI agents spawn, coordinate, and self-organize into
-  collaborative teams. Use when running parallel AI agent tasks, orchestrating multi-agent
-  workflows across Claude Code / Codex / Cursor / custom agents, isolating agent workspaces
-  via git worktrees, tracking task dependencies across agents, or running autonomous experiments.
-  Triggers on: clawteam, agent swarm, spawn agents, multi-agent team, agent orchestration,
-  parallel agents, agent coordination, swarm intelligence, agent spawn, clawteam spawn,
-  agent worktree, agentic team, ml agent experiments, autonomous agents, agent team.
+  Route explicit ClawTeam runtime requests into one honest operator packet before
+  touching commands: manual-team, template-launch, monitor-recover, or
+  profile-setup. Use when the user specifically wants ClawTeam's
+  team/task/inbox/worktree/board workflow for parallel developer work,
+  product/ops research, content operations, or game-production coordination.
+  Not for generic multi-agent routing, board-only governance, or lightweight
+  subtask fan-out when `jeo`, `omc`, `omx`, `ohmg`, `vibe-kanban`, or built-in
+  delegation already fit.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 license: MIT
 metadata:
-  tags: clawteam, multi-agent, swarm, orchestration, tmux, git-worktree, autonomous, python
-  version: "1.0"
+  tags: clawteam, multi-agent, swarm, orchestration, tmux, git-worktree, autonomous, python, routing
+  version: "1.2"
   source: https://github.com/HKUDS/ClawTeam
 ---
 
-# clawteam — Agent Swarm Intelligence
+# clawteam — ClawTeam runtime operator router
 
-> **Keyword**: `clawteam` · `agent swarm` · `spawn agents` · `multi-agent team`
->
-> One command → a self-organizing team of AI agents that spawn workers, coordinate tasks,
-> isolate workspaces with git worktrees, and deliver results autonomously.
->
-> *"Agents spawn agents, delegate tasks, and deliver results."*
+Use this skill when the real question is **"which ClawTeam operator packet do I need right now?"**
+
+`clawteam` owns the **ClawTeam-specific runtime surface**:
+- team / task / inbox state
+- worker spawning through `tmux` or `subprocess`
+- workspace or git-worktree isolation
+- board visibility and recovery flows
+- template launches
+- provider / preset / profile setup tied to spawn behavior
+
+It does **not** own generic multi-agent orchestration, board governance, or lightweight subtask fan-out.
+
+Read these support docs before stretching the boundary:
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/operator-modes-and-route-outs.md](references/operator-modes-and-route-outs.md)
+- [references/architecture.md](references/architecture.md)
+- [references/agent-types.md](references/agent-types.md)
+- [references/use-cases.md](references/use-cases.md)
 
 ## When to use this skill
+- The user explicitly says `clawteam` or clearly wants ClawTeam's team/task/inbox/worktree runtime
+- A leader should coordinate named workers with explicit task ownership and message passing
+- The user wants ClawTeam board commands such as `board attach`, `board live`, or `board serve`
+- The user wants a built-in ClawTeam template launch
+- The real blocker is provider/model/profile setup *inside ClawTeam* before spawn
+- The workflow spans developer delivery, product/ops research, content operations, or game work **and** the chosen runtime is ClawTeam
 
-- Spawn parallel AI agent workers for large, decomposable tasks
-- Run autonomous ML experiments across multiple GPU workers
-- Orchestrate full-stack development with specialized agents (API, backend, frontend, tests)
-- Run investment analysis with multi-specialist agent teams
-- Coordinate agents across Claude Code, Codex, OpenClaw, nanobot, or Cursor
-- Monitor live agent progress via tmux tiled views or web Kanban dashboard
-- Track task dependencies and automatically unblock agents when prerequisites complete
-
----
-
-## Installation
-
-```bash
-# Requires Python 3.10+, tmux, and at least one compatible CLI coding agent
-pip install clawteam
-
-# Verify installation
-clawteam --version
-clawteam doctor   # check tmux, agent CLI, environment
-```
-
-Compatible agents: `claude`, `codex`, `openclaw`, `nanobot`, `cursor`, custom scripts.
-
----
-
-## Core Concepts
-
-| Concept | Description |
-|---------|-------------|
-| **Leader** | The orchestrating agent that spawns workers and delegates tasks |
-| **Worker** | A sub-agent spawned into an isolated git worktree + tmux pane |
-| **Team** | Named group of workers coordinating on a shared task set |
-| **Task** | A unit of work with status: `pending` → `in_progress` → `completed` / `blocked` |
-| **Inbox** | File-based or ZeroMQ P2P message queue per agent |
-| **Worktree** | Git worktree at branch `clawteam/{team}/{agent}` — isolated file system |
-
----
-
-## Quick Start
-
-### Spawn a team from your agent session
-
-```bash
-# Leader spawns 3 Claude workers on a task
-clawteam spawn claude "Build the REST API" --workers 3 --team api-build
-
-# Spawn specialized workers
-clawteam spawn claude "Implement auth endpoints" --team api-build --name auth-worker
-clawteam spawn claude "Implement user CRUD"     --team api-build --name crud-worker
-clawteam spawn codex  "Write integration tests" --team api-build --name test-worker
-```
-
-### Check team status
-
-```bash
-clawteam status                      # all teams
-clawteam status --team api-build     # specific team
-clawteam board --team api-build      # live web Kanban dashboard
-```
-
-### Send messages between agents
-
-```bash
-# Leader sends task to a worker
-clawteam send --to crud-worker "Priority: implement DELETE /users/{id} first"
-
-# Worker broadcasts status
-clawteam broadcast --team api-build "Auth module complete, unblocking crud-worker"
-```
-
-### Task management
-
-```bash
-clawteam task add "Implement rate limiting" --team api-build
-clawteam task list --team api-build
-clawteam task done --id <task-id> --team api-build
-clawteam task block --id <task-id> --blocked-by <other-id>
-```
-
----
+## When not to use this skill
+- **Generic multi-agent implementation loop with planning + QA** → `jeo`, `omc`, `omx`, or `ohmg`
+- **Board/work queue control outside the ClawTeam runtime** → `vibe-kanban`
+- **Lightweight parallel subtasks with no team/task/inbox/worktree state** → built-in delegation / subagents
+- **Planning or decomposition** → `task-planning`
+- **Tool comparison or platform survey** → `survey`
 
 ## Instructions
 
-Use this sequence when the user asks to create or run a ClawTeam workflow.
+### Step 1: Start from the packet already in hand
+Use [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-1. Verify prerequisites first.
-   - Check Python 3.10+, `tmux`, `git`, and at least one supported agent CLI.
-   - If setup is unclear, run `bash scripts/install.sh` or show the minimal install commands.
-2. Pick the team shape.
-   - Use `clawteam template ...` for known patterns like `fullstack`, `ml-research`, or `hedge-fund`.
-   - Use explicit `clawteam spawn ... --name ...` commands when worker roles need to be custom.
-3. Make worker ownership explicit.
-   - Give each worker a semantic role such as `architect`, `backend`, `tester`, or `risk-analyst`.
-   - If tasks depend on one another, show `clawteam task block --id ... --blocked-by ...`.
-4. Show how to monitor and communicate.
-   - Include `clawteam status --team <name>`.
-   - Include either `clawteam board --team <name>` or `clawteam monitor --team <name>`.
-   - Include `clawteam send` or `clawteam broadcast` when coordination matters.
-5. Close with the lifecycle.
-   - Explain how to mark tasks done, inspect costs when relevant, and tear down the team with `clawteam teardown --team <name>`.
+Normalize the request into one packet first:
 
-If the user asks for a recommendation, prefer the smallest team that can execute in parallel without overlapping ownership.
-
----
-
-## Architecture
-
-```
-Leader Agent
-    │
-    ├── clawteam spawn → Worker 1 (tmux pane, git worktree: clawteam/my-team/worker-1)
-    ├── clawteam spawn → Worker 2 (tmux pane, git worktree: clawteam/my-team/worker-2)
-    └── clawteam spawn → Worker 3 (tmux pane, git worktree: clawteam/my-team/worker-3)
-                │
-    ┌───────────┼───────────┐
-    │           │           │
- Task 1      Task 2      Task 3
- (independent) (blocked  (blocked
-               by T1)     by T2)
-
-State: ~/.clawteam/{team}/
-  tasks.json    — task list with deps
-  inbox/        — per-agent message queues
-  snapshots/    — periodic state snapshots
-  costs.json    — token/API cost tracking
+```yaml
+clawteam_packet:
+  primary_packet: manual-team | template-launch | monitor-recover | profile-setup | route-out
+  backend: tmux | subprocess | unknown
+  audience: developer-workflow | product-ops | marketing-content | game-production | mixed
+  current_pain: ownership-split | quick-start | stuck-runtime | provider-setup | wrong-tool
+  confidence: high | medium | low
 ```
 
-**Workspace isolation**: Each worker operates in `clawteam/{team}/{worker}` git branch → no merge conflicts during parallel development.
+Choose one primary packet only:
+- `manual-team` — explicit team lifecycle, worker roles, tasks, inboxes, dependencies
+- `template-launch` — launch a prebuilt ClawTeam team and monitor it
+- `monitor-recover` — inspect a running/stuck team, board, inbox, tasks, workspaces, or lifecycle state
+- `profile-setup` — preset/profile/provider/model/runtime setup before spawn
+- `route-out` — the request is not really about ClawTeam's runtime
 
-**Transport**: FileTransport (default, atomic tmp+rename) or P2PTransport (ZeroMQ TCP with filesystem fallback).
+Rule: if the user really means “multiple agents” rather than “ClawTeam,” route out immediately.
 
----
-
-## Pre-built Team Templates
-
-### ML Research Team
+### Step 2: Verify the minimal runtime before giving deeper commands
+Check what already works **before** assuming ClawTeam will smooth it over.
 
 ```bash
-# 8 agents × H100 GPU experiments
-clawteam template ml-research \
-  --agents 8 \
-  --task "Optimize transformer attention with val_bpb target 0.97" \
-  --team ml-exp
+python3 --version
+clawteam --help
+
+tmux -V
+
+# Replace with the agent CLI the user actually wants to run:
+claude --version
+codex --version
 ```
 
-### Full-Stack Development Team
+Rules:
+1. If the underlying agent CLI does not work by itself, do not pretend `clawteam spawn` will fix it.
+2. Prefer `tmux` for visible interactive workers and live operator control.
+3. Prefer `subprocess` only when headless/background execution is the real need.
+4. If provider/model customization is the blocker, choose `profile-setup` before large spawn examples.
+
+### Step 3: Return the smallest useful command packet
+
+#### Packet A — manual-team
+Use this when ownership and dependencies must stay explicit.
 
 ```bash
-clawteam template fullstack \
-  --agents 4 \
-  --task "Build e-commerce product catalog API" \
-  --team shop-api
-# Spawns: api-designer, backend-dev, frontend-dev, test-engineer
+clawteam team spawn-team my-team -d "Build the auth module" -n leader
+clawteam spawn tmux claude --team my-team --agent-name architect --task "Design the API schema"
+clawteam spawn tmux codex --team my-team --agent-name tester --task "Write integration tests"
+clawteam task create my-team "Design the API schema" -o architect
+clawteam inbox send my-team tester "Wait for API handoff before final checks"
+clawteam board attach my-team
 ```
 
-### Investment Analysis Team
+Use [references/use-cases.md](references/use-cases.md) if the user needs fuller examples for fullstack, research, content, or game-production splits.
+
+#### Packet B — template-launch
+Use this when a built-in template already matches the job.
 
 ```bash
-clawteam template hedge-fund \
-  --agents 7 \
-  --ticker AAPL \
-  --team aapl-analysis
-# Spawns: growth-analyst, technical-analyst, fundamental-analyst,
-#         sentiment-analyst, risk-analyst, macro-analyst, synthesizer
+clawteam template list
+clawteam launch hedge-fund --team fund1 --goal "Analyze AAPL, MSFT, NVDA for Q2 2026"
+clawteam board attach fund1
 ```
 
----
+Do **not** bury this in a full manual-team walkthrough unless the template clearly fails to fit.
 
-## Monitoring
+#### Packet C — monitor-recover
+Use this when a team already exists or runtime truth is the real question.
 
 ```bash
-# Real-time tiled tmux view (split panes per worker)
-clawteam monitor --team api-build
-
-# Web Kanban dashboard (localhost:7420)
-clawteam board --team api-build --port 7420
-
-# Show agent costs and token usage
-clawteam costs --team api-build
+clawteam team discover
+clawteam team status my-team
+clawteam board show my-team
+clawteam task list my-team --status blocked
+clawteam inbox peek my-team
+clawteam workspace list my-team
 ```
 
----
+Use this packet to inspect stuck workers, blocked tasks, missing inbox activity, or workspace drift.
 
-## Configuration
+#### Packet D — profile-setup
+Use this when the runtime/provider setup is the actual blocker.
 
-Config file: `~/.clawteam/config.toml`
-
-```toml
-[transport]
-type = "file"          # "file" (default) or "p2p" (ZeroMQ)
-
-[workspace]
-base_dir = "~/.clawteam"
-worktree_pattern = "clawteam/{team}/{agent}"
-
-[spawn]
-default_agent = "claude"
-tmux_session_prefix = "ct-"
-
-[costs]
-budget_limit = 10.0    # USD, optional
-alert_threshold = 0.8  # warn at 80% of budget
-```
-
-Environment variables override config:
 ```bash
-CLAWTEAM_TRANSPORT=p2p   # use ZeroMQ
-CLAWTEAM_BASE_DIR=/tmp/clawteam
+clawteam preset list
+clawteam preset show moonshot-cn
+clawteam preset generate-profile moonshot-cn claude --name claude-kimi
+clawteam profile doctor claude
+MOONSHOT_API_KEY=*** clawteam profile test claude-kimi
+clawteam spawn tmux --profile claude-kimi --team my-team --agent-name researcher --task "Compare onboarding flows"
 ```
 
----
+Use this packet before large team examples when the question is really about provider/model/runtime configuration.
 
-## CLI Reference
+### Step 4: Keep the runtime reality honest
+ClawTeam-style workflows are still operator-heavy.
 
-| Command | Description |
-|---------|-------------|
-| `clawteam spawn <agent> <task>` | Spawn a worker agent with a task |
-| `clawteam status [--team NAME]` | Show team and task status |
-| `clawteam board [--team NAME]` | Open web Kanban dashboard |
-| `clawteam monitor [--team NAME]` | Live tmux tiled view |
-| `clawteam send --to <worker> <msg>` | Send message to a specific worker |
-| `clawteam broadcast --team <name> <msg>` | Broadcast to all team workers |
-| `clawteam task add/list/done/block` | Manage tasks |
-| `clawteam costs [--team NAME]` | Show token/cost usage |
-| `clawteam doctor` | Check environment and dependencies |
-| `clawteam template <name>` | Use pre-built team templates |
-| `clawteam teardown --team NAME` | Shut down team and clean up |
+State these realities when relevant:
+- `tmux` + worktree/session inspection is often part of the real workflow, not an implementation detail
+- long-running worker persistence may be fragile in some flows; do not oversell it
+- trust prompts, permission flows, and backend-specific quirks can still leak through the abstraction
+- manual cleanup, merge, or workspace hygiene may still matter after a run
 
----
+Important upstream caveats:
+- issue #148 documents worker keepalive problems in ongoing-job subprocess patterns
+- issue #146 documents gaps between parsed agent definitions/configs and applied runtime behavior
 
-## Worker Auto-Injection
+If the user wants generic orchestration policy, board governance, or lightweight built-in delegation, route outward instead of growing this skill.
 
-When ClawTeam spawns a worker, it injects a coordination prompt teaching the agent to:
+### Step 5: Return one concise operator brief
+Preferred format:
 
-1. Check assigned tasks: `clawteam task list --team {name} --owner {me}`
-2. Mark task in progress: `clawteam task start --id {id}`
-3. Report completion: `clawteam task done --id {id}`
-4. Check inbox: `clawteam inbox --team {name} --worker {me}`
-5. Send status: `clawteam send --to leader "Task complete: {summary}"`
+```markdown
+# ClawTeam Operator Brief
 
-Workers operate autonomously — no human intervention needed once spawned.
+## Packet
+- Packet:
+- Why it fits:
+- Backend:
 
----
+## Preconditions
+- Verified:
+- Missing / risky:
+
+## Commands
+1. ...
+2. ...
+3. ...
+
+## Monitoring / recovery
+- ...
+
+## Caveats
+- ...
+
+## Route-outs kept out of scope
+- ...
+```
+
+Short, truthful packets beat giant command dumps.
 
 ## Examples
 
-### Example 1: Spawn a 3-worker API team
+### Example 1: Fullstack feature split
+**Input**
+> Use ClawTeam to split a full-stack feature across a leader and two workers.
 
-```bash
-clawteam spawn claude "Design the API contracts" --team api-build --name architect
-clawteam spawn claude "Implement the REST endpoints" --team api-build --name backend
-clawteam spawn codex "Write integration tests" --team api-build --name tester
+**Good output direction**
+- choose `manual-team`
+- verify the runtime and worker CLI first
+- create the team, spawn workers, create explicit tasks, and end with a board command
+- keep planning/review policy outside this skill
 
-clawteam task block --id backend-impl --blocked-by api-spec
-clawteam task block --id integration-tests --blocked-by backend-impl
+### Example 2: Template first
+**Input**
+> Launch a built-in ClawTeam team and let me watch it.
 
-clawteam status --team api-build
-clawteam board --team api-build
-```
+**Good output direction**
+- choose `template-launch`
+- use `template list` if needed
+- use `launch ... --team ... --goal ...`
+- monitor with `board attach` or `board serve`
 
-### Example 2: Run parallel ML experiments
+### Example 3: Runtime recovery
+**Input**
+> A ClawTeam worker keeps dying after its first turn. What should I check?
 
-```bash
-clawteam template ml-research \
-  --agents 4 \
-  --task "Sweep learning rate and context length for val_bpb improvement" \
-  --team ml-sweep
+**Good output direction**
+- choose `monitor-recover`
+- inspect team, board, task, inbox, and workspace state
+- mention that long-running worker persistence is not guaranteed in every flow
+- avoid pretending a generic orchestration skill owns the problem
 
-clawteam monitor --team ml-sweep
-clawteam costs --team ml-sweep
-```
+### Example 4: Honest route-out
+**Input**
+> I just need a generic multi-agent implementation loop with planning and QA.
 
-### Example 3: Check what a team is doing right now
-
-```bash
-clawteam status --team shop-api
-clawteam board --team shop-api --port 7420
-clawteam inbox --team shop-api --worker backend
-```
-
----
+**Good output direction**
+- choose `route-out`
+- recommend `jeo`, `omc`, `omx`, or `ohmg`
+- explain that `clawteam` is the ClawTeam runtime/operator surface, not the generic answer to every multi-agent request
 
 ## Best practices
-
-1. **Name workers semantically** — `auth-worker`, `test-engineer`, not `worker-1`
-2. **Use task dependencies** — `clawteam task block` prevents out-of-order execution
-3. **Set budget limits** — use `budget_limit` in config to prevent runaway costs
-4. **Use templates for known patterns** — `ml-research`, `fullstack`, `hedge-fund`
-5. **FileTransport for most cases** — P2PTransport only needed for cross-machine teams
-6. **Monitor with `clawteam board`** — web dashboard gives clearest progress view
-
----
+1. Pick one packet first instead of dumping every ClawTeam command family.
+2. Verify the underlying agent CLI and backend before spawning workers.
+3. Prefer `tmux` for visible operator control; use `subprocess` only when headless execution is the real need.
+4. Use template launch only when the built-in archetype actually fits.
+5. Treat provider/profile setup as its own path.
+6. Keep worker persistence and config-application caveats explicit.
+7. Keep `clawteam` distinct from orchestration routers, planning skills, and board-governance tools.
+8. Update compact and discovery surfaces when the trigger wording changes materially.
 
 ## References
-
-- [Architecture Overview](references/architecture.md) — transport, workspace isolation, state model
-- [Agent Types & Compatibility](references/agent-types.md) — claude, codex, openclaw, nanobot, cursor
-- [Use Cases & Templates](references/use-cases.md) — ML research, fullstack dev, investment analysis
-- [ClawTeam GitHub](https://github.com/HKUDS/ClawTeam) — MIT License
-- [PyPI](https://pypi.org/project/clawteam/) — `pip install clawteam`
+- [ClawTeam README](https://github.com/HKUDS/ClawTeam)
+- [PyPI: clawteam](https://pypi.org/project/clawteam/)
+- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
+- [references/operator-modes-and-route-outs.md](references/operator-modes-and-route-outs.md)
+- [references/architecture.md](references/architecture.md)
+- [references/agent-types.md](references/agent-types.md)
+- [references/use-cases.md](references/use-cases.md)

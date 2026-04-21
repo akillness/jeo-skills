@@ -1,309 +1,230 @@
 ---
 name: changelog-maintenance
-description: Maintain a clear and informative changelog for software releases. Use when documenting version changes, tracking features, or communicating updates to users. Handles semantic versioning, changelog formats, and release notes.
+description: "Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, and what's new. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `user-guide-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`."
+allowed-tools: Read Write Edit Glob Grep
+compatibility: >
+  Best for docs-as-code repositories, GitHub/GitLab release workflows, changeset /
+  release-PR automation, customer-update hubs, and game patch-note surfaces where the
+  output lives in Markdown, release entries, docs sites, in-product feeds, or store
+  announcements.
+license: MIT
 metadata:
-  tags: changelog, release-notes, versioning, semantic-versioning, documentation
+  tags: changelog, release-notes, patch-notes, migration, semantic-versioning, documentation, release-communication
   platforms: Claude, ChatGPT, Gemini
+  version: "2.1.0"
+  modernization: 2026-04-14
+  hardening: 2026-04-18
 ---
-
 
 # Changelog Maintenance
 
+Use this skill when the deliverable is **release history or shipped-change communication**, not a broad documentation or launch-campaign bundle.
+
+`changelog-maintenance` is the documentation-cluster anchor for:
+- `CHANGELOG.md` upkeep
+- GitHub / GitLab / docs-site release notes
+- migration and deprecation updates tied to a shipped change
+- customer-facing “what changed” summaries
+- lightweight game patch notes and small update posts
+
+Read these support docs before choosing the mode or boundary:
+- [references/modes-and-boundaries.md](references/modes-and-boundaries.md)
+- [references/output-packets-and-channel-handoffs.md](references/output-packets-and-channel-handoffs.md)
+- [references/release-note-quality-checklist.md](references/release-note-quality-checklist.md)
+- [references/automation-and-source-of-truth.md](references/automation-and-source-of-truth.md)
 
 ## When to use this skill
+- A repo needs a durable changelog entry or `Unreleased` refresh based on shipped work
+- A release needs audience-appropriate notes for developers, customers, internal stakeholders, or players
+- A breaking change, deprecation, or compatibility shift needs a migration update linked from release history
+- Release automation drafted notes, but the output still needs truthful grouping, clearer wording, or better route-outs
+- A game update needs concise patch notes without collapsing into marketing copy, deployment runbooks, or full help docs
+- The real job is deciding the smallest release-writing packet rather than writing every neighboring document from scratch
 
-- **Before release**: organize changes before shipping a version
-- **Continuous**: update whenever significant changes occur
-- **Migration guide**: document breaking changes
+## When not to use this skill
+- **The main job is an internal spec, runbook, ADR, rollout plan, or deep migration procedure** → `technical-writing`
+- **The main job is published API / SDK / webhook / developer-portal content** → `api-documentation`
+- **The main job is end-user onboarding, tutorials, screenshots, FAQs, or help-center walkthroughs** → `user-guide-writing`
+- **The main job is deployment execution, environment promotion, rollback mechanics, or release orchestration** → `deployment-automation`
+- **The main job is launch copy, feature positioning, campaign sequencing, or GTM messaging** → `marketing-automation`
+- **There is no credible shipped evidence yet** → collect proof first instead of inventing release notes from a roadmap or TODO list
 
 ## Instructions
 
-### Step 1: Keep a Changelog format
+### Step 1: Classify one primary release-writing mode
+Normalize the request before drafting.
 
-**CHANGELOG.md**:
-```markdown
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
-### Added
-- New user profile customization options
-- Dark mode support
-
-### Changed
-- Improved performance of search feature
-
-### Fixed
-- Bug in password reset email
-
-## [1.2.0] - 2025-01-15
-
-### Added
-- Two-factor authentication (2FA)
-- Export user data feature (GDPR compliance)
-- API rate limiting
-- Webhook support for order events
-
-### Changed
-- Updated UI design for dashboard
-- Improved email templates
-- Database query optimization (40% faster)
-
-### Deprecated
-- `GET /api/v1/users/list` (use `GET /api/v2/users` instead)
-
-### Removed
-- Legacy authentication method (Basic Auth)
-
-### Fixed
-- Memory leak in background job processor
-- CORS issue with Safari browser
-- Timezone bug in date picker
-
-### Security
-- Updated dependencies (fixes CVE-2024-12345)
-- Implemented CSRF protection
-- Added helmet.js security headers
-
-## [1.1.2] - 2025-01-08
-
-### Fixed
-- Critical bug in payment processing
-- Session timeout issue
-
-## [1.1.0] - 2024-12-20
-
-### Added
-- User profile pictures
-- Email notifications
-- Search functionality
-
-### Changed
-- Redesigned login page
-- Improved mobile responsiveness
-
-## [1.0.0] - 2024-12-01
-
-Initial release
-
-### Added
-- User registration and authentication
-- Basic profile management
-- Product catalog
-- Shopping cart
-- Order management
-
-[Unreleased]: https://github.com/username/repo/compare/v1.2.0...HEAD
-[1.2.0]: https://github.com/username/repo/compare/v1.1.2...v1.2.0
-[1.1.2]: https://github.com/username/repo/compare/v1.1.0...v1.1.2
-[1.1.0]: https://github.com/username/repo/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/username/repo/releases/tag/v1.0.0
+```yaml
+changelog_mode:
+  primary_mode: changelog | release-notes | migration-update | game-patch-notes
+  audience: developers | end-users | mixed | players | internal-stakeholders | unknown
+  release_scope: patch | minor | major | rolling | unknown
+  source_of_truth: release-pr | tagged-release | prs | issues | commits | docs | mixed | unknown
+  publishing_surface: changelog-file | github-release | docs-site | in-app-updates | steam-news | mixed | unknown
+  automation_context: manual | release-drafter | changesets | release-please | autogenerated-release-notes | mixed | unknown
+  output_shape: single-entry | summary-plus-links | migration-brief | patch-note-brief | sync-packet | unknown
 ```
 
-### Step 2: Semantic Versioning
+Use one mode per run:
+- `changelog` → durable repo history in `CHANGELOG.md`
+- `release-notes` → audience-facing summary of what changed and why it matters
+- `migration-update` → changed behavior, required actions, deadlines, and compatibility notes
+- `game-patch-notes` → concise player-facing update summary
 
-**Version number**: `MAJOR.MINOR.PATCH`
+### Step 2: Confirm audience, proof, and route-outs
+Answer these before writing:
+1. Who reads this first?
+2. What action should they take after reading it?
+3. Which shipped evidence proves each headline claim?
+4. Which deeper artifact should carry the rest?
 
-```
-Given a version number MAJOR.MINOR.PATCH, increment:
+Quick route-out table:
 
-MAJOR (1.0.0 → 2.0.0): Breaking changes
-  - API changes break existing code
-  - Example: adding required parameters, changing response structure
+| If the request sounds like... | Use |
+|---|---|
+| “Write the architecture / rollout / runbook / internal migration plan” | `technical-writing` |
+| “Publish API reference, SDK docs, auth troubleshooting, or portal pages” | `api-documentation` |
+| “Write help docs, tutorials, screenshots, or FAQs for the changed workflow” | `user-guide-writing` |
+| “Plan deploy / rollback / release execution” | `deployment-automation` |
+| “Write launch copy / announcement / campaign messaging” | `marketing-automation` |
+| “Summarize shipped changes truthfully for a release surface” | `changelog-maintenance` |
 
-MINOR (1.1.0 → 1.2.0): Backward-compatible features
-  - Add new features
-  - Existing functionality continues to work
-  - Example: new API endpoints, optional parameters
+### Step 3: Gather the smallest truthful evidence set
+Do not write release history from memory alone. Pull the smallest credible packet first:
+- merged release PR, tag, or release entry if it exists
+- merged PRs / issues / commits included in the release
+- linked migration docs, upgrade notes, or help docs
+- breaking changes, removals, deprecations, deadlines, or rollout caveats
+- publishing-surface constraints (`CHANGELOG.md`, GitHub Release, customer update hub, Steam patch-note post)
+- automation context, if any
 
-PATCH (1.1.1 → 1.1.2): Backward-compatible bug fixes
-  - Bug fixes
-  - Security patches
-  - Example: fixing memory leaks, fixing typos
-```
+If evidence is incomplete, label assumptions and missing proof explicitly.
 
-**Examples**:
-- `1.0.0` → `1.0.1`: bug fix
-- `1.0.1` → `1.1.0`: new feature
-- `1.1.0` → `2.0.0`: Breaking change
+### Step 4: Choose the smallest useful artifact packet
+Use [references/output-packets-and-channel-handoffs.md](references/output-packets-and-channel-handoffs.md).
 
-### Step 3: Release Notes (user-friendly)
+Default shapes:
+- `single-entry` → one changelog entry or one release-note block
+- `summary-plus-links` → short release summary plus migration/help/API links
+- `migration-brief` → what changed, who is affected, required action, deadline, link-outs
+- `patch-note-brief` → concise new content / tuning / fixes / known issues packet
+- `sync-packet` → release-note draft plus list of downstream docs or channels that must stay aligned
+
+Do not ship a broad handbook when one release packet and a short sync list will do.
+
+### Step 5: Apply mode-specific writing rules
+- **Changelog**: favor grouped notable changes over commit archaeology; keep compare links or version/date framing when the repo uses them.
+- **Release notes**: lead with impact, not internal ticket numbers; keep wording plain and scannable.
+- **Migration update**: foreground required action, affected readers, deadline, and compatibility risk.
+- **Game patch notes**: keep the note lightweight and player-facing; do not smuggle rollout mechanics or campaign copy into it.
+
+### Step 6: Keep record, communication, and promotion separate
+Guard these boundaries aggressively:
+- changelog / release notes summarize what shipped
+- migration detail lives in linked migration docs when the procedure is too large for the summary
+- tutorials / FAQs live in `user-guide-writing`
+- API and integration detail lives in `api-documentation`
+- rollout / rollback mechanics live in `deployment-automation`
+- campaign-style language lives in `marketing-automation`
+
+### Step 7: Work with automation without surrendering judgment
+Use automation as draft input, not the final editor.
+- **Release Drafter / autogenerated release notes** → good for PR grouping and starter bullets
+- **Changesets** → good for package/version intent and monorepo release aggregation
+- **release-please / semantic-release style flows** → good for release PRs, version bumps, and commit-driven summaries
+
+Still decide manually:
+- the primary audience
+- what counts as notable
+- what needs a migration link
+- what should become a separate help/API/internal doc
+
+### Step 8: Run the trust check before publishing
+Use [references/release-note-quality-checklist.md](references/release-note-quality-checklist.md).
+
+Verify:
+1. Every claim matches shipped or merged evidence.
+2. The chosen mode fits the audience and channel.
+3. Breaking changes, removals, and deadlines are impossible to miss.
+4. Route-outs stay explicit instead of bloating the note.
+5. The packet is as small as possible while still truthful.
+
+### Step 9: Return a brief or the finished artifact
+Preferred brief shape before full drafting:
 
 ```markdown
-# Release Notes v1.2.0
-**Released**: January 15, 2025
+# Release Writing Brief
 
-## 🎉 What's New
+## Mode
+- Primary mode:
+- Why it fits:
+- Audience:
+- Output shape:
 
-### Two-Factor Authentication
-You can now enable 2FA for enhanced security. Go to Settings > Security to set it up.
+## Evidence used
+- Source of truth:
+- Supporting docs / links:
+- Assumptions / missing proof:
 
-![2FA Setup](https://example.com/images/2fa.png)
+## Planned artifact packet
+1. main release artifact
+2. downstream sync / linked-doc follow-up
 
-### Export Your Data
-We've added the ability to export all your data in JSON format. Perfect for backing up or migrating your account.
-
-## ✨ Improvements
-
-- **Faster Search**: Search is now 40% faster thanks to database optimizations
-- **Better Emails**: Redesigned email templates for a cleaner look
-- **Dashboard Refresh**: Updated UI with modern design
-
-## 🐛 Bug Fixes
-
-- Fixed a bug where password reset emails weren't being sent
-- Resolved timezone issues in the date picker
-- Fixed memory leak in background jobs
-
-## ⚠️ Breaking Changes
-
-If you're using our API:
-
-- **Removed**: Basic Authentication is no longer supported
-  - **Migration**: Use JWT tokens instead (see [Auth Guide](docs/auth.md))
-
-- **Deprecated**: `GET /api/v1/users/list`
-  - **Migration**: Use `GET /api/v2/users` with pagination
-
-## 🔒 Security
-
-- Updated all dependencies to latest versions
-- Added CSRF protection to all forms
-- Implemented security headers with helmet.js
-
-## 📝 Full Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for complete details.
-
----
-
-**Upgrade Instructions**: [docs/upgrade-to-v1.2.md](docs/upgrade-to-v1.2.md)
+## Writing notes
+- Breaking changes / deadlines:
+- Route-outs kept out of scope:
+- Channel-specific constraints:
 ```
 
-### Step 4: Breaking Changes migration guide
-
-```markdown
-# Migration Guide: v1.x to v2.0
-
-## Breaking Changes
-
-### 1. Authentication Method Changed
-
-**Before** (v1.x):
-\`\`\`javascript
-fetch('/api/users', {
-  headers: {
-    'Authorization': 'Basic ' + btoa(username + ':' + password)
-  }
-});
-\`\`\`
-
-**After** (v2.0):
-\`\`\`javascript
-// 1. Get JWT token
-const { accessToken } = await fetch('/api/auth/login', {
-  method: 'POST',
-  body: JSON.stringify({ email, password })
-}).then(r => r.json());
-
-// 2. Use token
-fetch('/api/users', {
-  headers: {
-    'Authorization': 'Bearer ' + accessToken
-  }
-});
-\`\`\`
-
-### 2. User List API Response Format
-
-**Before** (v1.x):
-\`\`\`json
-{
-  "users": [...]
-}
-\`\`\`
-
-**After** (v2.0):
-\`\`\`json
-{
-  "data": [...],
-  "pagination": {
-    "page": 1,
-    "limit": 20,
-    "total": 100
-  }
-}
-\`\`\`
-
-**Migration**:
-\`\`\`javascript
-// v1.x
-const users = response.users;
-
-// v2.0
-const users = response.data;
-\`\`\`
-
-## Deprecation Timeline
-
-- v2.0 (Jan 2025): Basic Auth marked as deprecated
-- v2.1 (Feb 2025): Warning logs for Basic Auth usage
-- v2.2 (Mar 2025): Basic Auth removed
-```
-
-## Output format
-
-```
-CHANGELOG.md             # Developer-facing detailed log
-RELEASES.md              # User-facing release notes
-docs/migration/
-  ├── v1-to-v2.md        # Migration guide
-  └── v2-to-v3.md
-```
-
-## Constraints
-
-### Required rules (MUST)
-
-1. **Reverse chronological**: latest version at the top
-2. **Include dates**: ISO 8601 format (YYYY-MM-DD)
-3. **Categorize entries**: Added, Changed, Fixed, etc.
-
-### Prohibited items (MUST NOT)
-
-1. **No copying Git logs**: write from the user's perspective
-2. **Vague wording**: "Bug fixes", "Performance improvements" (be specific)
-
-## Best practices
-
-1. **Keep a Changelog**: follow the standard format
-2. **Semantic Versioning**: consistent version management
-3. **Breaking Changes**: provide a migration guide
-
-## References
-
-- [Keep a Changelog](https://keepachangelog.com/)
-- [Semantic Versioning](https://semver.org/)
-
-## Metadata
-
-### Version
-- **Current version**: 1.0.0
-- **Last updated**: 2025-01-01
-- **Compatible platforms**: Claude, ChatGPT, Gemini
-
-### Tags
-`#changelog` `#release-notes` `#versioning` `#semantic-versioning` `#documentation`
+If the user already asked for the finished artifact, produce the selected packet directly with the matching structure.
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: Changelog plus migration link
+**Input**
+> Update `CHANGELOG.md` for v2.4.0 from the merged PR list and make the Basic Auth deprecation obvious.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Good output direction**
+- mode: `changelog`
+- output shape: `summary-plus-links`
+- grouped sections such as `Added`, `Changed`, `Deprecated`, `Fixed`
+- migration link or placeholder instead of embedding the full auth procedure
+
+### Example 2: Customer-facing release summary
+**Input**
+> Turn these shipped product updates into release notes customers will actually read.
+
+**Good output direction**
+- mode: `release-notes`
+- output shape: `single-entry` or `summary-plus-links`
+- benefit-led headings like `What’s new`, `Improvements`, `Fixes`
+- route tutorials or help refreshes to `user-guide-writing`
+
+### Example 3: Lightweight game patch notes
+**Input**
+> Write patch notes for our latest game update and keep them short.
+
+**Good output direction**
+- mode: `game-patch-notes`
+- output shape: `patch-note-brief`
+- concise sections for new content, tuning, fixes, and known issues
+- route launch-event hype or campaign beats to `marketing-automation`
+
+## Best practices
+1. Start from shipped evidence, not vibes.
+2. Pick one primary audience and one primary mode.
+3. Use the smallest packet that fits the channel.
+4. Separate release summary, migration detail, help docs, API docs, rollout mechanics, and launch messaging.
+5. Let automation collect draft material, but do not outsource judgment.
+6. Call out breaking changes and deadlines early.
+7. Treat patch notes as a real workflow with player-facing constraints, not just a renamed changelog.
+
+## References
+- [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+- [Semantic Versioning 2.0.0](https://semver.org/)
+- [Release Drafter](https://github.com/release-drafter/release-drafter)
+- [Changesets](https://github.com/changesets/changesets)
+- [release-please](https://github.com/googleapis/release-please)
+- [GitHub Docs: Automatically generated release notes](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes)
+- [Steamworks: Event Type — Small Update / Patch Notes](https://partner.steamgames.com/doc/marketing/event_tools/type_patchnotes?l=english)
+- [Steamworks: Updating Your Game — Best Practices](https://partner.steamgames.com/doc/store/updates?l=english)

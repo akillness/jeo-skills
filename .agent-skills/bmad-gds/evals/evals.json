@@ -1,0 +1,37 @@
+{
+  "skill_name": "bmad-gds",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use bmad-gds to turn this vague co-op survival idea into a milestone brief for a 3-person Unity team targeting a Steam demo in 8 weeks.",
+      "expected_output": "A Game Production Coordination Brief that uses the concept-to-milestone mode and recommends a single milestone-oriented artifact.",
+      "assertions": [
+        "Output includes the heading 'Game Production Coordination Brief'",
+        "Output includes 'Primary mode' and uses 'concept-to-milestone' or 'concept → milestone brief' wording",
+        "Output names one recommended next artifact rather than multiple parallel plans",
+        "Output mentions the Steam demo or next public beat explicitly"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We have Discord playtest notes, a bug sheet, and a Next Fest date. Players are confused in the first 10 minutes and the latest build also has packaging issues. Use bmad-gds.",
+      "expected_output": "A reprioritization-oriented coordination brief that routes feedback and build detail to the right downstream skills while preserving milestone context.",
+      "assertions": [
+        "Output includes 'reprioritization' as the primary mode or recommended artifact framing",
+        "Output references Next Fest or the next public beat",
+        "Output includes a specialist handoff to game-demo-feedback-triage",
+        "Output includes a specialist handoff to game-build-log-triage"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our Unreal CI build is failing during packaging. Help.",
+      "expected_output": "A short specialist-routing brief that does not treat bmad-gds as the detailed debugging skill.",
+      "assertions": [
+        "Output routes to game-build-log-triage",
+        "Output frames the result as a routing or handoff brief rather than a full milestone plan",
+        "Output requests or names the build/log packet needed for the downstream skill"
+      ]
+    }
+  ]
+}

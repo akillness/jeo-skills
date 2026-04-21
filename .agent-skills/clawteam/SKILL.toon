@@ -1,0 +1,17 @@
+N:clawteam
+D:Route explicit ClawTeam runtime requests into one honest operator packet before touching commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer work, product/ops research, content operations, or game-production coordination. Not for generic multi-agent routing, board-only governance, or lightweight subtask fan-out when `jeo`, `omc`, `omx`, `ohmg`, `vibe-kanban`, or built-in delegation already fit.
+G:clawteam multi-agent swarm orchestration tmux git-worktree autonomous python routing
+
+U[6]:
+  Explicit ClawTeam runtime/operator workflows
+  Team/task/inbox/worktree state with named workers
+  Template launch, monitor/recover, and profile/preset setup
+  Developer workflow, product/ops, content, and game-production coordination
+  Honest backend reality for tmux vs subprocess
+  Route-outs for generic orchestration and board-governance requests
+
+S[4]{n,action,details}:
+  1,Manual team packet,bash clawteam team spawn-team my-team -d "Build the auth module" -n leader && clawteam spawn tmux claude --team my-team --agent-name architect --task "Design the API schema" && clawteam task create my-team "Design the API schema" -o architect && clawteam board attach my-team
+  2,Template launch packet,bash clawteam template list && clawteam launch hedge-fund --team fund1 --goal "Analyze AAPL, MSFT, NVDA for Q2 2026" && clawteam board attach fund1
+  3,Monitor/recover packet,bash clawteam team discover && clawteam team status my-team && clawteam board show my-team && clawteam task list my-team --status blocked && clawteam inbox peek my-team
+  4,Profile setup packet,bash clawteam preset list && clawteam preset generate-profile moonshot-cn claude --name claude-kimi && clawteam profile doctor claude && clawteam spawn tmux --profile claude-kimi --team my-team --agent-name researcher --task "Compare onboarding flows"

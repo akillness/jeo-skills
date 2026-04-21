@@ -35,7 +35,7 @@ val_bpb: [FILL IN after first run]
 ## Constraints
 - TIME_BUDGET=300s (fixed)
 - Peak VRAM must stay under [X] GB
-- Do not modify prepare.py or constants.py
+- Do not modify prepare.py
 - No new packages (pyproject.toml is locked)
 ```
 
@@ -80,7 +80,7 @@ Hardware: H100 80GB
 ## Constraints
 - Must complete in 300 seconds (TIME_BUDGET is fixed, do not change)
 - Peak VRAM must stay under 39 GB
-- Do not modify prepare.py, constants.py, or pyproject.toml
+- Do not modify prepare.py or pyproject.toml
 - Do not add new packages
 - Each experiment should change ONE thing at a time (clean ablations)
 

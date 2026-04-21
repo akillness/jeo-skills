@@ -1,14 +1,15 @@
 N:ui-component-patterns
-D:Build reusable, maintainable UI components following modern design patterns. Use when creating co...
-G:UI-components React design-patterns composition TypeScript
-U[4]:
-  **Building Component Libraries**: Creating reusable UI components
-  **Implementing Design Systems**: Applying consistent UI patterns
-  **Complex UI**: Components requiring multiple variants (Button, Modal, Dropdown)
-  **Refactoring**: Extracting duplicate code into components
+D:Routing-first reusable component architecture for shared frontend primitives, slots, controlled ownership, alternate-root composition, and docs/verification packets. Use when the user needs to decide what should become a shared primitive, how a component API should expose variants or subcomponents, when parent state should control the component, how to compose onto alternate element types or wrappers, or what Storybook/example coverage is required.
+G:ui-components react typescript composition variants slots reusable frontend
+U[5]:
+  Choose what should become a shared primitive versus stay product-local
+  Design component APIs with variants, slots, or subcomponents without prop sprawl
+  Decide controlled-vs-uncontrolled ownership for reusable components
+  Handle alternate-root composition for buttons, links, dialogs, or wrappers
+  Define the docs/verification packet for stories, examples, and edge cases
 S[5]{n,action}:
-  1,Props API Design
-  2,Composition Pattern
-  3,Render Props / Children as Function
-  4,Separating Logic with Custom Hooks
-  5,Performance Optimization
+  1,Frame the reusable component job before naming props
+  2,Choose one primary component packet
+  3,Keep the invariants visible
+  4,Build the component architecture packet
+  5,Route adjacent frontend work honestly

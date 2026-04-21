@@ -1,0 +1,49 @@
+{
+  "skill_name": "npm-git-install",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We need an unpublished fix from a GitHub repo for our npm app. Should we install from the branch or do something safer for CI?",
+      "expected_output": "Chooses SHA-pinned direct Git install or an even safer artifact/publish path, explains why floating branch refs are risky, and includes npm-focused commands.",
+      "assertions": [
+        "Output names exactly one primary delivery mode",
+        "Output warns against floating branch refs for shared/CI usage",
+        "Output includes npm-specific install syntax",
+        "Output includes an exit strategy back to a packaged release"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our package is in a private GitHub repo and pnpm install keeps failing in CI. What path should we take?",
+      "expected_output": "Explains private Git vs private registry tradeoff, clarifies auth/CI requirements, and avoids suggesting committed secrets.",
+      "assertions": [
+        "Output includes auth or CI notes",
+        "Output avoids recommending committed secrets",
+        "Output mentions pnpm-specific command or context",
+        "Output recommends a durable registry/artifact path when appropriate"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The package lives in a monorepo. I use Yarn locally but the rest of the team just needs the package in normal projects. Should we install straight from GitHub?",
+      "expected_output": "Prefers workspace/file flow for local co-dev or publish-first for durable external use, and does not oversell raw Git installs for monorepo packages.",
+      "assertions": [
+        "Output distinguishes local co-development from shared external consumption",
+        "Output mentions Yarn/monorepo considerations",
+        "Output chooses one primary mode",
+        "Output warns that Git install is not always the best durable answer"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our marketing automation repo and game build tools both depend on the same internal Node package, and we still install it from main. Should we keep doing that or finally package it properly?",
+      "expected_output": "Treats the package as durable shared infrastructure, rejects floating-branch installs as the long-term answer, and recommends publish-first or artifact-based distribution with a clear handoff.",
+      "assertions": [
+        "Output identifies the dependency as durable shared usage rather than a temporary bridge",
+        "Output warns against continuing to install from a floating branch",
+        "Output recommends publish-first or tarball/artifact distribution as the primary path",
+        "Output routes package-host or release administration to github-repo-management when needed"
+      ]
+    }
+  ]
+}

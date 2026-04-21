@@ -1,27 +1,28 @@
 N:omc
-D:oh-my-claudecode — Teams-first multi-agent orchestration for Claude Code. 29+ specialized agents, smart model routing (Haiku→Opus), persistent execution loops (ralph), skill layers, CCG 3-model synthesis, real-time HUD. Zero learning curve. v4.9.3
-G:omc oh-my-claudecode claude-code multi-agent orchestration team autopilot ralph ultrawork ccg pipeline deep-interview deslop
+D:Route Claude Code–first orchestration to the truthful OMC install topology and runtime before giving commands. Distinguishes marketplace plugin slash skills from the `omc` shell CLI and local-checkout `--plugin-dir` usage, handles duplicate-install/recovery/state issues, and routes adjacent work to jeo, ralphmode, omx, ohmg, and browser-review skills.
+G:omc oh-my-claudecode claude-code /team autopilot ralph ultrawork ccg omc-team omc-ask omc-setup plugin-dir hud hooks
 U[5]:
-1:Teams-first multi-agent orchestration in Claude Code with zero config
-2:Parallel agent execution with persistent verify/fix loops (ralph)
-3:Guaranteed-completion tasks with Guarantee→Enhancement→Execution skill layers
-4:3-model synthesis with Codex+Gemini+Claude (CCG mode)
-5:Smart model routing across 29+ specialized agents (Haiku→Opus) saves 30-50% tokens
+1:Claude Code plugin setup, shell CLI setup, and local plugin-dir topology routing for OMC / oh-my-claudecode
+2:Truthful routing between in-session slash skills and shell-side `omc` CLI commands
+3:Mode selection for `/team`, `/autopilot`, `/ralph`, `/ultrawork`, and `omc team`
+4:Recovery guidance for duplicate installs, plugin-dir confusion, worktree/state drift, and HUD/update issues
+5:Explicit route-outs to jeo, ralphmode, omx, ohmg, plannotator, and browser-review skills
 S[6]{n,action,details}:
-1:install,Add plugin,/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode && /plugin install oh-my-claudecode
-2:setup,Initialize OMC,/oh-my-claudecode:omc-setup (run once; re-run after updates)
-3:team-mode,Canonical orchestration,/oh-my-claudecode:team 3:executor "task" — pipeline: team-plan→team-prd→team-exec→team-verify→team-fix
-4:keywords,Magic keywords,autopilot/ralph/ulw/ccg/ralplan/deepsearch/ultrathink/tdd/deslop/cancelomc — activate via natural language
-5:ask,Provider advisor,omc ask claude|codex|gemini --prompt "task" — cross-model consultation
-6:update,Keep current,/plugin marketplace update omc && /oh-my-claudecode:omc-setup; issues: /oh-my-claudecode:omc-doctor
+1:topology,Identify the install topology,marketplace-plugin | shell-cli | local-plugin-dir | mixed-or-unknown
+2:classify,Pick one packet,install-topology | in-session-runtime | terminal-runtime | recovery-and-update | boundary-and-route-out
+3:surface,State the runtime surface,plugin slash skills vs shell-side `omc` CLI
+4:recommend,Give the smallest truthful command,/team or /autopilot or /ralph or setup omc or omc setup or omc team or omc ask depending on topology + packet
+5:recover,Call out real operator constraints,enable CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 and inspect plugin-dir/state/worktree behavior when relevant
+6:route-out,Hand off non-OMC ownership,jeo / ralphmode / plannotator / agent-browser / playwriter / agentation / omx / ohmg
 R[6]:
-1:Team is canonical — swarm and ultrapilot are legacy facades that route to Team
-2:Enable CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 in ~/.claude/settings.json for native teams
-3:ralph includes ultrawork — parallel execution is automatic in ralph mode
-4:npm package name is oh-my-claude-sisyphus (not oh-my-claudecode)
-5:CCG mode synthesizes Codex (execution) + Gemini (analysis) + Claude (orchestration) for complex mixed work
-6:Skill layers compose: ralph(guarantee) wraps ultrawork(enhancement) wraps execution skill
-E[3]{desc,in,out}:
-1:{Team orchestration,/oh-my-claudecode:team 3:executor "fix all TypeScript errors",3 executor agents run in parallel on shared task list through team-plan→exec→verify pipeline}
-2:{Autopilot build,autopilot: build a REST API for managing tasks,Single lead agent autonomously plans designs implements tests and verifies the full API}
-3:{Deep interview,deep interview: I want to build a task management app,Socratic agent clarifies requirements until ambiguity ≤0.2 then hands off to execution}
+1:`/team` and `omc team` are both real but they are different runtimes
+2:`/autopilot`, `/ralph`, and `/ultrawork` are in-session skills, not normal `omc` CLI subcommands
+3:The npm package name is `oh-my-claude-sisyphus` while the runtime command is `omc`
+4:Local checkouts should use `--plugin-dir` / `OMC_PLUGIN_ROOT` / `omc setup --plugin-dir-mode`, not marketplace advice
+5:Native team mode depends on CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 in ~/.claude/settings.json
+6:Use references for volatile operator detail; keep the front door focused on routing
+E[4]{desc,in,out}:
+1:{Marketplace plugin setup,OMC 설치하고 Claude Code 안에서 바로 팀 모드까지 쓰고 싶어,Use install-topology with marketplace-plugin and give plugin install plus setup omc}
+2:{Local plugin-dir dev loop,로컬 checkout으로 OMC 수정 중인데 plugin-dir 쪽으로 어떻게 잡아야 해?,Use install-topology with local-plugin-dir and point to --plugin-dir / OMC_PLUGIN_ROOT / omc setup --plugin-dir-mode}
+3:{Shell-side worker team,omc team 2:codex "review auth flow",Use terminal-runtime and explain tmux worker orchestration}
+4:{Long-loop orchestration boundary,I want a resumable plan→execute→verify loop across multiple skills,Route to jeo and mention OMC only as the Claude-first runtime layer}

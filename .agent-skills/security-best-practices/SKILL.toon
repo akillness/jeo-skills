@@ -1,14 +1,14 @@
 N:security-best-practices
-D:Implement security best practices for web applications and infrastructure. Use when securing APIs...
-G:security HTTPS CORS XSS SQL-injection
+D:Routing-first web/application/API hardening. Use when the job is classifying one missing security layer — browser policy, cookies/CSRF, abuse controls, validation/unsafe execution, secrets/runtime config, or verification — and turning vague OWASP/security asks into one concrete hardening brief with route-outs.
+G:security|OWASP|CSP|CSRF|cookies|rate-limiting|secrets|verification|web-security|api-security
 U[4]:
-  **New project**: consider security from the start
-  **Security audit**: inspect and fix vulnerabilities
-  **Public API**: harden APIs accessible externally
-  **Compliance**: comply with GDPR, PCI-DSS, etc.
+  **Layer unclear**: pick the missing security layer before tools
+  **Launch hardening**: web/app/API, marketing-site, or game-service security pass
+  **Scanner findings**: convert vague findings into one hardening brief
+  **Weak proof**: verification ladder and route-outs are unclear
 S[5]{n,action}:
-  1,Enforce HTTPS and security headers
-  2,Input validation (SQL Injection, XSS prevention)
-  3,Prevent CSRF
-  4,Manage secrets
-  5,Secure API authentication
+  1,Frame the surface and primary risk before naming tools
+  2,Choose one primary mode and keep other concerns as follow-up
+  3,Recommend one bounded first slice instead of a giant checklist
+  4,Pair every recommendation with verification evidence
+  5,Route auth/schema/code/env work to adjacent skills

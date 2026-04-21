@@ -1,289 +1,232 @@
 ---
 name: security-best-practices
-description: Implement security best practices for web applications and infrastructure. Use when securing APIs, preventing common vulnerabilities, or implementing security policies. Handles HTTPS, CORS, XSS, SQL Injection, CSRF, rate limiting, and OWASP Top 10.
+description: >
+  Routing-first skill for web/application/API hardening. Use when the main job is
+  classifying which security layer is missing — browser/perimeter policy,
+  session/cookie/CSRF, abuse controls, validation/unsafe execution,
+  secrets/runtime config, or verification — and turning vague OWASP/security asks
+  into one concrete hardening brief. Route auth-stack choice to
+  `authentication-setup`, schema work to `database-schema-design`, code-level bug
+  fixing to `debugging` / `code-review`, and environment wiring to
+  `system-environment-setup`.
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: >
+  Best for web apps, APIs, backend/fullstack services, marketing-site forms,
+  edge/frontend-plus-backend systems, and game-adjacent service/web launch
+  surfaces where the team needs a vendor-neutral hardening workflow instead of a
+  giant middleware or scanner checklist.
+license: MIT
 metadata:
-  tags: security, HTTPS, CORS, XSS, SQL-injection, CSRF, OWASP, rate-limiting
-  platforms: Claude, ChatGPT, Gemini
-allowed-tools: Read Write Edit
+  version: "2.1.0"
+  modernization: 2026-04-14
+  hardening: 2026-04-18
+  tags: security-best-practices, owasp, appsec, csp, csrf, secrets, rate-limiting, web-security, api-security
+  platforms: Claude, ChatGPT, Gemini, Codex
 ---
-
 
 # Security Best Practices
 
+Use this skill when the job is to **name one missing security layer and turn it into a bounded hardening brief**.
+
+The job is not to dump a giant OWASP list, middleware catalog, or scanner parade.
+The job is to:
+1. frame the surface and risk,
+2. choose one primary hardening mode,
+3. recommend the smallest credible first slice,
+4. name the verification ladder,
+5. route adjacent work honestly.
+
+Read these support docs first:
+- [references/modes-and-boundaries.md](references/modes-and-boundaries.md)
+- [references/mode-packets-and-route-outs.md](references/mode-packets-and-route-outs.md)
+- [references/hardening-review-checklist.md](references/hardening-review-checklist.md)
+- [references/verification-ladder.md](references/verification-ladder.md)
 
 ## When to use this skill
+- A team says “make this secure” and the missing security layer is still unclear
+- A web app, API, marketing-site flow, admin panel, or game-service surface needs a hardening pass before launch or migration
+- You need to decide whether the main problem is CSP/headers, cookies/CSRF, abuse controls, validation/unsafe execution, secret handling, or weak verification
+- Scanner findings, OWASP requests, or launch-review notes need to be converted into one prioritized hardening brief
+- The current stack has some controls already, but trust is low and the next verification step is unclear
 
-- **New project**: consider security from the start
-- **Security audit**: inspect and fix vulnerabilities
-- **Public API**: harden APIs accessible externally
-- **Compliance**: comply with GDPR, PCI-DSS, etc.
+## When not to use this skill
+- **The main job is choosing an auth vendor, session architecture, org/member model, or enterprise SSO path** → `authentication-setup`
+- **The main job is API contract/interface design before security controls are slotted in** → `api-design`
+- **The main job is schema constraints, token tables, indexes, or migration safety** → `database-schema-design`
+- **The main job is backend regression coverage or auth/security test implementation** → `backend-testing`
+- **The main job is fixing a specific vulnerability in code or reviewing a concrete diff** → `debugging` or `code-review`
+- **The main job is secret injection mechanics, toolchain bootstrapping, or environment wiring** → `system-environment-setup` / `environment-setup`
+- **The main job is cloud IAM, VPC/network, or broader infrastructure security** → use the infrastructure-specific skill instead of this app-hardening anchor
 
 ## Instructions
 
-### Step 1: Enforce HTTPS and security headers
+### Step 1: Frame the hardening job before naming tools
+Capture the minimum facts first.
 
-**Express.js security middleware**:
-```typescript
-import express from 'express';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-
-const app = express();
-
-// Helmet: automatically set security headers
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://trusted-cdn.com"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https://api.example.com"],
-      fontSrc: ["'self'", "https:", "data:"],
-      objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
-      frameSrc: ["'none'"],
-    },
-  },
-  hsts: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true
-  }
-}));
-
-// Enforce HTTPS
-app.use((req, res, next) => {
-  if (process.env.NODE_ENV === 'production' && !req.secure) {
-    return res.redirect(301, `https://${req.headers.host}${req.url}`);
-  }
-  next();
-});
-
-// Rate limiting (DDoS prevention)
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // max 100 requests per IP
-  message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
-app.use('/api/', limiter);
-
-// Stricter for auth endpoints
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5, // only 5 times per 15 minutes
-  skipSuccessfulRequests: true // do not count successful requests
-});
-
-app.use('/api/auth/login', authLimiter);
-```
-
-### Step 2: Input validation (SQL Injection, XSS prevention)
-
-**Joi validation**:
-```typescript
-import Joi from 'joi';
-
-const userSchema = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().min(8).pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/).required(),
-  name: Joi.string().min(2).max(50).required()
-});
-
-app.post('/api/users', async (req, res) => {
-  // 1. Validate input
-  const { error, value } = userSchema.validate(req.body);
-
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-
-  // 2. Prevent SQL Injection: Parameterized Queries
-  // ❌ Bad example
-  // db.query(`SELECT * FROM users WHERE email = '${email}'`);
-
-  // ✅ Good example
-  const user = await db.query('SELECT * FROM users WHERE email = ?', [value.email]);
-
-  // 3. Prevent XSS: Output Encoding
-  // React/Vue escape automatically; otherwise use a library
-  import DOMPurify from 'isomorphic-dompurify';
-  const sanitized = DOMPurify.sanitize(userInput);
-
-  res.json({ user: sanitized });
-});
-```
-
-### Step 3: Prevent CSRF
-
-**CSRF Token**:
-```typescript
-import csrf from 'csurf';
-import cookieParser from 'cookie-parser';
-
-app.use(cookieParser());
-
-// CSRF protection
-const csrfProtection = csrf({ cookie: true });
-
-// Provide CSRF token
-app.get('/api/csrf-token', csrfProtection, (req, res) => {
-  res.json({ csrfToken: req.csrfToken() });
-});
-
-// Validate CSRF on all POST/PUT/DELETE requests
-app.post('/api/*', csrfProtection, (req, res, next) => {
-  next();
-});
-
-// Use on the client
-// fetch('/api/users', {
-//   method: 'POST',
-//   headers: {
-//     'CSRF-Token': csrfToken
-//   },
-//   body: JSON.stringify(data)
-// });
-```
-
-### Step 4: Manage secrets
-
-**.env (never commit)**:
-```bash
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/mydb
-
-# JWT
-ACCESS_TOKEN_SECRET=your-super-secret-access-token-key-min-32-chars
-REFRESH_TOKEN_SECRET=your-super-secret-refresh-token-key-min-32-chars
-
-# API Keys
-STRIPE_SECRET_KEY=sk_test_xxx
-SENDGRID_API_KEY=SG.xxx
-```
-
-**Kubernetes Secrets**:
 ```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: myapp-secrets
-type: Opaque
-stringData:
-  database-url: postgresql://user:password@postgres:5432/mydb
-  jwt-secret: your-jwt-secret
+security_intake:
+  surface: frontend | backend-api | fullstack | edge-worker | marketing-site | game-service-web | mixed | unknown
+  workflow_type: new-build | hardening-pass | audit-review | launch-readiness | incident-follow-up | migration
+  auth_session_model: cookie-session | bearer-token | mixed | unknown
+  current_controls:
+    - headers-csp
+    - csrf
+    - rate-limit
+    - validation
+    - secret-store
+    - scanning
+    - none
+  primary_risk: xss-browser-policy | csrf-session | abuse-automation | injection-unsafe-execution | secret-exposure | verification-gap | mixed | unknown
+  environments: local | preview | staging | prod | multi-env | unknown
+  ownership: app-team | platform | security | shared | unknown
 ```
 
-```typescript
-// Read from environment variables
-const dbUrl = process.env.DATABASE_URL;
-if (!dbUrl) {
-  throw new Error('DATABASE_URL environment variable is required');
-}
-```
+Rule: do **not** start with “install Helmet,” “turn on CORS,” or “just add WAF rules.”
+First label the missing layer.
 
-### Step 5: Secure API authentication
+### Step 2: Choose exactly one primary hardening mode
+Use the router in [references/mode-packets-and-route-outs.md](references/mode-packets-and-route-outs.md).
 
-**JWT + Refresh Token Rotation**:
-```typescript
-// Short-lived access token (15 minutes)
-const accessToken = jwt.sign({ userId }, ACCESS_SECRET, { expiresIn: '15m' });
+Primary modes:
+1. `browser-perimeter-policy`
+2. `session-cookie-csrf`
+3. `abuse-controls`
+4. `validation-unsafe-execution`
+5. `secrets-runtime-config`
+6. `review-verification`
 
-// Long-lived refresh token (7 days), store in DB
-const refreshToken = jwt.sign({ userId }, REFRESH_SECRET, { expiresIn: '7d' });
-await db.refreshToken.create({
-  userId,
-  token: refreshToken,
-  expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-});
+Pick the **highest-risk missing layer** as primary.
+List everything else as follow-up, not as equal co-owners.
 
-// Refresh token rotation: re-issue on each use
-app.post('/api/auth/refresh', async (req, res) => {
-  const { refreshToken } = req.body;
+### Step 3: Keep the invariants visible
+These rules survive every answer:
+- CORS, auth, CSRF, rate limiting, validation, and secrets are separate concerns even when they touch the same route
+- browser-policy work may need staged rollout or report-only verification
+- framework defaults help, but they do not prove full coverage
+- secret scanning is detection, not storage/rotation policy
+- WAF and rate limiting are compensating/perimeter controls, not full substitutes for app-layer fixes
+- every recommendation needs a matching verification step
 
-  const payload = jwt.verify(refreshToken, REFRESH_SECRET);
-
-  // Invalidate existing token
-  await db.refreshToken.delete({ where: { token: refreshToken } });
-
-  // Issue new tokens
-  const newAccessToken = jwt.sign({ userId: payload.userId }, ACCESS_SECRET, { expiresIn: '15m' });
-  const newRefreshToken = jwt.sign({ userId: payload.userId }, REFRESH_SECRET, { expiresIn: '7d' });
-
-  await db.refreshToken.create({
-    userId: payload.userId,
-    token: newRefreshToken,
-    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-  });
-
-  res.json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
-});
-```
-
-## Constraints
-
-### Required rules (MUST)
-
-1. **HTTPS Only**: HTTPS required in production
-2. **Separate secrets**: manage via environment variables; never hardcode in code
-3. **Input Validation**: validate all user input
-4. **Parameterized Queries**: prevent SQL Injection
-5. **Rate Limiting**: DDoS prevention
-
-### Prohibited items (MUST NOT)
-
-1. **No eval()**: code injection risk
-2. **No direct innerHTML**: XSS risk
-3. **No committing secrets**: never commit .env files
-
-## OWASP Top 10 checklist
+### Step 4: Build the security hardening brief
+Return this structure:
 
 ```markdown
-- [ ] A01: Broken Access Control - RBAC, authorization checks
-- [ ] A02: Cryptographic Failures - HTTPS, encryption
-- [ ] A03: Injection - Parameterized Queries, Input Validation
-- [ ] A04: Insecure Design - Security by Design
-- [ ] A05: Security Misconfiguration - Helmet, change default passwords
-- [ ] A06: Vulnerable Components - npm audit, regular updates
-- [ ] A07: Authentication Failures - strong auth, MFA
-- [ ] A08: Data Integrity Failures - signature validation, CSRF prevention
-- [ ] A09: Logging Failures - security event logging
-- [ ] A10: SSRF - validate outbound requests
+# Security Hardening Brief
+
+## Scope
+- Surface: ...
+- Workflow type: ...
+- Primary mode: ...
+- Confidence: high | medium | low
+
+## Current control state
+- Controls already present: ...
+- Missing or untrusted controls: ...
+
+## Highest-risk gaps
+1. ...
+2. ...
+3. ...
+
+## Recommended first slice
+1. ...
+2. ...
+3. ...
+
+## Verification plan
+- Manual review: ...
+- Static/policy checks: ...
+- Dynamic/runtime verification: ...
+- Operational evidence: ...
+
+## Ownership and route-outs
+- Primary owner: ...
+- Adjacent skills / teams: ...
 ```
 
-## Best practices
+### Step 5: Use the mode packet, not a giant checklist
+Pull the packet from [references/mode-packets-and-route-outs.md](references/mode-packets-and-route-outs.md).
 
-1. **Principle of Least Privilege**: grant minimal privileges
-2. **Defense in Depth**: layered security
-3. **Security Audits**: regular security reviews
+Mode rules:
+- `browser-perimeter-policy` → headers, CSP, framing, secure transport, report-only rollout, proxy/CDN vs app ownership
+- `session-cookie-csrf` → cookie flags, state-changing browser routes, origin assumptions, web vs API/mobile differences
+- `abuse-controls` → login/reset/form/expensive-endpoint protection, per-route vs global limits, bot carve-outs, monitoring
+- `validation-unsafe-execution` → trust boundaries, validation/encoding, uploads, SSRF, command execution, dangerous patterns
+- `secrets-runtime-config` → secret-vs-config separation, storage/injection, least privilege, rotation/revocation, client-bundle avoidance
+- `review-verification` → classify findings, keep/fix/add/defer decisions, smallest proof ladder, honest ownership
 
-## References
+### Step 6: Route adjacent work explicitly
+Use these route-outs when the problem crosses boundaries:
 
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [helmet.js](https://helmetjs.github.io/)
-- [Security Checklist](https://github.com/shieldfy/API-Security-Checklist)
+| If the real job is... | Route to... |
+|---|---|
+| auth vendor choice, enterprise SSO, org/member model, hosted-vs-native auth | `authentication-setup` |
+| API auth/error/webhook contract design | `api-design` |
+| schema constraints, token tables, migration/data-model safety | `database-schema-design` |
+| backend security regression tests or CI gates | `backend-testing` |
+| concrete vulnerability fix or risky diff review | `debugging` / `code-review` |
+| environment bootstrap or secret injection wiring | `system-environment-setup` / `environment-setup` |
 
-## Metadata
-
-### Version
-- **Current version**: 1.0.0
-- **Last updated**: 2025-01-01
-- **Compatible platforms**: Claude, ChatGPT, Gemini
-
-### Related skills
-- [authentication-setup](../authentication-setup/SKILL.md)
-- [deployment](../deployment-automation/SKILL.md)
-
-### Tags
-`#security` `#OWASP` `#HTTPS` `#CORS` `#XSS` `#SQL-injection` `#CSRF` `#infrastructure`
+## Output expectations
+A strong answer from this skill should:
+1. identify the **primary missing layer**,
+2. recommend one bounded first slice,
+3. name the **verification ladder**,
+4. avoid pretending one library/tool solves everything,
+5. route adjacent work outward instead of absorbing it.
 
 ## Examples
 
-### Example 1: Basic usage
-<!-- Add example content here -->
+### Example 1: cookie-based admin app hardening
+**Input**
+> Our Next.js admin app uses cookie sessions. POST routes lack CSRF protection and staging/prod cookie flags drift.
 
-### Example 2: Advanced usage
-<!-- Add advanced example content here -->
+**Output direction**
+- choose `session-cookie-csrf`
+- identify which routes need CSRF protection and which cookie flags must be fixed
+- include a verification step for staging/prod drift
+- avoid reframing the task as auth-vendor selection
+
+### Example 2: marketing-site form abuse
+**Input**
+> Our signup and demo-request forms are getting spammed even after adding a honeypot and CAPTCHA.
+
+**Output direction**
+- choose `abuse-controls`
+- separate form abuse controls from generic CSP/header work
+- recommend route-aware throttles / anti-automation steps plus monitoring
+- keep broader infrastructure or vendor-rule authoring outside the core brief
+
+### Example 3: game-service secret leakage risk
+**Input**
+> We have a game companion site plus backend APIs. I’m worried partner keys and admin tokens are drifting into CI logs and maybe client bundles.
+
+**Output direction**
+- choose `secrets-runtime-config`
+- separate secret detection from storage/rotation/injection policy
+- route environment bootstrapping details away when needed
+- include revocation/rotation proof requirements
+
+### Example 4: scanner report with weak ownership
+**Input**
+> The scanner says weak CSP and missing headers, but the app already added middleware and no one trusts the result.
+
+**Output direction**
+- choose `review-verification` or `browser-perimeter-policy`
+- keep middleware installation distinct from rollout proof
+- recommend staged/report-only verification or a scanner/runtime handoff
+
+## Best practices
+1. Choose the missing security layer before naming tools.
+2. Keep browser policy, session safety, abuse controls, validation, secrets, and verification separate.
+3. Pair every recommendation with evidence that would prove it worked.
+4. Treat framework defaults and scanners as inputs, not final answers.
+5. Prefer one bounded hardening brief over a giant compliance dump.
+
+## References
+- [OWASP Application Security Verification Standard](https://owasp.org/www-project-application-security-verification-standard/)
+- [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/)
+- [MDN: Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)
+- [MDN: Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
+- [OWASP ZAP](https://www.zaproxy.org/)
+- [GitHub CodeQL code scanning](https://docs.github.com/en/code-security/concepts/code-scanning/codeql/about-code-scanning-with-codeql)

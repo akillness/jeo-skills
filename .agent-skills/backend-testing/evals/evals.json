@@ -1,0 +1,49 @@
+{
+  "skill_name": "backend-testing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We added refresh-token rotation and new admin-only endpoints to our Express API. I need backend tests that catch auth failures, token replay issues, and DB persistence bugs without turning CI into a giant end-to-end suite.",
+      "expected_output": "A packet-first backend test plan that selects coverage-plan, chooses layered backend coverage, defines dependency realism and auth/bootstrap strategy, and keeps smoke coverage narrow.",
+      "assertions": [
+        "Output identifies coverage-plan or equivalent as the primary packet",
+        "Output identifies main risks such as auth, permissions, token/session persistence, or replay behavior",
+        "Output chooses multiple backend test layers instead of defaulting to one giant E2E suite",
+        "Output defines a dependency strategy such as real DB/container plus mocked or helper-based external auth pieces",
+        "Output distinguishes local, PR CI, and slower lanes"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our FastAPI integration tests pass locally but fail in CI around seeded Postgres state and background jobs. Give me a stabilization plan.",
+      "expected_output": "A flake-stabilization packet that addresses environment drift, readiness, data isolation, async timing, and debugging signals.",
+      "assertions": [
+        "Output recognizes flake-stabilization or equivalent as the primary packet",
+        "Output recognizes CI-vs-local drift, data seeding, or async timing as central issues",
+        "Output proposes stronger isolation, reset, readiness, or debugging signals rather than only more retries",
+        "Output keeps the response focused on backend test stabilization rather than general QA philosophy"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our payment service and webhook consumers keep drifting on response fields. I do not need API redesign, I need backend tests that catch compatibility regressions.",
+      "expected_output": "A contract-and-api-checks packet that protects an existing interface, recommends compatibility-focused backend tests, and routes schema redesign debates away to api-design.",
+      "assertions": [
+        "Output recognizes contract-and-api-checks or equivalent as the primary packet",
+        "Output keeps contract protection in scope because the interface already exists",
+        "Output routes API redesign or versioning debates to api-design",
+        "Output recommends contract or compatibility coverage rather than broad smoke inflation"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Design our company-wide testing strategy across frontend, backend, mobile, and manual QA for the next year.",
+      "expected_output": "A boundary-aware response that routes the primary request to testing-strategies and keeps backend-specific advice scoped as a handoff.",
+      "assertions": [
+        "Output recognizes that the main task belongs to testing-strategies",
+        "Output does not pretend backend-testing should own the whole-company test policy",
+        "Output preserves a backend-focused boundary or explicit handoff"
+      ]
+    }
+  ]
+}

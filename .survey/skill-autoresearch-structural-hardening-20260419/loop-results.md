@@ -1,0 +1,4 @@
+| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
+|---|---|---|---|---|---|---|
+| 0 | `.agent-skills/skill-autoresearch/SKILL.md` | Baseline is support-complete but still too large at the front door | No change | Baseline captured | Baseline | Existing skill is correct on niche but mixes router + artifact detail |
+| 1 | `.agent-skills/skill-autoresearch/SKILL.md` | A packet-first front door plus one new route-out reference will improve boundary clarity and discovery wording without losing the frozen-harness contract | Rewrote the front door around packet choice, added `references/run-packets-and-route-outs.md`, expanded evals, and synced discovery surfaces | `validate_skill.sh`, `json.tool`, and `validate_catalog_sync.py` all passed | Keep | Final file remains support-complete and now routes hosted eval / ML autoresearch work outward more explicitly |

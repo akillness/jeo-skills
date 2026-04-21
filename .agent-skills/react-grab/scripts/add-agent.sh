@@ -67,7 +67,13 @@ fi
 
 # Check Node.js
 if ! command -v node &>/dev/null; then
-  echo "❌ Node.js is required. Install from https://nodejs.org/ (>=18 required)"
+  echo "❌ Node.js is required. Install from https://nodejs.org/ (>=22 required)"
+  exit 1
+fi
+
+NODE_VERSION=$(node --version | sed 's/v//' | cut -d. -f1)
+if [[ "$NODE_VERSION" -lt 22 ]]; then
+  echo "❌ Node.js >=22 is required (current: $(node --version))"
   exit 1
 fi
 
