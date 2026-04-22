@@ -306,6 +306,7 @@ setup omc
 |-------|-------------|-----------|
 | `design-system` | Canonical frontend UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface system direction; routes component API, responsive layout, accessibility remediation, and broad UI critique to adjacent skills | All |
 | `frontend-design-system` | Compatibility alias for `design-system` when legacy tooling or exact-name workflows still expect the old name | All |
+| `google-design` | DESIGN.md format for AI coding agents — machine-readable YAML design tokens + markdown rationale; lint (WCAG AA), diff versions, export to Tailwind/DTCG | All |
 | `react-best-practices` | Measurement-led React & Next.js performance audits for waterfalls, bundle size, RSC/client boundaries, hydration, rerender churn, and slow routes | All |
 | `react-grab` | Browser element context capture — point at UI element, copy React component name, file path, HTML to clipboard for AI agents | All |
 | `vercel-react-best-practices` | Compatibility alias for `react-best-practices` when legacy tooling or exact-name workflows still expect the Vercel variant | Claude · Gemini · Codex |
@@ -481,6 +482,25 @@ ouroboros run resume
 ouroboros tui monitor
 ```
 
+### google-design — DESIGN.md for AI Coding Agents
+> Keyword: `google-design`, `DESIGN.md` | [Docs](docs/google-design/README.md) | [GitHub](https://github.com/google-labs-code/design.md)
+
+Machine-readable design system format (YAML tokens + markdown rationale) that gives AI coding agents a persistent, structured understanding of a visual identity. Lint for WCAG compliance, diff versions, export to Tailwind or W3C DTCG format.
+
+```bash
+# npm install
+npm install @google/design.md
+
+# Skill install (any platform)
+npx skills add https://github.com/akillness/oh-my-skills --skill google-design
+
+# Usage
+npx @google/design.md spec > DESIGN.md        # bootstrap
+npx @google/design.md lint DESIGN.md           # validate + WCAG check
+npx @google/design.md export --format tailwind DESIGN.md > tailwind.theme.json
+npx @google/design.md diff old.md new.md       # track changes
+```
+
 ### vibe-kanban — AI Agent Kanban Board
 > Keyword: `kanbanview` | [Docs](docs/vibe-kanban/README.md) | [GitHub](https://github.com/BloopAI/vibe-kanban)
 
@@ -529,6 +549,7 @@ npx vibe-kanban
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
+| `google-design` | `google-design`, `DESIGN.md` | [docs/google-design/README.md](docs/google-design/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
@@ -543,6 +564,7 @@ npx vibe-kanban
 | `jeo` | Internal | MIT |
 | `omc` | [Yeachan-Heo/oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | MIT |
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
+| `google-design` | [google-labs-code/design.md](https://github.com/google-labs-code/design.md) | Apache-2.0 |
 | `plannotator` | [plannotator.ai](https://plannotator.ai) | MIT |
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |

@@ -306,6 +306,7 @@ setup omc
 |------|------|--------|
 | `design-system` | 디자인 토큰 거버넌스, 비주얼 언어 규칙, 프리미티브 네이밍, 교차 화면 시스템 방향을 맡는 기본 프론트엔드 UI 시스템 앵커이며, 컴포넌트 API·반응형 레이아웃·접근성 수정·광범위한 UI 평가는 인접 스킬로 route-out합니다 | 전체 |
 | `frontend-design-system` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `design-system` 호환 별칭 | 전체 |
+| `google-design` | AI 코딩 에이전트를 위한 DESIGN.md 포맷 — 기계 가독 YAML 디자인 토큰 + 마크다운 설계 근거. lint(WCAG AA 검사), diff(버전 비교), export(Tailwind/DTCG 변환) | 전체 |
 | `react-best-practices` | waterfall, 번들 크기, RSC/클라이언트 경계, hydration, rerender churn, 느린 라우트를 측정 기반으로 진단하는 React & Next.js 성능 스킬 | 전체 |
 | `react-grab` | 브라우저 UI 엘리먼트에서 React 컴포넌트명·파일경로·HTML을 클립보드로 복사해 AI 에이전트에 전달 | 전체 |
 | `vercel-react-best-practices` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `react-best-practices` 호환 별칭 | Claude · Gemini · Codex |
@@ -481,6 +482,25 @@ ouroboros run resume
 ouroboros tui monitor
 ```
 
+### google-design — AI 코딩 에이전트를 위한 DESIGN.md
+> 키워드: `google-design`, `DESIGN.md` | [문서](docs/google-design/README.md) | [GitHub](https://github.com/google-labs-code/design.md)
+
+AI 코딩 에이전트가 시각적 아이덴티티를 지속적으로 이해할 수 있도록 구조화된 DESIGN.md 포맷 스킬. YAML 디자인 토큰(색상, 타이포그래피, 간격, 컴포넌트) + 마크다운 설계 근거를 조합합니다.
+
+```bash
+# npm 설치
+npm install @google/design.md
+
+# 스킬 설치 (모든 플랫폼)
+npx skills add https://github.com/akillness/oh-my-skills --skill google-design
+
+# 사용법
+npx @google/design.md spec > DESIGN.md                              # 부트스트랩
+npx @google/design.md lint DESIGN.md                                # WCAG 검사
+npx @google/design.md export --format tailwind DESIGN.md > tailwind.theme.json
+npx @google/design.md diff old.md new.md                            # 버전 비교
+```
+
 ### vibe-kanban — AI 에이전트 칸반 보드
 > 키워드: `kanbanview` | [문서](docs/vibe-kanban/README.md) | [GitHub](https://github.com/BloopAI/vibe-kanban)
 
@@ -529,6 +549,7 @@ npx vibe-kanban
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
+| `google-design` | `google-design`, `DESIGN.md` | [docs/google-design/README.md](docs/google-design/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
@@ -543,6 +564,7 @@ npx vibe-kanban
 | `jeo` | Internal | MIT |
 | `omc` | [Yeachan-Heo/oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | MIT |
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
+| `google-design` | [google-labs-code/design.md](https://github.com/google-labs-code/design.md) | Apache-2.0 |
 | `plannotator` | [plannotator.ai](https://plannotator.ai) | MIT |
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
