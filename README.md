@@ -53,7 +53,7 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 
 ```mermaid
 graph TD
-    JEO["🎯 JEO\nCore Orchestration"] --> PLAN["📋 PLAN\nralph + plannotator"]
+    JEO["🎯 JEO\nCore Orchestration"] --> PLAN["📋 PLAN\nooo + plannotator"]
     JEO --> EXEC["⚡ EXECUTE\nteam / bmad"]
     JEO --> VERIFY["🔍 VERIFY\nagent-browser"]
     JEO --> UI["🎨 VERIFY_UI\nagentation"]
@@ -64,7 +64,7 @@ graph TD
     PLAN --> OMX["omx\nCodex CLI"]
 
     SURVEY["🔭 survey"] -.-> JEO
-    RALPH["🔄 ralph"] -.-> EXEC
+    OOO["🔄 ooo"] -.-> EXEC
     AUTORESEARCH["🔬 autoresearch"] -.-> EXEC
 ```
 
@@ -219,14 +219,14 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
   --skill jeo --skill omc --skill plannotator --skill agentation \
-  --skill ralph --skill ralphmode --skill vibe-kanban
+  --skill ooo --skill vibe-kanban
 ```
 
 #### Gemini CLI
 
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
-  --skill jeo --skill ohmg --skill ralph --skill ralphmode --skill vibe-kanban
+  --skill jeo --skill ohmg --skill ooo --skill vibe-kanban
 gemini extensions install https://github.com/akillness/oh-my-skills
 ```
 
@@ -234,7 +234,7 @@ gemini extensions install https://github.com/akillness/oh-my-skills
 
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
-  --skill jeo --skill omx --skill ralph --skill ralphmode
+  --skill jeo --skill omx --skill ooo
 ```
 
 #### Platform-Specific Setup
@@ -267,8 +267,7 @@ setup omc
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Multi-agent workflow layer for Codex CLI (v0.11.10) — 30+ agents, 35+ skills, tmux team runtime, omx explore/sparkshell |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | Gemini / Antigravity entry for the portable `oh-my-agent` harness (`.agents` source of truth, native Gemini projection, cross-vendor-ready layout) |
-| `ralph` | `ralph`, `ooo` | All | Ouroboros spec-first method anchor — Socratic clarification, immutable seed/spec, drift-aware execution, and persistent completion until verification passes |
-| `ralphmode` | `ralphmode` | All | Automation permission profile — repo-local settings, boundary rules, and hook-backed checkpoints for trusted repos vs sandbox-only YOLO |
+| `ooo` | `ooo`, `ouroboros`, `ooo ralph` | All | Ouroboros spec-first development loop — Socratic interview, immutable seed/spec, drift-aware execution, persistent completion until verification passes. Plugin: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |
@@ -445,7 +444,7 @@ JEO keeps the shared contract — plan gate, runtime handoff, verification requi
 | Packet / Phase | Owner | Description |
 |----------------|-------|-------------|
 | Bootstrap / Resume | JEO scripts + `.jeo/` | Initialize or recover durable ledger and machine state |
-| Plan / Planning | `ralph` + `plannotator` | Shape the plan and get approval without reopening unchanged work |
+| Plan / Planning | `ooo` + `plannotator` | Shape the plan and get approval without reopening unchanged work |
 | Runtime handoff / Execute | `omc` / `omx` / `ohmg` / truthful `bmad` fallback | Keep runtime-native config and execution in the runtime skill |
 | Verify / QA | `agent-browser` | Record browser / QA evidence before claiming completion |
 | Verify UI / annotate | `agentation` | Wait for explicit submit, then process UI feedback |
@@ -460,15 +459,26 @@ Browser UI for annotating AI plans. Approve or send structured feedback in one c
 bash scripts/install.sh --all
 ```
 
-### ralph — Specification-First Development
-> Keyword: `ralph`, `ooo` | [Docs](docs/ralph/README.md) | [GitHub](https://github.com/Q00/ouroboros)
+### ooo — Ouroboros Specification-First Development
+> Keyword: `ooo`, `ouroboros`, `ooo ralph` | [Docs](docs/ooo/README.md) | [GitHub](https://github.com/Q00/ouroboros)
 
-Socratic interview → immutable seed/spec → execute against the contract → verify before done → keep looping until completion is actually verified. Runtime-specific hook / approval / harness details stay in `omc`, `omx`, `ohmg`, `jeo`, and `ralphmode`.
+Socratic interview → immutable seed/spec → execute against the contract → verify before done → keep looping until completion is actually verified. Installable as a Claude Code plugin or via pip.
 
 ```bash
-ooo interview "I want to build a task management CLI"
-ooo seed && ooo run && ooo evaluate <session_id>
-ooo ralph "fix all failing tests"
+# Plugin install (Claude Code)
+claude plugin marketplace add Q00/ouroboros
+
+# pip
+pip install ouroboros-ai[all]
+
+# Skill install (any platform)
+npx skills add https://github.com/akillness/oh-my-skills --skill ooo
+
+# Usage
+ouroboros init start "I want to build a task management CLI"
+ouroboros run workflow seed.yaml
+ouroboros run resume
+ouroboros tui monitor
 ```
 
 ### vibe-kanban — AI Agent Kanban Board
@@ -502,7 +512,7 @@ npx vibe-kanban
 ```text
 .
 ├── .agent-skills/          ← 90 skill folders (each with SKILL.md + SKILL.toon)
-├── docs/                   ← detailed guides (bmad, omc, plannotator, ralph, ...)
+├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
 ├── README.md               ← English (this file)
@@ -518,7 +528,7 @@ npx vibe-kanban
 | `jeo` | `jeo`, `annotate` | [.agent-skills/jeo/SKILL.md](.agent-skills/jeo/SKILL.md) |
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
-| `ralph` | `ralph` | [docs/ralph/README.md](docs/ralph/README.md) |
+| `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
@@ -532,7 +542,7 @@ npx vibe-kanban
 |-----------|--------|---------|
 | `jeo` | Internal | MIT |
 | `omc` | [Yeachan-Heo/oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | MIT |
-| `ralph` | [Q00/ouroboros](https://github.com/Q00/ouroboros) | MIT |
+| `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `plannotator` | [plannotator.ai](https://plannotator.ai) | MIT |
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |

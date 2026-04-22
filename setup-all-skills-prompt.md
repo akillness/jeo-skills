@@ -4,7 +4,7 @@
 
 > **CRITICAL — Preserve Existing Skills**: This installation MUST NOT delete or remove any skills that were not installed by this guide. Only add new skills or overwrite/update skills from this repository. Never run `skills remove`, `skills clear`, `skills reset`, or any destructive command. If a skill already exists, update it in place.
 
-> **CRITICAL — No Duplicate Platform Exposure**: Platform-specific skills (`omc`, `ohmg`, `omx`, `ralphmode`) MUST only be linked to their target agent(s). Use `-a` to target specific agents — never use `-a '*'` for platform-specific skills.
+> **CRITICAL — No Duplicate Platform Exposure**: Platform-specific skills (`omc`, `ohmg`, `omx`) MUST only be linked to their target agent(s). Use `-a` to target specific agents — never use `-a '*'` for platform-specific skills.
 
 > ```bash
 > curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-skills-prompt.md
@@ -85,7 +85,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 # ────────────────────────────────────────────────────────
 
 # Install ALL 90 skills to global store, link shared skills to all detected agents
-# Platform-specific skills (omc, ohmg, omx, ralphmode) are re-targeted in Step 2
+# Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
 
@@ -110,7 +110,6 @@ This step **re-links** them with correct `-a` targeting, replacing the `*` links
 # ║  omc       → Claude Code only                               ║
 # ║  ohmg      → Gemini CLI (+ Antigravity)                     ║
 # ║  omx       → Codex + Claude Code + Gemini CLI               ║
-# ║  ralphmode → Claude Code + Codex + Gemini CLI               ║
 # ╚══════════════════════════════════════════════════════════════╝
 
 # omc — Claude Code only
@@ -121,9 +120,6 @@ skills add -g "$REPO_URL" --skill ohmg -a 'gemini-cli,antigravity' --yes --copy
 
 # omx — Codex CLI primary, also usable from Claude Code and Gemini CLI
 skills add -g "$REPO_URL" --skill omx -a 'codex,claude-code,gemini-cli' --yes --copy
-
-# ralphmode — Claude Code, Codex CLI, Gemini CLI (repo-local settings + rules + hook checkpoints; not OpenCode)
-skills add -g "$REPO_URL" --skill ralphmode -a 'claude-code,codex,gemini-cli' --yes --copy
 
 # ── Clean stale symlinks from non-target agents ──
 echo ""
@@ -157,7 +153,6 @@ cleanup_skill_link() {
 cleanup_skill_link "omc"       "claude-code"
 cleanup_skill_link "ohmg"      "gemini-cli" "antigravity"
 cleanup_skill_link "omx"       "codex" "claude-code" "gemini-cli"
-cleanup_skill_link "ralphmode" "claude-code" "codex" "gemini-cli"
 
 echo "✅ Platform skill deduplication complete"
 ```
@@ -215,7 +210,7 @@ REPO_URL="https://github.com/akillness/oh-my-skills"
 # Core skill check
 echo ""
 echo "=== Core Skill Check ==="
-for skill in jeo omc ohmg omx ralph ralphmode plannotator agentation bmad survey harness; do
+for skill in jeo omc ohmg omx ooo plannotator agentation bmad survey harness; do
   [ -f "$SKILLS_ROOT/$skill/SKILL.md" ] \
     && echo "✅ $skill" \
     || echo "❌ $skill — re-run: skills add -g $REPO_URL --skill $skill --yes --copy"
@@ -322,7 +317,7 @@ If no → skip silently. Never re-ask.
 | Start any task | `jeo "task description"` |
 | Claude orchestration | `autopilot: task` or `/oh-my-claudecode:team "task"` |
 | Visual plan review | `plan` (plannotator keyword) |
-| Spec-first dev loop | `ralph "build X"` or `ooo interview "X"` *(portable method anchor; route runtime-native hook/approval setup to omc/omx/ohmg/ralphmode)* |
+| Spec-first dev loop | `ooo interview "X"` or `ouroboros init start "X"` *(install: `claude plugin marketplace add Q00/ouroboros` or `pip install ouroboros-ai[all]`)* |
 | Pre-impl research | `survey "topic"` *(writes reusable `.survey/{slug}/` artifacts and validates the artifact contract before handoff)* |
 | Agent team design | `harness "design team for X"` |
 | UI annotation | `annotate` (agentation keyword) |
@@ -338,11 +333,10 @@ If no → skip silently. Never re-ask.
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
-| **Core Orchestration** | jeo, ralph, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, vibe-kanban, agentation, agent-browser | All (`*`) |
+| **Core Orchestration** | jeo, ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, vibe-kanban, agentation, agent-browser | All (`*`) |
 | **Platform Setup** | omc | claude-code |
 | **Platform Setup** | ohmg | gemini-cli, antigravity |
 | **Platform Setup** | omx | codex, claude-code, gemini-cli |
-| **Platform Setup** | ralphmode | claude-code, codex, gemini-cli |
 | **Planning & Review** | playwriter *(running-browser / authenticated Chrome reuse via CLI+MCP; route clean disposable checks to agent-browser)*, prompt-repetition *(decision-first prompt repetition for non-reasoning/lightweight models on long-context retrieval, options-first MCQ, or position-sensitive lookups; route broader context/retrieval fixes away instead of blanket auto-apply)*, skill-standardization *(SKILL.md validate/rewrite + canonical-vs-alias cleanup + repo-root validator / derived-surface sync for `skills.json`, README/setup, and `SKILL.toon`)*, skill-autoresearch *(repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces only when the core skill change is justified)* | All (`*`) |
 | **Backend** | api-design *(contract-first API design / compatibility review)*, api-documentation *(developer-facing API docs anchor for reference portals / quickstarts / SDK-webhook guides / truthful examples / auth-error guidance)*, authentication-setup *(product-auth setup router for hosted/framework-native/platform-native auth, sessions/JWTs, org data boundaries, and enterprise SSO handoff; routes hardening to security-best-practices)*, backend-testing *(packet-first backend testing for coverage-plan, fixture/reset, contract/API protection, flake-stabilization, and local-vs-CI lane-split packets; routes policy to testing-strategies, API shape to api-design, and auth implementation to authentication-setup)*, database-schema-design *(packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible field decisions, and staged evolution; routes interface work to api-design, verification to backend-testing, and reporting/telemetry follow-through outward)* | All (`*`) |
 | **Frontend** | design-system *(canonical UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface direction; routes component API design to ui-component-patterns, responsive layout to responsive-design, accessibility remediation to web-accessibility, and broad critique to web-design-guidelines)*, frontend-design-system *(compatibility alias for design-system)*, react-best-practices *(measurement-led React / Next.js performance audits for waterfalls, bundle size, hydration, rerender churn, and client-boundary mistakes)*, react-grab, vercel-react-best-practices *(compatibility alias for react-best-practices)*, responsive-design *(routing-first responsive layout strategy for page-shell, component-slot, dense-data, media, and reflow-verification packets; routes component API design to ui-component-patterns, accessibility remediation to web-accessibility, system-wide breakpoint policy to design-system, and broad UI critique to web-design-guidelines)*, state-management *(React/fullstack ownership-packet skill for local vs Context vs URL/form vs client-store vs server-state/router-data decisions)*, ui-component-patterns *(routing-first reusable-component architecture for primitive-boundary, slot-anatomy, controlled-ownership, alternate-root composition, and docs/verification packets)*, web-accessibility *(routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback; routes broad UI critique to web-design-guidelines and layout strategy to responsive-design)*, web-design-guidelines *(broad web UI audit for launch-readiness, polish/consistency, flow-friction, heuristic, and rule-overlay reviews; routes accessibility-heavy work to web-accessibility and layout adaptation to responsive-design)* | All (`*`) |
@@ -364,8 +358,7 @@ If no → skip silently. Never re-ask.
 |-------|-------------------|-------------|
 | `jeo` | `jeo` | Packet-first orchestration with `.jeo` ledger — plan gate → runtime handoff → verify → cleanup. Routes to `plannotator`, runtime skills, `agent-browser`, and `agentation` instead of owning their internals. **Claude Code**: requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` |
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude-first OMC router — distinguish Claude Code slash skills from the `omc` shell CLI, then handle setup/recovery/state issues or route adjacent work outward |
-| `ralph` | `ralph`, `ooo`, `ooo ralph`, `ooo interview` | Ouroboros spec-first method anchor — Interview→Seed→Execute→Evaluate→Evolve, immutable seed/spec, and persistent completion until verification passes |
-| `ralphmode` | `ralphmode` | Automation permission profiles — repo boundary, sandbox-first, secret denylist |
+| `ooo` | `ooo`, `ouroboros`, `ooo ralph`, `ooo interview` | Ouroboros spec-first development loop — Interview→Seed→Run→Evaluate→Evolve, immutable seed/spec, persistent completion until verification passes. Plugin: `claude plugin marketplace add Q00/ouroboros` |
 | `plannotator` | `plan` | Routing-first visual approval gate for concrete plans, markdown specs, and diffs — choose one review packet, keep native-hook vs manual-review reality explicit, and route planning / PR policy / UI critique outward |
 | `harness` | `harness`, `build a harness`, `agent team architect` | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/`, validate harness |
 | `survey` | `survey` | Bounded cross-platform landscape scan before planning or implementation — classify one survey mode, preserve the 4-lane `.survey/{slug}/` artifact contract, and normalize platform topics as `settings/rules/hooks` |

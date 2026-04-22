@@ -53,7 +53,7 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 
 ```mermaid
 graph TD
-    JEO["🎯 JEO\n핵심 오케스트레이션"] --> PLAN["📋 계획\nralph + plannotator"]
+    JEO["🎯 JEO\n핵심 오케스트레이션"] --> PLAN["📋 계획\nooo + plannotator"]
     JEO --> EXEC["⚡ 실행\nteam / bmad"]
     JEO --> VERIFY["🔍 검증\nagent-browser"]
     JEO --> UI["🎨 UI 검증\nagentation"]
@@ -64,7 +64,7 @@ graph TD
     PLAN --> OMX["omx\nCodex CLI"]
 
     SURVEY["🔭 survey"] -.-> JEO
-    RALPH["🔄 ralph"] -.-> EXEC
+    OOO["🔄 ooo"] -.-> EXEC
     AUTORESEARCH["🔬 autoresearch"] -.-> EXEC
 ```
 
@@ -219,14 +219,14 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
   --skill jeo --skill omc --skill plannotator --skill agentation \
-  --skill ralph --skill ralphmode --skill vibe-kanban
+  --skill ooo --skill vibe-kanban
 ```
 
 #### Gemini CLI
 
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
-  --skill jeo --skill ohmg --skill ralph --skill ralphmode --skill vibe-kanban
+  --skill jeo --skill ohmg --skill ooo --skill vibe-kanban
 gemini extensions install https://github.com/akillness/oh-my-skills
 ```
 
@@ -234,7 +234,7 @@ gemini extensions install https://github.com/akillness/oh-my-skills
 
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
-  --skill jeo --skill omx --skill ralph --skill ralphmode
+  --skill jeo --skill omx --skill ooo
 ```
 
 #### 플랫폼별 추가 설정
@@ -267,8 +267,7 @@ setup omc
 | `harness` | `harness`, `build a harness` | 전체 | 메타스킬: 도메인 전용 에이전트 팀 설계, `.claude/agents/`·`.claude/skills/` 생성, harness 검증 |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Codex CLI용 멀티에이전트 워크플로우 레이어 (v0.11.10) — 30+ 에이전트, 35+ 스킬, tmux 팀 런타임, omx explore/sparkshell |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | 휴대형 `oh-my-agent` 하네스용 Gemini / Antigravity 진입 스킬 (`.agents` 소스 오브 트루스, Gemini 네이티브 투영, 크로스벤더 확장 가능) |
-| `ralph` | `ralph`, `ooo` | 전체 | Ouroboros 스펙 우선 메서드 앵커 — 소크라테스식 명확화, 불변 seed/spec, 드리프트 인식 실행, 검증 통과까지 이어가는 완료 루프 |
-| `ralphmode` | `ralphmode` | 전체 | 자동화 권한 프로파일 — 신뢰된 저장소용 로컬 설정, 경계 규칙, 훅 기반 체크포인트를 분리하고 샌드박스 전용 YOLO와 구분 |
+| `ooo` | `ooo`, `ouroboros`, `ooo ralph` | 전체 | Ouroboros 스펙 우선 개발 루프 — 소크라테스식 인터뷰, 불변 seed/spec, 드리프트 인식 실행, 검증 통과까지 이어가는 완료 루프. 플러그인: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | 패킷 우선 BMAD/BMM 프런트도어 — 현재 packet을 분류하고 다음 산출물 또는 gate를 고른 뒤 review / runtime / 실행 세부 작업을 바깥으로 라우팅 |
 | `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |
 | `bmad-idea` | `bmad-idea` | 전체 | 사전 기획 아이디어 라우터 — 거친 제품/GTM/컨설팅/게임 아이디어를 하나의 컨셉 산출물과 다음 핸드오프로 정리 |
@@ -445,7 +444,7 @@ JEO는 plan gate, runtime handoff, 검증 요구사항, submit-gated UI review, 
 | Packet / 단계 | 소유자 | 설명 |
 |---------------|--------|------|
 | Bootstrap / Resume | JEO scripts + `.jeo/` | durable ledger와 machine state를 초기화하거나 복구 |
-| Plan / Planning | `ralph` + `plannotator` | 동일 plan을 불필요하게 다시 열지 않고 계획을 승인받기 |
+| Plan / Planning | `ooo` + `plannotator` | 동일 plan을 불필요하게 다시 열지 않고 계획을 승인받기 |
 | Runtime handoff / Execute | `omc` / `omx` / `ohmg` / 필요한 경우 `bmad` fallback | 런타임별 설정과 실행은 해당 runtime skill이 담당 |
 | Verify / QA | `agent-browser` | 완료 주장 전에 브라우저 / QA 근거를 기록 |
 | Verify UI / annotate | `agentation` | 명시적 submit 이후에만 UI 피드백 처리 |
@@ -460,15 +459,26 @@ AI 계획을 브라우저 UI에서 어노테이션. 클릭 한 번으로 승인 
 bash scripts/install.sh --all
 ```
 
-### ralph — 스펙 우선 개발
-> 키워드: `ralph`, `ooo` | [문서](docs/ralph/README.md) | [GitHub](https://github.com/Q00/ouroboros)
+### ooo — Ouroboros 스펙 우선 개발
+> 키워드: `ooo`, `ouroboros`, `ooo ralph` | [문서](docs/ooo/README.md) | [GitHub](https://github.com/Q00/ouroboros)
 
-소크라테스식 인터뷰 → 불변 seed/spec 고정 → 그 계약을 기준으로 실행 → 완료 주장 전에 검증 → 실제로 검증될 때까지 반복합니다. 런타임별 훅 / 권한 / 하네스 세부사항은 `omc`, `omx`, `ohmg`, `jeo`, `ralphmode`가 담당합니다.
+소크라테스식 인터뷰 → 불변 seed/spec 고정 → 그 계약을 기준으로 실행 → 완료 주장 전에 검증 → 실제로 검증될 때까지 반복합니다. Claude Code 플러그인 또는 pip으로 설치 가능합니다.
 
 ```bash
-ooo interview "작업 관리 CLI를 만들고 싶어요"
-ooo seed && ooo run && ooo evaluate <session_id>
-ooo ralph "모든 실패 테스트 수정"
+# 플러그인 설치 (Claude Code)
+claude plugin marketplace add Q00/ouroboros
+
+# pip 설치
+pip install ouroboros-ai[all]
+
+# 스킬 설치 (모든 플랫폼)
+npx skills add https://github.com/akillness/oh-my-skills --skill ooo
+
+# 사용법
+ouroboros init start "작업 관리 CLI를 만들고 싶어요"
+ouroboros run workflow seed.yaml
+ouroboros run resume
+ouroboros tui monitor
 ```
 
 ### vibe-kanban — AI 에이전트 칸반 보드
@@ -502,7 +512,7 @@ npx vibe-kanban
 ```text
 .
 ├── .agent-skills/          ← 90개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
-├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ralph, ...)
+├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
 ├── README.md               ← English
@@ -518,7 +528,7 @@ npx vibe-kanban
 | `jeo` | `jeo`, `annotate` | [.agent-skills/jeo/SKILL.md](.agent-skills/jeo/SKILL.md) |
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
-| `ralph` | `ralph` | [docs/ralph/README.md](docs/ralph/README.md) |
+| `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
@@ -532,7 +542,7 @@ npx vibe-kanban
 |----------|------|---------|
 | `jeo` | Internal | MIT |
 | `omc` | [Yeachan-Heo/oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | MIT |
-| `ralph` | [Q00/ouroboros](https://github.com/Q00/ouroboros) | MIT |
+| `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `plannotator` | [plannotator.ai](https://plannotator.ai) | MIT |
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
