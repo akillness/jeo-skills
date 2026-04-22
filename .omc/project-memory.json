@@ -70,5 +70,10 @@
       "type": "directory"
     }
   ],
-  "userDirectives": []
+  "userDirectives": [
+    "Default operating flow for this repository: `$ooo` -> `$graphify` -> `$rtk` -> `$obsidian-cli` -> `$llm-wiki`.",
+    "Use `$ooo` first when work is ambiguous, multi-step, or drift-prone: clarify requirements, freeze acceptance criteria, execute, and verify before considering the task done.",
+    "Use `$graphify` for durable structure and relationship tracing, `$rtk` for compact shell execution, `$obsidian-cli` for official desktop Obsidian persistence or URI handoff, and `$llm-wiki` to file durable discoveries back into the markdown wiki while keeping `index.md` and `log.md` current.",
+    "Treat this sequence as the default operating rail, but do not force every step onto trivial prompts; use the smallest truthful owner step for the current job and return to the sequence as work moves from specification to persistence."
+  ]
 }

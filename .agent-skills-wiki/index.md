@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-20 | Total pages: 158
+> Last updated: 2026-04-22 | Total pages: 159
 
 ## Entities
 
@@ -26,6 +26,7 @@
 ## Comparisons
 
 ## Queries
+- [[default-operating-rules-memory-update-2026-04-22]] — Why the repository now treats `$ooo → $graphify → $rtk → $obsidian-cli → $llm-wiki` as the default operating rail and mirrors that rule into project memory.
 - [[jeo-structural-hardening-2026-04-20]] — Why the best bounded next core-orchestration improvement was tightening `jeo` into a packet-first orchestration front door with clearer runtime/browser route-outs instead of adding another orchestration wrapper.
 - [[marketing-automation-operator-packet-ratchet-2026-04-20]] — Why the best bounded marketing follow-up was making `marketing-automation` output one reusable operator packet with owner, approvals/dependencies, and proof instead of adding more tactic coverage or another broad wrapper.
 - [[marketing-automation-structural-hardening-2026-04-18]] — Why the best bounded marketing follow-up was tightening `marketing-automation` into an operating-mode front door with sharper route-outs instead of adding another broad wrapper.

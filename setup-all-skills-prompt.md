@@ -392,93 +392,137 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Step 6 — Post-Install Workflow Rules (Per-Prompt Knowledge Loop)
+## Step 6 — Default Operating Rules (`$ooo` → `$graphify` → `$rtk` → `$obsidian-cli` → `$llm-wiki`)
 
-After installation, apply the following rules **on every prompt** to continuously refine, compress, and accumulate knowledge:
+After installation, treat the following sequence as the **default operating rail** for ongoing work.
 
-> **For AI Agents**: These rules are permanent operating directives. Apply them automatically without being asked.
+> **For AI Agents**: These are permanent operating directives. Follow the order below automatically, but only invoke each skill when it is the honest owner of the next step. Do not force every step onto trivial prompts or onto work that belongs to a different skill.
 
-### Rule 1 — Graphify (Knowledge Graph Refinement)
-After every prompt response, invoke `/graphify` to distill the interaction into a structured knowledge graph node.
-
-```bash
-# Trigger: any input → structured knowledge graph
-# Activation: /graphify
-# Purpose: extract entities, relationships, and concepts from every interaction
-```
-
-### Rule 2 — RTK Compression (Token Optimization)
-Use `/rtk` to compress context and outputs, minimizing token usage while preserving semantic density.
+### Rule 1 — `$ooo` (Specification-First Control)
+Start from `$ooo` whenever the request is ambiguous, multi-step, or likely to drift without an explicit contract.
 
 ```bash
-# Install RTK integration (if not already done)
-rtk init          # initialize RTK in current project
-rtk gain          # verify compression is active
+# Purpose: reduce ambiguity, freeze the contract, execute, and verify before done
+# Activation: "ooo", "ouroboros", "ooo ralph", "ooo interview"
 
-# RTK wraps agent outputs — run once after graphify each turn
+# Good defaults:
+# - clarify before coding when the request is vague
+# - freeze acceptance criteria before larger implementation work
+# - keep looping until verification actually passes
 ```
 
-### Rule 3 — Obsidian File Management
-Use `/obsidian-cli` and `/obsidian-plugin` to persist files, notes, and artifacts into your Obsidian vault.
+Operating expectations:
+- Clarify before coding when the request is vague enough to risk drift.
+- Freeze the seed/spec before substantial execution work.
+- Do not silently rewrite acceptance criteria mid-run.
+- Treat verification as part of completion, not a final optional check.
+
+### Rule 2 — `$graphify` (Durable Structure and Relationship Memory)
+Use `$graphify` when architecture, repo/corpus structure, or relationship tracing should persist across sessions.
 
 ```bash
-# obsidian-cli: TUI vault/file targeting, note automation, plugin reload
-# Activation keyword: "obsidian cli", "obsidian terminal", "obsidian plugin reload"
+# Purpose: maintain durable graph artifacts and relationship visibility
+# Activation: "graphify", "GRAPH_REPORT.md", "graph.json", "graph.html"
 
-# obsidian-plugin: Obsidian plugin development — 27 ESLint rules, boilerplate
-# Activation keyword: "obsidian plugin", "create obsidian plugin"
-
-# Recommended vault structure for skill knowledge:
-# vault/
-# ├── skills/          ← per-skill notes synced from ~/.agents/skills/
-# ├── sessions/        ← per-session graphify outputs
-# └── wiki/            ← llm-wiki mirror
+# Artifact read order:
+# 1. graphify-out/GRAPH_REPORT.md
+# 2. graphify-out/graph.html
+# 3. graphify-out/graph.json
 ```
 
-### Rule 4 — LLM Wiki Knowledge Accumulation
-Use `/llm-wiki` to ingest every significant discovery, decision, or pattern into the persistent wiki.
+Operating expectations:
+- Prefer the existing `graphify-out/GRAPH_REPORT.md` before rebuilding anything.
+- Refresh only the smallest useful scope instead of blindly graphing the whole repo.
+- Use graph updates for durable structure, not for search-only or wiki-only work.
+- Keep the graph packet honest: install vs local build vs refresh vs query vs fallback.
+
+### Rule 3 — `$rtk` (Token-Optimized Shell Execution)
+Use `$rtk` as the default shell-output layer so command results stay compact and readable for agent workflows.
 
 ```bash
-# Activation keywords: "llm-wiki", "obsidian wiki", "research vault"
-# Wiki layers: raw/ (source) → wiki/ (processed)
-# Operations: bootstrap, ingest, query, lint
+# Purpose: reduce shell-output tokens without losing signal
+# Activation: prefix shell commands with rtk
 
-# Auto-ingest pattern (run after each session):
-# llm-wiki "/path/to/vault" ingest "session summary"
+rtk git status
+rtk gain
+rtk read setup-all-skills-prompt.md
 ```
 
-### Per-Prompt Execution Order
+Operating expectations:
+- Prefix normal shell commands with `rtk` when a compact wrapper exists.
+- Verify RTK health with `rtk gain`.
+- Use direct `rtk` wrappers when token savings matter or hook behavior is uncertain.
+- Remember built-in read/search tools do not automatically pass through RTK shell hooks.
+
+### Rule 4 — `$obsidian-cli` (Official Obsidian Desktop Persistence)
+Use `$obsidian-cli` when the next step is to persist or hand off artifacts through a real Obsidian desktop vault.
+
+```bash
+# Purpose: official desktop Obsidian CLI/URI control
+# Activation: "obsidian cli", "obsidian terminal", "obsidian://"
+
+# Deterministic targeting:
+obsidian vault="My Vault" read path="Inbox/Capture.md"
+obsidian vault="My Vault" search query="workflow rules"
+```
+
+Operating expectations:
+- Prefer official CLI/URI surfaces for desktop Obsidian interaction.
+- Use deterministic `vault=` plus `path=` targeting when ambiguity matters.
+- Route headless sync/publish elsewhere instead of pretending the desktop CLI owns it.
+- Use this step only when desktop-vault persistence or URI handoff is actually needed.
+
+### Rule 5 — `$llm-wiki` (Durable Wiki Filing and Retrieval)
+Use `$llm-wiki` to file durable findings, decisions, and reusable answers into the persistent markdown wiki.
+
+```bash
+# Purpose: accumulate reusable knowledge in markdown, not chat history
+# Activation: "llm-wiki", "obsidian wiki", "research vault"
+
+# Core workflow:
+# raw/ stays immutable
+# wiki/ is the maintained synthesis layer
+# index.md and log.md must stay current
+```
+
+Operating expectations:
+- File significant decisions and reusable answers back into the wiki.
+- Keep `raw/` immutable and treat `wiki/`, `index.md`, and `log.md` as maintained artifacts.
+- Read `index.md` first during follow-up queries before digging through raw sources.
+- Update the schema/operating contract when the workflow itself changes materially.
+
+### Default Operating Flow
 
 ```
-[1] Receive prompt
-[2] /graphify    → extract knowledge graph from interaction
-[3] /rtk gain    → compress output tokens
-[4] /obsidian-cli → persist artifacts to vault
-[5] /llm-wiki    → ingest significant discoveries into wiki
-[6] Respond
+[1] Start with $ooo to clarify, freeze, and verify the contract
+[2] Use $graphify when durable structure or relationship tracing should persist
+[3] Run shell work through $rtk for compact execution output
+[4] Use $obsidian-cli when desktop Obsidian persistence or URI handoff is the real next step
+[5] Use $llm-wiki to file durable discoveries into the wiki and keep index/log current
+[6] Continue the loop until the work is verified, not merely described
 ```
 
-### Setup Script (run once after Step 5)
+### Setup Script (run once after installation)
 
 ```bash
 SKILLS_ROOT="$HOME/.agents/skills"
 
-# Verify all four workflow skills are installed
-for skill in graphify rtk obsidian-cli obsidian-plugin llm-wiki; do
+# Verify the default operating-rule skills are installed
+for skill in ooo graphify rtk obsidian-cli llm-wiki; do
   [ -f "$SKILLS_ROOT/$skill/SKILL.md" ] \
     && echo "✅ $skill" \
     || echo "❌ $skill — run: skills add -g $REPO_URL --skill $skill --yes --copy"
 done
 
-# Initialize RTK
+# Initialize RTK when available
 command -v rtk &>/dev/null && rtk init || echo "⚠️  RTK not found — check rtk skill install"
 
 echo ""
-echo "✅ Per-prompt knowledge loop configured"
-echo "   Every prompt will: graphify → compress (rtk) → persist (obsidian) → wiki (llm-wiki)"
+echo "✅ Default operating rules configured"
+echo "   Baseline flow: \$ooo → \$graphify → \$rtk → \$obsidian-cli → \$llm-wiki"
 ```
 
-> **Note**: `/graphify` and `/rtk` run as lightweight post-processing steps. `/obsidian-cli` and `/llm-wiki` are triggered explicitly when file persistence or knowledge ingestion is needed.
+> **Note**: This is a default operating sequence, not a blind mandate to run every skill on every prompt. Use the smallest truthful owner step for the current job, then return to the sequence as work moves from specification to structure, execution, persistence, and durable knowledge filing.
 
 ---
 

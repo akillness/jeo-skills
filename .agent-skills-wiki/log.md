@@ -2,6 +2,14 @@
 
 > Chronological record of `.agent-skills` learning loop actions.
 
+## [2026-04-22] query | default operating rules memory update
+- Area researched: how the repo should express one durable default workflow across spec-first execution, structural memory, compact shell output, Obsidian persistence, and wiki filing without inventing another memory wrapper.
+- Sources reviewed: `setup-all-skills-prompt.md`, `.omc/project-memory.json`, current `.agent-skills-wiki` files, and `graphify-out/GRAPH_REPORT.md`.
+- Structural graph artifacts were reviewed from the current `graphify-out/GRAPH_REPORT.md` and not refreshed; this was a bounded workflow-memory update on a high-degree maintenance file rather than a structural catalog change.
+- Accepted: rewrite Step 6 around `$ooo → $graphify → $rtk → $obsidian-cli → $llm-wiki`, mirror the same rule into `.omc/project-memory.json`, add a durable wiki query page, and update `index.md` / `log.md`.
+- Rejected: keeping the old graphify-first loop without the spec-first layer; forcing all five skills on every trivial prompt; adding another memory wrapper instead of using existing repo memory surfaces.
+- Wiki files created/updated: `queries/default-operating-rules-memory-update-2026-04-22.md`, `index.md`, `log.md`
+
 ## [2026-04-12] create | Wiki initialized
 - Domain: oh-my-skills `.agent-skills` continuous learning and improvement
 - Structure created with SCHEMA.md, index.md, and log.md
