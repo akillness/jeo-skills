@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-04-19T06:22:16Z",
-  "skill_count": 90,
+  "generated": "2026-04-23T15:14:10Z",
+  "skill_count": 93,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -22,8 +22,8 @@
       "genkit",
       "looker-studio-bigquery",
       "monitoring-observability",
-      "scrapling",
       "rtk",
+      "scrapling",
       "security-best-practices",
       "strix",
       "system-environment-setup",
@@ -38,12 +38,12 @@
     ],
     "search-analysis": [
       "autoresearch",
-      "skill-autoresearch",
       "codebase-search",
       "data-analysis",
       "langsmith",
       "log-analysis",
-      "pattern-detection"
+      "pattern-detection",
+      "skill-autoresearch"
     ],
     "core-orchestration": [
       "bmad",
@@ -53,8 +53,6 @@
       "ohmg",
       "omc",
       "omx",
-      "ralph",
-      "ralphmode",
       "survey"
     ],
     "documentation": [
@@ -72,19 +70,25 @@
       "testing-strategies"
     ],
     "utilities": [
+      "aider-cli-workflow",
       "clawteam",
+      "compresso",
       "fabric",
       "file-organization",
       "git-submodule",
       "git-workflow",
       "google-workspace",
       "graphify",
+      "harness",
       "llm-wiki",
       "lmstudio-cli",
       "npm-git-install",
       "obsidian-cli",
       "obsidian-plugin",
+      "ooo",
       "opencontext",
+      "pretext",
+      "stitch-skills",
       "workflow-automation"
     ],
     "frontend": [
@@ -184,6 +188,34 @@
       ],
       "keyword": "agentation",
       "version": "1.1.0",
+      "commands": []
+    },
+    {
+      "name": "aider-cli-workflow",
+      "description": "Run a safe, reviewable Aider CLI coding loop for local repositories: model setup, edit scope control, test-first prompting, commit hygiene, and fallback when agent edits drift. Use when the user wants pair-programming with Aider, not generic Git workflow or hosted PR operations.",
+      "category": "utilities",
+      "path": "aider-cli-workflow/SKILL.md",
+      "tags": [
+        "aider",
+        "cli",
+        "ai-pair-programming",
+        "git",
+        "test-driven",
+        "code-review"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
       "commands": []
     },
     {
@@ -595,6 +627,36 @@
           "source": "search-analysis/codebase-search/SKILL.md"
         }
       ]
+    },
+    {
+      "name": "compresso",
+      "description": "AI agent skill for CompressO — a free, open-source, offline desktop tool for batch video and image compression built with Tauri + React. Use when the user needs to compress, trim, convert, or embed subtitles into video/image files locally without any network dependency. Covers installation (Homebrew, DMG, MSI, AppImage, DEB), build from source (Rust + Node.js + pnpm), and guidance on FFmpeg/pngquant/jpegoptim/gifski pipelines. Triggers on: compresso, compress video, compress image, batch compression, ffmpeg compression, tauri desktop compression, offline video compress.",
+      "category": "utilities",
+      "path": "compresso/SKILL.md",
+      "tags": [
+        "compresso",
+        "compression",
+        "video-compression",
+        "image-compression",
+        "batch-compression",
+        "ffmpeg",
+        "tauri",
+        "offline"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "commands": []
     },
     {
       "name": "data-analysis",
@@ -1274,6 +1336,34 @@
       "commands": []
     },
     {
+      "name": "graphify",
+      "description": "Route durable graph-building requests into one honest mode: assistant-native install, local Python build, incremental refresh, graph query follow-up, or a graphify-style structural fallback for markdown-heavy corpora. Use when the user wants `GRAPH_REPORT.md`, `graph.json`, `graph.html`, repo/corpus relationship tracing, mixed code+docs+asset graphing, or graph-backed architecture understanding that should persist across sessions. Route simple locate/reference work to `codebase-search`, narrative knowledge-base work to `llm-wiki`, and project-memory handoff to `opencontext`.",
+      "tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Grep",
+        "Glob"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "OpenCode"
+      ],
+      "path": "graphify",
+      "tags": [
+        "knowledge-graph",
+        "codebase-analysis",
+        "graphrag",
+        "architecture",
+        "graphify",
+        "corpus-analysis",
+        "persistent-memory"
+      ]
+    },
+    {
       "name": "harness",
       "description": "Design domain-specific agent teams, define specialized agents, and generate the skills they use. Meta-skill for decomposing complex projects into coordinated multi-agent pipelines. Use when you need to design an agent team architecture, generate .claude/agents/ and .claude/skills/ files, choose between pipeline/fan-out/expert-pool/producer-reviewer/supervisor/hierarchical patterns, or validate a generated harness. Triggers on: harness, build a harness, design agent team, agent team architecture, multi-agent skill generation, set up harness, harness engineering.",
       "category": "core-orchestration",
@@ -1394,34 +1484,6 @@
         "WebFetch"
       ],
       "commands": []
-    },
-    {
-      "name": "graphify",
-      "description": "Route durable graph-building requests into one honest mode: assistant-native install, local Python build, incremental refresh, graph query follow-up, or a graphify-style structural fallback for markdown-heavy corpora. Use when the user wants `GRAPH_REPORT.md`, `graph.json`, `graph.html`, repo/corpus relationship tracing, mixed code+docs+asset graphing, or graph-backed architecture understanding that should persist across sessions. Route simple locate/reference work to `codebase-search`, narrative knowledge-base work to `llm-wiki`, and project-memory handoff to `opencontext`.",
-      "tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Grep",
-        "Glob"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex",
-        "OpenCode"
-      ],
-      "path": "graphify",
-      "tags": [
-        "knowledge-graph",
-        "codebase-analysis",
-        "graphrag",
-        "architecture",
-        "graphify",
-        "corpus-analysis",
-        "persistent-memory"
-      ]
     },
     {
       "name": "llm-wiki",
@@ -1964,6 +2026,37 @@
       "commands": []
     },
     {
+      "name": "ooo",
+      "description": "Run the Ouroboros specification-first development loop: reduce ambiguity with a Socratic interview, freeze an immutable seed/spec, execute against that contract, verify before claiming success, and keep looping until completion is actually verified. Use when the user wants spec-first clarification, immutable requirements, drift-aware implementation, or a persistent completion loop that should keep going until tests / checks / acceptance criteria pass. Triggers on: ooo, ouroboros, interview, seed, run workflow, evaluate, evolve, ooo ralph, specification first, socratic interview, ambiguity reduction, persistent completion.",
+      "category": "utilities",
+      "path": "ooo/SKILL.md",
+      "tags": [
+        "ooo",
+        "ouroboros",
+        "specification-first",
+        "socratic",
+        "interview",
+        "seed",
+        "evaluate",
+        "evolve"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch",
+        "Agent"
+      ],
+      "commands": []
+    },
+    {
       "name": "opencontext",
       "description": "Routing-first active project/repo memory skill — choose one packet for memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out when agents need manifests, stable links, searchable decisions, small read-this-first handoff packets, and a highest-confidence source/freshness warning for overlapping notes across sessions.",
       "category": "utilities",
@@ -2298,6 +2391,36 @@
       "commands": []
     },
     {
+      "name": "pretext",
+      "description": "Fast, accurate, and comprehensive multiline text measurement and layout library for JavaScript/TypeScript — without DOM reflow. Use when the user needs to calculate paragraph heights, line counts, manual line layouts (text flowing around floated images), or rich text rendering (emoji, CJK, RTL) on DOM, Canvas, or SVG targets. Covers npm install, core API (prepare/layout, prepareWithSegments/layoutWithLines), and options (whiteSpace, wordBreak, letterSpacing). Triggers on: pretext, text measurement, text layout, paragraph height, line layout, text reflow, canvas text measurement, DOM reflow.",
+      "category": "utilities",
+      "path": "pretext/SKILL.md",
+      "tags": [
+        "pretext",
+        "text-measurement",
+        "text-layout",
+        "typography",
+        "canvas",
+        "dom",
+        "svg",
+        "reflow"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "commands": []
+    },
+    {
       "name": "prompt-repetition",
       "description": "Decide when repeating a full prompt is a useful accuracy hack for non-reasoning or lightweight LLM tasks, and when the real fix is better prompt structure, retrieval, or a stronger model. Use for long-context retrieval, options-first MCQ, or position-sensitive prompts on Haiku/Flash/mini-class models — not as a universal default for reasoning-heavy or RAG-architecture problems.",
       "category": "agent-development",
@@ -2323,81 +2446,6 @@
         "Glob"
       ],
       "commands": []
-    },
-    {
-      "name": "ralph",
-      "description": "Run the Ouroboros specification-first development loop: reduce ambiguity with a Socratic interview, freeze an immutable seed/spec, execute against that contract, verify before claiming success, and keep looping until completion is actually verified. Use when the user wants spec-first clarification, immutable requirements, drift-aware implementation, or a persistent completion loop that should keep going until tests / checks / acceptance criteria pass.",
-      "category": "core-orchestration",
-      "path": "ralph/SKILL.md",
-      "tags": [
-        "ralph",
-        "ouroboros",
-        "specification-first",
-        "socratic",
-        "interview",
-        "seed",
-        "evaluate",
-        "evolve",
-        "loop",
-        "completion",
-        "self-referential",
-        "multi-platform",
-        "claude",
-        "codex",
-        "gemini",
-        "boulder",
-        "ooo"
-      ],
-      "platforms": [
-        "Claude Code",
-        "Codex",
-        "Gemini-CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob",
-        "WebFetch"
-      ],
-      "commands": []
-    },
-    {
-      "name": "ralphmode",
-      "description": "Configure Claude Code, Codex CLI, and Gemini CLI for lower-friction `ralph` / `jeo` automation by choosing repo-local settings, explicit rules, and hook-backed checkpoints without collapsing into unsafe global bypass. Use when the user needs trusted-folder setup, approval-policy tuning, sandbox-first YOLO boundaries, or secret/destructive-command guardrails for long-running agent loops.",
-      "category": "core-orchestration",
-      "path": "ralphmode/SKILL.md",
-      "tags": [
-        "ralph",
-        "permissions",
-        "automation",
-        "claude-code",
-        "codex-cli",
-        "gemini-cli",
-        "sandbox",
-        "trusted-folders",
-        "bypass"
-      ],
-      "platforms": [
-        "Claude Code",
-        "Codex CLI",
-        "Gemini CLI"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "ralphmode",
-      "version": "0.1.0",
-      "commands": [],
-      "metadata": {
-        "version": "0.3.0"
-      }
     },
     {
       "name": "react-best-practices",
@@ -2849,6 +2897,36 @@
         "Edit",
         "Glob",
         "Grep"
+      ],
+      "commands": []
+    },
+    {
+      "name": "stitch-skills",
+      "description": "A collection of Agent Skills for the Stitch MCP server: generate high-fidelity UI screens, create multi-page websites from a single prompt, produce DESIGN.md documentation, enhance vague UI prompts, convert designs to React/shadcn-ui components, and generate walkthrough videos via Remotion. Use when the user needs AI-assisted UI design generation, prompt refinement, or screen-to-code workflows. Triggers on: stitch, stitch-design, stitch-loop, enhance-prompt, react-components, remotion, shadcn-ui, screen generation, ui generation.",
+      "category": "utilities",
+      "path": "stitch-skills/SKILL.md",
+      "tags": [
+        "stitch",
+        "stitch-design",
+        "stitch-loop",
+        "screen-generation",
+        "ui-generation",
+        "enhance-prompt",
+        "react-components",
+        "remotion"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
       ],
       "commands": []
     },
