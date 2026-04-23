@@ -91,3 +91,11 @@ Use one of these labels in the survey artifact:
 - Prefer primary sources over tertiary summaries when the claim matters.
 - Stable official pages are often better than dead blog guesses.
 - Snippets are useful, but they must stay visibly lower-confidence than direct retrieval.
+
+## GitHub-heavy survey fallback (keyword scans)
+When the survey topic is mostly GitHub repositories and search reliability drops (API auth failure, secondary rate limits, noisy keyword matches):
+1. Keep keyword-search evidence, but label it as `browser-rendered retrieval` and treat it as discovery, not final truth.
+2. Re-verify shortlisted candidates via direct repo pages/API (`direct page retrieval`) for stars, license, archived status, and recent updates.
+3. Prefer authenticated `gh api` retrieval when available to reduce unauthenticated rate-limit failures.
+4. If one keyword surface is too noisy (common for frontend/backend/game "skill" queries), use stable seed repos that match the workflow intent and state that this is a quality filter, not keyword-only ranking.
+5. If sandbox TLS trust is broken (`CERTIFICATE_VERIFY_FAILED`), use an unverified SSL context only for non-destructive metadata retrieval, and explicitly flag this as risk in artifacts/reports.
