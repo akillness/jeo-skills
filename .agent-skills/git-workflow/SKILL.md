@@ -39,6 +39,7 @@ If the main need is:
 - **reviewing a diff for correctness, architecture, or security** → route to `code-review`
 - **reproducing or diagnosing a bug/regression** → route to `debugging`
 - **planning tasks, acceptance criteria, or sprint slices** → route to `task-planning`
+- **Aider 기반 AI pair-programming 편집 루프 운영** → route to `aider-cli-workflow`
 - **hosted PR lifecycle, branch protection, reviewers, labels, or repo settings** → use a dedicated PR/repo-management workflow
 
 ## When to use this skill

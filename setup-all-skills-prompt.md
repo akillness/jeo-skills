@@ -84,7 +84,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 90 skills to global store, link shared skills to all detected agents
+# Install ALL 93 skills to global store, link shared skills to all detected agents
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
@@ -329,7 +329,7 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (90 skills)
+## Skill Inventory (93 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
