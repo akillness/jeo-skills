@@ -67,7 +67,7 @@ fi
 
 ---
 
-## Step 1 — Install All 89 Skills (Batch)
+## Step 1 — Install All 95 Skills (Batch)
 
 Install all skills to the global location, then link shared skills to all detected agents.
 Re-running this step safely overwrites existing skills (symlinks are updated in place).
@@ -84,7 +84,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 93 skills to global store, link shared skills to all detected agents
+# Install ALL 95 skills to global store, link shared skills to all detected agents
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
@@ -329,7 +329,7 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (93 skills)
+## Skill Inventory (95 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
