@@ -80,6 +80,16 @@
         "Treats unknown/missing license as drop or exception-only with explicit rationale",
         "Preserves provenance and lane coverage even when filtering aggressively"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "run the hourly survey and backend keyword hits include mostly stale repos last pushed more than 2 years ago",
+      "expected_output": "The survey keeps discovery evidence for lane coverage but applies a recommendation-grade freshness floor, dropping stale candidates by default unless an explicit exception rationale and risk note are provided.",
+      "assertions": [
+        "Enforces a default freshness floor using pushed_at recency (24 months) for recommendation-grade keeps",
+        "Allows stale candidates only when explicit exception rationale is documented",
+        "Maintains provenance and required-lane evidence even after freshness filtering"
+      ]
     }
   ]
 }
