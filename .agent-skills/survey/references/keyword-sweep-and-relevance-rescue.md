@@ -36,6 +36,11 @@ Positive keep signals:
 - Explicit license
 - Concrete docs/examples
 
+Freshness default for recommendation-grade keeps:
+
+- Keep if `pushed_at` is within the last 24 months.
+- Otherwise, drop by default or keep only with an explicit exception rationale and risk note.
+
 Drop or risk-mark signals:
 
 - Keyword-only match but wrong domain

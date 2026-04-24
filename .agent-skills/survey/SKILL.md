@@ -17,7 +17,7 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.2"
+  version: "2.1.3"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
   hardening: 2026-04-19
@@ -173,6 +173,7 @@ Run a compact gate before writing final recommendations:
 - **Positive signals (keep):** clear relation to the target capability, recent maintenance, explicit license, concrete docs/examples.
 - **Negative signals (drop or mark risk):** spam-like description, irrelevant domain despite keyword match, assessment/homework-only repos, stale/archived repos without strong justification, missing basic metadata, or unknown license without explicit justification.
 - **Metadata minimum:** capture `license`, `pushed_at`, `archived`, and one-line fit rationale for every candidate you keep. Unknown/missing license should be excluded by default unless a concrete exception rationale is documented.
+- **Freshness floor (recommendation-grade keep list):** exclude candidates whose latest `pushed_at` is older than 24 months by default. Keep stale candidates only with explicit exception rationale and risk note.
 
 If search/extract tooling is degraded, fallback to direct GitHub API retrieval and mark provenance/risk explicitly instead of pretending confidence.
 
@@ -190,6 +191,7 @@ Execution rules:
 - Keep the raw keyword scan as discovery evidence (usually `browser-rendered retrieval` when done through search pages).
 - Apply the Step 4.5 relevance gate before keeping any candidate.
 - For each kept candidate, record at least: `license`, `pushed_at/updated`, `archived`, and one-line fit rationale.
+- For recommendation-grade keeps, apply a default freshness floor (`pushed_at` within the last 24 months). If kept despite staleness, document exception rationale and explicit risk.
 - If direct web search/extract tooling fails (auth/rate-limit/transport), switch to GitHub-native retrieval (`gh search` + `gh api` or `gh repo view`) and label provenance clearly.
 - If keyword hits are noisy, add curated seed repos and state that seed verification is a quality filter, not keyword-only ranking.
 
