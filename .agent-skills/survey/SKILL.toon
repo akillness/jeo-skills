@@ -6,24 +6,25 @@ U[6]:
   Compare solutions workarounds and repeated complaints without drifting into coding
   Normalize platform topics into settings rules hooks and platform gaps
   Use a cheap-first evidence recovery ladder when search or extract tooling is weak
-  Run the mandatory five-keyword sweep for recurring repo-maintenance loops
+  Run the mandatory five-keyword sweep for recurring repo-maintenance loops with lane-specific recovery templates when sparse/noisy
   Validate the artifact contract before handing off to planning or execution
 S[8]{n,action,details}:
   1,Classify mode,Choose one primary survey mode and decide whether platform-map.md is required
   2,Freeze evidence rules,Set the source quality floor labels and recovery order before searching
   3,Triage and reuse,Extract what who why and check whether an existing .survey/{slug} should be reused
   4,Run 4 lanes,Research context solutions actual behavior and alternatives-or-platform-map in parallel
-  5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families and keep relevance-gated metadata
+  5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families, run lane recovery templates when needed, and keep relevance-gated metadata with lane-level threshold notes
   6,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
   7,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
   8,Summarize,Return a short factual survey summary and route planning or implementation outward
-R[7]:
+R[9]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
   Keep claims source-backed and label downgraded evidence clearly
   Drop assessment/homework-only and unknown-license noise unless exception rationale is explicit
   Apply a recommendation-grade freshness floor (drop stale pushed_at over 24 months unless exception rationale + risk note)
   Preserve the same artifact filenames and headings across platforms
+  Preserve lane-level threshold reporting (>=1 keep per lane where feasible; CLI lane target 3+) when keyword sweeps are sparse/noisy
   Deduplicate solution names and keep one bounded question per survey artifact
   Use settings rules hooks as the common layer for Claude Codex Gemini comparisons
 E[2]{desc,in,out}:

@@ -90,6 +90,16 @@
         "Allows stale candidates only when explicit exception rationale is documented",
         "Maintains provenance and required-lane evidence even after freshness filtering"
       ]
+    },
+    {
+      "id": 10,
+      "prompt": "run the hourly five-lane keyword sweep where frontend and game lanes are sparse/noisy; keep the report merge-ready for cron automation",
+      "expected_output": "The survey uses lane-specific recovery templates for sparse/noisy lanes, records lane-level threshold outcomes (>=1 keep where feasible, CLI target 3+), and explicitly reports why any lane stays below threshold.",
+      "assertions": [
+        "Invokes lane-specific recovery queries from the keyword sweep reference when sparse/noisy conditions appear",
+        "Reports lane-level threshold status after relevance gating, including CLI 3+ spotlight target",
+        "Preserves evidence and provenance instead of silently dropping under-threshold lanes"
+      ]
     }
   ]
 }
