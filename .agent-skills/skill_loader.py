@@ -502,6 +502,10 @@ class SkillLoader:
         if isinstance(allowed_tools, str):
             allowed_tools = [tool for tool in allowed_tools.split() if tool]
 
+        allowed_tools = frontmatter.get("allowed-tools", [])
+        if isinstance(allowed_tools, str):
+            allowed_tools = [tool for tool in allowed_tools.split() if tool]
+
         return {
             "name": frontmatter.get("name"),
             "description": frontmatter.get("description"),
