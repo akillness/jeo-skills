@@ -84,7 +84,7 @@ Use one of these labels in the survey artifact:
 - `browser-rendered retrieval`
 - `indexed snippet`
 - `browser-rendered indexed snippet`
-- `unverified prior knowledge`
+- `thin evidence`
 
 ## Practical reminders
 - Cheap-first escalation beats going straight to a full browser.
