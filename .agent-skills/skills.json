@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-04-23T15:14:10Z",
-  "skill_count": 93,
+  "generated": "2026-04-24T10:58:46Z",
+  "skill_count": 95,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -77,6 +77,7 @@
       "file-organization",
       "git-submodule",
       "git-workflow",
+      "god-tibo-imagen",
       "google-workspace",
       "graphify",
       "harness",
@@ -89,7 +90,8 @@
       "opencontext",
       "pretext",
       "stitch-skills",
-      "workflow-automation"
+      "workflow-automation",
+      "zeude"
     ],
     "frontend": [
       "design-system",
@@ -1299,6 +1301,40 @@
           "source": "utilities/git-workflow/SKILL.md"
         }
       ]
+    },
+    {
+      "name": "god-tibo-imagen",
+      "description": "Generate images using Codex's ChatGPT backend with zero production dependencies. Reuses existing local Codex authentication (~/.codex/auth.json) and supports CLI (gti), Node.js, and Python SDK workflows.",
+      "category": "utilities",
+      "path": "god-tibo-imagen/SKILL.md",
+      "tags": [
+        "image-generation",
+        "ai-image",
+        "codex",
+        "chatgpt",
+        "gti",
+        "cli",
+        "npm",
+        "python",
+        "multimodal"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "keyword": "god-tibo-imagen",
+      "version": "latest",
+      "commands": []
     },
     {
       "name": "google-workspace",
@@ -3439,6 +3475,38 @@
           "source": "utilities/workflow-automation/SKILL.md"
         }
       ]
+    },
+    {
+      "name": "zeude",
+      "description": "Enterprise AI adoption platform for Claude Code with OpenTelemetry usage measurement, centralized skill/MCP/hook sync, and context-aware skill suggestions. Requires Supabase + ClickHouse for self-hosted analytics.",
+      "category": "utilities",
+      "path": "zeude/SKILL.md",
+      "tags": [
+        "enterprise",
+        "ai-adoption",
+        "claude-code",
+        "opentelemetry",
+        "clickhouse",
+        "supabase",
+        "team-management",
+        "skill-sync",
+        "mcp-management",
+        "analytics"
+      ],
+      "platforms": [
+        "Claude Code"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "keyword": "zeude",
+      "version": "latest",
+      "commands": []
     }
   ]
 }
