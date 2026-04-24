@@ -48,6 +48,9 @@ Drop or risk-mark signals:
 If direct web search/extract is degraded or returns mostly noise:
 
 1. Switch to GitHub-native retrieval (`gh search repos`, `gh api`, `gh repo view`).
+   - Preferred command shape:
+     - `gh search repos "<query>" --json fullName,description,url,updatedAt,pushedAt,isArchived,license,stargazersCount`
+   - Use `fullName` + `license` (not GraphQL-style `nameWithOwner` / `licenseInfo`).
 2. Add curated seed repositories relevant to the target capability.
 3. Apply the same relevance gate to seed candidates.
 4. Label provenance explicitly (`direct page retrieval`, `browser-rendered retrieval`, etc.).

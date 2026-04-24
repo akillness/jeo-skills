@@ -13,7 +13,7 @@ S[8]{n,action,details}:
   2,Freeze evidence rules,Set the source quality floor labels and recovery order before searching
   3,Triage and reuse,Extract what who why and check whether an existing .survey/{slug} should be reused
   4,Run 4 lanes,Research context solutions actual behavior and alternatives-or-platform-map in parallel
-  5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families and keep relevance-gated metadata
+  5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families and keep relevance-gated metadata (license pushed/updated archived fit) using gh JSON fields fullName and license
   6,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
   7,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
   8,Summarize,Return a short factual survey summary and route planning or implementation outward

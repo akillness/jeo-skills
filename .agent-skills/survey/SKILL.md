@@ -191,6 +191,7 @@ Execution rules:
 - Apply the Step 4.5 relevance gate before keeping any candidate.
 - For each kept candidate, record at least: `license`, `pushed_at/updated`, `archived`, and one-line fit rationale.
 - If direct web search/extract tooling fails (auth/rate-limit/transport), switch to GitHub-native retrieval (`gh search` + `gh api` or `gh repo view`) and label provenance clearly.
+- For `gh search repos`, prefer JSON fields `fullName,description,url,updatedAt,pushedAt,isArchived,license,stargazersCount` (avoid GraphQL-style keys such as `nameWithOwner` or `licenseInfo`).
 - If keyword hits are noisy, add curated seed repos and state that seed verification is a quality filter, not keyword-only ranking.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
