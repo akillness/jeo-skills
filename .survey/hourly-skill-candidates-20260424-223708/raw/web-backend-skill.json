@@ -1,0 +1,566 @@
+{
+  "query": "web backend skill",
+  "runs": [
+    {
+      "mode": "primary",
+      "query": "web backend skill",
+      "error": null,
+      "items": []
+    },
+    {
+      "mode": "recovery",
+      "query": "backend framework tooling pushed:>=2024-01-01 stars:>1000",
+      "error": null,
+      "items": [
+        {
+          "description": "👩‍💻👨‍💻 Awesome cheatsheets for popular programming languages, frameworks and development tools. They include everything you should know in one single file.",
+          "fullName": "LeCoupa/awesome-cheatsheets",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-12T17:26:10Z",
+          "stargazersCount": 45697,
+          "updatedAt": "2026-04-24T19:16:17Z",
+          "url": "https://github.com/LeCoupa/awesome-cheatsheets"
+        },
+        {
+          "description": "An agentic company research tool powered by LangGraph and Tavily that conducts deep diligence on companies using a multi-agent framework. It leverages Google's Gemini 2.5 Flash and OpenAI's GPT-5.1 on the backend for inference.",
+          "fullName": "guy-hartstein/company-research-agent",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-04-21T22:15:33Z",
+          "stargazersCount": 1702,
+          "updatedAt": "2026-04-24T15:49:08Z",
+          "url": "https://github.com/guy-hartstein/company-research-agent"
+        },
+        {
+          "description": "Ready-to-use backend starter monorepo with CLI tools to generate project templates and optional framework addons.",
+          "fullName": "dev-rashedin/servest",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-02-14T05:58:45Z",
+          "stargazersCount": 73,
+          "updatedAt": "2026-04-20T11:30:36Z",
+          "url": "https://github.com/dev-rashedin/servest"
+        },
+        {
+          "description": "File Storage & Sandbox Backends for Pydantic AI: console tools for file operations, Docker-isolated sandboxes for safe execution, and permission system with presets for access control. Enables secure multi-user handling and testing in agents via in-memory, local, or containerized storage.",
+          "fullName": "vstorm-co/pydantic-ai-backend",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-20T21:33:42Z",
+          "stargazersCount": 81,
+          "updatedAt": "2026-04-23T04:21:22Z",
+          "url": "https://github.com/vstorm-co/pydantic-ai-backend"
+        },
+        {
+          "description": "🔥 A next-generation CLI tool that makes it easy to create amazing web applications with Go on the backend, using htmx, hyperscript or Alpine.js, and the most popular CSS frameworks on the frontend.",
+          "fullName": "gowebly/gowebly",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-04-18T09:31:27Z",
+          "stargazersCount": 1204,
+          "updatedAt": "2026-04-24T21:43:02Z",
+          "url": "https://github.com/gowebly/gowebly"
+        },
+        {
+          "description": "A modular AI agent framework built with FastAPI (backend) and TypeScript (frontend), integrating LangChain/LangGraph-based agents for conversational intelligence, reasoning, and tool orchestration.",
+          "fullName": "realyinchen/AgentHub",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-23T13:25:47Z",
+          "stargazersCount": 86,
+          "updatedAt": "2026-04-22T07:09:55Z",
+          "url": "https://github.com/realyinchen/AgentHub"
+        },
+        {
+          "description": "Automation low level tool based on MQTT data. Optionnal backends to create \"DRM/Cairo\", \"OLed\", \"LCD\" or \"Curses\" graphical applications.",
+          "fullName": "destroyedlolo/Selene",
+          "isArchived": false,
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          },
+          "pushedAt": "2026-04-22T22:13:25Z",
+          "stargazersCount": 27,
+          "updatedAt": "2026-04-18T11:43:12Z",
+          "url": "https://github.com/destroyedlolo/Selene"
+        },
+        {
+          "description": "A handy tool for generating Django-based backend projects without coding. On the other hand, it is a code generator of the Django framework.",
+          "fullName": "sageteamorg/django-sage-painless",
+          "isArchived": false,
+          "license": {
+            "key": "gpl-3.0",
+            "name": "GNU General Public License v3.0",
+            "url": "https://api.github.com/licenses/gpl-3.0"
+          },
+          "pushedAt": "2024-07-22T18:18:21Z",
+          "stargazersCount": 60,
+          "updatedAt": "2024-11-24T23:29:23Z",
+          "url": "https://github.com/sageteamorg/django-sage-painless"
+        },
+        {
+          "description": "This repository documents my journey through advanced web development topics. It includes hands-on projects and practice with various frontend and backend frameworks and tools such as Express, Fastify, tRPC, REST APIs, Redis, PostgreSQL, Rabbit-MQ (microservices)",
+          "fullName": "ankitklu/backend_prep",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2025-11-21T07:54:35Z",
+          "stargazersCount": 6,
+          "updatedAt": "2026-03-04T08:50:00Z",
+          "url": "https://github.com/ankitklu/backend_prep"
+        },
+        {
+          "description": "GoGinit is a user-friendly CLI tool that helps you quickly set up new Go backend projects with a choice of popular frameworks like Echo and Gin.",
+          "fullName": "pol-cova/GoGinit",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2024-08-24T15:20:02Z",
+          "stargazersCount": 8,
+          "updatedAt": "2026-03-06T03:03:58Z",
+          "url": "https://github.com/pol-cova/GoGinit"
+        }
+      ]
+    },
+    {
+      "mode": "recovery",
+      "query": "api backend toolkit pushed:>=2024-01-01 stars:>500",
+      "error": null,
+      "items": [
+        {
+          "description": "The Node.js Toolkit for Rapid Development.",
+          "fullName": "sharafdin/yonode",
+          "isArchived": true,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2025-01-31T09:48:14Z",
+          "stargazersCount": 122,
+          "updatedAt": "2026-04-17T18:17:26Z",
+          "url": "https://github.com/sharafdin/yonode"
+        },
+        {
+          "description": "The Utility first python web toolkit ",
+          "fullName": "nexios-labs/nexios",
+          "isArchived": false,
+          "license": {
+            "key": "bsd-3-clause",
+            "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+            "url": "https://api.github.com/licenses/bsd-3-clause"
+          },
+          "pushedAt": "2026-04-24T11:59:32Z",
+          "stargazersCount": 239,
+          "updatedAt": "2026-04-24T11:59:33Z",
+          "url": "https://github.com/nexios-labs/nexios"
+        },
+        {
+          "description": "FiSDK is an API toolkit developed by Fintechee for managing and controlling the backend of the Fintechee trading platform.",
+          "fullName": "fintechees/FiSDK",
+          "isArchived": false,
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          },
+          "pushedAt": "2026-01-02T11:23:35Z",
+          "stargazersCount": 30,
+          "updatedAt": "2026-01-02T11:23:40Z",
+          "url": "https://github.com/fintechees/FiSDK"
+        },
+        {
+          "description": "Full stack FastAPI toolkit provides ready to use boilerplate code for using FastAPI and other backend tools",
+          "fullName": "payamt007/FastAPI-Toolkit",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2025-06-12T13:49:10Z",
+          "stargazersCount": 33,
+          "updatedAt": "2026-03-26T01:07:45Z",
+          "url": "https://github.com/payamt007/FastAPI-Toolkit"
+        },
+        {
+          "description": "Toolkit to export your data from tesla-apiscraper InfluxDB backend, convert it to TeslaFi CSV format, and fix up some typical data glitches",
+          "fullName": "olexs/tesla-apiscraper-to-teslafi-export",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-04-02T10:45:42Z",
+          "stargazersCount": 6,
+          "updatedAt": "2025-12-08T10:48:57Z",
+          "url": "https://github.com/olexs/tesla-apiscraper-to-teslafi-export"
+        },
+        {
+          "description": "Production-ready Next.js 15 authentication starter with TypeScript, protected routes, and modern state management. Seamlessly integrates with TypeScript Backend Toolkit for type-safe API authentication 🚀",
+          "fullName": "muneebhashone/next-toolkit",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2025-02-22T17:27:37Z",
+          "stargazersCount": 4,
+          "updatedAt": "2025-09-07T21:20:15Z",
+          "url": "https://github.com/muneebhashone/next-toolkit"
+        },
+        {
+          "description": "Versatile multi-language template and toolkit for website servers and backend systems in general.",
+          "fullName": "Phosmachina/vectra",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2024-04-03T20:51:07Z",
+          "stargazersCount": 4,
+          "updatedAt": "2025-07-06T13:28:54Z",
+          "url": "https://github.com/Phosmachina/vectra"
+        },
+        {
+          "description": "Backend API application for Smart G4 Toolkit",
+          "fullName": "jedsgonzales/g4-toolkit-be",
+          "isArchived": true,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2025-05-10T00:22:58Z",
+          "stargazersCount": 0,
+          "updatedAt": "2025-05-10T00:23:55Z",
+          "url": "https://github.com/jedsgonzales/g4-toolkit-be"
+        },
+        {
+          "description": "",
+          "fullName": "Muthukumar1104/Redux_toolkit_sample_backend_API",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2025-01-31T14:51:23Z",
+          "stargazersCount": 0,
+          "updatedAt": "2025-01-31T14:51:26Z",
+          "url": "https://github.com/Muthukumar1104/Redux_toolkit_sample_backend_API"
+        },
+        {
+          "description": "Easily create a dll tool for games that use DirectX9, DirectX10, DirectX11 or OpenGL backend. Swap between them all with a single line change. Includes other QoL functionality too.",
+          "fullName": "TerryS94/dll-toolkit",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-01-14T15:22:20Z",
+          "stargazersCount": 2,
+          "updatedAt": "2026-01-14T15:22:58Z",
+          "url": "https://github.com/TerryS94/dll-toolkit"
+        }
+      ]
+    }
+  ],
+  "kept": [
+    {
+      "lane": "web-backend-skill",
+      "full_name": "guy-hartstein/company-research-agent",
+      "url": "https://github.com/guy-hartstein/company-research-agent",
+      "description": "An agentic company research tool powered by LangGraph and Tavily that conducts deep diligence on companies using a multi-agent framework. It leverages Google's Gemini 2.5 Flash and OpenAI's GPT-5.1 on the backend for inference.",
+      "stars": 1702,
+      "license": "APACHE-2.0",
+      "pushed_at": "2026-04-21T22:15:33Z",
+      "updated_at": "2026-04-24T15:49:08Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, adoption, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "dev-rashedin/servest",
+      "url": "https://github.com/dev-rashedin/servest",
+      "description": "Ready-to-use backend starter monorepo with CLI tools to generate project templates and optional framework addons.",
+      "stars": 73,
+      "license": "MIT",
+      "pushed_at": "2026-02-14T05:58:45Z",
+      "updated_at": "2026-04-20T11:30:36Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "gowebly/gowebly",
+      "url": "https://github.com/gowebly/gowebly",
+      "description": "🔥 A next-generation CLI tool that makes it easy to create amazing web applications with Go on the backend, using htmx, hyperscript or Alpine.js, and the most popular CSS frameworks on the frontend.",
+      "stars": 1204,
+      "license": "APACHE-2.0",
+      "pushed_at": "2026-04-18T09:31:27Z",
+      "updated_at": "2026-04-24T21:43:02Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, adoption, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "realyinchen/AgentHub",
+      "url": "https://github.com/realyinchen/AgentHub",
+      "description": "A modular AI agent framework built with FastAPI (backend) and TypeScript (frontend), integrating LangChain/LangGraph-based agents for conversational intelligence, reasoning, and tool orchestration.",
+      "stars": 86,
+      "license": "MIT",
+      "pushed_at": "2026-04-23T13:25:47Z",
+      "updated_at": "2026-04-22T07:09:55Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "sageteamorg/django-sage-painless",
+      "url": "https://github.com/sageteamorg/django-sage-painless",
+      "description": "A handy tool for generating Django-based backend projects without coding. On the other hand, it is a code generator of the Django framework.",
+      "stars": 60,
+      "license": "GPL-3.0",
+      "pushed_at": "2024-07-22T18:18:21Z",
+      "updated_at": "2024-11-24T23:29:23Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "pol-cova/GoGinit",
+      "url": "https://github.com/pol-cova/GoGinit",
+      "description": "GoGinit is a user-friendly CLI tool that helps you quickly set up new Go backend projects with a choice of popular frameworks like Echo and Gin.",
+      "stars": 8,
+      "license": "MIT",
+      "pushed_at": "2024-08-24T15:20:02Z",
+      "updated_at": "2026-03-06T03:03:58Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안"
+    }
+  ],
+  "dropped": [
+    {
+      "lane": "web-backend-skill",
+      "full_name": "LeCoupa/awesome-cheatsheets",
+      "url": "https://github.com/LeCoupa/awesome-cheatsheets",
+      "description": "👩‍💻👨‍💻 Awesome cheatsheets for popular programming languages, frameworks and development tools. They include everything you should know in one single file.",
+      "stars": 45697,
+      "license": "MIT",
+      "pushed_at": "2026-04-12T17:26:10Z",
+      "updated_at": "2026-04-24T19:16:17Z",
+      "archived": false,
+      "fit_score": 1,
+      "fit_rationale": "adoption, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "low-fit:1"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "vstorm-co/pydantic-ai-backend",
+      "url": "https://github.com/vstorm-co/pydantic-ai-backend",
+      "description": "File Storage & Sandbox Backends for Pydantic AI: console tools for file operations, Docker-isolated sandboxes for safe execution, and permission system with presets for access control. Enables secure multi-user handling and testing in agents via in-memory, local, or containerized storage.",
+      "stars": 81,
+      "license": "MIT",
+      "pushed_at": "2026-04-20T21:33:42Z",
+      "updated_at": "2026-04-23T04:21:22Z",
+      "archived": false,
+      "fit_score": 1,
+      "fit_rationale": "fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "low-fit:1"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "destroyedlolo/Selene",
+      "url": "https://github.com/destroyedlolo/Selene",
+      "description": "Automation low level tool based on MQTT data. Optionnal backends to create \"DRM/Cairo\", \"OLed\", \"LCD\" or \"Curses\" graphical applications.",
+      "stars": 27,
+      "license": "OTHER",
+      "pushed_at": "2026-04-22T22:13:25Z",
+      "updated_at": "2026-04-18T11:43:12Z",
+      "archived": false,
+      "fit_score": 1,
+      "fit_rationale": "fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:OTHER",
+        "low-fit:1"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "ankitklu/backend_prep",
+      "url": "https://github.com/ankitklu/backend_prep",
+      "description": "This repository documents my journey through advanced web development topics. It includes hands-on projects and practice with various frontend and backend frameworks and tools such as Express, Fastify, tRPC, REST APIs, Redis, PostgreSQL, Rabbit-MQ (microservices)",
+      "stars": 6,
+      "license": "UNKNOWN",
+      "pushed_at": "2025-11-21T07:54:35Z",
+      "updated_at": "2026-03-04T08:50:00Z",
+      "archived": false,
+      "fit_score": 4,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "sharafdin/yonode",
+      "url": "https://github.com/sharafdin/yonode",
+      "description": "The Node.js Toolkit for Rapid Development.",
+      "stars": 122,
+      "license": "MIT",
+      "pushed_at": "2025-01-31T09:48:14Z",
+      "updated_at": "2026-04-17T18:17:26Z",
+      "archived": true,
+      "fit_score": 1,
+      "fit_rationale": "adoption, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "archived",
+        "low-fit:1"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "nexios-labs/nexios",
+      "url": "https://github.com/nexios-labs/nexios",
+      "description": "The Utility first python web toolkit ",
+      "stars": 239,
+      "license": "BSD-3-CLAUSE",
+      "pushed_at": "2026-04-24T11:59:32Z",
+      "updated_at": "2026-04-24T11:59:33Z",
+      "archived": false,
+      "fit_score": 1,
+      "fit_rationale": "adoption, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "low-fit:1"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "fintechees/FiSDK",
+      "url": "https://github.com/fintechees/FiSDK",
+      "description": "FiSDK is an API toolkit developed by Fintechee for managing and controlling the backend of the Fintechee trading platform.",
+      "stars": 30,
+      "license": "OTHER",
+      "pushed_at": "2026-01-02T11:23:35Z",
+      "updated_at": "2026-01-02T11:23:40Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:OTHER"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "olexs/tesla-apiscraper-to-teslafi-export",
+      "url": "https://github.com/olexs/tesla-apiscraper-to-teslafi-export",
+      "description": "Toolkit to export your data from tesla-apiscraper InfluxDB backend, convert it to TeslaFi CSV format, and fix up some typical data glitches",
+      "stars": 6,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-04-02T10:45:42Z",
+      "updated_at": "2025-12-08T10:48:57Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "jedsgonzales/g4-toolkit-be",
+      "url": "https://github.com/jedsgonzales/g4-toolkit-be",
+      "description": "Backend API application for Smart G4 Toolkit",
+      "stars": 0,
+      "license": "UNKNOWN",
+      "pushed_at": "2025-05-10T00:22:58Z",
+      "updated_at": "2025-05-10T00:23:55Z",
+      "archived": true,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "archived",
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "full_name": "Muthukumar1104/Redux_toolkit_sample_backend_API",
+      "url": "https://github.com/Muthukumar1104/Redux_toolkit_sample_backend_API",
+      "description": "",
+      "stars": 0,
+      "license": "UNKNOWN",
+      "pushed_at": "2025-01-31T14:51:23Z",
+      "updated_at": "2025-01-31T14:51:26Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    }
+  ]
+}
