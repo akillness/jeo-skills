@@ -110,6 +110,16 @@
         "Uses degraded_causes taxonomy (`license|stale|low-fit|archived`) when thresholds are missed",
         "Keeps provenance/evidence references while reporting degraded lanes"
       ]
+    },
+    {
+      "id": 12,
+      "prompt": "run a survey in a degraded source environment and keep artifact validation green",
+      "expected_output": "The survey uses validator-compatible provenance labels (including `thin evidence` when needed) and avoids unsupported labels that would break `--require-provenance` checks.",
+      "assertions": [
+        "Uses a provenance label accepted by the validator (`direct page retrieval|feed recovery|browser-rendered retrieval|indexed snippet|browser-rendered indexed snippet|thin evidence`)",
+        "Avoids unsupported provenance labels in final markdown artifacts",
+        "Keeps the survey report explicit about reduced confidence when `thin evidence` is used"
+      ]
     }
   ]
 }
