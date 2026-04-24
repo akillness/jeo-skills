@@ -99,3 +99,23 @@ When the survey topic is mostly GitHub repositories and search reliability drops
 3. Prefer authenticated `gh api` retrieval when available to reduce unauthenticated rate-limit failures.
 4. If one keyword surface is too noisy (common for frontend/backend/game "skill" queries), use stable seed repos that match the workflow intent and state that this is a quality filter, not keyword-only ranking.
 5. If sandbox TLS trust is broken (`CERTIFICATE_VERIFY_FAILED`), use an unverified SSL context only for non-destructive metadata retrieval, and explicitly flag this as risk in artifacts/reports.
+
+### Keyword sweep quality rescue matrix (hourly maintenance)
+When hourly runs require fixed keyword coverage (`agentic ai skill`, `web frontend skill`, `web backend skill`, `cli open source skill`, `game development skill`), use this matrix before selecting a candidate:
+
+| Keyword bucket | Suggested seed repos (example) | Keep signals | Drop/risk signals |
+|---|---|---|---|
+| agentic ai skill | `langchain-ai/langgraph`, `microsoft/autogen`, `crewAIInc/crewAI` | active maintenance, explicit agent orchestration docs, permissive license | archived repos, model wrappers with no workflow guidance |
+| web frontend skill | `vercel/next.js`, `sveltejs/svelte`, `vuejs/core` | framework/runtime relevance to UI workflows, recent pushes | generic UI collections without operational workflow |
+| web backend skill | `fastapi/fastapi`, `django/django`, `nestjs/nest` | production backend patterns (API/auth/testing/deploy) | sample-only repos, dummy API datasets, missing license |
+| cli open source skill | `junegunn/fzf`, `charmbracelet/gum`, `sharkdp/bat` | clear CLI operator value, documented commands, active releases | listicle/meta repos, shell config bundles unrelated to target workflow |
+| game development skill | `godotengine/godot`, `bevyengine/bevy`, `MonoGame/MonoGame` | reproducible build/test/export workflows, active engine docs | archived game lists, showcase-only repos without operator workflow |
+
+### Mandatory metadata + fit rationale before proposing
+For each kept candidate, record:
+- `license` (or explicit missing-license risk)
+- `pushed_at`
+- `archived`
+- one-line fit rationale tied to the exact skill scope
+
+Do not promote a candidate to TOP proposals when it fails metadata minimums unless the report labels it explicitly as risk/experimental.

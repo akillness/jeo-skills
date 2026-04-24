@@ -1,0 +1,421 @@
+{
+  "generated_at": "2026-04-24T14:27:56.536171Z",
+  "provenance_note": "web_search failed with INVALID_API_KEY; used GitHub Search/Repo API direct retrieval fallback",
+  "results": {
+    "agentic ai skill": {
+      "query_used": "agentic ai framework stars:>500 language:Python",
+      "search_provenance": "direct page retrieval",
+      "search_items": [
+        {
+          "full_name": "langchain-ai/langchain",
+          "html_url": "https://github.com/langchain-ai/langchain",
+          "description": "The agent engineering platform",
+          "stars": 134781,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T14:01:11Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/langchain-ai/langchain"
+        },
+        {
+          "full_name": "FoundationAgents/MetaGPT",
+          "html_url": "https://github.com/FoundationAgents/MetaGPT",
+          "description": "🌟 The Multi-Agent Framework: First AI Software Company, Towards Natural Language Programming",
+          "stars": 67388,
+          "license": "MIT",
+          "pushed_at": "2026-01-21T10:12:33Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/FoundationAgents/MetaGPT"
+        },
+        {
+          "full_name": "microsoft/autogen",
+          "html_url": "https://github.com/microsoft/autogen",
+          "description": "A programming framework for agentic AI",
+          "stars": 57394,
+          "license": "CC-BY-4.0",
+          "pushed_at": "2026-04-15T11:59:09Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/microsoft/autogen"
+        },
+        {
+          "full_name": "crewAIInc/crewAI",
+          "html_url": "https://github.com/crewAIInc/crewAI",
+          "description": "Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks.",
+          "stars": 49778,
+          "license": "MIT",
+          "pushed_at": "2026-04-23T20:48:16Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/crewAIInc/crewAI"
+        },
+        {
+          "full_name": "langchain-ai/langgraph",
+          "html_url": "https://github.com/langchain-ai/langgraph",
+          "description": "Build resilient language agents as graphs.",
+          "stars": 30262,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T12:10:29Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/langchain-ai/langgraph"
+        }
+      ],
+      "seed_items": [
+        {
+          "full_name": "langchain-ai/langgraph",
+          "html_url": "https://github.com/langchain-ai/langgraph",
+          "description": "Build resilient language agents as graphs.",
+          "stars": 30262,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T12:10:29Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/langchain-ai/langgraph"
+        },
+        {
+          "full_name": "microsoft/autogen",
+          "html_url": "https://github.com/microsoft/autogen",
+          "description": "A programming framework for agentic AI",
+          "stars": 57394,
+          "license": "CC-BY-4.0",
+          "pushed_at": "2026-04-15T11:59:09Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/microsoft/autogen"
+        },
+        {
+          "full_name": "crewAIInc/crewAI",
+          "html_url": "https://github.com/crewAIInc/crewAI",
+          "description": "Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks.",
+          "stars": 49778,
+          "license": "MIT",
+          "pushed_at": "2026-04-23T20:48:16Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/crewAIInc/crewAI"
+        }
+      ]
+    },
+    "web frontend skill": {
+      "query_used": "frontend ui framework stars:>5000 language:TypeScript",
+      "search_provenance": "direct page retrieval",
+      "search_items": [
+        {
+          "full_name": "ionic-team/ionic-framework",
+          "html_url": "https://github.com/ionic-team/ionic-framework",
+          "description": "A powerful cross-platform UI toolkit for building native-quality iOS, Android, and Progressive Web Apps with HTML, CSS, and JavaScript.",
+          "stars": 52474,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T14:05:33Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/ionic-team/ionic-framework"
+        }
+      ],
+      "seed_items": [
+        {
+          "full_name": "vercel/next.js",
+          "html_url": "https://github.com/vercel/next.js",
+          "description": "The React Framework",
+          "stars": 139138,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T14:24:39Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/vercel/next.js"
+        },
+        {
+          "full_name": "sveltejs/svelte",
+          "html_url": "https://github.com/sveltejs/svelte",
+          "description": "web development for the rest of us",
+          "stars": 86414,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T09:51:36Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/sveltejs/svelte"
+        },
+        {
+          "full_name": "vuejs/core",
+          "html_url": "https://github.com/vuejs/core",
+          "description": "🖖 Vue.js is a progressive, incrementally-adoptable JavaScript framework for building UI on the web.",
+          "stars": 53520,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T06:00:15Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/vuejs/core"
+        }
+      ]
+    },
+    "web backend skill": {
+      "query_used": "backend api framework stars:>1000",
+      "search_provenance": "direct page retrieval",
+      "search_items": [
+        {
+          "full_name": "iii-hq/iii",
+          "html_url": "https://github.com/iii-hq/iii",
+          "description": "iii unifies your existing backend stack with a single engine and three primitives: Function, Trigger, and Worker.",
+          "stars": 15342,
+          "license": null,
+          "pushed_at": "2026-04-24T13:57:31Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/iii-hq/iii"
+        },
+        {
+          "full_name": "encoredev/encore",
+          "html_url": "https://github.com/encoredev/encore",
+          "description": "Open source framework for building robust type-safe distributed systems with declarative infrastructure",
+          "stars": 11862,
+          "license": "MPL-2.0",
+          "pushed_at": "2026-04-24T07:11:59Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/encoredev/encore"
+        },
+        {
+          "full_name": "Ovi/DummyJSON",
+          "html_url": "https://github.com/Ovi/DummyJSON",
+          "description": "DummyJSON.com provides different types of REST Endpoints filled with JSON data which you can use in developing the frontend with your favorite framework and library without worrying about writing a backend.",
+          "stars": 2769,
+          "license": "NOASSERTION",
+          "pushed_at": "2026-04-22T07:59:55Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/Ovi/DummyJSON"
+        },
+        {
+          "full_name": "ishtms/learn-nodejs-hard-way",
+          "html_url": "https://github.com/ishtms/learn-nodejs-hard-way",
+          "description": "Learn NodeJS and master the art of server-side programming by creating a backend framework with 0 dependencies.",
+          "stars": 1809,
+          "license": "NOASSERTION",
+          "pushed_at": "2024-10-09T17:23:06Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/ishtms/learn-nodejs-hard-way"
+        },
+        {
+          "full_name": "go-goyave/goyave",
+          "html_url": "https://github.com/go-goyave/goyave",
+          "description": "🍐 The enterprise REST API framework",
+          "stars": 1770,
+          "license": "MIT",
+          "pushed_at": "2026-03-12T09:54:40Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/go-goyave/goyave"
+        }
+      ],
+      "seed_items": [
+        {
+          "full_name": "fastapi/fastapi",
+          "html_url": "https://github.com/fastapi/fastapi",
+          "description": "FastAPI framework, high performance, easy to learn, fast to code, ready for production",
+          "stars": 97612,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T13:06:37Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/fastapi/fastapi"
+        },
+        {
+          "full_name": "django/django",
+          "html_url": "https://github.com/django/django",
+          "description": "The Web framework for perfectionists with deadlines.",
+          "stars": 87324,
+          "license": "BSD-3-Clause",
+          "pushed_at": "2026-04-24T13:00:22Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/django/django"
+        },
+        {
+          "full_name": "nestjs/nest",
+          "html_url": "https://github.com/nestjs/nest",
+          "description": "A progressive Node.js framework for building efficient, scalable, and enterprise-grade server-side applications with TypeScript/JavaScript 🚀",
+          "stars": 75306,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T10:17:39Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/nestjs/nest"
+        }
+      ]
+    },
+    "cli open source skill": {
+      "query_used": "cli tool stars:>5000",
+      "search_provenance": "direct page retrieval",
+      "search_items": [
+        {
+          "full_name": "trimstray/the-book-of-secret-knowledge",
+          "html_url": "https://github.com/trimstray/the-book-of-secret-knowledge",
+          "description": "A collection of inspiring lists, manuals, cheatsheets, blogs, hacks, one-liners, cli/web tools and more.",
+          "stars": 217105,
+          "license": "MIT",
+          "pushed_at": "2024-11-19T14:00:38Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/trimstray/the-book-of-secret-knowledge"
+        },
+        {
+          "full_name": "ohmyzsh/ohmyzsh",
+          "html_url": "https://github.com/ohmyzsh/ohmyzsh",
+          "description": "🙃   A delightful community-driven (with 2,400+ contributors) framework for managing your zsh configuration. Includes 300+ optional plugins (rails, git, macOS, hub, docker, homebrew, node, php, python, etc), 140+ themes to spice up your morning, and an auto-update tool that makes it easy to keep up with the latest updates from the community.",
+          "stars": 186439,
+          "license": "MIT",
+          "pushed_at": "2026-04-20T09:01:03Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/ohmyzsh/ohmyzsh"
+        },
+        {
+          "full_name": "sharkdp/bat",
+          "html_url": "https://github.com/sharkdp/bat",
+          "description": "A cat(1) clone with wings.",
+          "stars": 58527,
+          "license": "Apache-2.0",
+          "pushed_at": "2026-04-20T02:09:54Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/sharkdp/bat"
+        },
+        {
+          "full_name": "wagoodman/dive",
+          "html_url": "https://github.com/wagoodman/dive",
+          "description": "A tool for exploring each layer in a docker image",
+          "stars": 53822,
+          "license": "MIT",
+          "pushed_at": "2025-12-15T17:20:36Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/wagoodman/dive"
+        },
+        {
+          "full_name": "farion1231/cc-switch",
+          "html_url": "https://github.com/farion1231/cc-switch",
+          "description": "A cross-platform desktop All-in-One assistant tool for Claude Code, Codex, OpenCode, openclaw & Gemini CLI.",
+          "stars": 50531,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T00:56:02Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/farion1231/cc-switch"
+        }
+      ],
+      "seed_items": [
+        {
+          "full_name": "junegunn/fzf",
+          "html_url": "https://github.com/junegunn/fzf",
+          "description": ":cherry_blossom: A command-line fuzzy finder",
+          "stars": 79762,
+          "license": "MIT",
+          "pushed_at": "2026-04-21T09:48:34Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/junegunn/fzf"
+        },
+        {
+          "full_name": "charmbracelet/gum",
+          "html_url": "https://github.com/charmbracelet/gum",
+          "description": "A tool for glamorous shell scripts 🎀",
+          "stars": 23451,
+          "license": "MIT",
+          "pushed_at": "2026-04-22T14:14:33Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/charmbracelet/gum"
+        },
+        {
+          "full_name": "sharkdp/bat",
+          "html_url": "https://github.com/sharkdp/bat",
+          "description": "A cat(1) clone with wings.",
+          "stars": 58527,
+          "license": "Apache-2.0",
+          "pushed_at": "2026-04-20T02:09:54Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/sharkdp/bat"
+        }
+      ]
+    },
+    "game development skill": {
+      "query_used": "game engine stars:>20000",
+      "search_provenance": "direct page retrieval (unverified SSL fallback)",
+      "search_items": [
+        {
+          "full_name": "godotengine/godot",
+          "html_url": "https://github.com/godotengine/godot",
+          "description": "Godot Engine – Multi-platform 2D and 3D game engine",
+          "stars": 109896,
+          "license": "MIT",
+          "pushed_at": "2026-04-23T13:40:45Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/godotengine/godot"
+        },
+        {
+          "full_name": "pixijs/pixijs",
+          "html_url": "https://github.com/pixijs/pixijs",
+          "description": "The HTML5 Creation Engine: Create beautiful digital content with the fastest, most flexible 2D WebGL renderer.",
+          "stars": 46987,
+          "license": "MIT",
+          "pushed_at": "2026-04-24T07:34:07Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/pixijs/pixijs"
+        },
+        {
+          "full_name": "bevyengine/bevy",
+          "html_url": "https://github.com/bevyengine/bevy",
+          "description": "A refreshingly simple data-driven game engine built in Rust",
+          "stars": 45728,
+          "license": "Apache-2.0",
+          "pushed_at": "2026-04-24T05:51:59Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/bevyengine/bevy"
+        },
+        {
+          "full_name": "BabylonJS/Babylon.js",
+          "html_url": "https://github.com/BabylonJS/Babylon.js",
+          "description": "Babylon.js is a powerful, beautiful, simple, and open game and rendering engine packed into a friendly JavaScript framework.",
+          "stars": 25417,
+          "license": "Apache-2.0",
+          "pushed_at": "2026-04-24T08:03:43Z",
+          "archived": false,
+          "api_url": "https://api.github.com/repos/BabylonJS/Babylon.js"
+        },
+        {
+          "full_name": "leereilly/games",
+          "html_url": "https://github.com/leereilly/games",
+          "description": "Archived — A list of games, add-ons, maps, etc. hosted on GitHub. Any genre. Any platform. Any engine.",
+          "stars": 24689,
+          "license": null,
+          "pushed_at": "2025-09-13T20:06:46Z",
+          "archived": true,
+          "api_url": "https://api.github.com/repos/leereilly/games"
+        }
+      ],
+      "seed_items": [
+        {
+          "full_name": "godotengine/godot",
+          "html_url": "https://github.com/godotengine/godot",
+          "description": "Godot Engine – Multi-platform 2D and 3D game engine",
+          "stars": 109896,
+          "license": "MIT",
+          "pushed_at": "2026-04-23T13:40:45Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/godotengine/godot"
+        },
+        {
+          "full_name": "bevyengine/bevy",
+          "html_url": "https://github.com/bevyengine/bevy",
+          "description": "A refreshingly simple data-driven game engine built in Rust",
+          "stars": 45728,
+          "license": "Apache-2.0",
+          "pushed_at": "2026-04-24T05:51:59Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/bevyengine/bevy"
+        },
+        {
+          "full_name": "MonoGame/MonoGame",
+          "html_url": "https://github.com/MonoGame/MonoGame",
+          "description": "One framework for creating powerful cross-platform games.",
+          "stars": 13765,
+          "license": "NOASSERTION",
+          "pushed_at": "2026-04-22T16:22:53Z",
+          "archived": false,
+          "provenance": "direct page retrieval",
+          "api_url": "https://api.github.com/repos/mono/monogame"
+        }
+      ]
+    }
+  }
+}
