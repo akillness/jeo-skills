@@ -17,7 +17,7 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.0"
+  version: "2.1.1"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
   hardening: 2026-04-19
@@ -165,12 +165,23 @@ For agent/tooling/platform topics, replace that with:
 
 Use `settings / rules / hooks` as the common layer whenever Claude / Codex / Gemini differences are relevant.
 
+### Step 4.5: Apply a relevance gate for repo-maintenance surveys
+When `primary_mode: repo-maintenance`, do not trust keyword hits at face value.
+
+Run a compact gate before writing final recommendations:
+- **Positive signals (keep):** clear relation to the target capability, recent maintenance, explicit license, concrete docs/examples.
+- **Negative signals (drop or mark risk):** spam-like description, irrelevant domain despite keyword match, stale/archived repo without strong justification, missing basic metadata.
+- **Metadata minimum:** capture `license`, `pushed_at`, `archived`, and one-line fit rationale for every candidate you keep.
+
+If search/extract tooling is degraded, fallback to direct GitHub API retrieval and mark provenance/risk explicitly instead of pretending confidence.
+
 ### Step 5: Synthesize the artifacts
 Keep the written files compact and schema-stable.
 - Use the exact markdown templates in [references/output-templates-and-validator.md](references/output-templates-and-validator.md).
 - Keep the required filenames and headings unchanged.
 - Preserve honest provenance labels when evidence is weak.
 - For platform topics, make `platform-map.md` explicit instead of burying platform differences in `solutions.md`.
+- For `repo-maintenance`, show why each kept candidate passed the relevance gate (fit + metadata + risk).
 
 ### Step 6: Validate the artifact contract
 Run the validator after writing the files:
