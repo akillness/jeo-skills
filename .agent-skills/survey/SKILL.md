@@ -193,7 +193,8 @@ Execution rules:
 - For each kept candidate, record at least: `license`, `pushed_at/updated`, `archived`, and one-line fit rationale.
 - For recommendation-grade keeps, apply a default freshness floor (`pushed_at` within the last 24 months). If kept despite staleness, document exception rationale and explicit risk.
 - If direct web search/extract tooling fails (auth/rate-limit/transport), switch to GitHub-native retrieval (`gh search` + `gh api` or `gh repo view`) and label provenance clearly.
-- If keyword hits are noisy, add curated seed repos and state that seed verification is a quality filter, not keyword-only ranking.
+- If keyword hits are noisy or sparse, run lane-specific recovery templates from `references/keyword-sweep-and-relevance-rescue.md` before finalizing recommendations.
+- Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality. If thresholds are missed, keep evidence and report lane-level cause explicitly.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 

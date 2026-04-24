@@ -58,6 +58,28 @@ If direct web search/extract is degraded or returns mostly noise:
 3. Apply the same relevance gate to seed candidates.
 4. Label provenance explicitly (`direct page retrieval`, `browser-rendered retrieval`, etc.).
 
+### Lane-level recovery templates (hourly default)
+
+Use these as fallback queries after the primary keyword family returns sparse/noisy matches:
+
+- `agentic ai skill` lane
+  - `ai agent framework skills automation stars:>200 pushed:>=2024-01-01`
+- `web frontend skill` lane
+  - `frontend ui component design system stars:>300 pushed:>=2024-01-01`
+- `web backend skill` lane
+  - `backend api framework observability stars:>300 pushed:>=2024-01-01`
+- `cli open source skill` lane
+  - `command line tool developer productivity stars:>200 pushed:>=2024-01-01`
+  - `github cli terminal tool stars:>200 pushed:>=2024-01-01`
+- `game development skill` lane
+  - `game engine tooling pipeline stars:>150 pushed:>=2024-01-01`
+
+### Minimum recommendation thresholds (after relevance gate)
+
+- At least 1 recommendation-grade keep per lane where feasible.
+- `cli open source skill` lane target: 3+ kept entries for spotlight quality.
+- If a lane is below threshold, keep discovery evidence, mark lane status as `recovery used`, and report why thresholds were missed.
+
 ## Reporting checklist
 
 Before final recommendations:
