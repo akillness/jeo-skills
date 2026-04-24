@@ -1,0 +1,55 @@
+{
+  "new_top3": [
+    {
+      "name": "andreasbm/web-skills",
+      "url": "https://github.com/andreasbm/web-skills",
+      "license": "other",
+      "lane": "web backend skill",
+      "target_skill_path": ".agent-skills/web-skills/SKILL.md",
+      "reason": "Matched lane 'web backend skill' with metadata gate (license/recent/non-archived)"
+    },
+    {
+      "name": "jeremylongshore/claude-code-plugins-plus-skills",
+      "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+      "license": "mit",
+      "lane": "cli open source skill",
+      "target_skill_path": ".agent-skills/claude-code-plugins-plus-skills/SKILL.md",
+      "reason": "Matched lane 'cli open source skill' with metadata gate (license/recent/non-archived)"
+    },
+    {
+      "name": "dp-archive/archive",
+      "url": "https://github.com/dp-archive/archive",
+      "license": "apache-2.0",
+      "lane": "cli open source skill",
+      "target_skill_path": ".agent-skills/archive/SKILL.md",
+      "reason": "Matched lane 'cli open source skill' with metadata gate (license/recent/non-archived)"
+    }
+  ],
+  "improve_top3": [],
+  "cli_top3": [
+    {
+      "query": "cli open source skill",
+      "full_name": "jeremylongshore/claude-code-plugins-plus-skills",
+      "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+      "description": "423 plugins, 2,849 skills, 177 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+      "stars": 2012,
+      "license": "mit",
+      "updated_at": "2026-04-24T15:34:23Z",
+      "pushed_at": "2026-04-23T05:25:09Z",
+      "archived": false,
+      "fit_rationale": "Matched lane 'cli open source skill' with metadata gate (license/recent/non-archived)"
+    },
+    {
+      "query": "cli open source skill",
+      "full_name": "dp-archive/archive",
+      "url": "https://github.com/dp-archive/archive",
+      "description": "Skill Compose is an open-source agent builder and runtime platform for skill-powered agents. No workflow graphs. No CLI.",
+      "stars": 1107,
+      "license": "apache-2.0",
+      "updated_at": "2026-04-16T05:09:54Z",
+      "pushed_at": "2026-03-04T08:01:19Z",
+      "archived": false,
+      "fit_rationale": "Matched lane 'cli open source skill' with metadata gate (license/recent/non-archived)"
+    }
+  ]
+}

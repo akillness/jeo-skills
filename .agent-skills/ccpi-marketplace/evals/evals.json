@@ -1,0 +1,15 @@
+{
+  "skill_name": "ccpi-marketplace",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "install ccpi and add a plugin pack for devops workflows, then show how to verify it is installed",
+      "expected_output": "Uses pnpm global install for ccpi, runs search/install/list commands, and includes rollback-aware notes.",
+      "assertions": [
+        "Mentions or runs `pnpm add -g @intentsolutionsio/ccpi`",
+        "Uses `ccpi search`, `ccpi install`, and `ccpi list --installed` in sequence",
+        "Includes rollback guidance for installed packs"
+      ]
+    }
+  ]
+}

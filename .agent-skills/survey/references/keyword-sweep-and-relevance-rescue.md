@@ -39,8 +39,9 @@ Positive keep signals:
 Drop or risk-mark signals:
 
 - Keyword-only match but wrong domain
+- Assessment/homework/demo-only repos with low transferability
 - Archived/stale without strong reason
-- Missing basic metadata
+- Missing basic metadata or unknown license without exception note
 - Spam-like or boilerplate descriptions
 
 ## Rescue path for sparse/noisy lanes

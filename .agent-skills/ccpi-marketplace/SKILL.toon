@@ -1,0 +1,19 @@
+N:ccpi-marketplace
+D:Operate the Tons of Skills marketplace via the ccpi CLI and Claude plugin marketplace commands. Use for searching installing listing and updating Claude Code plugin packs with reversible rollbacks.
+G:ccpi claude-code plugin-marketplace skills-marketplace cli package-management tons-of-skills
+U[4]:
+  Install and validate @intentsolutionsio/ccpi
+  Discover plugin packs with keyword search
+  Install and update packs with rollback-aware notes
+  Verify installed packs before and after changes
+S[5]{n,action,details}:
+  1,Assess scope,Confirm target capability and whether CLI or built-in plugin command should be used
+  2,Install CLI,Install ccpi and verify command availability
+  3,Discover,Search marketplace and shortlist candidate packs
+  4,Apply,Install or update selected packs and capture exact identifiers
+  5,Verify,Run installed-list check and record rollback steps
+R[4]:
+  Keep installs reversible with explicit rollback notes
+  Avoid broad bundle installs without scope
+  Prefer deterministic CLI output over ad-hoc screenshots
+  Keep evidence linked to source repository and npm package
