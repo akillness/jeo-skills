@@ -21,6 +21,7 @@ R[6]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
   Keep claims source-backed and label downgraded evidence clearly
+  Drop assessment/homework-only and unknown-license noise unless exception rationale is explicit
   Preserve the same artifact filenames and headings across platforms
   Deduplicate solution names and keep one bounded question per survey artifact
   Use settings rules hooks as the common layer for Claude Codex Gemini comparisons

@@ -256,7 +256,7 @@ setup omc
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 95개 로컬 스킬 폴더 = 총 92개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 96개 로컬 스킬 폴더 = 총 92개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (11개)
 

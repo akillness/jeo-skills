@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-04-24T10:58:46Z",
-  "skill_count": 95,
+  "generated": "2026-04-24T18:00:29Z",
+  "skill_count": 96,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -71,6 +71,7 @@
     ],
     "utilities": [
       "aider-cli-workflow",
+      "ccpi-marketplace",
       "clawteam",
       "compresso",
       "fabric",
@@ -482,6 +483,37 @@
           "source": "bmad-idea/SKILL.md"
         }
       ]
+    },
+    {
+      "name": "ccpi-marketplace",
+      "description": "Operate the Tons of Skills marketplace via the ccpi CLI and Claude plugin marketplace commands for search/install/list/update workflows with rollback-aware verification.",
+      "category": "utilities",
+      "path": "ccpi-marketplace/SKILL.md",
+      "tags": [
+        "ccpi",
+        "claude-code",
+        "plugin-marketplace",
+        "skills-marketplace",
+        "cli",
+        "package-management"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "keyword": "ccpi",
+      "version": "latest",
+      "commands": []
     },
     {
       "name": "changelog-maintenance",
