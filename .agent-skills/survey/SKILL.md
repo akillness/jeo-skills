@@ -17,7 +17,7 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.1"
+  version: "2.1.2"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
   hardening: 2026-04-19
@@ -37,6 +37,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/evidence-recovery-ladder.md](references/evidence-recovery-ladder.md)
 - [references/platform-adapter-and-artifact-contract.md](references/platform-adapter-and-artifact-contract.md)
 - [references/output-templates-and-validator.md](references/output-templates-and-validator.md)
+- [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.
@@ -175,6 +176,25 @@ Run a compact gate before writing final recommendations:
 
 If search/extract tooling is degraded, fallback to direct GitHub API retrieval and mark provenance/risk explicitly instead of pretending confidence.
 
+### Step 4.6: Hourly candidate sweep (repo-maintenance cron loops)
+When the survey is part of a recurring skill-maintenance loop, run one explicit keyword sweep before final recommendations.
+
+Required keyword families:
+- `agentic ai skill`
+- `web frontend skill`
+- `web backend skill`
+- `cli open source skill`
+- `game development skill`
+
+Execution rules:
+- Keep the raw keyword scan as discovery evidence (usually `browser-rendered retrieval` when done through search pages).
+- Apply the Step 4.5 relevance gate before keeping any candidate.
+- For each kept candidate, record at least: `license`, `pushed_at/updated`, `archived`, and one-line fit rationale.
+- If direct web search/extract tooling fails (auth/rate-limit/transport), switch to GitHub-native retrieval (`gh search` + `gh api` or `gh repo view`) and label provenance clearly.
+- If keyword hits are noisy, add curated seed repos and state that seed verification is a quality filter, not keyword-only ranking.
+
+Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
+
 ### Step 5: Synthesize the artifacts
 Keep the written files compact and schema-stable.
 - Use the exact markdown templates in [references/output-templates-and-validator.md](references/output-templates-and-validator.md).
@@ -253,4 +273,5 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - `references/evidence-recovery-ladder.md` — fallback ladder and provenance labels for weak search/extract environments
 - `references/platform-adapter-and-artifact-contract.md` — portability rules for `settings`, `rules`, `hooks`, and identical artifact output across platforms
 - `references/output-templates-and-validator.md` — exact file templates plus validator usage for `.survey/{slug}/`
+- `references/keyword-sweep-and-relevance-rescue.md` — required five-keyword sweep and noisy-query rescue gate for recurring repo-maintenance loops
 - `scripts/validate_survey_artifacts.py` — artifact-contract validator for survey output folders

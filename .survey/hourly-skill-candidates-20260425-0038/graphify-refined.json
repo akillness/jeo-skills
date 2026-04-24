@@ -1,0 +1,210 @@
+{
+  "meta": {
+    "kind": "graphify-refined",
+    "source": "hourly survey evidence",
+    "kept_count": 10
+  },
+  "nodes": [
+    {
+      "id": "survey-loop",
+      "type": "process",
+      "label": "hourly survey loop"
+    },
+    {
+      "id": "agentic ai skill",
+      "type": "keyword-family",
+      "label": "agentic ai skill"
+    },
+    {
+      "id": "web frontend skill",
+      "type": "keyword-family",
+      "label": "web frontend skill"
+    },
+    {
+      "id": "web backend skill",
+      "type": "keyword-family",
+      "label": "web backend skill"
+    },
+    {
+      "id": "cli open source skill",
+      "type": "keyword-family",
+      "label": "cli open source skill"
+    },
+    {
+      "id": "game development skill",
+      "type": "keyword-family",
+      "label": "game development skill"
+    },
+    {
+      "id": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "candidate-repo",
+      "license": "apache-2.0",
+      "updated_at": "2026-04-07T21:13:35Z",
+      "archived": false,
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill"
+    },
+    {
+      "id": "SMDS-Studio/Building-a-New-creative-Pong-",
+      "type": "candidate-repo",
+      "license": "mit",
+      "updated_at": "2025-02-24T10:03:43Z",
+      "archived": false,
+      "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-"
+    },
+    {
+      "id": "VoDaiLocz/Enhance-Prompt",
+      "type": "candidate-repo",
+      "license": "mit",
+      "updated_at": "2026-04-14T14:36:09Z",
+      "archived": false,
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt"
+    },
+    {
+      "id": "UnrealBlueprint/02_CrystalCavern",
+      "type": "candidate-repo",
+      "license": "mit",
+      "updated_at": "2025-04-11T04:59:09Z",
+      "archived": false,
+      "url": "https://github.com/UnrealBlueprint/02_CrystalCavern"
+    },
+    {
+      "id": "iwe-org/skills",
+      "type": "candidate-repo",
+      "license": "mit",
+      "updated_at": "2026-04-21T19:12:04Z",
+      "archived": false,
+      "url": "https://github.com/iwe-org/skills"
+    },
+    {
+      "id": "Unengine/GameEngineAndGameMathTIL",
+      "type": "candidate-repo",
+      "license": "wtfpl",
+      "updated_at": "2021-05-17T16:44:59Z",
+      "archived": false,
+      "url": "https://github.com/Unengine/GameEngineAndGameMathTIL"
+    },
+    {
+      "id": "sparkade-labs/sparkade-skills",
+      "type": "candidate-repo",
+      "license": "other",
+      "updated_at": "2026-04-07T09:26:02Z",
+      "archived": false,
+      "url": "https://github.com/sparkade-labs/sparkade-skills"
+    },
+    {
+      "id": "taisukeoe/agentic-ai-skills-creator",
+      "type": "candidate-repo",
+      "license": "apache-2.0",
+      "updated_at": "2026-01-28T08:16:28Z",
+      "archived": false,
+      "url": "https://github.com/taisukeoe/agentic-ai-skills-creator"
+    }
+  ],
+  "edges": [
+    {
+      "source": "survey-loop",
+      "target": "agentic ai skill",
+      "relation": "requires-sweep"
+    },
+    {
+      "source": "survey-loop",
+      "target": "web frontend skill",
+      "relation": "requires-sweep"
+    },
+    {
+      "source": "survey-loop",
+      "target": "web backend skill",
+      "relation": "requires-sweep"
+    },
+    {
+      "source": "survey-loop",
+      "target": "cli open source skill",
+      "relation": "requires-sweep"
+    },
+    {
+      "source": "survey-loop",
+      "target": "game development skill",
+      "relation": "requires-sweep"
+    },
+    {
+      "source": "agentic ai skill",
+      "target": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "relation": "discovered"
+    },
+    {
+      "source": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "target": "survey-loop",
+      "relation": "relevance-gated"
+    },
+    {
+      "source": "game development skill",
+      "target": "SMDS-Studio/Building-a-New-creative-Pong-",
+      "relation": "discovered"
+    },
+    {
+      "source": "SMDS-Studio/Building-a-New-creative-Pong-",
+      "target": "survey-loop",
+      "relation": "relevance-gated"
+    },
+    {
+      "source": "agentic ai skill",
+      "target": "VoDaiLocz/Enhance-Prompt",
+      "relation": "discovered"
+    },
+    {
+      "source": "VoDaiLocz/Enhance-Prompt",
+      "target": "survey-loop",
+      "relation": "relevance-gated"
+    },
+    {
+      "source": "game development skill",
+      "target": "UnrealBlueprint/02_CrystalCavern",
+      "relation": "discovered"
+    },
+    {
+      "source": "UnrealBlueprint/02_CrystalCavern",
+      "target": "survey-loop",
+      "relation": "relevance-gated"
+    },
+    {
+      "source": "agentic ai skill",
+      "target": "iwe-org/skills",
+      "relation": "discovered"
+    },
+    {
+      "source": "iwe-org/skills",
+      "target": "survey-loop",
+      "relation": "relevance-gated"
+    },
+    {
+      "source": "game development skill",
+      "target": "Unengine/GameEngineAndGameMathTIL",
+      "relation": "discovered"
+    },
+    {
+      "source": "Unengine/GameEngineAndGameMathTIL",
+      "target": "survey-loop",
+      "relation": "relevance-gated"
+    },
+    {
+      "source": "game development skill",
+      "target": "sparkade-labs/sparkade-skills",
+      "relation": "discovered"
+    },
+    {
+      "source": "sparkade-labs/sparkade-skills",
+      "target": "survey-loop",
+      "relation": "relevance-gated"
+    },
+    {
+      "source": "agentic ai skill",
+      "target": "taisukeoe/agentic-ai-skills-creator",
+      "relation": "discovered"
+    },
+    {
+      "source": "taisukeoe/agentic-ai-skills-creator",
+      "target": "survey-loop",
+      "relation": "relevance-gated"
+    }
+  ]
+}
