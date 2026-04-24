@@ -60,6 +60,16 @@
         "States that repo-local artifact files remain the durable source of truth",
         "Treats hooks as optional runtime wrappers instead of assuming hook parity across platforms"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "run the hourly repo-maintenance survey with mandatory keyword families (agentic ai skill, web frontend skill, web backend skill, cli open source skill, game development skill) even if web search fails",
+      "expected_output": "The survey explicitly runs all five keyword families, applies relevance-gated metadata capture for kept candidates, and falls back to GitHub-native retrieval when search/extract tooling is degraded.",
+      "assertions": [
+        "Runs or explicitly requires all five keyword families for hourly repo-maintenance mode",
+        "Captures license, pushed_at/updated, archived, and fit rationale for kept candidates",
+        "Uses a fallback path (gh search/gh api/gh repo view) when direct search or extraction fails"
+      ]
     }
   ]
 }

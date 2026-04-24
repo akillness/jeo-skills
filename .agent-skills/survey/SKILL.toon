@@ -1,20 +1,22 @@
 N:survey
 D:Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform patterns map before deciding what to build. Produce reusable .survey/{slug}/ artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.
 G:survey landscape-scan research discovery groundwork omc omx ohmg claude codex gemini hooks rules settings
-U[5]:
+U[6]:
   Produce reusable .survey/{slug}/ artifacts before planning or implementation
   Compare solutions workarounds and repeated complaints without drifting into coding
   Normalize platform topics into settings rules hooks and platform gaps
   Use a cheap-first evidence recovery ladder when search or extract tooling is weak
+  Run the mandatory five-keyword sweep for recurring repo-maintenance loops
   Validate the artifact contract before handing off to planning or execution
-S[7]{n,action,details}:
+S[8]{n,action,details}:
   1,Classify mode,Choose one primary survey mode and decide whether platform-map.md is required
   2,Freeze evidence rules,Set the source quality floor labels and recovery order before searching
   3,Triage and reuse,Extract what who why and check whether an existing .survey/{slug} should be reused
   4,Run 4 lanes,Research context solutions actual behavior and alternatives-or-platform-map in parallel
-  5,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
-  6,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
-  7,Summarize,Return a short factual survey summary and route planning or implementation outward
+  5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families and keep relevance-gated metadata
+  6,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
+  7,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
+  8,Summarize,Return a short factual survey summary and route planning or implementation outward
 R[6]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
