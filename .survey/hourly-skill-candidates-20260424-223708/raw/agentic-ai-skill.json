@@ -1,0 +1,311 @@
+{
+  "query": "agentic ai skill",
+  "runs": [
+    {
+      "mode": "primary",
+      "query": "agentic ai skill",
+      "error": null,
+      "items": [
+        {
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-01-29T09:33:47Z",
+          "stargazersCount": 14,
+          "updatedAt": "2026-04-07T21:13:35Z",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill"
+        },
+        {
+          "description": "Agentic AI skills for knowledge graph management",
+          "fullName": "iwe-org/skills",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-06T01:48:47Z",
+          "stargazersCount": 7,
+          "updatedAt": "2026-04-21T19:12:04Z",
+          "url": "https://github.com/iwe-org/skills"
+        },
+        {
+          "description": "Static analysis engine for detecting malware in agentic AI skill files",
+          "fullName": "Ap6pack/malwar",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-08T22:08:53Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-04-08T22:18:55Z",
+          "url": "https://github.com/Ap6pack/malwar"
+        },
+        {
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-03-05T13:50:53Z",
+          "stargazersCount": 10,
+          "updatedAt": "2026-04-14T14:36:09Z",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt"
+        },
+        {
+          "description": "This is a foundation to create effective Agentic AI Skills",
+          "fullName": "taisukeoe/agentic-ai-skills-creator",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-01-23T12:11:13Z",
+          "stargazersCount": 2,
+          "updatedAt": "2026-01-28T08:16:28Z",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator"
+        },
+        {
+          "description": "Agentic AI Skills",
+          "fullName": "jprtr/Agentic-AI",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-04-03T04:39:10Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-04-03T04:39:13Z",
+          "url": "https://github.com/jprtr/Agentic-AI"
+        },
+        {
+          "description": "Agentic AI Skill Library",
+          "fullName": "gpimpler-too/skill-lib",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-04-05T03:35:57Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-04-05T03:36:01Z",
+          "url": "https://github.com/gpimpler-too/skill-lib"
+        },
+        {
+          "description": "MMM Agentic AI Skill",
+          "fullName": "ritikpatel/marketing-mix-modelling-skill",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-04-12T13:42:41Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-04-12T13:42:49Z",
+          "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill"
+        },
+        {
+          "description": "Agentic AI skill model",
+          "fullName": "thisrunsthru/Skill",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-03-12T21:33:21Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-03-12T21:33:24Z",
+          "url": "https://github.com/thisrunsthru/Skill"
+        },
+        {
+          "description": "My favorite agentic AI skills",
+          "fullName": "manuelmauro/skills",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-04-09T11:10:28Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-04-09T11:10:38Z",
+          "url": "https://github.com/manuelmauro/skills"
+        }
+      ]
+    }
+  ],
+  "kept": [
+    {
+      "lane": "agentic-ai-skill",
+      "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+      "stars": 14,
+      "license": "APACHE-2.0",
+      "pushed_at": "2026-01-29T09:33:47Z",
+      "updated_at": "2026-04-07T21:13:35Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "full_name": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "description": "Agentic AI skills for knowledge graph management",
+      "stars": 7,
+      "license": "MIT",
+      "pushed_at": "2026-04-06T01:48:47Z",
+      "updated_at": "2026-04-21T19:12:04Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "개선안"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "full_name": "Ap6pack/malwar",
+      "url": "https://github.com/Ap6pack/malwar",
+      "description": "Static analysis engine for detecting malware in agentic AI skill files",
+      "stars": 0,
+      "license": "MIT",
+      "pushed_at": "2026-04-08T22:08:53Z",
+      "updated_at": "2026-04-08T22:18:55Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "full_name": "VoDaiLocz/Enhance-Prompt",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+      "stars": 10,
+      "license": "MIT",
+      "pushed_at": "2026-03-05T13:50:53Z",
+      "updated_at": "2026-04-14T14:36:09Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "full_name": "taisukeoe/agentic-ai-skills-creator",
+      "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+      "description": "This is a foundation to create effective Agentic AI Skills",
+      "stars": 2,
+      "license": "APACHE-2.0",
+      "pushed_at": "2026-01-23T12:11:13Z",
+      "updated_at": "2026-01-28T08:16:28Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안"
+    }
+  ],
+  "dropped": [
+    {
+      "lane": "agentic-ai-skill",
+      "full_name": "jprtr/Agentic-AI",
+      "url": "https://github.com/jprtr/Agentic-AI",
+      "description": "Agentic AI Skills",
+      "stars": 0,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-04-03T04:39:10Z",
+      "updated_at": "2026-04-03T04:39:13Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "full_name": "gpimpler-too/skill-lib",
+      "url": "https://github.com/gpimpler-too/skill-lib",
+      "description": "Agentic AI Skill Library",
+      "stars": 0,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-04-05T03:35:57Z",
+      "updated_at": "2026-04-05T03:36:01Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "full_name": "ritikpatel/marketing-mix-modelling-skill",
+      "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill",
+      "description": "MMM Agentic AI Skill",
+      "stars": 0,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-04-12T13:42:41Z",
+      "updated_at": "2026-04-12T13:42:49Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "full_name": "thisrunsthru/Skill",
+      "url": "https://github.com/thisrunsthru/Skill",
+      "description": "Agentic AI skill model",
+      "stars": 0,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-03-12T21:33:21Z",
+      "updated_at": "2026-03-12T21:33:24Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "개선안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "full_name": "manuelmauro/skills",
+      "url": "https://github.com/manuelmauro/skills",
+      "description": "My favorite agentic AI skills",
+      "stars": 0,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-04-09T11:10:28Z",
+      "updated_at": "2026-04-09T11:10:38Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "개선안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    }
+  ]
+}

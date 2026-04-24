@@ -1,0 +1,710 @@
+{
+  "query": "cli open source skill",
+  "runs": [
+    {
+      "mode": "primary",
+      "query": "cli open source skill",
+      "error": null,
+      "items": []
+    },
+    {
+      "mode": "recovery",
+      "query": "command line tool skill pushed:>=2024-01-01 stars:>1000",
+      "error": null,
+      "items": [
+        {
+          "description": "Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.",
+          "fullName": "googleworkspace/cli",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-04-24T17:01:33Z",
+          "stargazersCount": 25326,
+          "updatedAt": "2026-04-24T22:36:38Z",
+          "url": "https://github.com/googleworkspace/cli"
+        },
+        {
+          "description": "Flyscrape is a command-line web scraping tool designed for those without advanced programming skills.",
+          "fullName": "philippta/flyscrape",
+          "isArchived": false,
+          "license": {
+            "key": "mpl-2.0",
+            "name": "Mozilla Public License 2.0",
+            "url": "https://api.github.com/licenses/mpl-2.0"
+          },
+          "pushedAt": "2025-11-24T20:30:02Z",
+          "stargazersCount": 1339,
+          "updatedAt": "2026-04-24T09:40:35Z",
+          "url": "https://github.com/philippta/flyscrape"
+        },
+        {
+          "description": "A comprehensive SEO audit command-line tool with 108 audit rules across 12 categories. Analyze any website for SEO best practices, Core Web Vitals, security headers, structured data, accessibility, and more.",
+          "fullName": "seo-skills/seo-audit-skill",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-03-05T08:15:32Z",
+          "stargazersCount": 195,
+          "updatedAt": "2026-04-23T11:53:51Z",
+          "url": "https://github.com/seo-skills/seo-audit-skill"
+        },
+        {
+          "description": "skill-security-scan is a command-line tool designed to scan and detect security risks in Claude Skills. Before installing third-party Skills, use this tool for security review to effectively prevent malicious code from stealing data or compromising your system.",
+          "fullName": "huifer/skill-security-scan",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2025-12-29T08:12:19Z",
+          "stargazersCount": 123,
+          "updatedAt": "2026-04-23T03:42:39Z",
+          "url": "https://github.com/huifer/skill-security-scan"
+        },
+        {
+          "description": "Resume_Builder_AIHawk is a powerful Python tool that allows you to automatically customize your resume based on a job URL, ensuring it perfectly aligns with the job requirements and skills. With an interactive command-line interface, this tool makes it easy to navigate through options and select from various pre-defined styles",
+          "fullName": "feder-cr/resume_render_from_job_description",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2024-09-15T18:50:47Z",
+          "stargazersCount": 396,
+          "updatedAt": "2026-04-23T14:02:57Z",
+          "url": "https://github.com/feder-cr/resume_render_from_job_description"
+        },
+        {
+          "description": "Explore a variety of simple, hands-on Java projects ideal for beginners. Sharpen your coding skills while creating command-line applications, games, and practical tools in Java. Perfect for those new to programming or looking to learn Java.",
+          "fullName": "Janani-Balasooriya/Java-Beginner-Projects",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2025-10-07T20:09:46Z",
+          "stargazersCount": 89,
+          "updatedAt": "2026-04-23T08:30:24Z",
+          "url": "https://github.com/Janani-Balasooriya/Java-Beginner-Projects"
+        },
+        {
+          "description": "\"ytdlp-gui\" is a user-friendly graphical interface that simplifies downloading videos from various platforms using the powerful command-line tool \"yt-dlp\", making it accessible for users of all skill levels.",
+          "fullName": "Venipa/ytdlp-gui",
+          "isArchived": false,
+          "license": {
+            "key": "agpl-3.0",
+            "name": "GNU Affero General Public License v3.0",
+            "url": "https://api.github.com/licenses/agpl-3.0"
+          },
+          "pushedAt": "2026-04-19T08:48:26Z",
+          "stargazersCount": 80,
+          "updatedAt": "2026-04-19T08:47:32Z",
+          "url": "https://github.com/Venipa/ytdlp-gui"
+        },
+        {
+          "description": "By skill4agent.com, a command-line tool for installing Agent Skills.",
+          "fullName": "osulivan/skill4agent-cli",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-02-25T09:54:15Z",
+          "stargazersCount": 6,
+          "updatedAt": "2026-04-03T08:40:31Z",
+          "url": "https://github.com/osulivan/skill4agent-cli"
+        },
+        {
+          "description": "Claw is a powerful CLI tool that enables agents to interact with the OpenClaw-CN ecosystem directly from the terminal. Manage skills, interact with the community forum, search documentation, and configure your agent profile—all through a simple command-line interface.",
+          "fullName": "jiulingyun/Claw-CLI",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-03-28T10:21:09Z",
+          "stargazersCount": 36,
+          "updatedAt": "2026-04-21T06:38:40Z",
+          "url": "https://github.com/jiulingyun/Claw-CLI"
+        },
+        {
+          "description": "A Python command-line tool to automatically convert Anthropic Claude skills into self-contained Google Gemini extensions, complete with a universal MCP server.",
+          "fullName": "simongwatts/skills-to-extensions",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2025-11-07T14:42:58Z",
+          "stargazersCount": 8,
+          "updatedAt": "2026-03-14T23:52:42Z",
+          "url": "https://github.com/simongwatts/skills-to-extensions"
+        }
+      ]
+    },
+    {
+      "mode": "recovery",
+      "query": "github cli tool skill pushed:>=2024-01-01 stars:>500",
+      "error": null,
+      "items": [
+        {
+          "description": "A tool to develop and improve a student’s programming skills by introducing the earliest lessons of coding.",
+          "fullName": "madlabsinc/teachcode",
+          "isArchived": false,
+          "license": {
+            "key": "gpl-3.0",
+            "name": "GNU General Public License v3.0",
+            "url": "https://api.github.com/licenses/gpl-3.0"
+          },
+          "pushedAt": "2025-11-07T17:02:29Z",
+          "stargazersCount": 412,
+          "updatedAt": "2026-04-15T10:57:03Z",
+          "url": "https://github.com/madlabsinc/teachcode"
+        },
+        {
+          "description": "A skill for AI-coding tools to build and edit Microsoft Copilot Studio agents as YAML — with schema validation, templates, and AI-powered skills. Suited for Claude Code, GitHub Copilot CLI, and more.",
+          "fullName": "microsoft/skills-for-copilot-studio",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-16T20:27:50Z",
+          "stargazersCount": 177,
+          "updatedAt": "2026-04-23T18:59:34Z",
+          "url": "https://github.com/microsoft/skills-for-copilot-studio"
+        },
+        {
+          "description": "A curated list of Agent Skills, resources, and tools for AI coding agents like Claude Code, Codex, Gemini CLI, GitHub Copilot, and more.",
+          "fullName": "gmh5225/awesome-skills",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-24T09:39:26Z",
+          "stargazersCount": 30,
+          "updatedAt": "2026-04-24T21:21:46Z",
+          "url": "https://github.com/gmh5225/awesome-skills"
+        },
+        {
+          "description": "Config path reference for Claude CLI, GitHub Copilot, Codex CLI & Gemini CLI — Prompts, Skills, MCP",
+          "fullName": "codeboyTW/ai-tools-config-reference",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-03-03T08:33:43Z",
+          "stargazersCount": 6,
+          "updatedAt": "2026-03-07T13:33:40Z",
+          "url": "https://github.com/codeboyTW/ai-tools-config-reference"
+        },
+        {
+          "description": "CLI tool to import production-ready development skills for Claude Code, Cursor, GitHub Copilot, and other AI coding assistants",
+          "fullName": "patricio0312rev/skillset",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-01-12T01:12:41Z",
+          "stargazersCount": 6,
+          "updatedAt": "2026-02-24T04:09:02Z",
+          "url": "https://github.com/patricio0312rev/skillset"
+        },
+        {
+          "description": "CLI tool that evaluates AI agent skills and produces quality scores. Works with any SKILL.md-based skill from skills.sh, ClawHub, GitHub, or local directories.",
+          "fullName": "joeynyc/skillscore",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-22T03:14:22Z",
+          "stargazersCount": 6,
+          "updatedAt": "2026-04-22T03:34:23Z",
+          "url": "https://github.com/joeynyc/skillscore"
+        },
+        {
+          "description": "Claude Code skills for git workflows, GitHub automation, security audits, code refactoring, and project tooling",
+          "fullName": "tartinerlabs/skills",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-16T17:22:59Z",
+          "stargazersCount": 6,
+          "updatedAt": "2026-04-19T12:05:56Z",
+          "url": "https://github.com/tartinerlabs/skills"
+        },
+        {
+          "description": "A powerful CLI tool that analyzes your GitHub profile to recommend open-source projects tailored to your interests and skills. DevProjectConnector connects you with potential collaborators, helping you grow your skills and expand your network within the open-source community.",
+          "fullName": "HenryLok0/DevProjectConnector",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2025-05-24T11:00:09Z",
+          "stargazersCount": 10,
+          "updatedAt": "2026-04-11T17:54:54Z",
+          "url": "https://github.com/HenryLok0/DevProjectConnector"
+        },
+        {
+          "description": "Publish CLI tools to Homebrew and mise via GitHub releases",
+          "fullName": "spqw/skill",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-02-24T16:56:38Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-02-24T16:57:44Z",
+          "url": "https://github.com/spqw/skill"
+        },
+        {
+          "description": "Skill management tool with GitHub CLI integration and symlink support",
+          "fullName": "shixy96/skill-link",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-20T01:02:29Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-04-16T07:28:32Z",
+          "url": "https://github.com/shixy96/skill-link"
+        }
+      ]
+    },
+    {
+      "mode": "recovery",
+      "query": "terminal tool open source pushed:>=2024-01-01 stars:>500",
+      "error": null,
+      "items": [
+        {
+          "description": "🚀 Open source Claude Code CLI source code. Advanced AI Agent for developers. Includes TypeScript codebase for LLM tool-calling, agentic workflows, and terminal UI. Remember this is just the skeleton not the brain itself. Found by Chaofan Shou. ",
+          "fullName": "yasasbanukaofficial/claude-code",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-04-04T21:25:14Z",
+          "stargazersCount": 2823,
+          "updatedAt": "2026-04-24T22:36:37Z",
+          "url": "https://github.com/yasasbanukaofficial/claude-code"
+        },
+        {
+          "description": "An open-source multi-provider AI assisted CLI development tool. Use whatever LLM you want to code in your terminal.",
+          "fullName": "vybestack/llxprt-code",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-04-24T20:59:04Z",
+          "stargazersCount": 669,
+          "updatedAt": "2026-04-24T19:19:12Z",
+          "url": "https://github.com/vybestack/llxprt-code"
+        },
+        {
+          "description": "A open source remote desktop and remote control. Support VNC, RDP, Terminal, SSH, TELNET, network tools, player etc",
+          "fullName": "KangLin/RabbitRemoteControl",
+          "isArchived": false,
+          "license": {
+            "key": "gpl-3.0",
+            "name": "GNU General Public License v3.0",
+            "url": "https://api.github.com/licenses/gpl-3.0"
+          },
+          "pushedAt": "2026-04-24T06:13:10Z",
+          "stargazersCount": 300,
+          "updatedAt": "2026-04-24T17:19:32Z",
+          "url": "https://github.com/KangLin/RabbitRemoteControl"
+        },
+        {
+          "description": "Freqtrade — Configuration and management tool for the Freqtrade open-source crypto trading bot with strategy backtesting, live/dry-run modes, 10+ exchange support (Binance, Kraken, OKX), hyperparameter optimization, FreqUI dashboard, and Rich terminal menu interface",
+          "fullName": "Kaleighc793/freqtrade-bot",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-03-13T09:46:49Z",
+          "stargazersCount": 567,
+          "updatedAt": "2026-04-23T17:48:35Z",
+          "url": "https://github.com/Kaleighc793/freqtrade-bot"
+        },
+        {
+          "description": "A Python tool to visualize + enforce dependencies, using modular architecture 🌎 Open source 🐍 Installable via pip 🔧 Able to be adopted incrementally - ⚡ Implemented with no runtime impact ♾️ Interoperable with your existing systems 🦀 Written in rust",
+          "fullName": "tach-org/tach",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-11T03:37:39Z",
+          "stargazersCount": 2705,
+          "updatedAt": "2026-04-24T21:37:51Z",
+          "url": "https://github.com/tach-org/tach"
+        },
+        {
+          "description": "Curated directory of terminal-native AI coding agents and the harnesses that orchestrate them. Covers open-source tools (Pi, OpenCode, Aider, Goose), platform agents (Claude Code, Codex, Gemini CLI), parallel runners, autonomous loops, and agent infrastructure. ",
+          "fullName": "bradAGI/awesome-cli-coding-agents",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-04-23T14:31:31Z",
+          "stargazersCount": 254,
+          "updatedAt": "2026-04-24T21:27:16Z",
+          "url": "https://github.com/bradAGI/awesome-cli-coding-agents"
+        },
+        {
+          "description": "MonkeyType Terminal is a powerful, open-source typing practice tool designed specifically for the command-line interface.",
+          "fullName": "shikhar13012001/monk-minal",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2024-11-03T18:10:21Z",
+          "stargazersCount": 55,
+          "updatedAt": "2026-03-31T23:46:49Z",
+          "url": "https://github.com/shikhar13012001/monk-minal"
+        },
+        {
+          "description": "Your no-config, no-install, globally distributed open-source tool to expose your local services",
+          "fullName": "gaetanlhf/EXPOSE",
+          "isArchived": false,
+          "license": {
+            "key": "agpl-3.0",
+            "name": "GNU Affero General Public License v3.0",
+            "url": "https://api.github.com/licenses/agpl-3.0"
+          },
+          "pushedAt": "2025-08-28T18:19:47Z",
+          "stargazersCount": 269,
+          "updatedAt": "2026-04-16T14:57:19Z",
+          "url": "https://github.com/gaetanlhf/EXPOSE"
+        },
+        {
+          "description": "Open-source Docker infrastructure platform. One web UI — containers, security, DNS, VPN, monitoring, backups, reverse proxy, terminal, and multi-node orchestration. Replace a dozen tools with one.",
+          "fullName": "fr4nsys/usulnet",
+          "isArchived": false,
+          "license": {
+            "key": "agpl-3.0",
+            "name": "GNU Affero General Public License v3.0",
+            "url": "https://api.github.com/licenses/agpl-3.0"
+          },
+          "pushedAt": "2026-02-23T23:00:19Z",
+          "stargazersCount": 93,
+          "updatedAt": "2026-04-24T16:45:10Z",
+          "url": "https://github.com/fr4nsys/usulnet"
+        },
+        {
+          "description": "Open-source, desktop client/UI build to harness Claude Code, Codex and any other Agent accepting Agent Client Protocol. Run multiple AI coding agents side by side with rich tool visualization, MCP integrations, built-in terminal, git, browser and just about anything else you may need.",
+          "fullName": "OpenSource03/harnss",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-20T02:30:54Z",
+          "stargazersCount": 201,
+          "updatedAt": "2026-04-24T16:52:25Z",
+          "url": "https://github.com/OpenSource03/harnss"
+        }
+      ]
+    }
+  ],
+  "kept": [
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "googleworkspace/cli",
+      "url": "https://github.com/googleworkspace/cli",
+      "description": "Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.",
+      "stars": 25326,
+      "license": "APACHE-2.0",
+      "pushed_at": "2026-04-24T17:01:33Z",
+      "updated_at": "2026-04-24T22:36:38Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, adoption, fresh",
+      "classification": "개선안"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "philippta/flyscrape",
+      "url": "https://github.com/philippta/flyscrape",
+      "description": "Flyscrape is a command-line web scraping tool designed for those without advanced programming skills.",
+      "stars": 1339,
+      "license": "MPL-2.0",
+      "pushed_at": "2025-11-24T20:30:02Z",
+      "updated_at": "2026-04-24T09:40:35Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, adoption, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "seo-skills/seo-audit-skill",
+      "url": "https://github.com/seo-skills/seo-audit-skill",
+      "description": "A comprehensive SEO audit command-line tool with 108 audit rules across 12 categories. Analyze any website for SEO best practices, Core Web Vitals, security headers, structured data, accessibility, and more.",
+      "stars": 195,
+      "license": "MIT",
+      "pushed_at": "2026-03-05T08:15:32Z",
+      "updated_at": "2026-04-23T11:53:51Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, adoption, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "huifer/skill-security-scan",
+      "url": "https://github.com/huifer/skill-security-scan",
+      "description": "skill-security-scan is a command-line tool designed to scan and detect security risks in Claude Skills. Before installing third-party Skills, use this tool for security review to effectively prevent malicious code from stealing data or compromising your system.",
+      "stars": 123,
+      "license": "MIT",
+      "pushed_at": "2025-12-29T08:12:19Z",
+      "updated_at": "2026-04-23T03:42:39Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, adoption, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "feder-cr/resume_render_from_job_description",
+      "url": "https://github.com/feder-cr/resume_render_from_job_description",
+      "description": "Resume_Builder_AIHawk is a powerful Python tool that allows you to automatically customize your resume based on a job URL, ensuring it perfectly aligns with the job requirements and skills. With an interactive command-line interface, this tool makes it easy to navigate through options and select from various pre-defined styles",
+      "stars": 396,
+      "license": "MIT",
+      "pushed_at": "2024-09-15T18:50:47Z",
+      "updated_at": "2026-04-23T14:02:57Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, adoption, fresh",
+      "classification": "신규안"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "Venipa/ytdlp-gui",
+      "url": "https://github.com/Venipa/ytdlp-gui",
+      "description": "\"ytdlp-gui\" is a user-friendly graphical interface that simplifies downloading videos from various platforms using the powerful command-line tool \"yt-dlp\", making it accessible for users of all skill levels.",
+      "stars": 80,
+      "license": "AGPL-3.0",
+      "pushed_at": "2026-04-19T08:48:26Z",
+      "updated_at": "2026-04-19T08:47:32Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안"
+    }
+  ],
+  "dropped": [
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "Janani-Balasooriya/Java-Beginner-Projects",
+      "url": "https://github.com/Janani-Balasooriya/Java-Beginner-Projects",
+      "description": "Explore a variety of simple, hands-on Java projects ideal for beginners. Sharpen your coding skills while creating command-line applications, games, and practical tools in Java. Perfect for those new to programming or looking to learn Java.",
+      "stars": 89,
+      "license": "UNKNOWN",
+      "pushed_at": "2025-10-07T20:09:46Z",
+      "updated_at": "2026-04-23T08:30:24Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "osulivan/skill4agent-cli",
+      "url": "https://github.com/osulivan/skill4agent-cli",
+      "description": "By skill4agent.com, a command-line tool for installing Agent Skills.",
+      "stars": 6,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-02-25T09:54:15Z",
+      "updated_at": "2026-04-03T08:40:31Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "jiulingyun/Claw-CLI",
+      "url": "https://github.com/jiulingyun/Claw-CLI",
+      "description": "Claw is a powerful CLI tool that enables agents to interact with the OpenClaw-CN ecosystem directly from the terminal. Manage skills, interact with the community forum, search documentation, and configure your agent profile—all through a simple command-line interface.",
+      "stars": 36,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-03-28T10:21:09Z",
+      "updated_at": "2026-04-21T06:38:40Z",
+      "archived": false,
+      "fit_score": 4,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "madlabsinc/teachcode",
+      "url": "https://github.com/madlabsinc/teachcode",
+      "description": "A tool to develop and improve a student’s programming skills by introducing the earliest lessons of coding.",
+      "stars": 412,
+      "license": "GPL-3.0",
+      "pushed_at": "2025-11-07T17:02:29Z",
+      "updated_at": "2026-04-15T10:57:03Z",
+      "archived": false,
+      "fit_score": 1,
+      "fit_rationale": "adoption, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "low-fit:1"
+      ]
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "tartinerlabs/skills",
+      "url": "https://github.com/tartinerlabs/skills",
+      "description": "Claude Code skills for git workflows, GitHub automation, security audits, code refactoring, and project tooling",
+      "stars": 6,
+      "license": "MIT",
+      "pushed_at": "2026-04-16T17:22:59Z",
+      "updated_at": "2026-04-19T12:05:56Z",
+      "archived": false,
+      "fit_score": 1,
+      "fit_rationale": "fresh",
+      "classification": "개선안",
+      "drop_reasons": [
+        "low-fit:1"
+      ]
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "spqw/skill",
+      "url": "https://github.com/spqw/skill",
+      "description": "Publish CLI tools to Homebrew and mise via GitHub releases",
+      "stars": 0,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-02-24T16:56:38Z",
+      "updated_at": "2026-02-24T16:57:44Z",
+      "archived": false,
+      "fit_score": 2,
+      "fit_rationale": "keyword-fit, fresh",
+      "classification": "개선안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "yasasbanukaofficial/claude-code",
+      "url": "https://github.com/yasasbanukaofficial/claude-code",
+      "description": "🚀 Open source Claude Code CLI source code. Advanced AI Agent for developers. Includes TypeScript codebase for LLM tool-calling, agentic workflows, and terminal UI. Remember this is just the skeleton not the brain itself. Found by Chaofan Shou. ",
+      "stars": 2823,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-04-04T21:25:14Z",
+      "updated_at": "2026-04-24T22:36:37Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, adoption, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "tach-org/tach",
+      "url": "https://github.com/tach-org/tach",
+      "description": "A Python tool to visualize + enforce dependencies, using modular architecture 🌎 Open source 🐍 Installable via pip 🔧 Able to be adopted incrementally - ⚡ Implemented with no runtime impact ♾️ Interoperable with your existing systems 🦀 Written in rust",
+      "stars": 2705,
+      "license": "MIT",
+      "pushed_at": "2026-04-11T03:37:39Z",
+      "updated_at": "2026-04-24T21:37:51Z",
+      "archived": false,
+      "fit_score": 1,
+      "fit_rationale": "adoption, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "low-fit:1"
+      ]
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "bradAGI/awesome-cli-coding-agents",
+      "url": "https://github.com/bradAGI/awesome-cli-coding-agents",
+      "description": "Curated directory of terminal-native AI coding agents and the harnesses that orchestrate them. Covers open-source tools (Pi, OpenCode, Aider, Goose), platform agents (Claude Code, Codex, Gemini CLI), parallel runners, autonomous loops, and agent infrastructure. ",
+      "stars": 254,
+      "license": "UNKNOWN",
+      "pushed_at": "2026-04-23T14:31:31Z",
+      "updated_at": "2026-04-24T21:27:16Z",
+      "archived": false,
+      "fit_score": 3,
+      "fit_rationale": "keyword-fit, adoption, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "license:UNKNOWN"
+      ]
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "full_name": "gaetanlhf/EXPOSE",
+      "url": "https://github.com/gaetanlhf/EXPOSE",
+      "description": "Your no-config, no-install, globally distributed open-source tool to expose your local services",
+      "stars": 269,
+      "license": "AGPL-3.0",
+      "pushed_at": "2025-08-28T18:19:47Z",
+      "updated_at": "2026-04-16T14:57:19Z",
+      "archived": false,
+      "fit_score": 1,
+      "fit_rationale": "adoption, fresh",
+      "classification": "신규안",
+      "drop_reasons": [
+        "low-fit:1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+agentic-ai-skill	agentic ai skill	kept=5	dropped=5
+web-frontend-skill	web frontend skill	kept=0	dropped=4
+web-backend-skill	web backend skill	kept=6	dropped=10
+cli-open-source-skill	cli open source skill	kept=6	dropped=10
+game-development-skill	game development skill	kept=0	dropped=10

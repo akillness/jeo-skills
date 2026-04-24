@@ -78,7 +78,8 @@ Use these as fallback queries after the primary keyword family returns sparse/no
 
 - At least 1 recommendation-grade keep per lane where feasible.
 - `cli open source skill` lane target: 3+ kept entries for spotlight quality.
-- If a lane is below threshold, keep discovery evidence, mark lane status as `recovery used`, and report why thresholds were missed.
+- For each lane, emit explicit `lane_status` in markdown: `pass` or `degraded`.
+- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived` (include counts or concrete examples).
 
 ## Reporting checklist
 
@@ -88,5 +89,7 @@ Before final recommendations:
 - [ ] Raw discovery evidence saved
 - [ ] Relevance gate applied to kept candidates
 - [ ] Metadata minimum recorded for each kept candidate
+- [ ] Lane-level `lane_status` (`pass|degraded`) included in markdown summary
+- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived`) reported with examples/counts
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly
