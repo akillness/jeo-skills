@@ -1,0 +1,27 @@
+N:ghgrab
+D:Search and selectively download files or folders from GitHub repositories via terminal using ghgrab, without full clone. Covers install, interactive browse, and release artifact retrieval.
+G:ghgrab github cli file-download selective-fetch terminal
+U[6]:
+  Install and verify ghgrab quickly on developer machines
+  Fetch specific files/folders without full repository clone
+  Start from interactive home or direct repository URL
+  Use release artifact download flow when binaries are needed
+  Keep automation runs reproducible with source/destination logging
+  Apply non-destructive destination/path checks before download
+S[6]{n,action,details}:
+  1,Detect availability,Check whether ghgrab exists in PATH and identify install method if missing
+  2,Install if needed,Use npm cargo or pipx then verify with ghgrab --help
+  3,Open target context,Launch interactive home or pass repository URL directly
+  4,Select and download,Choose only required files/folders and download intentionally
+  5,Handle release assets,Use release selection flow for binary/download artifacts
+  6,Record reproducibility,Capture source repo selected assets and destination path in run notes
+R[6]:
+  Prefer selective pull over full clone when history is unnecessary
+  Confirm output destination before any write side effects
+  Avoid destructive overwrite paths unless explicitly requested
+  Check binary shadowing when multiple installers are used
+  Treat private repository access as auth-dependent
+  Route history-sensitive tasks to git clone instead of ghgrab
+E[2]{desc,in,out}:
+  "Selective repo fetch","Get two config files from a large GitHub repo without cloning everything","Uses ghgrab on a direct repo URL and downloads only selected files"
+  "Release artifact pull","Download the latest release binary for my platform","Uses ghgrab release selection path and records chosen artifact plus destination"

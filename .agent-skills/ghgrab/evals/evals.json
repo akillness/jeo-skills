@@ -1,0 +1,35 @@
+{
+  "skill_name": "ghgrab",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I only need two files from a huge GitHub repo, do not clone the whole thing",
+      "expected_output": "Uses ghgrab selective-download workflow (interactive or direct URL) and avoids full clone guidance.",
+      "assertions": [
+        "Recommends ghgrab for selective file/folder retrieval",
+        "Includes direct repo URL mode or interactive mode",
+        "Avoids defaulting to full git clone"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "ghgrab command is not found on my machine",
+      "expected_output": "Provides install options (npm/cargo/pipx) and verification command.",
+      "assertions": [
+        "Lists at least one valid install command",
+        "Includes verification with ghgrab --help or equivalent",
+        "Mentions path/binary check when multiple installers exist"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Need latest release asset from GitHub without opening browser",
+      "expected_output": "Routes to ghgrab release artifact flow and emphasizes destination confirmation.",
+      "assertions": [
+        "Mentions release artifact retrieval mode",
+        "Includes destination-path confirmation or non-destructive write guard",
+        "Keeps answer in terminal-first workflow"
+      ]
+    }
+  ]
+}

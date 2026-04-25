@@ -89,7 +89,8 @@ Use these as fallback queries after the primary keyword family returns sparse/no
   - `command line tool developer productivity stars:>200 pushed:>=2024-01-01`
   - `github cli terminal tool stars:>200 pushed:>=2024-01-01`
 - `game development skill` lane
-  - `game engine tooling pipeline stars:>150 pushed:>=2024-01-01`
+  - Stage 1: `game engine tooling pipeline stars:>150 pushed:>=2024-01-01`
+  - Stage 2 (deterministic escalation when Stage 1 still has `raw_count == 0` or noisy keeps remain `kept_count == 0`): `game development framework tools stars:>100 pushed:>=2023-01-01`
 
 Stage-2 escalation rule:
 - If a lane remains `raw_count == 0` after stage-1 recovery, run exactly one stage-2 query template for that lane before finalizing `lane_status`.

@@ -190,6 +190,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where game-development lane is sparse: stage-1 recovery returns raw_count=0, so the run must stay deterministic",
+      "expected_output": "The survey applies the documented game lane stage-2 recovery query, then reports final lane_status with explicit degraded causes if recommendation-grade keeps still fail thresholds.",
+      "assertions": [
+        "Runs the documented game-development stage-2 recovery query when stage-1 is empty or still keeps=0",
+        "Reapplies recommendation-grade gates (license/freshness/signal/fit) to stage-2 hits",
+        "Reports lane_status, lane metrics, and degraded_causes transparently after escalation"
+      ]
     }
   ]
 }
