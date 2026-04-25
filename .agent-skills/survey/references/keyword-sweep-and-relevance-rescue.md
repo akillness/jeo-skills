@@ -50,6 +50,7 @@ Signal floor default for recommendation-grade keeps:
 Drop or risk-mark signals:
 
 - Keyword-only match but wrong domain
+- Generic personal catch-all repos (especially `*/skills`) without concrete workflow docs and traction
 - Assessment/homework/demo-only repos with low transferability
 - Archived/stale without strong reason
 - Missing basic metadata or unknown license without exception note
