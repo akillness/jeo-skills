@@ -81,12 +81,17 @@ Use these as fallback queries after the primary keyword family returns sparse/no
 - `web frontend skill` lane
   - `frontend ui component design system stars:>300 pushed:>=2024-01-01`
 - `web backend skill` lane
-  - `backend api framework observability stars:>300 pushed:>=2024-01-01`
+  - Stage 1: `backend api framework observability stars:>300 pushed:>=2024-01-01`
+  - Stage 2 (deterministic escalation when Stage 1 still has `raw_count == 0`): `backend developer platform api template stars:>150 pushed:>=2024-01-01`
 - `cli open source skill` lane
   - `command line tool developer productivity stars:>200 pushed:>=2024-01-01`
   - `github cli terminal tool stars:>200 pushed:>=2024-01-01`
 - `game development skill` lane
   - `game engine tooling pipeline stars:>150 pushed:>=2024-01-01`
+
+Stage-2 escalation rule:
+- If a lane remains `raw_count == 0` after stage-1 recovery, run exactly one stage-2 query template for that lane before finalizing `lane_status`.
+- Keep provenance labels and apply the same relevance + metadata + signal/freshness gate to stage-2 hits.
 
 ### Minimum recommendation thresholds (after relevance gate)
 

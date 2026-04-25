@@ -1,0 +1,135 @@
+{
+  "nodes": [
+    {
+      "id": "lane:agentic",
+      "type": "lane",
+      "status": "pass",
+      "keyword": "agentic ai skill"
+    },
+    {
+      "id": "repo:openakita/openakita",
+      "type": "repo",
+      "stars": 1668,
+      "license": "apache-2.0"
+    },
+    {
+      "id": "repo:sangrokjung/claude-forge",
+      "type": "repo",
+      "stars": 660,
+      "license": "mit"
+    },
+    {
+      "id": "repo:alirezarezvani/claude-code-aso-skill",
+      "type": "repo",
+      "stars": 313,
+      "license": "other"
+    },
+    {
+      "id": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "repo",
+      "stars": 14,
+      "license": "apache-2.0"
+    },
+    {
+      "id": "repo:VoDaiLocz/Enhance-Prompt",
+      "type": "repo",
+      "stars": 10,
+      "license": "mit"
+    },
+    {
+      "id": "repo:iwe-org/skills",
+      "type": "repo",
+      "stars": 7,
+      "license": "mit"
+    },
+    {
+      "id": "lane:frontend",
+      "type": "lane",
+      "status": "degraded",
+      "keyword": "web frontend skill"
+    },
+    {
+      "id": "lane:backend",
+      "type": "lane",
+      "status": "degraded",
+      "keyword": "web backend skill"
+    },
+    {
+      "id": "lane:cli",
+      "type": "lane",
+      "status": "degraded",
+      "keyword": "cli open source skill"
+    },
+    {
+      "id": "repo:guarinogabriel/Mac-CLI",
+      "type": "repo",
+      "stars": 9062,
+      "license": "mit"
+    },
+    {
+      "id": "repo:abhixdd/ghgrab",
+      "type": "repo",
+      "stars": 826,
+      "license": "mit"
+    },
+    {
+      "id": "lane:game",
+      "type": "lane",
+      "status": "pass",
+      "keyword": "game development skill"
+    },
+    {
+      "id": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "repo",
+      "stars": 3,
+      "license": "mit"
+    }
+  ],
+  "edges": [
+    {
+      "source": "lane:agentic",
+      "target": "repo:openakita/openakita",
+      "relation": "kept_candidate"
+    },
+    {
+      "source": "lane:agentic",
+      "target": "repo:sangrokjung/claude-forge",
+      "relation": "kept_candidate"
+    },
+    {
+      "source": "lane:agentic",
+      "target": "repo:alirezarezvani/claude-code-aso-skill",
+      "relation": "kept_candidate"
+    },
+    {
+      "source": "lane:agentic",
+      "target": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "relation": "kept_candidate"
+    },
+    {
+      "source": "lane:agentic",
+      "target": "repo:VoDaiLocz/Enhance-Prompt",
+      "relation": "kept_candidate"
+    },
+    {
+      "source": "lane:agentic",
+      "target": "repo:iwe-org/skills",
+      "relation": "kept_candidate"
+    },
+    {
+      "source": "lane:cli",
+      "target": "repo:guarinogabriel/Mac-CLI",
+      "relation": "kept_candidate"
+    },
+    {
+      "source": "lane:cli",
+      "target": "repo:abhixdd/ghgrab",
+      "relation": "kept_candidate"
+    },
+    {
+      "source": "lane:game",
+      "target": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "relation": "kept_candidate"
+    }
+  ]
+}

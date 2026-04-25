@@ -150,6 +150,16 @@
         "Requires a traction signal or explicit exception rationale for low-signal candidates",
         "Reports `low-signal` explicitly in degraded_causes when applicable"
       ]
+    },
+    {
+      "id": 16,
+      "prompt": "run the hourly five-lane survey where backend remains raw_count=0 after stage-1 recovery query; keep the run deterministic for cron",
+      "expected_output": "The survey runs one documented stage-2 recovery query for that lane before final lane_status, then applies the same relevance/provenance/quality gates to any recovered hits.",
+      "assertions": [
+        "Escalates once with a documented stage-2 lane query when stage-1 still yields raw_count==0",
+        "Keeps recommendation-grade filters (license/freshness/signal) on stage-2 results",
+        "Reports provenance and final lane_status/degraded_causes after escalation"
+      ]
     }
   ]
 }
