@@ -190,6 +190,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly survey in a repo where open hourly PRs already accumulated; keep recommendations useful but avoid runaway change volume",
+      "expected_output": "The survey keeps evidence collection complete, reports backlog pressure from open PR queue state, and constrains downstream implementation scope (one bounded hardening + at most one new skill) for safer cron operation.",
+      "assertions": [
+        "Checks or reports open PR backlog state before handoff to implementation",
+        "Marks backlog pressure explicitly when queue saturation is observed",
+        "Recommends scoped downstream change volume instead of broad multi-skill churn"
+      ]
     }
   ]
 }

@@ -1,0 +1,32 @@
+{
+  "skill_name": "supabase-agent-skills",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Supabase 기반 프로젝트에 AI 에이전트용 스킬을 붙이고 싶어. 최소 설치 명령 알려줘",
+      "expected_output": "The response provides `npx skills add supabase/agent-skills` and explains when to use selective install.",
+      "assertions": [
+        "Includes the exact install command for all skills",
+        "Mentions selective `--skill` install as an option"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Claude plugin 방식으로 Supabase 스킬 쓰려면?",
+      "expected_output": "The response includes marketplace add and plugin install commands.",
+      "assertions": [
+        "Mentions `claude plugin marketplace add supabase/agent-skills`",
+        "Mentions explicit plugin install command"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "스킬 로딩이 안 돼. 그냥 DB 작업 진행해도 될까?",
+      "expected_output": "The response recommends fallback to direct CLI/SQL with read-first safety checks.",
+      "assertions": [
+        "Recommends direct Supabase CLI or SQL fallback",
+        "Includes a safety guard against destructive operations"
+      ]
+    }
+  ]
+}

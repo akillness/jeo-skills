@@ -1,0 +1,31 @@
+N:supabase-agent-skills
+D:[supabase-agent-skills] Install and use Supabase Agent Skills from supabase/agent-skills for AI coding agents. Covers full install, selective skill install, Claude plugin path, verification checks, and fallback to direct Supabase CLI and SQL workflows.
+G:supabase postgres agent-skills ai-agent database backend cli
+
+U[6]:
+  Install Supabase skill packs for AI coding agents
+  Selectively install only needed Supabase skills to reduce noise
+  Verify installation before relying on generated database changes
+  Use Claude plugin installation path when plugin workflow is enabled
+  Fall back to direct Supabase CLI and SQL checks when skill loading fails
+  Keep migration and credential handling safe and explicit
+
+S[5]{n,action,details}:
+  1,Check prerequisites,Confirm Node and npm are available and the project actually uses Supabase or Postgres
+  2,Install skills,Run npx skills add supabase/agent-skills for full install or --skill for selective install
+  3,Plugin path optional,If Claude plugin mode is used add marketplace entry and install the plugin name explicitly
+  4,Verify quality,Check installed skills and run one bounded smoke task before broader use
+  5,Fallback safely,If agent skill loading is unavailable use direct Supabase CLI and SQL with read-first validation
+
+R[6]:
+  Prefer selective skill install in mixed stacks to avoid over-broad agent behavior
+  Do not execute destructive migrations without explicit confirmation
+  Keep credential material out of repository files
+  Validate generated SQL or migration output with direct inspection before apply
+  Use direct CLI or SQL fallback when skill/plugin state is uncertain
+  Keep evidence links to repo and docs for reproducible onboarding
+
+E[3]{type,command}:
+  Install all,npx skills add supabase/agent-skills
+  Install one,npx skills add supabase/agent-skills --skill supabase-postgres-best-practices
+  Claude plugin,claude plugin marketplace add supabase/agent-skills
