@@ -120,6 +120,16 @@
         "Avoids unsupported provenance labels in final markdown artifacts",
         "Keeps the survey report explicit about reduced confidence when `thin evidence` is used"
       ]
+    },
+    {
+      "id": 13,
+      "prompt": "run the hourly five-lane survey and make lane status reviewer-ready for trend tracking",
+      "expected_output": "The survey reports lane_status with compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can compare quality drift between hourly runs.",
+      "assertions": [
+        "Reports lane_status (`pass|degraded`) per lane in markdown",
+        "Includes lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) alongside lane_status",
+        "Keeps degraded_causes/provenance context when a lane is under threshold"
+      ]
     }
   ]
 }
