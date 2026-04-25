@@ -140,6 +140,16 @@
         "Runs lane-specific recovery queries when trigger conditions are met",
         "Preserves provenance and lane_status/degraded_causes reporting after recovery"
       ]
+    },
+    {
+      "id": 15,
+      "prompt": "run the hourly five-lane survey where one lane only has recently updated but very low-traction repositories; keep discovery evidence broad but recommendation-grade keeps strict",
+      "expected_output": "The survey preserves raw lane evidence but applies a recommendation-grade signal floor (for example stars>=3 or explicit adoption rationale), and reports `low-signal` in degraded causes when thresholds are missed.",
+      "assertions": [
+        "Keeps broad discovery evidence while applying stricter recommendation-grade keep rules",
+        "Requires a traction signal or explicit exception rationale for low-signal candidates",
+        "Reports `low-signal` explicitly in degraded_causes when applicable"
+      ]
     }
   ]
 }

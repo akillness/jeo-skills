@@ -41,6 +41,12 @@ Freshness default for recommendation-grade keeps:
 - Keep if `pushed_at` is within the last 24 months.
 - Otherwise, drop by default or keep only with an explicit exception rationale and risk note.
 
+Signal floor default for recommendation-grade keeps:
+
+- Preserve broad discovery evidence, but do not promote low-traction candidates by default.
+- Require at least one traction signal for keeps (for example, stars >= 3, or explicit maintainer/community adoption evidence with rationale).
+- If a lane is sparse and a low-signal keep is still needed, document the exception rationale and risk note explicitly in markdown.
+
 Drop or risk-mark signals:
 
 - Keyword-only match but wrong domain
@@ -87,7 +93,7 @@ Use these as fallback queries after the primary keyword family returns sparse/no
 - At least 1 recommendation-grade keep per lane where feasible.
 - `cli open source skill` lane target: 3+ kept entries for spotlight quality.
 - For each lane, emit explicit `lane_status` in markdown: `pass` or `degraded`.
-- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived` (include counts or concrete examples).
+- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal` (include counts or concrete examples).
 
 ## Reporting checklist
 
@@ -98,6 +104,6 @@ Before final recommendations:
 - [ ] Relevance gate applied to kept candidates
 - [ ] Metadata minimum recorded for each kept candidate
 - [ ] Lane-level `lane_status` (`pass|degraded`) included in markdown summary
-- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived`) reported with examples/counts
+- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal`) reported with examples/counts
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly
