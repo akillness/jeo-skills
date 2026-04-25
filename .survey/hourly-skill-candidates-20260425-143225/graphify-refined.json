@@ -1,0 +1,167 @@
+{
+  "generated_at": "2026-04-25T05:36:53.714907",
+  "source": "evidence.json",
+  "nodes": [
+    {
+      "id": "survey-run",
+      "type": "run",
+      "slug": "hourly-skill-candidates-20260425-143225"
+    },
+    {
+      "id": "lane:agentic",
+      "type": "lane",
+      "status": "degraded",
+      "kept_count": 0,
+      "raw_count": 40
+    },
+    {
+      "id": "lane:frontend",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 15,
+      "raw_count": 64
+    },
+    {
+      "id": "lane:backend",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 24,
+      "raw_count": 56
+    },
+    {
+      "id": "lane:cli",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 28,
+      "raw_count": 35
+    },
+    {
+      "id": "lane:game",
+      "type": "lane",
+      "status": "degraded",
+      "kept_count": 0,
+      "raw_count": 40
+    },
+    {
+      "id": "cause:archived",
+      "type": "degraded-cause"
+    },
+    {
+      "id": "cause:license",
+      "type": "degraded-cause"
+    },
+    {
+      "id": "cause:low-fit",
+      "type": "degraded-cause"
+    },
+    {
+      "id": "cause:stale",
+      "type": "degraded-cause"
+    }
+  ],
+  "edges": [
+    {
+      "source": "survey-run",
+      "target": "lane:agentic",
+      "relation": "has_lane"
+    },
+    {
+      "source": "lane:agentic",
+      "target": "cause:low-fit",
+      "relation": "degraded_by",
+      "count": 40
+    },
+    {
+      "source": "lane:agentic",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "count": 25
+    },
+    {
+      "source": "survey-run",
+      "target": "lane:frontend",
+      "relation": "has_lane"
+    },
+    {
+      "source": "lane:frontend",
+      "target": "cause:low-fit",
+      "relation": "degraded_by",
+      "count": 49
+    },
+    {
+      "source": "lane:frontend",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "count": 20
+    },
+    {
+      "source": "lane:frontend",
+      "target": "cause:stale",
+      "relation": "degraded_by",
+      "count": 1
+    },
+    {
+      "source": "survey-run",
+      "target": "lane:backend",
+      "relation": "has_lane"
+    },
+    {
+      "source": "lane:backend",
+      "target": "cause:low-fit",
+      "relation": "degraded_by",
+      "count": 30
+    },
+    {
+      "source": "lane:backend",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "count": 8
+    },
+    {
+      "source": "survey-run",
+      "target": "lane:cli",
+      "relation": "has_lane"
+    },
+    {
+      "source": "lane:cli",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "count": 4
+    },
+    {
+      "source": "lane:cli",
+      "target": "cause:low-fit",
+      "relation": "degraded_by",
+      "count": 4
+    },
+    {
+      "source": "survey-run",
+      "target": "lane:game",
+      "relation": "has_lane"
+    },
+    {
+      "source": "lane:game",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "count": 31
+    },
+    {
+      "source": "lane:game",
+      "target": "cause:low-fit",
+      "relation": "degraded_by",
+      "count": 40
+    },
+    {
+      "source": "lane:game",
+      "target": "cause:stale",
+      "relation": "degraded_by",
+      "count": 19
+    },
+    {
+      "source": "lane:game",
+      "target": "cause:archived",
+      "relation": "degraded_by",
+      "count": 2
+    }
+  ]
+}
