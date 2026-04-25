@@ -1,7 +1,7 @@
 N:survey
 D:Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform patterns map before deciding what to build. Produce reusable .survey/{slug}/ artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.
 G:survey landscape-scan research discovery groundwork omc omx ohmg claude codex gemini hooks rules settings
-U[10]:
+U[11]:
   Produce reusable .survey/{slug}/ artifacts before planning or implementation
   Compare solutions workarounds and repeated complaints without drifting into coding
   Normalize platform topics into settings rules hooks and platform gaps
@@ -11,8 +11,9 @@ U[10]:
   Treat generic personal catch-all repos (especially */skills) as low-fit by default unless workflow docs + traction are explicit
   Emit lane-level status vocabulary (pass|degraded) and degraded-cause taxonomy for sparse/noisy lanes
   Include compact lane-health metrics (kept_count raw_count median_stars_raw zero_star_raw) for reviewer trend tracking
+  Detect cross-lane recommendation concentration with recommended_lane_count and single_lane_concentration flags
   Validate the artifact contract before handing off to planning or execution
-S[10]{n,action,details}:
+S[11]{n,action,details}:
   1,Classify mode,Choose one primary survey mode and decide whether platform-map.md is required
   2,Freeze evidence rules,Set the source quality floor labels and recovery order before searching
   3,Triage and reuse,Extract what who why and check whether an existing .survey/{slug} should be reused
@@ -20,10 +21,11 @@ S[10]{n,action,details}:
   5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families, run lane recovery templates when needed, and escalate once with a documented stage-2 query if a lane still has raw_count==0
   6,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal) in markdown summaries
   7,Record lane metrics,Alongside lane_status include kept_count raw_count median_stars_raw zero_star_raw so reviewers can detect quality drift
-  8,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
-  9,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
-  10,Summarize,Return a short factual survey summary and route planning or implementation outward
-R[13]:
+  8,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane
+  9,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
+  10,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
+  11,Summarize,Return a short factual survey summary and route planning or implementation outward
+R[14]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
   Keep claims source-backed and label downgraded evidence clearly
@@ -35,6 +37,7 @@ R[13]:
   Preserve lane-level threshold reporting (>=1 keep per lane where feasible; CLI lane target 3+) and run one documented stage-2 lane recovery when stage-1 still yields raw_count==0
   Use lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal) for under-threshold lanes
   Include lane metrics (kept_count raw_count median_stars_raw zero_star_raw) whenever lane_status is reported
+  Include cross-lane concentration signals (recommended_lane_count and single_lane_concentration) before claiming healthy recommendation coverage
   Deduplicate solution names and keep one bounded question per survey artifact
   Use settings rules hooks as the common layer for Claude Codex Gemini comparisons
 E[2]{desc,in,out}:

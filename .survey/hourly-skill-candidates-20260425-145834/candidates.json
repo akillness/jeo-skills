@@ -1,0 +1,48 @@
+{
+  "run_slug": "hourly-skill-candidates-20260425-145834",
+  "generated_at": "2026-04-25T14:59:32Z",
+  "candidates": [
+    {
+      "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+      "stars": 14,
+      "forks": 2,
+      "license": "apache-2.0",
+      "pushed_at": "2026-01-29T09:33:47Z",
+      "updated_at": "2026-04-07T21:13:35Z",
+      "archived": false,
+      "fit_rationale": "agentic ai skill 맥락에서 재사용 가능한 오픈소스 역량 신호(⭐14)",
+      "lane": "agentic-ai-skill",
+      "provenance": "indexed snippet"
+    },
+    {
+      "full_name": "VoDaiLocz/Enhance-Prompt",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+      "stars": 10,
+      "forks": 1,
+      "license": "mit",
+      "pushed_at": "2026-03-05T13:50:53Z",
+      "updated_at": "2026-04-14T14:36:09Z",
+      "archived": false,
+      "fit_rationale": "agentic ai skill 맥락에서 재사용 가능한 오픈소스 역량 신호(⭐10)",
+      "lane": "agentic-ai-skill",
+      "provenance": "indexed snippet"
+    },
+    {
+      "full_name": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "description": "Agentic AI skills for knowledge graph management",
+      "stars": 7,
+      "forks": 1,
+      "license": "mit",
+      "pushed_at": "2026-04-06T01:48:47Z",
+      "updated_at": "2026-04-21T19:12:04Z",
+      "archived": false,
+      "fit_rationale": "agentic ai skill 맥락에서 재사용 가능한 오픈소스 역량 신호(⭐7)",
+      "lane": "agentic-ai-skill",
+      "provenance": "indexed snippet"
+    }
+  ]
+}
