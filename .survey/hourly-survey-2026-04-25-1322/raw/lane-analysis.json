@@ -1,0 +1,189 @@
+{
+  "agentic ai skill": {
+    "raw_count": 33,
+    "median_stars_raw": 0,
+    "zero_star_raw": 21,
+    "kept_count": 3,
+    "lane_status": "pass",
+    "degraded_causes": [],
+    "keeps": [
+      {
+        "name": "microsoft/autogen",
+        "url": "https://github.com/microsoft/autogen",
+        "stars": 57408,
+        "pushed_at": "2026-04-15T11:59:09Z",
+        "archived": false,
+        "license": "CC-BY-4.0",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      },
+      {
+        "name": "crewAIInc/crewAI",
+        "url": "https://github.com/crewAIInc/crewAI",
+        "stars": 49820,
+        "pushed_at": "2026-04-24T20:53:47Z",
+        "archived": false,
+        "license": "MIT",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      },
+      {
+        "name": "langchain-ai/langgraph",
+        "url": "https://github.com/langchain-ai/langgraph",
+        "stars": 30285,
+        "pushed_at": "2026-04-25T03:30:49Z",
+        "archived": false,
+        "license": "MIT",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      }
+    ]
+  },
+  "web frontend skill": {
+    "raw_count": 4,
+    "median_stars_raw": 0.0,
+    "zero_star_raw": 3,
+    "kept_count": 3,
+    "lane_status": "pass",
+    "degraded_causes": [],
+    "keeps": [
+      {
+        "name": "vercel/next.js",
+        "url": "https://github.com/vercel/next.js",
+        "stars": 139143,
+        "pushed_at": "2026-04-25T01:34:45Z",
+        "archived": false,
+        "license": "MIT",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      },
+      {
+        "name": "sveltejs/svelte",
+        "url": "https://github.com/sveltejs/svelte",
+        "stars": 86417,
+        "pushed_at": "2026-04-24T09:51:36Z",
+        "archived": false,
+        "license": "MIT",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      },
+      {
+        "name": "vuejs/core",
+        "url": "https://github.com/vuejs/core",
+        "stars": 53521,
+        "pushed_at": "2026-04-24T06:00:15Z",
+        "archived": false,
+        "license": "MIT",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      }
+    ]
+  },
+  "web backend skill": {
+    "raw_count": 0,
+    "median_stars_raw": 0,
+    "zero_star_raw": 0,
+    "kept_count": 3,
+    "lane_status": "pass",
+    "degraded_causes": [
+      "low-fit"
+    ],
+    "keeps": [
+      {
+        "name": "fastapi/fastapi",
+        "url": "https://github.com/fastapi/fastapi",
+        "stars": 97622,
+        "pushed_at": "2026-04-24T13:06:37Z",
+        "archived": false,
+        "license": "MIT",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      },
+      {
+        "name": "django/django",
+        "url": "https://github.com/django/django",
+        "stars": 87323,
+        "pushed_at": "2026-04-24T18:19:15Z",
+        "archived": false,
+        "license": "BSD-3-CLAUSE",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      },
+      {
+        "name": "nestjs/nest",
+        "url": "https://github.com/nestjs/nest",
+        "stars": 75310,
+        "pushed_at": "2026-04-24T10:17:39Z",
+        "archived": false,
+        "license": "MIT",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      }
+    ]
+  },
+  "cli open source skill": {
+    "raw_count": 5,
+    "median_stars_raw": 825,
+    "zero_star_raw": 0,
+    "kept_count": 3,
+    "lane_status": "pass",
+    "degraded_causes": [],
+    "keeps": [
+      {
+        "name": "junegunn/fzf",
+        "url": "https://github.com/junegunn/fzf",
+        "stars": 79769,
+        "pushed_at": "2026-04-21T09:48:34Z",
+        "archived": false,
+        "license": "MIT",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      },
+      {
+        "name": "sharkdp/bat",
+        "url": "https://github.com/sharkdp/bat",
+        "stars": 58533,
+        "pushed_at": "2026-04-20T02:09:54Z",
+        "archived": false,
+        "license": "APACHE-2.0",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      },
+      {
+        "name": "charmbracelet/gum",
+        "url": "https://github.com/charmbracelet/gum",
+        "stars": 23458,
+        "pushed_at": "2026-04-22T14:14:33Z",
+        "archived": false,
+        "license": "MIT",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      }
+    ]
+  },
+  "game development skill": {
+    "raw_count": 30,
+    "median_stars_raw": 0.0,
+    "zero_star_raw": 17,
+    "kept_count": 3,
+    "lane_status": "pass",
+    "degraded_causes": [],
+    "keeps": [
+      {
+        "name": "godotengine/godot",
+        "url": "https://github.com/godotengine/godot",
+        "stars": 109912,
+        "pushed_at": "2026-04-24T21:55:01Z",
+        "archived": false,
+        "license": "MIT",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      },
+      {
+        "name": "bevyengine/bevy",
+        "url": "https://github.com/bevyengine/bevy",
+        "stars": 45738,
+        "pushed_at": "2026-04-25T03:18:00Z",
+        "archived": false,
+        "license": "APACHE-2.0",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      },
+      {
+        "name": "MonoGame/MonoGame",
+        "url": "https://github.com/MonoGame/MonoGame",
+        "stars": 13766,
+        "pushed_at": "2026-04-22T16:22:53Z",
+        "archived": false,
+        "license": "OTHER",
+        "fit_rationale": "seed from relevance-rescue matrix; workflow-aligned"
+      }
+    ]
+  }
+}

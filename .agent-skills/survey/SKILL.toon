@@ -16,7 +16,7 @@ S[10]{n,action,details}:
   3,Triage and reuse,Extract what who why and check whether an existing .survey/{slug} should be reused
   4,Run 4 lanes,Research context solutions actual behavior and alternatives-or-platform-map in parallel
   5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families, run lane recovery templates when needed, and keep relevance-gated metadata with lane-level threshold notes
-  6,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived) in markdown summaries
+  6,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|transport/auth) in markdown summaries
   7,Record lane metrics,Alongside lane_status include kept_count raw_count median_stars_raw zero_star_raw so reviewers can detect quality drift
   8,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
   9,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
@@ -29,7 +29,7 @@ R[11]:
   Apply a recommendation-grade freshness floor (drop stale pushed_at over 24 months unless exception rationale + risk note)
   Preserve the same artifact filenames and headings across platforms
   Preserve lane-level threshold reporting (>=1 keep per lane where feasible; CLI lane target 3+) when keyword sweeps are sparse/noisy
-  Use lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived) for under-threshold lanes
+  Use lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|transport/auth) for under-threshold lanes
   Include lane metrics (kept_count raw_count median_stars_raw zero_star_raw) whenever lane_status is reported
   Deduplicate solution names and keep one bounded question per survey artifact
   Use settings rules hooks as the common layer for Claude Codex Gemini comparisons
