@@ -1,0 +1,8 @@
+run_slug=hourly-skill-candidates-20260425-160822
+recommended_lane_count=5
+single_lane_concentration=False
+agentic-ai: status=pass kept=3 raw=30 median_stars_raw=0.0 zero_star_raw=21 causes=none
+web-frontend: status=pass kept=1 raw=4 median_stars_raw=0.0 zero_star_raw=3 causes=none
+web-backend: status=pass kept=1 raw=1 median_stars_raw=7521 zero_star_raw=0 causes=none
+cli-open-source: status=pass kept=2 raw=2 median_stars_raw=1563.0 zero_star_raw=0 causes=none
+game-development: status=pass kept=8 raw=30 median_stars_raw=0.0 zero_star_raw=17 causes=none
