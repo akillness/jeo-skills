@@ -1,0 +1,6 @@
+[FAIL] Command: python3 - <<'PY'\nimport json\nobj=json.load(open('.surve...
+   3 lines of output
+
+Output:
+   sh: -c: line 0: syntax error near unexpected token `('
+   sh: -c: line 0: `python3 - <<'PY'\nimport json\nobj=json.load(open('.sur...
