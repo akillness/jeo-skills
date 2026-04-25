@@ -17,10 +17,10 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.3"
+  version: "2.1.4"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
-  hardening: 2026-04-19
+  hardening: 2026-04-25
 ---
 
 # Survey
@@ -196,6 +196,7 @@ Execution rules:
 - If keyword hits are noisy or sparse, run lane-specific recovery templates from `references/keyword-sweep-and-relevance-rescue.md` before finalizing recommendations.
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
 - Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`) plus examples/counts.
+- Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 
