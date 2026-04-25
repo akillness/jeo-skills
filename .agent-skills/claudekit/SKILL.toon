@@ -1,0 +1,1 @@
+claudekit|claudekit,claude code plugin,workflow toolkit,init wizard,mcp,hooks,rules,modes|Claude Code workflow toolkit plugin. Installs reusable skills/agents and scaffolds project rules, modes, hooks, and MCP config via /claudekit:init.|duthaho/claudekit|MIT|latest

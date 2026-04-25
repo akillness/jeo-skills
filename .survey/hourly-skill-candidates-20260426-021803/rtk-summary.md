@@ -1,0 +1,9 @@
+[ok] Command: python3 /tmp/lane_metrics.py
+   9 lines of output
+
+Output:
+   run_slug: hourly-skill-candidates-20260426-021803
+   generated_at_utc: 2026-04-25T17:20:20.258653Z
+   agentic ai skill: status=pass kept=3/40 median_stars_raw=0 zero_star_raw...
+   web frontend skill: status=degraded kept=0/4 median_stars_raw=1 zero_sta...
+   web backend skill: status=pass kept=3/19 median_stars_raw=0 zero_star_ra...

@@ -180,6 +180,16 @@
         "Sets or states `single_lane_concentration` when recommendation keeps come from a single lane",
         "Keeps degraded-lane evidence and causes visible instead of hiding lane imbalance"
       ]
+    },
+    {
+      "id": 19,
+      "prompt": "run the hourly five-lane survey where frontend lane has raw hits but still kept_count=0 after stage-1 recovery due to low-signal noise",
+      "expected_output": "The survey performs one documented stage-2 query for the noisy lane (not only raw_count==0 lanes), then reapplies the same relevance/provenance gates before final lane_status.",
+      "assertions": [
+        "Escalates with one stage-2 lane query when raw hits exist but recommendation-grade keeps remain zero after stage-1",
+        "Reapplies license/freshness/signal/fit gates on stage-2 results",
+        "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
+      ]
     }
   ]
 }
