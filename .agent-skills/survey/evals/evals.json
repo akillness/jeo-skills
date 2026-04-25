@@ -114,10 +114,10 @@
     {
       "id": 12,
       "prompt": "run a survey in a degraded source environment and keep artifact validation green",
-      "expected_output": "The survey uses validator-compatible provenance labels (including `thin evidence` when needed) and avoids unsupported labels that would break `--require-provenance` checks.",
+      "expected_output": "The survey uses validator-compatible provenance labels (including `thin evidence` when needed), explicitly maps GitHub-native retrieval to accepted labels (`indexed snippet`/`direct page retrieval`), and avoids unsupported labels that break `--require-provenance` checks.",
       "assertions": [
         "Uses a provenance label accepted by the validator (`direct page retrieval|feed recovery|browser-rendered retrieval|indexed snippet|browser-rendered indexed snippet|thin evidence`)",
-        "Avoids unsupported provenance labels in final markdown artifacts",
+        "Avoids unsupported provenance labels in final markdown artifacts (e.g., does not emit ad-hoc labels like `github search api`)",
         "Keeps the survey report explicit about reduced confidence when `thin evidence` is used"
       ]
     },

@@ -17,7 +17,7 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.5"
+  version: "2.1.6"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
   hardening: 2026-04-26
@@ -195,6 +195,7 @@ Execution rules:
 - Apply a default signal floor for recommendation-grade keeps: require at least one traction signal (for example, stars >= 3, or explicit maintainer/community adoption evidence with rationale). Keep broad discovery evidence even when the recommendation-grade list is stricter.
 - For the `agentic ai skill` lane, treat generic personal catch-all repositories named only like `*/skills` as low-fit by default unless there is explicit workflow documentation + traction; keep them in raw evidence but do not promote to TOP recommendations without an exception rationale.
 - If direct web search/extract tooling fails (auth/rate-limit/transport), switch to GitHub-native retrieval (`gh search` + `gh api` or `gh repo view`) and label provenance clearly.
+- In markdown artifacts validated with `--require-provenance`, map GitHub search result evidence to validator-supported labels (`indexed snippet` for search-result listings, `direct page retrieval` for repo/API detail fetches) instead of ad-hoc labels like `github search api`.
 - If keyword hits are noisy or sparse, run lane-specific recovery templates from `references/keyword-sweep-and-relevance-rescue.md` before finalizing recommendations.
 - Use objective recovery triggers after the primary query (`raw_count < 8`, `kept_count == 0`, or `zero_star_raw/raw_count >= 0.70`) so lane rescue is deterministic in unattended cron loops.
 - If a lane still has `raw_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query for that lane before finalizing `lane_status`.
