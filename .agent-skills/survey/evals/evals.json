@@ -170,6 +170,16 @@
         "Requires explicit workflow-documentation and traction rationale for any exception",
         "Maintains provenance and degraded-cause reporting when this noise pattern appears"
       ]
+    },
+    {
+      "id": 18,
+      "prompt": "run the hourly five-lane survey where only one lane produces recommendation-grade keeps and all other lanes are degraded",
+      "expected_output": "The survey explicitly reports cross-lane concentration (`recommended_lane_count`, `single_lane_concentration`) and avoids claiming broad coverage health when recommendations cluster in a single lane.",
+      "assertions": [
+        "Reports `recommended_lane_count` in markdown or structured summary",
+        "Sets or states `single_lane_concentration` when recommendation keeps come from a single lane",
+        "Keeps degraded-lane evidence and causes visible instead of hiding lane imbalance"
+      ]
     }
   ]
 }
