@@ -1,0 +1,23 @@
+N:github-repo-candidate-quality-gate
+D:Convert noisy GitHub repo search results into recommendation-grade keep lists with deterministic metadata, freshness, fit, and signal gates while preserving discovery evidence.
+G:github search triage quality-gate repo-maintenance
+U[4]:
+  Filter broad repo-search output into merge-ready recommendation lists
+  Preserve raw discovery evidence while hardening keep quality
+  Emit lane_status and degraded_causes with reviewer-friendly metrics
+  Keep exception handling explicit with rationale and risk notes
+S[6]{n,action,details}:
+  1,Collect raw hits,Use gh search repos or equivalent and store raw evidence
+  2,Normalize metadata,Capture license pushed_at updated_at archived stars fit rationale provenance
+  3,Apply deterministic gates,Run license archive freshness fit signal checks in fixed order
+  4,Compute lane metrics,Calculate kept_count raw_count median_stars_raw zero_star_raw
+  5,Report lane status,Emit pass or degraded plus degraded_causes taxonomy counts
+  6,Finalize safely,Keep raw evidence and document exceptions with risk notes
+R[5]:
+  Do not drop raw discovery evidence
+  Treat unknown license as drop-by-default unless explicit exception rationale
+  Apply 24-month freshness floor for recommendation-grade keeps by default
+  Use traction signal gate for recommendation-grade keeps (default stars>=3)
+  Report degraded_causes with license stale low-fit archived low-signal taxonomy
+E[1]{desc,in,out}:
+  "Hourly maintenance lane triage","Filter gh search repos output into merge-grade recommendations","Returns deterministic keep list plus lane metrics/status without losing discovery evidence"

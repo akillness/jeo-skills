@@ -1,0 +1,15 @@
+{
+  "skill_name": "github-repo-candidate-quality-gate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Triaging hourly GitHub search results where one lane has mostly zero-star repos but still needs reviewer-ready output",
+      "expected_output": "The skill keeps raw evidence, applies deterministic metadata/freshness/signal gates for recommendation keeps, and reports lane_status with low-signal degraded causes.",
+      "assertions": [
+        "Preserves broad discovery evidence even when strict keeps are few",
+        "Uses deterministic gate order including a signal gate",
+        "Reports degraded_causes including low-signal when applicable"
+      ]
+    }
+  ]
+}
