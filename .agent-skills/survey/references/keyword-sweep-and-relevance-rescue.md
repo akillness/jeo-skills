@@ -51,12 +51,20 @@ Drop or risk-mark signals:
 
 ## Rescue path for sparse/noisy lanes
 
+Trigger a recovery pass when **any** of the following is true after the primary keyword query:
+
+- `raw_count < 8`
+- `kept_count == 0`
+- `zero_star_raw / raw_count >= 0.70` (for `raw_count > 0`)
+- query transport degrades (auth/rate-limit/empty payload)
+
 If direct web search/extract is degraded or returns mostly noise:
 
 1. Switch to GitHub-native retrieval (`gh search repos`, `gh api`, `gh repo view`).
 2. Add curated seed repositories relevant to the target capability.
 3. Apply the same relevance gate to seed candidates.
 4. Label provenance explicitly (`direct page retrieval`, `browser-rendered retrieval`, etc.).
+5. Preserve raw discovery evidence even when all recommendation-grade keeps are filtered.
 
 ### Lane-level recovery templates (hourly default)
 

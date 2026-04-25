@@ -130,6 +130,16 @@
         "Includes lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) alongside lane_status",
         "Keeps degraded_causes/provenance context when a lane is under threshold"
       ]
+    },
+    {
+      "id": 14,
+      "prompt": "run the hourly five-lane sweep where primary queries are noisy and mostly zero-star results; keep the run deterministic for unattended cron",
+      "expected_output": "The survey applies objective recovery triggers (`raw_count < 8`, `kept_count == 0`, or high zero-star ratio) before lane rescue, then documents provenance and lane_status outcomes for reviewer verification.",
+      "assertions": [
+        "Uses explicit numeric recovery triggers rather than ad-hoc judgment for rescue activation",
+        "Runs lane-specific recovery queries when trigger conditions are met",
+        "Preserves provenance and lane_status/degraded_causes reporting after recovery"
+      ]
     }
   ]
 }
