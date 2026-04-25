@@ -193,6 +193,7 @@ Execution rules:
 - For each kept candidate, record at least: `license`, `pushed_at/updated`, `archived`, and one-line fit rationale.
 - For recommendation-grade keeps, apply a default freshness floor (`pushed_at` within the last 24 months). If kept despite staleness, document exception rationale and explicit risk.
 - Apply a default signal floor for recommendation-grade keeps: require at least one traction signal (for example, stars >= 3, or explicit maintainer/community adoption evidence with rationale). Keep broad discovery evidence even when the recommendation-grade list is stricter.
+- For the `agentic ai skill` lane, treat generic personal catch-all repositories named only like `*/skills` as low-fit by default unless there is explicit workflow documentation + traction; keep them in raw evidence but do not promote to TOP recommendations without an exception rationale.
 - If direct web search/extract tooling fails (auth/rate-limit/transport), switch to GitHub-native retrieval (`gh search` + `gh api` or `gh repo view`) and label provenance clearly.
 - If keyword hits are noisy or sparse, run lane-specific recovery templates from `references/keyword-sweep-and-relevance-rescue.md` before finalizing recommendations.
 - Use objective recovery triggers after the primary query (`raw_count < 8`, `kept_count == 0`, or `zero_star_raw/raw_count >= 0.70`) so lane rescue is deterministic in unattended cron loops.

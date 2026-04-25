@@ -160,6 +160,16 @@
         "Keeps recommendation-grade filters (license/freshness/signal) on stage-2 results",
         "Reports provenance and final lane_status/degraded_causes after escalation"
       ]
+    },
+    {
+      "id": 17,
+      "prompt": "run the hourly five-lane survey where agentic results are dominated by personal repositories named only \"skills\"; keep recommendations reviewable",
+      "expected_output": "The survey preserves those hits as raw discovery evidence but classifies generic personal `*/skills` repos as low-fit by default unless concrete workflow docs plus traction justify an exception.",
+      "assertions": [
+        "Keeps noisy personal `*/skills` hits in evidence while preventing blind promotion into TOP recommendations",
+        "Requires explicit workflow-documentation and traction rationale for any exception",
+        "Maintains provenance and degraded-cause reporting when this noise pattern appears"
+      ]
     }
   ]
 }
