@@ -104,10 +104,10 @@
     {
       "id": 11,
       "prompt": "run the hourly five-lane survey and two lanes still miss thresholds after recovery; produce a reviewer-ready markdown summary",
-      "expected_output": "The survey marks each lane with `lane_status` (`pass|degraded`) and reports `degraded_causes` using the compact taxonomy (`license`, `stale`, `low-fit`, `archived`) with concrete examples or counts.",
+      "expected_output": "The survey marks each lane with `lane_status` (`pass|degraded`) and reports `degraded_causes` using the compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results`) with concrete examples or counts.",
       "assertions": [
         "Includes explicit lane_status labels in markdown output for each lane",
-        "Uses degraded_causes taxonomy (`license|stale|low-fit|archived`) when thresholds are missed",
+        "Uses degraded_causes taxonomy (`license|stale|low-fit|archived|low-signal|no-results`) when thresholds are missed",
         "Keeps provenance/evidence references while reporting degraded lanes"
       ]
     },
@@ -189,6 +189,16 @@
         "Escalates with one stage-2 lane query when raw hits exist but recommendation-grade keeps remain zero after stage-1",
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where backend remains raw_count=0 even after documented stage-2 recovery; keep reviewer output deterministic",
+      "expected_output": "The survey explicitly marks `degraded_causes` with `no-results` for the lane instead of leaving an empty cause map, while preserving lane metrics and provenance.",
+      "assertions": [
+        "When raw_count stays zero after recovery, includes `no-results` in degraded_causes",
+        "Does not hide the lane; keeps lane_status and lane metrics in output",
+        "Preserves provenance labels and recovery-attempt context in the summary"
       ]
     }
   ]
