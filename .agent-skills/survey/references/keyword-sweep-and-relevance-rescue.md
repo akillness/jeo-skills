@@ -68,10 +68,11 @@ Trigger a recovery pass when **any** of the following is true after the primary 
 If direct web search/extract is degraded or returns mostly noise:
 
 1. Switch to GitHub-native retrieval (`gh search repos`, `gh api`, `gh repo view`).
-2. Add curated seed repositories relevant to the target capability.
-3. Apply the same relevance gate to seed candidates.
-4. Label provenance explicitly (`direct page retrieval`, `browser-rendered retrieval`, etc.).
-5. Preserve raw discovery evidence even when all recommendation-grade keeps are filtered.
+2. For `gh search repos --json`, prefer supported fields like `fullName` (or compose identity from `owner` + `name`) instead of unsupported fields such as `nameWithOwner`; when schema mismatch happens, persist stderr in evidence and rerun with supported fields before final lane status.
+3. Add curated seed repositories relevant to the target capability.
+4. Apply the same relevance gate to seed candidates.
+5. Label provenance explicitly (`direct page retrieval`, `browser-rendered retrieval`, etc.).
+6. Preserve raw discovery evidence even when all recommendation-grade keeps are filtered.
 
 ### Lane-level recovery templates (hourly default)
 

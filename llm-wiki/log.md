@@ -7,3 +7,4 @@
 - 2026-04-25 02:08:10Z hourly run: added lane-metrics ratchet note (kept_count/raw_count/median_stars_raw/zero_star_raw) and linked survey evidence/graphify memory
 - 2026-04-25 05:38:24Z hourly run: added deterministic recovery-trigger ratchet note and linked survey/RTK/graphify fallback artifacts
 - 2026-04-26 06:15:00Z hourly run: added license-fallback ratchet note and linked survey/RTK/graphify artifacts
+- 2026-04-26 07:26:00Z hourly run: added gh-field-compatibility ratchet note and linked survey/RTK/graphify artifacts (including failed gh field attempt and recovery)
