@@ -191,6 +191,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where agentic lane has many lexical matches and enough kept_count, but zero_star_raw/raw_count is very high and median_stars_raw is zero",
+      "expected_output": "The survey applies a zero-star saturation guard: it does not keep lane_status=pass by count alone, and either documents explicit traction rationale for promoted keeps or marks the lane degraded with low-signal cause.",
+      "assertions": [
+        "Checks zero-star saturation using both zero_star ratio and median_stars_raw",
+        "Avoids pass-by-count outcomes when saturation indicates weak traction",
+        "Requires explicit traction rationale or reports degraded low-signal status"
+      ]
     }
   ]
 }
