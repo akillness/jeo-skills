@@ -84,7 +84,7 @@ Use these as fallback queries after the primary keyword family returns sparse/no
   - Stage 2 (deterministic escalation when Stage 1 keeps remain `kept_count == 0` due to noisy/low-signal hits): `frontend engineering workflow design system toolkit stars:>120 pushed:>=2024-01-01`
 - `web backend skill` lane
   - Stage 1: `backend api framework observability stars:>300 pushed:>=2024-01-01`
-  - Stage 2 (deterministic escalation when Stage 1 still has `raw_count == 0`): `backend developer platform api template stars:>150 pushed:>=2024-01-01`
+  - Stage 2 (deterministic escalation when Stage 1 still has `raw_count == 0` OR noisy `kept_count == 0`): `backend developer platform api template stars:>150 pushed:>=2024-01-01`
 - `cli open source skill` lane
   - `command line tool developer productivity stars:>200 pushed:>=2024-01-01`
   - `github cli terminal tool stars:>200 pushed:>=2024-01-01`

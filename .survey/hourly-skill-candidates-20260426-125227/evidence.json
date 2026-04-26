@@ -1,0 +1,937 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-125227",
+  "generated_at": "2026-04-26T03:52:38.384511Z",
+  "mode": "repo-maintenance",
+  "required_keyword_families": [
+    "agentic ai skill",
+    "web frontend skill",
+    "web backend skill",
+    "cli open source skill",
+    "game development skill"
+  ],
+  "provenance_policy": [
+    "indexed snippet",
+    "direct page retrieval"
+  ],
+  "lanes": {
+    "agentic-ai-skill": {
+      "keyword": "agentic ai skill",
+      "attempts": [
+        {
+          "stage": "primary",
+          "query": "agentic ai skill",
+          "ok": true,
+          "error": "",
+          "count": 35
+        },
+        {
+          "stage": "recovery-stage1",
+          "query": "agentic ai skill stars:>20 pushed:>=2024-01-01",
+          "ok": true,
+          "error": "",
+          "count": 35
+        }
+      ],
+      "raw_count": 70,
+      "kept_count": 31,
+      "median_stars_raw": 142.5,
+      "zero_star_raw": 25,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "kept": [
+        {
+          "lane": "agentic-ai-skill",
+          "repo": "github/awesome-copilot",
+          "url": "https://github.com/github/awesome-copilot",
+          "description": "Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.",
+          "stars": 31223,
+          "forks": 3764,
+          "license": "mit",
+          "pushed_at": "2026-04-25T19:39:48Z",
+          "updated_at": "2026-04-26T02:58:00Z",
+          "archived": false,
+          "fit_rationale": "agentic-ai-skill relevance via agent",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "agentic-ai-skill",
+          "repo": "coreyhaines31/marketingskills",
+          "url": "https://github.com/coreyhaines31/marketingskills",
+          "description": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+          "stars": 24778,
+          "forks": 3927,
+          "license": "mit",
+          "pushed_at": "2026-04-25T20:58:51Z",
+          "updated_at": "2026-04-26T03:46:24Z",
+          "archived": false,
+          "fit_rationale": "agentic-ai-skill relevance via agent",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "agentic-ai-skill",
+          "repo": "mvanhorn/last30days-skill",
+          "url": "https://github.com/mvanhorn/last30days-skill",
+          "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+          "stars": 23977,
+          "forks": 1983,
+          "license": "mit",
+          "pushed_at": "2026-04-25T21:17:47Z",
+          "updated_at": "2026-04-26T03:29:46Z",
+          "archived": false,
+          "fit_rationale": "agentic-ai-skill relevance via agent",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "agentic-ai-skill",
+          "repo": "addyosmani/agent-skills",
+          "url": "https://github.com/addyosmani/agent-skills",
+          "description": "Production-grade engineering skills for AI coding agents.",
+          "stars": 23035,
+          "forks": 2856,
+          "license": "mit",
+          "pushed_at": "2026-04-21T06:34:32Z",
+          "updated_at": "2026-04-26T03:50:52Z",
+          "archived": false,
+          "fit_rationale": "agentic-ai-skill relevance via agent",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "agentic-ai-skill",
+          "repo": "MemTensor/MemOS",
+          "url": "https://github.com/MemTensor/MemOS",
+          "description": "AI memory OS for LLM and Agent systems(moltbot,clawdbot,openclaw), enabling persistent Skill memory for cross-task skill reuse and evolution.",
+          "stars": 8684,
+          "forks": 771,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-25T07:42:10Z",
+          "updated_at": "2026-04-26T02:33:56Z",
+          "archived": false,
+          "fit_rationale": "agentic-ai-skill relevance via agent",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "agentic-ai-skill",
+          "repo": "Orchestra-Research/AI-Research-SKILLs",
+          "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+          "description": "Comprehensive open-source library of AI research and engineering skills for any AI model. Package the skills and your claude code/codex/gemini agent will be an AI research agent with full horsepower. Maintained by Orchestra Research.",
+          "stars": 7394,
+          "forks": 568,
+          "license": "mit",
+          "pushed_at": "2026-04-13T20:41:37Z",
+          "updated_at": "2026-04-26T03:28:04Z",
+          "archived": false,
+          "fit_rationale": "agentic-ai-skill relevance via agent",
+          "provenance": "indexed snippet"
+        }
+      ],
+      "dropped_sample": [
+        {
+          "repo": "Ap6pack/malwar",
+          "url": "https://github.com/Ap6pack/malwar",
+          "reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "taisukeoe/agentic-ai-skills-creator",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+          "reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "jprtr/Agentic-AI",
+          "url": "https://github.com/jprtr/Agentic-AI",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "gpimpler-too/skill-lib",
+          "url": "https://github.com/gpimpler-too/skill-lib",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "ritikpatel/marketing-mix-modelling-skill",
+          "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "thisrunsthru/Skill",
+          "url": "https://github.com/thisrunsthru/Skill",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "manuelmauro/skills",
+          "url": "https://github.com/manuelmauro/skills",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "eclipse-csi/skills",
+          "url": "https://github.com/eclipse-csi/skills",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "DaRealPunjabi/AWS-AI-ML-Scholars",
+          "url": "https://github.com/DaRealPunjabi/AWS-AI-ML-Scholars",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "asllani94/skills",
+          "url": "https://github.com/asllani94/skills",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "swport/skills",
+          "url": "https://github.com/swport/skills",
+          "reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "muski630346/NO_TO_DSA",
+          "url": "https://github.com/muski630346/NO_TO_DSA",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ]
+    },
+    "web-frontend-skill": {
+      "keyword": "web frontend skill",
+      "attempts": [
+        {
+          "stage": "primary",
+          "query": "web frontend skill",
+          "ok": true,
+          "error": "",
+          "count": 4
+        },
+        {
+          "stage": "recovery-stage1",
+          "query": "web frontend skill stars:>20 pushed:>=2024-01-01",
+          "ok": true,
+          "error": "",
+          "count": 19
+        }
+      ],
+      "raw_count": 23,
+      "kept_count": 5,
+      "median_stars_raw": 36,
+      "zero_star_raw": 3,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal",
+        "stale"
+      ],
+      "kept": [
+        {
+          "lane": "web-frontend-skill",
+          "repo": "zarazhangrui/frontend-slides",
+          "url": "https://github.com/zarazhangrui/frontend-slides",
+          "description": "Create beautiful slides on the web using Claude's frontend skills",
+          "stars": 15647,
+          "forks": 1258,
+          "license": "mit",
+          "pushed_at": "2026-04-08T18:23:28Z",
+          "updated_at": "2026-04-26T03:34:48Z",
+          "archived": false,
+          "fit_rationale": "web-frontend-skill relevance via frontend",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "web-frontend-skill",
+          "repo": "ceilf6/FrontAgent",
+          "url": "https://github.com/ceilf6/FrontAgent",
+          "description": "AI agent platform for frontend engineering with RAG, Skills, SDD, MCP | 通过多种适配前端工程的技术进行赋能的智能体",
+          "stars": 92,
+          "forks": 11,
+          "license": "mit",
+          "pushed_at": "2026-04-09T06:59:40Z",
+          "updated_at": "2026-04-16T01:54:32Z",
+          "archived": false,
+          "fit_rationale": "web-frontend-skill relevance via frontend",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "web-frontend-skill",
+          "repo": "archlizheng/frontend-slides-editable",
+          "url": "https://github.com/archlizheng/frontend-slides-editable",
+          "description": "Editable HTML presentation skill for Codex/Claude Code with drag-resize editing, slide reordering, local save/export, and PPTX-to-web conversion. Shout out to @zarazhangrui ",
+          "stars": 83,
+          "forks": 5,
+          "license": "mit",
+          "pushed_at": "2026-04-04T08:17:58Z",
+          "updated_at": "2026-04-26T02:04:07Z",
+          "archived": false,
+          "fit_rationale": "web-frontend-skill relevance via frontend",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "web-frontend-skill",
+          "repo": "Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+          "url": "https://github.com/Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+          "description": "🚀 100 Days of Web Development challenge using HTML, CSS & JavaScript. Daily learning, practice, and real-world projects to strengthen frontend development skills.",
+          "stars": 36,
+          "forks": 125,
+          "license": "mit",
+          "pushed_at": "2026-03-08T06:32:12Z",
+          "updated_at": "2026-04-16T02:45:18Z",
+          "archived": false,
+          "fit_rationale": "web-frontend-skill relevance via frontend",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "web-frontend-skill",
+          "repo": "MickeyAlton33/web-designer-plugin",
+          "url": "https://github.com/MickeyAlton33/web-designer-plugin",
+          "description": "Award-winning web design skill for Claude Code. 48 patterns from 38 top websites. Stop generating generic AI frontends.",
+          "stars": 28,
+          "forks": 4,
+          "license": "mit",
+          "pushed_at": "2026-03-26T21:20:46Z",
+          "updated_at": "2026-04-21T23:53:10Z",
+          "archived": false,
+          "fit_rationale": "web-frontend-skill relevance via frontend",
+          "provenance": "indexed snippet"
+        }
+      ],
+      "dropped_sample": [
+        {
+          "repo": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "reasons": [
+            "low-signal",
+            "stale"
+          ]
+        },
+        {
+          "repo": "Hezekiah-Elisha/savannah_informatics_test",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "erdoganbavas/web-practices",
+          "url": "https://github.com/erdoganbavas/web-practices",
+          "reasons": [
+            "stale"
+          ]
+        },
+        {
+          "repo": "ShanaMaid/frontend-guidelines-zh-CN",
+          "url": "https://github.com/ShanaMaid/frontend-guidelines-zh-CN",
+          "reasons": [
+            "stale"
+          ]
+        },
+        {
+          "repo": "skill6/skill6-website-frontend",
+          "url": "https://github.com/skill6/skill6-website-frontend",
+          "reasons": [
+            "license",
+            "stale"
+          ]
+        },
+        {
+          "repo": "MarieLynneBlock/Nanodegree-FrontEndWebDevelopment",
+          "url": "https://github.com/MarieLynneBlock/Nanodegree-FrontEndWebDevelopment",
+          "reasons": [
+            "stale"
+          ]
+        },
+        {
+          "repo": "liyupi/yupi-hot-monitor",
+          "url": "https://github.com/liyupi/yupi-hot-monitor",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "Maher-Elmair/Maher-Elmair",
+          "url": "https://github.com/Maher-Elmair/Maher-Elmair",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "liyupi/github-global",
+          "url": "https://github.com/liyupi/github-global",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "SM8UTI/Webook-online-education-website",
+          "url": "https://github.com/SM8UTI/Webook-online-education-website",
+          "reasons": [
+            "license"
+          ]
+        }
+      ]
+    },
+    "web-backend-skill": {
+      "keyword": "web backend skill",
+      "attempts": [
+        {
+          "stage": "primary",
+          "query": "web backend skill",
+          "ok": true,
+          "error": "",
+          "count": 0
+        },
+        {
+          "stage": "recovery-stage1",
+          "query": "web backend skill stars:>20 pushed:>=2024-01-01",
+          "ok": true,
+          "error": "",
+          "count": 6
+        },
+        {
+          "stage": "recovery-stage2",
+          "query": "web backend skill topic:skill stars:>5 pushed:>=2023-01-01",
+          "ok": true,
+          "error": "",
+          "count": 0
+        }
+      ],
+      "raw_count": 6,
+      "kept_count": 0,
+      "median_stars_raw": 167.5,
+      "zero_star_raw": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "license",
+        "low-fit",
+        "stale"
+      ],
+      "kept": [],
+      "dropped_sample": [
+        {
+          "repo": "andreasbm/web-skills",
+          "url": "https://github.com/andreasbm/web-skills",
+          "reasons": [
+            "license",
+            "stale"
+          ]
+        },
+        {
+          "repo": "skill6/skill6-website-backend",
+          "url": "https://github.com/skill6/skill6-website-backend",
+          "reasons": [
+            "license",
+            "stale"
+          ]
+        },
+        {
+          "repo": "liyupi/yupi-hot-monitor",
+          "url": "https://github.com/liyupi/yupi-hot-monitor",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "liyupi/github-global",
+          "url": "https://github.com/liyupi/github-global",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "JayabharathP/The-Python-Mega-Course-Build-10-Real-World-Applications-",
+          "url": "https://github.com/JayabharathP/The-Python-Mega-Course-Build-10-Real-World-Applications-",
+          "reasons": [
+            "license",
+            "stale"
+          ]
+        },
+        {
+          "repo": "sanusanth/javascript-basic-program",
+          "url": "https://github.com/sanusanth/javascript-basic-program",
+          "reasons": [
+            "license",
+            "stale"
+          ]
+        }
+      ]
+    },
+    "cli-open-source-skill": {
+      "keyword": "cli open source skill",
+      "attempts": [
+        {
+          "stage": "primary",
+          "query": "cli open source skill",
+          "ok": true,
+          "error": "",
+          "count": 0
+        },
+        {
+          "stage": "recovery-stage1",
+          "query": "cli open source skill stars:>20 pushed:>=2024-01-01",
+          "ok": true,
+          "error": "",
+          "count": 9
+        }
+      ],
+      "raw_count": 9,
+      "kept_count": 8,
+      "median_stars_raw": 87,
+      "zero_star_raw": 0,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "stale"
+      ],
+      "kept": [
+        {
+          "lane": "cli-open-source-skill",
+          "repo": "jeremylongshore/claude-code-plugins-plus-skills",
+          "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+          "description": "423 plugins, 2,849 skills, 177 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+          "stars": 2030,
+          "forks": 273,
+          "license": "mit",
+          "pushed_at": "2026-04-23T05:25:09Z",
+          "updated_at": "2026-04-26T03:41:07Z",
+          "archived": false,
+          "fit_rationale": "cli-open-source-skill relevance via cli",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "cli-open-source-skill",
+          "repo": "dp-archive/archive",
+          "url": "https://github.com/dp-archive/archive",
+          "description": "Skill Compose is an open-source agent builder and runtime platform for skill-powered agents. No workflow graphs. No CLI.",
+          "stars": 1107,
+          "forks": 99,
+          "license": "apache-2.0",
+          "pushed_at": "2026-03-04T08:01:19Z",
+          "updated_at": "2026-04-25T23:27:40Z",
+          "archived": false,
+          "fit_rationale": "cli-open-source-skill relevance via cli",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "cli-open-source-skill",
+          "repo": "skrun-dev/skrun",
+          "url": "https://github.com/skrun-dev/skrun",
+          "description": "Deploy any Agent Skill as an API via POST /run. The open-source multi-model alternative to Claude Managed Agents, Microsoft Foundry & Mistral/Koyeb — works with any LLM.",
+          "stars": 162,
+          "forks": 13,
+          "license": "mit",
+          "pushed_at": "2026-04-17T21:41:44Z",
+          "updated_at": "2026-04-24T16:05:07Z",
+          "archived": false,
+          "fit_rationale": "keyword match with repo-maintenance potential",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "cli-open-source-skill",
+          "repo": "duthaho/claudekit",
+          "url": "https://github.com/duthaho/claudekit",
+          "description": "The open-source AI dev toolkit for Claude Code. Ship faster with 27+ commands, 7 modes, and 34+ skills. Free forever.",
+          "stars": 87,
+          "forks": 54,
+          "license": "mit",
+          "pushed_at": "2026-04-24T14:21:19Z",
+          "updated_at": "2026-04-24T16:23:40Z",
+          "archived": false,
+          "fit_rationale": "keyword match with repo-maintenance potential",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "cli-open-source-skill",
+          "repo": "bonnard-data/bonnard-cli",
+          "url": "https://github.com/bonnard-data/bonnard-cli",
+          "description": "Open-source agentic schema CLI. Optimised for claude code, gemini, codex and co-pilot. Skills included.",
+          "stars": 46,
+          "forks": 3,
+          "license": "mit",
+          "pushed_at": "2026-03-20T10:43:05Z",
+          "updated_at": "2026-04-14T06:29:25Z",
+          "archived": false,
+          "fit_rationale": "cli-open-source-skill relevance via cli",
+          "provenance": "indexed snippet"
+        },
+        {
+          "lane": "cli-open-source-skill",
+          "repo": "TerminalSkills/skills",
+          "url": "https://github.com/TerminalSkills/skills",
+          "description": "Open-source library of AI agent skills — SKILL.md files for Claude Code, Codex, Gemini CLI, Cursor",
+          "stars": 35,
+          "forks": 7,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-11T11:35:31Z",
+          "updated_at": "2026-04-22T04:47:12Z",
+          "archived": false,
+          "fit_rationale": "cli-open-source-skill relevance via cli",
+          "provenance": "indexed snippet"
+        }
+      ],
+      "dropped_sample": [
+        {
+          "repo": "Sfedfcv/redesigned-pancake",
+          "url": "https://github.com/Sfedfcv/redesigned-pancake",
+          "reasons": [
+            "license",
+            "stale"
+          ]
+        }
+      ]
+    },
+    "game-development-skill": {
+      "keyword": "game development skill",
+      "attempts": [
+        {
+          "stage": "primary",
+          "query": "game development skill",
+          "ok": true,
+          "error": "",
+          "count": 35
+        }
+      ],
+      "raw_count": 35,
+      "kept_count": 1,
+      "median_stars_raw": 0,
+      "zero_star_raw": 22,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "archived",
+        "license",
+        "low-signal",
+        "stale"
+      ],
+      "kept": [
+        {
+          "lane": "game-development-skill",
+          "repo": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "stars": 3,
+          "forks": 1,
+          "license": "mit",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "updated_at": "2026-04-14T18:39:35Z",
+          "archived": false,
+          "fit_rationale": "game-development-skill relevance via game",
+          "provenance": "indexed snippet"
+        }
+      ],
+      "dropped_sample": [
+        {
+          "repo": "UnrealBlueprint/02_CrystalCavern",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+          "reasons": [
+            "stale"
+          ]
+        },
+        {
+          "repo": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "Unengine/GameEngineAndGameMathTIL",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+          "reasons": [
+            "stale"
+          ]
+        },
+        {
+          "repo": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+          "reasons": [
+            "stale"
+          ]
+        },
+        {
+          "repo": "kkh9700/GameDevelopmentSkills-Individual",
+          "url": "https://github.com/kkh9700/GameDevelopmentSkills-Individual",
+          "reasons": [
+            "license",
+            "low-signal",
+            "stale"
+          ]
+        },
+        {
+          "repo": "sparkade-labs/sparkade-skills",
+          "url": "https://github.com/sparkade-labs/sparkade-skills",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "inchussa/Virtual-Pet-Simulator",
+          "url": "https://github.com/inchussa/Virtual-Pet-Simulator",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "teamgravitydev/learning-resources.md",
+          "url": "https://github.com/teamgravitydev/learning-resources.md",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "naash/UnityBattleRoyale",
+          "url": "https://github.com/naash/UnityBattleRoyale",
+          "reasons": [
+            "archived",
+            "license",
+            "low-signal",
+            "stale"
+          ]
+        },
+        {
+          "repo": "damirbaisalov/gamedev",
+          "url": "https://github.com/damirbaisalov/gamedev",
+          "reasons": [
+            "license",
+            "low-signal",
+            "stale"
+          ]
+        },
+        {
+          "repo": "cozmavladut/codex-roblox-toolkit",
+          "url": "https://github.com/cozmavladut/codex-roblox-toolkit",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "codereach1/cautious-potato",
+          "url": "https://github.com/codereach1/cautious-potato",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ]
+    }
+  },
+  "recommendation_summary": {
+    "recommended_total": 18,
+    "recommended_lane_count": 4,
+    "single_lane_concentration": false,
+    "top_recommendations": [
+      {
+        "lane": "agentic-ai-skill",
+        "repo": "github/awesome-copilot",
+        "url": "https://github.com/github/awesome-copilot",
+        "description": "Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.",
+        "stars": 31223,
+        "forks": 3764,
+        "license": "mit",
+        "pushed_at": "2026-04-25T19:39:48Z",
+        "updated_at": "2026-04-26T02:58:00Z",
+        "archived": false,
+        "fit_rationale": "agentic-ai-skill relevance via agent",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "agentic-ai-skill",
+        "repo": "coreyhaines31/marketingskills",
+        "url": "https://github.com/coreyhaines31/marketingskills",
+        "description": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+        "stars": 24778,
+        "forks": 3927,
+        "license": "mit",
+        "pushed_at": "2026-04-25T20:58:51Z",
+        "updated_at": "2026-04-26T03:46:24Z",
+        "archived": false,
+        "fit_rationale": "agentic-ai-skill relevance via agent",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "agentic-ai-skill",
+        "repo": "mvanhorn/last30days-skill",
+        "url": "https://github.com/mvanhorn/last30days-skill",
+        "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+        "stars": 23977,
+        "forks": 1983,
+        "license": "mit",
+        "pushed_at": "2026-04-25T21:17:47Z",
+        "updated_at": "2026-04-26T03:29:46Z",
+        "archived": false,
+        "fit_rationale": "agentic-ai-skill relevance via agent",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "agentic-ai-skill",
+        "repo": "addyosmani/agent-skills",
+        "url": "https://github.com/addyosmani/agent-skills",
+        "description": "Production-grade engineering skills for AI coding agents.",
+        "stars": 23035,
+        "forks": 2856,
+        "license": "mit",
+        "pushed_at": "2026-04-21T06:34:32Z",
+        "updated_at": "2026-04-26T03:50:52Z",
+        "archived": false,
+        "fit_rationale": "agentic-ai-skill relevance via agent",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "web-frontend-skill",
+        "repo": "zarazhangrui/frontend-slides",
+        "url": "https://github.com/zarazhangrui/frontend-slides",
+        "description": "Create beautiful slides on the web using Claude's frontend skills",
+        "stars": 15647,
+        "forks": 1258,
+        "license": "mit",
+        "pushed_at": "2026-04-08T18:23:28Z",
+        "updated_at": "2026-04-26T03:34:48Z",
+        "archived": false,
+        "fit_rationale": "web-frontend-skill relevance via frontend",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "agentic-ai-skill",
+        "repo": "MemTensor/MemOS",
+        "url": "https://github.com/MemTensor/MemOS",
+        "description": "AI memory OS for LLM and Agent systems(moltbot,clawdbot,openclaw), enabling persistent Skill memory for cross-task skill reuse and evolution.",
+        "stars": 8684,
+        "forks": 771,
+        "license": "apache-2.0",
+        "pushed_at": "2026-04-25T07:42:10Z",
+        "updated_at": "2026-04-26T02:33:56Z",
+        "archived": false,
+        "fit_rationale": "agentic-ai-skill relevance via agent",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "agentic-ai-skill",
+        "repo": "Orchestra-Research/AI-Research-SKILLs",
+        "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+        "description": "Comprehensive open-source library of AI research and engineering skills for any AI model. Package the skills and your claude code/codex/gemini agent will be an AI research agent with full horsepower. Maintained by Orchestra Research.",
+        "stars": 7394,
+        "forks": 568,
+        "license": "mit",
+        "pushed_at": "2026-04-13T20:41:37Z",
+        "updated_at": "2026-04-26T03:28:04Z",
+        "archived": false,
+        "fit_rationale": "agentic-ai-skill relevance via agent",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "cli-open-source-skill",
+        "repo": "jeremylongshore/claude-code-plugins-plus-skills",
+        "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+        "description": "423 plugins, 2,849 skills, 177 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+        "stars": 2030,
+        "forks": 273,
+        "license": "mit",
+        "pushed_at": "2026-04-23T05:25:09Z",
+        "updated_at": "2026-04-26T03:41:07Z",
+        "archived": false,
+        "fit_rationale": "cli-open-source-skill relevance via cli",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "cli-open-source-skill",
+        "repo": "dp-archive/archive",
+        "url": "https://github.com/dp-archive/archive",
+        "description": "Skill Compose is an open-source agent builder and runtime platform for skill-powered agents. No workflow graphs. No CLI.",
+        "stars": 1107,
+        "forks": 99,
+        "license": "apache-2.0",
+        "pushed_at": "2026-03-04T08:01:19Z",
+        "updated_at": "2026-04-25T23:27:40Z",
+        "archived": false,
+        "fit_rationale": "cli-open-source-skill relevance via cli",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "cli-open-source-skill",
+        "repo": "skrun-dev/skrun",
+        "url": "https://github.com/skrun-dev/skrun",
+        "description": "Deploy any Agent Skill as an API via POST /run. The open-source multi-model alternative to Claude Managed Agents, Microsoft Foundry & Mistral/Koyeb — works with any LLM.",
+        "stars": 162,
+        "forks": 13,
+        "license": "mit",
+        "pushed_at": "2026-04-17T21:41:44Z",
+        "updated_at": "2026-04-24T16:05:07Z",
+        "archived": false,
+        "fit_rationale": "keyword match with repo-maintenance potential",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "web-frontend-skill",
+        "repo": "ceilf6/FrontAgent",
+        "url": "https://github.com/ceilf6/FrontAgent",
+        "description": "AI agent platform for frontend engineering with RAG, Skills, SDD, MCP | 通过多种适配前端工程的技术进行赋能的智能体",
+        "stars": 92,
+        "forks": 11,
+        "license": "mit",
+        "pushed_at": "2026-04-09T06:59:40Z",
+        "updated_at": "2026-04-16T01:54:32Z",
+        "archived": false,
+        "fit_rationale": "web-frontend-skill relevance via frontend",
+        "provenance": "indexed snippet"
+      },
+      {
+        "lane": "cli-open-source-skill",
+        "repo": "duthaho/claudekit",
+        "url": "https://github.com/duthaho/claudekit",
+        "description": "The open-source AI dev toolkit for Claude Code. Ship faster with 27+ commands, 7 modes, and 34+ skills. Free forever.",
+        "stars": 87,
+        "forks": 54,
+        "license": "mit",
+        "pushed_at": "2026-04-24T14:21:19Z",
+        "updated_at": "2026-04-24T16:23:40Z",
+        "archived": false,
+        "fit_rationale": "keyword match with repo-maintenance potential",
+        "provenance": "indexed snippet"
+      }
+    ]
+  }
+}

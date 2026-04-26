@@ -190,6 +190,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where web-backend lane has raw hits after stage-1 but still kept_count=0 due to stale/license/low-signal filtering",
+      "expected_output": "The survey deterministically runs one backend stage-2 recovery query even though raw_count is non-zero, then reapplies recommendation-grade gates and reports final degraded causes transparently if still below threshold.",
+      "assertions": [
+        "Treats noisy backend kept_count==0 as a valid stage-2 trigger, not only raw_count==0",
+        "Reapplies license/freshness/signal/fit gates to backend stage-2 results",
+        "Reports backend lane_status and degraded_causes with provenance after escalation"
+      ]
     }
   ]
 }
