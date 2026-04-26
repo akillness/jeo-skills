@@ -1,0 +1,89 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-083233",
+  "generated_at": "2026-04-26T08:40:30.402352Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: error: graph file not found: /private/tmp/oh-my-skills-20260426-083103/repo/.survey/hourly-skill-candidates-20260426-083233/graph.json)",
+  "nodes": [
+    {
+      "id": "run",
+      "label": "hourly-skill-candidates-20260426-083233",
+      "type": "run",
+      "generated_at": "2026-04-26T08:38:27.951171Z"
+    },
+    {
+      "id": "lane:agentic ai skill",
+      "label": "agentic ai skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 3,
+      "raw_count": 25
+    },
+    {
+      "id": "lane:web frontend skill",
+      "label": "web frontend skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 15,
+      "raw_count": 17
+    },
+    {
+      "id": "lane:web backend skill",
+      "label": "web backend skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 5,
+      "raw_count": 9
+    },
+    {
+      "id": "lane:cli open source skill",
+      "label": "cli open source skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 17,
+      "raw_count": 25
+    },
+    {
+      "id": "lane:game development skill",
+      "label": "game development skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 1,
+      "raw_count": 25
+    }
+  ],
+  "links": [
+    {
+      "source": "run",
+      "target": "lane:agentic ai skill",
+      "type": "covers",
+      "weight": 25
+    },
+    {
+      "source": "run",
+      "target": "lane:web frontend skill",
+      "type": "covers",
+      "weight": 17
+    },
+    {
+      "source": "run",
+      "target": "lane:web backend skill",
+      "type": "covers",
+      "weight": 9
+    },
+    {
+      "source": "run",
+      "target": "lane:cli open source skill",
+      "type": "covers",
+      "weight": 25
+    },
+    {
+      "source": "run",
+      "target": "lane:game development skill",
+      "type": "covers",
+      "weight": 25
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260426-083233/evidence.json",
+    ".survey/hourly-skill-candidates-20260426-083233/rtk-summary.md"
+  ]
+}

@@ -199,6 +199,7 @@ Execution rules:
 - In markdown artifacts validated with `--require-provenance`, map GitHub search result evidence to validator-supported labels (`indexed snippet` for search-result listings, `direct page retrieval` for repo/API detail fetches) instead of ad-hoc labels like `github search api`.
 - If keyword hits are noisy or sparse, run lane-specific recovery templates from `references/keyword-sweep-and-relevance-rescue.md` before finalizing recommendations.
 - Use objective recovery triggers after the primary query (`raw_count < 8`, `kept_count == 0`, or `zero_star_raw/raw_count >= 0.70`) so lane rescue is deterministic in unattended cron loops.
+- **Metric integrity gate (mandatory):** after each recovery query selection, recompute lane metrics from the final selected result set before writing artifacts (`raw_count`, `zero_star_raw`, `median_stars_raw`, `kept_count`). Never emit impossible combinations like `kept_count > raw_count`.
 - If a lane still has `raw_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query for that lane before finalizing `lane_status`.
 - For noisy lanes where raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query before finalizing degraded status.
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
