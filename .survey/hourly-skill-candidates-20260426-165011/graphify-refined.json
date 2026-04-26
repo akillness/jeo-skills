@@ -1,0 +1,100 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-165011",
+  "generated_at": "2026-04-26T16:52:24.843320Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: missing links key in graph.json)",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260426-165011",
+      "type": "run",
+      "label": "hourly-skill-candidates-20260426-165011"
+    },
+    {
+      "id": "target:survey-keyword-sweep-reference",
+      "type": "target",
+      "label": "survey keyword sweep reference"
+    },
+    {
+      "id": "lane:agentic ai skill",
+      "type": "lane",
+      "label": "agentic ai skill",
+      "status": "pass",
+      "raw_count": 20,
+      "kept_count": 3
+    },
+    {
+      "id": "lane:web frontend skill",
+      "type": "lane",
+      "label": "web frontend skill",
+      "status": "degraded",
+      "raw_count": 0,
+      "kept_count": 0
+    },
+    {
+      "id": "lane:web backend skill",
+      "type": "lane",
+      "label": "web backend skill",
+      "status": "degraded",
+      "raw_count": 0,
+      "kept_count": 0
+    },
+    {
+      "id": "lane:cli open source skill",
+      "type": "lane",
+      "label": "cli open source skill",
+      "status": "pass",
+      "raw_count": 1,
+      "kept_count": 1
+    },
+    {
+      "id": "lane:game development skill",
+      "type": "lane",
+      "label": "game development skill",
+      "status": "pass",
+      "raw_count": 20,
+      "kept_count": 4
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260426-165011",
+      "target": "target:survey-keyword-sweep-reference",
+      "relation": "proposes",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-165011",
+      "target": "lane:agentic ai skill",
+      "relation": "observed",
+      "weight": 20
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-165011",
+      "target": "lane:web frontend skill",
+      "relation": "observed",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-165011",
+      "target": "lane:web backend skill",
+      "relation": "observed",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-165011",
+      "target": "lane:cli open source skill",
+      "relation": "observed",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-165011",
+      "target": "lane:game development skill",
+      "relation": "observed",
+      "weight": 20
+    }
+  ],
+  "source_files": [
+    "evidence.json",
+    "rtk-summary.md",
+    "graphify-query.err"
+  ]
+}
