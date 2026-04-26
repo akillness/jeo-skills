@@ -17,10 +17,10 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.6"
+  version: "2.1.7"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
-  hardening: 2026-04-26
+  hardening: 2026-04-27
 ---
 
 # Survey
@@ -194,6 +194,7 @@ Execution rules:
 - For recommendation-grade keeps, apply a default freshness floor (`pushed_at` within the last 24 months). If kept despite staleness, document exception rationale and explicit risk.
 - Apply a default signal floor for recommendation-grade keeps: require at least one traction signal (for example, stars >= 3, or explicit maintainer/community adoption evidence with rationale). Keep broad discovery evidence even when the recommendation-grade list is stricter.
 - For the `agentic ai skill` lane, treat generic personal catch-all repositories named only like `*/skills` as low-fit by default unless there is explicit workflow documentation + traction; keep them in raw evidence but do not promote to TOP recommendations without an exception rationale.
+- Add a lane-intent token-overlap gate before recommendation promotion: require at least one lane-intent keyword token (or documented synonym) in `fullName` or description; if missing, keep as raw discovery evidence and classify as `low-fit` noise instead of promoting.
 - If direct web search/extract tooling fails (auth/rate-limit/transport), switch to GitHub-native retrieval (`gh search` + `gh api` or `gh repo view`) and label provenance clearly.
 - Guard for GH CLI JSON-field drift in unattended loops: prefer `gh search repos --json fullName,...` (or compose identity from `owner` + `name`) instead of unsupported fields like `nameWithOwner`; if a field mismatch occurs, preserve stderr in evidence and rerun with supported fields before final lane status.
 - In markdown artifacts validated with `--require-provenance`, map GitHub search result evidence to validator-supported labels (`indexed snippet` for search-result listings, `direct page retrieval` for repo/API detail fetches) instead of ad-hoc labels like `github search api`.

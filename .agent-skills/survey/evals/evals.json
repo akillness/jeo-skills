@@ -191,6 +191,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where agentic query returns high-star but off-topic repositories (for example generic frameworks) that only weakly match keywords",
+      "expected_output": "The survey preserves those repositories in raw discovery evidence but blocks recommendation-grade promotion unless there is lane-intent token overlap in fullName/description (or a documented synonym exception), reporting filtered examples as low-fit.",
+      "assertions": [
+        "Applies a lane-intent token-overlap check before recommendation-grade promotion",
+        "Keeps filtered off-topic repositories in raw evidence rather than deleting discovery traces",
+        "Reports low-fit filtering examples or counts so reviewers can audit precision improvements"
+      ]
     }
   ]
 }
