@@ -105,10 +105,10 @@
     {
       "id": 11,
       "prompt": "run the hourly five-lane survey and two lanes still miss thresholds after recovery; produce a reviewer-ready markdown summary",
-      "expected_output": "The survey marks each lane with `lane_status` (`pass|degraded`) and reports `degraded_causes` using the compact taxonomy (`license`, `stale`, `low-fit`, `archived`) with concrete examples or counts.",
+      "expected_output": "The survey marks each lane with `lane_status` (`pass|degraded`) and reports `degraded_causes` using the compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results`) with concrete examples or counts.",
       "assertions": [
         "Includes explicit lane_status labels in markdown output for each lane",
-        "Uses degraded_causes taxonomy (`license|stale|low-fit|archived`) when thresholds are missed",
+        "Uses degraded_causes taxonomy (`license|stale|low-fit|archived|low-signal|no-results`) when thresholds are missed",
         "Keeps provenance/evidence references while reporting degraded lanes"
       ]
     },
@@ -190,6 +190,16 @@
         "Escalates with one stage-2 lane query when raw hits exist but recommendation-grade keeps remain zero after stage-1",
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where cli lane remains raw_count=0 even after documented recovery and stage-2 escalation",
+      "expected_output": "The survey keeps lane_status as degraded and explicitly includes `no-results` in degraded_causes (rather than leaving causes empty) while preserving provenance and recovery query evidence.",
+      "assertions": [
+        "Marks lane_status as degraded for the unrecovered zero-raw lane",
+        "Includes `no-results` explicitly in degraded_causes when raw_count remains zero after escalation",
+        "Retains recovery-query provenance/evidence instead of silently dropping the lane"
       ]
     }
   ]

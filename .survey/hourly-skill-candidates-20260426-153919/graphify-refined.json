@@ -1,0 +1,66 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-153919",
+  "lane_status": {
+    "agentic ai skill": "pass",
+    "web frontend skill": "degraded",
+    "web backend skill": "pass",
+    "cli open source skill": "degraded",
+    "game development skill": "pass"
+  },
+  "degraded_lanes": {
+    "web frontend skill": [
+      "license",
+      "low-signal"
+    ],
+    "cli open source skill": [
+      "no-results"
+    ]
+  },
+  "top_recommendations": [
+    {
+      "lane": "agentic ai skill",
+      "repo": {
+        "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+        "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+        "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+        "stargazersCount": 14,
+        "license": "apache-2.0",
+        "updatedAt": "2026-04-07T21:13:35Z",
+        "pushedAt": "2026-01-29T09:33:47Z",
+        "isArchived": false,
+        "fit_rationale": "Matches lane 'agentic ai skill' by repository/topic description",
+        "provenance": "direct page retrieval"
+      }
+    },
+    {
+      "lane": "web backend skill",
+      "repo": {
+        "fullName": "andreasbm/web-skills",
+        "url": "https://github.com/andreasbm/web-skills",
+        "description": "A visual overview of useful skills to learn as a web developer",
+        "stargazersCount": 7521,
+        "license": "other",
+        "updatedAt": "2026-04-26T15:02:58Z",
+        "pushedAt": "2024-04-19T03:22:28Z",
+        "isArchived": false,
+        "fit_rationale": "Recovery query match for lane 'web backend skill'",
+        "provenance": "feed recovery"
+      }
+    },
+    {
+      "lane": "game development skill",
+      "repo": {
+        "fullName": "SMDS-Studio/Building-a-New-creative-Pong-",
+        "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+        "description": "Enhance your Pong game with Pygame! Learn how to add exciting features and unleash your creativity in this tutorial series. Perfect for intermediate programmers looking to expand their game development skills with Python and Pygame. Let's take the classic Pong game to the next level together!",
+        "stargazersCount": 14,
+        "license": "mit",
+        "updatedAt": "2025-02-24T10:03:43Z",
+        "pushedAt": "2023-08-09T16:31:04Z",
+        "isArchived": false,
+        "fit_rationale": "Matches lane 'game development skill' by repository/topic description",
+        "provenance": "direct page retrieval"
+      }
+    }
+  ]
+}

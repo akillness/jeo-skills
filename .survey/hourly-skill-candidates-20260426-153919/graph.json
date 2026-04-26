@@ -1,0 +1,194 @@
+{
+  "nodes": [
+    {
+      "id": "run:hourly-skill-candidates-20260426-153919",
+      "label": "hourly-skill-candidates-20260426-153919",
+      "type": "run",
+      "meta": {
+        "generated_at": "2026-04-26T15:40:07.580087Z"
+      }
+    },
+    {
+      "id": "lane:agentic ai skill",
+      "label": "agentic ai skill",
+      "type": "lane",
+      "meta": {
+        "status": "pass",
+        "degraded_causes": []
+      }
+    },
+    {
+      "id": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "label": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "repo",
+      "meta": {
+        "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+        "stars": 14,
+        "license": "apache-2.0"
+      }
+    },
+    {
+      "id": "repo:iwe-org/skills",
+      "label": "iwe-org/skills",
+      "type": "repo",
+      "meta": {
+        "url": "https://github.com/iwe-org/skills",
+        "stars": 7,
+        "license": "mit"
+      }
+    },
+    {
+      "id": "repo:VoDaiLocz/Enhance-Prompt",
+      "label": "VoDaiLocz/Enhance-Prompt",
+      "type": "repo",
+      "meta": {
+        "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+        "stars": 10,
+        "license": "mit"
+      }
+    },
+    {
+      "id": "lane:web frontend skill",
+      "label": "web frontend skill",
+      "type": "lane",
+      "meta": {
+        "status": "degraded",
+        "degraded_causes": [
+          "license",
+          "low-signal"
+        ]
+      }
+    },
+    {
+      "id": "lane:web backend skill",
+      "label": "web backend skill",
+      "type": "lane",
+      "meta": {
+        "status": "pass",
+        "degraded_causes": []
+      }
+    },
+    {
+      "id": "repo:andreasbm/web-skills",
+      "label": "andreasbm/web-skills",
+      "type": "repo",
+      "meta": {
+        "url": "https://github.com/andreasbm/web-skills",
+        "stars": 7521,
+        "license": "other"
+      }
+    },
+    {
+      "id": "lane:cli open source skill",
+      "label": "cli open source skill",
+      "type": "lane",
+      "meta": {
+        "status": "degraded",
+        "degraded_causes": [
+          "no-results"
+        ]
+      }
+    },
+    {
+      "id": "lane:game development skill",
+      "label": "game development skill",
+      "type": "lane",
+      "meta": {
+        "status": "pass",
+        "degraded_causes": []
+      }
+    },
+    {
+      "id": "repo:UnrealBlueprint/02_CrystalCavern",
+      "label": "UnrealBlueprint/02_CrystalCavern",
+      "type": "repo",
+      "meta": {
+        "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+        "stars": 9,
+        "license": "mit"
+      }
+    },
+    {
+      "id": "repo:SMDS-Studio/Building-a-New-creative-Pong-",
+      "label": "SMDS-Studio/Building-a-New-creative-Pong-",
+      "type": "repo",
+      "meta": {
+        "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+        "stars": 14,
+        "license": "mit"
+      }
+    },
+    {
+      "id": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "label": "tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "repo",
+      "meta": {
+        "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+        "stars": 3,
+        "license": "mit"
+      }
+    }
+  ],
+  "links": [
+    {
+      "source": "run:hourly-skill-candidates-20260426-153919",
+      "target": "lane:agentic ai skill",
+      "relation": "contains_lane"
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "repo:iwe-org/skills",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "repo:VoDaiLocz/Enhance-Prompt",
+      "relation": "recommends"
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-153919",
+      "target": "lane:web frontend skill",
+      "relation": "contains_lane"
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-153919",
+      "target": "lane:web backend skill",
+      "relation": "contains_lane"
+    },
+    {
+      "source": "lane:web backend skill",
+      "target": "repo:andreasbm/web-skills",
+      "relation": "recommends"
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-153919",
+      "target": "lane:cli open source skill",
+      "relation": "contains_lane"
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-153919",
+      "target": "lane:game development skill",
+      "relation": "contains_lane"
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "repo:UnrealBlueprint/02_CrystalCavern",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "repo:SMDS-Studio/Building-a-New-creative-Pong-",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "relation": "recommends"
+    }
+  ]
+}
