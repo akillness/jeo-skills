@@ -198,11 +198,11 @@ Execution rules:
 - Guard for GH CLI JSON-field drift in unattended loops: prefer `gh search repos --json fullName,...` (or compose identity from `owner` + `name`) instead of unsupported fields like `nameWithOwner`; if a field mismatch occurs, preserve stderr in evidence and rerun with supported fields before final lane status.
 - In markdown artifacts validated with `--require-provenance`, map GitHub search result evidence to validator-supported labels (`indexed snippet` for search-result listings, `direct page retrieval` for repo/API detail fetches) instead of ad-hoc labels like `github search api`.
 - If keyword hits are noisy or sparse, run lane-specific recovery templates from `references/keyword-sweep-and-relevance-rescue.md` before finalizing recommendations.
-- Use objective recovery triggers after the primary query (`raw_count < 8`, `kept_count == 0`, or `zero_star_raw/raw_count >= 0.70`) so lane rescue is deterministic in unattended cron loops.
+- Use objective recovery triggers after the primary query (`raw_count < 8`, `kept_count == 0`, `zero_star_raw/raw_count >= 0.70`, or cross-lane `aggregate_zero_star_ratio >= 0.50`) so lane rescue is deterministic in unattended cron loops.
 - If a lane still has `raw_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query for that lane before finalizing `lane_status`.
 - For noisy lanes where raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query before finalizing degraded status.
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
-- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`) plus examples/counts.
+- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`) plus examples/counts.
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
 

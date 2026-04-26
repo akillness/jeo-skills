@@ -63,6 +63,7 @@ Trigger a recovery pass when **any** of the following is true after the primary 
 - `raw_count < 8`
 - `kept_count == 0`
 - `zero_star_raw / raw_count >= 0.70` (for `raw_count > 0`)
+- `aggregate_zero_star_ratio >= 0.50` across all five keyword lanes (cross-lane raw-quality collapse trigger)
 - query transport degrades (auth/rate-limit/empty payload)
 
 If direct web search/extract is degraded or returns mostly noise:
@@ -92,6 +93,11 @@ Use these as fallback queries after the primary keyword family returns sparse/no
 - `game development skill` lane
   - `game engine tooling pipeline stars:>150 pushed:>=2024-01-01`
 
+Cross-lane quality recovery template:
+- When `aggregate_zero_star_ratio >= 0.50`, run exactly one cross-lane recovery query before finalizing run-level status:
+  - `developer workflow automation framework toolkit stars:>180 pushed:>=2024-01-01`
+- Apply the same relevance/metadata/signal/freshness gate and report whether this recovery improved recommendation diversity (`recommended_lane_count`).
+
 Stage-2 escalation rule:
 - If a lane remains `raw_count == 0` after stage-1 recovery, run exactly one stage-2 query template for that lane before finalizing `lane_status`.
 - For lanes that are noisy (raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1), run exactly one stage-2 query template before finalizing degraded status.
@@ -102,7 +108,7 @@ Stage-2 escalation rule:
 - At least 1 recommendation-grade keep per lane where feasible.
 - `cli open source skill` lane target: 3+ kept entries for spotlight quality.
 - For each lane, emit explicit `lane_status` in markdown: `pass` or `degraded`.
-- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal` (include counts or concrete examples).
+- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation` (include counts or concrete examples).
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 
 ## Reporting checklist
@@ -114,6 +120,6 @@ Before final recommendations:
 - [ ] Relevance gate applied to kept candidates
 - [ ] Metadata minimum recorded for each kept candidate
 - [ ] Lane-level `lane_status` (`pass|degraded`) included in markdown summary
-- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal`) reported with examples/counts
+- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation`) reported with examples/counts
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly

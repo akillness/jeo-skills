@@ -1,6 +1,7 @@
 # LLM Wiki Index
 
 ## Topics
+- [Hourly survey raw-quality-collapse ratchet](queries/2026-04-26-hourly-survey-raw-quality-collapse-ratchet.md)
 - [Hourly survey gh-field-compatibility ratchet](queries/2026-04-26-hourly-survey-gh-field-compatibility-ratchet.md)
 - [Hourly survey license-fallback ratchet](queries/2026-04-26-hourly-survey-license-fallback-ratchet.md)
 - [Hourly survey deterministic recovery-trigger ratchet](queries/2026-04-25-hourly-survey-deterministic-recovery-trigger.md)
