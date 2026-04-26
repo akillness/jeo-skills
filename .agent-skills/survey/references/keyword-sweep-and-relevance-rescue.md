@@ -24,7 +24,7 @@ Without a rescue path, empty lanes can be misread as ecosystem absence.
 
 For each candidate you keep, capture at minimum:
 
-- `license`
+- `license` (if null/unknown on first pass, retry once with `gh api repos/<owner>/<repo> --jq .license.spdx_id`)
 - `pushed_at` or `updated_at`
 - `archived`
 - one-line fit rationale

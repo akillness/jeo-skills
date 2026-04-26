@@ -74,10 +74,11 @@
     {
       "id": 8,
       "prompt": "run an hourly keyword sweep and handle noisy frontend results where many matches are assessment repos with unknown licenses",
-      "expected_output": "The survey keeps keyword coverage evidence but excludes low-transfer assessment/homework repos (or marks them as risk) and requires explicit exception rationale for unknown-license candidates.",
+      "expected_output": "The survey keeps keyword coverage evidence, retries null license metadata once via GitHub REST before final classification, excludes low-transfer assessment/homework repos, and requires explicit exception rationale only when license remains unknown after fallback.",
       "assertions": [
         "Applies a relevance gate that filters assessment/homework-only repositories by default",
-        "Treats unknown/missing license as drop or exception-only with explicit rationale",
+        "Retries null/unknown license metadata with `gh api repos/<owner>/<repo>` before drop/exception handling",
+        "Treats unknown/missing license after fallback as drop or exception-only with explicit rationale",
         "Preserves provenance and lane coverage even when filtering aggressively"
       ]
     },
