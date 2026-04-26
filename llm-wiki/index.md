@@ -7,3 +7,4 @@
 - [Hourly survey recovery-template ratchet](queries/2026-04-25-hourly-survey-recovery-template.md)
 - [Hourly survey lane-status ratchet](queries/2026-04-25-hourly-survey-lane-status-ratchet.md)
 - [Hourly survey lane-metrics ratchet](queries/2026-04-25-hourly-survey-lane-metrics-ratchet.md)
+- [Hourly survey run 2026-04-26 (backend no-results + stage-2 recovery confirmation)](queries/2026-04-26-hourly-survey-run-20260426-140150.md)
