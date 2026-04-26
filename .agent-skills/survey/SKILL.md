@@ -172,7 +172,7 @@ When `primary_mode: repo-maintenance`, do not trust keyword hits at face value.
 Run a compact gate before writing final recommendations:
 - **Positive signals (keep):** clear relation to the target capability, recent maintenance, explicit license, concrete docs/examples.
 - **Negative signals (drop or mark risk):** spam-like description, irrelevant domain despite keyword match, assessment/homework-only repos, stale/archived repos without strong justification, missing basic metadata, or unknown license without explicit justification.
-- **Metadata minimum:** capture `license`, `pushed_at`, `archived`, and one-line fit rationale for every candidate you keep. Unknown/missing license should be excluded by default unless a concrete exception rationale is documented.
+- **Metadata minimum:** capture `license`, `pushed_at`, `archived`, and one-line fit rationale for every candidate you keep. If first-pass metadata returns null/unknown license (for example GraphQL `licenseInfo`), retry once via GitHub REST (`gh api repos/<owner>/<repo> --jq .license.spdx_id`) before classifying unknown-license. Unknown/missing license after fallback should be excluded by default unless a concrete exception rationale is documented.
 - **Freshness floor (recommendation-grade keep list):** exclude candidates whose latest `pushed_at` is older than 24 months by default. Keep stale candidates only with explicit exception rationale and risk note.
 
 If search/extract tooling is degraded, fallback to direct GitHub API retrieval and mark provenance/risk explicitly instead of pretending confidence.

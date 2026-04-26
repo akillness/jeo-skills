@@ -1,0 +1,4 @@
+GraphQL licenseInfo:
+
+REST license:
+MIT
