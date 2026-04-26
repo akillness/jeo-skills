@@ -42,7 +42,8 @@ For every kept candidate, capture all fields:
 ## Reporting contract
 - Keep and publish full discovery counts even when keeps are sparse.
 - Emit `lane_status: pass|degraded`.
-- Emit `degraded_causes` counts using: `license`, `stale`, `low-fit`, `archived`, `low-signal`.
+- Emit `degraded_causes` counts using: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results`.
+- When a lane ends with `raw_count == 0` after documented recovery, include `no-results` explicitly to keep degraded reports deterministic.
 - Include lane health metrics: `kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`.
 - State provenance labels used (`direct page retrieval`, `indexed snippet`, etc.).
 
