@@ -1,0 +1,223 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-162245",
+  "generated_at": "2026-04-26T16:22:45.654292",
+  "mode": "repo-maintenance",
+  "provenance_labels": [
+    "indexed snippet",
+    "direct page retrieval"
+  ],
+  "lanes": {
+    "agentic ai skill": {
+      "searches": [
+        {
+          "stage": "primary",
+          "query": "agentic ai skill",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"agentic ai skill\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage1",
+          "query": "ai agent framework skills automation stars:>200 pushed:>=2024-01-01",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"ai agent framework skills automation stars:>200 pushed:>=2024-01-01\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        }
+      ],
+      "raw_count": 0,
+      "kept_count": 0,
+      "lane_threshold": 1,
+      "lane_status": "degraded",
+      "median_stars_raw": 0,
+      "zero_star_raw": 0,
+      "kept": [],
+      "dropped_examples": [],
+      "degraded_causes": {}
+    },
+    "web frontend skill": {
+      "searches": [
+        {
+          "stage": "primary",
+          "query": "web frontend skill",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"web frontend skill\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage1",
+          "query": "frontend ui component design system stars:>300 pushed:>=2024-01-01",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"frontend ui component design system stars:>300 pushed:>=2024-01-01\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage2",
+          "query": "frontend engineering workflow design system toolkit stars:>120 pushed:>=2024-01-01",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"frontend engineering workflow design system toolkit stars:>120 pushed:>=2024-01-01\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        }
+      ],
+      "raw_count": 0,
+      "kept_count": 0,
+      "lane_threshold": 1,
+      "lane_status": "degraded",
+      "median_stars_raw": 0,
+      "zero_star_raw": 0,
+      "kept": [],
+      "dropped_examples": [],
+      "degraded_causes": {}
+    },
+    "web backend skill": {
+      "searches": [
+        {
+          "stage": "primary",
+          "query": "web backend skill",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"web backend skill\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage1",
+          "query": "backend api framework observability stars:>300 pushed:>=2024-01-01",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"backend api framework observability stars:>300 pushed:>=2024-01-01\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage2",
+          "query": "backend developer platform api template stars:>150 pushed:>=2024-01-01",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"backend developer platform api template stars:>150 pushed:>=2024-01-01\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        }
+      ],
+      "raw_count": 0,
+      "kept_count": 0,
+      "lane_threshold": 1,
+      "lane_status": "degraded",
+      "median_stars_raw": 0,
+      "zero_star_raw": 0,
+      "kept": [],
+      "dropped_examples": [],
+      "degraded_causes": {}
+    },
+    "cli open source skill": {
+      "searches": [
+        {
+          "stage": "primary",
+          "query": "cli open source skill",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"cli open source skill\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage1",
+          "query": "command line tool developer productivity stars:>200 pushed:>=2024-01-01",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"command line tool developer productivity stars:>200 pushed:>=2024-01-01\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage2",
+          "query": "github cli terminal tool stars:>200 pushed:>=2024-01-01",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"github cli terminal tool stars:>200 pushed:>=2024-01-01\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        }
+      ],
+      "raw_count": 0,
+      "kept_count": 0,
+      "lane_threshold": 3,
+      "lane_status": "degraded",
+      "median_stars_raw": 0,
+      "zero_star_raw": 0,
+      "kept": [],
+      "dropped_examples": [],
+      "degraded_causes": {}
+    },
+    "game development skill": {
+      "searches": [
+        {
+          "stage": "primary",
+          "query": "game development skill",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"game development skill\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage1",
+          "query": "game engine tooling pipeline stars:>150 pushed:>=2024-01-01",
+          "count": 0,
+          "error": {
+            "rc": 1,
+            "err": "Unknown JSON field: \"nameWithOwner\"\nAvailable fields:\n  createdAt\n  defaultBranch\n  description\n  forksCount\n  fullName\n  hasDownloads\n  hasIssues\n  hasPages\n  hasProjects\n  hasWiki\n  homepage\n  id\n  isArchived\n  isDisabled\n  isFork\n  isPrivate\n  language\n  license\n  name\n  openIssuesCount\n  owner\n  pushedAt\n  size\n  stargazersCount\n  updatedAt\n  url\n  visibility\n  watchersCount",
+            "cmd": "gh search repos \"game engine tooling pipeline stars:>150 pushed:>=2024-01-01\" --limit 20 --sort updated --order desc --json nameWithOwner,description,stargazersCount,updatedAt,pushedAt,isArchived,url"
+          },
+          "provenance": "indexed snippet"
+        }
+      ],
+      "raw_count": 0,
+      "kept_count": 0,
+      "lane_threshold": 1,
+      "lane_status": "degraded",
+      "median_stars_raw": 0,
+      "zero_star_raw": 0,
+      "kept": [],
+      "dropped_examples": [],
+      "degraded_causes": {}
+    }
+  },
+  "cross_lane": {
+    "recommended_lane_count": 0,
+    "single_lane_concentration": true
+  }
+}
