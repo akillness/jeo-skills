@@ -1,0 +1,784 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-062544",
+  "generated_at": "2026-04-26T21:25:48.773946Z",
+  "required_keyword_families": [
+    "agentic ai skill",
+    "web frontend skill",
+    "web backend skill",
+    "cli open source skill",
+    "game development skill"
+  ],
+  "lanes": {
+    "agentic-ai-skill": {
+      "keyword": "agentic ai skill",
+      "queries": [
+        {
+          "kind": "primary",
+          "query": "agentic ai skill in:name,description,readme sort:updated-desc",
+          "ok": true,
+          "error": null,
+          "count": 10
+        }
+      ],
+      "provenance": "indexed snippet",
+      "recovery_used": false,
+      "raw_count": 10,
+      "zero_star_raw": 0,
+      "median_stars_raw": 65640.5,
+      "kept_count": 6,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "kept": [
+        {
+          "fullName": "Shubhamsaboo/awesome-llm-apps",
+          "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+          "description": "100+ AI Agent & RAG apps you can actually run — clone, customize, ship.",
+          "stargazersCount": 107638,
+          "license": "apache-2.0",
+          "pushedAt": "2026-04-19T06:07:13Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "pinchbench/skill",
+          "url": "https://github.com/pinchbench/skill",
+          "description": "PinchBench is a benchmarking system for evaluating LLM models as OpenClaw coding agents. Made with 🦀 by the humans at https://kilo.ai",
+          "stargazersCount": 1065,
+          "license": "mit",
+          "pushedAt": "2026-04-25T01:06:37Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "VoltAgent/awesome-openclaw-skills",
+          "url": "https://github.com/VoltAgent/awesome-openclaw-skills",
+          "description": "The awesome collection of OpenClaw skills. 5,400+ skills filtered and categorized from the official OpenClaw Skills Registry.🦞",
+          "stargazersCount": 47288,
+          "license": "mit",
+          "pushedAt": "2026-04-20T06:41:09Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "openclaw/openclaw",
+          "url": "https://github.com/openclaw/openclaw",
+          "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞 ",
+          "stargazersCount": 364526,
+          "license": "mit",
+          "pushedAt": "2026-04-26T21:21:01Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "sickn33/antigravity-awesome-skills",
+          "url": "https://github.com/sickn33/antigravity-awesome-skills",
+          "description": "Installable GitHub library of 1,400+ agentic skills for Claude Code, Cursor, Codex CLI, Gemini CLI, Antigravity, and more. Includes installer CLI, bundles, workflows, and official/community skill collections.",
+          "stargazersCount": 35236,
+          "license": "mit",
+          "pushedAt": "2026-04-26T20:32:26Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "garrytan/gstack",
+          "url": "https://github.com/garrytan/gstack",
+          "description": "Use Garry Tan's exact Claude Code setup: 23 opinionated tools that serve as CEO, Designer, Eng Manager, Release Manager, Doc Engineer, and QA",
+          "stargazersCount": 83993,
+          "license": "mit",
+          "pushedAt": "2026-04-26T21:25:04Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        }
+      ]
+    },
+    "web-frontend-skill": {
+      "keyword": "web frontend skill",
+      "queries": [
+        {
+          "kind": "primary",
+          "query": "web frontend skill in:name,description,readme sort:updated-desc",
+          "ok": true,
+          "error": null,
+          "count": 10
+        }
+      ],
+      "provenance": "indexed snippet",
+      "recovery_used": false,
+      "raw_count": 10,
+      "zero_star_raw": 0,
+      "median_stars_raw": 14734.5,
+      "kept_count": 6,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "kept": [
+        {
+          "fullName": "zarazhangrui/frontend-slides",
+          "url": "https://github.com/zarazhangrui/frontend-slides",
+          "description": "Create beautiful slides on the web using Claude's frontend skills",
+          "stargazersCount": 15719,
+          "license": "mit",
+          "pushedAt": "2026-04-08T18:23:28Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "sickn33/antigravity-awesome-skills",
+          "url": "https://github.com/sickn33/antigravity-awesome-skills",
+          "description": "Installable GitHub library of 1,400+ agentic skills for Claude Code, Cursor, Codex CLI, Gemini CLI, Antigravity, and more. Includes installer CLI, bundles, workflows, and official/community skill collections.",
+          "stargazersCount": 35236,
+          "license": "mit",
+          "pushedAt": "2026-04-26T20:32:26Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "addyosmani/agent-skills",
+          "url": "https://github.com/addyosmani/agent-skills",
+          "description": "Production-grade engineering skills for AI coding agents.",
+          "stargazersCount": 23654,
+          "license": "mit",
+          "pushedAt": "2026-04-26T03:57:18Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "affaan-m/everything-claude-code",
+          "url": "https://github.com/affaan-m/everything-claude-code",
+          "description": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+          "stargazersCount": 167559,
+          "license": "mit",
+          "pushedAt": "2026-04-26T04:53:53Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "sadanandpai/frontend-learning-kit",
+          "url": "https://github.com/sadanandpai/frontend-learning-kit",
+          "description": "Frontend tech guide and curated collection of frontend materials",
+          "stargazersCount": 4656,
+          "license": "mit",
+          "pushedAt": "2026-04-24T05:25:09Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "vudovn/antigravity-kit",
+          "url": "https://github.com/vudovn/antigravity-kit",
+          "description": "",
+          "stargazersCount": 7221,
+          "license": "mit",
+          "pushedAt": "2026-03-18T14:14:56Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        }
+      ]
+    },
+    "web-backend-skill": {
+      "keyword": "web backend skill",
+      "queries": [
+        {
+          "kind": "primary",
+          "query": "web backend skill in:name,description,readme sort:updated-desc",
+          "ok": true,
+          "error": null,
+          "count": 10
+        }
+      ],
+      "provenance": "indexed snippet",
+      "recovery_used": false,
+      "raw_count": 10,
+      "zero_star_raw": 0,
+      "median_stars_raw": 32213.0,
+      "kept_count": 8,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "kept": [
+        {
+          "fullName": "openclaw/openclaw",
+          "url": "https://github.com/openclaw/openclaw",
+          "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞 ",
+          "stargazersCount": 364526,
+          "license": "mit",
+          "pushedAt": "2026-04-26T21:21:01Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "bytedance/deer-flow",
+          "url": "https://github.com/bytedance/deer-flow",
+          "description": "An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.",
+          "stargazersCount": 63872,
+          "license": "mit",
+          "pushedAt": "2026-04-26T15:30:00Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "sickn33/antigravity-awesome-skills",
+          "url": "https://github.com/sickn33/antigravity-awesome-skills",
+          "description": "Installable GitHub library of 1,400+ agentic skills for Claude Code, Cursor, Codex CLI, Gemini CLI, Antigravity, and more. Includes installer CLI, bundles, workflows, and official/community skill collections.",
+          "stargazersCount": 35236,
+          "license": "mit",
+          "pushedAt": "2026-04-26T20:32:26Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "wshobson/agents",
+          "url": "https://github.com/wshobson/agents",
+          "description": "Intelligent automation and multi-agent orchestration for Claude Code",
+          "stargazersCount": 34353,
+          "license": "mit",
+          "pushedAt": "2026-04-26T20:42:38Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "vudovn/antigravity-kit",
+          "url": "https://github.com/vudovn/antigravity-kit",
+          "description": "",
+          "stargazersCount": 7221,
+          "license": "mit",
+          "pushedAt": "2026-03-18T14:14:56Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "affaan-m/everything-claude-code",
+          "url": "https://github.com/affaan-m/everything-claude-code",
+          "description": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+          "stargazersCount": 167559,
+          "license": "mit",
+          "pushedAt": "2026-04-26T04:53:53Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "openclaw/clawhub",
+          "url": "https://github.com/openclaw/clawhub",
+          "description": "Skill Directory for OpenClaw",
+          "stargazersCount": 8285,
+          "license": "mit",
+          "pushedAt": "2026-04-24T20:31:17Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "iflytek/skillhub",
+          "url": "https://github.com/iflytek/skillhub",
+          "description": "Self-hosted, open-source agent skill registry for enterprises. Publish & version skill packages, govern with RBAC and audit logs, deploy   on-premise with Docker or Kubernetes.",
+          "stargazersCount": 2648,
+          "license": "apache-2.0",
+          "pushedAt": "2026-04-24T07:25:04Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        }
+      ]
+    },
+    "cli-open-source-skill": {
+      "keyword": "cli open source skill",
+      "queries": [
+        {
+          "kind": "primary",
+          "query": "cli open source skill in:name,description,readme sort:updated-desc",
+          "ok": true,
+          "error": null,
+          "count": 10
+        }
+      ],
+      "provenance": "indexed snippet",
+      "recovery_used": false,
+      "raw_count": 10,
+      "zero_star_raw": 0,
+      "median_stars_raw": 17212.5,
+      "kept_count": 8,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "kept": [
+        {
+          "fullName": "googleworkspace/cli",
+          "url": "https://github.com/googleworkspace/cli",
+          "description": "Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.",
+          "stargazersCount": 25423,
+          "license": "apache-2.0",
+          "pushedAt": "2026-04-24T17:01:33Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "larksuite/cli",
+          "url": "https://github.com/larksuite/cli",
+          "description": "The official Lark/Feishu CLI tool, maintained by the larksuite team — built for humans and AI Agents. Covers core business domains including Messenger, Docs, Base, Sheets, Calendar, Mail, Tasks, Meetings, and more, with 200+ commands and 20+ AI Agent Skills.",
+          "stargazersCount": 8770,
+          "license": "mit",
+          "pushedAt": "2026-04-26T17:37:27Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "openclaw/openclaw",
+          "url": "https://github.com/openclaw/openclaw",
+          "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞 ",
+          "stargazersCount": 364526,
+          "license": "mit",
+          "pushedAt": "2026-04-26T21:21:01Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "jackwener/OpenCLI",
+          "url": "https://github.com/jackwener/OpenCLI",
+          "description": "Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Transform any website, Electron app, or local binary into a standardized command-line interface. Built for AI Agents to discover, learn, and execute tools seamlessly via a unified AGENT.md integration.",
+          "stargazersCount": 17391,
+          "license": "apache-2.0",
+          "pushedAt": "2026-04-26T12:47:04Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "VoltAgent/awesome-openclaw-skills",
+          "url": "https://github.com/VoltAgent/awesome-openclaw-skills",
+          "description": "The awesome collection of OpenClaw skills. 5,400+ skills filtered and categorized from the official OpenClaw Skills Registry.🦞",
+          "stargazersCount": 47288,
+          "license": "mit",
+          "pushedAt": "2026-04-20T06:41:09Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "chauncygu/collection-claude-code-source-code",
+          "url": "https://github.com/chauncygu/collection-claude-code-source-code",
+          "description": "🔥 A collection of the newest Claude Code open source",
+          "stargazersCount": 2270,
+          "license": "apache-2.0",
+          "pushedAt": "2026-04-11T21:16:40Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "sickn33/antigravity-awesome-skills",
+          "url": "https://github.com/sickn33/antigravity-awesome-skills",
+          "description": "Installable GitHub library of 1,400+ agentic skills for Claude Code, Cursor, Codex CLI, Gemini CLI, Antigravity, and more. Includes installer CLI, bundles, workflows, and official/community skill collections.",
+          "stargazersCount": 35236,
+          "license": "mit",
+          "pushedAt": "2026-04-26T20:32:26Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "RightNow-AI/openfang",
+          "url": "https://github.com/RightNow-AI/openfang",
+          "description": "Open-source Agent Operating System",
+          "stargazersCount": 17034,
+          "license": "apache-2.0",
+          "pushedAt": "2026-04-23T08:24:48Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        }
+      ]
+    },
+    "game-development-skill": {
+      "keyword": "game development skill",
+      "queries": [
+        {
+          "kind": "primary",
+          "query": "game development skill in:name,description,readme sort:updated-desc",
+          "ok": true,
+          "error": null,
+          "count": 10
+        }
+      ],
+      "provenance": "indexed snippet",
+      "recovery_used": false,
+      "raw_count": 10,
+      "zero_star_raw": 0,
+      "median_stars_raw": 42620.5,
+      "kept_count": 8,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "kept": [
+        {
+          "fullName": "Donchitos/Claude-Code-Game-Studios",
+          "url": "https://github.com/Donchitos/Claude-Code-Game-Studios",
+          "description": "Turn Claude Code into a full game dev studio — 49 AI agents, 72 workflow skills, and a complete coordination system mirroring real studio hierarchy.",
+          "stargazersCount": 16239,
+          "license": "mit",
+          "pushedAt": "2026-04-24T04:28:29Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "phaserjs/phaser",
+          "url": "https://github.com/phaserjs/phaser",
+          "description": "Phaser is a fun, free and fast 2D game framework for making HTML5 games for desktop and mobile web browsers, supporting Canvas and WebGL rendering.",
+          "stargazersCount": 39501,
+          "license": "mit",
+          "pushedAt": "2026-04-24T23:21:57Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "nextlevelbuilder/ui-ux-pro-max-skill",
+          "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+          "description": "An AI SKILL that provide design intelligence for building professional UI/UX multiple platforms",
+          "stargazersCount": 70821,
+          "license": "mit",
+          "pushedAt": "2026-04-03T05:08:19Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "florinpop17/app-ideas",
+          "url": "https://github.com/florinpop17/app-ideas",
+          "description": "A Collection of application ideas which can be used to improve your coding skills.",
+          "stargazersCount": 93440,
+          "license": "mit",
+          "pushedAt": "2025-10-11T14:51:21Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "sindresorhus/awesome",
+          "url": "https://github.com/sindresorhus/awesome",
+          "description": "😎 Awesome lists about all kinds of interesting topics",
+          "stargazersCount": 459266,
+          "license": "cc0-1.0",
+          "pushedAt": "2026-04-19T17:04:38Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "htdt/godogen",
+          "url": "https://github.com/htdt/godogen",
+          "description": "Autonomous game development for Godot and Bevy with Claude Code and Codex",
+          "stargazersCount": 3011,
+          "license": "mit",
+          "pushedAt": "2026-04-26T08:53:44Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "mikesprague/udacity-nanodegrees",
+          "url": "https://github.com/mikesprague/udacity-nanodegrees",
+          "description": ":mortar_board: List of Udacity Nanodegree programs with links to the free courses in their curricula",
+          "stargazersCount": 6256,
+          "license": "mit",
+          "pushedAt": "2024-05-16T18:39:13Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "Shubhamsaboo/awesome-llm-apps",
+          "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+          "description": "100+ AI Agent & RAG apps you can actually run — clone, customize, ship.",
+          "stargazersCount": 107638,
+          "license": "apache-2.0",
+          "pushedAt": "2026-04-19T06:07:13Z",
+          "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+          "provenance": "indexed snippet"
+        }
+      ]
+    }
+  },
+  "recommended": [
+    {
+      "fullName": "sindresorhus/awesome",
+      "url": "https://github.com/sindresorhus/awesome",
+      "description": "😎 Awesome lists about all kinds of interesting topics",
+      "stargazersCount": 459266,
+      "license": "cc0-1.0",
+      "pushedAt": "2026-04-19T17:04:38Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "game-development-skill"
+    },
+    {
+      "fullName": "openclaw/openclaw",
+      "url": "https://github.com/openclaw/openclaw",
+      "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞 ",
+      "stargazersCount": 364526,
+      "license": "mit",
+      "pushedAt": "2026-04-26T21:21:01Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "affaan-m/everything-claude-code",
+      "url": "https://github.com/affaan-m/everything-claude-code",
+      "description": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+      "stargazersCount": 167559,
+      "license": "mit",
+      "pushedAt": "2026-04-26T04:53:53Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "web-frontend-skill"
+    },
+    {
+      "fullName": "Shubhamsaboo/awesome-llm-apps",
+      "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+      "description": "100+ AI Agent & RAG apps you can actually run — clone, customize, ship.",
+      "stargazersCount": 107638,
+      "license": "apache-2.0",
+      "pushedAt": "2026-04-19T06:07:13Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "florinpop17/app-ideas",
+      "url": "https://github.com/florinpop17/app-ideas",
+      "description": "A Collection of application ideas which can be used to improve your coding skills.",
+      "stargazersCount": 93440,
+      "license": "mit",
+      "pushedAt": "2025-10-11T14:51:21Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "game-development-skill"
+    },
+    {
+      "fullName": "garrytan/gstack",
+      "url": "https://github.com/garrytan/gstack",
+      "description": "Use Garry Tan's exact Claude Code setup: 23 opinionated tools that serve as CEO, Designer, Eng Manager, Release Manager, Doc Engineer, and QA",
+      "stargazersCount": 83993,
+      "license": "mit",
+      "pushedAt": "2026-04-26T21:25:04Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+      "description": "An AI SKILL that provide design intelligence for building professional UI/UX multiple platforms",
+      "stargazersCount": 70821,
+      "license": "mit",
+      "pushedAt": "2026-04-03T05:08:19Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "game-development-skill"
+    },
+    {
+      "fullName": "bytedance/deer-flow",
+      "url": "https://github.com/bytedance/deer-flow",
+      "description": "An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.",
+      "stargazersCount": 63872,
+      "license": "mit",
+      "pushedAt": "2026-04-26T15:30:00Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "web-backend-skill"
+    },
+    {
+      "fullName": "VoltAgent/awesome-openclaw-skills",
+      "url": "https://github.com/VoltAgent/awesome-openclaw-skills",
+      "description": "The awesome collection of OpenClaw skills. 5,400+ skills filtered and categorized from the official OpenClaw Skills Registry.🦞",
+      "stargazersCount": 47288,
+      "license": "mit",
+      "pushedAt": "2026-04-20T06:41:09Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "phaserjs/phaser",
+      "url": "https://github.com/phaserjs/phaser",
+      "description": "Phaser is a fun, free and fast 2D game framework for making HTML5 games for desktop and mobile web browsers, supporting Canvas and WebGL rendering.",
+      "stargazersCount": 39501,
+      "license": "mit",
+      "pushedAt": "2026-04-24T23:21:57Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "game-development-skill"
+    },
+    {
+      "fullName": "sickn33/antigravity-awesome-skills",
+      "url": "https://github.com/sickn33/antigravity-awesome-skills",
+      "description": "Installable GitHub library of 1,400+ agentic skills for Claude Code, Cursor, Codex CLI, Gemini CLI, Antigravity, and more. Includes installer CLI, bundles, workflows, and official/community skill collections.",
+      "stargazersCount": 35236,
+      "license": "mit",
+      "pushedAt": "2026-04-26T20:32:26Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "wshobson/agents",
+      "url": "https://github.com/wshobson/agents",
+      "description": "Intelligent automation and multi-agent orchestration for Claude Code",
+      "stargazersCount": 34353,
+      "license": "mit",
+      "pushedAt": "2026-04-26T20:42:38Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "web-backend-skill"
+    },
+    {
+      "fullName": "googleworkspace/cli",
+      "url": "https://github.com/googleworkspace/cli",
+      "description": "Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.",
+      "stargazersCount": 25423,
+      "license": "apache-2.0",
+      "pushedAt": "2026-04-24T17:01:33Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "cli-open-source-skill"
+    },
+    {
+      "fullName": "addyosmani/agent-skills",
+      "url": "https://github.com/addyosmani/agent-skills",
+      "description": "Production-grade engineering skills for AI coding agents.",
+      "stargazersCount": 23654,
+      "license": "mit",
+      "pushedAt": "2026-04-26T03:57:18Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "web-frontend-skill"
+    },
+    {
+      "fullName": "jackwener/OpenCLI",
+      "url": "https://github.com/jackwener/OpenCLI",
+      "description": "Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Transform any website, Electron app, or local binary into a standardized command-line interface. Built for AI Agents to discover, learn, and execute tools seamlessly via a unified AGENT.md integration.",
+      "stargazersCount": 17391,
+      "license": "apache-2.0",
+      "pushedAt": "2026-04-26T12:47:04Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "cli-open-source-skill"
+    },
+    {
+      "fullName": "RightNow-AI/openfang",
+      "url": "https://github.com/RightNow-AI/openfang",
+      "description": "Open-source Agent Operating System",
+      "stargazersCount": 17034,
+      "license": "apache-2.0",
+      "pushedAt": "2026-04-23T08:24:48Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "cli-open-source-skill"
+    },
+    {
+      "fullName": "Donchitos/Claude-Code-Game-Studios",
+      "url": "https://github.com/Donchitos/Claude-Code-Game-Studios",
+      "description": "Turn Claude Code into a full game dev studio — 49 AI agents, 72 workflow skills, and a complete coordination system mirroring real studio hierarchy.",
+      "stargazersCount": 16239,
+      "license": "mit",
+      "pushedAt": "2026-04-24T04:28:29Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "game-development-skill"
+    },
+    {
+      "fullName": "zarazhangrui/frontend-slides",
+      "url": "https://github.com/zarazhangrui/frontend-slides",
+      "description": "Create beautiful slides on the web using Claude's frontend skills",
+      "stargazersCount": 15719,
+      "license": "mit",
+      "pushedAt": "2026-04-08T18:23:28Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "web-frontend-skill"
+    },
+    {
+      "fullName": "larksuite/cli",
+      "url": "https://github.com/larksuite/cli",
+      "description": "The official Lark/Feishu CLI tool, maintained by the larksuite team — built for humans and AI Agents. Covers core business domains including Messenger, Docs, Base, Sheets, Calendar, Mail, Tasks, Meetings, and more, with 200+ commands and 20+ AI Agent Skills.",
+      "stargazersCount": 8770,
+      "license": "mit",
+      "pushedAt": "2026-04-26T17:37:27Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "cli-open-source-skill"
+    },
+    {
+      "fullName": "openclaw/clawhub",
+      "url": "https://github.com/openclaw/clawhub",
+      "description": "Skill Directory for OpenClaw",
+      "stargazersCount": 8285,
+      "license": "mit",
+      "pushedAt": "2026-04-24T20:31:17Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "web-backend-skill"
+    },
+    {
+      "fullName": "vudovn/antigravity-kit",
+      "url": "https://github.com/vudovn/antigravity-kit",
+      "description": "",
+      "stargazersCount": 7221,
+      "license": "mit",
+      "pushedAt": "2026-03-18T14:14:56Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "web-frontend-skill"
+    },
+    {
+      "fullName": "mikesprague/udacity-nanodegrees",
+      "url": "https://github.com/mikesprague/udacity-nanodegrees",
+      "description": ":mortar_board: List of Udacity Nanodegree programs with links to the free courses in their curricula",
+      "stargazersCount": 6256,
+      "license": "mit",
+      "pushedAt": "2024-05-16T18:39:13Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "game-development-skill"
+    },
+    {
+      "fullName": "sadanandpai/frontend-learning-kit",
+      "url": "https://github.com/sadanandpai/frontend-learning-kit",
+      "description": "Frontend tech guide and curated collection of frontend materials",
+      "stargazersCount": 4656,
+      "license": "mit",
+      "pushedAt": "2026-04-24T05:25:09Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "web-frontend-skill"
+    },
+    {
+      "fullName": "htdt/godogen",
+      "url": "https://github.com/htdt/godogen",
+      "description": "Autonomous game development for Godot and Bevy with Claude Code and Codex",
+      "stargazersCount": 3011,
+      "license": "mit",
+      "pushedAt": "2026-04-26T08:53:44Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "game-development-skill"
+    },
+    {
+      "fullName": "iflytek/skillhub",
+      "url": "https://github.com/iflytek/skillhub",
+      "description": "Self-hosted, open-source agent skill registry for enterprises. Publish & version skill packages, govern with RBAC and audit logs, deploy   on-premise with Docker or Kubernetes.",
+      "stargazersCount": 2648,
+      "license": "apache-2.0",
+      "pushedAt": "2026-04-24T07:25:04Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "web-backend-skill"
+    },
+    {
+      "fullName": "chauncygu/collection-claude-code-source-code",
+      "url": "https://github.com/chauncygu/collection-claude-code-source-code",
+      "description": "🔥 A collection of the newest Claude Code open source",
+      "stargazersCount": 2270,
+      "license": "apache-2.0",
+      "pushedAt": "2026-04-11T21:16:40Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "cli-open-source-skill"
+    },
+    {
+      "fullName": "pinchbench/skill",
+      "url": "https://github.com/pinchbench/skill",
+      "description": "PinchBench is a benchmarking system for evaluating LLM models as OpenClaw coding agents. Made with 🦀 by the humans at https://kilo.ai",
+      "stargazersCount": 1065,
+      "license": "mit",
+      "pushedAt": "2026-04-25T01:06:37Z",
+      "fit_rationale": "Matches lane intent and passes freshness/license/signal floor.",
+      "provenance": "indexed snippet",
+      "lane": "agentic-ai-skill"
+    }
+  ],
+  "recommended_lane_count": 5,
+  "single_lane_concentration": false
+}
