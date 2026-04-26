@@ -191,6 +191,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where gh search returns license as an empty object payload like {\"key\":\"\",\"name\":\"\"} for many frontend hits",
+      "expected_output": "The survey treats empty-object license payloads as unknown metadata, retries license lookup once via gh api repos/<owner>/<repo>, and excludes recommendation-grade keeps unless the fallback returns an explicit license or an exception rationale is documented.",
+      "assertions": [
+        "Interprets empty-object license payloads as unknown rather than valid license",
+        "Retries license resolution once with gh api before final keep/drop classification",
+        "Keeps provenance/lane coverage while preventing unknown-license promotion"
+      ]
     }
   ]
 }
