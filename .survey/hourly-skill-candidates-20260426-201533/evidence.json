@@ -1,0 +1,382 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-201533",
+  "generated_at": "2026-04-26T20:17:05.509951Z",
+  "keywords": [
+    "agentic ai skill",
+    "web frontend skill",
+    "web backend skill",
+    "cli open source skill",
+    "game development skill"
+  ],
+  "rolling_cutoff_iso": "2024-04-26T20:17:05.509951Z",
+  "lanes": {
+    "agentic ai skill": {
+      "keyword": "agentic ai skill",
+      "raw_count": 20,
+      "kept_count": 3,
+      "median_stars_raw": 0,
+      "zero_star_raw": 12,
+      "kept": [
+        {
+          "keyword": "agentic ai skill",
+          "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "stars": 14,
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "archived": false,
+          "license": "Apache-2.0",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": []
+        },
+        {
+          "keyword": "agentic ai skill",
+          "full_name": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "description": "Agentic AI skills for knowledge graph management",
+          "stars": 7,
+          "pushed_at": "2026-04-06T01:48:47Z",
+          "archived": false,
+          "license": "MIT",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": []
+        },
+        {
+          "keyword": "agentic ai skill",
+          "full_name": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "stars": 10,
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "archived": false,
+          "license": "MIT",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": []
+        }
+      ],
+      "dropped_sample": [
+        {
+          "keyword": "agentic ai skill",
+          "full_name": "Ap6pack/malwar",
+          "url": "https://github.com/Ap6pack/malwar",
+          "description": "Static analysis engine for detecting malware in agentic AI skill files",
+          "stars": 0,
+          "pushed_at": "2026-04-08T22:08:53Z",
+          "archived": false,
+          "license": "MIT",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "keyword": "agentic ai skill",
+          "full_name": "taisukeoe/agentic-ai-skills-creator",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+          "description": "This is a foundation to create effective Agentic AI Skills",
+          "stars": 2,
+          "pushed_at": "2026-01-23T12:11:13Z",
+          "archived": false,
+          "license": "Apache-2.0",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "keyword": "agentic ai skill",
+          "full_name": "jprtr/Agentic-AI",
+          "url": "https://github.com/jprtr/Agentic-AI",
+          "description": "Agentic AI Skills",
+          "stars": 0,
+          "pushed_at": "2026-04-03T04:39:10Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "keyword": "agentic ai skill",
+          "full_name": "gpimpler-too/skill-lib",
+          "url": "https://github.com/gpimpler-too/skill-lib",
+          "description": "Agentic AI Skill Library",
+          "stars": 0,
+          "pushed_at": "2026-04-05T03:35:57Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "keyword": "agentic ai skill",
+          "full_name": "ritikpatel/marketing-mix-modelling-skill",
+          "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill",
+          "description": "MMM Agentic AI Skill",
+          "stars": 0,
+          "pushed_at": "2026-04-12T13:42:41Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "keyword": "agentic ai skill",
+          "full_name": "thisrunsthru/Skill",
+          "url": "https://github.com/thisrunsthru/Skill",
+          "description": "Agentic AI skill model",
+          "stars": 0,
+          "pushed_at": "2026-03-12T21:33:21Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ],
+      "search_meta": {}
+    },
+    "web frontend skill": {
+      "keyword": "web frontend skill",
+      "raw_count": 4,
+      "kept_count": 0,
+      "median_stars_raw": 0,
+      "zero_star_raw": 3,
+      "kept": [],
+      "dropped_sample": [
+        {
+          "keyword": "web frontend skill",
+          "full_name": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+          "stars": 12,
+          "pushed_at": "2026-03-30T14:38:08Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "license"
+          ]
+        },
+        {
+          "keyword": "web frontend skill",
+          "full_name": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "description": "This is a frontend project to showcase web frontend skills.",
+          "stars": 0,
+          "pushed_at": "2023-11-29T17:23:32Z",
+          "archived": false,
+          "license": "MIT",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "keyword": "web frontend skill",
+          "full_name": "Hezekiah-Elisha/savannah_informatics_test",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only.",
+          "stars": 0,
+          "pushed_at": "2026-01-16T19:17:43Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "keyword": "web frontend skill",
+          "full_name": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only. It should be hosted on a code repository service (e.g Github, Gitlab) with public access to make the assessment easy",
+          "stars": 0,
+          "pushed_at": "2024-05-28T12:02:00Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ],
+      "search_meta": {}
+    },
+    "web backend skill": {
+      "keyword": "web backend skill",
+      "raw_count": 0,
+      "kept_count": 0,
+      "median_stars_raw": 0,
+      "zero_star_raw": 0,
+      "kept": [],
+      "dropped_sample": [],
+      "search_meta": {}
+    },
+    "cli open source skill": {
+      "keyword": "cli open source skill",
+      "raw_count": 0,
+      "kept_count": 0,
+      "median_stars_raw": 0,
+      "zero_star_raw": 0,
+      "kept": [],
+      "dropped_sample": [],
+      "search_meta": {}
+    },
+    "game development skill": {
+      "keyword": "game development skill",
+      "raw_count": 20,
+      "kept_count": 1,
+      "median_stars_raw": 2,
+      "zero_star_raw": 10,
+      "kept": [
+        {
+          "keyword": "game development skill",
+          "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "stars": 3,
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "archived": false,
+          "license": "MIT",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": []
+        }
+      ],
+      "dropped_sample": [
+        {
+          "keyword": "game development skill",
+          "full_name": "UnrealBlueprint/02_CrystalCavern",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+          "description": "A fun little parkour game for our now-famous marble. Here you'll start learning real-world blueprint game development skills (REF: CC_UBP)",
+          "stars": 9,
+          "pushed_at": "2019-03-27T19:49:24Z",
+          "archived": false,
+          "license": "MIT",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "keyword": "game development skill",
+          "full_name": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "description": "I am strengthening my C# game development skills day by day.",
+          "stars": 20,
+          "pushed_at": "2026-02-26T03:56:34Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "license"
+          ]
+        },
+        {
+          "keyword": "game development skill",
+          "full_name": "Unengine/GameEngineAndGameMathTIL",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+          "description": "for my game development skill",
+          "stars": 4,
+          "pushed_at": "2021-05-17T16:44:56Z",
+          "archived": false,
+          "license": "WTFPL",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "keyword": "game development skill",
+          "full_name": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+          "description": "Enhance your Pong game with Pygame! Learn how to add exciting features and unleash your creativity in this tutorial series. Perfect for intermediate programmers looking to expand their game development skills with Python and Pygame. Let's take the classic Pong game to the next level together!",
+          "stars": 14,
+          "pushed_at": "2023-08-09T16:31:04Z",
+          "archived": false,
+          "license": "MIT",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "keyword": "game development skill",
+          "full_name": "kkh9700/GameDevelopmentSkills-Individual",
+          "url": "https://github.com/kkh9700/GameDevelopmentSkills-Individual",
+          "description": "",
+          "stars": 0,
+          "pushed_at": "2023-09-22T03:05:44Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "license",
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "keyword": "game development skill",
+          "full_name": "sparkade-labs/sparkade-skills",
+          "url": "https://github.com/sparkade-labs/sparkade-skills",
+          "description": "Game development skills for building sparkade games",
+          "stars": 2,
+          "pushed_at": "2026-04-07T09:25:59Z",
+          "archived": false,
+          "license": "NOASSERTION",
+          "fit_note": "keyword-aligned",
+          "provenance": "indexed snippet",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ],
+      "search_meta": {}
+    }
+  },
+  "recommended_lane_count": 2,
+  "single_lane_concentration": false,
+  "candidate": {
+    "target_file": ".agent-skills/survey/references/keyword-sweep-and-relevance-rescue.md",
+    "proposed_change": "Add explicit cross-lane raw-quality collapse trigger when zero-star ratio is high, with deterministic fallback query template and degraded-cause logging.",
+    "why": "Observed aggregate zero-star ratio=0.57 across keyword sweep; noisy discovery can pass raw-count gates while recommendation quality collapses."
+  },
+  "provenance_labels": [
+    "indexed snippet",
+    "direct page retrieval"
+  ]
+}
