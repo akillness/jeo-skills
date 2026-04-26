@@ -102,13 +102,14 @@ Stage-2 escalation rule:
 - If a lane remains `raw_count == 0` after stage-1 recovery, run exactly one stage-2 query template for that lane before finalizing `lane_status`.
 - For lanes that are noisy (raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1), run exactly one stage-2 query template before finalizing degraded status.
 - Keep provenance labels and apply the same relevance + metadata + signal/freshness gate to stage-2 hits.
+- Record a deterministic lane query transcript in evidence (`primary_query`, optional `stage1_query`, optional `stage2_query`, each with `result_count` and `stderr_path` when failed). This prevents degraded lanes from looking like unexplained ecosystem absence.
 
 ### Minimum recommendation thresholds (after relevance gate)
 
 - At least 1 recommendation-grade keep per lane where feasible.
 - `cli open source skill` lane target: 3+ kept entries for spotlight quality.
 - For each lane, emit explicit `lane_status` in markdown: `pass` or `degraded`.
-- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation` (include counts or concrete examples).
+- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `no-results` (include counts or concrete examples).
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 
 ## Reporting checklist
@@ -120,6 +121,7 @@ Before final recommendations:
 - [ ] Relevance gate applied to kept candidates
 - [ ] Metadata minimum recorded for each kept candidate
 - [ ] Lane-level `lane_status` (`pass|degraded`) included in markdown summary
-- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation`) reported with examples/counts
+- [ ] Lane query transcript captured in evidence (`primary/stage1/stage2`, result counts, stderr path on failures)
+- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation|no-results`) reported with examples/counts
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly
