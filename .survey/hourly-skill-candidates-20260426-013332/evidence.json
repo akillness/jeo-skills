@@ -1,0 +1,486 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-013332",
+  "generated_at_utc": "2026-04-26T01:33:32.984471Z",
+  "primary_mode": "repo-maintenance",
+  "required_keyword_families": [
+    "agentic ai skill",
+    "web frontend skill",
+    "web backend skill",
+    "cli open source skill",
+    "game development skill"
+  ],
+  "lanes": {
+    "agentic ai skill": {
+      "query": "agentic ai skill",
+      "search_mode": "gh-search",
+      "provenance": "indexed snippet",
+      "raw_count": 40,
+      "kept_count": 2,
+      "raw_top": [
+        {
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-01-29T09:33:47Z",
+          "stargazersCount": 14,
+          "updatedAt": "2026-04-07T21:13:35Z",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill"
+        },
+        {
+          "description": "Agentic AI skills for knowledge graph management",
+          "fullName": "iwe-org/skills",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-06T01:48:47Z",
+          "stargazersCount": 7,
+          "updatedAt": "2026-04-21T19:12:04Z",
+          "url": "https://github.com/iwe-org/skills"
+        },
+        {
+          "description": "Static analysis engine for detecting malware in agentic AI skill files",
+          "fullName": "Ap6pack/malwar",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-08T22:08:53Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-04-08T22:18:55Z",
+          "url": "https://github.com/Ap6pack/malwar"
+        },
+        {
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-03-05T13:50:53Z",
+          "stargazersCount": 10,
+          "updatedAt": "2026-04-14T14:36:09Z",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt"
+        },
+        {
+          "description": "This is a foundation to create effective Agentic AI Skills",
+          "fullName": "taisukeoe/agentic-ai-skills-creator",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-01-23T12:11:13Z",
+          "stargazersCount": 2,
+          "updatedAt": "2026-01-28T08:16:28Z",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator"
+        },
+        {
+          "description": "Agentic AI Skills",
+          "fullName": "jprtr/Agentic-AI",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-04-03T04:39:10Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-04-03T04:39:13Z",
+          "url": "https://github.com/jprtr/Agentic-AI"
+        },
+        {
+          "description": "Agentic AI Skill Library",
+          "fullName": "gpimpler-too/skill-lib",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-04-05T03:35:57Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-04-05T03:36:01Z",
+          "url": "https://github.com/gpimpler-too/skill-lib"
+        },
+        {
+          "description": "MMM Agentic AI Skill",
+          "fullName": "ritikpatel/marketing-mix-modelling-skill",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-04-12T13:42:41Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-04-12T13:42:49Z",
+          "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill"
+        }
+      ],
+      "kept": [
+        {
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-01-29T09:33:47Z",
+          "stargazersCount": 14,
+          "updatedAt": "2026-04-07T21:13:35Z",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "fit_rationale": "agentic ai skill 정합 + license/freshness/signal gate 통과"
+        },
+        {
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-03-05T13:50:53Z",
+          "stargazersCount": 10,
+          "updatedAt": "2026-04-14T14:36:09Z",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "fit_rationale": "agentic ai skill 정합 + license/freshness/signal gate 통과"
+        }
+      ],
+      "median_stars_raw": 0,
+      "zero_star_raw": 26,
+      "lane_status": "pass",
+      "degraded_causes": {
+        "low-fit": 8,
+        "low-signal": 36,
+        "license": 25
+      },
+      "recovery_queries": []
+    },
+    "web frontend skill": {
+      "query": "web frontend skill",
+      "search_mode": "gh-search",
+      "provenance": "indexed snippet",
+      "raw_count": 4,
+      "kept_count": 0,
+      "raw_top": [
+        {
+          "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+          "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-03-30T14:38:08Z",
+          "stargazersCount": 12,
+          "updatedAt": "2026-04-02T16:29:32Z",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill"
+        },
+        {
+          "description": "This is a frontend project to showcase web frontend skills.",
+          "fullName": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2023-11-29T17:23:32Z",
+          "stargazersCount": 0,
+          "updatedAt": "2023-11-28T08:12:53Z",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend"
+        },
+        {
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only.",
+          "fullName": "Hezekiah-Elisha/savannah_informatics_test",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-01-16T19:17:43Z",
+          "stargazersCount": 0,
+          "updatedAt": "2026-01-16T19:17:48Z",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test"
+        },
+        {
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only. It should be hosted on a code repository service (e.g Github, Gitlab) with public access to make the assessment easy",
+          "fullName": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2024-05-28T12:02:00Z",
+          "stargazersCount": 0,
+          "updatedAt": "2024-05-28T12:02:04Z",
+          "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment"
+        }
+      ],
+      "kept": [],
+      "median_stars_raw": 0,
+      "zero_star_raw": 3,
+      "lane_status": "degraded",
+      "degraded_causes": {
+        "license": 6,
+        "stale": 2,
+        "low-signal": 6
+      },
+      "recovery_queries": [
+        {
+          "stage": "stage1",
+          "query": "frontend ui component design system stars:>300 pushed:>=2024-01-01"
+        },
+        {
+          "stage": "stage2",
+          "query": "frontend engineering workflow design system toolkit stars:>120 pushed:>=2024-01-01"
+        }
+      ]
+    },
+    "web backend skill": {
+      "query": "web backend skill",
+      "search_mode": "gh-search",
+      "provenance": "indexed snippet",
+      "raw_count": 0,
+      "kept_count": 0,
+      "raw_top": [],
+      "kept": [],
+      "median_stars_raw": 0,
+      "zero_star_raw": 0,
+      "lane_status": "degraded",
+      "degraded_causes": {
+        "no-results": 1
+      },
+      "recovery_queries": [
+        {
+          "stage": "stage1",
+          "query": "backend api framework observability stars:>300 pushed:>=2024-01-01"
+        },
+        {
+          "stage": "stage2",
+          "query": "backend developer platform api template stars:>150 pushed:>=2024-01-01"
+        }
+      ]
+    },
+    "cli open source skill": {
+      "query": "command line tool developer productivity stars:>200 pushed:>=2024-01-01",
+      "search_mode": "gh-search",
+      "provenance": "indexed snippet",
+      "raw_count": 1,
+      "kept_count": 1,
+      "raw_top": [
+        {
+          "description": " macOS command line tool for developers – The ultimate tool to manage your Mac. It provides a huge set of command line commands that automatize the usage of your Mac.",
+          "fullName": "guarinogabriel/Mac-CLI",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-02-28T02:21:48Z",
+          "stargazersCount": 9062,
+          "updatedAt": "2026-04-24T17:20:39Z",
+          "url": "https://github.com/guarinogabriel/Mac-CLI"
+        }
+      ],
+      "kept": [
+        {
+          "description": " macOS command line tool for developers – The ultimate tool to manage your Mac. It provides a huge set of command line commands that automatize the usage of your Mac.",
+          "fullName": "guarinogabriel/Mac-CLI",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-02-28T02:21:48Z",
+          "stargazersCount": 9062,
+          "updatedAt": "2026-04-24T17:20:39Z",
+          "url": "https://github.com/guarinogabriel/Mac-CLI",
+          "fit_rationale": "cli open source skill 정합 + license/freshness/signal gate 통과"
+        }
+      ],
+      "median_stars_raw": 9062,
+      "zero_star_raw": 0,
+      "lane_status": "degraded",
+      "degraded_causes": {},
+      "recovery_queries": [
+        {
+          "stage": "stage1",
+          "query": "command line tool developer productivity stars:>200 pushed:>=2024-01-01"
+        }
+      ]
+    },
+    "game development skill": {
+      "query": "game development skill",
+      "search_mode": "gh-search",
+      "provenance": "indexed snippet",
+      "raw_count": 40,
+      "kept_count": 1,
+      "raw_top": [
+        {
+          "description": "A fun little parkour game for our now-famous marble. Here you'll start learning real-world blueprint game development skills (REF: CC_UBP)",
+          "fullName": "UnrealBlueprint/02_CrystalCavern",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2019-03-27T19:49:24Z",
+          "stargazersCount": 9,
+          "updatedAt": "2025-04-11T04:59:09Z",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern"
+        },
+        {
+          "description": "I am strengthening my C# game development skills day by day.",
+          "fullName": "rohithnafeel/My-CS-Projects",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2026-02-26T03:56:34Z",
+          "stargazersCount": 20,
+          "updatedAt": "2026-03-30T05:08:21Z",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects"
+        },
+        {
+          "description": "for my game development skill",
+          "fullName": "Unengine/GameEngineAndGameMathTIL",
+          "isArchived": false,
+          "license": {
+            "key": "wtfpl",
+            "name": "Do What The F*ck You Want To Public License",
+            "url": "https://api.github.com/licenses/wtfpl"
+          },
+          "pushedAt": "2021-05-17T16:44:56Z",
+          "stargazersCount": 4,
+          "updatedAt": "2021-05-17T16:44:59Z",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL"
+        },
+        {
+          "description": "Enhance your Pong game with Pygame! Learn how to add exciting features and unleash your creativity in this tutorial series. Perfect for intermediate programmers looking to expand their game development skills with Python and Pygame. Let's take the classic Pong game to the next level together!",
+          "fullName": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2023-08-09T16:31:04Z",
+          "stargazersCount": 14,
+          "updatedAt": "2025-02-24T10:03:43Z",
+          "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-"
+        },
+        {
+          "description": "",
+          "fullName": "kkh9700/GameDevelopmentSkills-Individual",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2023-09-22T03:05:44Z",
+          "stargazersCount": 0,
+          "updatedAt": "2023-09-19T12:14:46Z",
+          "url": "https://github.com/kkh9700/GameDevelopmentSkills-Individual"
+        },
+        {
+          "description": "Game development skills for building sparkade games",
+          "fullName": "sparkade-labs/sparkade-skills",
+          "isArchived": false,
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          },
+          "pushedAt": "2026-04-07T09:25:59Z",
+          "stargazersCount": 2,
+          "updatedAt": "2026-04-07T09:26:02Z",
+          "url": "https://github.com/sparkade-labs/sparkade-skills"
+        },
+        {
+          "description": "A virtual pet simulator game developed using Unity and C#. The game allows users to interact with and take care of a virtual pet, demonstrating game development skills.",
+          "fullName": "inchussa/Virtual-Pet-Simulator",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2025-02-09T14:09:01Z",
+          "stargazersCount": 25,
+          "updatedAt": "2025-02-15T16:44:18Z",
+          "url": "https://github.com/inchussa/Virtual-Pet-Simulator"
+        },
+        {
+          "description": "Curated collection of resources, books, courses, tutorials, and YouTube channels, to help you master game development skills.",
+          "fullName": "teamgravitydev/learning-resources.md",
+          "isArchived": false,
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          },
+          "pushedAt": "2024-11-05T01:26:02Z",
+          "stargazersCount": 5,
+          "updatedAt": "2026-04-23T19:15:55Z",
+          "url": "https://github.com/teamgravitydev/learning-resources.md"
+        }
+      ],
+      "kept": [
+        {
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-02-06T04:09:12Z",
+          "stargazersCount": 3,
+          "updatedAt": "2026-04-14T18:39:35Z",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "fit_rationale": "game development skill 정합 + license/freshness/signal gate 통과"
+        }
+      ],
+      "median_stars_raw": 0,
+      "zero_star_raw": 27,
+      "lane_status": "pass",
+      "degraded_causes": {
+        "stale": 19,
+        "license": 31,
+        "low-signal": 32,
+        "low-fit": 1,
+        "archived": 2
+      },
+      "recovery_queries": []
+    }
+  },
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false
+}

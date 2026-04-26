@@ -190,6 +190,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where one lane remains raw_count=0 even after documented stage-2 recovery",
+      "expected_output": "The survey still reports lane_status and explicitly includes `no-results` in degraded_causes so sparse-lane failure mode is machine-readable for cron triage.",
+      "assertions": [
+        "Includes `no-results` in degraded_causes when a lane stays raw_count==0 after recovery",
+        "Does not leave degraded_causes empty for zero-result lanes",
+        "Preserves provenance and recovery-query evidence while reporting the final degraded lane"
+      ]
     }
   ]
 }
