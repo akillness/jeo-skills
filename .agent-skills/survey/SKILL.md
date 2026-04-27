@@ -210,6 +210,7 @@ Execution rules:
 - For unattended hourly runs, standardize the transport error artifact path to `.survey/<slug>/web-search-error.log` whenever web search transport fails; reference this exact path in `transport_status` so reviewers can diff outage evidence consistently.
 - In new hourly artifacts, keep `transport_status.web_search.error_log` repository-relative (for example `.survey/<slug>/web-search-error.log`) and do not store host-absolute prefixes such as `/Users/...` or `/home/...`.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
+- Add an open-PR backlog preflight gate before new PR creation: if hourly-survey PR backlog (title/head prefixed by `chore: hourly survey` or `chore/hourly-survey-`) is `>= 10`, switch that run to merge carry-forward mode (merge one clean open hourly PR first) and skip opening an additional new PR while still producing survey/RTK/graphify/obsidian artifacts.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 

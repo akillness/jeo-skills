@@ -1,0 +1,516 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-221215",
+  "generated_at_utc": "2026-04-27T22:12:51Z",
+  "primary_mode": "repo-maintenance",
+  "queries": [
+    "agentic ai skill",
+    "web frontend skill",
+    "web backend skill",
+    "cli open source skill",
+    "game development skill"
+  ],
+  "lanes": [
+    {
+      "query": "agentic ai skill",
+      "raw_count": 20,
+      "kept_count": 4,
+      "median_stars_raw": 2.0,
+      "zero_star_raw": 8,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "samples": [
+        {
+          "query": "agentic ai skill",
+          "full_name": "mech-xu/agent_dev_skills",
+          "url": "https://github.com/mech-xu/agent_dev_skills",
+          "stars": 0,
+          "license": "MIT",
+          "archived": false,
+          "pushed_at": "2026-04-27T22:08:55Z",
+          "fit_hint": "AI-optimized project development automation toolkit - context generation, log merging, and deployment automation for AI coding agents",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "agentic ai skill",
+          "full_name": "Bitterbot-AI/bitterbot-desktop",
+          "url": "https://github.com/Bitterbot-AI/bitterbot-desktop",
+          "stars": 1225,
+          "license": "NOASSERTION",
+          "archived": false,
+          "pushed_at": "2026-04-27T22:07:49Z",
+          "fit_hint": "A local-first AI agent with persistent memory, emotional intelligence, and a peer-to-peer skills economy.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "agentic ai skill",
+          "full_name": "wsbs20/claude-code-aso-skill",
+          "url": "https://github.com/wsbs20/claude-code-aso-skill",
+          "stars": 37,
+          "license": "NOASSERTION",
+          "archived": false,
+          "pushed_at": "2026-04-27T22:06:34Z",
+          "fit_hint": "🚀 Optimize App Store visibility with AI agents in the Claude Code framework for enhanced performance and growth.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "agentic ai skill",
+          "full_name": "speakeasy-api/gram",
+          "url": "https://github.com/speakeasy-api/gram",
+          "stars": 231,
+          "license": "AGPL-3.0",
+          "archived": false,
+          "pushed_at": "2026-04-27T22:10:46Z",
+          "fit_hint": "Securely scale AI usage across your organization.  Control plane for building, securing and monitoring your agents, mcp and skills.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "agentic ai skill",
+          "full_name": "magnusfroste/flowwink",
+          "url": "https://github.com/magnusfroste/flowwink",
+          "stars": 5,
+          "license": "MIT",
+          "archived": false,
+          "pushed_at": "2026-04-27T22:07:48Z",
+          "fit_hint": "The autonomous agentic web that runs your business. FlowPilot — an AI agent with 37+ skills, Workflow DAGs, A2A delegation, and self-healing",
+          "provenance": "direct page retrieval"
+        }
+      ],
+      "kept": [
+        {
+          "query": "agentic ai skill",
+          "full_name": "speakeasy-api/gram",
+          "url": "https://github.com/speakeasy-api/gram",
+          "stars": 231,
+          "license": "AGPL-3.0",
+          "archived": false,
+          "pushed_at": "2026-04-27T22:10:46Z",
+          "fit_hint": "Securely scale AI usage across your organization.  Control plane for building, securing and monitoring your agents, mcp and skills.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "agentic ai skill",
+          "full_name": "magnusfroste/flowwink",
+          "url": "https://github.com/magnusfroste/flowwink",
+          "stars": 5,
+          "license": "MIT",
+          "archived": false,
+          "pushed_at": "2026-04-27T22:07:48Z",
+          "fit_hint": "The autonomous agentic web that runs your business. FlowPilot — an AI agent with 37+ skills, Workflow DAGs, A2A delegation, and self-healing",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "agentic ai skill",
+          "full_name": "edimuj/vexscan",
+          "url": "https://github.com/edimuj/vexscan",
+          "stars": 5,
+          "license": "Apache-2.0",
+          "archived": false,
+          "pushed_at": "2026-04-27T22:04:55Z",
+          "fit_hint": "Security scanner for AI agent plugins, skills, MCPs, and configurations. Detects prompt injection, malware, credential theft, and obfuscated",
+          "provenance": "direct page retrieval"
+        }
+      ],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    {
+      "query": "web frontend skill",
+      "raw_count": 20,
+      "kept_count": 0,
+      "median_stars_raw": 0.0,
+      "zero_star_raw": 15,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit",
+        "low-signal-saturation"
+      ],
+      "samples": [
+        {
+          "query": "web frontend skill",
+          "full_name": "Sahar-Jw/Personal-Portfolio",
+          "url": "https://github.com/Sahar-Jw/Personal-Portfolio",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T22:10:46Z",
+          "fit_hint": "A modern, responsive personal portfolio website showcasing my frontend development skills, experience, and projects. Built with React.js, it",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "web frontend skill",
+          "full_name": "ericliu8888/blog-preview-card",
+          "url": "https://github.com/ericliu8888/blog-preview-card",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T21:59:31Z",
+          "fit_hint": "🌟 Build a responsive blog preview card with HTML and CSS, enhancing your web layout skills through practical application of design principle",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "web frontend skill",
+          "full_name": "heitorcg5/portfolio",
+          "url": "https://github.com/heitorcg5/portfolio",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T21:56:16Z",
+          "fit_hint": "Personal portfolio built with modern web technologies to present my projects, technical skills, and experience as a Software Engineering stu",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "web frontend skill",
+          "full_name": "jandortiz/the-hangman-game",
+          "url": "https://github.com/jandortiz/the-hangman-game",
+          "stars": 0,
+          "license": "MIT",
+          "archived": false,
+          "pushed_at": "2026-04-27T21:47:09Z",
+          "fit_hint": "A full-stack web-based Hangman game designed to practice English vocabulary while reinforcing backend and frontend development skills.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "web frontend skill",
+          "full_name": "zkm/zkm.tw",
+          "url": "https://github.com/zkm/zkm.tw",
+          "stars": 1,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T20:53:50Z",
+          "fit_hint": "Modern portfolio and interactive resume for Zach Schneider, Senior Web Developer Advisor. Built with React, TypeScript, Tailwind CSS, and Vi",
+          "provenance": "direct page retrieval"
+        }
+      ],
+      "kept": [],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    {
+      "query": "web backend skill",
+      "raw_count": 20,
+      "kept_count": 1,
+      "median_stars_raw": 0.0,
+      "zero_star_raw": 17,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "samples": [
+        {
+          "query": "web backend skill",
+          "full_name": "heitorcg5/portfolio",
+          "url": "https://github.com/heitorcg5/portfolio",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T21:56:16Z",
+          "fit_hint": "Personal portfolio built with modern web technologies to present my projects, technical skills, and experience as a Software Engineering stu",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "web backend skill",
+          "full_name": "jandortiz/the-hangman-game",
+          "url": "https://github.com/jandortiz/the-hangman-game",
+          "stars": 0,
+          "license": "MIT",
+          "archived": false,
+          "pushed_at": "2026-04-27T21:47:09Z",
+          "fit_hint": "A full-stack web-based Hangman game designed to practice English vocabulary while reinforcing backend and frontend development skills.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "web backend skill",
+          "full_name": "KASHISH-Naik/Complete-WebDev-Cheatsheet",
+          "url": "https://github.com/KASHISH-Naik/Complete-WebDev-Cheatsheet",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T19:17:13Z",
+          "fit_hint": "🛠️ Master web development with this comprehensive cheatsheet covering design, layout, performance testing, and deployment tips. Collaborate ",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "web backend skill",
+          "full_name": "Unnatti687/festhub-aws-s3",
+          "url": "https://github.com/Unnatti687/festhub-aws-s3",
+          "stars": 1,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T18:03:51Z",
+          "fit_hint": "FestHub (Trial Version) is a web platform to explore and manage college fests in one place. Built using HTML, CSS, and JavaScript, and deplo",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "web backend skill",
+          "full_name": "Pragatirakhunde/ProConnect",
+          "url": "https://github.com/Pragatirakhunde/ProConnect",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T17:48:09Z",
+          "fit_hint": "Production-ready MERN web app featuring secure JWT auth, role-based access, connection-based feeds, real-time messaging, and optimized Mongo",
+          "provenance": "direct page retrieval"
+        }
+      ],
+      "kept": [
+        {
+          "query": "web backend skill",
+          "full_name": "Gaku52/software-engineering-universe",
+          "url": "https://github.com/Gaku52/software-engineering-universe",
+          "stars": 5,
+          "license": "MIT",
+          "archived": false,
+          "pushed_at": "2026-04-27T16:42:04Z",
+          "fit_hint": "A comprehensive skills knowledge base covering the entire software development lifecycle — from design, implementation, testing to deploymen",
+          "provenance": "direct page retrieval"
+        }
+      ],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    {
+      "query": "cli open source skill",
+      "raw_count": 20,
+      "kept_count": 1,
+      "median_stars_raw": 1.0,
+      "zero_star_raw": 9,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "samples": [
+        {
+          "query": "cli open source skill",
+          "full_name": "skrun-dev/skrun",
+          "url": "https://github.com/skrun-dev/skrun",
+          "stars": 164,
+          "license": "MIT",
+          "archived": false,
+          "pushed_at": "2026-04-27T20:06:12Z",
+          "fit_hint": "Deploy any Agent Skill as an API via POST /run. The open-source multi-model alternative to Claude Managed Agents, Microsoft Foundry & Mistra",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "cli open source skill",
+          "full_name": "popular-molluskfamily870/claw-code",
+          "url": "https://github.com/popular-molluskfamily870/claw-code",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T16:04:22Z",
+          "fit_hint": "Build and run code across Rust and other workspaces with Claw Code, a tool for parity checks, usage flows, and roadmap tracking",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "cli open source skill",
+          "full_name": "pisonislo8737/HyperxOpenSkills",
+          "url": "https://github.com/pisonislo8737/HyperxOpenSkills",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T15:20:04Z",
+          "fit_hint": "Provide open-source Claude Code skills to access HyperX wallet analytics, market data, and social feeds for enhanced trading insights.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "cli open source skill",
+          "full_name": "wtfyashh/introduction-to-bash-scripting",
+          "url": "https://github.com/wtfyashh/introduction-to-bash-scripting",
+          "stars": 0,
+          "license": "MIT",
+          "archived": false,
+          "pushed_at": "2026-04-27T13:24:33Z",
+          "fit_hint": "💡 Learn Bash scripting basics and start writing scripts with this open-source guide. Perfect for beginners looking to enhance their skills.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "cli open source skill",
+          "full_name": "Stacksheild/sentinelai",
+          "url": "https://github.com/Stacksheild/sentinelai",
+          "stars": 1,
+          "license": "NOASSERTION",
+          "archived": false,
+          "pushed_at": "2026-04-27T01:55:17Z",
+          "fit_hint": "Security scanner, cost tracker, and model router for the AI ecosystem. Scan Claude Code skills, MCP servers, and LLM plugins   for vulnerabi",
+          "provenance": "direct page retrieval"
+        }
+      ],
+      "kept": [
+        {
+          "query": "cli open source skill",
+          "full_name": "skrun-dev/skrun",
+          "url": "https://github.com/skrun-dev/skrun",
+          "stars": 164,
+          "license": "MIT",
+          "archived": false,
+          "pushed_at": "2026-04-27T20:06:12Z",
+          "fit_hint": "Deploy any Agent Skill as an API via POST /run. The open-source multi-model alternative to Claude Managed Agents, Microsoft Foundry & Mistra",
+          "provenance": "direct page retrieval"
+        }
+      ],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    {
+      "query": "game development skill",
+      "raw_count": 20,
+      "kept_count": 0,
+      "median_stars_raw": 0.0,
+      "zero_star_raw": 15,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit",
+        "low-signal-saturation"
+      ],
+      "samples": [
+        {
+          "query": "game development skill",
+          "full_name": "jandortiz/the-hangman-game",
+          "url": "https://github.com/jandortiz/the-hangman-game",
+          "stars": 0,
+          "license": "MIT",
+          "archived": false,
+          "pushed_at": "2026-04-27T21:47:09Z",
+          "fit_hint": "A full-stack web-based Hangman game designed to practice English vocabulary while reinforcing backend and frontend development skills.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "game development skill",
+          "full_name": "Lukebonn/491-S26-TOO-MANY-COOKS",
+          "url": "https://github.com/Lukebonn/491-S26-TOO-MANY-COOKS",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T21:24:53Z",
+          "fit_hint": "The practical capstone version of GAME491 gives senior-level GAME students the opportunity to apply their learned skills in programming, art",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "game development skill",
+          "full_name": "PIPURU/Crossy-Road-Style-Game",
+          "url": "https://github.com/PIPURU/Crossy-Road-Style-Game",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T20:40:49Z",
+          "fit_hint": "🛣️ Navigate through an endless road-crossing challenge in this engaging Crossy Road-style game designed for fun and skill development.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "game development skill",
+          "full_name": "PHEONIXINFINITUS/MinesWeper",
+          "url": "https://github.com/PHEONIXINFINITUS/MinesWeper",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T19:31:07Z",
+          "fit_hint": "🌟 Play a classic Minesweeper game built in Java, designed for fun and skill development in problem-solving and strategy.",
+          "provenance": "direct page retrieval"
+        },
+        {
+          "query": "game development skill",
+          "full_name": "HumairAli26/HumairAli26",
+          "url": "https://github.com/HumairAli26/HumairAli26",
+          "stars": 1,
+          "license": "UNKNOWN",
+          "archived": false,
+          "pushed_at": "2026-04-27T18:45:14Z",
+          "fit_hint": "Computer Science student passionate about game development, app development, cybersecurity, and software engineering. Experienced in C++, Un",
+          "provenance": "direct page retrieval"
+        }
+      ],
+      "kept": [],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    }
+  ],
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false,
+  "aggregate_zero_star_ratio": 0.64,
+  "open_pr_count": 29,
+  "open_pr_sample": [
+    {
+      "mergeStateStatus": "CLEAN",
+      "number": 211,
+      "title": "chore(survey): add deterministic game-lane stage2 recovery template",
+      "updatedAt": "2026-04-27T21:07:29Z",
+      "url": "https://github.com/akillness/oh-my-skills/pull/211"
+    },
+    {
+      "mergeStateStatus": "DIRTY",
+      "number": 208,
+      "title": "chore: hourly survey + obsidian URI fallback hardening",
+      "updatedAt": "2026-04-27T16:15:52Z",
+      "url": "https://github.com/akillness/oh-my-skills/pull/208"
+    },
+    {
+      "mergeStateStatus": "DIRTY",
+      "number": 207,
+      "title": "chore: hourly survey artifacts + explicit no-results degraded cause",
+      "updatedAt": "2026-04-27T14:57:53Z",
+      "url": "https://github.com/akillness/oh-my-skills/pull/207"
+    },
+    {
+      "mergeStateStatus": "DIRTY",
+      "number": 206,
+      "title": "chore(survey): add negation-aware lane-intent gate for hourly sweep",
+      "updatedAt": "2026-04-27T13:48:42Z",
+      "url": "https://github.com/akillness/oh-my-skills/pull/206"
+    },
+    {
+      "mergeStateStatus": "DIRTY",
+      "number": 205,
+      "title": "chore: harden hourly survey degraded-cause taxonomy",
+      "updatedAt": "2026-04-27T11:21:00Z",
+      "url": "https://github.com/akillness/oh-my-skills/pull/205"
+    },
+    {
+      "mergeStateStatus": "DIRTY",
+      "number": 204,
+      "title": "chore: harden hourly survey metadata with maintenance signals",
+      "updatedAt": "2026-04-27T10:07:33Z",
+      "url": "https://github.com/akillness/oh-my-skills/pull/204"
+    },
+    {
+      "mergeStateStatus": "DIRTY",
+      "number": 201,
+      "title": "chore: hourly survey ratchet + flutter bloc skill doc",
+      "updatedAt": "2026-04-27T04:52:22Z",
+      "url": "https://github.com/akillness/oh-my-skills/pull/201"
+    },
+    {
+      "mergeStateStatus": "DIRTY",
+      "number": 200,
+      "title": "chore: hourly survey artifacts + survey metadata-gate hardening (20260427-121613)",
+      "updatedAt": "2026-04-27T03:26:59Z",
+      "url": "https://github.com/akillness/oh-my-skills/pull/200"
+    },
+    {
+      "mergeStateStatus": "DIRTY",
+      "number": 199,
+      "title": "chore(survey): ratchet no-results taxonomy and dedup coverage metrics",
+      "updatedAt": "2026-04-27T02:15:07Z",
+      "url": "https://github.com/akillness/oh-my-skills/pull/199"
+    },
+    {
+      "mergeStateStatus": "DIRTY",
+      "number": 198,
+      "title": "chore: hourly survey hardening + add payloadcms skill",
+      "updatedAt": "2026-04-27T01:00:19Z",
+      "url": "https://github.com/akillness/oh-my-skills/pull/198"
+    }
+  ],
+  "transport_status": {
+    "web_search": {
+      "status": "not_used",
+      "fallback": "gh api search/repositories",
+      "error_log": null
+    }
+  }
+}
