@@ -201,6 +201,16 @@
         "Uses deterministic GitHub REST fallback endpoint form (`gh api \"search/repositories?...\"`) before final lane status",
         "Preserves provenance and degraded/transport reporting in the final artifacts"
       ]
+    },
+    {
+      "id": 21,
+      "prompt": "run the hourly five-lane survey where game development lane remains raw_count=0 after stage-1 recovery; keep unattended behavior deterministic",
+      "expected_output": "The survey applies one documented stage-2 game-lane recovery query before final lane_status, then reapplies recommendation-grade relevance gates and reports final degraded_causes/provenance.",
+      "assertions": [
+        "Uses an explicit documented stage-2 query template for the game development lane when stage-1 recovery still yields raw_count==0",
+        "Reapplies license/freshness/signal/fit gates to stage-2 results before recommending keeps",
+        "Reports lane_status, degraded_causes, and provenance labels after game-lane escalation"
+      ]
     }
   ]
 }

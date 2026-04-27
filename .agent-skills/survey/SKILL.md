@@ -17,10 +17,10 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.7"
+  version: "2.1.8"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
-  hardening: 2026-04-26
+  hardening: 2026-04-28
 ---
 
 # Survey
@@ -202,6 +202,7 @@ Execution rules:
 - If keyword hits are noisy or sparse, run lane-specific recovery templates from `references/keyword-sweep-and-relevance-rescue.md` before finalizing recommendations.
 - Use objective recovery triggers after the primary query (`raw_count < 8`, `kept_count == 0`, `zero_star_raw/raw_count >= 0.70`, or cross-lane `aggregate_zero_star_ratio >= 0.50`) so lane rescue is deterministic in unattended cron loops.
 - If a lane still has `raw_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query for that lane before finalizing `lane_status`.
+- Keep stage-2 templates explicit for every mandatory hourly lane (including `game development skill`) so unattended runs do not rely on ad-hoc query invention.
 - For noisy lanes where raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query before finalizing degraded status.
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
 - Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `transport`) plus examples/counts.

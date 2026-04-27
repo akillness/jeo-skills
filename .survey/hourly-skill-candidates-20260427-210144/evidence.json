@@ -1,0 +1,363 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-210144",
+  "generated_at_utc": "2026-04-27T21:02:10.619743Z",
+  "repo": "akillness/oh-my-skills",
+  "required_keyword_lanes": [
+    "agentic ai skill",
+    "web frontend skill",
+    "web backend skill",
+    "cli open source skill",
+    "game development skill"
+  ],
+  "transport_status": {
+    "web_search": {
+      "status": "not-used",
+      "reason": "used GitHub search/API as primary survey transport"
+    },
+    "gh_search": {
+      "status": "ok",
+      "error_count": 0,
+      "errors": []
+    }
+  },
+  "lanes": {
+    "agentic-ai-skill": {
+      "lane_id": "agentic-ai-skill",
+      "query": "agentic ai skill",
+      "search_mode": "recovery",
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ],
+      "raw_count": 20,
+      "zero_star_raw": 0,
+      "median_stars_raw": 12279.5,
+      "kept_count": 16,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license"
+      ],
+      "filtered_counts": {
+        "license": 4,
+        "stale": 0,
+        "low-fit": 0,
+        "archived": 0,
+        "low-signal": 0,
+        "no-results": 0
+      },
+      "low_fit_examples": [],
+      "kept": [
+        {
+          "full_name": "bytedance/deer-flow",
+          "url": "https://github.com/bytedance/deer-flow",
+          "description": "An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.",
+          "stars": 64015,
+          "forks": 8374,
+          "pushed_at": "2026-04-27T16:13:07Z",
+          "updated_at": "2026-04-27T20:29:21Z",
+          "archived": false,
+          "license": "MIT",
+          "license_source": "search",
+          "fit_rationale": "matches lane intent tokens agent"
+        },
+        {
+          "full_name": "github/awesome-copilot",
+          "url": "https://github.com/github/awesome-copilot",
+          "description": "Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.",
+          "stars": 31387,
+          "forks": 3799,
+          "pushed_at": "2026-04-27T19:53:27Z",
+          "updated_at": "2026-04-27T20:51:26Z",
+          "archived": false,
+          "license": "MIT",
+          "license_source": "search",
+          "fit_rationale": "matches lane intent tokens agent"
+        },
+        {
+          "full_name": "googleworkspace/cli",
+          "url": "https://github.com/googleworkspace/cli",
+          "description": "Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.",
+          "stars": 25469,
+          "forks": 1309,
+          "pushed_at": "2026-04-24T17:01:33Z",
+          "updated_at": "2026-04-27T20:46:08Z",
+          "archived": false,
+          "license": "Apache-2.0",
+          "license_source": "search",
+          "fit_rationale": "matches lane intent tokens agent, ai"
+        },
+        {
+          "full_name": "coreyhaines31/marketingskills",
+          "url": "https://github.com/coreyhaines31/marketingskills",
+          "description": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+          "stars": 25141,
+          "forks": 3990,
+          "pushed_at": "2026-04-25T20:58:51Z",
+          "updated_at": "2026-04-27T21:00:52Z",
+          "archived": false,
+          "license": "MIT",
+          "license_source": "search",
+          "fit_rationale": "matches lane intent tokens agent, ai"
+        },
+        {
+          "full_name": "addyosmani/agent-skills",
+          "url": "https://github.com/addyosmani/agent-skills",
+          "description": "Production-grade engineering skills for AI coding agents.",
+          "stars": 24517,
+          "forks": 3047,
+          "pushed_at": "2026-04-26T03:57:18Z",
+          "updated_at": "2026-04-27T20:59:48Z",
+          "archived": false,
+          "license": "MIT",
+          "license_source": "search",
+          "fit_rationale": "matches lane intent tokens agent, ai"
+        }
+      ]
+    },
+    "web-frontend-skill": {
+      "lane_id": "web-frontend-skill",
+      "query": "web frontend skill",
+      "search_mode": "recovery",
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ],
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "filtered_counts": {
+        "license": 0,
+        "stale": 0,
+        "low-fit": 0,
+        "archived": 0,
+        "low-signal": 0,
+        "no-results": 1
+      },
+      "low_fit_examples": [],
+      "kept": []
+    },
+    "web-backend-skill": {
+      "lane_id": "web-backend-skill",
+      "query": "web backend skill",
+      "search_mode": "recovery",
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ],
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "filtered_counts": {
+        "license": 0,
+        "stale": 0,
+        "low-fit": 0,
+        "archived": 0,
+        "low-signal": 0,
+        "no-results": 1
+      },
+      "low_fit_examples": [],
+      "kept": []
+    },
+    "cli-open-source-skill": {
+      "lane_id": "cli-open-source-skill",
+      "query": "cli open source skill",
+      "search_mode": "primary",
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ],
+      "raw_count": 30,
+      "zero_star_raw": 13,
+      "median_stars_raw": 1.0,
+      "kept_count": 6,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-fit",
+        "low-signal"
+      ],
+      "filtered_counts": {
+        "license": 9,
+        "stale": 0,
+        "low-fit": 7,
+        "archived": 0,
+        "low-signal": 8,
+        "no-results": 0
+      },
+      "low_fit_examples": [
+        {
+          "repo": "popular-molluskfamily870/claw-code",
+          "reason": "no-intent-overlap"
+        },
+        {
+          "repo": "pisonislo8737/HyperxOpenSkills",
+          "reason": "no-intent-overlap"
+        }
+      ],
+      "kept": [
+        {
+          "full_name": "jeremylongshore/claude-code-plugins-plus-skills",
+          "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+          "description": "423 plugins, 2,849 skills, 177 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+          "stars": 2044,
+          "forks": 276,
+          "pushed_at": "2026-04-23T05:25:09Z",
+          "updated_at": "2026-04-27T16:16:29Z",
+          "archived": false,
+          "license": "MIT",
+          "license_source": "search",
+          "fit_rationale": "matches lane intent tokens cli"
+        },
+        {
+          "full_name": "KarmaloopAI/Jiva",
+          "url": "https://github.com/KarmaloopAI/Jiva",
+          "description": "Jiva is a CLI-first, open source autonomous AI agent and open alternative to Claude. Built in TypeScript with native support for Sarvam-105B and gpt-oss-120b, it autonomously plans and executes tasks from your terminal. Supports MCP servers, a built-in Skills system, and Jiva Personas - a plugin framework fully compatible with Claude Plugins.",
+          "stars": 35,
+          "forks": 6,
+          "pushed_at": "2026-04-27T07:14:58Z",
+          "updated_at": "2026-04-26T00:10:26Z",
+          "archived": false,
+          "license": "MIT",
+          "license_source": "search",
+          "fit_rationale": "matches lane intent tokens cli, terminal"
+        },
+        {
+          "full_name": "Security-Phoenix-demo/security-skills-claude-code",
+          "url": "https://github.com/Security-Phoenix-demo/security-skills-claude-code",
+          "description": "his repository is a curated collection of skills, plugins, and automation pipelines designed for Claude Code — Anthropic's CLI for AI-assisted software engineering.  It was built by the engineering and security engineering teams at Phoenix Security and released as open source so that security professionals, DevSecOps engineers, AppSec teams",
+          "stars": 26,
+          "forks": 2,
+          "pushed_at": "2026-04-21T18:34:22Z",
+          "updated_at": "2026-04-26T07:44:12Z",
+          "archived": false,
+          "license": "MIT",
+          "license_source": "search",
+          "fit_rationale": "matches lane intent tokens cli"
+        },
+        {
+          "full_name": "frank-luongt/faos-skills-marketplace",
+          "url": "https://github.com/frank-luongt/faos-skills-marketplace",
+          "description": "930+ AI-powered skills and 31 agent plugins for Claude Code, OpenAI Codex, Gemini CLI, GitHub Copilot, and Perplexity Computer. The largest open-source AI skills library.",
+          "stars": 14,
+          "forks": 8,
+          "pushed_at": "2026-04-19T10:33:03Z",
+          "updated_at": "2026-04-27T03:23:53Z",
+          "archived": false,
+          "license": "Apache-2.0",
+          "license_source": "search",
+          "fit_rationale": "matches lane intent tokens cli"
+        },
+        {
+          "full_name": "alestanalves/skill-generator",
+          "url": "https://github.com/alestanalves/skill-generator",
+          "description": "CLI open source para gerar skills de alta qualidade",
+          "stars": 8,
+          "forks": 0,
+          "pushed_at": "2026-04-21T05:47:11Z",
+          "updated_at": "2026-04-23T10:40:35Z",
+          "archived": false,
+          "license": "MIT",
+          "license_source": "search",
+          "fit_rationale": "matches lane intent tokens cli"
+        }
+      ]
+    },
+    "game-development-skill": {
+      "lane_id": "game-development-skill",
+      "query": "game development skill",
+      "search_mode": "recovery",
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ],
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "filtered_counts": {
+        "license": 0,
+        "stale": 0,
+        "low-fit": 0,
+        "archived": 0,
+        "low-signal": 0,
+        "no-results": 1
+      },
+      "low_fit_examples": [],
+      "kept": []
+    }
+  },
+  "recommendations": [
+    {
+      "lane_id": "agentic-ai-skill",
+      "full_name": "bytedance/deer-flow",
+      "url": "https://github.com/bytedance/deer-flow",
+      "description": "An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.",
+      "stars": 64015,
+      "forks": 8374,
+      "pushed_at": "2026-04-27T16:13:07Z",
+      "updated_at": "2026-04-27T20:29:21Z",
+      "archived": false,
+      "license": "MIT",
+      "license_source": "search",
+      "fit_rationale": "matches lane intent tokens agent"
+    },
+    {
+      "lane_id": "agentic-ai-skill",
+      "full_name": "github/awesome-copilot",
+      "url": "https://github.com/github/awesome-copilot",
+      "description": "Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.",
+      "stars": 31387,
+      "forks": 3799,
+      "pushed_at": "2026-04-27T19:53:27Z",
+      "updated_at": "2026-04-27T20:51:26Z",
+      "archived": false,
+      "license": "MIT",
+      "license_source": "search",
+      "fit_rationale": "matches lane intent tokens agent"
+    },
+    {
+      "lane_id": "cli-open-source-skill",
+      "full_name": "jeremylongshore/claude-code-plugins-plus-skills",
+      "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+      "description": "423 plugins, 2,849 skills, 177 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+      "stars": 2044,
+      "forks": 276,
+      "pushed_at": "2026-04-23T05:25:09Z",
+      "updated_at": "2026-04-27T16:16:29Z",
+      "archived": false,
+      "license": "MIT",
+      "license_source": "search",
+      "fit_rationale": "matches lane intent tokens cli"
+    },
+    {
+      "lane_id": "cli-open-source-skill",
+      "full_name": "KarmaloopAI/Jiva",
+      "url": "https://github.com/KarmaloopAI/Jiva",
+      "description": "Jiva is a CLI-first, open source autonomous AI agent and open alternative to Claude. Built in TypeScript with native support for Sarvam-105B and gpt-oss-120b, it autonomously plans and executes tasks from your terminal. Supports MCP servers, a built-in Skills system, and Jiva Personas - a plugin framework fully compatible with Claude Plugins.",
+      "stars": 35,
+      "forks": 6,
+      "pushed_at": "2026-04-27T07:14:58Z",
+      "updated_at": "2026-04-26T00:10:26Z",
+      "archived": false,
+      "license": "MIT",
+      "license_source": "search",
+      "fit_rationale": "matches lane intent tokens cli, terminal"
+    }
+  ],
+  "recommended_lane_count": 2,
+  "single_lane_concentration": false
+}
