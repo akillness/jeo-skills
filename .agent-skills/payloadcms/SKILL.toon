@@ -1,0 +1,11 @@
+N:payloadcms
+D:Operate Payload CMS in repo workflows: bootstrap a Payload app, evolve collection/global schemas, debug admin/API runtime issues, and prepare migration-safe releases with rollback notes. Use when the task mentions Payload CMS, payload config, collection models, admin panel behavior, or Next.js + headless CMS integration.
+G:payload payloadcms headless-cms nextjs cms content-model migration admin-panel
+
+S[6]{n,action,details}:
+  1,Choose one operating mode,Classify as bootstrap modeling runtime-debug or release-prep before making edits.
+  2,Run preflight checks,Confirm node/toolchain locate payload.config and model files verify env vars and inspect migration history.
+  3,Apply bounded changes,Change one schema unit at a time and record blast radius for collections API output and admin forms.
+  4,Verify runtime behavior,Confirm server start plus at least one affected API endpoint and admin page behavior.
+  5,Capture release safety,Document migration order rollback steps and risk notes for production-bound diffs.
+  6,Route out when out of scope,Use api-design authentication-setup database-schema-design or deployment-automation for non-Payload primary tasks.

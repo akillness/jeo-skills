@@ -191,6 +191,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where game lane results are mostly old repos (>24 months since last push) and only one stale repo has enough stars",
+      "expected_output": "The survey preserves discovery evidence but excludes stale repos from recommendation-grade keeps by default, reports freshness audit metrics (for example months_since_push or stale_filtered_count), and marks degraded lanes with `stale` cause unless an explicit exception rationale is documented.",
+      "assertions": [
+        "Applies recommendation-grade freshness filtering before final keeps",
+        "Reports freshness audit evidence such as months_since_push or stale_filtered_count",
+        "Uses degraded_causes including `stale` when freshness filtering removes lane keeps"
+      ]
     }
   ]
 }

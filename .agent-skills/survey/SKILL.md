@@ -173,7 +173,7 @@ Run a compact gate before writing final recommendations:
 - **Positive signals (keep):** clear relation to the target capability, recent maintenance, explicit license, concrete docs/examples.
 - **Negative signals (drop or mark risk):** spam-like description, irrelevant domain despite keyword match, assessment/homework-only repos, stale/archived repos without strong justification, missing basic metadata, or unknown license without explicit justification.
 - **Metadata minimum:** capture `license`, `pushed_at`, `archived`, and one-line fit rationale for every candidate you keep. If first-pass metadata returns null/unknown license (for example GraphQL `licenseInfo`), retry once via GitHub REST (`gh api repos/<owner>/<repo> --jq .license.spdx_id`) before classifying unknown-license. Unknown/missing license after fallback should be excluded by default unless a concrete exception rationale is documented.
-- **Freshness floor (recommendation-grade keep list):** exclude candidates whose latest `pushed_at` is older than 24 months by default. Keep stale candidates only with explicit exception rationale and risk note.
+- **Freshness floor (recommendation-grade keep list):** exclude candidates whose latest `pushed_at` is older than 24 months by default. Compute and record a simple recency metric (for example `months_since_push`) for keep/drop auditability. Keep stale candidates only with explicit exception rationale and risk note.
 
 If search/extract tooling is degraded, fallback to direct GitHub API retrieval and mark provenance/risk explicitly instead of pretending confidence.
 
@@ -203,7 +203,7 @@ Execution rules:
 - For noisy lanes where raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query before finalizing degraded status.
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
 - Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`) plus examples/counts.
-- Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
+- Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`, and freshness evidence such as `stale_filtered_count` or representative `months_since_push`) so reviewers can track quality drift across hourly runs.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)

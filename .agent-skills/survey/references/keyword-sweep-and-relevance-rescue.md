@@ -39,7 +39,9 @@ Positive keep signals:
 Freshness default for recommendation-grade keeps:
 
 - Keep if `pushed_at` is within the last 24 months.
+- Compute and record `months_since_push` (or equivalent age bucket) for each recommendation-grade keep candidate so stale filtering is auditable.
 - Otherwise, drop by default or keep only with an explicit exception rationale and risk note.
+- If a lane loses keeps primarily due to freshness, include `stale` in `degraded_causes` with a count/example in markdown.
 
 Signal floor default for recommendation-grade keeps:
 

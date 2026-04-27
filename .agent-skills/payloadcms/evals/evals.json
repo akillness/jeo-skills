@@ -1,0 +1,35 @@
+{
+  "skill_name": "payloadcms",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up Payload in this Next.js repo and confirm the admin panel plus one API endpoint both work locally.",
+      "expected_output": "Chooses bootstrap mode, runs preflight checks, and verifies both admin + API before declaring success.",
+      "assertions": [
+        "Classifies the job as bootstrap",
+        "Requires both admin and API verification",
+        "Avoids claiming completion without runnable proof"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We changed a Payload collection schema and now content writes fail. Diagnose and fix with minimal risk.",
+      "expected_output": "Uses runtime-debug + modeling flow, isolates the concrete schema/config issue, and provides a bounded fix with verification.",
+      "assertions": [
+        "Reproduces or identifies the concrete failing path",
+        "Applies minimal bounded model/config correction",
+        "Verifies behavior after fix in API/admin surfaces"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Prepare this Payload schema migration for production deployment.",
+      "expected_output": "Uses release-prep mode with explicit migration order, risk notes, and rollback strategy.",
+      "assertions": [
+        "Includes migration sequencing",
+        "Includes rollback plan",
+        "Includes post-deploy verification checklist"
+      ]
+    }
+  ]
+}
