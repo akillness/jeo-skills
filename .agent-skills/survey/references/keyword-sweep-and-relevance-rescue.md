@@ -112,6 +112,7 @@ Stage-2 escalation rule:
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 - When retrieval falls back due to degraded search transport, record `transport_status` (cause, fallback retrieval family, and error-log path) in run artifacts.
 - For unattended hourly runs, standardize the transport error log filename as `.survey/<slug>/web-search-error.log` (for example when `web_search` returns `INVALID_API_KEY`) and include this exact path in `transport_status`.
+- In new hourly artifacts, keep `transport_status.web_search.error_log` repository-relative (for example `.survey/<slug>/web-search-error.log`) and avoid host-absolute prefixes (for example `/Users/...`, `/home/...`) so outage evidence remains portable across runners.
 
 ## Reporting checklist
 
@@ -125,5 +126,6 @@ Before final recommendations:
 - [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation|transport`) reported with examples/counts
 - [ ] If fallback retrieval was used, `transport_status` (cause + fallback family + error-log path) recorded in artifacts
 - [ ] If search transport failed, `.survey/<slug>/web-search-error.log` exists and is referenced in `transport_status`
+- [ ] `transport_status.web_search.error_log` is repository-relative (`.survey/<slug>/...`) and does not include host-absolute prefixes
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly

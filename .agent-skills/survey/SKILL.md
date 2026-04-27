@@ -206,6 +206,7 @@ Execution rules:
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - When fallback retrieval is used because search transport degraded (for example auth/rate-limit/credential failure such as `INVALID_API_KEY`), record a compact `transport_status` note in run artifacts (cause + fallback command family + error-log path) before final recommendations.
 - For unattended hourly runs, standardize the transport error artifact path to `.survey/<slug>/web-search-error.log` whenever web search transport fails; reference this exact path in `transport_status` so reviewers can diff outage evidence consistently.
+- In new hourly artifacts, keep `transport_status.web_search.error_log` repository-relative (for example `.survey/<slug>/web-search-error.log`) and do not store host-absolute prefixes such as `/Users/...` or `/home/...`.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)

@@ -1,6 +1,7 @@
 # LLM Wiki Index
 
 ## Topics
+- [Hourly survey relative-error-log-path ratchet](queries/2026-04-27-hourly-survey-relative-error-log-path-ratchet.md)
 - [Hourly survey web-search-error-log ratchet](queries/2026-04-27-hourly-survey-web-search-error-log-ratchet.md)
 - [Hourly survey transport-taxonomy ratchet](queries/2026-04-27-hourly-survey-transport-taxonomy-ratchet.md)
 - [Hourly survey raw-quality-collapse ratchet](queries/2026-04-26-hourly-survey-raw-quality-collapse-ratchet.md)
