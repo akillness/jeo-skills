@@ -1,0 +1,215 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-145024",
+  "graphify_query_status": "fallback-generated (graphify query failed)",
+  "nodes": [
+    {
+      "id": "n1",
+      "label": "hourly-skill-candidates-20260427-145024",
+      "type": "run",
+      "generated_at": "2026-04-27T14:54:38.098523Z"
+    },
+    {
+      "id": "n2",
+      "label": "agentic_ai_skill",
+      "type": "lane",
+      "lane_status": "pass",
+      "raw_count": 40,
+      "kept_count": 1
+    },
+    {
+      "id": "n3",
+      "label": "license",
+      "type": "cause"
+    },
+    {
+      "id": "n4",
+      "label": "low-signal",
+      "type": "cause"
+    },
+    {
+      "id": "n5",
+      "label": "web_frontend_skill",
+      "type": "lane",
+      "lane_status": "degraded",
+      "raw_count": 4,
+      "kept_count": 0
+    },
+    {
+      "id": "n6",
+      "label": "stale",
+      "type": "cause"
+    },
+    {
+      "id": "n7",
+      "label": "web_backend_skill",
+      "type": "lane",
+      "lane_status": "degraded",
+      "raw_count": 1,
+      "kept_count": 0
+    },
+    {
+      "id": "n8",
+      "label": "cli_open_source_skill",
+      "type": "lane",
+      "lane_status": "degraded",
+      "raw_count": 0,
+      "kept_count": 0
+    },
+    {
+      "id": "n9",
+      "label": "no-results",
+      "type": "cause"
+    },
+    {
+      "id": "n10",
+      "label": "game_development_skill",
+      "type": "lane",
+      "lane_status": "pass",
+      "raw_count": 40,
+      "kept_count": 3
+    },
+    {
+      "id": "n11",
+      "label": "iwe-org/skills",
+      "type": "repo",
+      "url": "https://github.com/iwe-org/skills",
+      "stars": 7
+    },
+    {
+      "id": "n12",
+      "label": "codewith-salman/Rescuer-Game",
+      "type": "repo",
+      "url": "https://github.com/codewith-salman/Rescuer-Game",
+      "stars": 3
+    },
+    {
+      "id": "n13",
+      "label": "tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "repo",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "stars": 3
+    },
+    {
+      "id": "n14",
+      "label": "Shubham-Jana-Dev/bengal-skies-js-game",
+      "type": "repo",
+      "url": "https://github.com/Shubham-Jana-Dev/bengal-skies-js-game",
+      "stars": 5
+    }
+  ],
+  "links": [
+    {
+      "source": "n1",
+      "target": "n2",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "n2",
+      "target": "n3",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "n2",
+      "target": "n4",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "n1",
+      "target": "n5",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "n5",
+      "target": "n3",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "n5",
+      "target": "n4",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "n5",
+      "target": "n6",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "n1",
+      "target": "n7",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "n7",
+      "target": "n6",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "n1",
+      "target": "n8",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "n8",
+      "target": "n9",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "n1",
+      "target": "n10",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "n10",
+      "target": "n3",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "n10",
+      "target": "n4",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "n2",
+      "target": "n11",
+      "relation": "recommends",
+      "weight": 1
+    },
+    {
+      "source": "n10",
+      "target": "n12",
+      "relation": "recommends",
+      "weight": 1
+    },
+    {
+      "source": "n10",
+      "target": "n13",
+      "relation": "recommends",
+      "weight": 1
+    },
+    {
+      "source": "n10",
+      "target": "n14",
+      "relation": "recommends",
+      "weight": 1
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260427-145024/evidence.json",
+    ".survey/hourly-skill-candidates-20260427-145024/rtk-summary.md",
+    ".survey/hourly-skill-candidates-20260427-145024/graphify-query.err"
+  ]
+}

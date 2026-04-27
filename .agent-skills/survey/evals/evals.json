@@ -191,6 +191,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where cli lane remains raw_count=0 after documented stage-1 and stage-2 recovery",
+      "expected_output": "The survey keeps lane_status as degraded and explicitly includes `no-results` in degraded_causes so reviewers can distinguish retrieval emptiness from filtering-only degradation.",
+      "assertions": [
+        "When raw_count stays 0 after documented recovery, degraded_causes includes `no-results`",
+        "Preserves lane metrics and provenance while reporting the no-results condition",
+        "Does not misclassify pure no-hit lanes as only low-signal/low-fit without the explicit no-results tag"
+      ]
     }
   ]
 }
