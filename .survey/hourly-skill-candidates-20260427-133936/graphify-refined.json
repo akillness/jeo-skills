@@ -1,0 +1,90 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-133936",
+  "generated_at": "2026-04-27T13:42:40.839160+00:00",
+  "graphify_query_status": "fallback-generated (graphify query failed: error: graph file not found: /private/tmp/oh-my-skills-20260427-223416/.survey/hourly-skill-candidates-20260427-133936/graphify-memory/graph.json)",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260427-133936",
+      "type": "run",
+      "label": "hourly-skill-candidates-20260427-133936"
+    },
+    {
+      "id": "agentic-ai-skill",
+      "type": "lane",
+      "label": "agentic-ai-skill",
+      "status": "pass"
+    },
+    {
+      "id": "web-frontend-skill",
+      "type": "lane",
+      "label": "web-frontend-skill",
+      "status": "pass"
+    },
+    {
+      "id": "web-backend-skill",
+      "type": "lane",
+      "label": "web-backend-skill",
+      "status": "pass"
+    },
+    {
+      "id": "cli-open-source-skill",
+      "type": "lane",
+      "label": "cli-open-source-skill",
+      "status": "pass"
+    },
+    {
+      "id": "game-development-skill",
+      "type": "lane",
+      "label": "game-development-skill",
+      "status": "pass"
+    },
+    {
+      "id": "repo:github/awesome-copilot",
+      "type": "repo",
+      "label": "github/awesome-copilot"
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260427-133936",
+      "target": "agentic-ai-skill",
+      "type": "has_lane",
+      "weight": 5
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-133936",
+      "target": "web-frontend-skill",
+      "type": "has_lane",
+      "weight": 5
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-133936",
+      "target": "web-backend-skill",
+      "type": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-133936",
+      "target": "cli-open-source-skill",
+      "type": "has_lane",
+      "weight": 5
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-133936",
+      "target": "game-development-skill",
+      "type": "has_lane",
+      "weight": 5
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-133936",
+      "target": "repo:github/awesome-copilot",
+      "type": "top_recommendation",
+      "weight": 31346
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260427-133936/evidence.json",
+    ".survey/hourly-skill-candidates-20260427-133936/rtk-summary.md",
+    ".survey/hourly-skill-candidates-20260427-133936/graphify-query.err"
+  ]
+}

@@ -191,6 +191,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly survey where a candidate in the cli lane contains the token 'cli' only inside a negated phrase like 'No CLI'",
+      "expected_output": "The survey keeps the repo in raw discovery evidence but classifies it as low-fit for recommendation-grade promotion unless an explicit exception rationale is documented.",
+      "assertions": [
+        "Applies a negation-aware intent guard for lane-token hits inside phrases like 'no cli' or 'without cli'",
+        "Prevents blind promotion of negated-intent repos into recommendation-grade keeps",
+        "Preserves provenance and raw lane evidence while reporting the low-fit classification"
+      ]
     }
   ]
 }

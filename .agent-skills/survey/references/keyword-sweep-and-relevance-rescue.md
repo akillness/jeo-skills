@@ -50,6 +50,7 @@ Signal floor default for recommendation-grade keeps:
 Drop or risk-mark signals:
 
 - Keyword-only match but wrong domain
+- Lane-intent token appears only in explicit negation phrases (for example `no cli`, `without cli`, `not a cli`, `non-cli`) and no exception rationale is documented
 - Generic personal catch-all repos (especially `*/skills`) without concrete workflow docs and traction
 - Assessment/homework/demo-only repos with low transferability
 - Archived/stale without strong reason
