@@ -1,0 +1,218 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-121613",
+  "generated_at": "2026-04-27T03:21:23.782214Z",
+  "graphify_query_status": "fallback-generated (error: graph file not found: /private/tmp/oh-my-skills-hourly-20260427-121613/repo/.survey/hourly-skill-candidates-20260427-121613/graphify-memory/graph.json)",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260427-121613",
+      "label": "survey_run",
+      "type": "run"
+    },
+    {
+      "id": "agentic-ai-skill",
+      "label": "agentic-ai-skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 40,
+      "kept_count": 3
+    },
+    {
+      "id": "web-frontend-skill",
+      "label": "web-frontend-skill",
+      "type": "lane",
+      "status": "degraded",
+      "raw_count": 4,
+      "kept_count": 0
+    },
+    {
+      "id": "cause:license",
+      "label": "license",
+      "type": "degraded_cause"
+    },
+    {
+      "id": "cause:low-signal",
+      "label": "low-signal",
+      "type": "degraded_cause"
+    },
+    {
+      "id": "web-backend-skill",
+      "label": "web-backend-skill",
+      "type": "lane",
+      "status": "degraded",
+      "raw_count": 0,
+      "kept_count": 0
+    },
+    {
+      "id": "cause:no-results",
+      "label": "no-results",
+      "type": "degraded_cause"
+    },
+    {
+      "id": "cli-open-source-skill",
+      "label": "cli-open-source-skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 1,
+      "kept_count": 1
+    },
+    {
+      "id": "game-development-skill",
+      "label": "game-development-skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 40,
+      "kept_count": 4
+    },
+    {
+      "id": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "label": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "repo",
+      "stars": 14
+    },
+    {
+      "id": "repo:iwe-org/skills",
+      "label": "iwe-org/skills",
+      "type": "repo",
+      "stars": 7
+    },
+    {
+      "id": "repo:VoDaiLocz/Enhance-Prompt",
+      "label": "VoDaiLocz/Enhance-Prompt",
+      "type": "repo",
+      "stars": 10
+    },
+    {
+      "id": "repo:guarinogabriel/Mac-CLI",
+      "label": "guarinogabriel/Mac-CLI",
+      "type": "repo",
+      "stars": 9063
+    },
+    {
+      "id": "repo:UnrealBlueprint/02_CrystalCavern",
+      "label": "UnrealBlueprint/02_CrystalCavern",
+      "type": "repo",
+      "stars": 9
+    },
+    {
+      "id": "repo:Unengine/GameEngineAndGameMathTIL",
+      "label": "Unengine/GameEngineAndGameMathTIL",
+      "type": "repo",
+      "stars": 4
+    },
+    {
+      "id": "repo:SMDS-Studio/Building-a-New-creative-Pong-",
+      "label": "SMDS-Studio/Building-a-New-creative-Pong-",
+      "type": "repo",
+      "stars": 14
+    },
+    {
+      "id": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "label": "tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "repo",
+      "stars": 3
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260427-121613",
+      "target": "agentic-ai-skill",
+      "relation": "evaluated",
+      "weight": 40
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-121613",
+      "target": "web-frontend-skill",
+      "relation": "evaluated",
+      "weight": 4
+    },
+    {
+      "source": "web-frontend-skill",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "web-frontend-skill",
+      "target": "cause:low-signal",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-121613",
+      "target": "web-backend-skill",
+      "relation": "evaluated",
+      "weight": 1
+    },
+    {
+      "source": "web-backend-skill",
+      "target": "cause:no-results",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-121613",
+      "target": "cli-open-source-skill",
+      "relation": "evaluated",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-121613",
+      "target": "game-development-skill",
+      "relation": "evaluated",
+      "weight": 40
+    },
+    {
+      "source": "agentic-ai-skill",
+      "target": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "relation": "recommended",
+      "weight": 1
+    },
+    {
+      "source": "agentic-ai-skill",
+      "target": "repo:iwe-org/skills",
+      "relation": "recommended",
+      "weight": 1
+    },
+    {
+      "source": "agentic-ai-skill",
+      "target": "repo:VoDaiLocz/Enhance-Prompt",
+      "relation": "recommended",
+      "weight": 1
+    },
+    {
+      "source": "cli-open-source-skill",
+      "target": "repo:guarinogabriel/Mac-CLI",
+      "relation": "recommended",
+      "weight": 1
+    },
+    {
+      "source": "game-development-skill",
+      "target": "repo:UnrealBlueprint/02_CrystalCavern",
+      "relation": "recommended",
+      "weight": 1
+    },
+    {
+      "source": "game-development-skill",
+      "target": "repo:Unengine/GameEngineAndGameMathTIL",
+      "relation": "recommended",
+      "weight": 1
+    },
+    {
+      "source": "game-development-skill",
+      "target": "repo:SMDS-Studio/Building-a-New-creative-Pong-",
+      "relation": "recommended",
+      "weight": 1
+    },
+    {
+      "source": "game-development-skill",
+      "target": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "relation": "recommended",
+      "weight": 1
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260427-121613/evidence.json",
+    ".survey/hourly-skill-candidates-20260427-121613/rtk-summary.md",
+    ".survey/hourly-skill-candidates-20260427-121613/graphify-query.err"
+  ]
+}
