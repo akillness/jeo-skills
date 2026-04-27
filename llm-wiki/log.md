@@ -11,3 +11,4 @@
 - 2026-04-26 20:15:33Z hourly run: added raw-quality-collapse ratchet note and linked survey/RTK/graphify fallback artifacts
 - 2026-04-27 06:17:39Z hourly run: added transport-taxonomy ratchet note and linked survey/RTK/graphify fallback artifacts (web_search INVALID_API_KEY -> GH-native fallback)
 - 2026-04-27 07:32:00Z hourly run: added web-search-error-log ratchet note and linked survey/RTK/graphify artifacts (standardized .survey/<slug>/web-search-error.log for transport failures)
+- 2026-04-27 10:04:34Z hourly run: added maintenance-signal ratchet note and linked survey/RTK/graphify fallback artifacts (metadata minimum now tracks open_issues/forks evidence)

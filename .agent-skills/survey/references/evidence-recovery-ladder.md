@@ -116,6 +116,9 @@ For each kept candidate, record:
 - `license` (or explicit missing-license risk)
 - `pushed_at`
 - `archived`
+- `open_issues`
+- `forks`
 - one-line fit rationale tied to the exact skill scope
+- if `open_issues`/`forks` are missing on first pass, hydrate once via `gh api repos/<owner>/<repo> --jq '{open_issues: .open_issues_count, forks: .forks_count}'`
 
 Do not promote a candidate to TOP proposals when it fails metadata minimums unless the report labels it explicitly as risk/experimental.
