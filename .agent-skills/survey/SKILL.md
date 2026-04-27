@@ -17,7 +17,7 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.6"
+  version: "2.1.7"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
   hardening: 2026-04-26
@@ -202,7 +202,8 @@ Execution rules:
 - If a lane still has `raw_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query for that lane before finalizing `lane_status`.
 - For noisy lanes where raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query before finalizing degraded status.
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
-- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `transport`) plus examples/counts.
+- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `transport`, `no-results`) plus examples/counts.
+- If a lane remains `raw_count == 0` even after documented stage-2 recovery, always include `no-results` in `degraded_causes` (never leave the cause list empty for zero-hit lanes).
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - When fallback retrieval is used because search transport degraded (for example auth/rate-limit/credential failure such as `INVALID_API_KEY`), record a compact `transport_status` note in run artifacts (cause + fallback command family + error-log path) before final recommendations.
 - For unattended hourly runs, standardize the transport error artifact path to `.survey/<slug>/web-search-error.log` whenever web search transport fails; reference this exact path in `transport_status` so reviewers can diff outage evidence consistently.
