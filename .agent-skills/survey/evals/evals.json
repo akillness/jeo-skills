@@ -191,6 +191,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where `gh search repos` exits 0 but returns [] on a known-populated probe query; keep cron output merge-safe",
+      "expected_output": "The survey treats empty-success payloads as degraded retrieval, reruns search via `gh api \"search/repositories?...\"`, records fallback evidence, and continues lane status reporting with provenance labels.",
+      "assertions": [
+        "Does not treat `[]` + exit 0 from `gh search repos` as healthy when probe expectation indicates population",
+        "Uses deterministic GitHub REST fallback endpoint form (`gh api \"search/repositories?...\"`) before final lane status",
+        "Preserves provenance and degraded/transport reporting in the final artifacts"
+      ]
     }
   ]
 }
