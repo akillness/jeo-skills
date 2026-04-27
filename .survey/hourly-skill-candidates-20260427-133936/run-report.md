@@ -28,6 +28,11 @@
 - `git diff --check`: PASS
 - `validate_skill.sh .agent-skills/survey`: PASS
 
+## PR lifecycle
+- PR created: https://github.com/akillness/oh-my-skills/pull/206
+- Self-review checklist comment posted
+- Merge decision: BLOCKED (no branch checks reported by `gh pr checks`)
+
 ## Risk and rollback
 - Risk: negation guard may over-filter rare repos that mention a lane token in mixed contexts.
 - Mitigation: guard only affects recommendation-grade promotion; raw discovery evidence remains preserved.
