@@ -17,10 +17,10 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.6"
+  version: "2.1.7"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
-  hardening: 2026-04-26
+  hardening: 2026-04-27
 ---
 
 # Survey
@@ -206,6 +206,7 @@ Execution rules:
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - When fallback retrieval is used because search transport degraded (for example auth/rate-limit/credential failure such as `INVALID_API_KEY`), record a compact `transport_status` note in run artifacts (cause + fallback command family + error-log path) before final recommendations.
 - For unattended hourly runs, standardize the transport error artifact path to `.survey/<slug>/web-search-error.log` whenever web search transport fails; reference this exact path in `transport_status` so reviewers can diff outage evidence consistently.
+- When writing Obsidian notes in cron/headless loops, treat explicit CLI error-signature output (for example `Failed to execute Obsidian URI`) as failure even when exit code is zero, then fallback to deterministic direct markdown file writes and record the fallback path in run artifacts.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)

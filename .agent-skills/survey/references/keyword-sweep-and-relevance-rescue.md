@@ -125,5 +125,6 @@ Before final recommendations:
 - [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation|transport`) reported with examples/counts
 - [ ] If fallback retrieval was used, `transport_status` (cause + fallback family + error-log path) recorded in artifacts
 - [ ] If search transport failed, `.survey/<slug>/web-search-error.log` exists and is referenced in `transport_status`
+- [ ] If obsidian-cli output contains explicit URI failure signatures (for example `Failed to execute Obsidian URI`), run-note persistence falls back to direct markdown file write and fallback path is recorded
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly
