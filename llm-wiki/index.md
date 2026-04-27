@@ -15,3 +15,4 @@
 - [Hourly survey recovery-template ratchet](queries/2026-04-25-hourly-survey-recovery-template.md)
 - [Hourly survey lane-status ratchet](queries/2026-04-25-hourly-survey-lane-status-ratchet.md)
 - [Hourly survey lane-metrics ratchet](queries/2026-04-25-hourly-survey-lane-metrics-ratchet.md)
+- [Hourly survey game-lane stage2 ratchet](queries/2026-04-27-hourly-survey-game-lane-stage2-ratchet.md)

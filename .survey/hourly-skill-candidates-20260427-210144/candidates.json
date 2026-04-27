@@ -1,0 +1,61 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-210144",
+  "candidates": [
+    {
+      "lane_id": "agentic-ai-skill",
+      "full_name": "bytedance/deer-flow",
+      "url": "https://github.com/bytedance/deer-flow",
+      "description": "An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.",
+      "stars": 64015,
+      "forks": 8374,
+      "pushed_at": "2026-04-27T16:13:07Z",
+      "updated_at": "2026-04-27T20:29:21Z",
+      "archived": false,
+      "license": "MIT",
+      "license_source": "search",
+      "fit_rationale": "matches lane intent tokens agent"
+    },
+    {
+      "lane_id": "agentic-ai-skill",
+      "full_name": "github/awesome-copilot",
+      "url": "https://github.com/github/awesome-copilot",
+      "description": "Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.",
+      "stars": 31387,
+      "forks": 3799,
+      "pushed_at": "2026-04-27T19:53:27Z",
+      "updated_at": "2026-04-27T20:51:26Z",
+      "archived": false,
+      "license": "MIT",
+      "license_source": "search",
+      "fit_rationale": "matches lane intent tokens agent"
+    },
+    {
+      "lane_id": "cli-open-source-skill",
+      "full_name": "jeremylongshore/claude-code-plugins-plus-skills",
+      "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+      "description": "423 plugins, 2,849 skills, 177 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+      "stars": 2044,
+      "forks": 276,
+      "pushed_at": "2026-04-23T05:25:09Z",
+      "updated_at": "2026-04-27T16:16:29Z",
+      "archived": false,
+      "license": "MIT",
+      "license_source": "search",
+      "fit_rationale": "matches lane intent tokens cli"
+    },
+    {
+      "lane_id": "cli-open-source-skill",
+      "full_name": "KarmaloopAI/Jiva",
+      "url": "https://github.com/KarmaloopAI/Jiva",
+      "description": "Jiva is a CLI-first, open source autonomous AI agent and open alternative to Claude. Built in TypeScript with native support for Sarvam-105B and gpt-oss-120b, it autonomously plans and executes tasks from your terminal. Supports MCP servers, a built-in Skills system, and Jiva Personas - a plugin framework fully compatible with Claude Plugins.",
+      "stars": 35,
+      "forks": 6,
+      "pushed_at": "2026-04-27T07:14:58Z",
+      "updated_at": "2026-04-26T00:10:26Z",
+      "archived": false,
+      "license": "MIT",
+      "license_source": "search",
+      "fit_rationale": "matches lane intent tokens cli, terminal"
+    }
+  ]
+}

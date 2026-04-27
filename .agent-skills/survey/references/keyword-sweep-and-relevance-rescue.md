@@ -92,7 +92,8 @@ Use these as fallback queries after the primary keyword family returns sparse/no
   - `command line tool developer productivity stars:>200 pushed:>=2024-01-01`
   - `github cli terminal tool stars:>200 pushed:>=2024-01-01`
 - `game development skill` lane
-  - `game engine tooling pipeline stars:>150 pushed:>=2024-01-01`
+  - Stage 1: `game engine tooling pipeline stars:>150 pushed:>=2024-01-01`
+  - Stage 2 (deterministic escalation when Stage 1 still has `raw_count == 0`): `game dev framework tooling pipeline stars:>80 pushed:>=2024-01-01`
 
 Cross-lane quality recovery template:
 - When `aggregate_zero_star_ratio >= 0.50`, run exactly one cross-lane recovery query before finalizing run-level status:

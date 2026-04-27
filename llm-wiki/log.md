@@ -14,3 +14,4 @@
 - 2026-04-26 20:15:33Z hourly run: added raw-quality-collapse ratchet note and linked survey/RTK/graphify fallback artifacts
 - 2026-04-27 06:17:39Z hourly run: added transport-taxonomy ratchet note and linked survey/RTK/graphify fallback artifacts (web_search INVALID_API_KEY -> GH-native fallback)
 - 2026-04-27 07:32:00Z hourly run: added web-search-error-log ratchet note and linked survey/RTK/graphify artifacts (standardized .survey/<slug>/web-search-error.log for transport failures)
+- 2026-04-27 21:06:07Z hourly run: added game-lane stage2 ratchet note and linked survey/RTK/graphify artifacts (explicit stage-2 template for game lane when stage-1 remains raw_count=0).
