@@ -1,0 +1,94 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-195430",
+  "generated_at": "2026-04-27T19:55:12Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: error: could not load graph: 'links')",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260427-195430",
+      "label": "run:hourly-skill-candidates-20260427-195430",
+      "type": "run"
+    },
+    {
+      "id": "survey-skill",
+      "label": ".agent-skills/survey/SKILL.md",
+      "type": "target"
+    },
+    {
+      "id": "agentic-ai-skill",
+      "label": "agentic-ai-skill",
+      "type": "lane",
+      "raw_count": 10,
+      "kept_count": 2
+    },
+    {
+      "id": "web-frontend-skill",
+      "label": "web-frontend-skill",
+      "type": "lane",
+      "raw_count": 0,
+      "kept_count": 0
+    },
+    {
+      "id": "web-backend-skill",
+      "label": "web-backend-skill",
+      "type": "lane",
+      "raw_count": 10,
+      "kept_count": 1
+    },
+    {
+      "id": "cli-open-source-skill",
+      "label": "cli-open-source-skill",
+      "type": "lane",
+      "raw_count": 10,
+      "kept_count": 0
+    },
+    {
+      "id": "game-development-skill",
+      "label": "game-development-skill",
+      "type": "lane",
+      "raw_count": 10,
+      "kept_count": 0
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260427-195430",
+      "target": "survey-skill",
+      "type": "targets",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-195430",
+      "target": "agentic-ai-skill",
+      "type": "observes",
+      "weight": 10
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-195430",
+      "target": "web-frontend-skill",
+      "type": "observes",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-195430",
+      "target": "web-backend-skill",
+      "type": "observes",
+      "weight": 10
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-195430",
+      "target": "cli-open-source-skill",
+      "type": "observes",
+      "weight": 10
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-195430",
+      "target": "game-development-skill",
+      "type": "observes",
+      "weight": 10
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260427-195430/evidence.json",
+    ".survey/hourly-skill-candidates-20260427-195430/rtk-summary.md"
+  ]
+}
