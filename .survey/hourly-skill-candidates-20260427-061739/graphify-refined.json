@@ -1,0 +1,122 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-061739",
+  "generated_at": "2026-04-27T06:21:30.530156Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: missing links key in graph.json)",
+  "nodes": [
+    {
+      "id": "run:hourly-skill-candidates-20260427-061739",
+      "label": "hourly-skill-candidates-20260427-061739",
+      "type": "run"
+    },
+    {
+      "id": "target:survey-transport-taxonomy",
+      "label": "survey transport taxonomy hardening",
+      "type": "target"
+    },
+    {
+      "id": "lane:agentic ai skill",
+      "label": "agentic ai skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 19,
+      "raw_count": 20
+    },
+    {
+      "id": "lane:web frontend skill",
+      "label": "web frontend skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 8,
+      "raw_count": 19
+    },
+    {
+      "id": "lane:web backend skill",
+      "label": "web backend skill",
+      "type": "lane",
+      "status": "degraded",
+      "kept_count": 1,
+      "raw_count": 6
+    },
+    {
+      "id": "cause:low-signal-saturation",
+      "label": "low-signal-saturation",
+      "type": "degraded-cause"
+    },
+    {
+      "id": "lane:cli open source skill",
+      "label": "cli open source skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 8,
+      "raw_count": 9
+    },
+    {
+      "id": "lane:game development skill",
+      "label": "game development skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 9,
+      "raw_count": 15
+    },
+    {
+      "id": "cause:transport",
+      "label": "transport",
+      "type": "degraded-cause"
+    }
+  ],
+  "links": [
+    {
+      "source": "run:hourly-skill-candidates-20260427-061739",
+      "target": "target:survey-transport-taxonomy",
+      "type": "proposes",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260427-061739",
+      "target": "lane:agentic ai skill",
+      "type": "observed",
+      "weight": 20
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260427-061739",
+      "target": "lane:web frontend skill",
+      "type": "observed",
+      "weight": 19
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260427-061739",
+      "target": "lane:web backend skill",
+      "type": "observed",
+      "weight": 6
+    },
+    {
+      "source": "lane:web backend skill",
+      "target": "cause:low-signal-saturation",
+      "type": "degraded-by",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260427-061739",
+      "target": "lane:cli open source skill",
+      "type": "observed",
+      "weight": 9
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260427-061739",
+      "target": "lane:game development skill",
+      "type": "observed",
+      "weight": 15
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260427-061739",
+      "target": "cause:transport",
+      "type": "fallback-trigger",
+      "weight": 1
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260427-061739/evidence.json",
+    ".survey/hourly-skill-candidates-20260427-061739/rtk-summary.md",
+    ".survey/hourly-skill-candidates-20260427-061739/graphify-query.err"
+  ]
+}
