@@ -1,0 +1,146 @@
+{
+  "lane_metrics": {
+    "agentic-ai-skill": {
+      "raw_count": 23,
+      "zero_star_raw": 11,
+      "median_stars_raw": 1,
+      "kept_count": 6,
+      "lane_status": "pass",
+      "degraded_causes": {
+        "license": 10,
+        "low-signal": 7
+      }
+    },
+    "web-frontend-skill": {
+      "raw_count": 29,
+      "zero_star_raw": 16,
+      "median_stars_raw": 0,
+      "kept_count": 7,
+      "lane_status": "pass",
+      "degraded_causes": {
+        "license": 17,
+        "low-signal": 4,
+        "archived": 1
+      }
+    },
+    "web-backend-skill": {
+      "raw_count": 16,
+      "zero_star_raw": 0,
+      "median_stars_raw": 872,
+      "kept_count": 11,
+      "lane_status": "pass",
+      "degraded_causes": {
+        "license": 5
+      }
+    },
+    "cli-open-source-skill": {
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 9064,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": {}
+    },
+    "game-development-skill": {
+      "raw_count": 37,
+      "zero_star_raw": 16,
+      "median_stars_raw": 1,
+      "kept_count": 9,
+      "lane_status": "pass",
+      "degraded_causes": {
+        "low-signal": 6,
+        "license": 22
+      }
+    }
+  },
+  "top_candidates": [
+    {
+      "full_name": "encoredev/encore",
+      "html_url": "https://github.com/encoredev/encore",
+      "description": "Open source framework for building robust type-safe distributed systems with declarative infrastructure",
+      "stars": 11871,
+      "updated_at": "2026-04-27T15:06:49Z",
+      "pushed_at": "2026-04-27T11:22:35Z",
+      "archived": false,
+      "license": "MPL-2.0",
+      "lane": "web-backend-skill"
+    },
+    {
+      "full_name": "guarinogabriel/Mac-CLI",
+      "html_url": "https://github.com/guarinogabriel/Mac-CLI",
+      "description": " macOS command line tool for developers – The ultimate tool to manage your Mac. It provides a huge set of command line commands that automatize the usage of your Mac.",
+      "stars": 9064,
+      "updated_at": "2026-04-27T09:38:15Z",
+      "pushed_at": "2026-02-28T02:21:48Z",
+      "archived": false,
+      "license": "MIT",
+      "lane": "cli-open-source-skill"
+    },
+    {
+      "full_name": "larksuite/cli",
+      "html_url": "https://github.com/larksuite/cli",
+      "description": "The official Lark/Feishu CLI tool, maintained by the larksuite team — built for humans and AI Agents. Covers core business domains including Messenger, Docs, Base, Sheets, Calendar, Mail, Tasks, Meetings, and more, with 200+ commands and 20+ AI Agent Skills.",
+      "stars": 8859,
+      "updated_at": "2026-04-27T18:04:17Z",
+      "pushed_at": "2026-04-27T17:44:25Z",
+      "archived": false,
+      "license": "MIT",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "full_name": "EpicGamesExt/BlenderTools",
+      "html_url": "https://github.com/EpicGamesExt/BlenderTools",
+      "description": "Blender addons that improve the game development workflow between Blender and Unreal.",
+      "stars": 3135,
+      "updated_at": "2026-04-27T11:06:06Z",
+      "pushed_at": "2024-07-31T18:56:16Z",
+      "archived": false,
+      "license": "MIT",
+      "lane": "game-development-skill"
+    },
+    {
+      "full_name": "go-goyave/goyave",
+      "html_url": "https://github.com/go-goyave/goyave",
+      "description": "🍐 The enterprise REST API framework",
+      "stars": 1770,
+      "updated_at": "2026-04-14T08:33:12Z",
+      "pushed_at": "2026-03-12T09:54:40Z",
+      "archived": false,
+      "license": "MIT",
+      "lane": "web-backend-skill"
+    },
+    {
+      "full_name": "dembrandt/dembrandt",
+      "html_url": "https://github.com/dembrandt/dembrandt",
+      "description": "Extract any website’s design system into tokens in seconds: logo, colors, typography, borders & more. One command.",
+      "stars": 1719,
+      "updated_at": "2026-04-27T17:40:08Z",
+      "pushed_at": "2026-04-11T20:47:05Z",
+      "archived": false,
+      "license": "MIT",
+      "lane": "web-frontend-skill"
+    },
+    {
+      "full_name": "openakita/openakita",
+      "html_url": "https://github.com/openakita/openakita",
+      "description": "An open-source AI assistant framework with skills and agent architecture",
+      "stars": 1676,
+      "updated_at": "2026-04-27T18:37:25Z",
+      "pushed_at": "2026-04-27T17:57:10Z",
+      "archived": false,
+      "license": "Apache-2.0",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "full_name": "Trendyol/baklava",
+      "html_url": "https://github.com/Trendyol/baklava",
+      "description": "Baklava is a design system provided by Trendyol to create a consistent UI/UX for app users.",
+      "stars": 1383,
+      "updated_at": "2026-04-26T16:48:40Z",
+      "pushed_at": "2026-04-22T20:42:00Z",
+      "archived": false,
+      "license": "MIT",
+      "lane": "web-frontend-skill"
+    }
+  ]
+}

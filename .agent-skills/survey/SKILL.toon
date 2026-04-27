@@ -28,7 +28,7 @@ S[11]{n,action,details}:
 R[14]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
-  Keep claims source-backed and label downgraded evidence clearly using validator-supported labels (map gh-search listings to indexed snippet and repo/API detail fetches to direct page retrieval); for gh search repos JSON output prefer fullName or owner+name over unsupported nameWithOwner and persist stderr before retrying
+  Keep claims source-backed and label downgraded evidence clearly using validator-supported labels (map gh-search listings to indexed snippet and repo/API detail fetches to direct page retrieval); for gh search repos JSON output prefer fullName or owner+name over unsupported nameWithOwner, and if gh search returns empty-success payloads ([] exit 0) on known-populated probes rerun via gh api search/repositories fallback while preserving stderr evidence
   Drop assessment/homework-only and unknown-license noise unless exception rationale is explicit; when license is null on first pass, retry once via gh api repos/<owner>/<repo> before classifying unknown
   Treat generic personal catch-all repos (especially */skills) as low-fit unless workflow docs + traction are explicit
   Apply a recommendation-grade freshness floor (drop stale pushed_at over 24 months unless exception rationale + risk note)
