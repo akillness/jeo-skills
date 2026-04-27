@@ -1,0 +1,40 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-172031",
+  "generated_at": "2026-04-27T17:21:59.046004Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: error: could not load graph: 'links')",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260427-172031",
+      "label": "hourly-survey-run",
+      "type": "run"
+    },
+    {
+      "id": "transport",
+      "label": "transport fallback",
+      "type": "cause"
+    },
+    {
+      "id": "relative-path-ratchet",
+      "label": "relative error-log path ratchet",
+      "type": "candidate"
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260427-172031",
+      "target": "transport",
+      "relation": "degraded-cause",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-172031",
+      "target": "relative-path-ratchet",
+      "relation": "proposes"
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260427-172031/evidence.json",
+    ".survey/hourly-skill-candidates-20260427-172031/rtk-summary.md",
+    ".survey/hourly-skill-candidates-20260427-172031/graphify-query.err"
+  ]
+}
