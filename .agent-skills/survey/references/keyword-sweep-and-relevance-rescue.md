@@ -80,7 +80,8 @@ If direct web search/extract is degraded or returns mostly noise:
 Use these as fallback queries after the primary keyword family returns sparse/noisy matches:
 
 - `agentic ai skill` lane
-  - `ai agent framework skills automation stars:>200 pushed:>=2024-01-01`
+  - Stage 1: `ai agent framework skills automation stars:>200 pushed:>=2024-01-01`
+  - Stage 2 (deterministic escalation when Stage 1 remains `raw_count == 0` or `kept_count == 0`): `agent framework workflow prompt engineering toolkit stars:>120 pushed:>=2024-01-01`
 - `web frontend skill` lane
   - Stage 1: `frontend ui component design system stars:>300 pushed:>=2024-01-01`
   - Stage 2 (deterministic escalation when Stage 1 keeps remain `kept_count == 0` due to noisy/low-signal hits): `frontend engineering workflow design system toolkit stars:>120 pushed:>=2024-01-01`
@@ -88,10 +89,11 @@ Use these as fallback queries after the primary keyword family returns sparse/no
   - Stage 1: `backend api framework observability stars:>300 pushed:>=2024-01-01`
   - Stage 2 (deterministic escalation when Stage 1 still has `raw_count == 0`): `backend developer platform api template stars:>150 pushed:>=2024-01-01`
 - `cli open source skill` lane
-  - `command line tool developer productivity stars:>200 pushed:>=2024-01-01`
-  - `github cli terminal tool stars:>200 pushed:>=2024-01-01`
+  - Stage 1: `command line tool developer productivity stars:>200 pushed:>=2024-01-01`
+  - Stage 2 (deterministic escalation when Stage 1 remains `raw_count == 0` or `kept_count == 0`): `terminal automation cli workflow toolkit stars:>120 pushed:>=2024-01-01`
 - `game development skill` lane
-  - `game engine tooling pipeline stars:>150 pushed:>=2024-01-01`
+  - Stage 1: `game engine tooling pipeline stars:>150 pushed:>=2024-01-01`
+  - Stage 2 (deterministic escalation when Stage 1 remains `raw_count == 0` or `kept_count == 0`): `unity unreal godot development workflow toolkit stars:>120 pushed:>=2024-01-01`
 
 Cross-lane quality recovery template:
 - When `aggregate_zero_star_ratio >= 0.50`, run exactly one cross-lane recovery query before finalizing run-level status:
@@ -102,13 +104,14 @@ Stage-2 escalation rule:
 - If a lane remains `raw_count == 0` after stage-1 recovery, run exactly one stage-2 query template for that lane before finalizing `lane_status`.
 - For lanes that are noisy (raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1), run exactly one stage-2 query template before finalizing degraded status.
 - Keep provenance labels and apply the same relevance + metadata + signal/freshness gate to stage-2 hits.
+- If `raw_count == 0` after Stage 2, set `degraded_causes` to include `no-results` (alongside other causes) so empty lanes remain explicit in run reports.
 
 ### Minimum recommendation thresholds (after relevance gate)
 
 - At least 1 recommendation-grade keep per lane where feasible.
 - `cli open source skill` lane target: 3+ kept entries for spotlight quality.
 - For each lane, emit explicit `lane_status` in markdown: `pass` or `degraded`.
-- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation` (include counts or concrete examples).
+- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `no-results` (include counts or concrete examples).
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 
 ## Reporting checklist
@@ -120,6 +123,6 @@ Before final recommendations:
 - [ ] Relevance gate applied to kept candidates
 - [ ] Metadata minimum recorded for each kept candidate
 - [ ] Lane-level `lane_status` (`pass|degraded`) included in markdown summary
-- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation`) reported with examples/counts
+- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation|no-results`) reported with examples/counts
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly
