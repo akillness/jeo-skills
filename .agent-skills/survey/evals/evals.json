@@ -191,6 +191,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where gh search returns mixed license key shapes (`spdx_id`, `spdxId`, or empty object) across lanes",
+      "expected_output": "The survey normalizes license key drift from search payloads, then retries unresolved license values once via `gh api repos/<owner>/<repo>` before final keep/drop classification.",
+      "assertions": [
+        "Checks both `license.spdx_id` and `license.spdxId` before marking license unknown",
+        "Retries unresolved license once via `gh api repos/<owner>/<repo>` before unknown-license drop/exception handling",
+        "Keeps provenance and lane-status reporting intact after metadata normalization"
+      ]
     }
   ]
 }
