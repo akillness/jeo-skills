@@ -191,6 +191,16 @@
         "Reapplies license/freshness/signal/fit gates on stage-2 results",
         "Reports provenance plus final lane_status/degraded_causes after noisy-lane escalation"
       ]
+    },
+    {
+      "id": 20,
+      "prompt": "run the hourly five-lane survey where the same repository appears in multiple lanes and one lane remains raw_count=0 after documented recovery",
+      "expected_output": "The survey preserves raw evidence, deduplicates recommendation-grade repositories across lanes before final ranking, and reports `no-results` explicitly in degraded causes for lanes that remain raw_count=0 post-recovery.",
+      "assertions": [
+        "Reports both raw and deduplicated recommendation coverage metrics when cross-lane duplicates exist",
+        "Keeps raw discovery evidence unchanged while applying dedup only to recommendation-grade ranking",
+        "Includes `no-results` explicitly in degraded_causes when a lane remains raw_count==0 after recovery"
+      ]
     }
   ]
 }

@@ -108,8 +108,9 @@ Stage-2 escalation rule:
 - At least 1 recommendation-grade keep per lane where feasible.
 - `cli open source skill` lane target: 3+ kept entries for spotlight quality.
 - For each lane, emit explicit `lane_status` in markdown: `pass` or `degraded`.
-- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation` (include counts or concrete examples).
+- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `no-results` (include counts or concrete examples). Use `no-results` explicitly when a lane remains `raw_count == 0` after documented recovery.
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
+- Before final ranking, compute a deduplicated recommendation-grade set keyed by repository identity (`fullName` or `owner/name`) and report both raw and dedup recommendation coverage metrics.
 
 ## Reporting checklist
 
@@ -120,6 +121,7 @@ Before final recommendations:
 - [ ] Relevance gate applied to kept candidates
 - [ ] Metadata minimum recorded for each kept candidate
 - [ ] Lane-level `lane_status` (`pass|degraded`) included in markdown summary
-- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation`) reported with examples/counts
+- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation|no-results`) reported with examples/counts
+- [ ] Recommendation section reports both raw and deduplicated cross-lane coverage metrics
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly

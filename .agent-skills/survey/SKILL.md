@@ -17,10 +17,10 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.6"
+  version: "2.1.7"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
-  hardening: 2026-04-26
+  hardening: 2026-04-27
 ---
 
 # Survey
@@ -202,9 +202,10 @@ Execution rules:
 - If a lane still has `raw_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query for that lane before finalizing `lane_status`.
 - For noisy lanes where raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query before finalizing degraded status.
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
-- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`) plus examples/counts.
+- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `no-results`) plus examples/counts. When a lane remains `raw_count == 0` after documented recovery, include `no-results` explicitly.
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
+- Add a cross-lane recommendation dedup gate before final ranking: preserve raw discovery evidence unchanged, but compute a deduplicated recommendation-grade set keyed by repository identity (`fullName` or `owner/name`) and report both raw and dedup coverage metrics.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 
@@ -245,7 +246,7 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 ## Output rules
 - Facts first, recommendations second only if requested.
 - One bounded question per survey artifact.
-- Keep solution names deduplicated.
+- Keep solution names deduplicated, and deduplicate recommendation-grade repositories across lanes before final ranking while preserving raw evidence.
 - Preserve evidence labels when sources are weak or indirect.
 - Keep the output artifact schema identical across platforms.
 - Route architecture/planning/execution work outward once the survey is done.
