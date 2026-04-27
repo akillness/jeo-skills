@@ -115,6 +115,20 @@ Stage-2 escalation rule:
 - For unattended hourly runs, standardize the transport error log filename as `.survey/<slug>/web-search-error.log` (for example when `web_search` returns `INVALID_API_KEY`) and include this exact path in `transport_status`.
 - In new hourly artifacts, keep `transport_status.web_search.error_log` repository-relative (for example `.survey/<slug>/web-search-error.log`) and avoid host-absolute prefixes (for example `/Users/...`, `/home/...`) so outage evidence remains portable across runners.
 
+### Open-PR backlog gate (hourly merge-throughput guard)
+
+Use this pre-PR gate after survey artifacts pass validation and before creating a new branch/PR:
+
+1. Measure open backlog with `gh pr list --state open --limit 100`.
+2. Count hourly survey PRs (title/head starts with `chore: hourly survey` or `chore/hourly-survey-`).
+3. If hourly backlog is **>= 10**, switch to **merge carry-forward mode**:
+   - prioritize reviewing/merging one clean open hourly PR,
+   - avoid opening an additional new PR in that run,
+   - still produce current run survey/RTK/graphify/obsidian artifacts for continuity.
+4. If backlog is below threshold, proceed with normal new-PR flow.
+
+Rationale: prevents unattended hourly loops from amplifying PR queue saturation while preserving evidence continuity.
+
 ## Reporting checklist
 
 Before final recommendations:
