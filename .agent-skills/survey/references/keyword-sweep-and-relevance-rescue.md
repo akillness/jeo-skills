@@ -111,6 +111,7 @@ Stage-2 escalation rule:
 - If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `transport` (include counts or concrete examples).
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 - When retrieval falls back due to degraded search transport, record `transport_status` (cause, fallback retrieval family, and error-log path) in run artifacts.
+- For unattended hourly runs, standardize the transport error log filename as `.survey/<slug>/web-search-error.log` (for example when `web_search` returns `INVALID_API_KEY`) and include this exact path in `transport_status`.
 
 ## Reporting checklist
 
@@ -123,5 +124,6 @@ Before final recommendations:
 - [ ] Lane-level `lane_status` (`pass|degraded`) included in markdown summary
 - [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation|transport`) reported with examples/counts
 - [ ] If fallback retrieval was used, `transport_status` (cause + fallback family + error-log path) recorded in artifacts
+- [ ] If search transport failed, `.survey/<slug>/web-search-error.log` exists and is referenced in `transport_status`
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly
