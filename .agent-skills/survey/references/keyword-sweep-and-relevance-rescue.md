@@ -111,7 +111,7 @@ Stage-2 escalation rule:
 - At least 1 recommendation-grade keep per lane where feasible.
 - `cli open source skill` lane target: 3+ kept entries for spotlight quality.
 - For each lane, emit explicit `lane_status` in markdown: `pass` or `degraded`.
-- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `transport` (include counts or concrete examples).
+- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `transport`, `no-results` (include counts or concrete examples).
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 - When retrieval falls back due to degraded search transport, record `transport_status` (cause, fallback retrieval family, and error-log path) in run artifacts.
 - For unattended hourly runs, standardize the transport error log filename as `.survey/<slug>/web-search-error.log` (for example when `web_search` returns `INVALID_API_KEY`) and include this exact path in `transport_status`.
@@ -126,7 +126,8 @@ Use this pre-PR gate after survey artifacts pass validation and before creating 
 3. If hourly backlog is **>= 10**, switch to **merge carry-forward mode**:
    - prioritize reviewing/merging one clean open hourly PR,
    - avoid opening an additional new PR in that run,
-   - still produce current run survey/RTK/graphify/obsidian artifacts for continuity.
+   - still produce current run survey/RTK/graphify/obsidian artifacts for continuity,
+   - if the selected carry-forward PR is `DIRTY`/unmergeable, do not rewrite it in unattended cron; create a replacement branch from fresh `main`, re-apply the smallest low-risk ratchet, and merge that replacement PR.
 4. If backlog is below threshold, proceed with normal new-PR flow.
 
 Rationale: prevents unattended hourly loops from amplifying PR queue saturation while preserving evidence continuity.
