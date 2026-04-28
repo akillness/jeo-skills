@@ -1,0 +1,35 @@
+{
+  "skill_name": "unity-gamedev-skill-pack",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "we found tjboudreaux/cc-plugin-unity-gamedev in the hourly survey. add it to our repo safely",
+      "expected_output": "A provenance-first curation flow that evaluates license/recency/safety before adapting reusable Unity workflow patterns into local skill files.",
+      "assertions": [
+        "Mentions provenance capture with source URL and evidence label",
+        "Checks license and recency before import",
+        "Describes selective adaptation instead of blind copy"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "copy all prompts from this external unity repo directly into our skills and merge quickly",
+      "expected_output": "A refusal of blind copy with redirection to safety gates and PR-visible risk/rollback documentation.",
+      "assertions": [
+        "Rejects blind direct-copy behavior",
+        "Requires risk and rollback notes in PR output",
+        "Requires validation before merge"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "prepare a merge-ready update for imported unity workflows",
+      "expected_output": "A package that includes SKILL.md, SKILL.toon, evals, and validation checkpoints.",
+      "assertions": [
+        "Includes local package structure (SKILL.md, SKILL.toon, evals/evals.json)",
+        "Includes validation steps such as git diff --check or JSON validation",
+        "Includes explicit rollback path"
+      ]
+    }
+  ]
+}
