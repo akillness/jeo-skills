@@ -1,0 +1,8 @@
+run_slug: hourly-skill-candidates-20260428-130019
+agentic ai skill: raw=0 kept=0 median_stars=0 status=degraded causes=no-results
+web frontend skill: raw=0 kept=0 median_stars=0 status=degraded causes=no-results
+web backend skill: raw=0 kept=0 median_stars=0 status=degraded causes=no-results
+cli open source skill: raw=0 kept=0 median_stars=0 status=degraded causes=no-results
+game development skill: raw=0 kept=0 median_stars=0 status=degraded causes=no-results
+recommended_lane_count: 0
+single_lane_concentration: True

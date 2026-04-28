@@ -23,10 +23,11 @@ S[12]{n,action,details}:
   6,Ensure lane template parity,Confirm every mandatory lane (including game development) has an explicit stage-2 query template before finalizing unattended guidance
   7,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal) in markdown summaries
   8,Record lane metrics,Alongside lane_status include kept_count raw_count median_stars_raw zero_star_raw so reviewers can detect quality drift
-  9,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane
-  10,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
-  11,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
-  12,Summarize,Return a short factual survey summary and route planning or implementation outward
+  9,Lane-metric integrity,Before writing artifacts enforce raw_count>=kept_count and normalize empty-lane metrics to raw_count=0 zero_star_raw=0 median_stars_raw=0 to prevent impossible states
+  10,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane
+  11,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
+  12,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
+  13,Summarize,Return a short factual survey summary and route planning or implementation outward
 R[14]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
