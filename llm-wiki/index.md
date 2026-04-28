@@ -1,6 +1,7 @@
 # LLM Wiki Index
 
 ## Topics
+- [Hourly survey all-lanes-zero-results ratchet (2026-04-29)](queries/2026-04-29-hourly-survey-all-lanes-zero-results-ratchet.md)
 - [Hourly survey UNKNOWN-mergeability polling ratchet (2026-04-28)](queries/2026-04-28-hourly-survey-unknown-mergeability-polling-ratchet.md)
 - [Hourly survey transport-envelope ratchet (2026-04-28)](queries/2026-04-28-hourly-survey-transport-envelope-ratchet.md)
 - [Hourly survey transport-path eval ratchet (2026-04-28)](queries/2026-04-28-hourly-survey-transport-path-eval-ratchet.md)
