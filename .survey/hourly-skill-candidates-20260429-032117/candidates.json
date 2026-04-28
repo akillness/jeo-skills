@@ -1,0 +1,40 @@
+{
+  "run_slug": "hourly-skill-candidates-20260429-032117",
+  "candidates": [
+    {
+      "repo": "UnrealBlueprint/02_CrystalCavern",
+      "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+      "lane": "game development skill",
+      "why": "matched lane intent + non-archived + stars>=3",
+      "proposal": "reference or improve related skill docs/evals"
+    },
+    {
+      "repo": "rohithnafeel/My-CS-Projects",
+      "url": "https://github.com/rohithnafeel/My-CS-Projects",
+      "lane": "game development skill",
+      "why": "matched lane intent + non-archived + stars>=3",
+      "proposal": "reference or improve related skill docs/evals"
+    },
+    {
+      "repo": "Unengine/GameEngineAndGameMathTIL",
+      "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+      "lane": "game development skill",
+      "why": "matched lane intent + non-archived + stars>=3",
+      "proposal": "reference or improve related skill docs/evals"
+    },
+    {
+      "repo": "SMDS-Studio/Building-a-New-creative-Pong-",
+      "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+      "lane": "game development skill",
+      "why": "matched lane intent + non-archived + stars>=3",
+      "proposal": "reference or improve related skill docs/evals"
+    },
+    {
+      "repo": "inchussa/Virtual-Pet-Simulator",
+      "url": "https://github.com/inchussa/Virtual-Pet-Simulator",
+      "lane": "game development skill",
+      "why": "matched lane intent + non-archived + stars>=3",
+      "proposal": "reference or improve related skill docs/evals"
+    }
+  ]
+}
