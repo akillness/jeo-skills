@@ -1,0 +1,90 @@
+{
+  "run_slug": "hourly-skill-candidates-20260428-130019",
+  "generated_at": "2026-04-28T04:04:16.228819Z",
+  "lanes": {
+    "agentic ai skill": {
+      "query": "agentic ai skill",
+      "recovery_used": true,
+      "raw_count": 0,
+      "zero_star_raw": 1,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "provenance": "direct page retrieval",
+      "samples": [],
+      "recommended": []
+    },
+    "web frontend skill": {
+      "query": "web frontend skill",
+      "recovery_used": true,
+      "raw_count": 0,
+      "zero_star_raw": 1,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "provenance": "direct page retrieval",
+      "samples": [],
+      "recommended": []
+    },
+    "web backend skill": {
+      "query": "web backend skill",
+      "recovery_used": true,
+      "raw_count": 0,
+      "zero_star_raw": 1,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "provenance": "direct page retrieval",
+      "samples": [],
+      "recommended": []
+    },
+    "cli open source skill": {
+      "query": "cli open source skill",
+      "recovery_used": true,
+      "raw_count": 0,
+      "zero_star_raw": 1,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "provenance": "direct page retrieval",
+      "samples": [],
+      "recommended": []
+    },
+    "game development skill": {
+      "query": "game development skill",
+      "recovery_used": true,
+      "raw_count": 0,
+      "zero_star_raw": 1,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "provenance": "direct page retrieval",
+      "samples": [],
+      "recommended": []
+    }
+  },
+  "transport_status": {
+    "web_search": {
+      "status": "degraded",
+      "reason": "fallback to gh search repos"
+    }
+  },
+  "recommended_lane_count": 0,
+  "single_lane_concentration": true,
+  "top_recommendations": []
+}
