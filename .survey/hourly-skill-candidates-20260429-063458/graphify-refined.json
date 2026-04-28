@@ -1,0 +1,82 @@
+{
+  "run_slug": "hourly-skill-candidates-20260429-063458",
+  "graphify_query_status": "fallback-generated",
+  "nodes": [
+    {
+      "id": "run",
+      "label": "hourly-skill-candidates-20260429-063458",
+      "type": "run"
+    },
+    {
+      "id": "lane:agentic-ai",
+      "label": "agentic-ai",
+      "type": "lane",
+      "raw": 20,
+      "kept": 3
+    },
+    {
+      "id": "lane:web-frontend",
+      "label": "web-frontend",
+      "type": "lane",
+      "raw": 4,
+      "kept": 1
+    },
+    {
+      "id": "lane:web-backend",
+      "label": "web-backend",
+      "type": "lane",
+      "raw": 0,
+      "kept": 0
+    },
+    {
+      "id": "lane:cli-oss",
+      "label": "cli-oss",
+      "type": "lane",
+      "raw": 0,
+      "kept": 0
+    },
+    {
+      "id": "lane:game-dev",
+      "label": "game-dev",
+      "type": "lane",
+      "raw": 20,
+      "kept": 4
+    }
+  ],
+  "links": [
+    {
+      "source": "run",
+      "target": "lane:agentic-ai",
+      "type": "covers",
+      "weight": 3
+    },
+    {
+      "source": "run",
+      "target": "lane:web-frontend",
+      "type": "covers",
+      "weight": 1
+    },
+    {
+      "source": "run",
+      "target": "lane:web-backend",
+      "type": "covers",
+      "weight": 0
+    },
+    {
+      "source": "run",
+      "target": "lane:cli-oss",
+      "type": "covers",
+      "weight": 0
+    },
+    {
+      "source": "run",
+      "target": "lane:game-dev",
+      "type": "covers",
+      "weight": 4
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260429-063458/evidence.json",
+    ".survey/hourly-skill-candidates-20260429-063458/rtk-summary.md"
+  ]
+}
