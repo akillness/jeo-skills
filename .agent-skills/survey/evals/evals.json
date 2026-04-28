@@ -243,6 +243,16 @@
         "Captures provider error envelope fields when available (e.g., `error_tag`, `request_ids[]`)",
         "Keeps provenance labels valid while reporting degraded transport"
       ]
+    },
+    {
+      "id": 25,
+      "prompt": "run carry-forward merge mode with open-pr backlog>=10 where the newest candidate keeps returning mergeStateStatus UNKNOWN",
+      "expected_output": "The survey does bounded mergeability re-checks instead of treating UNKNOWN as final on first sample, then deterministically defers that PR and selects the next candidate while recording the defer reason in run artifacts.",
+      "assertions": [
+        "Does not finalize candidate eligibility from a single mergeStateStatus=UNKNOWN sample",
+        "Performs short bounded re-checks before deciding to defer",
+        "Records defer reason and fallback candidate selection in artifacts"
+      ]
     }
   ]
 }

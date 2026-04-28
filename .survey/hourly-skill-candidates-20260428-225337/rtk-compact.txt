@@ -1,0 +1,431 @@
+{
+  "run_slug": "hourly-skill-candidates-20260428-225337",
+  "generated_at": "2026-04-28T13:54:02.853261+00:00",
+  "provenance_labels": [
+    "indexed snippet",
+    "direct page retrieval"
+  ],
+  "transport_status": {
+    "search": "gh api search/repositories"
+  },
+  "lanes": {
+    "agentic_ai_skill": {
+      "query": "\"agentic ai\" skill",
+      "provenance": "indexed snippet",
+      "raw_count": 8,
+      "kept_count": 1,
+      "raw_candidates": [
+        {
+          "full_name": "leprachuan/Wee-Orchestrator",
+          "html_url": "https://github.com/leprachuan/Wee-Orchestrator",
+          "description": "🍀 Self-hosted multi-agent AI orchestrator — chat with Claude, Gemini & Copilot CLI from Telegram, WebEx, or browser. 5 runtimes, 17+ models, task scheduling, skill plugins.",
+          "stargazers_count": 6,
+          "updated_at": "2026-04-28T11:48:03Z",
+          "pushed_at": "2026-04-28T11:47:59Z",
+          "archived": false,
+          "license": "GPL-3.0"
+        },
+        {
+          "full_name": "aziz5971/TalentLens",
+          "html_url": "https://github.com/aziz5971/TalentLens",
+          "description": "Analyze candidates with a multi-agent AI screening pipeline that matches skills, verifies background, and prepares interviews",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T11:12:22Z",
+          "pushed_at": "2026-04-28T11:12:18Z",
+          "archived": false,
+          "license": "MIT"
+        },
+        {
+          "full_name": "ardelleinternecine541/agentic-ai-patterns",
+          "html_url": "https://github.com/ardelleinternecine541/agentic-ai-patterns",
+          "description": "Build design patterns for autonomous AI agents with orchestration, memory, fallback, tools, and multi-agent coordination",
+          "stargazers_count": 1,
+          "updated_at": "2026-04-28T11:02:50Z",
+          "pushed_at": "2026-04-28T11:02:46Z",
+          "archived": false,
+          "license": "MIT"
+        },
+        {
+          "full_name": "GhaliaRehawi/ai-learning-lab",
+          "html_url": "https://github.com/GhaliaRehawi/ai-learning-lab",
+          "description": "Personal ML/AI Boot-camp with Perplexity Computer/ Learning ML and SE skills with agentic AI ",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T10:50:42Z",
+          "pushed_at": "2026-04-28T10:50:38Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "AeonDave/malskill",
+          "html_url": "https://github.com/AeonDave/malskill",
+          "description": "Offensive oriented Skill for agentic AI",
+          "stargazers_count": 2,
+          "updated_at": "2026-04-28T10:45:16Z",
+          "pushed_at": "2026-04-28T10:45:13Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "aomi-labs/aomi",
+          "html_url": "https://github.com/aomi-labs/aomi",
+          "description": "The best blockchain harness for agentic AI - on-chain execution with runtime, skills, and component library.",
+          "stargazers_count": 5,
+          "updated_at": "2026-04-28T08:58:00Z",
+          "pushed_at": "2026-04-28T08:57:55Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "garrardkitchen/skills",
+          "html_url": "https://github.com/garrardkitchen/skills",
+          "description": "Security- and delivery-focused Claude skills for Azure, .NET, agentic AI, compliance assessment, architecture, CI/CD, documentation, and engineering workflow automation.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T07:02:18Z",
+          "pushed_at": "2026-04-28T07:00:13Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "sandya-portrfolio/agentic-ai-devops-with-claude-code",
+          "html_url": "https://github.com/sandya-portrfolio/agentic-ai-devops-with-claude-code",
+          "description": "Build AWS infra with Agentic AI DevOps Claude Code: Skills, Agents, Guardrails, MCP tools, Memory + GitHub Actions OIDC",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T05:56:07Z",
+          "pushed_at": "2026-04-28T05:56:03Z",
+          "archived": false,
+          "license": null
+        }
+      ],
+      "kept_candidates": [
+        {
+          "full_name": "leprachuan/Wee-Orchestrator",
+          "html_url": "https://github.com/leprachuan/Wee-Orchestrator",
+          "description": "🍀 Self-hosted multi-agent AI orchestrator — chat with Claude, Gemini & Copilot CLI from Telegram, WebEx, or browser. 5 runtimes, 17+ models, task scheduling, skill plugins.",
+          "stargazers_count": 6,
+          "updated_at": "2026-04-28T11:48:03Z",
+          "pushed_at": "2026-04-28T11:47:59Z",
+          "archived": false,
+          "license": "GPL-3.0",
+          "fit_rationale": "keyword-aligned and meets baseline signal/license filters"
+        }
+      ],
+      "lane_status": "pass",
+      "degraded_causes": []
+    },
+    "web_frontend_skill": {
+      "query": "web frontend skill",
+      "provenance": "indexed snippet",
+      "raw_count": 8,
+      "kept_count": 0,
+      "raw_candidates": [
+        {
+          "full_name": "ericliu8888/blog-preview-card",
+          "html_url": "https://github.com/ericliu8888/blog-preview-card",
+          "description": "🌟 Build a responsive blog preview card with HTML and CSS, enhancing your web layout skills through practical application of design principles.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T13:39:02Z",
+          "pushed_at": "2026-04-28T13:34:03Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "rinafcode/teachLink_web",
+          "html_url": "https://github.com/rinafcode/teachLink_web",
+          "description": "Frontend: Teachlink is a platform for technocrat where knowlege, skills, ideas, and information that can bring about development and improvement can be shared, dissected, you can also earn from it.",
+          "stargazers_count": 14,
+          "updated_at": "2026-04-28T13:31:51Z",
+          "pushed_at": "2026-04-28T13:30:24Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "TechbyWebCoder/Frontend_Project",
+          "html_url": "https://github.com/TechbyWebCoder/Frontend_Project",
+          "description": "This repository contains a curated collection of 25 frontend development projects built using HTML, CSS, and JavaScript. These projects are designed to help beginners and intermediate learners strengthen their web development skills through real-world, hands-on practice.",
+          "stargazers_count": 5,
+          "updated_at": "2026-04-28T13:19:07Z",
+          "pushed_at": "2026-04-28T13:18:47Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "Shadowrecruit1/react-project-clg-website",
+          "html_url": "https://github.com/Shadowrecruit1/react-project-clg-website",
+          "description": "🌐 Create a modern, static college website using React and Vite, designed to enhance web development skills with a user-friendly interface.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T13:12:50Z",
+          "pushed_at": "2026-04-28T13:12:46Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "StrongXscripts/Hacktoberfest-2025",
+          "html_url": "https://github.com/StrongXscripts/Hacktoberfest-2025",
+          "description": "🎃 Join Hacktoberfest 2025 and contribute to modern web development. Collaborate, learn, and enhance your coding skills in a supportive environment.",
+          "stargazers_count": 2,
+          "updated_at": "2026-04-28T13:02:33Z",
+          "pushed_at": "2026-04-28T13:02:29Z",
+          "archived": false,
+          "license": "MIT"
+        },
+        {
+          "full_name": "juan-salgado23/freecodecamp-css",
+          "html_url": "https://github.com/juan-salgado23/freecodecamp-css",
+          "description": "🎨 Create and showcase HTML and CSS projects to enhance your web development skills with freeCodeCamp's practical examples and resources.",
+          "stargazers_count": 1,
+          "updated_at": "2026-04-28T12:56:13Z",
+          "pushed_at": "2026-04-28T12:56:03Z",
+          "archived": false,
+          "license": "MIT"
+        },
+        {
+          "full_name": "MiguelNeculman/freecodecamp-css-product-landing-page",
+          "html_url": "https://github.com/MiguelNeculman/freecodecamp-css-product-landing-page",
+          "description": "🖥️ Build a responsive product landing page using HTML and CSS, designed to showcase your projects effectively and enhance your web development skills.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T12:56:06Z",
+          "pushed_at": "2026-04-28T12:56:02Z",
+          "archived": false,
+          "license": "MIT"
+        },
+        {
+          "full_name": "KASHISH-Naik/Complete-WebDev-Cheatsheet",
+          "html_url": "https://github.com/KASHISH-Naik/Complete-WebDev-Cheatsheet",
+          "description": "🛠️ Master web development with this comprehensive cheatsheet covering design, layout, performance testing, and deployment tips. Collaborate and enhance your skills.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T12:53:40Z",
+          "pushed_at": "2026-04-28T12:53:36Z",
+          "archived": false,
+          "license": null
+        }
+      ],
+      "kept_candidates": [],
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit",
+        "low-signal"
+      ]
+    },
+    "web_backend_skill": {
+      "query": "web backend skill",
+      "provenance": "indexed snippet",
+      "raw_count": 0,
+      "kept_count": 0,
+      "raw_candidates": [],
+      "kept_candidates": [],
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit",
+        "low-signal"
+      ]
+    },
+    "cli_open_source_skill": {
+      "query": "cli open source skill",
+      "provenance": "indexed snippet",
+      "raw_count": 8,
+      "kept_count": 2,
+      "raw_candidates": [
+        {
+          "full_name": "KarmaloopAI/Jiva",
+          "html_url": "https://github.com/KarmaloopAI/Jiva",
+          "description": "Jiva is a CLI-first, open source autonomous AI agent and open alternative to Claude. Built in TypeScript with native support for Sarvam-105B and gpt-oss-120b, it autonomously plans and executes tasks from your terminal. Supports MCP servers, a built-in Skills system, and Jiva Personas - a plugin framework fully compatible with Claude Plugins.",
+          "stargazers_count": 35,
+          "updated_at": "2026-04-28T11:43:04Z",
+          "pushed_at": "2026-04-28T11:45:06Z",
+          "archived": false,
+          "license": "MIT"
+        },
+        {
+          "full_name": "popular-molluskfamily870/claw-code",
+          "html_url": "https://github.com/popular-molluskfamily870/claw-code",
+          "description": "Build and run code across Rust and other workspaces with Claw Code, a tool for parity checks, usage flows, and roadmap tracking",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T11:14:19Z",
+          "pushed_at": "2026-04-28T11:14:15Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "pisonislo8737/HyperxOpenSkills",
+          "html_url": "https://github.com/pisonislo8737/HyperxOpenSkills",
+          "description": "Provide open-source Claude Code skills to access HyperX wallet analytics, market data, and social feeds for enhanced trading insights.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T10:57:56Z",
+          "pushed_at": "2026-04-28T10:57:53Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "wtfyashh/introduction-to-bash-scripting",
+          "html_url": "https://github.com/wtfyashh/introduction-to-bash-scripting",
+          "description": "💡 Learn Bash scripting basics and start writing scripts with this open-source guide. Perfect for beginners looking to enhance their skills.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T10:10:24Z",
+          "pushed_at": "2026-04-28T10:10:20Z",
+          "archived": false,
+          "license": "MIT"
+        },
+        {
+          "full_name": "skrun-dev/skrun",
+          "html_url": "https://github.com/skrun-dev/skrun",
+          "description": "Deploy any Agent Skill as an API via POST /run. The open-source multi-model alternative to Claude Managed Agents, Microsoft Foundry & Mistral/Koyeb — works with any LLM.",
+          "stargazers_count": 164,
+          "updated_at": "2026-04-27T19:58:26Z",
+          "pushed_at": "2026-04-27T20:06:12Z",
+          "archived": false,
+          "license": "MIT"
+        },
+        {
+          "full_name": "sharonds/checkapp",
+          "html_url": "https://github.com/sharonds/checkapp",
+          "description": "CheckApp — AI content quality checker for writers & teams. 9 skills (plagiarism, AI detection, SEO, fact-check, tone, legal, summary, brief, purpose). CLI + web dashboard + MCP. Open source, MIT.",
+          "stargazers_count": 2,
+          "updated_at": "2026-04-28T10:58:21Z",
+          "pushed_at": "2026-04-27T04:41:29Z",
+          "archived": false,
+          "license": "MIT"
+        },
+        {
+          "full_name": "Stacksheild/sentinelai",
+          "html_url": "https://github.com/Stacksheild/sentinelai",
+          "description": "Security scanner, cost tracker, and model router for the AI ecosystem. Scan Claude Code skills, MCP servers, and LLM plugins   for vulnerabilities. Track and forecast LLM API spend across providers. Get intelligent model recommendations based on task   type, cost, and latency. CLI-first, open source.",
+          "stargazers_count": 1,
+          "updated_at": "2026-04-27T01:28:01Z",
+          "pushed_at": "2026-04-27T01:55:17Z",
+          "archived": false,
+          "license": "NOASSERTION"
+        },
+        {
+          "full_name": "liugy789/workflow-installer-skills",
+          "html_url": "https://github.com/liugy789/workflow-installer-skills",
+          "description": "Documentation-first workflow installer skills for helping users install open-source agent workflow projects into Claude Code, Codex, Antigravity, Gemini CLI, and related tools.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-26T15:42:51Z",
+          "pushed_at": "2026-04-26T15:42:51Z",
+          "archived": false,
+          "license": null
+        }
+      ],
+      "kept_candidates": [
+        {
+          "full_name": "KarmaloopAI/Jiva",
+          "html_url": "https://github.com/KarmaloopAI/Jiva",
+          "description": "Jiva is a CLI-first, open source autonomous AI agent and open alternative to Claude. Built in TypeScript with native support for Sarvam-105B and gpt-oss-120b, it autonomously plans and executes tasks from your terminal. Supports MCP servers, a built-in Skills system, and Jiva Personas - a plugin framework fully compatible with Claude Plugins.",
+          "stargazers_count": 35,
+          "updated_at": "2026-04-28T11:43:04Z",
+          "pushed_at": "2026-04-28T11:45:06Z",
+          "archived": false,
+          "license": "MIT",
+          "fit_rationale": "keyword-aligned and meets baseline signal/license filters"
+        },
+        {
+          "full_name": "skrun-dev/skrun",
+          "html_url": "https://github.com/skrun-dev/skrun",
+          "description": "Deploy any Agent Skill as an API via POST /run. The open-source multi-model alternative to Claude Managed Agents, Microsoft Foundry & Mistral/Koyeb — works with any LLM.",
+          "stargazers_count": 164,
+          "updated_at": "2026-04-27T19:58:26Z",
+          "pushed_at": "2026-04-27T20:06:12Z",
+          "archived": false,
+          "license": "MIT",
+          "fit_rationale": "keyword-aligned and meets baseline signal/license filters"
+        }
+      ],
+      "lane_status": "pass",
+      "degraded_causes": []
+    },
+    "game_development_skill": {
+      "query": "game development skill",
+      "provenance": "indexed snippet",
+      "raw_count": 8,
+      "kept_count": 0,
+      "raw_candidates": [
+        {
+          "full_name": "Ahmedbahaa-tech/XO",
+          "html_url": "https://github.com/Ahmedbahaa-tech/XO",
+          "description": "A simple XO (Tic Tac Toe) game built in Java where two players take turns placing X and O on a 3x3 grid. The game checks for wins in rows, columns, and diagonals, and ends with a win or draw. It demonstrates OOP concepts, clean logic structure, and basic game development skills in Java.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T13:33:46Z",
+          "pushed_at": "2026-04-28T13:32:00Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "UmarWaqas513/Breakout-Game",
+          "html_url": "https://github.com/UmarWaqas513/Breakout-Game",
+          "description": "🏓 Create your own Breakout game with advanced ball physics and level design for a fun coding experience and game development skills enhancement.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T13:20:04Z",
+          "pushed_at": "2026-04-28T13:17:55Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "PIPURU/Crossy-Road-Style-Game",
+          "html_url": "https://github.com/PIPURU/Crossy-Road-Style-Game",
+          "description": "🛣️ Navigate through an endless road-crossing challenge in this engaging Crossy Road-style game designed for fun and skill development.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T13:15:23Z",
+          "pushed_at": "2026-04-28T13:13:42Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "PHEONIXINFINITUS/MinesWeper",
+          "html_url": "https://github.com/PHEONIXINFINITUS/MinesWeper",
+          "description": "🌟 Play a classic Minesweeper game built in Java, designed for fun and skill development in problem-solving and strategy.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T12:59:49Z",
+          "pushed_at": "2026-04-28T12:59:44Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "chaudhrynihaal/cpp-arcade-shooter",
+          "html_url": "https://github.com/chaudhrynihaal/cpp-arcade-shooter",
+          "description": "Complete arcade-style shooter game demonstrating game development skills – graphics, input handling, save states, and scoring systems.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T13:04:16Z",
+          "pushed_at": "2026-04-28T11:38:06Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "paulitaquack204/gstack-game",
+          "html_url": "https://github.com/paulitaquack204/gstack-game",
+          "description": "Review, score, and improve game design and code with 28 Claude Code skills for the full game development workflow",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T11:07:06Z",
+          "pushed_at": "2026-04-28T11:07:01Z",
+          "archived": false,
+          "license": "MIT"
+        },
+        {
+          "full_name": "yksorez/defold-agent-config",
+          "html_url": "https://github.com/yksorez/defold-agent-config",
+          "description": "Provide AI agent configurations and skills to enhance game development workflows with the Defold engine through easy integration and dependency access.",
+          "stargazers_count": 1,
+          "updated_at": "2026-04-28T10:38:33Z",
+          "pushed_at": "2026-04-28T10:38:28Z",
+          "archived": false,
+          "license": null
+        },
+        {
+          "full_name": "Lukebonn/491-S26-TOO-MANY-COOKS",
+          "html_url": "https://github.com/Lukebonn/491-S26-TOO-MANY-COOKS",
+          "description": "The practical capstone version of GAME491 gives senior-level GAME students the opportunity to apply their learned skills in programming, art, game design, and other disciplines to a long-term, team based game development project that aims to emulate real world game development practices in a classroom setting.",
+          "stargazers_count": 0,
+          "updated_at": "2026-04-28T06:24:05Z",
+          "pushed_at": "2026-04-28T06:24:01Z",
+          "archived": false,
+          "license": null
+        }
+      ],
+      "kept_candidates": [],
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit",
+        "low-signal"
+      ]
+    }
+  }
+}
