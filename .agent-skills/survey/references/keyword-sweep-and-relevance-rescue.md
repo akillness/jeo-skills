@@ -114,6 +114,7 @@ Stage-2 escalation rule:
 - If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `transport`, `no-results` (include counts or concrete examples).
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 - When retrieval falls back due to degraded search transport, record `transport_status` (cause, fallback retrieval family, and error-log path) in run artifacts.
+- Persist web-search error envelope fields when available as `transport_status.web_search.http_status`, `transport_status.web_search.error_tag`, and `transport_status.web_search.request_ids[]`.
 - For unattended hourly runs, standardize the transport error log filename as `.survey/<slug>/web-search-error.log` (for example when `web_search` returns `INVALID_API_KEY`) and include this exact path in `transport_status`.
 - In new hourly artifacts, keep `transport_status.web_search.error_log` repository-relative (for example `.survey/<slug>/web-search-error.log`) and avoid host-absolute prefixes (for example `/Users/...`, `/home/...`) so outage evidence remains portable across runners.
 
@@ -145,5 +146,6 @@ Before final recommendations:
 - [ ] If fallback retrieval was used, `transport_status` (cause + fallback family + error-log path) recorded in artifacts
 - [ ] If search transport failed, `.survey/<slug>/web-search-error.log` exists and is referenced in `transport_status`
 - [ ] `transport_status.web_search.error_log` is repository-relative (`.survey/<slug>/...`) and does not include host-absolute prefixes
+- [ ] If provider returned structured error envelope, `transport_status.web_search.http_status`, `error_tag`, and `request_ids[]` are captured
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly
