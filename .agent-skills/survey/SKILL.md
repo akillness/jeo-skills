@@ -219,6 +219,7 @@ Execution rules:
 - Emit an explicit overlap section when dedupe triggers (repo + primary lane + overlap lanes) so reviewers can audit why lane counts changed.
 - Add an open-PR backlog preflight gate before new PR creation: if hourly-survey PR backlog (title/head prefixed by `chore: hourly survey` or `chore/hourly-survey-`) is `>= 10`, switch that run to merge carry-forward mode (merge one clean open hourly PR first) and skip opening an additional new PR while still producing survey/RTK/graphify/obsidian artifacts.
 - In merge carry-forward mode, if the selected PR is `DIRTY`/unmergeable, do not force-push or rebase in unattended cron; create a replacement branch from current `main`, re-apply only the smallest low-risk ratchet + fresh run artifacts, and merge the replacement PR instead.
+- In merge carry-forward mode, if the selected PR reports `mergeStateStatus: UNKNOWN`, do not treat it as a final state on the first sample; perform bounded mergeability re-checks (short polling), and if it remains unknown, skip to the next deterministic candidate while recording the defer reason in artifacts.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 

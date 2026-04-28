@@ -1,0 +1,19 @@
+{
+  "run_slug": "hourly-skill-candidates-20260428-225337",
+  "generated_at": "2026-04-28T13:55:30Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: non-zero exit, see graphify-query.err)",
+  "nodes": [
+    {"id":"run","label":"hourly-skill-candidates-20260428-225337","type":"run"},
+    {"id":"target","label":"survey-skill-hardening","type":"target"},
+    {"id":"rule","label":"unknown-mergeability-polling","type":"rule"}
+  ],
+  "links": [
+    {"source":"run","target":"target","relation":"proposes"},
+    {"source":"target","target":"rule","relation":"adds"}
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260428-225337/evidence.json",
+    ".survey/hourly-skill-candidates-20260428-225337/rtk-summary.md",
+    ".survey/hourly-skill-candidates-20260428-225337/graphify-query.err"
+  ]
+}
