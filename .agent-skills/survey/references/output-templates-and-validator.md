@@ -144,3 +144,8 @@ python3 .agent-skills/survey/scripts/validate_survey_artifacts.py .survey/<slug>
 - The validator checks structure and basic provenance only.
 - It does **not** score whether the research is strategically good.
 - Keep strategic judgment in the survey lanes and the frozen evaluation harness, not in the script.
+
+## Run-slug guard (hourly automation)
+- Always persist the current run slug once (for example `.survey/LATEST_SLUG`) and pass it explicitly to every generator script via environment variable or argv.
+- Do not discover slug by listing `.survey/` directories; mixed historical folders can silently target the wrong run and contaminate artifacts.
+- After generation, verify `git status --short` only touches `.survey/<current-slug>/` paths before proceeding to PR.
