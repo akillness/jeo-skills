@@ -211,6 +211,16 @@
         "Reapplies license/freshness/signal/fit gates to stage-2 results before recommending keeps",
         "Reports lane_status, degraded_causes, and provenance labels after game-lane escalation"
       ]
+    },
+    {
+      "id": 22,
+      "prompt": "run the hourly five-lane survey where cli open source lane still has raw_count=0 after all documented recovery queries",
+      "expected_output": "The survey marks the lane as degraded and includes `no-results` explicitly in degraded_causes (rather than leaving causes empty), while preserving provenance and lane metrics.",
+      "assertions": [
+        "Reports lane_status as `degraded` for the zero-result lane",
+        "Includes `no-results` explicitly in degraded_causes when raw_count remains 0 after recovery attempts",
+        "Preserves provenance and lane-health metrics for the lane despite zero keeps"
+      ]
     }
   ]
 }

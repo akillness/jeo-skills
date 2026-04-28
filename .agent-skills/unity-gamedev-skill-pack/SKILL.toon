@@ -1,0 +1,25 @@
+N:unity-gamedev-skill-pack
+D:Evaluate and adopt Unity game-development skill packs from external repositories into a safe reusable local package with provenance risk controls and rollback.
+G:unity game-development skill-curation claude-code repository-maintenance
+U[5]:
+  Curate external Unity skill packs discovered via survey runs
+  Reuse only transferable workflow patterns and guardrails
+  Enforce license recency and deterministic-instruction checks
+  Package updates as SKILL.md SKILL.toon and evals/evals.json
+  Require PR-visible risk and rollback notes before merge
+S[6]{n,action,details}:
+  1,Capture provenance,Record source URLs and evidence labels before adaptation
+  2,Extract patterns,Keep reusable workflow units and drop unverifiable claims
+  3,Run safety gates,Check license recency determinism and version assumptions
+  4,Package locally,Write SKILL.md SKILL.toon and evals for the curated workflow
+  5,Document risk and rollback,Include imported/excluded scope plus revert plan in PR
+  6,Validate,Run JSON check diff hygiene and available skill validators before merge
+R[5]:
+  Do not blindly copy third-party prompts into internal skills
+  Do not import workflows without license and recency checks
+  Keep destructive or environment-specific commands behind explicit warnings
+  Keep provenance labels explicit for every imported claim
+  Do not merge when validation gates fail
+E[2]{desc,in,out}:
+  "Survey-derived import","we found a Unity skill-pack repo in hourly survey candidates and need a safe internal adaptation","Produces provenance-first curation packet with imported/excluded patterns risk notes and validation status"
+  "Risky direct-copy request","just copy this external Unity prompt pack into our repo","Refuses blind copy and reroutes to gated curation steps with license/recency checks"

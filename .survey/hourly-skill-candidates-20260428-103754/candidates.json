@@ -1,0 +1,62 @@
+{
+  "run_slug": "hourly-skill-candidates-20260428-103754",
+  "generated_at": "2026-04-28T01:39:13.700845+00:00",
+  "candidates": [
+    {
+      "lane": "agentic-ai-skill",
+      "query": "agentic ai skill",
+      "repo": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+      "stars": 14,
+      "forks": 2,
+      "license": "apache-2.0",
+      "pushed_at": "2026-01-29T09:33:47Z",
+      "updated_at": "2026-04-07T21:13:35Z",
+      "fit": "high",
+      "score": 14.4
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "query": "agentic ai skill",
+      "repo": "VoDaiLocz/Enhance-Prompt",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+      "stars": 10,
+      "forks": 1,
+      "license": "mit",
+      "pushed_at": "2026-03-05T13:50:53Z",
+      "updated_at": "2026-04-14T14:36:09Z",
+      "fit": "high",
+      "score": 10.2
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "query": "agentic ai skill",
+      "repo": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "description": "Agentic AI skills for knowledge graph management",
+      "stars": 7,
+      "forks": 1,
+      "license": "mit",
+      "pushed_at": "2026-04-06T01:48:47Z",
+      "updated_at": "2026-04-21T19:12:04Z",
+      "fit": "high",
+      "score": 7.2
+    },
+    {
+      "lane": "game-development-skill",
+      "query": "game development skill",
+      "repo": "tjboudreaux/cc-plugin-unity-gamedev",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+      "stars": 3,
+      "forks": 1,
+      "license": "mit",
+      "pushed_at": "2026-02-06T04:09:12Z",
+      "updated_at": "2026-04-14T18:39:35Z",
+      "fit": "high",
+      "score": 3.2
+    }
+  ]
+}
