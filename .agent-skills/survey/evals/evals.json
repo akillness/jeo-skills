@@ -240,6 +240,7 @@
       "assertions": [
         "Records transport fallback cause and command family when web_search is degraded",
         "Uses repository-relative `transport_status.web_search.error_log` path (no `/Users/...` or `/home/...` prefix)",
+        "Captures provider error envelope fields when available (e.g., `error_tag`, `request_ids[]`)",
         "Keeps provenance labels valid while reporting degraded transport"
       ]
     }
