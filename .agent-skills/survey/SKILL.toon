@@ -10,6 +10,7 @@ U[12]:
   Keep documented stage-2 recovery templates for every mandatory lane (including game development) to avoid ad-hoc query invention in unattended runs
   Apply recommendation-grade freshness and signal-floor gating while preserving broad discovery evidence
   Treat generic personal catch-all repos (especially */skills) as low-fit by default unless workflow docs + traction are explicit
+  Treat explicit negation phrases in CLI lane (no cli/without cli/not a cli/non-cli) as low-fit by default unless exception rationale is documented
   Emit lane-level status vocabulary (pass|degraded) and degraded-cause taxonomy for sparse/noisy lanes
   Include compact lane-health metrics (kept_count raw_count median_stars_raw zero_star_raw) for reviewer trend tracking
   Detect cross-lane recommendation concentration with recommended_lane_count and single_lane_concentration flags
@@ -34,6 +35,7 @@ R[14]:
   Keep claims source-backed and label downgraded evidence clearly using validator-supported labels (map gh-search listings to indexed snippet and repo/API detail fetches to direct page retrieval); for gh search repos JSON output prefer fullName or owner+name over unsupported nameWithOwner, and if gh search returns empty-success payloads ([] exit 0) on known-populated probes rerun via gh api search/repositories fallback while preserving stderr evidence
   Drop assessment/homework-only and unknown-license noise unless exception rationale is explicit; when license is null on first pass, retry once via gh api repos/<owner>/<repo> before classifying unknown
   Treat generic personal catch-all repos (especially */skills) as low-fit unless workflow docs + traction are explicit
+  Treat explicit negation phrases in CLI lane (no cli/without cli/not a cli/non-cli) as low-fit unless exception rationale is explicit
   Apply a recommendation-grade freshness floor (drop stale pushed_at over 24 months unless exception rationale + risk note)
   Apply a recommendation-grade signal floor (require traction signal such as stars>=3 or explicit adoption rationale)
   Preserve the same artifact filenames and headings across platforms

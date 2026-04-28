@@ -55,6 +55,7 @@ Drop or risk-mark signals:
 - Archived/stale without strong reason
 - Missing basic metadata or unknown license without exception note
 - Spam-like or boilerplate descriptions
+- CLI negation patterns (`no cli`, `without cli`, `not a cli`, `non-cli`) unless explicit exception rationale is documented
 
 ## Rescue path for sparse/noisy lanes
 

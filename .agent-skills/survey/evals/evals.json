@@ -222,6 +222,16 @@
         "Includes `no-results` explicitly in degraded_causes when raw_count remains 0 after recovery attempts",
         "Preserves provenance and lane-health metrics for the lane despite zero keeps"
       ]
+    },
+    {
+      "id": 23,
+      "prompt": "run the hourly five-lane survey where a CLI candidate description says 'No CLI required' but matches other lane keywords",
+      "expected_output": "The survey keeps the hit in raw evidence but marks it low-fit by default due to explicit negation phrases (`no cli`, `without cli`, `not a cli`, `non-cli`) unless an exception rationale is documented.",
+      "assertions": [
+        "Treats explicit CLI-negation phrases as low-fit signals by default",
+        "Preserves the candidate in raw evidence/provenance rather than silently dropping it",
+        "Requires an explicit exception rationale before recommendation-grade promotion"
+      ]
     }
   ]
 }

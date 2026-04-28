@@ -1,0 +1,1 @@
+fallback-direct-write (obsidian-cli create failed in headless mode)
