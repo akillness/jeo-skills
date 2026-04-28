@@ -1,0 +1,82 @@
+{
+  "run_slug": "hourly-skill-candidates-20260429-000110",
+  "generated_at": "2026-04-28T15:03:36.371815Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: missing links key in graph.json)",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260429-000110",
+      "type": "run"
+    },
+    {
+      "id": "agentic_ai_skill",
+      "type": "lane",
+      "status": "degraded",
+      "raw_count": 0,
+      "kept_count": 0
+    },
+    {
+      "id": "web_frontend_skill",
+      "type": "lane",
+      "status": "degraded",
+      "raw_count": 0,
+      "kept_count": 0
+    },
+    {
+      "id": "web_backend_skill",
+      "type": "lane",
+      "status": "degraded",
+      "raw_count": 0,
+      "kept_count": 0
+    },
+    {
+      "id": "cli_open_source_skill",
+      "type": "lane",
+      "status": "degraded",
+      "raw_count": 0,
+      "kept_count": 0
+    },
+    {
+      "id": "game_development_skill",
+      "type": "lane",
+      "status": "degraded",
+      "raw_count": 0,
+      "kept_count": 0
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260429-000110",
+      "target": "agentic_ai_skill",
+      "type": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260429-000110",
+      "target": "web_frontend_skill",
+      "type": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260429-000110",
+      "target": "web_backend_skill",
+      "type": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260429-000110",
+      "target": "cli_open_source_skill",
+      "type": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260429-000110",
+      "target": "game_development_skill",
+      "type": "has_lane",
+      "weight": 1
+    }
+  ],
+  "source_files": [
+    "/Users/jang_jennie/.hermes/hermes-agent/oh-my-skills/.survey/hourly-skill-candidates-20260429-000110/evidence.json",
+    "/Users/jang_jennie/.hermes/hermes-agent/oh-my-skills/.survey/hourly-skill-candidates-20260429-000110/rtk-summary.md"
+  ]
+}

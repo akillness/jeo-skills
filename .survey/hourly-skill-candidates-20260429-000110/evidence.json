@@ -1,0 +1,71 @@
+{
+  "run_slug": "hourly-skill-candidates-20260429-000110",
+  "generated_at": "2026-04-28T15:02:46.256400Z",
+  "lanes": {
+    "agentic_ai_skill": {
+      "query": "\"agentic ai skill\"",
+      "raw_count": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [],
+      "raw": [],
+      "kept": [],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    "web_frontend_skill": {
+      "query": "\"web frontend skill\"",
+      "raw_count": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [],
+      "raw": [],
+      "kept": [],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    "web_backend_skill": {
+      "query": "\"web backend skill\"",
+      "raw_count": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [],
+      "raw": [],
+      "kept": [],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    "cli_open_source_skill": {
+      "query": "\"cli open source skill\"",
+      "raw_count": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [],
+      "raw": [],
+      "kept": [],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    "game_development_skill": {
+      "query": "\"game development skill\"",
+      "raw_count": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [],
+      "raw": [],
+      "kept": [],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    }
+  }
+}
