@@ -1,0 +1,25 @@
+obsidian-cli - CLI to open, search, move, create, delete and update notes
+
+Usage:
+  obsidian-cli [command]
+
+Available Commands:
+  completion     Generate the autocompletion script for the specified shell
+  create         Creates note in vault
+  daily          Creates or opens daily note in vault
+  delete         Delete note in vault
+  frontmatter    View or modify note frontmatter
+  help           Help about any command
+  move           Move or rename note in vault and updated corresponding links
+  open           Opens note in vault by note name
+  print          Print contents of note
+  print-default  prints default vault name and path
+  search         Fuzzy searches and opens note in vault
+  search-content Search node content for search term
+  set-default    Sets default vault
+
+Flags:
+  -h, --help      help for obsidian-cli
+  -v, --version   version for obsidian-cli
+
+Use "obsidian-cli [command] --help" for more information about a command.

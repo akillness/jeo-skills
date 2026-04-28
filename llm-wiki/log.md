@@ -1,5 +1,6 @@
 # LLM Wiki Log
 
+- 2026-04-29 02:17:00Z hourly run: added transport-http-status envelope ratchet note and linked survey/RTK/graphify/obsidian artifacts (capture `transport_status.web_search.http_status` with `error_tag` and `request_ids[]`).
 - 2026-04-28 15:05:00Z hourly run: added all-lanes-zero-results ratchet note and linked survey/RTK/graphify/obsidian artifacts (run-level sweep_health degradation marker).
 - 2026-04-28 13:56:30Z hourly run: added UNKNOWN-mergeability polling ratchet note and linked survey/RTK/graphify artifacts (carry-forward defer-to-next candidate when UNKNOWN persists).
 - 2026-04-28 09:31:48Z hourly run: added transport-envelope ratchet note and linked survey/RTK/graphify artifacts (capture error_tag + request_ids[] under transport_status.web_search).

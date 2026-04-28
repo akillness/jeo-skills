@@ -1,0 +1,65 @@
+{
+  "run_slug": "hourly-skill-candidates-20260429-0213",
+  "generated_at": "2026-04-28T17:16:26.166977Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: missing links key in graph.json)",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260429-0213",
+      "type": "run",
+      "label": "hourly-skill-candidates-20260429-0213"
+    },
+    {
+      "id": "lane:invalid-api-key",
+      "type": "lane",
+      "label": "invalid-api-key",
+      "raw_count": 2
+    },
+    {
+      "id": "cause:transport-auth",
+      "type": "cause",
+      "label": "transport-auth"
+    },
+    {
+      "id": "lane:obsidian-cli",
+      "type": "lane",
+      "label": "obsidian-cli",
+      "raw_count": 1
+    },
+    {
+      "id": "lane:graph-links",
+      "type": "lane",
+      "label": "graph-links",
+      "raw_count": 10
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260429-0213",
+      "target": "lane:invalid-api-key",
+      "type": "observed",
+      "weight": 2
+    },
+    {
+      "source": "lane:invalid-api-key",
+      "target": "cause:transport-auth",
+      "type": "degraded_cause",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260429-0213",
+      "target": "lane:obsidian-cli",
+      "type": "observed",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260429-0213",
+      "target": "lane:graph-links",
+      "type": "observed",
+      "weight": 10
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260429-0213/evidence.json",
+    ".survey/hourly-skill-candidates-20260429-0213/rtk-summary.md"
+  ]
+}
