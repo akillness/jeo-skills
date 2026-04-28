@@ -141,7 +141,7 @@ Before final recommendations:
 - [ ] Relevance gate applied to kept candidates
 - [ ] Metadata minimum recorded for each kept candidate
 - [ ] Lane-level `lane_status` (`pass|degraded`) included in markdown summary
-- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation|transport`) reported with examples/counts
+- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation|transport|no-results`) reported with examples/counts
 - [ ] If fallback retrieval was used, `transport_status` (cause + fallback family + error-log path) recorded in artifacts
 - [ ] If search transport failed, `.survey/<slug>/web-search-error.log` exists and is referenced in `transport_status`
 - [ ] `transport_status.web_search.error_log` is repository-relative (`.survey/<slug>/...`) and does not include host-absolute prefixes
