@@ -211,6 +211,16 @@
         "Reapplies license/freshness/signal/fit gates to stage-2 results before recommending keeps",
         "Reports lane_status, degraded_causes, and provenance labels after game-lane escalation"
       ]
+    },
+    {
+      "id": 22,
+      "prompt": "run the hourly five-lane survey where `gh search repos --json license` returns license objects with `key/name` but no `spdx_id`; keep lane status accurate",
+      "expected_output": "The survey normalizes GitHub search license payload shapes (`license.key|license.name|spdxId`) before classifying unknown-license and only then performs one enrichment fallback (`gh repo view`/`gh api`) if still unknown.",
+      "assertions": [
+        "Treats `license.key` or `license.name` from gh search payload as valid first-pass license evidence",
+        "Runs enrichment fallback only when normalized license fields are still unknown",
+        "Avoids false `license` degraded causes that come only from schema-shape mismatch"
+      ]
     }
   ]
 }
