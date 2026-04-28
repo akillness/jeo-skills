@@ -232,6 +232,16 @@
         "Preserves the candidate in raw evidence/provenance rather than silently dropping it",
         "Requires an explicit exception rationale before recommendation-grade promotion"
       ]
+    },
+    {
+      "id": 24,
+      "prompt": "run the hourly survey with web_search degraded and include transport_status in evidence for portability",
+      "expected_output": "The survey records transport fallback metadata and keeps `transport_status.web_search.error_log` repository-relative (for example `.survey/<slug>/web-search-error.log`) instead of host-absolute paths, preserving cross-run portability.",
+      "assertions": [
+        "Records transport fallback cause and command family when web_search is degraded",
+        "Uses repository-relative `transport_status.web_search.error_log` path (no `/Users/...` or `/home/...` prefix)",
+        "Keeps provenance labels valid while reporting degraded transport"
+      ]
     }
   ]
 }

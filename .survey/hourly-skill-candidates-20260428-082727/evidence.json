@@ -1,0 +1,109 @@
+{
+  "run_slug": "hourly-skill-candidates-20260428-082727",
+  "generated_at": "2026-04-28T08:28:00.294617Z",
+  "transport_status": {
+    "web_search": {
+      "status": "degraded",
+      "cause": "INVALID_API_KEY (401)",
+      "fallback": "gh api search/repositories",
+      "error_log": ".survey/hourly-skill-candidates-20260428-082727/web-search-error.log"
+    }
+  },
+  "candidates": [
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-082727/raw/agent-skills.json",
+      "name": "genuspipilelifespan610/skills-repository",
+      "url": "https://github.com/genuspipilelifespan610/skills-repository",
+      "description": "Manage, import, and distribute Agent skills from multiple sources with security checks and template reuse in a unified desktop app.",
+      "stars": 0,
+      "updated_at": "2026-04-28T07:02:52Z",
+      "license": null,
+      "provenance": "indexed snippet"
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-082727/raw/agent-skills.json",
+      "name": "Trex740/hatch3r",
+      "url": "https://github.com/Trex740/hatch3r",
+      "description": "Install an agentic coding setup that adds multiple AI agents, skills, and rules to enhance automation across GitHub, Azure DevOps, or GitLab repositories.",
+      "stars": 2,
+      "updated_at": "2026-04-28T06:49:28Z",
+      "license": null,
+      "provenance": "indexed snippet"
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-082727/raw/agent-skills.json",
+      "name": "stefaniuk/awesome-promptfiles",
+      "url": "https://github.com/stefaniuk/awesome-promptfiles",
+      "description": "🤖 A curated, specification-first library of copy-ready prompts, instruction packs, skills, and Copilot agents designed to keep AI helpers aligned with the spec-kit operating model - delivering consistent, deterministic automation across repositories through shared guardrails, governance gates, and repeatable quality checks.",
+      "stars": 3,
+      "updated_at": "2026-04-27T14:54:22Z",
+      "license": "MIT",
+      "provenance": "indexed snippet"
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-082727/raw/graphify.json",
+      "name": "michaelwinczuk/knowledge-graph-reasoning",
+      "url": "https://github.com/michaelwinczuk/knowledge-graph-reasoning",
+      "description": "Agent Skill for Claude: Build, query, validate, and reason over knowledge graphs. Adversarial fact validation, deterministic reasoning, JSON-LD schema.",
+      "stars": 1,
+      "updated_at": "2026-04-10T10:30:50Z",
+      "license": "Apache-2.0",
+      "provenance": "indexed snippet"
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-082727/raw/graphify.json",
+      "name": "AjaySreekumar47/scientific-doc-ai-kg",
+      "url": "https://github.com/AjaySreekumar47/scientific-doc-ai-kg",
+      "description": "An end-to-end document intelligence pipeline converting scientific PDFs into structured Knowledge Graphs. Features layout-aware parsing (text, tables, figures) via PyMuPDF/OCR, schema-validated JSON, and RDF transformation for GraphDB. Includes SPARQL querying, provenance tracing, and a FastAPI interface. Containerized and CI/CD ready.",
+      "stars": 0,
+      "updated_at": "2026-03-27T02:45:27Z",
+      "license": null,
+      "provenance": "indexed snippet"
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-082727/raw/graphify.json",
+      "name": "abskyblu-create/Semantic-Knowledge-Graph-Pipeline-using-RDFLib",
+      "url": "https://github.com/abskyblu-create/Semantic-Knowledge-Graph-Pipeline-using-RDFLib",
+      "description": "JSON → RDF → Schema → Graph → Export",
+      "stars": 0,
+      "updated_at": "2026-03-20T00:16:51Z",
+      "license": null,
+      "provenance": "indexed snippet"
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-082727/raw/llm-wiki.json",
+      "name": "Pawpaw-Technology/llm-wiki",
+      "url": "https://github.com/Pawpaw-Technology/llm-wiki",
+      "description": "LLM Wiki — team knowledge base toolkit. CLI + MCP interface for LLM-maintained markdown wikis.",
+      "stars": 0,
+      "updated_at": "2026-04-28T06:52:34Z",
+      "license": null,
+      "provenance": "indexed snippet"
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-082727/raw/llm-wiki.json",
+      "name": "darthblanc/anansi",
+      "url": "https://github.com/darthblanc/anansi",
+      "description": "A quiz and evaluator agent built on top of Karpathy's LLM wiki pattern. Generates contextual quizzes from your markdown knowledge base and evaluates your answers using Claude AI.     ",
+      "stars": 0,
+      "updated_at": "2026-04-28T04:46:13Z",
+      "license": null,
+      "provenance": "indexed snippet"
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-082727/raw/llm-wiki.json",
+      "name": "Pratiyush/llm-wiki",
+      "url": "https://github.com/Pratiyush/llm-wiki",
+      "description": "LLM-powered knowledge base from your Claude Code, Codex CLI, Copilot, Cursor & Gemini sessions. Karpathy's LLM Wiki pattern — implemented and shipped.",
+      "stars": 180,
+      "updated_at": "2026-04-28T06:12:28Z",
+      "license": "MIT",
+      "provenance": "indexed snippet"
+    }
+  ],
+  "recommended_change": {
+    "type": "improvement",
+    "target": ".agent-skills/survey/evals/evals.json",
+    "summary": "Add eval coverage for repository-relative transport_status.web_search.error_log path in degraded web_search runs."
+  }
+}
