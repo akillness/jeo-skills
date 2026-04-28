@@ -1,0 +1,17 @@
+Error: unknown flag: --file
+Usage:
+  obsidian-cli create [flags]
+
+Aliases:
+  create, c
+
+Flags:
+  -a, --append           append to note
+  -c, --content string   text to add to note
+  -e, --editor           open in editor instead of Obsidian (requires --open flag)
+  -h, --help             help for create
+      --open             open created note
+  -o, --overwrite        overwrite note
+  -v, --vault string     vault name
+
+Whoops. There was an error while executing your CLI 'unknown flag: --file'

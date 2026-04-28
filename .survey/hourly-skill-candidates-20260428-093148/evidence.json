@@ -1,0 +1,135 @@
+{
+  "run_slug": "hourly-skill-candidates-20260428-093148",
+  "generated_at": "2026-04-28T09:33:08.139714Z",
+  "transport_status": {
+    "web_search": {
+      "status": "error",
+      "cause": "INVALID_API_KEY",
+      "error_tag": "INVALID_API_KEY",
+      "request_ids": [
+        "962c849412ee4bbd5315b9af78433e73",
+        "1d328139e156f6af9636cad4be86a793",
+        "c62762c00f73174432d577f7db91a5cc",
+        "f6fbb53e7773fb8ee045d4c3b5a73245",
+        "851d7313b25ad0d671278e8ca58274cd"
+      ],
+      "error_log": ".survey/hourly-skill-candidates-20260428-093148/web-search-error.log"
+    },
+    "fallback": "gh api search/repositories"
+  },
+  "queries": [
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-093148/raw/obsidian-cli.json",
+      "total_count": 263,
+      "top_links": [
+        {
+          "full_name": "CorrectRoadH/obsidian-task-center",
+          "html_url": "https://github.com/CorrectRoadH/obsidian-task-center",
+          "description": "Task board + CLI for energy-based task management on top of Obsidian Tasks syntax",
+          "stargazers_count": 0
+        },
+        {
+          "full_name": "rjzxui/obsidian-vault-cli",
+          "html_url": "https://github.com/rjzxui/obsidian-vault-cli",
+          "description": "Manage and automate Obsidian vaults from the command line with 100+ commands and direct file access for efficient workflows.",
+          "stargazers_count": 3
+        },
+        {
+          "full_name": "Wisdom-Mbuk/ScribeAI",
+          "html_url": "https://github.com/Wisdom-Mbuk/ScribeAI",
+          "description": "Generate and manage reports, CVs, and Obsidian notes using an AI-powered CLI tool with templates, versioning, and PDF export.",
+          "stargazers_count": 0
+        },
+        {
+          "full_name": "mnaoumov/obsidian-dev-utils",
+          "html_url": "https://github.com/mnaoumov/obsidian-dev-utils",
+          "description": "Collection of essential functions and CLI tools designed to streamline your Obsidian plugin development process",
+          "stargazers_count": 101
+        },
+        {
+          "full_name": "KK1182112KK/codex-noteforge",
+          "html_url": "https://github.com/KK1182112KK/codex-noteforge",
+          "description": "Study-first Obsidian desktop plugin backed by the local Codex login and direct Codex CLI threads.",
+          "stargazers_count": 2
+        }
+      ]
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-093148/raw/llm-wiki.json",
+      "total_count": 81,
+      "top_links": [
+        {
+          "full_name": "SamurAIGPT/llm-wiki-agent",
+          "html_url": "https://github.com/SamurAIGPT/llm-wiki-agent",
+          "description": "A personal knowledge base that builds and maintains itself. Drop in sources — Claude (or Codex/Gemini) reads them, extracts knowledge, and maintains a persistent interlinked wiki. Works with Claude Code, Codex, OpenCode, Gemini CLI. No API key needed.",
+          "stargazers_count": 2345
+        },
+        {
+          "full_name": "Astro-Han/karpathy-llm-wiki",
+          "html_url": "https://github.com/Astro-Han/karpathy-llm-wiki",
+          "description": "Agent Skills-compatible LLM wiki for Claude Code, Cursor, and Codex. Build a Karpathy-style knowledge base from raw sources, citations, and linting.",
+          "stargazers_count": 648
+        },
+        {
+          "full_name": "swarmclawai/swarmvault",
+          "html_url": "https://github.com/swarmclawai/swarmvault",
+          "description": "Inspired by Karpathy's LLM Wiki. Local-first RAG knowledge base compiler with MCP server (Claude Code, Codex, OpenCode, OpenClaw). Turn raw research into a persistent markdown wiki, knowledge graph, and hybrid search that compound over time.",
+          "stargazers_count": 272
+        },
+        {
+          "full_name": "ussumant/llm-wiki-compiler",
+          "html_url": "https://github.com/ussumant/llm-wiki-compiler",
+          "description": "Claude Code plugin that compiles markdown knowledge files into a topic-based wiki. Implements Karpathy's LLM Knowledge Base pattern.",
+          "stargazers_count": 234
+        },
+        {
+          "full_name": "NicholasSpisak/second-brain",
+          "html_url": "https://github.com/NicholasSpisak/second-brain",
+          "description": "LLM-maintained personal knowledge base for Obsidian. Based on Andrej Karpathy's LLM Wiki pattern.",
+          "stargazers_count": 227
+        }
+      ]
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-093148/raw/graphify.json",
+      "total_count": 8,
+      "top_links": [
+        {
+          "full_name": "safishamsi/graphify",
+          "html_url": "https://github.com/safishamsi/graphify",
+          "description": "AI coding assistant skill (Claude Code, Codex, OpenCode, Cursor, Gemini CLI, GitHub Copilot CLI, OpenClaw, Factory Droid, Trae, Google Antigravity). Turn any folder of code, docs, papers, images, or videos into a queryable knowledge graph",
+          "stargazers_count": 36868
+        },
+        {
+          "full_name": "parisgroup-ai/graphify",
+          "html_url": "https://github.com/parisgroup-ai/graphify",
+          "description": "Rust CLI for architectural analysis of codebases — extracts dependencies via tree-sitter AST, builds knowledge graphs, identifies hotspots and circular dependencies",
+          "stargazers_count": 1
+        },
+        {
+          "full_name": "costin10-Ten/V2-novel-graphify",
+          "html_url": "https://github.com/costin10-Ten/V2-novel-graphify",
+          "description": "AI coding assistant skill (Claude Code, Codex, OpenCode, Cursor, Gemini CLI, GitHub Copilot CLI, OpenClaw, Factory Droid, Trae, Google Antigravity). Turn any folder of code, docs, papers, images, or videos into a queryable knowledge graph",
+          "stargazers_count": 0
+        },
+        {
+          "full_name": "WangXimo-95/Graphy_Wiki",
+          "html_url": "https://github.com/WangXimo-95/Graphy_Wiki",
+          "description": " Thinking Graphy_Wiki is a unified CLI pipeline that transforms raw information into a living, interlinked personal knowledge garden. It bridges two powerful engines—llm-wiki-compiler for concept distillation and graphify for structural discovery—into a single, cohesive workflow.",
+          "stargazers_count": 0
+        },
+        {
+          "full_name": "nhtera/graphify-rs",
+          "html_url": "https://github.com/nhtera/graphify-rs",
+          "description": "Rust CLI that builds knowledge graphs from code, documents, papers, and images",
+          "stargazers_count": 0
+        }
+      ]
+    },
+    {
+      "source_file": ".survey/hourly-skill-candidates-20260428-093148/raw/agent-skills.json",
+      "total_count": 0,
+      "top_links": []
+    }
+  ]
+}
