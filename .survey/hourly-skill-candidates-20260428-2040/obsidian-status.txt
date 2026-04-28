@@ -1,0 +1,3 @@
+status: fallback-direct-write
+reason: Failed to execute Obsidian URI
+note_path: /Users/jang_jennie/work/oh-my-skills-cron/obsidian-vault/hourly-survey-20260428-2040.md
