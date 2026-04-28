@@ -1,0 +1,6 @@
+lane	raw	kept	status
+agentic_ai_skill	0	0	degraded
+web_frontend_skill	0	0	degraded
+web_backend_skill	0	0	degraded
+cli_open_source_skill	0	0	degraded
+game_development_skill	0	0	degraded
