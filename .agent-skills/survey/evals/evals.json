@@ -253,6 +253,16 @@
         "Performs short bounded re-checks before deciding to defer",
         "Records defer reason and fallback candidate selection in artifacts"
       ]
+    },
+    {
+      "id": 26,
+      "prompt": "run the hourly five-lane survey where backend and cli lanes needed recovery queries before final lane status",
+      "expected_output": "The survey persists per-lane recovery_attempts (stage, query, raw_count) in evidence.json and mirrors compact recovery notes in markdown so degraded or rescued lanes are reviewer-auditable.",
+      "assertions": [
+        "Stores lane-level recovery_attempts with stage/query/raw_count in structured evidence",
+        "Includes a compact markdown recovery note per affected lane (not JSON-only)",
+        "Keeps final lane_status/degraded_causes consistent with the recorded recovery attempts"
+      ]
     }
   ]
 }
