@@ -1,0 +1,70 @@
+{
+  "agentic ai skill": [
+    {
+      "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+      "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "isArchived": false,
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "pushedAt": "2026-01-29T09:33:47Z",
+      "stargazersCount": 14,
+      "updatedAt": "2026-04-07T21:13:35Z",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "fit_rationale": "agentic ai skill 정합 + license/freshness/signal gate 통과"
+    },
+    {
+      "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+      "fullName": "VoDaiLocz/Enhance-Prompt",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-03-05T13:50:53Z",
+      "stargazersCount": 10,
+      "updatedAt": "2026-04-14T14:36:09Z",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "fit_rationale": "agentic ai skill 정합 + license/freshness/signal gate 통과"
+    }
+  ],
+  "web frontend skill": [],
+  "web backend skill": [],
+  "cli open source skill": [
+    {
+      "description": " macOS command line tool for developers – The ultimate tool to manage your Mac. It provides a huge set of command line commands that automatize the usage of your Mac.",
+      "fullName": "guarinogabriel/Mac-CLI",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-02-28T02:21:48Z",
+      "stargazersCount": 9062,
+      "updatedAt": "2026-04-24T17:20:39Z",
+      "url": "https://github.com/guarinogabriel/Mac-CLI",
+      "fit_rationale": "cli open source skill 정합 + license/freshness/signal gate 통과"
+    }
+  ],
+  "game development skill": [
+    {
+      "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+      "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-02-06T04:09:12Z",
+      "stargazersCount": 3,
+      "updatedAt": "2026-04-14T18:39:35Z",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "fit_rationale": "game development skill 정합 + license/freshness/signal gate 통과"
+    }
+  ]
+}

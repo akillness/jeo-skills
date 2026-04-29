@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where backend remains raw_count=0 even after documented stage-2 recovery; keep reviewer output deterministic",
-      "expected_output": "The survey explicitly marks `degraded_causes` with `no-results` for the lane instead of leaving an empty cause map, while preserving lane metrics and provenance.",
+      "prompt": "run the hourly five-lane survey where one lane remains raw_count=0 even after documented stage-2 recovery",
+      "expected_output": "The survey still reports lane_status and explicitly includes `no-results` in degraded_causes so sparse-lane failure mode is machine-readable for cron triage.",
       "assertions": [
-        "When raw_count stays zero after recovery, includes `no-results` in degraded_causes",
-        "Does not hide the lane; keeps lane_status and lane metrics in output",
-        "Preserves provenance labels and recovery-attempt context in the summary"
+        "Includes `no-results` in degraded_causes when a lane stays raw_count==0 after recovery",
+        "Does not leave degraded_causes empty for zero-result lanes",
+        "Preserves provenance and recovery-query evidence while reporting the final degraded lane"
       ]
     }
   ]

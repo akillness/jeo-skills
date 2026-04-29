@@ -1,31 +1,24 @@
-# 2026-04-26 hourly survey no-results degraded-cause ratchet
+# Hourly survey `no-results` degraded-cause ratchet
 
-## Query
-What low-risk hardening should be merged from this hourly five-lane survey run to make degraded lane reporting deterministic?
+## Context
+이번 시간대 mandatory 5-lane survey에서 lane별 `lane_status/degraded_causes`를 집계했고, reviewer가 `raw_count == 0` 상태를 명확히 구분할 수 있도록 taxonomy 보강 필요성이 확인되었다.
 
-## Inputs
-- `.survey/hourly-skill-candidates-20260426-094925/evidence.json`
-- `.survey/hourly-skill-candidates-20260426-094925/rtk-summary.md`
-- `.survey/hourly-skill-candidates-20260426-094925/graphify-refined.json`
-- Existing guidance: `.agent-skills/survey/SKILL.md`, `.agent-skills/survey/references/keyword-sweep-and-relevance-rescue.md`
+## Evidence
+- Survey slug: `hourly-skill-candidates-20260426-013332`
+- Evidence JSON: `.survey/hourly-skill-candidates-20260426-013332/evidence.json`
+- RTK summary: `.survey/hourly-skill-candidates-20260426-013332/rtk-summary.md`
+- Graphify fallback refined: `.survey/hourly-skill-candidates-20260426-013332/graphify-refined.json`
+- Graphify query error captured: `error: could not load graph: 'links'`
 
-## Distilled findings
-- agentic ai skill: status=pass, raw=20, kept=2, causes=license:12, low-fit:5, low-signal:17
-- web frontend skill: status=degraded, raw=4, kept=0, causes=license:3, low-signal:3, stale:1
-- web backend skill: status=degraded, raw=0, kept=0, causes=no-results:1
-- cli open source skill: status=degraded, raw=1, kept=1, causes=none
-- game development skill: status=pass, raw=20, kept=1, causes=archived:1, license:12, low-signal:13, stale:9
-- `web backend skill` lane ended with `raw_count=0`, so degraded reporting needs an explicit `no-results` cause to avoid ambiguous failures.
+## Insight
+- `degraded_causes` taxonomy에 `no-results`를 포함하면, sparse/noisy lane 중에서도 **검색 결과 부재**를 별도 축으로 분리해 triage 자동화를 안정화할 수 있다.
+- 이는 `license/stale/low-fit/archived/low-signal`과 상보적이며, `raw_count == 0` 시 원인 누락(빈 taxonomy)을 방지한다.
 
-## Decision
-- Extend degraded-cause taxonomy with `no-results` in hourly survey guidance and reporting checklist.
-- Require explicit `no-results` when a lane remains `raw_count == 0` after documented recovery.
-
-## Why low-risk
-- Documentation-only hardening (no destructive runtime behavior change).
-- Aligns written policy with observed lane outcome and existing validator workflow.
+## Proposed repo hardening
+1. survey SKILL 문서의 degraded-cause taxonomy에 `no-results` 추가.
+2. SKILL.toon 규칙/절차의 taxonomy를 동일하게 동기화.
+3. eval 케이스 추가: stage-2 이후에도 `raw_count==0`이면 `no-results`를 명시해야 PASS.
 
 ## Provenance
 - indexed snippet
 - direct page retrieval
-- thin evidence
