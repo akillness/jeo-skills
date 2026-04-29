@@ -1,0 +1,9 @@
+[ok] Command: cat /tmp/lane_metrics_hourly-skill-candidates-20260426-08...
+   9 lines of output
+
+Output:
+   run_slug=hourly-skill-candidates-20260426-083233
+   recommended_lane_count=5
+   single_lane_concentration=False
+   agentic ai skill	status=pass	kept=3	raw=25	median_stars_raw=0	zero_star_...
+   web frontend skill	status=pass	kept=15	raw=17	median_stars_raw=8333	zero...
