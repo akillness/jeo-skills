@@ -14,7 +14,7 @@ U[12]:
   Emit lane-level status vocabulary (pass|degraded) and degraded-cause taxonomy for sparse/noisy lanes
   Include compact lane-health metrics (kept_count raw_count median_stars_raw zero_star_raw) and apply a zero-star saturation guard before marking a lane pass
   Detect cross-lane recommendation concentration with recommended_lane_count and single_lane_concentration flags
-  Treat Obsidian CLI error-signature output as failure even on zero exit and fallback to deterministic direct markdown writes in cron loops
+  Deduplicate recommendation-grade repositories across lanes before final ranking while preserving raw evidence
   Validate the artifact contract before handing off to planning or execution
 S[12]{n,action,details}:
   1,Classify mode,Choose one primary survey mode and decide whether platform-map.md is required
@@ -22,14 +22,13 @@ S[12]{n,action,details}:
   3,Triage and reuse,Extract what who why and check whether an existing .survey/{slug} should be reused
   4,Run 4 lanes,Research context solutions actual behavior and alternatives-or-platform-map in parallel
   5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families, run lane recovery templates when needed, and escalate once with a documented stage-2 query if a lane still has raw_count==0
-  6,Apply fit gate,Before promotion run relevance checks including negation-aware lane-intent filtering for phrases like no cli or non-cli
-  7,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal) in markdown summaries
-  8,Record lane metrics,Alongside lane_status include kept_count raw_count median_stars_raw zero_star_raw so reviewers can detect quality drift
-  9,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane
-  10,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
-  11,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
-  12,Summarize,Return a short factual survey summary and route planning or implementation outward
-R[15]:
+  6,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal|no-results) in markdown summaries
+  7,Record lane metrics,Alongside lane_status include kept_count raw_count median_stars_raw zero_star_raw so reviewers can detect quality drift
+  8,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane, then report a deduplicated recommendation set keyed by repository identity
+  9,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
+  10,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
+  11,Summarize,Return a short factual survey summary and route planning or implementation outward
+R[14]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
   Keep claims source-backed and label downgraded evidence clearly using validator-supported labels (map gh-search listings to indexed snippet and repo/API detail fetches to direct page retrieval); for gh search repos JSON output prefer fullName or owner+name over unsupported nameWithOwner, and if gh search returns empty-success payloads ([] exit 0) on known-populated probes rerun via gh api search/repositories fallback while preserving stderr evidence
@@ -40,12 +39,10 @@ R[15]:
   Apply a recommendation-grade signal floor (require traction signal such as stars>=3 or explicit adoption rationale)
   Preserve the same artifact filenames and headings across platforms
   Preserve lane-level threshold reporting (>=1 keep per lane where feasible; CLI lane target 3+) and run one documented stage-2 lane recovery when stage-1 still yields raw_count==0
-  Use lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal|transport|no-results) for under-threshold lanes
-  If a lane remains raw_count==0 after documented recovery stages, include no-results in degraded_causes explicitly
+  Use lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal|no-results) for under-threshold lanes; include no-results explicitly when post-recovery raw_count==0
   Include lane metrics (kept_count raw_count median_stars_raw zero_star_raw) whenever lane_status is reported
   Include cross-lane concentration signals (recommended_lane_count and single_lane_concentration) before claiming healthy recommendation coverage
-  Treat explicit obsidian-cli URI failure signatures (for example Failed to execute Obsidian URI) as hard failure signals even when exit code is zero; fallback to direct markdown file writes and record the fallback path in run artifacts
-  Deduplicate solution names and keep one bounded question per survey artifact
+  Deduplicate recommendation-grade repositories across lanes before final ranking and report both raw and deduplicated coverage metrics
   Use settings rules hooks as the common layer for Claude Codex Gemini comparisons
 E[2]{desc,in,out}:
   "Repo maintenance","survey which existing skill in this repo is the best bounded maintenance target next","Creates triage context and solutions artifacts, then validates the output folder before any skill rewrite starts"

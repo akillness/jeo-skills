@@ -208,14 +208,13 @@ Execution rules:
 - For noisy lanes where raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query before finalizing degraded status.
 - If a lane still ends with `raw_count == 0` after documented recovery, set/report `degraded_causes` with explicit `no-results` (do not leave it empty).
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
-- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `transport`, `no-results`) plus examples/counts.
-- If a lane remains `raw_count == 0` even after documented stage-2 recovery, always include `no-results` in `degraded_causes` (never leave the cause list empty for zero-hit lanes).
+- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `no-results`) plus examples/counts. When a lane remains `raw_count == 0` after documented recovery, include `no-results` explicitly.
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - When fallback retrieval is used because search transport degraded (for example auth/rate-limit/credential failure such as `INVALID_API_KEY`), record a compact `transport_status` note in run artifacts (cause + fallback command family + error-log path) before final recommendations.
 - For unattended hourly runs, standardize the transport error artifact path to `.survey/<slug>/web-search-error.log` whenever web search transport fails; reference this exact path in `transport_status` so reviewers can diff outage evidence consistently.
 - When writing Obsidian notes in cron/headless loops, treat explicit CLI error-signature output (for example `Failed to execute Obsidian URI`) as failure even when exit code is zero, then fallback to deterministic direct markdown file writes and record the fallback path in run artifacts.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
-- Before implementation handoff in unattended hourly loops, check open hourly PR backlog (`gh pr list --state open`). If backlog is high (default threshold: 5+ open hourly PRs), mark `backlog_pressure: true` in run notes and constrain downstream implementation scope to one bounded existing-skill hardening plus at most one new skill addition.
+- Add a cross-lane recommendation dedup gate before final ranking: preserve raw discovery evidence unchanged, but compute a deduplicated recommendation-grade set keyed by repository identity (`fullName` or `owner/name`) and report both raw and dedup coverage metrics.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 
@@ -256,7 +255,7 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 ## Output rules
 - Facts first, recommendations second only if requested.
 - One bounded question per survey artifact.
-- Keep solution names deduplicated.
+- Keep solution names deduplicated, and deduplicate recommendation-grade repositories across lanes before final ranking while preserving raw evidence.
 - Preserve evidence labels when sources are weak or indirect.
 - Keep the output artifact schema identical across platforms.
 - Route architecture/planning/execution work outward once the survey is done.

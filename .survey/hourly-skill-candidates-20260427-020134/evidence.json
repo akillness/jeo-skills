@@ -1,0 +1,1872 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-020134",
+  "generated_at_utc": "2026-04-27T02:06:11.698646Z",
+  "mode": "repo-maintenance",
+  "provenance": "indexed snippet",
+  "lanes": {
+    "agentic ai skill": {
+      "queries": [
+        {
+          "stage": "primary",
+          "query": "agentic ai skill",
+          "provenance": "indexed snippet",
+          "error": null
+        }
+      ],
+      "raw": [
+        {
+          "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "license": "Apache-2.0",
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "archived": false,
+          "stars": 14,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "description": "Agentic AI skills for knowledge graph management",
+          "license": "MIT",
+          "pushed_at": "2026-04-06T01:48:47Z",
+          "archived": false,
+          "stars": 7,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "Ap6pack/malwar",
+          "url": "https://github.com/Ap6pack/malwar",
+          "description": "Static analysis engine for detecting malware in agentic AI skill files",
+          "license": "MIT",
+          "pushed_at": "2026-04-08T22:08:53Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "license": "MIT",
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "archived": false,
+          "stars": 10,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "taisukeoe/agentic-ai-skills-creator",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+          "description": "This is a foundation to create effective Agentic AI Skills",
+          "license": "Apache-2.0",
+          "pushed_at": "2026-01-23T12:11:13Z",
+          "archived": false,
+          "stars": 2,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "jprtr/Agentic-AI",
+          "url": "https://github.com/jprtr/Agentic-AI",
+          "description": "Agentic AI Skills",
+          "license": null,
+          "pushed_at": "2026-04-03T04:39:10Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "gpimpler-too/skill-lib",
+          "url": "https://github.com/gpimpler-too/skill-lib",
+          "description": "Agentic AI Skill Library",
+          "license": null,
+          "pushed_at": "2026-04-05T03:35:57Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "ritikpatel/marketing-mix-modelling-skill",
+          "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill",
+          "description": "MMM Agentic AI Skill",
+          "license": null,
+          "pushed_at": "2026-04-12T13:42:41Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "thisrunsthru/Skill",
+          "url": "https://github.com/thisrunsthru/Skill",
+          "description": "Agentic AI skill model",
+          "license": null,
+          "pushed_at": "2026-03-12T21:33:21Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "manuelmauro/skills",
+          "url": "https://github.com/manuelmauro/skills",
+          "description": "My favorite agentic AI skills",
+          "license": null,
+          "pushed_at": "2026-04-09T11:10:28Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "eclipse-csi/skills",
+          "url": "https://github.com/eclipse-csi/skills",
+          "description": "Eclipse CSI Agentic AI Skills",
+          "license": null,
+          "pushed_at": "2026-04-16T09:04:05Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "DaRealPunjabi/AWS-AI-ML-Scholars",
+          "url": "https://github.com/DaRealPunjabi/AWS-AI-ML-Scholars",
+          "description": "Develop AI & Agentic AI skills",
+          "license": null,
+          "pushed_at": "2026-04-17T09:22:20Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "swport/skills",
+          "url": "https://github.com/swport/skills",
+          "description": "Agentic AI skills for everyday use",
+          "license": "MIT",
+          "pushed_at": "2026-03-28T05:30:07Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "asllani94/skills",
+          "url": "https://github.com/asllani94/skills",
+          "description": "My collection of Agentic AI Skills",
+          "license": null,
+          "pushed_at": "2026-03-18T20:40:10Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "Hedi-Bk/Agentic_AI_Space",
+          "url": "https://github.com/Hedi-Bk/Agentic_AI_Space",
+          "description": "My Agentic AI Skills Showcase 🟢",
+          "license": null,
+          "pushed_at": "2025-11-26T06:55:18Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "muski630346/NO_TO_DSA",
+          "url": "https://github.com/muski630346/NO_TO_DSA",
+          "description": "agentic ai skill craft hiring process",
+          "license": null,
+          "pushed_at": "2026-03-02T16:16:35Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "Aayesha55/SkillsRepo",
+          "url": "https://github.com/Aayesha55/SkillsRepo",
+          "description": "My Agentic AI Skill creation task",
+          "license": null,
+          "pushed_at": "2026-01-11T08:45:02Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "nzhulikov/telegram-bot-skills",
+          "url": "https://github.com/nzhulikov/telegram-bot-skills",
+          "description": "Agentic AI Skills for developing Telegram Bots",
+          "license": "Apache-2.0",
+          "pushed_at": "2026-03-07T12:56:41Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "manuelmauro/skilo",
+          "url": "https://github.com/manuelmauro/skilo",
+          "description": "Agentic AI skills management, linting, and formatting",
+          "license": "Apache-2.0",
+          "pushed_at": "2026-04-01T11:03:40Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "onsen-ai/metabase-skill",
+          "url": "https://github.com/onsen-ai/metabase-skill",
+          "description": "Agentic AI skill for Metabase developers and users",
+          "license": null,
+          "pushed_at": "2026-04-24T16:52:42Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "shelendrajain2004/AI-Agent",
+          "url": "https://github.com/shelendrajain2004/AI-Agent",
+          "description": "This is repository to capture the Agentic AI skills",
+          "license": null,
+          "pushed_at": "2026-03-31T13:27:28Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "michaelzalman/lawyerzhang",
+          "url": "https://github.com/michaelzalman/lawyerzhang",
+          "description": "agent AI skill",
+          "license": null,
+          "pushed_at": "2026-03-27T07:55:04Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "vincentkelleher/skills",
+          "url": "https://github.com/vincentkelleher/skills",
+          "description": "Agentic AI skills that I use on my personal projects",
+          "license": null,
+          "pushed_at": "2026-04-06T15:20:28Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "asadullah48/hackathon-iii-learnflow-skills",
+          "url": "https://github.com/asadullah48/hackathon-iii-learnflow-skills",
+          "description": "Cloud-Native Agentic AI Skills for Claude.ai - Panaversity Hackathon III",
+          "license": null,
+          "pushed_at": "2026-01-14T02:38:43Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "alexandreeberhardt/skills",
+          "url": "https://github.com/alexandreeberhardt/skills",
+          "description": "This repository stores the custom Agentic AI skills that I use.",
+          "license": null,
+          "pushed_at": "2026-04-03T06:01:27Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "oslo-medchem/vs-benchmark-agentic-ai",
+          "url": "https://github.com/oslo-medchem/vs-benchmark-agentic-ai",
+          "description": "FPR2 virtual screening benchmark: agentic AI skill-guided vs naive protocols",
+          "license": "MIT",
+          "pushed_at": "2026-03-26T20:41:31Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "ReadShade/skills",
+          "url": "https://github.com/ReadShade/skills",
+          "description": "ReadShade's Agentic AI skills for Claude Code, Gemini CLI, etc.",
+          "license": "BSD-3-Clause",
+          "pushed_at": "2026-03-03T09:33:31Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "kdcllc/youtube-skill",
+          "url": "https://github.com/kdcllc/youtube-skill",
+          "description": "Agentic AI Skill for using yt-dlp to interact with Youtube",
+          "license": null,
+          "pushed_at": "2026-04-22T22:14:35Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "erganestudio/agentic-skills",
+          "url": "https://github.com/erganestudio/agentic-skills",
+          "description": "This is the repository for all agentic AI skills for building great impactfull applications",
+          "license": null,
+          "pushed_at": "2026-03-17T11:12:38Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "HHuongDuong/AgenticAiSkill",
+          "url": "https://github.com/HHuongDuong/AgenticAiSkill",
+          "description": "",
+          "license": null,
+          "pushed_at": "2026-04-02T20:27:15Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        }
+      ],
+      "kept": [
+        {
+          "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "license": "Apache-2.0",
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "archived": false,
+          "stars": 14,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "description": "Agentic AI skills for knowledge graph management",
+          "license": "MIT",
+          "pushed_at": "2026-04-06T01:48:47Z",
+          "archived": false,
+          "stars": 7,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "license": "MIT",
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "archived": false,
+          "stars": 10,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        }
+      ],
+      "dropped": [
+        {
+          "full_name": "Ap6pack/malwar",
+          "url": "https://github.com/Ap6pack/malwar",
+          "description": "Static analysis engine for detecting malware in agentic AI skill files",
+          "license": "MIT",
+          "pushed_at": "2026-04-08T22:08:53Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "taisukeoe/agentic-ai-skills-creator",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+          "description": "This is a foundation to create effective Agentic AI Skills",
+          "license": "Apache-2.0",
+          "pushed_at": "2026-01-23T12:11:13Z",
+          "archived": false,
+          "stars": 2,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "jprtr/Agentic-AI",
+          "url": "https://github.com/jprtr/Agentic-AI",
+          "description": "Agentic AI Skills",
+          "license": null,
+          "pushed_at": "2026-04-03T04:39:10Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "gpimpler-too/skill-lib",
+          "url": "https://github.com/gpimpler-too/skill-lib",
+          "description": "Agentic AI Skill Library",
+          "license": null,
+          "pushed_at": "2026-04-05T03:35:57Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "ritikpatel/marketing-mix-modelling-skill",
+          "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill",
+          "description": "MMM Agentic AI Skill",
+          "license": null,
+          "pushed_at": "2026-04-12T13:42:41Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "thisrunsthru/Skill",
+          "url": "https://github.com/thisrunsthru/Skill",
+          "description": "Agentic AI skill model",
+          "license": null,
+          "pushed_at": "2026-03-12T21:33:21Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "manuelmauro/skills",
+          "url": "https://github.com/manuelmauro/skills",
+          "description": "My favorite agentic AI skills",
+          "license": null,
+          "pushed_at": "2026-04-09T11:10:28Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "eclipse-csi/skills",
+          "url": "https://github.com/eclipse-csi/skills",
+          "description": "Eclipse CSI Agentic AI Skills",
+          "license": null,
+          "pushed_at": "2026-04-16T09:04:05Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "DaRealPunjabi/AWS-AI-ML-Scholars",
+          "url": "https://github.com/DaRealPunjabi/AWS-AI-ML-Scholars",
+          "description": "Develop AI & Agentic AI skills",
+          "license": null,
+          "pushed_at": "2026-04-17T09:22:20Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "swport/skills",
+          "url": "https://github.com/swport/skills",
+          "description": "Agentic AI skills for everyday use",
+          "license": "MIT",
+          "pushed_at": "2026-03-28T05:30:07Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "asllani94/skills",
+          "url": "https://github.com/asllani94/skills",
+          "description": "My collection of Agentic AI Skills",
+          "license": null,
+          "pushed_at": "2026-03-18T20:40:10Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "Hedi-Bk/Agentic_AI_Space",
+          "url": "https://github.com/Hedi-Bk/Agentic_AI_Space",
+          "description": "My Agentic AI Skills Showcase 🟢",
+          "license": null,
+          "pushed_at": "2025-11-26T06:55:18Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "muski630346/NO_TO_DSA",
+          "url": "https://github.com/muski630346/NO_TO_DSA",
+          "description": "agentic ai skill craft hiring process",
+          "license": null,
+          "pushed_at": "2026-03-02T16:16:35Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "Aayesha55/SkillsRepo",
+          "url": "https://github.com/Aayesha55/SkillsRepo",
+          "description": "My Agentic AI Skill creation task",
+          "license": null,
+          "pushed_at": "2026-01-11T08:45:02Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "nzhulikov/telegram-bot-skills",
+          "url": "https://github.com/nzhulikov/telegram-bot-skills",
+          "description": "Agentic AI Skills for developing Telegram Bots",
+          "license": "Apache-2.0",
+          "pushed_at": "2026-03-07T12:56:41Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "manuelmauro/skilo",
+          "url": "https://github.com/manuelmauro/skilo",
+          "description": "Agentic AI skills management, linting, and formatting",
+          "license": "Apache-2.0",
+          "pushed_at": "2026-04-01T11:03:40Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "onsen-ai/metabase-skill",
+          "url": "https://github.com/onsen-ai/metabase-skill",
+          "description": "Agentic AI skill for Metabase developers and users",
+          "license": null,
+          "pushed_at": "2026-04-24T16:52:42Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "shelendrajain2004/AI-Agent",
+          "url": "https://github.com/shelendrajain2004/AI-Agent",
+          "description": "This is repository to capture the Agentic AI skills",
+          "license": null,
+          "pushed_at": "2026-03-31T13:27:28Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "michaelzalman/lawyerzhang",
+          "url": "https://github.com/michaelzalman/lawyerzhang",
+          "description": "agent AI skill",
+          "license": null,
+          "pushed_at": "2026-03-27T07:55:04Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "vincentkelleher/skills",
+          "url": "https://github.com/vincentkelleher/skills",
+          "description": "Agentic AI skills that I use on my personal projects",
+          "license": null,
+          "pushed_at": "2026-04-06T15:20:28Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "asadullah48/hackathon-iii-learnflow-skills",
+          "url": "https://github.com/asadullah48/hackathon-iii-learnflow-skills",
+          "description": "Cloud-Native Agentic AI Skills for Claude.ai - Panaversity Hackathon III",
+          "license": null,
+          "pushed_at": "2026-01-14T02:38:43Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "alexandreeberhardt/skills",
+          "url": "https://github.com/alexandreeberhardt/skills",
+          "description": "This repository stores the custom Agentic AI skills that I use.",
+          "license": null,
+          "pushed_at": "2026-04-03T06:01:27Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "oslo-medchem/vs-benchmark-agentic-ai",
+          "url": "https://github.com/oslo-medchem/vs-benchmark-agentic-ai",
+          "description": "FPR2 virtual screening benchmark: agentic AI skill-guided vs naive protocols",
+          "license": "MIT",
+          "pushed_at": "2026-03-26T20:41:31Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "ReadShade/skills",
+          "url": "https://github.com/ReadShade/skills",
+          "description": "ReadShade's Agentic AI skills for Claude Code, Gemini CLI, etc.",
+          "license": "BSD-3-Clause",
+          "pushed_at": "2026-03-03T09:33:31Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "kdcllc/youtube-skill",
+          "url": "https://github.com/kdcllc/youtube-skill",
+          "description": "Agentic AI Skill for using yt-dlp to interact with Youtube",
+          "license": null,
+          "pushed_at": "2026-04-22T22:14:35Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "erganestudio/agentic-skills",
+          "url": "https://github.com/erganestudio/agentic-skills",
+          "description": "This is the repository for all agentic AI skills for building great impactfull applications",
+          "license": null,
+          "pushed_at": "2026-03-17T11:12:38Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "HHuongDuong/AgenticAiSkill",
+          "url": "https://github.com/HHuongDuong/AgenticAiSkill",
+          "description": "",
+          "license": null,
+          "pushed_at": "2026-04-02T20:27:15Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ],
+      "lane_status": "pass",
+      "degraded_causes": [
+        {
+          "cause": "low-signal",
+          "count": 27
+        },
+        {
+          "cause": "license",
+          "count": 20
+        }
+      ],
+      "metrics": {
+        "raw_count": 30,
+        "kept_count": 3,
+        "zero_star_raw": 21,
+        "median_stars_raw": 0.0
+      }
+    },
+    "web frontend skill": {
+      "queries": [
+        {
+          "stage": "primary",
+          "query": "web frontend skill",
+          "provenance": "indexed snippet",
+          "error": null
+        },
+        {
+          "stage": "stage1-recovery",
+          "query": "frontend ui component design system stars:>300 pushed:>=2024-01-01",
+          "provenance": "indexed snippet",
+          "error": null
+        },
+        {
+          "stage": "stage2-recovery",
+          "query": "frontend engineering workflow design system toolkit stars:>120 pushed:>=2024-01-01",
+          "provenance": "indexed snippet",
+          "error": null
+        }
+      ],
+      "raw": [
+        {
+          "full_name": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+          "license": null,
+          "pushed_at": "2026-03-30T14:38:08Z",
+          "archived": false,
+          "stars": 12,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "description": "This is a frontend project to showcase web frontend skills.",
+          "license": "MIT",
+          "pushed_at": "2023-11-29T17:23:32Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "Hezekiah-Elisha/savannah_informatics_test",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only.",
+          "license": null,
+          "pushed_at": "2026-01-16T19:17:43Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only. It should be hosted on a code repository service (e.g Github, Gitlab) with public access to make the assessment easy",
+          "license": null,
+          "pushed_at": "2024-05-28T12:02:00Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        }
+      ],
+      "kept": [],
+      "dropped": [
+        {
+          "full_name": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+          "license": null,
+          "pushed_at": "2026-03-30T14:38:08Z",
+          "archived": false,
+          "stars": 12,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license"
+          ]
+        },
+        {
+          "full_name": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "description": "This is a frontend project to showcase web frontend skills.",
+          "license": "MIT",
+          "pushed_at": "2023-11-29T17:23:32Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "Hezekiah-Elisha/savannah_informatics_test",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only.",
+          "license": null,
+          "pushed_at": "2026-01-16T19:17:43Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only. It should be hosted on a code repository service (e.g Github, Gitlab) with public access to make the assessment easy",
+          "license": null,
+          "pushed_at": "2024-05-28T12:02:00Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ],
+      "lane_status": "degraded",
+      "degraded_causes": [
+        {
+          "cause": "license",
+          "count": 3
+        },
+        {
+          "cause": "low-signal",
+          "count": 3
+        },
+        {
+          "cause": "stale",
+          "count": 1
+        }
+      ],
+      "metrics": {
+        "raw_count": 4,
+        "kept_count": 0,
+        "zero_star_raw": 3,
+        "median_stars_raw": 0.0
+      }
+    },
+    "web backend skill": {
+      "queries": [
+        {
+          "stage": "primary",
+          "query": "web backend skill",
+          "provenance": "indexed snippet",
+          "error": null
+        },
+        {
+          "stage": "stage1-recovery",
+          "query": "backend api framework observability stars:>300 pushed:>=2024-01-01",
+          "provenance": "indexed snippet",
+          "error": null
+        },
+        {
+          "stage": "stage2-recovery",
+          "query": "backend developer platform api template stars:>150 pushed:>=2024-01-01",
+          "provenance": "indexed snippet",
+          "error": null
+        }
+      ],
+      "raw": [],
+      "kept": [],
+      "dropped": [],
+      "lane_status": "degraded",
+      "degraded_causes": [
+        {
+          "cause": "no-results",
+          "count": 1
+        }
+      ],
+      "metrics": {
+        "raw_count": 0,
+        "kept_count": 0,
+        "zero_star_raw": 0,
+        "median_stars_raw": 0.0
+      }
+    },
+    "cli open source skill": {
+      "queries": [
+        {
+          "stage": "primary",
+          "query": "cli open source skill",
+          "provenance": "indexed snippet",
+          "error": null
+        },
+        {
+          "stage": "stage1-recovery",
+          "query": "command line tool developer productivity stars:>200 pushed:>=2024-01-01",
+          "provenance": "indexed snippet",
+          "error": null
+        }
+      ],
+      "raw": [
+        {
+          "full_name": "guarinogabriel/Mac-CLI",
+          "url": "https://github.com/guarinogabriel/Mac-CLI",
+          "description": " macOS command line tool for developers – The ultimate tool to manage your Mac. It provides a huge set of command line commands that automatize the usage of your Mac.",
+          "license": "MIT",
+          "pushed_at": "2026-02-28T02:21:48Z",
+          "archived": false,
+          "stars": 9063,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        }
+      ],
+      "kept": [
+        {
+          "full_name": "guarinogabriel/Mac-CLI",
+          "url": "https://github.com/guarinogabriel/Mac-CLI",
+          "description": " macOS command line tool for developers – The ultimate tool to manage your Mac. It provides a huge set of command line commands that automatize the usage of your Mac.",
+          "license": "MIT",
+          "pushed_at": "2026-02-28T02:21:48Z",
+          "archived": false,
+          "stars": 9063,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        }
+      ],
+      "dropped": [],
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "metrics": {
+        "raw_count": 1,
+        "kept_count": 1,
+        "zero_star_raw": 0,
+        "median_stars_raw": 9063.0
+      }
+    },
+    "game development skill": {
+      "queries": [
+        {
+          "stage": "primary",
+          "query": "game development skill",
+          "provenance": "indexed snippet",
+          "error": null
+        }
+      ],
+      "raw": [
+        {
+          "full_name": "UnrealBlueprint/02_CrystalCavern",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+          "description": "A fun little parkour game for our now-famous marble. Here you'll start learning real-world blueprint game development skills (REF: CC_UBP)",
+          "license": "MIT",
+          "pushed_at": "2019-03-27T19:49:24Z",
+          "archived": false,
+          "stars": 9,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "description": "I am strengthening my C# game development skills day by day.",
+          "license": null,
+          "pushed_at": "2026-02-26T03:56:34Z",
+          "archived": false,
+          "stars": 20,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "Unengine/GameEngineAndGameMathTIL",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+          "description": "for my game development skill",
+          "license": "WTFPL",
+          "pushed_at": "2021-05-17T16:44:56Z",
+          "archived": false,
+          "stars": 4,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+          "description": "Enhance your Pong game with Pygame! Learn how to add exciting features and unleash your creativity in this tutorial series. Perfect for intermediate programmers looking to expand their game development skills with Python and Pygame. Let's take the classic Pong game to the next level together!",
+          "license": "MIT",
+          "pushed_at": "2023-08-09T16:31:04Z",
+          "archived": false,
+          "stars": 14,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "kkh9700/GameDevelopmentSkills-Individual",
+          "url": "https://github.com/kkh9700/GameDevelopmentSkills-Individual",
+          "description": "",
+          "license": null,
+          "pushed_at": "2023-09-22T03:05:44Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "sparkade-labs/sparkade-skills",
+          "url": "https://github.com/sparkade-labs/sparkade-skills",
+          "description": "Game development skills for building sparkade games",
+          "license": "NOASSERTION",
+          "pushed_at": "2026-04-07T09:25:59Z",
+          "archived": false,
+          "stars": 2,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "inchussa/Virtual-Pet-Simulator",
+          "url": "https://github.com/inchussa/Virtual-Pet-Simulator",
+          "description": "A virtual pet simulator game developed using Unity and C#. The game allows users to interact with and take care of a virtual pet, demonstrating game development skills.",
+          "license": null,
+          "pushed_at": "2025-02-09T14:09:01Z",
+          "archived": false,
+          "stars": 25,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "teamgravitydev/learning-resources.md",
+          "url": "https://github.com/teamgravitydev/learning-resources.md",
+          "description": "Curated collection of resources, books, courses, tutorials, and YouTube channels, to help you master game development skills.",
+          "license": null,
+          "pushed_at": "2024-11-05T01:26:02Z",
+          "archived": false,
+          "stars": 5,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "naash/UnityBattleRoyale",
+          "url": "https://github.com/naash/UnityBattleRoyale",
+          "description": "Unity project of a battle royale. Will use this project to showcase my game development skills in Unity. ",
+          "license": null,
+          "pushed_at": "2020-04-18T10:14:16Z",
+          "archived": true,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "damirbaisalov/gamedev",
+          "url": "https://github.com/damirbaisalov/gamedev",
+          "description": "for game development skills",
+          "license": null,
+          "pushed_at": "2020-01-15T14:54:12Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "cozmavladut/codex-roblox-toolkit",
+          "url": "https://github.com/cozmavladut/codex-roblox-toolkit",
+          "description": "Unlock Powerful Roblox Scripts with Codex – Enhance Your Game Development Skills",
+          "license": null,
+          "pushed_at": "2025-12-17T14:07:44Z",
+          "archived": false,
+          "stars": 2,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "codereach1/cautious-potato",
+          "url": "https://github.com/codereach1/cautious-potato",
+          "description": "Game development ,skills development 👌 ",
+          "license": null,
+          "pushed_at": "2026-04-09T10:37:47Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "dindaya28/JavaGame",
+          "url": "https://github.com/dindaya28/JavaGame",
+          "description": "Learning basic Java game development skills",
+          "license": null,
+          "pushed_at": "2019-12-06T18:58:01Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "license": "MIT",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "archived": false,
+          "stars": 3,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "DanBoB113/BoretskyJem",
+          "url": "https://github.com/DanBoB113/BoretskyJem",
+          "description": "Testing game-development skills in Jem format",
+          "license": null,
+          "pushed_at": "2025-09-05T09:00:41Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "Finn-T-Dev/SnakeProject",
+          "url": "https://github.com/Finn-T-Dev/SnakeProject",
+          "description": "Practicing C++ game development skills using raylib",
+          "license": null,
+          "pushed_at": "2025-10-16T05:29:35Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "dillonoc98/VR-Zombie-Game",
+          "url": "https://github.com/dillonoc98/VR-Zombie-Game",
+          "description": "Game to demonstrate VR game Development skills",
+          "license": null,
+          "pushed_at": "2019-12-09T00:52:00Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "PPYukito/Warrior",
+          "url": "https://github.com/PPYukito/Warrior",
+          "description": "Advanced RPG, made by Unreal Engine 5 for studying case and practicing game development skills.",
+          "license": "MIT",
+          "pushed_at": "2024-12-02T02:08:44Z",
+          "archived": false,
+          "stars": 2,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "MuszkaCPP/Jump-o-Wall",
+          "url": "https://github.com/MuszkaCPP/Jump-o-Wall",
+          "description": "My own project which improves game development skills.",
+          "license": "MIT",
+          "pushed_at": "2020-07-15T19:25:56Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "SinglaRijul/my-portfolio",
+          "url": "https://github.com/SinglaRijul/my-portfolio",
+          "description": "My portfolio focusing on my game development skills",
+          "license": "MIT",
+          "pushed_at": "2025-08-27T07:29:50Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        },
+        {
+          "full_name": "auriorajaa/Java2DGame",
+          "url": "https://github.com/auriorajaa/Java2DGame",
+          "description": "Welcome to the Java 2D Game Project repository! This project is a continuous exploration of game development in Java, influenced by the instructional content provided by Ryisnow on YouTube. It is a living testament to my journey in acquiring game development skills using Java. ",
+          "license": null,
+          "pushed_at": "2024-01-05T08:55:40Z",
+          "archived": false,
+          "stars": 6,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "Elouiseng/elouiseng.github.io",
+          "url": "https://github.com/Elouiseng/elouiseng.github.io",
+          "description": "Elouiseng's Portfolio - software and game development skill demonstration",
+          "license": null,
+          "pushed_at": "2025-08-19T08:42:04Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "davidgd72k/mi-super-mairo-bors",
+          "url": "https://github.com/davidgd72k/mi-super-mairo-bors",
+          "description": "A platformer game to practice my game development skills.",
+          "license": null,
+          "pushed_at": "2026-03-14T22:14:13Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "carlospazuzu/sokoban",
+          "url": "https://github.com/carlospazuzu/sokoban",
+          "description": "Simple and classic game to rehearsal game development skills",
+          "license": null,
+          "pushed_at": "2023-07-19T19:50:46Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "Gnarlmor/Game-dev",
+          "url": "https://github.com/Gnarlmor/Game-dev",
+          "description": "The first steps in mastering the game development skills.",
+          "license": null,
+          "pushed_at": "2024-08-24T09:33:37Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "Rasheed-Al-Qobbaj/UnityGame",
+          "url": "https://github.com/Rasheed-Al-Qobbaj/UnityGame",
+          "description": "Testing and training my game development skills using unity",
+          "license": null,
+          "pushed_at": "2023-10-25T22:33:28Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "theRealTinyRick/Portfolio",
+          "url": "https://github.com/theRealTinyRick/Portfolio",
+          "description": "A simple website to showcase my Game Development skills",
+          "license": null,
+          "pushed_at": "2018-06-10T21:22:33Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "MTocci1/Cave-Mages",
+          "url": "https://github.com/MTocci1/Cave-Mages",
+          "description": "Personal Project to sharpen C++ and game development skills",
+          "license": null,
+          "pushed_at": "2024-01-31T05:28:47Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "kartikaysharma01/kitchen_chaos",
+          "url": "https://github.com/kartikaysharma01/kitchen_chaos",
+          "description": "A unity game to hone my game development skills.",
+          "license": null,
+          "pushed_at": "2024-11-15T12:49:30Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate"
+        },
+        {
+          "full_name": "FunplayAI/funplay-skill",
+          "url": "https://github.com/FunplayAI/funplay-skill",
+          "description": "Open-source game development skills — reusable workflows for texture processing, audio, level generation, asset optimization, and more.",
+          "license": "MIT",
+          "pushed_at": "2026-04-17T03:55:46Z",
+          "archived": false,
+          "stars": 2,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        }
+      ],
+      "kept": [
+        {
+          "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "license": "MIT",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "archived": false,
+          "stars": 3,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed"
+        }
+      ],
+      "dropped": [
+        {
+          "full_name": "UnrealBlueprint/02_CrystalCavern",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+          "description": "A fun little parkour game for our now-famous marble. Here you'll start learning real-world blueprint game development skills (REF: CC_UBP)",
+          "license": "MIT",
+          "pushed_at": "2019-03-27T19:49:24Z",
+          "archived": false,
+          "stars": 9,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "full_name": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "description": "I am strengthening my C# game development skills day by day.",
+          "license": null,
+          "pushed_at": "2026-02-26T03:56:34Z",
+          "archived": false,
+          "stars": 20,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license"
+          ]
+        },
+        {
+          "full_name": "Unengine/GameEngineAndGameMathTIL",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+          "description": "for my game development skill",
+          "license": "WTFPL",
+          "pushed_at": "2021-05-17T16:44:56Z",
+          "archived": false,
+          "stars": 4,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "full_name": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+          "description": "Enhance your Pong game with Pygame! Learn how to add exciting features and unleash your creativity in this tutorial series. Perfect for intermediate programmers looking to expand their game development skills with Python and Pygame. Let's take the classic Pong game to the next level together!",
+          "license": "MIT",
+          "pushed_at": "2023-08-09T16:31:04Z",
+          "archived": false,
+          "stars": 14,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "full_name": "kkh9700/GameDevelopmentSkills-Individual",
+          "url": "https://github.com/kkh9700/GameDevelopmentSkills-Individual",
+          "description": "",
+          "license": null,
+          "pushed_at": "2023-09-22T03:05:44Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "sparkade-labs/sparkade-skills",
+          "url": "https://github.com/sparkade-labs/sparkade-skills",
+          "description": "Game development skills for building sparkade games",
+          "license": "NOASSERTION",
+          "pushed_at": "2026-04-07T09:25:59Z",
+          "archived": false,
+          "stars": 2,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "inchussa/Virtual-Pet-Simulator",
+          "url": "https://github.com/inchussa/Virtual-Pet-Simulator",
+          "description": "A virtual pet simulator game developed using Unity and C#. The game allows users to interact with and take care of a virtual pet, demonstrating game development skills.",
+          "license": null,
+          "pushed_at": "2025-02-09T14:09:01Z",
+          "archived": false,
+          "stars": 25,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license"
+          ]
+        },
+        {
+          "full_name": "teamgravitydev/learning-resources.md",
+          "url": "https://github.com/teamgravitydev/learning-resources.md",
+          "description": "Curated collection of resources, books, courses, tutorials, and YouTube channels, to help you master game development skills.",
+          "license": null,
+          "pushed_at": "2024-11-05T01:26:02Z",
+          "archived": false,
+          "stars": 5,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license"
+          ]
+        },
+        {
+          "full_name": "naash/UnityBattleRoyale",
+          "url": "https://github.com/naash/UnityBattleRoyale",
+          "description": "Unity project of a battle royale. Will use this project to showcase my game development skills in Unity. ",
+          "license": null,
+          "pushed_at": "2020-04-18T10:14:16Z",
+          "archived": true,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "archived",
+            "license",
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "damirbaisalov/gamedev",
+          "url": "https://github.com/damirbaisalov/gamedev",
+          "description": "for game development skills",
+          "license": null,
+          "pushed_at": "2020-01-15T14:54:12Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "cozmavladut/codex-roblox-toolkit",
+          "url": "https://github.com/cozmavladut/codex-roblox-toolkit",
+          "description": "Unlock Powerful Roblox Scripts with Codex – Enhance Your Game Development Skills",
+          "license": null,
+          "pushed_at": "2025-12-17T14:07:44Z",
+          "archived": false,
+          "stars": 2,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "codereach1/cautious-potato",
+          "url": "https://github.com/codereach1/cautious-potato",
+          "description": "Game development ,skills development 👌 ",
+          "license": null,
+          "pushed_at": "2026-04-09T10:37:47Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "dindaya28/JavaGame",
+          "url": "https://github.com/dindaya28/JavaGame",
+          "description": "Learning basic Java game development skills",
+          "license": null,
+          "pushed_at": "2019-12-06T18:58:01Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "DanBoB113/BoretskyJem",
+          "url": "https://github.com/DanBoB113/BoretskyJem",
+          "description": "Testing game-development skills in Jem format",
+          "license": null,
+          "pushed_at": "2025-09-05T09:00:41Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "Finn-T-Dev/SnakeProject",
+          "url": "https://github.com/Finn-T-Dev/SnakeProject",
+          "description": "Practicing C++ game development skills using raylib",
+          "license": null,
+          "pushed_at": "2025-10-16T05:29:35Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "dillonoc98/VR-Zombie-Game",
+          "url": "https://github.com/dillonoc98/VR-Zombie-Game",
+          "description": "Game to demonstrate VR game Development skills",
+          "license": null,
+          "pushed_at": "2019-12-09T00:52:00Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "PPYukito/Warrior",
+          "url": "https://github.com/PPYukito/Warrior",
+          "description": "Advanced RPG, made by Unreal Engine 5 for studying case and practicing game development skills.",
+          "license": "MIT",
+          "pushed_at": "2024-12-02T02:08:44Z",
+          "archived": false,
+          "stars": 2,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "MuszkaCPP/Jump-o-Wall",
+          "url": "https://github.com/MuszkaCPP/Jump-o-Wall",
+          "description": "My own project which improves game development skills.",
+          "license": "MIT",
+          "pushed_at": "2020-07-15T19:25:56Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "SinglaRijul/my-portfolio",
+          "url": "https://github.com/SinglaRijul/my-portfolio",
+          "description": "My portfolio focusing on my game development skills",
+          "license": "MIT",
+          "pushed_at": "2025-08-27T07:29:50Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "auriorajaa/Java2DGame",
+          "url": "https://github.com/auriorajaa/Java2DGame",
+          "description": "Welcome to the Java 2D Game Project repository! This project is a continuous exploration of game development in Java, influenced by the instructional content provided by Ryisnow on YouTube. It is a living testament to my journey in acquiring game development skills using Java. ",
+          "license": null,
+          "pushed_at": "2024-01-05T08:55:40Z",
+          "archived": false,
+          "stars": 6,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "stale"
+          ]
+        },
+        {
+          "full_name": "Elouiseng/elouiseng.github.io",
+          "url": "https://github.com/Elouiseng/elouiseng.github.io",
+          "description": "Elouiseng's Portfolio - software and game development skill demonstration",
+          "license": null,
+          "pushed_at": "2025-08-19T08:42:04Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "davidgd72k/mi-super-mairo-bors",
+          "url": "https://github.com/davidgd72k/mi-super-mairo-bors",
+          "description": "A platformer game to practice my game development skills.",
+          "license": null,
+          "pushed_at": "2026-03-14T22:14:13Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "carlospazuzu/sokoban",
+          "url": "https://github.com/carlospazuzu/sokoban",
+          "description": "Simple and classic game to rehearsal game development skills",
+          "license": null,
+          "pushed_at": "2023-07-19T19:50:46Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "Gnarlmor/Game-dev",
+          "url": "https://github.com/Gnarlmor/Game-dev",
+          "description": "The first steps in mastering the game development skills.",
+          "license": null,
+          "pushed_at": "2024-08-24T09:33:37Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "Rasheed-Al-Qobbaj/UnityGame",
+          "url": "https://github.com/Rasheed-Al-Qobbaj/UnityGame",
+          "description": "Testing and training my game development skills using unity",
+          "license": null,
+          "pushed_at": "2023-10-25T22:33:28Z",
+          "archived": false,
+          "stars": 1,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "theRealTinyRick/Portfolio",
+          "url": "https://github.com/theRealTinyRick/Portfolio",
+          "description": "A simple website to showcase my Game Development skills",
+          "license": null,
+          "pushed_at": "2018-06-10T21:22:33Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "MTocci1/Cave-Mages",
+          "url": "https://github.com/MTocci1/Cave-Mages",
+          "description": "Personal Project to sharpen C++ and game development skills",
+          "license": null,
+          "pushed_at": "2024-01-31T05:28:47Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "stale",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "kartikaysharma01/kitchen_chaos",
+          "url": "https://github.com/kartikaysharma01/kitchen_chaos",
+          "description": "A unity game to hone my game development skills.",
+          "license": null,
+          "pushed_at": "2024-11-15T12:49:30Z",
+          "archived": false,
+          "stars": 0,
+          "intent_overlap": true,
+          "fit_rationale": "filtered by gate",
+          "drop_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "FunplayAI/funplay-skill",
+          "url": "https://github.com/FunplayAI/funplay-skill",
+          "description": "Open-source game development skills — reusable workflows for texture processing, audio, level generation, asset optimization, and more.",
+          "license": "MIT",
+          "pushed_at": "2026-04-17T03:55:46Z",
+          "archived": false,
+          "stars": 2,
+          "intent_overlap": true,
+          "fit_rationale": "intent-token overlap + maintained + licensed",
+          "drop_reasons": [
+            "low-signal"
+          ]
+        }
+      ],
+      "lane_status": "pass",
+      "degraded_causes": [
+        {
+          "cause": "license",
+          "count": 22
+        },
+        {
+          "cause": "low-signal",
+          "count": 22
+        },
+        {
+          "cause": "stale",
+          "count": 14
+        },
+        {
+          "cause": "archived",
+          "count": 1
+        }
+      ],
+      "metrics": {
+        "raw_count": 30,
+        "kept_count": 1,
+        "zero_star_raw": 17,
+        "median_stars_raw": 0.0
+      }
+    }
+  },
+  "run_metrics": {
+    "raw_unique_repo_count": 65,
+    "raw_cross_lane_duplicate_count": 0,
+    "kept_unique_repo_count": 5,
+    "kept_cross_lane_duplicate_count": 0,
+    "recommended_lane_count": 3,
+    "single_lane_concentration": false
+  },
+  "cross_lane_duplicates": {
+    "raw": {},
+    "kept": {}
+  }
+}
