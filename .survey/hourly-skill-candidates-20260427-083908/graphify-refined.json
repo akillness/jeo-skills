@@ -1,0 +1,159 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-083908",
+  "generated_at": "2026-04-26T23:44:34.994042Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: error: could not load graph: 'links')",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260427-083908",
+      "type": "run",
+      "label": "hourly-skill-candidates-20260427-083908"
+    },
+    {
+      "id": "survey-skill",
+      "type": "component",
+      "label": "survey skill"
+    },
+    {
+      "id": "keyword-sweep-reference",
+      "type": "component",
+      "label": "keyword sweep reference"
+    },
+    {
+      "id": "flutter-bloc-clean-architecture-skill",
+      "type": "candidate",
+      "label": "AbdelhakRazi/flutter-bloc-clean-architecture-skill"
+    },
+    {
+      "id": "lane:agentic-ai-skill",
+      "type": "lane",
+      "label": "agentic-ai-skill",
+      "lane_status": "pass",
+      "kept_count": 3,
+      "raw_count": 20
+    },
+    {
+      "id": "lane:web-frontend-skill",
+      "type": "lane",
+      "label": "web-frontend-skill",
+      "lane_status": "degraded",
+      "kept_count": 0,
+      "raw_count": 4
+    },
+    {
+      "id": "cause:web-frontend-skill:license",
+      "type": "degraded-cause",
+      "label": "license"
+    },
+    {
+      "id": "cause:web-frontend-skill:low-signal",
+      "type": "degraded-cause",
+      "label": "low-signal"
+    },
+    {
+      "id": "cause:web-frontend-skill:stale",
+      "type": "degraded-cause",
+      "label": "stale"
+    },
+    {
+      "id": "lane:web-backend-skill",
+      "type": "lane",
+      "label": "web-backend-skill",
+      "lane_status": "degraded",
+      "kept_count": 0,
+      "raw_count": 0
+    },
+    {
+      "id": "cause:web-backend-skill:low-fit",
+      "type": "degraded-cause",
+      "label": "low-fit"
+    },
+    {
+      "id": "lane:cli-open-source-skill",
+      "type": "lane",
+      "label": "cli-open-source-skill",
+      "lane_status": "pass",
+      "kept_count": 1,
+      "raw_count": 1
+    },
+    {
+      "id": "lane:game-development-skill",
+      "type": "lane",
+      "label": "game-development-skill",
+      "lane_status": "pass",
+      "kept_count": 3,
+      "raw_count": 20
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260427-083908",
+      "target": "survey-skill",
+      "relation": "analyzes"
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-083908",
+      "target": "keyword-sweep-reference",
+      "relation": "proposes-ratchet"
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-083908",
+      "target": "flutter-bloc-clean-architecture-skill",
+      "relation": "documents-candidate"
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-083908",
+      "target": "lane:agentic-ai-skill",
+      "relation": "lane-status",
+      "weight": 20
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-083908",
+      "target": "lane:web-frontend-skill",
+      "relation": "lane-status",
+      "weight": 4
+    },
+    {
+      "source": "lane:web-frontend-skill",
+      "target": "cause:web-frontend-skill:license",
+      "relation": "degraded-by"
+    },
+    {
+      "source": "lane:web-frontend-skill",
+      "target": "cause:web-frontend-skill:low-signal",
+      "relation": "degraded-by"
+    },
+    {
+      "source": "lane:web-frontend-skill",
+      "target": "cause:web-frontend-skill:stale",
+      "relation": "degraded-by"
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-083908",
+      "target": "lane:web-backend-skill",
+      "relation": "lane-status",
+      "weight": 1
+    },
+    {
+      "source": "lane:web-backend-skill",
+      "target": "cause:web-backend-skill:low-fit",
+      "relation": "degraded-by"
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-083908",
+      "target": "lane:cli-open-source-skill",
+      "relation": "lane-status",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260427-083908",
+      "target": "lane:game-development-skill",
+      "relation": "lane-status",
+      "weight": 20
+    }
+  ],
+  "source_files": [
+    "/Users/jang_jennie/.hermes/hermes-agent/oh-my-skills-hourly-20260427-014801/.survey/hourly-skill-candidates-20260427-083908/evidence.json",
+    "/Users/jang_jennie/.hermes/hermes-agent/oh-my-skills-hourly-20260427-014801/.survey/hourly-skill-candidates-20260427-083908/rtk-summary.md",
+    "/Users/jang_jennie/.hermes/hermes-agent/oh-my-skills-hourly-20260427-014801/.survey/hourly-skill-candidates-20260427-083908/graphify-query.err"
+  ]
+}
