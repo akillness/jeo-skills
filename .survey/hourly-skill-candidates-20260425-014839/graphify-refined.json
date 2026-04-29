@@ -1,0 +1,462 @@
+{
+  "nodes": [
+    {
+      "id": "q:agentic ai skill",
+      "type": "query",
+      "label": "agentic ai skill"
+    },
+    {
+      "id": "q:web frontend skill",
+      "type": "query",
+      "label": "web frontend skill"
+    },
+    {
+      "id": "q:web backend skill",
+      "type": "query",
+      "label": "web backend skill"
+    },
+    {
+      "id": "q:cli open source skill",
+      "type": "query",
+      "label": "cli open source skill"
+    },
+    {
+      "id": "q:game development skill",
+      "type": "query",
+      "label": "game development skill"
+    },
+    {
+      "id": "policy:metadata-gate",
+      "type": "policy",
+      "label": "metadata-gate"
+    },
+    {
+      "id": "policy:seed-recovery",
+      "type": "policy",
+      "label": "seed-recovery"
+    },
+    {
+      "id": "repo:LeCoupa/awesome-cheatsheets",
+      "type": "repo",
+      "label": "LeCoupa/awesome-cheatsheets",
+      "license": "mit",
+      "archived": false
+    },
+    {
+      "id": "repo:cli/cli",
+      "type": "repo",
+      "label": "cli/cli",
+      "license": "mit",
+      "archived": false
+    },
+    {
+      "id": "repo:payloadcms/payload",
+      "type": "repo",
+      "label": "payloadcms/payload",
+      "license": "mit",
+      "archived": false
+    },
+    {
+      "id": "repo:vuejs/vue-cli",
+      "type": "repo",
+      "label": "vuejs/vue-cli",
+      "license": "mit",
+      "archived": false
+    },
+    {
+      "id": "repo:angular/angular-cli",
+      "type": "repo",
+      "label": "angular/angular-cli",
+      "license": "mit",
+      "archived": false
+    },
+    {
+      "id": "repo:googleworkspace/cli",
+      "type": "repo",
+      "label": "googleworkspace/cli",
+      "license": "apache-2.0",
+      "archived": false
+    },
+    {
+      "id": "repo:davila7/claude-code-templates",
+      "type": "repo",
+      "label": "davila7/claude-code-templates",
+      "license": "mit",
+      "archived": false
+    },
+    {
+      "id": "repo:urfave/cli",
+      "type": "repo",
+      "label": "urfave/cli",
+      "license": "mit",
+      "archived": false
+    },
+    {
+      "id": "repo:spicetify/cli",
+      "type": "repo",
+      "label": "spicetify/cli",
+      "license": "lgpl-2.1",
+      "archived": false
+    },
+    {
+      "id": "repo:jackwener/OpenCLI",
+      "type": "repo",
+      "label": "jackwener/OpenCLI",
+      "license": "apache-2.0",
+      "archived": false
+    },
+    {
+      "id": "repo:pystardust/ani-cli",
+      "type": "repo",
+      "label": "pystardust/ani-cli",
+      "license": "gpl-3.0",
+      "archived": false
+    },
+    {
+      "id": "repo:encoredev/encore",
+      "type": "repo",
+      "label": "encoredev/encore",
+      "license": "mpl-2.0",
+      "archived": false
+    },
+    {
+      "id": "repo:octobercms/october",
+      "type": "repo",
+      "label": "octobercms/october",
+      "license": "other",
+      "archived": false
+    },
+    {
+      "id": "repo:larksuite/cli",
+      "type": "repo",
+      "label": "larksuite/cli",
+      "license": "mit",
+      "archived": false
+    },
+    {
+      "id": "repo:sparckles/Robyn",
+      "type": "repo",
+      "label": "sparckles/Robyn",
+      "license": "bsd-2-clause",
+      "archived": false
+    },
+    {
+      "id": "repo:shuttle-hq/shuttle",
+      "type": "repo",
+      "label": "shuttle-hq/shuttle",
+      "license": "apache-2.0",
+      "archived": false
+    },
+    {
+      "id": "repo:inchussa/Virtual-Pet-Simulator",
+      "type": "repo",
+      "label": "inchussa/Virtual-Pet-Simulator",
+      "license": "",
+      "archived": false
+    },
+    {
+      "id": "repo:rohithnafeel/My-CS-Projects",
+      "type": "repo",
+      "label": "rohithnafeel/My-CS-Projects",
+      "license": "",
+      "archived": false
+    },
+    {
+      "id": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "repo",
+      "label": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "license": "apache-2.0",
+      "archived": false
+    },
+    {
+      "id": "repo:SMDS-Studio/Building-a-New-creative-Pong-",
+      "type": "repo",
+      "label": "SMDS-Studio/Building-a-New-creative-Pong-",
+      "license": "mit",
+      "archived": false
+    }
+  ],
+  "edges": [
+    {
+      "source": "q:web backend skill",
+      "target": "repo:LeCoupa/awesome-cheatsheets",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:LeCoupa/awesome-cheatsheets",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:LeCoupa/awesome-cheatsheets",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:cli open source skill",
+      "target": "repo:cli/cli",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:cli/cli",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:cli/cli",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:web backend skill",
+      "target": "repo:payloadcms/payload",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:payloadcms/payload",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:payloadcms/payload",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:cli open source skill",
+      "target": "repo:vuejs/vue-cli",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:vuejs/vue-cli",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:vuejs/vue-cli",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:cli open source skill",
+      "target": "repo:angular/angular-cli",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:angular/angular-cli",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:angular/angular-cli",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:cli open source skill",
+      "target": "repo:googleworkspace/cli",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:googleworkspace/cli",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:googleworkspace/cli",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:cli open source skill",
+      "target": "repo:davila7/claude-code-templates",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:davila7/claude-code-templates",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:davila7/claude-code-templates",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:cli open source skill",
+      "target": "repo:urfave/cli",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:urfave/cli",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:urfave/cli",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:cli open source skill",
+      "target": "repo:spicetify/cli",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:spicetify/cli",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:spicetify/cli",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:cli open source skill",
+      "target": "repo:jackwener/OpenCLI",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:jackwener/OpenCLI",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:jackwener/OpenCLI",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:cli open source skill",
+      "target": "repo:pystardust/ani-cli",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:pystardust/ani-cli",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:pystardust/ani-cli",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:web backend skill",
+      "target": "repo:encoredev/encore",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:encoredev/encore",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:encoredev/encore",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:web backend skill",
+      "target": "repo:octobercms/october",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:octobercms/october",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:octobercms/october",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:cli open source skill",
+      "target": "repo:larksuite/cli",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:larksuite/cli",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:larksuite/cli",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:web backend skill",
+      "target": "repo:sparckles/Robyn",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:sparckles/Robyn",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:sparckles/Robyn",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:web backend skill",
+      "target": "repo:shuttle-hq/shuttle",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:shuttle-hq/shuttle",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "policy:seed-recovery",
+      "target": "repo:shuttle-hq/shuttle",
+      "relation": "rescues"
+    },
+    {
+      "source": "q:game development skill",
+      "target": "repo:inchussa/Virtual-Pet-Simulator",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:inchussa/Virtual-Pet-Simulator",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "q:game development skill",
+      "target": "repo:rohithnafeel/My-CS-Projects",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:rohithnafeel/My-CS-Projects",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "q:agentic ai skill",
+      "target": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    },
+    {
+      "source": "q:game development skill",
+      "target": "repo:SMDS-Studio/Building-a-New-creative-Pong-",
+      "relation": "discovered"
+    },
+    {
+      "source": "repo:SMDS-Studio/Building-a-New-creative-Pong-",
+      "target": "policy:metadata-gate",
+      "relation": "passes"
+    }
+  ],
+  "summary": "Graphify-style normalized entities/relations for hourly survey run"
+}
