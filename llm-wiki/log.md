@@ -10,4 +10,4 @@
 - 2026-04-26 06:15:00Z hourly run: added license-fallback ratchet note and linked survey/RTK/graphify artifacts
 - 2026-04-26 07:26:00Z hourly run: added gh-field-compatibility ratchet note and linked survey/RTK/graphify artifacts (including failed gh field attempt and recovery)
 - 2026-04-26 20:15:33Z hourly run: added raw-quality-collapse ratchet note and linked survey/RTK/graphify fallback artifacts
-- 2026-04-27 08:39:08Z hourly run: added lane-query-transcript ratchet note and linked survey/RTK/graphify fallback artifacts; documented flutter-bloc-clean-architecture-skill candidate onboarding
+- 2026-04-27 04:31:16Z hourly run: added no-results degraded-cause ratchet note + survey rescue stage clarifications and linked survey/RTK/graphify fallback artifacts

@@ -1,39 +1,48 @@
-# flutter-bloc-clean-architecture-skill — Flutter BLoC + Clean Architecture
+# flutter-bloc-clean-architecture-skill — Flutter BLoC + Clean Architecture Agent Skill
 
-> Agentic AI skill for Flutter that enforces BLoC state management, clean architecture layering, and consistent design-system rules.
+> Agentic skill package for generating production-style Flutter BLoC layers with strict clean-architecture boundaries.
 
 ← [Back to README](../../README.md)
 
 ---
 
-## What it provides
+## What this skill package covers
 
-- Opinionated `SKILL.md` guidance for production-style Flutter architecture
-- Feature and shared-layer examples (`examples/`)
-- Clear data flow contract:
+This document tracks the external repository [`AbdelhakRazi/flutter-bloc-clean-architecture-skill`](https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill) as a curated candidate discovered in the hourly survey lane.
 
-```text
-UI → BLoC → Repository → Datasource → Backend
-```
+Use it when you need to:
+- Bootstrap Flutter feature scaffolding with **BLoC + use-case + repository** separation
+- Keep presentation/domain/data boundaries explicit while generating code
+- Reduce ad-hoc architecture drift in AI-assisted Flutter implementation sessions
 
-## Install
+## Why it was selected in this hourly run
 
+Survey evidence (`.survey/hourly-skill-candidates-20260427-133116/evidence.json`):
+- lane: `agentic ai skill`
+- stars: `14`
+- license: `Apache-2.0`
+- archived: `false`
+- pushed_at: `2026-01-29T09:33:47Z` (within freshness window)
+- provenance: `direct page retrieval`
+
+## Installation / usage
+
+### Add from source repository
 ```bash
-# Direct from source repo
-npx skills add https://github.com/abdelhakrazi/flutter-bloc-clean-architecture-skill --skill flutter-bloc-development
-
-# From oh-my-skills mirror docs
-npx skills add https://github.com/akillness/oh-my-skills --skill flutter-bloc-clean-architecture-skill
+npx skills add https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill
 ```
 
-## When to use
+### Inspect repository
+```bash
+gh repo view AbdelhakRazi/flutter-bloc-clean-architecture-skill
+```
 
-- You need a stricter Flutter layering contract for agent-generated code.
-- You want to prevent business logic in widgets and keep UI/state/data boundaries explicit.
-- You need a template for BLoC + Clean Architecture onboarding in team workflows.
+## Risk notes
 
-## Source
+- The package is Flutter/BLoC specific; do not treat it as a general mobile architecture standard.
+- Validate generated structure against your app’s dependency injection and testing conventions before broad adoption.
 
-- GitHub: https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill
-- License: Apache-2.0
-- Last checked (hourly survey): 2026-04-27
+## Further reading
+
+- Upstream repo: <https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill>
+- Hourly evidence artifact: `../../.survey/hourly-skill-candidates-20260427-133116/evidence.json`
