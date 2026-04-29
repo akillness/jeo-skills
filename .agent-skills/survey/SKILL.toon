@@ -20,7 +20,7 @@ S[12]{n,action,details}:
   2,Freeze evidence rules,Set the source quality floor labels and recovery order before searching
   3,Triage and reuse,Extract what who why and check whether an existing .survey/{slug} should be reused
   4,Run 4 lanes,Research context solutions actual behavior and alternatives-or-platform-map in parallel
-  5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families, run lane recovery templates when needed, and escalate once with a documented stage-2 query if a lane still has raw_count==0 or noisy kept_count==0 after stage-1
+  5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families, run lane recovery templates when needed, and escalate once with a documented stage-2 query if a lane still has raw_count==0 or noisy keeps remain kept_count==0 after stage-1
   6,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal) in markdown summaries
   7,Record lane metrics,Alongside lane_status include kept_count raw_count median_stars_raw zero_star_raw so reviewers can detect quality drift
   8,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane, then report a deduplicated recommendation set keyed by repository identity

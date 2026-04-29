@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where game lane results are mostly old repos (>24 months since last push) and only one stale repo has enough stars",
-      "expected_output": "The survey preserves discovery evidence but excludes stale repos from recommendation-grade keeps by default, reports freshness audit metrics (for example months_since_push or stale_filtered_count), and marks degraded lanes with `stale` cause unless an explicit exception rationale is documented.",
+      "prompt": "run the hourly five-lane survey where game-development lane is sparse: stage-1 recovery returns raw_count=0, so the run must stay deterministic",
+      "expected_output": "The survey applies the documented game lane stage-2 recovery query, then reports final lane_status with explicit degraded causes if recommendation-grade keeps still fail thresholds.",
       "assertions": [
-        "Applies recommendation-grade freshness filtering before final keeps",
-        "Reports freshness audit evidence such as months_since_push or stale_filtered_count",
-        "Uses degraded_causes including `stale` when freshness filtering removes lane keeps"
+        "Runs the documented game-development stage-2 recovery query when stage-1 is empty or still keeps=0",
+        "Reapplies recommendation-grade gates (license/freshness/signal/fit) to stage-2 hits",
+        "Reports lane_status, lane metrics, and degraded_causes transparently after escalation"
       ]
     }
   ]

@@ -1,0 +1,183 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-033108",
+  "generated_at": "2026-04-25T18:33:04.038371Z",
+  "graphify_query_status": "fallback-generated (graphify query failed)",
+  "failure_reason": "error: graph file not found: /private/tmp/oh-my-skills-hourly-20260426-032834/.survey/hourly-skill-candidates-20260426-033108/graph.json\n",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260426-033108",
+      "type": "run",
+      "label": "hourly-skill-candidates-20260426-033108"
+    },
+    {
+      "id": "lane:agentic ai skill",
+      "type": "lane",
+      "label": "agentic ai skill",
+      "status": "pass"
+    },
+    {
+      "id": "lane:web frontend skill",
+      "type": "lane",
+      "label": "web frontend skill",
+      "status": "degraded"
+    },
+    {
+      "id": "cause:license",
+      "type": "degraded-cause",
+      "label": "license"
+    },
+    {
+      "id": "cause:stale",
+      "type": "degraded-cause",
+      "label": "stale"
+    },
+    {
+      "id": "lane:web backend skill",
+      "type": "lane",
+      "label": "web backend skill",
+      "status": "degraded"
+    },
+    {
+      "id": "lane:cli open source skill",
+      "type": "lane",
+      "label": "cli open source skill",
+      "status": "degraded"
+    },
+    {
+      "id": "cause:low-fit",
+      "type": "degraded-cause",
+      "label": "low-fit"
+    },
+    {
+      "id": "lane:game development skill",
+      "type": "lane",
+      "label": "game development skill",
+      "status": "degraded"
+    },
+    {
+      "id": "cause:archived",
+      "type": "degraded-cause",
+      "label": "archived"
+    },
+    {
+      "id": "repo:guarinogabriel/Mac-CLI",
+      "type": "repo",
+      "label": "guarinogabriel/Mac-CLI",
+      "stars": 9062
+    },
+    {
+      "id": "repo:abhixdd/ghgrab",
+      "type": "repo",
+      "label": "abhixdd/ghgrab",
+      "stars": 828
+    },
+    {
+      "id": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "repo",
+      "label": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "stars": 14
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260426-033108",
+      "target": "lane:agentic ai skill",
+      "type": "covers",
+      "weight": 10
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-033108",
+      "target": "lane:web frontend skill",
+      "type": "covers",
+      "weight": 4
+    },
+    {
+      "source": "lane:web frontend skill",
+      "target": "cause:license",
+      "type": "degraded-by",
+      "weight": 3
+    },
+    {
+      "source": "lane:web frontend skill",
+      "target": "cause:stale",
+      "type": "degraded-by",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-033108",
+      "target": "lane:web backend skill",
+      "type": "covers",
+      "weight": 0
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-033108",
+      "target": "lane:cli open source skill",
+      "type": "covers",
+      "weight": 5
+    },
+    {
+      "source": "lane:cli open source skill",
+      "target": "cause:license",
+      "type": "degraded-by",
+      "weight": 1
+    },
+    {
+      "source": "lane:cli open source skill",
+      "target": "cause:stale",
+      "type": "degraded-by",
+      "weight": 1
+    },
+    {
+      "source": "lane:cli open source skill",
+      "target": "cause:low-fit",
+      "type": "degraded-by",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-033108",
+      "target": "lane:game development skill",
+      "type": "covers",
+      "weight": 11
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "cause:license",
+      "type": "degraded-by",
+      "weight": 7
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "cause:stale",
+      "type": "degraded-by",
+      "weight": 3
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "cause:archived",
+      "type": "degraded-by",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-033108",
+      "target": "repo:guarinogabriel/Mac-CLI",
+      "type": "recommends",
+      "weight": 9062
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-033108",
+      "target": "repo:abhixdd/ghgrab",
+      "type": "recommends",
+      "weight": 828
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-033108",
+      "target": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "recommends",
+      "weight": 14
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260426-033108/evidence.json",
+    ".survey/hourly-skill-candidates-20260426-033108/rtk-summary.md"
+  ]
+}
