@@ -1,0 +1,115 @@
+{
+  "nodes": [
+    {
+      "id": "lane:agentic-ai",
+      "label": "agentic-ai",
+      "type": "lane",
+      "status": "pass",
+      "kept": 3,
+      "raw": 40
+    },
+    {
+      "id": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "label": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "repo",
+      "stars": 14,
+      "license": "Apache-2.0",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill"
+    },
+    {
+      "id": "repo:iwe-org/skills",
+      "label": "iwe-org/skills",
+      "type": "repo",
+      "stars": 7,
+      "license": "MIT",
+      "url": "https://github.com/iwe-org/skills"
+    },
+    {
+      "id": "repo:VoDaiLocz/Enhance-Prompt",
+      "label": "VoDaiLocz/Enhance-Prompt",
+      "type": "repo",
+      "stars": 10,
+      "license": "MIT",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt"
+    },
+    {
+      "id": "lane:web-frontend",
+      "label": "web-frontend",
+      "type": "lane",
+      "status": "degraded",
+      "kept": 0,
+      "raw": 4
+    },
+    {
+      "id": "lane:web-backend",
+      "label": "web-backend",
+      "type": "lane",
+      "status": "degraded",
+      "kept": 0,
+      "raw": 1
+    },
+    {
+      "id": "lane:cli-open-source",
+      "label": "cli-open-source",
+      "type": "lane",
+      "status": "pass",
+      "kept": 1,
+      "raw": 2
+    },
+    {
+      "id": "repo:jeremylongshore/claude-code-plugins-plus-skills",
+      "label": "jeremylongshore/claude-code-plugins-plus-skills",
+      "type": "repo",
+      "stars": 2043,
+      "license": "MIT",
+      "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills"
+    },
+    {
+      "id": "lane:game-development",
+      "label": "game-development",
+      "type": "lane",
+      "status": "pass",
+      "kept": 1,
+      "raw": 40
+    },
+    {
+      "id": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "label": "tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "repo",
+      "stars": 3,
+      "license": "MIT",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev"
+    }
+  ],
+  "edges": [
+    {
+      "source": "lane:agentic-ai",
+      "target": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "recommends"
+    },
+    {
+      "source": "lane:agentic-ai",
+      "target": "repo:iwe-org/skills",
+      "type": "recommends"
+    },
+    {
+      "source": "lane:agentic-ai",
+      "target": "repo:VoDaiLocz/Enhance-Prompt",
+      "type": "recommends"
+    },
+    {
+      "source": "lane:cli-open-source",
+      "target": "repo:jeremylongshore/claude-code-plugins-plus-skills",
+      "type": "recommends"
+    },
+    {
+      "source": "lane:game-development",
+      "target": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "recommends"
+    }
+  ],
+  "meta": {
+    "slug": "hourly-skill-candidates-20260427-160140",
+    "run_utc": "2026-04-27T16:01:40.850913+00:00"
+  }
+}

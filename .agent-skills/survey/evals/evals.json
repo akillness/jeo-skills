@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where cli lane remains raw_count=0 after documented stage-1 and stage-2 recovery",
-      "expected_output": "The survey keeps lane_status as degraded and explicitly includes `no-results` in degraded_causes so reviewers can distinguish retrieval emptiness from filtering-only degradation.",
+      "prompt": "run the hourly survey in a headless cron runtime where obsidian-cli prints 'Failed to execute Obsidian URI' but exits 0 while writing run notes",
+      "expected_output": "The survey treats the explicit URI failure signature as a hard failure signal, falls back to deterministic direct markdown file writes, and records the fallback path in run artifacts instead of claiming Obsidian CLI success.",
       "assertions": [
-        "When raw_count stays 0 after documented recovery, degraded_causes includes `no-results`",
-        "Preserves lane metrics and provenance while reporting the no-results condition",
-        "Does not misclassify pure no-hit lanes as only low-signal/low-fit without the explicit no-results tag"
+        "Treats explicit obsidian-cli failure signatures as failure conditions even when process exit code is zero",
+        "Falls back to direct markdown file writing for run-note persistence",
+        "Records fallback status/path in artifacts or run summary for reviewer traceability"
       ]
     }
   ]
