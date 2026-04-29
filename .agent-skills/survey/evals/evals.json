@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where one lane still has raw_count=0 even after stage-2 recovery and keep reviewer triage deterministic",
-      "expected_output": "The survey keeps the lane degraded and explicitly includes `no-results` in degraded_causes for that lane, so zero-hit runs never ship with an empty or ambiguous cause list.",
+      "prompt": "run the hourly survey where a candidate in the cli lane contains the token 'cli' only inside a negated phrase like 'No CLI'",
+      "expected_output": "The survey keeps the repo in raw discovery evidence but classifies it as low-fit for recommendation-grade promotion unless an explicit exception rationale is documented.",
       "assertions": [
-        "Adds `no-results` to degraded_causes when final raw_count remains 0 after documented recovery",
-        "Avoids leaving degraded_causes empty for zero-hit lanes",
-        "Keeps provenance and lane-status reporting explicit in markdown artifacts"
+        "Applies a negation-aware intent guard for lane-token hits inside phrases like 'no cli' or 'without cli'",
+        "Prevents blind promotion of negated-intent repos into recommendation-grade keeps",
+        "Preserves provenance and raw lane evidence while reporting the low-fit classification"
       ]
     }
   ]

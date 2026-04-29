@@ -9,7 +9,8 @@ U[12]:
   Run the mandatory five-keyword sweep for recurring repo-maintenance loops with lane-specific recovery templates and deterministic stage-2 escalation when a lane remains raw_count==0
   Keep documented stage-2 recovery templates for every mandatory lane (including game development) to avoid ad-hoc query invention in unattended runs
   Apply recommendation-grade freshness and signal-floor gating while preserving broad discovery evidence
-  Treat generic personal catch-all repos (especially */skills) as low-fit by default unless workflow docs + traction are explicit, and apply lane-intent token overlap gating before recommendation promotion
+  Treat generic personal catch-all repos (especially */skills) as low-fit by default unless workflow docs + traction are explicit
+  Apply negation-aware intent gating so token overlap inside phrases like no cli or without cli is treated as low-fit unless an exception is justified
   Emit lane-level status vocabulary (pass|degraded) and degraded-cause taxonomy for sparse/noisy lanes
   Include compact lane-health metrics (kept_count raw_count median_stars_raw zero_star_raw) and apply a zero-star saturation guard before marking a lane pass
   Detect cross-lane recommendation concentration with recommended_lane_count and single_lane_concentration flags
@@ -21,10 +22,10 @@ S[12]{n,action,details}:
   3,Triage and reuse,Extract what who why and check whether an existing .survey/{slug} should be reused
   4,Run 4 lanes,Research context solutions actual behavior and alternatives-or-platform-map in parallel
   5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families, run lane recovery templates when needed, and escalate once with a documented stage-2 query if a lane still has raw_count==0
-  6,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal|transport|no-results) in markdown summaries
-  7,Record lane metrics,Alongside lane_status include kept_count raw_count median_stars_raw zero_star_raw so reviewers can detect quality drift
-  8,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane
-  9,Handle Obsidian fallback,If obsidian-cli emits explicit URI failure signatures, fallback to direct markdown file write and record artifact path
+  6,Apply fit gate,Before promotion run relevance checks including negation-aware lane-intent filtering for phrases like no cli or non-cli
+  7,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal) in markdown summaries
+  8,Record lane metrics,Alongside lane_status include kept_count raw_count median_stars_raw zero_star_raw so reviewers can detect quality drift
+  9,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane
   10,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
   11,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
   12,Summarize,Return a short factual survey summary and route planning or implementation outward
@@ -34,6 +35,7 @@ R[15]:
   Keep claims source-backed and label downgraded evidence clearly using validator-supported labels (map gh-search listings to indexed snippet and repo/API detail fetches to direct page retrieval); for gh search repos JSON output prefer fullName or owner+name over unsupported nameWithOwner, and if gh search returns empty-success payloads ([] exit 0) on known-populated probes rerun via gh api search/repositories fallback while preserving stderr evidence
   Drop assessment/homework-only and unknown-license noise unless exception rationale is explicit; when license is null on first pass, retry once via gh api repos/<owner>/<repo> before classifying unknown
   Treat generic personal catch-all repos (especially */skills) as low-fit unless workflow docs + traction are explicit
+  Treat lane-token hits inside explicit negation phrases (for example no cli, without cli, not a cli, non-cli) as low-fit unless a documented exception rationale exists
   Apply a recommendation-grade freshness floor (drop stale pushed_at over 24 months unless exception rationale + risk note)
   Apply a recommendation-grade signal floor (require traction signal such as stars>=3 or explicit adoption rationale)
   Preserve the same artifact filenames and headings across platforms
