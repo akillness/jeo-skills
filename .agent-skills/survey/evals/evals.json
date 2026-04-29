@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where the same repository appears in multiple lanes and one lane remains raw_count=0 after documented recovery",
-      "expected_output": "The survey preserves raw evidence, deduplicates recommendation-grade repositories across lanes before final ranking, and reports `no-results` explicitly in degraded causes for lanes that remain raw_count=0 post-recovery.",
+      "prompt": "run the hourly five-lane survey where gh search returns license as an empty object payload like {\"key\":\"\",\"name\":\"\"} for many frontend hits",
+      "expected_output": "The survey treats empty-object license payloads as unknown metadata, retries license lookup once via gh api repos/<owner>/<repo>, and excludes recommendation-grade keeps unless the fallback returns an explicit license or an exception rationale is documented.",
       "assertions": [
-        "Reports both raw and deduplicated recommendation coverage metrics when cross-lane duplicates exist",
-        "Keeps raw discovery evidence unchanged while applying dedup only to recommendation-grade ranking",
-        "Includes `no-results` explicitly in degraded_causes when a lane remains raw_count==0 after recovery"
+        "Interprets empty-object license payloads as unknown rather than valid license",
+        "Retries license resolution once with gh api before final keep/drop classification",
+        "Keeps provenance/lane coverage while preventing unknown-license promotion"
       ]
     }
   ]
