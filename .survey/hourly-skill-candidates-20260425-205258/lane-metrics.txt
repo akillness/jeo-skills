@@ -1,0 +1,7 @@
+run_slug=hourly-skill-candidates-20260425-205258
+lane=agentic status=pass kept=5 raw=33 median_stars_raw=0.0 zero_star_raw=21 degraded_causes={'low-fit': 8, 'low-signal': 27, 'license': 20}
+lane=frontend status=degraded kept=0 raw=4 median_stars_raw=0.0 zero_star_raw=3 degraded_causes={'license': 3, 'stale': 1, 'low-signal': 3}
+lane=backend status=degraded kept=0 raw=0 median_stars_raw=0 zero_star_raw=0 degraded_causes={'no-results': 1}
+lane=cli status=degraded kept=2 raw=5 median_stars_raw=829.0 zero_star_raw=0 degraded_causes={'stale': 2, 'low-fit': 1}
+lane=game status=pass kept=1 raw=30 median_stars_raw=0.0 zero_star_raw=17 degraded_causes={'stale': 14, 'license': 21, 'low-fit': 22, 'low-signal': 22, 'archived': 1}
+cross_lane={'recommended_lane_count': 3, 'single_lane_concentration': False, 'total_recommendation_grade_keeps': 8}

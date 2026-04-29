@@ -201,7 +201,7 @@ Execution rules:
 - If keyword hits are noisy or sparse, run lane-specific recovery templates from `references/keyword-sweep-and-relevance-rescue.md` before finalizing recommendations.
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
 - Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results`) plus examples/counts.
-- If a lane remains `raw_count == 0` after the documented recovery path, always include `no-results` in `degraded_causes` so sparse-lane triage stays deterministic.
+- If a lane remains `raw_count == 0` after documented stage-1/stage-2 recovery, explicitly include `no-results` in `degraded_causes` (do not leave empty causes for empty lanes).
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)

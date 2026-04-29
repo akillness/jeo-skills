@@ -1,0 +1,203 @@
+{
+  "run_slug": "hourly-skill-candidates-20260425-205258",
+  "generated_at": "2026-04-25T20:54:20.715942Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: error: could not load graph: 'links')",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260425-205258",
+      "type": "run",
+      "label": "hourly-skill-candidates-20260425-205258"
+    },
+    {
+      "id": "survey-skill",
+      "type": "skill",
+      "label": "survey"
+    },
+    {
+      "id": "lane:agentic",
+      "type": "lane",
+      "label": "agentic",
+      "status": "pass"
+    },
+    {
+      "id": "cause:low-fit",
+      "type": "cause",
+      "label": "low-fit"
+    },
+    {
+      "id": "cause:low-signal",
+      "type": "cause",
+      "label": "low-signal"
+    },
+    {
+      "id": "cause:license",
+      "type": "cause",
+      "label": "license"
+    },
+    {
+      "id": "lane:frontend",
+      "type": "lane",
+      "label": "frontend",
+      "status": "degraded"
+    },
+    {
+      "id": "cause:stale",
+      "type": "cause",
+      "label": "stale"
+    },
+    {
+      "id": "lane:backend",
+      "type": "lane",
+      "label": "backend",
+      "status": "degraded"
+    },
+    {
+      "id": "cause:no-results",
+      "type": "cause",
+      "label": "no-results"
+    },
+    {
+      "id": "lane:cli",
+      "type": "lane",
+      "label": "cli",
+      "status": "degraded"
+    },
+    {
+      "id": "lane:game",
+      "type": "lane",
+      "label": "game",
+      "status": "pass"
+    },
+    {
+      "id": "cause:archived",
+      "type": "cause",
+      "label": "archived"
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260425-205258",
+      "target": "survey-skill",
+      "relation": "analyzes",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260425-205258",
+      "target": "lane:agentic",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "lane:agentic",
+      "target": "cause:low-fit",
+      "relation": "degraded_by",
+      "weight": 8
+    },
+    {
+      "source": "lane:agentic",
+      "target": "cause:low-signal",
+      "relation": "degraded_by",
+      "weight": 27
+    },
+    {
+      "source": "lane:agentic",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "weight": 20
+    },
+    {
+      "source": "hourly-skill-candidates-20260425-205258",
+      "target": "lane:frontend",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "lane:frontend",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "weight": 3
+    },
+    {
+      "source": "lane:frontend",
+      "target": "cause:stale",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:frontend",
+      "target": "cause:low-signal",
+      "relation": "degraded_by",
+      "weight": 3
+    },
+    {
+      "source": "hourly-skill-candidates-20260425-205258",
+      "target": "lane:backend",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "lane:backend",
+      "target": "cause:no-results",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260425-205258",
+      "target": "lane:cli",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "lane:cli",
+      "target": "cause:stale",
+      "relation": "degraded_by",
+      "weight": 2
+    },
+    {
+      "source": "lane:cli",
+      "target": "cause:low-fit",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260425-205258",
+      "target": "lane:game",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "lane:game",
+      "target": "cause:stale",
+      "relation": "degraded_by",
+      "weight": 14
+    },
+    {
+      "source": "lane:game",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "weight": 21
+    },
+    {
+      "source": "lane:game",
+      "target": "cause:low-fit",
+      "relation": "degraded_by",
+      "weight": 22
+    },
+    {
+      "source": "lane:game",
+      "target": "cause:low-signal",
+      "relation": "degraded_by",
+      "weight": 22
+    },
+    {
+      "source": "lane:game",
+      "target": "cause:archived",
+      "relation": "degraded_by",
+      "weight": 1
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260425-205258/evidence.json",
+    ".survey/hourly-skill-candidates-20260425-205258/rtk-summary.md"
+  ]
+}

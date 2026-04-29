@@ -36,9 +36,8 @@ R[11]:
   Apply a recommendation-grade freshness floor (drop stale pushed_at over 24 months unless exception rationale + risk note)
   Apply a recommendation-grade signal floor (require traction signal such as stars>=3 or explicit adoption rationale)
   Preserve the same artifact filenames and headings across platforms
-  Preserve lane-level threshold reporting (>=1 keep per lane where feasible; CLI lane target 3+) and run one documented stage-2 lane recovery when stage-1 still yields raw_count==0
+  Preserve lane-level threshold reporting (>=1 keep per lane where feasible; CLI lane target 3+) and run one documented stage-2 lane recovery when stage-1 still yields raw_count==0; if raw_count remains 0 after recovery, explicitly report degraded_cause no-results
   Use lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal|no-results) for under-threshold lanes
-  If a lane remains raw_count==0 after recovery, include no-results in degraded_causes explicitly
   Include lane metrics (kept_count raw_count median_stars_raw zero_star_raw) whenever lane_status is reported
   Include cross-lane concentration signals (recommended_lane_count and single_lane_concentration) before claiming healthy recommendation coverage
   Deduplicate solution names and keep one bounded question per survey artifact
