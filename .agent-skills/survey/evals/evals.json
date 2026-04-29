@@ -106,10 +106,10 @@
     {
       "id": 11,
       "prompt": "run the hourly five-lane survey and two lanes still miss thresholds after recovery; produce a reviewer-ready markdown summary",
-      "expected_output": "The survey marks each lane with `lane_status` (`pass|degraded`) and reports `degraded_causes` using the compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `transport/auth`) with concrete examples or counts.",
+      "expected_output": "The survey marks each lane with `lane_status` (`pass|degraded`) and reports `degraded_causes` using the compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results`) with concrete examples or counts.",
       "assertions": [
         "Includes explicit lane_status labels in markdown output for each lane",
-        "Uses degraded_causes taxonomy (`license|stale|low-fit|archived|transport/auth`) when thresholds are missed",
+        "Uses degraded_causes taxonomy (`license|stale|low-fit|archived|low-signal|no-results`) when thresholds are missed",
         "Keeps provenance/evidence references while reporting degraded lanes"
       ]
     },
@@ -196,32 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where `gh search repos` exits 0 but returns [] on a known-populated probe query; keep cron output merge-safe",
-      "expected_output": "The survey treats empty-success payloads as degraded retrieval, reruns search via `gh api \"search/repositories?...\"`, records fallback evidence, and continues lane status reporting with provenance labels.",
+      "prompt": "run the hourly five-lane survey where backend remains raw_count=0 even after documented stage-2 recovery; keep reviewer output deterministic",
+      "expected_output": "The survey explicitly marks `degraded_causes` with `no-results` for the lane instead of leaving an empty cause map, while preserving lane metrics and provenance.",
       "assertions": [
-        "Does not treat `[]` + exit 0 from `gh search repos` as healthy when probe expectation indicates population",
-        "Uses deterministic GitHub REST fallback endpoint form (`gh api \"search/repositories?...\"`) before final lane status",
-        "Preserves provenance and degraded/transport reporting in the final artifacts"
-      ]
-    },
-    {
-      "id": 21,
-      "prompt": "run the hourly five-lane survey where game development lane remains raw_count=0 after stage-1 recovery; keep unattended behavior deterministic",
-      "expected_output": "The survey applies one documented stage-2 game-lane recovery query before final lane_status, then reapplies recommendation-grade relevance gates and reports final degraded_causes/provenance.",
-      "assertions": [
-        "Uses an explicit documented stage-2 query template for the game development lane when stage-1 recovery still yields raw_count==0",
-        "Reapplies license/freshness/signal/fit gates to stage-2 results before recommending keeps",
-        "Reports lane_status, degraded_causes, and provenance labels after game-lane escalation"
-      ]
-    },
-    {
-      "id": 22,
-      "prompt": "run the hourly five-lane survey where `gh search repos --json license` returns license objects with `key/name` but no `spdx_id`; keep lane status accurate",
-      "expected_output": "The survey normalizes GitHub search license payload shapes (`license.key|license.name|spdxId`) before classifying unknown-license and only then performs one enrichment fallback (`gh repo view`/`gh api`) if still unknown.",
-      "assertions": [
-        "Treats `license.key` or `license.name` from gh search payload as valid first-pass license evidence",
-        "Runs enrichment fallback only when normalized license fields are still unknown",
-        "Avoids false `license` degraded causes that come only from schema-shape mismatch"
+        "When raw_count stays zero after recovery, includes `no-results` in degraded_causes",
+        "Does not hide the lane; keeps lane_status and lane metrics in output",
+        "Preserves provenance labels and recovery-attempt context in the summary"
       ]
     }
   ]

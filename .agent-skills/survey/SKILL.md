@@ -17,7 +17,7 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.5"
+  version: "2.1.7"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
   hardening: 2026-04-28
@@ -200,8 +200,8 @@ Execution rules:
 - If direct web search/extract tooling fails (auth/rate-limit/transport), switch to GitHub-native retrieval (`gh search` + `gh api` or `gh repo view`) and label provenance clearly.
 - If keyword hits are noisy or sparse, run lane-specific recovery templates from `references/keyword-sweep-and-relevance-rescue.md` before finalizing recommendations.
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
-- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `transport/auth`) plus examples/counts.
-- If external search tooling fails because of credentials/transport/rate limits, always include `transport/auth` in `degraded_causes` for impacted lanes and preserve one concrete error signature (for example `401 INVALID_API_KEY`) in artifacts.
+- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results`) plus examples/counts.
+- When a lane remains `raw_count == 0` after documented recovery stages, always include `no-results` in `degraded_causes` (do not leave cause maps empty).
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
