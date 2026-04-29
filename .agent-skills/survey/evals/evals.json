@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where a lane switches to a recovery query result set after trigger conditions are met",
-      "expected_output": "Before writing artifacts, the survey recomputes lane metrics from the final selected result set and enforces metric integrity so impossible states (for example kept_count > raw_count) are never emitted.",
+      "prompt": "run the hourly five-lane survey where one lane remains raw_count=0 even after documented stage-2 recovery; keep reviewer triage deterministic",
+      "expected_output": "The survey keeps the lane as degraded and explicitly includes `no-results` in degraded_causes so reviewers can distinguish empty-lane failures from other filters.",
       "assertions": [
-        "Recomputes raw_count/zero_star_raw/median_stars_raw after recovery-query switching",
-        "Ensures kept_count is derived from the same final selected result set",
-        "Blocks or retries artifact output when metric integrity would be violated (e.g., kept_count > raw_count)"
+        "Reports lane_status=degraded when final raw_count stays 0",
+        "Includes `no-results` in degraded_causes instead of leaving the cause list empty",
+        "Preserves provenance and lane-health metrics while documenting the empty-lane condition"
       ]
     }
   ]

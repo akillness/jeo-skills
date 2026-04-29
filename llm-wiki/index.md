@@ -8,4 +8,4 @@
 - [Hourly survey recovery-template ratchet](queries/2026-04-25-hourly-survey-recovery-template.md)
 - [Hourly survey lane-status ratchet](queries/2026-04-25-hourly-survey-lane-status-ratchet.md)
 - [Hourly survey lane-metrics ratchet](queries/2026-04-25-hourly-survey-lane-metrics-ratchet.md)
-- [Hourly survey open-PR backlog gate](queries/2026-04-25-hourly-survey-open-pr-backlog-gate.md)
+- [Hourly survey no-results degraded-cause hardening](queries/2026-04-26-hourly-survey-no-results-cause.md)

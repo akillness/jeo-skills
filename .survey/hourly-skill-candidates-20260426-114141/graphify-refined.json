@@ -1,0 +1,101 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-114141",
+  "generated_at": "2026-04-26T02:42:58Z",
+  "graphify_query_status": "fallback-generated (error: graph file not found: /private/tmp/oh-my-skills-hourly-20260426-114005/repo/.survey/hourly-skill-candidates-20260426-114141/graph.json)",
+  "nodes": [
+    {
+      "id": "run:hourly-skill-candidates-20260426-114141",
+      "type": "run",
+      "label": "hourly-skill-candidates-20260426-114141"
+    },
+    {
+      "id": "lane:agentic_ai_skill",
+      "type": "lane",
+      "label": "agentic_ai_skill",
+      "status": "pass"
+    },
+    {
+      "id": "lane:web_frontend_skill",
+      "type": "lane",
+      "label": "web_frontend_skill",
+      "status": "pass"
+    },
+    {
+      "id": "lane:web_backend_skill",
+      "type": "lane",
+      "label": "web_backend_skill",
+      "status": "pass"
+    },
+    {
+      "id": "lane:cli_open_source_skill",
+      "type": "lane",
+      "label": "cli_open_source_skill",
+      "status": "degraded"
+    },
+    {
+      "id": "cause:license",
+      "type": "cause",
+      "label": "license"
+    },
+    {
+      "id": "cause:low-fit",
+      "type": "cause",
+      "label": "low-fit"
+    },
+    {
+      "id": "lane:game_development_skill",
+      "type": "lane",
+      "label": "game_development_skill",
+      "status": "pass"
+    }
+  ],
+  "links": [
+    {
+      "source": "run:hourly-skill-candidates-20260426-114141",
+      "target": "lane:agentic_ai_skill",
+      "relation": "analyzed",
+      "weight": 47
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-114141",
+      "target": "lane:web_frontend_skill",
+      "relation": "analyzed",
+      "weight": 14
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-114141",
+      "target": "lane:web_backend_skill",
+      "relation": "analyzed",
+      "weight": 8
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-114141",
+      "target": "lane:cli_open_source_skill",
+      "relation": "analyzed",
+      "weight": 3
+    },
+    {
+      "source": "lane:cli_open_source_skill",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:cli_open_source_skill",
+      "target": "cause:low-fit",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-114141",
+      "target": "lane:game_development_skill",
+      "relation": "analyzed",
+      "weight": 30
+    }
+  ],
+  "source_files": [
+    "evidence.json",
+    "rtk-summary.md",
+    "graphify-query.err"
+  ]
+}
