@@ -1,22 +1,7 @@
 # LLM Wiki Index
 
 ## Topics
-- [Hourly survey recovery-attempt auditability ratchet (2026-04-29)](queries/2026-04-29-hourly-survey-recovery-attempt-auditability-ratchet.md)
-- [Hourly survey transport-http-status envelope ratchet (2026-04-29)](queries/2026-04-29-hourly-survey-transport-http-status-ratchet.md)
-- [Hourly survey all-lanes-zero-results ratchet (2026-04-29)](queries/2026-04-29-hourly-survey-all-lanes-zero-results-ratchet.md)
-- [Hourly survey UNKNOWN-mergeability polling ratchet (2026-04-28)](queries/2026-04-28-hourly-survey-unknown-mergeability-polling-ratchet.md)
-- [Hourly survey transport-envelope ratchet (2026-04-28)](queries/2026-04-28-hourly-survey-transport-envelope-ratchet.md)
-- [Hourly survey transport-path eval ratchet (2026-04-28)](queries/2026-04-28-hourly-survey-transport-path-eval-ratchet.md)
-- [Hourly survey carry-forward merge #208 (2026-04-28)](queries/2026-04-28-hourly-survey-carry-forward-merge-208.md)
-- [Hourly survey open-PR backlog-gate ratchet](queries/2026-04-27-hourly-survey-open-pr-backlog-gate-ratchet.md)
-- [Hourly survey merge carry-forward](queries/2026-04-27-hourly-survey-merge-carry-forward.md)
-- [Hourly survey gh-search-empty-payload ratchet](queries/2026-04-27-hourly-survey-gh-search-empty-payload-ratchet.md)
-- [Hourly survey relative-error-log-path ratchet](queries/2026-04-27-hourly-survey-relative-error-log-path-ratchet.md)
-- [Hourly survey web-search-error-log ratchet](queries/2026-04-27-hourly-survey-web-search-error-log-ratchet.md)
-- [Hourly survey transport-taxonomy ratchet](queries/2026-04-27-hourly-survey-transport-taxonomy-ratchet.md)
-- [Hourly survey raw-quality-collapse ratchet](queries/2026-04-26-hourly-survey-raw-quality-collapse-ratchet.md)
-- [Hourly survey gh-field-compatibility ratchet](queries/2026-04-26-hourly-survey-gh-field-compatibility-ratchet.md)
-- [Hourly survey license-fallback ratchet](queries/2026-04-26-hourly-survey-license-fallback-ratchet.md)
+- [Hourly survey lane-health diagnostics](queries/2026-04-26-hourly-survey-lane-health-diagnostics.md)
 - [Hourly survey deterministic recovery-trigger ratchet](queries/2026-04-25-hourly-survey-deterministic-recovery-trigger.md)
 - [Hourly survey noise-gate evolution](queries/2026-04-25-hourly-survey-noise-gate.md)
 - [Hourly survey freshness-floor ratchet](queries/2026-04-25-hourly-survey-freshness-floor.md)

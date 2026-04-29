@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where backend lane remains raw_count=0 after stage-2 recovery; keep reviewer triage deterministic",
-      "expected_output": "The survey explicitly reports degraded_cause `no-results` for the empty lane (instead of leaving causes empty) while preserving query logs and lane metrics.",
+      "prompt": "run the hourly five-lane survey where backend has raw_count=0 after recovery while frontend has raw_count>0 but kept_count=0; keep markdown reviewer-ready",
+      "expected_output": "The survey explicitly distinguishes degraded-no-results and degraded-noisy lanes in markdown, requires `no-results` cause for empty lanes, and preserves lane metrics/provenance for both cases.",
       "assertions": [
-        "Sets `degraded_causes` to include `no-results` when raw_count remains 0 after documented recovery",
-        "Preserves query logs showing stage-1/stage-2 recovery attempts",
-        "Keeps lane metrics (`raw_count`, `kept_count`) aligned with the reported no-results state"
+        "Classifies a `raw_count==0` lane as degraded-no-results and includes `no-results` in degraded_causes",
+        "Classifies a `raw_count>0 && kept_count==0` lane as degraded-noisy with concrete degraded_causes",
+        "Keeps lane metrics and provenance visible for both degraded lane types"
       ]
     }
   ]
