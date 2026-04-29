@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where agentic lane has many lexical matches and enough kept_count, but zero_star_raw/raw_count is very high and median_stars_raw is zero",
-      "expected_output": "The survey applies a zero-star saturation guard: it does not keep lane_status=pass by count alone, and either documents explicit traction rationale for promoted keeps or marks the lane degraded with low-signal cause.",
+      "prompt": "run the hourly five-lane survey where agentic query returns high-star but off-topic repositories (for example generic frameworks) that only weakly match keywords",
+      "expected_output": "The survey preserves those repositories in raw discovery evidence but blocks recommendation-grade promotion unless there is lane-intent token overlap in fullName/description (or a documented synonym exception), reporting filtered examples as low-fit.",
       "assertions": [
-        "Checks zero-star saturation using both zero_star ratio and median_stars_raw",
-        "Avoids pass-by-count outcomes when saturation indicates weak traction",
-        "Requires explicit traction rationale or reports degraded low-signal status"
+        "Applies a lane-intent token-overlap check before recommendation-grade promotion",
+        "Keeps filtered off-topic repositories in raw evidence rather than deleting discovery traces",
+        "Reports low-fit filtering examples or counts so reviewers can audit precision improvements"
       ]
     }
   ]

@@ -20,7 +20,7 @@ metadata:
   version: "2.1.7"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
-  hardening: 2026-04-28
+  hardening: 2026-04-27
 ---
 
 # Survey
@@ -196,7 +196,7 @@ Execution rules:
 - For recommendation-grade keeps, apply a default freshness floor (`pushed_at` within the last 24 months). If kept despite staleness, document exception rationale and explicit risk.
 - Apply a default signal floor for recommendation-grade keeps: require at least one traction signal (for example, stars >= 3, or explicit maintainer/community adoption evidence with rationale). Keep broad discovery evidence even when the recommendation-grade list is stricter.
 - For the `agentic ai skill` lane, treat generic personal catch-all repositories named only like `*/skills` as low-fit by default unless there is explicit workflow documentation + traction; keep them in raw evidence but do not promote to TOP recommendations without an exception rationale.
-- For the `cli open source skill` lane, treat explicit negation phrases (`no cli`, `without cli`, `not a cli`, `non-cli`) as low-fit signals by default; preserve in raw evidence but require explicit exception rationale before recommendation-grade promotion.
+- Add a lane-intent token-overlap gate before recommendation promotion: require at least one lane-intent keyword token (or documented synonym) in `fullName` or description; if missing, keep as raw discovery evidence and classify as `low-fit` noise instead of promoting.
 - If direct web search/extract tooling fails (auth/rate-limit/transport), switch to GitHub-native retrieval (`gh search` + `gh api` or `gh repo view`) and label provenance clearly.
 - If keyword hits are noisy or sparse, run lane-specific recovery templates from `references/keyword-sweep-and-relevance-rescue.md` before finalizing recommendations.
 - Use objective recovery triggers after the primary query (`raw_count < 8`, `kept_count == 0`, or `zero_star_raw/raw_count >= 0.70`) so lane rescue is deterministic in unattended cron loops.

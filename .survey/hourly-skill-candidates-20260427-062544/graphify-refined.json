@@ -1,0 +1,238 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-062544",
+  "generated_at": "2026-04-26T21:27:24.736671Z",
+  "graphify_query_status": "fallback-generated (graphify query failed; see graphify-query.err)",
+  "nodes": [
+    {
+      "id": "run:hourly-skill-candidates-20260427-062544",
+      "label": "hourly-skill-candidates-20260427-062544",
+      "kind": "run"
+    },
+    {
+      "id": "lane:agentic-ai-skill",
+      "label": "agentic-ai-skill",
+      "kind": "lane"
+    },
+    {
+      "id": "lane:web-frontend-skill",
+      "label": "web-frontend-skill",
+      "kind": "lane"
+    },
+    {
+      "id": "lane:web-backend-skill",
+      "label": "web-backend-skill",
+      "kind": "lane"
+    },
+    {
+      "id": "lane:cli-open-source-skill",
+      "label": "cli-open-source-skill",
+      "kind": "lane"
+    },
+    {
+      "id": "lane:game-development-skill",
+      "label": "game-development-skill",
+      "kind": "lane"
+    },
+    {
+      "id": "repo:sindresorhus/awesome",
+      "label": "sindresorhus/awesome",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:openclaw/openclaw",
+      "label": "openclaw/openclaw",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:affaan-m/everything-claude-code",
+      "label": "affaan-m/everything-claude-code",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:Shubhamsaboo/awesome-llm-apps",
+      "label": "Shubhamsaboo/awesome-llm-apps",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:florinpop17/app-ideas",
+      "label": "florinpop17/app-ideas",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:garrytan/gstack",
+      "label": "garrytan/gstack",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:nextlevelbuilder/ui-ux-pro-max-skill",
+      "label": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:bytedance/deer-flow",
+      "label": "bytedance/deer-flow",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:VoltAgent/awesome-openclaw-skills",
+      "label": "VoltAgent/awesome-openclaw-skills",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:phaserjs/phaser",
+      "label": "phaserjs/phaser",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:sickn33/antigravity-awesome-skills",
+      "label": "sickn33/antigravity-awesome-skills",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:wshobson/agents",
+      "label": "wshobson/agents",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:googleworkspace/cli",
+      "label": "googleworkspace/cli",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:addyosmani/agent-skills",
+      "label": "addyosmani/agent-skills",
+      "kind": "repo"
+    },
+    {
+      "id": "repo:jackwener/OpenCLI",
+      "label": "jackwener/OpenCLI",
+      "kind": "repo"
+    }
+  ],
+  "links": [
+    {
+      "source": "run:hourly-skill-candidates-20260427-062544",
+      "target": "lane:agentic-ai-skill",
+      "type": "covers",
+      "weight": 10
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260427-062544",
+      "target": "lane:web-frontend-skill",
+      "type": "covers",
+      "weight": 10
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260427-062544",
+      "target": "lane:web-backend-skill",
+      "type": "covers",
+      "weight": 10
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260427-062544",
+      "target": "lane:cli-open-source-skill",
+      "type": "covers",
+      "weight": 10
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260427-062544",
+      "target": "lane:game-development-skill",
+      "type": "covers",
+      "weight": 10
+    },
+    {
+      "source": "lane:game-development-skill",
+      "target": "repo:sindresorhus/awesome",
+      "type": "keeps",
+      "weight": 459266
+    },
+    {
+      "source": "lane:agentic-ai-skill",
+      "target": "repo:openclaw/openclaw",
+      "type": "keeps",
+      "weight": 364526
+    },
+    {
+      "source": "lane:web-frontend-skill",
+      "target": "repo:affaan-m/everything-claude-code",
+      "type": "keeps",
+      "weight": 167559
+    },
+    {
+      "source": "lane:agentic-ai-skill",
+      "target": "repo:Shubhamsaboo/awesome-llm-apps",
+      "type": "keeps",
+      "weight": 107638
+    },
+    {
+      "source": "lane:game-development-skill",
+      "target": "repo:florinpop17/app-ideas",
+      "type": "keeps",
+      "weight": 93440
+    },
+    {
+      "source": "lane:agentic-ai-skill",
+      "target": "repo:garrytan/gstack",
+      "type": "keeps",
+      "weight": 83993
+    },
+    {
+      "source": "lane:game-development-skill",
+      "target": "repo:nextlevelbuilder/ui-ux-pro-max-skill",
+      "type": "keeps",
+      "weight": 70821
+    },
+    {
+      "source": "lane:web-backend-skill",
+      "target": "repo:bytedance/deer-flow",
+      "type": "keeps",
+      "weight": 63872
+    },
+    {
+      "source": "lane:agentic-ai-skill",
+      "target": "repo:VoltAgent/awesome-openclaw-skills",
+      "type": "keeps",
+      "weight": 47288
+    },
+    {
+      "source": "lane:game-development-skill",
+      "target": "repo:phaserjs/phaser",
+      "type": "keeps",
+      "weight": 39501
+    },
+    {
+      "source": "lane:agentic-ai-skill",
+      "target": "repo:sickn33/antigravity-awesome-skills",
+      "type": "keeps",
+      "weight": 35236
+    },
+    {
+      "source": "lane:web-backend-skill",
+      "target": "repo:wshobson/agents",
+      "type": "keeps",
+      "weight": 34353
+    },
+    {
+      "source": "lane:cli-open-source-skill",
+      "target": "repo:googleworkspace/cli",
+      "type": "keeps",
+      "weight": 25423
+    },
+    {
+      "source": "lane:web-frontend-skill",
+      "target": "repo:addyosmani/agent-skills",
+      "type": "keeps",
+      "weight": 23654
+    },
+    {
+      "source": "lane:cli-open-source-skill",
+      "target": "repo:jackwener/OpenCLI",
+      "type": "keeps",
+      "weight": 17391
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260427-062544/evidence.json",
+    ".survey/hourly-skill-candidates-20260427-062544/rtk-summary.md"
+  ]
+}

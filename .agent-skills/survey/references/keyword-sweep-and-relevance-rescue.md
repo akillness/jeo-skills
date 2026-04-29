@@ -57,6 +57,13 @@ Drop or risk-mark signals:
 - Spam-like or boilerplate descriptions
 - CLI negation patterns (`no cli`, `without cli`, `not a cli`, `non-cli`) unless explicit exception rationale is documented
 
+Lane-intent token-overlap gate (recommendation promotion guard):
+
+- Build a compact lane token set (for example: `agentic|ai|skill`, `frontend|ui|design|component`, `backend|api|framework|observability`, `cli|terminal|command`, `game|engine|gamedev|pipeline`).
+- For recommendation-grade keeps, require at least one lane-intent token (or documented synonym) in `fullName` or repository description.
+- If no overlap, keep the repository in raw discovery evidence but classify it as `low-fit` for promotion decisions.
+- Record at least one concrete off-topic example when this guard filters candidates, so reviewers can audit why precision improved.
+
 ## Rescue path for sparse/noisy lanes
 
 Trigger a recovery pass when **any** of the following is true after the primary keyword query:

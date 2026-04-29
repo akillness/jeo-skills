@@ -1,0 +1,154 @@
+{
+  "lane": "cli-open-source-skill",
+  "queries": [
+    {
+      "kind": "primary",
+      "query": "cli open source skill in:name,description,readme sort:updated-desc",
+      "ok": true,
+      "error": null,
+      "count": 10
+    }
+  ],
+  "items": [
+    {
+      "description": "Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.",
+      "fullName": "googleworkspace/cli",
+      "isArchived": false,
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "pushedAt": "2026-04-24T17:01:33Z",
+      "stargazersCount": 25423,
+      "updatedAt": "2026-04-26T20:47:50Z",
+      "url": "https://github.com/googleworkspace/cli"
+    },
+    {
+      "description": "The official Lark/Feishu CLI tool, maintained by the larksuite team — built for humans and AI Agents. Covers core business domains including Messenger, Docs, Base, Sheets, Calendar, Mail, Tasks, Meetings, and more, with 200+ commands and 20+ AI Agent Skills.",
+      "fullName": "larksuite/cli",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-04-26T17:37:27Z",
+      "stargazersCount": 8770,
+      "updatedAt": "2026-04-26T18:24:13Z",
+      "url": "https://github.com/larksuite/cli"
+    },
+    {
+      "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞 ",
+      "fullName": "openclaw/openclaw",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-04-26T21:21:01Z",
+      "stargazersCount": 364526,
+      "updatedAt": "2026-04-26T21:25:44Z",
+      "url": "https://github.com/openclaw/openclaw"
+    },
+    {
+      "description": "Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Transform any website, Electron app, or local binary into a standardized command-line interface. Built for AI Agents to discover, learn, and execute tools seamlessly via a unified AGENT.md integration.",
+      "fullName": "jackwener/OpenCLI",
+      "isArchived": false,
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "pushedAt": "2026-04-26T12:47:04Z",
+      "stargazersCount": 17391,
+      "updatedAt": "2026-04-26T21:22:27Z",
+      "url": "https://github.com/jackwener/OpenCLI"
+    },
+    {
+      "description": "The awesome collection of OpenClaw skills. 5,400+ skills filtered and categorized from the official OpenClaw Skills Registry.🦞",
+      "fullName": "VoltAgent/awesome-openclaw-skills",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-04-20T06:41:09Z",
+      "stargazersCount": 47288,
+      "updatedAt": "2026-04-26T21:14:59Z",
+      "url": "https://github.com/VoltAgent/awesome-openclaw-skills"
+    },
+    {
+      "description": "🔥 A collection of the newest Claude Code open source",
+      "fullName": "chauncygu/collection-claude-code-source-code",
+      "isArchived": false,
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "pushedAt": "2026-04-11T21:16:40Z",
+      "stargazersCount": 2270,
+      "updatedAt": "2026-04-26T18:24:13Z",
+      "url": "https://github.com/chauncygu/collection-claude-code-source-code"
+    },
+    {
+      "description": "An open-source alternative to Claude Cowork built for teams, powered by opencode",
+      "fullName": "different-ai/openwork",
+      "isArchived": false,
+      "license": {
+        "key": "other",
+        "name": "Other",
+        "url": ""
+      },
+      "pushedAt": "2026-04-26T20:54:44Z",
+      "stargazersCount": 14373,
+      "updatedAt": "2026-04-26T20:49:00Z",
+      "url": "https://github.com/different-ai/openwork"
+    },
+    {
+      "description": "Installable GitHub library of 1,400+ agentic skills for Claude Code, Cursor, Codex CLI, Gemini CLI, Antigravity, and more. Includes installer CLI, bundles, workflows, and official/community skill collections.",
+      "fullName": "sickn33/antigravity-awesome-skills",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-04-26T20:32:26Z",
+      "stargazersCount": 35236,
+      "updatedAt": "2026-04-26T21:24:12Z",
+      "url": "https://github.com/sickn33/antigravity-awesome-skills"
+    },
+    {
+      "description": "The open agent skills tool - npx skills",
+      "fullName": "vercel-labs/skills",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-04-22T09:46:48Z",
+      "stargazersCount": 16134,
+      "updatedAt": "2026-04-26T20:55:56Z",
+      "url": "https://github.com/vercel-labs/skills"
+    },
+    {
+      "description": "Open-source Agent Operating System",
+      "fullName": "RightNow-AI/openfang",
+      "isArchived": false,
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "pushedAt": "2026-04-23T08:24:48Z",
+      "stargazersCount": 17034,
+      "updatedAt": "2026-04-26T19:08:24Z",
+      "url": "https://github.com/RightNow-AI/openfang"
+    }
+  ]
+}
