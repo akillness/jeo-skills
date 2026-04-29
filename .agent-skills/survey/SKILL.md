@@ -206,6 +206,7 @@ Execution rules:
 - If a lane remains `raw_count == 0` after documented stage-2 recovery, include `no-results` explicitly in `degraded_causes` (do not leave causes empty).
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
 - Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results`) plus examples/counts.
+- If a lane remains `raw_count == 0` after documented recovery (including stage-2 when configured), explicitly include `no-results` in `degraded_causes` rather than leaving cause lists empty.
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - Add canonical degraded-lane interpretation in markdown: classify lanes as `degraded-no-results` when `raw_count == 0` (must include `no-results` cause) versus `degraded-noisy` when `raw_count > 0` but recommendation keeps remain zero after recovery.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.

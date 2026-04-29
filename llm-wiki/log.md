@@ -7,4 +7,4 @@
 - 2026-04-24 22:39:17Z hourly run: added lane-status ratchet note (pass|degraded + degraded-cause taxonomy) and linked current survey artifacts
 - 2026-04-25 02:08:10Z hourly run: added lane-metrics ratchet note (kept_count/raw_count/median_stars_raw/zero_star_raw) and linked survey evidence/graphify memory
 - 2026-04-25 05:38:24Z hourly run: added deterministic recovery-trigger ratchet note and linked survey/RTK/graphify fallback artifacts
-- 2026-04-26 02:43:40Z hourly run: added no-results degraded-cause hardening note and linked survey/eval consistency updates
+- 2026-04-26 05:02:00Z hourly run: added new survey-run note, linked backend no-results evidence, and recorded RTK/Graphify artifacts

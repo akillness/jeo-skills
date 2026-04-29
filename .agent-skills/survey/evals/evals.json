@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where one lane remains raw_count=0 even after documented stage-2 recovery; keep reviewer triage deterministic",
-      "expected_output": "The survey keeps the lane as degraded and explicitly includes `no-results` in degraded_causes so reviewers can distinguish empty-lane failures from other filters.",
+      "prompt": "run the hourly five-lane survey where backend lane stays raw_count=0 even after documented stage-2 recovery; keep reviewer output deterministic",
+      "expected_output": "The survey keeps lane evidence transparent and explicitly emits `no-results` in `degraded_causes` for that lane instead of leaving cause lists empty.",
       "assertions": [
-        "Reports lane_status=degraded when final raw_count stays 0",
-        "Includes `no-results` in degraded_causes instead of leaving the cause list empty",
-        "Preserves provenance and lane-health metrics while documenting the empty-lane condition"
+        "When raw_count remains 0 after recovery, markdown output includes degraded_causes entry `no-results`",
+        "Does not claim healthy lane coverage for an empty lane",
+        "Preserves provenance labels and lane metrics while reporting no-results"
       ]
     }
   ]
