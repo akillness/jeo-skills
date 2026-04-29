@@ -106,10 +106,10 @@
     {
       "id": 11,
       "prompt": "run the hourly five-lane survey and two lanes still miss thresholds after recovery; produce a reviewer-ready markdown summary",
-      "expected_output": "The survey marks each lane with `lane_status` (`pass|degraded`) and reports `degraded_causes` using the compact taxonomy (`license`, `stale`, `low-fit`, `archived`) with concrete examples or counts.",
+      "expected_output": "The survey marks each lane with `lane_status` (`pass|degraded`) and reports `degraded_causes` using the compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `transport/auth`) with concrete examples or counts.",
       "assertions": [
         "Includes explicit lane_status labels in markdown output for each lane",
-        "Uses degraded_causes taxonomy (`license|stale|low-fit|archived`) when thresholds are missed",
+        "Uses degraded_causes taxonomy (`license|stale|low-fit|archived|transport/auth`) when thresholds are missed",
         "Keeps provenance/evidence references while reporting degraded lanes"
       ]
     },
