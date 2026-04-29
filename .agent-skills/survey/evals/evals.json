@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where `gh search repos` exits 0 but returns [] on a known-populated probe query; keep cron output merge-safe",
-      "expected_output": "The survey treats empty-success payloads as degraded retrieval, reruns search via `gh api \"search/repositories?...\"`, records fallback evidence, and continues lane status reporting with provenance labels.",
+      "prompt": "run the hourly five-lane survey where one lane still has raw_count=0 even after stage-2 recovery and keep reviewer triage deterministic",
+      "expected_output": "The survey keeps the lane degraded and explicitly includes `no-results` in degraded_causes for that lane, so zero-hit runs never ship with an empty or ambiguous cause list.",
       "assertions": [
-        "Does not treat `[]` + exit 0 from `gh search repos` as healthy when probe expectation indicates population",
-        "Uses deterministic GitHub REST fallback endpoint form (`gh api \"search/repositories?...\"`) before final lane status",
-        "Preserves provenance and degraded/transport reporting in the final artifacts"
+        "Adds `no-results` to degraded_causes when final raw_count remains 0 after documented recovery",
+        "Avoids leaving degraded_causes empty for zero-hit lanes",
+        "Keeps provenance and lane-status reporting explicit in markdown artifacts"
       ]
     }
   ]
