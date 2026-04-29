@@ -1,0 +1,272 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-223114",
+  "generated_at": "2026-04-26T22:32:24Z",
+  "graphify_query_status": "fallback-generated (error: graph file not found: /private/tmp/oh-my-skills-20260426-223114/repo/.survey/hourly-skill-candidates-20260426-223114/graph.json)",
+  "nodes": [
+    {
+      "id": "run:hourly-skill-candidates-20260426-223114",
+      "label": "hourly-skill-candidates-20260426-223114",
+      "type": "run",
+      "meta": {
+        "generated_at": "2026-04-26T22:32:24Z"
+      }
+    },
+    {
+      "id": "repo:akillness/oh-my-skills",
+      "label": "akillness/oh-my-skills",
+      "type": "repo"
+    },
+    {
+      "id": "lane:agentic_ai",
+      "label": "agentic_ai",
+      "type": "lane",
+      "meta": {
+        "status": "pass",
+        "raw_count": 30,
+        "kept_count": 3
+      }
+    },
+    {
+      "id": "cause:license",
+      "label": "license",
+      "type": "degraded-cause"
+    },
+    {
+      "id": "cause:low-signal",
+      "label": "low-signal",
+      "type": "degraded-cause"
+    },
+    {
+      "id": "lane:web_frontend",
+      "label": "web_frontend",
+      "type": "lane",
+      "meta": {
+        "status": "degraded",
+        "raw_count": 4,
+        "kept_count": 0
+      }
+    },
+    {
+      "id": "cause:stale",
+      "label": "stale",
+      "type": "degraded-cause"
+    },
+    {
+      "id": "lane:web_backend",
+      "label": "web_backend",
+      "type": "lane",
+      "meta": {
+        "status": "pass",
+        "raw_count": 1,
+        "kept_count": 1
+      }
+    },
+    {
+      "id": "lane:cli_open_source",
+      "label": "cli_open_source",
+      "type": "lane",
+      "meta": {
+        "status": "degraded",
+        "raw_count": 0,
+        "kept_count": 0
+      }
+    },
+    {
+      "id": "cause:no-results",
+      "label": "no-results",
+      "type": "degraded-cause"
+    },
+    {
+      "id": "lane:game_development",
+      "label": "game_development",
+      "type": "lane",
+      "meta": {
+        "status": "pass",
+        "raw_count": 30,
+        "kept_count": 1
+      }
+    },
+    {
+      "id": "cause:archived",
+      "label": "archived",
+      "type": "degraded-cause"
+    },
+    {
+      "id": "repo:andreasbm/web-skills",
+      "label": "andreasbm/web-skills",
+      "type": "candidate",
+      "meta": {
+        "stars": 7521,
+        "lane": "web_backend"
+      }
+    },
+    {
+      "id": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "label": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "candidate",
+      "meta": {
+        "stars": 14,
+        "lane": "agentic_ai"
+      }
+    },
+    {
+      "id": "repo:VoDaiLocz/Enhance-Prompt",
+      "label": "VoDaiLocz/Enhance-Prompt",
+      "type": "candidate",
+      "meta": {
+        "stars": 10,
+        "lane": "agentic_ai"
+      }
+    },
+    {
+      "id": "repo:iwe-org/skills",
+      "label": "iwe-org/skills",
+      "type": "candidate",
+      "meta": {
+        "stars": 7,
+        "lane": "agentic_ai"
+      }
+    },
+    {
+      "id": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "label": "tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "candidate",
+      "meta": {
+        "stars": 3,
+        "lane": "game_development"
+      }
+    }
+  ],
+  "links": [
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "repo:akillness/oh-my-skills",
+      "relation": "targets",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "lane:agentic_ai",
+      "relation": "surveyed",
+      "weight": 30
+    },
+    {
+      "source": "lane:agentic_ai",
+      "target": "cause:license",
+      "relation": "has_cause",
+      "weight": 1
+    },
+    {
+      "source": "lane:agentic_ai",
+      "target": "cause:low-signal",
+      "relation": "has_cause",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "lane:web_frontend",
+      "relation": "surveyed",
+      "weight": 4
+    },
+    {
+      "source": "lane:web_frontend",
+      "target": "cause:license",
+      "relation": "has_cause",
+      "weight": 1
+    },
+    {
+      "source": "lane:web_frontend",
+      "target": "cause:low-signal",
+      "relation": "has_cause",
+      "weight": 1
+    },
+    {
+      "source": "lane:web_frontend",
+      "target": "cause:stale",
+      "relation": "has_cause",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "lane:web_backend",
+      "relation": "surveyed",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "lane:cli_open_source",
+      "relation": "surveyed",
+      "weight": 0
+    },
+    {
+      "source": "lane:cli_open_source",
+      "target": "cause:no-results",
+      "relation": "has_cause",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "lane:game_development",
+      "relation": "surveyed",
+      "weight": 30
+    },
+    {
+      "source": "lane:game_development",
+      "target": "cause:archived",
+      "relation": "has_cause",
+      "weight": 1
+    },
+    {
+      "source": "lane:game_development",
+      "target": "cause:license",
+      "relation": "has_cause",
+      "weight": 1
+    },
+    {
+      "source": "lane:game_development",
+      "target": "cause:low-signal",
+      "relation": "has_cause",
+      "weight": 1
+    },
+    {
+      "source": "lane:game_development",
+      "target": "cause:stale",
+      "relation": "has_cause",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "repo:andreasbm/web-skills",
+      "relation": "recommends",
+      "weight": 7521
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "relation": "recommends",
+      "weight": 14
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "repo:VoDaiLocz/Enhance-Prompt",
+      "relation": "recommends",
+      "weight": 10
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "repo:iwe-org/skills",
+      "relation": "recommends",
+      "weight": 7
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260426-223114",
+      "target": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "relation": "recommends",
+      "weight": 3
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260426-223114/evidence.json",
+    ".survey/hourly-skill-candidates-20260426-223114/rtk-summary.md"
+  ]
+}
