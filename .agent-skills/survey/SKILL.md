@@ -173,8 +173,8 @@ When `primary_mode: repo-maintenance`, do not trust keyword hits at face value.
 Run a compact gate before writing final recommendations:
 - **Positive signals (keep):** clear relation to the target capability, recent maintenance, explicit license, concrete docs/examples.
 - **Negative signals (drop or mark risk):** spam-like description, irrelevant domain despite keyword match, assessment/homework-only repos, stale/archived repos without strong justification, missing basic metadata, or unknown license without explicit justification.
-- **Metadata minimum:** capture `license`, `pushed_at`, `archived`, and one-line fit rationale for every candidate you keep. If first-pass metadata returns null/unknown license (for example GraphQL `licenseInfo`), retry once via GitHub REST (`gh api repos/<owner>/<repo> --jq .license.spdx_id`) before classifying unknown-license. Unknown/missing license after fallback should be excluded by default unless a concrete exception rationale is documented.
-- **Freshness floor (recommendation-grade keep list):** exclude candidates whose latest `pushed_at` is older than 24 months by default. Compute and record a simple recency metric (for example `months_since_push`) for keep/drop auditability. Keep stale candidates only with explicit exception rationale and risk note.
+- **Metadata minimum:** capture `license`, `pushed_at`, `archived`, `open_issues`, `forks`, and one-line fit rationale for every candidate you keep. If first-pass metadata returns null/unknown license (for example GraphQL `licenseInfo`), retry once via GitHub REST (`gh api repos/<owner>/<repo> --jq .license.spdx_id`) before classifying unknown-license. Unknown/missing license after fallback should be excluded by default unless a concrete exception rationale is documented. If `open_issues`/`forks` are unavailable from the first pass, hydrate once via `gh api repos/<owner>/<repo> --jq '{open_issues: .open_issues_count, forks: .forks_count}'` and record retrieval provenance.
+- **Freshness floor (recommendation-grade keep list):** exclude candidates whose latest `pushed_at` is older than 24 months by default. Keep stale candidates only with explicit exception rationale and risk note.
 
 If search/extract tooling is degraded, fallback to direct GitHub API retrieval and mark provenance/risk explicitly instead of pretending confidence.
 
@@ -191,7 +191,7 @@ Required keyword families:
 Execution rules:
 - Keep the raw keyword scan as discovery evidence (usually `browser-rendered retrieval` when done through search pages).
 - Apply the Step 4.5 relevance gate before keeping any candidate.
-- For each kept candidate, record at least: `license`, `pushed_at/updated`, `archived`, and one-line fit rationale.
+- For each kept candidate, record at least: `license`, `pushed_at/updated`, `archived`, `open_issues`, `forks`, and one-line fit rationale.
 - For recommendation-grade keeps, apply a default freshness floor (`pushed_at` within the last 24 months). If kept despite staleness, document exception rationale and explicit risk.
 - Apply a default signal floor for recommendation-grade keeps: require at least one traction signal (for example, stars >= 3, or explicit maintainer/community adoption evidence with rationale). Keep broad discovery evidence even when the recommendation-grade list is stricter.
 - For the `agentic ai skill` lane, treat generic personal catch-all repositories named only like `*/skills` as low-fit by default unless there is explicit workflow documentation + traction; keep them in raw evidence but do not promote to TOP recommendations without an exception rationale.

@@ -27,7 +27,10 @@ For each candidate you keep, capture at minimum:
 - `license` (if null/unknown on first pass, or returned as an empty object like `{"key":"","name":""}`, retry once with `gh api repos/<owner>/<repo> --jq .license.spdx_id`)
 - `pushed_at` or `updated_at`
 - `archived`
+- `open_issues`
+- `forks`
 - one-line fit rationale
+- if `open_issues`/`forks` are unavailable in first-pass metadata, hydrate once via `gh api repos/<owner>/<repo> --jq '{open_issues: .open_issues_count, forks: .forks_count}'`
 
 Positive keep signals:
 
