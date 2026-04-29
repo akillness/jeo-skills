@@ -111,7 +111,8 @@ Stage-2 escalation rule:
 - At least 1 recommendation-grade keep per lane where feasible.
 - `cli open source skill` lane target: 3+ kept entries for spotlight quality.
 - For each lane, emit explicit `lane_status` in markdown: `pass` or `degraded`.
-- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `transport`, `no-results` (include counts or concrete examples).
+- If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results` (include counts or concrete examples).
+- If a lane still has `raw_count == 0` after documented recovery, set `degraded_causes` to include `no-results` explicitly (never leave empty causes for empty lanes).
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 - When retrieval falls back due to degraded search transport, record `transport_status` (cause, fallback retrieval family, and error-log path) in run artifacts.
 - Persist web-search error envelope fields when available as `transport_status.web_search.http_status`, `transport_status.web_search.error_tag`, and `transport_status.web_search.request_ids[]`.
@@ -142,10 +143,6 @@ Before final recommendations:
 - [ ] Relevance gate applied to kept candidates
 - [ ] Metadata minimum recorded for each kept candidate
 - [ ] Lane-level `lane_status` (`pass|degraded`) included in markdown summary
-- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation|transport|no-results`) reported with examples/counts
-- [ ] If fallback retrieval was used, `transport_status` (cause + fallback family + error-log path) recorded in artifacts
-- [ ] If search transport failed, `.survey/<slug>/web-search-error.log` exists and is referenced in `transport_status`
-- [ ] `transport_status.web_search.error_log` is repository-relative (`.survey/<slug>/...`) and does not include host-absolute prefixes
-- [ ] If provider returned structured error envelope, `transport_status.web_search.http_status`, `error_tag`, and `request_ids[]` are captured
+- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|no-results`) reported with examples/counts
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly

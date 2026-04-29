@@ -1,0 +1,211 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-094925",
+  "generated_at": "2026-04-26T09:49:25.842201Z",
+  "graphify_query_status": "fallback-generated (graphify query failed: error: could not load graph: 'links')",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260426-094925",
+      "type": "run"
+    },
+    {
+      "id": "lane:agentic ai skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 2
+    },
+    {
+      "id": "cause:low-fit",
+      "type": "degraded_cause"
+    },
+    {
+      "id": "cause:low-signal",
+      "type": "degraded_cause"
+    },
+    {
+      "id": "cause:license",
+      "type": "degraded_cause"
+    },
+    {
+      "id": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "repo",
+      "stars": 14
+    },
+    {
+      "id": "repo:VoDaiLocz/Enhance-Prompt",
+      "type": "repo",
+      "stars": 10
+    },
+    {
+      "id": "lane:web frontend skill",
+      "type": "lane",
+      "status": "degraded",
+      "kept_count": 0
+    },
+    {
+      "id": "cause:stale",
+      "type": "degraded_cause"
+    },
+    {
+      "id": "lane:web backend skill",
+      "type": "lane",
+      "status": "degraded",
+      "kept_count": 0
+    },
+    {
+      "id": "cause:no-results",
+      "type": "degraded_cause"
+    },
+    {
+      "id": "lane:cli open source skill",
+      "type": "lane",
+      "status": "degraded",
+      "kept_count": 1
+    },
+    {
+      "id": "repo:guarinogabriel/Mac-CLI",
+      "type": "repo",
+      "stars": 9063
+    },
+    {
+      "id": "lane:game development skill",
+      "type": "lane",
+      "status": "pass",
+      "kept_count": 1
+    },
+    {
+      "id": "cause:archived",
+      "type": "degraded_cause"
+    },
+    {
+      "id": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "repo",
+      "stars": 3
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260426-094925",
+      "target": "lane:agentic ai skill",
+      "relation": "has_lane",
+      "weight": 20
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "cause:low-fit",
+      "relation": "degraded_due_to",
+      "weight": 5
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "cause:low-signal",
+      "relation": "degraded_due_to",
+      "weight": 17
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "cause:license",
+      "relation": "degraded_due_to",
+      "weight": 12
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "relation": "recommends",
+      "weight": 14
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "repo:VoDaiLocz/Enhance-Prompt",
+      "relation": "recommends",
+      "weight": 10
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-094925",
+      "target": "lane:web frontend skill",
+      "relation": "has_lane",
+      "weight": 4
+    },
+    {
+      "source": "lane:web frontend skill",
+      "target": "cause:license",
+      "relation": "degraded_due_to",
+      "weight": 3
+    },
+    {
+      "source": "lane:web frontend skill",
+      "target": "cause:low-signal",
+      "relation": "degraded_due_to",
+      "weight": 3
+    },
+    {
+      "source": "lane:web frontend skill",
+      "target": "cause:stale",
+      "relation": "degraded_due_to",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-094925",
+      "target": "lane:web backend skill",
+      "relation": "has_lane",
+      "weight": 0
+    },
+    {
+      "source": "lane:web backend skill",
+      "target": "cause:no-results",
+      "relation": "degraded_due_to",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-094925",
+      "target": "lane:cli open source skill",
+      "relation": "has_lane",
+      "weight": 1
+    },
+    {
+      "source": "lane:cli open source skill",
+      "target": "repo:guarinogabriel/Mac-CLI",
+      "relation": "recommends",
+      "weight": 9063
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-094925",
+      "target": "lane:game development skill",
+      "relation": "has_lane",
+      "weight": 20
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "cause:license",
+      "relation": "degraded_due_to",
+      "weight": 12
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "cause:stale",
+      "relation": "degraded_due_to",
+      "weight": 9
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "cause:low-signal",
+      "relation": "degraded_due_to",
+      "weight": 13
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "cause:archived",
+      "relation": "degraded_due_to",
+      "weight": 1
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "relation": "recommends",
+      "weight": 3
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260426-094925/evidence.json",
+    ".survey/hourly-skill-candidates-20260426-094925/rtk-summary.md"
+  ]
+}
