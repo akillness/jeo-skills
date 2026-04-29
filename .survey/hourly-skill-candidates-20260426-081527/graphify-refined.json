@@ -1,0 +1,102 @@
+{
+  "run_slug": "hourly-skill-candidates-20260426-081527",
+  "generated_at": "2026-04-25T23:21:16.765856Z",
+  "graphify_query_status": "fallback-generated (graphify binary missing)",
+  "failure_reason": "graphify command not found in runtime",
+  "nodes": [
+    {
+      "id": "hourly-skill-candidates-20260426-081527",
+      "type": "run",
+      "label": "hourly-skill-candidates-20260426-081527"
+    },
+    {
+      "id": "target:oh-my-skills",
+      "type": "repo",
+      "label": "akillness/oh-my-skills"
+    },
+    {
+      "id": "lane:agentic ai skill",
+      "type": "lane",
+      "label": "agentic ai skill",
+      "status": "pass"
+    },
+    {
+      "id": "lane:web frontend skill",
+      "type": "lane",
+      "label": "web frontend skill",
+      "status": "pass"
+    },
+    {
+      "id": "lane:web backend skill",
+      "type": "lane",
+      "label": "web backend skill",
+      "status": "pass"
+    },
+    {
+      "id": "lane:cli open source skill",
+      "type": "lane",
+      "label": "cli open source skill",
+      "status": "pass"
+    },
+    {
+      "id": "lane:game development skill",
+      "type": "lane",
+      "label": "game development skill",
+      "status": "pass"
+    },
+    {
+      "id": "signal:backlog-pressure",
+      "type": "signal",
+      "label": "backlog_pressure"
+    }
+  ],
+  "links": [
+    {
+      "source": "hourly-skill-candidates-20260426-081527",
+      "target": "target:oh-my-skills",
+      "type": "targets",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-081527",
+      "target": "lane:agentic ai skill",
+      "type": "covers",
+      "weight": 27
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-081527",
+      "target": "lane:web frontend skill",
+      "type": "covers",
+      "weight": 6
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-081527",
+      "target": "lane:web backend skill",
+      "type": "covers",
+      "weight": 1
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-081527",
+      "target": "lane:cli open source skill",
+      "type": "covers",
+      "weight": 10
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-081527",
+      "target": "lane:game development skill",
+      "type": "covers",
+      "weight": 10
+    },
+    {
+      "source": "hourly-skill-candidates-20260426-081527",
+      "target": "signal:backlog-pressure",
+      "type": "observed",
+      "weight": 5
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260426-081527/evidence.json",
+    ".survey/hourly-skill-candidates-20260426-081527/rtk-summary.md",
+    ".survey/hourly-skill-candidates-20260426-081527/open-prs.json"
+  ]
+}
