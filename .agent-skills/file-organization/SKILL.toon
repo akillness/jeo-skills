@@ -1,16 +1,13 @@
 N:file-organization
-D:Choose and evolve project/repository structure without cargo-culting one folder tree. Use when deciding between framework defaults, feature/domain folders, workspace/monorepo boundaries, docs taxonomy, or engine-aware game/content layouts, or when a messy repo needs clearer ownership.
-G:file-organization project-structure repo-layout feature-folders monorepo naming-conventions docs-taxonomy game-development
-U[6]:
-  structure new repos
-  refactor messy repo layout
-  choose framework-default vs feature/domain mode
-  define apps/packages or monorepo boundaries
-  organize docs by reader task and content type
-  organize engine-aware game/content repositories
+D:Choose the right repo structure boundary: feature, shared layer, route segment, or workspace package. Use for folder-structure refactors, project-layout decisions, naming/import conventions, and staged migrations when a repo feels scattered or a team needs to know where code should live.
+G:file-organization project-structure folder-structure feature-folders shared-vs-feature apps-packages naming-conventions
+U[3]:
+  Starter-tree cleanup before a small app calcifies into scattered technical folders
+  Feature/shared/route/package boundary decisions for growing repos
+  Migration audits for risky reorganizations, import cleanup, and staged moves
 S[5]{n,action}:
-  1,Classify repository shape, pressure, and constraints
-  2,Choose one primary organization mode
-  3,Define top-level boundaries and naming/placement rules
-  4,Plan incremental migration only if the repo already exists
-  5,Route search, automation, environment, subsystem, and game-production follow-ups to adjacent skills
+  1,Classify the structure pressure and choose one primary organization mode
+  2,Pick the smallest boundary unit that solves the problem
+  3,Define naming, import, and public-API guardrails
+  4,Plan a staged migration with verification steps
+  5,Return a file-organization brief with route-outs

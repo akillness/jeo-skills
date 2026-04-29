@@ -935,7 +935,7 @@
     },
     {
       "name": "file-organization",
-      "description": "Choose and evolve project/repository structure without cargo-culting one folder tree. Use when deciding how a frontend, backend, fullstack, docs/ops, or game-development repo should be organized; when feature folders, monorepo boundaries, docs taxonomy, or engine-aware asset layouts are being debated; or when a messy repo needs clearer boundaries.",
+      "description": "Design or refactor project structure around the right boundary unit: feature, shared layer, route segment, or workspace package. Use when a repo feels scattered, a team needs naming/import conventions, or the user must choose a maintainable layout and migration path.",
       "category": "utilities",
       "path": "file-organization/SKILL.md",
       "tags": [

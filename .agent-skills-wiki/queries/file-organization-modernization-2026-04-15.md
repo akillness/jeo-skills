@@ -1,60 +1,48 @@
 ---
-title: File Organization Modernization 2026-04-15
+title: File organization modernization
 created: 2026-04-15
 updated: 2026-04-15
 type: query
-tags: [skills, survey, consolidation, trigger-design, skill-quality, docs, game-dev]
-sources: [.survey/file-organization-modernization-20260415/triage.md, .survey/file-organization-modernization-20260415/context.md, .survey/file-organization-modernization-20260415/solutions.md, .survey/file-organization-modernization-20260415/platform-map.md, .agent-skills/file-organization/SKILL.md, graphify-out/GRAPH_REPORT.md]
+tags: [skills, survey, trigger-design, skill-quality, docs]
+sources: [.survey/file-organization-modernization-20260415/context.md, .survey/file-organization-modernization-20260415/solutions.md, graphify-out/GRAPH_REPORT.md, .agent-skills/file-organization/SKILL.md]
 ---
 
-# File Organization Modernization 2026-04-15
+# File organization modernization
 
-## Question
-Should the repo add another project-structure wrapper skill, or modernize the existing `file-organization` skill into a clearer boundary?
+## Why this was the best bounded move
+The survey showed that the highest-value gap was not a missing new structure skill. It was the stale `file-organization` anchor, which still behaved like a static React/Node folder-tree dump even though the surrounding developer-workflow lane had already moved toward decision-first, boundary-aware skills.
 
-## Answer
-Modernizing `file-organization` was the better bounded move.
+Primary evidence this run converged on one pattern:
+- Feature-Sliced Design and Bulletproof React both emphasize feature-oriented boundaries once technical folders start scattering one business change across many locations.
+- Next.js docs show that framework-native colocation matters, but do not present one universal repo tree.
+- Turborepo docs show that `apps/` + `packages/` is a workspace decision, not the default answer for every messy repo.
+- MIT's file-structure guidance reinforces the cross-domain point that folder strategy should communicate purpose and support repeatability for collaborators.
 
-The old skill was highly discoverable but low-signal: it mostly dumped example folder trees for React/Next.js and Node/Express, with weak trigger wording, no migration guidance, no support files, and almost no treatment of docs/ops or game-development repositories.
-
-The survey showed that real-world structure decisions are usually not about picking one canonical tree. They are about choosing the **lowest-complexity structure that fits the current repo shape**:
-- keep framework or engine defaults when they already solve the problem,
-- escalate to feature/domain grouping when change locality matters,
-- escalate to `apps/` + `packages/libs/` when multi-app or multi-package boundaries appear,
-- use docs taxonomy for docs/ops repos,
-- use engine-aware hybrids for Unity/Unreal-style code + content repos.
-
-## Why this beat adding a new skill
-- The repo already had adjacent skills for search (`codebase-search`), automation (`workflow-automation`), environment setup (`system-environment-setup`), frontend subsystem boundaries (`state-management`, `design-system`), and game-production orchestration (`bmad-gds`).
-- Another wrapper skill would have increased overlap instead of clarifying the route-outs.
-- `file-organization` already had top-level discovery weight in README / setup surfaces, so upgrading it compounds more value than creating a new name.
-
-## Durable boundary
-Use `file-organization` when the main question is:
-> how should this repository be structured next, and how do we improve it without a risky all-at-once rewrite?
-
-Route out when the real question changes:
-- finding existing files → `codebase-search`
-- scaffolds / generators / task runners → `workflow-automation`
-- runnable environments / Docker / devcontainers → `system-environment-setup`
-- frontend state ownership → `state-management`
-- shared UI package / design-token boundaries → `design-system`
-- game-production phase routing → `bmad-gds`
+That made the best bounded ratchet clear: rewrite `file-organization` into a structure router that chooses the right boundary unit (feature, shared layer, route segment, or package), adds naming/import guardrails, and includes migration planning instead of only showing example trees.
 
 ## Accepted changes
-- Rewrote `file-organization` as a decision-first, migration-aware skill
-- Added `references/` and `evals/`
-- Updated README / README.ko / setup prompt / skill manifests
-- Refreshed graph and wiki notes so future runs keep the boundary straight
+- Rewrote `file-organization/SKILL.md` around structure-pressure intake, primary organization modes, route-outs, and migration briefs.
+- Added `references/boundary-decision-matrix.md`, `references/migration-checklist.md`, and `references/naming-and-import-rules.md`.
+- Added `evals/evals.json` so future loops can dry-run trigger quality and route-outs.
+- Refreshed `SKILL.toon`, `skills.json`, `skills.toon`, `README.md`, `README.ko.md`, and `setup-all-skills-prompt.md` so discovery surfaces reflect the stronger role.
+- Refreshed graph outputs and recorded the support-coverage increase in wiki memory.
 
 ## Rejected alternatives
-- Adding another generic repo-structure / monorepo-structure wrapper
-- Keeping the skill as a static scaffold catalog
-- Letting the skill absorb search, automation, or environment setup responsibilities
+- Adding another separate monorepo or frontend-architecture wrapper skill.
+- Keeping `file-organization` as a generic example/template catalog.
+- Expanding the skill into component API design, state-boundary policy, environment setup, or task-runner automation.
+
+## Durable boundary rule
+`file-organization` should own **repo-structure boundary choice plus migration planning**.
+Adjacent concerns stay separate:
+- component API shape → `ui-component-patterns` / `design-system`
+- state ownership → `state-management`
+- runtime/toolchain/services → `system-environment-setup`
+- recurring repo automation → `workflow-automation`
 
 ## Related pages
 - [[developer-workflow-cluster]]
 - [[skill-support-coverage]]
 - [[workflow-automation-modernization-2026-04-13]]
-- [[codebase-search-modernization-2026-04-14]]
-- [[bmad-gds-modernization-2026-04-12]]
+- [[environment-skill-canonicalization-2026-04-12]]
+- [[npm-git-install-modernization-2026-04-15]]

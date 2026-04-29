@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Persistent knowledge base for `oh-my-skills/.agent-skills` improvement work.
-> Last updated: 2026-04-22 | Total pages: 159
+> Last updated: 2026-04-15 | Total pages: 51
 
 ## Entities
 
@@ -158,20 +158,5 @@
 - [[bmad-modernization-2026-04-15]] — Why the best bounded core-BMAD improvement was modernizing `bmad` into the level/phase/next-artifact router instead of keeping a giant command dump or adding another BMAD wrapper.
 - [[bmad-packet-ratchet-2026-04-20]] — Why the best bounded next core-BMAD improvement was tightening `bmad` into a packet-first front door with brownfield resume handling and earlier route-outs instead of adding another BMAD wrapper.
 - [[bmad-idea-modernization-2026-04-15]] — Why the best bounded pre-planning creativity improvement was modernizing `bmad-idea` into the concept-routing anchor instead of leaving it as a command/persona catalog or adding another ideation wrapper.
-- [[playwriter-modernization-2026-04-15]] — Why the best bounded browser-tooling improvement was modernizing `playwriter` into the running-browser / authenticated-session reuse anchor instead of adding another browser wrapper or letting it blur into `agent-browser`.
-- [[agentation-modernization-2026-04-15]] — Why the best bounded planning-review/browser-follow-up improvement was modernizing `agentation` into the exact rendered-UI feedback router instead of adding another browser or QA wrapper.
-- [[presentation-builder-modernization-2026-04-15]] — Why the best bounded documentation/publishing improvement was modernizing `presentation-builder` into the deck-artifact anchor instead of leaving it as a thin slides-grab command note or adding another pitch/deck wrapper.
-- [[presentation-builder-structural-hardening-2026-04-18]] — Why the best bounded documentation-cluster follow-up was shrinking `presentation-builder` into a packet-first deck artifact anchor with explicit last-mile handoff surfaces instead of adding another slide/pitch wrapper.
-- [[research-paper-writing-hardening-2026-04-15]] — Why the best bounded documentation-cluster improvement was hardening `research-paper-writing` with manuscript-package support files instead of adding another paper/rebuttal wrapper or broadening it into generic academic tooling.
-- [[game-performance-profiler-modernization-2026-04-15]] — Why the best bounded game-performance improvement was modernizing `game-performance-profiler` into a quick-packet / benchmark-route / device-review anchor instead of adding another perf wrapper or merging it into generic optimization.
-- [[game-performance-profiler-structural-hardening-2026-04-18]] — Why the best bounded follow-up after modernization was shrinking `game-performance-profiler` into a routing-first profiling anchor with a dedicated mode-selection / route-out reference instead of adding another game-performance wrapper.
-- [[game-ci-cd-pipeline-structural-hardening-2026-04-19]] — Why the best bounded next game/developer-workflow improvement was shrinking `game-ci-cd-pipeline` into a packet-first pipeline router with explicit log-triage handoffs instead of adding another game DevOps wrapper.
-- [[game-ci-signal-tier-ratchet-2026-04-20]] — Why the best bounded next follow-up was making `game-ci-cd-pipeline` name branch-gate vs nightly/package-candidate vs release/certification lane before packet routing instead of adding another game CI wrapper.
-- [[steam-store-launch-ops-structural-hardening-2026-04-17]] — Why the best bounded game/marketing crossover follow-up was hardening `steam-store-launch-ops` into a bottleneck-first Steam launch/store router instead of adding another wishlist/Next Fest wrapper.
-- [[steam-store-launch-ops-packet-first-hardening-2026-04-20]] — Why the best bounded next improvement after the bottleneck rewrite was tightening `steam-store-launch-ops` into a packet-first Steam launch router with sharper route-outs and one-shot timing warnings instead of adding another Steam marketing wrapper.
-- [[react-grab-structural-hardening-2026-04-16]] — Why the best bounded next frontend/browser maintenance move was shrinking `react-grab` into a routing-first skill, adding focused support docs, and syncing stale helper-script prerequisites to the upstream Node.js >=22 reality instead of adding another wrapper.
-- [[fabric-modernization-2026-04-15]] — Why the best bounded utilities/developer-workflow improvement was modernizing `fabric` into the pattern-first CLI transform anchor instead of leaving it as a broad AI-CLI feature tour or adding another adjacent prompt wrapper.
-- [[fabric-structural-hardening-2026-04-18]] — Why the best bounded utilities follow-up after modernization was shrinking `fabric` into a routing-first operator front door with a dedicated packet/route-out reference instead of adding another Fabric helper or leaving the long feature-tour shape intact.
-- [[firebase-cli-structural-hardening-2026-04-16]] — Why the best bounded Firebase/platform improvement was shrinking `firebase-cli` into a routing-first operator anchor with focused support packets instead of adding another wrapper or keeping a command-catalog front door.
-- [[vibe-kanban-modernization-2026-04-15]] — Why the best bounded orchestration/planning-review improvement was modernizing `vibe-kanban` into the coding-task board/workspace control plane instead of adding another agent-board wrapper.
-- [[vibe-kanban-structural-hardening-2026-04-18]] — Why the best bounded orchestration follow-up was shrinking `vibe-kanban` into a smaller coding-board front door with tracker-sync guidance instead of adding another board helper.
+- [[file-organization-modernization-2026-04-15]] — Why the best bounded utility/developer-workflow improvement was modernizing `file-organization` into a repo-structure boundary and migration-planning anchor instead of leaving it as a static folder-tree dump or adding another structure wrapper.
+

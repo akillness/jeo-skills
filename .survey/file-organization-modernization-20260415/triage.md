@@ -1,4 +1,4 @@
 # Triage
-- Problem: `file-organization` is a high-visibility but low-signal skill that still reads like a static scaffold catalog instead of a decision-first skill for structuring growing repositories.
-- Audience: Agents and developers working on frontend, backend, fullstack/monorepo, docs/ops, and game-development repositories.
-- Why now: The repo already has stronger adjacent skills (`workflow-automation`, `codebase-search`, `system-environment-setup`, `state-management`, `design-system`, `bmad-gds`), so leaving `file-organization` as a template dump creates avoidable overlap and weak discovery quality.
+- Problem: `file-organization` is a legacy static-tree skill that overfits to one React/Node layout instead of helping agents choose a maintainable structure, boundary strategy, and migration path.
+- Audience: AI agents and developers working on growing repos across web/fullstack and general software projects.
+- Why now: The developer-workflow cluster has been modernized around decision-first anchors, but `file-organization` still reads like a generic folder dump with no support files, no evals, and weak route-outs.

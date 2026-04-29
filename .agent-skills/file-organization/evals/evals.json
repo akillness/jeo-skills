@@ -3,57 +3,32 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Our Next.js repo has app routes, a huge components folder, scattered hooks, and nobody agrees where new checkout code should live. Help us choose a better structure.",
-      "expected_output": "Chooses a frontend-appropriate organization mode, keeps framework defaults where useful, introduces feature/domain guidance, and warns against dumping more code into generic shared folders.",
+      "prompt": "Our React app has top-level components, hooks, utils, and store folders. Every checkout change touches four directories. How should we reorganize this without overengineering it?",
+      "expected_output": "The skill activates in feature modularization mode, recommends feature boundaries with a governed shared layer, and avoids treating the answer as a static universal tree.",
       "assertions": [
-        "Output classifies the repo as a frontend or meta-framework app",
-        "Output names a primary organization mode",
-        "Output includes route-colocation or feature/domain guidance",
-        "Output mentions at least one anti-pattern such as generic shared folders or barrel overuse"
+        "Response classifies the structure problem before prescribing folders",
+        "Response recommends feature-based boundaries or equivalent as the primary organizing unit",
+        "Response includes a migration or staged move plan"
       ]
     },
     {
       "id": 2,
-      "prompt": "Our Python API started simple but now controllers, jobs, schemas, migrations, and services are scattered. We need a clearer structure without a rewrite marathon.",
-      "expected_output": "Classifies the repo as a backend service, chooses a fitting organization mode, keeps migrations/jobs/scripts visible, and gives an incremental migration plan instead of a giant rewrite.",
+      "prompt": "We use Next.js App Router and our app directory is becoming a mess. I need a structure that respects route files and layouts but keeps business logic sane.",
+      "expected_output": "The skill activates in framework colocation mode and distinguishes route-segment placement from reusable feature/shared code.",
       "assertions": [
-        "Output classifies the repo as a backend service",
-        "Output keeps or evaluates framework/module conventions before deeper restructuring",
-        "Output includes an incremental migration plan",
-        "Output warns against a giant global common/shared bucket"
+        "Response names framework/route-aware organization as the main mode or equivalent",
+        "Response keeps special route files where the framework expects them",
+        "Response distinguishes route-local organization from broader feature or shared boundaries"
       ]
     },
     {
       "id": 3,
-      "prompt": "We have a monorepo with web, api, docs, and shared packages. Some packages only exist because we copied helpers out too early. How should we reorganize it without a giant rewrite?",
-      "expected_output": "Chooses workspace/monorepo mode, explains apps/packages boundaries, discourages premature extraction, and gives an incremental migration path.",
+      "prompt": "We now have a web app, a worker, and a shared UI library. Should this repo become apps/packages, or do we just need better folders?",
+      "expected_output": "The skill activates in workspace split mode only if runnable targets and reusable libraries justify package boundaries, and it explains why.",
       "assertions": [
-        "Output recommends or evaluates apps/packages or apps/libs boundaries",
-        "Output warns against premature shared package extraction",
-        "Output includes an incremental migration plan",
-        "Output does not turn into workflow-automation or environment-setup guidance"
-      ]
-    },
-    {
-      "id": 4,
-      "prompt": "Our docs repo has onboarding guides, runbooks, product help, and architecture notes all mixed under notes/. People cannot guess where new docs belong.",
-      "expected_output": "Chooses docs-taxonomy mode, separates reader tasks or document types, and avoids one giant mixed notes bucket.",
-      "assertions": [
-        "Output classifies the repo as docs/ops or equivalent",
-        "Output names docs-taxonomy mode or an equivalent task-based taxonomy",
-        "Output separates runbooks or architecture notes from end-user help",
-        "Output warns against a single catch-all notes or misc folder"
-      ]
-    },
-    {
-      "id": 5,
-      "prompt": "Our Unity project has scenes, prefabs, scripts, and art assets all mixed under Assets. Designers and programmers keep stepping on each other. I need folder rules that fit Unity instead of generic web advice.",
-      "expected_output": "Chooses an engine-aware hybrid mode, respects Unity special-folder constraints, and proposes clear asset/code/naming boundaries for mixed-discipline contributors.",
-      "assertions": [
-        "Output classifies the repo as a game project",
-        "Output mentions engine-aware or Unity-specific constraints",
-        "Output separates code and content or equivalent ownership boundaries",
-        "Output includes naming rules or ownership guidance for assets"
+        "Response evaluates whether a workspace/package split is justified instead of assuming it",
+        "Response recommends apps/packages or equivalent only when runtime or reusable-library boundaries exist",
+        "Response includes verification or migration cautions for the split"
       ]
     }
   ]

@@ -3,67 +3,53 @@
 ## Solution List
 | Name | Approach | Strengths | Weaknesses | Notes |
 |------|----------|-----------|------------|-------|
-| Next.js / Nuxt / SvelteKit project structure | Framework-imposed conventions plus route colocation | Low decision cost, tooling/doc alignment, easy onboarding | Weak guidance for large cross-feature boundaries; can blur domain ownership | Best default for framework-first frontend/fullstack repos |
-| Angular style guide | Official feature-area and naming guidance | Explicit official rules, good consistency pressure | Can feel heavy for small apps | Strong example of “feature area + naming” guidance |
-| FastAPI / Nest modular layouts | Backend module/package splits | Clear service boundaries once one-file apps break down | Easily turns into ceremony or layer sprawl | Good backend evidence for growth-triggered restructuring |
-| Nx / Turborepo / pnpm workspaces | Monorepo app-package separation | Scales across apps and shared packages; supports boundary tooling | Premature shared packages and ownership tangles are common | Strong fullstack/developer-platform pattern |
-| create-next-app / Angular CLI / Nest CLI / create-t3-app | Generator-led starter structures | Real-world adoption is high because teams keep generator output | Templates fossilize early decisions and can be cargo-culted | Shows why the skill must discuss scaffolds and migration |
-| Feature-Sliced Design / Bulletproof React | Opinionated large-app architecture templates | Good escalation path when framework defaults are no longer enough | Often too heavy or abstract for small/medium teams | Better as “scale-up options” than defaults |
-| Unity / Unreal project structure guidance | Engine-aware code + asset organization | Respects engine/tool constraints; useful for code + content repos | Pure feature/domain advice breaks when engine folders are required | Important game-dev lane that the current skill ignores |
-| Docs-as-code / Diátaxis | Information architecture for docs repos | Organizes around user need, not arbitrary history | Not a full repo architecture system by itself | Useful for product/ops documentation repositories |
+| Feature-Sliced Design | Feature-first frontend architecture with layers, slices, and public APIs | Strong boundaries, scalable terminology, explicit public API thinking | Frontend-centric; can feel heavy for very small repos | Strong primary-source guidance on why type-based trees fail at scale |
+| Bulletproof React | Opinionated production React architecture centered on `features/` plus shared folders | Practical folder examples, migration-friendly, high adoption in real React repos | Still React-oriented; not a universal backend/monorepo answer | Good evidence for actual day-to-day feature-folder behavior |
+| Next.js project-organization guidance | Framework-native colocation, route groups, private folders, and feature/route splits | Matches framework conventions; avoids fighting router semantics | Intentionally unopinionated beyond framework-specific file conventions | Good source for route-aware structure decisions rather than global folder dogma |
+| Turborepo workspace conventions | `apps/` + `packages/` monorepo/workspace structure | Good when multiple runnable apps and shared packages exist | Wrong abstraction if the repo is still one app | Useful as the “split into packages” route-out, not the default answer |
+| General reproducibility guidance (MIT Comm Lab) | Purpose-first naming and hierarchy for revisitability and collaboration | Cross-domain, durable reasoning beyond JS frameworks | High-level; not enough alone for app architecture | Good support for naming, repeatability, and collaborator clarity |
 
 ## Categories
-- **Official defaults**: Next.js, Nuxt, SvelteKit, Angular, FastAPI, Nest, Unity, Unreal
-- **Monorepo/workspace structure**: Nx, Turborepo, pnpm workspaces
-- **Scaffolding surfaces**: create-next-app, Angular CLI, Nest CLI, create-t3-app
-- **Scale-up templates**: Feature-Sliced Design, Bulletproof React, Clean Architecture variants
-- **Docs / ops information architecture**: Diátaxis, docs-as-code guidance
-- **Maintainability heuristics**: colocation, fewer top-level buckets, delayed extraction of shared code, explicit ownership and naming rules
+- **Feature-first app structure:** Feature-Sliced Design, Bulletproof React
+- **Framework-native organization:** Next.js colocation, route groups, private folders
+- **Repository/workspace split:** Turborepo workspace conventions
+- **Cross-domain naming/repeatability rules:** MIT Comm Lab file-structure guidance
 
 ## What People Actually Use
-People usually do not jump from a messy repo to a pristine universal structure. They keep framework or engine defaults, carve out feature/domain folders where change is most frequent, add monorepo boundaries when multi-app sprawl appears, and use generators, barrel files, aliases, ADRs, or CODEOWNERS as stopgaps.
+In practice, teams rarely invent a perfect universal hierarchy from scratch. They mix one of three patterns:
+1. Start with a type-based or framework-starter layout because it is easy to scaffold.
+2. Migrate hot business areas into feature folders once the starter layout causes scattered changes.
+3. Only split into `apps/` + `packages/` when multiple deployable apps/services or reusable packages actually justify workspace boundaries.
+
+The recurring real-world compromise is not “choose one static tree forever.” It is “pick the smallest structure that preserves boundaries today, then add a migration rule for when code should move from shared or route folders into feature or package boundaries.”
 
 ## Frequency Ranking
-1. Official framework/engine conventions
-2. Feature/domain-first organization
-3. Monorepo `apps/` + `packages/libs/`
-4. Generator-led starter layouts
-5. Opinionated large-app templates
-6. Layer-first controller/service/repository splits
-7. Supporting heuristics like naming rules, barrels, and ownership docs
+1. **Feature-first organization** — most repeated recommendation across Feature-Sliced Design, Bulletproof React, and indexed practitioner summaries.
+2. **Framework-native colocation** — common when using Next.js App Router and similar meta-frameworks.
+3. **Workspace/package split** — common in monorepos, but clearly secondary to deciding whether the repo actually has multiple packages/apps.
+4. **Naming/repeatability conventions** — universal but usually presented as support rules, not the main architecture choice.
 
 ## Key Gaps
-- Most guidance stops at starter templates and does not help teams choose **when to stay with defaults vs when to escalate**.
-- Few sources explain **boundary handoff** between file organization and adjacent concerns like automation, state architecture, design systems, or environment setup.
-- Many guides ignore **docs repos** and **game/content repos**, even though those domains have strong structure pain.
-- Template-heavy advice underexplains **incremental migration** and hybrid layouts.
+- Existing guidance is often frontend-specific, while agents still need a transferable decision rubric for backend/fullstack/general repo organization.
+- Many resources show example trees but spend less time on migration triggers: when to move code into a feature, shared folder, route group, or package.
+- Repo-local skill boundaries are currently under-specified, so `file-organization` risks overlapping with `system-environment-setup`, `ui-component-patterns`, `design-system`, and `workflow-automation`.
 
 ## Contradictions
-- Marketed promise: “Use this clean structure and your repo will stay organized.”
-  Reality: teams still accumulate hybrid trees, legacy folders, and partial migrations.
-- Marketed promise: “Monorepo/package boundaries solve complexity.”
-  Reality: shared-package sprawl and weak ownership often replace folder sprawl.
-- Marketed promise: “Barrel files improve ergonomics.”
-  Reality: overused barrels hide coupling and create circular dependency problems.
+- Marketed examples often look like universal templates, but the best primary sources explicitly say structure should follow context: Next.js is unopinionated about overall organization, Bulletproof React warns it is not a silver bullet/template, and Turborepo only recommends workspace/package splitting when the repo is actually a workspace.[^next][^bulletproof][^turbo]
+- Type-based starter layouts are often sold as “clean,” yet FSD directly calls out their scaling limit: feature code becomes scattered across 5–7 directories, making changes riskier.[^fsd]
 
 ## Key Insight
-A strong `file-organization` skill should not prescribe one perfect folder tree. It should help the user choose the **lowest-complexity structure that matches the repo’s scale and constraints**: start with framework/engine defaults, escalate to feature/domain grouping when change locality matters, adopt app/package boundaries when multi-project sprawl appears, and use migration-friendly heuristics instead of big-bang restructures.
+The highest-value improvement is not adding another project-template skill. It is turning `file-organization` into a decision-first structure router: choose the right boundary unit (feature, shared layer, route group, or package), explain when each is justified, provide a low-risk migration checklist, and route adjacent concerns to the skills that already own component APIs, environment setup, and repo automation.
 
 ## Curated Sources
-- [Angular Style Guide](https://angular.dev/style-guide)
-- [Next.js Project Structure](https://nextjs.org/docs/app/getting-started/project-structure)
-- [Nuxt Directory Structure](https://nuxt.com/docs/guide/directory-structure/app)
-- [SvelteKit Project Structure](https://svelte.dev/docs/kit/project-structure)
-- [FastAPI Bigger Applications](https://fastapi.tiangolo.com/tutorial/bigger-applications/)
-- [NestJS Monorepo](https://docs.nestjs.com/cli/monorepo)
-- [Nx Workspace Layout](https://nx.dev/concepts/more-concepts/workspace-layout)
-- [Turborepo Structuring a Repository](https://turbo.build/repo/docs/crafting-your-repository/structuring-a-repository)
-- [pnpm Workspaces](https://pnpm.io/workspaces)
-- [Redux Style Guide](https://redux.js.org/style-guide/#structure-files-as-feature-folders-with-single-file-logic)
-- [Feature-Sliced Design](https://feature-sliced.design/docs/get-started/overview)
-- [Bulletproof React](https://github.com/alan2207/bulletproof-react)
-- [Write the Docs: Docs as Code](https://www.writethedocs.org/guide/docs-as-code/)
-- [Diátaxis](https://diataxis.fr/)
-- [Unity Special Folders](https://docs.unity3d.com/Manual/SpecialFolders.html)
-- [Unreal Engine Directory Structure](https://dev.epicgames.com/documentation/en-us/unreal-engine/directory-structure)
-- [TkDodo: Please Stop Using Barrel Files](https://tkdodo.eu/blog/please-stop-using-barrel-files)
+- Feature-Sliced Design, "The Perfect Folder Structure for Scalable Frontend" — https://feature-sliced.design/blog/frontend-folder-structure
+- Bulletproof React README — https://raw.githubusercontent.com/alan2207/bulletproof-react/master/README.md
+- Bulletproof React project structure doc — https://raw.githubusercontent.com/alan2207/bulletproof-react/master/docs/project-structure.md
+- Next.js docs, "Project structure and organization" — https://nextjs.org/docs/app/getting-started/project-structure
+- Turborepo docs, "Structuring a repository" — https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository
+- MIT Comm Lab, "File Structure" — https://mitcommlab.mit.edu/broad/commkit/file-structure/
+
+[^fsd]: Feature-Sliced Design, browser-rendered primary page evidence.
+[^bulletproof]: GitHub raw primary-source retrieval.
+[^next]: Direct page retrieval + browser-rendered primary page evidence.
+[^turbo]: Browser-rendered primary page evidence.

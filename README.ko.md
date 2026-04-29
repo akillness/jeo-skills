@@ -407,12 +407,11 @@ setup omc
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `fabric` | stdin/파일/트랜스크립트/로그용 재사용 패턴, 커스텀 패턴 팩, 셸 파이프라인, `fabric --serve` 워크플로를 고르는 라우팅-우선 Fabric 운영 스킬 | 전체 |
-| `file-organization` | 결정 우선 저장소 구조 가이드 — 프레임워크 기본 구조, feature 폴더, 모노레포 경계, 문서 분류, 게임 엔진형 레이아웃 중 무엇을 쓸지 결정 | 전체 |
-| `git-submodule` | 라우팅-우선 Git 서브모듈 워크플로 — submodule vs subtree/vendor/package delivery 선택, 재귀 부트스트랩, 안전한 포인터 동기화/업데이트, detached HEAD 방지, CI / hosted-platform checkout 제약 처리 | 전체 |
-| `git-workflow` | 라우팅 우선 로컬 Git 워크플로 — 브랜치 정리, 선택적 staging, 커밋 정리, merge-vs-rebase 선택, 충돌 해결, `--force-with-lease` 기반 안전 푸시, 복구 | 전체 |
-| `google-workspace` | 결정-우선 Google Workspace 운영 스킬 — Apps Script vs REST API vs Admin SDK, 인증 방식, Docs/Sheets/Slides/Drive/Gmail/Calendar/Chat/Forms 교차 워크플로를 먼저 고릅니다 | 전체 |
-| `graphify` | 라우팅-우선 durable graph 스킬 — assistant-native install, local build, refresh, graph query, structural fallback 중 하나를 골라 repo/corpus 그래프와 `GRAPH_REPORT.md` / `graph.json` 산출물을 만듭니다 | 전체 |
+| `fabric` | AI 프롬프트 패턴 — YouTube 요약, 문서 분석 (200+ 패턴) | 전체 |
+| `file-organization` | feature/shared/route/package 경계를 고르고 네이밍 규칙과 마이그레이션 단계를 정하는 결정-우선 저장소 구조 스킬 | 전체 |
+| `git-submodule` | Git 서브모듈 관리 | 전체 |
+| `git-workflow` | 로컬 Git 브랜치, 커밋, 리베이스, 충돌 해결, 안전한 푸시, 복구 워크플로우 | 전체 |
+| `google-workspace` | Google Workspace REST API 자동화 — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
 | `npm-git-install` | npm / pnpm / Yarn / Bun용 라우팅-우선 Node 패키지 전달 스킬 — temporary Git bridge, SHA pin, tarball, workspace, publish-first handoff를 안전하게 선택 | 전체 |
 | `obsidian-cli` | Obsidian 데스크톱 자동화 라우팅 — 공식 CLI 단일 명령/TUI, 개발자 명령, 공식 `obsidian://` handoff, headless·plugin/API route-out까지 명시 | 전체 |

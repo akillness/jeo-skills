@@ -407,12 +407,11 @@ setup omc
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `fabric` | Routing-first Fabric operator skill for stdin/files/transcripts/logs → reusable patterns, custom pattern packs, shell pipelines, and `fabric --serve` workflows | All |
-| `file-organization` | Decision-first repo structure guidance — choose framework defaults vs feature folders, monorepo boundaries, docs taxonomy, or engine-aware game layouts | All |
-| `git-submodule` | Routing-first Git submodule workflow — choose submodule vs subtree/vendor/package delivery, bootstrap recursively, sync or advance pointers safely, avoid detached-HEAD traps, and handle CI / hosted-platform checkout limits | All |
-| `git-workflow` | Routing-first local Git workflow — branch hygiene, selective staging, commit cleanup, merge-vs-rebase choice, conflict resolution, lease-safe pushes, and recovery | All |
-| `google-workspace` | Decision-first Google Workspace operations — choose Apps Script vs REST API vs Admin SDK, auth model, and cross-service flows across Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, and Forms | All |
-| `graphify` | Routing-first durable graph skill — choose assistant-native install, local build, refresh, graph query, or structural fallback for repo/corpus graphs and persistent `GRAPH_REPORT.md` / `graph.json` outputs | All |
+| `fabric` | AI prompt patterns — YouTube summaries, document analysis via 200+ Patterns | All |
+| `file-organization` | Decision-first repo structure skill — choose feature/shared/route/package boundaries, naming rules, and migration steps | All |
+| `git-submodule` | Git submodule management | All |
+| `git-workflow` | Local Git branch, commit, rebase, conflict, push-safety, and recovery workflows | All |
+| `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
 | `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |
 | `npm-git-install` | Routing-first Node package delivery skill for npm / pnpm / Yarn / Bun — choose temporary Git bridge, SHA pin, tarball, workspace, or publish-first handoff safely | All |
 | `obsidian-cli` | Route Obsidian desktop automation — official CLI command/TUI mode, developer commands, official `obsidian://` handoff, and explicit route-outs for headless or plugin/API-heavy jobs | All |
