@@ -10,8 +10,7 @@ U[12]:
   Keep documented stage-2 recovery templates for every mandatory lane (including game development) to avoid ad-hoc query invention in unattended runs
   Apply recommendation-grade freshness and signal-floor gating while preserving broad discovery evidence
   Treat generic personal catch-all repos (especially */skills) as low-fit by default unless workflow docs + traction are explicit
-  Emit lane-level status vocabulary (pass|degraded) and degraded-cause taxonomy for sparse/noisy lanes
-  Require no-results in degraded_causes when a lane remains raw_count==0 after documented stage-2 recovery
+  Emit lane-level status vocabulary (pass|degraded), explicit no-results tagging for zero-hit lanes, and degraded-cause taxonomy for sparse/noisy lanes
   Include compact lane-health metrics (kept_count raw_count median_stars_raw zero_star_raw) for reviewer trend tracking
   Detect cross-lane recommendation concentration with recommended_lane_count and single_lane_concentration flags
   Recompute final lane metrics after any recovery query and enforce metric integrity (never kept_count > raw_count)
@@ -22,7 +21,7 @@ S[12]{n,action,details}:
   3,Triage and reuse,Extract what who why and check whether an existing .survey/{slug} should be reused
   4,Run 4 lanes,Research context solutions actual behavior and alternatives-or-platform-map in parallel
   5,Keyword sweep (hourly loops),For recurring repo-maintenance runs execute all five keyword families, run lane recovery templates when needed, and escalate once with a documented stage-2 query if a lane still has raw_count==0
-  6,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal|no-results) in markdown summaries; if raw_count stays zero after recovery mark no-results explicitly
+  6,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal|no-results) in markdown summaries
   7,Record lane metrics,Alongside lane_status include kept_count raw_count median_stars_raw zero_star_raw so reviewers can detect quality drift
   8,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane
   9,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
@@ -39,7 +38,7 @@ R[14]:
   Apply a recommendation-grade signal floor (require traction signal such as stars>=3 or explicit adoption rationale)
   Preserve the same artifact filenames and headings across platforms
   Preserve lane-level threshold reporting (>=1 keep per lane where feasible; CLI lane target 3+) and run one documented stage-2 lane recovery when stage-1 still yields raw_count==0
-  Use lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal|no-results) for under-threshold lanes; if raw_count remains zero after documented recovery include no-results explicitly
+  Use lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal|no-results) for under-threshold lanes
   Include lane metrics (kept_count raw_count median_stars_raw zero_star_raw) whenever lane_status is reported
   Recompute lane metrics from the final selected result set after recovery-query switching; never publish impossible metric states such as kept_count > raw_count
   Include cross-lane concentration signals (recommended_lane_count and single_lane_concentration) before claiming healthy recommendation coverage

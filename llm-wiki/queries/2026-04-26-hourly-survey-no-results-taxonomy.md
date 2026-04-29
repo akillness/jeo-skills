@@ -1,32 +1,21 @@
 # Hourly survey no-results taxonomy ratchet
 
-- Date: 2026-04-26
-- Run slug: `hourly-skill-candidates-20260425-205258`
-- Mode: `repo-maintenance`
+## Run context
+- Run slug: `hourly-skill-candidates-20260426-221631`
+- Branch: `chore/hourly-survey-20260426-221631`
+- Evidence: `.survey/hourly-skill-candidates-20260426-221631/evidence.json`
+- RTK summary: `.survey/hourly-skill-candidates-20260426-221631/rtk-summary.md`
+- Graphify artifact: `.survey/hourly-skill-candidates-20260426-221631/graphify-refined.json`
 
-## Summary
-Current hourly sweep produced a backend lane with `raw_count=0` after deterministic stage-1 and stage-2 recovery. This confirms that degraded-cause reporting needs an explicit `no-results` value instead of relying on implicit emptiness.
+## What changed
+- Added a survey hardening rule: if a lane remains `raw_count == 0` after recovery, require explicit `degraded_causes` reporting with `no-results`.
+- This removes ambiguous degraded lanes where `degraded_causes` was empty and improves deterministic reviewer triage.
 
-## Evidence
-- Survey evidence JSON: `.survey/hourly-skill-candidates-20260425-205258/evidence.json`
-- RTK summary: `.survey/hourly-skill-candidates-20260425-205258/rtk-summary.md`
-- Graphify refinement fallback: `.survey/hourly-skill-candidates-20260425-205258/graphify-refined.json`
-- Backend lane query logs include:
-  - `web backend skill`
-  - `backend api framework observability stars:>300 pushed:>=2024-01-01`
-  - `backend developer platform api template stars:>150 pushed:>=2024-01-01`
+## Why this ratchet
+- Prior lane-metrics and lane-status ratchets improved comparability, but zero-hit lanes could still be under-specified.
+- This run reproduced a zero-hit backend lane and confirmed that explicit `no-results` tagging improves quality-gate clarity.
 
-## Recommendation
-- Extend degraded-cause taxonomy to include `no-results`.
-- Require `no-results` whenever `raw_count == 0` after documented recovery passes.
-- Add eval coverage so this behavior is enforced in future unattended runs.
-
-## Lane Snapshot
-- agentic: pass | kept=5 raw=33
-- frontend: degraded | kept=0 raw=4
-- backend: degraded | kept=0 raw=0 degraded_causes={'no-results': 1}
-- cli: degraded | kept=2 raw=5
-- game: pass | kept=1 raw=30
-
-## Provenance
-- direct page retrieval
+## References
+- `llm-wiki/queries/2026-04-25-hourly-survey-lane-status-ratchet.md`
+- `llm-wiki/queries/2026-04-25-hourly-survey-lane-metrics-ratchet.md`
+- `llm-wiki/queries/2026-04-26-hourly-survey-gh-field-compatibility-ratchet.md`

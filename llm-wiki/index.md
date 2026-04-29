@@ -1,7 +1,9 @@
 # LLM Wiki Index
 
 ## Topics
-- [Hourly survey lane-health diagnostics](queries/2026-04-26-hourly-survey-lane-health-diagnostics.md)
+- [Hourly survey no-results taxonomy ratchet](queries/2026-04-26-hourly-survey-no-results-taxonomy.md)
+- [Hourly survey gh-field-compatibility ratchet](queries/2026-04-26-hourly-survey-gh-field-compatibility-ratchet.md)
+- [Hourly survey license-fallback ratchet](queries/2026-04-26-hourly-survey-license-fallback-ratchet.md)
 - [Hourly survey deterministic recovery-trigger ratchet](queries/2026-04-25-hourly-survey-deterministic-recovery-trigger.md)
 - [Hourly survey noise-gate evolution](queries/2026-04-25-hourly-survey-noise-gate.md)
 - [Hourly survey freshness-floor ratchet](queries/2026-04-25-hourly-survey-freshness-floor.md)

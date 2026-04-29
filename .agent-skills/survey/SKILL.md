@@ -203,10 +203,9 @@ Execution rules:
 - **Metric integrity gate (mandatory):** after each recovery query selection, recompute lane metrics from the final selected result set before writing artifacts (`raw_count`, `zero_star_raw`, `median_stars_raw`, `kept_count`). Never emit impossible combinations like `kept_count > raw_count`.
 - If a lane still has `raw_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query for that lane before finalizing `lane_status`.
 - For noisy lanes where raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query before finalizing degraded status.
-- If a lane remains `raw_count == 0` after documented stage-2 recovery, include `no-results` explicitly in `degraded_causes` (do not leave causes empty).
+- If a lane still ends with `raw_count == 0` after documented recovery, set/report `degraded_causes` with explicit `no-results` (do not leave it empty).
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
 - Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results`) plus examples/counts.
-- If a lane remains `raw_count == 0` after documented recovery/escalation queries, explicitly include `no-results` in `degraded_causes` (do not leave causes empty).
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - Add canonical degraded-lane interpretation in markdown: classify lanes as `degraded-no-results` when `raw_count == 0` (must include `no-results` cause) versus `degraded-noisy` when `raw_count > 0` but recommendation keeps remain zero after recovery.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
