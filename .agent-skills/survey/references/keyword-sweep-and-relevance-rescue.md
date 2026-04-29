@@ -92,22 +92,33 @@ If direct web search/extract is degraded or returns mostly noise:
 
 ### Lane-level recovery templates (hourly default)
 
-Use these as fallback queries after the primary keyword family returns sparse/noisy matches:
+Use these as fallback queries after the primary keyword family returns sparse/noisy matches.
+
+Before running fallback queries, compute a rolling freshness floor once per run (24 months) and reuse it in every `pushed:` qualifier:
+
+```bash
+ROLLING_CUTOFF=$(python3 - <<'PY'
+from datetime import datetime, timedelta
+print((datetime.utcnow() - timedelta(days=730)).strftime('%Y-%m-%d'))
+PY
+)
+```
+
+Then substitute `${ROLLING_CUTOFF}` in templates:
 
 - `agentic ai skill` lane
-  - Stage 1: `ai agent framework skills automation stars:>200 pushed:>=2024-01-01`
-  - Stage 2 (deterministic escalation when Stage 1 remains `raw_count == 0` or `kept_count == 0`): `agent framework workflow prompt engineering toolkit stars:>120 pushed:>=2024-01-01`
+  - `ai agent framework skills automation stars:>200 pushed:>=${ROLLING_CUTOFF}`
 - `web frontend skill` lane
-  - `frontend ui component design system stars:>300 pushed:>=2024-01-01`
+  - Stage 1: `frontend ui component design system stars:>300 pushed:>=${ROLLING_CUTOFF}`
+  - Stage 2 (deterministic escalation when Stage 1 keeps remain `kept_count == 0` due to noisy/low-signal hits): `frontend engineering workflow design system toolkit stars:>120 pushed:>=${ROLLING_CUTOFF}`
 - `web backend skill` lane
-  - Stage 1: `backend api framework observability stars:>300 pushed:>=2024-01-01`
-  - Stage 2 (deterministic escalation when Stage 1 still has `raw_count == 0` OR noisy `kept_count == 0`): `backend developer platform api template stars:>150 pushed:>=2024-01-01`
+  - Stage 1: `backend api framework observability stars:>300 pushed:>=${ROLLING_CUTOFF}`
+  - Stage 2 (deterministic escalation when Stage 1 still has `raw_count == 0`): `backend developer platform api template stars:>150 pushed:>=${ROLLING_CUTOFF}`
 - `cli open source skill` lane
-  - Stage 1: `command line tool developer productivity stars:>200 pushed:>=2024-01-01`
-  - Stage 2 (deterministic escalation when Stage 1 remains `raw_count == 0` or `kept_count == 0`): `terminal automation cli workflow toolkit stars:>120 pushed:>=2024-01-01`
+  - `command line tool developer productivity stars:>200 pushed:>=${ROLLING_CUTOFF}`
+  - `github cli terminal tool stars:>200 pushed:>=${ROLLING_CUTOFF}`
 - `game development skill` lane
-  - Stage 1: `game engine tooling pipeline stars:>150 pushed:>=2024-01-01`
-  - Stage 2 (deterministic escalation when Stage 1 still has `raw_count == 0` or noisy keeps remain `kept_count == 0`): `game development framework tools stars:>100 pushed:>=2023-01-01`
+  - `game engine tooling pipeline stars:>150 pushed:>=${ROLLING_CUTOFF}`
 
 Stage-2 escalation rule:
 - If a lane remains `raw_count == 0` after stage-1 recovery, run exactly one stage-2 query template for that lane before finalizing `lane_status`.
