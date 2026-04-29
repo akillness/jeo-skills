@@ -95,7 +95,8 @@ Use these as fallback queries after the primary keyword family returns sparse/no
 - `web frontend skill` lane
   - `frontend ui component design system stars:>300 pushed:>=2024-01-01`
 - `web backend skill` lane
-  - `backend api framework observability stars:>300 pushed:>=2024-01-01`
+  - Stage 1: `backend api framework observability stars:>300 pushed:>=2024-01-01`
+  - Stage 2 (deterministic escalation when Stage 1 still has `raw_count == 0` OR noisy `kept_count == 0`): `backend developer platform api template stars:>150 pushed:>=2024-01-01`
 - `cli open source skill` lane
   - Stage 1: `command line tool developer productivity stars:>200 pushed:>=2024-01-01`
   - Stage 2 (deterministic escalation when Stage 1 remains `raw_count == 0` or `kept_count == 0`): `terminal automation cli workflow toolkit stars:>120 pushed:>=2024-01-01`
