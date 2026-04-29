@@ -1,7 +1,9 @@
 # LLM Wiki Index
 
 ## Topics
-- [Hourly survey obsidian-uri-fallback ratchet](queries/2026-04-27-hourly-survey-obsidian-uri-fallback-ratchet.md)
+- [Hourly survey merge carry-forward](queries/2026-04-27-hourly-survey-merge-carry-forward.md)
+- [Hourly survey gh-search-empty-payload ratchet](queries/2026-04-27-hourly-survey-gh-search-empty-payload-ratchet.md)
+- [Hourly survey relative-error-log-path ratchet](queries/2026-04-27-hourly-survey-relative-error-log-path-ratchet.md)
 - [Hourly survey web-search-error-log ratchet](queries/2026-04-27-hourly-survey-web-search-error-log-ratchet.md)
 - [Hourly survey transport-taxonomy ratchet](queries/2026-04-27-hourly-survey-transport-taxonomy-ratchet.md)
 - [Hourly survey raw-quality-collapse ratchet](queries/2026-04-26-hourly-survey-raw-quality-collapse-ratchet.md)

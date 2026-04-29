@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly survey in a headless cron runtime where obsidian-cli prints 'Failed to execute Obsidian URI' but exits 0 while writing run notes",
-      "expected_output": "The survey treats the explicit URI failure signature as a hard failure signal, falls back to deterministic direct markdown file writes, and records the fallback path in run artifacts instead of claiming Obsidian CLI success.",
+      "prompt": "run the hourly five-lane survey where `gh search repos` exits 0 but returns [] on a known-populated probe query; keep cron output merge-safe",
+      "expected_output": "The survey treats empty-success payloads as degraded retrieval, reruns search via `gh api \"search/repositories?...\"`, records fallback evidence, and continues lane status reporting with provenance labels.",
       "assertions": [
-        "Treats explicit obsidian-cli failure signatures as failure conditions even when process exit code is zero",
-        "Falls back to direct markdown file writing for run-note persistence",
-        "Records fallback status/path in artifacts or run summary for reviewer traceability"
+        "Does not treat `[]` + exit 0 from `gh search repos` as healthy when probe expectation indicates population",
+        "Uses deterministic GitHub REST fallback endpoint form (`gh api \"search/repositories?...\"`) before final lane status",
+        "Preserves provenance and degraded/transport reporting in the final artifacts"
       ]
     }
   ]

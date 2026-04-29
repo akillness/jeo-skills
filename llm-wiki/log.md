@@ -1,6 +1,8 @@
 # LLM Wiki Log
 
-- 2026-04-26 07:06:00Z hourly run: added lane-health diagnostics note (degraded-no-results vs degraded-noisy) and linked survey artifacts
+- 2026-04-27 19:55:40Z hourly run: carry-forward merge execution for pending gh-search-empty-payload ratchet; regenerated survey/RTK/graphify/obsidian artifacts and completed PR pipeline.
+- 2026-04-27 18:48:15Z hourly run: added gh-search-empty-payload ratchet note and linked survey/RTK/graphify artifacts (guard empty-success `gh search repos` with `gh api search/repositories` fallback)
+- 2026-04-27 17:20:31Z hourly run: added relative-error-log-path ratchet note and linked survey/RTK/graphify artifacts (forbid host-absolute transport error_log path in new artifacts)
 - 2026-04-24 18:02:14Z hourly run: added ccpi-marketplace skill and survey noise-gate hardening
 - 2026-04-24 19:09:28Z hourly run: added freshness-floor ratchet note and linked survey evidence
 - 2026-04-25 05:16:21Z hourly run: added lane recovery-template ratchet note and linked survey/graphify artifacts
