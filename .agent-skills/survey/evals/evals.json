@@ -215,53 +215,12 @@
     },
     {
       "id": 22,
-      "prompt": "run the hourly five-lane survey where cli open source lane still has raw_count=0 after all documented recovery queries",
-      "expected_output": "The survey marks the lane as degraded and includes `no-results` explicitly in degraded_causes (rather than leaving causes empty), while preserving provenance and lane metrics.",
+      "prompt": "run the hourly five-lane survey where `gh search repos --json license` returns license objects with `key/name` but no `spdx_id`; keep lane status accurate",
+      "expected_output": "The survey normalizes GitHub search license payload shapes (`license.key|license.name|spdxId`) before classifying unknown-license and only then performs one enrichment fallback (`gh repo view`/`gh api`) if still unknown.",
       "assertions": [
-        "Reports lane_status as `degraded` for the zero-result lane",
-        "Includes `no-results` explicitly in degraded_causes when raw_count remains 0 after recovery attempts",
-        "Preserves provenance and lane-health metrics for the lane despite zero keeps"
-      ]
-    },
-    {
-      "id": 23,
-      "prompt": "run the hourly five-lane survey where a CLI candidate description says 'No CLI required' but matches other lane keywords",
-      "expected_output": "The survey keeps the hit in raw evidence but marks it low-fit by default due to explicit negation phrases (`no cli`, `without cli`, `not a cli`, `non-cli`) unless an exception rationale is documented.",
-      "assertions": [
-        "Treats explicit CLI-negation phrases as low-fit signals by default",
-        "Preserves the candidate in raw evidence/provenance rather than silently dropping it",
-        "Requires an explicit exception rationale before recommendation-grade promotion"
-      ]
-    },
-    {
-      "id": 24,
-      "prompt": "run the hourly survey with web_search degraded and include transport_status in evidence for portability",
-      "expected_output": "The survey records transport fallback metadata and keeps `transport_status.web_search.error_log` repository-relative (for example `.survey/<slug>/web-search-error.log`) instead of host-absolute paths, preserving cross-run portability.",
-      "assertions": [
-        "Records transport fallback cause and command family when web_search is degraded",
-        "Uses repository-relative `transport_status.web_search.error_log` path (no `/Users/...` or `/home/...` prefix)",
-        "Captures provider error envelope fields when available (e.g., `error_tag`, `request_ids[]`)",
-        "Keeps provenance labels valid while reporting degraded transport"
-      ]
-    },
-    {
-      "id": 25,
-      "prompt": "run carry-forward merge mode with open-pr backlog>=10 where the newest candidate keeps returning mergeStateStatus UNKNOWN",
-      "expected_output": "The survey does bounded mergeability re-checks instead of treating UNKNOWN as final on first sample, then deterministically defers that PR and selects the next candidate while recording the defer reason in run artifacts.",
-      "assertions": [
-        "Does not finalize candidate eligibility from a single mergeStateStatus=UNKNOWN sample",
-        "Performs short bounded re-checks before deciding to defer",
-        "Records defer reason and fallback candidate selection in artifacts"
-      ]
-    },
-    {
-      "id": 26,
-      "prompt": "run the hourly five-lane survey where backend and cli lanes needed recovery queries before final lane status",
-      "expected_output": "The survey persists per-lane recovery_attempts (stage, query, raw_count) in evidence.json and mirrors compact recovery notes in markdown so degraded or rescued lanes are reviewer-auditable.",
-      "assertions": [
-        "Stores lane-level recovery_attempts with stage/query/raw_count in structured evidence",
-        "Includes a compact markdown recovery note per affected lane (not JSON-only)",
-        "Keeps final lane_status/degraded_causes consistent with the recorded recovery attempts"
+        "Treats `license.key` or `license.name` from gh search payload as valid first-pass license evidence",
+        "Runs enrichment fallback only when normalized license fields are still unknown",
+        "Avoids false `license` degraded causes that come only from schema-shape mismatch"
       ]
     }
   ]

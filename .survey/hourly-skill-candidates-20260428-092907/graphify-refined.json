@@ -1,0 +1,192 @@
+{
+  "run_slug": "hourly-skill-candidates-20260428-092907",
+  "generated_at": "2026-04-28T00:30:24.012033+00:00",
+  "graphify_query_status": "fallback-generated (error: could not load graph: 'links')",
+  "nodes": [
+    {
+      "id": "run:hourly-skill-candidates-20260428-092907",
+      "type": "run",
+      "label": "hourly-skill-candidates-20260428-092907"
+    },
+    {
+      "id": "lane:agentic-ai",
+      "type": "lane",
+      "label": "agentic-ai",
+      "lane_status": "pass",
+      "kept_count": 3,
+      "raw_count": 40
+    },
+    {
+      "id": "cause:license",
+      "type": "cause",
+      "label": "license"
+    },
+    {
+      "id": "cause:low-signal",
+      "type": "cause",
+      "label": "low-signal"
+    },
+    {
+      "id": "lane:web-frontend",
+      "type": "lane",
+      "label": "web-frontend",
+      "lane_status": "degraded",
+      "kept_count": 0,
+      "raw_count": 4
+    },
+    {
+      "id": "cause:stale",
+      "type": "cause",
+      "label": "stale"
+    },
+    {
+      "id": "lane:web-backend",
+      "type": "lane",
+      "label": "web-backend",
+      "lane_status": "degraded",
+      "kept_count": 0,
+      "raw_count": 2
+    },
+    {
+      "id": "lane:cli-open-source",
+      "type": "lane",
+      "label": "cli-open-source",
+      "lane_status": "pass",
+      "kept_count": 30,
+      "raw_count": 40
+    },
+    {
+      "id": "cause:archived",
+      "type": "cause",
+      "label": "archived"
+    },
+    {
+      "id": "lane:game-development",
+      "type": "lane",
+      "label": "game-development",
+      "lane_status": "pass",
+      "kept_count": 1,
+      "raw_count": 40
+    }
+  ],
+  "links": [
+    {
+      "source": "run:hourly-skill-candidates-20260428-092907",
+      "target": "lane:agentic-ai",
+      "relation": "has_lane",
+      "weight": 40
+    },
+    {
+      "source": "lane:agentic-ai",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:agentic-ai",
+      "target": "cause:low-signal",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260428-092907",
+      "target": "lane:web-frontend",
+      "relation": "has_lane",
+      "weight": 4
+    },
+    {
+      "source": "lane:web-frontend",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:web-frontend",
+      "target": "cause:stale",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:web-frontend",
+      "target": "cause:low-signal",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260428-092907",
+      "target": "lane:web-backend",
+      "relation": "has_lane",
+      "weight": 2
+    },
+    {
+      "source": "lane:web-backend",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:web-backend",
+      "target": "cause:stale",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260428-092907",
+      "target": "lane:cli-open-source",
+      "relation": "has_lane",
+      "weight": 40
+    },
+    {
+      "source": "lane:cli-open-source",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:cli-open-source",
+      "target": "cause:stale",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:cli-open-source",
+      "target": "cause:archived",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "run:hourly-skill-candidates-20260428-092907",
+      "target": "lane:game-development",
+      "relation": "has_lane",
+      "weight": 40
+    },
+    {
+      "source": "lane:game-development",
+      "target": "cause:license",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:game-development",
+      "target": "cause:stale",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:game-development",
+      "target": "cause:archived",
+      "relation": "degraded_by",
+      "weight": 1
+    },
+    {
+      "source": "lane:game-development",
+      "target": "cause:low-signal",
+      "relation": "degraded_by",
+      "weight": 1
+    }
+  ],
+  "source_files": [
+    ".survey/hourly-skill-candidates-20260428-092907/evidence.json",
+    ".survey/hourly-skill-candidates-20260428-092907/rtk-summary.md"
+  ]
+}

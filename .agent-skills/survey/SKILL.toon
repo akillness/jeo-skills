@@ -24,17 +24,15 @@ S[12]{n,action,details}:
   6,Ensure lane template parity,Confirm every mandatory lane (including game development) has an explicit stage-2 query template before finalizing unattended guidance
   7,Mark lane status,After relevance gate add lane_status(pass|degraded) and degraded_causes(license|stale|low-fit|archived|low-signal|no-results) in markdown summaries
   8,Record lane metrics,Alongside lane_status include kept_count raw_count median_stars_raw zero_star_raw so reviewers can detect quality drift
-  9,Lane-metric integrity,Before writing artifacts enforce raw_count>=kept_count and normalize empty-lane metrics to raw_count=0 zero_star_raw=0 median_stars_raw=0 to prevent impossible states
-  10,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane
-  11,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
-  12,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
-  13,Summarize,Return a short factual survey summary and route planning or implementation outward
-R[14]:
+  9,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane
+  10,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
+  11,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
+  12,Summarize,Return a short factual survey summary and route planning or implementation outward
+R[15]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
   Keep claims source-backed and label downgraded evidence clearly using validator-supported labels (map gh-search listings to indexed snippet and repo/API detail fetches to direct page retrieval); for gh search repos JSON output prefer fullName or owner+name over unsupported nameWithOwner, and if gh search returns empty-success payloads ([] exit 0) on known-populated probes rerun via gh api search/repositories fallback while preserving stderr evidence
-  In backlog-driven carry-forward merges, do not finalize from a single mergeStateStatus=UNKNOWN sample; run short bounded re-checks, then defer that PR with explicit artifact notes if UNKNOWN persists
-  Drop assessment/homework-only and unknown-license noise unless exception rationale is explicit; when license is null on first pass, retry once via gh api repos/<owner>/<repo> before classifying unknown
+  Drop assessment/homework-only and unknown-license noise unless exception rationale is explicit; when license is null on first pass, normalize gh search license payload shapes first (`license.key`/`license.name`/`spdxId`), then retry once via gh api repos/<owner>/<repo> before classifying unknown
   Treat generic personal catch-all repos (especially */skills) as low-fit unless workflow docs + traction are explicit
   Treat explicit negation phrases in CLI lane (no cli/without cli/not a cli/non-cli) as low-fit unless exception rationale is explicit
   Apply a recommendation-grade freshness floor (drop stale pushed_at over 24 months unless exception rationale + risk note)

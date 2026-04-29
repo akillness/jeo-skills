@@ -24,3 +24,4 @@
 - [Hourly survey lane-status ratchet](queries/2026-04-25-hourly-survey-lane-status-ratchet.md)
 - [Hourly survey lane-metrics ratchet](queries/2026-04-25-hourly-survey-lane-metrics-ratchet.md)
 - [Hourly survey game-lane stage2 ratchet](queries/2026-04-27-hourly-survey-game-lane-stage2-ratchet.md)
+- [Hourly survey license-shape normalization ratchet](queries/2026-04-28-hourly-survey-license-shape-ratchet.md)
