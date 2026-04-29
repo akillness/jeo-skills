@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where gh search returns mixed license key shapes (`spdx_id`, `spdxId`, or empty object) across lanes",
-      "expected_output": "The survey normalizes license key drift from search payloads, then retries unresolved license values once via `gh api repos/<owner>/<repo>` before final keep/drop classification.",
+      "prompt": "run the hourly five-lane survey where cli lane remains raw_count=0 after documented stage-1 and stage-2 recovery",
+      "expected_output": "The survey keeps lane_status as degraded and explicitly includes `no-results` in degraded_causes so reviewers can distinguish retrieval emptiness from filtering-only degradation.",
       "assertions": [
-        "Checks both `license.spdx_id` and `license.spdxId` before marking license unknown",
-        "Retries unresolved license once via `gh api repos/<owner>/<repo>` before unknown-license drop/exception handling",
-        "Keeps provenance and lane-status reporting intact after metadata normalization"
+        "When raw_count stays 0 after documented recovery, degraded_causes includes `no-results`",
+        "Preserves lane metrics and provenance while reporting the no-results condition",
+        "Does not misclassify pure no-hit lanes as only low-signal/low-fit without the explicit no-results tag"
       ]
     }
   ]

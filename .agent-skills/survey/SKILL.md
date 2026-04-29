@@ -204,8 +204,8 @@ Execution rules:
 - For noisy lanes where raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1 recovery, run exactly one documented stage-2 recovery query before finalizing degraded status.
 - If a lane still ends with `raw_count == 0` after documented recovery, set/report `degraded_causes` with explicit `no-results` (do not leave it empty).
 - Recommendation thresholds after relevance gate: aim for at least 1 keep per lane where feasible, and `cli open source skill` should target 3+ kept entries for spotlight quality.
-- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `no-results`) plus examples/counts.
-- If a lane still has `raw_count == 0` after stage-2 recovery, include `no-results` in `degraded_causes` explicitly so sparse lanes are auditable instead of silently empty.
+- Emit explicit lane-level status in markdown (`lane_status: pass|degraded`). If thresholds are missed, keep evidence and report `degraded_causes` with compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `low-signal-saturation`, `transport`, `no-results`) plus examples/counts.
+- If a lane ends with `raw_count == 0` after the documented recovery path, always include `no-results` in that lane’s `degraded_causes` for deterministic reviewer triage.
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - Include a lane query transcript in evidence for every lane (`primary_query`, optional `stage1_query`, optional `stage2_query`, each with result counts, and stderr path when a query fails) so degraded outcomes are auditable.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.

@@ -1,0 +1,508 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-145024",
+  "generated_at": "2026-04-27T14:51:23.341003+00:00",
+  "repo": "akillness/oh-my-skills",
+  "required_lanes": [
+    "agentic_ai_skill",
+    "web_frontend_skill",
+    "web_backend_skill",
+    "cli_open_source_skill",
+    "game_development_skill"
+  ],
+  "lanes": {
+    "agentic_ai_skill": {
+      "lane_query": "agentic ai skill",
+      "recovery_query": null,
+      "recovery_used": false,
+      "provenance": [
+        "github search api"
+      ],
+      "raw_count": 40,
+      "zero_star_raw": 29,
+      "median_stars_raw": 0.0,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "gh_errors": [],
+      "kept": [
+        {
+          "full_name": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "description": "Agentic AI skills for knowledge graph management",
+          "stars": 7,
+          "forks": 1,
+          "updated_at": "2026-04-21T19:12:04Z",
+          "pushed_at": "2026-04-06T01:48:47Z",
+          "archived": false,
+          "license": "MIT License",
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [],
+          "fit_rationale": "Matched lane intent tokens for 'agentic ai skill', active within 24 months, open-source license detected, non-archived, and passes signal floor."
+        }
+      ],
+      "filtered_low_fit_examples": [],
+      "filtered_other_examples": [
+        {
+          "full_name": "gofastskill/fastskill",
+          "url": "https://github.com/gofastskill/fastskill",
+          "description": "Package manager and operational toolkit for Agent AI Skills. FastSkill enables discovery, installation, versioning, and deployment of skills at scale.",
+          "stars": 4,
+          "forks": 0,
+          "updated_at": "2026-04-27T08:05:55Z",
+          "pushed_at": "2026-04-25T18:22:03Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license"
+          ]
+        },
+        {
+          "full_name": "muhammad-khalid-bin-walid/Agentic-AI-SKills-For-Cyber-Security",
+          "url": "https://github.com/muhammad-khalid-bin-walid/Agentic-AI-SKills-For-Cyber-Security",
+          "description": "This is a Claude AI Skill that transforms Claude into a full-stack, end-to-end penetration testing co-pilot. Drop it into any Claude environment and you instantly have an expert partner that can automate your way.",
+          "stars": 1,
+          "forks": 0,
+          "updated_at": "2026-04-25T16:03:42Z",
+          "pushed_at": "2026-04-25T08:49:03Z",
+          "archived": false,
+          "license": "MIT License",
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "onsen-ai/metabase-skill",
+          "url": "https://github.com/onsen-ai/metabase-skill",
+          "description": "Agentic AI skill for Metabase developers and users",
+          "stars": 1,
+          "forks": 0,
+          "updated_at": "2026-04-24T16:52:44Z",
+          "pushed_at": "2026-04-24T16:52:42Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "kdcllc/youtube-skill",
+          "url": "https://github.com/kdcllc/youtube-skill",
+          "description": "Agentic AI Skill for using yt-dlp to interact with Youtube",
+          "stars": 0,
+          "forks": 0,
+          "updated_at": "2026-04-22T22:14:40Z",
+          "pushed_at": "2026-04-22T22:14:35Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "cjgunase/AgenticAI_Skills",
+          "url": "https://github.com/cjgunase/AgenticAI_Skills",
+          "description": "",
+          "stars": 0,
+          "forks": 0,
+          "updated_at": "2026-04-22T14:54:55Z",
+          "pushed_at": "2026-04-22T14:54:51Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ]
+    },
+    "web_frontend_skill": {
+      "lane_query": "web frontend skill",
+      "recovery_query": null,
+      "recovery_used": false,
+      "provenance": [
+        "github search api"
+      ],
+      "raw_count": 4,
+      "zero_star_raw": 3,
+      "median_stars_raw": 0.0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "license",
+        "low-signal",
+        "stale"
+      ],
+      "gh_errors": [],
+      "kept": [],
+      "filtered_low_fit_examples": [],
+      "filtered_other_examples": [
+        {
+          "full_name": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+          "stars": 12,
+          "forks": 1,
+          "updated_at": "2026-04-02T16:29:32Z",
+          "pushed_at": "2026-03-30T14:38:08Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license"
+          ]
+        },
+        {
+          "full_name": "Hezekiah-Elisha/savannah_informatics_test",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only.",
+          "stars": 0,
+          "forks": 0,
+          "updated_at": "2026-01-16T19:17:48Z",
+          "pushed_at": "2026-01-16T19:17:43Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only. It should be hosted on a code repository service (e.g Github, Gitlab) with public access to make the assessment easy",
+          "stars": 0,
+          "forks": 0,
+          "updated_at": "2024-05-28T12:02:04Z",
+          "pushed_at": "2024-05-28T12:02:00Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "description": "This is a frontend project to showcase web frontend skills.",
+          "stars": 0,
+          "forks": 0,
+          "updated_at": "2023-11-28T08:12:53Z",
+          "pushed_at": "2023-11-29T17:23:32Z",
+          "archived": false,
+          "license": "MIT License",
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "low-signal",
+            "stale"
+          ]
+        }
+      ]
+    },
+    "web_backend_skill": {
+      "lane_query": "web backend skill",
+      "recovery_query": "web backend skill stars:>5000 pushed:>2024-01-01",
+      "recovery_used": true,
+      "provenance": [
+        "github search api"
+      ],
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 7522,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "stale"
+      ],
+      "gh_errors": [],
+      "kept": [],
+      "filtered_low_fit_examples": [],
+      "filtered_other_examples": [
+        {
+          "full_name": "andreasbm/web-skills",
+          "url": "https://github.com/andreasbm/web-skills",
+          "description": "A visual overview of useful skills to learn as a web developer",
+          "stars": 7522,
+          "forks": 716,
+          "updated_at": "2026-04-27T12:02:32Z",
+          "pushed_at": "2024-04-19T03:22:28Z",
+          "archived": false,
+          "license": "Other",
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "stale"
+          ]
+        }
+      ]
+    },
+    "cli_open_source_skill": {
+      "lane_query": "cli open source skill",
+      "recovery_query": "cli open source skill stars:>5000 pushed:>2024-01-01",
+      "recovery_used": true,
+      "provenance": [
+        "github search api"
+      ],
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "gh_errors": [],
+      "kept": [],
+      "filtered_low_fit_examples": [],
+      "filtered_other_examples": []
+    },
+    "game_development_skill": {
+      "lane_query": "game development skill",
+      "recovery_query": null,
+      "recovery_used": false,
+      "provenance": [
+        "github search api"
+      ],
+      "raw_count": 40,
+      "zero_star_raw": 30,
+      "median_stars_raw": 0.0,
+      "kept_count": 3,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "gh_errors": [],
+      "kept": [
+        {
+          "full_name": "codewith-salman/Rescuer-Game",
+          "url": "https://github.com/codewith-salman/Rescuer-Game",
+          "description": "Rescuer is a fun and engaging browser game where players complete rescue missions through interactive challenges. Built with HTML, CSS, and JavaScript, this project highlights game logic, animations, and responsive design—perfect for showcasing your frontend and game development skills.",
+          "stars": 3,
+          "forks": 0,
+          "updated_at": "2026-02-19T18:36:17Z",
+          "pushed_at": "2026-02-19T18:36:14Z",
+          "archived": false,
+          "license": "Apache License 2.0",
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [],
+          "fit_rationale": "Matched lane intent tokens for 'game development skill', active within 24 months, open-source license detected, non-archived, and passes signal floor."
+        },
+        {
+          "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "stars": 3,
+          "forks": 1,
+          "updated_at": "2026-04-14T18:39:35Z",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "archived": false,
+          "license": "MIT License",
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [],
+          "fit_rationale": "Matched lane intent tokens for 'game development skill', active within 24 months, open-source license detected, non-archived, and passes signal floor."
+        },
+        {
+          "full_name": "Shubham-Jana-Dev/bengal-skies-js-game",
+          "url": "https://github.com/Shubham-Jana-Dev/bengal-skies-js-game",
+          "description": "🎮 Bengal Skies: The Flight for Rights is a Flappy Bird clone showcasing front-end game development skills using Vanilla JS. Implements a physics engine, score tracking, and custom CSS for graphics, including complex gradient-based brick textures. Demonstrates proficiency in core web technologies.",
+          "stars": 5,
+          "forks": 0,
+          "updated_at": "2026-03-10T03:17:58Z",
+          "pushed_at": "2025-12-16T16:34:50Z",
+          "archived": false,
+          "license": "MIT License",
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [],
+          "fit_rationale": "Matched lane intent tokens for 'game development skill', active within 24 months, open-source license detected, non-archived, and passes signal floor."
+        }
+      ],
+      "filtered_low_fit_examples": [],
+      "filtered_other_examples": [
+        {
+          "full_name": "UmarWaqas513/Breakout-Game",
+          "url": "https://github.com/UmarWaqas513/Breakout-Game",
+          "description": "🏓 Create your own Breakout game with advanced ball physics and level design for a fun coding experience and game development skills enhancement.",
+          "stars": 0,
+          "forks": 0,
+          "updated_at": "2026-04-27T12:19:13Z",
+          "pushed_at": "2026-04-27T12:19:10Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "IsaacJReis/AshenKatana",
+          "url": "https://github.com/IsaacJReis/AshenKatana",
+          "description": "A simple 2D samurai game developed to improve my Unity and game development skills.",
+          "stars": 0,
+          "forks": 0,
+          "updated_at": "2026-04-25T15:31:54Z",
+          "pushed_at": "2026-04-25T15:31:49Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "Berke-421/unity_practice",
+          "url": "https://github.com/Berke-421/unity_practice",
+          "description": "# Unity Practice  This repository contains my Unity and C# practice scripts and small experiments.  ## Purpose To improve my game development skills by building and testing core gameplay mechanics in Unity.",
+          "stars": 0,
+          "forks": 0,
+          "updated_at": "2026-04-25T15:05:51Z",
+          "pushed_at": "2026-04-25T15:05:47Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "NotEdward-Fall/GameDev",
+          "url": "https://github.com/NotEdward-Fall/GameDev",
+          "description": "Game Development skill using Unity 6 3D and C# on Visual Studio Code ",
+          "stars": 0,
+          "forks": 0,
+          "updated_at": "2026-04-25T13:18:06Z",
+          "pushed_at": "2026-04-25T13:18:03Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "shrinithi19/Flappy_Cloud",
+          "url": "https://github.com/shrinithi19/Flappy_Cloud",
+          "description": "Flappy Cloud is a lightweight 2D game inspired by Flappy Bird, built with Python and Pygame. It features smooth controls, real-time collision detection, and dynamic obstacle generation. This project showcases foundational game development skills including game loop design, sprite handling, and physics-based movement.",
+          "stars": 0,
+          "forks": 0,
+          "updated_at": "2026-04-25T04:51:41Z",
+          "pushed_at": "2026-04-25T04:51:37Z",
+          "archived": false,
+          "license": null,
+          "fit_overlap": true,
+          "negation_detected": false,
+          "relevance_causes": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ]
+    }
+  },
+  "recommended": [
+    {
+      "full_name": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "description": "Agentic AI skills for knowledge graph management",
+      "stars": 7,
+      "forks": 1,
+      "updated_at": "2026-04-21T19:12:04Z",
+      "pushed_at": "2026-04-06T01:48:47Z",
+      "archived": false,
+      "license": "MIT License",
+      "fit_overlap": true,
+      "negation_detected": false,
+      "relevance_causes": [],
+      "fit_rationale": "Matched lane intent tokens for 'agentic ai skill', active within 24 months, open-source license detected, non-archived, and passes signal floor.",
+      "lane": "agentic_ai_skill"
+    },
+    {
+      "full_name": "codewith-salman/Rescuer-Game",
+      "url": "https://github.com/codewith-salman/Rescuer-Game",
+      "description": "Rescuer is a fun and engaging browser game where players complete rescue missions through interactive challenges. Built with HTML, CSS, and JavaScript, this project highlights game logic, animations, and responsive design—perfect for showcasing your frontend and game development skills.",
+      "stars": 3,
+      "forks": 0,
+      "updated_at": "2026-02-19T18:36:17Z",
+      "pushed_at": "2026-02-19T18:36:14Z",
+      "archived": false,
+      "license": "Apache License 2.0",
+      "fit_overlap": true,
+      "negation_detected": false,
+      "relevance_causes": [],
+      "fit_rationale": "Matched lane intent tokens for 'game development skill', active within 24 months, open-source license detected, non-archived, and passes signal floor.",
+      "lane": "game_development_skill"
+    },
+    {
+      "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+      "stars": 3,
+      "forks": 1,
+      "updated_at": "2026-04-14T18:39:35Z",
+      "pushed_at": "2026-02-06T04:09:12Z",
+      "archived": false,
+      "license": "MIT License",
+      "fit_overlap": true,
+      "negation_detected": false,
+      "relevance_causes": [],
+      "fit_rationale": "Matched lane intent tokens for 'game development skill', active within 24 months, open-source license detected, non-archived, and passes signal floor.",
+      "lane": "game_development_skill"
+    },
+    {
+      "full_name": "Shubham-Jana-Dev/bengal-skies-js-game",
+      "url": "https://github.com/Shubham-Jana-Dev/bengal-skies-js-game",
+      "description": "🎮 Bengal Skies: The Flight for Rights is a Flappy Bird clone showcasing front-end game development skills using Vanilla JS. Implements a physics engine, score tracking, and custom CSS for graphics, including complex gradient-based brick textures. Demonstrates proficiency in core web technologies.",
+      "stars": 5,
+      "forks": 0,
+      "updated_at": "2026-03-10T03:17:58Z",
+      "pushed_at": "2025-12-16T16:34:50Z",
+      "archived": false,
+      "license": "MIT License",
+      "fit_overlap": true,
+      "negation_detected": false,
+      "relevance_causes": [],
+      "fit_rationale": "Matched lane intent tokens for 'game development skill', active within 24 months, open-source license detected, non-archived, and passes signal floor.",
+      "lane": "game_development_skill"
+    }
+  ],
+  "recommended_lane_count": 2,
+  "single_lane_concentration": false,
+  "provenance": [
+    "github search api",
+    "github repo view api",
+    "github repos rest api"
+  ]
+}
