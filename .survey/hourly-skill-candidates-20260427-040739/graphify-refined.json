@@ -1,0 +1,323 @@
+{
+  "run": "2026-04-26T19:07:39Z",
+  "slug": "hourly-skill-candidates-20260427-040739",
+  "nodes": [
+    {
+      "id": "lane:agentic ai skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 30,
+      "kept_count": 30
+    },
+    {
+      "id": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "repo",
+      "stars": 14,
+      "license": "unknown",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill"
+    },
+    {
+      "id": "repo:VoDaiLocz/Enhance-Prompt",
+      "type": "repo",
+      "stars": 10,
+      "license": "unknown",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt"
+    },
+    {
+      "id": "repo:iwe-org/skills",
+      "type": "repo",
+      "stars": 7,
+      "license": "unknown",
+      "url": "https://github.com/iwe-org/skills"
+    },
+    {
+      "id": "repo:taisukeoe/agentic-ai-skills-creator",
+      "type": "repo",
+      "stars": 2,
+      "license": "unknown",
+      "url": "https://github.com/taisukeoe/agentic-ai-skills-creator"
+    },
+    {
+      "id": "repo:Hedi-Bk/Agentic_AI_Space",
+      "type": "repo",
+      "stars": 1,
+      "license": "unknown",
+      "url": "https://github.com/Hedi-Bk/Agentic_AI_Space"
+    },
+    {
+      "id": "lane:web frontend skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 4,
+      "kept_count": 3
+    },
+    {
+      "id": "repo:Hezekiah-Elisha/savannah_informatics_test",
+      "type": "repo",
+      "stars": 0,
+      "license": "unknown",
+      "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test"
+    },
+    {
+      "id": "repo:Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+      "type": "repo",
+      "stars": 0,
+      "license": "unknown",
+      "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment"
+    },
+    {
+      "id": "repo:amrrs/cinematic-webscroll-frontend-skill",
+      "type": "repo",
+      "stars": 12,
+      "license": "unknown",
+      "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill"
+    },
+    {
+      "id": "lane:web backend skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 31,
+      "kept_count": 31
+    },
+    {
+      "id": "repo:com-lihaoyi/cask",
+      "type": "repo",
+      "stars": 593,
+      "license": "unknown",
+      "url": "https://github.com/com-lihaoyi/cask"
+    },
+    {
+      "id": "repo:cirosantilli/china-dictatorship",
+      "type": "repo",
+      "stars": 2957,
+      "license": "unknown",
+      "url": "https://github.com/cirosantilli/china-dictatorship"
+    },
+    {
+      "id": "repo:gege-circle/.github",
+      "type": "repo",
+      "stars": 1859,
+      "license": "unknown",
+      "url": "https://github.com/gege-circle/.github"
+    },
+    {
+      "id": "repo:ishtms/learn-nodejs-hard-way",
+      "type": "repo",
+      "stars": 1808,
+      "license": "unknown",
+      "url": "https://github.com/ishtms/learn-nodejs-hard-way"
+    },
+    {
+      "id": "repo:danielgtaylor/huma",
+      "type": "repo",
+      "stars": 4032,
+      "license": "unknown",
+      "url": "https://github.com/danielgtaylor/huma"
+    },
+    {
+      "id": "lane:cli open source skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 50,
+      "kept_count": 44
+    },
+    {
+      "id": "repo:cli/cli",
+      "type": "repo",
+      "stars": 44074,
+      "license": "unknown",
+      "url": "https://github.com/cli/cli"
+    },
+    {
+      "id": "repo:urfave/cli",
+      "type": "repo",
+      "stars": 23994,
+      "license": "unknown",
+      "url": "https://github.com/urfave/cli"
+    },
+    {
+      "id": "repo:spicetify/cli",
+      "type": "repo",
+      "stars": 22946,
+      "license": "unknown",
+      "url": "https://github.com/spicetify/cli"
+    },
+    {
+      "id": "repo:TheR1D/shell_gpt",
+      "type": "repo",
+      "stars": 12014,
+      "license": "unknown",
+      "url": "https://github.com/TheR1D/shell_gpt"
+    },
+    {
+      "id": "repo:ankitpokhrel/jira-cli",
+      "type": "repo",
+      "stars": 5554,
+      "license": "unknown",
+      "url": "https://github.com/ankitpokhrel/jira-cli"
+    },
+    {
+      "id": "lane:game development skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 30,
+      "kept_count": 13
+    },
+    {
+      "id": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "repo",
+      "stars": 3,
+      "license": "unknown",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev"
+    },
+    {
+      "id": "repo:PPYukito/Warrior",
+      "type": "repo",
+      "stars": 2,
+      "license": "unknown",
+      "url": "https://github.com/PPYukito/Warrior"
+    },
+    {
+      "id": "repo:inchussa/Virtual-Pet-Simulator",
+      "type": "repo",
+      "stars": 25,
+      "license": "unknown",
+      "url": "https://github.com/inchussa/Virtual-Pet-Simulator"
+    },
+    {
+      "id": "repo:UnrealBlueprint/02_CrystalCavern",
+      "type": "repo",
+      "stars": 9,
+      "license": "unknown",
+      "url": "https://github.com/UnrealBlueprint/02_CrystalCavern"
+    },
+    {
+      "id": "repo:Unengine/GameEngineAndGameMathTIL",
+      "type": "repo",
+      "stars": 4,
+      "license": "unknown",
+      "url": "https://github.com/Unengine/GameEngineAndGameMathTIL"
+    }
+  ],
+  "edges": [
+    {
+      "source": "lane:agentic ai skill",
+      "target": "repo:AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "repo:VoDaiLocz/Enhance-Prompt",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "repo:iwe-org/skills",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "repo:taisukeoe/agentic-ai-skills-creator",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:agentic ai skill",
+      "target": "repo:Hedi-Bk/Agentic_AI_Space",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:web frontend skill",
+      "target": "repo:Hezekiah-Elisha/savannah_informatics_test",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:web frontend skill",
+      "target": "repo:Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:web frontend skill",
+      "target": "repo:amrrs/cinematic-webscroll-frontend-skill",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:web backend skill",
+      "target": "repo:com-lihaoyi/cask",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:web backend skill",
+      "target": "repo:cirosantilli/china-dictatorship",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:web backend skill",
+      "target": "repo:gege-circle/.github",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:web backend skill",
+      "target": "repo:ishtms/learn-nodejs-hard-way",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:web backend skill",
+      "target": "repo:danielgtaylor/huma",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:cli open source skill",
+      "target": "repo:cli/cli",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:cli open source skill",
+      "target": "repo:urfave/cli",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:cli open source skill",
+      "target": "repo:spicetify/cli",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:cli open source skill",
+      "target": "repo:TheR1D/shell_gpt",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:cli open source skill",
+      "target": "repo:ankitpokhrel/jira-cli",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "repo:tjboudreaux/cc-plugin-unity-gamedev",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "repo:PPYukito/Warrior",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "repo:inchussa/Virtual-Pet-Simulator",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "repo:UnrealBlueprint/02_CrystalCavern",
+      "relation": "recommends"
+    },
+    {
+      "source": "lane:game development skill",
+      "target": "repo:Unengine/GameEngineAndGameMathTIL",
+      "relation": "recommends"
+    }
+  ],
+  "cross_lane": {
+    "recommended_lane_count": 5,
+    "single_lane_concentration": false
+  }
+}

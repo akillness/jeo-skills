@@ -196,12 +196,12 @@
     },
     {
       "id": 20,
-      "prompt": "run the hourly five-lane survey where one lane still has raw_count=0 after documented recovery and produce reviewer-ready degraded reporting",
-      "expected_output": "The survey marks that lane as degraded and explicitly includes `no-results` in degraded_causes (instead of leaving degraded causes empty) while preserving provenance and lane metrics.",
+      "prompt": "run the hourly five-lane survey where agentic lane has many lexical matches and enough kept_count, but zero_star_raw/raw_count is very high and median_stars_raw is zero",
+      "expected_output": "The survey applies a zero-star saturation guard: it does not keep lane_status=pass by count alone, and either documents explicit traction rationale for promoted keeps or marks the lane degraded with low-signal cause.",
       "assertions": [
-        "Includes `no-results` in degraded_causes when raw_count remains 0 after recovery",
-        "Does not leave degraded_causes empty for zero-result degraded lanes",
-        "Keeps lane metrics and provenance labels alongside the degraded lane report"
+        "Checks zero-star saturation using both zero_star ratio and median_stars_raw",
+        "Avoids pass-by-count outcomes when saturation indicates weak traction",
+        "Requires explicit traction rationale or reports degraded low-signal status"
       ]
     }
   ]
