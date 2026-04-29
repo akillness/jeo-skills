@@ -1,0 +1,105 @@
+{
+  "run_slug": "hourly-skill-candidates-20260427-095216",
+  "priority_candidates": [
+    {
+      "lane": "cli-open-source-skill",
+      "query": "cli tool stars:>1000 pushed:>2023-01-01",
+      "provenance": "feed recovery",
+      "repo": "cli/cli",
+      "url": "https://github.com/cli/cli",
+      "description": "GitHub’s official command line tool",
+      "stars": 44077,
+      "forks": 8337,
+      "license": "mit",
+      "updated_at": "2026-04-27T00:48:20Z",
+      "pushed_at": "2026-04-24T13:54:31Z",
+      "archived": false,
+      "fit_tokens": [
+        "cli",
+        "command",
+        "tool"
+      ],
+      "fit_rationale": "token overlap=cli,command,tool; stars=44077; forks=8337; license=mit",
+      "risk_note": "normal"
+    },
+    {
+      "lane": "web-backend-skill",
+      "query": "backend framework stars:>5000 pushed:>2023-01-01",
+      "provenance": "feed recovery",
+      "repo": "payloadcms/payload",
+      "url": "https://github.com/payloadcms/payload",
+      "description": "Payload is the open-source, fullstack Next.js framework, giving you instant backend superpowers. Get a full TypeScript backend and admin panel instantly. Use Payload as a headless CMS or for building powerful applications.",
+      "stars": 42043,
+      "forks": 3633,
+      "license": "mit",
+      "updated_at": "2026-04-27T00:44:13Z",
+      "pushed_at": "2026-04-26T22:29:47Z",
+      "archived": false,
+      "fit_tokens": [
+        "backend"
+      ],
+      "fit_rationale": "token overlap=backend; stars=42043; forks=3633; license=mit",
+      "risk_note": "normal"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "query": "cli tool stars:>1000 pushed:>2023-01-01",
+      "provenance": "feed recovery",
+      "repo": "zeromicro/go-zero",
+      "url": "https://github.com/zeromicro/go-zero",
+      "description": "A cloud-native Go microservices framework with cli tool for productivity.",
+      "stars": 32960,
+      "forks": 4293,
+      "license": "mit",
+      "updated_at": "2026-04-26T22:34:40Z",
+      "pushed_at": "2026-04-25T09:11:04Z",
+      "archived": false,
+      "fit_tokens": [
+        "cli",
+        "tool"
+      ],
+      "fit_rationale": "token overlap=cli,tool; stars=32960; forks=4293; license=mit",
+      "risk_note": "normal"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "query": "cli tool stars:>1000 pushed:>2023-01-01",
+      "provenance": "feed recovery",
+      "repo": "vuejs/vue-cli",
+      "url": "https://github.com/vuejs/vue-cli",
+      "description": "🛠️ webpack-based tooling for Vue.js Development",
+      "stars": 29595,
+      "forks": 6274,
+      "license": "mit",
+      "updated_at": "2026-04-27T00:41:19Z",
+      "pushed_at": "2025-08-21T10:56:30Z",
+      "archived": false,
+      "fit_tokens": [
+        "cli",
+        "tool"
+      ],
+      "fit_rationale": "token overlap=cli,tool; stars=29595; forks=6274; license=mit",
+      "risk_note": "normal"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "query": "cli tool stars:>1000 pushed:>2023-01-01",
+      "provenance": "feed recovery",
+      "repo": "angular/angular-cli",
+      "url": "https://github.com/angular/angular-cli",
+      "description": "CLI tool for Angular",
+      "stars": 27041,
+      "forks": 11870,
+      "license": "mit",
+      "updated_at": "2026-04-26T20:46:03Z",
+      "pushed_at": "2026-04-24T08:07:52Z",
+      "archived": false,
+      "fit_tokens": [
+        "cli",
+        "tool"
+      ],
+      "fit_rationale": "token overlap=cli,tool; stars=27041; forks=11870; license=mit",
+      "risk_note": "normal"
+    }
+  ]
+}
