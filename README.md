@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-96-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-97-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**107 local skill folders · 96 installable skills · TOON Format · Cross-platform**
+**107 local skill folders · 97 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,7 +18,7 @@
 
 ## 💡 What is Agent Skills?
 
-**107 local skill folders · 96 installable skills · TOON Format · Cross-platform**
+**107 local skill folders · 97 installable skills · TOON Format · Cross-platform**
 
 Agent Skills is a curated collection with 107 local skill folders and 96 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 What's New in v2026-05-04
+
+| Change | Details |
+|--------|---------|
+| **agentic-skills: production engineering framework** | Added `agentic-skills` — a production-grade engineering skill that encodes Google-proven workflows and quality gates for AI coding agents. Covers spec-driven development (`/spec`), task planning (`/plan`), incremental TDD (`/build`), browser verification (`/test`), five-axis code review (`/review`), behavior-preserving simplification (`/code-simplify`), and disciplined git/CI/CD shipping (`/ship`). Draws from *Software Engineering at Google* (Hyrum's Law, Chesterton's Fence, Shift Left, trunk-based development). Plugin install: `/plugin marketplace add addyosmani/agent-skills`. 95 → **96 skills**. |
 
 ## 🆕 What's New in v2026-04-18
 
@@ -318,10 +324,11 @@ setup omc
 | `web-accessibility` | Routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback | All |
 | `web-design-guidelines` | Broad web UI audit for hierarchy, clarity, consistency, states, responsiveness basics, and accessibility basics | All |
 
-### 🔍 Code Quality (5)
+### 🔍 Code Quality (6)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
+| `agentic-skills` | Production-grade engineering framework (Google practices) — spec-driven development, incremental implementation, TDD, security hardening, performance optimization, and disciplined git/CI/CD workflows across `/spec` `/plan` `/build` `/test` `/review` `/code-simplify` `/ship` phases. Plugin: `/plugin marketplace add addyosmani/agent-skills` | All |
 | `code-refactoring` | Behavior-preserving structural cleanup, decomposition, duplication removal, and codemod planning | All |
 | `code-review` | Evidence-first diff / PR review with severity, missing-proof checks, and route-outs | All |
 | `debugging` | Routing-first diagnosis for concrete bugs, regressions, flaky failures, and env-specific behavior; routes raw logs to `log-analysis` and perf-only work to `performance-optimization` | All |
@@ -378,13 +385,14 @@ setup omc
 | `log-analysis` | Routing-first log triage: choose one evidence packet for app, container/pod, browser+API, CI cascade, JSON/event, or security-signal logs before debugging/observability work | All |
 | `pattern-detection` | Routing-first pattern/anomaly hunting: choose text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly before deeper analysis | All |
 
-### 🎬 Creative Media (3)
+### 🎬 Creative Media (4)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `remotion-video-production` | Compatibility alias for `video-production` when legacy tooling or explicit Remotion naming still expects the old skill | All |
 | `video-production` | Canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs | All |
 | `god-tibo-imagen` | Generate AI images via Codex ChatGPT backend — zero dependencies, reuses `~/.codex/auth.json`, CLI (`gti`), Node.js, and Python SDK | All |
+| `notebooklm` | Query Google NotebookLM notebooks directly from Claude Code — source-grounded citation-backed answers via Patchright browser automation, persistent Google auth, and notebook library management | Claude Code |
 
 ### 📢 Marketing (2)
 
@@ -504,8 +512,31 @@ pip install god-tibo-imagen
 npx skills add https://github.com/akillness/oh-my-skills --skill god-tibo-imagen
 
 # Usage
-gti --prompt "blue square icon" --output ./icon.png
+ --output ./icon.png
 gti --prompt "make it round" --input ./ref.png --output ./out.png
+```
+
+### notebooklm — Google NotebookLM Integration for Claude Code
+> Keyword: `notebooklm`, `notebook query`, `google notebooklm` | [Docs](docs/notebooklm/README.md) | [GitHub](https://github.com/PleasePrompto/notebooklm-skill)
+
+Query your Google NotebookLM notebooks directly from Claude Code via Patchright browser automation. Get source-grounded, citation-backed answers from your uploaded documents without leaving the terminal. Supports persistent Google authentication, notebook library management, and multi-notebook research workflows. **Local Claude Code only** (web UI not supported).
+
+```bash
+# Plugin install (Claude Code)
+claude plugin marketplace add PleasePrompto/notebooklm-skill
+
+# Manual clone
+git clone https://github.com/PleasePrompto/notebooklm-skill.git ~/.claude/skills/notebooklm
+
+# Install from oh-my-skills
+npx skills add https://github.com/akillness/oh-my-skills --skill notebooklm
+
+# First-time setup (opens Chrome for Google login)
+python scripts/run.py auth_manager.py setup
+
+# Add a notebook and ask a question
+python scripts/run.py notebook_manager.py add --url "https://notebooklm.google.com/notebook/ID" --name "my-research"
+python scripts/run.py ask_question.py --question "What are the key findings?"
 ```
 
 ### pretext — Fast Multiline Text Measurement & Layout
@@ -644,6 +675,7 @@ npx vibe-kanban
 | `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
 | `pretext` | `pretext`, `text measurement`, `text layout` | [docs/pretext/README.md](docs/pretext/README.md) |
 | `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [docs/god-tibo-imagen/README.md](docs/god-tibo-imagen/README.md) |
+| `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [docs/notebooklm/README.md](docs/notebooklm/README.md) |
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
@@ -663,6 +695,7 @@ npx vibe-kanban
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |
 | `pretext` | [chenglou/pretext](https://github.com/chenglou/pretext) | MIT |
 | `god-tibo-imagen` | [NomaDamas/god-tibo-imagen](https://github.com/NomaDamas/god-tibo-imagen) | MIT |
+| `notebooklm` | [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | MIT |
 | `zeude` | [zep-us/zeude](https://github.com/zep-us/zeude) | Apache-2.0 |
 | `flutter-bloc-clean-architecture-skill` | [AbdelhakRazi/flutter-bloc-clean-architecture-skill](https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill) | Apache-2.0 |
 | `plannotator` | [plannotator.ai](https://plannotator.ai) | MIT |

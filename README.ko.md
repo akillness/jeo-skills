@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-96-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-97-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 v2026-05-04 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **agentic-skills: 프로덕션 엔지니어링 프레임워크** | Google 엔지니어링 실천법 기반의 프로덕션급 엔지니어링 스킬 `agentic-skills`를 추가했습니다. AI 코딩 에이전트를 위한 워크플로우와 품질 게이트를 체계화합니다. spec 주도 개발(`/spec`), 태스크 계획(`/plan`), 점진적 TDD(`/build`), 브라우저 검증(`/test`), 5개 축 코드 리뷰(`/review`), 동작 보존 단순화(`/code-simplify`), 체계적인 git/CI/CD 배포(`/ship`) 단계를 제공합니다. *Software Engineering at Google*(Hyrum's Law, Chesterton's Fence, Shift Left, 트렁크 기반 개발)에서 영감을 받았습니다. 플러그인 설치: `/plugin marketplace add addyosmani/agent-skills`. 95 → **96개 스킬**. |
 
 ## 🆕 v2026-04-18 업데이트
 
@@ -318,10 +324,11 @@ setup omc
 | `web-accessibility` | semantics, keyboard/focus, labels/announcements, reflow, media alternatives, routed-app feedback를 다루는 routing-first 접근성 수정·검증 스킬 | 전체 |
 | `web-design-guidelines` | hierarchy, clarity, consistency, state, responsiveness/accessibility basics를 보는 broad 웹 UI 감사 | 전체 |
 
-### 🔍 코드 품질 (5개)
+### 🔍 코드 품질 (6개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
+| `agentic-skills` | Google 엔지니어링 실천법 기반 프로덕션 엔지니어링 프레임워크 — spec 주도 개발, 점진적 구현, TDD, 보안 강화, 성능 최적화, 체계적인 git/CI/CD 워크플로우를 `/spec` `/plan` `/build` `/test` `/review` `/code-simplify` `/ship` 단계로 제공. 플러그인: `/plugin marketplace add addyosmani/agent-skills` | 전체 |
 | `code-refactoring` | 동작 보존 중심 구조 정리, 분해, 중복 제거, codemod 계획 | 전체 |
 | `code-review` | 심각도·증거 공백 점검·route-out을 포함한 evidence-first diff / PR 리뷰 | 전체 |
 | `debugging` | 구체적인 버그·회귀·flaky 실패·환경별 이상 동작을 위한 routing-first 진단 스킬; raw log는 `log-analysis`, 순수 성능 작업은 `performance-optimization`으로 라우팅 | 전체 |
@@ -378,13 +385,14 @@ setup omc
 | `log-analysis` | 앱·컨테이너/파드·브라우저+API·CI cascade·JSON/event·security-signal 로그 중 한 가지 evidence packet을 먼저 고른 뒤 디버깅/옵저버빌리티 작업으로 넘기는 routing-first 로그 트리아지 | 전체 |
 | `pattern-detection` | text-prefilter·structural-code-rule·log-event-pattern·metric-anomaly 중 한 packet을 먼저 고르는 라우팅형 패턴/이상 탐지 | 전체 |
 
-### 🎬 창의 미디어 (3개)
+### 🎬 창의 미디어 (4개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `remotion-video-production` | 레거시 툴링이나 명시적 Remotion 이름이 남아 있을 때 `video-production`으로 연결하는 호환 별칭 | 전체 |
 | `video-production` | Remotion, 템플릿 API, 콘텐츠 리퍼포징, QA 핸드오프를 묶는 기본 프로그래머블/자동화 비디오 스킬 | 전체 |
 | `god-tibo-imagen` | Codex ChatGPT 백엔드를 통한 AI 이미지 생성 — 의존성 없음, `~/.codex/auth.json` 재사용, CLI(`gti`), Node.js, Python SDK 지원 | 전체 |
+| `notebooklm` | Claude Code에서 Google NotebookLM 노트북을 직접 조회 — Patchright 브라우저 자동화로 출처 기반 인용 답변, 영구 Google 인증, 노트북 라이브러리 관리 지원 | Claude Code |
 
 ### 📢 마케팅 (2개)
 
@@ -506,6 +514,29 @@ npx skills add https://github.com/akillness/oh-my-skills --skill god-tibo-imagen
 # 사용법
 gti --prompt "파란색 사각형 아이콘" --output ./icon.png
 gti --prompt "둥글게 만들어줘" --input ./ref.png --output ./out.png
+```
+
+### notebooklm — Claude Code용 Google NotebookLM 통합
+> 키워드: `notebooklm`, `notebook query`, `google notebooklm` | [문서](docs/notebooklm/README.md) | [GitHub](https://github.com/PleasePrompto/notebooklm-skill)
+
+Patchright 브라우저 자동화를 통해 Claude Code에서 직접 Google NotebookLM 노트북을 조회합니다. 에디터를 벗어나지 않고 업로드된 문서로부터 출처 기반, 인용 포함 답변을 받을 수 있습니다. **로컬 Claude Code 전용** (웹 UI 미지원).
+
+```bash
+# 플러그인 설치 (Claude Code)
+claude plugin marketplace add PleasePrompto/notebooklm-skill
+
+# 수동 클론
+git clone https://github.com/PleasePrompto/notebooklm-skill.git ~/.claude/skills/notebooklm
+
+# 스킬 설치
+npx skills add https://github.com/akillness/oh-my-skills --skill notebooklm
+
+# 최초 설정 (Google 로그인을 위해 Chrome 창이 열립니다)
+python scripts/run.py auth_manager.py setup
+
+# 노트북 추가 및 질문
+python scripts/run.py notebook_manager.py add --url "https://notebooklm.google.com/notebook/ID" --name "my-research"
+python scripts/run.py ask_question.py --question "주요 발견 사항은 무엇인가요?"
 ```
 
 ### pretext — 빠른 멀티라인 텍스트 측정 & 레이아웃
@@ -630,6 +661,7 @@ npx vibe-kanban
 | `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
 | `pretext` | `pretext`, `text measurement`, `text layout` | [docs/pretext/README.md](docs/pretext/README.md) |
 | `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [docs/god-tibo-imagen/README.md](docs/god-tibo-imagen/README.md) |
+| `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [docs/notebooklm/README.md](docs/notebooklm/README.md) |
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
@@ -649,6 +681,7 @@ npx vibe-kanban
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |
 | `pretext` | [chenglou/pretext](https://github.com/chenglou/pretext) | MIT |
 | `god-tibo-imagen` | [NomaDamas/god-tibo-imagen](https://github.com/NomaDamas/god-tibo-imagen) | MIT |
+| `notebooklm` | [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | MIT |
 | `zeude` | [zep-us/zeude](https://github.com/zep-us/zeude) | Apache-2.0 |
 | `plannotator` | [plannotator.ai](https://plannotator.ai) | MIT |
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
