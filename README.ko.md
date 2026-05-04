@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-98-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-113-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**107개 로컬 스킬 폴더 · 설치 가능 스킬 98개 · TOON 포맷 · 멀티플랫폼**
+**122개 로컬 스킬 폴더 · 설치 가능 스킬 113개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**107개 로컬 스킬 폴더 · 설치 가능 스킬 98개 · TOON 포맷 · 멀티플랫폼**
+**122개 로컬 스킬 폴더 · 설치 가능 스킬 113개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 107개 로컬 스킬 폴더와 98개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 122개 로컬 스킬 폴더와 113개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 v2026-05-04 업데이트 (mattpocock 스킬 통합)
+
+| 변경 | 내용 |
+|------|------|
+| **mattpocock/skills에서 15개 신규 스킬 추가** | GitHub 스타 58k+의 Matt Pocock 엔지니어링 스킬 컬렉션을 통합했습니다. 신규 스킬: `diagnose`(체계적 6단계 디버깅), `tdd`(레드-그린-리팩터 수직 슬라이스), `grill-with-docs`(도메인 문서 연동 설계 리뷰), `triage`(이슈 상태 머신), `improve-codebase-architecture`(아키텍처 심화 기회 발굴), `to-issues`(플랜→티켓 변환), `to-prd`(PRD 생성), `zoom-out`(아키텍처 조망), `caveman`(토큰 75% 절감 압축 모드), `grill-me`(계획 스트레스 테스트), `write-a-skill`(스킬 생성 프레임워크), `git-guardrails-claude-code`(파괴적 git 명령 차단), `setup-pre-commit`(Husky/lint-staged 설정), `scaffold-exercises`(교육 구조 생성), `migrate-to-shoehorn`(타입 안전 테스트 어서션). 98 → **113개 스킬**. 출처: [mattpocock/skills](https://github.com/mattpocock/skills). |
 
 ## 🆕 v2026-05-04 업데이트
 
@@ -280,7 +286,7 @@ setup omc
 | `bmad-idea` | `bmad-idea` | 전체 | 사전 기획 아이디어 라우터 — 거친 제품/GTM/컨설팅/게임 아이디어를 하나의 컨셉 산출물과 다음 핸드오프로 정리 |
 | `survey` | `survey` | 전체 | 재사용 가능한 `.survey/{slug}/` 결과물과 검증기 기반 아티팩트 계약 체크를 남기는 bounded 사전 구현 문제공간 스캔 |
 
-### 📋 계획 및 검토 (5개)
+### 📋 계획 및 검토 (12개)
 
 | 스킬 | 키워드 | 설명 |
 |------|--------|------|
@@ -289,6 +295,13 @@ setup omc
 | `agent-browser` | `agent-browser` | fresh-session 브라우저 검증 앵커 — clean disposable browser, snapshot refs, 명시적 before/after evidence |
 | `playwriter` | `playwriter` | 인증된 Chrome 세션과 MCP 재사용을 위한 실행 중 브라우저 자동화 |
 | `vibe-kanban` | `kanbanview` | 바운드된 코딩 카드, 트래커 연동 워크스페이스, 검토 큐, worktree 격리, PR 핸드오프를 다루는 코딩 보드 제어면 |
+| `triage` | `triage` | 이슈 상태 머신: needs-triage → needs-info → ready-for-agent / ready-for-human / wontfix | All |
+| `to-issues` | `to-issues` | 계획/스펙을 독립적으로 실행 가능한 수직 슬라이스 이슈로 변환 (HITL/AFK 분류) | All |
+| `to-prd` | `to-prd` | 대화 컨텍스트로 구조화된 PRD 생성 — 문제 설명, 사용자 스토리, 모듈, 테스트 결정 | All |
+| `grill-me` | `grill-me` | 체계적인 1문1답 질문으로 계획의 모든 결정 트리를 탐색하는 스트레스 테스트 | All |
+| `grill-with-docs` | `grill-with-docs` | 도메인 모델 대비 계획 검증, 용어 정제, CONTEXT.md/ADR 인라인 업데이트 | All |
+| `improve-codebase-architecture` | `improve-codebase-architecture` | 삭제 테스트·심(Seam)·지역성 어휘를 사용해 얕은 모듈을 깊은 모듈로 개선하는 기회 발굴 | All |
+| `zoom-out` | `zoom-out` | 도메인 어휘로 관련 모듈, 호출자 관계, 의존성을 매핑하는 상위 아키텍처 관점 제공 | All |
 
 ### 🤖 에이전트 개발 (2개)
 
@@ -326,7 +339,7 @@ setup omc
 | `web-accessibility` | semantics, keyboard/focus, labels/announcements, reflow, media alternatives, routed-app feedback를 다루는 routing-first 접근성 수정·검증 스킬 | 전체 |
 | `web-design-guidelines` | hierarchy, clarity, consistency, state, responsiveness/accessibility basics를 보는 broad 웹 UI 감사 | 전체 |
 
-### 🔍 코드 품질 (6개)
+### 🔍 코드 품질 (9개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -336,6 +349,9 @@ setup omc
 | `debugging` | 구체적인 버그·회귀·flaky 실패·환경별 이상 동작을 위한 routing-first 진단 스킬; raw log는 `log-analysis`, 순수 성능 작업은 `performance-optimization`으로 라우팅 | 전체 |
 | `performance-optimization` | trace·보고서·query plan 같은 현재 아티팩트에서 출발해 지연시간·처리량·메모리·번들·CWV·프레임 예산 병목을 측정 중심으로 분석하고 튜닝 | 전체 |
 | `testing-strategies` | merge-gate truth, release-only proof, scheduled breadth, cross-domain handoff를 다루는 패킷 우선 검증 정책 | 전체 |
+| `diagnose` | 체계적 6단계 디버깅: 피드백 루프 구축 → 재현 → 가설 → 계측 → 수정+테스트 → 정리. Phase 1(빠른 피드백 루프) 투자 우선 | All |
+| `tdd` | 레드-그린-리팩터 TDD (수직 슬라이스) — 공개 인터페이스를 통한 행동 검증, 구현 세부사항 테스트 금지 | All |
+| `migrate-to-shoehorn` | TypeScript 테스트의 `as` 어서션을 `fromPartial()`, `fromAny()`, `fromExact()`로 타입 안전하게 교체. 테스트 코드 전용. | All |
 
 ### 🏗 인프라 (14개)
 
@@ -413,7 +429,7 @@ setup omc
 | `game-performance-profiler` | Unity/Unreal frame-time 트리아지 — bottleneck-first profiling brief, quick packet, benchmark route, target-device 검토, profiler escalation | 전체 |
 | `steam-store-launch-ops` | Packet-first Steam launch router — page-promise audit, wishlist signal check, demo readiness, event timing workback, launch-ops runbook 중 하나를 고름 | 전체 |
 
-### 🔧 유틸리티 (11개)
+### 🔧 유틸리티 (16개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -428,6 +444,11 @@ setup omc
 | `obsidian-plugin` | Obsidian 플러그인 개발 — 27개 ESLint 규칙, 보일러플레이트 생성기, 접근성, 커뮤니티 제출 검증 | 전체 |
 | `opencontext` | 라우팅-우선 프로젝트/저장소 메모리 스킬 — memory-layer choice, load-context, search-context, store-conclusions, setup-integration, repo-packer route-out 중 하나를 골라 manifest / stable link / 에이전트 핸드오프 패킷을 다루고, 메모가 겹칠 때는 최고 신뢰 소스와 freshness 경고를 고릅니다 | 전체 |
 | `workflow-automation` | 라우팅-우선 저장소 워크플로우 자동화 — task-entrypoints, bootstrap/onboarding, 로컬 CI 패리티, hook 가드레일, 유지보수 봇, 워크플로우 정리 중 하나를 고르고 환경/배포 문제로 번지지 않게 유지 | 전체 |
+| `caveman` | 토큰 75% 절감 압축 통신 모드. 활성화: "caveman mode", "less tokens". 비활성화: "stop caveman" | All |
+| `write-a-skill` | 에이전트 스킬 생성 프레임워크: 요구사항 수집 → SKILL.md 초안 → 검토. description 필드가 활성화 핵심. | All |
+| `git-guardrails-claude-code` | Claude Code PreToolUse 훅으로 파괴적 git 명령(force push, reset --hard 등) 차단 | Claude |
+| `setup-pre-commit` | Husky + lint-staged + Prettier 커밋 전 품질 검사 자동화 설정 | All |
+| `scaffold-exercises` | pnpm ai-hero-cli lint를 통과하는 교육용 연습문제 디렉터리 구조 생성 | All |
 
 ---
 

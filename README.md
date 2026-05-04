@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-98-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-113-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**107 local skill folders · 98 installable skills · TOON Format · Cross-platform**
+**122 local skill folders · 113 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**107 local skill folders · 98 installable skills · TOON Format · Cross-platform**
+**122 local skill folders · 113 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 107 local skill folders and 96 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
+Agent Skills is a curated collection with 122 local skill folders and 113 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 What's New in v2026-05-04 (mattpocock skills integration)
+
+| Change | Details |
+|--------|---------|
+| **15 new skills from mattpocock/skills** | Integrated Matt Pocock's engineering skills collection (58k+ GitHub stars). New skills: `diagnose` (systematic 6-phase debugging), `tdd` (red-green-refactor vertical slices), `grill-with-docs` (design review with domain docs), `triage` (issue state machine), `improve-codebase-architecture` (deepening opportunities), `to-issues` (plan→tickets), `to-prd` (PRD generation), `zoom-out` (architectural perspective), `caveman` (~75% token reduction mode), `grill-me` (plan stress-testing), `write-a-skill` (skill creation framework), `git-guardrails-claude-code` (destructive git prevention), `setup-pre-commit` (Husky/lint-staged), `scaffold-exercises` (educational structure), `migrate-to-shoehorn` (type-safe test assertions). 98 → **113 skills**. Source: [mattpocock/skills](https://github.com/mattpocock/skills). |
 
 ## 🆕 What's New in v2026-05-04
 
@@ -263,7 +269,7 @@ setup omc
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 107 local skill folders = 96 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 122 local skill folders = 113 total installable skills
 
 ### 🎯 Core Orchestration (11)
 
@@ -280,7 +286,7 @@ setup omc
 | `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |
 | `survey` | `survey` | All | Bounded pre-implementation landscape scan with reusable `.survey/{slug}/` artifacts plus validator-backed artifact-contract checks |
 
-### 📋 Planning & Review (5)
+### 📋 Planning & Review (12)
 
 | Skill | Keyword | Description |
 |-------|---------|-------------|
@@ -289,6 +295,13 @@ setup omc
 | `agent-browser` | `agent-browser` | Fresh-session browser verification anchor — clean disposable browser, snapshot refs, and explicit before/after evidence |
 | `playwriter` | `playwriter` | Running-browser automation for authenticated Chrome sessions and MCP browser reuse |
 | `vibe-kanban` | `kanbanview` | Coding-board control plane for bounded coding cards, tracker-linked workspaces, review queues, worktree isolation, and PR handoff |
+| `triage` | `triage` | Issue state machine: needs-triage → needs-info → ready-for-agent / ready-for-human / wontfix. All AI comments include AI disclaimer |
+| `to-issues` | `to-issues` | Convert plans/specs into independently-grabbable vertical slice issues (HITL or AFK classification) |
+| `to-prd` | `to-prd` | Generate structured PRDs from conversation context without interviewing — problem statement, user stories, modules, testing decisions |
+| `grill-me` | `grill-me` | Systematic plan stress-testing through relentless one-question-at-a-time interviewing across the full decision tree |
+| `grill-with-docs` | `grill-with-docs` | Design review that stress-tests plans against domain model, sharpens terminology, and updates CONTEXT.md / ADRs inline |
+| `improve-codebase-architecture` | `improve-codebase-architecture` | Surface shallow modules and propose deepening opportunities for testability using deletion-test, seam, and locality vocabulary |
+| `zoom-out` | `zoom-out` | Get higher-level architectural perspective: maps all relevant modules, caller relationships, dependencies using domain vocabulary |
 
 ### 🤖 Agent Development (2)
 
@@ -326,7 +339,7 @@ setup omc
 | `web-accessibility` | Routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback | All |
 | `web-design-guidelines` | Broad web UI audit for hierarchy, clarity, consistency, states, responsiveness basics, and accessibility basics | All |
 
-### 🔍 Code Quality (6)
+### 🔍 Code Quality (9)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -336,6 +349,9 @@ setup omc
 | `debugging` | Routing-first diagnosis for concrete bugs, regressions, flaky failures, and env-specific behavior; routes raw logs to `log-analysis` and perf-only work to `performance-optimization` | All |
 | `performance-optimization` | Artifact-first measurement-led bottleneck analysis and tuning across latency, throughput, memory, bundle, CWV, and frame-budget work | All |
 | `testing-strategies` | Packet-first validation policy for merge-gate truth, release-only proof, scheduled breadth, and cross-domain test-policy handoffs | All |
+| `diagnose` | Systematic six-phase debugging: build feedback loop → reproduce → hypothesize → instrument → fix+test → cleanup. Invest in Phase 1 (fast feedback loop) first | All |
+| `tdd` | Red-green-refactor TDD with vertical slices — tests verify behavior through public interfaces, not implementation details | All |
+| `migrate-to-shoehorn` | Migrate TypeScript test `as` assertions to type-safe `fromPartial()`, `fromAny()`, `fromExact()` from @total-typescript/shoehorn. Test code only. | All |
 
 ### 🏗 Infrastructure (14)
 
@@ -428,6 +444,16 @@ setup omc
 | `obsidian-plugin` | Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility, submission validation | All |
 | `opencontext` | Routing-first active project/repo memory — choose memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out for manifests, stable links, cross-agent handoff packets, and highest-confidence-source / freshness checks when notes overlap | All |
 | `workflow-automation` | Routing-first repo workflow automation — choose one mode for task-entrypoints, bootstrap/onboarding, local-CI parity, hook guardrails, maintenance bots, or workflow cleanup without drifting into environment/deploy work | All |
+
+### 🛠 Utilities (Productivity) (5)
+
+| Skill | Description | Platforms |
+|-------|-------------|-----------|
+| `caveman` | Ultra-compressed communication mode (~75% token reduction). Activate: "caveman mode", "less tokens". Deactivate: "stop caveman" | All |
+| `write-a-skill` | Create structured agent skills: gather requirements → draft SKILL.md → review. Description field is critical for agent activation | All |
+| `git-guardrails-claude-code` | Prevent destructive git operations (force push, reset --hard, clean, branch -D) via Claude Code PreToolUse hooks | Claude |
+| `setup-pre-commit` | Configure Husky + lint-staged + Prettier pre-commit hooks with typecheck and test automation | All |
+| `scaffold-exercises` | Create educational exercise directories (XX-section/XX.YY-exercise/problem\|solution\|explainer) that pass pnpm ai-hero-cli lint | All |
 
 ---
 
