@@ -8,7 +8,7 @@
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**94 AI agent skills · TOON Format · Cross-platform**
+**107 local skill folders · 96 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**94 AI agent skills · TOON Format · Cross-platform**
+**107 local skill folders · 96 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection of 94 AI agent skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
+Agent Skills is a curated collection with 107 local skill folders and 96 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -256,7 +256,7 @@ setup omc
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 96 local skill folders = 92 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 107 local skill folders = 96 total installable skills
 
 ### 🎯 Core Orchestration (11)
 
@@ -621,7 +621,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 96 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 107 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

@@ -8,7 +8,7 @@
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**94개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
+**107개 로컬 스킬 폴더 · 설치 가능 스킬 96개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**94개 AI 에이전트 스킬 · TOON 포맷 · 멀티플랫폼**
+**107개 로컬 스킬 폴더 · 설치 가능 스킬 96개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 94개 AI 에이전트 스킬 컬렉션입니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 107개 로컬 스킬 폴더와 96개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -256,7 +256,7 @@ setup omc
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 96개 로컬 스킬 폴더 = 총 92개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 107개 로컬 스킬 폴더 = 총 96개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (11개)
 
@@ -608,7 +608,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 90개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 107개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
