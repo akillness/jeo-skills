@@ -67,7 +67,7 @@ fi
 
 ---
 
-## Step 1 — Install All 96 Skills (Batch)
+## Step 1 — Install All 97 Skills (Batch)
 
 Install all skills to the global location, then link shared skills to all detected agents.
 Re-running this step safely overwrites existing skills (symlinks are updated in place).
@@ -84,7 +84,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 97 skills to global store, link shared skills to all detected agents
+# Install ALL 98 skills to global store, link shared skills to all detected agents
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
@@ -329,7 +329,7 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (97 skills)
+## Skill Inventory (98 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
@@ -339,7 +339,7 @@ If no → skip silently. Never re-ask.
 | **Platform Setup** | omx | codex, claude-code, gemini-cli |
 | **Planning & Review** | playwriter *(running-browser / authenticated Chrome reuse via CLI+MCP; route clean disposable checks to agent-browser)*, prompt-repetition *(decision-first prompt repetition for non-reasoning/lightweight models on long-context retrieval, options-first MCQ, or position-sensitive lookups; route broader context/retrieval fixes away instead of blanket auto-apply)*, skill-standardization *(SKILL.md validate/rewrite + canonical-vs-alias cleanup + repo-root validator / derived-surface sync for `skills.json`, README/setup, and `SKILL.toon`)*, skill-autoresearch *(repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces only when the core skill change is justified)* | All (`*`) |
 | **Backend** | api-design *(contract-first API design / compatibility review)*, api-documentation *(developer-facing API docs anchor for reference portals / quickstarts / SDK-webhook guides / truthful examples / auth-error guidance)*, authentication-setup *(product-auth setup router for hosted/framework-native/platform-native auth, sessions/JWTs, org data boundaries, and enterprise SSO handoff; routes hardening to security-best-practices)*, backend-testing *(packet-first backend testing for coverage-plan, fixture/reset, contract/API protection, flake-stabilization, and local-vs-CI lane-split packets; routes policy to testing-strategies, API shape to api-design, and auth implementation to authentication-setup)*, database-schema-design *(packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible field decisions, and staged evolution; routes interface work to api-design, verification to backend-testing, and reporting/telemetry follow-through outward)* | All (`*`) |
-| **Design Tools** | stitch-skills *(Agent Skills for Stitch MCP — generate high-fidelity UI screens, multi-page websites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, Remotion walkthrough videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills`)*, compresso *(free offline desktop video/image compression via Tauri+React — batch compress, trim/split, convert, embed subtitles; uses FFmpeg/pngquant/jpegoptim/gifski. Install: `brew install --cask codeforreal1/tap/compresso`)* | All (`*`) |
+| **Design Tools** | stitch-skills *(Agent Skills for Stitch MCP — generate high-fidelity UI screens, multi-page websites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, Remotion walkthrough videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills`)*, compresso *(free offline desktop video/image compression via Tauri+React — batch compress, trim/split, convert, embed subtitles; uses FFmpeg/pngquant/jpegoptim/gifski. Install: `brew install --cask codeforreal1/tap/compresso`)*, open-design *(local-first open-source design tool — generate prototypes, decks, and media artifacts using installed coding agents; 72 built-in design systems, 5 visual directions, multi-format export HTML/PDF/PPTX/ZIP/Markdown, AI media via gpt-image-2 and Seedance 2.0. Plugin: `claude plugin marketplace add nexu-io/open-design`)* | All (`*`) |
 | **Creative Media** | god-tibo-imagen *(AI image generation via Codex ChatGPT backend — zero deps, reuses `~/.codex/auth.json`, CLI `gti`, Node.js library, Python SDK, reference image inputs, dry-run mode. Plugin: `claude plugin marketplace add NomaDamas/god-tibo-imagen`)* | All (`*`) |
 | **Creative Media** | notebooklm *(query Google NotebookLM notebooks directly from Claude Code — Patchright browser automation, source-grounded citation-backed answers, persistent Google auth, notebook library management. Local Claude Code only. Plugin: `claude plugin marketplace add PleasePrompto/notebooklm-skill`)* | claude-code |
 | **Infrastructure** | zeude *(enterprise AI adoption platform for Claude Code — 3× adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), context-aware skill suggestions. Requires Supabase + ClickHouse. Plugin: `claude plugin marketplace add zep-us/zeude`)* | Claude |
@@ -364,6 +364,7 @@ If no → skip silently. Never re-ask.
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude-first OMC router — distinguish Claude Code slash skills from the `omc` shell CLI, then handle setup/recovery/state issues or route adjacent work outward |
 | `stitch-skills` | `stitch`, `stitch-design`, `stitch-loop`, `enhance-prompt`, `screen generation`, `ui generation` | Agent Skills for Stitch MCP — generate UI screens, multi-page sites, enhance prompts, React/shadcn-ui, Remotion videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills` |
 | `compresso` | `compresso`, `compress video`, `compress image`, `batch compression`, `ffmpeg compression`, `offline video compress` | Free offline desktop video/image compression (Tauri+React) — batch compress, trim/split, convert formats, embed subtitles. Install: `brew install --cask codeforreal1/tap/compresso` |
+| `open-design` | `open-design`, `local design tool`, `prototype generation`, `design deck`, `design artifact`, `open design prototype` | Local-first open-source design tool using installed coding agents — 72 built-in design systems, 5 visual directions, multi-format export (HTML/PDF/PPTX/ZIP/Markdown), AI media generation. Plugin: `claude plugin marketplace add nexu-io/open-design` |
 | `pretext` | `pretext`, `text measurement`, `text layout`, `paragraph height`, `line layout`, `DOM reflow` | Fast multiline text measurement & layout without DOM reflow — prepare/layout, prepareWithSegments/layoutWithLines, emoji/CJK/RTL. npm: `@chenglou/pretext` |
 | `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation`, `codex image`, `chatgpt image`, `ai image` | AI image generation via Codex ChatGPT backend — zero deps, reuses `~/.codex/auth.json`, CLI `gti --prompt`, Node.js and Python SDK. Plugin: `claude plugin marketplace add NomaDamas/god-tibo-imagen` |
 | `notebooklm` | `notebooklm`, `notebook lm`, `google notebooklm`, `notebook query`, `ask notebooklm` | Query Google NotebookLM notebooks from Claude Code — Patchright browser automation, source-grounded citation-backed answers, persistent Google auth, notebook library. Local only. Plugin: `claude plugin marketplace add PleasePrompto/notebooklm-skill` |

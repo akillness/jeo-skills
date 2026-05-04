@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-97-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-98-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**107개 로컬 스킬 폴더 · 설치 가능 스킬 96개 · TOON 포맷 · 멀티플랫폼**
+**107개 로컬 스킬 폴더 · 설치 가능 스킬 98개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**107개 로컬 스킬 폴더 · 설치 가능 스킬 96개 · TOON 포맷 · 멀티플랫폼**
+**107개 로컬 스킬 폴더 · 설치 가능 스킬 98개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 107개 로컬 스킬 폴더와 96개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 107개 로컬 스킬 폴더와 98개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -75,6 +75,7 @@ graph TD
 | 변경 | 내용 |
 |------|------|
 | **agentic-skills: 프로덕션 엔지니어링 프레임워크** | Google 엔지니어링 실천법 기반의 프로덕션급 엔지니어링 스킬 `agentic-skills`를 추가했습니다. AI 코딩 에이전트를 위한 워크플로우와 품질 게이트를 체계화합니다. spec 주도 개발(`/spec`), 태스크 계획(`/plan`), 점진적 TDD(`/build`), 브라우저 검증(`/test`), 5개 축 코드 리뷰(`/review`), 동작 보존 단순화(`/code-simplify`), 체계적인 git/CI/CD 배포(`/ship`) 단계를 제공합니다. *Software Engineering at Google*(Hyrum's Law, Chesterton's Fence, Shift Left, 트렁크 기반 개발)에서 영감을 받았습니다. 플러그인 설치: `/plugin marketplace add addyosmani/agent-skills`. 95 → **96개 스킬**. |
+| **open-design: 로컬 우선 디자인 아티팩트 생성** | `open-design`을 추가했습니다 — Anthropic의 Claude Design에 대한 오픈소스 대안으로, 로컬에 설치된 코딩 에이전트(Claude Code, Cursor, Gemini CLI 등)를 사용해 웹/모바일/데스크톱 프로토타입, 프레젠테이션 덱, 미디어 아티팩트를 생성합니다. 72개 내장 디자인 시스템(Linear, Stripe, Vercel, Notion, Apple 등), 5가지 비주얼 방향, 멀티 포맷 내보내기(HTML/PDF/PPTX/ZIP/Markdown), gpt-image-2·Seedance 2.0·HyperFrames를 통한 AI 미디어 생성을 지원합니다. 93개 프롬프트 템플릿 포함. 플러그인: `claude plugin marketplace add nexu-io/open-design`. 97 → **98개 스킬**. |
 
 ## 🆕 v2026-04-18 업데이트
 
@@ -262,7 +263,7 @@ setup omc
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 107개 로컬 스킬 폴더 = 총 96개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 107개 로컬 스킬 폴더 = 총 98개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (11개)
 
@@ -306,7 +307,7 @@ setup omc
 | `backend-testing` | 커버리지 계획, fixture/reset 전략, 계약/API 보호, flaky-suite 안정화, 로컬-vs-CI lane 분리를 다루는 패킷 우선 백엔드 테스트 스킬 | 전체 |
 | `database-schema-design` | 관계형·문서형·하이브리드 스키마, queryable-vs-flexible 필드 판단, 단계적 스키마 변경, 그리고 API/인증/테스트/리포팅 인접 스킬 route-out을 다루는 패킷형 스토리지 모델 설계 | 전체 |
 
-### 🎨 프론트엔드 (11개)
+### 🎨 프론트엔드 (12개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -314,6 +315,7 @@ setup omc
 | `frontend-design-system` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `design-system` 호환 별칭 | 전체 |
 | `stitch-skills` | Stitch MCP 에이전트 스킬 — 고품질 UI 화면 생성, 멀티페이지 웹사이트, DESIGN.md 문서화, 프롬프트 향상, React/shadcn-ui 변환, Remotion 동영상 생성. 플러그인: `claude plugin marketplace add google-labs-code/stitch-skills` | 전체 |
 | `compresso` | 무료 오프라인 데스크톱 동영상/이미지 압축 (Tauri+React) — 배치 압축, 동영상 트리밍/분할, 포맷 변환, 자막 삽입, 메타데이터 관리. FFmpeg/pngquant/jpegoptim/gifski 사용. 플러그인: `claude plugin marketplace add codeforreal1/compressO` | 전체 |
+| `open-design` | 로컬 우선 오픈소스 디자인 도구 — 설치된 코딩 에이전트를 사용해 프로토타입·덱·미디어 아티팩트를 생성합니다. 72개 내장 디자인 시스템, 5가지 비주얼 방향, 멀티 포맷 내보내기(HTML/PDF/PPTX/ZIP). 플러그인: `claude plugin marketplace add nexu-io/open-design` | 전체 |
 | `pretext` | DOM 리플로우 없는 빠르고 정확한 멀티라인 텍스트 측정/레이아웃 — `prepare`/`layout`(높이), `prepareWithSegments`/`layoutWithLines`(라인별), 이모지/CJK/RTL 지원, DOM·Canvas·SVG 출력. npm: `@chenglou/pretext` | 전체 |
 | `react-best-practices` | waterfall, 번들 크기, RSC/클라이언트 경계, hydration, rerender churn, 느린 라우트를 측정 기반으로 진단하는 React & Next.js 성능 스킬 | 전체 |
 | `react-grab` | 브라우저 UI 엘리먼트에서 React 컴포넌트명·파일경로·HTML을 클립보드로 복사해 AI 에이전트에 전달 | 전체 |
@@ -609,6 +611,24 @@ npx skills add google-labs-code/stitch-skills --skill enhance-prompt --global
 npx skills add https://github.com/akillness/oh-my-skills --skill stitch-skills
 ```
 
+### open-design — 로컬 우선 디자인 아티팩트 생성
+> 키워드: `open-design`, `local design tool`, `prototype generation` | [GitHub](https://github.com/nexu-io/open-design)
+
+Anthropic의 Claude Design에 대한 오픈소스 대안. 로컬에 설치된 코딩 에이전트를 사용해 웹/모바일/데스크톱 프로토타입, 프레젠테이션 덱, 미디어 아티팩트를 생성합니다. 72개 내장 디자인 시스템, 5가지 비주얼 방향, 93개 미디어 프롬프트 템플릿, 멀티 포맷 내보내기를 지원합니다.
+
+```bash
+# 플러그인 설치 (Claude Code)
+claude plugin marketplace add nexu-io/open-design
+
+# 로컬에서 직접 실행
+git clone https://github.com/nexu-io/open-design.git
+cd open-design && corepack enable && pnpm install
+pnpm tools-dev run web
+
+# oh-my-skills에서 설치
+npx skills add https://github.com/akillness/oh-my-skills --skill open-design
+```
+
 ### vibe-kanban — AI 에이전트 칸반 보드
 > 키워드: `kanbanview` | [문서](docs/vibe-kanban/README.md) | [GitHub](https://github.com/BloopAI/vibe-kanban)
 
@@ -659,6 +679,7 @@ npx vibe-kanban
 | `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
 | `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
+| `open-design` | `open-design`, `local design tool`, `prototype generation` | [.agent-skills/open-design/SKILL.md](.agent-skills/open-design/SKILL.md) |
 | `pretext` | `pretext`, `text measurement`, `text layout` | [docs/pretext/README.md](docs/pretext/README.md) |
 | `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [docs/god-tibo-imagen/README.md](docs/god-tibo-imagen/README.md) |
 | `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [docs/notebooklm/README.md](docs/notebooklm/README.md) |
@@ -679,6 +700,7 @@ npx vibe-kanban
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `stitch-skills` | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | Apache-2.0 |
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |
+| `open-design` | [nexu-io/open-design](https://github.com/nexu-io/open-design) | MIT |
 | `pretext` | [chenglou/pretext](https://github.com/chenglou/pretext) | MIT |
 | `god-tibo-imagen` | [NomaDamas/god-tibo-imagen](https://github.com/NomaDamas/god-tibo-imagen) | MIT |
 | `notebooklm` | [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | MIT |

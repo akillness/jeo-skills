@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-97-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-98-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**107 local skill folders · 97 installable skills · TOON Format · Cross-platform**
+**107 local skill folders · 98 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,7 +18,7 @@
 
 ## 💡 What is Agent Skills?
 
-**107 local skill folders · 97 installable skills · TOON Format · Cross-platform**
+**107 local skill folders · 98 installable skills · TOON Format · Cross-platform**
 
 Agent Skills is a curated collection with 107 local skill folders and 96 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
@@ -75,6 +75,7 @@ graph TD
 | Change | Details |
 |--------|---------|
 | **agentic-skills: production engineering framework** | Added `agentic-skills` — a production-grade engineering skill that encodes Google-proven workflows and quality gates for AI coding agents. Covers spec-driven development (`/spec`), task planning (`/plan`), incremental TDD (`/build`), browser verification (`/test`), five-axis code review (`/review`), behavior-preserving simplification (`/code-simplify`), and disciplined git/CI/CD shipping (`/ship`). Draws from *Software Engineering at Google* (Hyrum's Law, Chesterton's Fence, Shift Left, trunk-based development). Plugin install: `/plugin marketplace add addyosmani/agent-skills`. 95 → **96 skills**. |
+| **open-design: local-first design artifact generation** | Added `open-design` — an open-source alternative to Anthropic's Claude Design that generates web/mobile/desktop prototypes, presentation decks, and media artifacts using locally-installed coding agents. Features 72 built-in design systems (Linear, Stripe, Vercel, Notion, Apple, etc.), 5 visual directions, multi-format export (HTML/PDF/PPTX/ZIP/Markdown), and AI media generation via gpt-image-2, Seedance 2.0, and HyperFrames. Supports 93 prompt templates. Plugin: `claude plugin marketplace add nexu-io/open-design`. 97 → **98 skills**. |
 
 ## 🆕 What's New in v2026-04-18
 
@@ -306,7 +307,7 @@ setup omc
 | `backend-testing` | Packet-first backend testing for coverage plans, fixture/reset strategy, contract/API protection, flaky-suite stabilization, and local-vs-CI lane splits | All |
 | `database-schema-design` | Packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible fields, and route-outs to API/auth/testing/reporting neighbors | All |
 
-### 🎨 Frontend (11)
+### 🎨 Frontend (12)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -314,6 +315,7 @@ setup omc
 | `frontend-design-system` | Compatibility alias for `design-system` when legacy tooling or exact-name workflows still expect the old name | All |
 | `stitch-skills` | Agent Skills for Stitch MCP — generate high-fidelity UI screens, multi-page websites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, Remotion walkthrough videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills` | All |
 | `compresso` | Free offline desktop video/image compression (Tauri+React) — batch compress, trim/split videos, convert formats, embed subtitles, manage metadata. Uses FFmpeg/pngquant/jpegoptim/gifski. Plugin: `claude plugin marketplace add codeforreal1/compressO` | All |
+| `open-design` | Local-first open-source design tool — generate prototypes, decks, and media artifacts using installed coding agents. 72 built-in design systems, 5 visual directions, multi-format export (HTML/PDF/PPTX/ZIP). Plugin: `claude plugin marketplace add nexu-io/open-design` | All |
 | `pretext` | Fast, accurate multiline text measurement & layout without DOM reflow — `prepare`/`layout` for height, `prepareWithSegments`/`layoutWithLines` for per-line access, emoji/CJK/RTL support, DOM/Canvas/SVG output. npm: `@chenglou/pretext` | All |
 | `react-best-practices` | Measurement-led React & Next.js performance audits for waterfalls, bundle size, RSC/client boundaries, hydration, rerender churn, and slow routes | All |
 | `react-grab` | Browser element context capture — point at UI element, copy React component name, file path, HTML to clipboard for AI agents | All |
@@ -609,6 +611,24 @@ npx skills add google-labs-code/stitch-skills --skill enhance-prompt --global
 npx skills add https://github.com/akillness/oh-my-skills --skill stitch-skills
 ```
 
+### open-design — Local-First Design Artifact Generation
+> Keyword: `open-design`, `local design tool`, `prototype generation` | [GitHub](https://github.com/nexu-io/open-design)
+
+Open-source alternative to Anthropic's Claude Design. Generates web, mobile, and desktop prototypes, presentation decks, and media artifacts using locally-installed coding agents (Claude Code, Cursor, Gemini CLI, GitHub Copilot, etc.). Includes 72 built-in design systems, 5 visual directions, 93 media prompt templates, and multi-format export.
+
+```bash
+# Plugin install (Claude Code)
+claude plugin marketplace add nexu-io/open-design
+
+# Clone and run locally
+git clone https://github.com/nexu-io/open-design.git
+cd open-design && corepack enable && pnpm install
+pnpm tools-dev run web
+
+# Install from oh-my-skills
+npx skills add https://github.com/akillness/oh-my-skills --skill open-design
+```
+
 ### flutter-bloc-clean-architecture-skill — Flutter BLoC + Clean Architecture
 > Keyword: `flutter bloc`, `clean architecture`, `flutter-bloc-development` | [Docs](docs/flutter-bloc-clean-architecture-skill/README.md) | [GitHub](https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill)
 
@@ -673,6 +693,7 @@ npx vibe-kanban
 | `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
 | `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
+| `open-design` | `open-design`, `local design tool`, `prototype generation` | [.agent-skills/open-design/SKILL.md](.agent-skills/open-design/SKILL.md) |
 | `pretext` | `pretext`, `text measurement`, `text layout` | [docs/pretext/README.md](docs/pretext/README.md) |
 | `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [docs/god-tibo-imagen/README.md](docs/god-tibo-imagen/README.md) |
 | `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [docs/notebooklm/README.md](docs/notebooklm/README.md) |
@@ -693,6 +714,7 @@ npx vibe-kanban
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `stitch-skills` | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | Apache-2.0 |
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |
+| `open-design` | [nexu-io/open-design](https://github.com/nexu-io/open-design) | MIT |
 | `pretext` | [chenglou/pretext](https://github.com/chenglou/pretext) | MIT |
 | `god-tibo-imagen` | [NomaDamas/god-tibo-imagen](https://github.com/NomaDamas/god-tibo-imagen) | MIT |
 | `notebooklm` | [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | MIT |

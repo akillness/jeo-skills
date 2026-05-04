@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-04-24T18:00:29Z",
-  "skill_count": 96,
+  "skill_count": 97,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -92,7 +92,8 @@
       "pretext",
       "stitch-skills",
       "workflow-automation",
-      "zeude"
+      "zeude",
+      "open-design"
     ],
     "frontend": [
       "design-system",
@@ -3538,6 +3539,42 @@
       ],
       "keyword": "zeude",
       "version": "latest",
+      "commands": []
+    },
+    {
+      "name": "open-design",
+      "description": "Route design-generation work into the right Open Design mode — prototype, deck, document, or media. Local-first design tool using installed coding agents (Claude Code, Cursor, Gemini CLI, etc.). Supports 72 built-in design systems, 5 visual directions, multi-format export (HTML/PDF/PPTX/ZIP/Markdown), and AI media generation. Plugin: claude plugin marketplace add nexu-io/open-design",
+      "category": "utilities",
+      "path": "open-design/SKILL.md",
+      "tags": [
+        "open-design",
+        "design-tool",
+        "local-first",
+        "prototype",
+        "deck",
+        "ui-generation",
+        "multi-format",
+        "design-system",
+        "media-generation",
+        "html-export",
+        "pptx-export"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex",
+        "ChatGPT"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "keyword": "open-design",
+      "version": "1.0",
       "commands": []
     }
   ]
