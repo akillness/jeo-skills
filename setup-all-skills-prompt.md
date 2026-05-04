@@ -392,6 +392,7 @@ If no → skip silently. Never re-ask.
 | `scrapling` | `scrapling`, `adaptive scraping`, `stealthy fetch`, `selector drift` | Routing-first adaptive web scraping — choose parser-only, HTTP fetch, JS browser, stealth escalation, MCP, or spiders from one intake packet |
 | `rtk` | `rtk`, `rust token killer`, `rtk init`, `rtk gain` | RTK install and agent integration — verify correct package, choose init mode, and use compact shell wrappers |
 | `strix` | `strix`, `ai pentest`, `vulnerability scan cli` | AI-driven appsec testing — Docker sandbox, LLM provider, local/GitHub/live scans, CI/CD |
+| `agentic-skills` | `agentic-skills`, `/spec`, `/plan`, `/build`, `/test`, `/review`, `/code-simplify`, `/ship`, `spec-driven`, `source-driven development`, `google engineering practices` | Production-grade engineering framework for AI agents — spec-driven dev, incremental TDD, five-axis code review, security hardening, and disciplined git/CI/CD workflows. Plugin: `claude plugin marketplace add addyosmani/agent-skills` |
 | `research-paper-writing` | `research paper`, `academic paper` | ML/CV/NLP paper + rebuttal workflow — abstract/introduction/method/experiments, figure-table support, reviewer response, camera-ready revision |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex CLI multi-agent workflow layer (v0.11.10, 30+ agents) — team runtime, explore, sparkshell |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini / Antigravity entry for the portable `oh-my-agent` harness |
