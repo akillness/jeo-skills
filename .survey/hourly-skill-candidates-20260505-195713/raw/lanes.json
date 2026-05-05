@@ -1,0 +1,7 @@
+[
+  {"lane":"agentic ai skill","intent_tokens":["agent","ai","llm","autonomous","agentic"],"q1":"agentic ai skill"},
+  {"lane":"web frontend skill","intent_tokens":["frontend","front-end","react","vue","ui","css"],"q1":"web frontend skill"},
+  {"lane":"web backend skill","intent_tokens":["backend","back-end","api","server","database"],"q1":"web backend skill"},
+  {"lane":"cli open source skill","intent_tokens":["cli","command","terminal","shell","tool"],"q1":"cli open source skill"},
+  {"lane":"game development skill","intent_tokens":["game","gamedev","engine","unity","unreal","godot"],"q1":"game development skill"}
+]

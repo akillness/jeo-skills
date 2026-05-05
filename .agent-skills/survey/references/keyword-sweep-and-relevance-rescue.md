@@ -149,3 +149,7 @@ Before final recommendations:
 - [ ] Recommendation section reports both raw and deduplicated cross-lane coverage metrics
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly
+
+## Hourly run note (2026-05-06)
+- If a lane is still `raw_count == 0` after stage-1 and stage-2 recovery queries, set `lane_status: degraded` with `degraded_causes: ["no-results"]` explicitly.
+- Keep one filtered `low-fit` example per degraded lane in markdown to make reviewer audit deterministic.
