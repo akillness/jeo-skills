@@ -1,0 +1,215 @@
+{
+  "slug": "hourly-skill-candidates-20260505-233627",
+  "generated_at_utc": "2026-05-05T14:36:31.981281Z",
+  "provenance": "indexed snippet",
+  "lanes": {
+    "agentic-ai-skill": {
+      "query": "agentic ai skill",
+      "recovery_queries": [],
+      "provenance": "indexed snippet",
+      "raw_count": 30,
+      "zero_star_raw": 20,
+      "median_stars_raw": 0.0,
+      "kept_count": 4,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "low_fit_count": 0,
+      "sample_low_fit": [],
+      "kept": [
+        {
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-01-29T09:33:47Z",
+          "stargazersCount": 16,
+          "updatedAt": "2026-05-02T13:39:38Z",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "fit_rationale": "matched lane tokens ['agent', 'agentic'] and freshness/license/signal gates"
+        },
+        {
+          "description": "Agentic AI skills for knowledge graph management",
+          "fullName": "iwe-org/skills",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-06T01:48:47Z",
+          "stargazersCount": 7,
+          "updatedAt": "2026-04-21T19:12:04Z",
+          "url": "https://github.com/iwe-org/skills",
+          "fit_rationale": "matched lane tokens ['agent', 'agentic'] and freshness/license/signal gates"
+        },
+        {
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-03-05T13:50:53Z",
+          "stargazersCount": 10,
+          "updatedAt": "2026-04-14T14:36:09Z",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "fit_rationale": "matched lane tokens ['agent', 'agentic'] and freshness/license/signal gates"
+        },
+        {
+          "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification — with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+          "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-04-09T12:21:43Z",
+          "stargazersCount": 5,
+          "updatedAt": "2026-05-05T13:59:45Z",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "fit_rationale": "matched lane tokens ['agent', 'agentic'] and freshness/license/signal gates"
+        }
+      ]
+    },
+    "web-frontend-skill": {
+      "query": "web frontend skill",
+      "recovery_queries": [],
+      "provenance": "indexed snippet",
+      "raw_count": 5,
+      "zero_star_raw": 4,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "low_fit_count": 0,
+      "sample_low_fit": [],
+      "kept": []
+    },
+    "web-backend-skill": {
+      "query": "web backend skill",
+      "recovery_queries": [
+        "web backend skill stars:>5000",
+        "web backend skill pushed:>=2025-01-01"
+      ],
+      "provenance": "feed recovery",
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 7529,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "stale"
+      ],
+      "low_fit_count": 0,
+      "sample_low_fit": [],
+      "kept": []
+    },
+    "cli-open-source-skill": {
+      "query": "cli open source skill",
+      "recovery_queries": [
+        "cli open source skill stars:>5000",
+        "cli open source skill pushed:>=2025-01-01"
+      ],
+      "provenance": "feed recovery",
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 26522,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "low_fit_count": 0,
+      "sample_low_fit": [],
+      "kept": [
+        {
+          "description": "🎨 Local-first, open-source alternative to Anthropic's Claude Design. ⚡ 19 Skills · ✨ 71 brand-grade Design Systems 🖼 Generate web · desktop · mobile prototypes · slides · images · videos · HyperFrames 📦 Sandboxed preview · HTML/PDF/PPTX/MP4 export 🤖 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+          "fullName": "nexu-io/open-design",
+          "isArchived": false,
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          },
+          "pushedAt": "2026-05-05T14:25:17Z",
+          "stargazersCount": 26522,
+          "updatedAt": "2026-05-05T14:36:25Z",
+          "url": "https://github.com/nexu-io/open-design",
+          "fit_rationale": "matched lane tokens ['cli', 'command'] and freshness/license/signal gates"
+        }
+      ]
+    },
+    "game-development-skill": {
+      "query": "game development skill",
+      "recovery_queries": [],
+      "provenance": "indexed snippet",
+      "raw_count": 30,
+      "zero_star_raw": 18,
+      "median_stars_raw": 0.0,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "low_fit_count": 0,
+      "sample_low_fit": [],
+      "kept": [
+        {
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+          "isArchived": false,
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          },
+          "pushedAt": "2026-02-06T04:09:12Z",
+          "stargazersCount": 3,
+          "updatedAt": "2026-04-14T18:39:35Z",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "fit_rationale": "matched lane tokens ['game', 'gamedev'] and freshness/license/signal gates"
+        }
+      ]
+    }
+  },
+  "recommended": [
+    {
+      "lane": "agentic-ai-skill",
+      "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "stars": 16,
+      "provenance": "indexed snippet"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "fullName": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "stars": 7,
+      "provenance": "indexed snippet"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "fullName": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "stars": 26522,
+      "provenance": "indexed snippet"
+    },
+    {
+      "lane": "game-development-skill",
+      "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "stars": 3,
+      "provenance": "indexed snippet"
+    }
+  ],
+  "cross_lane": {
+    "recommended_lane_count": 3,
+    "single_lane_concentration": false
+  }
+}

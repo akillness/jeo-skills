@@ -1,0 +1,82 @@
+{
+  "summary": "Hourly lane graph fallback",
+  "nodes": [
+    {
+      "id": "agentic-ai-skill",
+      "type": "lane",
+      "status": "pass"
+    },
+    {
+      "id": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "repo",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill"
+    },
+    {
+      "id": "iwe-org/skills",
+      "type": "repo",
+      "url": "https://github.com/iwe-org/skills"
+    },
+    {
+      "id": "VoDaiLocz/Enhance-Prompt",
+      "type": "repo",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt"
+    },
+    {
+      "id": "web-frontend-skill",
+      "type": "lane",
+      "status": "degraded"
+    },
+    {
+      "id": "web-backend-skill",
+      "type": "lane",
+      "status": "degraded"
+    },
+    {
+      "id": "cli-open-source-skill",
+      "type": "lane",
+      "status": "pass"
+    },
+    {
+      "id": "nexu-io/open-design",
+      "type": "repo",
+      "url": "https://github.com/nexu-io/open-design"
+    },
+    {
+      "id": "game-development-skill",
+      "type": "lane",
+      "status": "pass"
+    },
+    {
+      "id": "tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "repo",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev"
+    }
+  ],
+  "edges": [
+    {
+      "source": "agentic-ai-skill",
+      "target": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "type": "recommends"
+    },
+    {
+      "source": "agentic-ai-skill",
+      "target": "iwe-org/skills",
+      "type": "recommends"
+    },
+    {
+      "source": "agentic-ai-skill",
+      "target": "VoDaiLocz/Enhance-Prompt",
+      "type": "recommends"
+    },
+    {
+      "source": "cli-open-source-skill",
+      "target": "nexu-io/open-design",
+      "type": "recommends"
+    },
+    {
+      "source": "game-development-skill",
+      "target": "tjboudreaux/cc-plugin-unity-gamedev",
+      "type": "recommends"
+    }
+  ]
+}
