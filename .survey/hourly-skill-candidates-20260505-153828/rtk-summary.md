@@ -1,0 +1,9 @@
+# RTK Summary (fallback)
+
+- agentic_ai_skill: raw=30 kept=4 median_stars=0.0 zero_star=20 status=pass causes=
+- web_frontend_skill: raw=5 kept=1 median_stars=0 zero_star=4 status=pass causes=license
+- web_backend_skill: raw=1 kept=0 median_stars=7529 zero_star=0 status=degraded causes=low-fit
+- cli_open_source_skill: raw=1 kept=1 median_stars=26698 zero_star=0 status=pass causes=
+- game_development_skill: raw=30 kept=4 median_stars=0.0 zero_star=18 status=pass causes=license
+
+provenance: indexed snippet

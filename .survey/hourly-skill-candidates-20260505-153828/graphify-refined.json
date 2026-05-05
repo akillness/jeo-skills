@@ -1,0 +1,6 @@
+{
+  "slug": "hourly-skill-candidates-20260505-153828",
+  "status": "degraded",
+  "reason": "graphify query not executed in cron; fallback generated",
+  "recommended_lane_count": 4
+}
