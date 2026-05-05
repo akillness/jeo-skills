@@ -1,0 +1,27 @@
+{
+  "agentic_ai_skill": {
+    "primary": "agentic ai skill pushed:>=2026-04-29",
+    "recovery1": "agentic ai framework skill stars:>5000 pushed:>=2025-01-01",
+    "recovery2": "autonomous agent ai developer tool stars:>1000 pushed:>=2024-01-01"
+  },
+  "web_frontend_skill": {
+    "primary": "web frontend skill pushed:>=2026-04-29",
+    "recovery1": "frontend react vue svelte toolkit stars:>3000 pushed:>=2025-01-01",
+    "recovery2": "css ui component library stars:>2000 pushed:>=2024-01-01"
+  },
+  "web_backend_skill": {
+    "primary": "web backend skill pushed:>=2026-04-29",
+    "recovery1": "backend api framework node python go stars:>3000 pushed:>=2025-01-01",
+    "recovery2": "server framework microservice toolkit stars:>2000 pushed:>=2024-01-01"
+  },
+  "cli_open_source_skill": {
+    "primary": "cli open source skill pushed:>=2026-04-29",
+    "recovery1": "cli terminal tool open source stars:>2000 pushed:>=2025-01-01",
+    "recovery2": "command line utility developer productivity stars:>1500 pushed:>=2024-01-01"
+  },
+  "game_development_skill": {
+    "primary": "game development skill pushed:>=2026-04-29",
+    "recovery1": "game engine development toolkit stars:>3000 pushed:>=2025-01-01",
+    "recovery2": "gamedev framework unity unreal godot tool stars:>1000 pushed:>=2024-01-01"
+  }
+}

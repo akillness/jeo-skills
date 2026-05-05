@@ -1,0 +1,5 @@
+agentic_ai_skill: raw=30 kept=28 median_stars=2072.5 status=pass causes=license
+web_frontend_skill: raw=30 kept=2 median_stars=0.0 status=pass causes=license
+web_backend_skill: raw=30 kept=2 median_stars=0.0 status=pass causes=license
+cli_open_source_skill: raw=18 kept=8 median_stars=3.0 status=pass causes=license
+game_development_skill: raw=30 kept=1 median_stars=0.0 status=pass causes=license

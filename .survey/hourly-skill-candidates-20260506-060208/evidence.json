@@ -1,0 +1,790 @@
+{
+  "slug": "hourly-skill-candidates-20260506-060208",
+  "generated_at_utc": "2026-05-05T21:03:39.808921+00:00",
+  "policy": {
+    "required_lanes": [
+      "agentic_ai_skill",
+      "web_frontend_skill",
+      "web_backend_skill",
+      "cli_open_source_skill",
+      "game_development_skill"
+    ],
+    "signal_floor": "stars>=3",
+    "freshness_months": 24
+  },
+  "lanes": {
+    "agentic_ai_skill": {
+      "queries": [
+        {
+          "stage": "stage0",
+          "query": "agentic ai skill pushed:>=2026-04-29",
+          "count": 30
+        }
+      ],
+      "provenance": "indexed snippet",
+      "raw_count": 30,
+      "zero_star_raw": 0,
+      "median_stars_raw": 2072.5,
+      "kept_count": 28,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license"
+      ],
+      "recommended": [
+        {
+          "full_name": "addyosmani/agent-skills",
+          "url": "https://github.com/addyosmani/agent-skills",
+          "description": "Production-grade engineering skills for AI coding agents.",
+          "stars": 28682,
+          "updated_at": "2026-05-05T21:01:35Z",
+          "pushed_at": "2026-05-03T02:23:41Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        },
+        {
+          "full_name": "pinchbench/skill",
+          "url": "https://github.com/pinchbench/skill",
+          "description": "PinchBench is a benchmarking system for evaluating LLM models as OpenClaw coding agents. Made with 🦀 by the humans at https://kilo.ai",
+          "stars": 1095,
+          "updated_at": "2026-05-05T18:35:31Z",
+          "pushed_at": "2026-05-05T18:35:26Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        },
+        {
+          "full_name": "mvanhorn/last30days-skill",
+          "url": "https://github.com/mvanhorn/last30days-skill",
+          "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+          "stars": 24819,
+          "updated_at": "2026-05-05T20:59:41Z",
+          "pushed_at": "2026-05-02T18:30:22Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        },
+        {
+          "full_name": "coreyhaines31/marketingskills",
+          "url": "https://github.com/coreyhaines31/marketingskills",
+          "description": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+          "stars": 26756,
+          "updated_at": "2026-05-05T20:56:02Z",
+          "pushed_at": "2026-05-05T00:28:18Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        },
+        {
+          "full_name": "supabase/agent-skills",
+          "url": "https://github.com/supabase/agent-skills",
+          "description": "Agent Skills to help developers using AI agents with Supabase",
+          "stars": 2041,
+          "updated_at": "2026-05-05T19:31:47Z",
+          "pushed_at": "2026-04-30T22:21:45Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "full_name": "yaklang/hack-skills",
+          "url": "https://github.com/yaklang/hack-skills",
+          "description": "Helping AI Agent become an awesome practical hacker!",
+          "stars": 484,
+          "updated_at": "2026-05-05T19:59:52Z",
+          "pushed_at": "2026-05-01T13:47:43Z",
+          "archived": false,
+          "license": null,
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "license"
+        },
+        {
+          "full_name": "codeaholicguy/ai-devkit",
+          "url": "https://github.com/codeaholicguy/ai-devkit",
+          "description": "A universal CLI toolkit for AI agent skills, enabling structured AI-assisted development across tools like Cursor, Claude Code, Codex, and more.",
+          "stars": 1178,
+          "updated_at": "2026-05-05T18:46:48Z",
+          "pushed_at": "2026-05-05T18:46:43Z",
+          "archived": false,
+          "license": null,
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "license"
+        }
+      ]
+    },
+    "web_frontend_skill": {
+      "queries": [
+        {
+          "stage": "stage0",
+          "query": "web frontend skill pushed:>=2026-04-29",
+          "count": 30
+        }
+      ],
+      "provenance": "indexed snippet",
+      "raw_count": 30,
+      "zero_star_raw": 18,
+      "median_stars_raw": 0.0,
+      "kept_count": 2,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license"
+      ],
+      "recommended": [
+        {
+          "full_name": "ceilf6/FrontAgent",
+          "url": "https://github.com/ceilf6/FrontAgent",
+          "description": "AI agent platform for frontend engineering with RAG, Skills, SDD, MCP | 通过多种适配前端工程的技术进行赋能的智能体，支持通过 CLI 或 VSCode插件 使用",
+          "stars": 93,
+          "updated_at": "2026-05-02T06:45:55Z",
+          "pushed_at": "2026-04-30T10:03:51Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        },
+        {
+          "full_name": "codewith-salman/Easybank-Digital-Website",
+          "url": "https://github.com/codewith-salman/Easybank-Digital-Website",
+          "description": "A sleek and modern landing page for a digital banking platform. Designed to highlight features like mobile banking, budgeting tools, and seamless money management. Fully responsive and ideal for showcasing frontend skills and UI/UX design capabilities.",
+          "stars": 3,
+          "updated_at": "2026-05-03T04:09:02Z",
+          "pushed_at": "2026-05-03T04:08:58Z",
+          "archived": false,
+          "license": "apache-2.0",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "full_name": "rinafcode/teachLink_web",
+          "url": "https://github.com/rinafcode/teachLink_web",
+          "description": "Frontend: Teachlink is a platform for technocrat where knowlege, skills, ideas, and information that can bring about development and improvement can be shared, dissected, you can also earn from it.",
+          "stars": 14,
+          "updated_at": "2026-05-02T11:03:08Z",
+          "pushed_at": "2026-05-02T11:03:02Z",
+          "archived": false,
+          "license": null,
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "license"
+        },
+        {
+          "full_name": "dk5847001-stack/Internova-frontend",
+          "url": "https://github.com/dk5847001-stack/Internova-frontend",
+          "description": "InternovaTech helps students, freshers, and learners build real career-focused skills through structured Internship Programs programs, guided modules, assessments, progress tracking, and certificate verification support. Our platform is designed to deliver a futuristic, premium, and outcome-driven learning experience across Web Development",
+          "stars": 11,
+          "updated_at": "2026-05-05T10:15:54Z",
+          "pushed_at": "2026-05-05T10:15:50Z",
+          "archived": false,
+          "license": null,
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "license"
+        },
+        {
+          "full_name": "StrongXscripts/Hacktoberfest-2025",
+          "url": "https://github.com/StrongXscripts/Hacktoberfest-2025",
+          "description": "🎃 Join Hacktoberfest 2025 and contribute to modern web development. Collaborate, learn, and enhance your coding skills in a supportive environment.",
+          "stars": 2,
+          "updated_at": "2026-05-05T17:53:21Z",
+          "pushed_at": "2026-05-05T17:53:16Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap missing",
+          "provenance": "indexed snippet",
+          "risk_note": "low-fit;low-signal"
+        }
+      ]
+    },
+    "web_backend_skill": {
+      "queries": [
+        {
+          "stage": "stage0",
+          "query": "web backend skill pushed:>=2026-04-29",
+          "count": 30
+        }
+      ],
+      "provenance": "indexed snippet",
+      "raw_count": 30,
+      "zero_star_raw": 23,
+      "median_stars_raw": 0.0,
+      "kept_count": 2,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license"
+      ],
+      "recommended": [
+        {
+          "full_name": "SujalPatil21/Protfolio-Website",
+          "url": "https://github.com/SujalPatil21/Protfolio-Website",
+          "description": "Modern personal portfolio website showcasing my projects, skills, and experience in backend development and software engineering.",
+          "stars": 4,
+          "updated_at": "2026-05-01T11:51:43Z",
+          "pushed_at": "2026-05-01T11:51:39Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        },
+        {
+          "full_name": "Gaku52/software-engineering-universe",
+          "url": "https://github.com/Gaku52/software-engineering-universe",
+          "description": "A comprehensive skills knowledge base covering the entire software development lifecycle — from design, implementation, testing to deployment. Systematized cross-platform development knowledge spanning iOS, Web, Backend, Scripting, DevOps, and quality assurance. 36 Skills / 952 guides / 43M+ characters.",
+          "stars": 5,
+          "updated_at": "2026-05-05T08:30:26Z",
+          "pushed_at": "2026-05-05T17:25:56Z",
+          "archived": false,
+          "license": "other",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "full_name": "SujalPatil21/Portfolio-Website",
+          "url": "https://github.com/SujalPatil21/Portfolio-Website",
+          "description": "Modern personal portfolio website showcasing my projects, skills, and experience in backend development and software engineering.",
+          "stars": 2,
+          "updated_at": "2026-05-01T11:53:31Z",
+          "pushed_at": "2026-05-01T11:53:28Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "low-signal"
+        },
+        {
+          "full_name": "samuelwbrown4/routebase-tms-app-backend",
+          "url": "https://github.com/samuelwbrown4/routebase-tms-app-backend",
+          "description": "Backend for TMS application applying logistics knowledge with web dev skills.",
+          "stars": 0,
+          "updated_at": "2026-05-05T02:07:01Z",
+          "pushed_at": "2026-05-05T02:06:57Z",
+          "archived": false,
+          "license": null,
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "low-signal;license"
+        },
+        {
+          "full_name": "nik1234abc/portfolio-website",
+          "url": "https://github.com/nik1234abc/portfolio-website",
+          "description": "Professional Java Backend Developer portfolio website showcasing experience, projects, skills, and certifications.",
+          "stars": 0,
+          "updated_at": "2026-05-04T19:39:33Z",
+          "pushed_at": "2026-05-04T19:39:29Z",
+          "archived": false,
+          "license": null,
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "low-signal;license"
+        }
+      ]
+    },
+    "cli_open_source_skill": {
+      "queries": [
+        {
+          "stage": "stage0",
+          "query": "cli open source skill pushed:>=2026-04-29",
+          "count": 18
+        }
+      ],
+      "provenance": "indexed snippet",
+      "raw_count": 18,
+      "zero_star_raw": 8,
+      "median_stars_raw": 3.0,
+      "kept_count": 8,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license"
+      ],
+      "recommended": [
+        {
+          "full_name": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "description": "🎨 Local-first, open-source alternative to Anthropic's Claude Design. ⚡ 19 Skills · ✨ 71 brand-grade Design Systems 🖼 Generate web · desktop · mobile prototypes · slides · images · videos · HyperFrames 📦 Sandboxed preview · HTML/PDF/PPTX/MP4 export 🤖 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+          "stars": 27253,
+          "updated_at": "2026-05-05T21:03:31Z",
+          "pushed_at": "2026-05-05T17:24:24Z",
+          "archived": false,
+          "license": "apache-2.0",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        },
+        {
+          "full_name": "jeremylongshore/claude-code-plugins-plus-skills",
+          "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+          "description": "425 plugins, 2,810 skills, 200 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+          "stars": 2104,
+          "updated_at": "2026-05-05T17:59:56Z",
+          "pushed_at": "2026-05-04T16:33:40Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        },
+        {
+          "full_name": "TerminalSkills/skills",
+          "url": "https://github.com/TerminalSkills/skills",
+          "description": "Open-source library of AI agent skills — SKILL.md files for Claude Code, Codex, Gemini CLI, Cursor",
+          "stars": 39,
+          "updated_at": "2026-05-04T12:55:28Z",
+          "pushed_at": "2026-05-04T12:55:24Z",
+          "archived": false,
+          "license": "apache-2.0",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        },
+        {
+          "full_name": "bawbel/bawbel-scanner",
+          "url": "https://github.com/bawbel/bawbel-scanner",
+          "description": "Open-source CLI scanner for agentic AI components such as skills, MCP servers, system prompts",
+          "stars": 3,
+          "updated_at": "2026-05-05T16:09:58Z",
+          "pushed_at": "2026-05-05T16:01:42Z",
+          "archived": false,
+          "license": "other",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        },
+        {
+          "full_name": "shrek-abaper/sap-abap-cli",
+          "url": "https://github.com/shrek-abaper/sap-abap-cli",
+          "description": "CLI tool and AI agent skill for reading and writing ABAP source code and metadata from SAP systems (ECC · S/4HANA · BTP) via the ADT REST API. Supports programs, classes, CDS views, DDIC objects, transport management, Open SQL queries, and object search — with fine-grained permission flags for all write operations.",
+          "stars": 7,
+          "updated_at": "2026-05-05T12:25:58Z",
+          "pushed_at": "2026-04-30T07:01:22Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "full_name": "manu14357/zskills",
+          "url": "https://github.com/manu14357/zskills",
+          "description": "Open-source skill registry for AI agents—discover, fork, and ship.",
+          "stars": 12,
+          "updated_at": "2026-05-05T16:23:16Z",
+          "pushed_at": "2026-05-05T16:23:12Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap missing",
+          "provenance": "indexed snippet",
+          "risk_note": "low-fit"
+        },
+        {
+          "full_name": "coddy-project/coddy-agent",
+          "url": "https://github.com/coddy-project/coddy-agent",
+          "description": "Open-source ReAct AI coding agent in Go with TUI. Works with Cursor, Zed via ACP. Supports any OpenAI-compatible providers. Can use SKILLS and MCP servers.",
+          "stars": 7,
+          "updated_at": "2026-05-05T08:30:04Z",
+          "pushed_at": "2026-05-05T08:30:13Z",
+          "archived": false,
+          "license": null,
+          "fit_rationale": "token overlap missing",
+          "provenance": "indexed snippet",
+          "risk_note": "low-fit;license"
+        },
+        {
+          "full_name": "pisonislo8737/HyperxOpenSkills",
+          "url": "https://github.com/pisonislo8737/HyperxOpenSkills",
+          "description": "Provide open-source Claude Code skills to access HyperX wallet analytics, market data, and social feeds for enhanced trading insights.",
+          "stars": 0,
+          "updated_at": "2026-05-05T19:55:20Z",
+          "pushed_at": "2026-05-05T19:55:15Z",
+          "archived": false,
+          "license": null,
+          "fit_rationale": "token overlap missing",
+          "provenance": "indexed snippet",
+          "risk_note": "low-fit;low-signal;license"
+        }
+      ]
+    },
+    "game_development_skill": {
+      "queries": [
+        {
+          "stage": "stage0",
+          "query": "game development skill pushed:>=2026-04-29",
+          "count": 30
+        }
+      ],
+      "provenance": "indexed snippet",
+      "raw_count": 30,
+      "zero_star_raw": 23,
+      "median_stars_raw": 0.0,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license"
+      ],
+      "recommended": [
+        {
+          "full_name": "viktor-ferenczi/se-dev-skills",
+          "url": "https://github.com/viktor-ferenczi/se-dev-skills",
+          "description": "Skill library for Space Engineers plugin, mod and in-game script development. Usable with Claude Code, Cline and other agentic coding harnesses.",
+          "stars": 5,
+          "updated_at": "2026-05-05T19:01:53Z",
+          "pushed_at": "2026-05-05T19:01:32Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "none"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "full_name": "Yuki001/game-dev-skills",
+          "url": "https://github.com/Yuki001/game-dev-skills",
+          "description": "My personal agent skill repository, primarily focused on game development.",
+          "stars": 13,
+          "updated_at": "2026-05-05T13:24:47Z",
+          "pushed_at": "2026-05-05T13:22:01Z",
+          "archived": false,
+          "license": null,
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "license"
+        },
+        {
+          "full_name": "Yakoub-ai/phaser4-gamedev",
+          "url": "https://github.com/Yakoub-ai/phaser4-gamedev",
+          "description": "Claude Code plugin for Phaser 4 game development — 4 agents + 6 skills encoding deep Phaser 4 API knowledge",
+          "stars": 5,
+          "updated_at": "2026-05-01T12:22:41Z",
+          "pushed_at": "2026-05-01T12:22:37Z",
+          "archived": false,
+          "license": null,
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "license"
+        },
+        {
+          "full_name": "FunplayAI/funplay-skill",
+          "url": "https://github.com/FunplayAI/funplay-skill",
+          "description": "Open-source game development skills — reusable workflows for texture processing, audio, level generation, asset optimization, and more.",
+          "stars": 2,
+          "updated_at": "2026-04-30T10:29:34Z",
+          "pushed_at": "2026-04-30T10:29:32Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "intent token overlap",
+          "provenance": "indexed snippet",
+          "risk_note": "low-signal"
+        }
+      ]
+    }
+  },
+  "cross_lane": {
+    "recommended_lane_count": 5,
+    "single_lane_concentration": false
+  },
+  "recommendations": [
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "addyosmani/agent-skills",
+      "url": "https://github.com/addyosmani/agent-skills",
+      "description": "Production-grade engineering skills for AI coding agents.",
+      "stars": 28682,
+      "updated_at": "2026-05-05T21:01:35Z",
+      "pushed_at": "2026-05-03T02:23:41Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "pinchbench/skill",
+      "url": "https://github.com/pinchbench/skill",
+      "description": "PinchBench is a benchmarking system for evaluating LLM models as OpenClaw coding agents. Made with 🦀 by the humans at https://kilo.ai",
+      "stars": 1095,
+      "updated_at": "2026-05-05T18:35:31Z",
+      "pushed_at": "2026-05-05T18:35:26Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "mvanhorn/last30days-skill",
+      "url": "https://github.com/mvanhorn/last30days-skill",
+      "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+      "stars": 24819,
+      "updated_at": "2026-05-05T20:59:41Z",
+      "pushed_at": "2026-05-02T18:30:22Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "coreyhaines31/marketingskills",
+      "url": "https://github.com/coreyhaines31/marketingskills",
+      "description": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+      "stars": 26756,
+      "updated_at": "2026-05-05T20:56:02Z",
+      "pushed_at": "2026-05-05T00:28:18Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "supabase/agent-skills",
+      "url": "https://github.com/supabase/agent-skills",
+      "description": "Agent Skills to help developers using AI agents with Supabase",
+      "stars": 2041,
+      "updated_at": "2026-05-05T19:31:47Z",
+      "pushed_at": "2026-04-30T22:21:45Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "github/awesome-copilot",
+      "url": "https://github.com/github/awesome-copilot",
+      "description": "Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.",
+      "stars": 32173,
+      "updated_at": "2026-05-05T20:13:50Z",
+      "pushed_at": "2026-05-05T19:56:50Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "MoizIbnYousaf/Ai-Agent-Skills",
+      "url": "https://github.com/MoizIbnYousaf/Ai-Agent-Skills",
+      "description": "my curated agent skills library ",
+      "stars": 1045,
+      "updated_at": "2026-05-05T09:57:16Z",
+      "pushed_at": "2026-05-05T09:57:12Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "snyk/agent-scan",
+      "url": "https://github.com/snyk/agent-scan",
+      "description": "Security scanner for AI agents, MCP servers and agent skills.",
+      "stars": 2343,
+      "updated_at": "2026-05-05T20:36:31Z",
+      "pushed_at": "2026-05-05T06:18:06Z",
+      "archived": false,
+      "license": "apache-2.0",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "SamurAIGPT/Generative-Media-Skills",
+      "url": "https://github.com/SamurAIGPT/Generative-Media-Skills",
+      "description": "Multi-modal Generative Media Skills for AI Agents (Claude Code, Cursor, Gemini CLI). High-quality image, video, and audio generation powered by muapi.ai.",
+      "stars": 3179,
+      "updated_at": "2026-05-05T18:35:07Z",
+      "pushed_at": "2026-05-02T18:35:59Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "dotnet/skills",
+      "url": "https://github.com/dotnet/skills",
+      "description": "Repository for skills to assist AI coding agents with .NET and C#",
+      "stars": 1523,
+      "updated_at": "2026-05-05T19:53:06Z",
+      "pushed_at": "2026-05-05T19:39:47Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "MemTensor/MemOS",
+      "url": "https://github.com/MemTensor/MemOS",
+      "description": "AI memory OS for LLM and Agent systems(moltbot,clawdbot,openclaw), enabling persistent Skill memory for cross-task skill reuse and evolution.",
+      "stars": 8895,
+      "updated_at": "2026-05-05T19:13:32Z",
+      "pushed_at": "2026-05-05T11:53:29Z",
+      "archived": false,
+      "license": "apache-2.0",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "openakita/openakita",
+      "url": "https://github.com/openakita/openakita",
+      "description": "An open-source AI assistant framework with skills and agent architecture",
+      "stars": 1720,
+      "updated_at": "2026-05-05T15:58:40Z",
+      "pushed_at": "2026-05-04T03:35:40Z",
+      "archived": false,
+      "license": "apache-2.0",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "samber/cc-skills-golang",
+      "url": "https://github.com/samber/cc-skills-golang",
+      "description": "🧑‍🎨 A collection of Golang agentic skills that works",
+      "stars": 1523,
+      "updated_at": "2026-05-05T20:07:00Z",
+      "pushed_at": "2026-05-01T15:51:26Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "AvdLee/SwiftUI-Agent-Skill",
+      "url": "https://github.com/AvdLee/SwiftUI-Agent-Skill",
+      "description": "Add expert SwiftUI Best Practices guidance to your AI coding tool (Agent Skills open format).",
+      "stars": 2797,
+      "updated_at": "2026-05-05T20:52:36Z",
+      "pushed_at": "2026-04-29T08:34:14Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "numman-ali/n-skills",
+      "url": "https://github.com/numman-ali/n-skills",
+      "description": "Curated plugin marketplace for AI agents - works with Claude Code, Codex, and openskills",
+      "stars": 977,
+      "updated_at": "2026-05-04T13:40:22Z",
+      "pushed_at": "2026-05-03T00:40:28Z",
+      "archived": false,
+      "license": "apache-2.0",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "expo/skills",
+      "url": "https://github.com/expo/skills",
+      "description": "A collection of AI agent skills for working with Expo projects and Expo Application Services",
+      "stars": 1851,
+      "updated_at": "2026-05-05T18:25:53Z",
+      "pushed_at": "2026-05-05T20:44:55Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "ValueCell-ai/ClawX",
+      "url": "https://github.com/ValueCell-ai/ClawX",
+      "description": "ClawX is a desktop app that provides a graphical interface for OpenClaw AI agents. It turns CLI-based AI orchestration into a desktop experience without using the terminal. China website is https://clawx.com.cn.",
+      "stars": 7051,
+      "updated_at": "2026-05-05T20:45:30Z",
+      "pushed_at": "2026-05-03T07:44:22Z",
+      "archived": false,
+      "license": "mit",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "iamzhihuix/skills-manage",
+      "url": "https://github.com/iamzhihuix/skills-manage",
+      "description": "Desktop app to manage AI coding agent skills across Claude Code, Cursor, Gemini CLI, Codex, and 20+ platforms from one place.",
+      "stars": 1615,
+      "updated_at": "2026-05-05T20:24:47Z",
+      "pushed_at": "2026-05-02T14:01:06Z",
+      "archived": false,
+      "license": "apache-2.0",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "HoangNguyen0403/agent-skills-standard",
+      "url": "https://github.com/HoangNguyen0403/agent-skills-standard",
+      "description": "A collection of Agent Skills Standard and Best Practice for Programming Languages, Frameworks that help our AI Agent follow best practies on frameworks and programming laguages",
+      "stars": 480,
+      "updated_at": "2026-05-05T16:53:29Z",
+      "pushed_at": "2026-05-05T07:58:39Z",
+      "archived": false,
+      "license": "apache-2.0",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    },
+    {
+      "lane": "agentic_ai_skill",
+      "full_name": "skalesapp/skales",
+      "url": "https://github.com/skalesapp/skales",
+      "description": "Your local AI Desktop Agent for Windows, macOS & Linux. Agent Skills (SKILL.md), autonomous coding (Codework), multi-agent teams, desktop automation, 15+ AI providers, Desktop Buddy. No Docker, no terminal. Free.",
+      "stars": 912,
+      "updated_at": "2026-05-05T18:33:30Z",
+      "pushed_at": "2026-05-05T18:33:10Z",
+      "archived": false,
+      "license": "other",
+      "fit_rationale": "intent token overlap",
+      "provenance": "indexed snippet",
+      "risk_note": "none"
+    }
+  ]
+}
