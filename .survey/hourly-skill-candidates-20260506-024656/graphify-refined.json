@@ -1,0 +1,5 @@
+{
+  "status": "fallback",
+  "reason": "graphify query skipped in hourly cron",
+  "slug": "hourly-skill-candidates-20260506-024656"
+}

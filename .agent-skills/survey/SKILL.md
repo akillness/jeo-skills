@@ -295,4 +295,5 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - `references/platform-adapter-and-artifact-contract.md` — portability rules for `settings`, `rules`, `hooks`, and identical artifact output across platforms
 - `references/output-templates-and-validator.md` — exact file templates plus validator usage for `.survey/{slug}/`
 - `references/keyword-sweep-and-relevance-rescue.md` — required five-keyword sweep and noisy-query rescue gate for recurring repo-maintenance loops
+- `references/hourly-lane-health-audit.md` — lane health metric integrity, degraded-cause taxonomy, and reviewer-facing audit checklist for hourly runs
 - `scripts/validate_survey_artifacts.py` — artifact-contract validator for survey output folders
