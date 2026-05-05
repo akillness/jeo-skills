@@ -12,3 +12,5 @@
 - 2026-04-26 06:15:00Z hourly run: added license-fallback ratchet note and linked survey/RTK/graphify artifacts
 - 2026-04-26 07:26:00Z hourly run: added gh-field-compatibility ratchet note and linked survey/RTK/graphify artifacts (including failed gh field attempt and recovery)
 - 2026-04-27 01:54:00Z hourly run: added rolling-cutoff ratchet note and linked survey/RTK/graphify artifacts (including graphify links-key fallback)
+
+- 2026-05-06 hourly-skill-candidates-20260506-035221: llm-wiki/queries/2026-05-06-hourly-survey-hourly-skill-candidates-20260506-035221.md

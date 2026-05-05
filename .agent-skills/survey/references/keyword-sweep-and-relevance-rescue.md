@@ -106,6 +106,12 @@ PY
 
 Then substitute `${ROLLING_CUTOFF}` in templates:
 
+24h~7d hourly window guard (for cron consistency):
+- Run the primary pass with `pushed:>=<now-7d>`.
+- If lane relevance quality is low but non-zero, run one recovery pass with the same 7-day floor.
+- If lane `raw_count == 0` after stage-1 recovery, run stage-2 recovery with tighter recency (`pushed:>=<now-1d>`) once, then finalize lane status.
+- Persist all three query strings (primary/stage-1/stage-2) in `evidence.json` for reviewer auditability.
+
 - `agentic ai skill` lane
   - `ai agent framework skills automation stars:>200 pushed:>=${ROLLING_CUTOFF}`
 - `web frontend skill` lane

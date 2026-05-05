@@ -1,0 +1,33 @@
+{
+  "slug": "hourly-skill-candidates-20260506-035221",
+  "degraded": true,
+  "reason": "graphify save-result CLI does not support --input/--output in this runtime",
+  "lane_health": {
+    "agentic_ai_skill": {
+      "raw_count": 30,
+      "kept_count": 30,
+      "status": "pass"
+    },
+    "web_frontend_skill": {
+      "raw_count": 30,
+      "kept_count": 9,
+      "status": "pass"
+    },
+    "web_backend_skill": {
+      "raw_count": 30,
+      "kept_count": 3,
+      "status": "pass"
+    },
+    "cli_open_source_skill": {
+      "raw_count": 20,
+      "kept_count": 9,
+      "status": "pass"
+    },
+    "game_development_skill": {
+      "raw_count": 30,
+      "kept_count": 3,
+      "status": "pass"
+    }
+  },
+  "recommended_lane_count": 5
+}
