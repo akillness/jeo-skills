@@ -1,0 +1,149 @@
+{
+  "slug": "hourly-skill-candidates-20260505-164302",
+  "generated_at_utc": "2026-05-05T16:43:36.852814Z",
+  "provenance": "github search api via gh cli",
+  "lanes": {
+    "agentic_ai_skill": {
+      "query": "agentic ai skill",
+      "attempts": [
+        {
+          "stage": "stage-1",
+          "query": "\"agentic ai skill\" pushed:>=2026-04-28 archived:false",
+          "count": 6,
+          "error": null
+        }
+      ],
+      "raw_count": 6,
+      "zero_star_raw": 2,
+      "median_stars_raw": 1.0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "recommended": [],
+      "low_fit_examples": [],
+      "provenance_labels": [
+        "direct page retrieval",
+        "indexed snippet"
+      ]
+    },
+    "web_frontend_skill": {
+      "query": "web frontend skill",
+      "attempts": [
+        {
+          "stage": "stage-1",
+          "query": "\"web frontend skill\" pushed:>=2026-04-28 archived:false",
+          "count": 1,
+          "error": null
+        }
+      ],
+      "raw_count": 1,
+      "zero_star_raw": 1,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-signal"
+      ],
+      "recommended": [],
+      "low_fit_examples": [],
+      "provenance_labels": [
+        "direct page retrieval",
+        "indexed snippet"
+      ]
+    },
+    "web_backend_skill": {
+      "query": "web backend skill",
+      "attempts": [
+        {
+          "stage": "stage-1",
+          "query": "\"web backend skill\" pushed:>=2026-04-28 archived:false",
+          "count": 0,
+          "error": null
+        },
+        {
+          "stage": "stage-2",
+          "query": "\"web backend skill\" stars:>5000 pushed:>=2026-04-28 archived:false",
+          "count": 0,
+          "error": null
+        }
+      ],
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "recommended": [],
+      "low_fit_examples": [],
+      "provenance_labels": [
+        "direct page retrieval",
+        "indexed snippet"
+      ]
+    },
+    "cli_open_source_skill": {
+      "query": "cli open source skill",
+      "attempts": [
+        {
+          "stage": "stage-1",
+          "query": "\"cli open source skill\" pushed:>=2026-04-28 archived:false",
+          "count": 0,
+          "error": null
+        },
+        {
+          "stage": "stage-2",
+          "query": "\"cli open source skill\" stars:>5000 pushed:>=2026-04-28 archived:false",
+          "count": 0,
+          "error": null
+        }
+      ],
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "recommended": [],
+      "low_fit_examples": [],
+      "provenance_labels": [
+        "direct page retrieval",
+        "indexed snippet"
+      ]
+    },
+    "game_development_skill": {
+      "query": "game development skill",
+      "attempts": [
+        {
+          "stage": "stage-1",
+          "query": "\"game development skill\" pushed:>=2026-04-28 archived:false",
+          "count": 7,
+          "error": null
+        }
+      ],
+      "raw_count": 7,
+      "zero_star_raw": 6,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-signal"
+      ],
+      "recommended": [],
+      "low_fit_examples": [],
+      "provenance_labels": [
+        "direct page retrieval",
+        "indexed snippet"
+      ]
+    }
+  },
+  "cross_lane": {
+    "recommended_lane_count": 0,
+    "single_lane_concentration": true
+  }
+}

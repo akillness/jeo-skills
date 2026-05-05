@@ -149,3 +149,9 @@ Before final recommendations:
 - [ ] Recommendation section reports both raw and deduplicated cross-lane coverage metrics
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly
+
+## Integrity tripwire (kept/raw)
+
+- Recompute `raw_count` and `kept_count` from the exact finalized lane dataset immediately before writing `evidence.json`.
+- Block artifact finalization if any lane has `kept_count > raw_count`.
+- If `raw_count == 0` after documented stage-1/stage-2 recovery, enforce `lane_status: degraded` with `degraded_causes` including `no-results`.

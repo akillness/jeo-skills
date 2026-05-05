@@ -1,0 +1,6 @@
+{
+  "status": "degraded",
+  "reason": "graphify query skipped in unattended run; fallback synthesized from evidence",
+  "slug": "hourly-skill-candidates-20260505-164302",
+  "recommended_lane_count": 0
+}
