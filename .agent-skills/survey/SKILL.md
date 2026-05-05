@@ -257,6 +257,7 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - Preserve evidence labels when sources are weak or indirect.
 - Keep the output artifact schema identical across platforms.
 - Route architecture/planning/execution work outward once the survey is done.
+- For unattended hourly loops, finalize with internal triad consensus (탐색/품질리스크/실행가능성) in artifacts; do not require external user approval checklists before creating PRs.
 
 ## Examples
 

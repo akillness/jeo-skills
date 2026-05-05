@@ -69,7 +69,8 @@
         "Runs or explicitly requires all five keyword families for hourly repo-maintenance mode",
         "Captures license, pushed_at/updated, archived, and fit rationale for kept candidates",
         "Uses a fallback path (gh search/gh api/gh repo view) when direct search or extraction fails",
-        "Uses `gh search repos` JSON fields compatible with CLI output (e.g., fullName and license)"
+        "Uses `gh search repos` JSON fields compatible with CLI output (e.g., fullName and license)",
+        "For unattended hourly runs, reports internal triad consensus (exploration/risk/feasibility) without asking user approval checklists"
       ]
     },
     {

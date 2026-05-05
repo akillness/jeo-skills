@@ -26,7 +26,7 @@ S[12]{n,action,details}:
   8,Check cross-lane concentration,Compute recommended_lane_count and set single_lane_concentration when recommendation-grade keeps cluster in one lane, then report a deduplicated recommendation set keyed by repository identity
   9,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
   10,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
-  11,Summarize,Return a short factual survey summary and route planning or implementation outward
+  11,Summarize,Return a short factual survey summary with internal triad consensus (exploration/risk/feasibility) and route planning or implementation outward
 R[14]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
