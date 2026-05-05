@@ -1,0 +1,252 @@
+{
+  "slug": "hourly-skill-candidates-20260506-070542",
+  "generated_at_utc": "2026-05-05T22:07:02.295414Z",
+  "provenance": "indexed snippet",
+  "lanes": {
+    "agentic ai skill": {
+      "raw_count": 30,
+      "attempts": [
+        {
+          "stage": 0,
+          "query": "agentic ai skill",
+          "count": 30
+        }
+      ],
+      "kept_count": 4,
+      "kept": [
+        {
+          "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "stars": 16,
+          "license": "apache-2.0",
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "fit_rationale": "lane token overlap + stars 16 + active <=24mo"
+        },
+        {
+          "full_name": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "stars": 7,
+          "license": "mit",
+          "pushed_at": "2026-04-06T01:48:47Z",
+          "fit_rationale": "lane token overlap + stars 7 + active <=24mo"
+        },
+        {
+          "full_name": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "stars": 10,
+          "license": "mit",
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "fit_rationale": "lane token overlap + stars 10 + active <=24mo"
+        },
+        {
+          "full_name": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "stars": 5,
+          "license": "mit",
+          "pushed_at": "2026-04-09T12:21:43Z",
+          "fit_rationale": "lane token overlap + stars 5 + active <=24mo"
+        }
+      ],
+      "low_fit_examples": [],
+      "provenance": "indexed snippet"
+    },
+    "web frontend skill": {
+      "raw_count": 5,
+      "attempts": [
+        {
+          "stage": 0,
+          "query": "web frontend skill",
+          "count": 5
+        }
+      ],
+      "kept_count": 0,
+      "kept": [],
+      "low_fit_examples": [],
+      "provenance": "indexed snippet"
+    },
+    "web backend skill": {
+      "raw_count": 1,
+      "attempts": [
+        {
+          "stage": 0,
+          "query": "web backend skill",
+          "count": 0
+        },
+        {
+          "stage": 1,
+          "query": "web backend skill stars:>5000 pushed:>=2024-01-01",
+          "count": 1
+        }
+      ],
+      "kept_count": 0,
+      "kept": [],
+      "low_fit_examples": [
+        {
+          "repo": "andreasbm/web-skills",
+          "reason": "low-fit-token-miss",
+          "url": "https://github.com/andreasbm/web-skills"
+        }
+      ],
+      "provenance": "indexed snippet"
+    },
+    "cli open source skill": {
+      "raw_count": 1,
+      "attempts": [
+        {
+          "stage": 0,
+          "query": "cli open source skill",
+          "count": 0
+        },
+        {
+          "stage": 1,
+          "query": "cli open source skill stars:>5000 pushed:>=2024-01-01",
+          "count": 1
+        }
+      ],
+      "kept_count": 1,
+      "kept": [
+        {
+          "full_name": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "stars": 27338,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-05T17:24:24Z",
+          "fit_rationale": "lane token overlap + stars 27338 + active <=24mo"
+        }
+      ],
+      "low_fit_examples": [],
+      "provenance": "indexed snippet"
+    },
+    "game development skill": {
+      "raw_count": 30,
+      "attempts": [
+        {
+          "stage": 0,
+          "query": "game development skill",
+          "count": 30
+        }
+      ],
+      "kept_count": 1,
+      "kept": [
+        {
+          "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "stars": 3,
+          "license": "mit",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "fit_rationale": "lane token overlap + stars 3 + active <=24mo"
+        }
+      ],
+      "low_fit_examples": [],
+      "provenance": "indexed snippet"
+    }
+  },
+  "recommendations": [
+    {
+      "lane": "agentic ai skill",
+      "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "stars": 16,
+      "license": "apache-2.0",
+      "pushed_at": "2026-01-29T09:33:47Z",
+      "fit_rationale": "lane token overlap + stars 16 + active <=24mo"
+    },
+    {
+      "lane": "agentic ai skill",
+      "full_name": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "stars": 7,
+      "license": "mit",
+      "pushed_at": "2026-04-06T01:48:47Z",
+      "fit_rationale": "lane token overlap + stars 7 + active <=24mo"
+    },
+    {
+      "lane": "agentic ai skill",
+      "full_name": "VoDaiLocz/Enhance-Prompt",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "stars": 10,
+      "license": "mit",
+      "pushed_at": "2026-03-05T13:50:53Z",
+      "fit_rationale": "lane token overlap + stars 10 + active <=24mo"
+    },
+    {
+      "lane": "agentic ai skill",
+      "full_name": "laviDrori0702/tableau-dashboard-creator-skill",
+      "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+      "stars": 5,
+      "license": "mit",
+      "pushed_at": "2026-04-09T12:21:43Z",
+      "fit_rationale": "lane token overlap + stars 5 + active <=24mo"
+    },
+    {
+      "lane": "cli open source skill",
+      "full_name": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "stars": 27338,
+      "license": "apache-2.0",
+      "pushed_at": "2026-05-05T17:24:24Z",
+      "fit_rationale": "lane token overlap + stars 27338 + active <=24mo"
+    },
+    {
+      "lane": "game development skill",
+      "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "stars": 3,
+      "license": "mit",
+      "pushed_at": "2026-02-06T04:09:12Z",
+      "fit_rationale": "lane token overlap + stars 3 + active <=24mo"
+    }
+  ],
+  "lane_health": {
+    "agentic ai skill": {
+      "lane_status": "pass",
+      "degraded_causes": [
+        "low-signal"
+      ],
+      "zero_star_raw": 20,
+      "median_stars_raw": 0.0,
+      "kept_count": 4
+    },
+    "web frontend skill": {
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "zero_star_raw": 4,
+      "median_stars_raw": 0,
+      "kept_count": 0
+    },
+    "web backend skill": {
+      "lane_status": "pass",
+      "degraded_causes": [
+        "low-fit"
+      ],
+      "zero_star_raw": 0,
+      "median_stars_raw": 7531,
+      "kept_count": 0
+    },
+    "cli open source skill": {
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "zero_star_raw": 0,
+      "median_stars_raw": 27338,
+      "kept_count": 1
+    },
+    "game development skill": {
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal",
+        "stale"
+      ],
+      "zero_star_raw": 18,
+      "median_stars_raw": 0.0,
+      "kept_count": 1
+    }
+  },
+  "cross_lane": {
+    "recommended_lane_count": 3,
+    "single_lane_concentration": false
+  }
+}

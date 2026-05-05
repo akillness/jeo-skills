@@ -1,0 +1,7 @@
+agentic ai skill	status=pass	raw=30	kept=4	median=0.0	zero_star=20	causes=low-signal
+web frontend skill	status=pass	raw=5	kept=0	median=0	zero_star=4	causes=license,low-signal
+web backend skill	status=pass	raw=1	kept=0	median=7531	zero_star=0	causes=low-fit
+cli open source skill	status=pass	raw=1	kept=1	median=27338	zero_star=0	causes=
+game development skill	status=pass	raw=30	kept=1	median=0.0	zero_star=18	causes=license,low-signal,stale
+recommended_lane_count	3
+single_lane_concentration	False
