@@ -1,6 +1,6 @@
 ---
 name: to-issues
-description: >
+description: Use this skill when >
   Convert plans, specs, or requirements into independently-grabbable vertical slice
   issues. Each slice is a thin but complete end-to-end cut through all layers
   (schema, API, UI, tests). Classifies issues as HITL (human-in-the-loop) or AFK
@@ -94,3 +94,21 @@ HITL | AFK
 ```
 
 Add appropriate labels: category (`bug`/`enhancement`) + state (`needs-triage` or `ready-for-agent`/`ready-for-human`).
+
+## Instructions
+1. Identify the task trigger and expected output.
+2. Follow the workflow steps in this skill from top to bottom.
+3. Validate outputs before moving to the next step.
+4. Capture blockers and fallback path if any step fails.
+
+## Examples
+- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.
+
+## References
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

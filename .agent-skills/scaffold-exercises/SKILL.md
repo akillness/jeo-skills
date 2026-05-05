@@ -1,6 +1,6 @@
 ---
 name: scaffold-exercises
-description: >
+description: Use this skill when >
   Create exercise directory structures for educational content that comply with
   linting standards. Sections use XX-section-name/ naming, exercises use
   XX.YY-exercise-name/ with problem/, solution/, explainer/ variants. Use when
@@ -102,3 +102,21 @@ Use `git mv` (not `mv`) to rename directories — preserves git history:
 ```bash
 git mv exercises/01-old-name exercises/01-new-name
 ```
+
+## Instructions
+1. Identify the task trigger and expected output.
+2. Follow the workflow steps in this skill from top to bottom.
+3. Validate outputs before moving to the next step.
+4. Capture blockers and fallback path if any step fails.
+
+## Examples
+- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.
+
+## References
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

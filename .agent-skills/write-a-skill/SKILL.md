@@ -1,6 +1,6 @@
 ---
 name: write-a-skill
-description: >
+description: Use this skill when >
   Create structured agent skills with proper documentation following the SKILL.md
   format. Three-phase process: gather requirements, draft SKILL.md and supporting
   files, review with user. Use when building new reusable agent capabilities or
@@ -115,3 +115,15 @@ Brief intro paragraph.
 - [ ] When-not-to-use routes out to specific skills
 - [ ] metadata.tags covers discoverable keywords
 - [ ] No implementation details in the description (that's what the body is for)
+
+## Examples
+- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.
+
+## References
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

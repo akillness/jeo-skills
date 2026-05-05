@@ -1,6 +1,6 @@
 ---
 name: zoom-out
-description: >
+description: Use this skill when >
   Request a broader architectural perspective when navigating unfamiliar code sections.
   Maps all relevant modules, identifies caller relationships and dependencies, and
   uses domain-specific vocabulary. Use when encountering unfamiliar code or needing
@@ -67,3 +67,21 @@ Domain terms in use here:
 ## Note on invocation
 
 This skill sets `disable-model-invocation: true` — it is a directive framework that instructs the agent how to respond, not an independent processing unit. Invoke it as a behavioral directive when exploring code.
+
+## Instructions
+1. Identify the task trigger and expected output.
+2. Follow the workflow steps in this skill from top to bottom.
+3. Validate outputs before moving to the next step.
+4. Capture blockers and fallback path if any step fails.
+
+## Examples
+- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.
+
+## References
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

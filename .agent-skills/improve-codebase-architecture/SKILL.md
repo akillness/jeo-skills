@@ -1,6 +1,6 @@
 ---
 name: improve-codebase-architecture
-description: >
+description: Use this skill when >
   Identify architectural friction and propose deepening opportunities — refactors
   that turn shallow modules into deep ones for better testability and AI-navigability.
   Use when improving architecture, finding refactoring opportunities, consolidating
@@ -86,3 +86,21 @@ Side effects as decisions crystallize:
 - **New concept not in CONTEXT.md?** Add the term immediately
 - **Fuzzy term sharpened?** Update CONTEXT.md right there
 - **User rejects with a load-bearing reason?** Offer an ADR (only when a future explorer would need it to avoid re-suggesting the same thing)
+
+## Instructions
+1. Identify the task trigger and expected output.
+2. Follow the workflow steps in this skill from top to bottom.
+3. Validate outputs before moving to the next step.
+4. Capture blockers and fallback path if any step fails.
+
+## Examples
+- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.
+
+## References
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

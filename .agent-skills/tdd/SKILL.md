@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: >
+description: Use this skill when >
   Test-Driven Development using red-green-refactor cycles with vertical slices.
   Tests verify behavior through public interfaces, not implementation details.
   Use when building new features or fixing bugs with a test-first discipline to
@@ -125,3 +125,21 @@ function formatCurrency(amount: number, currency: string): string {
 
 // REFACTOR if needed, then move to next behavior
 ```
+
+## Instructions
+1. Identify the task trigger and expected output.
+2. Follow the workflow steps in this skill from top to bottom.
+3. Validate outputs before moving to the next step.
+4. Capture blockers and fallback path if any step fails.
+
+## Examples
+- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.
+
+## References
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

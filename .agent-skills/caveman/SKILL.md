@@ -1,6 +1,6 @@
 ---
 name: caveman
-description: >
+description: Use this skill when >
   Ultra-compressed communication mode that reduces token usage by ~75% by eliminating
   articles, filler words, pleasantries, and hedging while preserving technical accuracy.
   Activate with "caveman mode", "less tokens", "be brief", or "/caveman". Deactivate
@@ -70,3 +70,21 @@ React performance issue:
 Database connection:
 > Normal: "A connection pool allows you to reuse existing database connections rather than creating new ones, which avoids the overhead of the TCP handshake and authentication process, resulting in better performance under load."
 > Caveman: "Pool = reuse DB conn. Skip handshake → fast under load."
+
+## When to use this skill
+- Use this skill when you need the workflow described above and want consistent, repeatable execution.
+
+## Instructions
+1. Identify the task trigger and expected output.
+2. Follow the workflow steps in this skill from top to bottom.
+3. Validate outputs before moving to the next step.
+4. Capture blockers and fallback path if any step fails.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.
+
+## References
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

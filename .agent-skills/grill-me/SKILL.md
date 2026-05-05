@@ -1,6 +1,6 @@
 ---
 name: grill-me
-description: >
+description: Use this skill when >
   Conduct a comprehensive plan or design stress-test through systematic questioning.
   Interviews relentlessly about every decision point, resolves interdependencies
   progressively, and traverses the complete decision tree. Use when thoroughly
@@ -67,3 +67,21 @@ By the end of the session:
 ## Activation
 
 User says: "grill me", "stress-test this plan", "challenge my design", "ask me hard questions about this"
+
+## Instructions
+1. Identify the task trigger and expected output.
+2. Follow the workflow steps in this skill from top to bottom.
+3. Validate outputs before moving to the next step.
+4. Capture blockers and fallback path if any step fails.
+
+## Examples
+- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.
+
+## References
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

@@ -1,6 +1,6 @@
 ---
 name: to-prd
-description: >
+description: Use this skill when >
   Generate a structured Product Requirements Document (PRD) from existing conversation
   context and codebase state. Synthesizes knowledge into a PRD without interviewing
   the user. Use when documenting requirements for a feature or change to publish
@@ -101,3 +101,21 @@ Complete the PRD template and submit to the issue tracker with the `needs-triage
 - [ ] Implementation decisions reference existing domain vocabulary
 - [ ] Out of scope section prevents scope creep
 - [ ] No file paths or code in the PRD (these belong in issues)
+
+## Instructions
+1. Identify the task trigger and expected output.
+2. Follow the workflow steps in this skill from top to bottom.
+3. Validate outputs before moving to the next step.
+4. Capture blockers and fallback path if any step fails.
+
+## Examples
+- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.
+
+## References
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`
