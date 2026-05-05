@@ -1,6 +1,6 @@
 ---
 name: notebooklm
-description: >
+description: Use this skill when >
   Query Google NotebookLM directly from Claude Code using browser automation.
   Retrieves source-grounded, citation-backed answers from your NotebookLM notebooks
   without leaving the editor. Supports notebook library management, persistent Google
@@ -183,3 +183,17 @@ NotebookLM can answer follow-up questions within the same session context. Ask t
 - `~/.claude/skills/notebooklm/references/api_reference.md` — programmatic usage
 - `~/.claude/skills/notebooklm/references/troubleshooting.md` — troubleshooting guide
 - `~/.claude/skills/notebooklm/AUTHENTICATION.md` — hybrid auth system details
+
+## Instructions
+1. Identify the task trigger and expected output.
+2. Follow the workflow steps in this skill from top to bottom.
+3. Validate outputs before moving to the next step.
+4. Capture blockers and fallback path if any step fails.
+
+## Examples
+- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.

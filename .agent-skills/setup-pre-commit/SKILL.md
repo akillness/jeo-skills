@@ -1,6 +1,6 @@
 ---
 name: setup-pre-commit
-description: >
+description: Use this skill when >
   Configure automated code quality checks at commit time using Husky and lint-staged.
   Sets up pre-commit hooks for formatting (Prettier), type checking, and tests.
   Adapts to existing project configurations and omits missing scripts gracefully.
@@ -116,3 +116,21 @@ Watch for: lint-staged formatting, typecheck passing, tests passing.
 lint-staged runs first (fast, only staged files) → typecheck (full project) → tests (full suite)
 
 If `typecheck` or `test` scripts don't exist in `package.json`, omit those lines from the pre-commit hook.
+
+## Instructions
+1. Identify the task trigger and expected output.
+2. Follow the workflow steps in this skill from top to bottom.
+3. Validate outputs before moving to the next step.
+4. Capture blockers and fallback path if any step fails.
+
+## Examples
+- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+## Best practices
+- Keep outputs deterministic and auditable.
+- Prefer small reversible changes over broad risky edits.
+- Record assumptions explicitly.
+
+## References
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`
