@@ -1,0 +1,14 @@
+{
+  "question": "What are the lane health signals and primary risks in this hourly run?",
+  "answer": {
+    "recommended_lane_count": 1,
+    "single_lane_concentration": true,
+    "degraded_lanes": [
+      "web frontend skill",
+      "web backend skill",
+      "cli open source skill",
+      "game development skill"
+    ],
+    "provenance": "indexed snippet"
+  }
+}

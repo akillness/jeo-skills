@@ -4,7 +4,7 @@ Use this guide when a `survey` run is part of recurring skill maintenance (for e
 
 ## Required keyword families (hourly maintenance loop)
 
-Run all five keyword families before final recommendations:
+Run all five keyword families before final recommendations (default time window: recent 24 hours to 7 days, represented as `pushed:>=<7d cutoff>` with lane notes if a stricter 24h floor is applied):
 
 1. `agentic ai skill`
 2. `web frontend skill`
