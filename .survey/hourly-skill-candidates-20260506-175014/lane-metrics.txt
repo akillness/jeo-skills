@@ -1,0 +1,5 @@
+agentic-ai-skill 50 48 1506.5
+web-frontend-skill 50 2 0.0
+web-backend-skill 50 2 0.0
+cli-open-source-skill 19 8 3
+game-development-skill 45 1 0

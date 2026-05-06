@@ -136,6 +136,12 @@ Stage-2 escalation rule:
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 - Before final ranking, compute a deduplicated recommendation-grade set keyed by repository identity (`fullName` or `owner/name`) and report both raw and dedup recommendation coverage metrics.
 
+## Graphify CLI compatibility note
+
+- Some `graphify` builds reject `save-result --input ...` and require question/answer-only writes.
+- In unattended runs, call `graphify save-result --question ... --answer ... --memory-dir <run-local-dir>`.
+- If argument compatibility fails, persist stderr in `.survey/<slug>/graphify-query.err` and emit `.survey/<slug>/graphify-refined.json` fallback from `evidence.json`.
+
 ## Checks-degraded escalation (PR lifecycle guard)
 
 When survey artifacts are valid but GitHub reports `no checks reported` on the PR branch:
