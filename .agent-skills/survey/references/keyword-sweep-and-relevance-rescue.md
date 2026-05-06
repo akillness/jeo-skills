@@ -125,6 +125,8 @@ Stage-2 escalation rule:
 - For lanes that are noisy (raw hits exist but recommendation-grade keeps remain `kept_count == 0` after stage-1), run exactly one stage-2 query template before finalizing degraded status.
 - Keep provenance labels and apply the same relevance + metadata + signal/freshness gate to stage-2 hits.
 - If `raw_count == 0` after Stage 2, set `degraded_causes` to include `no-results` (alongside other causes) so empty lanes remain explicit in run reports.
+- Recompute lane metrics from the same final selected set before writing artifacts (`raw_count`, `zero_star_raw`, `median_stars_raw`, `kept_count`) and reject impossible states such as `kept_count > raw_count`.
+- Persist the exact stage-1/stage-2 recovery query strings in `evidence.json` so reviewer audit can reproduce no-result lanes deterministically.
 
 ### Minimum recommendation thresholds (after relevance gate)
 

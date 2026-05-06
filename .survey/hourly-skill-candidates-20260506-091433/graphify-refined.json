@@ -1,0 +1,5 @@
+{
+  "fallback_reason": "graphify query unavailable for run-local graph",
+  "recommended_lane_count": 4,
+  "single_lane_concentration": false
+}
