@@ -138,7 +138,12 @@ Stage-2 escalation rule:
 
 ## Checks-degraded escalation (PR lifecycle guard)
 
-When survey artifacts are valid but GitHub reports `no checks reported` on the PR branch:
+Use backlog-aware handling before opening a new hourly PR:
+
+- If open PR backlog is high (default threshold: `>=10`) **and** sampled carry-forward PRs show `no checks reported`, switch to checks-degraded mode for this run: generate artifacts + blocker report only, and do not open an additional PR.
+- If backlog is below the threshold, continue normal PR creation cadence, but keep merge gating strict.
+
+When survey artifacts are valid but GitHub reports `no checks reported` on the current PR branch:
 
 - Treat as hard blocker for merge in unattended hourly runs.
 - Post a PR comment with exact blocker string and remediation steps (enable required checks or re-run workflows).
