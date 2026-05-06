@@ -145,6 +145,11 @@ When survey artifacts are valid but GitHub reports `no checks reported` on the P
 - Keep this run in `merge-blocked` state; do not force-merge.
 - Record `merge_blocked_reason: no-checks-reported` in the final run report.
 
+Backlog-aware preflight clarification:
+
+- If open PR backlog is high (`>=10`) **and** sampled carry-forward PRs also show `no checks reported`, switch to blocker-report mode for that run (artifacts only, no additional PR creation).
+- If backlog is below the threshold, PR creation may proceed, but merge must still be blocked whenever current-branch checks are absent.
+
 ## Reporting checklist
 
 Before final recommendations:

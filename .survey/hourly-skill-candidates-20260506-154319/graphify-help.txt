@@ -1,0 +1,41 @@
+Usage: graphify <command>
+
+Commands:
+  install [--platform P]  copy skill to platform config dir (claude|windows|codex|opencode|aider|claw|droid|trae|trae-cn|gemini|cursor)
+  query "<question>"       BFS traversal of graph.json for a question
+    --dfs                   use depth-first instead of breadth-first
+    --budget N              cap output at N tokens (default 2000)
+    --graph <path>          path to graph.json (default graphify-out/graph.json)
+  save-result             save a Q&A result to graphify-out/memory/ for graph feedback loop
+    --question Q            the question asked
+    --answer A              the answer to save
+    --type T                query type: query|path_query|explain (default: query)
+    --nodes N1 N2 ...       source node labels cited in the answer
+    --memory-dir DIR        memory directory (default: graphify-out/memory)
+  benchmark [graph.json]  measure token reduction vs naive full-corpus approach
+  hook install            install post-commit/post-checkout git hooks (all platforms)
+  hook uninstall          remove git hooks
+  hook status             check if git hooks are installed
+  gemini install          write GEMINI.md section + BeforeTool hook (Gemini CLI)
+  gemini uninstall        remove GEMINI.md section + BeforeTool hook
+  cursor install          write .cursor/rules/graphify.mdc (Cursor)
+  cursor uninstall        remove .cursor/rules/graphify.mdc
+  claude install          write graphify section to CLAUDE.md + PreToolUse hook (Claude Code)
+  claude uninstall        remove graphify section from CLAUDE.md + PreToolUse hook
+  codex install           write graphify section to AGENTS.md (Codex)
+  codex uninstall         remove graphify section from AGENTS.md
+  opencode install        write graphify section to AGENTS.md + tool.execute.before plugin (OpenCode)
+  opencode uninstall      remove graphify section from AGENTS.md + plugin
+  aider install           write graphify section to AGENTS.md (Aider)
+  aider uninstall         remove graphify section from AGENTS.md
+  copilot install         copy graphify skill to ~/.copilot/skills (GitHub Copilot CLI)
+  copilot uninstall       remove graphify skill from ~/.copilot/skills
+  claw install            write graphify section to AGENTS.md (OpenClaw)
+  claw uninstall          remove graphify section from AGENTS.md
+  droid install           write graphify section to AGENTS.md (Factory Droid)
+  droid uninstall        remove graphify section from AGENTS.md
+  trae install            write graphify section to AGENTS.md (Trae)
+  trae uninstall         remove graphify section from AGENTS.md
+  trae-cn install         write graphify section to AGENTS.md (Trae CN)
+  trae-cn uninstall      remove graphify section from AGENTS.md
+

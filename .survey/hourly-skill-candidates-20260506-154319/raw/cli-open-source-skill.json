@@ -1,0 +1,32 @@
+{
+  "attempts": [
+    {
+      "stage": "primary",
+      "query": "cli open source skill",
+      "count": 0,
+      "error": null
+    },
+    {
+      "stage": "recovery-1",
+      "query": "cli open source skill stars:>5000 pushed:>2025-01-01",
+      "count": 1,
+      "error": null
+    }
+  ],
+  "items": [
+    {
+      "description": "🎨 Local-first, open-source alternative to Anthropic's Claude Design. ⚡ 19 Skills · ✨ 71 brand-grade Design Systems 🖼 Generate web · desktop · mobile prototypes · slides · images · videos · HyperFrames 📦 Sandboxed preview · HTML/PDF/PPTX/MP4 export 🤖 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+      "fullName": "nexu-io/open-design",
+      "isArchived": false,
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "pushedAt": "2026-05-06T06:37:41Z",
+      "stargazersCount": 28622,
+      "updatedAt": "2026-05-06T06:43:21Z",
+      "url": "https://github.com/nexu-io/open-design"
+    }
+  ]
+}
