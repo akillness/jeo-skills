@@ -145,6 +145,12 @@ When survey artifacts are valid but GitHub reports `no checks reported` on the P
 - Keep this run in `merge-blocked` state; do not force-merge.
 - Record `merge_blocked_reason: no-checks-reported` in the final run report.
 
+## Lane metric integrity guard
+
+- Recompute `raw_count`, `zero_star_raw`, `median_stars_raw`, and `kept_count` from the same final selected result set after any recovery-query switch.
+- Never emit impossible states such as `kept_count > raw_count` in `evidence.json` or markdown summaries.
+- Add a one-line integrity check result in run notes (for example, `integrity_check: pass`).
+
 ## Reporting checklist
 
 Before final recommendations:
