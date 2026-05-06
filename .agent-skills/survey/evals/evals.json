@@ -204,6 +204,16 @@
         "Reapplies recommendation-grade gates (license/freshness/signal/fit) to stage-2 hits",
         "Reports lane_status, lane metrics, and degraded_causes transparently after escalation"
       ]
+    },
+    {
+      "id": 21,
+      "prompt": "run the hourly survey where multiple .survey/hourly-skill-candidates-* folders already exist and artifact generation scripts are chained",
+      "expected_output": "The run persists a single active slug and passes it explicitly across shell and Python steps, avoiding find/head folder auto-selection that can contaminate artifacts.",
+      "assertions": [
+        "Persists one run slug source-of-truth (for example .survey/LATEST_SLUG or exported SLUG)",
+        "Passes slug explicitly into helper scripts instead of auto-selecting directories",
+        "Verifies changed paths target only the active .survey/<slug>/ folder before PR packaging"
+      ]
     }
   ]
 }

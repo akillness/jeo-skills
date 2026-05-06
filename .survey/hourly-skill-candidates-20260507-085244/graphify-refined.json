@@ -1,0 +1,6 @@
+{
+  "status": "degraded",
+  "reason": "graphify query skipped in unattended run",
+  "source": "evidence.json",
+  "provenance": "indexed snippet"
+}

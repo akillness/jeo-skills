@@ -213,6 +213,7 @@ Execution rules:
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
 - Add a cross-lane recommendation dedup gate before final ranking: preserve raw discovery evidence unchanged, but compute a deduplicated recommendation-grade set keyed by repository identity (`fullName` or `owner/name`) and report both raw and dedup coverage metrics.
+- **Run-slug integrity guard (mandatory):** persist one slug source-of-truth (for example `.survey/LATEST_SLUG`) and pass it explicitly to every generation step. Do not rediscover active run folders via `find .survey ... | head -1` style heuristics.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 
