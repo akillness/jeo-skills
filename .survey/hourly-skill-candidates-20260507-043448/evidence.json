@@ -1,0 +1,134 @@
+{
+  "generated_at_utc": "2026-05-06T19:35:25.979552Z",
+  "slug": "hourly-skill-candidates-20260507-043448",
+  "provenance": "direct page retrieval",
+  "lanes": {
+    "agentic ai skill": {
+      "query": "\"agentic ai skill\" pushed:>=2026-04-29 archived:false",
+      "source_stage": "stage1",
+      "raw_count": 7,
+      "zero_star_raw": 1,
+      "median_stars_raw": 1,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "recovery_attempts": [],
+      "low_fit_examples": [],
+      "kept": [
+        {
+          "full_name": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "description": "This repository serves as a library for showcasing how to adopt Agentic AI skills, and agent markdown files in a company-wide setting. ",
+          "stars": 3,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-30T13:42:47Z",
+          "fit_rationale": "lane token overlap + freshness/signal gate pass"
+        }
+      ]
+    },
+    "web frontend skill": {
+      "query": "\"web frontend skill\" pushed:>=2026-04-29 archived:false",
+      "source_stage": "stage1",
+      "raw_count": 1,
+      "zero_star_raw": 1,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-signal"
+      ],
+      "recovery_attempts": [],
+      "low_fit_examples": [],
+      "kept": []
+    },
+    "web backend skill": {
+      "query": "\"web backend skill\" pushed:>=2026-04-29 archived:false",
+      "source_stage": "recovery",
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage1",
+          "query": "\"web backend skill\" pushed:>=2026-04-29 archived:false",
+          "error": "",
+          "count": 0
+        },
+        {
+          "stage": "stage2",
+          "query": "\"web backend skill\" stars:>5000 archived:false",
+          "error": "",
+          "count": 0
+        }
+      ],
+      "low_fit_examples": [],
+      "kept": []
+    },
+    "cli open source skill": {
+      "query": "\"cli open source skill\" pushed:>=2026-04-29 archived:false",
+      "source_stage": "recovery",
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage1",
+          "query": "\"cli open source skill\" pushed:>=2026-04-29 archived:false",
+          "error": "",
+          "count": 0
+        },
+        {
+          "stage": "stage2",
+          "query": "\"cli open source skill\" stars:>5000 archived:false",
+          "error": "",
+          "count": 0
+        }
+      ],
+      "low_fit_examples": [],
+      "kept": []
+    },
+    "game development skill": {
+      "query": "\"game development skill\" pushed:>=2026-04-29 archived:false",
+      "source_stage": "stage1",
+      "raw_count": 4,
+      "zero_star_raw": 3,
+      "median_stars_raw": 0.0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "recovery_attempts": [],
+      "low_fit_examples": [],
+      "kept": []
+    }
+  },
+  "recommended": [
+    {
+      "lane": "agentic ai skill",
+      "full_name": "rhysmcneill/agentic-ai-library",
+      "url": "https://github.com/rhysmcneill/agentic-ai-library",
+      "description": "This repository serves as a library for showcasing how to adopt Agentic AI skills, and agent markdown files in a company-wide setting. ",
+      "stars": 3,
+      "license": "apache-2.0",
+      "pushed_at": "2026-04-30T13:42:47Z",
+      "fit_rationale": "lane token overlap + freshness/signal gate pass"
+    }
+  ],
+  "recommended_lane_count": 1,
+  "single_lane_concentration": true
+}

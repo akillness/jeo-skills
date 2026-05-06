@@ -150,6 +150,12 @@ When survey artifacts are valid but GitHub reports `no checks reported` on the c
 - Keep this run in `merge-blocked` state; do not force-merge.
 - Record `merge_blocked_reason: no-checks-reported` in the final run report.
 
+## Run-slug handoff guard (artifact integrity)
+
+- Persist `SLUG` once per run (for example `.slug`) and pass it explicitly into every Python helper through env/argv.
+- Never auto-select `.survey/hourly-skill-candidates-*` directories inside helper scripts.
+- After artifact generation, run `git status --short` and verify only `.survey/<SLUG>/` paths changed before commit.
+
 ## Reporting checklist
 
 Before final recommendations:
