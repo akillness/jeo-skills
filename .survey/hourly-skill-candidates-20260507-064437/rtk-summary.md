@@ -1,0 +1,9 @@
+# RTK Summary
+
+- agentic-ai-skill: raw=30, kept=30, median_stars=2014.0, status=pass
+- web-frontend-skill: raw=30, kept=9, median_stars=0.0, status=pass
+- web-backend-skill: raw=30, kept=3, median_stars=0.0, status=pass
+- cli-open-source-skill: raw=23, kept=10, median_stars=0.0, status=pass
+- game-development-skill: raw=30, kept=3, median_stars=0.0, status=pass
+- recommended_lane_count=5
+- single_lane_concentration=false
