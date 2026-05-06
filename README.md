@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-113-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-114-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**122 local skill folders · 113 installable skills · TOON Format · Cross-platform**
+**123 local skill folders · 114 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**122 local skill folders · 113 installable skills · TOON Format · Cross-platform**
+**123 local skill folders · 114 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 122 local skill folders and 113 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
+Agent Skills is a curated collection with 123 local skill folders and 114 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -75,6 +75,7 @@ graph TD
 | Change | Details |
 |--------|---------|
 | **15 new skills from mattpocock/skills** | Integrated Matt Pocock's engineering skills collection (58k+ GitHub stars). New skills: `diagnose` (systematic 6-phase debugging), `tdd` (red-green-refactor vertical slices), `grill-with-docs` (design review with domain docs), `triage` (issue state machine), `improve-codebase-architecture` (deepening opportunities), `to-issues` (plan→tickets), `to-prd` (PRD generation), `zoom-out` (architectural perspective), `caveman` (~75% token reduction mode), `grill-me` (plan stress-testing), `write-a-skill` (skill creation framework), `git-guardrails-claude-code` (destructive git prevention), `setup-pre-commit` (Husky/lint-staged), `scaffold-exercises` (educational structure), `migrate-to-shoehorn` (type-safe test assertions). 98 → **113 skills**. Source: [mattpocock/skills](https://github.com/mattpocock/skills). |
+| **obsidian: unified Obsidian skill (v2.0)** | Merged `obsidian-plugin` and `obsidian-cli` into a single unified `obsidian` skill incorporating [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) content. Covers plugin development (27 ESLint rules, boilerplate, accessibility, submission), desktop CLI automation (commands, TUI, URI handoff, developer mode), and Obsidian content patterns (markdown, Bases, JSON Canvas, Defuddle). Plugin-installable: `claude plugin marketplace add akillness/oh-my-skills`. 113 → **114 skills**. |
 
 ## 🆕 What's New in v2026-05-04
 
@@ -269,7 +270,7 @@ setup omc
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 122 local skill folders = 113 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 123 local skill folders = 114 total installable skills
 
 ### 🎯 Core Orchestration (11)
 
@@ -440,8 +441,9 @@ setup omc
 | `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
 | `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |
 | `npm-git-install` | Routing-first Node package delivery skill for npm / pnpm / Yarn / Bun — choose temporary Git bridge, SHA pin, tarball, workspace, or publish-first handoff safely | All |
-| `obsidian-cli` | Route Obsidian desktop automation — official CLI command/TUI mode, developer commands, official `obsidian://` handoff, and explicit route-outs for headless or plugin/API-heavy jobs | All |
-| `obsidian-plugin` | Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility, submission validation | All |
+| `obsidian` | **Unified Obsidian skill (v2.0)** — plugin development (27 ESLint rules, boilerplate, submission) + CLI automation (commands, TUI, URI handoff, developer mode) + content patterns (markdown, Bases, JSON Canvas). Plugin: `claude plugin marketplace add akillness/oh-my-skills` | All |
+| `obsidian-cli` | *(alias → `obsidian`)* Route Obsidian desktop automation — official CLI, `obsidian://` handoff, developer commands | All |
+| `obsidian-plugin` | *(alias → `obsidian`)* Obsidian plugin development — 27 ESLint rules, boilerplate generator, submission | All |
 | `opencontext` | Routing-first active project/repo memory — choose memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out for manifests, stable links, cross-agent handoff packets, and highest-confidence-source / freshness checks when notes overlap | All |
 | `workflow-automation` | Routing-first repo workflow automation — choose one mode for task-entrypoints, bootstrap/onboarding, local-CI parity, hook guardrails, maintenance bots, or workflow cleanup without drifting into environment/deploy work | All |
 

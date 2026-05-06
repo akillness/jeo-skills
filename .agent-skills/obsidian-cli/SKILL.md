@@ -1,26 +1,19 @@
 ---
 name: obsidian-cli
 description: >
-  Route Obsidian desktop automation to the right first-party surface: official
-  Obsidian CLI for terminal/TUI commands against a running app, official
-  `obsidian://` URIs for launcher/callback handoff, and explicit route-outs when
-  the real need is headless sync, filesystem writes, or richer plugin/API
-  automation. Use when the user wants vault or note targeting, daily-note/search
-  flows, plugin reload/dev screenshots, command-palette execution, or URI-based
-  open/new/search callbacks from scripts, shortcuts, browsers, or agent loops.
+  ALIAS — merged into the unified `obsidian` skill (v2.0). Use the `obsidian` skill instead.
+  Route Obsidian desktop automation: official CLI, obsidian:// URIs, developer commands.
+  Redirects to obsidian skill for vault targeting, daily-note flows, plugin reload, URI handoff.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: >
-  Requires desktop Obsidian with Command line interface enabled in Settings ->
-  General. Current official docs say Obsidian CLI requires the installer version
-  1.12.7+ and controls the desktop app from the terminal; Obsidian Headless is a
-  separate standalone client for Sync/Publish without the desktop app.
+  Requires desktop Obsidian with CLI enabled (Settings → General → Command line interface,
+  installer 1.12.7+). Merged into obsidian skill v2.0.
 license: Proprietary docs, skill authored for oh-my-skills
 metadata:
   tags: obsidian, cli, terminal, automation, vault, uri, developer-tools, notes, tui
-  version: "2.0.0"
+  version: "2.1.0"
   source: https://obsidian.md/help/cli
-  modernization: 2026-04-19
-  hardening: 2026-04-19
+  deprecated: "Merged into obsidian skill v2.0 — use obsidian instead"
 ---
 
 # obsidian-cli - Route Obsidian desktop automation correctly

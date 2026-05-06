@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-113-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-114-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**122개 로컬 스킬 폴더 · 설치 가능 스킬 113개 · TOON 포맷 · 멀티플랫폼**
+**123개 로컬 스킬 폴더 · 설치 가능 스킬 114개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**122개 로컬 스킬 폴더 · 설치 가능 스킬 113개 · TOON 포맷 · 멀티플랫폼**
+**123개 로컬 스킬 폴더 · 설치 가능 스킬 114개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 122개 로컬 스킬 폴더와 113개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 123개 로컬 스킬 폴더와 114개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -75,6 +75,7 @@ graph TD
 | 변경 | 내용 |
 |------|------|
 | **mattpocock/skills에서 15개 신규 스킬 추가** | GitHub 스타 58k+의 Matt Pocock 엔지니어링 스킬 컬렉션을 통합했습니다. 신규 스킬: `diagnose`(체계적 6단계 디버깅), `tdd`(레드-그린-리팩터 수직 슬라이스), `grill-with-docs`(도메인 문서 연동 설계 리뷰), `triage`(이슈 상태 머신), `improve-codebase-architecture`(아키텍처 심화 기회 발굴), `to-issues`(플랜→티켓 변환), `to-prd`(PRD 생성), `zoom-out`(아키텍처 조망), `caveman`(토큰 75% 절감 압축 모드), `grill-me`(계획 스트레스 테스트), `write-a-skill`(스킬 생성 프레임워크), `git-guardrails-claude-code`(파괴적 git 명령 차단), `setup-pre-commit`(Husky/lint-staged 설정), `scaffold-exercises`(교육 구조 생성), `migrate-to-shoehorn`(타입 안전 테스트 어서션). 98 → **113개 스킬**. 출처: [mattpocock/skills](https://github.com/mattpocock/skills). |
+| **obsidian: 통합 Obsidian 스킬 (v2.0)** | `obsidian-plugin`과 `obsidian-cli`를 단일 `obsidian` 스킬로 통합하고 [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) 콘텐츠를 반영했습니다. 플러그인 개발(27개 ESLint 규칙, 보일러플레이트, 접근성, 제출 검증), 데스크톱 CLI 자동화(명령, TUI, URI handoff, 개발자 모드), Obsidian 콘텐츠 패턴(markdown, Bases, JSON Canvas, Defuddle) 전부 포함. 플러그인 설치: `claude plugin marketplace add akillness/oh-my-skills`. 113 → **114개 스킬**. |
 
 ## 🆕 v2026-05-04 업데이트
 
@@ -440,8 +441,9 @@ setup omc
 | `google-workspace` | Google Workspace REST API 자동화 — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
 | `npm-git-install` | npm / pnpm / Yarn / Bun용 라우팅-우선 Node 패키지 전달 스킬 — temporary Git bridge, SHA pin, tarball, workspace, publish-first handoff를 안전하게 선택 | 전체 |
-| `obsidian-cli` | Obsidian 데스크톱 자동화 라우팅 — 공식 CLI 단일 명령/TUI, 개발자 명령, 공식 `obsidian://` handoff, headless·plugin/API route-out까지 명시 | 전체 |
-| `obsidian-plugin` | Obsidian 플러그인 개발 — 27개 ESLint 규칙, 보일러플레이트 생성기, 접근성, 커뮤니티 제출 검증 | 전체 |
+| `obsidian` | **통합 Obsidian 스킬 (v2.0)** — 플러그인 개발(27개 ESLint 규칙, 보일러플레이트, 제출) + CLI 자동화(명령, TUI, URI handoff, 개발자 모드) + 콘텐츠 패턴(markdown, Bases, JSON Canvas). 플러그인: `claude plugin marketplace add akillness/oh-my-skills` | 전체 |
+| `obsidian-cli` | *(alias → `obsidian`)* Obsidian 데스크톱 자동화 — 공식 CLI, `obsidian://` handoff, 개발자 명령 | 전체 |
+| `obsidian-plugin` | *(alias → `obsidian`)* Obsidian 플러그인 개발 — 27개 ESLint 규칙, 보일러플레이트 생성기, 제출 검증 | 전체 |
 | `opencontext` | 라우팅-우선 프로젝트/저장소 메모리 스킬 — memory-layer choice, load-context, search-context, store-conclusions, setup-integration, repo-packer route-out 중 하나를 골라 manifest / stable link / 에이전트 핸드오프 패킷을 다루고, 메모가 겹칠 때는 최고 신뢰 소스와 freshness 경고를 고릅니다 | 전체 |
 | `workflow-automation` | 라우팅-우선 저장소 워크플로우 자동화 — task-entrypoints, bootstrap/onboarding, 로컬 CI 패리티, hook 가드레일, 유지보수 봇, 워크플로우 정리 중 하나를 고르고 환경/배포 문제로 번지지 않게 유지 | 전체 |
 | `caveman` | 토큰 75% 절감 압축 통신 모드. 활성화: "caveman mode", "less tokens". 비활성화: "stop caveman" | All |

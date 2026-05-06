@@ -84,7 +84,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 112 skills to global store, link shared skills to all detected agents
+# Install ALL 113 skills to global store, link shared skills to all detected agents
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
@@ -329,7 +329,7 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (112 skills)
+## Skill Inventory (113 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
@@ -356,7 +356,7 @@ If no → skip silently. Never re-ask.
 | **Creative Media** | remotion-video-production *(compatibility alias for video-production when legacy tooling or explicit Remotion naming still expects the old skill)*, video-production *(canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs)* | All (`*`) |
 | **Marketing** | marketing-automation, marketing-skills-collection *(compatibility alias for marketing-automation)* | All (`*`) |
 | **Game Development** | game-build-log-triage *(Unity/Unreal build-log triage)*, game-ci-cd-pipeline *(game build/release pipeline design)*, game-demo-feedback-triage *(demo/playtest feedback synthesis)*, game-performance-profiler *(Unity/Unreal performance evidence triage)*, steam-store-launch-ops *(Steam store/festival/wishlist/launch operations)* | All (`*`) |
-| **Utilities** | clawteam, fabric, file-organization *(repo structure / feature-vs-shared / route-vs-package boundary choice + migration planning)*, git-submodule, git-workflow, google-workspace, llm-wiki, npm-git-install *(Git dependency / tarball / workspace / publish-first choice)*, obsidian-cli, obsidian-plugin, opencontext, workflow-automation *(repo task runners / bootstrap / local-CI automation)* | All (`*`) |
+| **Utilities** | clawteam, fabric, file-organization *(repo structure / feature-vs-shared / route-vs-package boundary choice + migration planning)*, git-submodule, git-workflow, google-workspace, llm-wiki, npm-git-install *(Git dependency / tarball / workspace / publish-first choice)*, obsidian *(unified: plugin dev + CLI automation + markdown/Bases/JSON Canvas — plugin: `claude plugin marketplace add akillness/oh-my-skills`)*, obsidian-cli *(alias → obsidian)*, obsidian-plugin *(alias → obsidian)*, opencontext, workflow-automation *(repo task runners / bootstrap / local-CI automation)* | All (`*`) |
 
 ---
 
@@ -383,8 +383,9 @@ If no → skip silently. Never re-ask.
 | `bmad-gds` | `bmad-gds` | Game-production orchestrator for ideas, GDDs, playtest notes, bugs, and launch beats |
 | `bmad-idea` | `bmad-idea` | Pre-planning idea router for product, GTM, consulting, and game concepts → choose one framing mode and one concept artifact |
 | `agent-browser` | `agent-browser` | Fresh-session browser verification anchor — choose a clean disposable browser, use snapshot refs, and prove before/after state with explicit evidence |
-| `obsidian-cli` | `obsidian cli`, `obsidian terminal`, `obsidian plugin reload`, `obsidian://` | Routing-first Obsidian desktop automation — official CLI command/TUI mode, developer commands, URI handoff, and explicit headless/plugin-API route-outs |
-| `obsidian-plugin` | `obsidian plugin`, `create obsidian plugin` | Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility |
+| `obsidian` | `obsidian`, `obsidian plugin`, `obsidian cli`, `obsidian automation`, `obsidian development`, `obsidian eslint`, `obsidian markdown`, `obsidian bases`, `json-canvas`, `obsidian vault`, `obsidian uri` | **Unified Obsidian skill (v2.0)** — plugin development (27 ESLint rules, boilerplate, submission) + CLI automation (commands, TUI, URI handoff, developer mode) + content patterns (markdown, Bases, JSON Canvas). Plugin: `claude plugin marketplace add akillness/oh-my-skills` |
+| `obsidian-cli` | `obsidian cli`, `obsidian terminal`, `obsidian plugin reload`, `obsidian://` | *(alias → `obsidian`)* Routing-first Obsidian desktop automation — official CLI command/TUI mode, developer commands, URI handoff |
+| `obsidian-plugin` | `obsidian plugin`, `create obsidian plugin` | *(alias → `obsidian`)* Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility |
 | `llm-wiki` | `llm-wiki`, `obsidian wiki`, `research vault` | Persistent markdown wiki maintenance — bootstrap raw/wiki layers, ingest sources, file queries, run lint passes |
 | `game-build-log-triage` | `game build log`, `unity build failed`, `unreal packaging error` | Unity/Unreal build/editor/package log triage — isolate the first actionable engine/build failure |
 | `game-ci-cd-pipeline` | `game ci`, `unity build pipeline`, `unreal release pipeline` | Routing-first game CI/CD packets — classify branch-gate vs nightly/package-candidate vs release/certification lane, then choose setup, stage split, cache policy, preflight checks, artifact/release hygiene, or CI trust |

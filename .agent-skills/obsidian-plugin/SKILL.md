@@ -1,19 +1,16 @@
 ---
 name: obsidian-plugin
 description: >
-  Build, validate, and publish Obsidian plugins following official community submission standards.
-  Use when developing an Obsidian plugin from scratch, reviewing existing plugin code, fixing ESLint
-  violations from eslint-plugin-obsidianmd, preparing a plugin for community directory submission,
-  or applying Obsidian-specific best practices (memory management, type safety, accessibility, CSS
-  variables, vault API). Triggers on: obsidian plugin, obsidian development, obsidian-plugin, create
-  obsidian plugin, obsidian eslint, obsidian submission, obsidian community plugin, obsidian API,
-  plugin boilerplate, obsidian typescript, obsidian vault, obsidian settings, obsidian commands.
+  ALIAS — merged into the unified `obsidian` skill (v2.0). Use the `obsidian` skill instead.
+  Build, validate, and publish Obsidian plugins. Redirects to obsidian skill for plugin development,
+  ESLint rules, boilerplate generation, accessibility, and submission validation.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 license: MIT
 metadata:
   tags: obsidian, plugin-development, eslint, typescript, boilerplate, submission, accessibility
-  version: "1.0"
+  version: "1.1"
   source: https://github.com/gapmiss/obsidian-plugin-skill
+  deprecated: "Merged into obsidian skill v2.0 — use obsidian instead"
 ---
 
 # obsidian-plugin — Obsidian Plugin Development Skill
