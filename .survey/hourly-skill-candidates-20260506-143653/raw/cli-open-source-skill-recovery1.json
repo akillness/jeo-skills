@@ -1,0 +1,16 @@
+[
+  {
+    "description": "🎨 Local-first, open-source alternative to Anthropic's Claude Design. ⚡ 19 Skills · ✨ 71 brand-grade Design Systems 🖼 Generate web · desktop · mobile prototypes · slides · images · videos · HyperFrames 📦 Sandboxed preview · HTML/PDF/PPTX/MP4 export 🤖 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+    "fullName": "nexu-io/open-design",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-05-06T05:29:55Z",
+    "stargazersCount": 28407,
+    "updatedAt": "2026-05-06T05:37:34Z",
+    "url": "https://github.com/nexu-io/open-design"
+  }
+]
