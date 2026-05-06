@@ -6,7 +6,7 @@ U[12]:
   Compare solutions workarounds and repeated complaints without drifting into coding
   Normalize platform topics into settings rules hooks and platform gaps
   Use a cheap-first evidence recovery ladder when search or extract tooling is weak
-  Run the mandatory five-keyword sweep for recurring repo-maintenance loops with lane-specific recovery templates and deterministic stage-2 escalation when a lane remains raw_count==0 or noisy-kept_count==0 after stage-1
+  Run the mandatory five-keyword sweep for recurring repo-maintenance loops using recent-window presets (24h and 7d) plus lane-specific recovery templates and deterministic stage-2 escalation when a lane remains raw_count==0 or noisy-kept_count==0 after stage-1
   Apply recommendation-grade freshness and signal-floor gating while preserving broad discovery evidence
   Treat generic personal catch-all repos (especially */skills) as low-fit by default unless workflow docs + traction are explicit
   Apply negation-aware intent gating so token overlap inside phrases like no cli or without cli is treated as low-fit unless an exception is justified

@@ -1,0 +1,4 @@
+usage: graphify save-result [-h] --question QUESTION --answer ANSWER
+                            [--type QUERY_TYPE] [--nodes [NODES ...]]
+                            [--memory-dir MEMORY_DIR]
+graphify save-result: error: unrecognized arguments: --input .survey/hourly-skill-candidates-20260506-095640/evidence.json

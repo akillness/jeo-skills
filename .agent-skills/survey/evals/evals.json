@@ -204,6 +204,16 @@
         "Reapplies recommendation-grade gates (license/freshness/signal/fit) to stage-2 hits",
         "Reports lane_status, lane metrics, and degraded_causes transparently after escalation"
       ]
+    },
+    {
+      "id": 21,
+      "prompt": "run the hourly five-lane survey with a strict recency focus (last 24h~7d) and keep fallback behavior deterministic when lanes are sparse",
+      "expected_output": "The survey uses explicit recent-window query presets (24h primary, 7d expansion), documents recovery queries per sparse lane, and preserves reproducible lane metrics/provenance in artifacts.",
+      "assertions": [
+        "Uses documented recent-window presets (24h and 7d) before broader recovery",
+        "Records exact per-lane recovery queries when sparse/noisy conditions persist",
+        "Keeps lane metrics and provenance labels in final markdown/JSON artifacts"
+      ]
     }
   ]
 }
