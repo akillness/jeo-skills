@@ -133,6 +133,7 @@ Stage-2 escalation rule:
 - For each lane, emit explicit `lane_status` in markdown: `pass` or `degraded`.
 - If a lane is below threshold, keep discovery evidence and report `degraded_causes` using a compact taxonomy: `license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results` (include counts or concrete examples).
 - If a lane still has `raw_count == 0` after stage-2 recovery, include `no-results` explicitly (never leave degraded causes empty for degraded lanes).
+- Recompute lane metrics from the final selected result set after any recovery-query switch, and enforce integrity (`kept_count <= raw_count`, non-negative counts) before writing `evidence.json` or markdown summaries.
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 - Before final ranking, compute a deduplicated recommendation-grade set keyed by repository identity (`fullName` or `owner/name`) and report both raw and dedup recommendation coverage metrics.
 

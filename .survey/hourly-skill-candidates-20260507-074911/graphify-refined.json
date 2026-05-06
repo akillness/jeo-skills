@@ -1,0 +1,6 @@
+{
+  "question": "What changed in this hourly survey run?",
+  "answer": "Created lane metrics and tightened survey reference with no-results degraded cause requirement.",
+  "source": "evidence.json",
+  "provenance": "indexed snippet"
+}
