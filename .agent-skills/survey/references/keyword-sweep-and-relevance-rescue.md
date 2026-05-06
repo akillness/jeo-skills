@@ -154,7 +154,7 @@ Before final recommendations:
 - [ ] Relevance gate applied to kept candidates
 - [ ] Metadata minimum recorded for each kept candidate
 - [ ] Lane-level `lane_status` (`pass|degraded`) included in markdown summary
-- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|low-signal-saturation|no-results`) reported with examples/counts
+- [ ] For degraded lanes, `degraded_causes` (`license|stale|low-fit|archived|low-signal|no-results`) reported with examples/counts (do not invent extra taxonomy labels)
 - [ ] Recommendation section reports both raw and deduplicated cross-lane coverage metrics
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly

@@ -1,0 +1,338 @@
+{
+  "slug": "hourly-skill-candidates-20260506-131037",
+  "generated_at_utc": "2026-05-06T13:10:45.583237Z",
+  "provenance_labels": [
+    "indexed snippet",
+    "direct page retrieval"
+  ],
+  "lanes": {
+    "agentic-ai-skill": {
+      "query_attempts": [
+        "agentic ai skill pushed:>=2026-04-29"
+      ],
+      "raw_count": 30,
+      "zero_star_raw": 0,
+      "median_stars_raw": 2014.0,
+      "kept_count": 28,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license"
+      ],
+      "recommended": [
+        {
+          "fullName": "addyosmani/agent-skills",
+          "url": "https://github.com/addyosmani/agent-skills",
+          "stars": 29286,
+          "license": "mit",
+          "pushedAt": "2026-05-03T02:23:41Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "pinchbench/skill",
+          "url": "https://github.com/pinchbench/skill",
+          "stars": 1098,
+          "license": "mit",
+          "pushedAt": "2026-05-05T18:35:26Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "mvanhorn/last30days-skill",
+          "url": "https://github.com/mvanhorn/last30days-skill",
+          "stars": 24885,
+          "license": "mit",
+          "pushedAt": "2026-05-02T18:30:22Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "coreyhaines31/marketingskills",
+          "url": "https://github.com/coreyhaines31/marketingskills",
+          "stars": 26889,
+          "license": "mit",
+          "pushedAt": "2026-05-06T06:56:58Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "supabase/agent-skills",
+          "url": "https://github.com/supabase/agent-skills",
+          "stars": 2044,
+          "license": "mit",
+          "pushedAt": "2026-04-30T22:21:45Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "github/awesome-copilot",
+          "url": "https://github.com/github/awesome-copilot",
+          "stars": 32249,
+          "license": "mit",
+          "pushedAt": "2026-05-06T04:16:50Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "MoizIbnYousaf/Ai-Agent-Skills",
+          "url": "https://github.com/MoizIbnYousaf/Ai-Agent-Skills",
+          "stars": 1046,
+          "license": "mit",
+          "pushedAt": "2026-05-05T09:57:12Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "snyk/agent-scan",
+          "url": "https://github.com/snyk/agent-scan",
+          "stars": 2353,
+          "license": "apache-2.0",
+          "pushedAt": "2026-05-05T06:18:06Z",
+          "fit": "intent-token-overlap+signal"
+        }
+      ],
+      "filtered_examples": {
+        "low_fit": [],
+        "archived": [],
+        "license": [
+          "skalesapp/skales",
+          "Bitterbot-AI/bitterbot-desktop"
+        ],
+        "stale": [],
+        "low_signal": []
+      }
+    },
+    "web-frontend-skill": {
+      "query_attempts": [
+        "web frontend skill pushed:>=2026-04-29"
+      ],
+      "raw_count": 30,
+      "zero_star_raw": 18,
+      "median_stars_raw": 0.0,
+      "kept_count": 2,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "recommended": [
+        {
+          "fullName": "ceilf6/FrontAgent",
+          "url": "https://github.com/ceilf6/FrontAgent",
+          "stars": 94,
+          "license": "mit",
+          "pushedAt": "2026-05-06T12:25:47Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "codewith-salman/Easybank-Digital-Website",
+          "url": "https://github.com/codewith-salman/Easybank-Digital-Website",
+          "stars": 3,
+          "license": "apache-2.0",
+          "pushedAt": "2026-05-03T04:08:58Z",
+          "fit": "intent-token-overlap+signal"
+        }
+      ],
+      "filtered_examples": {
+        "low_fit": [],
+        "archived": [],
+        "license": [
+          "rinafcode/teachLink_web",
+          "dk5847001-stack/Internova-frontend",
+          "MAHESHPPAI/Portfolio-website"
+        ],
+        "stale": [],
+        "low_signal": [
+          "StrongXscripts/Hacktoberfest-2025",
+          "PriyanshuRaj2077/Skill2Role",
+          "kozz36/frontend-architect-skill"
+        ]
+      }
+    },
+    "web-backend-skill": {
+      "query_attempts": [
+        "web backend skill pushed:>=2026-04-29"
+      ],
+      "raw_count": 30,
+      "zero_star_raw": 22,
+      "median_stars_raw": 0.0,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "recommended": [
+        {
+          "fullName": "SujalPatil21/Protfolio-Website",
+          "url": "https://github.com/SujalPatil21/Protfolio-Website",
+          "stars": 4,
+          "license": "mit",
+          "pushedAt": "2026-05-01T11:51:39Z",
+          "fit": "intent-token-overlap+signal"
+        }
+      ],
+      "filtered_examples": {
+        "low_fit": [],
+        "archived": [],
+        "license": [
+          "Gaku52/software-engineering-universe",
+          "samuelwbrown4/routebase-tms-app-backend",
+          "nik1234abc/portfolio-website"
+        ],
+        "stale": [],
+        "low_signal": [
+          "SujalPatil21/Portfolio-Website",
+          "Lincb522/codex-universal-builder-skills",
+          "syedAsifalilionking/cursor-skill-fullstack-native-app-builder"
+        ]
+      }
+    },
+    "cli-open-source-skill": {
+      "query_attempts": [
+        "cli open source skill pushed:>=2026-04-29"
+      ],
+      "raw_count": 20,
+      "zero_star_raw": 10,
+      "median_stars_raw": 1.5,
+      "kept_count": 8,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "recommended": [
+        {
+          "fullName": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "stars": 29540,
+          "license": "apache-2.0",
+          "pushedAt": "2026-05-06T13:09:17Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "jeremylongshore/claude-code-plugins-plus-skills",
+          "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+          "stars": 2110,
+          "license": "mit",
+          "pushedAt": "2026-05-04T16:33:40Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "TerminalSkills/skills",
+          "url": "https://github.com/TerminalSkills/skills",
+          "stars": 41,
+          "license": "apache-2.0",
+          "pushedAt": "2026-05-04T12:55:24Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "shrek-abaper/sap-abap-cli",
+          "url": "https://github.com/shrek-abaper/sap-abap-cli",
+          "stars": 8,
+          "license": "mit",
+          "pushedAt": "2026-05-06T01:02:43Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "manu14357/zskills",
+          "url": "https://github.com/manu14357/zskills",
+          "stars": 12,
+          "license": "mit",
+          "pushedAt": "2026-05-06T02:50:24Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "Security-Phoenix-demo/security-skills-claude-code",
+          "url": "https://github.com/Security-Phoenix-demo/security-skills-claude-code",
+          "stars": 28,
+          "license": "mit",
+          "pushedAt": "2026-04-29T19:20:05Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "Geoion/clis",
+          "url": "https://github.com/Geoion/clis",
+          "stars": 5,
+          "license": "apache-2.0",
+          "pushedAt": "2026-04-30T04:16:30Z",
+          "fit": "intent-token-overlap+signal"
+        },
+        {
+          "fullName": "usetemi/skills",
+          "url": "https://github.com/usetemi/skills",
+          "stars": 3,
+          "license": "mit",
+          "pushedAt": "2026-05-06T09:32:48Z",
+          "fit": "intent-token-overlap+signal"
+        }
+      ],
+      "filtered_examples": {
+        "low_fit": [],
+        "archived": [],
+        "license": [
+          "bawbel/bawbel-scanner",
+          "coddy-project/coddy-agent",
+          "pisonislo8737/HyperxOpenSkills"
+        ],
+        "stale": [],
+        "low_signal": [
+          "hashSTACS-Global/pimp-the-repo",
+          "Veronica0206/vera-clinical-indication-researching",
+          "Veronica0206/vera-clinical-trial-designing"
+        ]
+      }
+    },
+    "game-development-skill": {
+      "query_attempts": [
+        "game development skill pushed:>=2026-04-29"
+      ],
+      "raw_count": 30,
+      "zero_star_raw": 23,
+      "median_stars_raw": 0.0,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "recommended": [
+        {
+          "fullName": "viktor-ferenczi/se-dev-skills",
+          "url": "https://github.com/viktor-ferenczi/se-dev-skills",
+          "stars": 5,
+          "license": "mit",
+          "pushedAt": "2026-05-05T19:01:32Z",
+          "fit": "intent-token-overlap+signal"
+        }
+      ],
+      "filtered_examples": {
+        "low_fit": [],
+        "archived": [],
+        "license": [
+          "Yuki001/game-dev-skills",
+          "Yakoub-ai/phaser4-gamedev",
+          "zasuozz-oss/antigravity-unity-skills"
+        ],
+        "stale": [],
+        "low_signal": [
+          "FunplayAI/funplay-skill",
+          "calvin-iyer/android-skills",
+          "paulitaquack204/gstack-game"
+        ]
+      }
+    }
+  },
+  "queries": {
+    "agentic-ai-skill": [
+      "agentic ai skill pushed:>=2026-04-29"
+    ],
+    "web-frontend-skill": [
+      "web frontend skill pushed:>=2026-04-29"
+    ],
+    "web-backend-skill": [
+      "web backend skill pushed:>=2026-04-29"
+    ],
+    "cli-open-source-skill": [
+      "cli open source skill pushed:>=2026-04-29"
+    ],
+    "game-development-skill": [
+      "game development skill pushed:>=2026-04-29"
+    ]
+  },
+  "recommended_lane_count": 5,
+  "single_lane_concentration": false
+}

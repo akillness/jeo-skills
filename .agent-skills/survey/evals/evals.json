@@ -109,7 +109,7 @@
       "expected_output": "The survey marks each lane with `lane_status` (`pass|degraded`) and reports `degraded_causes` using the compact taxonomy (`license`, `stale`, `low-fit`, `archived`, `low-signal`, `no-results`) with concrete examples or counts.",
       "assertions": [
         "Includes explicit lane_status labels in markdown output for each lane",
-        "Uses degraded_causes taxonomy (`license|stale|low-fit|archived|low-signal|no-results`) when thresholds are missed",
+        "Uses degraded_causes taxonomy (`license|stale|low-fit|archived|low-signal|no-results`) when thresholds are missed (no ad-hoc extra labels)",
         "When a degraded lane has raw_count==0 after documented recovery, includes `no-results` explicitly",
         "Keeps provenance/evidence references while reporting degraded lanes"
       ]

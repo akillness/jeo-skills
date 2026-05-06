@@ -1,0 +1,10 @@
+{
+  "question": "Which lanes produced recommendation-grade candidates?",
+  "answer": {
+    "agentic-ai-skill": 28,
+    "web-frontend-skill": 2,
+    "web-backend-skill": 1,
+    "cli-open-source-skill": 8,
+    "game-development-skill": 1
+  }
+}
