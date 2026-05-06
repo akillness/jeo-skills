@@ -1,7 +1,7 @@
 N:survey
 D:Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform patterns map before deciding what to build. Produce reusable .survey/{slug}/ artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.
 G:survey landscape-scan research discovery groundwork omc omx ohmg claude codex gemini hooks rules settings
-U[12]:
+U[13]:
   Produce reusable .survey/{slug}/ artifacts before planning or implementation
   Compare solutions workarounds and repeated complaints without drifting into coding
   Normalize platform topics into settings rules hooks and platform gaps
@@ -14,6 +14,7 @@ U[12]:
   Include compact lane-health metrics (kept_count raw_count median_stars_raw zero_star_raw) and apply a zero-star saturation guard before marking a lane pass
   Detect cross-lane recommendation concentration with recommended_lane_count and single_lane_concentration flags
   Deduplicate recommendation-grade repositories across lanes before final ranking while preserving raw evidence
+  Normalize GitHub license payload shapes (spdx_id/spdxId/key/name) before classifying unknown-license in unattended runs
   Validate the artifact contract before handing off to planning or execution
 S[12]{n,action,details}:
   1,Classify mode,Choose one primary survey mode and decide whether platform-map.md is required
@@ -27,10 +28,11 @@ S[12]{n,action,details}:
   9,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
   10,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
   11,Summarize,Return a short factual survey summary and route planning or implementation outward
-R[14]:
+R[15]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
   Keep claims source-backed and label downgraded evidence clearly using validator-supported labels (map gh-search listings to indexed snippet and repo/API detail fetches to direct page retrieval); for gh search repos JSON output prefer fullName or owner+name over unsupported nameWithOwner and persist stderr before retrying
+  Normalize GitHub license payload shape variants (license.spdx_id/spdxId/key/name) before classifying unknown-license, then run one REST fallback if still null
   Drop assessment/homework-only and unknown-license noise unless exception rationale is explicit; when license is null on first pass or arrives as an empty object payload, retry once via gh api repos/<owner>/<repo> before classifying unknown
   Treat generic personal catch-all repos (especially */skills) as low-fit unless workflow docs + traction are explicit
   Treat lane-token hits inside explicit negation phrases (for example no cli, without cli, not a cli, non-cli) as low-fit unless a documented exception rationale exists

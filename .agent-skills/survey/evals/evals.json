@@ -204,6 +204,16 @@
         "Reapplies recommendation-grade gates (license/freshness/signal/fit) to stage-2 hits",
         "Reports lane_status, lane metrics, and degraded_causes transparently after escalation"
       ]
+    },
+    {
+      "id": 21,
+      "prompt": "run the hourly five-lane survey where gh search returns mixed license object shapes (spdx_id/spdxId/key/name) and some nulls",
+      "expected_output": "The survey normalizes license payload shapes before classification, then performs exactly one REST enrichment fallback for still-null candidates to avoid false unknown-license degradation.",
+      "assertions": [
+        "Normalizes GitHub license payload variants (`license.spdx_id`, `license.spdxId`, `license.key`, `license.name`) before unknown-license classification",
+        "Runs one deterministic REST fallback (`gh api repos/<owner>/<repo> --jq .license.spdx_id`) when normalized license is still null",
+        "Avoids over-reporting `license` degraded causes caused only by schema-shape mismatch"
+      ]
     }
   ]
 }

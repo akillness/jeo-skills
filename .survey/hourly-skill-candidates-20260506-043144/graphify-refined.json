@@ -1,0 +1,32 @@
+{
+  "question": "What is the hourly lane health and risk posture for this run?",
+  "answer": "All five lanes produced recommendation-grade keeps; primary risks are license and low-signal filtering concentration in frontend/backend/game lanes.",
+  "lane_health": {
+    "agentic-ai-skill": {
+      "lane_status": "pass",
+      "kept_count": 28,
+      "raw_count": 30
+    },
+    "web-frontend-skill": {
+      "lane_status": "pass",
+      "kept_count": 2,
+      "raw_count": 30
+    },
+    "web-backend-skill": {
+      "lane_status": "pass",
+      "kept_count": 2,
+      "raw_count": 30
+    },
+    "cli-open-source-skill": {
+      "lane_status": "pass",
+      "kept_count": 8,
+      "raw_count": 19
+    },
+    "game-development-skill": {
+      "lane_status": "pass",
+      "kept_count": 1,
+      "raw_count": 30
+    }
+  },
+  "degraded": false
+}
