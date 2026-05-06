@@ -1,0 +1,17 @@
+Validating: .agent-skills/survey/SKILL.md
+  ✓ Required field: name = 'survey'
+  ✓ Name format: valid (lowercase alphanumeric + hyphens)
+  ✓ Name matches directory: 'survey'
+  ✓ Required field: description present
+  ✓ Description length: 396 chars (OK)
+  ✓ Description has imperative trigger phrasing
+  ✓ allowed-tools format: space-delimited (OK)
+  ✓ Recommended section: When to use this skill
+  ✓ Recommended section: Instructions
+  ✓ Recommended section: Examples
+  ✓ Recommended section: Best practices
+  ✓ Recommended section: References
+  ✓ File length: 298 lines (OK)
+
+  Issues: 0 errors, 0 warnings
+

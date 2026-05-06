@@ -11,3 +11,5 @@
 - [Hourly survey lane-status ratchet](queries/2026-04-25-hourly-survey-lane-status-ratchet.md)
 - [Hourly survey lane-metrics ratchet](queries/2026-04-25-hourly-survey-lane-metrics-ratchet.md)
 - [Hourly survey stage2 noisy-lane recovery](queries/2026-04-26-hourly-survey-stage2-noisy-lane-recovery.md)
+
+- [hourly-skill-candidates-20260506-101924](hourly/hourly-skill-candidates-20260506-101924.md)

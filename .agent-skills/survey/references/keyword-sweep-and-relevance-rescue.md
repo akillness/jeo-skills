@@ -136,6 +136,15 @@ Stage-2 escalation rule:
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 - Before final ranking, compute a deduplicated recommendation-grade set keyed by repository identity (`fullName` or `owner/name`) and report both raw and dedup recommendation coverage metrics.
 
+## Checks-degraded escalation (PR lifecycle guard)
+
+When survey artifacts are valid but GitHub reports `no checks reported` on the PR branch:
+
+- Treat as hard blocker for merge in unattended hourly runs.
+- Post a PR comment with exact blocker string and remediation steps (enable required checks or re-run workflows).
+- Keep this run in `merge-blocked` state; do not force-merge.
+- Record `merge_blocked_reason: no-checks-reported` in the final run report.
+
 ## Reporting checklist
 
 Before final recommendations:
