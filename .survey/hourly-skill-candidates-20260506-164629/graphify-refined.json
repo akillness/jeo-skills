@@ -1,0 +1,26 @@
+{
+  "question": "What are the top reliable candidates per lane?",
+  "answer": "See evidence.json recommended lists filtered by freshness/license/fit/signal.",
+  "lanes": {
+    "agentic-ai-skill": {
+      "kept_count": 5,
+      "status": "pass"
+    },
+    "web-frontend-skill": {
+      "kept_count": 0,
+      "status": "degraded"
+    },
+    "web-backend-skill": {
+      "kept_count": 0,
+      "status": "degraded"
+    },
+    "cli-open-source-skill": {
+      "kept_count": 1,
+      "status": "pass"
+    },
+    "game-development-skill": {
+      "kept_count": 1,
+      "status": "pass"
+    }
+  }
+}

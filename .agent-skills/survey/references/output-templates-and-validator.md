@@ -149,3 +149,9 @@ python3 .agent-skills/survey/scripts/validate_survey_artifacts.py .survey/<slug>
 - Always persist the current run slug once (for example `.survey/LATEST_SLUG`) and pass it explicitly to every generator script via environment variable or argv.
 - Do not discover slug by listing `.survey/` directories; mixed historical folders can silently target the wrong run and contaminate artifacts.
 - After generation, verify `git status --short` only touches `.survey/<current-slug>/` paths before proceeding to PR.
+
+## Lane integrity guardrails (hourly survey)
+- Recompute lane metrics (`raw_count`, `zero_star_raw`, `median_stars_raw`, `kept_count`) from the same final candidate set after any recovery-query switch.
+- Never publish impossible states such as `kept_count > raw_count`.
+- If a mandatory lane remains empty after stage-1 and stage-2 recovery attempts, set `lane_status: degraded` and include `degraded_causes: ["no-results"]` with exact recovery queries for reviewer auditability.
+- Keep raw discovery evidence even when recommendation-grade filtering rejects candidates (`low-fit`, `low-signal`, `stale`, `license`, `archived`).
