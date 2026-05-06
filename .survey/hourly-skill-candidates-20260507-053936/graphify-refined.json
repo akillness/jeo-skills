@@ -1,0 +1,6 @@
+{
+  "status": "fallback",
+  "reason": "graphify query skipped in cron",
+  "slug": "hourly-skill-candidates-20260507-053936",
+  "recommended_lane_count": 5
+}
