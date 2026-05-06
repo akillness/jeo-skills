@@ -8,7 +8,7 @@
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**127 local skill folders · 126 installable skills · TOON Format · Cross-platform**
+**126 local skill folders · 126 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**127 local skill folders · 126 installable skills · TOON Format · Cross-platform**
+**126 local skill folders · 126 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 127 local skill folders and 126 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
+Agent Skills is a curated collection with 126 local skill folders and 126 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -270,9 +270,9 @@ setup omc
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 127 local skill folders = 126 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 126 local skill folders = 126 total installable skills
 
-### 🎯 Core Orchestration (11)
+### 🎯 Core Orchestration (13)
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
@@ -286,6 +286,8 @@ setup omc
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |
 | `survey` | `survey` | All | Bounded pre-implementation landscape scan with reusable `.survey/{slug}/` artifacts plus validator-backed artifact-contract checks |
+| `clawteam` | `clawteam`, `claw team`, `multi-agent team` | All | Route ClawTeam runtime requests — manual-team, template-team, worker-agent modes with one honest operator packet before touching commands |
+| `ccpi-marketplace` | `ccpi`, `tons of skills`, `plugin marketplace` | All | Operate the Tons of Skills marketplace via the ccpi CLI and Claude plugin marketplace commands — search, install, update, list skills |
 
 ### 📋 Planning & Review (12)
 
@@ -304,14 +306,17 @@ setup omc
 | `improve-codebase-architecture` | `improve-codebase-architecture` | Surface shallow modules and propose deepening opportunities for testability using deletion-test, seam, and locality vocabulary |
 | `zoom-out` | `zoom-out` | Get higher-level architectural perspective: maps all relevant modules, caller relationships, dependencies using domain vocabulary |
 
-### 🤖 Agent Development (2)
+### 🤖 Agent Development (5)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `prompt-repetition` | Decision-first prompt repetition skill for non-reasoning/lightweight LLMs — long-context retrieval, options-first MCQ, position-sensitive lookup, and explicit route-outs to retrieval or stronger models | All |
 | `skill-standardization` | Validate/rewrite SKILL.md, canonicalize duplicates, and keep repo-root validator flows plus derived discovery surfaces (`skills.json`, README/setup, `SKILL.toon`) in sync | All |
+| `microsoft-agent-framework` | Design enterprise-grade agent systems with Microsoft's agent framework — role separation, workflow control, policy enforcement, and multi-agent coordination patterns | All |
+| `openai-agents-python` | Build and operate multi-agent workflows with OpenAI Agents SDK (Python) — define agents/tools/handoffs, add guardrails, trace with LangSmith, run async pipelines | All |
+| `pydantic-ai` | Build typed LLM applications with PydanticAI — schema-constrained outputs, tool integration, validation, retries, and dependency injection for production AI apps | All |
 
-### ⚙️ Backend (5)
+### ⚙️ Backend (7)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -320,8 +325,10 @@ setup omc
 | `authentication-setup` | Product-auth setup routing across hosted/framework-native/platform-native auth, sessions/JWTs, org data, and enterprise SSO handoff | All |
 | `backend-testing` | Packet-first backend testing for coverage plans, fixture/reset strategy, contract/API protection, flaky-suite stabilization, and local-vs-CI lane splits | All |
 | `database-schema-design` | Packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible fields, and route-outs to API/auth/testing/reporting neighbors | All |
+| `payloadcms` | Operate Payload CMS (Next.js-native headless CMS) — bootstrap app, configure collections/globals, manage auth/access control, migrations, REST/GraphQL/Local API, and plugin authoring | All |
+| `supabase-agent-skills` | Install and use Supabase Agent Skills with AI coding agents — covers install modes, skill selection, Supabase CLI integration, and agent-assisted database/auth/storage workflows | All |
 
-### 🎨 Frontend (12)
+### 🎨 Frontend (14)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -340,7 +347,7 @@ setup omc
 | `web-accessibility` | Routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback | All |
 | `web-design-guidelines` | Broad web UI audit for hierarchy, clarity, consistency, states, responsiveness basics, and accessibility basics | All |
 
-### 🔍 Code Quality (9)
+### 🔍 Code Quality (10)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -353,8 +360,9 @@ setup omc
 | `diagnose` | Systematic six-phase debugging: build feedback loop → reproduce → hypothesize → instrument → fix+test → cleanup. Invest in Phase 1 (fast feedback loop) first | All |
 | `tdd` | Red-green-refactor TDD with vertical slices — tests verify behavior through public interfaces, not implementation details | All |
 | `migrate-to-shoehorn` | Migrate TypeScript test `as` assertions to type-safe `fromPartial()`, `fromAny()`, `fromExact()` from @total-typescript/shoehorn. Test code only. | All |
+| `aider-cli-workflow` | Run a safe, reviewable Aider CLI coding loop — model setup, edit scope control, test-first prompting, diff review, and commit hygiene for local repositories | All |
 
-### 🏗 Infrastructure (14)
+### 🏗 Infrastructure (16)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -372,6 +380,8 @@ setup omc
 | `system-environment-setup` | Canonical broader environment-setup skill for runnable repos, toolchains, Docker/devcontainers, local services, onboarding, and setup drift diagnosis | All |
 | `vercel-deploy` | Vercel-specific operator skill for linked-project preview/prod deploys, staged promote flows, aliases/domains, env-scope fixes, and rollback response | All |
 | `zeude` | Enterprise AI adoption platform for Claude Code — 3× adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), and context-aware skill suggestions. Requires Supabase + ClickHouse | Claude |
+| `hyperfine-benchmarking` | Benchmark shell commands reliably with hyperfine — warmup runs, statistical summaries, parameter sweeps, export artifacts (JSON/CSV/Markdown), and regression detection | All |
+| `lmstudio-cli` | Operate LM Studio's `lms` CLI and local/remote LM Studio servers — model discovery, server status, model loading, endpoint smoke tests, and OpenAI-compatible wiring | All |
 
 ### 📝 Documentation (5)
 
@@ -392,7 +402,7 @@ setup omc
 | `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing | All |
 
-### 🔭 Search & Analysis (7)
+### 🔭 Search & Analysis (8)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -403,6 +413,7 @@ setup omc
 | `langsmith` | Routing-first LangSmith skill: choose one packet for trace-debug, evals, review queues, prompt-registry decisions, or cross-service propagation before touching SDK code | All |
 | `log-analysis` | Routing-first log triage: choose one evidence packet for app, container/pod, browser+API, CI cascade, JSON/event, or security-signal logs before debugging/observability work | All |
 | `pattern-detection` | Routing-first pattern/anomaly hunting: choose text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly before deeper analysis | All |
+| `github-repo-candidate-quality-gate` | Convert noisy GitHub search results into recommendation-grade candidate lists — metadata freshness, license shape, activity signals, and dependency risk scoring | All |
 
 ### 🎬 Creative Media (4)
 
@@ -420,7 +431,7 @@ setup omc
 | `marketing-automation` | Canonical broad marketing front door — choose one operating mode, one primary lane, and one reusable operator packet with owner, dependencies/approvals, and proof across launch, conversion, lifecycle, acquisition/content, and measurement work | All |
 | `marketing-skills-collection` | Compatibility alias for `marketing-automation` in legacy prompt packs and catalogs | All |
 
-### 🎮 Game Development (5)
+### 🎮 Game Development (6)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -429,8 +440,9 @@ setup omc
 | `game-demo-feedback-triage` | Turn playtest/demo/community feedback into weighted themes, fix-first priorities, and explicit handoffs | All |
 | `game-performance-profiler` | Unity/Unreal frame-time triage — bottleneck-first profiling brief, quick packets, benchmark routes, target-device review, and deliberate profiler escalation | All |
 | `steam-store-launch-ops` | Packet-first Steam launch router — choose page-promise audit, wishlist signal check, demo readiness, event timing workback, or launch-ops runbook | All |
+| `unity-gamedev-skill-pack` | Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package with validation and integration guidance | All |
 
-### 🔧 Utilities (11)
+### 🔧 Utilities (14)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -446,6 +458,9 @@ setup omc
 | `obsidian-plugin` | *(alias → `obsidian`)* Obsidian plugin development — 27 ESLint rules, boilerplate generator, submission | All |
 | `opencontext` | Routing-first active project/repo memory — choose memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out for manifests, stable links, cross-agent handoff packets, and highest-confidence-source / freshness checks when notes overlap | All |
 | `workflow-automation` | Routing-first repo workflow automation — choose one mode for task-entrypoints, bootstrap/onboarding, local-CI parity, hook guardrails, maintenance bots, or workflow cleanup without drifting into environment/deploy work | All |
+| `claudekit` | Standardized Claude Code workflow toolkit — claudekit plugin installation, init, update, hook management, and workspace configuration for consistent Claude Code setups | All |
+| `ghgrab` | Search and download specific files/folders from GitHub repositories directly from terminal using ghgrab, without full repo cloning | All |
+| `obsidian-cli-uri-fallback` | Fallback handler for Obsidian URI automation in cron/headless environments — detects URI failure signatures and routes to filesystem or headless alternatives | All |
 
 ### 🛠 Utilities (Productivity) (5)
 
