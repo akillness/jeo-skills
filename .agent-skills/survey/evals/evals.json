@@ -204,6 +204,16 @@
         "Reapplies recommendation-grade gates (license/freshness/signal/fit) to stage-2 hits",
         "Reports lane_status, lane metrics, and degraded_causes transparently after escalation"
       ]
+    },
+    {
+      "id": 21,
+      "prompt": "run the hourly maintenance loop when open PR backlog is >=10 and sampled carry-forward PR checks report no checks",
+      "expected_output": "The run switches to checks-degraded mode: it still produces survey artifacts and blocker details, but does not open an additional PR and reports deterministic remediation steps.",
+      "assertions": [
+        "Performs backlog/check preflight before PR creation",
+        "If backlog high and sampled checks are missing, skips new PR creation for that run",
+        "Publishes blocker reason and next-step remediation in run report/artifacts"
+      ]
     }
   ]
 }
