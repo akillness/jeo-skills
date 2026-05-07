@@ -121,12 +121,17 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 - [references/plugin-dev.md](references/plugin-dev.md) — All 27 ESLint rules, code patterns, submission
 - [references/cli-automation.md](references/cli-automation.md) — CLI commands, URI, developer mode
 - [references/content-patterns.md](references/content-patterns.md) — Markdown, Bases, JSON Canvas
-- [eslint-plugin-obsidianmd](https://github.com/obsidianmd/eslint-plugin-obsidianmd)
+- [eslint-plugin-obsidianmd](https://github.com/obsidianmd/eslint-plugin)
 - [Obsidian Plugin Docs](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)
 - [Obsidian CLI](https://obsidian.md/help/cli)
 - [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
 
-## Instructions
+## Examples
+- "Fix `prefer-register-event` and `no-tfile-cast` errors in my Obsidian plugin and explain each fix."
+- "Use CLI to append today's task list to Daily note in vault `Work` and then read it back."
+- "Convert these meeting notes into Obsidian callouts + wikilinks + a Base query."
+
+## Operational checklist
 1. Identify the task trigger and expected output.
 2. Follow the workflow steps in this skill from top to bottom.
 3. Validate outputs before moving to the next step.
@@ -136,3 +141,4 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 - Keep outputs deterministic and auditable.
 - Prefer small reversible changes over broad risky edits.
 - Record assumptions explicitly.
+- For third-party bootstrap commands (for example `npx github:...`), verify publisher/repo provenance and pin versions/commits when possible before execution.
