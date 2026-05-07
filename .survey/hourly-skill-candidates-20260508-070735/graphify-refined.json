@@ -1,0 +1,27 @@
+{
+  "slug": "hourly-skill-candidates-20260508-070735",
+  "status": "degraded",
+  "reason": "graphify CLI skipped in cron; fallback emitted",
+  "lanes": {
+    "agentic_ai_skill": {
+      "raw_count": 30,
+      "kept_count": 5
+    },
+    "web_frontend_skill": {
+      "raw_count": 5,
+      "kept_count": 0
+    },
+    "web_backend_skill": {
+      "raw_count": 0,
+      "kept_count": 0
+    },
+    "cli_open_source_skill": {
+      "raw_count": 1,
+      "kept_count": 1
+    },
+    "game_development_skill": {
+      "raw_count": 30,
+      "kept_count": 1
+    }
+  }
+}

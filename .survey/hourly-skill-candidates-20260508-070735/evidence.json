@@ -1,0 +1,438 @@
+{
+  "slug": "hourly-skill-candidates-20260508-070735",
+  "generated_at": "2026-05-07T22:09:56.988086+00:00",
+  "required_lanes": [
+    "agentic_ai_skill",
+    "web_frontend_skill",
+    "web_backend_skill",
+    "cli_open_source_skill",
+    "game_development_skill"
+  ],
+  "lanes": {
+    "agentic_ai_skill": {
+      "query_primary": "agentic ai skill",
+      "provenance_primary": "indexed snippet",
+      "raw_count": 30,
+      "zero_star_raw": 19,
+      "median_stars_raw": 0.0,
+      "kept_count": 5,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_attempts": [],
+      "recommended": [
+        {
+          "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "stars": 16,
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "updated_at": "2026-05-02T13:39:38Z",
+          "archived": false,
+          "license": "apache-2.0",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "description": "Agentic AI skills for knowledge graph management",
+          "stars": 7,
+          "pushed_at": "2026-04-06T01:48:47Z",
+          "updated_at": "2026-04-21T19:12:04Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "stars": 11,
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "updated_at": "2026-05-06T16:02:57Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "description": "This repository serves as a library for showcasing how to adopt Agentic AI skills, and agent markdown files in a company-wide setting. ",
+          "stars": 4,
+          "pushed_at": "2026-04-30T13:42:47Z",
+          "updated_at": "2026-05-07T19:52:19Z",
+          "archived": false,
+          "license": "apache-2.0",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification — with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+          "stars": 5,
+          "pushed_at": "2026-04-09T12:21:43Z",
+          "updated_at": "2026-05-05T13:59:45Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "full_name": "sysdig/skills",
+          "url": "https://github.com/sysdig/skills",
+          "description": "Sysdig agentic AI skills and plugins",
+          "stars": 45,
+          "pushed_at": "2026-05-06T13:35:15Z",
+          "updated_at": "2026-05-07T20:38:36Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "license"
+          ]
+        },
+        {
+          "full_name": "Ap6pack/malwar",
+          "url": "https://github.com/Ap6pack/malwar",
+          "description": "Static analysis engine for detecting malware in agentic AI skill files",
+          "stars": 0,
+          "pushed_at": "2026-04-08T22:08:53Z",
+          "updated_at": "2026-04-08T22:18:55Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "taisukeoe/agentic-ai-skills-creator",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+          "description": "This is a foundation to create effective Agentic AI Skills",
+          "stars": 2,
+          "pushed_at": "2026-01-23T12:11:13Z",
+          "updated_at": "2026-01-28T08:16:28Z",
+          "archived": false,
+          "license": "apache-2.0",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "gpimpler-too/skill-lib",
+          "url": "https://github.com/gpimpler-too/skill-lib",
+          "description": "Agentic AI Skill Library",
+          "stars": 0,
+          "pushed_at": "2026-04-05T03:35:57Z",
+          "updated_at": "2026-04-05T03:36:01Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "thisrunsthru/Skill",
+          "url": "https://github.com/thisrunsthru/Skill",
+          "description": "Agentic AI skill model",
+          "stars": 0,
+          "pushed_at": "2026-03-12T21:33:21Z",
+          "updated_at": "2026-03-12T21:33:24Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ]
+    },
+    "web_frontend_skill": {
+      "query_primary": "web frontend skill",
+      "provenance_primary": "indexed snippet",
+      "raw_count": 5,
+      "zero_star_raw": 4,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit"
+      ],
+      "recovery_attempts": [],
+      "recommended": [],
+      "filtered_examples": [
+        {
+          "full_name": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+          "stars": 12,
+          "pushed_at": "2026-03-30T14:38:08Z",
+          "updated_at": "2026-04-02T16:29:32Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "license"
+          ]
+        },
+        {
+          "full_name": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "description": "This is a frontend project to showcase web frontend skills.",
+          "stars": 0,
+          "pushed_at": "2023-11-29T17:23:32Z",
+          "updated_at": "2023-11-28T08:12:53Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "low-signal",
+            "stale"
+          ]
+        },
+        {
+          "full_name": "Hezekiah-Elisha/savannah_informatics_test",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only.",
+          "stars": 0,
+          "pushed_at": "2026-01-16T19:17:43Z",
+          "updated_at": "2026-01-16T19:17:48Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only. It should be hosted on a code repository service (e.g Github, Gitlab) with public access to make the assessment easy",
+          "stars": 0,
+          "pushed_at": "2024-05-28T12:02:00Z",
+          "updated_at": "2024-05-28T12:02:04Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "full_name": "sonhaicoder/web-taste-skill",
+          "url": "https://github.com/sonhaicoder/web-taste-skill",
+          "description": "Anti-slop web frontend skill for AI coding agents. Auto-trigger every web task. Force Kimi/Lovable-tier quality with Discovery Form + 5 deterministic directions + 27 anti-patterns + ready-to-paste hero/section/motion blueprints. Distilled from open-design, taste-skill, impeccable.style, getdesign.md, kimi.com, lovable.dev.",
+          "stars": 0,
+          "pushed_at": "2026-05-05T04:17:36Z",
+          "updated_at": "2026-05-05T04:17:42Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "low-signal"
+          ]
+        }
+      ]
+    },
+    "web_backend_skill": {
+      "query_primary": "web backend skill",
+      "provenance_primary": "indexed snippet",
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage-1",
+          "query": "backend api framework observability stars:>300 pushed:>=2024-05-07",
+          "raw_count": 0,
+          "provenance": "feed recovery"
+        },
+        {
+          "stage": "stage-2",
+          "query": "backend developer platform api template stars:>150 pushed:>=2024-05-07",
+          "raw_count": 0,
+          "provenance": "feed recovery"
+        }
+      ],
+      "recommended": [],
+      "filtered_examples": []
+    },
+    "cli_open_source_skill": {
+      "query_primary": "cli open source skill",
+      "provenance_primary": "indexed snippet",
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 9073,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_attempts": [
+        {
+          "stage": "stage-1",
+          "query": "command line tool developer productivity stars:>200 pushed:>=2024-05-07",
+          "raw_count": 1,
+          "provenance": "feed recovery"
+        },
+        {
+          "stage": "stage-2",
+          "query": "github cli terminal tool stars:>200 pushed:>=2024-05-07",
+          "raw_count": 4,
+          "provenance": "feed recovery"
+        }
+      ],
+      "recommended": [
+        {
+          "full_name": "guarinogabriel/Mac-CLI",
+          "url": "https://github.com/guarinogabriel/Mac-CLI",
+          "description": " macOS command line tool for developers – The ultimate tool to manage your Mac. It provides a huge set of command line commands that automatize the usage of your Mac.",
+          "stars": 9073,
+          "pushed_at": "2026-02-28T02:21:48Z",
+          "updated_at": "2026-05-07T05:24:13Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet"
+        }
+      ],
+      "filtered_examples": []
+    },
+    "game_development_skill": {
+      "query_primary": "game development skill",
+      "provenance_primary": "indexed snippet",
+      "raw_count": 30,
+      "zero_star_raw": 18,
+      "median_stars_raw": 0.0,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_attempts": [],
+      "recommended": [
+        {
+          "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "stars": 3,
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "updated_at": "2026-04-14T18:39:35Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "full_name": "UnrealBlueprint/02_CrystalCavern",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+          "description": "A fun little parkour game for our now-famous marble. Here you'll start learning real-world blueprint game development skills (REF: CC_UBP)",
+          "stars": 9,
+          "pushed_at": "2019-03-27T19:49:24Z",
+          "updated_at": "2025-04-11T04:59:09Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "full_name": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "description": "I am strengthening my C# game development skills day by day.",
+          "stars": 20,
+          "pushed_at": "2026-02-26T03:56:34Z",
+          "updated_at": "2026-03-30T05:08:21Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "license"
+          ]
+        },
+        {
+          "full_name": "Unengine/GameEngineAndGameMathTIL",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+          "description": "for my game development skill",
+          "stars": 4,
+          "pushed_at": "2021-05-17T16:44:56Z",
+          "updated_at": "2021-05-17T16:44:59Z",
+          "archived": false,
+          "license": "wtfpl",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "full_name": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+          "description": "Enhance your Pong game with Pygame! Learn how to add exciting features and unleash your creativity in this tutorial series. Perfect for intermediate programmers looking to expand their game development skills with Python and Pygame. Let's take the classic Pong game to the next level together!",
+          "stars": 14,
+          "pushed_at": "2023-08-09T16:31:04Z",
+          "updated_at": "2025-02-24T10:03:43Z",
+          "archived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "full_name": "kkh9700/GameDevelopmentSkills-Individual",
+          "url": "https://github.com/kkh9700/GameDevelopmentSkills-Individual",
+          "description": "",
+          "stars": 0,
+          "pushed_at": "2023-09-22T03:05:44Z",
+          "updated_at": "2023-09-19T12:14:46Z",
+          "archived": false,
+          "license": "UNKNOWN",
+          "fit_rationale": "token overlap and metadata gate",
+          "provenance": "indexed snippet",
+          "filtered_reasons": [
+            "license",
+            "low-signal",
+            "stale"
+          ]
+        }
+      ]
+    }
+  },
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false,
+  "provenance_labels": [
+    "indexed snippet",
+    "feed recovery",
+    "direct page retrieval",
+    "thin evidence"
+  ]
+}

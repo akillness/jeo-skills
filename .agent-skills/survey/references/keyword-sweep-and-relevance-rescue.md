@@ -176,6 +176,8 @@ Graphify compatibility note for unattended runs:
 
 Before final recommendations:
 
+- [ ] Final run report explicitly states: `open PR 수 / 신규 PR 생성 여부 / 머지·정리 결과`
+
 - [ ] All five keyword families executed
 - [ ] Raw discovery evidence saved
 - [ ] Relevance gate applied to kept candidates
