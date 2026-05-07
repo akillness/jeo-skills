@@ -1,0 +1,5 @@
+agentic ai skill: raw=2 kept=0 status=degraded causes=low-fit,low-signal
+web frontend skill: raw=30 kept=6 status=pass causes=-
+web backend skill: raw=30 kept=1 status=pass causes=-
+cli open source skill: raw=30 kept=18 status=pass causes=-
+game development skill: raw=30 kept=12 status=pass causes=-

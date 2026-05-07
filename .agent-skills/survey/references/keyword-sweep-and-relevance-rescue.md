@@ -145,6 +145,7 @@ Apply this sequence at run start before any new branch/PR work:
 - If open PR count is `>=1`, **do not create a new branch/PR** in that run.
 - Instead, triage existing PRs first: checks, conflict status, review state.
 - If checks are absent (`no checks reported`), post blocker guidance first and keep run in merge-blocked mode.
+- While checks are absent, continue cadence by committing fresh hourly artifacts to that existing PR branch (do not open a new PR).
 - If a PR is mergeable and checks are green, merge it first.
 - If a PR is conflicting/duplicate, leave a blocker comment, close it, and clean its remote branch.
 - Only when open PR count becomes `0` may the run create a new branch and PR.

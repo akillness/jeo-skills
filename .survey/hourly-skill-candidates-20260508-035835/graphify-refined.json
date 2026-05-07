@@ -1,0 +1,405 @@
+{
+  "nodes": [
+    {
+      "id": "agentic ai skill",
+      "type": "lane",
+      "status": "degraded"
+    },
+    {
+      "id": "Jopie64/identity-agent-skill",
+      "type": "repo",
+      "stars": 2,
+      "rec": "low-fit"
+    },
+    {
+      "id": "HDeibler/universal-design-principles",
+      "type": "repo",
+      "stars": 0,
+      "rec": "low-fit"
+    },
+    {
+      "id": "web frontend skill",
+      "type": "lane",
+      "status": "pass"
+    },
+    {
+      "id": "zarazhangrui/frontend-slides",
+      "type": "repo",
+      "stars": 16682,
+      "rec": "keep"
+    },
+    {
+      "id": "Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+      "type": "repo",
+      "stars": 36,
+      "rec": "keep"
+    },
+    {
+      "id": "archlizheng/frontend-slides-editable",
+      "type": "repo",
+      "stars": 101,
+      "rec": "keep"
+    },
+    {
+      "id": "Maher-Elmair/Maher-Elmair",
+      "type": "repo",
+      "stars": 26,
+      "rec": "low-fit"
+    },
+    {
+      "id": "MarieLynneBlock/Nanodegree-FrontEndWebDevelopment",
+      "type": "repo",
+      "stars": 24,
+      "rec": "low-fit"
+    },
+    {
+      "id": "mvmohitverma54/repo-made-for-frontend-devs---mohitverma",
+      "type": "repo",
+      "stars": 14,
+      "rec": "low-fit"
+    },
+    {
+      "id": "frontendmentorio/insure-landing-page",
+      "type": "repo",
+      "stars": 7,
+      "rec": "low-fit"
+    },
+    {
+      "id": "MickeyAlton33/web-designer-plugin",
+      "type": "repo",
+      "stars": 30,
+      "rec": "keep"
+    },
+    {
+      "id": "web backend skill",
+      "type": "lane",
+      "status": "pass"
+    },
+    {
+      "id": "andreasbm/web-skills",
+      "type": "repo",
+      "stars": 7531,
+      "rec": "low-fit"
+    },
+    {
+      "id": "a-h/pill",
+      "type": "repo",
+      "stars": 7,
+      "rec": "low-fit"
+    },
+    {
+      "id": "masonmahaffey/MERN-Stack-Google-Maps",
+      "type": "repo",
+      "stars": 5,
+      "rec": "low-fit"
+    },
+    {
+      "id": "infinite-education/web-backend-developer-roadmap",
+      "type": "repo",
+      "stars": 9,
+      "rec": "low-fit"
+    },
+    {
+      "id": "Y0srgh/ieee-orange-int-2024-mern",
+      "type": "repo",
+      "stars": 0,
+      "rec": "low-fit"
+    },
+    {
+      "id": "PragatiVerma18/PragatiVerma18",
+      "type": "repo",
+      "stars": 1,
+      "rec": "low-fit"
+    },
+    {
+      "id": "RanitManik/College-Website",
+      "type": "repo",
+      "stars": 12,
+      "rec": "low-fit"
+    },
+    {
+      "id": "artursniegowski/Mastering_Django_through_Projects",
+      "type": "repo",
+      "stars": 17,
+      "rec": "low-fit"
+    },
+    {
+      "id": "cli open source skill",
+      "type": "lane",
+      "status": "pass"
+    },
+    {
+      "id": "nexu-io/open-design",
+      "type": "repo",
+      "stars": 31995,
+      "rec": "keep"
+    },
+    {
+      "id": "dp-archive/archive",
+      "type": "repo",
+      "stars": 1107,
+      "rec": "keep"
+    },
+    {
+      "id": "jeremylongshore/claude-code-plugins-plus-skills",
+      "type": "repo",
+      "stars": 2120,
+      "rec": "keep"
+    },
+    {
+      "id": "TerminalSkills/skills",
+      "type": "repo",
+      "stars": 44,
+      "rec": "keep"
+    },
+    {
+      "id": "bonnard-data/bonnard-cli",
+      "type": "repo",
+      "stars": 48,
+      "rec": "keep"
+    },
+    {
+      "id": "frank-luongt/faos-skills-marketplace",
+      "type": "repo",
+      "stars": 14,
+      "rec": "keep"
+    },
+    {
+      "id": "alestanalves/skill-generator",
+      "type": "repo",
+      "stars": 9,
+      "rec": "keep"
+    },
+    {
+      "id": "KarmaloopAI/Jiva",
+      "type": "repo",
+      "stars": 35,
+      "rec": "keep"
+    },
+    {
+      "id": "game development skill",
+      "type": "lane",
+      "status": "pass"
+    },
+    {
+      "id": "brockmartin/roblox-game-skill",
+      "type": "repo",
+      "stars": 17,
+      "rec": "low-fit"
+    },
+    {
+      "id": "Heigvd/Wegas",
+      "type": "repo",
+      "stars": 30,
+      "rec": "keep"
+    },
+    {
+      "id": "viktor-ferenczi/se-dev-skills",
+      "type": "repo",
+      "stars": 5,
+      "rec": "keep"
+    },
+    {
+      "id": "Project-Skill-Tree/Skill-Tree-Discord-Bot",
+      "type": "repo",
+      "stars": 23,
+      "rec": "low-fit"
+    },
+    {
+      "id": "UnrealBlueprint/02_CrystalCavern",
+      "type": "repo",
+      "stars": 9,
+      "rec": "low-fit"
+    },
+    {
+      "id": "TalimaVale/teamTALIMA_theGAME",
+      "type": "repo",
+      "stars": 22,
+      "rec": "low-fit"
+    },
+    {
+      "id": "indiesoftby/defold-agent-config",
+      "type": "repo",
+      "stars": 62,
+      "rec": "keep"
+    },
+    {
+      "id": "gavogavogavo/claude-sbox",
+      "type": "repo",
+      "stars": 40,
+      "rec": "keep"
+    }
+  ],
+  "edges": [
+    {
+      "source": "agentic ai skill",
+      "target": "Jopie64/identity-agent-skill",
+      "relation": "candidate"
+    },
+    {
+      "source": "agentic ai skill",
+      "target": "HDeibler/universal-design-principles",
+      "relation": "candidate"
+    },
+    {
+      "source": "web frontend skill",
+      "target": "zarazhangrui/frontend-slides",
+      "relation": "candidate"
+    },
+    {
+      "source": "web frontend skill",
+      "target": "Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+      "relation": "candidate"
+    },
+    {
+      "source": "web frontend skill",
+      "target": "archlizheng/frontend-slides-editable",
+      "relation": "candidate"
+    },
+    {
+      "source": "web frontend skill",
+      "target": "Maher-Elmair/Maher-Elmair",
+      "relation": "candidate"
+    },
+    {
+      "source": "web frontend skill",
+      "target": "MarieLynneBlock/Nanodegree-FrontEndWebDevelopment",
+      "relation": "candidate"
+    },
+    {
+      "source": "web frontend skill",
+      "target": "mvmohitverma54/repo-made-for-frontend-devs---mohitverma",
+      "relation": "candidate"
+    },
+    {
+      "source": "web frontend skill",
+      "target": "frontendmentorio/insure-landing-page",
+      "relation": "candidate"
+    },
+    {
+      "source": "web frontend skill",
+      "target": "MickeyAlton33/web-designer-plugin",
+      "relation": "candidate"
+    },
+    {
+      "source": "web backend skill",
+      "target": "andreasbm/web-skills",
+      "relation": "candidate"
+    },
+    {
+      "source": "web backend skill",
+      "target": "a-h/pill",
+      "relation": "candidate"
+    },
+    {
+      "source": "web backend skill",
+      "target": "masonmahaffey/MERN-Stack-Google-Maps",
+      "relation": "candidate"
+    },
+    {
+      "source": "web backend skill",
+      "target": "infinite-education/web-backend-developer-roadmap",
+      "relation": "candidate"
+    },
+    {
+      "source": "web backend skill",
+      "target": "Y0srgh/ieee-orange-int-2024-mern",
+      "relation": "candidate"
+    },
+    {
+      "source": "web backend skill",
+      "target": "PragatiVerma18/PragatiVerma18",
+      "relation": "candidate"
+    },
+    {
+      "source": "web backend skill",
+      "target": "RanitManik/College-Website",
+      "relation": "candidate"
+    },
+    {
+      "source": "web backend skill",
+      "target": "artursniegowski/Mastering_Django_through_Projects",
+      "relation": "candidate"
+    },
+    {
+      "source": "cli open source skill",
+      "target": "nexu-io/open-design",
+      "relation": "candidate"
+    },
+    {
+      "source": "cli open source skill",
+      "target": "dp-archive/archive",
+      "relation": "candidate"
+    },
+    {
+      "source": "cli open source skill",
+      "target": "jeremylongshore/claude-code-plugins-plus-skills",
+      "relation": "candidate"
+    },
+    {
+      "source": "cli open source skill",
+      "target": "TerminalSkills/skills",
+      "relation": "candidate"
+    },
+    {
+      "source": "cli open source skill",
+      "target": "bonnard-data/bonnard-cli",
+      "relation": "candidate"
+    },
+    {
+      "source": "cli open source skill",
+      "target": "frank-luongt/faos-skills-marketplace",
+      "relation": "candidate"
+    },
+    {
+      "source": "cli open source skill",
+      "target": "alestanalves/skill-generator",
+      "relation": "candidate"
+    },
+    {
+      "source": "cli open source skill",
+      "target": "KarmaloopAI/Jiva",
+      "relation": "candidate"
+    },
+    {
+      "source": "game development skill",
+      "target": "brockmartin/roblox-game-skill",
+      "relation": "candidate"
+    },
+    {
+      "source": "game development skill",
+      "target": "Heigvd/Wegas",
+      "relation": "candidate"
+    },
+    {
+      "source": "game development skill",
+      "target": "viktor-ferenczi/se-dev-skills",
+      "relation": "candidate"
+    },
+    {
+      "source": "game development skill",
+      "target": "Project-Skill-Tree/Skill-Tree-Discord-Bot",
+      "relation": "candidate"
+    },
+    {
+      "source": "game development skill",
+      "target": "UnrealBlueprint/02_CrystalCavern",
+      "relation": "candidate"
+    },
+    {
+      "source": "game development skill",
+      "target": "TalimaVale/teamTALIMA_theGAME",
+      "relation": "candidate"
+    },
+    {
+      "source": "game development skill",
+      "target": "indiesoftby/defold-agent-config",
+      "relation": "candidate"
+    },
+    {
+      "source": "game development skill",
+      "target": "gavogavogavo/claude-sbox",
+      "relation": "candidate"
+    }
+  ]
+}
