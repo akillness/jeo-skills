@@ -121,12 +121,17 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 - [references/plugin-dev.md](references/plugin-dev.md) — All 27 ESLint rules, code patterns, submission
 - [references/cli-automation.md](references/cli-automation.md) — CLI commands, URI, developer mode
 - [references/content-patterns.md](references/content-patterns.md) — Markdown, Bases, JSON Canvas
-- [eslint-plugin-obsidianmd](https://github.com/obsidianmd/eslint-plugin-obsidianmd)
+- [eslint-plugin-obsidianmd](https://github.com/obsidianmd/eslint-plugin)
 - [Obsidian Plugin Docs](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)
 - [Obsidian CLI](https://obsidian.md/help/cli)
 - [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
 
-## Instructions
+## Examples
+- "Create an Obsidian plugin skeleton and fix all eslint-plugin-obsidianmd issues before first commit."
+- "Use Obsidian CLI to append today’s meeting action items to the daily note in vault X."
+- "Convert raw markdown notes into Obsidian-friendly wikilinks/callouts/bases queries."
+
+## Operational checklist
 1. Identify the task trigger and expected output.
 2. Follow the workflow steps in this skill from top to bottom.
 3. Validate outputs before moving to the next step.
@@ -135,4 +140,5 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 ## Best practices
 - Keep outputs deterministic and auditable.
 - Prefer small reversible changes over broad risky edits.
+- Before running remote generators (for example `npx github:...`), verify the repository owner/source and prefer pinned revisions when possible.
 - Record assumptions explicitly.
