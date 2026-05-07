@@ -1,15 +1,23 @@
 {
   "version": "1.2.0",
   "generated": "2026-04-24T18:00:29Z",
-  "skill_count": 98,
+  "skill_count": 127,
   "categories": {
     "planning-review": [
       "agent-browser",
       "agentation",
+      "agentic-skills",
+      "browser-harness",
+      "grill-me",
+      "grill-with-docs",
+      "microsoft-agent-framework",
+      "openai-agents-python",
       "plannotator",
       "playwriter",
-      "vibe-kanban",
-      "browser-harness"
+      "to-issues",
+      "to-prd",
+      "triage",
+      "vibe-kanban"
     ],
     "agent-development": [
       "prompt-repetition",
@@ -35,7 +43,10 @@
       "api-documentation",
       "authentication-setup",
       "backend-testing",
-      "database-schema-design"
+      "database-schema-design",
+      "payloadcms",
+      "pydantic-ai",
+      "supabase-agent-skills"
     ],
     "search-analysis": [
       "autoresearch",
@@ -67,34 +78,52 @@
       "code-refactoring",
       "code-review",
       "debugging",
+      "diagnose",
+      "improve-codebase-architecture",
+      "migrate-to-shoehorn",
       "performance-optimization",
-      "testing-strategies"
+      "tdd",
+      "testing-strategies",
+      "zoom-out"
     ],
     "utilities": [
       "aider-cli-workflow",
+      "caveman",
       "ccpi-marketplace",
+      "claudekit",
       "clawteam",
       "compresso",
       "fabric",
       "file-organization",
+      "ghgrab",
+      "git-guardrails-claude-code",
       "git-submodule",
       "git-workflow",
+      "github-repo-candidate-quality-gate",
       "god-tibo-imagen",
       "google-workspace",
       "graphify",
       "harness",
+      "hyperfine-benchmarking",
       "llm-wiki",
       "lmstudio-cli",
+      "notebooklm",
       "npm-git-install",
+      "obsidian",
       "obsidian-cli",
+      "obsidian-cli-uri-fallback",
       "obsidian-plugin",
       "ooo",
+      "open-design",
       "opencontext",
       "pretext",
+      "scaffold-exercises",
+      "setup-pre-commit",
       "stitch-skills",
+      "unity-gamedev-skill-pack",
       "workflow-automation",
-      "zeude",
-      "open-design"
+      "write-a-skill",
+      "zeude"
     ],
     "frontend": [
       "design-system",
@@ -3598,6 +3627,570 @@
         "Claude",
         "Codex",
         "OpenCode"
+      ]
+    },
+    {
+      "name": "agentic-skills",
+      "category": "planning-review",
+      "path": ".agent-skills/agentic-skills/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "agentic-skills",
+        "production-engineering",
+        "spec-driven",
+        "tdd",
+        "code-review",
+        "security",
+        "performance",
+        "git-workflow",
+        "ci-cd",
+        "google-practices"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "caveman",
+      "category": "utilities",
+      "path": ".agent-skills/caveman/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "token-reduction",
+        "communication",
+        "brevity",
+        "compression",
+        "productivity"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "claudekit",
+      "category": "utilities",
+      "path": ".agent-skills/claudekit/SKILL.md",
+      "description": "Use this skill when you need a standardized Claude Code workflow toolkit.",
+      "tags": [
+        "claude-code",
+        "workflow",
+        "plugin",
+        "skills",
+        "agents",
+        "mcp",
+        "hooks"
+      ],
+      "platforms": [
+        "Claude Code"
+      ]
+    },
+    {
+      "name": "diagnose",
+      "category": "code-quality",
+      "path": ".agent-skills/diagnose/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "debugging",
+        "feedback-loop",
+        "reproduction",
+        "hypothesis",
+        "instrumentation",
+        "post-mortem"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "ghgrab",
+      "category": "utilities",
+      "path": ".agent-skills/ghgrab/SKILL.md",
+      "description": "Search and download specific files/folders from GitHub repositories directly from",
+      "tags": [
+        "ghgrab",
+        "github",
+        "cli",
+        "file-download",
+        "developer-productivity"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "git-guardrails-claude-code",
+      "category": "utilities",
+      "path": ".agent-skills/git-guardrails-claude-code/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "git",
+        "safety",
+        "hooks",
+        "destructive-operations",
+        "guardrails",
+        "claude-code"
+      ],
+      "platforms": [
+        "Claude"
+      ]
+    },
+    {
+      "name": "github-repo-candidate-quality-gate",
+      "category": "utilities",
+      "path": ".agent-skills/github-repo-candidate-quality-gate/SKILL.md",
+      "description": "Convert noisy GitHub repository search results into recommendation-grade candidate",
+      "tags": [
+        "github",
+        "search",
+        "triage",
+        "quality-gate",
+        "repo-maintenance"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "grill-me",
+      "category": "planning-review",
+      "path": ".agent-skills/grill-me/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "design-review",
+        "stress-testing",
+        "planning",
+        "architecture",
+        "questioning",
+        "validation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "grill-with-docs",
+      "category": "planning-review",
+      "path": ".agent-skills/grill-with-docs/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "design-review",
+        "architecture",
+        "domain-model",
+        "documentation",
+        "adr",
+        "context-map"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "hyperfine-benchmarking",
+      "category": "utilities",
+      "path": ".agent-skills/hyperfine-benchmarking/SKILL.md",
+      "description": "Use this skill to benchmark shell commands reliably with warmup runs, statistical summaries, and exportable artifacts using hyperfine.",
+      "tags": [
+        "hyperfine-benchmarking"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "improve-codebase-architecture",
+      "category": "code-quality",
+      "path": ".agent-skills/improve-codebase-architecture/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "architecture",
+        "refactoring",
+        "deep-modules",
+        "testability",
+        "locality",
+        "leverage"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "microsoft-agent-framework",
+      "category": "planning-review",
+      "path": ".agent-skills/microsoft-agent-framework/SKILL.md",
+      "description": "Design enterprise-grade agent systems with Microsoft's agent framework",
+      "tags": [
+        "agentic-ai",
+        "microsoft",
+        "enterprise",
+        "governance",
+        "orchestration"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "migrate-to-shoehorn",
+      "category": "code-quality",
+      "path": ".agent-skills/migrate-to-shoehorn/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "typescript",
+        "testing",
+        "type-safety",
+        "assertions",
+        "migration",
+        "shoehorn"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "notebooklm",
+      "category": "utilities",
+      "path": ".agent-skills/notebooklm/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "notebooklm",
+        "google",
+        "browser-automation",
+        "patchright",
+        "research",
+        "notebook",
+        "knowledge-base",
+        "citation",
+        "grounded-answers"
+      ],
+      "platforms": [
+        "Claude Code"
+      ]
+    },
+    {
+      "name": "obsidian",
+      "category": "utilities",
+      "path": ".agent-skills/obsidian/SKILL.md",
+      "description": "Unified Obsidian skill: plugin development AND desktop automation. Use when building",
+      "tags": [
+        "obsidian",
+        "plugin-development",
+        "eslint",
+        "cli",
+        "automation",
+        "markdown",
+        "bases",
+        "json-canvas",
+        "vault",
+        "uri"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "obsidian-cli-uri-fallback",
+      "category": "utilities",
+      "path": ".agent-skills/obsidian-cli-uri-fallback/SKILL.md",
+      "description": "Use when Obsidian note automation runs in cron/headless environments and",
+      "tags": [
+        "obsidian",
+        "cli",
+        "fallback",
+        "cron",
+        "headless",
+        "reliability",
+        "automation"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "openai-agents-python",
+      "category": "planning-review",
+      "path": ".agent-skills/openai-agents-python/SKILL.md",
+      "description": "Build and operate multi-agent workflows with OpenAI Agents SDK (Python):",
+      "tags": [
+        "agentic-ai",
+        "multi-agent",
+        "orchestration",
+        "openai",
+        "python",
+        "handoff"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "payloadcms",
+      "category": "backend",
+      "path": ".agent-skills/payloadcms/SKILL.md",
+      "description": "Operate Payload CMS (Next.js-native headless CMS) in repo workflows: bootstrap a Payload app,",
+      "tags": [
+        "payloadcms",
+        "payload",
+        "cms",
+        "headless-cms",
+        "nextjs",
+        "backend",
+        "content-model",
+        "migration"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "pydantic-ai",
+      "category": "backend",
+      "path": ".agent-skills/pydantic-ai/SKILL.md",
+      "description": "Build typed LLM applications with PydanticAI: schema-constrained outputs,",
+      "tags": [
+        "pydantic",
+        "structured-output",
+        "validation",
+        "llm-app",
+        "python"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "scaffold-exercises",
+      "category": "utilities",
+      "path": ".agent-skills/scaffold-exercises/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "education",
+        "exercises",
+        "scaffolding",
+        "course-content",
+        "linting",
+        "structure"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "setup-pre-commit",
+      "category": "utilities",
+      "path": ".agent-skills/setup-pre-commit/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "git-hooks",
+        "pre-commit",
+        "husky",
+        "lint-staged",
+        "prettier",
+        "code-quality",
+        "automation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "supabase-agent-skills",
+      "category": "backend",
+      "path": ".agent-skills/supabase-agent-skills/SKILL.md",
+      "description": "Install and use Supabase Agent Skills (`supabase/agent-skills`) with AI coding",
+      "tags": [
+        "supabase",
+        "postgres",
+        "agent-skills",
+        "ai-agent",
+        "database",
+        "backend",
+        "cli"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "tdd",
+      "category": "code-quality",
+      "path": ".agent-skills/tdd/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "tdd",
+        "test-driven-development",
+        "red-green-refactor",
+        "vertical-slices",
+        "behavior-verification"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "to-issues",
+      "category": "planning-review",
+      "path": ".agent-skills/to-issues/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "issues",
+        "planning",
+        "vertical-slices",
+        "decomposition",
+        "project-management",
+        "tickets"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "to-prd",
+      "category": "planning-review",
+      "path": ".agent-skills/to-prd/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "prd",
+        "requirements",
+        "product",
+        "documentation",
+        "planning",
+        "user-stories"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "triage",
+      "category": "planning-review",
+      "path": ".agent-skills/triage/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "triage",
+        "issues",
+        "state-machine",
+        "project-management",
+        "bug-tracking",
+        "enhancement"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "unity-gamedev-skill-pack",
+      "category": "utilities",
+      "path": ".agent-skills/unity-gamedev-skill-pack/SKILL.md",
+      "description": "Evaluate and adopt Unity game-development skill packs from external repositories",
+      "tags": [
+        "unity",
+        "game-development",
+        "skill-curation",
+        "claude-code",
+        "repository-maintenance"
+      ],
+      "platforms": [
+        "Claude",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "write-a-skill",
+      "category": "utilities",
+      "path": ".agent-skills/write-a-skill/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "skill-creation",
+        "agent-skills",
+        "documentation",
+        "reusability",
+        "skill-design"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ]
+    },
+    {
+      "name": "zoom-out",
+      "category": "code-quality",
+      "path": ".agent-skills/zoom-out/SKILL.md",
+      "description": "Use this skill when >",
+      "tags": [
+        "architecture",
+        "navigation",
+        "context",
+        "modules",
+        "codebase-understanding",
+        "orientation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
       ]
     }
   ]
