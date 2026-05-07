@@ -185,3 +185,7 @@ Before final recommendations:
 - [ ] Recommendation section reports both raw and deduplicated cross-lane coverage metrics
 - [ ] Provenance labels present
 - [ ] Risks for noisy or sparse lanes stated explicitly
+
+
+## Hourly note: open-PR carry-forward mode
+When `gh pr list --state open` returns at least one PR, do not create a new PR. Commit each hourly survey artifact set to the existing PR branch, then post/refresh a blocker comment if `gh pr checks` reports `no checks reported`. This preserves cadence and avoids PR backlog inflation.

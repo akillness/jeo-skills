@@ -1,0 +1,6 @@
+{
+  "slug": "hourly-skill-candidates-20260507-210526",
+  "status": "degraded",
+  "reason": "graphify query skipped in cron fallback",
+  "source": "evidence.json"
+}
