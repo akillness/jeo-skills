@@ -126,7 +126,11 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 - [Obsidian CLI](https://obsidian.md/help/cli)
 - [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
 
-## Instructions
+## Examples
+- "Vault에서 최근 7일간 수정된 노트를 찾아 요약해줘" → `obsidian-cli search` + `obsidian-cli read` 조합으로 근거 라인 포함 요약 제공.
+- "이 회의 메모를 프로젝트 폴더에 템플릿으로 저장해줘" → `obsidian-cli write` 또는 URI 액션으로 지정 경로에 생성 후 재조회 검증.
+
+## Operational checklist
 1. Identify the task trigger and expected output.
 2. Follow the workflow steps in this skill from top to bottom.
 3. Validate outputs before moving to the next step.
@@ -135,4 +139,5 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 ## Best practices
 - Keep outputs deterministic and auditable.
 - Prefer small reversible changes over broad risky edits.
+- Review third-party install commands (`claude plugin marketplace add`, `npx skills add`) against trusted repository sources before execution.
 - Record assumptions explicitly.
