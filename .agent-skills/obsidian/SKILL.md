@@ -116,6 +116,26 @@ claude plugin marketplace add akillness/oh-my-skills
 npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 ```
 
+## Examples
+
+```bash
+# Example 1: Validate Obsidian CLI availability then open today's note
+obsidian help
+obsidian daily
+```
+
+```bash
+# Example 2: Plugin lint pass for community submission readiness
+npm install --save-dev eslint eslint-plugin-obsidianmd
+npx eslint src/
+```
+
+```bash
+# Example 3: Safer remote bootstrap pattern (review before execution)
+npx github:gapmiss/obsidian-plugin-skill create-plugin --help
+# Review generated files and package metadata before npm install/build.
+```
+
 ## References
 
 - [references/plugin-dev.md](references/plugin-dev.md) — All 27 ESLint rules, code patterns, submission
@@ -126,7 +146,7 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 - [Obsidian CLI](https://obsidian.md/help/cli)
 - [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
 
-## Instructions
+## Operational checklist
 1. Identify the task trigger and expected output.
 2. Follow the workflow steps in this skill from top to bottom.
 3. Validate outputs before moving to the next step.
@@ -136,3 +156,4 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 - Keep outputs deterministic and auditable.
 - Prefer small reversible changes over broad risky edits.
 - Record assumptions explicitly.
+- For remote bootstrap commands (for example `npx github:...`), inspect source and generated files before executing additional install/build steps.
