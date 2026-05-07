@@ -1,0 +1,27 @@
+{
+  "agentic ai skill": {
+    "primary": "agentic ai skill",
+    "stage1": "ai agent framework skills automation stars:>200 pushed:>=2024-05-07",
+    "stage2": "agent framework orchestration toolchain stars:>150 pushed:>=2024-05-07"
+  },
+  "web frontend skill": {
+    "primary": "web frontend skill",
+    "stage1": "frontend ui component design system stars:>300 pushed:>=2024-05-07",
+    "stage2": "frontend engineering workflow design system toolkit stars:>120 pushed:>=2024-05-07"
+  },
+  "web backend skill": {
+    "primary": "web backend skill",
+    "stage1": "backend api framework observability stars:>300 pushed:>=2024-05-07",
+    "stage2": "backend developer platform api template stars:>150 pushed:>=2024-05-07"
+  },
+  "cli open source skill": {
+    "primary": "cli open source skill",
+    "stage1": "command line tool developer productivity stars:>200 pushed:>=2024-05-07",
+    "stage2": "github cli terminal tool stars:>200 pushed:>=2024-05-07"
+  },
+  "game development skill": {
+    "primary": "game development skill",
+    "stage1": "game engine tooling pipeline stars:>150 pushed:>=2024-05-07",
+    "stage2": "gamedev framework toolkit stars:>100 pushed:>=2024-05-07"
+  }
+}
