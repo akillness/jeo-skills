@@ -1,0 +1,294 @@
+{
+  "slug": "hourly-skill-candidates-20260507-110434",
+  "generated_at_utc": "2026-05-07T02:04:34.945010Z",
+  "provenance": "github search api",
+  "lanes": {
+    "agentic ai skill": {
+      "lane_status": "pass",
+      "degraded_causes": [
+        "low-signal"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage1",
+          "query": "\"agentic ai skill\" pushed:>=2026-04-30 archived:false",
+          "count": 7,
+          "stderr": ""
+        }
+      ],
+      "raw_count": 7,
+      "zero_star_raw": 1,
+      "median_stars_raw": 1,
+      "kept_count": 3,
+      "recommended": [
+        {
+          "full_name": "sysdig/skills",
+          "url": "https://github.com/sysdig/skills",
+          "description": "Sysdig agentic AI skills and plugins",
+          "stars": 8,
+          "license": "UNKNOWN",
+          "pushed_at": "2026-05-06T13:35:15Z",
+          "updated_at": "2026-05-06T21:41:56Z",
+          "archived": false,
+          "fit_flags": [],
+          "fit_rationale": "token overlap + non-negated intent + non-personal pattern + fresh + signal floor"
+        },
+        {
+          "full_name": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "description": "This repository serves as a library for showcasing how to adopt Agentic AI skills, and agent markdown files in a company-wide setting. ",
+          "stars": 3,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-30T13:42:47Z",
+          "updated_at": "2026-05-05T23:06:48Z",
+          "archived": false,
+          "fit_flags": [],
+          "fit_rationale": "token overlap + non-negated intent + non-personal pattern + fresh + signal floor"
+        },
+        {
+          "full_name": "gofastskill/fastskill",
+          "url": "https://github.com/gofastskill/fastskill",
+          "description": "Package manager and operational toolkit for Agent AI Skills. FastSkill enables discovery, installation, versioning, and deployment of skills at scale.",
+          "stars": 4,
+          "license": "UNKNOWN",
+          "pushed_at": "2026-05-05T04:05:39Z",
+          "updated_at": "2026-05-03T07:20:20Z",
+          "archived": false,
+          "fit_flags": [],
+          "fit_rationale": "token overlap + non-negated intent + non-personal pattern + fresh + signal floor"
+        }
+      ],
+      "low_fit_examples": [
+        {
+          "full_name": "manuelmauro/skilo",
+          "url": "https://github.com/manuelmauro/skilo",
+          "description": "Agentic AI skills management, linting, and formatting",
+          "stars": 1,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-06T16:30:28Z",
+          "updated_at": "2026-05-06T13:45:43Z",
+          "archived": false,
+          "fit_flags": [
+            "low-signal"
+          ],
+          "fit_rationale": "low-signal"
+        },
+        {
+          "full_name": "onsen-ai/metabase-skill",
+          "url": "https://github.com/onsen-ai/metabase-skill",
+          "description": "Agentic AI skill for Metabase developers and users",
+          "stars": 1,
+          "license": "UNKNOWN",
+          "pushed_at": "2026-05-04T11:45:13Z",
+          "updated_at": "2026-05-04T11:44:55Z",
+          "archived": false,
+          "fit_flags": [
+            "low-signal"
+          ],
+          "fit_rationale": "low-signal"
+        },
+        {
+          "full_name": "antongulin/agenticflow-ai-skills",
+          "url": "https://github.com/antongulin/agenticflow-ai-skills",
+          "description": "",
+          "stars": 1,
+          "license": "UNKNOWN",
+          "pushed_at": "2026-04-30T18:29:59Z",
+          "updated_at": "2026-05-02T18:54:47Z",
+          "archived": false,
+          "fit_flags": [
+            "low-signal"
+          ],
+          "fit_rationale": "low-signal"
+        },
+        {
+          "full_name": "gsbhatia93/agentic-ai-skills-IF-EVAL",
+          "url": "https://github.com/gsbhatia93/agentic-ai-skills-IF-EVAL",
+          "description": "",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "pushed_at": "2026-05-05T06:21:24Z",
+          "updated_at": "2026-05-05T06:21:29Z",
+          "archived": false,
+          "fit_flags": [
+            "low-signal"
+          ],
+          "fit_rationale": "low-signal"
+        }
+      ]
+    },
+    "web frontend skill": {
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit",
+        "low-signal"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage1",
+          "query": "\"web frontend skill\" pushed:>=2026-04-30 archived:false",
+          "count": 1,
+          "stderr": ""
+        }
+      ],
+      "raw_count": 1,
+      "zero_star_raw": 1,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "recommended": [],
+      "low_fit_examples": [
+        {
+          "full_name": "sonhaicoder/web-taste-skill",
+          "url": "https://github.com/sonhaicoder/web-taste-skill",
+          "description": "Anti-slop web frontend skill for AI coding agents. Auto-trigger every web task. Force Kimi/Lovable-tier quality with Discovery Form + 5 deterministic directions + 27 anti-patterns + ready-to-paste hero/section/motion blueprints. Distilled from open-design, taste-skill, impeccable.style, getdesign.md, kimi.com, lovable.dev.",
+          "stars": 0,
+          "license": "mit",
+          "pushed_at": "2026-05-05T04:17:36Z",
+          "updated_at": "2026-05-05T04:17:42Z",
+          "archived": false,
+          "fit_flags": [
+            "low-signal"
+          ],
+          "fit_rationale": "low-signal"
+        }
+      ]
+    },
+    "web backend skill": {
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage1",
+          "query": "\"web backend skill\" pushed:>=2026-04-30 archived:false",
+          "count": 0,
+          "stderr": ""
+        },
+        {
+          "stage": "stage2",
+          "query": "\"web backend skill\" stars:>5000 pushed:>=2026-04-30 archived:false",
+          "count": 0,
+          "stderr": "",
+          "provenance": "recovery"
+        }
+      ],
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "recommended": [],
+      "low_fit_examples": []
+    },
+    "cli open source skill": {
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage1",
+          "query": "\"cli open source skill\" pushed:>=2026-04-30 archived:false",
+          "count": 0,
+          "stderr": ""
+        },
+        {
+          "stage": "stage2",
+          "query": "\"cli open source skill\" stars:>5000 pushed:>=2026-04-30 archived:false",
+          "count": 0,
+          "stderr": "",
+          "provenance": "recovery"
+        }
+      ],
+      "raw_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "recommended": [],
+      "low_fit_examples": []
+    },
+    "game development skill": {
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit",
+        "low-signal"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage1",
+          "query": "\"game development skill\" pushed:>=2026-04-30 archived:false",
+          "count": 4,
+          "stderr": ""
+        }
+      ],
+      "raw_count": 4,
+      "zero_star_raw": 3,
+      "median_stars_raw": 0.0,
+      "kept_count": 0,
+      "recommended": [],
+      "low_fit_examples": [
+        {
+          "full_name": "FunplayAI/funplay-skill",
+          "url": "https://github.com/FunplayAI/funplay-skill",
+          "description": "Open-source game development skills — reusable workflows for texture processing, audio, level generation, asset optimization, and more.",
+          "stars": 2,
+          "license": "mit",
+          "pushed_at": "2026-04-30T10:29:32Z",
+          "updated_at": "2026-04-30T10:29:34Z",
+          "archived": false,
+          "fit_flags": [
+            "low-signal"
+          ],
+          "fit_rationale": "low-signal"
+        },
+        {
+          "full_name": "UmarWaqas513/Breakout-Game",
+          "url": "https://github.com/UmarWaqas513/Breakout-Game",
+          "description": "🏓 Create your own Breakout game with advanced ball physics and level design for a fun coding experience and game development skills enhancement.",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "pushed_at": "2026-05-06T22:52:42Z",
+          "updated_at": "2026-05-06T22:52:47Z",
+          "archived": false,
+          "fit_flags": [
+            "low-signal"
+          ],
+          "fit_rationale": "low-signal"
+        },
+        {
+          "full_name": "Berke-421/unity_practice",
+          "url": "https://github.com/Berke-421/unity_practice",
+          "description": "# Unity Practice  This repository contains my Unity and C# practice scripts and small experiments.  ## Purpose To improve my game development skills by building and testing core gameplay mechanics in Unity.",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "pushed_at": "2026-05-05T14:22:09Z",
+          "updated_at": "2026-05-05T14:24:06Z",
+          "archived": false,
+          "fit_flags": [
+            "low-signal"
+          ],
+          "fit_rationale": "low-signal"
+        },
+        {
+          "full_name": "vaibhavy06/gladiator-arena",
+          "url": "https://github.com/vaibhavy06/gladiator-arena",
+          "description": "🛡️ Gladiator: Rise of the Arena A fast-paced web-based action game where a gladiator battles soldiers, dragons, and bosses in an evolving arena. Built with scalable architecture, modular game logic, and interactive UI, showcasing real-world software engineering and game development skills.",
+          "stars": 0,
+          "license": "UNKNOWN",
+          "pushed_at": "2026-04-30T20:47:30Z",
+          "updated_at": "2026-04-30T20:47:34Z",
+          "archived": false,
+          "fit_flags": [
+            "low-signal"
+          ],
+          "fit_rationale": "low-signal"
+        }
+      ]
+    }
+  },
+  "queries": {},
+  "summary": {
+    "recommended_lane_count": 1,
+    "single_lane_concentration": true
+  }
+}

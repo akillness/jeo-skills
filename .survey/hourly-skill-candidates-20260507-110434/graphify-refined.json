@@ -1,0 +1,12 @@
+{
+  "status": "fallback",
+  "reason": "graphify not invoked in this runtime",
+  "slug": "hourly-skill-candidates-20260507-110434",
+  "lanes": [
+    "agentic ai skill",
+    "web frontend skill",
+    "web backend skill",
+    "cli open source skill",
+    "game development skill"
+  ]
+}

@@ -142,6 +142,7 @@ Use backlog-aware handling before opening a new hourly PR:
 
 - If open PR backlog is high (default threshold: `>=10`) **and** sampled carry-forward PRs show `no checks reported`, switch to checks-degraded mode for this run: generate artifacts + blocker report only, and do not open an additional PR.
 - If backlog is below the threshold, continue normal PR creation cadence, but keep merge gating strict.
+- Sampling command guard: use supported fields when listing open PRs (example: `gh pr list --state open --json number,headRefName,title,author`) and then run `gh pr checks <number>` on 2-3 recent carry-forward PRs.
 
 When survey artifacts are valid but GitHub reports `no checks reported` on the current PR branch:
 
