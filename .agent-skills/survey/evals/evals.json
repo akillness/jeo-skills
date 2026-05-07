@@ -204,6 +204,16 @@
         "Reapplies recommendation-grade gates (license/freshness/signal/fit) to stage-2 hits",
         "Reports lane_status, lane metrics, and degraded_causes transparently after escalation"
       ]
+    },
+    {
+      "id": 21,
+      "prompt": "run hourly survey with a strict recency-first policy: start from pushed within 24h~7d and widen only when a lane is empty/noisy",
+      "expected_output": "The survey starts with a 24h~7d recency window for all mandatory lanes, records explicit stage recovery query widening, and preserves lane metric integrity after switching query windows.",
+      "assertions": [
+        "Applies an initial recency-first query window (24h~7d) per lane before broader recovery",
+        "Documents any query widening as stage-1/stage-2 recovery attempts with exact query strings",
+        "Recomputes raw_count/kept_count/zero_star_raw/median_stars_raw from the final selected set after recovery"
+      ]
     }
   ]
 }

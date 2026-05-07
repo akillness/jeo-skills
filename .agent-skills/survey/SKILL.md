@@ -189,6 +189,7 @@ Required keyword families:
 - `game development skill`
 
 Execution rules:
+- Use a recency-first query window for hourly runs: default to `pushed` within the last 24h~7d, then widen only through documented recovery stages.
 - Keep the raw keyword scan as discovery evidence (usually `browser-rendered retrieval` when done through search pages).
 - Apply the Step 4.5 relevance gate before keeping any candidate.
 - For each kept candidate, record at least: `license`, `pushed_at/updated`, `archived`, `open_issues`, `forks`, and one-line fit rationale.
