@@ -271,7 +271,7 @@ setup omc
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 107개 로컬 스킬 폴더 = 총 98개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 127개 로컬 스킬 폴더 = 총 127개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (11개)
 
@@ -684,7 +684,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 107개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 127개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

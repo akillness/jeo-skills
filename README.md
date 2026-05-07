@@ -717,7 +717,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 107 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 127 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
