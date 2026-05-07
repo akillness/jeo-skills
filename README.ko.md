@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-126-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-127-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**126개 로컬 스킬 폴더 · 설치 가능 스킬 126개 · TOON 포맷 · 멀티플랫폼**
+**127개 로컬 스킬 폴더 · 설치 가능 스킬 127개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**126개 로컬 스킬 폴더 · 설치 가능 스킬 126개 · TOON 포맷 · 멀티플랫폼**
+**127개 로컬 스킬 폴더 · 설치 가능 스킬 127개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 126개 로컬 스킬 폴더와 126개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 127개 로컬 스킬 폴더와 127개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -83,6 +83,7 @@ graph TD
 |------|------|
 | **agentic-skills: 프로덕션 엔지니어링 프레임워크** | Google 엔지니어링 실천법 기반의 프로덕션급 엔지니어링 스킬 `agentic-skills`를 추가했습니다. AI 코딩 에이전트를 위한 워크플로우와 품질 게이트를 체계화합니다. spec 주도 개발(`/spec`), 태스크 계획(`/plan`), 점진적 TDD(`/build`), 브라우저 검증(`/test`), 5개 축 코드 리뷰(`/review`), 동작 보존 단순화(`/code-simplify`), 체계적인 git/CI/CD 배포(`/ship`) 단계를 제공합니다. *Software Engineering at Google*(Hyrum's Law, Chesterton's Fence, Shift Left, 트렁크 기반 개발)에서 영감을 받았습니다. 플러그인 설치: `/plugin marketplace add addyosmani/agent-skills`. 95 → **96개 스킬**. |
 | **open-design: 로컬 우선 디자인 아티팩트 생성** | `open-design`을 추가했습니다 — Anthropic의 Claude Design에 대한 오픈소스 대안으로, 로컬에 설치된 코딩 에이전트(Claude Code, Cursor, Gemini CLI 등)를 사용해 웹/모바일/데스크톱 프로토타입, 프레젠테이션 덱, 미디어 아티팩트를 생성합니다. 72개 내장 디자인 시스템(Linear, Stripe, Vercel, Notion, Apple 등), 5가지 비주얼 방향, 멀티 포맷 내보내기(HTML/PDF/PPTX/ZIP/Markdown), gpt-image-2·Seedance 2.0·HyperFrames를 통한 AI 미디어 생성을 지원합니다. 93개 프롬프트 템플릿 포함. 플러그인: `claude plugin marketplace add nexu-io/open-design`. 97 → **98개 스킬**. |
+| **browser-harness: 자가 치유 LLM 브라우저 자동화** | `browser-harness`를 추가했습니다 — LLM 에이전트를 Chrome DevTools Protocol(CDP)로 Chrome에 직접 연결하는 자가 치유 프레임워크입니다. 에이전트가 실행 중에 `agent_helpers.py` 헬퍼 코드를 직접 작성·개선하며, 커뮤니티 도메인 스킬(사이트별 플레이북)을 활용합니다. Browser Use Cloud 연동으로 동시 브라우저 3개, 주거용 프록시, 캡차 해결을 지원합니다. 설치: Claude Code 프롬프트에 "Set up https://github.com/browser-use/browser-harness for me" 입력. 126 → **127개 스킬**. |
 
 ## 🆕 v2026-04-18 업데이트
 
@@ -287,13 +288,14 @@ setup omc
 | `bmad-idea` | `bmad-idea` | 전체 | 사전 기획 아이디어 라우터 — 거친 제품/GTM/컨설팅/게임 아이디어를 하나의 컨셉 산출물과 다음 핸드오프로 정리 |
 | `survey` | `survey` | 전체 | 재사용 가능한 `.survey/{slug}/` 결과물과 검증기 기반 아티팩트 계약 체크를 남기는 bounded 사전 구현 문제공간 스캔 |
 
-### 📋 계획 및 검토 (12개)
+### 📋 계획 및 검토 (13개)
 
 | 스킬 | 키워드 | 설명 |
 |------|--------|------|
 | `plannotator` | `plan` | 에이전트 계획/diff용 시각적 승인 게이트 — 주석, 승인, 수정 요청, 검토 결과 저장 |
 | `agentation` | `annotate` | 정확한 렌더드 UI 피드백 라우터 — copy-paste review, watch-loop sync, self-driving critique, platform setup 선택 |
 | `agent-browser` | `agent-browser` | fresh-session 브라우저 검증 앵커 — clean disposable browser, snapshot refs, 명시적 before/after evidence |
+| `browser-harness` | `browser-harness` | 자가 치유 LLM 브라우저 자동화 — CDP로 Chrome 직접 연결, `agent_helpers.py` 에이전트 편집, 도메인 스킬, Browser Use Cloud 연동 |
 | `playwriter` | `playwriter` | 인증된 Chrome 세션과 MCP 재사용을 위한 실행 중 브라우저 자동화 |
 | `vibe-kanban` | `kanbanview` | 바운드된 코딩 카드, 트래커 연동 워크스페이스, 검토 큐, worktree 격리, PR 핸드오프를 다루는 코딩 보드 제어면 |
 | `triage` | `triage` | 이슈 상태 머신: needs-triage → needs-info → ready-for-agent / ready-for-human / wontfix | All |

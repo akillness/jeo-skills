@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-126-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-127-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**126 local skill folders · 126 installable skills · TOON Format · Cross-platform**
+**127 local skill folders · 127 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**126 local skill folders · 126 installable skills · TOON Format · Cross-platform**
+**127 local skill folders · 127 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 126 local skill folders and 126 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
+Agent Skills is a curated collection with 127 local skill folders and 127 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -83,6 +83,7 @@ graph TD
 |--------|---------|
 | **agentic-skills: production engineering framework** | Added `agentic-skills` — a production-grade engineering skill that encodes Google-proven workflows and quality gates for AI coding agents. Covers spec-driven development (`/spec`), task planning (`/plan`), incremental TDD (`/build`), browser verification (`/test`), five-axis code review (`/review`), behavior-preserving simplification (`/code-simplify`), and disciplined git/CI/CD shipping (`/ship`). Draws from *Software Engineering at Google* (Hyrum's Law, Chesterton's Fence, Shift Left, trunk-based development). Plugin install: `/plugin marketplace add addyosmani/agent-skills`. 95 → **96 skills**. |
 | **open-design: local-first design artifact generation** | Added `open-design` — an open-source alternative to Anthropic's Claude Design that generates web/mobile/desktop prototypes, presentation decks, and media artifacts using locally-installed coding agents. Features 72 built-in design systems (Linear, Stripe, Vercel, Notion, Apple, etc.), 5 visual directions, multi-format export (HTML/PDF/PPTX/ZIP/Markdown), and AI media generation via gpt-image-2, Seedance 2.0, and HyperFrames. Supports 93 prompt templates. Plugin: `claude plugin marketplace add nexu-io/open-design`. 97 → **98 skills**. |
+| **browser-harness: self-healing LLM browser automation** | Added `browser-harness` — a self-healing framework that connects LLMs directly to Chrome via Chrome DevTools Protocol (CDP). The agent writes and improves `agent_helpers.py` helper code during execution, contributing to a community library of domain skills (site-specific playbooks). Optional Browser Use Cloud integration for concurrent browsers, residential proxies, and captcha solving. Setup via Claude Code prompt: "Set up https://github.com/browser-use/browser-harness for me". Source: [browser-use/browser-harness](https://github.com/browser-use/browser-harness). 126 → **127 skills**. |
 
 ## 🆕 What's New in v2026-04-18
 
@@ -270,7 +271,7 @@ setup omc
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 126 local skill folders = 126 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 127 local skill folders = 127 total installable skills
 
 ### 🎯 Core Orchestration (13)
 
@@ -289,13 +290,14 @@ setup omc
 | `clawteam` | `clawteam`, `claw team`, `multi-agent team` | All | Route ClawTeam runtime requests — manual-team, template-team, worker-agent modes with one honest operator packet before touching commands |
 | `ccpi-marketplace` | `ccpi`, `tons of skills`, `plugin marketplace` | All | Operate the Tons of Skills marketplace via the ccpi CLI and Claude plugin marketplace commands — search, install, update, list skills |
 
-### 📋 Planning & Review (12)
+### 📋 Planning & Review (13)
 
 | Skill | Keyword | Description |
 |-------|---------|-------------|
 | `plannotator` | `plan` | Visual approval gate for agent plans/diffs — annotate, approve, request changes, or save reviewed plans |
 | `agentation` | `annotate` | Exact rendered-UI feedback router — choose copy-paste review, watch-loop sync, self-driving critique, or platform setup |
 | `agent-browser` | `agent-browser` | Fresh-session browser verification anchor — clean disposable browser, snapshot refs, and explicit before/after evidence |
+| `browser-harness` | `browser-harness` | Self-healing LLM browser automation via CDP — agent-editable `agent_helpers.py`, domain skills (site-specific playbooks), Browser Use Cloud integration |
 | `playwriter` | `playwriter` | Running-browser automation for authenticated Chrome sessions and MCP browser reuse |
 | `vibe-kanban` | `kanbanview` | Coding-board control plane for bounded coding cards, tracker-linked workspaces, review queues, worktree isolation, and PR handoff |
 | `triage` | `triage` | Issue state machine: needs-triage → needs-info → ready-for-agent / ready-for-human / wontfix. All AI comments include AI disclaimer |
