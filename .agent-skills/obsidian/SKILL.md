@@ -74,6 +74,8 @@ npx eslint src/         # validate all 27 rules
 npx eslint src/ --fix   # auto-fix where possible
 ```
 
+Security note: treat remote generators as untrusted code. Review the source repo and pin to a specific commit/tag when possible before running in sensitive environments.
+
 Key rules: `prefer-register-event` (memory), `no-tfile-cast` (type safety),
 `require-aria-label` (accessibility), `prefer-css-variables` (styling).
 See [references/plugin-dev.md](references/plugin-dev.md) for all 27 rules + code patterns.
@@ -121,12 +123,17 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 - [references/plugin-dev.md](references/plugin-dev.md) — All 27 ESLint rules, code patterns, submission
 - [references/cli-automation.md](references/cli-automation.md) — CLI commands, URI, developer mode
 - [references/content-patterns.md](references/content-patterns.md) — Markdown, Bases, JSON Canvas
-- [eslint-plugin-obsidianmd](https://github.com/obsidianmd/eslint-plugin-obsidianmd)
+- [eslint-plugin-obsidianmd](https://github.com/obsidianmd/eslint-plugin)
 - [Obsidian Plugin Docs](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)
 - [Obsidian CLI](https://obsidian.md/help/cli)
 - [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
 
-## Instructions
+## Examples
+- "Set up a new Obsidian plugin and fix eslint-plugin-obsidianmd violations before submission."
+- "Use Obsidian CLI to append today's standup note and search unresolved tasks in a vault."
+- "Convert meeting notes to Obsidian callouts and link related notes with wikilinks."
+
+## Operational checklist
 1. Identify the task trigger and expected output.
 2. Follow the workflow steps in this skill from top to bottom.
 3. Validate outputs before moving to the next step.
