@@ -151,6 +151,11 @@ When survey artifacts are valid but GitHub reports `no checks reported` on the c
 - Keep this run in `merge-blocked` state; do not force-merge.
 - Record `merge_blocked_reason: no-checks-reported` in the final run report.
 
+Graphify compatibility note for unattended runs:
+
+- `graphify save-result` currently requires `--question` and `--answer`; do not pass unsupported flags such as `--input`.
+- If command contract mismatch occurs, persist stderr under the run folder and generate `graphify-refined.json` fallback from `evidence.json` so PR packaging still contains auditable knowledge artifacts.
+
 ## Reporting checklist
 
 Before final recommendations:
