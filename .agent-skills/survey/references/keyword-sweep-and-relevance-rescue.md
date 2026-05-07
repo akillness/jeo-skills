@@ -136,12 +136,23 @@ Stage-2 escalation rule:
 - Add cross-lane concentration metrics for recommendation-grade keeps: `recommended_lane_count` and `single_lane_concentration` (`true` when recommended keeps are concentrated in a single lane).
 - Before final ranking, compute a deduplicated recommendation-grade set keyed by repository identity (`fullName` or `owner/name`) and report both raw and dedup recommendation coverage metrics.
 
+## Open-PR first gate (hourly hard rule)
+
+Apply this sequence at run start before any new branch/PR work:
+
+- Query open PRs immediately (`gh pr list --state open`).
+- If open PR count is `>=1`, **do not create a new branch/PR** in that run.
+- Instead, triage existing PRs first: checks, conflict status, review state.
+- If a PR is mergeable and checks are green, merge it first.
+- If a PR is conflicting/duplicate, leave a blocker comment, close it, and clean its remote branch.
+- Only when open PR count becomes `0` may the run create a new branch and PR.
+
 ## Checks-degraded escalation (PR lifecycle guard)
 
 Use backlog-aware handling before opening a new hourly PR:
 
 - Sample at least the two most recent carry-forward PRs with `gh pr checks` before deciding mode.
-- If open PR backlog is high (default threshold: `>=10`) **and** sampled carry-forward PRs show `no checks reported`, switch to checks-degraded mode for this run: generate artifacts + blocker report only, and do not open an additional PR.
+- If open PR backlog is high (default threshold: `>=10`) and sampled carry-forward PRs show `no checks reported`, switch to checks-degraded mode for this run: generate artifacts + blocker report only, and do not open an additional PR.
 - If backlog is below the threshold, continue normal PR creation cadence, but keep merge gating strict.
 - If sampled carry-forward PRs are also `DIRTY` or `CONFLICTING` while checks are absent, keep this run in blocker-report mode and avoid same-run conflict resolution churn.
 
