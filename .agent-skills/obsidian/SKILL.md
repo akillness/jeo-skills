@@ -116,17 +116,32 @@ claude plugin marketplace add akillness/oh-my-skills
 npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 ```
 
+## Examples
+
+```bash
+# Plugin-dev path: scaffold then lint
+npx github:gapmiss/obsidian-plugin-skill create-plugin
+npm install --save-dev eslint eslint-plugin-obsidianmd
+npx eslint src/ --fix
+```
+
+```bash
+# CLI-automation path: query and append daily tasks
+obsidian vault="My Vault" search query="retro"
+obsidian daily:append content="- [ ] Ship release notes"
+```
+
 ## References
 
 - [references/plugin-dev.md](references/plugin-dev.md) — All 27 ESLint rules, code patterns, submission
 - [references/cli-automation.md](references/cli-automation.md) — CLI commands, URI, developer mode
 - [references/content-patterns.md](references/content-patterns.md) — Markdown, Bases, JSON Canvas
-- [eslint-plugin-obsidianmd](https://github.com/obsidianmd/eslint-plugin-obsidianmd)
+- [eslint-plugin-obsidianmd](https://github.com/obsidianmd/eslint-plugin)
 - [Obsidian Plugin Docs](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)
 - [Obsidian CLI](https://obsidian.md/help/cli)
 - [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
 
-## Instructions
+## Operational checklist
 1. Identify the task trigger and expected output.
 2. Follow the workflow steps in this skill from top to bottom.
 3. Validate outputs before moving to the next step.
