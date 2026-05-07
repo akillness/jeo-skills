@@ -140,6 +140,7 @@ Stage-2 escalation rule:
 
 Use backlog-aware handling before opening a new hourly PR:
 
+- Sample at least the two most recent carry-forward PRs with `gh pr checks` before deciding mode.
 - If open PR backlog is high (default threshold: `>=10`) **and** sampled carry-forward PRs show `no checks reported`, switch to checks-degraded mode for this run: generate artifacts + blocker report only, and do not open an additional PR.
 - If backlog is below the threshold, continue normal PR creation cadence, but keep merge gating strict.
 - If sampled carry-forward PRs are also `DIRTY` or `CONFLICTING` while checks are absent, keep this run in blocker-report mode and avoid same-run conflict resolution churn.
