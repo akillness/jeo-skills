@@ -65,7 +65,7 @@ obsidian_intent:
 ### Plugin development quick start
 
 ```bash
-# Generate boilerplate
+# Generate boilerplate (review source first; executes remote package code)
 npx github:gapmiss/obsidian-plugin-skill create-plugin
 
 # Install ESLint validation
@@ -116,17 +116,22 @@ claude plugin marketplace add akillness/oh-my-skills
 npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 ```
 
+## Examples
+- **Plugin lint remediation:** “Fix all `eslint-plugin-obsidianmd` violations in `src/` and summarize any non-auto-fixable rules.”
+- **CLI automation task:** “Append today’s standup checklist to the daily note in vault `Work` and reopen Obsidian at that note.”
+- **Content conversion:** “Convert these bullet notes into Obsidian callouts + wikilinks using the patterns in `references/content-patterns.md`.”
+
 ## References
 
 - [references/plugin-dev.md](references/plugin-dev.md) — All 27 ESLint rules, code patterns, submission
 - [references/cli-automation.md](references/cli-automation.md) — CLI commands, URI, developer mode
 - [references/content-patterns.md](references/content-patterns.md) — Markdown, Bases, JSON Canvas
-- [eslint-plugin-obsidianmd](https://github.com/obsidianmd/eslint-plugin-obsidianmd)
+- [eslint-plugin-obsidianmd](https://github.com/obsidianmd/eslint-plugin)
 - [Obsidian Plugin Docs](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)
 - [Obsidian CLI](https://obsidian.md/help/cli)
 - [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
 
-## Instructions
+## Operational checklist
 1. Identify the task trigger and expected output.
 2. Follow the workflow steps in this skill from top to bottom.
 3. Validate outputs before moving to the next step.
