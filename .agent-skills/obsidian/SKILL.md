@@ -116,6 +116,22 @@ claude plugin marketplace add akillness/oh-my-skills
 npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 ```
 
+## Examples
+
+```bash
+# Example 1: verify CLI availability, then search and append to daily note
+obsidian version
+obsidian vault="Work" search query="incident postmortem"
+obsidian daily:append content="- [ ] Share postmortem summary"
+```
+
+```bash
+# Example 2: plugin-dev lint/fix loop before submission
+npm install --save-dev eslint eslint-plugin-obsidianmd
+npx eslint src/
+npx eslint src/ --fix
+```
+
 ## References
 
 - [references/plugin-dev.md](references/plugin-dev.md) — All 27 ESLint rules, code patterns, submission
@@ -125,12 +141,6 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 - [Obsidian Plugin Docs](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)
 - [Obsidian CLI](https://obsidian.md/help/cli)
 - [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
-
-## Instructions
-1. Identify the task trigger and expected output.
-2. Follow the workflow steps in this skill from top to bottom.
-3. Validate outputs before moving to the next step.
-4. Capture blockers and fallback path if any step fails.
 
 ## Best practices
 - Keep outputs deterministic and auditable.
