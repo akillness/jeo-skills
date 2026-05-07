@@ -116,6 +116,12 @@ claude plugin marketplace add akillness/oh-my-skills
 npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 ```
 
+## Examples
+
+- **Plugin lint fix**: run `npx eslint src/ --fix`, then manually resolve remaining `no-tfile-cast` and `prefer-register-event` issues before submission.
+- **CLI triage**: verify `obsidian help` works, then run `obsidian vault="My Vault" search query="error budget"` and `obsidian vault="My Vault" read path="Ops/Runbook.md"`.
+- **URI handoff**: open a note directly from automation with `obsidian://open?vault=my%20vault&file=Projects%2FRoadmap`.
+
 ## References
 
 - [references/plugin-dev.md](references/plugin-dev.md) — All 27 ESLint rules, code patterns, submission
@@ -126,7 +132,7 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 - [Obsidian CLI](https://obsidian.md/help/cli)
 - [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
 
-## Instructions
+## Operational checklist
 1. Identify the task trigger and expected output.
 2. Follow the workflow steps in this skill from top to bottom.
 3. Validate outputs before moving to the next step.
@@ -135,4 +141,5 @@ npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
 ## Best practices
 - Keep outputs deterministic and auditable.
 - Prefer small reversible changes over broad risky edits.
+- Never run plugin install/build commands from untrusted repositories without reviewing package metadata first.
 - Record assumptions explicitly.
