@@ -1,0 +1,5 @@
+{
+  "graphify_status": "fallback",
+  "error": "usage: graphify save-result [-h] --question QUESTION --answer ANSWER\n                            [--type QUERY_TYPE] [--nodes [NODES ...]]\n                            [--memory-dir MEMORY_DIR]\ngraphify save-result: error: unrecognized arguments: --input .survey/hourly-skill-candidates-20260508-012212/evidence.json\n",
+  "recommended_lane_count": 3
+}

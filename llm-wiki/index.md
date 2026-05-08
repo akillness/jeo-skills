@@ -13,3 +13,5 @@
 - [Hourly survey stage2 noisy-lane recovery](queries/2026-04-26-hourly-survey-stage2-noisy-lane-recovery.md)
 
 - [hourly-skill-candidates-20260506-101924](hourly/hourly-skill-candidates-20260506-101924.md)
+
+- [hourly-skill-candidates-20260508-012212 lane-health script ratchet](queries/2026-05-08-hourly-survey-hourly-skill-candidates-20260508-012212-lane-health-script.md)

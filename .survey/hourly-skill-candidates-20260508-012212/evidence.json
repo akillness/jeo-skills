@@ -1,0 +1,1394 @@
+{
+  "slug": "hourly-skill-candidates-20260508-012212",
+  "generated_at_utc": "2026-05-08T01:22:12.697239Z",
+  "lanes": {
+    "agentic-ai-skill": {
+      "query": "agentic ai skill",
+      "stage": "stage1",
+      "stage1_query": "\"agentic ai skill\" stars:>1 archived:false",
+      "recovery_queries": [],
+      "raw_count": 11,
+      "zero_star_raw": 0,
+      "median_stars_raw": 4,
+      "kept_count": 5,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "results": [
+        {
+          "full_name": "sysdig/skills",
+          "url": "https://github.com/sysdig/skills",
+          "description": "Sysdig agentic AI skills and plugins",
+          "stars": 46,
+          "license": null,
+          "pushed_at": "2026-05-06T13:35:15Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "stars": 16,
+          "license": "apache-2.0",
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "description": "Agentic AI skills for knowledge graph management",
+          "stars": 7,
+          "license": "mit",
+          "pushed_at": "2026-04-06T01:48:47Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "stars": 11,
+          "license": "mit",
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "taisukeoe/agentic-ai-skills-creator",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+          "description": "This is a foundation to create effective Agentic AI Skills",
+          "stars": 2,
+          "license": "apache-2.0",
+          "pushed_at": "2026-01-23T12:11:13Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "description": "This repository serves as a library for showcasing how to adopt Agentic AI skills, and agent markdown files in a company-wide setting. ",
+          "stars": 4,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-30T13:42:47Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification — with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+          "stars": 5,
+          "license": "mit",
+          "pushed_at": "2026-04-09T12:21:43Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "muhammad-khalid-bin-walid/Agentic-AI-SKills-For-Cyber-Security",
+          "url": "https://github.com/muhammad-khalid-bin-walid/Agentic-AI-SKills-For-Cyber-Security",
+          "description": "This is a Claude AI Skill that transforms Claude into a full-stack, end-to-end penetration testing co-pilot. Drop it into any Claude environment and you instantly have an expert partner that can automate your way.",
+          "stars": 2,
+          "license": "mit",
+          "pushed_at": "2026-04-25T08:49:03Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "gofastskill/fastskill",
+          "url": "https://github.com/gofastskill/fastskill",
+          "description": "Package manager and operational toolkit for Agent AI Skills. FastSkill enables discovery, installation, versioning, and deployment of skills at scale.",
+          "stars": 4,
+          "license": null,
+          "pushed_at": "2026-05-05T04:05:39Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "RayMEI-XiaoGaoShou/skill_game-teardown-expert",
+          "url": "https://github.com/RayMEI-XiaoGaoShou/skill_game-teardown-expert",
+          "description": "A multi-agent AI skill for deep game teardown and market analysis based on Oh My OpenCode",
+          "stars": 2,
+          "license": null,
+          "pushed_at": "2026-03-08T08:13:47Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-signal",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "sebassdc/crap4ts",
+          "url": "https://github.com/sebassdc/crap4ts",
+          "description": "CRAP metric CLI for TypeScript: combines cyclomatic complexity and test coverage to find risky code, with a bundled cross-agent AI skill.",
+          "stars": 2,
+          "license": "other",
+          "pushed_at": "2026-04-14T01:50:13Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        }
+      ],
+      "kept": [
+        {
+          "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "stars": 16,
+          "license": "apache-2.0",
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "description": "Agentic AI skills for knowledge graph management",
+          "stars": 7,
+          "license": "mit",
+          "pushed_at": "2026-04-06T01:48:47Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "stars": 11,
+          "license": "mit",
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "description": "This repository serves as a library for showcasing how to adopt Agentic AI skills, and agent markdown files in a company-wide setting. ",
+          "stars": 4,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-30T13:42:47Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification — with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+          "stars": 5,
+          "license": "mit",
+          "pushed_at": "2026-04-09T12:21:43Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        }
+      ]
+    },
+    "web-frontend-skill": {
+      "query": "web frontend skill",
+      "stage": "stage1",
+      "stage1_query": "\"web frontend skill\" stars:>1 archived:false",
+      "recovery_queries": [],
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 12,
+      "kept_count": 0,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-fit"
+      ],
+      "results": [
+        {
+          "full_name": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+          "stars": 12,
+          "license": null,
+          "pushed_at": "2026-03-30T14:38:08Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        }
+      ],
+      "kept": []
+    },
+    "web-backend-skill": {
+      "query": "web backend skill",
+      "stage": "recovery",
+      "stage1_query": "\"web backend skill\" stars:>1 archived:false",
+      "recovery_queries": [
+        {
+          "query": "\"web backend skill\" stars:>5 pushed:>2024-01-01 archived:false",
+          "count": 0,
+          "error": null
+        },
+        {
+          "query": "web backend skill topic:web stars:>10 archived:false",
+          "count": 18,
+          "error": null
+        }
+      ],
+      "raw_count": 18,
+      "zero_star_raw": 9,
+      "median_stars_raw": 0.5,
+      "kept_count": 0,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "low-fit"
+      ],
+      "results": [
+        {
+          "full_name": "liyupi/yupi-hot-monitor",
+          "url": "https://github.com/liyupi/yupi-hot-monitor",
+          "description": "2026 年编程导航 AI 编程实战新项目，基于 Node.js + Express + React + OpenRouter 的 AI 热点监控工具，支持多信息源聚合抓取（Twitter / Bing / HackerNews / B 站等 7+ 平台）、AI 查询扩展、AI 真假识别与相关性分析、WebSocket 实时推送、邮件通知、多维度筛选排序，并将热点监控能力封装为 Agent Skills 技能包。覆盖 Prisma + SQLite 数据库、Socket.io 实时通信、Axios + Cheerio 网页爬虫、OpenRouter 大模型接入、Aceternity UI 炫酷前端、node-cron 定时任务、VSCode Copilot Vibe Coding + MCP",
+          "stars": 421,
+          "license": null,
+          "pushed_at": "2026-04-16T11:56:53Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "liyupi/github-global",
+          "url": "https://github.com/liyupi/github-global",
+          "description": "2026 年编程导航 AI 编程实战新项目，基于 Next.js 15 + GitHub App + OpenRouter 的 GitHub 仓库 AI 文档翻译 SaaS 平台，支持可视化翻译配置、一键多语言翻译、自动创建 PR、Webhook 增量翻译、自定义大模型等。覆盖 GitHub App OAuth 认证、GitHub REST API 对接、OpenRouter 多模型接入、Prisma + MySQL 全栈开发、Vercel 部署、Ngrok 内网穿透、Cursor Vibe Coding + MCP + Agent Skills 等核心技术。用一套教程掌握 AI 编程全流程，从需求调研到部署上线，不到一周学完，给你的简历增加竞争力",
+          "stars": 105,
+          "license": null,
+          "pushed_at": "2026-03-03T05:34:39Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "RanitManik/College-Website",
+          "url": "https://github.com/RanitManik/College-Website",
+          "description": "This repository contains the code and resources for a web development project focused on creating a static and engaging college website. Through this project, I aimed to enhance my web development skills by designing and implementing a modern and user-friendly website.",
+          "stars": 12,
+          "license": null,
+          "pushed_at": "2024-10-28T11:19:06Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "berkaykrks/personal-website",
+          "url": "https://github.com/berkaykrks/personal-website",
+          "description": "A personal portfolio website showcasing my projects, skills, and experience.",
+          "stars": 6,
+          "license": null,
+          "pushed_at": "2025-11-16T09:00:39Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": true,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "low-fit:generic-personal-repo",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "mk-knight23/04-portfolio-backend",
+          "url": "https://github.com/mk-knight23/04-portfolio-backend",
+          "description": "A personal portfolio project showcasing projects, skills, and engineering work.",
+          "stars": 0,
+          "license": "mit",
+          "pushed_at": "2026-03-20T13:43:19Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": true,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:generic-personal-repo",
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "24-25-UC-Senior-Design-Group-7/Culinary-Mastery",
+          "url": "https://github.com/24-25-UC-Senior-Design-Group-7/Culinary-Mastery",
+          "description": "Educational app teaching foundational cooking skills through video tutorials, with secure data storage and efficient backend services.",
+          "stars": 2,
+          "license": null,
+          "pushed_at": "2025-04-08T17:21:36Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-signal",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "shbhmexe/Projects-2024",
+          "url": "https://github.com/shbhmexe/Projects-2024",
+          "description": "A collection of diverse web development projects for 2024, including UI clones, simulations, and tools to showcase my front-end and full-stack development skills.",
+          "stars": 0,
+          "license": null,
+          "pushed_at": "2025-03-14T12:21:44Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "low-signal",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "Mdken1/-my-portfolio",
+          "url": "https://github.com/Mdken1/-my-portfolio",
+          "description": "Personal Portfolio showcasing my skills and projects as a Fullstack Developer. Explore my work in frontend and backend development, including web design, programming, and software solutions.",
+          "stars": 0,
+          "license": null,
+          "pushed_at": "2025-07-13T01:03:08Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": true,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:generic-personal-repo",
+            "low-signal",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "TAskMAster339/django_lyceum",
+          "url": "https://github.com/TAskMAster339/django_lyceum",
+          "description": "Django Lyceum is an educational project that I have been developing to enhance my programming skills. It is my first significant project, consisting of multiple files. The project is designed for long-term support, so it contains a huge number of tests for almost every function.",
+          "stars": 0,
+          "license": null,
+          "pushed_at": "2025-05-10T19:39:31Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "low-signal",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "Skillter/skillter.dev",
+          "url": "https://github.com/Skillter/skillter.dev",
+          "description": "A Spring website about me and about my portfolio at https://skillter.dev",
+          "stars": 1,
+          "license": "other",
+          "pushed_at": "2026-04-14T12:37:07Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": true,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "low-fit:generic-personal-repo",
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "andoka-soudanais/skills-resolve-merge-conflicts",
+          "url": "https://github.com/andoka-soudanais/skills-resolve-merge-conflicts",
+          "description": "My clone repository",
+          "stars": 0,
+          "license": "mit",
+          "pushed_at": "2025-12-09T20:46:17Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "Jefe21054/django-blog",
+          "url": "https://github.com/Jefe21054/django-blog",
+          "description": "A mockup blog web page build completely with the framework Django in the backend, using the Python programming language to do it! Also needed some HTML, CSS & SQL skills.",
+          "stars": 0,
+          "license": "gpl-3.0",
+          "pushed_at": "2023-04-28T04:49:24Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "stale",
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "pratik-karna/Personal-portfolio",
+          "url": "https://github.com/pratik-karna/Personal-portfolio",
+          "description": " ✨📚 Personal Portfolio GitHub repository showcasing my projects, skills, and achievements to impress and inspire.",
+          "stars": 1,
+          "license": null,
+          "pushed_at": "2025-04-07T08:43:50Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": true,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "low-fit:generic-personal-repo",
+            "low-signal",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "allanlealluz/Allan",
+          "url": "https://github.com/allanlealluz/Allan",
+          "description": "About Welcome to my portfolio! I'm Allan, a backend programmer passionate about building efficient web solutions. With expertise in PHP, Python, and JavaScript, along with modern web technologies like HTML, CSS, and Bootstrap, I create engaging applications.  This portfolio showcases my skills, projects, and experiences",
+          "stars": 2,
+          "license": null,
+          "pushed_at": "2024-06-22T00:08:10Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": true,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:generic-personal-repo",
+            "low-signal",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "Harrison-II/java",
+          "url": "https://github.com/Harrison-II/java",
+          "description": "This repository contains my progress as a java developer and all the projects and challenges i take part in on my journy to develop my skill. In here will be a combination of all things java from backend wb development to full on projects i decided to attempt.",
+          "stars": 0,
+          "license": "apache-2.0",
+          "pushed_at": "2023-06-16T14:50:41Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "stale",
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        }
+      ],
+      "kept": []
+    },
+    "cli-open-source-skill": {
+      "query": "cli open source skill",
+      "stage": "recovery",
+      "stage1_query": "\"cli open source skill\" stars:>1 archived:false",
+      "recovery_queries": [
+        {
+          "query": "\"cli open source skill\" stars:>5 pushed:>2024-01-01 archived:false",
+          "count": 0,
+          "error": null
+        },
+        {
+          "query": "cli open source skill topic:cli stars:>10 archived:false",
+          "count": 23,
+          "error": null
+        }
+      ],
+      "raw_count": 23,
+      "zero_star_raw": 8,
+      "median_stars_raw": 1,
+      "kept_count": 4,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "results": [
+        {
+          "full_name": "skrun-dev/skrun",
+          "url": "https://github.com/skrun-dev/skrun",
+          "description": "Deploy any Agent Skill as an API via POST /run. The open-source multi-model alternative to Claude Managed Agents, Microsoft Foundry & Mistral/Koyeb — works with any LLM.",
+          "stars": 169,
+          "license": "mit",
+          "pushed_at": "2026-04-27T20:06:12Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "alestanalves/skill-generator",
+          "url": "https://github.com/alestanalves/skill-generator",
+          "description": "CLI open source para gerar skills de alta qualidade",
+          "stars": 9,
+          "license": "mit",
+          "pushed_at": "2026-04-21T05:47:11Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "KarmaloopAI/Jiva",
+          "url": "https://github.com/KarmaloopAI/Jiva",
+          "description": "Jiva is a CLI-first, open source autonomous AI agent and open alternative to Claude. Built in TypeScript with native support for Sarvam-105B and gpt-oss-120b, it autonomously plans and executes tasks from your terminal. Supports MCP servers, a built-in Skills system, and Jiva Personas - a plugin framework fully compatible with Claude Plugins.",
+          "stars": 35,
+          "license": "mit",
+          "pushed_at": "2026-04-28T11:45:06Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "garudust-org/garudust-agent",
+          "url": "https://github.com/garudust-org/garudust-agent",
+          "description": "🦅 Open-source self-improving AI agent in Rust — persistent memory, skill learning, tool hub, multi-platform bots & production gateway",
+          "stars": 15,
+          "license": "mit",
+          "pushed_at": "2026-05-07T23:57:13Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "shrek-abaper/sap-abap-cli",
+          "url": "https://github.com/shrek-abaper/sap-abap-cli",
+          "description": "CLI tool and AI agent skill for reading and writing ABAP source code and metadata from SAP systems (ECC · S/4HANA · BTP) via the ADT REST API. Supports programs, classes, CDS views, DDIC objects, transport management, Open SQL queries, and object search — with fine-grained permission flags for all write operations.",
+          "stars": 8,
+          "license": "mit",
+          "pushed_at": "2026-05-06T01:02:43Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "manu14357/zskills",
+          "url": "https://github.com/manu14357/zskills",
+          "description": "Open-source skill registry for AI agents—discover, fork, and ship.",
+          "stars": 12,
+          "license": "mit",
+          "pushed_at": "2026-05-06T17:56:00Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "aidongise-cell/prism-scanner",
+          "url": "https://github.com/aidongise-cell/prism-scanner",
+          "description": "Open-source security scanner for AI Agent skills, plugins & MCP servers. 39 detection rules. pip install prism-scanner",
+          "stars": 10,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-07T03:44:50Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "coddy-project/coddy-agent",
+          "url": "https://github.com/coddy-project/coddy-agent",
+          "description": "Open-source distroless harness coding agent in Go. Works with Cursor, Zed via ACP. Supports any OpenAI-compatible providers. Can use SKILLS and MCP servers.",
+          "stars": 7,
+          "license": null,
+          "pushed_at": "2026-05-07T21:07:39Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "HappyHackingSpace/skills",
+          "url": "https://github.com/HappyHackingSpace/skills",
+          "description": "Agent Skills for Happy Hacking Space's open-source security tools. Compatible with Claude Code, OpenAI Codex, Gemini CLI, and Cursor.",
+          "stars": 4,
+          "license": "mit",
+          "pushed_at": "2026-02-28T23:37:07Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "Ahoo-Wang/skills",
+          "url": "https://github.com/Ahoo-Wang/skills",
+          "description": "Ahoo Wang's open source project skills repository",
+          "stars": 1,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-21T01:20:44Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "avantika-msr/agent-skills",
+          "url": "https://github.com/avantika-msr/agent-skills",
+          "description": "A collection of open-source skills that teach Agents to automate real workflows autonomously.",
+          "stars": 0,
+          "license": "mit",
+          "pushed_at": "2026-03-31T07:22:41Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "Manzanita-Research/understory",
+          "url": "https://github.com/Manzanita-Research/understory",
+          "description": "🌿 Open-source skills that bridge AI chat and working code",
+          "stars": 1,
+          "license": "mit",
+          "pushed_at": "2026-02-26T04:49:01Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "swps24/skill-mesh-bridge",
+          "url": "https://github.com/swps24/skill-mesh-bridge",
+          "description": "Top Open Source AI Automation Tools 2026 🚀 – Run Any API or CLI from Your Terminal!",
+          "stars": 0,
+          "license": null,
+          "pushed_at": "2026-03-25T05:59:30Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-signal",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "regedcompany/skill-compose",
+          "url": "https://github.com/regedcompany/skill-compose",
+          "description": "🤖 Build and run skill-powered agents easily with an open-source platform that requires no workflow graphs or CLI.",
+          "stars": 0,
+          "license": null,
+          "pushed_at": "2026-02-26T22:06:16Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-signal",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "pisonislo8737/HyperxOpenSkills",
+          "url": "https://github.com/pisonislo8737/HyperxOpenSkills",
+          "description": "Provide open-source Claude Code skills to access HyperX wallet analytics, market data, and social feeds for enhanced trading insights.",
+          "stars": 0,
+          "license": null,
+          "pushed_at": "2026-05-08T00:19:01Z",
+          "archived": false,
+          "token_overlap": false,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:no-token-overlap",
+            "low-signal",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        }
+      ],
+      "kept": [
+        {
+          "full_name": "alestanalves/skill-generator",
+          "url": "https://github.com/alestanalves/skill-generator",
+          "description": "CLI open source para gerar skills de alta qualidade",
+          "stars": 9,
+          "license": "mit",
+          "pushed_at": "2026-04-21T05:47:11Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "KarmaloopAI/Jiva",
+          "url": "https://github.com/KarmaloopAI/Jiva",
+          "description": "Jiva is a CLI-first, open source autonomous AI agent and open alternative to Claude. Built in TypeScript with native support for Sarvam-105B and gpt-oss-120b, it autonomously plans and executes tasks from your terminal. Supports MCP servers, a built-in Skills system, and Jiva Personas - a plugin framework fully compatible with Claude Plugins.",
+          "stars": 35,
+          "license": "mit",
+          "pushed_at": "2026-04-28T11:45:06Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "shrek-abaper/sap-abap-cli",
+          "url": "https://github.com/shrek-abaper/sap-abap-cli",
+          "description": "CLI tool and AI agent skill for reading and writing ABAP source code and metadata from SAP systems (ECC · S/4HANA · BTP) via the ADT REST API. Supports programs, classes, CDS views, DDIC objects, transport management, Open SQL queries, and object search — with fine-grained permission flags for all write operations.",
+          "stars": 8,
+          "license": "mit",
+          "pushed_at": "2026-05-06T01:02:43Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "HappyHackingSpace/skills",
+          "url": "https://github.com/HappyHackingSpace/skills",
+          "description": "Agent Skills for Happy Hacking Space's open-source security tools. Compatible with Claude Code, OpenAI Codex, Gemini CLI, and Cursor.",
+          "stars": 4,
+          "license": "mit",
+          "pushed_at": "2026-02-28T23:37:07Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        }
+      ]
+    },
+    "game-development-skill": {
+      "query": "game development skill",
+      "stage": "stage1",
+      "stage1_query": "\"game development skill\" stars:>1 archived:false",
+      "recovery_queries": [],
+      "raw_count": 17,
+      "zero_star_raw": 0,
+      "median_stars_raw": 3,
+      "kept_count": 2,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "results": [
+        {
+          "full_name": "UnrealBlueprint/02_CrystalCavern",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+          "description": "A fun little parkour game for our now-famous marble. Here you'll start learning real-world blueprint game development skills (REF: CC_UBP)",
+          "stars": 9,
+          "license": "mit",
+          "pushed_at": "2019-03-27T19:49:24Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "stale"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "description": "I am strengthening my C# game development skills day by day.",
+          "stars": 20,
+          "license": null,
+          "pushed_at": "2026-02-26T03:56:34Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "Unengine/GameEngineAndGameMathTIL",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+          "description": "for my game development skill",
+          "stars": 4,
+          "license": "wtfpl",
+          "pushed_at": "2021-05-17T16:44:56Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "stale"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+          "description": "Enhance your Pong game with Pygame! Learn how to add exciting features and unleash your creativity in this tutorial series. Perfect for intermediate programmers looking to expand their game development skills with Python and Pygame. Let's take the classic Pong game to the next level together!",
+          "stars": 14,
+          "license": "mit",
+          "pushed_at": "2023-08-09T16:31:04Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "stale"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "sparkade-labs/sparkade-skills",
+          "url": "https://github.com/sparkade-labs/sparkade-skills",
+          "description": "Game development skills for building sparkade games",
+          "stars": 2,
+          "license": "other",
+          "pushed_at": "2026-04-07T09:25:59Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "inchussa/Virtual-Pet-Simulator",
+          "url": "https://github.com/inchussa/Virtual-Pet-Simulator",
+          "description": "A virtual pet simulator game developed using Unity and C#. The game allows users to interact with and take care of a virtual pet, demonstrating game development skills.",
+          "stars": 24,
+          "license": null,
+          "pushed_at": "2025-02-09T14:09:01Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": true,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:generic-personal-repo",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "teamgravitydev/learning-resources.md",
+          "url": "https://github.com/teamgravitydev/learning-resources.md",
+          "description": "Curated collection of resources, books, courses, tutorials, and YouTube channels, to help you master game development skills.",
+          "stars": 5,
+          "license": null,
+          "pushed_at": "2024-11-05T01:26:02Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "stars": 3,
+          "license": "mit",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "PPYukito/Warrior",
+          "url": "https://github.com/PPYukito/Warrior",
+          "description": "Advanced RPG, made by Unreal Engine 5 for studying case and practicing game development skills.",
+          "stars": 2,
+          "license": "mit",
+          "pushed_at": "2024-12-02T02:08:44Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "auriorajaa/Java2DGame",
+          "url": "https://github.com/auriorajaa/Java2DGame",
+          "description": "Welcome to the Java 2D Game Project repository! This project is a continuous exploration of game development in Java, influenced by the instructional content provided by Ryisnow on YouTube. It is a living testament to my journey in acquiring game development skills using Java. ",
+          "stars": 6,
+          "license": null,
+          "pushed_at": "2024-01-05T08:55:40Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "stale",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "FunplayAI/funplay-skill",
+          "url": "https://github.com/FunplayAI/funplay-skill",
+          "description": "Open-source game development skills — reusable workflows for texture processing, audio, level generation, asset optimization, and more.",
+          "stars": 2,
+          "license": "mit",
+          "pushed_at": "2026-04-30T10:29:32Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-signal"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "hassounamohamed/Pac-Man-game",
+          "url": "https://github.com/hassounamohamed/Pac-Man-game",
+          "description": "A classic recreation of the iconic Pac-Man game, developed using Java and Swing. This project demonstrates object-oriented programming principles, GUI design, and game development skills.",
+          "stars": 3,
+          "license": null,
+          "pushed_at": "2024-12-26T22:53:36Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": true,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:generic-personal-repo",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "Shubham-Jana-Dev/bengal-skies-js-game",
+          "url": "https://github.com/Shubham-Jana-Dev/bengal-skies-js-game",
+          "description": "🎮 Bengal Skies: The Flight for Rights is a Flappy Bird clone showcasing front-end game development skills using Vanilla JS. Implements a physics engine, score tracking, and custom CSS for graphics, including complex gradient-based brick textures. Demonstrates proficiency in core web technologies.",
+          "stars": 5,
+          "license": "mit",
+          "pushed_at": "2025-12-16T16:34:50Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": true,
+          "fit": "low-fit",
+          "risk_notes": [
+            "low-fit:generic-personal-repo"
+          ],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "codewith-salman/Rescuer-Game",
+          "url": "https://github.com/codewith-salman/Rescuer-Game",
+          "description": "Rescuer is a fun and engaging browser game where players complete rescue missions through interactive challenges. Built with HTML, CSS, and JavaScript, this project highlights game logic, animations, and responsive design—perfect for showcasing your frontend and game development skills.",
+          "stars": 3,
+          "license": "apache-2.0",
+          "pushed_at": "2026-02-19T18:36:14Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "Bskasan/First2DGame",
+          "url": "https://github.com/Bskasan/First2DGame",
+          "description": "This a 2D platform game similar to mario and any other runner game on 2D platform. I'm creating this project to improve my 2D game development skill on Unity Game Engine.  I will release my prototype asap. This project is still in progress.",
+          "stars": 3,
+          "license": null,
+          "pushed_at": "2023-02-19T07:37:41Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "low-fit",
+          "risk_notes": [
+            "stale",
+            "license"
+          ],
+          "provenance": "indexed snippet"
+        }
+      ],
+      "kept": [
+        {
+          "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "stars": 3,
+          "license": "mit",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        },
+        {
+          "full_name": "codewith-salman/Rescuer-Game",
+          "url": "https://github.com/codewith-salman/Rescuer-Game",
+          "description": "Rescuer is a fun and engaging browser game where players complete rescue missions through interactive challenges. Built with HTML, CSS, and JavaScript, this project highlights game logic, animations, and responsive design—perfect for showcasing your frontend and game development skills.",
+          "stars": 3,
+          "license": "apache-2.0",
+          "pushed_at": "2026-02-19T18:36:14Z",
+          "archived": false,
+          "token_overlap": true,
+          "negation_intent": false,
+          "generic_personal_repo": false,
+          "fit": "keep",
+          "risk_notes": [],
+          "provenance": "indexed snippet"
+        }
+      ]
+    }
+  },
+  "recommended": [
+    {
+      "full_name": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+      "stars": 16,
+      "license": "apache-2.0",
+      "pushed_at": "2026-01-29T09:33:47Z",
+      "archived": false,
+      "token_overlap": true,
+      "negation_intent": false,
+      "generic_personal_repo": false,
+      "fit": "keep",
+      "risk_notes": [],
+      "provenance": "indexed snippet",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "full_name": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "description": "Agentic AI skills for knowledge graph management",
+      "stars": 7,
+      "license": "mit",
+      "pushed_at": "2026-04-06T01:48:47Z",
+      "archived": false,
+      "token_overlap": true,
+      "negation_intent": false,
+      "generic_personal_repo": false,
+      "fit": "keep",
+      "risk_notes": [],
+      "provenance": "indexed snippet",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "full_name": "VoDaiLocz/Enhance-Prompt",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+      "stars": 11,
+      "license": "mit",
+      "pushed_at": "2026-03-05T13:50:53Z",
+      "archived": false,
+      "token_overlap": true,
+      "negation_intent": false,
+      "generic_personal_repo": false,
+      "fit": "keep",
+      "risk_notes": [],
+      "provenance": "indexed snippet",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "full_name": "alestanalves/skill-generator",
+      "url": "https://github.com/alestanalves/skill-generator",
+      "description": "CLI open source para gerar skills de alta qualidade",
+      "stars": 9,
+      "license": "mit",
+      "pushed_at": "2026-04-21T05:47:11Z",
+      "archived": false,
+      "token_overlap": true,
+      "negation_intent": false,
+      "generic_personal_repo": false,
+      "fit": "keep",
+      "risk_notes": [],
+      "provenance": "indexed snippet",
+      "lane": "cli-open-source-skill"
+    },
+    {
+      "full_name": "KarmaloopAI/Jiva",
+      "url": "https://github.com/KarmaloopAI/Jiva",
+      "description": "Jiva is a CLI-first, open source autonomous AI agent and open alternative to Claude. Built in TypeScript with native support for Sarvam-105B and gpt-oss-120b, it autonomously plans and executes tasks from your terminal. Supports MCP servers, a built-in Skills system, and Jiva Personas - a plugin framework fully compatible with Claude Plugins.",
+      "stars": 35,
+      "license": "mit",
+      "pushed_at": "2026-04-28T11:45:06Z",
+      "archived": false,
+      "token_overlap": true,
+      "negation_intent": false,
+      "generic_personal_repo": false,
+      "fit": "keep",
+      "risk_notes": [],
+      "provenance": "indexed snippet",
+      "lane": "cli-open-source-skill"
+    },
+    {
+      "full_name": "shrek-abaper/sap-abap-cli",
+      "url": "https://github.com/shrek-abaper/sap-abap-cli",
+      "description": "CLI tool and AI agent skill for reading and writing ABAP source code and metadata from SAP systems (ECC · S/4HANA · BTP) via the ADT REST API. Supports programs, classes, CDS views, DDIC objects, transport management, Open SQL queries, and object search — with fine-grained permission flags for all write operations.",
+      "stars": 8,
+      "license": "mit",
+      "pushed_at": "2026-05-06T01:02:43Z",
+      "archived": false,
+      "token_overlap": true,
+      "negation_intent": false,
+      "generic_personal_repo": false,
+      "fit": "keep",
+      "risk_notes": [],
+      "provenance": "indexed snippet",
+      "lane": "cli-open-source-skill"
+    },
+    {
+      "full_name": "tjboudreaux/cc-plugin-unity-gamedev",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+      "stars": 3,
+      "license": "mit",
+      "pushed_at": "2026-02-06T04:09:12Z",
+      "archived": false,
+      "token_overlap": true,
+      "negation_intent": false,
+      "generic_personal_repo": false,
+      "fit": "keep",
+      "risk_notes": [],
+      "provenance": "indexed snippet",
+      "lane": "game-development-skill"
+    },
+    {
+      "full_name": "codewith-salman/Rescuer-Game",
+      "url": "https://github.com/codewith-salman/Rescuer-Game",
+      "description": "Rescuer is a fun and engaging browser game where players complete rescue missions through interactive challenges. Built with HTML, CSS, and JavaScript, this project highlights game logic, animations, and responsive design—perfect for showcasing your frontend and game development skills.",
+      "stars": 3,
+      "license": "apache-2.0",
+      "pushed_at": "2026-02-19T18:36:14Z",
+      "archived": false,
+      "token_overlap": true,
+      "negation_intent": false,
+      "generic_personal_repo": false,
+      "fit": "keep",
+      "risk_notes": [],
+      "provenance": "indexed snippet",
+      "lane": "game-development-skill"
+    }
+  ],
+  "provenance_labels": [
+    "indexed snippet",
+    "direct page retrieval"
+  ],
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false
+}
