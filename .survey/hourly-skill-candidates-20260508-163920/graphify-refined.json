@@ -1,0 +1,14 @@
+{
+  "slug": "hourly-skill-candidates-20260508-163920",
+  "generated_at": "2026-05-08T16:40:33.476893Z",
+  "status": "degraded",
+  "reason": "graphify query/save-result skipped in unattended run; fallback emitted",
+  "lane_status": {
+    "agentic-ai-skill": "pass",
+    "web-frontend-skill": "degraded",
+    "web-backend-skill": "degraded",
+    "cli-open-source-skill": "pass",
+    "game-development-skill": "pass"
+  },
+  "recommended_lane_count": 3
+}
