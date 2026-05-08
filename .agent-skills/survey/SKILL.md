@@ -39,6 +39,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/output-templates-and-validator.md](references/output-templates-and-validator.md)
 - [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 - [references/gh-search-empty-lane-recovery-playbook.md](references/gh-search-empty-lane-recovery-playbook.md)
+- [references/lane-quality-gate-utility.md](references/lane-quality-gate-utility.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.
@@ -214,6 +215,7 @@ Execution rules:
 - Alongside `lane_status`, include compact lane-health metrics (`kept_count`, `raw_count`, `median_stars_raw`, `zero_star_raw`) so reviewers can track quality drift across hourly runs.
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
 - Add a cross-lane recommendation dedup gate before final ranking: preserve raw discovery evidence unchanged, but compute a deduplicated recommendation-grade set keyed by repository identity (`fullName` or `owner/name`) and report both raw and dedup coverage metrics.
+- Prefer the reusable lane scorer utility (`scripts/lane_quality_gate.py`) to compute lane metrics and degraded causes consistently across unattended runs; if using custom logic, keep parity with the same gate set and output fields.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 
@@ -296,4 +298,6 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - `references/platform-adapter-and-artifact-contract.md` — portability rules for `settings`, `rules`, `hooks`, and identical artifact output across platforms
 - `references/output-templates-and-validator.md` — exact file templates plus validator usage for `.survey/{slug}/`
 - `references/keyword-sweep-and-relevance-rescue.md` — required five-keyword sweep and noisy-query rescue gate for recurring repo-maintenance loops
+- `references/lane-quality-gate-utility.md` — deterministic lane scoring utility and output contract for hourly runs
+- `scripts/lane_quality_gate.py` — reusable lane-level quality gate implementation
 - `scripts/validate_survey_artifacts.py` — artifact-contract validator for survey output folders

@@ -214,6 +214,16 @@
         "Documents any query widening as stage-1/stage-2 recovery attempts with exact query strings",
         "Recomputes raw_count/kept_count/zero_star_raw/median_stars_raw from the final selected set after recovery"
       ]
+    },
+    {
+      "id": 22,
+      "prompt": "run the hourly five-lane survey and produce reviewer-auditable lane scoring with a reusable utility",
+      "expected_output": "The survey uses a deterministic lane scoring utility (or equivalent parity logic) that emits lane metrics, lane_status, degraded_causes, recommended keeps, and low-fit examples with integrity-safe counts.",
+      "assertions": [
+        "Uses `scripts/lane_quality_gate.py` or explicitly equivalent gate logic for lane scoring",
+        "Emits lane metrics (`raw_count`, `kept_count`, `zero_star_raw`, `median_stars_raw`) with integrity constraints",
+        "Reports `lane_status` plus taxonomy-bound `degraded_causes` and sample low-fit evidence"
+      ]
     }
   ]
 }

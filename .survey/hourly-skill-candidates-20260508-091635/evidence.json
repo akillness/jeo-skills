@@ -1,0 +1,254 @@
+{
+  "slug": "hourly-skill-candidates-20260508-091635",
+  "generated_at": "2026-05-08T00:16:35.176359+00:00",
+  "lanes": {
+    "agentic-ai-skill": {
+      "query": "agentic ai skill",
+      "attempts": [
+        {
+          "stage": 0,
+          "query": "agentic ai skill",
+          "error": null,
+          "count": 30
+        }
+      ],
+      "raw_count": 30,
+      "zero_star_raw": 19,
+      "median_stars_raw": 0.0,
+      "kept_count": 5,
+      "recommended": [
+        {
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "stars": 16,
+          "license": "apache-2.0",
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "fit": "pass",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "stars": 7,
+          "license": "mit",
+          "pushed_at": "2026-04-06T01:48:47Z",
+          "fit": "pass",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "stars": 11,
+          "license": "mit",
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "fit": "pass",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "stars": 4,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-30T13:42:47Z",
+          "fit": "pass",
+          "provenance": "indexed snippet"
+        },
+        {
+          "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "stars": 5,
+          "license": "mit",
+          "pushed_at": "2026-04-09T12:21:43Z",
+          "fit": "pass",
+          "provenance": "indexed snippet"
+        }
+      ],
+      "low_fit_examples": [
+        {
+          "fullName": "sysdig/skills",
+          "url": "https://github.com/sysdig/skills",
+          "reason": "license"
+        },
+        {
+          "fullName": "Ap6pack/malwar",
+          "url": "https://github.com/Ap6pack/malwar",
+          "reason": "low-signal"
+        },
+        {
+          "fullName": "taisukeoe/agentic-ai-skills-creator",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+          "reason": "low-signal"
+        }
+      ],
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "provenance": [
+        "indexed snippet"
+      ]
+    },
+    "web-frontend-skill": {
+      "query": "web frontend skill",
+      "attempts": [
+        {
+          "stage": 0,
+          "query": "web frontend skill",
+          "error": null,
+          "count": 5
+        }
+      ],
+      "raw_count": 5,
+      "zero_star_raw": 4,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "recommended": [],
+      "low_fit_examples": [
+        {
+          "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "reason": "license"
+        },
+        {
+          "fullName": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "reason": "low-signal,stale"
+        },
+        {
+          "fullName": "Hezekiah-Elisha/savannah_informatics_test",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+          "reason": "low-signal,license"
+        }
+      ],
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit"
+      ],
+      "provenance": [
+        "indexed snippet"
+      ]
+    },
+    "web-backend-skill": {
+      "query": "web backend skill",
+      "attempts": [
+        {
+          "stage": 0,
+          "query": "web backend skill",
+          "error": null,
+          "count": 0
+        },
+        {
+          "stage": 1,
+          "query": "web backend skill stars:>5000 pushed:>=2024-01-01",
+          "error": null,
+          "count": 1
+        }
+      ],
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 7531,
+      "kept_count": 0,
+      "recommended": [],
+      "low_fit_examples": [
+        {
+          "fullName": "andreasbm/web-skills",
+          "url": "https://github.com/andreasbm/web-skills",
+          "reason": "stale"
+        }
+      ],
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit"
+      ],
+      "provenance": [
+        "indexed snippet"
+      ]
+    },
+    "cli-open-source-skill": {
+      "query": "cli open source skill",
+      "attempts": [
+        {
+          "stage": 0,
+          "query": "cli open source skill",
+          "error": null,
+          "count": 0
+        },
+        {
+          "stage": 1,
+          "query": "cli open source skill stars:>5000 pushed:>=2024-01-01",
+          "error": null,
+          "count": 1
+        }
+      ],
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 32227,
+      "kept_count": 1,
+      "recommended": [
+        {
+          "fullName": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "stars": 32227,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-08T00:05:59Z",
+          "fit": "pass",
+          "provenance": "indexed snippet"
+        }
+      ],
+      "low_fit_examples": [],
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "provenance": [
+        "indexed snippet"
+      ]
+    },
+    "game-development-skill": {
+      "query": "game development skill",
+      "attempts": [
+        {
+          "stage": 0,
+          "query": "game development skill",
+          "error": null,
+          "count": 30
+        }
+      ],
+      "raw_count": 30,
+      "zero_star_raw": 18,
+      "median_stars_raw": 0.0,
+      "kept_count": 1,
+      "recommended": [
+        {
+          "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "stars": 3,
+          "license": "mit",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "fit": "pass",
+          "provenance": "indexed snippet"
+        }
+      ],
+      "low_fit_examples": [
+        {
+          "fullName": "UnrealBlueprint/02_CrystalCavern",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+          "reason": "stale"
+        },
+        {
+          "fullName": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "reason": "license"
+        },
+        {
+          "fullName": "Unengine/GameEngineAndGameMathTIL",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+          "reason": "stale"
+        }
+      ],
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "provenance": [
+        "indexed snippet"
+      ]
+    }
+  },
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false
+}

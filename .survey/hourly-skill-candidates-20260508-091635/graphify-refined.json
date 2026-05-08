@@ -1,0 +1,5 @@
+{
+  "status": "fallback",
+  "reason": "graphify query skipped in cron; produced deterministic fallback from evidence",
+  "provenance": "indexed snippet"
+}

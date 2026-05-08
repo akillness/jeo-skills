@@ -1,0 +1,9 @@
+# RTK Summary
+
+Compact lane metrics:
+- agentic-ai-skill: raw=30, kept=5, median_stars=0.0, status=pass
+- web-frontend-skill: raw=5, kept=0, median_stars=0, status=degraded
+- web-backend-skill: raw=1, kept=0, median_stars=7531, status=degraded
+- cli-open-source-skill: raw=1, kept=1, median_stars=32227, status=pass
+- game-development-skill: raw=30, kept=1, median_stars=0.0, status=pass
+- recommended_lane_count=3
