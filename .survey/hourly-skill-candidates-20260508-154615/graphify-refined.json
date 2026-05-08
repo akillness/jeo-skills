@@ -1,0 +1,48 @@
+{
+  "slug": "hourly-skill-candidates-20260508-154615",
+  "generated_from": "evidence.json",
+  "graphify_degraded_note": "graphify save-result failed",
+  "lanes": [
+    {
+      "lane": "agentic ai skill",
+      "raw_count": 30,
+      "kept_count": 5,
+      "status": "pass",
+      "degraded_causes": []
+    },
+    {
+      "lane": "web frontend skill",
+      "raw_count": 5,
+      "kept_count": 0,
+      "status": "pass",
+      "degraded_causes": [
+        "low-fit"
+      ]
+    },
+    {
+      "lane": "web backend skill",
+      "raw_count": 0,
+      "kept_count": 0,
+      "status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ]
+    },
+    {
+      "lane": "cli open source skill",
+      "raw_count": 0,
+      "kept_count": 0,
+      "status": "degraded",
+      "degraded_causes": [
+        "no-results"
+      ]
+    },
+    {
+      "lane": "game development skill",
+      "raw_count": 30,
+      "kept_count": 1,
+      "status": "pass",
+      "degraded_causes": []
+    }
+  ]
+}

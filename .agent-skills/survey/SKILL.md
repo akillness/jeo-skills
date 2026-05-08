@@ -218,6 +218,7 @@ Execution rules:
 - Add a cross-lane concentration check for recommendation-grade keeps: if `recommended_lane_count < 2`, mark the run as `single_lane_concentration: true`, keep degraded-lane evidence explicit, and avoid claiming broad coverage health.
 - Add a cross-lane recommendation dedup gate before final ranking: preserve raw discovery evidence unchanged, but compute a deduplicated recommendation-grade set keyed by repository identity (`fullName` or `owner/name`) and report both raw and dedup coverage metrics.
 - Prefer the reusable lane scorer utility (`scripts/lane_quality_gate.py`) to compute lane metrics and degraded causes consistently across unattended runs; if using custom logic, keep parity with the same gate set and output fields.
+- Generate reviewer-facing lane metric tables with `python3 .agent-skills/survey/scripts/build_lane_health_report.py .survey/<slug>` to keep markdown summaries aligned with evidence.json.
 
 Reference: [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 
