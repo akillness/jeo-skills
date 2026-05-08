@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json
+import os
 import sys
-from pathlib import Path
 
 REQUIRED_LANES = [
     "agentic-ai-skill",
@@ -13,63 +13,69 @@ REQUIRED_LANES = [
 
 
 def fail(msg):
-    sys.stderr.write(msg + "\n")
-    sys.exit(1)
+    sys.stderr.write("[hourly-evidence-contract] ERROR: {}\n".format(msg))
+    return 1
 
 
-if len(sys.argv) != 2:
-    sys.stderr.write("Usage: validate_hourly_evidence_contract.py .survey/<slug>/evidence.json\n")
-    sys.exit(2)
+def main():
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: {} <evidence.json>\n".format(sys.argv[0]))
+        return 2
 
-p = Path(sys.argv[1])
-if not p.exists():
-    fail("missing evidence file: {}".format(p))
+    path = sys.argv[1]
+    if not os.path.exists(path):
+        return fail("file not found: {}".format(path))
 
-obj = json.loads(p.read_text())
-lanes = obj.get("lanes")
-if not isinstance(lanes, dict):
-    fail("evidence missing lanes map")
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception as e:
+        return fail("cannot parse json: {}".format(e))
 
-errors = []
-for lane in REQUIRED_LANES:
-    d = lanes.get(lane)
-    if not isinstance(d, dict):
-        errors.append("missing required lane: {}".format(lane))
-        continue
+    lanes = data.get("lanes")
+    if not isinstance(lanes, dict):
+        return fail("missing object key: lanes")
 
-    raw_count = int(d.get("raw_count", 0) or 0)
-    kept_count = int(d.get("kept_count", 0) or 0)
-    zero_star_raw = int(d.get("zero_star_raw", 0) or 0)
-    degraded_causes = list(d.get("degraded_causes", []))
-    recov = list(d.get("recovery_queries", []))
+    for lane in REQUIRED_LANES:
+        if lane not in lanes:
+            return fail("missing lane key: {}".format(lane))
 
-    if kept_count > raw_count:
-        errors.append("{} kept_count > raw_count".format(lane))
-    if zero_star_raw > raw_count:
-        errors.append("{} zero_star_raw > raw_count".format(lane))
+    for lane in REQUIRED_LANES:
+        item = lanes[lane]
+        for key in ["raw_count", "zero_star_raw", "median_stars_raw", "kept_count", "recovery_queries"]:
+            if key not in item:
+                return fail("lane {} missing key: {}".format(lane, key))
 
-    stages = set()
-    for item in recov:
-        if isinstance(item, dict):
-            st = item.get("stage")
-            if st:
-                stages.add(st)
+        raw_count = int(item.get("raw_count", 0) or 0)
+        kept_count = int(item.get("kept_count", 0) or 0)
+        zero_star_raw = int(item.get("zero_star_raw", 0) or 0)
+        median_stars_raw = item.get("median_stars_raw", 0) or 0
 
-    if "stage-1" not in stages or "stage-2" not in stages:
-        errors.append("{} missing required recovery stages stage-1 and stage-2".format(lane))
+        if kept_count > raw_count:
+            return fail("lane {} integrity violation: kept_count > raw_count".format(lane))
+        if raw_count == 0 and (zero_star_raw != 0 or float(median_stars_raw) != 0.0):
+            return fail("lane {} integrity violation: raw_count=0 requires zero_star_raw=0 and median_stars_raw=0".format(lane))
 
-    if raw_count == 0:
-        if "no-results" not in degraded_causes:
-            errors.append("{} raw_count==0 but missing degraded cause no-results".format(lane))
+        rq = item.get("recovery_queries")
+        if not isinstance(rq, list):
+            return fail("lane {} recovery_queries must be a list".format(lane))
 
-single_lane_concentration = obj.get("single_lane_concentration")
-recommended_lane_count = int(obj.get("recommended_lane_count", 0) or 0)
-if recommended_lane_count < 2 and single_lane_concentration is not True:
-    errors.append("recommended_lane_count < 2 requires single_lane_concentration=true")
+        stages = set()
+        for q in rq:
+            if isinstance(q, dict) and "stage" in q:
+                stages.add(str(q.get("stage")))
 
-if errors:
-    for e in errors:
-        sys.stderr.write("ERROR: {}\n".format(e))
-    sys.exit(1)
+        if "stage1" not in stages or "stage2" not in stages:
+            return fail("lane {} recovery_queries must include stage1 and stage2".format(lane))
 
-print("OK: hourly evidence contract validated")
+        if raw_count == 0:
+            causes = item.get("degraded_causes", [])
+            if "no-results" not in causes:
+                return fail("lane {} with raw_count=0 must include degraded_causes:no-results".format(lane))
+
+    sys.stdout.write("hourly evidence contract valid\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

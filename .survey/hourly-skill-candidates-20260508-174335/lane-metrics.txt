@@ -1,0 +1,5 @@
+agentic-ai-skill: raw=30 kept=27 median=34784.5 zero=0 status=pass
+web-frontend-skill: raw=30 kept=3 median=16479.0 zero=0 status=pass
+web-backend-skill: raw=30 kept=2 median=14470.0 zero=0 status=pass
+cli-open-source-skill: raw=30 kept=8 median=16194.0 zero=0 status=pass
+game-development-skill: raw=30 kept=7 median=6578.5 zero=0 status=pass

@@ -1,0 +1,31 @@
+{
+  "status": "fallback",
+  "reason": "",
+  "lanes": {
+    "agentic-ai-skill": {
+      "raw_count": 30,
+      "kept_count": 27,
+      "lane_status": "pass"
+    },
+    "web-frontend-skill": {
+      "raw_count": 30,
+      "kept_count": 3,
+      "lane_status": "pass"
+    },
+    "web-backend-skill": {
+      "raw_count": 30,
+      "kept_count": 2,
+      "lane_status": "pass"
+    },
+    "cli-open-source-skill": {
+      "raw_count": 30,
+      "kept_count": 8,
+      "lane_status": "pass"
+    },
+    "game-development-skill": {
+      "raw_count": 30,
+      "kept_count": 7,
+      "lane_status": "pass"
+    }
+  }
+}

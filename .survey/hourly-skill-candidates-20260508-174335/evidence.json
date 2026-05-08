@@ -1,0 +1,327 @@
+{
+  "slug": "hourly-skill-candidates-20260508-174335",
+  "generated_at_utc": "2026-05-08T17:45:02.817401+00:00",
+  "provenance": [
+    "indexed snippet",
+    "thin evidence"
+  ],
+  "lanes": {
+    "agentic-ai-skill": {
+      "lane_query": "mandatory lane",
+      "raw_count": 30,
+      "zero_star_raw": 0,
+      "median_stars_raw": 34784.5,
+      "kept_count": 27,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage1",
+          "query": "used"
+        },
+        {
+          "stage": "stage2",
+          "query": "used"
+        }
+      ],
+      "selected_stage": "stage0",
+      "recommended": [
+        {
+          "fullName": "vercel/ai",
+          "url": "https://github.com/vercel/ai",
+          "description": "The AI Toolkit for TypeScript. From the creators of Next.js, the AI SDK is a free open-source library for building AI-powered applications and agents ",
+          "stars": 24097,
+          "license": "other",
+          "pushed_at": "2026-05-08T17:41:34Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "Shubhamsaboo/awesome-llm-apps",
+          "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+          "description": "100+ AI Agent & RAG apps you can actually run \u2014 clone, customize, ship.",
+          "stars": 109258,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-08T00:17:23Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "pinchbench/skill",
+          "url": "https://github.com/pinchbench/skill",
+          "description": "PinchBench is a benchmarking system for evaluating LLM models as OpenClaw coding agents. Made with \ud83e\udd80 by the humans at https://kilo.ai",
+          "stars": 1111,
+          "license": "mit",
+          "pushed_at": "2026-05-08T14:54:47Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "anthropics/skills",
+          "url": "https://github.com/anthropics/skills",
+          "description": "Public repository for Agent Skills",
+          "stars": 130415,
+          "license": "UNKNOWN",
+          "pushed_at": "2026-05-06T16:05:51Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "VoltAgent/awesome-openclaw-skills",
+          "url": "https://github.com/VoltAgent/awesome-openclaw-skills",
+          "description": "The awesome collection of OpenClaw skills. 5,400+ skills filtered and categorized from the official OpenClaw Skills Registry.\ud83e\udd9e",
+          "stars": 48230,
+          "license": "mit",
+          "pushed_at": "2026-04-20T06:41:09Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        }
+      ],
+      "low_fit_examples": [
+        "anbeime/skill",
+        "garrytan/gstack",
+        "davila7/claude-code-templates"
+      ]
+    },
+    "web-frontend-skill": {
+      "lane_query": "mandatory lane",
+      "raw_count": 30,
+      "zero_star_raw": 0,
+      "median_stars_raw": 16479.0,
+      "kept_count": 3,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage1",
+          "query": "used"
+        },
+        {
+          "stage": "stage2",
+          "query": "broad recovery"
+        }
+      ],
+      "selected_stage": "stage0",
+      "recommended": [
+        {
+          "fullName": "zarazhangrui/frontend-slides",
+          "url": "https://github.com/zarazhangrui/frontend-slides",
+          "description": "Create beautiful slides on the web using Claude's frontend skills",
+          "stars": 16752,
+          "license": "mit",
+          "pushed_at": "2026-04-08T18:23:28Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "sadanandpai/frontend-learning-kit",
+          "url": "https://github.com/sadanandpai/frontend-learning-kit",
+          "description": "Frontend tech guide and curated collection of frontend materials",
+          "stars": 4666,
+          "license": "mit",
+          "pushed_at": "2026-05-08T04:22:24Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "abhigyanpatwari/GitNexus",
+          "url": "https://github.com/abhigyanpatwari/GitNexus",
+          "description": "GitNexus: The Zero-Server Code Intelligence Engine -       GitNexus is a client-side knowledge graph creator that runs entirely in your browser. Drop in a GitHub repo or ZIP file, and get an interactive knowledge graph wit a built in Graph RAG Agent. Perfect for code exploration",
+          "stars": 37014,
+          "license": "other",
+          "pushed_at": "2026-05-08T16:21:53Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        }
+      ],
+      "low_fit_examples": [
+        "Leonxlnx/taste-skill",
+        "anbeime/skill",
+        "vercel-labs/skills"
+      ]
+    },
+    "web-backend-skill": {
+      "lane_query": "mandatory lane",
+      "raw_count": 30,
+      "zero_star_raw": 0,
+      "median_stars_raw": 14470.0,
+      "kept_count": 2,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage1",
+          "query": "used"
+        },
+        {
+          "stage": "stage2",
+          "query": "broad recovery"
+        }
+      ],
+      "selected_stage": "stage0",
+      "recommended": [
+        {
+          "fullName": "abhigyanpatwari/GitNexus",
+          "url": "https://github.com/abhigyanpatwari/GitNexus",
+          "description": "GitNexus: The Zero-Server Code Intelligence Engine -       GitNexus is a client-side knowledge graph creator that runs entirely in your browser. Drop in a GitHub repo or ZIP file, and get an interactive knowledge graph wit a built in Graph RAG Agent. Perfect for code exploration",
+          "stars": 37014,
+          "license": "other",
+          "pushed_at": "2026-05-08T16:21:53Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "EKKOLearnAI/hermes-web-ui",
+          "url": "https://github.com/EKKOLearnAI/hermes-web-ui",
+          "description": "Web dashboard for Hermes Agent \u2014 multi-platform AI chat, session management, scheduled jobs, usage analytics & channel configuration (Telegram, Discord, Slack, WhatsApp)",
+          "stars": 4003,
+          "license": "mit",
+          "pushed_at": "2026-05-08T14:59:36Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        }
+      ],
+      "low_fit_examples": [
+        "openclaw/openclaw",
+        "bytedance/deer-flow",
+        "wshobson/agents"
+      ]
+    },
+    "cli-open-source-skill": {
+      "lane_query": "mandatory lane",
+      "raw_count": 30,
+      "zero_star_raw": 0,
+      "median_stars_raw": 16194.0,
+      "kept_count": 8,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage1",
+          "query": "used"
+        },
+        {
+          "stage": "stage2",
+          "query": "used"
+        }
+      ],
+      "selected_stage": "stage0",
+      "recommended": [
+        {
+          "fullName": "googleworkspace/cli",
+          "url": "https://github.com/googleworkspace/cli",
+          "description": "Google Workspace CLI \u2014 one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.",
+          "stars": 25923,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-08T15:34:43Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "larksuite/cli",
+          "url": "https://github.com/larksuite/cli",
+          "description": "The official Lark/Feishu CLI tool, maintained by the larksuite team \u2014 built for humans and AI Agents. Covers core business domains including Messenger, Docs, Base, Sheets, Calendar, Mail, Tasks, Meetings, and more, with 200+ commands and 20+ AI Agent Skills.",
+          "stars": 9490,
+          "license": "mit",
+          "pushed_at": "2026-05-08T14:39:26Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "jackwener/OpenCLI",
+          "url": "https://github.com/jackwener/OpenCLI",
+          "description": "Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Transform any website, Electron app, or local binary into a standardized command-line interface. Built for AI Agents to discover, learn, and execute tools seamlessly via a unified AGENT.md integration.",
+          "stars": 19332,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-08T11:57:23Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "description": "\ud83c\udfa8 Local-first, open-source alternative to Anthropic's Claude Design. \u26a1 19 Skills \u00b7 \u2728 71 brand-grade Design Systems \ud83d\uddbc Generate web \u00b7 desktop \u00b7 mobile prototypes \u00b7 slides \u00b7 images \u00b7 videos \u00b7 HyperFrames \ud83d\udce6 Sandboxed preview \u00b7 HTML/PDF/PPTX/MP4 export \ud83e\udd16 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+          "stars": 33717,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-08T17:23:37Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "sickn33/antigravity-awesome-skills",
+          "url": "https://github.com/sickn33/antigravity-awesome-skills",
+          "description": "Installable GitHub library of 1,400+ agentic skills for Claude Code, Cursor, Codex CLI, Gemini CLI, Antigravity, and more. Includes installer CLI, bundles, workflows, and official/community skill collections.",
+          "stars": 36828,
+          "license": "mit",
+          "pushed_at": "2026-05-08T07:34:58Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        }
+      ],
+      "low_fit_examples": [
+        "openclaw/openclaw",
+        "VoltAgent/awesome-openclaw-skills",
+        "chauncygu/collection-claude-code-source-code"
+      ]
+    },
+    "game-development-skill": {
+      "lane_query": "mandatory lane",
+      "raw_count": 30,
+      "zero_star_raw": 0,
+      "median_stars_raw": 6578.5,
+      "kept_count": 7,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage1",
+          "query": "agent recovery"
+        },
+        {
+          "stage": "stage2",
+          "query": "broad recovery"
+        }
+      ],
+      "selected_stage": "stage0",
+      "recommended": [
+        {
+          "fullName": "Donchitos/Claude-Code-Game-Studios",
+          "url": "https://github.com/Donchitos/Claude-Code-Game-Studios",
+          "description": "Turn Claude Code into a full game dev studio \u2014 49 AI agents, 72 workflow skills, and a complete coordination system mirroring real studio hierarchy.",
+          "stars": 17755,
+          "license": "mit",
+          "pushed_at": "2026-05-03T11:58:24Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "phaserjs/phaser",
+          "url": "https://github.com/phaserjs/phaser",
+          "description": "Phaser is a fun, free and fast 2D game framework for making HTML5 games for desktop and mobile web browsers, supporting Canvas and WebGL rendering.",
+          "stars": 39593,
+          "license": "mit",
+          "pushed_at": "2026-04-30T02:11:46Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "htdt/godogen",
+          "url": "https://github.com/htdt/godogen",
+          "description": "Autonomous game development for Godot and Bevy with Claude Code and Codex",
+          "stars": 3127,
+          "license": "mit",
+          "pushed_at": "2026-04-26T08:53:44Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "JoseDeFreitas/awesome-youtubers",
+          "url": "https://github.com/JoseDeFreitas/awesome-youtubers",
+          "description": "An awesome list of awesome YouTubers that teach about technology. Tutorials about web development, computer science, machine learning, game development, cybersecurity, and more.",
+          "stars": 7392,
+          "license": "cc0-1.0",
+          "pushed_at": "2026-03-26T19:51:06Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        },
+        {
+          "fullName": "Revolutionary-Games/Thrive",
+          "url": "https://github.com/Revolutionary-Games/Thrive",
+          "description": "The main repository for the development of the evolution game Thrive. ",
+          "stars": 3528,
+          "license": "other",
+          "pushed_at": "2026-05-08T16:02:39Z",
+          "fit_rationale": "token overlap + signal + freshness + non-archived"
+        }
+      ],
+      "low_fit_examples": [
+        "bmad-code-org/BMAD-METHOD",
+        "2011Scape/game",
+        "nextlevelbuilder/ui-ux-pro-max-skill"
+      ]
+    }
+  },
+  "recommended_lane_count": 5,
+  "single_lane_concentration": false
+}

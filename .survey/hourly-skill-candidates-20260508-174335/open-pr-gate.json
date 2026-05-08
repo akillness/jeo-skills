@@ -1,0 +1,13 @@
+{
+  "open_pr_count": 1,
+  "open_prs": [
+    {
+      "headRefName": "chore/hourly-survey-20260507-224544",
+      "number": 271,
+      "title": "chore: hourly survey run 20260507-224544 with integrity guard",
+      "url": "https://github.com/akillness/oh-my-skills/pull/271"
+    }
+  ],
+  "gate": "block_new_pr",
+  "provenance": "direct page retrieval"
+}

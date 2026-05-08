@@ -1,0 +1,27 @@
+{
+  "agentic-ai-skill": {
+    "stage0": "agentic ai skill in:name,description,readme stars:>10 archived:false",
+    "stage1": "agentic ai workflow skill stars:>200 pushed:>=2024-01-01 archived:false",
+    "stage2": "autonomous ai agent framework stars:>1000 pushed:>=2023-01-01 archived:false"
+  },
+  "web-frontend-skill": {
+    "stage0": "web frontend skill in:name,description,readme stars:>10 archived:false",
+    "stage1": "frontend workflow toolkit stars:>200 pushed:>=2024-01-01 archived:false",
+    "stage2": "react ui toolkit developer workflow stars:>1000 pushed:>=2023-01-01 archived:false"
+  },
+  "web-backend-skill": {
+    "stage0": "web backend skill in:name,description,readme stars:>10 archived:false",
+    "stage1": "backend framework workflow stars:>200 pushed:>=2024-01-01 archived:false",
+    "stage2": "api backend framework developer tooling stars:>1000 pushed:>=2023-01-01 archived:false"
+  },
+  "cli-open-source-skill": {
+    "stage0": "cli open source skill in:name,description,readme stars:>10 archived:false",
+    "stage1": "command line developer tool workflow stars:>200 pushed:>=2024-01-01 archived:false",
+    "stage2": "cli productivity tool open source stars:>1000 pushed:>=2023-01-01 archived:false"
+  },
+  "game-development-skill": {
+    "stage0": "game development skill in:name,description,readme stars:>10 archived:false",
+    "stage1": "game development toolkit workflow stars:>200 pushed:>=2024-01-01 archived:false",
+    "stage2": "game engine developer tools stars:>1000 pushed:>=2023-01-01 archived:false"
+  }
+}

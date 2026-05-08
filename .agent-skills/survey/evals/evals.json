@@ -255,6 +255,17 @@
         "Avoids creating a new PR when an open PR already exists",
         "Produces explicit blocker guidance when `no checks reported` is detected"
       ]
+    },
+    {
+      "id": 26,
+      "prompt": "validate hourly evidence.json before commit and fail when lane keys or recovery stages are incomplete",
+      "expected_output": "The workflow runs scripts/validate_hourly_evidence_contract.py against .survey/<slug>/evidence.json and blocks merge/package when required lane keys, stage1/stage2 recovery records, or metric integrity checks fail.",
+      "assertions": [
+        "Runs or references scripts/validate_hourly_evidence_contract.py on the current run evidence.json",
+        "Enforces required lane keys for all five mandatory hourly lanes",
+        "Fails on integrity errors such as kept_count > raw_count or raw_count==0 without no-results degraded cause",
+        "Requires recovery_queries to include both stage1 and stage2 entries per lane"
+      ]
     }
   ]
 }

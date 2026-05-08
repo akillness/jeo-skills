@@ -314,3 +314,4 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - `scripts/enrich_license_metadata.py` — reusable license enrichment utility for sparse/shape-shifted GitHub search payloads
 - `scripts/generate_checks_blocker_comment.py` — reusable PR blocker comment body generator for unattended runs
 - `scripts/validate_survey_artifacts.py` — artifact-contract validator for survey output folders
+- `scripts/validate_hourly_evidence_contract.py` — strict hourly evidence lane-key and metric-integrity validator
