@@ -1,0 +1,6 @@
+# Lane Health
+- agentic-ai-skill: raw=45, kept=8, median_stars=1, status=pass, causes=none
+- web-frontend-skill: raw=6, kept=1, median_stars=0.0, status=pass, causes=none
+- web-backend-skill: raw=1, kept=0, median_stars=7531, status=degraded, causes=stale
+- cli-open-source-skill: raw=1, kept=1, median_stars=33284, status=pass, causes=none
+- game-development-skill: raw=30, kept=1, median_stars=0.0, status=pass, causes=none

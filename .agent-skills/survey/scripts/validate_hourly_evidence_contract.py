@@ -48,9 +48,17 @@ for lane in REQUIRED_LANES:
     if zero_star_raw > raw_count:
         errors.append("{} zero_star_raw > raw_count".format(lane))
 
+    stages = set()
+    for item in recov:
+        if isinstance(item, dict):
+            st = item.get("stage")
+            if st:
+                stages.add(st)
+
+    if "stage-1" not in stages or "stage-2" not in stages:
+        errors.append("{} missing required recovery stages stage-1 and stage-2".format(lane))
+
     if raw_count == 0:
-        if len(recov) < 2:
-            errors.append("{} raw_count==0 but missing stage-1/2 recovery queries".format(lane))
         if "no-results" not in degraded_causes:
             errors.append("{} raw_count==0 but missing degraded cause no-results".format(lane))
 

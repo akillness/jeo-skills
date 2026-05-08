@@ -1,0 +1,99 @@
+{
+  "agentic-ai-skill": [
+    {
+      "fullName": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "stars": 7,
+      "license": "mit",
+      "pushed_at": "2026-05-08T12:14:42Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    },
+    {
+      "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "stars": 16,
+      "license": "apache-2.0",
+      "pushed_at": "2026-01-29T09:33:47Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    },
+    {
+      "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+      "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+      "stars": 6,
+      "license": "mit",
+      "pushed_at": "2026-04-09T12:21:43Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    },
+    {
+      "fullName": "VoDaiLocz/Enhance-Prompt",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "stars": 11,
+      "license": "mit",
+      "pushed_at": "2026-03-05T13:50:53Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    },
+    {
+      "fullName": "rhysmcneill/agentic-ai-library",
+      "url": "https://github.com/rhysmcneill/agentic-ai-library",
+      "stars": 4,
+      "license": "apache-2.0",
+      "pushed_at": "2026-04-30T13:42:47Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    },
+    {
+      "fullName": "addyosmani/agent-skills",
+      "url": "https://github.com/addyosmani/agent-skills",
+      "stars": 33968,
+      "license": "mit",
+      "pushed_at": "2026-05-07T01:33:06Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    },
+    {
+      "fullName": "Orchestra-Research/AI-Research-SKILLs",
+      "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+      "stars": 8064,
+      "license": "mit",
+      "pushed_at": "2026-04-28T05:09:27Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    },
+    {
+      "fullName": "mvanhorn/last30days-skill",
+      "url": "https://github.com/mvanhorn/last30days-skill",
+      "stars": 25127,
+      "license": "mit",
+      "pushed_at": "2026-05-02T18:30:22Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    }
+  ],
+  "web-frontend-skill": [
+    {
+      "fullName": "zarazhangrui/frontend-slides",
+      "url": "https://github.com/zarazhangrui/frontend-slides",
+      "stars": 16739,
+      "license": "mit",
+      "pushed_at": "2026-04-08T18:23:28Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    }
+  ],
+  "web-backend-skill": [],
+  "cli-open-source-skill": [
+    {
+      "fullName": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "stars": 33284,
+      "license": "apache-2.0",
+      "pushed_at": "2026-05-08T12:15:36Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    }
+  ],
+  "game-development-skill": [
+    {
+      "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "stars": 3,
+      "license": "mit",
+      "pushed_at": "2026-02-06T04:09:12Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh<=24m+signal-floor+licensed"
+    }
+  ]
+}
