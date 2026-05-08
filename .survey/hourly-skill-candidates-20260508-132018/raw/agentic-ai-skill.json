@@ -1,0 +1,842 @@
+[
+  {
+    "description": "Sysdig agentic AI skills and plugins",
+    "fullName": "sysdig/skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-05-06T13:35:15Z",
+    "stargazersCount": 47,
+    "updatedAt": "2026-05-08T03:08:14Z",
+    "url": "https://github.com/sysdig/skills"
+  },
+  {
+    "description": "Agentic AI skills for knowledge graph management",
+    "fullName": "iwe-org/skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-08T12:14:42Z",
+    "stargazersCount": 7,
+    "updatedAt": "2026-05-08T12:14:46Z",
+    "url": "https://github.com/iwe-org/skills"
+  },
+  {
+    "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+    "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-01-29T09:33:47Z",
+    "stargazersCount": 16,
+    "updatedAt": "2026-05-02T13:39:38Z",
+    "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill"
+  },
+  {
+    "description": "Static analysis engine for detecting malware in agentic AI skill files",
+    "fullName": "Ap6pack/malwar",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-08T22:08:53Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-04-08T22:18:55Z",
+    "url": "https://github.com/Ap6pack/malwar"
+  },
+  {
+    "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification — with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+    "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-09T12:21:43Z",
+    "stargazersCount": 6,
+    "updatedAt": "2026-05-08T10:44:55Z",
+    "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill"
+  },
+  {
+    "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+    "fullName": "VoDaiLocz/Enhance-Prompt",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-03-05T13:50:53Z",
+    "stargazersCount": 11,
+    "updatedAt": "2026-05-06T16:02:57Z",
+    "url": "https://github.com/VoDaiLocz/Enhance-Prompt"
+  },
+  {
+    "description": "This is a foundation to create effective Agentic AI Skills",
+    "fullName": "taisukeoe/agentic-ai-skills-creator",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-01-23T12:11:13Z",
+    "stargazersCount": 2,
+    "updatedAt": "2026-01-28T08:16:28Z",
+    "url": "https://github.com/taisukeoe/agentic-ai-skills-creator"
+  },
+  {
+    "description": "This repository serves as a library for showcasing how to adopt Agentic AI skills, and agent markdown files in a company-wide setting. ",
+    "fullName": "rhysmcneill/agentic-ai-library",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-04-30T13:42:47Z",
+    "stargazersCount": 4,
+    "updatedAt": "2026-05-07T19:52:19Z",
+    "url": "https://github.com/rhysmcneill/agentic-ai-library"
+  },
+  {
+    "description": "Agentic AI Skill Library",
+    "fullName": "gpimpler-too/skill-lib",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-05T03:35:57Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-04-05T03:36:01Z",
+    "url": "https://github.com/gpimpler-too/skill-lib"
+  },
+  {
+    "description": "MMM Agentic AI Skill",
+    "fullName": "ritikpatel/marketing-mix-modelling-skill",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-12T13:42:41Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-04-12T13:42:49Z",
+    "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill"
+  },
+  {
+    "description": "Agentic AI skill model",
+    "fullName": "thisrunsthru/Skill",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-12T21:33:21Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-03-12T21:33:24Z",
+    "url": "https://github.com/thisrunsthru/Skill"
+  },
+  {
+    "description": "Develop AI & Agentic AI skills",
+    "fullName": "DaRealPunjabi/AWS-AI-ML-Scholars",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-17T09:22:20Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-04-17T09:22:24Z",
+    "url": "https://github.com/DaRealPunjabi/AWS-AI-ML-Scholars"
+  },
+  {
+    "description": "Eclipse CSI Agentic AI Skills",
+    "fullName": "eclipse-csi/skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-16T09:04:05Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-04-16T09:04:09Z",
+    "url": "https://github.com/eclipse-csi/skills"
+  },
+  {
+    "description": "My favorite agentic AI skills",
+    "fullName": "manuelmauro/skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-09T11:10:28Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-04-09T11:10:38Z",
+    "url": "https://github.com/manuelmauro/skills"
+  },
+  {
+    "description": "My Agentic AI Skills Showcase 🟢",
+    "fullName": "Hedi-Bk/Agentic_AI_Space",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-11-26T06:55:18Z",
+    "stargazersCount": 1,
+    "updatedAt": "2025-11-26T09:07:39Z",
+    "url": "https://github.com/Hedi-Bk/Agentic_AI_Space"
+  },
+  {
+    "description": "My Agentic AI Skill creation task",
+    "fullName": "Aayesha55/SkillsRepo",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-01-11T08:45:02Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-01-11T08:45:05Z",
+    "url": "https://github.com/Aayesha55/SkillsRepo"
+  },
+  {
+    "description": "agentic ai skill craft hiring process",
+    "fullName": "muski630346/NO_TO_DSA",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-02T16:16:35Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-03-02T16:17:29Z",
+    "url": "https://github.com/muski630346/NO_TO_DSA"
+  },
+  {
+    "description": "Agentic AI skills for everyday use",
+    "fullName": "swport/skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-03-28T05:30:07Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-03-28T05:30:50Z",
+    "url": "https://github.com/swport/skills"
+  },
+  {
+    "description": "My collection of Agentic AI Skills",
+    "fullName": "asllani94/skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-18T20:40:10Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-03-18T20:40:14Z",
+    "url": "https://github.com/asllani94/skills"
+  },
+  {
+    "description": "Agentic AI Skills for developing Telegram Bots",
+    "fullName": "nzhulikov/telegram-bot-skills",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-03-07T12:56:41Z",
+    "stargazersCount": 1,
+    "updatedAt": "2026-03-18T10:15:22Z",
+    "url": "https://github.com/nzhulikov/telegram-bot-skills"
+  },
+  {
+    "description": "Agentic AI skills management, linting, and formatting",
+    "fullName": "manuelmauro/skilo",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-05-07T08:34:12Z",
+    "stargazersCount": 1,
+    "updatedAt": "2026-05-07T08:34:17Z",
+    "url": "https://github.com/manuelmauro/skilo"
+  },
+  {
+    "description": "Agentic AI skill for Metabase developers and users",
+    "fullName": "onsen-ai/metabase-skill",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-05-04T11:45:13Z",
+    "stargazersCount": 1,
+    "updatedAt": "2026-05-04T11:44:55Z",
+    "url": "https://github.com/onsen-ai/metabase-skill"
+  },
+  {
+    "description": "This is repository to capture the Agentic AI skills",
+    "fullName": "shelendrajain2004/AI-Agent",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-31T13:27:28Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-03-31T13:27:34Z",
+    "url": "https://github.com/shelendrajain2004/AI-Agent"
+  },
+  {
+    "description": "Agentic AI skills that I use on my personal projects",
+    "fullName": "vincentkelleher/skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-06T15:20:28Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-04-06T15:20:32Z",
+    "url": "https://github.com/vincentkelleher/skills"
+  },
+  {
+    "description": "agent AI skill",
+    "fullName": "michaelzalman/lawyerzhang",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-27T07:55:04Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-03-27T07:55:04Z",
+    "url": "https://github.com/michaelzalman/lawyerzhang"
+  },
+  {
+    "description": "Cloud-Native Agentic AI Skills for Claude.ai - Panaversity Hackathon III",
+    "fullName": "asadullah48/hackathon-iii-learnflow-skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-01-14T02:38:43Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-01-14T02:38:47Z",
+    "url": "https://github.com/asadullah48/hackathon-iii-learnflow-skills"
+  },
+  {
+    "description": "ReadShade's Agentic AI skills for Claude Code, Gemini CLI, etc.",
+    "fullName": "ReadShade/skills",
+    "isArchived": false,
+    "license": {
+      "key": "bsd-3-clause",
+      "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+      "url": "https://api.github.com/licenses/bsd-3-clause"
+    },
+    "pushedAt": "2026-03-03T09:33:31Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-03-03T09:37:04Z",
+    "url": "https://github.com/ReadShade/skills"
+  },
+  {
+    "description": "FPR2 virtual screening benchmark: agentic AI skill-guided vs naive protocols",
+    "fullName": "oslo-medchem/vs-benchmark-agentic-ai",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-03-26T20:41:31Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-03-26T20:41:35Z",
+    "url": "https://github.com/oslo-medchem/vs-benchmark-agentic-ai"
+  },
+  {
+    "description": "This repository stores the custom Agentic AI skills that I use.",
+    "fullName": "alexandreeberhardt/skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-03T06:01:27Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-04-03T06:01:31Z",
+    "url": "https://github.com/alexandreeberhardt/skills"
+  },
+  {
+    "description": "Agentic AI Skill for using yt-dlp to interact with Youtube",
+    "fullName": "kdcllc/youtube-skill",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-22T22:14:35Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-04-22T22:14:40Z",
+    "url": "https://github.com/kdcllc/youtube-skill"
+  },
+  {
+    "description": "Production-grade engineering skills for AI coding agents.",
+    "fullName": "addyosmani/agent-skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-07T01:33:06Z",
+    "stargazersCount": 34152,
+    "updatedAt": "2026-05-08T13:20:16Z",
+    "url": "https://github.com/addyosmani/agent-skills"
+  },
+  {
+    "description": "Comprehensive open-source library of AI research and engineering skills for any AI model. Package the skills and your claude code/codex/gemini agent will be an AI research agent with full horsepower. Maintained by Orchestra Research.",
+    "fullName": "Orchestra-Research/AI-Research-SKILLs",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-28T05:09:27Z",
+    "stargazersCount": 8066,
+    "updatedAt": "2026-05-08T12:45:35Z",
+    "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs"
+  },
+  {
+    "description": "PinchBench is a benchmarking system for evaluating LLM models as OpenClaw coding agents. Made with 🦀 by the humans at https://kilo.ai",
+    "fullName": "pinchbench/skill",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-06T14:50:42Z",
+    "stargazersCount": 1110,
+    "updatedAt": "2026-05-08T11:35:58Z",
+    "url": "https://github.com/pinchbench/skill"
+  },
+  {
+    "description": "TypeScript AI AI Function Calling Framework enhanced by compiler skills.",
+    "fullName": "wrtnlabs/agentica",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-27T05:58:49Z",
+    "stargazersCount": 1023,
+    "updatedAt": "2026-04-28T01:15:52Z",
+    "url": "https://github.com/wrtnlabs/agentica"
+  },
+  {
+    "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+    "fullName": "mvanhorn/last30days-skill",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-02T18:30:22Z",
+    "stargazersCount": 25131,
+    "updatedAt": "2026-05-08T13:11:20Z",
+    "url": "https://github.com/mvanhorn/last30days-skill"
+  },
+  {
+    "description": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+    "fullName": "coreyhaines31/marketingskills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-06T06:56:58Z",
+    "stargazersCount": 27293,
+    "updatedAt": "2026-05-08T13:11:18Z",
+    "url": "https://github.com/coreyhaines31/marketingskills"
+  },
+  {
+    "description": "Agent Skills to help developers using AI agents with Supabase",
+    "fullName": "supabase/agent-skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-06T15:00:00Z",
+    "stargazersCount": 2053,
+    "updatedAt": "2026-05-08T06:19:06Z",
+    "url": "https://github.com/supabase/agent-skills"
+  },
+  {
+    "description": "Universal skills loader for AI coding agents - npm i -g openskills",
+    "fullName": "numman-ali/openskills",
+    "isArchived": false,
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "url": ""
+    },
+    "pushedAt": "2026-01-18T13:09:50Z",
+    "stargazersCount": 10053,
+    "updatedAt": "2026-05-08T12:48:41Z",
+    "url": "https://github.com/numman-ali/openskills"
+  },
+  {
+    "description": "my curated agent skills library ",
+    "fullName": "MoizIbnYousaf/Ai-Agent-Skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-05T09:57:12Z",
+    "stargazersCount": 1048,
+    "updatedAt": "2026-05-08T07:24:05Z",
+    "url": "https://github.com/MoizIbnYousaf/Ai-Agent-Skills"
+  },
+  {
+    "description": "Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.",
+    "fullName": "github/awesome-copilot",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-08T11:05:43Z",
+    "stargazersCount": 32451,
+    "updatedAt": "2026-05-08T13:13:43Z",
+    "url": "https://github.com/github/awesome-copilot"
+  },
+  {
+    "description": "Security scanner for AI agents, MCP servers and agent skills.",
+    "fullName": "snyk/agent-scan",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-05-07T09:42:01Z",
+    "stargazersCount": 2364,
+    "updatedAt": "2026-05-08T04:48:56Z",
+    "url": "https://github.com/snyk/agent-scan"
+  },
+  {
+    "description": "A curated list of awesome LLM and AI Agent Skills, resources and tools for customising AI Agent workflows - that works with Claude Code, Codex, Gemini CLI and your custom AI Agents",
+    "fullName": "Prat011/awesome-llm-skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-22T10:46:57Z",
+    "stargazersCount": 1210,
+    "updatedAt": "2026-05-08T13:13:20Z",
+    "url": "https://github.com/Prat011/awesome-llm-skills"
+  },
+  {
+    "description": "Product Management skills framework built on battle-tested methods for Claude Code, Cowork, Codex, and AI agents.",
+    "fullName": "deanpeters/Product-Manager-Skills",
+    "isArchived": false,
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "url": ""
+    },
+    "pushedAt": "2026-04-28T17:32:07Z",
+    "stargazersCount": 4097,
+    "updatedAt": "2026-05-08T13:07:42Z",
+    "url": "https://github.com/deanpeters/Product-Manager-Skills"
+  },
+  {
+    "description": "Terraform & OpenTofu Skill for AI Agents - testing, modules, CI/CD, and production patterns",
+    "fullName": "antonbabenko/terraform-skill",
+    "isArchived": false,
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "url": ""
+    },
+    "pushedAt": "2026-04-22T18:01:23Z",
+    "stargazersCount": 1812,
+    "updatedAt": "2026-05-08T10:53:33Z",
+    "url": "https://github.com/antonbabenko/terraform-skill"
+  },
+  {
+    "description": "Give Cursor Agent an AI Team and Advanced Skills",
+    "fullName": "eastlondoner/vibe-tools",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2025-08-25T10:10:43Z",
+    "stargazersCount": 4759,
+    "updatedAt": "2026-05-08T01:02:52Z",
+    "url": "https://github.com/eastlondoner/vibe-tools"
+  },
+  {
+    "description": "fly ai agent skill",
+    "fullName": "alibaba-flyai/flyai-skill",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-21T11:20:56Z",
+    "stargazersCount": 623,
+    "updatedAt": "2026-05-08T11:52:26Z",
+    "url": "https://github.com/alibaba-flyai/flyai-skill"
+  },
+  {
+    "description": "Multi-modal Generative Media Skills for AI Agents (Claude Code, Cursor, Gemini CLI). High-quality image, video, and audio generation powered by muapi.ai.",
+    "fullName": "SamurAIGPT/Generative-Media-Skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-02T18:35:59Z",
+    "stargazersCount": 3196,
+    "updatedAt": "2026-05-08T13:09:18Z",
+    "url": "https://github.com/SamurAIGPT/Generative-Media-Skills"
+  },
+  {
+    "description": "SwiftUI agent skill for Claude Code, Codex, and other AI tools.",
+    "fullName": "twostraws/SwiftUI-Agent-Skill",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-20T08:02:42Z",
+    "stargazersCount": 3833,
+    "updatedAt": "2026-05-08T09:51:40Z",
+    "url": "https://github.com/twostraws/SwiftUI-Agent-Skill"
+  },
+  {
+    "description": "Repository for skills to assist AI coding agents with .NET and C#",
+    "fullName": "dotnet/skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-08T13:15:37Z",
+    "stargazersCount": 1624,
+    "updatedAt": "2026-05-08T12:42:03Z",
+    "url": "https://github.com/dotnet/skills"
+  },
+  {
+    "description": "The secure, validated skill registry for professional AI coding agents. Extend Antigravity, Claude Code, Cursor, Copilot and more with absolute confidence.",
+    "fullName": "tech-leads-club/agent-skills",
+    "isArchived": false,
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "url": ""
+    },
+    "pushedAt": "2026-04-28T17:42:25Z",
+    "stargazersCount": 2303,
+    "updatedAt": "2026-05-08T13:00:16Z",
+    "url": "https://github.com/tech-leads-club/agent-skills"
+  },
+  {
+    "description": "The definitive resource for Agent Skills - modular capabilities revolutionizing AI agent architecture",
+    "fullName": "skillmatic-ai/awesome-agent-skills",
+    "isArchived": false,
+    "license": {
+      "key": "cc0-1.0",
+      "name": "Creative Commons Zero v1.0 Universal",
+      "url": "https://api.github.com/licenses/cc0-1.0"
+    },
+    "pushedAt": "2026-04-22T21:08:51Z",
+    "stargazersCount": 561,
+    "updatedAt": "2026-05-06T09:33:31Z",
+    "url": "https://github.com/skillmatic-ai/awesome-agent-skills"
+  },
+  {
+    "description": "Helping AI Agent become an awesome practical hacker!",
+    "fullName": "yaklang/hack-skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-06T12:09:05Z",
+    "stargazersCount": 546,
+    "updatedAt": "2026-05-08T11:48:54Z",
+    "url": "https://github.com/yaklang/hack-skills"
+  },
+  {
+    "description": "Binance Skills Hub is an open skills marketplace that gives AI agents native access to crypto",
+    "fullName": "binance/binance-skills-hub",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-28T10:05:44Z",
+    "stargazersCount": 823,
+    "updatedAt": "2026-05-08T03:47:32Z",
+    "url": "https://github.com/binance/binance-skills-hub"
+  },
+  {
+    "description": "754 structured cybersecurity skills for AI agents · Mapped to 5 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND & NIST AI RMF · agentskills.io standard · Works with Claude Code, GitHub Copilot, Codex CLI, Cursor, Gemini CLI & 20+ platforms · 26 security domains · Apache 2.0",
+    "fullName": "mukul975/Anthropic-Cybersecurity-Skills",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-04-26T12:03:38Z",
+    "stargazersCount": 6110,
+    "updatedAt": "2026-05-08T12:59:20Z",
+    "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills"
+  },
+  {
+    "description": "Bridge Claude Code / Codex to IM platforms — chat with AI coding agents from Telegram, Discord, or Feishu/Lark.",
+    "fullName": "op7418/Claude-to-IM-skill",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-03-23T17:03:44Z",
+    "stargazersCount": 2455,
+    "updatedAt": "2026-05-08T12:56:58Z",
+    "url": "https://github.com/op7418/Claude-to-IM-skill"
+  },
+  {
+    "description": "Opinionated skills for AI coding agents to create stunning diagrams and visualizations directly in Markdown. These skills extend agent capabilities across diagram generation, data visualization, and technical documentation.",
+    "fullName": "markdown-viewer/skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-23T09:26:29Z",
+    "stargazersCount": 2391,
+    "updatedAt": "2026-05-08T12:38:30Z",
+    "url": "https://github.com/markdown-viewer/skills"
+  },
+  {
+    "description": "Official AI skills for GSAP. These skills teach AI coding agents how to correctly use GSAP (GreenSock Animation Platform), including best practices, common animation patterns, and plugin usage.",
+    "fullName": "greensock/gsap-skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-21T23:47:09Z",
+    "stargazersCount": 3147,
+    "updatedAt": "2026-05-08T12:34:37Z",
+    "url": "https://github.com/greensock/gsap-skills"
+  },
+  {
+    "description": "A collection of agent-optimized React Native skills for AI coding assistants.",
+    "fullName": "callstackincubator/agent-skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-28T03:25:43Z",
+    "stargazersCount": 1310,
+    "updatedAt": "2026-05-08T09:24:28Z",
+    "url": "https://github.com/callstackincubator/agent-skills"
+  },
+  {
+    "description": "🧑‍🎨 A collection of Golang agentic skills that works",
+    "fullName": "samber/cc-skills-golang",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-07T20:36:18Z",
+    "stargazersCount": 1566,
+    "updatedAt": "2026-05-08T10:11:03Z",
+    "url": "https://github.com/samber/cc-skills-golang"
+  },
+  {
+    "description": "An open-source AI assistant framework with skills and agent architecture",
+    "fullName": "openakita/openakita",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-05-07T14:12:52Z",
+    "stargazersCount": 1725,
+    "updatedAt": "2026-05-08T09:52:39Z",
+    "url": "https://github.com/openakita/openakita"
+  }
+]

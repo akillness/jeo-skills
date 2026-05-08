@@ -234,6 +234,16 @@
         "Uses a deterministic fallback order (`gh repo view` then one `gh api repos/<owner>/<repo> --jq .license.spdx_id`)",
         "Persists enrichment provenance so reviewers can distinguish indexed snippet vs direct page retrieval"
       ]
+    },
+    {
+      "id": 24,
+      "prompt": "run the hourly five-lane survey and prove recommendation claims are protected from token-only false positives",
+      "expected_output": "The survey runs `scripts/intent_fit_audit.py` on evidence, attaches lane-level flagged examples (no-overlap/personal/negation), and keeps those findings visible before final recommendation claims.",
+      "assertions": [
+        "Runs or references `scripts/intent_fit_audit.py` against the current run evidence.json",
+        "Publishes per-lane flagged examples with reason fields (no_overlap, personal, negation)",
+        "Uses audit output to support degraded or cautionary recommendation messaging when false positives are detected"
+      ]
     }
   ]
 }
