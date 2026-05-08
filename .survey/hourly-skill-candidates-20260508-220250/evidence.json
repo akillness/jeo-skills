@@ -1,0 +1,304 @@
+{
+  "slug": "hourly-skill-candidates-20260508-220250",
+  "generated_at_utc": "2026-05-08T22:04:41.571970Z",
+  "lanes": {
+    "agentic-ai-skill": {
+      "lane_query": "agentic ai skill",
+      "provenance": "indexed snippet",
+      "raw_count": 20,
+      "zero_star_raw": 11,
+      "median_stars_raw": 0,
+      "kept_count": 5,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "agentic ai skill pushed:>=2026-05-01 stars:>=3"
+        },
+        {
+          "stage": "stage-2",
+          "query": "agentic ai skill stars:>200 pushed:>=2025-01-01"
+        }
+      ],
+      "recommended": [
+        {
+          "fullName": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "stars": 7,
+          "license": "mit",
+          "pushed_at": "2026-05-08T12:14:42Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        },
+        {
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "stars": 16,
+          "license": "apache-2.0",
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        },
+        {
+          "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "stars": 6,
+          "license": "mit",
+          "pushed_at": "2026-04-09T12:21:43Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        },
+        {
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "stars": 11,
+          "license": "mit",
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        },
+        {
+          "fullName": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "stars": 4,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-30T13:42:47Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "fullName": "sysdig/skills",
+          "reason": "low-fit"
+        },
+        {
+          "fullName": "Ap6pack/malwar",
+          "reason": "low-fit"
+        },
+        {
+          "fullName": "onsen-ai/metabase-skill",
+          "reason": "low-fit"
+        }
+      ]
+    },
+    "web-frontend-skill": {
+      "lane_query": "web frontend skill",
+      "provenance": "indexed snippet",
+      "raw_count": 5,
+      "zero_star_raw": 4,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-signal",
+        "low-fit"
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web frontend skill pushed:>=2026-05-01 stars:>=3"
+        },
+        {
+          "stage": "stage-2",
+          "query": "web frontend skill stars:>200 pushed:>=2025-01-01"
+        }
+      ],
+      "recommended": [],
+      "filtered_examples": [
+        {
+          "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+          "reason": "low-fit"
+        },
+        {
+          "fullName": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "reason": "low-fit"
+        },
+        {
+          "fullName": "Hezekiah-Elisha/savannah_informatics_test",
+          "reason": "low-fit"
+        }
+      ]
+    },
+    "web-backend-skill": {
+      "lane_query": "web backend skill",
+      "provenance": "indexed snippet",
+      "raw_count": 20,
+      "zero_star_raw": 13,
+      "median_stars_raw": 0,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web backend skill pushed:>=2026-05-01 stars:>=3"
+        },
+        {
+          "stage": "stage-2",
+          "query": "web backend skill stars:>200 pushed:>=2025-01-01"
+        }
+      ],
+      "recommended": [
+        {
+          "fullName": "Gaku52/software-engineering-universe",
+          "url": "https://github.com/Gaku52/software-engineering-universe",
+          "stars": 5,
+          "license": "other",
+          "pushed_at": "2026-05-08T16:00:01Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "fullName": "SujalPatil21/Protfolio-Website",
+          "reason": "low-fit"
+        },
+        {
+          "fullName": "SujalPatil21/Portfolio-Website",
+          "reason": "low-fit"
+        },
+        {
+          "fullName": "samuelwbrown4/routebase-tms-app-backend",
+          "reason": "low-fit"
+        }
+      ]
+    },
+    "cli-open-source-skill": {
+      "lane_query": "cli open source skill",
+      "provenance": "indexed snippet",
+      "raw_count": 20,
+      "zero_star_raw": 8,
+      "median_stars_raw": 2,
+      "kept_count": 7,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "cli open source skill pushed:>=2026-05-01 stars:>=3"
+        },
+        {
+          "stage": "stage-2",
+          "query": "cli open source skill stars:>200 pushed:>=2025-01-01"
+        }
+      ],
+      "recommended": [
+        {
+          "fullName": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "stars": 33882,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-08T18:41:49Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        },
+        {
+          "fullName": "jeremylongshore/claude-code-plugins-plus-skills",
+          "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+          "stars": 2137,
+          "license": "mit",
+          "pushed_at": "2026-05-08T14:54:43Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        },
+        {
+          "fullName": "TerminalSkills/skills",
+          "url": "https://github.com/TerminalSkills/skills",
+          "stars": 45,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-04T12:55:24Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        },
+        {
+          "fullName": "shrek-abaper/sap-abap-cli",
+          "url": "https://github.com/shrek-abaper/sap-abap-cli",
+          "stars": 8,
+          "license": "mit",
+          "pushed_at": "2026-05-06T01:02:43Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        },
+        {
+          "fullName": "bawbel/bawbel-scanner",
+          "url": "https://github.com/bawbel/bawbel-scanner",
+          "stars": 3,
+          "license": "other",
+          "pushed_at": "2026-05-08T15:56:07Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        },
+        {
+          "fullName": "usetemi/skills",
+          "url": "https://github.com/usetemi/skills",
+          "stars": 3,
+          "license": "mit",
+          "pushed_at": "2026-05-08T21:15:52Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        },
+        {
+          "fullName": "prevu-cloud/prevu",
+          "url": "https://github.com/prevu-cloud/prevu",
+          "stars": 6,
+          "license": "mit",
+          "pushed_at": "2026-05-08T07:05:56Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "fullName": "garudust-org/garudust-agent",
+          "reason": "low-fit"
+        },
+        {
+          "fullName": "manu14357/zskills",
+          "reason": "low-fit"
+        },
+        {
+          "fullName": "coddy-project/coddy-agent",
+          "reason": "low-fit"
+        }
+      ]
+    },
+    "game-development-skill": {
+      "lane_query": "game development skill",
+      "provenance": "indexed snippet",
+      "raw_count": 20,
+      "zero_star_raw": 10,
+      "median_stars_raw": 1,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "game development skill pushed:>=2026-05-01 stars:>=3"
+        },
+        {
+          "stage": "stage-2",
+          "query": "game development skill stars:>200 pushed:>=2025-01-01"
+        }
+      ],
+      "recommended": [
+        {
+          "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "stars": 3,
+          "license": "mit",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "fit_rationale": "token overlap plus traction and freshness"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "fullName": "UnrealBlueprint/02_CrystalCavern",
+          "reason": "low-fit"
+        },
+        {
+          "fullName": "rohithnafeel/My-CS-Projects",
+          "reason": "low-fit"
+        },
+        {
+          "fullName": "Unengine/GameEngineAndGameMathTIL",
+          "reason": "low-fit"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "recommended_lane_count": 4,
+    "single_lane_concentration": false
+  }
+}

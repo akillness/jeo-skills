@@ -2,12 +2,12 @@
 import json
 import sys
 
-REQUIRED_LANES = [
-    "agentic-ai-skill",
-    "web-frontend-skill",
-    "web-backend-skill",
-    "cli-open-source-skill",
-    "game-development-skill",
+REQ_KEYS = [
+    'agentic-ai-skill',
+    'web-frontend-skill',
+    'web-backend-skill',
+    'cli-open-source-skill',
+    'game-development-skill'
 ]
 
 
@@ -16,56 +16,51 @@ def fail(msg):
     return 1
 
 
-def main(argv):
-    if len(argv) != 2:
-        return fail("usage: validate_hourly_evidence_contract.py <evidence.json>")
-    path = argv[1]
+def main():
+    if len(sys.argv) != 2:
+        return fail('usage: validate_hourly_evidence_contract.py <evidence.json>')
+    path = sys.argv[1]
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+      with open(path, 'r') as f:
+        data = json.load(f)
     except Exception as e:
-        return fail("failed to read json: {0}".format(e))
+      return fail('failed to load {}: {}'.format(path, e))
 
-    lanes = data.get("lanes")
+    lanes = data.get('lanes')
     if not isinstance(lanes, dict):
-        return fail("missing or invalid 'lanes' object")
+      return fail('missing lanes map')
 
     rc = 0
-    for lane in REQUIRED_LANES:
-        if lane not in lanes:
-            sys.stderr.write("missing lane: {0}\n".format(lane))
-            rc = 1
-            continue
-        node = lanes[lane]
-        rq = node.get("recovery_queries")
-        if not isinstance(rq, list):
-            sys.stderr.write("lane {0}: missing recovery_queries list\n".format(lane))
-            rc = 1
-            continue
-        stages = set()
-        for item in rq:
-            if isinstance(item, dict) and item.get("stage"):
-                stages.add(str(item.get("stage")))
-        if "stage-1" not in stages or "stage-2" not in stages:
-            sys.stderr.write("lane {0}: recovery_queries must include stage-1 and stage-2\n".format(lane))
-            rc = 1
+    for k in REQ_KEYS:
+      if k not in lanes:
+        sys.stderr.write('missing lane key: {}\n'.format(k))
+        rc = 1
+        continue
+      lane = lanes[k]
+      rq = lane.get('recovery_queries')
+      if not isinstance(rq, list):
+        sys.stderr.write('lane {} missing recovery_queries\n'.format(k)); rc = 1
+      else:
+        stages = set([x.get('stage') for x in rq if isinstance(x, dict)])
+        if 'stage-1' not in stages or 'stage-2' not in stages:
+          sys.stderr.write('lane {} must include both stage-1 and stage-2 recovery entries\n'.format(k)); rc = 1
 
-        raw = node.get("raw_count")
-        kept = node.get("kept_count")
-        if isinstance(raw, int) and isinstance(kept, int) and kept > raw:
-            sys.stderr.write("lane {0}: kept_count > raw_count\n".format(lane))
-            rc = 1
-
-        if raw == 0:
-            causes = node.get("degraded_causes") or []
-            if "no-results" not in causes:
-                sys.stderr.write("lane {0}: raw_count=0 requires degraded_causes to include no-results\n".format(lane))
-                rc = 1
-
+      raw_count = int(lane.get('raw_count') or 0)
+      kept_count = int(lane.get('kept_count') or 0)
+      zero_star = int(lane.get('zero_star_raw') or 0)
+      median = int(lane.get('median_stars_raw') or 0)
+      if kept_count > raw_count:
+        sys.stderr.write('lane {} integrity error: kept_count > raw_count\n'.format(k)); rc = 1
+      if raw_count == 0:
+        causes = lane.get('degraded_causes') or []
+        if 'no-results' not in causes:
+          sys.stderr.write('lane {} raw_count==0 requires degraded_causes include no-results\n'.format(k)); rc = 1
+        if zero_star != 0 or median != 0:
+          sys.stderr.write('lane {} raw_count==0 requires zero_star_raw=0 and median_stars_raw=0\n'.format(k)); rc = 1
     if rc == 0:
-        print("hourly evidence contract: OK")
+      sys.stdout.write('hourly evidence contract: PASS\n')
     return rc
 
 
-if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+if __name__ == '__main__':
+    sys.exit(main())

@@ -1,0 +1,5 @@
+{
+  "question": "What low-risk procedural hardening should this hourly run add?",
+  "answer": "Add strict evidence contract validator script and carry-forward blocker workflow on no-checks branches.",
+  "status": "fallback-generated"
+}
