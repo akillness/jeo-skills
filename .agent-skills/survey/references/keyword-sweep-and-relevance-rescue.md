@@ -25,3 +25,11 @@ If a lane remains `raw_count == 0`, set `lane_status: degraded` and include `deg
 
 ## Provenance labels
 Use validator-accepted labels directly in markdown: `indexed snippet`, `direct page retrieval`, `thin evidence`, `feed recovery`, `browser-rendered retrieval`, `browser-rendered indexed snippet`.
+
+## Reusable contract validation script
+Run `.agent-skills/survey/scripts/validate_hourly_evidence_contract.py .survey/<slug>/evidence.json` before PR creation to catch hard-gate violations early:
+- missing mandatory lanes
+- impossible metrics (`kept_count > raw_count`, `zero_star_raw > raw_count`)
+- `raw_count == 0` without stage-1/stage-2 recovery queries
+- missing `no-results` degraded cause when a lane remains empty
+- missing `single_lane_concentration: true` when `recommended_lane_count < 2`

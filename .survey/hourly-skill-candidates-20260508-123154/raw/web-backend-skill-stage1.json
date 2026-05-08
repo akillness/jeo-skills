@@ -1,0 +1,20 @@
+{
+  "query": "web backend skill stars:>5000 pushed:>2024-01-01",
+  "count": 1,
+  "items": [
+    {
+      "description": "A visual overview of useful skills to learn as a web developer",
+      "fullName": "andreasbm/web-skills",
+      "isArchived": false,
+      "license": {
+        "key": "other",
+        "name": "Other",
+        "url": ""
+      },
+      "pushedAt": "2024-04-19T03:22:28Z",
+      "stargazersCount": 7531,
+      "updatedAt": "2026-05-07T21:12:13Z",
+      "url": "https://github.com/andreasbm/web-skills"
+    }
+  ]
+}
