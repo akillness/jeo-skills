@@ -1,0 +1,31 @@
+{
+  "status": "fallback",
+  "reason": "graphify unavailable in cron environment",
+  "lanes": {
+    "agentic-ai-skill": {
+      "raw_count": 30,
+      "kept_count": 27,
+      "status": "pass"
+    },
+    "web-frontend-skill": {
+      "raw_count": 30,
+      "kept_count": 8,
+      "status": "pass"
+    },
+    "web-backend-skill": {
+      "raw_count": 30,
+      "kept_count": 1,
+      "status": "pass"
+    },
+    "cli-open-source-skill": {
+      "raw_count": 30,
+      "kept_count": 23,
+      "status": "pass"
+    },
+    "game-development-skill": {
+      "raw_count": 30,
+      "kept_count": 15,
+      "status": "pass"
+    }
+  }
+}

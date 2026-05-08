@@ -1,0 +1,1 @@
+/bin/bash: line 56: obsidian: command not found

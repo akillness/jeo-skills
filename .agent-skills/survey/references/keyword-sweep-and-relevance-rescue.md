@@ -1,35 +1,56 @@
-# Hourly Keyword Sweep and Relevance Rescue
+# Keyword Sweep and Relevance Rescue (Hourly)
 
-This reference defines deterministic survey-first discovery behavior for hourly maintenance.
+This reference defines deterministic behavior for the five mandatory hourly lanes:
 
-## Mandatory keyword lanes
 - agentic ai skill
 - web frontend skill
 - web backend skill
 - cli open source skill
 - game development skill
 
-## Recovery sequence
-1. primary query
-2. stage-1 recovery: add `stars:>5000 pushed:>2024-01-01`
-3. stage-2 recovery: add `stars:>1000 pushed:>2022-01-01`
+## Staged query policy
 
-If a lane remains `raw_count == 0`, set `lane_status: degraded` and include `degraded_causes: ["no-results"]` with exact attempted queries.
+1. stage-1: `<lane keyword> pushed:>=<window> archived:false`
+2. stage-2: `<lane keyword> stars:>5 pushed:>=<window> archived:false`
+3. stage-3: `<lane keyword> stars:>50 archived:false`
 
-## Promotion gates
-- lane-intent token overlap required
-- negation-aware guard (`no cli`, `without cli`, `non-cli`)
-- generic personal repo guard (`portfolio|homework|assignment|demo`)
-- metadata gate: non-archived, license present, freshness <= 24 months
-- signal floor: stars >= 3 unless explicit exception rationale
+All attempts must be stored in `recovery_queries` in `evidence.json`, including zero-result attempts.
 
-## Provenance labels
-Use validator-accepted labels directly in markdown: `indexed snippet`, `direct page retrieval`, `thin evidence`, `feed recovery`, `browser-rendered retrieval`, `browser-rendered indexed snippet`.
+## Recommendation-grade filters
 
-## Reusable contract validation script
-Run `.agent-skills/survey/scripts/validate_hourly_evidence_contract.py .survey/<slug>/evidence.json` before PR creation to catch hard-gate violations early:
-- missing mandatory lanes
-- impossible metrics (`kept_count > raw_count`, `zero_star_raw > raw_count`)
-- `raw_count == 0` without stage-1/stage-2 recovery queries
-- missing `no-results` degraded cause when a lane remains empty
-- missing `single_lane_concentration: true` when `recommended_lane_count < 2`
+A candidate is recommendation-grade only when all pass:
+
+- token overlap with lane intent (or explicit synonym rationale)
+- not negation-only intent (e.g., `no cli`, `without cli`)
+- not generic portfolio/demo/homework catch-all unless explicit exception rationale
+- signal floor met (`stars >= 3` by default)
+- freshness met (pushed within 24 months)
+- repository not archived
+- license resolved
+
+## Degraded status taxonomy
+
+Use `lane_status: degraded` with explicit causes from:
+
+- `no-results`
+- `license`
+- `stale`
+- `low-fit`
+- `archived`
+- `low-signal`
+
+When `raw_count == 0`, include `no-results` in `degraded_causes`.
+
+## Contract check
+
+Run:
+
+```bash
+python3 .agent-skills/survey/scripts/validate_hourly_evidence_contract.py .survey/<slug>/evidence.json
+```
+
+Then run strict survey validator:
+
+```bash
+python3 .agent-skills/survey/scripts/validate_survey_artifacts.py .survey/<slug> --platform-topic --require-provenance
+```
