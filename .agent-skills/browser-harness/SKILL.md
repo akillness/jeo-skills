@@ -12,7 +12,7 @@ compatibility: Requires Python 3.10+, Chrome with remote debugging enabled. Setu
 license: MIT
 metadata:
   tags: browser-harness, browser-automation, self-healing, cdp, chrome-devtools-protocol, llm-browser, agent-browser, domain-skills, claude-code
-  version: "1.0"
+  version: "1.0.1"
   source: https://github.com/browser-use/browser-harness
   platforms: Claude, Codex, OpenCode
 ---
@@ -214,6 +214,20 @@ result = client.run("Search for 'browser automation python' on Google and return
 5. Keep `agent_helpers.py` lean — split large helpers into domain-skill files once they become site-specific.
 6. For stateless HTML-only scraping, route to `scrapling` instead — CDP overhead is unnecessary.
 7. Verify task completion explicitly in your prompt ("confirm the form was submitted successfully") to trigger the agent's self-check.
+
+## Local patches
+
+The following fixes are applied to `src/browser_harness/helpers.py` in local installations to prevent image-handling errors with Claude's vision API:
+
+- **Added `io` import** — required for `io.BytesIO` usage in screenshot pipeline.
+- **`click_at_xy` debug overlay** — use `with Image.open(path) as src: img = src.copy()` to avoid holding a file lock on the PNG after opening.
+- **`capture_screenshot`** — decode CDP data to `bytes` first, resize in-memory via `io.BytesIO` (never write then re-read the file), then write once with `with open(path, "wb")`. Prevents double-write and avoids unclosed file handle errors that trigger Claude tool errors.
+
+Apply with:
+```bash
+cd ~/browser-harness && git apply <patch-file>
+# or edit src/browser_harness/helpers.py directly per the diff above
+```
 
 ## References
 
