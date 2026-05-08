@@ -1,0 +1,32 @@
+{
+  "slug": "hourly-skill-candidates-20260508-022538",
+  "graphify_mode": "fallback-refined",
+  "note": "graphify save-result failed; see graphify-save.err",
+  "lane_health": {
+    "agentic ai skill": {
+      "status": "pass",
+      "raw_count": 30,
+      "kept_count": 5
+    },
+    "web frontend skill": {
+      "status": "degraded",
+      "raw_count": 5,
+      "kept_count": 0
+    },
+    "web backend skill": {
+      "status": "degraded",
+      "raw_count": 1,
+      "kept_count": 0
+    },
+    "cli open source skill": {
+      "status": "pass",
+      "raw_count": 1,
+      "kept_count": 1
+    },
+    "game development skill": {
+      "status": "pass",
+      "raw_count": 30,
+      "kept_count": 1
+    }
+  }
+}

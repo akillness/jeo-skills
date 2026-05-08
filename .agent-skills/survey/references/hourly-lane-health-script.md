@@ -17,8 +17,9 @@ python3 .agent-skills/survey/scripts/compute_lane_health.py .survey/<slug>/evide
 - kept_count
 - zero_star_raw
 - median_stars_raw
-- lane_status
-- degraded_causes
+- status (supports `status` and legacy `lane_status` keys)
+- degraded_causes (auto-adds `no-results` when `raw_count == 0`)
+- integrity (`ok` or impossible-state flags such as `invalid-kept-gt-raw`)
 
 ## Usage Pattern
 1. Generate survey evidence.

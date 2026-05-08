@@ -40,6 +40,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/keyword-sweep-and-relevance-rescue.md](references/keyword-sweep-and-relevance-rescue.md)
 - [references/gh-search-empty-lane-recovery-playbook.md](references/gh-search-empty-lane-recovery-playbook.md)
 - [references/lane-quality-gate-utility.md](references/lane-quality-gate-utility.md)
+- [references/hourly-lane-health-script.md](references/hourly-lane-health-script.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.
