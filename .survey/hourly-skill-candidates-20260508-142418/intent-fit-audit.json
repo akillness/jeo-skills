@@ -1,0 +1,27 @@
+# Intent-Fit Audit
+- provenance: indexed snippet
+
+## agentic-ai-skill
+- kept_count: 6
+- raw_count: 30
+- flagged_count: 0
+
+## web-frontend-skill
+- kept_count: 1
+- raw_count: 5
+- flagged_count: 0
+
+## web-backend-skill
+- kept_count: 0
+- raw_count: 1
+- flagged_count: 0
+
+## cli-open-source-skill
+- kept_count: 1
+- raw_count: 1
+- flagged_count: 0
+
+## game-development-skill
+- kept_count: 3
+- raw_count: 30
+- flagged_count: 0

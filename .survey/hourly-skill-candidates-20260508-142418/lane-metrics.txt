@@ -1,0 +1,8 @@
+slug: hourly-skill-candidates-20260508-142418
+recommended_lane_count: 4
+single_lane_concentration: False
+agentic-ai-skill status=pass raw=30 kept=6 median=0.0 zero=19 causes=
+web-frontend-skill status=pass raw=5 kept=1 median=0 zero=4 causes=
+web-backend-skill status=degraded raw=1 kept=0 median=7532 zero=0 causes=low-fit,stale
+cli-open-source-skill status=pass raw=1 kept=1 median=33481 zero=0 causes=
+game-development-skill status=pass raw=30 kept=3 median=0.0 zero=18 causes=

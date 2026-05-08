@@ -46,6 +46,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/hourly-lane-query-generator.md](references/hourly-lane-query-generator.md)
 - [references/hourly-recommendation-quality-audit.md](references/hourly-recommendation-quality-audit.md)
 - [references/intent-fit-audit.md](references/intent-fit-audit.md)
+- [references/open-pr-gate-assessment.md](references/open-pr-gate-assessment.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.
@@ -196,6 +197,7 @@ Required keyword families:
 - `game development skill`
 
 Execution rules:
+- Before any new branch/PR, run `python3 .agent-skills/survey/scripts/assess_open_pr_gate.py <owner/repo>` and persist JSON output for deterministic open-PR triage.
 - Use a recency-first query window for hourly runs: default to `pushed` within the last 24h~7d, then widen only through documented recovery stages.
 - Keep the raw keyword scan as discovery evidence (usually `browser-rendered retrieval` when done through search pages).
 - Apply the Step 4.5 relevance gate before keeping any candidate.

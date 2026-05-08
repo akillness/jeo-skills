@@ -1,0 +1,174 @@
+{
+  "recommended": [
+    {
+      "lane": "agentic-ai-skill",
+      "description": "Sysdig agentic AI skills and plugins",
+      "fullName": "sysdig/skills",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-05-06T13:35:15Z",
+      "stargazersCount": 47,
+      "updatedAt": "2026-05-08T03:08:14Z",
+      "url": "https://github.com/sysdig/skills",
+      "fit_rationale": "token-overlap+signal+freshness",
+      "license_normalized": ""
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "description": "Agentic AI skills for knowledge graph management",
+      "fullName": "iwe-org/skills",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-05-08T12:14:42Z",
+      "stargazersCount": 7,
+      "updatedAt": "2026-05-08T12:14:46Z",
+      "url": "https://github.com/iwe-org/skills",
+      "fit_rationale": "token-overlap+signal+freshness",
+      "license_normalized": "mit"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+      "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "isArchived": false,
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "pushedAt": "2026-01-29T09:33:47Z",
+      "stargazersCount": 16,
+      "updatedAt": "2026-05-02T13:39:38Z",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "fit_rationale": "token-overlap+signal+freshness",
+      "license_normalized": "apache-2.0"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification \u2014 with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+      "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-04-09T12:21:43Z",
+      "stargazersCount": 6,
+      "updatedAt": "2026-05-08T10:44:55Z",
+      "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+      "fit_rationale": "token-overlap+signal+freshness",
+      "license_normalized": "mit"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions \u2014 like having a prompt engineer on your team.",
+      "fullName": "VoDaiLocz/Enhance-Prompt",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-03-05T13:50:53Z",
+      "stargazersCount": 11,
+      "updatedAt": "2026-05-06T16:02:57Z",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "fit_rationale": "token-overlap+signal+freshness",
+      "license_normalized": "mit"
+    },
+    {
+      "lane": "web-frontend-skill",
+      "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+      "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-03-30T14:38:08Z",
+      "stargazersCount": 12,
+      "updatedAt": "2026-04-02T16:29:32Z",
+      "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+      "fit_rationale": "token-overlap+signal+freshness",
+      "license_normalized": ""
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "description": "\ud83c\udfa8 Local-first, open-source alternative to Anthropic's Claude Design. \u26a1 19 Skills \u00b7 \u2728 71 brand-grade Design Systems \ud83d\uddbc Generate web \u00b7 desktop \u00b7 mobile prototypes \u00b7 slides \u00b7 images \u00b7 videos \u00b7 HyperFrames \ud83d\udce6 Sandboxed preview \u00b7 HTML/PDF/PPTX/MP4 export \ud83e\udd16 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+      "fullName": "nexu-io/open-design",
+      "isArchived": false,
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "url": "https://api.github.com/licenses/apache-2.0"
+      },
+      "pushedAt": "2026-05-08T14:21:19Z",
+      "stargazersCount": 33481,
+      "updatedAt": "2026-05-08T14:25:26Z",
+      "url": "https://github.com/nexu-io/open-design",
+      "fit_rationale": "token-overlap+signal+freshness",
+      "license_normalized": "apache-2.0"
+    },
+    {
+      "lane": "game-development-skill",
+      "description": "I am strengthening my C# game development skills day by day.",
+      "fullName": "rohithnafeel/My-CS-Projects",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-02-26T03:56:34Z",
+      "stargazersCount": 20,
+      "updatedAt": "2026-03-30T05:08:21Z",
+      "url": "https://github.com/rohithnafeel/My-CS-Projects",
+      "fit_rationale": "token-overlap+signal+freshness",
+      "license_normalized": ""
+    },
+    {
+      "lane": "game-development-skill",
+      "description": "Curated collection of resources, books, courses, tutorials, and YouTube channels, to help you master game development skills.",
+      "fullName": "teamgravitydev/learning-resources.md",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2024-11-05T01:26:02Z",
+      "stargazersCount": 5,
+      "updatedAt": "2026-04-23T19:15:55Z",
+      "url": "https://github.com/teamgravitydev/learning-resources.md",
+      "fit_rationale": "token-overlap+signal+freshness",
+      "license_normalized": ""
+    },
+    {
+      "lane": "game-development-skill",
+      "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+      "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-02-06T04:09:12Z",
+      "stargazersCount": 3,
+      "updatedAt": "2026-04-14T18:39:35Z",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "fit_rationale": "token-overlap+signal+freshness",
+      "license_normalized": "mit"
+    }
+  ]
+}

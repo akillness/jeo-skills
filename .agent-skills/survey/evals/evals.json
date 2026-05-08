@@ -244,6 +244,17 @@
         "Publishes per-lane flagged examples with reason fields (no_overlap, personal, negation)",
         "Uses audit output to support degraded or cautionary recommendation messaging when false positives are detected"
       ]
+    },
+    {
+      "id": 25,
+      "prompt": "hourly cron run starts while an older PR is still open and has no checks reported; keep cadence without creating duplicate PRs",
+      "expected_output": "The workflow runs `scripts/assess_open_pr_gate.py`, records JSON triage, skips new PR creation when open_pr_count>=1, and posts a deterministic blocker status tied to the existing PR branch.",
+      "assertions": [
+        "Runs or references `scripts/assess_open_pr_gate.py` before branch/PR creation",
+        "Persists open-PR triage output as an artifact in `.survey/{slug}/`",
+        "Avoids creating a new PR when an open PR already exists",
+        "Produces explicit blocker guidance when `no checks reported` is detected"
+      ]
     }
   ]
 }
