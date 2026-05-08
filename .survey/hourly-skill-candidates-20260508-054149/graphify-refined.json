@@ -1,0 +1,42 @@
+{
+  "status": "fallback",
+  "reason": "graphify query path not executed in cron environment; preserving deterministic fallback",
+  "nodes": [
+    {
+      "id": "agentic-ai-skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 30,
+      "kept_count": 6
+    },
+    {
+      "id": "web-frontend-skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 5,
+      "kept_count": 1
+    },
+    {
+      "id": "web-backend-skill",
+      "type": "lane",
+      "status": "degraded",
+      "raw_count": 1,
+      "kept_count": 0
+    },
+    {
+      "id": "cli-open-source-skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 1,
+      "kept_count": 1
+    },
+    {
+      "id": "game-development-skill",
+      "type": "lane",
+      "status": "pass",
+      "raw_count": 30,
+      "kept_count": 3
+    }
+  ],
+  "single_lane_concentration": false
+}
