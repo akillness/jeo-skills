@@ -266,6 +266,16 @@
         "Fails on integrity errors such as kept_count > raw_count or raw_count==0 without no-results degraded cause",
         "Requires recovery_queries to include both stage1 and stage2 entries per lane"
       ]
+    },
+    {
+      "id": 27,
+      "prompt": "run hourly five-lane survey and produce a reviewer-ready deduplicated recommendation summary without mutating raw evidence",
+      "expected_output": "The workflow runs scripts/dedupe_hourly_recommendations.py on .survey/<slug>/evidence.json, outputs raw-vs-dedup counts, and preserves lane-level discovery evidence unchanged.",
+      "assertions": [
+        "Runs or references scripts/dedupe_hourly_recommendations.py against current evidence.json",
+        "Publishes recommended_raw_count and recommended_dedup_count for reviewer auditability",
+        "Keeps lane-level raw discovery evidence in evidence.json unchanged while adding a separate dedup artifact"
+      ]
     }
   ]
 }

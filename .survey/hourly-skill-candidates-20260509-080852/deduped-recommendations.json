@@ -1,0 +1,136 @@
+{
+  "recommended_raw_count": 13,
+  "recommended_dedup_count": 13,
+  "deduped_recommendations": [
+    {
+      "fullName": "addyosmani/agent-skills",
+      "url": "https://github.com/addyosmani/agent-skills",
+      "stars": 35259,
+      "license": "mit",
+      "pushed_at": "2026-05-07T01:33:06Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "agentic-ai-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "stars": 33921,
+      "license": "apache-2.0",
+      "pushed_at": "2026-05-08T18:41:49Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "cli-open-source-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "coreyhaines31/marketingskills",
+      "url": "https://github.com/coreyhaines31/marketingskills",
+      "stars": 27373,
+      "license": "mit",
+      "pushed_at": "2026-05-06T06:56:58Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "agentic-ai-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "mvanhorn/last30days-skill",
+      "url": "https://github.com/mvanhorn/last30days-skill",
+      "stars": 25182,
+      "license": "mit",
+      "pushed_at": "2026-05-02T18:30:22Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "agentic-ai-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "jeremylongshore/claude-code-plugins-plus-skills",
+      "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+      "stars": 2137,
+      "license": "mit",
+      "pushed_at": "2026-05-08T14:54:43Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "cli-open-source-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "supabase/agent-skills",
+      "url": "https://github.com/supabase/agent-skills",
+      "stars": 2056,
+      "license": "mit",
+      "pushed_at": "2026-05-06T15:00:00Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "agentic-ai-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "pinchbench/skill",
+      "url": "https://github.com/pinchbench/skill",
+      "stars": 1111,
+      "license": "mit",
+      "pushed_at": "2026-05-08T14:54:47Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "agentic-ai-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "ceilf6/FrontAgent",
+      "url": "https://github.com/ceilf6/FrontAgent",
+      "stars": 94,
+      "license": "mit",
+      "pushed_at": "2026-05-07T13:28:36Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "web-frontend-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "TerminalSkills/skills",
+      "url": "https://github.com/TerminalSkills/skills",
+      "stars": 45,
+      "license": "apache-2.0",
+      "pushed_at": "2026-05-04T12:55:24Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "cli-open-source-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "shrek-abaper/sap-abap-cli",
+      "url": "https://github.com/shrek-abaper/sap-abap-cli",
+      "stars": 8,
+      "license": "mit",
+      "pushed_at": "2026-05-06T01:02:43Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "cli-open-source-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "viktor-ferenczi/se-dev-skills",
+      "url": "https://github.com/viktor-ferenczi/se-dev-skills",
+      "stars": 5,
+      "license": "mit",
+      "pushed_at": "2026-05-06T23:49:32Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "game-development-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "Gaku52/software-engineering-universe",
+      "url": "https://github.com/Gaku52/software-engineering-universe",
+      "stars": 5,
+      "license": "other",
+      "pushed_at": "2026-05-08T16:00:01Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "web-backend-skill",
+      "also_seen_in_lanes": []
+    },
+    {
+      "fullName": "bawbel/bawbel-scanner",
+      "url": "https://github.com/bawbel/bawbel-scanner",
+      "stars": 3,
+      "license": "other",
+      "pushed_at": "2026-05-08T15:56:07Z",
+      "fit_rationale": "token-overlap + signal/freshness/license pass",
+      "first_lane": "cli-open-source-skill",
+      "also_seen_in_lanes": []
+    }
+  ]
+}

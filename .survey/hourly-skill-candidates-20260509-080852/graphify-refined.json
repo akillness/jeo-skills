@@ -1,0 +1,33 @@
+{
+  "slug": "hourly-skill-candidates-20260509-080852",
+  "recommended_lane_count": 5,
+  "single_lane_concentration": false,
+  "lanes": {
+    "agentic-ai-skill": {
+      "status": "pass",
+      "kept": 20,
+      "raw": 20
+    },
+    "web-frontend-skill": {
+      "status": "pass",
+      "kept": 1,
+      "raw": 20
+    },
+    "web-backend-skill": {
+      "status": "pass",
+      "kept": 1,
+      "raw": 20
+    },
+    "cli-open-source-skill": {
+      "status": "pass",
+      "kept": 7,
+      "raw": 20
+    },
+    "game-development-skill": {
+      "status": "pass",
+      "kept": 1,
+      "raw": 20
+    }
+  },
+  "fallback": "graphify-refined generated from evidence.json"
+}

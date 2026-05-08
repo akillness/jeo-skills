@@ -1,0 +1,11 @@
+Error: unknown command "note" for "obsidian-cli"
+
+Did you mean this?
+	move
+
+Run 'obsidian-cli --help' for usage.
+Whoops. There was an error while executing your CLI 'unknown command "note" for "obsidian-cli"
+
+Did you mean this?
+	move
+'
