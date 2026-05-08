@@ -19,4 +19,4 @@
 
 - 2026-05-08T08:59:59.029023Z hourly-skill-candidates-20260508-085650: artifacts + lane query generator update
 
-- 2026-05-08T11:10:42.637771+00:00 | hourly survey hourly-skill-candidates-20260508-200926 | artifacts + substantive script improvement | no-checks merge block
+- 2026-05-08T11:10:42.637771+00:00 | hourly survey hourly-skill-candidates-20260508-200926 | artifacts + substantive script improvement | no-checks merge block- 2026-05-08T19:55:35Z | hourly-skill-candidates-20260508-195231 | blocked merge(no checks reported)
