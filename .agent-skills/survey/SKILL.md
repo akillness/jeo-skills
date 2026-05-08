@@ -41,6 +41,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/gh-search-empty-lane-recovery-playbook.md](references/gh-search-empty-lane-recovery-playbook.md)
 - [references/lane-quality-gate-utility.md](references/lane-quality-gate-utility.md)
 - [references/hourly-lane-health-script.md](references/hourly-lane-health-script.md)
+- [references/hourly-run-report-generator.md](references/hourly-run-report-generator.md)
 - [references/checks-blocker-comment-template.md](references/checks-blocker-comment-template.md)
 
 ## When to use this skill

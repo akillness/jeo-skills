@@ -14,3 +14,5 @@
 - 2026-04-27 01:54:00Z hourly run: added rolling-cutoff ratchet note and linked survey/RTK/graphify artifacts (including graphify links-key fallback)
 
 - 2026-05-08T01:23:20.059612Z | hourly survey hourly-skill-candidates-20260508-012212 | lane-health script ratchet | no-checks merge block
+
+- 2026-05-08: hourly survey update hourly-skill-candidates-20260508-165149 (artifacts + run-report generator)
