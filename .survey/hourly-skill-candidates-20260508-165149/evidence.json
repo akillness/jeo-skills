@@ -2,7 +2,7 @@
   "slug": "hourly-skill-candidates-20260508-165149",
   "generated_at_utc": "2026-05-08T07:52:49.456726Z",
   "lanes": {
-    "agentic ai skill": {
+    "agentic-ai-skill": {
       "lane_status": "pass",
       "degraded_causes": [],
       "provenance": "indexed snippet",
@@ -131,9 +131,13 @@
             "low-signal"
           ]
         }
+      ],
+      "recovery_queries": [
+        "agentic ai skill stars:>5000 pushed:>2024-01-01",
+        "agentic ai skill stars:>1000 pushed:>2023-01-01"
       ]
     },
-    "web frontend skill": {
+    "web-frontend-skill": {
       "lane_status": "degraded",
       "degraded_causes": [
         "license",
@@ -216,9 +220,13 @@
             "low-signal"
           ]
         }
+      ],
+      "recovery_queries": [
+        "web frontend skill stars:>5000 pushed:>2024-01-01",
+        "web frontend skill stars:>1000 pushed:>2023-01-01"
       ]
     },
-    "web backend skill": {
+    "web-backend-skill": {
       "lane_status": "degraded",
       "degraded_causes": [
         "stale"
@@ -248,9 +256,13 @@
             "stale"
           ]
         }
+      ],
+      "recovery_queries": [
+        "web backend skill stars:>5000 pushed:>2024-01-01",
+        "web backend skill stars:>1000 pushed:>2023-01-01"
       ]
     },
-    "cli open source skill": {
+    "cli-open-source-skill": {
       "lane_status": "pass",
       "degraded_causes": [],
       "provenance": "feed recovery",
@@ -276,9 +288,13 @@
           "fit_rationale": "token overlap + signal floor + active + non-archived + known license"
         }
       ],
-      "filtered_examples": []
+      "filtered_examples": [],
+      "recovery_queries": [
+        "cli open source skill stars:>5000 pushed:>2024-01-01",
+        "cli open source skill stars:>1000 pushed:>2023-01-01"
+      ]
     },
-    "game development skill": {
+    "game-development-skill": {
       "lane_status": "pass",
       "degraded_causes": [],
       "provenance": "indexed snippet",
@@ -367,6 +383,10 @@
             "stale"
           ]
         }
+      ],
+      "recovery_queries": [
+        "game development skill stars:>5000 pushed:>2024-01-01",
+        "game development skill stars:>1000 pushed:>2023-01-01"
       ]
     }
   },
