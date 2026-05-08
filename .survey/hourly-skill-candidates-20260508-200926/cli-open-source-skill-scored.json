@@ -1,0 +1,20 @@
+{
+  "lane": "cli-open-source-skill",
+  "raw_count": 1,
+  "zero_star_raw": 0,
+  "median_stars_raw": 33208,
+  "kept_count": 1,
+  "lane_status": "pass",
+  "degraded_causes": [],
+  "recommended": [
+    {
+      "fullName": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "stars": 33208,
+      "license": "apache-2.0",
+      "pushed_at": "2026-05-08T11:05:56Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+    }
+  ],
+  "low_fit_examples": []
+}

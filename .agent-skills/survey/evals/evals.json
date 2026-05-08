@@ -224,6 +224,16 @@
         "Emits lane metrics (`raw_count`, `kept_count`, `zero_star_raw`, `median_stars_raw`) with integrity constraints",
         "Reports `lane_status` plus taxonomy-bound `degraded_causes` and sample low-fit evidence"
       ]
+    },
+    {
+      "id": 23,
+      "prompt": "run the hourly five-lane survey where GitHub search returns sparse or shape-shifted license fields; keep recommendation gating deterministic",
+      "expected_output": "The survey normalizes license fields from search payloads, then enriches unresolved licenses with `gh repo view` followed by one `gh api` fallback before final lane classification.",
+      "assertions": [
+        "Normalizes license from payload keys (`spdx_id|spdxId|key|name`) before fallback calls",
+        "Uses a deterministic fallback order (`gh repo view` then one `gh api repos/<owner>/<repo> --jq .license.spdx_id`)",
+        "Persists enrichment provenance so reviewers can distinguish indexed snippet vs direct page retrieval"
+      ]
     }
   ]
 }

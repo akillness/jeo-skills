@@ -1,0 +1,46 @@
+{
+  "lane": "game-development-skill",
+  "raw_count": 30,
+  "zero_star_raw": 18,
+  "median_stars_raw": 0.0,
+  "kept_count": 1,
+  "lane_status": "pass",
+  "degraded_causes": [],
+  "recommended": [
+    {
+      "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "stars": 3,
+      "license": "mit",
+      "pushed_at": "2026-02-06T04:09:12Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+    }
+  ],
+  "low_fit_examples": [
+    {
+      "fullName": "UnrealBlueprint/02_CrystalCavern",
+      "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+      "reason": "stale"
+    },
+    {
+      "fullName": "rohithnafeel/My-CS-Projects",
+      "url": "https://github.com/rohithnafeel/My-CS-Projects",
+      "reason": "license"
+    },
+    {
+      "fullName": "Unengine/GameEngineAndGameMathTIL",
+      "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+      "reason": "stale"
+    },
+    {
+      "fullName": "SMDS-Studio/Building-a-New-creative-Pong-",
+      "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+      "reason": "stale"
+    },
+    {
+      "fullName": "kkh9700/GameDevelopmentSkills-Individual",
+      "url": "https://github.com/kkh9700/GameDevelopmentSkills-Individual",
+      "reason": "low-signal,stale,license"
+    }
+  ]
+}

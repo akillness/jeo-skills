@@ -1,0 +1,19 @@
+{
+  "lane": "web-backend-skill",
+  "raw_count": 1,
+  "zero_star_raw": 0,
+  "median_stars_raw": 7531,
+  "kept_count": 0,
+  "lane_status": "degraded",
+  "degraded_causes": [
+    "stale"
+  ],
+  "recommended": [],
+  "low_fit_examples": [
+    {
+      "fullName": "andreasbm/web-skills",
+      "url": "https://github.com/andreasbm/web-skills",
+      "reason": "stale"
+    }
+  ]
+}

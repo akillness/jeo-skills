@@ -15,3 +15,5 @@
 - [hourly-skill-candidates-20260506-101924](hourly/hourly-skill-candidates-20260506-101924.md)
 
 - [hourly-skill-candidates-20260508-012212 lane-health script ratchet](queries/2026-05-08-hourly-survey-hourly-skill-candidates-20260508-012212-lane-health-script.md)
+
+- [hourly-skill-candidates-20260508-200926](hourly/hourly-skill-candidates-20260508-200926.md)

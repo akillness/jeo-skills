@@ -305,7 +305,9 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - `references/output-templates-and-validator.md` — exact file templates plus validator usage for `.survey/{slug}/`
 - `references/keyword-sweep-and-relevance-rescue.md` — required five-keyword sweep and noisy-query rescue gate for recurring repo-maintenance loops
 - `references/lane-quality-gate-utility.md` — deterministic lane scoring utility and output contract for hourly runs
+- `references/license-enrichment-fallback.md` — license metadata fallback flow (search payload -> gh repo view -> gh api) for recommendation-grade gating
 - `references/checks-blocker-comment-template.md` — deterministic ASCII blocker comment generation flow for no-checks gate failures
 - `scripts/lane_quality_gate.py` — reusable lane-level quality gate implementation
+- `scripts/enrich_license_metadata.py` — reusable license enrichment utility for sparse/shape-shifted GitHub search payloads
 - `scripts/generate_checks_blocker_comment.py` — reusable PR blocker comment body generator for unattended runs
 - `scripts/validate_survey_artifacts.py` — artifact-contract validator for survey output folders

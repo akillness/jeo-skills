@@ -1,0 +1,41 @@
+{
+  "lane": "web-frontend-skill",
+  "raw_count": 5,
+  "zero_star_raw": 4,
+  "median_stars_raw": 0,
+  "kept_count": 0,
+  "lane_status": "degraded",
+  "degraded_causes": [
+    "license",
+    "stale",
+    "low-signal"
+  ],
+  "recommended": [],
+  "low_fit_examples": [
+    {
+      "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+      "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+      "reason": "license"
+    },
+    {
+      "fullName": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+      "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+      "reason": "low-signal,stale"
+    },
+    {
+      "fullName": "Hezekiah-Elisha/savannah_informatics_test",
+      "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+      "reason": "low-signal,license"
+    },
+    {
+      "fullName": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+      "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+      "reason": "low-signal,license"
+    },
+    {
+      "fullName": "sonhaicoder/web-taste-skill",
+      "url": "https://github.com/sonhaicoder/web-taste-skill",
+      "reason": "low-signal"
+    }
+  ]
+}

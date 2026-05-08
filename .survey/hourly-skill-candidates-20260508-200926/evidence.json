@@ -1,0 +1,293 @@
+{
+  "slug": "hourly-skill-candidates-20260508-200926",
+  "generated_at": "2026-05-08T11:09:49.056554Z",
+  "source": "gh search repos",
+  "provenance_labels": [
+    "indexed snippet",
+    "direct page retrieval"
+  ],
+  "lanes": {
+    "agentic-ai-skill": {
+      "lane": "agentic-ai-skill",
+      "raw_count": 30,
+      "zero_star_raw": 19,
+      "median_stars_raw": 0.0,
+      "kept_count": 5,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recommended": [
+        {
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "stars": 16,
+          "license": "apache-2.0",
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+        },
+        {
+          "fullName": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "stars": 7,
+          "license": "mit",
+          "pushed_at": "2026-04-06T01:48:47Z",
+          "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+        },
+        {
+          "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "stars": 6,
+          "license": "mit",
+          "pushed_at": "2026-04-09T12:21:43Z",
+          "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+        },
+        {
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "stars": 11,
+          "license": "mit",
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+        },
+        {
+          "fullName": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "stars": 4,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-30T13:42:47Z",
+          "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+        }
+      ],
+      "low_fit_examples": [
+        {
+          "fullName": "sysdig/skills",
+          "url": "https://github.com/sysdig/skills",
+          "reason": "license"
+        },
+        {
+          "fullName": "Ap6pack/malwar",
+          "url": "https://github.com/Ap6pack/malwar",
+          "reason": "low-signal"
+        },
+        {
+          "fullName": "taisukeoe/agentic-ai-skills-creator",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+          "reason": "low-signal"
+        },
+        {
+          "fullName": "gpimpler-too/skill-lib",
+          "url": "https://github.com/gpimpler-too/skill-lib",
+          "reason": "low-signal,license"
+        },
+        {
+          "fullName": "ritikpatel/marketing-mix-modelling-skill",
+          "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill",
+          "reason": "low-signal,license"
+        }
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "agentic ai skill stars:>5000",
+          "result_count": 0
+        },
+        {
+          "stage": "stage-2",
+          "query": "agentic ai skill pushed:>2024-01-01 stars:>100",
+          "result_count": 0
+        }
+      ],
+      "selected_stage": "stage-0",
+      "provenance": "indexed snippet",
+      "raw_query": "agentic ai skill"
+    },
+    "web-frontend-skill": {
+      "lane": "web-frontend-skill",
+      "raw_count": 5,
+      "zero_star_raw": 4,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "license",
+        "stale",
+        "low-signal"
+      ],
+      "recommended": [],
+      "low_fit_examples": [
+        {
+          "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "reason": "license"
+        },
+        {
+          "fullName": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "reason": "low-signal,stale"
+        },
+        {
+          "fullName": "Hezekiah-Elisha/savannah_informatics_test",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+          "reason": "low-signal,license"
+        },
+        {
+          "fullName": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "reason": "low-signal,license"
+        },
+        {
+          "fullName": "sonhaicoder/web-taste-skill",
+          "url": "https://github.com/sonhaicoder/web-taste-skill",
+          "reason": "low-signal"
+        }
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web frontend skill stars:>5000",
+          "result_count": 0
+        },
+        {
+          "stage": "stage-2",
+          "query": "web frontend skill pushed:>2024-01-01 stars:>100",
+          "result_count": 0
+        }
+      ],
+      "selected_stage": "stage-0",
+      "provenance": "indexed snippet",
+      "raw_query": "web frontend skill"
+    },
+    "web-backend-skill": {
+      "lane": "web-backend-skill",
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 7531,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "stale"
+      ],
+      "recommended": [],
+      "low_fit_examples": [
+        {
+          "fullName": "andreasbm/web-skills",
+          "url": "https://github.com/andreasbm/web-skills",
+          "reason": "stale"
+        }
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web backend skill stars:>5000",
+          "result_count": 1
+        },
+        {
+          "stage": "stage-2",
+          "query": "web backend skill pushed:>2024-01-01 stars:>100",
+          "result_count": 0
+        }
+      ],
+      "selected_stage": "stage-1",
+      "provenance": "indexed snippet",
+      "raw_query": "web backend skill"
+    },
+    "cli-open-source-skill": {
+      "lane": "cli-open-source-skill",
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 33208,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recommended": [
+        {
+          "fullName": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "stars": 33208,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-08T11:05:56Z",
+          "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+        }
+      ],
+      "low_fit_examples": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "cli open source skill stars:>5000",
+          "result_count": 1
+        },
+        {
+          "stage": "stage-2",
+          "query": "cli open source skill pushed:>2024-01-01 stars:>100",
+          "result_count": 0
+        }
+      ],
+      "selected_stage": "stage-1",
+      "provenance": "indexed snippet",
+      "raw_query": "cli open source skill"
+    },
+    "game-development-skill": {
+      "lane": "game-development-skill",
+      "raw_count": 30,
+      "zero_star_raw": 18,
+      "median_stars_raw": 0.0,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recommended": [
+        {
+          "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "stars": 3,
+          "license": "mit",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+        }
+      ],
+      "low_fit_examples": [
+        {
+          "fullName": "UnrealBlueprint/02_CrystalCavern",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+          "reason": "stale"
+        },
+        {
+          "fullName": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "reason": "license"
+        },
+        {
+          "fullName": "Unengine/GameEngineAndGameMathTIL",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+          "reason": "stale"
+        },
+        {
+          "fullName": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+          "reason": "stale"
+        },
+        {
+          "fullName": "kkh9700/GameDevelopmentSkills-Individual",
+          "url": "https://github.com/kkh9700/GameDevelopmentSkills-Individual",
+          "reason": "low-signal,stale,license"
+        }
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "game development skill stars:>5000",
+          "result_count": 0
+        },
+        {
+          "stage": "stage-2",
+          "query": "game development skill pushed:>2024-01-01 stars:>100",
+          "result_count": 0
+        }
+      ],
+      "selected_stage": "stage-0",
+      "provenance": "indexed snippet",
+      "raw_query": "game development skill"
+    }
+  },
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false,
+  "merge_blocked_reason": "no-checks-reported"
+}

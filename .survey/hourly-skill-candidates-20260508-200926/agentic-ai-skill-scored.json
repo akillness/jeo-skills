@@ -1,0 +1,78 @@
+{
+  "lane": "agentic-ai-skill",
+  "raw_count": 30,
+  "zero_star_raw": 19,
+  "median_stars_raw": 0.0,
+  "kept_count": 5,
+  "lane_status": "pass",
+  "degraded_causes": [],
+  "recommended": [
+    {
+      "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "stars": 16,
+      "license": "apache-2.0",
+      "pushed_at": "2026-01-29T09:33:47Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+    },
+    {
+      "fullName": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "stars": 7,
+      "license": "mit",
+      "pushed_at": "2026-04-06T01:48:47Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+    },
+    {
+      "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+      "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+      "stars": 6,
+      "license": "mit",
+      "pushed_at": "2026-04-09T12:21:43Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+    },
+    {
+      "fullName": "VoDaiLocz/Enhance-Prompt",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "stars": 11,
+      "license": "mit",
+      "pushed_at": "2026-03-05T13:50:53Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+    },
+    {
+      "fullName": "rhysmcneill/agentic-ai-library",
+      "url": "https://github.com/rhysmcneill/agentic-ai-library",
+      "stars": 4,
+      "license": "apache-2.0",
+      "pushed_at": "2026-04-30T13:42:47Z",
+      "fit_rationale": "token-overlap+non-negated+non-generic+fresh+signal+licensed"
+    }
+  ],
+  "low_fit_examples": [
+    {
+      "fullName": "sysdig/skills",
+      "url": "https://github.com/sysdig/skills",
+      "reason": "license"
+    },
+    {
+      "fullName": "Ap6pack/malwar",
+      "url": "https://github.com/Ap6pack/malwar",
+      "reason": "low-signal"
+    },
+    {
+      "fullName": "taisukeoe/agentic-ai-skills-creator",
+      "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+      "reason": "low-signal"
+    },
+    {
+      "fullName": "gpimpler-too/skill-lib",
+      "url": "https://github.com/gpimpler-too/skill-lib",
+      "reason": "low-signal,license"
+    },
+    {
+      "fullName": "ritikpatel/marketing-mix-modelling-skill",
+      "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill",
+      "reason": "low-signal,license"
+    }
+  ]
+}

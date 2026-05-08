@@ -1,7 +1,7 @@
 N:survey
 D:Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform patterns map before deciding what to build. Produce reusable .survey/{slug}/ artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.
 G:survey landscape-scan research discovery groundwork omc omx ohmg claude codex gemini hooks rules settings
-U[13]:
+U[14]:
   Produce reusable .survey/{slug}/ artifacts before planning or implementation
   Compare solutions workarounds and repeated complaints without drifting into coding
   Normalize platform topics into settings rules hooks and platform gaps
@@ -15,6 +15,7 @@ U[13]:
   Detect cross-lane recommendation concentration with recommended_lane_count and single_lane_concentration flags
   Deduplicate recommendation-grade repositories across lanes before final ranking while preserving raw evidence
   Reuse scripts/lane_quality_gate.py to compute deterministic lane metrics and degraded causes in unattended hourly runs
+  Reuse scripts/enrich_license_metadata.py to harden unknown-license handling before final lane classification
   Validate the artifact contract before handing off to planning or execution
 S[11]{n,action,details}:
   1,Classify mode,Choose one primary survey mode and decide whether platform-map.md is required
