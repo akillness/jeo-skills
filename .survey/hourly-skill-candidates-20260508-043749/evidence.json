@@ -1,0 +1,351 @@
+{
+  "slug": "hourly-skill-candidates-20260508-043749",
+  "generated_at": "2026-05-08T04:37:49.719123+00:00",
+  "provenance_labels": [
+    "indexed snippet",
+    "direct page retrieval"
+  ],
+  "lanes": {
+    "agentic-ai-skill": {
+      "query": "agentic ai skill",
+      "raw_count": 30,
+      "kept_count": 5,
+      "zero_star_raw": 19,
+      "median_stars_raw": 0.0,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage0",
+          "query": "agentic ai skill"
+        }
+      ],
+      "kept": [
+        {
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "stars": 16,
+          "license": "apache-2.0",
+          "pushedAt": "2026-01-29T09:33:47Z",
+          "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor"
+        },
+        {
+          "fullName": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "stars": 7,
+          "license": "mit",
+          "pushedAt": "2026-04-06T01:48:47Z",
+          "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor"
+        },
+        {
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "stars": 11,
+          "license": "mit",
+          "pushedAt": "2026-03-05T13:50:53Z",
+          "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor"
+        },
+        {
+          "fullName": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "stars": 4,
+          "license": "apache-2.0",
+          "pushedAt": "2026-04-30T13:42:47Z",
+          "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor"
+        },
+        {
+          "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "stars": 5,
+          "license": "mit",
+          "pushedAt": "2026-04-09T12:21:43Z",
+          "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "repo": "sysdig/skills",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "Ap6pack/malwar",
+          "reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "taisukeoe/agentic-ai-skills-creator",
+          "reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "gpimpler-too/skill-lib",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "thisrunsthru/Skill",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ]
+    },
+    "web-frontend-skill": {
+      "query": "web frontend skill",
+      "raw_count": 5,
+      "kept_count": 0,
+      "zero_star_raw": 4,
+      "median_stars_raw": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "license",
+        "low-signal",
+        "stale"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage0",
+          "query": "web frontend skill"
+        }
+      ],
+      "kept": [],
+      "filtered_examples": [
+        {
+          "repo": "amrrs/cinematic-webscroll-frontend-skill",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "reasons": [
+            "low-signal",
+            "stale"
+          ]
+        },
+        {
+          "repo": "Hezekiah-Elisha/savannah_informatics_test",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "repo": "sonhaicoder/web-taste-skill",
+          "reasons": [
+            "low-signal"
+          ]
+        }
+      ]
+    },
+    "web-backend-skill": {
+      "query": "web backend skill",
+      "raw_count": 1,
+      "kept_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 7531,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "stale"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage0",
+          "query": "web backend skill"
+        },
+        {
+          "stage": "stage1",
+          "query": "web backend skill stars:>5000 pushed:>2024-01-01"
+        }
+      ],
+      "kept": [],
+      "filtered_examples": [
+        {
+          "repo": "andreasbm/web-skills",
+          "reasons": [
+            "stale"
+          ]
+        }
+      ]
+    },
+    "cli-open-source-skill": {
+      "query": "cli open source skill",
+      "raw_count": 1,
+      "kept_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 32606,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_attempts": [
+        {
+          "stage": "stage0",
+          "query": "cli open source skill"
+        },
+        {
+          "stage": "stage1",
+          "query": "cli open source skill stars:>5000 pushed:>2024-01-01"
+        }
+      ],
+      "kept": [
+        {
+          "fullName": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "stars": 32606,
+          "license": "apache-2.0",
+          "pushedAt": "2026-05-08T04:36:23Z",
+          "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor"
+        }
+      ],
+      "filtered_examples": []
+    },
+    "game-development-skill": {
+      "query": "game development skill",
+      "raw_count": 30,
+      "kept_count": 1,
+      "zero_star_raw": 18,
+      "median_stars_raw": 0.0,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "archived",
+        "license",
+        "low-fit",
+        "low-signal",
+        "stale"
+      ],
+      "recovery_attempts": [
+        {
+          "stage": "stage0",
+          "query": "game development skill"
+        }
+      ],
+      "kept": [
+        {
+          "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "stars": 3,
+          "license": "mit",
+          "pushedAt": "2026-02-06T04:09:12Z",
+          "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor"
+        }
+      ],
+      "filtered_examples": [
+        {
+          "repo": "UnrealBlueprint/02_CrystalCavern",
+          "reasons": [
+            "stale"
+          ]
+        },
+        {
+          "repo": "rohithnafeel/My-CS-Projects",
+          "reasons": [
+            "license"
+          ]
+        },
+        {
+          "repo": "Unengine/GameEngineAndGameMathTIL",
+          "reasons": [
+            "stale"
+          ]
+        },
+        {
+          "repo": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "reasons": [
+            "stale"
+          ]
+        },
+        {
+          "repo": "kkh9700/GameDevelopmentSkills-Individual",
+          "reasons": [
+            "license",
+            "low-signal",
+            "stale"
+          ]
+        }
+      ]
+    }
+  },
+  "recommended": [
+    {
+      "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "stars": 16,
+      "license": "apache-2.0",
+      "pushedAt": "2026-01-29T09:33:47Z",
+      "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "stars": 7,
+      "license": "mit",
+      "pushedAt": "2026-04-06T01:48:47Z",
+      "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "VoDaiLocz/Enhance-Prompt",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "stars": 11,
+      "license": "mit",
+      "pushedAt": "2026-03-05T13:50:53Z",
+      "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "rhysmcneill/agentic-ai-library",
+      "url": "https://github.com/rhysmcneill/agentic-ai-library",
+      "stars": 4,
+      "license": "apache-2.0",
+      "pushedAt": "2026-04-30T13:42:47Z",
+      "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+      "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+      "stars": 5,
+      "license": "mit",
+      "pushedAt": "2026-04-09T12:21:43Z",
+      "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "stars": 32606,
+      "license": "apache-2.0",
+      "pushedAt": "2026-05-08T04:36:23Z",
+      "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor",
+      "lane": "cli-open-source-skill"
+    },
+    {
+      "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "stars": 3,
+      "license": "mit",
+      "pushedAt": "2026-02-06T04:09:12Z",
+      "fit_rationale": "token overlap + non-negated lane intent + freshness<=24m + signal floor",
+      "lane": "game-development-skill"
+    }
+  ],
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false
+}

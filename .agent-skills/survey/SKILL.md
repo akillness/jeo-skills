@@ -41,6 +41,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/gh-search-empty-lane-recovery-playbook.md](references/gh-search-empty-lane-recovery-playbook.md)
 - [references/lane-quality-gate-utility.md](references/lane-quality-gate-utility.md)
 - [references/hourly-lane-health-script.md](references/hourly-lane-health-script.md)
+- [references/checks-blocker-comment-template.md](references/checks-blocker-comment-template.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.
@@ -300,5 +301,7 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - `references/output-templates-and-validator.md` — exact file templates plus validator usage for `.survey/{slug}/`
 - `references/keyword-sweep-and-relevance-rescue.md` — required five-keyword sweep and noisy-query rescue gate for recurring repo-maintenance loops
 - `references/lane-quality-gate-utility.md` — deterministic lane scoring utility and output contract for hourly runs
+- `references/checks-blocker-comment-template.md` — deterministic ASCII blocker comment generation flow for no-checks gate failures
 - `scripts/lane_quality_gate.py` — reusable lane-level quality gate implementation
+- `scripts/generate_checks_blocker_comment.py` — reusable PR blocker comment body generator for unattended runs
 - `scripts/validate_survey_artifacts.py` — artifact-contract validator for survey output folders

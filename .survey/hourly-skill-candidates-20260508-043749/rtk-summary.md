@@ -1,0 +1,9 @@
+# RTK Summary
+
+- slug=hourly-skill-candidates-20260508-043749
+- recommended_lane_count=3
+- agentic-ai-skill: raw=30 kept=5 status=pass causes=license,low-signal
+- web-frontend-skill: raw=5 kept=0 status=degraded causes=license,low-signal,stale
+- web-backend-skill: raw=1 kept=0 status=degraded causes=stale
+- cli-open-source-skill: raw=1 kept=1 status=pass causes=
+- game-development-skill: raw=30 kept=1 status=pass causes=archived,license,low-fit,low-signal,stale
