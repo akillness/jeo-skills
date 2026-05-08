@@ -43,6 +43,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/hourly-lane-health-script.md](references/hourly-lane-health-script.md)
 - [references/hourly-run-report-generator.md](references/hourly-run-report-generator.md)
 - [references/checks-blocker-comment-template.md](references/checks-blocker-comment-template.md)
+- [references/hourly-lane-query-generator.md](references/hourly-lane-query-generator.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.

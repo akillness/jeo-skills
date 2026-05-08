@@ -1,0 +1,77 @@
+{
+  "query": "web frontend skill",
+  "exit_code": 0,
+  "stderr": "",
+  "results": [
+    {
+      "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+      "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-03-30T14:38:08Z",
+      "stargazersCount": 12,
+      "updatedAt": "2026-04-02T16:29:32Z",
+      "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill"
+    },
+    {
+      "description": "This is a frontend project to showcase web frontend skills.",
+      "fullName": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2023-11-29T17:23:32Z",
+      "stargazersCount": 0,
+      "updatedAt": "2023-11-28T08:12:53Z",
+      "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend"
+    },
+    {
+      "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only.",
+      "fullName": "Hezekiah-Elisha/savannah_informatics_test",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-01-16T19:17:43Z",
+      "stargazersCount": 0,
+      "updatedAt": "2026-01-16T19:17:48Z",
+      "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test"
+    },
+    {
+      "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only. It should be hosted on a code repository service (e.g Github, Gitlab) with public access to make the assessment easy",
+      "fullName": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2024-05-28T12:02:00Z",
+      "stargazersCount": 0,
+      "updatedAt": "2024-05-28T12:02:04Z",
+      "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment"
+    },
+    {
+      "description": "Anti-slop web frontend skill for AI coding agents. Auto-trigger every web task. Force Kimi/Lovable-tier quality with Discovery Form + 5 deterministic directions + 27 anti-patterns + ready-to-paste hero/section/motion blueprints. Distilled from open-design, taste-skill, impeccable.style, getdesign.md, kimi.com, lovable.dev.",
+      "fullName": "sonhaicoder/web-taste-skill",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-05-05T04:17:36Z",
+      "stargazersCount": 0,
+      "updatedAt": "2026-05-05T04:17:42Z",
+      "url": "https://github.com/sonhaicoder/web-taste-skill"
+    }
+  ]
+}

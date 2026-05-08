@@ -1,0 +1,12 @@
+[ok] Command: cat .survey/hourly-skill-candidates-20260508-085650/lane-...
+   9 lines of output
+
+List (8 items):
+   • slug: hourly-skill-candidates-20260508-085650
+   • recommended_lane_count: 3
+   • single_lane_concentration: False
+   • agentic-ai-skill: raw=30 kept=5 median=0.0 status=pass causes=-
+   • web-frontend-skill: raw=5 kept=0 median=0 status=degraded causes=lo...
+   • web-backend-skill: raw=1 kept=0 median=7531 status=degraded causes=...
+   • cli-open-source-skill: raw=1 kept=1 median=33027 status=pass causes=-
+   • game-development-skill: raw=30 kept=1 median=0.0 status=pass causes=-

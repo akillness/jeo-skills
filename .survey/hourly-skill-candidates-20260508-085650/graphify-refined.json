@@ -1,0 +1,34 @@
+{
+  "slug": "hourly-skill-candidates-20260508-085650",
+  "graphify_status": "degraded-fallback",
+  "errors": [
+    "error: could not load graph: 'links'"
+  ],
+  "recommended_lane_count": 3,
+  "lanes": {
+    "agentic-ai-skill": {
+      "status": "pass",
+      "causes": []
+    },
+    "web-frontend-skill": {
+      "status": "degraded",
+      "causes": [
+        "low-fit"
+      ]
+    },
+    "web-backend-skill": {
+      "status": "degraded",
+      "causes": [
+        "low-fit"
+      ]
+    },
+    "cli-open-source-skill": {
+      "status": "pass",
+      "causes": []
+    },
+    "game-development-skill": {
+      "status": "pass",
+      "causes": []
+    }
+  }
+}

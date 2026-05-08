@@ -1,0 +1,427 @@
+{
+  "query": "game development skill pushed:>2024-01-01 stars:>100",
+  "exit_code": 0,
+  "stderr": "",
+  "results": [
+    {
+      "description": "The ultimate Roblox game development Claude Code skill",
+      "fullName": "brockmartin/roblox-game-skill",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-03-04T20:06:25Z",
+      "stargazersCount": 19,
+      "updatedAt": "2026-05-08T00:26:08Z",
+      "url": "https://github.com/brockmartin/roblox-game-skill"
+    },
+    {
+      "description": "A Web Game Authoring System coded in Java and Javascript for rapid development of serious games without programming skills.",
+      "fullName": "Heigvd/Wegas",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-05-06T15:16:41Z",
+      "stargazersCount": 30,
+      "updatedAt": "2026-04-17T13:49:23Z",
+      "url": "https://github.com/Heigvd/Wegas"
+    },
+    {
+      "description": "The development repo for the GodotSteam open-source game, Skillet. Designed to showcase the features of GodotSteam.",
+      "fullName": "GodotSteam/Skillet",
+      "isArchived": true,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2025-09-21T00:36:19Z",
+      "stargazersCount": 87,
+      "updatedAt": "2026-05-01T07:09:47Z",
+      "url": "https://github.com/GodotSteam/Skillet"
+    },
+    {
+      "description": "Level Up Your Web Development Skills with Fun Quizzes! ",
+      "fullName": "ishitaraina1807/WebQuest-QuizGame",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2024-04-21T22:23:37Z",
+      "stargazersCount": 9,
+      "updatedAt": "2025-10-08T09:00:06Z",
+      "url": "https://github.com/ishitaraina1807/WebQuest-QuizGame"
+    },
+    {
+      "description": "Skill library for Space Engineers plugin, mod and in-game script development. Usable with any \"skills\" compatible agentic coding harness.",
+      "fullName": "viktor-ferenczi/se-dev-skills",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-05-06T23:49:32Z",
+      "stargazersCount": 5,
+      "updatedAt": "2026-05-06T23:51:41Z",
+      "url": "https://github.com/viktor-ferenczi/se-dev-skills"
+    },
+    {
+      "description": "An example configuration of AGENTS.md and a set of skills for AI-assisted game development with the https://defold.com engine.",
+      "fullName": "indiesoftby/defold-agent-config",
+      "isArchived": false,
+      "license": {
+        "key": "other",
+        "name": "Other",
+        "url": ""
+      },
+      "pushedAt": "2026-04-23T16:51:14Z",
+      "stargazersCount": 63,
+      "updatedAt": "2026-05-07T20:17:26Z",
+      "url": "https://github.com/indiesoftby/defold-agent-config"
+    },
+    {
+      "description": "A universal scaffold for AI-assisted game development. 42 agents, 51 commands, 86 skills. Multi-engine (Unity, Unreal, Godot, HTML). Multi-harness (Claude Code, Codex, Cursor, OpenCode, Kiro).",
+      "fullName": "MRCalderon3D/everything-game-dev-code",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-04-23T19:55:39Z",
+      "stargazersCount": 27,
+      "updatedAt": "2026-05-07T06:07:00Z",
+      "url": "https://github.com/MRCalderon3D/everything-game-dev-code"
+    },
+    {
+      "description": "A comprehensive skill for [Claude](https://claude.ai) that provides expert guidance for Cocos Creator 3.x game development using TypeScript.",
+      "fullName": "Dailiduzhou/cocos-creator-dev-skill",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-02-07T11:59:21Z",
+      "stargazersCount": 26,
+      "updatedAt": "2026-05-07T11:55:02Z",
+      "url": "https://github.com/Dailiduzhou/cocos-creator-dev-skill"
+    },
+    {
+      "description": "Welcome to the **Slot & Casino Game Developer Skills for Stake Engine** collection! This repository provides a suite of specialized AI skills designed to accelerate the development, optimization, and deployment of casino games for the Stake Engine ecosystem and modern iGaming platforms.",
+      "fullName": "egorfedorov/Slot-Casino-Game-Developer-Skills-for-Stake-Engine",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-02-21T01:07:37Z",
+      "stargazersCount": 6,
+      "updatedAt": "2026-05-01T15:01:37Z",
+      "url": "https://github.com/egorfedorov/Slot-Casino-Game-Developer-Skills-for-Stake-Engine"
+    },
+    {
+      "description": "My personal agent skill repository, primarily focused on game development.",
+      "fullName": "Yuki001/game-dev-skills",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-05-08T08:38:34Z",
+      "stargazersCount": 13,
+      "updatedAt": "2026-05-08T08:38:39Z",
+      "url": "https://github.com/Yuki001/game-dev-skills"
+    },
+    {
+      "description": "Claude Code skill for s&box game development. Schema-verified API reference, 10 runnable examples, zero Unity hallucinations",
+      "fullName": "gavogavogavo/claude-sbox",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-04-14T22:57:04Z",
+      "stargazersCount": 40,
+      "updatedAt": "2026-05-05T16:04:08Z",
+      "url": "https://github.com/gavogavogavo/claude-sbox"
+    },
+    {
+      "description": "AI-first Unity 6.2+ game development workflow — rules, agents, skills, and slash commands for Claude Code and Antigravity",
+      "fullName": "devdavv/unity-ai-workflow",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-04-01T15:59:29Z",
+      "stargazersCount": 16,
+      "updatedAt": "2026-04-26T08:38:18Z",
+      "url": "https://github.com/devdavv/unity-ai-workflow"
+    },
+    {
+      "description": "Claude Code skill for retro game development with Pyxel",
+      "fullName": "kitao/pyxel-skill",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-03-27T14:06:17Z",
+      "stargazersCount": 9,
+      "updatedAt": "2026-05-06T09:55:24Z",
+      "url": "https://github.com/kitao/pyxel-skill"
+    },
+    {
+      "description": "I am strengthening my C# game development skills day by day.",
+      "fullName": "rohithnafeel/My-CS-Projects",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-02-26T03:56:34Z",
+      "stargazersCount": 20,
+      "updatedAt": "2026-03-30T05:08:21Z",
+      "url": "https://github.com/rohithnafeel/My-CS-Projects"
+    },
+    {
+      "description": "A collection of Unity game development agent skills that comply with the Claude Code Skills specification.",
+      "fullName": "OstrichHermit/OH-Unity-GameDev-Skills",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-02-03T15:05:48Z",
+      "stargazersCount": 7,
+      "updatedAt": "2026-04-16T16:36:16Z",
+      "url": "https://github.com/OstrichHermit/OH-Unity-GameDev-Skills"
+    },
+    {
+      "description": "🎮 34 production-grade Claude Code skills for indie game development — studio agents, workflow skills, engine specialists, genre packs, and CI validation. From concept to launch.",
+      "fullName": "AlterLab-IEU/AlterLab_GameForge",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-03-30T13:32:11Z",
+      "stargazersCount": 11,
+      "updatedAt": "2026-04-20T23:09:01Z",
+      "url": "https://github.com/AlterLab-IEU/AlterLab_GameForge"
+    },
+    {
+      "description": "some ai skills using for godot game development",
+      "fullName": "Atthepiano/godot_skills",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-01-21T11:31:59Z",
+      "stargazersCount": 5,
+      "updatedAt": "2026-02-15T17:40:36Z",
+      "url": "https://github.com/Atthepiano/godot_skills"
+    },
+    {
+      "description": "The ultimate DIY video game console that you can buy as a kit or as a prebuilt. It uses a custom operating system that is easy to use and incredibly powerful. It has an SDK that makes game development as easy as possible, allowing for anyone of any programming skill to make amazing games. ",
+      "fullName": "HalloSpaceBoy5/PicoBoy",
+      "isArchived": false,
+      "license": {
+        "key": "other",
+        "name": "Other",
+        "url": ""
+      },
+      "pushedAt": "2025-09-10T17:54:25Z",
+      "stargazersCount": 80,
+      "updatedAt": "2026-02-26T00:31:43Z",
+      "url": "https://github.com/HalloSpaceBoy5/PicoBoy"
+    },
+    {
+      "description": "Repository of proven and daily used agent skills for app and game development",
+      "fullName": "EnzeD/skills",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-03-17T08:23:27Z",
+      "stargazersCount": 7,
+      "updatedAt": "2026-04-19T22:20:27Z",
+      "url": "https://github.com/EnzeD/skills"
+    },
+    {
+      "description": "Web based Multiplayer chess game. This project is built with a simple approach to enhance our web development skills and logic building. Of course there are many aspects in this project where improvisation will be implemented with time. ",
+      "fullName": "prathmesh-ka-github/Chessable",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2025-07-17T18:33:08Z",
+      "stargazersCount": 10,
+      "updatedAt": "2025-07-19T17:19:01Z",
+      "url": "https://github.com/prathmesh-ka-github/Chessable"
+    },
+    {
+      "description": "A virtual pet simulator game developed using Unity and C#. The game allows users to interact with and take care of a virtual pet, demonstrating game development skills.",
+      "fullName": "inchussa/Virtual-Pet-Simulator",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2025-02-09T14:09:01Z",
+      "stargazersCount": 24,
+      "updatedAt": "2026-05-05T16:32:31Z",
+      "url": "https://github.com/inchussa/Virtual-Pet-Simulator"
+    },
+    {
+      "description": "Welcome to the Java 2D Game Project repository! This project is a continuous exploration of game development in Java, influenced by the instructional content provided by Ryisnow on YouTube. It is a living testament to my journey in acquiring game development skills using Java. ",
+      "fullName": "auriorajaa/Java2DGame",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2024-01-05T08:55:40Z",
+      "stargazersCount": 6,
+      "updatedAt": "2026-02-28T14:19:16Z",
+      "url": "https://github.com/auriorajaa/Java2DGame"
+    },
+    {
+      "description": "🐉 Snake Game 🐍 rebuilt with 🦎 sleek design 🦈 and smooth 🐳 gameplay This 🐬 repo offers 🪲 an amazing 🦋 fully functional 🐙 Snake game 🍔 built using 🍅 JavaScript perfect 🍊both beginners 🍓 learning game 🌽 development 🫑 and pros polishing 🚂 their skills 🏩 Smooth animations 🚋 powered by 🚁 request 🚀 Animation 🚠 Frame 🛸 React ⛴ hook 🚢",
+      "fullName": "Hazrat-Ali9/Snake-Game",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2025-05-13T13:09:41Z",
+      "stargazersCount": 37,
+      "updatedAt": "2026-05-04T14:23:34Z",
+      "url": "https://github.com/Hazrat-Ali9/Snake-Game"
+    },
+    {
+      "description": "A repository of resources for common game development tools/skills",
+      "fullName": "UBC-Game-Development-Association/Resources",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-02-05T22:39:45Z",
+      "stargazersCount": 4,
+      "updatedAt": "2026-02-05T22:39:49Z",
+      "url": "https://github.com/UBC-Game-Development-Association/Resources"
+    },
+    {
+      "description": "Claude Code plugin for Phaser 4 game development — 4 agents + 6 skills encoding deep Phaser 4 API knowledge",
+      "fullName": "Yakoub-ai/phaser4-gamedev",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-05-01T12:22:37Z",
+      "stargazersCount": 5,
+      "updatedAt": "2026-05-01T12:22:41Z",
+      "url": "https://github.com/Yakoub-ai/phaser4-gamedev"
+    },
+    {
+      "description": "",
+      "fullName": "sajib-mridha-nor/Skill-Development-for-Mobile-and-Game-Application-Dashboard",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2024-08-16T11:06:33Z",
+      "stargazersCount": 2,
+      "updatedAt": "2025-10-08T16:06:36Z",
+      "url": "https://github.com/sajib-mridha-nor/Skill-Development-for-Mobile-and-Game-Application-Dashboard"
+    },
+    {
+      "description": "Game development skills for building sparkade games",
+      "fullName": "sparkade-labs/sparkade-skills",
+      "isArchived": false,
+      "license": {
+        "key": "other",
+        "name": "Other",
+        "url": ""
+      },
+      "pushedAt": "2026-04-07T09:25:59Z",
+      "stargazersCount": 2,
+      "updatedAt": "2026-04-07T09:26:02Z",
+      "url": "https://github.com/sparkade-labs/sparkade-skills"
+    },
+    {
+      "description": "一个使用 Flet + Canvas 开发的经典雷电风格飞机射击游戏，具有流畅的动画、精美的视觉效果和爽快的射击体验。完全由 AI 基于我开发的 flet-development Skill 技能，自动编写实现！",
+      "fullName": "HnBigVolibear/flet-game-by-using-flet-skill-demo01",
+      "isArchived": false,
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "url": "https://api.github.com/licenses/mit"
+      },
+      "pushedAt": "2026-03-21T17:41:55Z",
+      "stargazersCount": 3,
+      "updatedAt": "2026-04-27T14:20:10Z",
+      "url": "https://github.com/HnBigVolibear/flet-game-by-using-flet-skill-demo01"
+    },
+    {
+      "description": "Learn to develop Stone_Paper_Scissors_Game  using HTML, CSS , Javascript while mastering web development skills.",
+      "fullName": "vaibhav1826/Stone_Paper_Scissors_Game",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2024-07-16T18:13:53Z",
+      "stargazersCount": 4,
+      "updatedAt": "2026-03-29T11:59:54Z",
+      "url": "https://github.com/vaibhav1826/Stone_Paper_Scissors_Game"
+    },
+    {
+      "description": "Claude Code skills for DragonRuby GTK game development",
+      "fullName": "Nitemaeric/dragonruby-skills",
+      "isArchived": false,
+      "license": {
+        "key": "",
+        "name": "",
+        "url": ""
+      },
+      "pushedAt": "2026-03-10T00:25:47Z",
+      "stargazersCount": 2,
+      "updatedAt": "2026-04-29T22:10:41Z",
+      "url": "https://github.com/Nitemaeric/dragonruby-skills"
+    }
+  ]
+}
