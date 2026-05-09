@@ -1,0 +1,6 @@
+{
+  "status": "fallback",
+  "reason": "graphify CLI not invoked in this environment",
+  "from": "evidence.json",
+  "slug": "hourly-skill-candidates-20260510-034032"
+}
