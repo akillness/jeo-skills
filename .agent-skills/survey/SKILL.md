@@ -310,9 +310,11 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - `references/keyword-sweep-and-relevance-rescue.md` — required five-keyword sweep and noisy-query rescue gate for recurring repo-maintenance loops
 - `references/lane-quality-gate-utility.md` — deterministic lane scoring utility and output contract for hourly runs
 - `references/license-enrichment-fallback.md` — license metadata fallback flow (search payload -> gh repo view -> gh api) for recommendation-grade gating
+- `references/slug-integrity-verification.md` — pre-commit guard to ensure only active `.survey/{slug}/` artifacts are modified in a run
 - `references/checks-blocker-comment-template.md` — deterministic ASCII blocker comment generation flow for no-checks gate failures
 - `scripts/lane_quality_gate.py` — reusable lane-level quality gate implementation
 - `scripts/enrich_license_metadata.py` — reusable license enrichment utility for sparse/shape-shifted GitHub search payloads
+- `scripts/verify_hourly_slug_integrity.py` — reusable guard that fails when git changes include non-active `.survey/` slug paths
 - `scripts/generate_checks_blocker_comment.py` — reusable PR blocker comment body generator for unattended runs
 - `scripts/validate_survey_artifacts.py` — artifact-contract validator for survey output folders
 - `scripts/validate_hourly_evidence_contract.py` — strict hourly evidence lane-key and metric-integrity validator

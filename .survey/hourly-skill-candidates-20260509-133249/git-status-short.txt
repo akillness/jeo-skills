@@ -1,0 +1,5 @@
+ M .agent-skills/survey/SKILL.md
+ M .survey/.active-hourly-slug
+?? .agent-skills/survey/references/slug-integrity-verification.md
+?? .agent-skills/survey/scripts/verify_hourly_slug_integrity.py
+?? .survey/hourly-skill-candidates-20260509-133249/

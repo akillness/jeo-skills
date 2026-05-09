@@ -1,0 +1,24 @@
+{
+  "slug": "hourly-skill-candidates-20260509-133249",
+  "lane_status": {
+    "agentic-ai-skill": "pass",
+    "web-frontend-skill": "degraded",
+    "web-backend-skill": "degraded",
+    "cli-open-source-skill": "pass",
+    "game-development-skill": "pass"
+  },
+  "degraded_causes": {
+    "agentic-ai-skill": [],
+    "web-frontend-skill": [
+      "license",
+      "low-signal",
+      "stale"
+    ],
+    "web-backend-skill": [
+      "low-fit"
+    ],
+    "cli-open-source-skill": [],
+    "game-development-skill": []
+  },
+  "fallback": true
+}
