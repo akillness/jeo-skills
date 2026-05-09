@@ -1,0 +1,20 @@
+{
+  "slug": "hourly-skill-candidates-20260509-022120",
+  "degraded": [
+    {
+      "lane": "web-frontend-skill",
+      "causes": [
+        "license",
+        "low-signal",
+        "stale"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "causes": [
+        "low-fit"
+      ]
+    }
+  ],
+  "recommended_lane_count": 3
+}

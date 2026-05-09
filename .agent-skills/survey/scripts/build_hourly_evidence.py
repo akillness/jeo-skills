@@ -132,13 +132,10 @@ def main():
         raw = []
         selected_stage = None
         for i, q in enumerate(stage_queries):
-            if selected_stage is not None:
-                recovery_queries.append({"stage": "stage-{}".format(i), "query": q, "attempted": False, "result_count": 0, "ok": True, "error": None})
-                continue
             res = gh_search(q)
             count = len(res.get("items", []))
             recovery_queries.append({"stage": "stage-{}".format(i), "query": q, "attempted": True, "result_count": count, "ok": res.get("ok", False), "error": res.get("error")})
-            if res.get("ok") and count > 0:
+            if selected_stage is None and res.get("ok") and count > 0:
                 raw = res["items"]
                 selected_stage = i
         dedup = {}

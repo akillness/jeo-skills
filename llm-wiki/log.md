@@ -24,3 +24,5 @@
 - hourly-skill-candidates-20260508-220250: hourly survey run recorded; added hourly evidence contract validator; merge blocked by no checks.
 
 - hourly-skill-candidates-20260509-080852: added dedupe helper + five-lane artifacts; merge blocked by missing checks on PR #271
+
+- 2026-05-09T02:24:25Z: hourly survey run hourly-skill-candidates-20260509-022120 (see .survey/hourly-skill-candidates-20260509-022120)
