@@ -33,3 +33,5 @@
 - 2026-05-09 06:44:40Z hourly-skill-candidates-20260509-154245: hourly survey carry-forward update (provenance: indexed snippet)
 
 - 2026-05-09T11:06:04Z hourly-skill-candidates-20260509-200502: hourly survey artifacts + evidence contract validator
+
+- 2026-05-09 15:26:45Z hourly run hourly-skill-candidates-20260510-002403: added toolchain preflight automation and generated carry-forward survey artifacts for PR #271 (checks blocked).
