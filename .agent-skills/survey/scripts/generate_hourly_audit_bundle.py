@@ -45,6 +45,7 @@ def main():
     run(["python3", os.path.join(scripts, "intent_fit_audit.py"), evidence], capture_path=os.path.join(survey_dir, "intent-fit-audit.json"))
     run(["python3", os.path.join(scripts, "audit_hourly_recommendation_quality.py"), evidence], capture_path=os.path.join(survey_dir, "recommendation-quality-audit.json"))
     run(["python3", os.path.join(scripts, "audit_freshness_window.py"), evidence], capture_path=os.path.join(survey_dir, "freshness-audit.json"))
+    run(["python3", os.path.join(scripts, "generate_rtk_summary.py"), evidence, os.path.join(survey_dir, "rtk-summary.md")])
     run(["python3", os.path.join(scripts, "generate_hourly_run_report.py"), survey_dir, os.path.join(survey_dir, "run-report.md")])
     run(["python3", os.path.join(scripts, "generate_hourly_delivery_report.py"), survey_dir, os.path.join(survey_dir, "delivery-report.md")])
 
