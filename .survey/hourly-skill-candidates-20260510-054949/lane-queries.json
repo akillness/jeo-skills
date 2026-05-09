@@ -1,0 +1,22 @@
+{
+  "agentic-ai-skill": {
+    "stage-1": "agentic ai skill in:name,description pushed:>=2024-01-01 archived:false",
+    "stage-2": "agentic ai framework skill in:name,description stars:>50 pushed:>=2023-01-01 archived:false"
+  },
+  "web-frontend-skill": {
+    "stage-1": "web frontend skill in:name,description pushed:>=2024-01-01 archived:false",
+    "stage-2": "frontend ui component skill in:name,description stars:>50 pushed:>=2023-01-01 archived:false"
+  },
+  "web-backend-skill": {
+    "stage-1": "web backend skill in:name,description pushed:>=2024-01-01 archived:false",
+    "stage-2": "backend api server skill in:name,description stars:>50 pushed:>=2023-01-01 archived:false"
+  },
+  "cli-open-source-skill": {
+    "stage-1": "cli open source skill in:name,description pushed:>=2024-01-01 archived:false",
+    "stage-2": "command line tool skill in:name,description stars:>50 pushed:>=2023-01-01 archived:false"
+  },
+  "game-development-skill": {
+    "stage-1": "game development skill in:name,description pushed:>=2024-01-01 archived:false",
+    "stage-2": "game engine toolkit skill in:name,description stars:>50 pushed:>=2023-01-01 archived:false"
+  }
+}
