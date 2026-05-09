@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "lane_count": 5,
+  "missing_stage_1": [],
+  "missing_stage_2": [],
+  "lane_stage_coverage": {
+    "agentic-ai-skill": {
+      "has_stage_1": true,
+      "has_stage_2": true,
+      "recovery_query_count": 2
+    },
+    "cli-open-source-skill": {
+      "has_stage_1": true,
+      "has_stage_2": true,
+      "recovery_query_count": 2
+    },
+    "game-development-skill": {
+      "has_stage_1": true,
+      "has_stage_2": true,
+      "recovery_query_count": 2
+    },
+    "web-backend-skill": {
+      "has_stage_1": true,
+      "has_stage_2": true,
+      "recovery_query_count": 2
+    },
+    "web-frontend-skill": {
+      "has_stage_1": true,
+      "has_stage_2": true,
+      "recovery_query_count": 2
+    }
+  }
+}

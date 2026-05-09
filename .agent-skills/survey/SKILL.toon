@@ -1,7 +1,7 @@
 N:survey
 D:Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform patterns map before deciding what to build. Produce reusable .survey/{slug}/ artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.
 G:survey landscape-scan research discovery groundwork omc omx ohmg claude codex gemini hooks rules settings
-U[17]:
+U[18]:
   Produce reusable .survey/{slug}/ artifacts before planning or implementation
   Compare solutions workarounds and repeated complaints without drifting into coding
   Normalize platform topics into settings rules hooks and platform gaps
@@ -18,6 +18,7 @@ U[17]:
   Reuse scripts/enrich_license_metadata.py to harden unknown-license handling before final lane classification
   Reuse scripts/intent_fit_audit.py to produce deterministic flagged examples for token-overlap, negation, and personal-repo false positives
   Reuse scripts/assess_open_pr_gate.py to enforce deterministic open-PR triage before new PR creation in hourly loops
+  Reuse scripts/collect_lane_recovery_coverage.py to enforce stage-1/stage-2 query coverage for every mandatory lane and emit deterministic coverage artifacts
   Reuse scripts/dedupe_hourly_recommendations.py to compute raw-vs-dedup recommendation coverage for reviewer summaries
   Validate the artifact contract before handing off to planning or execution
 S[11]{n,action,details}:

@@ -17,7 +17,7 @@ metadata:
   tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
-  version: "2.1.7"
+  version: "2.1.8"
   source: akillness/oh-my-skills
   modernization: 2026-04-12
   hardening: 2026-04-27
@@ -50,6 +50,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/hourly-deduped-recommendations.md](references/hourly-deduped-recommendations.md)
 - [references/hourly-audit-bundle-generator.md](references/hourly-audit-bundle-generator.md)
 - [references/open-pr-checks-artifact-collector.md](references/open-pr-checks-artifact-collector.md)
+- [references/hourly-recency-window-and-stage-expansion.md](references/hourly-recency-window-and-stage-expansion.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.

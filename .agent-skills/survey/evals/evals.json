@@ -276,6 +276,16 @@
         "Publishes recommended_raw_count and recommended_dedup_count for reviewer auditability",
         "Keeps lane-level raw discovery evidence in evidence.json unchanged while adding a separate dedup artifact"
       ]
+    },
+    {
+      "id": 28,
+      "prompt": "run hourly five-lane survey with recency-first windows and verify every lane still records both stage-1 and stage-2 recovery queries",
+      "expected_output": "The workflow starts with recency-first queries, expands only through documented stage-2 rescue when needed, and emits explicit stage-coverage evidence per lane for deterministic reviewer audits.",
+      "assertions": [
+        "Uses a recency-first stage-1 query policy before broader recovery",
+        "Persists both stage-1 and stage-2 recovery query entries for each mandatory lane",
+        "Produces lane metrics and status after final selected-stage recomputation"
+      ]
     }
   ]
 }

@@ -1,0 +1,5 @@
+{
+  "status": "degraded",
+  "reason": "graphify-cli-not-invoked-in-this-run",
+  "source": "evidence.json"
+}
