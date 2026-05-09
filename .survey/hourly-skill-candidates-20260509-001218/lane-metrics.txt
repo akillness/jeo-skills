@@ -1,0 +1,7 @@
+Hourly lane metrics
+agentic-ai-skill: status=pass raw=30 kept=5 zero_star_raw=19 median_stars_raw=0 causes=
+web-frontend-skill: status=degraded raw=5 kept=0 zero_star_raw=4 median_stars_raw=0 causes=license,low-signal,stale
+web-backend-skill: status=degraded raw=1 kept=0 zero_star_raw=0 median_stars_raw=7532 causes=low-fit
+cli-open-source-skill: status=pass raw=1 kept=1 zero_star_raw=0 median_stars_raw=33954 causes=
+game-development-skill: status=pass raw=30 kept=1 zero_star_raw=18 median_stars_raw=0 causes=
+recommended_lane_count=3 single_lane_concentration=False
