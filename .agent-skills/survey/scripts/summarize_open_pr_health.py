@@ -7,66 +7,59 @@ import sys
 
 def run(cmd):
     p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    return p.returncode, p.stdout, p.stderr
+    return p.returncode, p.stdout.strip(), p.stderr.strip()
 
 
 def main():
     if len(sys.argv) != 5:
-        sys.stderr.write("usage: summarize_open_pr_health.py <repo> <pr_number> <slug_dir> <output_md>\n")
+        sys.stderr.write("usage: summarize_open_pr_health.py <repo> <pr_number> <output_json> <output_md>\n")
         return 2
     repo = sys.argv[1]
     pr_number = sys.argv[2]
-    slug_dir = sys.argv[3]
+    output_json = sys.argv[3]
     output_md = sys.argv[4]
 
-    rc, pr_out, pr_err = run(["gh", "pr", "view", pr_number, "-R", repo, "--json", "number,title,url,headRefName,mergeStateStatus,isDraft"])
-    if rc != 0:
-        sys.stderr.write(pr_err)
-        return rc
-    pr = json.loads(pr_out)
+    rc, pr_out, pr_err = run(["gh", "pr", "view", pr_number, "--repo", repo, "--json", "number,title,url,headRefName,mergeable,reviewDecision"])
+    pr_data = {}
+    if rc == 0 and pr_out:
+        pr_data = json.loads(pr_out)
 
-    rc2, chk_out, chk_err = run(["gh", "pr", "checks", pr_number, "-R", repo])
-    checks_state = "ok" if rc2 == 0 else "blocked"
+    rc2, chk_out, chk_err = run(["gh", "pr", "checks", pr_number, "--repo", repo])
 
-    lines = []
-    lines.append("# Open PR Health Summary")
-    lines.append("")
-    lines.append("- repo: {}".format(repo))
-    lines.append("- pr_number: {}".format(pr.get("number")))
-    lines.append("- title: {}".format(pr.get("title")))
-    lines.append("- url: {}".format(pr.get("url")))
-    lines.append("- branch: {}".format(pr.get("headRefName")))
-    lines.append("- merge_state: {}".format(pr.get("mergeStateStatus")))
-    lines.append("- checks_state: {}".format(checks_state))
-    lines.append("")
-    lines.append("## Checks output")
-    lines.append("")
-    if chk_out.strip():
-        lines.append("```text")
-        lines.append(chk_out.strip())
-        lines.append("```")
-    if chk_err.strip():
-        lines.append("```text")
-        lines.append(chk_err.strip())
-        lines.append("```")
-
-    os.makedirs(slug_dir, exist_ok=True)
-    with open(output_md, "w") as f:
-        f.write("\n".join(lines) + "\n")
-
-    payload = {
+    data = {
         "repo": repo,
-        "pr": pr,
+        "pr_number": int(pr_number),
+        "headRefName": pr_data.get("headRefName"),
+        "mergeable": pr_data.get("mergeable"),
+        "reviewDecision": pr_data.get("reviewDecision"),
+        "url": pr_data.get("url"),
         "checks_exit_code": rc2,
         "checks_stdout": chk_out,
         "checks_stderr": chk_err,
-        "checks_state": checks_state,
+        "status": "blocked-no-checks" if (rc2 != 0 and "no checks reported" in (chk_out + "\n" + chk_err)) else "ok"
     }
-    with open(os.path.join(slug_dir, "open-pr-health.json"), "w") as f:
-        json.dump(payload, f, indent=2)
+
+    with open(output_json, "w") as f:
+        json.dump(data, f, indent=2)
+
+    lines = []
+    lines.append("# Open PR Health")
+    lines.append("")
+    lines.append("- PR: #{0} ({1})".format(data["pr_number"], data.get("url") or ""))
+    lines.append("- Branch: {0}".format(data.get("headRefName") or "unknown"))
+    lines.append("- Mergeable: {0}".format(data.get("mergeable") or "UNKNOWN"))
+    lines.append("- Review decision: {0}".format(data.get("reviewDecision") or "NONE"))
+    lines.append("- Checks status: {0}".format(data["status"]))
+    lines.append("")
+    lines.append("## Checks Output")
+    lines.append("```text")
+    lines.append(data.get("checks_stdout") or data.get("checks_stderr") or "(empty)")
+    lines.append("```")
+    with open(output_md, "w") as f:
+        f.write("\n".join(lines) + "\n")
 
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

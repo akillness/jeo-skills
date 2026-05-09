@@ -1,0 +1,544 @@
+{
+  "slug": "hourly-skill-candidates-20260509-122708",
+  "generated_at": "2026-05-09T03:28:32.902422+00:00",
+  "lanes": {
+    "agentic-ai-skill": {
+      "raw_count": 60,
+      "zero_star_raw": 19,
+      "median_stars_raw": 299.0,
+      "kept_count": 36,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal"
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "agentic ai skill stars:>500 pushed:>=2024-01-01",
+          "raw_count": 30
+        },
+        {
+          "stage": "stage-2",
+          "query": "agentic ai skill framework automation",
+          "raw_count": 0
+        }
+      ],
+      "recommended": [
+        {
+          "fullName": "sysdig/skills",
+          "url": "https://github.com/sysdig/skills",
+          "description": "Sysdig agentic AI skills and plugins",
+          "stars": 47,
+          "license": "",
+          "pushed_at": "2026-05-06T13:35:15Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "description": "Agentic AI skills for knowledge graph management",
+          "stars": 7,
+          "license": "mit",
+          "pushed_at": "2026-05-08T12:14:42Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "stars": 16,
+          "license": "apache-2.0",
+          "pushed_at": "2026-01-29T09:33:47Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification \u2014 with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+          "stars": 6,
+          "license": "mit",
+          "pushed_at": "2026-04-09T12:21:43Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions \u2014 like having a prompt engineer on your team.",
+          "stars": 11,
+          "license": "mit",
+          "pushed_at": "2026-03-05T13:50:53Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "description": "This repository serves as a library for showcasing how to adopt Agentic AI skills, and agent markdown files in a company-wide setting. ",
+          "stars": 4,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-30T13:42:47Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "addyosmani/agent-skills",
+          "url": "https://github.com/addyosmani/agent-skills",
+          "description": "Production-grade engineering skills for AI coding agents.",
+          "stars": 35767,
+          "license": "mit",
+          "pushed_at": "2026-05-09T00:30:05Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "Orchestra-Research/AI-Research-SKILLs",
+          "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+          "description": "Comprehensive open-source library of AI research and engineering skills for any AI model. Package the skills and your claude code/codex/gemini agent will be an AI research agent with full horsepower. Maintained by Orchestra Research.",
+          "stars": 8081,
+          "license": "mit",
+          "pushed_at": "2026-04-28T05:09:27Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "pinchbench/skill",
+          "url": "https://github.com/pinchbench/skill",
+          "description": "PinchBench is a benchmarking system for evaluating LLM models as OpenClaw coding agents. Made with \ud83e\udd80 by the humans at https://kilo.ai",
+          "stars": 1114,
+          "license": "mit",
+          "pushed_at": "2026-05-08T14:54:47Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "wrtnlabs/agentica",
+          "url": "https://github.com/wrtnlabs/agentica",
+          "description": "TypeScript AI AI Function Calling Framework enhanced by compiler skills.",
+          "stars": 1023,
+          "license": "mit",
+          "pushed_at": "2026-04-27T05:58:49Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "mvanhorn/last30days-skill",
+          "url": "https://github.com/mvanhorn/last30days-skill",
+          "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+          "stars": 25205,
+          "license": "mit",
+          "pushed_at": "2026-05-02T18:30:22Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "coreyhaines31/marketingskills",
+          "url": "https://github.com/coreyhaines31/marketingskills",
+          "description": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+          "stars": 27395,
+          "license": "mit",
+          "pushed_at": "2026-05-06T06:56:58Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "supabase/agent-skills",
+          "url": "https://github.com/supabase/agent-skills",
+          "description": "Agent Skills to help developers using AI agents with Supabase",
+          "stars": 2057,
+          "license": "mit",
+          "pushed_at": "2026-05-06T15:00:00Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "numman-ali/openskills",
+          "url": "https://github.com/numman-ali/openskills",
+          "description": "Universal skills loader for AI coding agents - npm i -g openskills",
+          "stars": 10060,
+          "license": "other",
+          "pushed_at": "2026-01-18T13:09:50Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "github/awesome-copilot",
+          "url": "https://github.com/github/awesome-copilot",
+          "description": "Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.",
+          "stars": 32491,
+          "license": "mit",
+          "pushed_at": "2026-05-08T19:51:06Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "MoizIbnYousaf/Ai-Agent-Skills",
+          "url": "https://github.com/MoizIbnYousaf/Ai-Agent-Skills",
+          "description": "my curated agent skills library ",
+          "stars": 1048,
+          "license": "mit",
+          "pushed_at": "2026-05-05T09:57:12Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "snyk/agent-scan",
+          "url": "https://github.com/snyk/agent-scan",
+          "description": "Security scanner for AI agents, MCP servers and agent skills.",
+          "stars": 2366,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-08T15:49:35Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "Prat011/awesome-llm-skills",
+          "url": "https://github.com/Prat011/awesome-llm-skills",
+          "description": "A curated list of awesome LLM and AI Agent Skills, resources and tools for customising AI Agent workflows - that works with Claude Code, Codex, Gemini CLI and your custom AI Agents",
+          "stars": 1213,
+          "license": "",
+          "pushed_at": "2026-04-22T10:46:57Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "deanpeters/Product-Manager-Skills",
+          "url": "https://github.com/deanpeters/Product-Manager-Skills",
+          "description": "Product Management skills framework built on battle-tested methods for Claude Code, Cowork, Codex, and AI agents.",
+          "stars": 4108,
+          "license": "other",
+          "pushed_at": "2026-04-28T17:32:07Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "antonbabenko/terraform-skill",
+          "url": "https://github.com/antonbabenko/terraform-skill",
+          "description": "Terraform & OpenTofu Skill for AI Agents - testing, modules, CI/CD, and production patterns",
+          "stars": 1815,
+          "license": "other",
+          "pushed_at": "2026-04-22T18:01:23Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "eastlondoner/vibe-tools",
+          "url": "https://github.com/eastlondoner/vibe-tools",
+          "description": "Give Cursor Agent an AI Team and Advanced Skills",
+          "stars": 4759,
+          "license": "mit",
+          "pushed_at": "2025-08-25T10:10:43Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "alibaba-flyai/flyai-skill",
+          "url": "https://github.com/alibaba-flyai/flyai-skill",
+          "description": "fly ai agent skill",
+          "stars": 625,
+          "license": "mit",
+          "pushed_at": "2026-04-21T11:20:56Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "SamurAIGPT/Generative-Media-Skills",
+          "url": "https://github.com/SamurAIGPT/Generative-Media-Skills",
+          "description": "Multi-modal Generative Media Skills for AI Agents (Claude Code, Cursor, Gemini CLI). High-quality image, video, and audio generation powered by muapi.ai.",
+          "stars": 3200,
+          "license": "mit",
+          "pushed_at": "2026-05-02T18:35:59Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "twostraws/SwiftUI-Agent-Skill",
+          "url": "https://github.com/twostraws/SwiftUI-Agent-Skill",
+          "description": "SwiftUI agent skill for Claude Code, Codex, and other AI tools.",
+          "stars": 3839,
+          "license": "mit",
+          "pushed_at": "2026-04-20T08:02:42Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "dotnet/skills",
+          "url": "https://github.com/dotnet/skills",
+          "description": "Repository for skills to assist AI coding agents with .NET and C#",
+          "stars": 1634,
+          "license": "mit",
+          "pushed_at": "2026-05-08T13:15:37Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "skillmatic-ai/awesome-agent-skills",
+          "url": "https://github.com/skillmatic-ai/awesome-agent-skills",
+          "description": "The definitive resource for Agent Skills - modular capabilities revolutionizing AI agent architecture",
+          "stars": 561,
+          "license": "cc0-1.0",
+          "pushed_at": "2026-04-22T21:08:51Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "tech-leads-club/agent-skills",
+          "url": "https://github.com/tech-leads-club/agent-skills",
+          "description": "The secure, validated skill registry for professional AI coding agents. Extend Antigravity, Claude Code, Cursor, Copilot and more with absolute confidence.",
+          "stars": 2306,
+          "license": "other",
+          "pushed_at": "2026-04-28T17:42:25Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "yaklang/hack-skills",
+          "url": "https://github.com/yaklang/hack-skills",
+          "description": "Helping AI Agent become an awesome practical hacker!",
+          "stars": 551,
+          "license": "mit",
+          "pushed_at": "2026-05-06T12:09:05Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "mukul975/Anthropic-Cybersecurity-Skills",
+          "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+          "description": "754 structured cybersecurity skills for AI agents \u00b7 Mapped to 5 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND & NIST AI RMF \u00b7 agentskills.io standard \u00b7 Works with Claude Code, GitHub Copilot, Codex CLI, Cursor, Gemini CLI & 20+ platforms \u00b7 26 security domains \u00b7 Apache 2.0",
+          "stars": 6127,
+          "license": "apache-2.0",
+          "pushed_at": "2026-04-26T12:03:38Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "binance/binance-skills-hub",
+          "url": "https://github.com/binance/binance-skills-hub",
+          "description": "Binance Skills Hub is an open skills marketplace that gives AI agents native access to crypto",
+          "stars": 823,
+          "license": "",
+          "pushed_at": "2026-04-28T10:05:44Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "greensock/gsap-skills",
+          "url": "https://github.com/greensock/gsap-skills",
+          "description": "Official AI skills for GSAP. These skills teach AI coding agents how to correctly use GSAP (GreenSock Animation Platform), including best practices, common animation patterns, and plugin usage.",
+          "stars": 3158,
+          "license": "mit",
+          "pushed_at": "2026-04-21T23:47:09Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "op7418/Claude-to-IM-skill",
+          "url": "https://github.com/op7418/Claude-to-IM-skill",
+          "description": "Bridge Claude Code / Codex to IM platforms \u2014 chat with AI coding agents from Telegram, Discord, or Feishu/Lark.",
+          "stars": 2458,
+          "license": "mit",
+          "pushed_at": "2026-03-23T17:03:44Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "markdown-viewer/skills",
+          "url": "https://github.com/markdown-viewer/skills",
+          "description": "Opinionated skills for AI coding agents to create stunning diagrams and visualizations directly in Markdown. These skills extend agent capabilities across diagram generation, data visualization, and technical documentation.",
+          "stars": 2393,
+          "license": "",
+          "pushed_at": "2026-04-23T09:26:29Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "callstackincubator/agent-skills",
+          "url": "https://github.com/callstackincubator/agent-skills",
+          "description": "A collection of agent-optimized React Native skills for AI coding assistants.",
+          "stars": 1312,
+          "license": "mit",
+          "pushed_at": "2026-04-28T03:25:43Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "samber/cc-skills-golang",
+          "url": "https://github.com/samber/cc-skills-golang",
+          "description": "\ud83e\uddd1\u200d\ud83c\udfa8 A collection of Golang agentic skills that works",
+          "stars": 1574,
+          "license": "mit",
+          "pushed_at": "2026-05-07T20:36:18Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "openakita/openakita",
+          "url": "https://github.com/openakita/openakita",
+          "description": "An open-source AI assistant framework with skills and agent architecture",
+          "stars": 1726,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-08T15:59:40Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        }
+      ],
+      "low_fit_examples": [],
+      "provenance": "indexed snippet"
+    },
+    "web-frontend-skill": {
+      "raw_count": 6,
+      "zero_star_raw": 4,
+      "median_stars_raw": 0.0,
+      "kept_count": 2,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "license",
+        "low-signal",
+        "stale"
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web frontend skill stars:>500 pushed:>=2024-01-01",
+          "raw_count": 1
+        },
+        {
+          "stage": "stage-2",
+          "query": "frontend ui component library skill",
+          "raw_count": 0
+        }
+      ],
+      "recommended": [
+        {
+          "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+          "stars": 12,
+          "license": "",
+          "pushed_at": "2026-03-30T14:38:08Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "zarazhangrui/frontend-slides",
+          "url": "https://github.com/zarazhangrui/frontend-slides",
+          "description": "Create beautiful slides on the web using Claude's frontend skills",
+          "stars": 16768,
+          "license": "mit",
+          "pushed_at": "2026-04-08T18:23:28Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        }
+      ],
+      "low_fit_examples": [],
+      "provenance": "indexed snippet"
+    },
+    "web-backend-skill": {
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 7532,
+      "kept_count": 0,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "stale"
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web backend skill stars:>500 pushed:>=2024-01-01",
+          "raw_count": 1
+        },
+        {
+          "stage": "stage-2",
+          "query": "backend api framework skill",
+          "raw_count": 0
+        }
+      ],
+      "recommended": [],
+      "low_fit_examples": [],
+      "provenance": "indexed snippet"
+    },
+    "cli-open-source-skill": {
+      "raw_count": 3,
+      "zero_star_raw": 0,
+      "median_stars_raw": 2138,
+      "kept_count": 2,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "low-fit"
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "cli open source skill stars:>500 pushed:>=2024-01-01",
+          "raw_count": 3
+        },
+        {
+          "stage": "stage-2",
+          "query": "command line tool open source developer workflow",
+          "raw_count": 0
+        }
+      ],
+      "recommended": [
+        {
+          "fullName": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "description": "\ud83c\udfa8 Local-first, open-source alternative to Anthropic's Claude Design. \u26a1 19 Skills \u00b7 \u2728 71 brand-grade Design Systems \ud83d\uddbc Generate web \u00b7 desktop \u00b7 mobile prototypes \u00b7 slides \u00b7 images \u00b7 videos \u00b7 HyperFrames \ud83d\udce6 Sandboxed preview \u00b7 HTML/PDF/PPTX/MP4 export \ud83e\udd16 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+          "stars": 34152,
+          "license": "apache-2.0",
+          "pushed_at": "2026-05-09T03:24:04Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "jeremylongshore/claude-code-plugins-plus-skills",
+          "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+          "description": "425 plugins, 2,810 skills, 200 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+          "stars": 2138,
+          "license": "mit",
+          "pushed_at": "2026-05-09T01:40:47Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        }
+      ],
+      "low_fit_examples": [
+        "dp-archive/archive"
+      ],
+      "provenance": "indexed snippet"
+    },
+    "game-development-skill": {
+      "raw_count": 31,
+      "zero_star_raw": 18,
+      "median_stars_raw": 0,
+      "kept_count": 3,
+      "lane_status": "pass",
+      "degraded_causes": [
+        "archived",
+        "license",
+        "low-fit",
+        "low-signal",
+        "stale"
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "game development skill stars:>500 pushed:>=2024-01-01",
+          "raw_count": 1
+        },
+        {
+          "stage": "stage-2",
+          "query": "game engine development tools open source",
+          "raw_count": 0
+        }
+      ],
+      "recommended": [
+        {
+          "fullName": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "description": "I am strengthening my C# game development skills day by day.",
+          "stars": 20,
+          "license": "",
+          "pushed_at": "2026-02-26T03:56:34Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "teamgravitydev/learning-resources.md",
+          "url": "https://github.com/teamgravitydev/learning-resources.md",
+          "description": "Curated collection of resources, books, courses, tutorials, and YouTube channels, to help you master game development skills.",
+          "stars": 5,
+          "license": "",
+          "pushed_at": "2024-11-05T01:26:02Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        },
+        {
+          "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "stars": 3,
+          "license": "mit",
+          "pushed_at": "2026-02-06T04:09:12Z",
+          "fit_rationale": "token-overlap matched lane intent; active and non-archived"
+        }
+      ],
+      "low_fit_examples": [
+        "inchussa/Virtual-Pet-Simulator",
+        "dillonoc98/VR-Zombie-Game",
+        "SinglaRijul/my-portfolio"
+      ],
+      "provenance": "indexed snippet"
+    }
+  },
+  "provenance_labels": [
+    "indexed snippet",
+    "direct page retrieval",
+    "thin evidence"
+  ],
+  "recommended_raw_count": 43,
+  "recommended_dedup_count": 43,
+  "recommended_lane_count": 4,
+  "single_lane_concentration": false
+}

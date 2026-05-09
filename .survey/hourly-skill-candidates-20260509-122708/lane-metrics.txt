@@ -1,0 +1,6 @@
+agentic-ai-skill: raw=60 kept=36 median_stars=299.0 status=pass causes=license,low-signal
+web-frontend-skill: raw=6 kept=2 median_stars=0.0 status=pass causes=license,low-signal,stale
+web-backend-skill: raw=1 kept=0 median_stars=7532 status=pass causes=stale
+cli-open-source-skill: raw=3 kept=2 median_stars=2138 status=pass causes=low-fit
+game-development-skill: raw=31 kept=3 median_stars=0 status=pass causes=archived,license,low-fit,low-signal,stale
+recommended_raw_count=43 dedup=43 lanes=4 single_lane_concentration=False
