@@ -30,3 +30,4 @@
 - 2026-05-09T03:30:12Z | hourly-skill-candidates-20260509-122708
 
 - hourly-skill-candidates-20260509-143807: hourly run updated artifacts and blocker state
+- 2026-05-09 06:44:40Z hourly-skill-candidates-20260509-154245: hourly survey carry-forward update (provenance: indexed snippet)

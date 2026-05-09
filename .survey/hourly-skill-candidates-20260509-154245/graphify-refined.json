@@ -1,0 +1,6 @@
+{
+  "status": "fallback",
+  "reason": "graphify query not executed in cron; retained refined evidence projection",
+  "recommended_dedup_count": 41,
+  "single_lane_concentration": false
+}
