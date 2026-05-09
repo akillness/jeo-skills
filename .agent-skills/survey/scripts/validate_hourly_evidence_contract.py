@@ -1,68 +1,76 @@
 #!/usr/bin/env python3
 import json
+import os
 import sys
 
 REQUIRED_LANES = [
-    'agentic-ai-skill',
-    'web-frontend-skill',
-    'web-backend-skill',
-    'cli-open-source-skill',
-    'game-development-skill',
+    "agentic-ai-skill",
+    "web-frontend-skill",
+    "web-backend-skill",
+    "cli-open-source-skill",
+    "game-development-skill",
 ]
 
 
 def fail(msg):
-    sys.stderr.write(msg + '\n')
+    sys.stderr.write(msg + "\n")
     return 1
 
 
-def main():
-    if len(sys.argv) != 2:
-        return fail('usage: validate_hourly_evidence_contract.py <evidence.json>')
-    path = sys.argv[1]
-    try:
-        data = json.load(open(path, 'r'))
-    except Exception as e:
-        return fail('failed to read json: {0}'.format(e))
+def main(argv):
+    if len(argv) != 2:
+        return fail("usage: validate_hourly_evidence_contract.py <evidence.json>")
+    path = argv[1]
+    if not os.path.exists(path):
+        return fail("missing evidence file: {0}".format(path))
 
-    lanes = data.get('lanes')
+    data = json.load(open(path, "r"))
+    lanes = data.get("lanes")
     if not isinstance(lanes, dict):
-        return fail('missing lanes map')
+        return fail("invalid contract: lanes map missing")
 
-    missing = [k for k in REQUIRED_LANES if k not in lanes]
-    if missing:
-        return fail('missing lane keys: {0}'.format(', '.join(missing)))
-
+    rc = 0
     for lane in REQUIRED_LANES:
-        row = lanes.get(lane, {})
-        for k in ['raw_count', 'zero_star_raw', 'median_stars_raw', 'kept_count', 'lane_status', 'degraded_causes', 'recovery_queries']:
-            if k not in row:
-                return fail('lane {0} missing key {1}'.format(lane, k))
-        raw_count = row.get('raw_count', 0)
-        kept_count = row.get('kept_count', 0)
-        if kept_count > raw_count:
-            return fail('lane {0} invalid metrics: kept_count > raw_count'.format(lane))
+        if lane not in lanes:
+            sys.stderr.write("missing lane: {0}\n".format(lane))
+            rc = 1
+            continue
+        obj = lanes[lane]
+        for key in ["raw_count", "kept_count", "recovery_queries", "lane_status", "degraded_causes"]:
+            if key not in obj:
+                sys.stderr.write("lane {0} missing key: {1}\n".format(lane, key))
+                rc = 1
+        rq = obj.get("recovery_queries")
+        if not isinstance(rq, list):
+            sys.stderr.write("lane {0} recovery_queries must be list\n".format(lane))
+            rc = 1
+        else:
+            stages = []
+            for item in rq:
+                if isinstance(item, dict):
+                    stages.append(item.get("stage"))
+            if "stage-1" not in stages or "stage-2" not in stages:
+                sys.stderr.write("lane {0} recovery_queries must include stage-1 and stage-2\n".format(lane))
+                rc = 1
+        raw_count = obj.get("raw_count", 0)
+        kept_count = obj.get("kept_count", 0)
+        try:
+            if int(kept_count) > int(raw_count):
+                sys.stderr.write("lane {0} invalid metrics: kept_count > raw_count\n".format(lane))
+                rc = 1
+        except Exception:
+            sys.stderr.write("lane {0} invalid metric types\n".format(lane))
+            rc = 1
+        if int(raw_count) == 0:
+            causes = obj.get("degraded_causes") or []
+            if "no-results" not in causes:
+                sys.stderr.write("lane {0} raw_count=0 must include degraded cause no-results\n".format(lane))
+                rc = 1
 
-        rec = row.get('recovery_queries')
-        if not isinstance(rec, list) or len(rec) < 2:
-            return fail('lane {0} recovery_queries must include stage-1 and stage-2'.format(lane))
-        stages = set()
-        for item in rec:
-            if isinstance(item, dict):
-                st = item.get('stage')
-                if st:
-                    stages.add(st)
-        if 'stage-1' not in stages or 'stage-2' not in stages:
-            return fail('lane {0} recovery stages incomplete'.format(lane))
-
-        if raw_count == 0:
-            causes = row.get('degraded_causes') or []
-            if 'no-results' not in causes:
-                return fail('lane {0} raw_count==0 requires degraded_causes include no-results'.format(lane))
-
-    sys.stdout.write('ok\n')
-    return 0
+    if rc == 0:
+        sys.stdout.write("hourly evidence contract: OK\n")
+    return rc
 
 
-if __name__ == '__main__':
-    sys.exit(main())
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

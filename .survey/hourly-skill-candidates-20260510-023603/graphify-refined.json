@@ -1,0 +1,5 @@
+{
+  "status": "fallback",
+  "reason": "graphify query/save-result not available in this runtime; fallback artifact generated from evidence summary",
+  "slug": "hourly-skill-candidates-20260510-023603"
+}

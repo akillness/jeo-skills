@@ -1,0 +1,702 @@
+[
+  {
+    "fullName": "addyosmani/agent-skills",
+    "url": "https://github.com/addyosmani/agent-skills",
+    "description": "Production-grade engineering skills for AI coding agents.",
+    "stargazersCount": 37158,
+    "pushedAt": "2026-05-09T03:37:44Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "Orchestra-Research/AI-Research-SKILLs",
+    "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+    "description": "Comprehensive open-source library of AI research and engineering skills for any AI model. Package the skills and your claude code/codex/gemini agent will be an AI research agent with full horsepower. Maintained by Orchestra Research.",
+    "stargazersCount": 8110,
+    "pushedAt": "2026-04-28T05:09:27Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "pinchbench/skill",
+    "url": "https://github.com/pinchbench/skill",
+    "description": "PinchBench is a benchmarking system for evaluating LLM models as OpenClaw coding agents. Made with \ud83e\udd80 by the humans at https://kilo.ai",
+    "stargazersCount": 1115,
+    "pushedAt": "2026-05-08T14:54:47Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "wrtnlabs/agentica",
+    "url": "https://github.com/wrtnlabs/agentica",
+    "description": "TypeScript AI AI Function Calling Framework enhanced by compiler skills.",
+    "stargazersCount": 1023,
+    "pushedAt": "2026-04-27T05:58:49Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "mvanhorn/last30days-skill",
+    "url": "https://github.com/mvanhorn/last30days-skill",
+    "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+    "stargazersCount": 25271,
+    "pushedAt": "2026-05-02T18:30:22Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "coreyhaines31/marketingskills",
+    "url": "https://github.com/coreyhaines31/marketingskills",
+    "description": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+    "stargazersCount": 27521,
+    "pushedAt": "2026-05-06T06:56:58Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "supabase/agent-skills",
+    "url": "https://github.com/supabase/agent-skills",
+    "description": "Agent Skills to help developers using AI agents with Supabase",
+    "stargazersCount": 2066,
+    "pushedAt": "2026-05-06T15:00:00Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "numman-ali/openskills",
+    "url": "https://github.com/numman-ali/openskills",
+    "description": "Universal skills loader for AI coding agents - npm i -g openskills",
+    "stargazersCount": 10071,
+    "pushedAt": "2026-01-18T13:09:50Z",
+    "license": "other",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "github/awesome-copilot",
+    "url": "https://github.com/github/awesome-copilot",
+    "description": "Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.",
+    "stargazersCount": 32539,
+    "pushedAt": "2026-05-08T19:51:06Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "MoizIbnYousaf/Ai-Agent-Skills",
+    "url": "https://github.com/MoizIbnYousaf/Ai-Agent-Skills",
+    "description": "my curated agent skills library ",
+    "stargazersCount": 1049,
+    "pushedAt": "2026-05-05T09:57:12Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "snyk/agent-scan",
+    "url": "https://github.com/snyk/agent-scan",
+    "description": "Security scanner for AI agents, MCP servers and agent skills.",
+    "stargazersCount": 2368,
+    "pushedAt": "2026-05-09T07:41:30Z",
+    "license": "apache-2.0",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "deanpeters/Product-Manager-Skills",
+    "url": "https://github.com/deanpeters/Product-Manager-Skills",
+    "description": "Product Management skills framework built on battle-tested methods for Claude Code, Cowork, Codex, and AI agents.",
+    "stargazersCount": 4123,
+    "pushedAt": "2026-04-28T17:32:07Z",
+    "license": "other",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "antonbabenko/terraform-skill",
+    "url": "https://github.com/antonbabenko/terraform-skill",
+    "description": "Terraform & OpenTofu Skill for AI Agents - testing, modules, CI/CD, and production patterns",
+    "stargazersCount": 1816,
+    "pushedAt": "2026-04-22T18:01:23Z",
+    "license": "other",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "eastlondoner/vibe-tools",
+    "url": "https://github.com/eastlondoner/vibe-tools",
+    "description": "Give Cursor Agent an AI Team and Advanced Skills",
+    "stargazersCount": 4761,
+    "pushedAt": "2025-08-25T10:10:43Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "alibaba-flyai/flyai-skill",
+    "url": "https://github.com/alibaba-flyai/flyai-skill",
+    "description": "fly ai agent skill",
+    "stargazersCount": 629,
+    "pushedAt": "2026-04-21T11:20:56Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "SamurAIGPT/Generative-Media-Skills",
+    "url": "https://github.com/SamurAIGPT/Generative-Media-Skills",
+    "description": "Multi-modal Generative Media Skills for AI Agents (Claude Code, Cursor, Gemini CLI). High-quality image, video, and audio generation powered by muapi.ai.",
+    "stargazersCount": 3203,
+    "pushedAt": "2026-05-02T18:35:59Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "twostraws/SwiftUI-Agent-Skill",
+    "url": "https://github.com/twostraws/SwiftUI-Agent-Skill",
+    "description": "SwiftUI agent skill for Claude Code, Codex, and other AI tools.",
+    "stargazersCount": 3843,
+    "pushedAt": "2026-04-20T08:02:42Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "dotnet/skills",
+    "url": "https://github.com/dotnet/skills",
+    "description": "Repository for skills to assist AI coding agents with .NET and C#",
+    "stargazersCount": 1642,
+    "pushedAt": "2026-05-09T03:31:37Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "tech-leads-club/agent-skills",
+    "url": "https://github.com/tech-leads-club/agent-skills",
+    "description": "The secure, validated skill registry for professional AI coding agents. Extend Antigravity, Claude Code, Cursor, Copilot and more with absolute confidence.",
+    "stargazersCount": 2308,
+    "pushedAt": "2026-04-28T17:42:25Z",
+    "license": "other",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "skillmatic-ai/awesome-agent-skills",
+    "url": "https://github.com/skillmatic-ai/awesome-agent-skills",
+    "description": "The definitive resource for Agent Skills - modular capabilities revolutionizing AI agent architecture",
+    "stargazersCount": 561,
+    "pushedAt": "2026-04-22T21:08:51Z",
+    "license": "cc0-1.0",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "yaklang/hack-skills",
+    "url": "https://github.com/yaklang/hack-skills",
+    "description": "Helping AI Agent become an awesome practical hacker!",
+    "stargazersCount": 559,
+    "pushedAt": "2026-05-06T12:09:05Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "mukul975/Anthropic-Cybersecurity-Skills",
+    "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+    "description": "754 structured cybersecurity skills for AI agents \u00b7 Mapped to 5 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND & NIST AI RMF \u00b7 agentskills.io standard \u00b7 Works with Claude Code, GitHub Copilot, Codex CLI, Cursor, Gemini CLI & 20+ platforms \u00b7 26 security domains \u00b7 Apache 2.0",
+    "stargazersCount": 6141,
+    "pushedAt": "2026-04-26T12:03:38Z",
+    "license": "apache-2.0",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "greensock/gsap-skills",
+    "url": "https://github.com/greensock/gsap-skills",
+    "description": "Official AI skills for GSAP. These skills teach AI coding agents how to correctly use GSAP (GreenSock Animation Platform), including best practices, common animation patterns, and plugin usage.",
+    "stargazersCount": 3177,
+    "pushedAt": "2026-04-21T23:47:09Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "openakita/openakita",
+    "url": "https://github.com/openakita/openakita",
+    "description": "An open-source AI assistant framework with skills and agent architecture",
+    "stargazersCount": 1728,
+    "pushedAt": "2026-05-09T15:11:21Z",
+    "license": "apache-2.0",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "HoangNguyen0403/agent-skills-standard",
+    "url": "https://github.com/HoangNguyen0403/agent-skills-standard",
+    "description": "A collection of Agent Skills Standard and Best Practice for Programming Languages, Frameworks that help our AI Agent follow best practies on frameworks and programming laguages",
+    "stargazersCount": 487,
+    "pushedAt": "2026-05-09T16:39:18Z",
+    "license": "apache-2.0",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "aaron-he-zhu/seo-geo-claude-skills",
+    "url": "https://github.com/aaron-he-zhu/seo-geo-claude-skills",
+    "description": "20 SEO & GEO skills for Claude Code, Cursor, Codex, and 35+ AI agents. Keyword research, content writing, technical audits, rank tracking. CORE-EEAT + CITE frameworks.",
+    "stargazersCount": 1540,
+    "pushedAt": "2026-04-28T04:04:54Z",
+    "license": "apache-2.0",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "davidYichengWei/agentic-engineering-framework",
+    "url": "https://github.com/davidYichengWei/agentic-engineering-framework",
+    "description": "\u5f00\u7bb1\u5373\u7528\u3001\u53ef\u6309\u9879\u76ee\u5b9a\u5236\u7684 AI Coding Agent Skills \u6846\u67b6\uff1a\u63d0\u4f9b\u901a\u7528 Workflow\u3001\u53ef\u6269\u5c55\u7684\u9879\u76ee\u79c1\u6709\u77e5\u8bc6\u3001\u81ea\u6211\u5b66\u4e60\u95ed\u73af\u548c\u95ee\u9898\u6392\u67e5\u80fd\u529b\uff0c\u9002\u914d\u4efb\u610f\u6280\u672f\u6808\u548c\u5de5\u7a0b\u573a\u666f\u3002\u517c\u5bb9\u4e3b\u6d41 Coding Agent\u3002",
+    "stargazersCount": 112,
+    "pushedAt": "2026-03-25T05:13:37Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "polyuiislab/infiAgent",
+    "url": "https://github.com/polyuiislab/infiAgent",
+    "description": "Build your own Cowork, AI Scientist and other SoTA Agents just by editing config files. Support anthropic skills. An infinite-horizon agent framework designed for long-running, complex tasks.",
+    "stargazersCount": 1172,
+    "pushedAt": "2026-04-06T12:34:54Z",
+    "license": "gpl-3.0",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "opensolon/solon-ai",
+    "url": "https://github.com/opensolon/solon-ai",
+    "description": "Java AI application development framework (supports LLM-tool,skill; RAG; MCP; Agent-ReAct,Team-Agent). Compatible with java8 ~ java25. It can also be embedded in SpringBoot, jFinal, Vert.x, Quarkus, and other frameworks.",
+    "stargazersCount": 379,
+    "pushedAt": "2026-05-09T08:05:01Z",
+    "license": "apache-2.0",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "proffesor-for-testing/agentic-qe",
+    "url": "https://github.com/proffesor-for-testing/agentic-qe",
+    "description": "Agentic QE Fleet is an open-source AI-powered QA/QE platform designed for use with Coding Agents (works best with Claude Code) featuring specialized agents and skills to support testing activities for a product at any stage of the SDLC. Free to use, fork, build, and contribute. Based on the Agentic QE Framework created by Dragan Spiridonov.",
+    "stargazersCount": 340,
+    "pushedAt": "2026-05-09T14:08:50Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "wanxingai/LightAgent",
+    "url": "https://github.com/wanxingai/LightAgent",
+    "description": "LightAgent: Lightweight AI agent framework with memory, mcp & skill. Supports multi-agent collaboration, self-learning, and major LLMs (OpenAI/DeepSeek/Qwen). Open-source with MCP/SSE protocol integration.",
+    "stargazersCount": 959,
+    "pushedAt": "2026-04-26T14:25:51Z",
+    "license": "apache-2.0",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "open-gitagent/gitagent",
+    "url": "https://github.com/open-gitagent/gitagent",
+    "description": "A universal git-native AI agent framework. Your agent lives inside a git repo \u2014 identity, rules, memory, tools, and skills are all version-controlled files.",
+    "stargazersCount": 356,
+    "pushedAt": "2026-05-05T13:27:11Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "sangrokjung/claude-forge",
+    "url": "https://github.com/sangrokjung/claude-forge",
+    "description": "Supercharge Claude Code with 11 AI agents, 36 commands & 15 skills \u2014 the claude-code plugin framework inspired by oh-my-zsh. 6-layer security hooks included. 5-min install.",
+    "stargazersCount": 689,
+    "pushedAt": "2026-05-03T07:02:12Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "slowmist/slowmist-agent-security",
+    "url": "https://github.com/slowmist/slowmist-agent-security",
+    "description": "SlowMist Agent Security Skill: A comprehensive security review framework for AI agents operating in adversarial environments. Core principle: Every external input is untrusted until verified.",
+    "stargazersCount": 447,
+    "pushedAt": "2026-04-17T02:12:58Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "zhu1090093659/spec_driven_develop",
+    "url": "https://github.com/zhu1090093659/spec_driven_develop",
+    "description": "A cross-platform AI agent skill that turns \"rewrite this in Rust\" or \"migrate to microservices\" into a disciplined, document-driven workflow \u2014 analyze, decompose, track, execute. One SKILL.md, no framework, no runtime. Works with Claude Code, Codex, Cursor, or any agent that reads Markdown.",
+    "stargazersCount": 714,
+    "pushedAt": "2026-04-24T02:41:43Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "BAAI-Agents/Cradle",
+    "url": "https://github.com/BAAI-Agents/Cradle",
+    "description": "The Cradle framework is a first attempt at General Computer Control (GCC). Cradle supports agents to ace any computer task by enabling strong reasoning abilities, self-improvment, and skill curation, in a standardized general environment with minimal requirements.",
+    "stargazersCount": 2507,
+    "pushedAt": "2024-11-07T04:58:20Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "mastra-ai/skills",
+    "url": "https://github.com/mastra-ai/skills",
+    "description": "Official agent skills for coding agents working with the Mastra AI framework",
+    "stargazersCount": 53,
+    "pushedAt": "2026-05-07T07:29:15Z",
+    "license": "other",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "JOINCLASS/ai-ceo-framework",
+    "url": "https://github.com/JOINCLASS/ai-ceo-framework",
+    "description": "Run your entire company with Claude Code. 15 AI Agents + 5 Skills + Approval Pipeline. Battle-tested in production for 1+ year.",
+    "stargazersCount": 37,
+    "pushedAt": "2026-04-15T00:56:57Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "Snowflake-Labs/ai-ready-data",
+    "url": "https://github.com/Snowflake-Labs/ai-ready-data",
+    "description": "Framework to define AI-ready data and Skills for coding agents to assess and make your data AI-ready",
+    "stargazersCount": 67,
+    "pushedAt": "2026-04-16T21:08:21Z",
+    "license": "apache-2.0",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "alirezarezvani/claude-code-aso-skill",
+    "url": "https://github.com/alirezarezvani/claude-code-aso-skill",
+    "description": "AEO Automation Framework for Claude Code One-click, beginner friendly automation for GitHub. Includes a dedicated fleet of AEO sub-agents handling planning, execution, reports, actionable items, and executive summaries. Trigger work instantly with AEO slash-commands. Fully integrated as a Claude Code Skill and usable across Claude AI App",
+    "stargazersCount": 330,
+    "pushedAt": "2026-04-13T00:13:58Z",
+    "license": "other",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "Fujigo-Software/f5-framework-claude",
+    "url": "https://github.com/Fujigo-Software/f5-framework-claude",
+    "description": "AI-Powered Development Framework for Claude Code \u2014 70+ commands, 25 agents, 381 skills, quality gates",
+    "stargazersCount": 20,
+    "pushedAt": "2026-02-04T12:03:24Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "kucherenko/gangsta",
+    "url": "https://github.com/kucherenko/gangsta",
+    "description": "AI agentic skills framework for spec-driven development, built on the organizational model of mafia.",
+    "stargazersCount": 21,
+    "pushedAt": "2026-05-01T14:08:26Z",
+    "license": "mit",
+    "fit_rationale": "agentic-ai-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "zarazhangrui/frontend-slides",
+    "url": "https://github.com/zarazhangrui/frontend-slides",
+    "description": "Create beautiful slides on the web using Claude's frontend skills",
+    "stargazersCount": 16873,
+    "pushedAt": "2026-04-08T18:23:28Z",
+    "license": "mit",
+    "fit_rationale": "web-frontend-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+    "url": "https://github.com/Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+    "description": "\ud83d\ude80 100 Days of Web Development challenge using HTML, CSS & JavaScript. Daily learning, practice, and real-world projects to strengthen frontend development skills.",
+    "stargazersCount": 36,
+    "pushedAt": "2026-03-08T06:32:12Z",
+    "license": "mit",
+    "fit_rationale": "web-frontend-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "archlizheng/frontend-slides-editable",
+    "url": "https://github.com/archlizheng/frontend-slides-editable",
+    "description": "Editable HTML presentation skill for Codex/Claude Code with drag-resize editing, slide reordering, local save/export, and PPTX-to-web conversion. Shout out to @zarazhangrui ",
+    "stargazersCount": 104,
+    "pushedAt": "2026-04-04T08:17:58Z",
+    "license": "mit",
+    "fit_rationale": "web-frontend-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "MickeyAlton33/web-designer-plugin",
+    "url": "https://github.com/MickeyAlton33/web-designer-plugin",
+    "description": "Award-winning web design skill for Claude Code. 48 patterns from 38 top websites. Stop generating generic AI frontends.",
+    "stargazersCount": 31,
+    "pushedAt": "2026-03-26T21:20:46Z",
+    "license": "mit",
+    "fit_rationale": "web-frontend-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "ceilf6/FrontAgent",
+    "url": "https://github.com/ceilf6/FrontAgent",
+    "description": "AI agent platform for frontend engineering with RAG, Skills, SDD, MCP | \u901a\u8fc7\u591a\u79cd\u9002\u914d\u524d\u7aef\u5de5\u7a0b\u7684\u6280\u672f\u8fdb\u884c\u8d4b\u80fd\u7684\u667a\u80fd\u4f53\uff0c\u652f\u6301\u901a\u8fc7 CLI \u6216 VSCode\u63d2\u4ef6 \u4f7f\u7528",
+    "stargazersCount": 94,
+    "pushedAt": "2026-05-09T17:05:14Z",
+    "license": "mit",
+    "fit_rationale": "web-frontend-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "aladicf/better-web-ui",
+    "url": "https://github.com/aladicf/better-web-ui",
+    "description": "better-web-ui is a web frontend design skill library for AI coding agents.",
+    "stargazersCount": 14,
+    "pushedAt": "2026-04-26T19:22:20Z",
+    "license": "other",
+    "fit_rationale": "web-frontend-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "mikeoptimax/claude-frontend-skills-pack",
+    "url": "https://github.com/mikeoptimax/claude-frontend-skills-pack",
+    "description": "One CLAUDE.md file that makes Claude Code build production-grade UI. 1,400+ components from 21st.dev, distinctive typography, Framer Motion, Next.js 15 patterns.",
+    "stargazersCount": 12,
+    "pushedAt": "2026-02-28T20:09:23Z",
+    "license": "mit",
+    "fit_rationale": "web-frontend-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "mukeshlilawat1/Hotel-Mountain-Mirage",
+    "url": "https://github.com/mukeshlilawat1/Hotel-Mountain-Mirage",
+    "description": "Hotel-Mountain-Mirage is a full-stack hotel booking and management web application built with React.js (Frontend) and Spring Boot (Backend). It integrates secure authentication using Spring Security with JWT and is deployed using AWS services. This project demonstrates real-world development skills including role-based access control, API integrati",
+    "stargazersCount": 17,
+    "pushedAt": "2026-01-18T13:18:36Z",
+    "license": "mit",
+    "fit_rationale": "web-backend-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "web-backend-skill"
+  },
+  {
+    "fullName": "nexu-io/open-design",
+    "url": "https://github.com/nexu-io/open-design",
+    "description": "\ud83c\udfa8 Local-first, open-source alternative to Anthropic's Claude Design. \u26a1 19 Skills \u00b7 \u2728 71 brand-grade Design Systems \ud83d\uddbc Generate web \u00b7 desktop \u00b7 mobile prototypes \u00b7 slides \u00b7 images \u00b7 videos \u00b7 HyperFrames \ud83d\udce6 Sandboxed preview \u00b7 HTML/PDF/PPTX/MP4 export \ud83e\udd16 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+    "stargazersCount": 35078,
+    "pushedAt": "2026-05-09T17:33:08Z",
+    "license": "apache-2.0",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "jeremylongshore/claude-code-plugins-plus-skills",
+    "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+    "description": "425 plugins, 2,810 skills, 200 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+    "stargazersCount": 2144,
+    "pushedAt": "2026-05-09T13:11:52Z",
+    "license": "mit",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "bonnard-data/bonnard-cli",
+    "url": "https://github.com/bonnard-data/bonnard-cli",
+    "description": "Open-source agentic schema CLI. Optimised for claude code, gemini, codex and co-pilot. Skills included.",
+    "stargazersCount": 48,
+    "pushedAt": "2026-03-20T10:43:05Z",
+    "license": "mit",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "TerminalSkills/skills",
+    "url": "https://github.com/TerminalSkills/skills",
+    "description": "Open-source library of AI agent skills \u2014 SKILL.md files for Claude Code, Codex, Gemini CLI, Cursor",
+    "stargazersCount": 46,
+    "pushedAt": "2026-05-04T12:55:24Z",
+    "license": "apache-2.0",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "frank-luongt/faos-skills-marketplace",
+    "url": "https://github.com/frank-luongt/faos-skills-marketplace",
+    "description": "930+ AI-powered skills and 31 agent plugins for Claude Code, OpenAI Codex, Gemini CLI, GitHub Copilot, and Perplexity Computer. The largest open-source AI skills library.",
+    "stargazersCount": 14,
+    "pushedAt": "2026-04-19T10:33:03Z",
+    "license": "apache-2.0",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "KarmaloopAI/Jiva",
+    "url": "https://github.com/KarmaloopAI/Jiva",
+    "description": "Jiva is a CLI-first, open source autonomous AI agent and open alternative to Claude. Built in TypeScript with native support for Sarvam-105B and gpt-oss-120b, it autonomously plans and executes tasks from your terminal. Supports MCP servers, a built-in Skills system, and Jiva Personas - a plugin framework fully compatible with Claude Plugins.",
+    "stargazersCount": 35,
+    "pushedAt": "2026-05-08T10:13:15Z",
+    "license": "mit",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "Redblock-Online/redblock-client",
+    "url": "https://github.com/Redblock-Online/redblock-client",
+    "description": "First Open Source Aim Trainer and World Builder for FPS players. Built with Three.js to push the limits of skill and design.",
+    "stargazersCount": 20,
+    "pushedAt": "2026-02-21T20:39:11Z",
+    "license": "other",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "night-slayer18/leetcode-cli",
+    "url": "https://github.com/night-slayer18/leetcode-cli",
+    "description": "A powerful command-line interface (CLI) tool for LeetCode, enabling developers to fetch coding problems, submit solutions, manage accounts, and streamline competitive programming workflows directly from the terminal.",
+    "stargazersCount": 26,
+    "pushedAt": "2026-05-01T09:37:59Z",
+    "license": "apache-2.0",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "eneswritescode/focuscli",
+    "url": "https://github.com/eneswritescode/focuscli",
+    "description": "A command-line interface (CLI) tool for task management and Pomodoro timing. Designed for developer workflow efficiency.",
+    "stargazersCount": 3,
+    "pushedAt": "2026-02-13T18:51:28Z",
+    "license": "mit",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "scientist-labs/ragnar-cli",
+    "url": "https://github.com/scientist-labs/ragnar-cli",
+    "description": "Ragnar is a pure Ruby command-line RAG (Retrieval-Augmented Generation) tool with zero external dependencies. It provides local document indexing, semantic search, and LLM-powered query processing. Built to be hackable, it lets Ruby developers experiment with agentic workflows and RAG pipelines natively in Ruby.",
+    "stargazersCount": 10,
+    "pushedAt": "2026-03-31T06:13:27Z",
+    "license": "mit",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "devcoffee/idempiere-cli",
+    "url": "https://github.com/devcoffee/idempiere-cli",
+    "description": "`idempiere-cli` is a command-line tool built with Quarkus, designed to modernize the developer experience for iDempiere plugin development. It streamlines the entire workflow \u2014 from setting up a development environment to building, testing, and publishing plugins.",
+    "stargazersCount": 4,
+    "pushedAt": "2026-05-06T16:52:00Z",
+    "license": "gpl-2.0",
+    "fit_rationale": "cli-open-source-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "Heigvd/Wegas",
+    "url": "https://github.com/Heigvd/Wegas",
+    "description": "A Web Game Authoring System coded in Java and Javascript for rapid development of serious games without programming skills.",
+    "stargazersCount": 30,
+    "pushedAt": "2026-05-06T15:16:41Z",
+    "license": "mit",
+    "fit_rationale": "game-development-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "indiesoftby/defold-agent-config",
+    "url": "https://github.com/indiesoftby/defold-agent-config",
+    "description": "An example configuration of AGENTS.md and a set of skills for AI-assisted game development with the https://defold.com engine.",
+    "stargazersCount": 63,
+    "pushedAt": "2026-04-23T16:51:14Z",
+    "license": "other",
+    "fit_rationale": "game-development-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "MRCalderon3D/everything-game-dev-code",
+    "url": "https://github.com/MRCalderon3D/everything-game-dev-code",
+    "description": "A universal scaffold for AI-assisted game development. 42 agents, 51 commands, 86 skills. Multi-engine (Unity, Unreal, Godot, HTML). Multi-harness (Claude Code, Codex, Cursor, OpenCode, Kiro).",
+    "stargazersCount": 28,
+    "pushedAt": "2026-04-23T19:55:39Z",
+    "license": "mit",
+    "fit_rationale": "game-development-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "Dailiduzhou/cocos-creator-dev-skill",
+    "url": "https://github.com/Dailiduzhou/cocos-creator-dev-skill",
+    "description": "A comprehensive skill for [Claude](https://claude.ai) that provides expert guidance for Cocos Creator 3.x game development using TypeScript.",
+    "stargazersCount": 26,
+    "pushedAt": "2026-02-07T11:59:21Z",
+    "license": "mit",
+    "fit_rationale": "game-development-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "gavogavogavo/claude-sbox",
+    "url": "https://github.com/gavogavogavo/claude-sbox",
+    "description": "Claude Code skill for s&box game development. Schema-verified API reference, 10 runnable examples, zero Unity hallucinations",
+    "stargazersCount": 39,
+    "pushedAt": "2026-04-14T22:57:04Z",
+    "license": "mit",
+    "fit_rationale": "game-development-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "devdavv/unity-ai-workflow",
+    "url": "https://github.com/devdavv/unity-ai-workflow",
+    "description": "AI-first Unity 6.2+ game development workflow \u2014 rules, agents, skills, and slash commands for Claude Code and Antigravity",
+    "stargazersCount": 16,
+    "pushedAt": "2026-04-01T15:59:29Z",
+    "license": "mit",
+    "fit_rationale": "game-development-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "AlterLab-IEU/AlterLab_GameForge",
+    "url": "https://github.com/AlterLab-IEU/AlterLab_GameForge",
+    "description": "\ud83c\udfae 34 production-grade Claude Code skills for indie game development \u2014 studio agents, workflow skills, engine specialists, genre packs, and CI validation. From concept to launch.",
+    "stargazersCount": 11,
+    "pushedAt": "2026-03-30T13:32:11Z",
+    "license": "mit",
+    "fit_rationale": "game-development-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "HalloSpaceBoy5/PicoBoy",
+    "url": "https://github.com/HalloSpaceBoy5/PicoBoy",
+    "description": "The ultimate DIY video game console that you can buy as a kit or as a prebuilt. It uses a custom operating system that is easy to use and incredibly powerful. It has an SDK that makes game development as easy as possible, allowing for anyone of any programming skill to make amazing games. ",
+    "stargazersCount": 80,
+    "pushedAt": "2025-09-10T17:54:25Z",
+    "license": "other",
+    "fit_rationale": "game-development-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "Hazrat-Ali9/Snake-Game",
+    "url": "https://github.com/Hazrat-Ali9/Snake-Game",
+    "description": "\ud83d\udc09 Snake Game \ud83d\udc0d rebuilt with \ud83e\udd8e sleek design \ud83e\udd88 and smooth \ud83d\udc33 gameplay This \ud83d\udc2c repo offers \ud83e\udeb2 an amazing \ud83e\udd8b fully functional \ud83d\udc19 Snake game \ud83c\udf54 built using \ud83c\udf45 JavaScript perfect \ud83c\udf4aboth beginners \ud83c\udf53 learning game \ud83c\udf3d development \ud83e\uded1 and pros polishing \ud83d\ude82 their skills \ud83c\udfe9 Smooth animations \ud83d\ude8b powered by \ud83d\ude81 request \ud83d\ude80 Animation \ud83d\udea0 Frame \ud83d\udef8 React \u26f4 hook \ud83d\udea2",
+    "stargazersCount": 37,
+    "pushedAt": "2025-05-13T13:09:41Z",
+    "license": "mit",
+    "fit_rationale": "game-development-skill intent overlap and signal/freshness/license gates passed",
+    "lane": "game-development-skill"
+  }
+]

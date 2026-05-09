@@ -36,3 +36,5 @@
 
 - 2026-05-09 15:26:45Z hourly run hourly-skill-candidates-20260510-002403: added toolchain preflight automation and generated carry-forward survey artifacts for PR #271 (checks blocked).
 - 2026-05-09T16:32:22Z | hourly survey hourly-skill-candidates-20260510-013002: generated evidence bundle, added RTK automation script, open PR gate active.
+
+- 2026-05-09T17:36:59Z: carry-forward run on PR #271 (hourly-skill-candidates-20260510-023603)
