@@ -1,0 +1,70 @@
+{
+  "slug": "hourly-skill-candidates-20260509-210900",
+  "generated_at_utc": "2026-05-09T12:09:35.462569+00:00",
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false,
+  "lane_rows": [
+    {
+      "lane": "agentic-ai-skill",
+      "status": "pass",
+      "raw_count": 30,
+      "kept_count": 5,
+      "median_stars_raw": 0,
+      "degraded_causes": []
+    },
+    {
+      "lane": "web-frontend-skill",
+      "status": "degraded",
+      "raw_count": 5,
+      "kept_count": 0,
+      "median_stars_raw": 0,
+      "degraded_causes": [
+        "license",
+        "low-signal",
+        "stale"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "status": "degraded",
+      "raw_count": 1,
+      "kept_count": 0,
+      "median_stars_raw": 7532,
+      "degraded_causes": [
+        "low-fit"
+      ]
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "status": "pass",
+      "raw_count": 1,
+      "kept_count": 1,
+      "median_stars_raw": 34790,
+      "degraded_causes": []
+    },
+    {
+      "lane": "game-development-skill",
+      "status": "pass",
+      "raw_count": 30,
+      "kept_count": 1,
+      "median_stars_raw": 0,
+      "degraded_causes": []
+    }
+  ],
+  "degraded_lanes": [
+    {
+      "lane": "web-frontend-skill",
+      "causes": [
+        "license",
+        "low-signal",
+        "stale"
+      ]
+    },
+    {
+      "lane": "web-backend-skill",
+      "causes": [
+        "low-fit"
+      ]
+    }
+  ]
+}

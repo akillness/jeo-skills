@@ -1,0 +1,5 @@
+ M .survey/.active-hourly-slug
+?? .agent-skills/survey/references/open-pr-blocker-bundle.md
+?? .agent-skills/survey/scripts/generate_open_pr_blocker_bundle.py
+?? .survey/hourly-skill-candidates-20260509-210900/
+?? open_prs.json
