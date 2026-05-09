@@ -28,3 +28,5 @@
 - 2026-05-09T02:24:25Z: hourly survey run hourly-skill-candidates-20260509-022120 (see .survey/hourly-skill-candidates-20260509-022120)
 
 - 2026-05-09T03:30:12Z | hourly-skill-candidates-20260509-122708
+
+- hourly-skill-candidates-20260509-143807: hourly run updated artifacts and blocker state

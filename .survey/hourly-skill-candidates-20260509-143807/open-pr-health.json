@@ -1,0 +1,12 @@
+{
+  "repo": "akillness/oh-my-skills",
+  "pr_number": 271,
+  "headRefName": "chore/hourly-survey-20260507-224544",
+  "mergeable": "MERGEABLE",
+  "reviewDecision": "",
+  "url": "https://github.com/akillness/oh-my-skills/pull/271",
+  "checks_exit_code": 1,
+  "checks_stdout": "",
+  "checks_stderr": "no checks reported on the 'chore/hourly-survey-20260507-224544' branch",
+  "status": "blocked-no-checks"
+}
