@@ -1,0 +1,12 @@
+{
+  "slug": "hourly-skill-candidates-20260510-065413",
+  "graphify_save_result_exit_code": null,
+  "fallback_reason": "none",
+  "lanes": [
+    "agentic-ai-skill",
+    "web-frontend-skill",
+    "web-backend-skill",
+    "cli-open-source-skill",
+    "game-development-skill"
+  ]
+}
