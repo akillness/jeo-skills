@@ -1,0 +1,22 @@
+{
+  "repo": "akillness/oh-my-skills",
+  "status": "degraded",
+  "merge_blocked_reason": "no-checks-reported",
+  "checks": [
+    {
+      "name": "workflow_files_present",
+      "status": "fail",
+      "count": 0
+    },
+    {
+      "name": "active_workflow_present",
+      "status": "fail",
+      "count": 0
+    }
+  ],
+  "remediation": [
+    "Add at least one workflow in .github/workflows/*.yml",
+    "Trigger workflow via push or workflow_dispatch",
+    "Require status checks in branch protection"
+  ]
+}
