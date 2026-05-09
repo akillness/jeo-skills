@@ -48,6 +48,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/intent-fit-audit.md](references/intent-fit-audit.md)
 - [references/open-pr-gate-assessment.md](references/open-pr-gate-assessment.md)
 - [references/hourly-deduped-recommendations.md](references/hourly-deduped-recommendations.md)
+- [references/hourly-audit-bundle-generator.md](references/hourly-audit-bundle-generator.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.
