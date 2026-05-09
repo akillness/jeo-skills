@@ -1,0 +1,9 @@
+{
+  "repo": "akillness/oh-my-skills",
+  "pr_number": 271,
+  "head_sha": "ee291e18b94d3d6e6014c43084305da50b6a3c0a",
+  "checks_exit_code": 1,
+  "checks_stdout": "",
+  "checks_stderr": "no checks reported on the 'chore/hourly-survey-20260507-224544' branch\n",
+  "merge_blocked_reason": "no-checks-reported"
+}
