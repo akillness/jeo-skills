@@ -1,0 +1,30 @@
+[
+  {
+    "description": "Create beautiful slides on the web using Claude's frontend skills",
+    "fullName": "zarazhangrui/frontend-slides",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-08T18:23:28Z",
+    "stargazersCount": 16825,
+    "updatedAt": "2026-05-09T10:58:50Z",
+    "url": "https://github.com/zarazhangrui/frontend-slides"
+  },
+  {
+    "description": "2026 年编程导航 AI 编程实战新项目，基于 Node.js + Express + React + OpenRouter 的 AI 热点监控工具，支持多信息源聚合抓取（Twitter / Bing / HackerNews / B 站等 7+ 平台）、AI 查询扩展、AI 真假识别与相关性分析、WebSocket 实时推送、邮件通知、多维度筛选排序，并将热点监控能力封装为 Agent Skills 技能包。覆盖 Prisma + SQLite 数据库、Socket.io 实时通信、Axios + Cheerio 网页爬虫、OpenRouter 大模型接入、Aceternity UI 炫酷前端、node-cron 定时任务、VSCode Copilot Vibe Coding + MCP",
+    "fullName": "liyupi/yupi-hot-monitor",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-16T11:56:53Z",
+    "stargazersCount": 429,
+    "updatedAt": "2026-05-09T07:33:37Z",
+    "url": "https://github.com/liyupi/yupi-hot-monitor"
+  }
+]

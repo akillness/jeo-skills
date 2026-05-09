@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import json
-import os
 import sys
 
 REQUIRED_LANES = [
@@ -13,55 +12,57 @@ REQUIRED_LANES = [
 
 
 def fail(msg):
-    sys.stderr.write('ERROR: %s\n' % msg)
+    sys.stderr.write(msg + '\n')
     return 1
 
 
-def main(argv):
-    if len(argv) != 2:
-        sys.stderr.write('Usage: validate_hourly_evidence_contract.py <evidence.json>\n')
-        return 2
-    path = argv[1]
-    if not os.path.isfile(path):
-        return fail('file not found: %s' % path)
+def main():
+    if len(sys.argv) != 2:
+        return fail('usage: validate_hourly_evidence_contract.py <evidence.json>')
+    path = sys.argv[1]
     try:
-        data = json.load(open(path, 'r', encoding='utf-8'))
+        data = json.load(open(path, 'r'))
     except Exception as e:
-        return fail('invalid json: %s' % e)
+        return fail('failed to read json: {0}'.format(e))
 
     lanes = data.get('lanes')
     if not isinstance(lanes, dict):
-        return fail('missing lanes object')
+        return fail('missing lanes map')
 
     missing = [k for k in REQUIRED_LANES if k not in lanes]
     if missing:
-        return fail('missing lane keys: %s' % ', '.join(missing))
+        return fail('missing lane keys: {0}'.format(', '.join(missing)))
 
-    for lane_key in REQUIRED_LANES:
-        lane = lanes.get(lane_key) or {}
-        rq = lane.get('recovery_queries')
-        if not isinstance(rq, list):
-            return fail('%s: recovery_queries must be a list' % lane_key)
+    for lane in REQUIRED_LANES:
+        row = lanes.get(lane, {})
+        for k in ['raw_count', 'zero_star_raw', 'median_stars_raw', 'kept_count', 'lane_status', 'degraded_causes', 'recovery_queries']:
+            if k not in row:
+                return fail('lane {0} missing key {1}'.format(lane, k))
+        raw_count = row.get('raw_count', 0)
+        kept_count = row.get('kept_count', 0)
+        if kept_count > raw_count:
+            return fail('lane {0} invalid metrics: kept_count > raw_count'.format(lane))
+
+        rec = row.get('recovery_queries')
+        if not isinstance(rec, list) or len(rec) < 2:
+            return fail('lane {0} recovery_queries must include stage-1 and stage-2'.format(lane))
         stages = set()
-        for item in rq:
-            if isinstance(item, dict) and 'stage' in item:
-                stages.add(item.get('stage'))
+        for item in rec:
+            if isinstance(item, dict):
+                st = item.get('stage')
+                if st:
+                    stages.add(st)
         if 'stage-1' not in stages or 'stage-2' not in stages:
-            return fail('%s: recovery_queries must include stage-1 and stage-2' % lane_key)
-
-        raw_count = lane.get('raw_count', 0)
-        kept_count = lane.get('kept_count', 0)
-        if isinstance(raw_count, int) and isinstance(kept_count, int) and kept_count > raw_count:
-            return fail('%s: kept_count > raw_count' % lane_key)
+            return fail('lane {0} recovery stages incomplete'.format(lane))
 
         if raw_count == 0:
-            causes = lane.get('degraded_causes') or []
+            causes = row.get('degraded_causes') or []
             if 'no-results' not in causes:
-                return fail('%s: raw_count==0 requires degraded_cause no-results' % lane_key)
+                return fail('lane {0} raw_count==0 requires degraded_causes include no-results'.format(lane))
 
-    print('OK: hourly evidence contract valid')
+    sys.stdout.write('ok\n')
     return 0
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv))
+    sys.exit(main())

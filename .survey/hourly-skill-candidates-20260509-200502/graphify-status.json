@@ -1,0 +1,5 @@
+{
+  "status": "ok",
+  "mode": "graphify-query",
+  "fallback": "graphify-refined.json"
+}

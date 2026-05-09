@@ -1,0 +1,12 @@
+{
+  "status": "degraded",
+  "reason": "graphify query unavailable or empty",
+  "lane_status": {
+    "agentic-ai-skill": "pass",
+    "web-frontend-skill": "pass",
+    "web-backend-skill": "degraded",
+    "cli-open-source-skill": "pass",
+    "game-development-skill": "pass"
+  },
+  "provenance": "indexed snippet"
+}

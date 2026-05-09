@@ -1,0 +1,13 @@
+[ok] Command: cat .survey/hourly-skill-candidates-20260509-200502/lane-...
+   10 lines of output
+
+List (9 items):
+   • Hourly lane metrics
+   • agentic-ai-skill: raw=20 kept=15 median_stars=2783.5 status=pass
+   • web-frontend-skill: raw=20 kept=5 median_stars=39.5 status=pass
+   • web-backend-skill: raw=6 kept=0 median_stars=167.0 status=degraded
+   • cli-open-source-skill: raw=9 kept=6 median_stars=169 status=pass
+   • game-development-skill: raw=15 kept=5 median_stars=40 status=pass
+   • recommended_raw_count=31
+   • recommended_dedup_count=31
+   • recommended_lane_count=4

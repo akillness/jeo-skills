@@ -1,0 +1,312 @@
+[
+  {
+    "fullName": "addyosmani/agent-skills",
+    "url": "https://github.com/addyosmani/agent-skills",
+    "stars": 36788,
+    "license": "mit",
+    "pushedAt": "2026-05-09T03:37:44Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "Orchestra-Research/AI-Research-SKILLs",
+    "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+    "stars": 8095,
+    "license": "mit",
+    "pushedAt": "2026-04-28T05:09:27Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "pinchbench/skill",
+    "url": "https://github.com/pinchbench/skill",
+    "stars": 1115,
+    "license": "mit",
+    "pushedAt": "2026-05-08T14:54:47Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "wrtnlabs/agentica",
+    "url": "https://github.com/wrtnlabs/agentica",
+    "stars": 1023,
+    "license": "mit",
+    "pushedAt": "2026-04-27T05:58:49Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "mvanhorn/last30days-skill",
+    "url": "https://github.com/mvanhorn/last30days-skill",
+    "stars": 25238,
+    "license": "mit",
+    "pushedAt": "2026-05-02T18:30:22Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "coreyhaines31/marketingskills",
+    "url": "https://github.com/coreyhaines31/marketingskills",
+    "stars": 27447,
+    "license": "mit",
+    "pushedAt": "2026-05-06T06:56:58Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "supabase/agent-skills",
+    "url": "https://github.com/supabase/agent-skills",
+    "stars": 2061,
+    "license": "mit",
+    "pushedAt": "2026-05-06T15:00:00Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "github/awesome-copilot",
+    "url": "https://github.com/github/awesome-copilot",
+    "stars": 32523,
+    "license": "mit",
+    "pushedAt": "2026-05-08T19:51:06Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "MoizIbnYousaf/Ai-Agent-Skills",
+    "url": "https://github.com/MoizIbnYousaf/Ai-Agent-Skills",
+    "stars": 1048,
+    "license": "mit",
+    "pushedAt": "2026-05-05T09:57:12Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "snyk/agent-scan",
+    "url": "https://github.com/snyk/agent-scan",
+    "stars": 2366,
+    "license": "apache-2.0",
+    "pushedAt": "2026-05-09T07:41:30Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "eastlondoner/vibe-tools",
+    "url": "https://github.com/eastlondoner/vibe-tools",
+    "stars": 4760,
+    "license": "mit",
+    "pushedAt": "2025-08-25T10:10:43Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "alibaba-flyai/flyai-skill",
+    "url": "https://github.com/alibaba-flyai/flyai-skill",
+    "stars": 628,
+    "license": "mit",
+    "pushedAt": "2026-04-21T11:20:56Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "SamurAIGPT/Generative-Media-Skills",
+    "url": "https://github.com/SamurAIGPT/Generative-Media-Skills",
+    "stars": 3201,
+    "license": "mit",
+    "pushedAt": "2026-05-02T18:35:59Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "twostraws/SwiftUI-Agent-Skill",
+    "url": "https://github.com/twostraws/SwiftUI-Agent-Skill",
+    "stars": 3842,
+    "license": "mit",
+    "pushedAt": "2026-04-20T08:02:42Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "dotnet/skills",
+    "url": "https://github.com/dotnet/skills",
+    "stars": 1637,
+    "license": "mit",
+    "pushedAt": "2026-05-09T03:31:37Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "agentic-ai-skill"
+  },
+  {
+    "fullName": "zarazhangrui/frontend-slides",
+    "url": "https://github.com/zarazhangrui/frontend-slides",
+    "stars": 16825,
+    "license": "mit",
+    "pushedAt": "2026-04-08T18:23:28Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+    "url": "https://github.com/Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+    "stars": 36,
+    "license": "mit",
+    "pushedAt": "2026-03-08T06:32:12Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "archlizheng/frontend-slides-editable",
+    "url": "https://github.com/archlizheng/frontend-slides-editable",
+    "stars": 104,
+    "license": "mit",
+    "pushedAt": "2026-04-04T08:17:58Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "MickeyAlton33/web-designer-plugin",
+    "url": "https://github.com/MickeyAlton33/web-designer-plugin",
+    "stars": 31,
+    "license": "mit",
+    "pushedAt": "2026-03-26T21:20:46Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "ceilf6/FrontAgent",
+    "url": "https://github.com/ceilf6/FrontAgent",
+    "stars": 94,
+    "license": "mit",
+    "pushedAt": "2026-05-07T13:28:36Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "web-frontend-skill"
+  },
+  {
+    "fullName": "nexu-io/open-design",
+    "url": "https://github.com/nexu-io/open-design",
+    "stars": 34740,
+    "license": "apache-2.0",
+    "pushedAt": "2026-05-09T10:44:18Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "jeremylongshore/claude-code-plugins-plus-skills",
+    "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+    "stars": 2141,
+    "license": "mit",
+    "pushedAt": "2026-05-09T01:40:47Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "bonnard-data/bonnard-cli",
+    "url": "https://github.com/bonnard-data/bonnard-cli",
+    "stars": 48,
+    "license": "mit",
+    "pushedAt": "2026-03-20T10:43:05Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "TerminalSkills/skills",
+    "url": "https://github.com/TerminalSkills/skills",
+    "stars": 46,
+    "license": "apache-2.0",
+    "pushedAt": "2026-05-04T12:55:24Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "skrun-dev/skrun",
+    "url": "https://github.com/skrun-dev/skrun",
+    "stars": 169,
+    "license": "mit",
+    "pushedAt": "2026-04-27T20:06:12Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "KarmaloopAI/Jiva",
+    "url": "https://github.com/KarmaloopAI/Jiva",
+    "stars": 35,
+    "license": "mit",
+    "pushedAt": "2026-05-08T10:13:15Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "cli-open-source-skill"
+  },
+  {
+    "fullName": "Heigvd/Wegas",
+    "url": "https://github.com/Heigvd/Wegas",
+    "stars": 30,
+    "license": "mit",
+    "pushedAt": "2026-05-06T15:16:41Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "MRCalderon3D/everything-game-dev-code",
+    "url": "https://github.com/MRCalderon3D/everything-game-dev-code",
+    "stars": 28,
+    "license": "mit",
+    "pushedAt": "2026-04-23T19:55:39Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "Dailiduzhou/cocos-creator-dev-skill",
+    "url": "https://github.com/Dailiduzhou/cocos-creator-dev-skill",
+    "stars": 26,
+    "license": "mit",
+    "pushedAt": "2026-02-07T11:59:21Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "gavogavogavo/claude-sbox",
+    "url": "https://github.com/gavogavogavo/claude-sbox",
+    "stars": 40,
+    "license": "mit",
+    "pushedAt": "2026-04-14T22:57:04Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "game-development-skill"
+  },
+  {
+    "fullName": "Hazrat-Ali9/Snake-Game",
+    "url": "https://github.com/Hazrat-Ali9/Snake-Game",
+    "stars": 37,
+    "license": "mit",
+    "pushedAt": "2025-05-13T13:09:41Z",
+    "fit_rationale": "token overlap and signal/freshness pass",
+    "provenance": "indexed snippet",
+    "lane": "game-development-skill"
+  }
+]
