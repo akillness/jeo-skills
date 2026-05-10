@@ -1,0 +1,422 @@
+[
+  {
+    "description": "A visual overview of useful skills to learn as a web developer",
+    "fullName": "andreasbm/web-skills",
+    "isArchived": false,
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "url": ""
+    },
+    "pushedAt": "2024-04-19T03:22:28Z",
+    "stargazersCount": 7533,
+    "updatedAt": "2026-05-10T01:15:31Z",
+    "url": "https://github.com/andreasbm/web-skills"
+  },
+  {
+    "description": "2026 \u5e74\u7f16\u7a0b\u5bfc\u822a AI \u7f16\u7a0b\u5b9e\u6218\u65b0\u9879\u76ee\uff0c\u57fa\u4e8e Node.js + Express + React + OpenRouter \u7684 AI \u70ed\u70b9\u76d1\u63a7\u5de5\u5177\uff0c\u652f\u6301\u591a\u4fe1\u606f\u6e90\u805a\u5408\u6293\u53d6\uff08Twitter / Bing / HackerNews / B \u7ad9\u7b49 7+ \u5e73\u53f0\uff09\u3001AI \u67e5\u8be2\u6269\u5c55\u3001AI \u771f\u5047\u8bc6\u522b\u4e0e\u76f8\u5173\u6027\u5206\u6790\u3001WebSocket \u5b9e\u65f6\u63a8\u9001\u3001\u90ae\u4ef6\u901a\u77e5\u3001\u591a\u7ef4\u5ea6\u7b5b\u9009\u6392\u5e8f\uff0c\u5e76\u5c06\u70ed\u70b9\u76d1\u63a7\u80fd\u529b\u5c01\u88c5\u4e3a Agent Skills \u6280\u80fd\u5305\u3002\u8986\u76d6 Prisma + SQLite \u6570\u636e\u5e93\u3001Socket.io \u5b9e\u65f6\u901a\u4fe1\u3001Axios + Cheerio \u7f51\u9875\u722c\u866b\u3001OpenRouter \u5927\u6a21\u578b\u63a5\u5165\u3001Aceternity UI \u70ab\u9177\u524d\u7aef\u3001node-cron \u5b9a\u65f6\u4efb\u52a1\u3001VSCode Copilot Vibe Coding + MCP",
+    "fullName": "liyupi/yupi-hot-monitor",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-16T11:56:53Z",
+    "stargazersCount": 431,
+    "updatedAt": "2026-05-10T16:05:40Z",
+    "url": "https://github.com/liyupi/yupi-hot-monitor"
+  },
+  {
+    "description": "2026 \u5e74\u7f16\u7a0b\u5bfc\u822a AI \u7f16\u7a0b\u5b9e\u6218\u65b0\u9879\u76ee\uff0c\u57fa\u4e8e Next.js 15 + GitHub App + OpenRouter \u7684 GitHub \u4ed3\u5e93 AI \u6587\u6863\u7ffb\u8bd1 SaaS \u5e73\u53f0\uff0c\u652f\u6301\u53ef\u89c6\u5316\u7ffb\u8bd1\u914d\u7f6e\u3001\u4e00\u952e\u591a\u8bed\u8a00\u7ffb\u8bd1\u3001\u81ea\u52a8\u521b\u5efa PR\u3001Webhook \u589e\u91cf\u7ffb\u8bd1\u3001\u81ea\u5b9a\u4e49\u5927\u6a21\u578b\u7b49\u3002\u8986\u76d6 GitHub App OAuth \u8ba4\u8bc1\u3001GitHub REST API \u5bf9\u63a5\u3001OpenRouter \u591a\u6a21\u578b\u63a5\u5165\u3001Prisma + MySQL \u5168\u6808\u5f00\u53d1\u3001Vercel \u90e8\u7f72\u3001Ngrok \u5185\u7f51\u7a7f\u900f\u3001Cursor Vibe Coding + MCP + Agent Skills \u7b49\u6838\u5fc3\u6280\u672f\u3002\u7528\u4e00\u5957\u6559\u7a0b\u638c\u63e1 AI \u7f16\u7a0b\u5168\u6d41\u7a0b\uff0c\u4ece\u9700\u6c42\u8c03\u7814\u5230\u90e8\u7f72\u4e0a\u7ebf\uff0c\u4e0d\u5230\u4e00\u5468\u5b66\u5b8c\uff0c\u7ed9\u4f60\u7684\u7b80\u5386\u589e\u52a0\u7ade\u4e89\u529b",
+    "fullName": "liyupi/github-global",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-03T05:34:39Z",
+    "stargazersCount": 105,
+    "updatedAt": "2026-05-06T13:15:39Z",
+    "url": "https://github.com/liyupi/github-global"
+  },
+  {
+    "description": "This repository contains the code and resources for a web development project focused on creating a static and engaging college website. Through this project, I aimed to enhance my web development skills by designing and implementing a modern and user-friendly website.",
+    "fullName": "RanitManik/College-Website",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2024-10-28T11:19:06Z",
+    "stargazersCount": 12,
+    "updatedAt": "2026-04-24T17:12:23Z",
+    "url": "https://github.com/RanitManik/College-Website"
+  },
+  {
+    "description": "Skill Swap Platform: A full-stack web application for connecting individuals to exchange skills. Features include user authentication, comprehensive profiles, swap request management, a feedback system, and an admin panel. Built with Flask (Python) and React (HTML/CSS/JS) with a SQLite database",
+    "fullName": "CodeByRachit/skillswap-platform",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2025-08-30T16:41:36Z",
+    "stargazersCount": 9,
+    "updatedAt": "2026-04-07T06:53:20Z",
+    "url": "https://github.com/CodeByRachit/skillswap-platform"
+  },
+  {
+    "description": "Build a full-stack web application using MongoDB, Express.js, React.js, and Node.js within 3 hours. Showcase your skills in backend API development, frontend UI design, and optional authentication implementation.",
+    "fullName": "Y0srgh/ieee-orange-int-2024-mern",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2024-06-22T12:03:33Z",
+    "stargazersCount": 0,
+    "updatedAt": "2024-06-22T09:01:48Z",
+    "url": "https://github.com/Y0srgh/ieee-orange-int-2024-mern"
+  },
+  {
+    "description": "Enthusiastic full stack web developer \ud83d\udc68\u200d\ud83d\udcbb , eager to contribute to team success through hard work, attention to detail, and excellent organizational skills, a clear understanding of frontend, backend, and project management.",
+    "fullName": "PragatiVerma18/PragatiVerma18",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-02-21T14:59:13Z",
+    "stargazersCount": 1,
+    "updatedAt": "2025-02-21T14:59:16Z",
+    "url": "https://github.com/PragatiVerma18/PragatiVerma18"
+  },
+  {
+    "description": "Mastering Django through Projects is a repo of Django and Django REST framework projects to help developers improve their skills in full-stack and backend web development with Python.",
+    "fullName": "artursniegowski/Mastering_Django_through_Projects",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2024-09-22T16:20:17Z",
+    "stargazersCount": 18,
+    "updatedAt": "2026-05-08T18:22:09Z",
+    "url": "https://github.com/artursniegowski/Mastering_Django_through_Projects"
+  },
+  {
+    "description": "PGT Tarlac Center for Learning and Skills Success",
+    "fullName": "primex-joseph/Tclass-website-backend",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-18T04:32:42Z",
+    "stargazersCount": 0,
+    "updatedAt": "2026-03-18T04:32:45Z",
+    "url": "https://github.com/primex-joseph/Tclass-website-backend"
+  },
+  {
+    "description": "Full-stack skill enhancement platform with React frontend and Node.js backend",
+    "fullName": "pratham0804/skillhub-webapp",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-06-30T09:23:11Z",
+    "stargazersCount": 3,
+    "updatedAt": "2025-07-22T08:49:27Z",
+    "url": "https://github.com/pratham0804/skillhub-webapp"
+  },
+  {
+    "description": "This back-end web project can help beginners to improve their web development skills.",
+    "fullName": "abuzar-alvi/Organize-files---Clear-the-Clutter",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-02-13T16:34:39Z",
+    "stargazersCount": 5,
+    "updatedAt": "2026-01-27T16:35:17Z",
+    "url": "https://github.com/abuzar-alvi/Organize-files---Clear-the-Clutter"
+  },
+  {
+    "description": "\ud83d\udcbb Full Stack Web Dev repository \u2013 Frontend to Backend with Projects | Please star this repository for easy access and follow this GitHub.",
+    "fullName": "DevanshuSir/FullStack_SkillWaala_19March2025",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-07-31T06:40:34Z",
+    "stargazersCount": 5,
+    "updatedAt": "2026-01-06T03:14:43Z",
+    "url": "https://github.com/DevanshuSir/FullStack_SkillWaala_19March2025"
+  },
+  {
+    "description": "This back-end web project can help beginners to improve their web development skills.",
+    "fullName": "abuzar-alvi/Repeated-Layout-by-node-ejs-and-tailwind",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-02-13T13:42:46Z",
+    "stargazersCount": 5,
+    "updatedAt": "2026-01-27T16:35:22Z",
+    "url": "https://github.com/abuzar-alvi/Repeated-Layout-by-node-ejs-and-tailwind"
+  },
+  {
+    "description": "TaskPro is the culmination of our journey through a 11-month Fullstack Development Bootcamp. This fullstack application showcases the depth of knowledge and skills we've acquired in building robust and feature-rich web applications.",
+    "fullName": "Alexandrbig1/task-pro",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2024-02-20T05:25:01Z",
+    "stargazersCount": 5,
+    "updatedAt": "2024-09-02T17:20:14Z",
+    "url": "https://github.com/Alexandrbig1/task-pro"
+  },
+  {
+    "description": "\ud83d\udccc Structura \u2013 Architectural Skill-Sharing & Learning Platform A full-stack web application built with Spring Boot (Java) & React (Vite, Tailwind CSS), designed to facilitate skill-sharing, learning progress tracking, and interactive engagement.",
+    "fullName": "LEXES7/Structura-Backend",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-05-07T18:46:16Z",
+    "stargazersCount": 0,
+    "updatedAt": "2025-05-07T09:48:25Z",
+    "url": "https://github.com/LEXES7/Structura-Backend"
+  },
+  {
+    "description": "This back-end web project can help beginners to improve their web development skills.",
+    "fullName": "abuzar-alvi/Generate-Dummy-Data-In-Mongo-DB",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-30T06:16:03Z",
+    "stargazersCount": 5,
+    "updatedAt": "2026-01-27T16:35:21Z",
+    "url": "https://github.com/abuzar-alvi/Generate-Dummy-Data-In-Mongo-DB"
+  },
+  {
+    "description": "A personal portfolio website showcasing my projects, skills, and experience.",
+    "fullName": "berkaykrks/personal-website",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-11-16T09:00:39Z",
+    "stargazersCount": 6,
+    "updatedAt": "2026-02-19T15:38:36Z",
+    "url": "https://github.com/berkaykrks/personal-website"
+  },
+  {
+    "description": "Web application with Home, Login/Signup, and Profile pages .  Profiles display skills, bio , and allow feedback & ratings .  Chatbot helps with doubts, discussions, and quizzes.  Users teach and learn skills from each other in a mutual learning setup.  Frontend: HTML | Backend: Python Flask",
+    "fullName": "kiruthika569/skill_swap",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-09-13T05:19:57Z",
+    "stargazersCount": 0,
+    "updatedAt": "2025-09-13T06:42:59Z",
+    "url": "https://github.com/kiruthika569/skill_swap"
+  },
+  {
+    "description": "Modern personal portfolio website showcasing my projects, skills, and experience in backend development and software engineering.",
+    "fullName": "SujalPatil21/Protfolio-Website",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-01T11:51:39Z",
+    "stargazersCount": 4,
+    "updatedAt": "2026-05-01T11:51:43Z",
+    "url": "https://github.com/SujalPatil21/Protfolio-Website"
+  },
+  {
+    "description": "Claude Code skill for writing LotusScript code on HCL Domino 14 \u2014 comprehensive reference for syntax, backend object model, DQL, JSON classes, and web agent patterns",
+    "fullName": "gigbuilder/claude-code-hcl-domino-skill",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-23T10:35:00Z",
+    "stargazersCount": 5,
+    "updatedAt": "2026-04-29T17:20:07Z",
+    "url": "https://github.com/gigbuilder/claude-code-hcl-domino-skill"
+  },
+  {
+    "description": "The Coding Quiz Generator is a web application that dynamically generates coding-related quizzes, allowing users to test their knowledge and skills. Used Google Firebase for Backend as a service ",
+    "fullName": "PawanSirsat/Coding-Quizzer-BackendAsService",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2024-07-12T06:46:20Z",
+    "stargazersCount": 0,
+    "updatedAt": "2024-07-12T06:46:24Z",
+    "url": "https://github.com/PawanSirsat/Coding-Quizzer-BackendAsService"
+  },
+  {
+    "description": "A Peer Learning Web App",
+    "fullName": "MNKolombage/SkillSwap-backend",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-09-23T05:21:46Z",
+    "stargazersCount": 0,
+    "updatedAt": "2025-09-23T05:21:50Z",
+    "url": "https://github.com/MNKolombage/SkillSwap-backend"
+  },
+  {
+    "description": "",
+    "fullName": "huguetteuwase/WebTech_SkillStream_Backend",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-05-30T07:19:39Z",
+    "stargazersCount": 0,
+    "updatedAt": "2025-05-30T07:00:56Z",
+    "url": "https://github.com/huguetteuwase/WebTech_SkillStream_Backend"
+  },
+  {
+    "description": "The skillupjr web along with the backend",
+    "fullName": "Jegx07/skillupjr07",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-08-20T04:37:35Z",
+    "stargazersCount": 0,
+    "updatedAt": "2025-08-20T04:37:39Z",
+    "url": "https://github.com/Jegx07/skillupjr07"
+  },
+  {
+    "description": "practicing my backend skills^^",
+    "fullName": "attywenn/webproj",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-11-10T04:56:42Z",
+    "stargazersCount": 0,
+    "updatedAt": "2025-11-10T04:56:47Z",
+    "url": "https://github.com/attywenn/webproj"
+  },
+  {
+    "description": "Backend code for the Skill Share Web App",
+    "fullName": "adhii1144/SkillShare-Backend",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2024-12-21T14:04:55Z",
+    "stargazersCount": 0,
+    "updatedAt": "2024-12-21T14:04:58Z",
+    "url": "https://github.com/adhii1144/SkillShare-Backend"
+  },
+  {
+    "description": "Backend for web app called \"SkillMate\" (Java Spring)",
+    "fullName": "RamazanMamyrbek/SkillMate-backend",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-05-08T04:44:01Z",
+    "stargazersCount": 0,
+    "updatedAt": "2025-05-08T04:44:05Z",
+    "url": "https://github.com/RamazanMamyrbek/SkillMate-backend"
+  },
+  {
+    "description": "A personal portfolio website showcasing my projects, skills, and experience as a developer. Built to highlight my journey, expertise, and contact information.",
+    "fullName": "xatrarana/web",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-06-26T16:03:29Z",
+    "stargazersCount": 0,
+    "updatedAt": "2025-06-26T16:35:44Z",
+    "url": "https://github.com/xatrarana/web"
+  },
+  {
+    "description": "Backend template for the WorldSkills national final (Web Technologies)",
+    "fullName": "wiizzl/skill17-backend",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-09-07T12:50:56Z",
+    "stargazersCount": 0,
+    "updatedAt": "2025-09-07T13:07:53Z",
+    "url": "https://github.com/wiizzl/skill17-backend"
+  },
+  {
+    "description": "",
+    "fullName": "Shkettoe/SkillUp-WebDev-Course-Backend",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-08-23T09:10:31Z",
+    "stargazersCount": 0,
+    "updatedAt": "2025-08-23T09:10:34Z",
+    "url": "https://github.com/Shkettoe/SkillUp-WebDev-Course-Backend"
+  }
+]

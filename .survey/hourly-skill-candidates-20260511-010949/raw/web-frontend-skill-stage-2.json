@@ -1,0 +1,422 @@
+[
+  {
+    "description": "Create beautiful slides on the web using Claude's frontend skills",
+    "fullName": "zarazhangrui/frontend-slides",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-08T18:23:28Z",
+    "stargazersCount": 17004,
+    "updatedAt": "2026-05-10T16:10:15Z",
+    "url": "https://github.com/zarazhangrui/frontend-slides"
+  },
+  {
+    "description": "This project aims to hold a list of exercises for beginner frontend developer to practice their skills and create a path to solve some minor problems.",
+    "fullName": "erdoganbavas/web-practices",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2024-01-10T23:40:37Z",
+    "stargazersCount": 73,
+    "updatedAt": "2026-03-28T21:43:37Z",
+    "url": "https://github.com/erdoganbavas/web-practices"
+  },
+  {
+    "description": "\ud83d\ude80 100 Days of Web Development challenge using HTML, CSS & JavaScript. Daily learning, practice, and real-world projects to strengthen frontend development skills.",
+    "fullName": "Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-03-08T06:32:12Z",
+    "stargazersCount": 36,
+    "updatedAt": "2026-04-16T02:45:18Z",
+    "url": "https://github.com/Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26"
+  },
+  {
+    "description": "Frontend: Teachlink is a platform for technocrat where knowlege, skills, ideas, and information that can bring about development and improvement can be shared, dissected, you can also earn from it.",
+    "fullName": "rinafcode/teachLink_web",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-05-07T10:29:52Z",
+    "stargazersCount": 14,
+    "updatedAt": "2026-05-07T10:29:58Z",
+    "url": "https://github.com/rinafcode/teachLink_web"
+  },
+  {
+    "description": "Frontend Wonders is a collaborative open-source project aimed at showcasing the creativity and skills of frontend developers. Whether you're passionate about CSS animations, JavaScript interactivity, or responsive design, this project provides a platform to share your work and learn from others.",
+    "fullName": "Build-In-Bharat/FrontendWonders",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2024-10-31T18:03:58Z",
+    "stargazersCount": 8,
+    "updatedAt": "2025-08-29T10:11:41Z",
+    "url": "https://github.com/Build-In-Bharat/FrontendWonders"
+  },
+  {
+    "description": "Editable HTML presentation skill for Codex/Claude Code with drag-resize editing, slide reordering, local save/export, and PPTX-to-web conversion. Shout out to @zarazhangrui ",
+    "fullName": "archlizheng/frontend-slides-editable",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-04T08:17:58Z",
+    "stargazersCount": 107,
+    "updatedAt": "2026-05-10T15:46:49Z",
+    "url": "https://github.com/archlizheng/frontend-slides-editable"
+  },
+  {
+    "description": "2026 \u5e74\u7f16\u7a0b\u5bfc\u822a AI \u7f16\u7a0b\u5b9e\u6218\u65b0\u9879\u76ee\uff0c\u57fa\u4e8e Node.js + Express + React + OpenRouter \u7684 AI \u70ed\u70b9\u76d1\u63a7\u5de5\u5177\uff0c\u652f\u6301\u591a\u4fe1\u606f\u6e90\u805a\u5408\u6293\u53d6\uff08Twitter / Bing / HackerNews / B \u7ad9\u7b49 7+ \u5e73\u53f0\uff09\u3001AI \u67e5\u8be2\u6269\u5c55\u3001AI \u771f\u5047\u8bc6\u522b\u4e0e\u76f8\u5173\u6027\u5206\u6790\u3001WebSocket \u5b9e\u65f6\u63a8\u9001\u3001\u90ae\u4ef6\u901a\u77e5\u3001\u591a\u7ef4\u5ea6\u7b5b\u9009\u6392\u5e8f\uff0c\u5e76\u5c06\u70ed\u70b9\u76d1\u63a7\u80fd\u529b\u5c01\u88c5\u4e3a Agent Skills \u6280\u80fd\u5305\u3002\u8986\u76d6 Prisma + SQLite \u6570\u636e\u5e93\u3001Socket.io \u5b9e\u65f6\u901a\u4fe1\u3001Axios + Cheerio \u7f51\u9875\u722c\u866b\u3001OpenRouter \u5927\u6a21\u578b\u63a5\u5165\u3001Aceternity UI \u70ab\u9177\u524d\u7aef\u3001node-cron \u5b9a\u65f6\u4efb\u52a1\u3001VSCode Copilot Vibe Coding + MCP",
+    "fullName": "liyupi/yupi-hot-monitor",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-16T11:56:53Z",
+    "stargazersCount": 431,
+    "updatedAt": "2026-05-10T16:05:40Z",
+    "url": "https://github.com/liyupi/yupi-hot-monitor"
+  },
+  {
+    "description": "Award-winning web design skill for Claude Code. 48 patterns from 38 top websites. Stop generating generic AI frontends.",
+    "fullName": "MickeyAlton33/web-designer-plugin",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-03-26T21:20:46Z",
+    "stargazersCount": 31,
+    "updatedAt": "2026-05-08T21:16:45Z",
+    "url": "https://github.com/MickeyAlton33/web-designer-plugin"
+  },
+  {
+    "description": "Personal GitHub profile showcasing projects, skills, and contributions in web development.",
+    "fullName": "Maher-Elmair/Maher-Elmair",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-05-10T13:18:36Z",
+    "stargazersCount": 26,
+    "updatedAt": "2026-04-20T00:23:38Z",
+    "url": "https://github.com/Maher-Elmair/Maher-Elmair"
+  },
+  {
+    "description": "Test your layout skills with this HTML & CSS only landing page. This challenge is perfect if you're starting to get confident in laying out web pages.",
+    "fullName": "frontendmentorio/insure-landing-page",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-30T13:35:57Z",
+    "stargazersCount": 7,
+    "updatedAt": "2026-03-30T13:36:02Z",
+    "url": "https://github.com/frontendmentorio/insure-landing-page"
+  },
+  {
+    "description": "AI agent platform for frontend engineering with RAG, Skills, SDD, MCP | \u901a\u8fc7\u591a\u79cd\u9002\u914d\u524d\u7aef\u5de5\u7a0b\u7684\u6280\u672f\u8fdb\u884c\u8d4b\u80fd\u7684\u667a\u80fd\u4f53\uff0c\u652f\u6301\u901a\u8fc7 CLI \u6216 VSCode\u63d2\u4ef6 \u4f7f\u7528",
+    "fullName": "ceilf6/FrontAgent",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-09T17:05:14Z",
+    "stargazersCount": 94,
+    "updatedAt": "2026-05-09T17:05:18Z",
+    "url": "https://github.com/ceilf6/FrontAgent"
+  },
+  {
+    "description": "My frontend portfolio; web development skills, examples of my projects, contact links, and a bit about me. ",
+    "fullName": "Syknapse/Syk-Houdeib",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-01-07T09:00:22Z",
+    "stargazersCount": 17,
+    "updatedAt": "2026-01-07T09:00:27Z",
+    "url": "https://github.com/Syknapse/Syk-Houdeib"
+  },
+  {
+    "description": "InternovaTech helps students, freshers, and learners build real career-focused skills through structured Internship Programs programs, guided modules, assessments, progress tracking, and certificate verification support. Our platform is designed to deliver a futuristic, premium, and outcome-driven learning experience across Web Development",
+    "fullName": "dk5847001-stack/Internova-frontend",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-05-10T03:49:56Z",
+    "stargazersCount": 11,
+    "updatedAt": "2026-05-10T03:50:00Z",
+    "url": "https://github.com/dk5847001-stack/Internova-frontend"
+  },
+  {
+    "description": "DevTinder is a modern, interactive web application that connects developers based on their skills, interests, and project goals. Think \"Tinder for Developers\" - swipe through developer profiles, connect with like-minded programmers, and build amazing projects together.",
+    "fullName": "coder-writes/devTinder-frontend-main",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2025-08-12T18:54:48Z",
+    "stargazersCount": 2,
+    "updatedAt": "2026-03-28T07:58:58Z",
+    "url": "https://github.com/coder-writes/devTinder-frontend-main"
+  },
+  {
+    "description": "2026 \u5e74\u7f16\u7a0b\u5bfc\u822a AI \u7f16\u7a0b\u5b9e\u6218\u65b0\u9879\u76ee\uff0c\u57fa\u4e8e Next.js 15 + GitHub App + OpenRouter \u7684 GitHub \u4ed3\u5e93 AI \u6587\u6863\u7ffb\u8bd1 SaaS \u5e73\u53f0\uff0c\u652f\u6301\u53ef\u89c6\u5316\u7ffb\u8bd1\u914d\u7f6e\u3001\u4e00\u952e\u591a\u8bed\u8a00\u7ffb\u8bd1\u3001\u81ea\u52a8\u521b\u5efa PR\u3001Webhook \u589e\u91cf\u7ffb\u8bd1\u3001\u81ea\u5b9a\u4e49\u5927\u6a21\u578b\u7b49\u3002\u8986\u76d6 GitHub App OAuth \u8ba4\u8bc1\u3001GitHub REST API \u5bf9\u63a5\u3001OpenRouter \u591a\u6a21\u578b\u63a5\u5165\u3001Prisma + MySQL \u5168\u6808\u5f00\u53d1\u3001Vercel \u90e8\u7f72\u3001Ngrok \u5185\u7f51\u7a7f\u900f\u3001Cursor Vibe Coding + MCP + Agent Skills \u7b49\u6838\u5fc3\u6280\u672f\u3002\u7528\u4e00\u5957\u6559\u7a0b\u638c\u63e1 AI \u7f16\u7a0b\u5168\u6d41\u7a0b\uff0c\u4ece\u9700\u6c42\u8c03\u7814\u5230\u90e8\u7f72\u4e0a\u7ebf\uff0c\u4e0d\u5230\u4e00\u5468\u5b66\u5b8c\uff0c\u7ed9\u4f60\u7684\u7b80\u5386\u589e\u52a0\u7ade\u4e89\u529b",
+    "fullName": "liyupi/github-global",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-03T05:34:39Z",
+    "stargazersCount": 105,
+    "updatedAt": "2026-05-06T13:15:39Z",
+    "url": "https://github.com/liyupi/github-global"
+  },
+  {
+    "description": "This repository contains the code and resources for a web development project focused on creating a static and engaging college website. Through this project, I aimed to enhance my web development skills by designing and implementing a modern and user-friendly website.",
+    "fullName": "RanitManik/College-Website",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2024-10-28T11:19:06Z",
+    "stargazersCount": 12,
+    "updatedAt": "2026-04-24T17:12:23Z",
+    "url": "https://github.com/RanitManik/College-Website"
+  },
+  {
+    "description": "Unlock the exciting world of frontend web development with our hands-on workshop, From Code to Creation. Designed for beginners, this comprehensive series provides the essential skills needed to build interactive and visually stunning web applications from scratch.",
+    "fullName": "RaoAviralYadav/From-Code-to-Creation",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-03-21T10:59:21Z",
+    "stargazersCount": 14,
+    "updatedAt": "2025-10-06T09:32:27Z",
+    "url": "https://github.com/RaoAviralYadav/From-Code-to-Creation"
+  },
+  {
+    "description": "Comprehensive creative studio skill merging Perplexity Computer's video, speech, image, and web building with Claude Code's canvas design, algorithmic art, brand guidelines, frontend design, content frameworks, and prompt engineering. Full creative production pipeline.",
+    "fullName": "get-zeked/content-creative-super-skill",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-03T10:05:57Z",
+    "stargazersCount": 2,
+    "updatedAt": "2026-05-09T01:51:31Z",
+    "url": "https://github.com/get-zeked/content-creative-super-skill"
+  },
+  {
+    "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+    "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-30T14:38:08Z",
+    "stargazersCount": 12,
+    "updatedAt": "2026-04-02T16:29:32Z",
+    "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill"
+  },
+  {
+    "description": "\ud83c\udf83 Join Hacktoberfest 2025 and contribute to modern web development. Collaborate, learn, and enhance your coding skills in a supportive environment.",
+    "fullName": "StrongXscripts/Hacktoberfest-2025",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-10T15:58:34Z",
+    "stargazersCount": 2,
+    "updatedAt": "2026-05-10T15:58:39Z",
+    "url": "https://github.com/StrongXscripts/Hacktoberfest-2025"
+  },
+  {
+    "description": "This is a course on frontend development basics, covering HTML, CSS, JavaScript, Angular, and responsive design. You'll build practical projects with instructor guidance. Suitable for beginners and those developing web skills. Developed for Codemasters International.",
+    "fullName": "andreyfesunov/course",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-02-10T16:11:35Z",
+    "stargazersCount": 2,
+    "updatedAt": "2026-02-10T16:11:48Z",
+    "url": "https://github.com/andreyfesunov/course"
+  },
+  {
+    "description": "This is a solution of a Thapa Technical Codefest. The Problem Statement is to make a single page Online education website ( only frontend work ). I am Smruti ranjan nayak Btech 1st Year Studet in CSE Branch. I complete this problem below solution you saw every single function, code, and feature. in a few months, I had designed many components or websites, this is my first codefest or hackathon challenge to develop my skills.",
+    "fullName": "SM8UTI/Webook-online-education-website",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-01-04T11:48:01Z",
+    "stargazersCount": 21,
+    "updatedAt": "2026-01-04T11:48:04Z",
+    "url": "https://github.com/SM8UTI/Webook-online-education-website"
+  },
+  {
+    "description": "This is a personal portfolio website developed by Akaeid Hasan to showcase skills, projects, and experience as a Frontend Developer specializing in WordPress and modern web technologies. The website is built with a clean and responsive design to provide a professional online presence.",
+    "fullName": "akaeid-hasan/Portfolio---Website",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-07-16T11:42:12Z",
+    "stargazersCount": 8,
+    "updatedAt": "2025-08-07T10:01:59Z",
+    "url": "https://github.com/akaeid-hasan/Portfolio---Website"
+  },
+  {
+    "description": "All the skills for mobile and web developer.",
+    "fullName": "konokol/frontend-skill-tree",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-27T02:13:45Z",
+    "stargazersCount": 8,
+    "updatedAt": "2026-03-27T02:13:49Z",
+    "url": "https://github.com/konokol/frontend-skill-tree"
+  },
+  {
+    "description": "Skill Swap Platform: A full-stack web application for connecting individuals to exchange skills. Features include user authentication, comprehensive profiles, swap request management, a feedback system, and an admin panel. Built with Flask (Python) and React (HTML/CSS/JS) with a SQLite database",
+    "fullName": "CodeByRachit/skillswap-platform",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2025-08-30T16:41:36Z",
+    "stargazersCount": 9,
+    "updatedAt": "2026-04-07T06:53:20Z",
+    "url": "https://github.com/CodeByRachit/skillswap-platform"
+  },
+  {
+    "description": "A modern, interactive landing page showcasing the creative studio \u201cNorrav.\u201d Built to demonstrate UI/UX design skills, animations, and frontend development using React and modern web technologies.",
+    "fullName": "peyush-nuwal/norrav-landing-page",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-08-18T15:51:28Z",
+    "stargazersCount": 17,
+    "updatedAt": "2026-05-08T13:46:40Z",
+    "url": "https://github.com/peyush-nuwal/norrav-landing-page"
+  },
+  {
+    "description": "A modern portfolio website built to highlight my work, technical skills, and web development journey.",
+    "fullName": "Maher-Elmair/My_Website",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-01T06:53:41Z",
+    "stargazersCount": 8,
+    "updatedAt": "2026-04-01T06:53:45Z",
+    "url": "https://github.com/Maher-Elmair/My_Website"
+  },
+  {
+    "description": "Build a full-stack web application using MongoDB, Express.js, React.js, and Node.js within 3 hours. Showcase your skills in backend API development, frontend UI design, and optional authentication implementation.",
+    "fullName": "Y0srgh/ieee-orange-int-2024-mern",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2024-06-22T12:03:33Z",
+    "stargazersCount": 0,
+    "updatedAt": "2024-06-22T09:01:48Z",
+    "url": "https://github.com/Y0srgh/ieee-orange-int-2024-mern"
+  },
+  {
+    "description": "\ud83d\ude80\ud83d\udcbb Welcome to the \"Front-End-Project\" challenge! This is your opportunity to enhance your frontend development skills and build a strong foundation in web development.",
+    "fullName": "dpvasani/Front-End-Project",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2024-06-18T22:06:35Z",
+    "stargazersCount": 12,
+    "updatedAt": "2025-02-23T17:37:32Z",
+    "url": "https://github.com/dpvasani/Front-End-Project"
+  },
+  {
+    "description": "Enthusiastic full stack web developer \ud83d\udc68\u200d\ud83d\udcbb , eager to contribute to team success through hard work, attention to detail, and excellent organizational skills, a clear understanding of frontend, backend, and project management.",
+    "fullName": "PragatiVerma18/PragatiVerma18",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2025-02-21T14:59:13Z",
+    "stargazersCount": 1,
+    "updatedAt": "2025-02-21T14:59:16Z",
+    "url": "https://github.com/PragatiVerma18/PragatiVerma18"
+  }
+]

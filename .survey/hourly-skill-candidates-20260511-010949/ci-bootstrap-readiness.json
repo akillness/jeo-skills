@@ -1,0 +1,9 @@
+{
+  "repo": "akillness/oh-my-skills",
+  "merge_blocked_reason": "no-checks-reported",
+  "required_remediation": [
+    "Add at least one required GitHub Actions workflow",
+    "Enable branch protection checks for PR branches",
+    "Re-run checks on PR #271 after workflow push"
+  ]
+}

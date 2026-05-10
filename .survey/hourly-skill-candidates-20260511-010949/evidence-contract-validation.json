@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "check": "metrics:agentic-ai-skill",
+      "ok": true,
+      "detail": "counts valid"
+    },
+    {
+      "check": "recovery:agentic-ai-skill",
+      "ok": true,
+      "detail": "stages=['stage-0', 'stage-1', 'stage-2']"
+    },
+    {
+      "check": "metrics:web-frontend-skill",
+      "ok": true,
+      "detail": "counts valid"
+    },
+    {
+      "check": "recovery:web-frontend-skill",
+      "ok": true,
+      "detail": "stages=['stage-0', 'stage-1', 'stage-2']"
+    },
+    {
+      "check": "metrics:web-backend-skill",
+      "ok": true,
+      "detail": "counts valid"
+    },
+    {
+      "check": "recovery:web-backend-skill",
+      "ok": true,
+      "detail": "stages=['stage-0', 'stage-1', 'stage-2']"
+    },
+    {
+      "check": "metrics:cli-open-source-skill",
+      "ok": true,
+      "detail": "counts valid"
+    },
+    {
+      "check": "recovery:cli-open-source-skill",
+      "ok": true,
+      "detail": "stages=['stage-0', 'stage-1', 'stage-2']"
+    },
+    {
+      "check": "metrics:game-development-skill",
+      "ok": true,
+      "detail": "counts valid"
+    },
+    {
+      "check": "recovery:game-development-skill",
+      "ok": true,
+      "detail": "stages=['stage-0', 'stage-1', 'stage-2']"
+    }
+  ],
+  "required_lanes": [
+    "agentic-ai-skill",
+    "web-frontend-skill",
+    "web-backend-skill",
+    "cli-open-source-skill",
+    "game-development-skill"
+  ]
+}

@@ -1,0 +1,422 @@
+[
+  {
+    "description": "\ud83c\udfa8 Local-first, open-source alternative to Anthropic's Claude Design. \u26a1 19 Skills \u00b7 \u2728 71 brand-grade Design Systems \ud83d\uddbc Generate web \u00b7 desktop \u00b7 mobile prototypes \u00b7 slides \u00b7 images \u00b7 videos \u00b7 HyperFrames \ud83d\udce6 Sandboxed preview \u00b7 HTML/PDF/PPTX/MP4 export \ud83e\udd16 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+    "fullName": "nexu-io/open-design",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-05-10T16:02:28Z",
+    "stargazersCount": 35928,
+    "updatedAt": "2026-05-10T16:09:25Z",
+    "url": "https://github.com/nexu-io/open-design"
+  },
+  {
+    "description": "425 plugins, 2,810 skills, 200 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+    "fullName": "jeremylongshore/claude-code-plugins-plus-skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-10T13:20:23Z",
+    "stargazersCount": 2149,
+    "updatedAt": "2026-05-10T15:41:09Z",
+    "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills"
+  },
+  {
+    "description": "Skill Compose is an open-source agent builder and runtime platform for skill-powered agents. No workflow graphs. No CLI.",
+    "fullName": "dp-archive/archive",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-03-04T08:01:19Z",
+    "stargazersCount": 1107,
+    "updatedAt": "2026-05-07T04:01:06Z",
+    "url": "https://github.com/dp-archive/archive"
+  },
+  {
+    "description": "Open-source agentic schema CLI. Optimised for claude code, gemini, codex and co-pilot. Skills included.",
+    "fullName": "bonnard-data/bonnard-cli",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-03-20T10:43:05Z",
+    "stargazersCount": 48,
+    "updatedAt": "2026-05-07T12:27:13Z",
+    "url": "https://github.com/bonnard-data/bonnard-cli"
+  },
+  {
+    "description": "Open-source library of AI agent skills \u2014 SKILL.md files for Claude Code, Codex, Gemini CLI, Cursor",
+    "fullName": "TerminalSkills/skills",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-05-04T12:55:24Z",
+    "stargazersCount": 46,
+    "updatedAt": "2026-05-09T03:43:14Z",
+    "url": "https://github.com/TerminalSkills/skills"
+  },
+  {
+    "description": "Open-source toolkit for the QVeris capability routing network: CLI, MCP server, Python SDK, skills, and REST API docs for agents to discover, inspect, call, and audit real-world tools.",
+    "fullName": "QVerisAI/qveris-agent-toolkit",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-05-10T14:42:56Z",
+    "stargazersCount": 222,
+    "updatedAt": "2026-05-10T11:53:25Z",
+    "url": "https://github.com/QVerisAI/qveris-agent-toolkit"
+  },
+  {
+    "description": "930+ AI-powered skills and 31 agent plugins for Claude Code, OpenAI Codex, Gemini CLI, GitHub Copilot, and Perplexity Computer. The largest open-source AI skills library.",
+    "fullName": "frank-luongt/faos-skills-marketplace",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-04-19T10:33:03Z",
+    "stargazersCount": 14,
+    "updatedAt": "2026-04-28T23:53:41Z",
+    "url": "https://github.com/frank-luongt/faos-skills-marketplace"
+  },
+  {
+    "description": "Deploy any Agent Skill as an API via POST /run. The open-source multi-model alternative to Claude Managed Agents, Microsoft Foundry & Mistral/Koyeb \u2014 works with any LLM.",
+    "fullName": "skrun-dev/skrun",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-27T20:06:12Z",
+    "stargazersCount": 169,
+    "updatedAt": "2026-05-06T08:21:35Z",
+    "url": "https://github.com/skrun-dev/skrun"
+  },
+  {
+    "description": "\ud83e\udd85 Open-source self-improving AI agent in Rust \u2014 persistent memory, skill learning, tool hub, multi-platform bots & production gateway",
+    "fullName": "garudust-org/garudust-agent",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-10T15:54:47Z",
+    "stargazersCount": 16,
+    "updatedAt": "2026-05-10T15:50:00Z",
+    "url": "https://github.com/garudust-org/garudust-agent"
+  },
+  {
+    "description": "CLI open source para gerar skills de alta qualidade",
+    "fullName": "alestanalves/skill-generator",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-21T05:47:11Z",
+    "stargazersCount": 9,
+    "updatedAt": "2026-04-28T01:44:12Z",
+    "url": "https://github.com/alestanalves/skill-generator"
+  },
+  {
+    "description": "Jiva is a CLI-first, open source autonomous AI agent and open alternative to Claude. Built in TypeScript with native support for Sarvam-105B and gpt-oss-120b, it autonomously plans and executes tasks from your terminal. Supports MCP servers, a built-in Skills system, and Jiva Personas - a plugin framework fully compatible with Claude Plugins.",
+    "fullName": "KarmaloopAI/Jiva",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-08T10:13:15Z",
+    "stargazersCount": 35,
+    "updatedAt": "2026-04-28T11:43:04Z",
+    "url": "https://github.com/KarmaloopAI/Jiva"
+  },
+  {
+    "description": "Open-source CLI skills for promptfolio \u2014 analyze your AI conversation history locally",
+    "fullName": "billc8128/promptfolio-skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-26T07:26:43Z",
+    "stargazersCount": 8,
+    "updatedAt": "2026-04-10T15:21:12Z",
+    "url": "https://github.com/billc8128/promptfolio-skills"
+  },
+  {
+    "description": "CLI tool and AI agent skill for reading and writing ABAP source code and metadata from SAP systems (ECC \u00b7 S/4HANA \u00b7 BTP) via the ADT REST API. Supports programs, classes, CDS views, DDIC objects, transport management, Open SQL queries, and object search \u2014 with fine-grained permission flags for all write operations.",
+    "fullName": "shrek-abaper/sap-abap-cli",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-09T10:20:22Z",
+    "stargazersCount": 8,
+    "updatedAt": "2026-05-09T10:20:26Z",
+    "url": "https://github.com/shrek-abaper/sap-abap-cli"
+  },
+  {
+    "description": "Open-source skill registry for AI agents\u2014discover, fork, and ship.",
+    "fullName": "manu14357/zskills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-06T17:56:00Z",
+    "stargazersCount": 13,
+    "updatedAt": "2026-05-08T15:01:49Z",
+    "url": "https://github.com/manu14357/zskills"
+  },
+  {
+    "description": "A powerful CLI tool that analyzes your GitHub profile to recommend open-source projects tailored to your interests and skills. DevProjectConnector connects you with potential collaborators, helping you grow your skills and expand your network within the open-source community.",
+    "fullName": "HenryLok0/DevProjectConnector",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2025-05-24T11:00:09Z",
+    "stargazersCount": 10,
+    "updatedAt": "2026-04-11T17:54:54Z",
+    "url": "https://github.com/HenryLok0/DevProjectConnector"
+  },
+  {
+    "description": "Open-source CLI scanner for agentic AI components such as skills, MCP servers, system prompts",
+    "fullName": "bawbel/bawbel-scanner",
+    "isArchived": false,
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "url": ""
+    },
+    "pushedAt": "2026-05-08T15:56:07Z",
+    "stargazersCount": 3,
+    "updatedAt": "2026-05-08T15:56:11Z",
+    "url": "https://github.com/bawbel/bawbel-scanner"
+  },
+  {
+    "description": "First Open Source Aim Trainer and World Builder for FPS players. Built with Three.js to push the limits of skill and design.",
+    "fullName": "Redblock-Online/redblock-client",
+    "isArchived": false,
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "url": ""
+    },
+    "pushedAt": "2026-02-21T20:39:11Z",
+    "stargazersCount": 20,
+    "updatedAt": "2026-05-03T19:48:54Z",
+    "url": "https://github.com/Redblock-Online/redblock-client"
+  },
+  {
+    "description": "Open-source security scanner for AI Agent skills, plugins & MCP servers. 39 detection rules. pip install prism-scanner",
+    "fullName": "aidongise-cell/prism-scanner",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-04-07T03:44:50Z",
+    "stargazersCount": 10,
+    "updatedAt": "2026-05-07T19:26:14Z",
+    "url": "https://github.com/aidongise-cell/prism-scanner"
+  },
+  {
+    "description": "This repository is a curated collection of skills, plugins, and automation pipelines designed for Claude Code \u2014 Anthropic's CLI for AI-assisted software engineering.  It was built by the engineering and security engineering teams at Phoenix Security and released as open source so that security professionals, DevSecOps engineers, AppSec teams",
+    "fullName": "Security-Phoenix-demo/security-skills-claude-code",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-29T19:20:05Z",
+    "stargazersCount": 31,
+    "updatedAt": "2026-05-08T03:54:36Z",
+    "url": "https://github.com/Security-Phoenix-demo/security-skills-claude-code"
+  },
+  {
+    "description": "Open-source Supabase security auditor: detects RLS-disabled tables, public buckets, exposed SECURITY DEFINER functions. Active anonymous probe confirms each leak with the anon key.",
+    "fullName": "Perufitlife/supabase-security-skill",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-10T10:57:29Z",
+    "stargazersCount": 13,
+    "updatedAt": "2026-05-10T11:56:24Z",
+    "url": "https://github.com/Perufitlife/supabase-security-skill"
+  },
+  {
+    "description": "Open-source collection of Claude skills. Rust CLI tool to discover, search, and install skills that extend Claude's capabilities.",
+    "fullName": "dcodesdev/clawd",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2025-12-07T14:33:04Z",
+    "stargazersCount": 7,
+    "updatedAt": "2026-03-31T18:34:22Z",
+    "url": "https://github.com/dcodesdev/clawd"
+  },
+  {
+    "description": "Open-source distroless harness coding agent in Go. Works with Cursor, Zed via ACP. Supports any OpenAI-compatible providers. Can use SKILLS and MCP servers.",
+    "fullName": "coddy-project/coddy-agent",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-05-10T15:58:38Z",
+    "stargazersCount": 7,
+    "updatedAt": "2026-05-10T15:58:42Z",
+    "url": "https://github.com/coddy-project/coddy-agent"
+  },
+  {
+    "description": "Open-source security skills for AI coding agents. Grounded in OWASP, NIST, MITRE ATT&CK, CIS. Works with Claude Code, Gemini CLI, Cursor, Codex CLI, OpenClaw, Kiro.",
+    "fullName": "UnitOneAI/SecuritySkills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-04-08T15:07:10Z",
+    "stargazersCount": 4,
+    "updatedAt": "2026-04-30T13:20:47Z",
+    "url": "https://github.com/UnitOneAI/SecuritySkills"
+  },
+  {
+    "description": "Agent Skills for Happy Hacking Space's open-source security tools. Compatible with Claude Code, OpenAI Codex, Gemini CLI, and Cursor.",
+    "fullName": "HappyHackingSpace/skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-02-28T23:37:07Z",
+    "stargazersCount": 4,
+    "updatedAt": "2026-03-11T23:10:52Z",
+    "url": "https://github.com/HappyHackingSpace/skills"
+  },
+  {
+    "description": "AI-Powered Terminal Assistant - Open-source alternative to Claude Code Skills with cost savings. Supports DeepSeek/Qwen/Ollama & offline mode",
+    "fullName": "Geoion/clis",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-04-30T04:16:30Z",
+    "stargazersCount": 5,
+    "updatedAt": "2026-04-30T04:16:36Z",
+    "url": "https://github.com/Geoion/clis"
+  },
+  {
+    "description": "Lightweight, fast, open-source desktop web proxy for macOS \u2014 HTTP/HTTPS MITM, capture, replay, fuzzer, CLI automation, AI skills",
+    "fullName": "sm1ee/Sniper",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-04-23T02:14:23Z",
+    "stargazersCount": 8,
+    "updatedAt": "2026-05-05T09:15:19Z",
+    "url": "https://github.com/sm1ee/Sniper"
+  },
+  {
+    "description": "Ahoo Wang's open source project skills repository",
+    "fullName": "Ahoo-Wang/skills",
+    "isArchived": false,
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "url": "https://api.github.com/licenses/apache-2.0"
+    },
+    "pushedAt": "2026-05-08T13:45:07Z",
+    "stargazersCount": 2,
+    "updatedAt": "2026-05-08T13:45:11Z",
+    "url": "https://github.com/Ahoo-Wang/skills"
+  },
+  {
+    "description": "Open-source agent skills for Claude Code, Claude Cowork, Codex, Cursor, and Gemini CLI. Connect AI agents to Google Analytics, Search Console, and Drive. From Temi (usetemi.com).",
+    "fullName": "usetemi/skills",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-08T21:15:52Z",
+    "stargazersCount": 3,
+    "updatedAt": "2026-05-08T21:15:56Z",
+    "url": "https://github.com/usetemi/skills"
+  },
+  {
+    "description": "Open-source CLI and agent skills for Prevu \u2014 preview/staging environments for coding agents like Claude Code, Codex, Cursor, OpenHands, even OpenClaw and Hermes Agent",
+    "fullName": "prevu-cloud/prevu",
+    "isArchived": false,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "url": "https://api.github.com/licenses/mit"
+    },
+    "pushedAt": "2026-05-09T17:52:09Z",
+    "stargazersCount": 7,
+    "updatedAt": "2026-05-09T17:52:12Z",
+    "url": "https://github.com/prevu-cloud/prevu"
+  },
+  {
+    "description": "an open source skill management cli tool",
+    "fullName": "lewisyoung0914/oh-my-skills",
+    "isArchived": false,
+    "license": {
+      "key": "",
+      "name": "",
+      "url": ""
+    },
+    "pushedAt": "2026-03-13T07:19:18Z",
+    "stargazersCount": 1,
+    "updatedAt": "2026-03-13T07:22:36Z",
+    "url": "https://github.com/lewisyoung0914/oh-my-skills"
+  }
+]

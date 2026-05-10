@@ -20,4 +20,4 @@
 
 - hourly-skill-candidates-20260509-122708
 
-- hourly-skill-candidates-20260509-143807: llm-wiki/queries/hourly-skill-candidates-20260509-143807.md
+- hourly-skill-candidates-20260509-143807: llm-wiki/queries/hourly-skill-candidates-20260509-143807.md- [hourly-skill-candidates-20260511-010949](hourly/hourly-skill-candidates-20260511-010949.md)

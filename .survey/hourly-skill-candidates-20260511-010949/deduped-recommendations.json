@@ -1,0 +1,50 @@
+{
+  "iwe-org/skills": {
+    "fullName": "iwe-org/skills",
+    "url": "https://github.com/iwe-org/skills",
+    "stars": 7,
+    "license": "mit",
+    "pushedAt": "2026-05-08T12:14:42Z",
+    "fit_rationale": "token+signal+freshness satisfied"
+  },
+  "AbdelhakRazi/flutter-bloc-clean-architecture-skill": {
+    "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+    "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+    "stars": 16,
+    "license": "apache-2.0",
+    "pushedAt": "2026-01-29T09:33:47Z",
+    "fit_rationale": "token+signal+freshness satisfied"
+  },
+  "laviDrori0702/tableau-dashboard-creator-skill": {
+    "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+    "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+    "stars": 6,
+    "license": "mit",
+    "pushedAt": "2026-04-09T12:21:43Z",
+    "fit_rationale": "token+signal+freshness satisfied"
+  },
+  "VoDaiLocz/Enhance-Prompt": {
+    "fullName": "VoDaiLocz/Enhance-Prompt",
+    "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+    "stars": 11,
+    "license": "mit",
+    "pushedAt": "2026-03-05T13:50:53Z",
+    "fit_rationale": "token+signal+freshness satisfied"
+  },
+  "rhysmcneill/agentic-ai-library": {
+    "fullName": "rhysmcneill/agentic-ai-library",
+    "url": "https://github.com/rhysmcneill/agentic-ai-library",
+    "stars": 4,
+    "license": "apache-2.0",
+    "pushedAt": "2026-04-30T13:42:47Z",
+    "fit_rationale": "token+signal+freshness satisfied"
+  },
+  "tjboudreaux/cc-plugin-unity-gamedev": {
+    "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+    "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+    "stars": 3,
+    "license": "mit",
+    "pushedAt": "2026-02-06T04:09:12Z",
+    "fit_rationale": "token+signal+freshness satisfied"
+  }
+}

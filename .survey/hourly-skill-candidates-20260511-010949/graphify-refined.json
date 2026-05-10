@@ -1,0 +1,32 @@
+{
+  "status": "fallback",
+  "reason": "graphify CLI not invoked in cron guarded mode",
+  "slug": "hourly-skill-candidates-20260511-010949",
+  "lane_snapshot": {
+    "agentic-ai-skill": {
+      "raw_count": 30,
+      "kept_count": 5,
+      "status": "pass"
+    },
+    "web-frontend-skill": {
+      "raw_count": 5,
+      "kept_count": 0,
+      "status": "degraded"
+    },
+    "web-backend-skill": {
+      "raw_count": 0,
+      "kept_count": 0,
+      "status": "degraded"
+    },
+    "cli-open-source-skill": {
+      "raw_count": 0,
+      "kept_count": 0,
+      "status": "degraded"
+    },
+    "game-development-skill": {
+      "raw_count": 30,
+      "kept_count": 1,
+      "status": "pass"
+    }
+  }
+}
