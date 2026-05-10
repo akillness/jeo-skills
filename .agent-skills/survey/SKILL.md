@@ -53,6 +53,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/hourly-recency-window-and-stage-expansion.md](references/hourly-recency-window-and-stage-expansion.md)
 - [references/lane-degradation-report.md](references/lane-degradation-report.md)
 - [references/hourly-artifact-completeness-gate.md](references/hourly-artifact-completeness-gate.md)
+- [references/freshness-age-gate.md](references/freshness-age-gate.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.
@@ -317,6 +318,7 @@ Do **not** slide into planning or implementation unless the user explicitly asks
 - `references/license-enrichment-fallback.md` — license metadata fallback flow (search payload -> gh repo view -> gh api) for recommendation-grade gating
 - `references/slug-integrity-verification.md` — pre-commit guard to ensure only active `.survey/{slug}/` artifacts are modified in a run
 - `references/checks-blocker-comment-template.md` — deterministic ASCII blocker comment generation flow for no-checks gate failures
+- `references/freshness-age-gate.md` — age-based 24-month freshness gate with degraded-cause output contract
 - `scripts/lane_quality_gate.py` — reusable lane-level quality gate implementation
 - `scripts/enrich_license_metadata.py` — reusable license enrichment utility for sparse/shape-shifted GitHub search payloads
 - `scripts/verify_hourly_slug_integrity.py` — reusable guard that fails when git changes include non-active `.survey/` slug paths

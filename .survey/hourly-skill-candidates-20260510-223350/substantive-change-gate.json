@@ -1,0 +1,17 @@
+{
+  "status_file": ".survey/hourly-skill-candidates-20260510-223350/git-status-short.txt",
+  "changed_count": 4,
+  "reusable_change_count": 3,
+  "survey_only_change_count": 1,
+  "reusable_changes": [
+    ".agent-skills/survey/SKILL.md",
+    ".agent-skills/survey/scripts/audit_freshness_window.py",
+    ".agent-skills/survey/references/freshness-age-gate.md"
+  ],
+  "survey_only_changes": [
+    ".survey/hourly-skill-candidates-20260510-223350/"
+  ],
+  "pass": true,
+  "merge_blocked_reason": null,
+  "remediation": []
+}
