@@ -1,0 +1,16 @@
+{
+  "status_file": ".survey/hourly-skill-candidates-20260511-021434/precommit-status.txt",
+  "changed_count": 3,
+  "reusable_change_count": 2,
+  "survey_only_change_count": 1,
+  "reusable_changes": [
+    ".agent-skills/survey/scripts/generate_hourly_audit_bundle.py",
+    ".agent-skills/survey/scripts/check_recommended_lane_concentration.py"
+  ],
+  "survey_only_changes": [
+    ".survey/hourly-skill-candidates-20260511-021434/"
+  ],
+  "pass": true,
+  "merge_blocked_reason": null,
+  "remediation": []
+}

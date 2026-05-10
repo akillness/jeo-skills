@@ -90,6 +90,13 @@ def main():
             os.path.join(survey_dir, "lane-queries-validation.json"),
         ])
 
+    run([
+        "python3",
+        os.path.join(scripts, "check_recommended_lane_concentration.py"),
+        evidence,
+        os.path.join(survey_dir, "lane-concentration.json"),
+    ])
+
     run(["python3", os.path.join(scripts, "validate_hourly_artifact_completeness.py"), survey_dir, os.path.join(survey_dir, "artifact-completeness.json")])
 
     with open(evidence, "r", encoding="utf-8") as f:

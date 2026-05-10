@@ -1,0 +1,6 @@
+lane,raw_count,kept_count,zero_star_raw,median_stars_raw,status,degraded_causes,integrity
+agentic-ai-skill,30,5,19,0,pass,,ok
+web-frontend-skill,5,0,4,0,degraded,license|low-signal|stale,ok
+web-backend-skill,1,0,0,7533,degraded,low-fit,ok
+cli-open-source-skill,1,1,0,35977,pass,,ok
+game-development-skill,30,1,18,0,pass,,ok
