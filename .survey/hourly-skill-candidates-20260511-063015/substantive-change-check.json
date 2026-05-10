@@ -1,0 +1,17 @@
+{
+  "status_file": "/dev/fd/63",
+  "changed_count": 4,
+  "reusable_change_count": 2,
+  "survey_only_change_count": 2,
+  "reusable_changes": [
+    ".agent-skills/survey/scripts/generate_hourly_audit_bundle.py",
+    "open-prs.json"
+  ],
+  "survey_only_changes": [
+    ".survey/.active-hourly-slug",
+    ".survey/hourly-skill-candidates-20260511-063015/"
+  ],
+  "pass": true,
+  "merge_blocked_reason": null,
+  "remediation": []
+}
