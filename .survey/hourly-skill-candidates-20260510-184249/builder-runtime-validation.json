@@ -1,0 +1,30 @@
+{
+  "survey_dir": ".survey/hourly-skill-candidates-20260510-184249",
+  "ok": true,
+  "checks": [
+    {
+      "check": "builder_py_compile",
+      "ok": true
+    },
+    {
+      "check": "survey_dir_exists",
+      "ok": true
+    },
+    {
+      "check": "lane_queries_exists",
+      "ok": true
+    },
+    {
+      "check": "evidence_exists",
+      "ok": true
+    },
+    {
+      "check": "lane_keys_exact",
+      "ok": true
+    },
+    {
+      "check": "recovery_stage12_present",
+      "ok": true
+    }
+  ]
+}
