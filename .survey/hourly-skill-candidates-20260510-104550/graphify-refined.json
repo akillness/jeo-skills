@@ -1,0 +1,12 @@
+{
+  "question": "What are the highest-fit hourly skill candidates across mandatory lanes?",
+  "answer": "See lane summaries and degraded causes; use deduped recommendations for promotion.",
+  "summary": {
+    "degraded": [
+      "web-frontend-skill",
+      "web-backend-skill"
+    ],
+    "recommended_lane_count": 3,
+    "single_lane_concentration": false
+  }
+}

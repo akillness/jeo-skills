@@ -296,6 +296,16 @@
         "Publishes both lane-degradation-report.md and lane-degradation-report.json",
         "Includes per-lane status and degraded_causes with compact metrics (kept/raw, median_stars_raw, zero_star_raw)"
       ]
+    },
+    {
+      "id": 30,
+      "prompt": "run hourly survey bundle generation and ensure missing deliverables are caught before PR packaging",
+      "expected_output": "The workflow runs scripts/validate_hourly_artifact_completeness.py against .survey/<slug>, writes artifact-completeness.json, and fails fast when required outputs (evidence, reports, graphify/rtk notes) are missing.",
+      "assertions": [
+        "Runs or references scripts/validate_hourly_artifact_completeness.py on the current survey slug directory",
+        "Publishes artifact-completeness.json in the same .survey/<slug> folder",
+        "Treats missing required artifacts as a blocking failure before PR creation/merge"
+      ]
     }
   ]
 }

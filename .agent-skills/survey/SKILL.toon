@@ -1,7 +1,7 @@
 N:survey
 D:Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform patterns map before deciding what to build. Produce reusable .survey/{slug}/ artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.
 G:survey landscape-scan research discovery groundwork omc omx ohmg claude codex gemini hooks rules settings
-U[18]:
+U[19]:
   Produce reusable .survey/{slug}/ artifacts before planning or implementation
   Compare solutions workarounds and repeated complaints without drifting into coding
   Normalize platform topics into settings rules hooks and platform gaps
@@ -20,6 +20,7 @@ U[18]:
   Reuse scripts/assess_open_pr_gate.py to enforce deterministic open-PR triage before new PR creation in hourly loops
   Reuse scripts/collect_lane_recovery_coverage.py to enforce stage-1/stage-2 query coverage for every mandatory lane and emit deterministic coverage artifacts
   Reuse scripts/dedupe_hourly_recommendations.py to compute raw-vs-dedup recommendation coverage for reviewer summaries
+  Reuse scripts/validate_hourly_artifact_completeness.py to fail fast when required hourly deliverables are missing before PR packaging
   Validate the artifact contract before handing off to planning or execution
 S[11]{n,action,details}:
   1,Classify mode,Choose one primary survey mode and decide whether platform-map.md is required
@@ -33,7 +34,7 @@ S[11]{n,action,details}:
   9,Synthesize,Write triage.md context.md solutions.md and platform-map.md with the required headings
   10,Validate,Run the survey artifact validator with platform-topic and provenance flags when needed
   11,Summarize,Return a short factual survey summary and route planning or implementation outward
-R[18]:
+R[19]:
   Never write implementation code in survey mode
   Search broadly in English unless the user requires another language
   Keep claims source-backed and label downgraded evidence clearly using validator-supported labels (map gh-search listings to indexed snippet and repo/API detail fetches to direct page retrieval); for gh search repos JSON output prefer fullName or owner+name over unsupported nameWithOwner and persist stderr before retrying
@@ -51,6 +52,7 @@ R[18]:
   Include cross-lane concentration signals (recommended_lane_count and single_lane_concentration) before claiming healthy recommendation coverage
   Deduplicate recommendation-grade repositories across lanes before final ranking and report both raw and deduplicated coverage metrics
   Run scripts/intent_fit_audit.py on hourly evidence and attach per-lane flagged examples before final recommendation claims
+  Run scripts/validate_hourly_artifact_completeness.py and block packaging when required hourly artifacts are missing
   Use settings rules hooks as the common layer for Claude Codex Gemini comparisons
 E[2]{desc,in,out}:
   "Repo maintenance","survey which existing skill in this repo is the best bounded maintenance target next","Creates triage context and solutions artifacts, then validates the output folder before any skill rewrite starts"
