@@ -29,6 +29,14 @@ def main(argv):
     open_prs = load_json(open_prs_path)
     checks_summary = load_json(checks_summary_path)
 
+    # Accept both list payloads (gh pr list --json ...) and single-object
+    # payloads (gh pr view --json ...), then normalize to a list.
+    if isinstance(open_prs, dict):
+        open_prs = [open_prs]
+    if not isinstance(open_prs, list):
+        sys.stderr.write('open_prs json must be a list or object\n')
+        return 2
+
     open_pr_count = len(open_prs)
     checks_status = str(checks_summary.get('status', 'unknown'))
     merge_blocked_reason = checks_summary.get('merge_blocked_reason')
@@ -56,7 +64,7 @@ def main(argv):
         'merge_blocked_reason': merge_blocked_reason,
         'mode': mode,
         'rationale': rationale,
-        'open_pr_numbers': [pr.get('number') for pr in open_prs],
+        'open_pr_numbers': [pr.get('number') for pr in open_prs if isinstance(pr, dict)],
     }
 
     out_dir = os.path.dirname(out_path)

@@ -1,0 +1,15 @@
+{
+  "status_file": "/dev/fd/63",
+  "changed_count": 2,
+  "reusable_change_count": 1,
+  "survey_only_change_count": 1,
+  "reusable_changes": [
+    ".agent-skills/survey/scripts/decide_hourly_pr_mode.py"
+  ],
+  "survey_only_changes": [
+    ".survey/hourly-skill-candidates-20260510-202539/"
+  ],
+  "pass": true,
+  "merge_blocked_reason": null,
+  "remediation": []
+}
