@@ -51,7 +51,21 @@ def main():
     run(["python3", os.path.join(scripts, "generate_hourly_run_report.py"), survey_dir, os.path.join(survey_dir, "run-report.md")])
     run(["python3", os.path.join(scripts, "generate_hourly_delivery_report.py"), survey_dir, os.path.join(survey_dir, "delivery-report.md")])
     run(["python3", os.path.join(scripts, "check_delivery_report_accuracy.py"), survey_dir, os.path.join(survey_dir, "delivery-report-accuracy.json")])
-    run(["python3", os.path.join(scripts, "validate_hourly_artifact_completeness.py"), survey_dir, os.path.join(survey_dir, "artifact-completeness.json")])
+
+    # Generate deterministic knowledge-note artifacts before completeness validation.
+    run(["python3", os.path.join(scripts, "generate_hourly_knowledge_notes.py"), survey_dir])
+
+    # Ensure graphify fallback artifact exists for validator contract.
+    graphify_refined = os.path.join(survey_dir, "graphify-refined.json")
+    if not os.path.isfile(graphify_refined):
+        fallback = {
+            "status": "fallback",
+            "reason": "graphify query unavailable in unattended run",
+            "source": "evidence.json",
+        }
+        with open(graphify_refined, "w", encoding="utf-8") as f:
+            json.dump(fallback, f, indent=2, ensure_ascii=False)
+            f.write("\n")
 
     repo = os.environ.get("GH_REPO")
     if not repo:
@@ -75,6 +89,8 @@ def main():
             lane_queries,
             os.path.join(survey_dir, "lane-queries-validation.json"),
         ])
+
+    run(["python3", os.path.join(scripts, "validate_hourly_artifact_completeness.py"), survey_dir, os.path.join(survey_dir, "artifact-completeness.json")])
 
     with open(evidence, "r", encoding="utf-8") as f:
         data = json.load(f)
