@@ -51,6 +51,15 @@ def main():
     run(["python3", os.path.join(scripts, "generate_hourly_delivery_report.py"), survey_dir, os.path.join(survey_dir, "delivery-report.md")])
     run(["python3", os.path.join(scripts, "check_delivery_report_accuracy.py"), survey_dir, os.path.join(survey_dir, "delivery-report-accuracy.json")])
 
+    lane_queries = os.path.join(survey_dir, "lane-queries.json")
+    if os.path.isfile(lane_queries):
+        run([
+            "python3",
+            os.path.join(scripts, "validate_hourly_lane_queries.py"),
+            lane_queries,
+            os.path.join(survey_dir, "lane-queries-validation.json"),
+        ])
+
     with open(evidence, "r", encoding="utf-8") as f:
         data = json.load(f)
     lanes = data.get("lanes", {})
