@@ -1,67 +1,67 @@
 #!/usr/bin/env python3
+import argparse
 import json
-import os
 import sys
 
 REQUIRED_LANES = [
-    'agentic-ai-skill',
-    'web-frontend-skill',
-    'web-backend-skill',
-    'cli-open-source-skill',
-    'game-development-skill',
+    "agentic-ai-skill",
+    "web-frontend-skill",
+    "web-backend-skill",
+    "cli-open-source-skill",
+    "game-development-skill",
 ]
 
 
-def fail(msg):
-    sys.stderr.write(msg + '\n')
-    return 1
-
-
 def main():
-    if len(sys.argv) != 2:
-        return fail('usage: validate_hourly_evidence_contract.py <evidence.json>')
-    path = sys.argv[1]
-    if not os.path.exists(path):
-        return fail('missing file: {0}'.format(path))
-    with open(path, 'r') as f:
-        try:
-            data = json.load(f)
-        except Exception as e:
-            return fail('invalid json: {0}'.format(e))
+    parser = argparse.ArgumentParser(description="Validate hourly evidence contract")
+    parser.add_argument("evidence_json", help="Path to evidence.json")
+    args = parser.parse_args()
 
-    lanes = data.get('lanes')
+    with open(args.evidence_json, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    errors = []
+    lanes = data.get("lanes")
     if not isinstance(lanes, dict):
-        return fail('missing lanes object')
-
-    missing = [k for k in REQUIRED_LANES if k not in lanes]
-    if missing:
-        return fail('missing required lane keys: {0}'.format(', '.join(missing)))
+        errors.append("missing lanes map")
+        lanes = {}
 
     for lane in REQUIRED_LANES:
-        lane_obj = lanes.get(lane, {})
-        raw = lane_obj.get('raw_count', 0)
-        kept = lane_obj.get('kept_count', 0)
-        if isinstance(raw, int) and isinstance(kept, int) and kept > raw:
-            return fail('invalid counts for {0}: kept_count > raw_count'.format(lane))
-
-        rq = lane_obj.get('recovery_queries')
-        if not isinstance(rq, list):
-            return fail('lane {0}: recovery_queries must be a list'.format(lane))
+        if lane not in lanes:
+            errors.append("missing lane: {}".format(lane))
+            continue
+        item = lanes[lane]
+        raw_count = item.get("raw_count", 0)
+        kept_count = item.get("kept_count", 0)
+        if kept_count > raw_count:
+            errors.append("lane {} has kept_count > raw_count".format(lane))
+        recovery = item.get("recovery_queries")
+        if not isinstance(recovery, list):
+            errors.append("lane {} missing recovery_queries".format(lane))
+            continue
         stages = set()
-        for item in rq:
-            if isinstance(item, dict):
-                stages.add(item.get('stage'))
-        if 'stage-1' not in stages or 'stage-2' not in stages:
-            return fail('lane {0}: missing required recovery stages stage-1/stage-2'.format(lane))
+        for r in recovery:
+            if isinstance(r, dict) and "stage" in r:
+                stages.add(r["stage"])
+        for need in ("stage-1", "stage-2"):
+            if need not in stages:
+                errors.append("lane {} missing {} recovery entry".format(lane, need))
+        if raw_count == 0:
+            causes = item.get("degraded_causes") or []
+            if "no-results" not in causes:
+                errors.append("lane {} raw_count=0 but degraded_causes lacks no-results".format(lane))
 
-        if raw == 0:
-            causes = lane_obj.get('degraded_causes', [])
-            if 'no-results' not in causes:
-                return fail('lane {0}: raw_count=0 requires degraded_causes to include no-results'.format(lane))
+    extra = sorted([k for k in lanes.keys() if k not in REQUIRED_LANES])
+    if extra:
+        errors.append("unexpected lane keys: {}".format(", ".join(extra)))
 
-    print('OK: hourly evidence contract valid')
+    if errors:
+        for e in errors:
+            sys.stderr.write("ERROR: {}\n".format(e))
+        return 1
+    print("hourly evidence contract: PASS")
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())
