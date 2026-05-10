@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-05-10T18:19:22.929290Z",
+  "candidates": [
+    {
+      "lane": "agentic-ai-skill",
+      "fullName": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "description": "Agentic AI skills for knowledge graph management",
+      "stargazersCount": 7,
+      "pushedAt": "2026-05-08T12:14:42Z",
+      "updatedAt": "2026-05-08T12:14:46Z",
+      "isArchived": false,
+      "license": "mit",
+      "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+      "stargazersCount": 16,
+      "pushedAt": "2026-01-29T09:33:47Z",
+      "updatedAt": "2026-05-02T13:39:38Z",
+      "isArchived": false,
+      "license": "apache-2.0",
+      "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+      "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+      "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification \u2014 with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+      "stargazersCount": 6,
+      "pushedAt": "2026-04-09T12:21:43Z",
+      "updatedAt": "2026-05-08T10:44:55Z",
+      "isArchived": false,
+      "license": "mit",
+      "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "fullName": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "description": "\ud83c\udfa8 Local-first, open-source alternative to Anthropic's Claude Design. \u26a1 19 Skills \u00b7 \u2728 71 brand-grade Design Systems \ud83d\uddbc Generate web \u00b7 desktop \u00b7 mobile prototypes \u00b7 slides \u00b7 images \u00b7 videos \u00b7 HyperFrames \ud83d\udce6 Sandboxed preview \u00b7 HTML/PDF/PPTX/MP4 export \ud83e\udd16 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+      "stargazersCount": 36020,
+      "pushedAt": "2026-05-10T16:02:28Z",
+      "updatedAt": "2026-05-10T18:18:26Z",
+      "isArchived": false,
+      "license": "apache-2.0",
+      "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+    },
+    {
+      "lane": "game-development-skill",
+      "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+      "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+      "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+      "stargazersCount": 3,
+      "pushedAt": "2026-02-06T04:09:12Z",
+      "updatedAt": "2026-04-14T18:39:35Z",
+      "isArchived": false,
+      "license": "mit",
+      "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+    }
+  ]
+}

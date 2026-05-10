@@ -1,0 +1,11 @@
+{
+  "status": "degraded",
+  "merge_blocked_reason": "no-checks-reported",
+  "pr_number": 271,
+  "branch": "chore/hourly-survey-20260507-224544",
+  "remediation": [
+    "Enable repository CI workflow(s) for pull_request events",
+    "Ensure branch protection requires at least one status check",
+    "Re-run checks via gh pr checks 271 --watch after workflow bootstrap"
+  ]
+}

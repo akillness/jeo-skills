@@ -1,0 +1,5 @@
+{
+  "status": "degraded",
+  "reason": "graphify CLI not invoked; fallback generated from evidence",
+  "provenance": "indexed snippet"
+}

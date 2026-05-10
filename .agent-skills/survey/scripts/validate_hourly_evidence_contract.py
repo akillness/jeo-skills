@@ -11,58 +11,60 @@ REQUIRED_LANES = [
     "game-development-skill",
 ]
 
+
 def main():
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         sys.stderr.write("usage: validate_hourly_evidence_contract.py <evidence.json>\n")
         return 2
 
     path = Path(sys.argv[1])
     if not path.exists():
         sys.stderr.write("missing file: {}\n".format(path))
-        return 2
+        return 1
 
     data = json.loads(path.read_text(encoding="utf-8"))
-    lanes = data.get("lanes", {})
+    lanes = data.get("lanes")
+    if not isinstance(lanes, dict):
+        sys.stderr.write("invalid contract: missing lanes object\n")
+        return 1
 
-    checks = []
     ok = True
-
     for lane in REQUIRED_LANES:
         lane_obj = lanes.get(lane)
         if not isinstance(lane_obj, dict):
-            checks.append({"check": "lane:{}".format(lane), "ok": False, "detail": "missing lane"})
+            sys.stderr.write("missing lane: {}\n".format(lane))
             ok = False
             continue
 
-        raw_count = lane_obj.get("raw_count", 0)
-        kept_count = lane_obj.get("kept_count", 0)
-        if kept_count > raw_count:
-            checks.append({"check": "metrics:{}".format(lane), "ok": False, "detail": "kept_count > raw_count"})
+        rq = lane_obj.get("recovery_queries")
+        if not isinstance(rq, list):
+            sys.stderr.write("lane {} missing recovery_queries list\n".format(lane))
             ok = False
-        else:
-            checks.append({"check": "metrics:{}".format(lane), "ok": True, "detail": "counts valid"})
+            continue
 
-        rq = lane_obj.get("recovery_queries", [])
         stages = set()
-        if isinstance(rq, list):
-            for item in rq:
-                if isinstance(item, dict) and item.get("stage"):
-                    stages.add(item.get("stage"))
+        for row in rq:
+            if isinstance(row, dict):
+                stage = row.get("stage")
+                if stage:
+                    stages.add(stage)
 
-        has_stage1 = "stage-1" in stages
-        has_stage2 = "stage-2" in stages
-        stage_ok = has_stage1 and has_stage2
-        checks.append({
-            "check": "recovery:{}".format(lane),
-            "ok": stage_ok,
-            "detail": "stages={}".format(sorted(stages)),
-        })
-        if not stage_ok:
+        if "stage-1" not in stages or "stage-2" not in stages:
+            sys.stderr.write("lane {} missing stage-1/stage-2 coverage\n".format(lane))
             ok = False
 
-    out = {"ok": ok, "checks": checks, "required_lanes": REQUIRED_LANES}
-    print(json.dumps(out, indent=2))
-    return 0 if ok else 1
+        raw = lane_obj.get("raw_count")
+        kept = lane_obj.get("kept_count")
+        if isinstance(raw, int) and isinstance(kept, int) and kept > raw:
+            sys.stderr.write("lane {} invalid counts: kept_count > raw_count\n".format(lane))
+            ok = False
+
+    if not ok:
+        return 1
+
+    print(json.dumps({"ok": True, "checked_lanes": REQUIRED_LANES}, indent=2))
+    return 0
+
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

@@ -1,0 +1,453 @@
+{
+  "generated_at_utc": "2026-05-10T18:18:45.439728Z",
+  "lanes": {
+    "agentic-ai-skill": {
+      "query": "agentic ai skill",
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "agentic ai skill",
+          "raw_count": 30,
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage-2",
+          "query": "agentic ai skill stars:>5000 pushed:>2024-01-01",
+          "raw_count": 20,
+          "provenance": "indexed snippet"
+        }
+      ],
+      "raw_count": 30,
+      "zero_star_raw": 19,
+      "median_stars_raw": 0.0,
+      "kept_count": 5,
+      "recommended": [
+        {
+          "fullName": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "description": "Agentic AI skills for knowledge graph management",
+          "stargazersCount": 7,
+          "pushedAt": "2026-05-08T12:14:42Z",
+          "updatedAt": "2026-05-08T12:14:46Z",
+          "isArchived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+        },
+        {
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "stargazersCount": 16,
+          "pushedAt": "2026-01-29T09:33:47Z",
+          "updatedAt": "2026-05-02T13:39:38Z",
+          "isArchived": false,
+          "license": "apache-2.0",
+          "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+        },
+        {
+          "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification \u2014 with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+          "stargazersCount": 6,
+          "pushedAt": "2026-04-09T12:21:43Z",
+          "updatedAt": "2026-05-08T10:44:55Z",
+          "isArchived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+        },
+        {
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions \u2014 like having a prompt engineer on your team.",
+          "stargazersCount": 11,
+          "pushedAt": "2026-03-05T13:50:53Z",
+          "updatedAt": "2026-05-06T16:02:57Z",
+          "isArchived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+        },
+        {
+          "fullName": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "description": "This repository serves as a library for showcasing how to adopt Agentic AI skills, and agent markdown files in a company-wide setting. ",
+          "stargazersCount": 4,
+          "pushedAt": "2026-04-30T13:42:47Z",
+          "updatedAt": "2026-05-07T19:52:19Z",
+          "isArchived": false,
+          "license": "apache-2.0",
+          "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+        }
+      ],
+      "low_fit_examples": [
+        {
+          "fullName": "sysdig/skills",
+          "url": "https://github.com/sysdig/skills",
+          "description": "Sysdig agentic AI skills and plugins",
+          "stargazersCount": 47,
+          "pushedAt": "2026-05-06T13:35:15Z",
+          "updatedAt": "2026-05-08T03:08:14Z",
+          "isArchived": false,
+          "license": "",
+          "low_fit_reasons": [
+            "license"
+          ]
+        },
+        {
+          "fullName": "Ap6pack/malwar",
+          "url": "https://github.com/Ap6pack/malwar",
+          "description": "Static analysis engine for detecting malware in agentic AI skill files",
+          "stargazersCount": 0,
+          "pushedAt": "2026-04-08T22:08:53Z",
+          "updatedAt": "2026-04-08T22:18:55Z",
+          "isArchived": false,
+          "license": "mit",
+          "low_fit_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "fullName": "onsen-ai/metabase-skill",
+          "url": "https://github.com/onsen-ai/metabase-skill",
+          "description": "Agentic AI skill for Metabase developers and users",
+          "stargazersCount": 2,
+          "pushedAt": "2026-05-04T11:45:13Z",
+          "updatedAt": "2026-05-08T15:21:53Z",
+          "isArchived": false,
+          "license": "",
+          "low_fit_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "fullName": "taisukeoe/agentic-ai-skills-creator",
+          "url": "https://github.com/taisukeoe/agentic-ai-skills-creator",
+          "description": "This is a foundation to create effective Agentic AI Skills",
+          "stargazersCount": 2,
+          "pushedAt": "2026-01-23T12:11:13Z",
+          "updatedAt": "2026-01-28T08:16:28Z",
+          "isArchived": false,
+          "license": "apache-2.0",
+          "low_fit_reasons": [
+            "low-signal"
+          ]
+        },
+        {
+          "fullName": "ritikpatel/marketing-mix-modelling-skill",
+          "url": "https://github.com/ritikpatel/marketing-mix-modelling-skill",
+          "description": "MMM Agentic AI Skill",
+          "stargazersCount": 0,
+          "pushedAt": "2026-04-12T13:42:41Z",
+          "updatedAt": "2026-04-12T13:42:49Z",
+          "isArchived": false,
+          "license": "",
+          "low_fit_reasons": [
+            "license",
+            "low-signal"
+          ]
+        }
+      ],
+      "provenance_labels": [
+        "indexed snippet"
+      ]
+    },
+    "web-frontend-skill": {
+      "query": "web frontend skill",
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit"
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web frontend skill",
+          "raw_count": 5,
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage-2",
+          "query": "web frontend skill stars:>5000 pushed:>2024-01-01",
+          "raw_count": 1,
+          "provenance": "indexed snippet"
+        }
+      ],
+      "raw_count": 5,
+      "zero_star_raw": 4,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "recommended": [],
+      "low_fit_examples": [
+        {
+          "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+          "stargazersCount": 12,
+          "pushedAt": "2026-03-30T14:38:08Z",
+          "updatedAt": "2026-04-02T16:29:32Z",
+          "isArchived": false,
+          "license": "",
+          "low_fit_reasons": [
+            "license"
+          ]
+        },
+        {
+          "fullName": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "description": "This is a frontend project to showcase web frontend skills.",
+          "stargazersCount": 0,
+          "pushedAt": "2023-11-29T17:23:32Z",
+          "updatedAt": "2023-11-28T08:12:53Z",
+          "isArchived": false,
+          "license": "mit",
+          "low_fit_reasons": [
+            "low-signal",
+            "stale"
+          ]
+        },
+        {
+          "fullName": "Hezekiah-Elisha/savannah_informatics_test",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only.",
+          "stargazersCount": 0,
+          "pushedAt": "2026-01-16T19:17:43Z",
+          "updatedAt": "2026-01-16T19:17:48Z",
+          "isArchived": false,
+          "license": "",
+          "low_fit_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "fullName": "Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "url": "https://github.com/Victor-Mutwiri/SIL-Frontend-Engineer-Assessment",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only. It should be hosted on a code repository service (e.g Github, Gitlab) with public access to make the assessment easy",
+          "stargazersCount": 0,
+          "pushedAt": "2024-05-28T12:02:00Z",
+          "updatedAt": "2024-05-28T12:02:04Z",
+          "isArchived": false,
+          "license": "",
+          "low_fit_reasons": [
+            "license",
+            "low-signal"
+          ]
+        },
+        {
+          "fullName": "sonhaicoder/web-taste-skill",
+          "url": "https://github.com/sonhaicoder/web-taste-skill",
+          "description": "Anti-slop web frontend skill for AI coding agents. Auto-trigger every web task. Force Kimi/Lovable-tier quality with Discovery Form + 5 deterministic directions + 27 anti-patterns + ready-to-paste hero/section/motion blueprints. Distilled from open-design, taste-skill, impeccable.style, getdesign.md, kimi.com, lovable.dev.",
+          "stargazersCount": 0,
+          "pushedAt": "2026-05-05T04:17:36Z",
+          "updatedAt": "2026-05-05T04:17:42Z",
+          "isArchived": false,
+          "license": "mit",
+          "low_fit_reasons": [
+            "low-signal"
+          ]
+        }
+      ],
+      "provenance_labels": [
+        "indexed snippet"
+      ]
+    },
+    "web-backend-skill": {
+      "query": "web backend skill",
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit"
+      ],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web backend skill",
+          "raw_count": 0,
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage-2",
+          "query": "web backend skill stars:>5000 pushed:>2024-01-01",
+          "raw_count": 1,
+          "provenance": "indexed snippet"
+        }
+      ],
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 7532,
+      "kept_count": 0,
+      "recommended": [],
+      "low_fit_examples": [
+        {
+          "fullName": "andreasbm/web-skills",
+          "url": "https://github.com/andreasbm/web-skills",
+          "description": "A visual overview of useful skills to learn as a web developer",
+          "stargazersCount": 7532,
+          "pushedAt": "2024-04-19T03:22:28Z",
+          "updatedAt": "2026-05-10T18:04:27Z",
+          "isArchived": false,
+          "license": "other",
+          "low_fit_reasons": [
+            "stale"
+          ]
+        }
+      ],
+      "provenance_labels": [
+        "indexed snippet"
+      ]
+    },
+    "cli-open-source-skill": {
+      "query": "cli open source skill",
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "cli open source skill",
+          "raw_count": 0,
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage-2",
+          "query": "cli open source skill stars:>5000 pushed:>2024-01-01",
+          "raw_count": 1,
+          "provenance": "indexed snippet"
+        }
+      ],
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 36020,
+      "kept_count": 1,
+      "recommended": [
+        {
+          "fullName": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "description": "\ud83c\udfa8 Local-first, open-source alternative to Anthropic's Claude Design. \u26a1 19 Skills \u00b7 \u2728 71 brand-grade Design Systems \ud83d\uddbc Generate web \u00b7 desktop \u00b7 mobile prototypes \u00b7 slides \u00b7 images \u00b7 videos \u00b7 HyperFrames \ud83d\udce6 Sandboxed preview \u00b7 HTML/PDF/PPTX/MP4 export \ud83e\udd16 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+          "stargazersCount": 36020,
+          "pushedAt": "2026-05-10T16:02:28Z",
+          "updatedAt": "2026-05-10T18:18:26Z",
+          "isArchived": false,
+          "license": "apache-2.0",
+          "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+        }
+      ],
+      "low_fit_examples": [],
+      "provenance_labels": [
+        "indexed snippet"
+      ]
+    },
+    "game-development-skill": {
+      "query": "game development skill",
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "game development skill",
+          "raw_count": 30,
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage-2",
+          "query": "game development skill stars:>5000 pushed:>2024-01-01",
+          "raw_count": 0,
+          "provenance": "indexed snippet"
+        }
+      ],
+      "raw_count": 30,
+      "zero_star_raw": 18,
+      "median_stars_raw": 0.0,
+      "kept_count": 1,
+      "recommended": [
+        {
+          "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "stargazersCount": 3,
+          "pushedAt": "2026-02-06T04:09:12Z",
+          "updatedAt": "2026-04-14T18:39:35Z",
+          "isArchived": false,
+          "license": "mit",
+          "fit_rationale": "token overlap + freshness<=24m + non-archived + license + signal floor"
+        }
+      ],
+      "low_fit_examples": [
+        {
+          "fullName": "UnrealBlueprint/02_CrystalCavern",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+          "description": "A fun little parkour game for our now-famous marble. Here you'll start learning real-world blueprint game development skills (REF: CC_UBP)",
+          "stargazersCount": 9,
+          "pushedAt": "2019-03-27T19:49:24Z",
+          "updatedAt": "2025-04-11T04:59:09Z",
+          "isArchived": false,
+          "license": "mit",
+          "low_fit_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "fullName": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "description": "I am strengthening my C# game development skills day by day.",
+          "stargazersCount": 20,
+          "pushedAt": "2026-02-26T03:56:34Z",
+          "updatedAt": "2026-03-30T05:08:21Z",
+          "isArchived": false,
+          "license": "",
+          "low_fit_reasons": [
+            "license"
+          ]
+        },
+        {
+          "fullName": "Unengine/GameEngineAndGameMathTIL",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+          "description": "for my game development skill",
+          "stargazersCount": 4,
+          "pushedAt": "2021-05-17T16:44:56Z",
+          "updatedAt": "2021-05-17T16:44:59Z",
+          "isArchived": false,
+          "license": "wtfpl",
+          "low_fit_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "fullName": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+          "description": "Enhance your Pong game with Pygame! Learn how to add exciting features and unleash your creativity in this tutorial series. Perfect for intermediate programmers looking to expand their game development skills with Python and Pygame. Let's take the classic Pong game to the next level together!",
+          "stargazersCount": 14,
+          "pushedAt": "2023-08-09T16:31:04Z",
+          "updatedAt": "2025-02-24T10:03:43Z",
+          "isArchived": false,
+          "license": "mit",
+          "low_fit_reasons": [
+            "stale"
+          ]
+        },
+        {
+          "fullName": "kkh9700/GameDevelopmentSkills-Individual",
+          "url": "https://github.com/kkh9700/GameDevelopmentSkills-Individual",
+          "description": "",
+          "stargazersCount": 0,
+          "pushedAt": "2023-09-22T03:05:44Z",
+          "updatedAt": "2023-09-19T12:14:46Z",
+          "isArchived": false,
+          "license": "",
+          "low_fit_reasons": [
+            "license",
+            "low-signal",
+            "stale"
+          ]
+        }
+      ],
+      "provenance_labels": [
+        "indexed snippet"
+      ]
+    }
+  },
+  "provenance": "indexed snippet via gh search repos",
+  "recommended_raw_count": 7,
+  "recommended_dedup_count": 7,
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false
+}

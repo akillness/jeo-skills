@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "checked_lanes": [
+    "agentic-ai-skill",
+    "web-frontend-skill",
+    "web-backend-skill",
+    "cli-open-source-skill",
+    "game-development-skill"
+  ]
+}
