@@ -1,0 +1,9 @@
+{
+  "merge_blocked_reason": "no-checks-reported",
+  "readiness": "not-ready",
+  "required_actions": [
+    "Enable at least one CI workflow that triggers on pull_request for this branch",
+    "Set required status checks in branch protection after first successful run",
+    "Re-run gh pr checks and confirm non-empty check suite"
+  ]
+}

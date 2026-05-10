@@ -1,0 +1,13 @@
+{
+  "pr_number": 271,
+  "branch": "chore/hourly-survey-20260507-224544",
+  "commit": "8e31931",
+  "status": "blocked",
+  "merge_blocked_reason": "no-checks-reported",
+  "checks_error": "no checks reported on the 'chore/hourly-survey-20260507-224544' branch",
+  "remediation": [
+    "Enable CI workflow triggers for this branch",
+    "Ensure required status checks are configured in branch protection",
+    "Re-run checks via workflow_dispatch or push a noop commit once CI is active"
+  ]
+}
