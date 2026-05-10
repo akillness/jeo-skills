@@ -286,6 +286,16 @@
         "Persists both stage-1 and stage-2 recovery query entries for each mandatory lane",
         "Produces lane metrics and status after final selected-stage recomputation"
       ]
+    },
+    {
+      "id": 29,
+      "prompt": "run hourly survey in open-PR carry-forward mode and produce a compact degraded-lane summary artifact for blocker reporting",
+      "expected_output": "The workflow generates deterministic lane degradation markdown+json from evidence and includes degraded lane count, per-lane status, and degraded causes for reviewer triage.",
+      "assertions": [
+        "Runs or references scripts/generate_lane_degradation_report.py against current evidence.json",
+        "Publishes both lane-degradation-report.md and lane-degradation-report.json",
+        "Includes per-lane status and degraded_causes with compact metrics (kept/raw, median_stars_raw, zero_star_raw)"
+      ]
     }
   ]
 }

@@ -51,6 +51,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/hourly-audit-bundle-generator.md](references/hourly-audit-bundle-generator.md)
 - [references/open-pr-checks-artifact-collector.md](references/open-pr-checks-artifact-collector.md)
 - [references/hourly-recency-window-and-stage-expansion.md](references/hourly-recency-window-and-stage-expansion.md)
+- [references/lane-degradation-report.md](references/lane-degradation-report.md)
 
 ## When to use this skill
 - The user asks what exists, what people actually use, or what the current solution landscape looks like.

@@ -1,0 +1,25 @@
+{
+  "repo": "akillness/oh-my-skills",
+  "open_pr_count": 1,
+  "prs": [
+    {
+      "headRefName": "chore/hourly-survey-20260507-224544",
+      "mergeStateStatus": "CLEAN",
+      "number": 271,
+      "title": "chore: hourly survey run 20260507-224544 with integrity guard",
+      "url": "https://github.com/akillness/oh-my-skills/pull/271"
+    }
+  ],
+  "checks_degraded": true,
+  "merge_candidates": [],
+  "blocked_prs": [
+    {
+      "number": 271,
+      "url": "https://github.com/akillness/oh-my-skills/pull/271",
+      "merge_state": "CLEAN",
+      "checks_no_reported": true,
+      "checks_exit_code": 1,
+      "checks_excerpt": "no checks reported on the 'chore/hourly-survey-20260507-224544' branch"
+    }
+  ]
+}

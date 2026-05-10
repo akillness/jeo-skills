@@ -41,6 +41,7 @@ def main():
     run(["python3", os.path.join(scripts, "dedupe_hourly_recommendations.py"), evidence, os.path.join(survey_dir, "deduped-recommendations.json")])
     run(["python3", os.path.join(scripts, "compute_lane_health.py"), evidence], capture_path=os.path.join(survey_dir, "lane-health.json"))
     run(["python3", os.path.join(scripts, "generate_recovery_query_matrix.py"), evidence, os.path.join(survey_dir, "recovery-query-matrix.md")])
+    run(["python3", os.path.join(scripts, "generate_lane_degradation_report.py"), evidence, os.path.join(survey_dir, "lane-degradation-report.md"), os.path.join(survey_dir, "lane-degradation-report.json")])
     run(["python3", os.path.join(scripts, "lane_quality_gate.py"), "--input", evidence, "--output", os.path.join(survey_dir, "lane-quality-gate.json")])
     run(["python3", os.path.join(scripts, "intent_fit_audit.py"), evidence], capture_path=os.path.join(survey_dir, "intent-fit-audit.json"))
     run(["python3", os.path.join(scripts, "audit_hourly_recommendation_quality.py"), evidence], capture_path=os.path.join(survey_dir, "recommendation-quality-audit.json"))
