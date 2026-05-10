@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "required_sections": [
+    "## Summary",
+    "## Evidence",
+    "## Risk",
+    "## Rollback",
+    "## Validation"
+  ],
+  "missing_sections": [],
+  "body_path": ".survey/hourly-skill-candidates-20260511-042209/pr-body.md"
+}

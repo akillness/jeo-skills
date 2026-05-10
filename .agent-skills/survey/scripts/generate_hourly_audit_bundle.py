@@ -52,6 +52,18 @@ def main():
     run(["python3", os.path.join(scripts, "generate_hourly_delivery_report.py"), survey_dir, os.path.join(survey_dir, "delivery-report.md")])
     run(["python3", os.path.join(scripts, "check_delivery_report_accuracy.py"), survey_dir, os.path.join(survey_dir, "delivery-report-accuracy.json")])
 
+    # Open-PR mode decision artifact for deterministic carry-forward vs new-PR routing.
+    open_prs_json = os.path.join(survey_dir, "open-prs.json")
+    checks_summary_json = os.path.join(survey_dir, "open-pr-checks-summary.json")
+    if os.path.isfile(open_prs_json) and os.path.isfile(checks_summary_json):
+        run([
+            "python3",
+            os.path.join(scripts, "decide_hourly_pr_mode.py"),
+            open_prs_json,
+            checks_summary_json,
+            os.path.join(survey_dir, "hourly-pr-mode.json"),
+        ])
+
     # Generate deterministic knowledge-note artifacts before completeness validation.
     run(["python3", os.path.join(scripts, "generate_hourly_knowledge_notes.py"), survey_dir])
 

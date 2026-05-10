@@ -1,0 +1,20 @@
+{
+  "status_file": ".survey/hourly-skill-candidates-20260511-042209/git-status-short.txt",
+  "changed_count": 7,
+  "reusable_change_count": 6,
+  "survey_only_change_count": 1,
+  "reusable_changes": [
+    ".agent-skills/survey/scripts/generate_hourly_audit_bundle.py",
+    ".active_slug_runtime",
+    ".run_workdir",
+    "checks.err.tmp",
+    "checks.out.tmp",
+    "open_prs.json"
+  ],
+  "survey_only_changes": [
+    ".survey/hourly-skill-candidates-20260511-042209/"
+  ],
+  "pass": true,
+  "merge_blocked_reason": null,
+  "remediation": []
+}
