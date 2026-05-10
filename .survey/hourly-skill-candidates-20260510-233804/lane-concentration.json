@@ -1,0 +1,37 @@
+{
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false,
+  "recommended_lanes": [
+    "agentic-ai-skill",
+    "cli-open-source-skill",
+    "game-development-skill"
+  ],
+  "lane_metrics": {
+    "agentic-ai-skill": {
+      "raw_count": 30,
+      "kept_count": 5,
+      "has_recommendation": true
+    },
+    "web-frontend-skill": {
+      "raw_count": 5,
+      "kept_count": 0,
+      "has_recommendation": false
+    },
+    "web-backend-skill": {
+      "raw_count": 1,
+      "kept_count": 0,
+      "has_recommendation": false
+    },
+    "cli-open-source-skill": {
+      "raw_count": 1,
+      "kept_count": 1,
+      "has_recommendation": true
+    },
+    "game-development-skill": {
+      "raw_count": 30,
+      "kept_count": 1,
+      "has_recommendation": true
+    }
+  },
+  "status": "pass"
+}

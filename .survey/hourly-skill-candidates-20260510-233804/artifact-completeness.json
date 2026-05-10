@@ -1,0 +1,29 @@
+{
+  "survey_dir": ".survey/hourly-skill-candidates-20260510-233804",
+  "required_count": 19,
+  "present_count": 19,
+  "missing_count": 0,
+  "present": [
+    "evidence.json",
+    "triage.md",
+    "context.md",
+    "solutions.md",
+    "platform-map.md",
+    "rtk-summary.md",
+    "graphify-refined.json",
+    "obsidian-note.md",
+    "llm-wiki-note.md",
+    "hourly-run-report.json",
+    "delivery-report.md",
+    "lane-health.md",
+    "lane-health.json",
+    "deduped-recommendations.json",
+    "lane-degradation-report.md",
+    "lane-degradation-report.json",
+    "lane-quality-gate.json",
+    "recovery-stage-coverage.json",
+    "ci-bootstrap-readiness.json"
+  ],
+  "missing": [],
+  "status": "PASS"
+}

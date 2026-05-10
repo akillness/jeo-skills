@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import argparse
 import json
 import os
 import subprocess
@@ -115,9 +116,20 @@ def keep_reason(item, lane):
 
 
 def main():
-    slug = os.environ["SLUG"]
+    parser = argparse.ArgumentParser(description="Build hourly evidence from lane queries")
+    parser.add_argument("survey_dir", nargs="?", help="Optional .survey/<slug> directory")
+    parser.add_argument("--slug", dest="slug", help="Run slug (falls back to $SLUG)")
+    args = parser.parse_args()
+
+    slug = args.slug or os.environ.get("SLUG")
+    if not slug and args.survey_dir:
+        slug = os.path.basename(args.survey_dir.rstrip("/"))
+    if not slug:
+        raise SystemExit("missing slug: provide --slug, survey_dir, or SLUG env var")
+
     qpath = ".survey/{}/lane-queries.json".format(slug)
-    queries = json.load(open(qpath))["lanes"]
+    with open(qpath, "r") as f:
+        queries = json.load(f)["lanes"]
     evidence = {
         "slug": slug,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),

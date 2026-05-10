@@ -1,0 +1,5 @@
+{
+  "status": "degraded",
+  "reason": "graphify CLI not executed in cron run; fallback from evidence lanes",
+  "provenance": "indexed snippet"
+}
