@@ -1,0 +1,4 @@
+ M .survey/.active-hourly-slug
+?? .agent-skills/survey/scripts/check_substantive_hourly_change.py
+?? .survey/hourly-skill-candidates-20260510-150623/
+?? .survey/toolchain-preflight.json

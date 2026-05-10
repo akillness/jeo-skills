@@ -1,0 +1,17 @@
+{
+  "status_file": ".survey/hourly-skill-candidates-20260510-150623/git-status-before-commit.txt",
+  "changed_count": 4,
+  "reusable_change_count": 1,
+  "survey_only_change_count": 3,
+  "reusable_changes": [
+    ".agent-skills/survey/scripts/check_substantive_hourly_change.py"
+  ],
+  "survey_only_changes": [
+    ".survey/.active-hourly-slug",
+    ".survey/hourly-skill-candidates-20260510-150623/",
+    ".survey/toolchain-preflight.json"
+  ],
+  "pass": true,
+  "merge_blocked_reason": null,
+  "remediation": []
+}
