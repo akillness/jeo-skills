@@ -1,0 +1,5 @@
+{
+  "status": "fallback",
+  "reason": "graphify command not executed in this runtime; generated deterministic fallback from evidence",
+  "provenance": "thin evidence"
+}

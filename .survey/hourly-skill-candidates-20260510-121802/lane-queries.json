@@ -1,0 +1,22 @@
+{
+  "agentic-ai-skill": {
+    "stage-1": "agentic ai skill stars:>10 pushed:>2024-01-01 archived:false",
+    "stage-2": "autonomous agent framework skill stars:>50 pushed:>2024-01-01 archived:false"
+  },
+  "web-frontend-skill": {
+    "stage-1": "web frontend skill stars:>10 pushed:>2024-01-01 archived:false",
+    "stage-2": "frontend ui component library skill stars:>50 pushed:>2024-01-01 archived:false"
+  },
+  "web-backend-skill": {
+    "stage-1": "web backend skill stars:>10 pushed:>2024-01-01 archived:false",
+    "stage-2": "backend api framework skill stars:>50 pushed:>2024-01-01 archived:false"
+  },
+  "cli-open-source-skill": {
+    "stage-1": "cli open source skill stars:>10 pushed:>2024-01-01 archived:false",
+    "stage-2": "command line tool open source stars:>100 pushed:>2024-01-01 archived:false"
+  },
+  "game-development-skill": {
+    "stage-1": "game development skill stars:>10 pushed:>2024-01-01 archived:false",
+    "stage-2": "game engine development toolkit stars:>100 pushed:>2024-01-01 archived:false"
+  }
+}

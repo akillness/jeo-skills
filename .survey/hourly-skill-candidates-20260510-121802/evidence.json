@@ -1,0 +1,1182 @@
+{
+  "slug": "hourly-skill-candidates-20260510-121802",
+  "generated_at": "2026-05-10T03:18:50.440897Z",
+  "lanes": {
+    "agentic-ai-skill": {
+      "raw_count": 23,
+      "kept_count": 23,
+      "zero_star_raw": 0,
+      "median_stars_raw": 2368,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "agentic ai skill stars:>10 pushed:>2024-01-01 archived:false",
+          "result_count": 20,
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage-2",
+          "query": "autonomous agent framework skill stars:>50 pushed:>2024-01-01 archived:false",
+          "result_count": 3,
+          "provenance": "feed recovery"
+        }
+      ],
+      "kept": [
+        {
+          "fullName": "addyosmani/agent-skills",
+          "url": "https://github.com/addyosmani/agent-skills",
+          "stars": 37490,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "Orchestra-Research/AI-Research-SKILLs",
+          "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+          "stars": 8119,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "pinchbench/skill",
+          "url": "https://github.com/pinchbench/skill",
+          "stars": 1116,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "wrtnlabs/agentica",
+          "url": "https://github.com/wrtnlabs/agentica",
+          "stars": 1023,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "mvanhorn/last30days-skill",
+          "url": "https://github.com/mvanhorn/last30days-skill",
+          "stars": 25306,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "coreyhaines31/marketingskills",
+          "url": "https://github.com/coreyhaines31/marketingskills",
+          "stars": 27577,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "supabase/agent-skills",
+          "url": "https://github.com/supabase/agent-skills",
+          "stars": 2067,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "numman-ali/openskills",
+          "url": "https://github.com/numman-ali/openskills",
+          "stars": 10072,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "github/awesome-copilot",
+          "url": "https://github.com/github/awesome-copilot",
+          "stars": 32556,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "MoizIbnYousaf/Ai-Agent-Skills",
+          "url": "https://github.com/MoizIbnYousaf/Ai-Agent-Skills",
+          "stars": 1050,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "snyk/agent-scan",
+          "url": "https://github.com/snyk/agent-scan",
+          "stars": 2368,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          }
+        },
+        {
+          "fullName": "Prat011/awesome-llm-skills",
+          "url": "https://github.com/Prat011/awesome-llm-skills",
+          "stars": 1216,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "deanpeters/Product-Manager-Skills",
+          "url": "https://github.com/deanpeters/Product-Manager-Skills",
+          "stars": 4126,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "antonbabenko/terraform-skill",
+          "url": "https://github.com/antonbabenko/terraform-skill",
+          "stars": 1816,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "eastlondoner/vibe-tools",
+          "url": "https://github.com/eastlondoner/vibe-tools",
+          "stars": 4761,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "alibaba-flyai/flyai-skill",
+          "url": "https://github.com/alibaba-flyai/flyai-skill",
+          "stars": 629,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "SamurAIGPT/Generative-Media-Skills",
+          "url": "https://github.com/SamurAIGPT/Generative-Media-Skills",
+          "stars": 3208,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "twostraws/SwiftUI-Agent-Skill",
+          "url": "https://github.com/twostraws/SwiftUI-Agent-Skill",
+          "stars": 3847,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "dotnet/skills",
+          "url": "https://github.com/dotnet/skills",
+          "stars": 1643,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "skillmatic-ai/awesome-agent-skills",
+          "url": "https://github.com/skillmatic-ai/awesome-agent-skills",
+          "stars": 561,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "cc0-1.0",
+            "name": "Creative Commons Zero v1.0 Universal",
+            "url": "https://api.github.com/licenses/cc0-1.0"
+          }
+        },
+        {
+          "fullName": "wanshuiyin/Auto-claude-code-research-in-sleep",
+          "url": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+          "stars": 8587,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "freddy-schuetz/n8n-claw",
+          "url": "https://github.com/freddy-schuetz/n8n-claw",
+          "stars": 429,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "Aryia-Behroziuan/References",
+          "url": "https://github.com/Aryia-Behroziuan/References",
+          "stars": 61,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        }
+      ],
+      "filtered_example": null
+    },
+    "web-frontend-skill": {
+      "raw_count": 20,
+      "kept_count": 19,
+      "zero_star_raw": 0,
+      "median_stars_raw": 25.5,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web frontend skill stars:>10 pushed:>2024-01-01 archived:false",
+          "result_count": 20,
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage-2",
+          "query": "frontend ui component library skill stars:>50 pushed:>2024-01-01 archived:false",
+          "result_count": 0,
+          "provenance": "feed recovery"
+        }
+      ],
+      "kept": [
+        {
+          "fullName": "zarazhangrui/frontend-slides",
+          "url": "https://github.com/zarazhangrui/frontend-slides",
+          "stars": 16920,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "erdoganbavas/web-practices",
+          "url": "https://github.com/erdoganbavas/web-practices",
+          "stars": 73,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+          "url": "https://github.com/Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+          "stars": 36,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "ShanaMaid/frontend-guidelines-zh-CN",
+          "url": "https://github.com/ShanaMaid/frontend-guidelines-zh-CN",
+          "stars": 66,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "skill6/skill6-website-frontend",
+          "url": "https://github.com/skill6/skill6-website-frontend",
+          "stars": 25,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "rinafcode/teachLink_web",
+          "url": "https://github.com/rinafcode/teachLink_web",
+          "stars": 14,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "archlizheng/frontend-slides-editable",
+          "url": "https://github.com/archlizheng/frontend-slides-editable",
+          "stars": 105,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "MarieLynneBlock/Nanodegree-FrontEndWebDevelopment",
+          "url": "https://github.com/MarieLynneBlock/Nanodegree-FrontEndWebDevelopment",
+          "stars": 24,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "liyupi/yupi-hot-monitor",
+          "url": "https://github.com/liyupi/yupi-hot-monitor",
+          "stars": 429,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "MickeyAlton33/web-designer-plugin",
+          "url": "https://github.com/MickeyAlton33/web-designer-plugin",
+          "stars": 31,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "Maher-Elmair/Maher-Elmair",
+          "url": "https://github.com/Maher-Elmair/Maher-Elmair",
+          "stars": 26,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "mvmohitverma54/repo-made-for-frontend-devs---mohitverma",
+          "url": "https://github.com/mvmohitverma54/repo-made-for-frontend-devs---mohitverma",
+          "stars": 14,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "ceilf6/FrontAgent",
+          "url": "https://github.com/ceilf6/FrontAgent",
+          "stars": 94,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "dk5847001-stack/Internova-frontend",
+          "url": "https://github.com/dk5847001-stack/Internova-frontend",
+          "stars": 11,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "liyupi/github-global",
+          "url": "https://github.com/liyupi/github-global",
+          "stars": 105,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "RanitManik/College-Website",
+          "url": "https://github.com/RanitManik/College-Website",
+          "stars": 12,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "RaoAviralYadav/From-Code-to-Creation",
+          "url": "https://github.com/RaoAviralYadav/From-Code-to-Creation",
+          "stars": 14,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "stars": 12,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "SM8UTI/Webook-online-education-website",
+          "url": "https://github.com/SM8UTI/Webook-online-education-website",
+          "stars": 21,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        }
+      ],
+      "filtered_example": {
+        "fullName": "Syknapse/Syk-Houdeib",
+        "reason": "low-fit or low-signal"
+      }
+    },
+    "web-backend-skill": {
+      "raw_count": 10,
+      "kept_count": 8,
+      "zero_star_raw": 0,
+      "median_stars_raw": 85.0,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web backend skill stars:>10 pushed:>2024-01-01 archived:false",
+          "result_count": 10,
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage-2",
+          "query": "backend api framework skill stars:>50 pushed:>2024-01-01 archived:false",
+          "result_count": 0,
+          "provenance": "feed recovery"
+        }
+      ],
+      "kept": [
+        {
+          "fullName": "andreasbm/web-skills",
+          "url": "https://github.com/andreasbm/web-skills",
+          "stars": 7533,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "skill6/skill6-website-backend",
+          "url": "https://github.com/skill6/skill6-website-backend",
+          "stars": 156,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "liyupi/yupi-hot-monitor",
+          "url": "https://github.com/liyupi/yupi-hot-monitor",
+          "stars": 429,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "liyupi/github-global",
+          "url": "https://github.com/liyupi/github-global",
+          "stars": 105,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "RanitManik/College-Website",
+          "url": "https://github.com/RanitManik/College-Website",
+          "stars": 12,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "artursniegowski/Mastering_Django_through_Projects",
+          "url": "https://github.com/artursniegowski/Mastering_Django_through_Projects",
+          "stars": 18,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "NJ-kannadiga/NJ_kannada_bootcamp2025",
+          "url": "https://github.com/NJ-kannadiga/NJ_kannada_bootcamp2025",
+          "stars": 11,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "sanusanth/javascript-basic-program",
+          "url": "https://github.com/sanusanth/javascript-basic-program",
+          "stars": 65,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        }
+      ],
+      "filtered_example": {
+        "fullName": "JayabharathP/The-Python-Mega-Course-Build-10-Real-World-Applications-",
+        "reason": "low-fit or low-signal"
+      }
+    },
+    "cli-open-source-skill": {
+      "raw_count": 33,
+      "kept_count": 27,
+      "zero_star_raw": 0,
+      "median_stars_raw": 245,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "cli open source skill stars:>10 pushed:>2024-01-01 archived:false",
+          "result_count": 13,
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage-2",
+          "query": "command line tool open source stars:>100 pushed:>2024-01-01 archived:false",
+          "result_count": 20,
+          "provenance": "feed recovery"
+        }
+      ],
+      "kept": [
+        {
+          "fullName": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "stars": 35387,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          }
+        },
+        {
+          "fullName": "jeremylongshore/claude-code-plugins-plus-skills",
+          "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+          "stars": 2145,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "bonnard-data/bonnard-cli",
+          "url": "https://github.com/bonnard-data/bonnard-cli",
+          "stars": 48,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "TerminalSkills/skills",
+          "url": "https://github.com/TerminalSkills/skills",
+          "stars": 46,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          }
+        },
+        {
+          "fullName": "frank-luongt/faos-skills-marketplace",
+          "url": "https://github.com/frank-luongt/faos-skills-marketplace",
+          "stars": 14,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          }
+        },
+        {
+          "fullName": "KarmaloopAI/Jiva",
+          "url": "https://github.com/KarmaloopAI/Jiva",
+          "stars": 35,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "Redblock-Online/redblock-client",
+          "url": "https://github.com/Redblock-Online/redblock-client",
+          "stars": 20,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "Security-Phoenix-demo/security-skills-claude-code",
+          "url": "https://github.com/Security-Phoenix-demo/security-skills-claude-code",
+          "stars": 31,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "percona/percona-toolkit",
+          "url": "https://github.com/percona/percona-toolkit",
+          "stars": 1482,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "gpl-2.0",
+            "name": "GNU General Public License v2.0",
+            "url": "https://api.github.com/licenses/gpl-2.0"
+          }
+        },
+        {
+          "fullName": "dariomanesku/cmft",
+          "url": "https://github.com/dariomanesku/cmft",
+          "stars": 865,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "bellingcat/open-source-research-notebooks",
+          "url": "https://github.com/bellingcat/open-source-research-notebooks",
+          "stars": 300,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "jscad/OpenJSCAD.org",
+          "url": "https://github.com/jscad/OpenJSCAD.org",
+          "stars": 3166,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "ch32-rs/wlink",
+          "url": "https://github.com/ch32-rs/wlink",
+          "stars": 304,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          }
+        },
+        {
+          "fullName": "ImageMagick/ImageMagick",
+          "url": "https://github.com/ImageMagick/ImageMagick",
+          "stars": 16378,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "snowflakedb/snowflake-cli",
+          "url": "https://github.com/snowflakedb/snowflake-cli",
+          "stars": 250,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          }
+        },
+        {
+          "fullName": "JinjieNi/EasyLiterature",
+          "url": "https://github.com/JinjieNi/EasyLiterature",
+          "stars": 296,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "takipi/java-bullshifier",
+          "url": "https://github.com/takipi/java-bullshifier",
+          "stars": 358,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "DataBiosphere/dsub",
+          "url": "https://github.com/DataBiosphere/dsub",
+          "stars": 277,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          }
+        },
+        {
+          "fullName": "codingo/bbr",
+          "url": "https://github.com/codingo/bbr",
+          "stars": 218,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "gpl-3.0",
+            "name": "GNU General Public License v3.0",
+            "url": "https://api.github.com/licenses/gpl-3.0"
+          }
+        },
+        {
+          "fullName": "ImageMagick/ImageMagick6",
+          "url": "https://github.com/ImageMagick/ImageMagick6",
+          "stars": 245,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "fossology/fossology",
+          "url": "https://github.com/fossology/fossology",
+          "stars": 985,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "gpl-2.0",
+            "name": "GNU General Public License v2.0",
+            "url": "https://api.github.com/licenses/gpl-2.0"
+          }
+        },
+        {
+          "fullName": "clbustos/PHP_Beautifier",
+          "url": "https://github.com/clbustos/PHP_Beautifier",
+          "stars": 108,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "awslabs/iam-policy-autopilot",
+          "url": "https://github.com/awslabs/iam-policy-autopilot",
+          "stars": 351,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          }
+        },
+        {
+          "fullName": "shubhamrooter/ShodanSpider",
+          "url": "https://github.com/shubhamrooter/ShodanSpider",
+          "stars": 187,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "MJ-CJM/fuxi-cli",
+          "url": "https://github.com/MJ-CJM/fuxi-cli",
+          "stars": 122,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "apache-2.0",
+            "name": "Apache License 2.0",
+            "url": "https://api.github.com/licenses/apache-2.0"
+          }
+        },
+        {
+          "fullName": "Quicksi-CLI/quicksiCLI",
+          "url": "https://github.com/Quicksi-CLI/quicksiCLI",
+          "stars": 103,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "Don-No7/Hack-SQL",
+          "url": "https://github.com/Don-No7/Hack-SQL",
+          "stars": 131,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        }
+      ],
+      "filtered_example": {
+        "fullName": "dp-archive/archive",
+        "reason": "low-fit or low-signal"
+      }
+    },
+    "game-development-skill": {
+      "raw_count": 21,
+      "kept_count": 17,
+      "zero_star_raw": 0,
+      "median_stars_raw": 26,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "game development skill stars:>10 pushed:>2024-01-01 archived:false",
+          "result_count": 20,
+          "provenance": "indexed snippet"
+        },
+        {
+          "stage": "stage-2",
+          "query": "game engine development toolkit stars:>100 pushed:>2024-01-01 archived:false",
+          "result_count": 1,
+          "provenance": "feed recovery"
+        }
+      ],
+      "kept": [
+        {
+          "fullName": "AlloVince/physics_mathematics_skills_for_game_development",
+          "url": "https://github.com/AlloVince/physics_mathematics_skills_for_game_development",
+          "stars": 155,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "brockmartin/roblox-game-skill",
+          "url": "https://github.com/brockmartin/roblox-game-skill",
+          "stars": 19,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "Heigvd/Wegas",
+          "url": "https://github.com/Heigvd/Wegas",
+          "stars": 30,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "Project-Skill-Tree/Skill-Tree-Discord-Bot",
+          "url": "https://github.com/Project-Skill-Tree/Skill-Tree-Discord-Bot",
+          "stars": 23,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "TalimaVale/teamTALIMA_theGAME",
+          "url": "https://github.com/TalimaVale/teamTALIMA_theGAME",
+          "stars": 22,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "indiesoftby/defold-agent-config",
+          "url": "https://github.com/indiesoftby/defold-agent-config",
+          "stars": 63,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "MRCalderon3D/everything-game-dev-code",
+          "url": "https://github.com/MRCalderon3D/everything-game-dev-code",
+          "stars": 28,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "Dailiduzhou/cocos-creator-dev-skill",
+          "url": "https://github.com/Dailiduzhou/cocos-creator-dev-skill",
+          "stars": 26,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "Yuki001/game-dev-skills",
+          "url": "https://github.com/Yuki001/game-dev-skills",
+          "stars": 13,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "gavogavogavo/claude-sbox",
+          "url": "https://github.com/gavogavogavo/claude-sbox",
+          "stars": 39,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "devdavv/unity-ai-workflow",
+          "url": "https://github.com/devdavv/unity-ai-workflow",
+          "stars": 16,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "SMDS-Studio/Building-a-New-creative-Pong-",
+          "url": "https://github.com/SMDS-Studio/Building-a-New-creative-Pong-",
+          "stars": 14,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "Toscan0/Tutorials",
+          "url": "https://github.com/Toscan0/Tutorials",
+          "stars": 15,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "stars": 20,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "",
+            "name": "",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "AlterLab-IEU/AlterLab_GameForge",
+          "url": "https://github.com/AlterLab-IEU/AlterLab_GameForge",
+          "stars": 11,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        },
+        {
+          "fullName": "HalloSpaceBoy5/PicoBoy",
+          "url": "https://github.com/HalloSpaceBoy5/PicoBoy",
+          "stars": 80,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "other",
+            "name": "Other",
+            "url": ""
+          }
+        },
+        {
+          "fullName": "Hazrat-Ali9/Snake-Game",
+          "url": "https://github.com/Hazrat-Ali9/Snake-Game",
+          "stars": 37,
+          "fit": "token-overlap+signal-floor",
+          "license": {
+            "key": "mit",
+            "name": "MIT License",
+            "url": "https://api.github.com/licenses/mit"
+          }
+        }
+      ],
+      "filtered_example": {
+        "fullName": "alinebastos/dev-practice",
+        "reason": "low-fit or low-signal"
+      }
+    }
+  },
+  "provenance": "indexed snippet",
+  "recommended_raw_count": 94,
+  "recommended_dedup_count": 91,
+  "recommended_lane_count": 5,
+  "single_lane_concentration": false
+}
