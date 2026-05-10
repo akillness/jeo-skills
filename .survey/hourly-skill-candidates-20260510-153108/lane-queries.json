@@ -1,0 +1,29 @@
+{
+  "lanes": {
+    "agentic-ai-skill": {
+      "stage-0": "agentic ai skill",
+      "stage-1": "agentic ai skill stars:>5000",
+      "stage-2": "agentic ai skill pushed:>2024-01-01 stars:>100"
+    },
+    "web-frontend-skill": {
+      "stage-0": "web frontend skill",
+      "stage-1": "web frontend skill stars:>5000",
+      "stage-2": "web frontend skill pushed:>2024-01-01 stars:>100"
+    },
+    "web-backend-skill": {
+      "stage-0": "web backend skill",
+      "stage-1": "web backend skill stars:>5000",
+      "stage-2": "web backend skill pushed:>2024-01-01 stars:>100"
+    },
+    "cli-open-source-skill": {
+      "stage-0": "cli open source skill",
+      "stage-1": "cli open source skill stars:>5000",
+      "stage-2": "cli open source skill pushed:>2024-01-01 stars:>100"
+    },
+    "game-development-skill": {
+      "stage-0": "game development skill",
+      "stage-1": "game development skill stars:>5000",
+      "stage-2": "game development skill pushed:>2024-01-01 stars:>100"
+    }
+  }
+}

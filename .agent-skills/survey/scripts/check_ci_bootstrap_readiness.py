@@ -57,11 +57,27 @@ def main():
             "count": len(active)
         })
 
+        rc_runs, out_runs, err_runs = run(["gh", "run", "list", "--repo", repo, "--limit", "20", "--json", "databaseId,status,conclusion,createdAt"])
+        recent_runs = []
+        if rc_runs == 0:
+            try:
+                recent_runs = json.loads(out_runs)
+            except Exception:
+                recent_runs = []
+        checks.append({
+            "name": "recent_workflow_runs_present",
+            "status": "pass" if len(recent_runs) > 0 else "fail",
+            "count": len(recent_runs),
+            "detail": err_runs if rc_runs != 0 else ""
+        })
+
         missing = []
         if len(workflows) == 0:
             missing.append("No GitHub Actions workflow files detected")
         if len(active) == 0:
             missing.append("No active workflow detected")
+        if len(recent_runs) == 0:
+            missing.append("No recent workflow runs detected")
 
         payload = {
             "repo": repo,
@@ -71,6 +87,7 @@ def main():
             "remediation": [
                 "Add at least one workflow in .github/workflows/*.yml",
                 "Trigger workflow via push or workflow_dispatch",
+                "Confirm workflows execute at least once (gh run list --limit 5)",
                 "Require status checks in branch protection"
             ] if len(missing) > 0 else []
         }

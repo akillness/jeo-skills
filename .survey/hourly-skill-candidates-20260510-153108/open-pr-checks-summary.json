@@ -1,0 +1,7 @@
+{
+  "generated_at_utc": "2026-05-10T06:33:14.271516+00:00",
+  "checks_out": "open-pr-checks.out",
+  "checks_err": "open-pr-checks.err",
+  "status": "blocked",
+  "merge_blocked_reason": "no-checks-reported"
+}

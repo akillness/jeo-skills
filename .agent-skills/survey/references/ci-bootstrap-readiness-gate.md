@@ -10,7 +10,7 @@ When hourly runs hit `no checks reported`, this gate provides a deterministic pr
 Produces JSON with:
 - `status`: `pass|degraded`
 - `merge_blocked_reason`: `none|no-checks-reported|workflow-discovery-failed`
-- `checks[]`: machine-readable checks (`workflow_files_present`, `active_workflow_present`)
+- `checks[]`: machine-readable checks (`workflow_files_present`, `active_workflow_present`, `recent_workflow_runs_present`)
 - `remediation[]`: ordered bootstrap actions
 
 ## Recommended Hourly Usage
