@@ -1,0 +1,50 @@
+{
+  "status": "pass",
+  "degraded_causes": [],
+  "checks": [
+    {
+      "tool": "gh",
+      "present": true,
+      "path": "/usr/local/bin/gh"
+    },
+    {
+      "tool": "git",
+      "present": true,
+      "path": "/usr/bin/git"
+    },
+    {
+      "tool": "python3",
+      "present": true,
+      "path": "/Library/Frameworks/Python.framework/Versions/3.11/bin/python3"
+    },
+    {
+      "tool": "bash",
+      "present": true,
+      "path": "/bin/bash"
+    },
+    {
+      "tool": "rtk",
+      "present": true,
+      "path": "/Users/jang_jennie/.local/bin/rtk"
+    },
+    {
+      "tool": "graphify",
+      "present": true,
+      "path": "/Library/Frameworks/Python.framework/Versions/3.11/bin/graphify"
+    },
+    {
+      "tool": "obsidian",
+      "present": false,
+      "path": ""
+    }
+  ],
+  "gh_auth": {
+    "ok": true,
+    "reason": "ok",
+    "detail": {
+      "exit_code": 0,
+      "stdout": "github.com\n  ✓ Logged in to github.com account akillness (keyring)\n  - Active account: true\n  - Git operations protocol: https\n  - Token: gho_************************************\n  - Token scopes: 'gist', 'read:org', 'repo', 'workflow'",
+      "stderr": ""
+    }
+  }
+}
