@@ -1,0 +1,61 @@
+{
+  "lane_count": 5,
+  "degraded_lane_count": 2,
+  "degraded_lanes": [
+    "web-backend-skill",
+    "web-frontend-skill"
+  ],
+  "rows": [
+    {
+      "lane": "agentic-ai-skill",
+      "status": "pass",
+      "raw_count": 30,
+      "kept_count": 5,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "degraded_causes": []
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "status": "pass",
+      "raw_count": 1,
+      "kept_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "degraded_causes": []
+    },
+    {
+      "lane": "game-development-skill",
+      "status": "pass",
+      "raw_count": 30,
+      "kept_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "degraded_causes": []
+    },
+    {
+      "lane": "web-backend-skill",
+      "status": "degraded",
+      "raw_count": 1,
+      "kept_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "degraded_causes": [
+        "low-fit"
+      ]
+    },
+    {
+      "lane": "web-frontend-skill",
+      "status": "degraded",
+      "raw_count": 5,
+      "kept_count": 0,
+      "zero_star_raw": 0,
+      "median_stars_raw": 0,
+      "degraded_causes": [
+        "license",
+        "low-signal",
+        "stale"
+      ]
+    }
+  ]
+}

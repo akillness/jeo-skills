@@ -49,6 +49,7 @@ def main():
     run(["python3", os.path.join(scripts, "generate_rtk_summary.py"), evidence, os.path.join(survey_dir, "rtk-summary.md")])
     run(["python3", os.path.join(scripts, "generate_hourly_run_report.py"), survey_dir, os.path.join(survey_dir, "run-report.md")])
     run(["python3", os.path.join(scripts, "generate_hourly_delivery_report.py"), survey_dir, os.path.join(survey_dir, "delivery-report.md")])
+    run(["python3", os.path.join(scripts, "check_delivery_report_accuracy.py"), survey_dir, os.path.join(survey_dir, "delivery-report-accuracy.json")])
 
     with open(evidence, "r", encoding="utf-8") as f:
         data = json.load(f)
