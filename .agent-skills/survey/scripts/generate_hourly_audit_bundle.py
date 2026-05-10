@@ -51,6 +51,20 @@ def main():
     run(["python3", os.path.join(scripts, "generate_hourly_delivery_report.py"), survey_dir, os.path.join(survey_dir, "delivery-report.md")])
     run(["python3", os.path.join(scripts, "check_delivery_report_accuracy.py"), survey_dir, os.path.join(survey_dir, "delivery-report-accuracy.json")])
 
+    repo = os.environ.get("GH_REPO")
+    if not repo:
+        try:
+            repo = run(["gh", "repo", "view", "--json", "nameWithOwner", "-q", ".nameWithOwner"]).strip()
+        except SystemExit:
+            repo = ""
+    if repo:
+        run([
+            "python3",
+            os.path.join(scripts, "check_ci_bootstrap_readiness.py"),
+            repo,
+            os.path.join(survey_dir, "ci-bootstrap-readiness.json"),
+        ])
+
     lane_queries = os.path.join(survey_dir, "lane-queries.json")
     if os.path.isfile(lane_queries):
         run([
