@@ -1,0 +1,334 @@
+{
+  "generated_at": "2026-05-11T05:02:12.192400Z",
+  "provenance_label": "indexed snippet",
+  "lanes": {
+    "agentic-ai-skill": {
+      "query": "agentic ai skill",
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "agentic ai skill",
+          "count": 20
+        },
+        {
+          "stage": "stage-2",
+          "query": "agentic ai skill stars:>500 pushed:>2024-01-01",
+          "count": 20
+        }
+      ],
+      "raw_count": 20,
+      "zero_star_raw": 11,
+      "median_stars_raw": 0.0,
+      "kept_count": 5,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recommended": [
+        {
+          "fullName": "iwe-org/skills",
+          "url": "https://github.com/iwe-org/skills",
+          "description": "Agentic AI skills for knowledge graph management",
+          "stars": 7,
+          "archived": false,
+          "license": "mit",
+          "pushedAt": "2026-05-08T12:14:42Z",
+          "fit_rationale": "token-overlap + signal-floor + freshness + license"
+        },
+        {
+          "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+          "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+          "stars": 16,
+          "archived": false,
+          "license": "apache-2.0",
+          "pushedAt": "2026-01-29T09:33:47Z",
+          "fit_rationale": "token-overlap + signal-floor + freshness + license"
+        },
+        {
+          "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+          "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+          "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification — with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+          "stars": 6,
+          "archived": false,
+          "license": "mit",
+          "pushedAt": "2026-04-09T12:21:43Z",
+          "fit_rationale": "token-overlap + signal-floor + freshness + license"
+        },
+        {
+          "fullName": "VoDaiLocz/Enhance-Prompt",
+          "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+          "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+          "stars": 11,
+          "archived": false,
+          "license": "mit",
+          "pushedAt": "2026-03-05T13:50:53Z",
+          "fit_rationale": "token-overlap + signal-floor + freshness + license"
+        },
+        {
+          "fullName": "rhysmcneill/agentic-ai-library",
+          "url": "https://github.com/rhysmcneill/agentic-ai-library",
+          "description": "This repository serves as a library for showcasing how to adopt Agentic AI skills, and agent markdown files in a company-wide setting. ",
+          "stars": 4,
+          "archived": false,
+          "license": "apache-2.0",
+          "pushedAt": "2026-04-30T13:42:47Z",
+          "fit_rationale": "token-overlap + signal-floor + freshness + license"
+        }
+      ],
+      "filtered_low_fit_examples": [
+        {
+          "fullName": "sysdig/skills",
+          "url": "https://github.com/sysdig/skills",
+          "description": "Sysdig agentic AI skills and plugins",
+          "stars": 47,
+          "archived": false,
+          "license": "unknown",
+          "pushedAt": "2026-05-06T13:35:15Z"
+        },
+        {
+          "fullName": "Ap6pack/malwar",
+          "url": "https://github.com/Ap6pack/malwar",
+          "description": "Static analysis engine for detecting malware in agentic AI skill files",
+          "stars": 0,
+          "archived": false,
+          "license": "mit",
+          "pushedAt": "2026-04-08T22:08:53Z"
+        },
+        {
+          "fullName": "onsen-ai/metabase-skill",
+          "url": "https://github.com/onsen-ai/metabase-skill",
+          "description": "Agentic AI skill for Metabase developers and users",
+          "stars": 2,
+          "archived": false,
+          "license": "unknown",
+          "pushedAt": "2026-05-04T11:45:13Z"
+        }
+      ],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    "web-frontend-skill": {
+      "query": "web frontend skill",
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web frontend skill",
+          "count": 5
+        },
+        {
+          "stage": "stage-2",
+          "query": "web frontend skill stars:>500 pushed:>2024-01-01",
+          "count": 1
+        }
+      ],
+      "raw_count": 5,
+      "zero_star_raw": 4,
+      "median_stars_raw": 0,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit"
+      ],
+      "recommended": [],
+      "filtered_low_fit_examples": [
+        {
+          "fullName": "amrrs/cinematic-webscroll-frontend-skill",
+          "url": "https://github.com/amrrs/cinematic-webscroll-frontend-skill",
+          "description": "Reusable cross-tool skill package for planning and prompting cinematic websites with GSAP, three js, fal.ai",
+          "stars": 12,
+          "archived": false,
+          "license": "unknown",
+          "pushedAt": "2026-03-30T14:38:08Z"
+        },
+        {
+          "fullName": "nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "url": "https://github.com/nasiriftikhar334/Cpe-Rater-only-Frotnend",
+          "description": "This is a frontend project to showcase web frontend skills.",
+          "stars": 0,
+          "archived": false,
+          "license": "mit",
+          "pushedAt": "2023-11-29T17:23:32Z"
+        },
+        {
+          "fullName": "Hezekiah-Elisha/savannah_informatics_test",
+          "url": "https://github.com/Hezekiah-Elisha/savannah_informatics_test",
+          "description": "The purpose of the assessment is to assess the web frontend skills required for the job. The software written is for assessment purposes only.",
+          "stars": 0,
+          "archived": false,
+          "license": "unknown",
+          "pushedAt": "2026-01-16T19:17:43Z"
+        }
+      ],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    "web-backend-skill": {
+      "query": "web backend skill",
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "web backend skill",
+          "count": 0
+        },
+        {
+          "stage": "stage-2",
+          "query": "web backend skill stars:>500 pushed:>2024-01-01",
+          "count": 1
+        }
+      ],
+      "raw_count": 1,
+      "zero_star_raw": 0,
+      "median_stars_raw": 7532,
+      "kept_count": 0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "low-fit"
+      ],
+      "recommended": [],
+      "filtered_low_fit_examples": [
+        {
+          "fullName": "andreasbm/web-skills",
+          "url": "https://github.com/andreasbm/web-skills",
+          "description": "A visual overview of useful skills to learn as a web developer",
+          "stars": 7532,
+          "archived": false,
+          "license": "other",
+          "pushedAt": "2024-04-19T03:22:28Z"
+        }
+      ],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    "cli-open-source-skill": {
+      "query": "cli open source skill",
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "cli open source skill",
+          "count": 0
+        },
+        {
+          "stage": "stage-2",
+          "query": "cli open source skill stars:>500 pushed:>2024-01-01",
+          "count": 3
+        }
+      ],
+      "raw_count": 3,
+      "zero_star_raw": 0,
+      "median_stars_raw": 2154,
+      "kept_count": 2,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recommended": [
+        {
+          "fullName": "nexu-io/open-design",
+          "url": "https://github.com/nexu-io/open-design",
+          "description": "🎨 Local-first, open-source alternative to Anthropic's Claude Design. ⚡ 19 Skills · ✨ 71 brand-grade Design Systems 🖼 Generate web · desktop · mobile prototypes · slides · images · videos · HyperFrames 📦 Sandboxed preview · HTML/PDF/PPTX/MP4 export 🤖 Runs on Claude Code / Codex / Cursor / Gemini / OpenCode / Qwen / Copilot / Hermes / Kimi CLI.",
+          "stars": 36466,
+          "archived": false,
+          "license": "apache-2.0",
+          "pushedAt": "2026-05-11T04:33:47Z",
+          "fit_rationale": "token-overlap + signal-floor + freshness + license"
+        },
+        {
+          "fullName": "jeremylongshore/claude-code-plugins-plus-skills",
+          "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+          "description": "425 plugins, 2,810 skills, 200 agents for Claude Code. Open-source marketplace at tonsofskills.com with the ccpi CLI package manager.",
+          "stars": 2154,
+          "archived": false,
+          "license": "mit",
+          "pushedAt": "2026-05-11T01:47:53Z",
+          "fit_rationale": "token-overlap + signal-floor + freshness + license"
+        }
+      ],
+      "filtered_low_fit_examples": [
+        {
+          "fullName": "dp-archive/archive",
+          "url": "https://github.com/dp-archive/archive",
+          "description": "Skill Compose is an open-source agent builder and runtime platform for skill-powered agents. No workflow graphs. No CLI.",
+          "stars": 1108,
+          "archived": false,
+          "license": "apache-2.0",
+          "pushedAt": "2026-03-04T08:01:19Z"
+        }
+      ],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    },
+    "game-development-skill": {
+      "query": "game development skill",
+      "recovery_queries": [
+        {
+          "stage": "stage-1",
+          "query": "game development skill",
+          "count": 20
+        },
+        {
+          "stage": "stage-2",
+          "query": "game development skill stars:>500 pushed:>2024-01-01",
+          "count": 1
+        }
+      ],
+      "raw_count": 20,
+      "zero_star_raw": 10,
+      "median_stars_raw": 1.0,
+      "kept_count": 1,
+      "lane_status": "pass",
+      "degraded_causes": [],
+      "recommended": [
+        {
+          "fullName": "tjboudreaux/cc-plugin-unity-gamedev",
+          "url": "https://github.com/tjboudreaux/cc-plugin-unity-gamedev",
+          "description": "21 Unity game development skills for Claude Code - Addressables, Behavior Designer, Cinemachine, GAS, VContainer, UniTask, Wwise, and more",
+          "stars": 3,
+          "archived": false,
+          "license": "mit",
+          "pushedAt": "2026-02-06T04:09:12Z",
+          "fit_rationale": "token-overlap + signal-floor + freshness + license"
+        }
+      ],
+      "filtered_low_fit_examples": [
+        {
+          "fullName": "UnrealBlueprint/02_CrystalCavern",
+          "url": "https://github.com/UnrealBlueprint/02_CrystalCavern",
+          "description": "A fun little parkour game for our now-famous marble. Here you'll start learning real-world blueprint game development skills (REF: CC_UBP)",
+          "stars": 9,
+          "archived": false,
+          "license": "mit",
+          "pushedAt": "2019-03-27T19:49:24Z"
+        },
+        {
+          "fullName": "rohithnafeel/My-CS-Projects",
+          "url": "https://github.com/rohithnafeel/My-CS-Projects",
+          "description": "I am strengthening my C# game development skills day by day.",
+          "stars": 20,
+          "archived": false,
+          "license": "unknown",
+          "pushedAt": "2026-02-26T03:56:34Z"
+        },
+        {
+          "fullName": "Unengine/GameEngineAndGameMathTIL",
+          "url": "https://github.com/Unengine/GameEngineAndGameMathTIL",
+          "description": "for my game development skill",
+          "stars": 4,
+          "archived": false,
+          "license": "wtfpl",
+          "pushedAt": "2021-05-17T16:44:56Z"
+        }
+      ],
+      "provenance": [
+        "indexed snippet",
+        "direct page retrieval"
+      ]
+    }
+  },
+  "recommended_lane_count": 3,
+  "single_lane_concentration": false
+}

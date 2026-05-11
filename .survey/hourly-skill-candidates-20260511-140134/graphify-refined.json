@@ -1,0 +1,26 @@
+{
+  "status": "degraded-fallback",
+  "reason": "graphify cli not invoked in minimal pipeline; generated from evidence.json",
+  "lanes": {
+    "agentic-ai-skill": {
+      "status": "pass",
+      "kept": 5
+    },
+    "web-frontend-skill": {
+      "status": "degraded",
+      "kept": 0
+    },
+    "web-backend-skill": {
+      "status": "degraded",
+      "kept": 0
+    },
+    "cli-open-source-skill": {
+      "status": "pass",
+      "kept": 2
+    },
+    "game-development-skill": {
+      "status": "pass",
+      "kept": 1
+    }
+  }
+}

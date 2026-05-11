@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-"""Validate hourly evidence contract for oh-my-skills survey runs.
-Usage: python3 validate_hourly_evidence_contract.py <evidence.json>
-"""
 import json
 import sys
 
@@ -13,54 +10,45 @@ REQUIRED_LANES = [
     "game-development-skill",
 ]
 
+def fail(msg):
+    sys.stderr.write(msg + "\n")
+    return 1
 
 def main():
     if len(sys.argv) != 2:
-        sys.stderr.write("usage: python3 validate_hourly_evidence_contract.py <evidence.json>\n")
-        return 2
+        return fail("usage: validate_hourly_evidence_contract.py <evidence.json>")
+
     path = sys.argv[1]
-    with open(path, "r", encoding="utf-8") as f:
-        data = json.load(f)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception as e:
+        return fail("failed to read json: {}".format(e))
 
     lanes = data.get("lanes")
-    errors = []
     if not isinstance(lanes, dict):
-        errors.append("missing or invalid top-level 'lanes' map")
-        lanes = {}
+        return fail("missing or invalid 'lanes' map")
 
-    for key in REQUIRED_LANES:
-        lane = lanes.get(key)
-        if lane is None:
-            errors.append("missing lane: {}".format(key))
-            continue
-        if not isinstance(lane, dict):
-            errors.append("lane is not object: {}".format(key))
-            continue
-        recovery = lane.get("recovery_queries")
-        if not isinstance(recovery, list):
-            errors.append("lane {} missing recovery_queries list".format(key))
-            continue
+    for lane in REQUIRED_LANES:
+        if lane not in lanes:
+            return fail("missing lane: {}".format(lane))
+        lane_obj = lanes[lane]
+        rq = lane_obj.get("recovery_queries")
+        if not isinstance(rq, list):
+            return fail("lane {} missing recovery_queries list".format(lane))
         stages = set()
-        for item in recovery:
-            if isinstance(item, dict):
-                stage = item.get("stage")
-                if stage:
-                    stages.add(stage)
+        for item in rq:
+            if isinstance(item, dict) and "stage" in item:
+                stages.add(item["stage"])
         if "stage-1" not in stages or "stage-2" not in stages:
-            errors.append("lane {} must include both stage-1 and stage-2 recovery queries".format(key))
-        raw_count = lane.get("raw_count", 0)
-        kept_count = lane.get("kept_count", 0)
+            return fail("lane {} missing stage-1/stage-2 recovery coverage".format(lane))
+        raw_count = lane_obj.get("raw_count")
+        kept_count = lane_obj.get("kept_count")
         if isinstance(raw_count, int) and isinstance(kept_count, int) and kept_count > raw_count:
-            errors.append("lane {} has impossible counts: kept_count > raw_count".format(key))
+            return fail("lane {} has impossible metric kept_count > raw_count".format(lane))
 
-    if errors:
-        for e in errors:
-            sys.stderr.write("ERROR: {}\n".format(e))
-        return 1
-
-    print(json.dumps({"status": "pass", "checked_lanes": REQUIRED_LANES}, ensure_ascii=False))
+    print("ok: hourly evidence contract valid")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
