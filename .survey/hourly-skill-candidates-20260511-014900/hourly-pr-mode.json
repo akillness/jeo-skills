@@ -1,0 +1,13 @@
+{
+  "open_pr_count": 1,
+  "checks_status": "blocked",
+  "merge_blocked_reason": "no-checks-reported",
+  "mode": "carry-forward-open-pr",
+  "rationale": [
+    "open-pr-gate-active",
+    "merge-blocked:no-checks-reported"
+  ],
+  "open_pr_numbers": [
+    271
+  ]
+}

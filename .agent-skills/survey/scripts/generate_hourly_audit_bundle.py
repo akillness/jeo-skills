@@ -8,6 +8,7 @@ Usage:
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 
@@ -22,6 +23,42 @@ def run(cmd, capture_path=None):
         sys.stderr.write(proc.stderr)
         raise SystemExit(proc.returncode)
     return proc.stdout
+
+
+def _coerce_open_pr_payload(path):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+    except Exception:
+        return False
+
+    if isinstance(payload, list):
+        return True
+
+    if isinstance(payload, dict):
+        normalized = [payload]
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(normalized, f, indent=2, ensure_ascii=False)
+            f.write("\n")
+        return True
+
+    return False
+
+
+def _ensure_open_pr_inputs(survey_dir, root):
+    open_prs_json = os.path.join(survey_dir, "open-prs.json")
+    checks_summary_json = os.path.join(survey_dir, "open-pr-checks-summary.json")
+
+    # Carry-forward guard: some runs captured open-prs.json at repo root.
+    root_open_prs = os.path.join(root, "open-prs.json")
+    if (not os.path.isfile(open_prs_json)) and os.path.isfile(root_open_prs):
+        shutil.copyfile(root_open_prs, open_prs_json)
+
+    # Normalize payload shape for mode-decision script (expects array payload).
+    if os.path.isfile(open_prs_json):
+        _coerce_open_pr_payload(open_prs_json)
+
+    return open_prs_json, checks_summary_json
 
 
 def main():
@@ -55,8 +92,7 @@ def main():
     run(["python3", os.path.join(scripts, "check_delivery_report_accuracy.py"), survey_dir, os.path.join(survey_dir, "delivery-report-accuracy.json")])
 
     # Open-PR mode decision artifact for deterministic carry-forward vs new-PR routing.
-    open_prs_json = os.path.join(survey_dir, "open-prs.json")
-    checks_summary_json = os.path.join(survey_dir, "open-pr-checks-summary.json")
+    open_prs_json, checks_summary_json = _ensure_open_pr_inputs(survey_dir, root)
     if os.path.isfile(open_prs_json) and os.path.isfile(checks_summary_json):
         run([
             "python3",
