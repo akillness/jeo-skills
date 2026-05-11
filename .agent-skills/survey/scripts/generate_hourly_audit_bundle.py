@@ -131,6 +131,16 @@ def main():
             os.path.join(survey_dir, "ci-bootstrap-readiness.json"),
         ])
 
+    blocker_json = os.path.join(survey_dir, "open-pr-blocker.json")
+    blocker_md = os.path.join(survey_dir, "open-pr-blocker.md")
+    if os.path.isfile(blocker_json) and os.path.isfile(blocker_md):
+        run([
+            "python3",
+            os.path.join(scripts, "check_open_pr_blocker_consistency.py"),
+            survey_dir,
+            os.path.join(survey_dir, "open-pr-blocker-consistency.json"),
+        ])
+
     lane_queries = os.path.join(survey_dir, "lane-queries.json")
     if os.path.isfile(lane_queries):
         run([

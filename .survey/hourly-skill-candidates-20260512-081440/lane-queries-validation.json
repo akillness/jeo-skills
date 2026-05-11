@@ -1,0 +1,33 @@
+{
+  "status": "pass",
+  "required_lane_count": 5,
+  "discovered_lane_count": 5,
+  "summary": {
+    "agentic-ai-skill": {
+      "stage-0": true,
+      "stage-1": true,
+      "stage-2": true
+    },
+    "web-frontend-skill": {
+      "stage-0": true,
+      "stage-1": true,
+      "stage-2": true
+    },
+    "web-backend-skill": {
+      "stage-0": true,
+      "stage-1": true,
+      "stage-2": true
+    },
+    "cli-open-source-skill": {
+      "stage-0": true,
+      "stage-1": true,
+      "stage-2": true
+    },
+    "game-development-skill": {
+      "stage-0": true,
+      "stage-1": true,
+      "stage-2": true
+    }
+  },
+  "errors": []
+}

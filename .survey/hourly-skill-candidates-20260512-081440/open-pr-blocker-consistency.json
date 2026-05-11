@@ -1,0 +1,9 @@
+{
+  "status": "pass",
+  "issues": [],
+  "checked_files": {
+    "open-pr-blocker.json": true,
+    "open-pr-blocker.md": true,
+    "ci-bootstrap-readiness.json": true
+  }
+}
