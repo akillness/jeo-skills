@@ -1,0 +1,126 @@
+{
+  "status": "degraded",
+  "reason": "graphify CLI not invoked in this environment; fallback generated from evidence.json",
+  "top_recommendations": [
+    {
+      "fullName": "addyosmani/agent-skills",
+      "url": "https://github.com/addyosmani/agent-skills",
+      "description": "Production-grade engineering skills for AI coding agents.",
+      "stargazersCount": 38689,
+      "license": "mit",
+      "pushedAt": "2026-05-10T20:24:32Z",
+      "updatedAt": "2026-05-11T03:55:25Z",
+      "isArchived": false,
+      "fit_rationale": "token-overlap+signal+freshness gate",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "Orchestra-Research/AI-Research-SKILLs",
+      "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+      "description": "Comprehensive open-source library of AI research and engineering skills for any AI model. Package the skills and your claude code/codex/gemini agent will be an AI research agent with full horsepower. Maintained by Orchestra Research.",
+      "stargazersCount": 8177,
+      "license": "mit",
+      "pushedAt": "2026-04-28T05:09:27Z",
+      "updatedAt": "2026-05-11T03:41:10Z",
+      "isArchived": false,
+      "fit_rationale": "token-overlap+signal+freshness gate",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "pinchbench/skill",
+      "url": "https://github.com/pinchbench/skill",
+      "description": "PinchBench is a benchmarking system for evaluating LLM models as OpenClaw coding agents. Made with \ud83e\udd80 by the humans at https://kilo.ai",
+      "stargazersCount": 1122,
+      "license": "mit",
+      "pushedAt": "2026-05-08T14:54:47Z",
+      "updatedAt": "2026-05-11T03:55:39Z",
+      "isArchived": false,
+      "fit_rationale": "token-overlap+signal+freshness gate",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "wrtnlabs/agentica",
+      "url": "https://github.com/wrtnlabs/agentica",
+      "description": "TypeScript AI AI Function Calling Framework enhanced by compiler skills.",
+      "stargazersCount": 1023,
+      "license": "mit",
+      "pushedAt": "2026-04-27T05:58:49Z",
+      "updatedAt": "2026-04-28T01:15:52Z",
+      "isArchived": false,
+      "fit_rationale": "token-overlap+signal+freshness gate",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "mvanhorn/last30days-skill",
+      "url": "https://github.com/mvanhorn/last30days-skill",
+      "description": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+      "stargazersCount": 25373,
+      "license": "mit",
+      "pushedAt": "2026-05-10T04:04:24Z",
+      "updatedAt": "2026-05-11T03:45:28Z",
+      "isArchived": false,
+      "fit_rationale": "token-overlap+signal+freshness gate",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "coreyhaines31/marketingskills",
+      "url": "https://github.com/coreyhaines31/marketingskills",
+      "description": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
+      "stargazersCount": 27728,
+      "license": "mit",
+      "pushedAt": "2026-05-06T06:56:58Z",
+      "updatedAt": "2026-05-11T03:49:11Z",
+      "isArchived": false,
+      "fit_rationale": "token-overlap+signal+freshness gate",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "supabase/agent-skills",
+      "url": "https://github.com/supabase/agent-skills",
+      "description": "Agent Skills to help developers using AI agents with Supabase",
+      "stargazersCount": 2070,
+      "license": "mit",
+      "pushedAt": "2026-05-06T15:00:00Z",
+      "updatedAt": "2026-05-10T18:19:16Z",
+      "isArchived": false,
+      "fit_rationale": "token-overlap+signal+freshness gate",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "numman-ali/openskills",
+      "url": "https://github.com/numman-ali/openskills",
+      "description": "Universal skills loader for AI coding agents - npm i -g openskills",
+      "stargazersCount": 10087,
+      "license": "other",
+      "pushedAt": "2026-01-18T13:09:50Z",
+      "updatedAt": "2026-05-11T03:39:08Z",
+      "isArchived": false,
+      "fit_rationale": "token-overlap+signal+freshness gate",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "github/awesome-copilot",
+      "url": "https://github.com/github/awesome-copilot",
+      "description": "Community-contributed instructions, agents, skills, and configurations to help you make the most of GitHub Copilot.",
+      "stargazersCount": 32615,
+      "license": "mit",
+      "pushedAt": "2026-05-11T03:41:09Z",
+      "updatedAt": "2026-05-11T03:41:13Z",
+      "isArchived": false,
+      "fit_rationale": "token-overlap+signal+freshness gate",
+      "lane": "agentic-ai-skill"
+    },
+    {
+      "fullName": "MoizIbnYousaf/Ai-Agent-Skills",
+      "url": "https://github.com/MoizIbnYousaf/Ai-Agent-Skills",
+      "description": "my curated agent skills library ",
+      "stargazersCount": 1051,
+      "license": "mit",
+      "pushedAt": "2026-05-05T09:57:12Z",
+      "updatedAt": "2026-05-10T22:03:07Z",
+      "isArchived": false,
+      "fit_rationale": "token-overlap+signal+freshness gate",
+      "lane": "agentic-ai-skill"
+    }
+  ]
+}

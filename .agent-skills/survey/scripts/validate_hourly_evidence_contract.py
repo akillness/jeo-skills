@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+"""Validate hourly evidence contract for oh-my-skills survey runs.
+Usage: python3 validate_hourly_evidence_contract.py <evidence.json>
+"""
 import json
 import sys
-from pathlib import Path
 
 REQUIRED_LANES = [
     "agentic-ai-skill",
@@ -13,56 +15,50 @@ REQUIRED_LANES = [
 
 
 def main():
-    if len(sys.argv) < 2:
-        sys.stderr.write("usage: validate_hourly_evidence_contract.py <evidence.json>\n")
+    if len(sys.argv) != 2:
+        sys.stderr.write("usage: python3 validate_hourly_evidence_contract.py <evidence.json>\n")
         return 2
+    path = sys.argv[1]
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
-    path = Path(sys.argv[1])
-    if not path.exists():
-        sys.stderr.write("missing file: {}\n".format(path))
-        return 1
-
-    data = json.loads(path.read_text(encoding="utf-8"))
     lanes = data.get("lanes")
+    errors = []
     if not isinstance(lanes, dict):
-        sys.stderr.write("invalid contract: missing lanes object\n")
-        return 1
+        errors.append("missing or invalid top-level 'lanes' map")
+        lanes = {}
 
-    ok = True
-    for lane in REQUIRED_LANES:
-        lane_obj = lanes.get(lane)
-        if not isinstance(lane_obj, dict):
-            sys.stderr.write("missing lane: {}\n".format(lane))
-            ok = False
+    for key in REQUIRED_LANES:
+        lane = lanes.get(key)
+        if lane is None:
+            errors.append("missing lane: {}".format(key))
             continue
-
-        rq = lane_obj.get("recovery_queries")
-        if not isinstance(rq, list):
-            sys.stderr.write("lane {} missing recovery_queries list\n".format(lane))
-            ok = False
+        if not isinstance(lane, dict):
+            errors.append("lane is not object: {}".format(key))
             continue
-
+        recovery = lane.get("recovery_queries")
+        if not isinstance(recovery, list):
+            errors.append("lane {} missing recovery_queries list".format(key))
+            continue
         stages = set()
-        for row in rq:
-            if isinstance(row, dict):
-                stage = row.get("stage")
+        for item in recovery:
+            if isinstance(item, dict):
+                stage = item.get("stage")
                 if stage:
                     stages.add(stage)
-
         if "stage-1" not in stages or "stage-2" not in stages:
-            sys.stderr.write("lane {} missing stage-1/stage-2 coverage\n".format(lane))
-            ok = False
+            errors.append("lane {} must include both stage-1 and stage-2 recovery queries".format(key))
+        raw_count = lane.get("raw_count", 0)
+        kept_count = lane.get("kept_count", 0)
+        if isinstance(raw_count, int) and isinstance(kept_count, int) and kept_count > raw_count:
+            errors.append("lane {} has impossible counts: kept_count > raw_count".format(key))
 
-        raw = lane_obj.get("raw_count")
-        kept = lane_obj.get("kept_count")
-        if isinstance(raw, int) and isinstance(kept, int) and kept > raw:
-            sys.stderr.write("lane {} invalid counts: kept_count > raw_count\n".format(lane))
-            ok = False
-
-    if not ok:
+    if errors:
+        for e in errors:
+            sys.stderr.write("ERROR: {}\n".format(e))
         return 1
 
-    print(json.dumps({"ok": True, "checked_lanes": REQUIRED_LANES}, indent=2))
+    print(json.dumps({"status": "pass", "checked_lanes": REQUIRED_LANES}, ensure_ascii=False))
     return 0
 
 

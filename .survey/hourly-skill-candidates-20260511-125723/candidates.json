@@ -1,0 +1,96 @@
+{
+  "generated_at": "2026-05-11T03:57:51.960387Z",
+  "candidates": [
+    {
+      "lane": "agentic-ai-skill",
+      "fullName": "addyosmani/agent-skills",
+      "url": "https://github.com/addyosmani/agent-skills",
+      "stars": 38689,
+      "license": "mit"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "fullName": "Orchestra-Research/AI-Research-SKILLs",
+      "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+      "stars": 8177,
+      "license": "mit"
+    },
+    {
+      "lane": "agentic-ai-skill",
+      "fullName": "pinchbench/skill",
+      "url": "https://github.com/pinchbench/skill",
+      "stars": 1122,
+      "license": "mit"
+    },
+    {
+      "lane": "web-frontend-skill",
+      "fullName": "zarazhangrui/frontend-slides",
+      "url": "https://github.com/zarazhangrui/frontend-slides",
+      "stars": 17052,
+      "license": "mit"
+    },
+    {
+      "lane": "web-frontend-skill",
+      "fullName": "Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+      "url": "https://github.com/Shubham-cyber-prog/100-Days-Of-Web-Development-ECWoC26",
+      "stars": 36,
+      "license": "mit"
+    },
+    {
+      "lane": "web-frontend-skill",
+      "fullName": "archlizheng/frontend-slides-editable",
+      "url": "https://github.com/archlizheng/frontend-slides-editable",
+      "stars": 107,
+      "license": "mit"
+    },
+    {
+      "lane": "web-backend-skill",
+      "fullName": "CodeByRachit/skillswap-platform",
+      "url": "https://github.com/CodeByRachit/skillswap-platform",
+      "stars": 9,
+      "license": "mit"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "fullName": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "stars": 36400,
+      "license": "apache-2.0"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "fullName": "jeremylongshore/claude-code-plugins-plus-skills",
+      "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+      "stars": 2153,
+      "license": "mit"
+    },
+    {
+      "lane": "cli-open-source-skill",
+      "fullName": "bonnard-data/bonnard-cli",
+      "url": "https://github.com/bonnard-data/bonnard-cli",
+      "stars": 48,
+      "license": "mit"
+    },
+    {
+      "lane": "game-development-skill",
+      "fullName": "Heigvd/Wegas",
+      "url": "https://github.com/Heigvd/Wegas",
+      "stars": 30,
+      "license": "mit"
+    },
+    {
+      "lane": "game-development-skill",
+      "fullName": "indiesoftby/defold-agent-config",
+      "url": "https://github.com/indiesoftby/defold-agent-config",
+      "stars": 64,
+      "license": "other"
+    },
+    {
+      "lane": "game-development-skill",
+      "fullName": "MRCalderon3D/everything-game-dev-code",
+      "url": "https://github.com/MRCalderon3D/everything-game-dev-code",
+      "stars": 28,
+      "license": "mit"
+    }
+  ]
+}
