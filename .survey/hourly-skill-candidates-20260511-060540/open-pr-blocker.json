@@ -1,0 +1,17 @@
+{
+  "repo": "akillness/oh-my-skills",
+  "pr_number": 271,
+  "branch": "chore/hourly-survey-20260507-224544",
+  "commit_sha": "4680853cb358e99c64fb5d94c1fb48828950e436",
+  "captured_at_utc": "2026-05-11T06:08:43Z",
+  "checks_stdout": "",
+  "checks_stderr": "no checks reported on the 'chore/hourly-survey-20260507-224544' branch",
+  "no_checks_reported": true,
+  "merge_blocked_reason": "no-checks-reported",
+  "can_merge": false,
+  "remediation": [
+    "Enable required CI checks for pull_request events on this repository.",
+    "Re-run checks by pushing a no-op commit or using GitHub Actions rerun.",
+    "Re-run `gh pr checks <PR_NUMBER>` and only merge when all checks are green."
+  ]
+}
