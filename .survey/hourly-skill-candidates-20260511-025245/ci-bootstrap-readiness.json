@@ -1,0 +1,8 @@
+{
+  "merge_blocked_reason": "no-checks-reported",
+  "required_actions": [
+    "Add CI workflow in .github/workflows",
+    "Enable required checks on branch protection",
+    "Push a no-op commit to trigger first run"
+  ]
+}

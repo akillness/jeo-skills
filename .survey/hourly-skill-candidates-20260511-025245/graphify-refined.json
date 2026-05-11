@@ -1,0 +1,61 @@
+{
+  "status": "fallback",
+  "reason": "graphify cli not invoked in this environment",
+  "top_recommendations": [
+    {
+      "fullName": "sysdig/skills",
+      "url": "https://github.com/sysdig/skills",
+      "description": "Sysdig agentic AI skills and plugins",
+      "stargazersCount": 47,
+      "pushedAt": "2026-05-06T13:35:15Z",
+      "updatedAt": "2026-05-08T03:08:14Z",
+      "isArchived": false,
+      "license": "UNKNOWN",
+      "fit_rationale": "token-overlap"
+    },
+    {
+      "fullName": "iwe-org/skills",
+      "url": "https://github.com/iwe-org/skills",
+      "description": "Agentic AI skills for knowledge graph management",
+      "stargazersCount": 7,
+      "pushedAt": "2026-05-08T12:14:42Z",
+      "updatedAt": "2026-05-08T12:14:46Z",
+      "isArchived": false,
+      "license": "mit",
+      "fit_rationale": "token-overlap"
+    },
+    {
+      "fullName": "AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "url": "https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill",
+      "description": "Agentic AI SKILL for Flutter. Automates production-grade BLoC implementation and enforces strict Clean Architecture standards.",
+      "stargazersCount": 16,
+      "pushedAt": "2026-01-29T09:33:47Z",
+      "updatedAt": "2026-05-02T13:39:38Z",
+      "isArchived": false,
+      "license": "apache-2.0",
+      "fit_rationale": "token-overlap"
+    },
+    {
+      "fullName": "laviDrori0702/tableau-dashboard-creator-skill",
+      "url": "https://github.com/laviDrori0702/tableau-dashboard-creator-skill",
+      "description": "Agentic AI skill that transforms a dashboard request into a Tableau specification — with interactive HTML mock, implementation blueprint, and experimental .twbx generation. Works with Claude Code, Cursor, and other AI coding tools",
+      "stargazersCount": 6,
+      "pushedAt": "2026-04-09T12:21:43Z",
+      "updatedAt": "2026-05-08T10:44:55Z",
+      "isArchived": false,
+      "license": "mit",
+      "fit_rationale": "token-overlap"
+    },
+    {
+      "fullName": "VoDaiLocz/Enhance-Prompt",
+      "url": "https://github.com/VoDaiLocz/Enhance-Prompt",
+      "description": "An agentic AI skill that transforms raw, vague prompts into professional-grade, context-rich instructions — like having a prompt engineer on your team.",
+      "stargazersCount": 11,
+      "pushedAt": "2026-03-05T13:50:53Z",
+      "updatedAt": "2026-05-06T16:02:57Z",
+      "isArchived": false,
+      "license": "mit",
+      "fit_rationale": "token-overlap"
+    }
+  ]
+}

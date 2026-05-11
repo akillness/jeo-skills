@@ -1,0 +1,136 @@
+{
+  "ok": true,
+  "path": ".survey/hourly-skill-candidates-20260511-025245",
+  "checks": [
+    {
+      "check": "directory_exists",
+      "ok": true,
+      "detail": ".survey/hourly-skill-candidates-20260511-025245"
+    },
+    {
+      "check": "exists:triage.md",
+      "ok": true,
+      "detail": ".survey/hourly-skill-candidates-20260511-025245/triage.md"
+    },
+    {
+      "check": "heading:triage.md:# Triage",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:triage.md:- Problem:",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:triage.md:- Audience:",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:triage.md:- Why now:",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "exists:context.md",
+      "ok": true,
+      "detail": ".survey/hourly-skill-candidates-20260511-025245/context.md"
+    },
+    {
+      "check": "heading:context.md:## Workflow Context",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:context.md:## Affected Users",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:context.md:## Current Workarounds",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:context.md:## Adjacent Problems",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:context.md:## User Voices",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "exists:solutions.md",
+      "ok": true,
+      "detail": ".survey/hourly-skill-candidates-20260511-025245/solutions.md"
+    },
+    {
+      "check": "heading:solutions.md:## Solution List",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:solutions.md:## Categories",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:solutions.md:## What People Actually Use",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:solutions.md:## Frequency Ranking",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:solutions.md:## Key Gaps",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:solutions.md:## Contradictions",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:solutions.md:## Key Insight",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "exists:platform-map.md",
+      "ok": true,
+      "detail": ".survey/hourly-skill-candidates-20260511-025245/platform-map.md"
+    },
+    {
+      "check": "heading:platform-map.md:## Settings",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:platform-map.md:## Rules",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:platform-map.md:## Hooks",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "heading:platform-map.md:## Platform Gaps",
+      "ok": true,
+      "detail": "found"
+    },
+    {
+      "check": "provenance_labels",
+      "ok": true,
+      "detail": "indexed snippet"
+    }
+  ]
+}

@@ -1,66 +1,29 @@
 #!/usr/bin/env python3
-"""Check cross-lane recommendation concentration from hourly evidence.
-
-Usage:
-  python3 check_recommended_lane_concentration.py <evidence.json> <output.json>
-"""
-
-import json
-import os
-import sys
-
+import json,sys
 
 def main():
-    if len(sys.argv) != 3:
-        sys.stderr.write("usage: check_recommended_lane_concentration.py <evidence.json> <output.json>\n")
-        raise SystemExit(2)
-
-    evidence_path = sys.argv[1]
-    output_path = sys.argv[2]
-
-    if not os.path.isfile(evidence_path):
-        sys.stderr.write("missing evidence: {}\n".format(evidence_path))
-        raise SystemExit(2)
-
-    with open(evidence_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    lanes = data.get("lanes", {})
-    recommended_lanes = []
-    per_lane = {}
-
-    for lane_name, lane in lanes.items():
-        kept = int(lane.get("kept_count", 0) or 0)
-        raw = int(lane.get("raw_count", 0) or 0)
-        has_recommendation = kept > 0
-        if has_recommendation:
-            recommended_lanes.append(lane_name)
-        per_lane[lane_name] = {
-            "raw_count": raw,
-            "kept_count": kept,
-            "has_recommendation": has_recommendation,
-        }
-
-    recommended_lane_count = len(recommended_lanes)
-    out = {
-        "recommended_lane_count": recommended_lane_count,
-        "single_lane_concentration": recommended_lane_count < 2,
-        "recommended_lanes": recommended_lanes,
-        "lane_metrics": per_lane,
+    if len(sys.argv)!=3:
+        sys.stderr.write('usage: check_recommended_lane_concentration.py <evidence.json> <output.json>\n')
+        return 2
+    ev=json.load(open(sys.argv[1],encoding='utf-8'))
+    lanes=ev.get('lanes',{})
+    cnt=0
+    detail={}
+    for k,v in lanes.items():
+        kept=int(v.get('kept_count',0) or 0)
+        detail[k]=kept
+        if kept>0:
+            cnt+=1
+    status='pass' if cnt>=2 else 'degraded'
+    out={
+      'status':status,
+      'recommended_lane_count':cnt,
+      'single_lane_concentration':cnt<2,
+      'lane_kept_counts':detail,
+      'merge_blocked_reason':'' if status=='pass' else 'single-lane-concentration'
     }
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2, ensure_ascii=False)
-        f.write("\n")
-
-    out["status"] = "degraded" if out["single_lane_concentration"] else "pass"
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2, ensure_ascii=False)
-        f.write("\n")
-
-    print("{}: recommended_lane_count={}".format(out["status"], recommended_lane_count))
-
-
-if __name__ == "__main__":
-    main()
+    json.dump(out,open(sys.argv[2],'w',encoding='utf-8'),indent=2,ensure_ascii=False)
+    print(status)
+    return 0 if status=='pass' else 1
+if __name__=='__main__':
+    raise SystemExit(main())
