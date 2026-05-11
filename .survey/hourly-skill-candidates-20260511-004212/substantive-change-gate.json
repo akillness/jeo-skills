@@ -1,0 +1,16 @@
+{
+  "status_file": ".survey/hourly-skill-candidates-20260511-004212/git-status-short.txt",
+  "changed_count": 3,
+  "reusable_change_count": 2,
+  "survey_only_change_count": 1,
+  "reusable_changes": [
+    ".agent-skills/survey/SKILL.md",
+    ".agent-skills/survey/references/open-pr-carry-forward-blocker-playbook.md"
+  ],
+  "survey_only_changes": [
+    ".survey/hourly-skill-candidates-20260511-004212/"
+  ],
+  "pass": true,
+  "merge_blocked_reason": null,
+  "remediation": []
+}
