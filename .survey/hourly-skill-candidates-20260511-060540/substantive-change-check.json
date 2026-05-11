@@ -1,0 +1,15 @@
+{
+  "status_file": ".survey/hourly-skill-candidates-20260511-060540/git-status-short.precheck.txt",
+  "changed_count": 2,
+  "reusable_change_count": 1,
+  "survey_only_change_count": 1,
+  "reusable_changes": [
+    ".agent-skills/survey/scripts/check_remote_branch_contains_commit.py"
+  ],
+  "survey_only_changes": [
+    ".survey/hourly-skill-candidates-20260511-060540/"
+  ],
+  "pass": true,
+  "merge_blocked_reason": null,
+  "remediation": []
+}
