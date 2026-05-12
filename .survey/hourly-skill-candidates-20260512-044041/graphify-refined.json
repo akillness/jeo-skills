@@ -1,0 +1,5 @@
+{
+  "status": "fallback",
+  "reason": "graphify CLI not available in this branch runtime",
+  "provenance": "thin evidence"
+}

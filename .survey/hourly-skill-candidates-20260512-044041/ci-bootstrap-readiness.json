@@ -1,0 +1,9 @@
+{
+  "status": "degraded",
+  "merge_blocked_reason": "no-checks-reported",
+  "remediation": [
+    "Add at least one CI workflow under .github/workflows",
+    "Ensure workflow triggers on pull_request for target branch",
+    "Re-run checks via gh pr checks after workflow bootstrap"
+  ]
+}

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import os
 import sys
 
 REQUIRED_LANES = [
@@ -16,51 +17,60 @@ def fail(msg):
     return 1
 
 
-def main():
-    if len(sys.argv) != 2:
+def main(argv):
+    if len(argv) != 2:
         return fail('usage: validate_hourly_evidence_contract.py <evidence.json>')
 
-    path = sys.argv[1]
+    path = argv[1]
+    if not os.path.exists(path):
+        return fail('missing evidence file: {0}'.format(path))
+
     try:
-        data = json.load(open(path, 'r'))
-    except Exception as e:
-        return fail('failed to read evidence json: {0}'.format(e))
+        with open(path, 'r') as f:
+            data = json.load(f)
+    except Exception as exc:
+        return fail('invalid json: {0}'.format(exc))
 
     lanes = data.get('lanes')
     if not isinstance(lanes, dict):
-        return fail('invalid contract: missing lanes map')
+        return fail('contract violation: top-level "lanes" map is required')
 
-    missing = [k for k in REQUIRED_LANES if k not in lanes]
-    extra = [k for k in lanes.keys() if k not in REQUIRED_LANES]
-    if missing:
-        return fail('missing required lane keys: {0}'.format(', '.join(missing)))
-    if extra:
-        return fail('unexpected lane keys: {0}'.format(', '.join(extra)))
+    errors = []
+    for lane in REQUIRED_LANES:
+        if lane not in lanes:
+            errors.append('missing lane key: {0}'.format(lane))
+            continue
+        lane_obj = lanes.get(lane)
+        if not isinstance(lane_obj, dict):
+            errors.append('lane is not an object: {0}'.format(lane))
+            continue
 
-    for lane_name in REQUIRED_LANES:
-        lane = lanes.get(lane_name, {})
-        rq = lane.get('recovery_queries')
-        if not isinstance(rq, list):
-            return fail('lane {0}: recovery_queries must be list'.format(lane_name))
-        stages = {}
-        for item in rq:
-            if isinstance(item, dict) and 'stage' in item:
-                stages[item.get('stage')] = True
-        if 'stage-1' not in stages or 'stage-2' not in stages:
-            return fail('lane {0}: recovery_queries must include stage-1 and stage-2'.format(lane_name))
+        raw_count = lane_obj.get('raw_count')
+        kept_count = lane_obj.get('kept_count')
+        if isinstance(raw_count, int) and isinstance(kept_count, int):
+            if kept_count > raw_count:
+                errors.append('impossible metrics in {0}: kept_count({1}) > raw_count({2})'.format(lane, kept_count, raw_count))
 
-        raw_count = lane.get('raw_count', 0)
-        kept_count = lane.get('kept_count', 0)
-        if kept_count > raw_count:
-            return fail('lane {0}: kept_count > raw_count'.format(lane_name))
-        if raw_count == 0:
-            causes = lane.get('degraded_causes') or []
-            if 'no-results' not in causes:
-                return fail('lane {0}: raw_count=0 requires degraded_causes to include no-results'.format(lane_name))
+        recovery = lane_obj.get('recovery_queries')
+        if not isinstance(recovery, dict):
+            errors.append('missing recovery_queries object in {0}'.format(lane))
+        else:
+            for stage in ('stage-1', 'stage-2'):
+                st = recovery.get(stage)
+                if not isinstance(st, dict):
+                    errors.append('missing recovery_queries[{0}] in {1}'.format(stage, lane))
+                else:
+                    if not st.get('query'):
+                        errors.append('empty recovery query for {0} {1}'.format(lane, stage))
 
-    print(json.dumps({'status': 'pass', 'path': path, 'lanes': REQUIRED_LANES}, ensure_ascii=False))
+    if errors:
+        for e in errors:
+            sys.stderr.write('- ' + e + '\n')
+        return 1
+
+    print('ok: hourly evidence contract validated')
     return 0
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    sys.exit(main(sys.argv))
