@@ -90,6 +90,7 @@ def main():
     run(["python3", os.path.join(scripts, "generate_hourly_run_report.py"), survey_dir, os.path.join(survey_dir, "run-report.md")])
     run(["python3", os.path.join(scripts, "generate_hourly_delivery_report.py"), survey_dir, os.path.join(survey_dir, "delivery-report.md")])
     run(["python3", os.path.join(scripts, "check_delivery_report_accuracy.py"), survey_dir, os.path.join(survey_dir, "delivery-report-accuracy.json")])
+    run(["python3", os.path.join(scripts, "check_final_report_format.py"), survey_dir, os.path.join(survey_dir, "final-report-format.json")])
 
     # Open-PR mode decision artifact for deterministic carry-forward vs new-PR routing.
     open_prs_json, checks_summary_json = _ensure_open_pr_inputs(survey_dir, root)
