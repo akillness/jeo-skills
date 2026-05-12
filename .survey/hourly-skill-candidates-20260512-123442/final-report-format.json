@@ -1,0 +1,10 @@
+{
+  "status": "pass",
+  "checks": {
+    "top_has_dev_heading": true,
+    "top_has_dev_bullets": true,
+    "has_maintenance_section": true,
+    "tail_has_merge_and_blocker": true
+  },
+  "merge_blocked_reason": ""
+}

@@ -39,8 +39,18 @@ def main():
     text = open(report_path, "r", encoding="utf-8").read()
     lines = text.splitlines()
 
-    top_chunk = "\n".join(lines[:40])
+    top_chunk = "\n".join(lines[:60])
+    top_has_dev_heading = any(
+        marker in top_chunk.lower()
+        for marker in [
+            "development contributions",
+            "development/progress contributions",
+            "개발/발전 기여",
+            "개발 기여",
+        ]
+    )
     dev_bullets = re.findall(r"^\s*[-*]\s+.*", top_chunk, flags=re.M)
+    result["checks"]["top_has_dev_heading"] = top_has_dev_heading
     result["checks"]["top_has_dev_bullets"] = len(dev_bullets) >= 1
 
     maintenance_markers = ["maintenance", "유지보수", "Maintenance Changes"]

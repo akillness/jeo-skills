@@ -1,0 +1,13 @@
+{
+  "status": "fallback",
+  "reason": "graphify-query-skipped-or-unavailable",
+  "slug": "hourly-skill-candidates-20260512-123442",
+  "lane_count": 5,
+  "recommended_counts": {
+    "agentic-ai-skill": 5,
+    "web-frontend-skill": 0,
+    "web-backend-skill": 0,
+    "cli-open-source-skill": 1,
+    "game-development-skill": 1
+  }
+}
