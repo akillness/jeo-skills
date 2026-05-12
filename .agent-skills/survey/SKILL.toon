@@ -20,7 +20,7 @@ U[19]:
   Reuse scripts/assess_open_pr_gate.py to enforce deterministic open-PR triage before new PR creation in hourly loops
   Reuse scripts/collect_lane_recovery_coverage.py to enforce stage-1/stage-2 query coverage for every mandatory lane and emit deterministic coverage artifacts
   Reuse scripts/dedupe_hourly_recommendations.py to compute raw-vs-dedup recommendation coverage for reviewer summaries
-  Reuse scripts/validate_hourly_artifact_completeness.py to fail fast when required hourly deliverables are missing before PR packaging
+  Reuse scripts/validate_hourly_artifact_completeness.py to fail fast when required hourly deliverables are missing before PR packaging, and reuse scripts/check_remote_branch_contains_commit.py to verify post-push remote containment in open-PR carry-forward mode
   Validate the artifact contract before handing off to planning or execution
 S[11]{n,action,details}:
   1,Classify mode,Choose one primary survey mode and decide whether platform-map.md is required

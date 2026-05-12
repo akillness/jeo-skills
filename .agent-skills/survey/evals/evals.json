@@ -306,6 +306,16 @@
         "Publishes artifact-completeness.json in the same .survey/<slug> folder",
         "Treats missing required artifacts as a blocking failure before PR creation/merge"
       ]
+    },
+    {
+      "id": 31,
+      "prompt": "carry-forward run pushed commits to an already-open PR branch; verify final report references a deliverable commit reachable on remote head",
+      "expected_output": "The workflow runs scripts/check_remote_branch_contains_commit.py after push, records containment status, and updates blocker/report metadata to remote head SHA when branch drift is detected.",
+      "assertions": [
+        "Runs or references scripts/check_remote_branch_contains_commit.py with repo, branch, commit, and output path",
+        "Publishes a containment artifact in .survey/<slug> with local_commit and remote_head fields",
+        "When containment fails, avoids claiming stale local SHA as delivered and reports drift remediation"
+      ]
     }
   ]
 }

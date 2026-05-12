@@ -51,6 +51,7 @@ Read these support docs before running unfamiliar survey work:
 - [references/hourly-audit-bundle-generator.md](references/hourly-audit-bundle-generator.md)
 - [references/open-pr-checks-artifact-collector.md](references/open-pr-checks-artifact-collector.md)
 - [references/open-pr-carry-forward-blocker-playbook.md](references/open-pr-carry-forward-blocker-playbook.md)
+- [references/open-pr-head-containment-verification.md](references/open-pr-head-containment-verification.md)
 - [references/hourly-recency-window-and-stage-expansion.md](references/hourly-recency-window-and-stage-expansion.md)
 - [references/lane-degradation-report.md](references/lane-degradation-report.md)
 - [references/hourly-artifact-completeness-gate.md](references/hourly-artifact-completeness-gate.md)

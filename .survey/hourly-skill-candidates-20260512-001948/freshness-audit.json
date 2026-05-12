@@ -1,0 +1,65 @@
+{
+  "threshold_months": 24.0,
+  "lanes": {
+    "agentic-ai-skill": {
+      "raw_examples": 8,
+      "stale_over_threshold": 0,
+      "missing_timestamp": 8,
+      "stale_ratio": 0.0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "missing-timestamp"
+      ]
+    },
+    "web-frontend-skill": {
+      "raw_examples": 5,
+      "stale_over_threshold": 0,
+      "missing_timestamp": 5,
+      "stale_ratio": 0.0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "missing-timestamp"
+      ]
+    },
+    "web-backend-skill": {
+      "raw_examples": 1,
+      "stale_over_threshold": 0,
+      "missing_timestamp": 1,
+      "stale_ratio": 0.0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "missing-timestamp"
+      ]
+    },
+    "cli-open-source-skill": {
+      "raw_examples": 1,
+      "stale_over_threshold": 0,
+      "missing_timestamp": 1,
+      "stale_ratio": 0.0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "missing-timestamp"
+      ]
+    },
+    "game-development-skill": {
+      "raw_examples": 8,
+      "stale_over_threshold": 0,
+      "missing_timestamp": 8,
+      "stale_ratio": 0.0,
+      "lane_status": "degraded",
+      "degraded_causes": [
+        "missing-timestamp"
+      ]
+    }
+  },
+  "totals": {
+    "raw": 23,
+    "stale": 0,
+    "missing_ts": 23,
+    "degraded_lanes": 5
+  },
+  "status": "degraded",
+  "degraded_causes": [
+    "missing-timestamp"
+  ]
+}
