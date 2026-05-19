@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-04-24T18:00:29Z",
-  "skill_count": 127,
+  "skill_count": 128,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -55,6 +55,7 @@
       "langsmith",
       "log-analysis",
       "pattern-detection",
+      "semble",
       "skill-autoresearch"
     ],
     "core-orchestration": [
@@ -2842,6 +2843,38 @@
         "Edit",
         "Glob",
         "Grep",
+        "WebFetch"
+      ],
+      "commands": []
+    },
+    {
+      "name": "semble",
+      "description": "Fast, accurate code search for AI agents using ~98% fewer tokens than grep+read. Indexes any local or remote repository in under a second (~250ms on CPU, no GPU or API key needed). Supports natural-language and symbol queries, semantic similar-code discovery via find-related, and MCP server integration for Claude Code, Codex, Cursor, and OpenCode. Python library available for programmatic use. Triggers on: semble, code search, semantic code search, semble search, token-efficient search, find code, code search mcp, agent code search, semble find-related, semble savings.",
+      "category": "search-analysis",
+      "path": "semble/SKILL.md",
+      "tags": [
+        "semble",
+        "code-search",
+        "semantic-search",
+        "mcp",
+        "token-efficient",
+        "agent-tools",
+        "python",
+        "cli",
+        "codebase-navigation"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
         "WebFetch"
       ],
       "commands": []

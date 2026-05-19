@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-127-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-128-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**127 local skill folders · 127 installable skills · TOON Format · Cross-platform**
+**128 local skill folders · 128 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**127 local skill folders · 127 installable skills · TOON Format · Cross-platform**
+**128 local skill folders · 128 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 127 local skill folders and 127 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
+Agent Skills is a curated collection with 128 local skill folders and 128 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 What's New in v2026-05-19
+
+| Change | Details |
+|--------|---------|
+| **semble: token-efficient code search for agents** | Added `semble` — a fast, accurate code search library that returns only the relevant code snippets agents need, using ~98% fewer tokens than grep+read. Indexes any local or remote repository in ~250ms entirely on CPU (no GPU or API key needed). Supports natural-language and symbol queries, semantic similar-code discovery (`find-related`), and MCP server integration for Claude Code, Codex, Cursor, and OpenCode. Python library and CLI both available. Plugin: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`. Source: [MinishLab/semble](https://github.com/MinishLab/semble). 127 → **128 skills**. |
 
 ## 🆕 What's New in v2026-05-04 (mattpocock skills integration)
 
@@ -271,7 +277,7 @@ setup omc
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 127 local skill folders = 127 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 128 local skill folders = 128 total installable skills
 
 ### 🎯 Core Orchestration (13)
 
@@ -404,7 +410,7 @@ setup omc
 | `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing | All |
 
-### 🔭 Search & Analysis (8)
+### 🔭 Search & Analysis (9)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -416,6 +422,7 @@ setup omc
 | `log-analysis` | Routing-first log triage: choose one evidence packet for app, container/pod, browser+API, CI cascade, JSON/event, or security-signal logs before debugging/observability work | All |
 | `pattern-detection` | Routing-first pattern/anomaly hunting: choose text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly before deeper analysis | All |
 | `github-repo-candidate-quality-gate` | Convert noisy GitHub search results into recommendation-grade candidate lists — metadata freshness, license shape, activity signals, and dependency risk scoring | All |
+| `semble` | Token-efficient code search for agents — returns only relevant code chunks using ~98% fewer tokens than grep+read. Natural-language and symbol queries, semantic `find-related`, MCP for Claude Code/Codex/Cursor/OpenCode, Python library, CPU-only with no API key | All |
 
 ### 🎬 Creative Media (4)
 
@@ -687,6 +694,23 @@ npx skills add https://github.com/abdelhakrazi/flutter-bloc-clean-architecture-s
 npx skills add https://github.com/akillness/oh-my-skills --skill flutter-bloc-clean-architecture-skill
 ```
 
+### semble — Token-Efficient Code Search for Agents
+> Keyword: `semble`, `code search`, `semble search`, `semantic code search` | [GitHub](https://github.com/MinishLab/semble)
+
+Fast, accurate code search that returns only the relevant code snippets agents need — using ~98% fewer tokens than grep+read. Indexes any local or remote repo in ~250ms entirely on CPU (no GPU or API key). Supports natural-language and symbol queries, semantic similar-code discovery, and MCP integration for Claude Code, Codex, Cursor, and OpenCode.
+
+```bash
+# MCP install (Claude Code)
+claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
+
+# CLI install
+pip install semble          # pip
+uv tool install semble      # uv
+
+# Install from oh-my-skills
+npx skills add https://github.com/akillness/oh-my-skills --skill semble
+```
+
 ### vibe-kanban — AI Agent Kanban Board
 > Keyword: `kanbanview` | [Docs](docs/vibe-kanban/README.md) | [GitHub](https://github.com/BloopAI/vibe-kanban)
 
@@ -717,7 +741,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 127 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 128 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -776,6 +800,7 @@ npx vibe-kanban
 | `graphify` | [safishamsi/graphify](https://github.com/safishamsi/graphify) | MIT |
 | `browser-harness` | [browser-use/browser-harness](https://github.com/browser-use/browser-harness) | MIT |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
+| `semble` | [MinishLab/semble](https://github.com/MinishLab/semble) | MIT |
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |
 | `autoresearch` | Andrej Karpathy methodology | — |
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |

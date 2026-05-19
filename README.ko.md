@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-127-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-128-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**127개 로컬 스킬 폴더 · 설치 가능 스킬 127개 · TOON 포맷 · 멀티플랫폼**
+**128개 로컬 스킬 폴더 · 설치 가능 스킬 128개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**127개 로컬 스킬 폴더 · 설치 가능 스킬 127개 · TOON 포맷 · 멀티플랫폼**
+**128개 로컬 스킬 폴더 · 설치 가능 스킬 128개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 127개 로컬 스킬 폴더와 127개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 128개 로컬 스킬 폴더와 128개 설치 가능 스킬을 제공합니다. `jeo` 오케스트레이션 프로토콜을 중심으로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 v2026-05-19 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **semble: 에이전트용 토큰 효율 코드 검색** | `semble`을 추가했습니다 — grep+read 대비 토큰 사용량 ~98% 절감으로 에이전트에게 필요한 코드 청크만 정확히 반환하는 고속 코드 검색 라이브러리입니다. 로컬/원격 리포지터리를 ~250ms(CPU만 사용, GPU·API 키 불필요) 안에 인덱싱합니다. 자연어·심볼 쿼리, 의미 기반 유사 코드 탐색(`find-related`), Claude Code·Codex·Cursor·OpenCode용 MCP 서버 통합을 지원합니다. Python 라이브러리와 CLI도 제공합니다. MCP 설치: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`. 출처: [MinishLab/semble](https://github.com/MinishLab/semble). 127 → **128개 스킬**. |
 
 ## 🆕 v2026-05-04 업데이트 (mattpocock 스킬 통합)
 
@@ -271,7 +277,7 @@ setup omc
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 127개 로컬 스킬 폴더 = 총 127개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 128개 로컬 스킬 폴더 = 총 128개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (11개)
 
@@ -394,7 +400,7 @@ setup omc
 | `task-estimation` | software, GTM, game work 전반에서 스토리 포인트, T셔츠 사이징, split/spike 판단, 예측 안전형 불확실성 프레이밍을 담은 estimate packet anchor | 전체 |
 | `task-planning` | software, GTM, game work 전반에서 backlog cleanup, feature slicing, sprint/milestone prep, release packet을 다루고 estimation/board/review/사전 프레이밍으로의 route-out을 명시하는 packet-first planning anchor | 전체 |
 
-### 🔭 검색 및 분석 (7개)
+### 🔭 검색 및 분석 (8개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -405,6 +411,7 @@ setup omc
 | `langsmith` | SDK 코드로 곧장 가지 않고 trace-debug, 평가, 리뷰 큐, 프롬프트 레지스트리, 멀티서비스 전파 중 한 packet을 먼저 고르는 라우팅형 LangSmith 스킬 | 전체 |
 | `log-analysis` | 앱·컨테이너/파드·브라우저+API·CI cascade·JSON/event·security-signal 로그 중 한 가지 evidence packet을 먼저 고른 뒤 디버깅/옵저버빌리티 작업으로 넘기는 routing-first 로그 트리아지 | 전체 |
 | `pattern-detection` | text-prefilter·structural-code-rule·log-event-pattern·metric-anomaly 중 한 packet을 먼저 고르는 라우팅형 패턴/이상 탐지 | 전체 |
+| `semble` | grep+read 대비 토큰 ~98% 절감하는 에이전트용 토큰 효율 코드 검색 — 자연어·심볼 쿼리, 의미 기반 `find-related`, Claude Code·Codex·Cursor·OpenCode용 MCP, Python 라이브러리, CPU만 사용(GPU·API 키 불필요) | 전체 |
 
 ### 🎬 창의 미디어 (4개)
 
@@ -654,6 +661,23 @@ pnpm tools-dev run web
 npx skills add https://github.com/akillness/oh-my-skills --skill open-design
 ```
 
+### semble — 에이전트용 토큰 효율 코드 검색
+> 키워드: `semble`, `code search`, `semble search`, `semantic code search` | [GitHub](https://github.com/MinishLab/semble)
+
+grep+read 대비 토큰 사용량 ~98% 절감. 로컬/원격 리포지터리를 ~250ms(CPU만, GPU·API 키 불필요) 안에 인덱싱합니다. 자연어·심볼 쿼리, `find-related`를 통한 의미 기반 유사 코드 탐색, Claude Code·Codex·Cursor·OpenCode용 MCP 서버 통합을 지원합니다.
+
+```bash
+# MCP 설치 (Claude Code)
+claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
+
+# CLI 설치
+pip install semble          # pip
+uv tool install semble      # uv
+
+# oh-my-skills에서 설치
+npx skills add https://github.com/akillness/oh-my-skills --skill semble
+```
+
 ### vibe-kanban — AI 에이전트 칸반 보드
 > 키워드: `kanbanview` | [문서](docs/vibe-kanban/README.md) | [GitHub](https://github.com/BloopAI/vibe-kanban)
 
@@ -684,7 +708,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 127개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 128개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -739,6 +763,7 @@ npx vibe-kanban
 | `llm-wiki` | [karpathy/llm-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | — |
 | `graphify` | [safishamsi/graphify](https://github.com/safishamsi/graphify) | MIT |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
+| `semble` | [MinishLab/semble](https://github.com/MinishLab/semble) | MIT |
 | `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |
 | `autoresearch` | Andrej Karpathy methodology | — |
