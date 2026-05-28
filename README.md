@@ -219,6 +219,8 @@ graph TD
 
 ## 📦 Installation
 
+> **Cross-platform**: macOS, Linux, and Windows (Git Bash / WSL2) are all supported. The installer auto-detects your OS in Step 0 and picks the right package manager (`brew` / `snap` / `winget`) and paths (`$HOME` / `$USERPROFILE` / `$XDG_DATA_HOME`) for each tool.
+
 ### Step 0: Install `skills` CLI
 
 ```bash
@@ -226,7 +228,7 @@ npm install -g skills
 skills --version
 ```
 
-### For LLM Agents
+### For LLM Agents (recommended — handles all platforms automatically)
 
 ```bash
 curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-skills-prompt.md
@@ -257,15 +259,24 @@ npx skills add https://github.com/akillness/oh-my-skills \
   --skill omx --skill ooo
 ```
 
-#### Platform-Specific Setup
+#### Core Tool Setup (all platforms)
 
 ```bash
-# Claude Code — oh-my-claudecode plugin + ooo MCP
-/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/plugin install oh-my-claudecode
-setup omc
-claude mcp add ooo -s user -- ouroboros mcp
+# ooo MCP — spec-first control loop
+pip install "ouroboros-ai[all]"
+claude mcp add ooo -s user -- ouroboros mcp      # Claude Code
+# Codex: writes ~/.codex/mcp.json automatically via setup-all-skills-prompt.md
+
+# semble MCP — token-efficient code search
 claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
+
+# rtk — token-optimized shell output
+# macOS: brew install rtk  |  Linux: cargo install rtk  |  Windows: winget install rtk
+rtk init -g
+
+# oh-my-claudecode plugin
+/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
+/plugin install oh-my-claudecode && setup omc
 ```
 
 ---

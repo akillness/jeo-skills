@@ -29,11 +29,39 @@
 Check which AI platforms are installed and set the installation root:
 
 ```bash
-# skills CLI installs to ~/.agents/skills/ and symlinks to all platform paths
-SKILLS_ROOT="$HOME/.agents/skills"
-REPO_URL="https://github.com/akillness/oh-my-skills"
+# ── OS / platform detection ──────────────────────────────────
+_OS="$(uname -s 2>/dev/null || echo Windows)"
+case "$_OS" in
+  Darwin*)  PLATFORM="macos"   ;;
+  Linux*)   PLATFORM="linux"   ;;
+  *)        PLATFORM="windows" ;;
+esac
+echo "=== OS: $PLATFORM ==="
 
-# Detect available platforms and build agent target list
+# Platform-specific home and skills root
+# macOS / Linux : $HOME/.agents/skills
+# Windows (Git Bash / WSL) : $USERPROFILE/.agents/skills
+if [ "$PLATFORM" = "windows" ]; then
+  _HOME="${USERPROFILE:-$HOME}"
+else
+  _HOME="$HOME"
+fi
+SKILLS_ROOT="$_HOME/.agents/skills"
+REPO_URL="https://github.com/akillness/oh-my-skills"
+echo "SKILLS_ROOT: $SKILLS_ROOT"
+
+# Claude Code config root (platform-specific)
+if [ "$PLATFORM" = "windows" ]; then
+  CLAUDE_CONFIG_DIR="${APPDATA:-$_HOME/AppData/Roaming}/Claude"
+elif [ "$PLATFORM" = "macos" ]; then
+  CLAUDE_CONFIG_DIR="$_HOME/.claude"
+else
+  CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME:-$_HOME/.config}/claude"
+fi
+echo "CLAUDE_CONFIG_DIR: $CLAUDE_CONFIG_DIR"
+
+# ── Agent detection ───────────────────────────────────────────
+echo ""
 echo "=== Platform Detection ==="
 DETECTED_AGENTS=""
 if command -v claude   &>/dev/null; then echo "✅ Claude Code";  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}claude-code"; fi
@@ -161,80 +189,144 @@ echo "✅ Platform skill deduplication complete"
 
 Install the tools that power the default operating flow (`$ooo` → `$graphify` → `$rtk` → `$obsidian` → `$llm-wiki`).
 
+> **Prerequisite**: Run Step 0 first so `$PLATFORM`, `$_HOME`, `$SKILLS_ROOT`, and `$CLAUDE_CONFIG_DIR` are set.
+
 ### 3a — RTK (Rust Token Killer — compact shell output)
 
 ```bash
-# Install via Homebrew (macOS/Linux)
-if command -v brew &>/dev/null; then
-  brew install rtk
+echo "=== Installing RTK ==="
+case "$PLATFORM" in
+  macos)
+    # Homebrew (preferred)
+    if command -v brew &>/dev/null; then
+      brew install rtk
+    else
+      curl -fsSL https://raw.githubusercontent.com/crates-io/rtk/main/install.sh | sh
+    fi
+    ;;
+  linux)
+    # cargo (preferred), or curl installer
+    if command -v cargo &>/dev/null; then
+      cargo install rtk
+    else
+      curl -fsSL https://raw.githubusercontent.com/crates-io/rtk/main/install.sh | sh
+    fi
+    ;;
+  windows)
+    # winget (preferred), or cargo
+    if command -v winget &>/dev/null; then
+      winget install rtk
+    elif command -v cargo &>/dev/null; then
+      cargo install rtk
+    else
+      echo "⚠️  Install rtk manually: https://github.com/crates-io/rtk/releases"
+    fi
+    ;;
+esac
+
+# Initialize globally (adds rtk hook to shell profile / PowerShell profile on Windows)
+if command -v rtk &>/dev/null; then
+  rtk init -g
+  echo "✅ rtk installed and initialized"
+  rtk gain
 else
-  # Fallback: install script from skill
-  bash "$SKILLS_ROOT/rtk/scripts/install.sh"
+  echo "⚠️  rtk not found — re-run after manual install"
 fi
-
-# Initialize globally (adds rtk hook to shell profile)
-rtk init -g
-echo "✅ rtk installed and initialized"
-
-# Verify
-rtk gain
 ```
 
 ### 3b — Graphify (knowledge graph generator)
 
 ```bash
-pip install graphifyy
-echo "✅ graphify installed"
+echo "=== Installing Graphify ==="
+# pip3 on macOS/Linux, pip on Windows — try both
+PIP_CMD="pip3"
+command -v pip3 &>/dev/null || PIP_CMD="pip"
 
-# Verify
-python3 -c "import graphifyy; print('graphify OK')"
+$PIP_CMD install graphifyy
+echo "✅ graphify installed"
+python3 -c "import graphifyy; print('graphify OK')" 2>/dev/null \
+  || python -c "import graphifyy; print('graphify OK')"
 ```
 
 ### 3c — ooo MCP Server (Ouroboros spec-first dev loop)
 
 ```bash
-# Install ouroboros-ai with all extras
-pip install "ouroboros-ai[all]"
+echo "=== Installing ooo (Ouroboros) ==="
+PIP_CMD="pip3"; command -v pip3 &>/dev/null || PIP_CMD="pip"
+$PIP_CMD install "ouroboros-ai[all]"
 echo "✅ ouroboros-ai installed"
 
-# Register ooo as MCP server for each detected platform
+# MCP config paths per platform
+if [ "$PLATFORM" = "windows" ]; then
+  CODEX_MCP_DIR="${USERPROFILE:-$HOME}/.codex"
+else
+  CODEX_MCP_DIR="$_HOME/.codex"
+fi
+
+# Register ooo MCP with Claude Code
 if command -v claude &>/dev/null; then
   claude mcp add ooo -s user -- ouroboros mcp
   echo "✅ ooo MCP registered with Claude Code"
 fi
 
+# Register ooo MCP with Codex (write ~/.codex/mcp.json)
 if command -v codex &>/dev/null; then
+  mkdir -p "$CODEX_MCP_DIR"
   echo '{"mcpServers":{"ooo":{"command":"ouroboros","args":["mcp"]}}}' \
-    > "$HOME/.codex/mcp.json"
-  echo "✅ ooo MCP registered with Codex"
+    > "$CODEX_MCP_DIR/mcp.json"
+  echo "✅ ooo MCP registered with Codex ($CODEX_MCP_DIR/mcp.json)"
 fi
 
-# Verify
-ouroboros --version
+ouroboros --version 2>/dev/null && echo "✅ ouroboros ready" || echo "⚠️  ouroboros not in PATH — restart shell"
 ```
 
 ### 3d — Obsidian CLI (desktop vault persistence)
 
 ```bash
-# Install via Homebrew (official Obsidian CLI)
-if command -v brew &>/dev/null; then
-  brew install obsidian
-fi
+echo "=== Installing Obsidian CLI ==="
+case "$PLATFORM" in
+  macos)
+    command -v brew &>/dev/null && brew install obsidian \
+      || echo "ℹ️  brew not found — install Obsidian from https://obsidian.md/download"
+    ;;
+  linux)
+    # Try snap, then flatpak, then direct AppImage
+    if command -v snap &>/dev/null; then
+      snap install obsidian --classic
+    elif command -v flatpak &>/dev/null; then
+      flatpak install flathub md.obsidian.Obsidian -y
+    else
+      echo "ℹ️  Install Obsidian AppImage from https://obsidian.md/download"
+    fi
+    ;;
+  windows)
+    if command -v winget &>/dev/null; then
+      winget install Obsidian.Obsidian
+    elif command -v choco &>/dev/null; then
+      choco install obsidian -y
+    else
+      echo "ℹ️  Install Obsidian from https://obsidian.md/download"
+    fi
+    ;;
+esac
 
-# Verify desktop CLI availability
-if command -v obsidian &>/dev/null; then
-  echo "✅ obsidian CLI available"
-else
-  echo "ℹ️  Obsidian desktop CLI not found — URI fallback (obsidian://) will be used"
-fi
+command -v obsidian &>/dev/null \
+  && echo "✅ obsidian CLI available" \
+  || echo "ℹ️  obsidian desktop CLI not in PATH — URI fallback (obsidian://) will be used"
 ```
 
 ### 3e — llm-wiki (persistent markdown wiki)
 
 ```bash
-# llm-wiki is a skill (no separate package install needed)
-# Bootstrap the wiki vault structure when first use is expected
-WIKI_VAULT="${LLM_WIKI_VAULT:-$HOME/wiki}"
+echo "=== Bootstrapping llm-wiki vault ==="
+# Platform-aware default vault location
+case "$PLATFORM" in
+  windows) WIKI_DEFAULT="${USERPROFILE:-$HOME}/wiki" ;;
+  macos)   WIKI_DEFAULT="$_HOME/wiki" ;;
+  linux)   WIKI_DEFAULT="${XDG_DATA_HOME:-$_HOME/.local/share}/wiki" ;;
+esac
+WIKI_VAULT="${LLM_WIKI_VAULT:-$WIKI_DEFAULT}"
+
 if [ ! -d "$WIKI_VAULT" ]; then
   mkdir -p "$WIKI_VAULT/raw" "$WIKI_VAULT/wiki"
   touch "$WIKI_VAULT/index.md" "$WIKI_VAULT/log.md"
@@ -242,12 +334,25 @@ if [ ! -d "$WIKI_VAULT" ]; then
 else
   echo "✅ wiki vault exists at $WIKI_VAULT"
 fi
+echo "   Set LLM_WIKI_VAULT to override the default location."
 ```
 
 ### 3f — semble MCP (token-efficient code search)
 
 ```bash
-# Register semble as MCP server (no local install needed — uses uvx)
+echo "=== Registering semble MCP ==="
+# Uses uvx (part of uv) — install uv if missing
+if ! command -v uvx &>/dev/null; then
+  case "$PLATFORM" in
+    macos|linux)
+      curl -LsSf https://astral.sh/uv/install.sh | sh
+      ;;
+    windows)
+      powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+      ;;
+  esac
+fi
+
 if command -v claude &>/dev/null; then
   claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
   echo "✅ semble MCP registered with Claude Code"
@@ -257,6 +362,8 @@ fi
 ### 3g — Platform Plugin Setup
 
 ```bash
+echo "=== Platform Plugin Setup ==="
+
 # Claude Code — oh-my-claudecode plugin (slash skills: /team, /autopilot, /ralph, /ultrawork)
 if command -v claude &>/dev/null; then
   /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
@@ -278,6 +385,8 @@ echo "✅ agentation skill installed"
 
 > **TOON Format**: `~/.claude/hooks/toon-inject.mjs` injects the skill catalog into every prompt (40–50% token savings). `~/.gemini/hooks/toon-skill-inject.sh` loads it via `includeDirectories`.
 > [Official Gemini Hooks Guide](https://developers.googleblog.com/tailor-gemini-cli-to-your-workflow-with-hooks/)
+
+**Windows note**: Run all bash steps in **Git Bash** or **WSL2**. PowerShell users: replace `$_HOME` with `$env:USERPROFILE` and use `python` instead of `python3`.
 
 ---
 
@@ -631,21 +740,36 @@ Operating expectations:
 ### Setup Script (run once after installation)
 
 ```bash
-SKILLS_ROOT="$HOME/.agents/skills"
+# Re-use PLATFORM / _HOME / SKILLS_ROOT from Step 0 if already set
+PLATFORM="${PLATFORM:-$(uname -s 2>/dev/null | grep -qi darwin && echo macos || (uname -s 2>/dev/null | grep -qi linux && echo linux || echo windows))}"
+_HOME="${_HOME:-$HOME}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+REPO_URL="${REPO_URL:-https://github.com/akillness/oh-my-skills}"
 
 # Verify the default operating-rule skills are installed
-for skill in ooo graphify rtk obsidian-cli llm-wiki; do
+for skill in ooo graphify rtk obsidian llm-wiki semble; do
   [ -f "$SKILLS_ROOT/$skill/SKILL.md" ] \
     && echo "✅ $skill" \
     || echo "❌ $skill — run: skills add -g $REPO_URL --skill $skill --yes --copy"
 done
 
 # Initialize RTK when available
-command -v rtk &>/dev/null && rtk init || echo "⚠️  RTK not found — check rtk skill install"
+if command -v rtk &>/dev/null; then
+  rtk init -g && echo "✅ rtk initialized"
+else
+  echo "⚠️  RTK not found — run Step 3a to install"
+fi
+
+# Confirm ooo MCP is registered
+if command -v claude &>/dev/null; then
+  claude mcp list 2>/dev/null | grep -q "^ooo" \
+    && echo "✅ ooo MCP registered with Claude Code" \
+    || echo "⚠️  ooo MCP not found — run Step 3c to register"
+fi
 
 echo ""
-echo "✅ Default operating rules configured"
-echo "   Baseline flow: \$ooo → \$graphify → \$rtk → \$obsidian-cli → \$llm-wiki"
+echo "✅ Default operating rules configured (platform: $PLATFORM)"
+echo "   Baseline flow: \$ooo → \$graphify → \$rtk → \$obsidian → \$llm-wiki"
 ```
 
 > **Note**: This is a default operating sequence, not a blind mandate to run every skill on every prompt. Use the smallest truthful owner step for the current job, then return to the sequence as work moves from specification to structure, execution, persistence, and durable knowledge filing.

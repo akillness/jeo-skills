@@ -218,6 +218,8 @@ graph TD
 
 ## 📦 설치
 
+> **크로스 플랫폼**: macOS, Linux, Windows(Git Bash / WSL2) 모두 지원합니다. 설치 스크립트가 Step 0에서 OS를 자동 감지하여 적합한 패키지 매니저(`brew` / `snap` / `winget`)와 경로(`$HOME` / `$USERPROFILE` / `$XDG_DATA_HOME`)를 선택합니다.
+
 ### 0단계: `skills` CLI 설치
 
 ```bash
@@ -225,7 +227,7 @@ npm install -g skills
 skills --version
 ```
 
-### LLM 에이전트용
+### LLM 에이전트용 (권장 — 모든 플랫폼 자동 처리)
 
 ```bash
 curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-skills-prompt.md
@@ -256,15 +258,24 @@ npx skills add https://github.com/akillness/oh-my-skills \
   --skill omx --skill ooo
 ```
 
-#### 플랫폼별 추가 설정
+#### 핵심 도구 설정 (전 플랫폼 공통)
 
 ```bash
-# Claude Code — oh-my-claudecode 플러그인 + ooo MCP
-/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/plugin install oh-my-claudecode
-setup omc
-claude mcp add ooo -s user -- ouroboros mcp
+# ooo MCP — 스펙 우선 제어 루프
+pip install "ouroboros-ai[all]"
+claude mcp add ooo -s user -- ouroboros mcp      # Claude Code
+# Codex: setup-all-skills-prompt.md 실행 시 ~/.codex/mcp.json 자동 생성
+
+# semble MCP — 토큰 효율 코드 검색
 claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
+
+# rtk — 토큰 최적화 셸 출력
+# macOS: brew install rtk  |  Linux: cargo install rtk  |  Windows: winget install rtk
+rtk init -g
+
+# oh-my-claudecode 플러그인
+/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
+/plugin install oh-my-claudecode && setup omc
 ```
 
 ---
