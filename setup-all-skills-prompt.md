@@ -265,7 +265,7 @@ fi
 
 # Register ooo MCP with Claude Code
 if command -v claude &>/dev/null; then
-  claude mcp add ooo -s user -- ouroboros mcp
+  claude mcp add ooo -s user -- ouroboros mcp serve
   echo "✅ ooo MCP registered with Claude Code"
 fi
 
