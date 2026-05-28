@@ -242,10 +242,11 @@ echo "=== Installing Graphify ==="
 PIP_CMD="pip3"
 command -v pip3 &>/dev/null || PIP_CMD="pip"
 
-$PIP_CMD install graphifyy
-echo "✅ graphify installed"
-python3 -c "import graphifyy; print('graphify OK')" 2>/dev/null \
-  || python -c "import graphifyy; print('graphify OK')"
+uv venv ~/.agents/venvs/graphify 2>/dev/null || true
+uv pip install graphifyy --python ~/.agents/venvs/graphify/bin/python 2>&1 | tail -2
+echo "✅ graphify installed (package: graphifyy, module: graphify)"
+# Note: install name is graphifyy but import name is graphify
+~/.agents/venvs/graphify/bin/python -c "import graphify; print('graphify import OK')"
 ```
 
 ### 3c — ooo MCP Server (Ouroboros spec-first dev loop)
