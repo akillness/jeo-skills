@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-128-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-127-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**128 local skill folders · 128 installable skills · TOON Format · Cross-platform**
+**127 local skill folders · 127 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**128 local skill folders · 128 installable skills · TOON Format · Cross-platform**
+**127 local skill folders · 127 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 128 local skill folders and 128 installable skills for LLM-based development workflows. Built around the `jeo` orchestration protocol, it provides:
+Agent Skills is a curated collection with 127 local skill folders and 127 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -42,10 +42,10 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 
 | Platform | First Command |
 |----------|--------------|
-| Claude Code | `jeo "task description"` or `/team "task"` |
-| Gemini CLI | `/jeo "task description"` |
-| Codex CLI | `/jeo "task description"` |
-| OpenCode | `/jeo "task description"` |
+| Claude Code | `ooo interview "task"` or `/team "task"` |
+| Gemini CLI | `bmad "task"` or `ooo interview "task"` |
+| Codex CLI | `bmad "task"` or `ooo interview "task"` |
+| OpenCode | `bmad "task"` or `ooo interview "task"` |
 
 ---
 
@@ -53,18 +53,18 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 
 ```mermaid
 graph TD
-    JEO["🎯 JEO\nCore Orchestration"] --> PLAN["📋 PLAN\nooo + plannotator"]
-    JEO --> EXEC["⚡ EXECUTE\nteam / bmad"]
-    JEO --> VERIFY["🔍 VERIFY\nagent-browser"]
-    JEO --> UI["🎨 VERIFY_UI\nagentation"]
-    JEO --> CLEAN["🧹 CLEANUP\nworktree"]
+    OOO["🎯 OOO\nSpec-First Control"] --> PLAN["📋 PLAN\nplannotator + bmad"]
+    OOO --> EXEC["⚡ EXECUTE\nteam / bmad"]
+    OOO --> VERIFY["🔍 VERIFY\nagent-browser"]
+    OOO --> UI["🎨 VERIFY_UI\nagentation"]
+    OOO --> CLEAN["🧹 CLEANUP\nworktree"]
 
     PLAN --> OMC["omc\nClaude Code"]
     PLAN --> OHMG["ohmg\nGemini CLI"]
     PLAN --> OMX["omx\nCodex CLI"]
 
-    SURVEY["🔭 survey"] -.-> JEO
-    OOO["🔄 ooo"] -.-> EXEC
+    SURVEY["🔭 survey"] -.-> OOO
+    GRAPHIFY["📊 graphify"] -.-> EXEC
     AUTORESEARCH["🔬 autoresearch"] -.-> EXEC
 ```
 
@@ -74,7 +74,8 @@ graph TD
 
 | Change | Details |
 |--------|---------|
-| **semble: token-efficient code search for agents** | Added `semble` — a fast, accurate code search library that returns only the relevant code snippets agents need, using ~98% fewer tokens than grep+read. Indexes any local or remote repository in ~250ms entirely on CPU (no GPU or API key needed). Supports natural-language and symbol queries, semantic similar-code discovery (`find-related`), and MCP server integration for Claude Code, Codex, Cursor, and OpenCode. Python library and CLI both available. Plugin: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`. Source: [MinishLab/semble](https://github.com/MinishLab/semble). 127 → **128 skills**. |
+| **semble: token-efficient code search for agents** | Added `semble` — a fast, accurate code search library that returns only the relevant code snippets agents need, using ~98% fewer tokens than grep+read. Indexes any local or remote repository in ~250ms entirely on CPU (no GPU or API key needed). Supports natural-language and symbol queries, semantic similar-code discovery (`find-related`), and MCP server integration for Claude Code, Codex, Cursor, and OpenCode. Python library and CLI both available. Plugin: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`. Source: [MinishLab/semble](https://github.com/MinishLab/semble). |
+| **jeo removed: orchestration consolidated into ooo + bmad** | Removed the `jeo` skill and its associated hooks (`ExitPlanMode` plan-gate, `UserPromptSubmit` agentation). Orchestration is now handled by `ooo` (spec-first control loop), `bmad` (planning/routing), and `plannotator` (review gate). 128 → **127 skills**. |
 
 ## 🆕 What's New in v2026-05-04 (mattpocock skills integration)
 
@@ -203,7 +204,6 @@ graph TD
 |--------|---------|
 | **clawteam: ClawTeam runtime operator router** | Tightened `clawteam` into a packet-first ClawTeam runtime skill: choose one honest operator packet (`manual-team`, `template-launch`, `monitor-recover`, or `profile-setup`) before commands, keep tmux/worktree runtime reality explicit, and route generic orchestration or board-governance requests outward. |
 | **obsidian-plugin: Obsidian plugin development skill** | Build, validate, and publish Obsidian plugins. Covers all 27 `eslint-plugin-obsidianmd` rules, interactive boilerplate generator (`create-plugin.js`), memory management, type safety, accessibility (MANDATORY), CSS variables, vault API, and community submission validation. 75 → **76 skills**. |
-| **jeo v1.6.0: `.jeo` planning ledger flow** | JEO now creates a project-local `.jeo/` folder and uses it as a durable planning/development/QA ledger: `long-term.md`, `short-term.md`, `planned.md`, `progress.md`, `history.md`, plus queued/active task files. Completed task files are summarized into history then removed; follow-up work can be queued without resetting the workflow. |
 | **skill-autoresearch: eval-driven skill optimization** | New skill for improving an existing `SKILL.md` with binary evals, mutation loops, baseline scoring, and dashboard/changelog artifacts. Keeps the original `autoresearch` ML workflow separate. 76 → **77 skills**. |
 | **firebase-cli: Firebase platform operator hardening** | Upgraded `firebase-cli` into a routing-first Firebase operator anchor for install/auth, bootstrap/config, Emulator Suite workflows, scoped deploy/release flows, and admin/data operations. Added focused references for routing, bootstrap/auth, emulators/release, and admin tasks; refreshed evals/compact wording; and corrected the npm-path Node.js baseline to current `firebase-tools` requirements. |
 | **google-workspace, langsmith, react-grab added** | 3 new skills: Google Workspace REST API automation, LangSmith LLM observability/evaluation, react-grab React element context capture. 71 → **74 skills**. |
@@ -212,7 +212,6 @@ graph TD
 | **Removed deprecated agent-development skills** | Removed `agent-configuration`, `agent-evaluation`, `agentic-development-principles`, `agentic-principles`, `agentic-workflow`. 80 → **72 skills**. |
 | **Removed deprecated image/media skills** | Removed `image-generation`, `image-generation-mcp`, `pollinations-ai`. Use `video-production` as the canonical programmable-video skill; `remotion-video-production` remains as the compatibility alias for explicit Remotion naming. |
 | **autoresearch: Karpathy autonomous ML experiment skill** | Human-written `program.md`, agent-edited `train.py`, fixed 5-minute GPU runs, and `val_bpb` keep/revert ratcheting for real ML search. Now explicitly routes prompt / app eval work away to `skill-autoresearch` or eval platforms, and includes `scripts/`, `references/`, and `evals/`. |
-| **jeo v1.2.3: plannotator-plan-loop.sh all-platform hardening** | Cross-platform temp dir fallback, dedicated port `PLANNOTATOR_PORT=47291`, `probe_plannotator_port()` + `wait_for_listen()`, browser-crash retry up to 3 times, structured `jeo-blocked.json` output. |
 | **survey: artifact-validator hardening** | Tightened `survey` into a smaller artifact-contract-first research anchor, moved verbose output templates into a dedicated reference, and added `scripts/validate_survey_artifacts.py` so `.survey/{slug}/` folders can be checked mechanically before planning or implementation. Platform topics still normalize as `settings/rules/hooks`, with hooks treated as optional wrappers around the same portable validator. |
 | **presentation-builder: packet-first deck handoff hardening** | Tightened `presentation-builder` into a smaller routing-first deck artifact anchor. It now chooses one deck mode, one smallest useful artifact packet (`outline-brief`, `storyboard`, `review-ready-html`, `export-handoff`, or `sync-packet`), and one honest last-mile surface (HTML viewer, PPTX, PDF, Google Slides, or Figma Slides); adds `references/artifact-packets-and-last-mile-handoffs.md`; refreshes eval coverage; and syncs compact/discovery surfaces so the skill matches real deck workflows instead of acting like a giant slides essay. |
 
@@ -239,7 +238,7 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
-  --skill jeo --skill omc --skill plannotator --skill agentation \
+  --skill omc --skill plannotator --skill agentation \
   --skill ooo --skill vibe-kanban
 ```
 
@@ -247,7 +246,7 @@ npx skills add https://github.com/akillness/oh-my-skills \
 
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
-  --skill jeo --skill ohmg --skill ooo --skill vibe-kanban
+  --skill ohmg --skill ooo --skill vibe-kanban
 gemini extensions install https://github.com/akillness/oh-my-skills
 ```
 
@@ -255,22 +254,18 @@ gemini extensions install https://github.com/akillness/oh-my-skills
 
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
-  --skill jeo --skill omx --skill ooo
+  --skill omx --skill ooo
 ```
 
 #### Platform-Specific Setup
 
 ```bash
-# Claude Code — jeo hook setup
-bash ~/.agent-skills/jeo/scripts/setup-claude.sh
-
-# Gemini CLI — jeo hook setup
-bash ~/.agent-skills/jeo/scripts/setup-gemini.sh
-
-# oh-my-claudecode
+# Claude Code — oh-my-claudecode plugin + ooo MCP
 /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
 /plugin install oh-my-claudecode
 setup omc
+claude mcp add ooo -s user -- ouroboros mcp
+claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
 ```
 
 ---
@@ -283,8 +278,9 @@ setup omc
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
-| `jeo` | `jeo`, `annotate` | All | Packet-first orchestration front door with `.jeo` ledger: plan gate → runtime handoff → verify → cleanup |
-| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | Claude-first orchestration router for oh-my-claudecode — identifies marketplace plugin vs shell CLI vs local `--plugin-dir` topology first, distinguishes plugin slash skills from the `omc` shell CLI, handles duplicate-install/recovery/state issues, and routes adjacent work to `jeo`, `ralphmode`, `omx`, `ohmg`, and browser-review skills |
+| `ooo` | `ooo`, `ouroboros`, `ooo interview` | All | Spec-first control loop — clarify, freeze, execute, verify. Entry point for any ambiguous or multi-step task |
+| `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM planning front door — classify packet, choose next artifact or gate, route runtime/review work outward |
+| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | Claude-first orchestration router for oh-my-claudecode — identifies marketplace plugin vs shell CLI vs local `--plugin-dir` topology first, distinguishes plugin slash skills from the `omc` shell CLI, handles duplicate-install/recovery/state issues, and routes adjacent work to `ralphmode`, `omx`, `ohmg`, and browser-review skills |
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Multi-agent workflow layer for Codex CLI (v0.11.10) — 30+ agents, 35+ skills, tmux team runtime, omx explore/sparkshell |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | Gemini / Antigravity entry for the portable `oh-my-agent` harness (`.agents` source of truth, native Gemini projection, cross-vendor-ready layout) |
@@ -500,21 +496,19 @@ TOON (Token-Oriented Object Notation) compresses the skill catalog and auto-inje
 
 ## 🔮 Featured Tools
 
-### jeo — Integrated Agent Orchestration
-> Keyword: `jeo` · `annotate` | Platforms: Claude · Codex · Gemini · OpenCode
+### ooo — Spec-First Control Loop
+> Keyword: `ooo` · `ouroboros` · `ooo interview` | Platforms: Claude · Codex · Gemini · OpenCode
 
-Packet-first orchestration front door: choose the right JEO packet, preserve `.jeo` ledger truth, and hand work to the correct owner instead of expanding every runtime inline.
+Spec-first development front door: clarify ambiguous requests, freeze the contract, execute, and verify before claiming done. MCP server install: `claude mcp add ooo -s user -- ouroboros mcp`.
 
-JEO keeps the shared contract — plan gate, runtime handoff, verification requirements, submit-gated UI review, cleanup, and resumable `.jeo` / machine state — while routing specialist work to sibling skills.
-
-| Packet / Phase | Owner | Description |
-|----------------|-------|-------------|
-| Bootstrap / Resume | JEO scripts + `.jeo/` | Initialize or recover durable ledger and machine state |
-| Plan / Planning | `ooo` + `plannotator` | Shape the plan and get approval without reopening unchanged work |
-| Runtime handoff / Execute | `omc` / `omx` / `ohmg` / truthful `bmad` fallback | Keep runtime-native config and execution in the runtime skill |
+| Phase | Owner | Description |
+|-------|-------|-------------|
+| Clarify / Spec | `ooo interview` | Freeze acceptance criteria before execution |
+| Plan / Review | `plannotator` + `bmad` | Shape and approve the plan without reopening settled work |
+| Runtime handoff / Execute | `omc` / `omx` / `ohmg` | Keep runtime-native config and execution in the runtime skill |
 | Verify / QA | `agent-browser` | Record browser / QA evidence before claiming completion |
-| Verify UI / annotate | `agentation` | Wait for explicit submit, then process UI feedback |
-| Cleanup | JEO scripts + `worktree-cleanup.sh` | Summarize, queue follow-up work, and clean worktrees |
+| Verify UI | `agentation` | Wait for explicit submit, then process UI feedback |
+| Durable knowledge | `llm-wiki` + `graphify` | File significant findings into the wiki and graph |
 
 ### plannotator — Visual Plan Review
 > Keyword: `plan` | [Docs](docs/plannotator/README.md) | [GitHub](https://github.com/backnotprop/plannotator)
@@ -755,7 +749,7 @@ npx vibe-kanban
 
 | Tool | Keyword | Doc |
 |------|---------|-----|
-| `jeo` | `jeo`, `annotate` | [.agent-skills/jeo/SKILL.md](.agent-skills/jeo/SKILL.md) |
+| `ooo` | `ooo`, `ouroboros`, `ooo interview` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
 | `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `flutter-bloc-clean-architecture-skill` | `flutter bloc`, `clean architecture` | [docs/flutter-bloc-clean-architecture-skill/README.md](docs/flutter-bloc-clean-architecture-skill/README.md) |
@@ -779,7 +773,6 @@ npx vibe-kanban
 
 | Component | Source | License |
 |-----------|--------|---------|
-| `jeo` | Internal | MIT |
 | `omc` | [Yeachan-Heo/oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | MIT |
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `stitch-skills` | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | Apache-2.0 |

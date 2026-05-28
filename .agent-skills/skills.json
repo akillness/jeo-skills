@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-04-24T18:00:29Z",
-  "skill_count": 128,
+  "skill_count": 127,
   "categories": {
     "planning-review": [
       "agent-browser",
@@ -62,7 +62,6 @@
       "bmad",
       "bmad-gds",
       "bmad-idea",
-      "jeo",
       "ohmg",
       "omc",
       "omx",
@@ -1512,50 +1511,6 @@
           "source": "core-orchestration/harness/scripts/validate-harness.sh"
         }
       ]
-    },
-    {
-      "name": "jeo",
-      "description": "Turn integrated agent delivery into one packet-first orchestration decision. Use when the user wants a single front door for plan approval, runtime handoff, browser/UI verification, resume or recovery, and durable .jeo task history across Claude Code, Codex CLI, Gemini CLI, or OpenCode. Route spec-first loops to ralph, plan review to plannotator, runtime-native execution to omc / omx / ohmg, browser verification to agent-browser, submit-gated UI review to agentation, and trust-posture tuning to ralphmode.",
-      "category": "core-orchestration",
-      "path": "jeo/SKILL.md",
-      "tags": [
-        "jeo",
-        "orchestration",
-        "ralph",
-        "plannotator",
-        "agentation",
-        "annotate",
-        "agentui",
-        "UI-review",
-        "team",
-        "bmad",
-        "omc",
-        "omx",
-        "ohmg",
-        "agent-browser",
-        "multi-agent",
-        "workflow",
-        "worktree-cleanup",
-        "browser-verification",
-        "ui-feedback"
-      ],
-      "platforms": [
-        "Claude",
-        "Codex",
-        "Gemini",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob",
-        "Task"
-      ],
-      "keyword": "jeo",
-      "version": "1.6.2",
-      "commands": []
     },
     {
       "name": "langsmith",

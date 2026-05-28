@@ -67,7 +67,7 @@ fi
 
 ---
 
-## Step 1 — Install All 128 Skills (Batch)
+## Step 1 — Install All 127 Skills (Batch)
 
 Install all skills to the global location, then link shared skills to all detected agents.
 Re-running this step safely overwrites existing skills (symlinks are updated in place).
@@ -84,13 +84,11 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 128 skills to global store, link shared skills to all detected agents
+# Install ALL 127 skills to global store, link shared skills to all detected agents
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
 ```
 
-> **jeo**: Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` on Claude Code. Creates a resumable `.jeo/` ledger (long-term.md, short-term.md, planned.md, progress.md, history.md) plus `.omc/state/jeo-state.json` for durable workflow state across planning, execution, QA, and cleanup.
->
 > **agentation MCP**: `npx add-mcp "npx -y agentation-mcp server"` — auto-detects 9+ agents.
 > **agentation Claude Code Official Skill**: `npx skills add benjitaylor/agentation -g` → `/agentation` in conversation.
 >
@@ -159,21 +157,112 @@ echo "✅ Platform skill deduplication complete"
 
 ---
 
-## Step 3 — Platform-Specific Setup
+## Step 3 — Core Tool Installation
 
-Run the setup script for every detected platform:
+Install the tools that power the default operating flow (`$ooo` → `$graphify` → `$rtk` → `$obsidian` → `$llm-wiki`).
+
+### 3a — RTK (Rust Token Killer — compact shell output)
 
 ```bash
-# Claude Code — jeo hook + oh-my-claudecode
-if command -v claude &>/dev/null; then
-  bash "$SKILLS_ROOT/jeo/scripts/setup-claude.sh"
-  echo "✅ Claude Code configured"
+# Install via Homebrew (macOS/Linux)
+if command -v brew &>/dev/null; then
+  brew install rtk
+else
+  # Fallback: install script from skill
+  bash "$SKILLS_ROOT/rtk/scripts/install.sh"
 fi
 
-# Gemini CLI — jeo AfterAgent hook
-if command -v gemini &>/dev/null; then
-  bash "$SKILLS_ROOT/jeo/scripts/setup-gemini.sh"
-  echo "✅ Gemini CLI configured"
+# Initialize globally (adds rtk hook to shell profile)
+rtk init -g
+echo "✅ rtk installed and initialized"
+
+# Verify
+rtk gain
+```
+
+### 3b — Graphify (knowledge graph generator)
+
+```bash
+pip install graphifyy
+echo "✅ graphify installed"
+
+# Verify
+python3 -c "import graphifyy; print('graphify OK')"
+```
+
+### 3c — ooo MCP Server (Ouroboros spec-first dev loop)
+
+```bash
+# Install ouroboros-ai with all extras
+pip install "ouroboros-ai[all]"
+echo "✅ ouroboros-ai installed"
+
+# Register ooo as MCP server for each detected platform
+if command -v claude &>/dev/null; then
+  claude mcp add ooo -s user -- ouroboros mcp
+  echo "✅ ooo MCP registered with Claude Code"
+fi
+
+if command -v codex &>/dev/null; then
+  echo '{"mcpServers":{"ooo":{"command":"ouroboros","args":["mcp"]}}}' \
+    > "$HOME/.codex/mcp.json"
+  echo "✅ ooo MCP registered with Codex"
+fi
+
+# Verify
+ouroboros --version
+```
+
+### 3d — Obsidian CLI (desktop vault persistence)
+
+```bash
+# Install via Homebrew (official Obsidian CLI)
+if command -v brew &>/dev/null; then
+  brew install obsidian
+fi
+
+# Verify desktop CLI availability
+if command -v obsidian &>/dev/null; then
+  echo "✅ obsidian CLI available"
+else
+  echo "ℹ️  Obsidian desktop CLI not found — URI fallback (obsidian://) will be used"
+fi
+```
+
+### 3e — llm-wiki (persistent markdown wiki)
+
+```bash
+# llm-wiki is a skill (no separate package install needed)
+# Bootstrap the wiki vault structure when first use is expected
+WIKI_VAULT="${LLM_WIKI_VAULT:-$HOME/wiki}"
+if [ ! -d "$WIKI_VAULT" ]; then
+  mkdir -p "$WIKI_VAULT/raw" "$WIKI_VAULT/wiki"
+  touch "$WIKI_VAULT/index.md" "$WIKI_VAULT/log.md"
+  echo "✅ wiki vault bootstrapped at $WIKI_VAULT"
+else
+  echo "✅ wiki vault exists at $WIKI_VAULT"
+fi
+```
+
+### 3f — semble MCP (token-efficient code search)
+
+```bash
+# Register semble as MCP server (no local install needed — uses uvx)
+if command -v claude &>/dev/null; then
+  claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
+  echo "✅ semble MCP registered with Claude Code"
+fi
+```
+
+### 3g — Platform Plugin Setup
+
+```bash
+# Claude Code — oh-my-claudecode plugin (slash skills: /team, /autopilot, /ralph, /ultrawork)
+if command -v claude &>/dev/null; then
+  /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
+  /plugin install oh-my-claudecode
+  setup omc
+  echo "✅ Claude Code: oh-my-claudecode configured"
 fi
 
 # OpenCode — oh-my-opencode
@@ -181,19 +270,10 @@ if command -v opencode &>/dev/null; then
   curl -s https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md
   echo "✅ OpenCode — check guide above, then run: skills add -g $REPO_URL --yes --copy"
 fi
-```
 
-**Claude Code additional setup:**
-
-```bash
-# oh-my-claudecode plugin (optional — adds Claude Code slash skills; install the shell-side `omc` runtime separately when you truly need `omc ...` CLI commands)
-/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/plugin install oh-my-claudecode
-setup omc
-
-# agentation Official Skill (recommended for UI annotation)
+# agentation Official Skill (UI annotation)
 npx skills add benjitaylor/agentation -g
-# Then in conversation: /agentation
+echo "✅ agentation skill installed"
 ```
 
 > **TOON Format**: `~/.claude/hooks/toon-inject.mjs` injects the skill catalog into every prompt (40–50% token savings). `~/.gemini/hooks/toon-skill-inject.sh` loads it via `includeDirectories`.
@@ -210,7 +290,7 @@ REPO_URL="https://github.com/akillness/oh-my-skills"
 # Core skill check
 echo ""
 echo "=== Core Skill Check ==="
-for skill in jeo omc ohmg omx ooo stitch-skills compresso pretext god-tibo-imagen zeude plannotator agentation bmad survey harness; do
+for skill in omc ohmg omx ooo stitch-skills compresso pretext god-tibo-imagen zeude plannotator agentation bmad survey harness rtk graphify obsidian llm-wiki semble; do
   [ -f "$SKILLS_ROOT/$skill/SKILL.md" ] \
     && echo "✅ $skill" \
     || echo "❌ $skill — re-run: skills add -g $REPO_URL --skill $skill --yes --copy"
@@ -256,10 +336,10 @@ First run after installation:
 
 | Platform | Command |
 |----------|---------|
-| Claude Code | `jeo "task description"` or `/oh-my-claudecode:team "task"` |
-| Gemini CLI | `/jeo "task description"` |
-| Codex CLI | `/jeo "task description"` |
-| OpenCode | `/jeo "task description"` |
+| Claude Code | `ooo interview "task"` or `/oh-my-claudecode:team "task"` |
+| Gemini CLI | `bmad "task"` or `ooo interview "task"` |
+| Codex CLI | `bmad "task"` or `ooo interview "task"` |
+| OpenCode | `bmad "task"` or `ooo interview "task"` |
 
 ---
 
@@ -314,7 +394,7 @@ If no → skip silently. Never re-ask.
 
 | Goal | Command |
 |------|---------|
-| Start any task | `jeo "task description"` |
+| Start any task | `ooo interview "task"` or `bmad "task"` |
 | Claude orchestration | `autopilot: task` or `/oh-my-claudecode:team "task"` |
 | Visual plan review | `plan` (plannotator keyword) |
 | Spec-first dev loop | `ooo interview "X"` or `ouroboros init start "X"` *(install: `claude plugin marketplace add Q00/ouroboros` or `pip install ouroboros-ai[all]`)* |
@@ -329,11 +409,11 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (128 skills)
+## Skill Inventory (127 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
-| **Core Orchestration** | jeo, ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, vibe-kanban, agentation, agent-browser, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
+| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, vibe-kanban, agentation, agent-browser, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
 | **Platform Setup** | omc | claude-code |
 | **Platform Setup** | ohmg | gemini-cli, antigravity |
 | **Platform Setup** | omx | codex, claude-code, gemini-cli |
@@ -365,7 +445,6 @@ If no → skip silently. Never re-ask.
 
 | Skill | Activation Keyword | Description |
 |-------|-------------------|-------------|
-| `jeo` | `jeo` | Packet-first orchestration with `.jeo` ledger — plan gate → runtime handoff → verify → cleanup. Routes to `plannotator`, runtime skills, `agent-browser`, and `agentation` instead of owning their internals. **Claude Code**: requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` |
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude-first OMC router — distinguish Claude Code slash skills from the `omc` shell CLI, then handle setup/recovery/state issues or route adjacent work outward |
 | `stitch-skills` | `stitch`, `stitch-design`, `stitch-loop`, `enhance-prompt`, `screen generation`, `ui generation` | Agent Skills for Stitch MCP — generate UI screens, multi-page sites, enhance prompts, React/shadcn-ui, Remotion videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills` |
 | `compresso` | `compresso`, `compress video`, `compress image`, `batch compression`, `ffmpeg compression`, `offline video compress` | Free offline desktop video/image compression (Tauri+React) — batch compress, trim/split, convert formats, embed subtitles. Install: `brew install --cask codeforreal1/tap/compresso` |
