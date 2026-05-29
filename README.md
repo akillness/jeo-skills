@@ -497,7 +497,7 @@ TOON (Token-Oriented Object Notation) compresses the skill catalog and auto-inje
 | Platform | File | Mechanism |
 |----------|------|-----------|
 | Claude Code | `~/.claude/hooks/toon-inject.mjs` | `UserPromptSubmit` hook — 26-37ms |
-| Antigravity CLI | `~/.gemini/antigravity/hooks/toon-skill-inject.sh` | `includeDirectories` session load |
+| Antigravity CLI (`agy`) | `~/.gemini/antigravity-cli/hooks/toon-skill-inject.sh` | lifecycle hook (`agy inspect` to verify) |
 | Codex CLI | `~/.codex/skills-toon-catalog.toon` | Static catalog |
 
 - **Tier 1** (always): Skill catalog index (~875-3,500 tokens) — names + descriptions + tags

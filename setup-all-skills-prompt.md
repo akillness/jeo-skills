@@ -67,7 +67,8 @@ echo "=== Platform Detection ==="
 DETECTED_AGENTS=""
 if command -v claude   &>/dev/null; then echo "✅ Claude Code";  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}claude-code"; fi
 if command -v codex    &>/dev/null; then echo "✅ Codex CLI";    DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}codex"; fi
-if command -v antigravity &>/dev/null || [ -d "$_HOME/.gemini/antigravity" ]; then echo "✅ Antigravity CLI"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}antigravity"; fi
+# agy is the canonical binary name (not antigravity); some Linux packagers ship antigravity as an alias
+if command -v agy &>/dev/null || command -v antigravity &>/dev/null || [ -d "$_HOME/.gemini/antigravity" ]; then echo "✅ Antigravity CLI (agy)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}antigravity"; fi
 if command -v opencode &>/dev/null; then echo "✅ OpenCode";     DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}opencode"; fi
 
 [ -z "$DETECTED_AGENTS" ] && { echo "⚠️  No AI agents detected. Install at least one platform first."; exit 1; }
@@ -162,9 +163,12 @@ This step **re-links** them with correct `-a` targeting, replacing the `*` links
 # omc — Claude Code only
 skills add -g "$REPO_URL" --skill omc -a 'claude-code' --yes --copy
 
-# ohmg — Antigravity CLI (globalSkillsDir = ~/.gemini/antigravity/skills per skills CLI)
-# Create the dir first — skills CLI detects antigravity by checking ~/.gemini/antigravity/
+# ohmg — Antigravity CLI
+# Binary: agy (canonical); some Linux distros also ship as 'antigravity' alias
+# skills CLI globalSkillsDir = ~/.gemini/antigravity/skills; detection checks ~/.gemini/antigravity/
+# Antigravity-CLI config root = ~/.gemini/antigravity-cli/ (settings.json, hooks live here)
 mkdir -p "$_HOME/.gemini/antigravity/skills"
+mkdir -p "$_HOME/.gemini/antigravity-cli/hooks"
 skills add -g "$REPO_URL" --skill ohmg -a 'antigravity' --yes --copy
 
 # omx — Codex CLI primary, also usable from Claude Code
@@ -409,7 +413,7 @@ npx skills add benjitaylor/agentation -g
 echo "✅ agentation skill installed"
 ```
 
-> **TOON Format**: `~/.claude/hooks/toon-inject.mjs` injects the skill catalog into every prompt (40–50% token savings). `~/.gemini/antigravity/hooks/toon-skill-inject.sh` loads it via `includeDirectories`.
+> **TOON Format**: `~/.claude/hooks/toon-inject.mjs` injects the skill catalog into every prompt (40–50% token savings). `~/.gemini/antigravity-cli/hooks/toon-skill-inject.sh` loads it via Antigravity's lifecycle hook system (`agy inspect` shows loaded hooks).
 
 **Windows note**: Run all bash steps in **Git Bash** or **WSL2**. PowerShell users: replace `$_HOME` with `$env:USERPROFILE` and use `python` instead of `python3`.
 
