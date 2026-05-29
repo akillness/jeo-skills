@@ -156,7 +156,7 @@ cleanup_skill_link() {
   local skill="$1"; shift
   local allowed=("$@")
 
-  for agent_dir in "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills" ~/.codex/skills ~/.gemini/skills ~/.config/opencode/skills; do
+  for agent_dir in "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/skills" "$_HOME/.codex/skills" "$_HOME/.gemini/skills" "$_HOME/.config/opencode/skills"; do
     local agent_name
     case "$agent_dir" in
       */.claude/*|*/Claude/*)  agent_name="claude-code" ;;
@@ -196,6 +196,7 @@ Install the tools that power the default operating flow (`$ooo` → `$graphify` 
 
 ```bash
 echo "=== Installing RTK ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
 # WARNING: `brew install rtk` installs the wrong package (Rust Type Kit, not Rust Token Killer).
 # Use cargo or the official installer on all platforms.
 case "$PLATFORM" in
@@ -205,10 +206,12 @@ case "$PLATFORM" in
     else
       curl -fsSL https://raw.githubusercontent.com/crates-io/rtk/main/install.sh | sh
     fi
+    export PATH="$_HOME/.cargo/bin:$PATH"
     ;;
   windows)
     if command -v cargo &>/dev/null; then
       cargo install rtk
+      export PATH="${_HOME//\\//}/.cargo/bin:$PATH"
     else
       echo "⚠️  Install rtk: cargo install rtk  OR  https://github.com/crates-io/rtk/releases"
     fi
@@ -248,16 +251,13 @@ echo "✅ graphify installed (venv: $GRAPHIFY_VENV)"
 
 ```bash
 echo "=== Installing ooo (Ouroboros) ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
 PIP_CMD="pip3"; command -v pip3 &>/dev/null || PIP_CMD="pip"
 $PIP_CMD install "ouroboros-ai[all]"
 echo "✅ ouroboros-ai installed"
 
 # MCP config paths per platform
-if [ "$PLATFORM" = "windows" ]; then
-  CODEX_MCP_DIR="${USERPROFILE:-$HOME}/.codex"
-else
-  CODEX_MCP_DIR="$_HOME/.codex"
-fi
+CODEX_MCP_DIR="$_HOME/.codex"
 
 # Register ooo MCP with Claude Code
 if command -v claude &>/dev/null; then
@@ -280,6 +280,7 @@ ouroboros --version 2>/dev/null && echo "✅ ouroboros ready" || echo "⚠️  o
 
 ```bash
 echo "=== Installing Obsidian CLI ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
 case "$PLATFORM" in
   macos)
     # Obsidian is a cask (GUI app), not a formula — --cask is required
@@ -336,17 +337,19 @@ echo "   Set LLM_WIKI_VAULT to override the default location."
 
 ```bash
 echo "=== Registering semble MCP ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
 # Uses uvx (part of uv) — install uv if missing
 if ! command -v uvx &>/dev/null; then
   case "$PLATFORM" in
     macos|linux)
       curl -LsSf https://astral.sh/uv/install.sh | sh
-      export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+      export PATH="$_HOME/.local/bin:$_HOME/.cargo/bin:$PATH"
       ;;
     windows)
       PS_CMD="pwsh"; command -v pwsh &>/dev/null || PS_CMD="powershell"
       $PS_CMD -c "irm https://astral.sh/uv/install.ps1 | iex"
-      export PATH="${USERPROFILE//\\//}/.local/bin:${USERPROFILE//\\//}/.cargo/bin:$PATH"
+      _WIN="${_HOME//\\//}"
+      export PATH="$_WIN/.local/bin:$_WIN/.cargo/bin:${LOCALAPPDATA//\\//}/uv/bin:${LOCALAPPDATA//\\//}/Programs/uv:$PATH"
       ;;
   esac
 fi
@@ -414,11 +417,11 @@ check_no_dup() {
   local skill="$1" agent_dir="$2" agent_name="$3"
   [ -e "$agent_dir/$skill" ] && echo "⚠️  $skill found on $agent_name (should not be there)"
 }
-check_no_dup "omc"  "$HOME/.gemini/skills"                       "gemini-cli"
-check_no_dup "omc"  "$HOME/.codex/skills"                        "codex"
-check_no_dup "omc"  "$HOME/.config/opencode/skills"              "opencode"
-check_no_dup "ohmg" "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills" "claude-code"
-check_no_dup "ohmg" "$HOME/.codex/skills"                        "codex"
+check_no_dup "omc"  "$_HOME/.gemini/skills"                       "gemini-cli"
+check_no_dup "omc"  "$_HOME/.codex/skills"                        "codex"
+check_no_dup "omc"  "$_HOME/.config/opencode/skills"              "opencode"
+check_no_dup "ohmg" "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/skills" "claude-code"
+check_no_dup "ohmg" "$_HOME/.codex/skills"                        "codex"
 echo "✅ Platform dedup verified"
 
 # Preservation check
