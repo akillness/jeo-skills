@@ -249,7 +249,7 @@ npx skills add https://github.com/akillness/oh-my-skills \
 ```bash
 npx skills add https://github.com/akillness/oh-my-skills \
   --skill ohmg --skill ooo --skill vibe-kanban
-gemini extensions install https://github.com/akillness/oh-my-skills
+antigravity extensions install https://github.com/akillness/oh-my-skills
 ```
 
 #### Codex CLI
@@ -497,7 +497,7 @@ TOON (Token-Oriented Object Notation) compresses the skill catalog and auto-inje
 | Platform | File | Mechanism |
 |----------|------|-----------|
 | Claude Code | `~/.claude/hooks/toon-inject.mjs` | `UserPromptSubmit` hook — 26-37ms |
-| Gemini CLI | `~/.gemini/hooks/toon-skill-inject.sh` | `includeDirectories` session load |
+| Antigravity CLI | `~/.gemini/antigravity/hooks/toon-skill-inject.sh` | `includeDirectories` session load |
 | Codex CLI | `~/.codex/skills-toon-catalog.toon` | Static catalog |
 
 - **Tier 1** (always): Skill catalog index (~875-3,500 tokens) — names + descriptions + tags

@@ -1,56 +1,12 @@
 {
   "version": 1,
   "skills": {
-    "jeo": {
-      "source": "akillness/oh-my-skills",
-      "sourceType": "github",
-      "version": "1.3.0",
-      "keyword": "jeo",
-      "description": "통합 AI 에이전트 오케스트레이션. ooo+plannotator 계획→team/bmad 실행→agent-browser 검증→agentation submit-gated UI 피드백→worktree 정리.",
-      "tags": [
-        "jeo",
-        "orchestration",
-        "ooo",
-        "plannotator",
-        "team",
-        "bmad",
-        "agent-browser",
-        "agentation",
-        "submit-gate",
-        "plan-hash"
-      ],
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill jeo",
-      "addedAt": "2026-03-05T00:00:00Z",
-      "updatedAt": "2026-03-10T00:00:00Z",
-      "extensions": [
-        {
-          "skill": "a2a-integration",
-          "status": "survey-candidate",
-          "reason": "JEO needs an explicit peer delegation contract when orchestration crosses agent or service boundaries."
-        },
-        {
-          "skill": "agent-observability",
-          "status": "survey-candidate",
-          "reason": "PLAN→EXECUTE→VERIFY loops need trace, latency, and cost visibility to become productizable."
-        },
-        {
-          "skill": "mcp-server",
-          "status": "survey-candidate",
-          "reason": "Hosted tool surfaces should move from ad-hoc shell glue to hardened MCP contracts."
-        }
-      ],
-      "changelog": {
-        "1.3.0": "Claude/Codex/Gemini에서 동일한 plan hash 재검토를 차단하고, annotate/agentation은 explicit submit/onSubmit 이후에만 처리하도록 submit gate를 추가",
-        "1.1.0": "retry_count/last_error/checkpoint 에러 복구 필드 추가, 모든 STEP pre-flight 체크 추가, git 저장소 감지 개선",
-        "1.0.0": "초기 릴리스 — PLAN/EXECUTE/VERIFY/VERIFY_UI/CLEANUP 전체 플로우"
-      }
-    },
     "omc": {
       "source": "Yeachan-Heo/oh-my-claudecode",
       "sourceType": "plugin",
       "version": "4.2.15",
       "keyword": "omc",
-      "description": "Claude Code용 팀 중심 멀티에이전트 오케스트레이션. JEO의 Claude 실행 백엔드이자 Ralph/Ultrawork 지속 실행을 포함한다.",
+      "description": "Claude Code용 팀 중심 멀티에이전트 오케스트레이션. Ralph/Ultrawork 지속 실행을 포함하며 ooo 와 연동한다.",
       "tags": [
         "omc",
         "claude-code",
@@ -204,43 +160,22 @@
     }
   },
   "dependencies": {
-    "plannotator": {
-      "version": "latest",
-      "source": "backnotprop/plannotator",
-      "installCommand": "bash scripts/install.sh --with-plannotator",
-      "required_by": [
-        "jeo"
-      ],
-      "description": "시각적 계획/diff 리뷰 UI. jeo PLAN 단계 blocking 실행에 필수."
-    },
     "ooo": {
       "version": "0.29.0",
       "source": "Q00/ouroboros",
       "installCommand": "claude plugin marketplace add Q00/ouroboros",
       "alternativeInstall": "pip install ouroboros-ai[all]",
-      "required_by": [
-        "jeo"
-      ],
+      "required_by": [],
       "optional_for": [
         "omc"
       ],
       "description": "Ouroboros spec-first completion loop. jeo PLAN 단계 반복 실행 엔진."
-    },
-    "omc": {
-      "version": "latest",
-      "source": "akillness/oh-my-skills",
-      "installCommand": "bash scripts/install.sh --with-omc",
-      "required_by": [
-        "jeo"
-      ],
-      "description": "Claude Code 네이티브 팀 오케스트레이션. jeo EXECUTE 단계 Claude 플랫폼 primary 실행에 필수."
     },
     "agent-browser": {
       "version": "latest",
       "source": "npm:agent-browser",
       "installCommand": "npm install -g agent-browser",
       "optional_for": [
-        "jeo",
         "omc"
       ],
       "description": "AI 에이전트용 헤드리스 브라우저. jeo VERIFY 단계 기본 검증 도구. 브라우저 UI 없는 백엔드/CLI 작업은 건너뜀."
@@ -249,9 +184,7 @@
       "version": "latest",
       "source": "benjitaylor/agentation",
       "installCommand": "bash scripts/install.sh --with-agentation",
-      "optional_for": [
-        "jeo"
-      ],
+      "optional_for": [],
       "description": "UI 어노테이션 → 에이전트 코드 수정 연동. jeo `annotate` 키워드 감지 시에만 VERIFY_UI 단계 활성화."
     },
     "survey": {
@@ -260,7 +193,6 @@
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill survey",
       "optional_for": [
         "harness",
-        "jeo",
         "omc",
         "ooo"
       ],
@@ -270,19 +202,15 @@
       "version": "latest",
       "source": "akillness/oh-my-skills",
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill omx",
-      "optional_for": [
-        "jeo"
-      ],
+      "optional_for": [],
       "description": "OpenAI Codex CLI용 실행 백엔드. jeo EXECUTE 단계를 Codex 환경에 맞게 연결한다."
     },
     "ohmg": {
       "version": "latest",
       "source": "akillness/oh-my-skills",
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill ohmg",
-      "optional_for": [
-        "jeo"
-      ],
-      "description": "Gemini/Antigravity 계열 실행 백엔드. jeo가 멀티-CLI orchestration을 유지할 때 사용한다."
+      "optional_for": [],
+      "description": "Antigravity 계열 실행 백엔드. 멀티-CLI orchestration 시 사용한다."
     },
     "playwriter": {
       "version": "latest",

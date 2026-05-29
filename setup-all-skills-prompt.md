@@ -67,7 +67,7 @@ echo "=== Platform Detection ==="
 DETECTED_AGENTS=""
 if command -v claude   &>/dev/null; then echo "✅ Claude Code";  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}claude-code"; fi
 if command -v codex    &>/dev/null; then echo "✅ Codex CLI";    DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}codex"; fi
-if command -v gemini   &>/dev/null; then echo "✅ Gemini CLI";   DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}gemini-cli"; fi
+if command -v antigravity &>/dev/null || [ -d "$_HOME/.gemini/antigravity" ]; then echo "✅ Antigravity CLI"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}antigravity"; fi
 if command -v opencode &>/dev/null; then echo "✅ OpenCode";     DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}opencode"; fi
 
 [ -z "$DETECTED_AGENTS" ] && { echo "⚠️  No AI agents detected. Install at least one platform first."; exit 1; }
@@ -114,9 +114,29 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 # ────────────────────────────────────────────────────────
 
 # Install ALL 127 skills to global store, link shared skills to all detected agents
+# --full-depth: discovers nested skills (7 skills require this to be found)
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
-skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy
+skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 ```
+
+> **Global vs Project install — why skill files may be missing**
+>
+> **Global install** (`-g`): downloads all 127 skills from the GitHub repo into the agent's global
+> skills store (`~/.claude/skills/`, `~/.codex/skills/`, etc.). Requires `--full-depth` to discover
+> the 7 skills whose `SKILL.md` is nested in a subdirectory. Without this flag only ~120 skills
+> are found and linked.
+>
+> **Project install** (`experimental_install` / `skills restore`): reads `skills-lock.json` in the
+> project root and restores **only the skills listed there** — not all 127. If `skills-lock.json`
+> contains only 6 entries (omc, ooo, ai-tool-compliance, llm-monitoring-dashboard, survey, harness)
+> then only those 6 are restored regardless of how many are in the global store. To include more
+> skills in a project install, add them to `skills-lock.json` first.
+>
+> **Root cause summary**:
+> 1. Missing `--full-depth` → 7 nested skills skipped on global install
+> 2. Sparse `skills-lock.json` → project install only restores listed entries
+> 3. CLI `isExcluded` drops dotfiles (e.g. `.env.example`) during copy — upstream limitation
+> 4. Empty `files` arrays in `skills.json` → HTTP/well-known install path broken for those skills
 
 > **agentation MCP**: `npx add-mcp "npx -y agentation-mcp server"` — auto-detects 9+ agents.
 > **agentation Claude Code Official Skill**: `npx skills add benjitaylor/agentation -g` → `/agentation` in conversation.
@@ -142,11 +162,13 @@ This step **re-links** them with correct `-a` targeting, replacing the `*` links
 # omc — Claude Code only
 skills add -g "$REPO_URL" --skill omc -a 'claude-code' --yes --copy
 
-# ohmg — Gemini CLI (+ Antigravity if available)
-skills add -g "$REPO_URL" --skill ohmg -a 'gemini-cli,antigravity' --yes --copy
+# ohmg — Antigravity CLI (globalSkillsDir = ~/.gemini/antigravity/skills per skills CLI)
+# Create the dir first — skills CLI detects antigravity by checking ~/.gemini/antigravity/
+mkdir -p "$_HOME/.gemini/antigravity/skills"
+skills add -g "$REPO_URL" --skill ohmg -a 'antigravity' --yes --copy
 
-# omx — Codex CLI primary, also usable from Claude Code and Gemini CLI
-skills add -g "$REPO_URL" --skill omx -a 'codex,claude-code,gemini-cli' --yes --copy
+# omx — Codex CLI primary, also usable from Claude Code
+skills add -g "$REPO_URL" --skill omx -a 'codex,claude-code' --yes --copy
 
 # ── Clean stale symlinks from non-target agents ──
 echo ""
@@ -156,13 +178,13 @@ cleanup_skill_link() {
   local skill="$1"; shift
   local allowed=("$@")
 
-  for agent_dir in "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/skills" "$_HOME/.codex/skills" "$_HOME/.gemini/skills" "$_HOME/.config/opencode/skills"; do
+  for agent_dir in "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/skills" "$_HOME/.codex/skills" "$_HOME/.gemini/antigravity/skills" "$_HOME/.config/opencode/skills"; do
     local agent_name
     case "$agent_dir" in
-      */.claude/*|*/Claude/*)  agent_name="claude-code" ;;
-      */.codex/*)              agent_name="codex" ;;
-      */.gemini/*)             agent_name="gemini-cli" ;;
-      */.config/opencode/*)    agent_name="opencode" ;;
+      */.claude/*|*/Claude/*)         agent_name="claude-code" ;;
+      */.codex/*)                     agent_name="codex" ;;
+      */.gemini/antigravity/*)        agent_name="antigravity" ;;
+      */.config/opencode/*)           agent_name="opencode" ;;
     esac
 
     local is_allowed=false
@@ -178,8 +200,8 @@ cleanup_skill_link() {
 }
 
 cleanup_skill_link "omc"       "claude-code"
-cleanup_skill_link "ohmg"      "gemini-cli" "antigravity"
-cleanup_skill_link "omx"       "codex" "claude-code" "gemini-cli"
+cleanup_skill_link "ohmg"      "antigravity"
+cleanup_skill_link "omx"       "codex" "claude-code"
 
 echo "✅ Platform skill deduplication complete"
 ```
@@ -387,8 +409,7 @@ npx skills add benjitaylor/agentation -g
 echo "✅ agentation skill installed"
 ```
 
-> **TOON Format**: `~/.claude/hooks/toon-inject.mjs` injects the skill catalog into every prompt (40–50% token savings). `~/.gemini/hooks/toon-skill-inject.sh` loads it via `includeDirectories`.
-> [Official Gemini Hooks Guide](https://developers.googleblog.com/tailor-gemini-cli-to-your-workflow-with-hooks/)
+> **TOON Format**: `~/.claude/hooks/toon-inject.mjs` injects the skill catalog into every prompt (40–50% token savings). `~/.gemini/antigravity/hooks/toon-skill-inject.sh` loads it via `includeDirectories`.
 
 **Windows note**: Run all bash steps in **Git Bash** or **WSL2**. PowerShell users: replace `$_HOME` with `$env:USERPROFILE` and use `python` instead of `python3`.
 
@@ -417,7 +438,7 @@ check_no_dup() {
   local skill="$1" agent_dir="$2" agent_name="$3"
   [ -e "$agent_dir/$skill" ] && echo "⚠️  $skill found on $agent_name (should not be there)"
 }
-check_no_dup "omc"  "$_HOME/.gemini/skills"                       "gemini-cli"
+check_no_dup "omc"  "$_HOME/.gemini/antigravity/skills"             "antigravity"
 check_no_dup "omc"  "$_HOME/.codex/skills"                        "codex"
 check_no_dup "omc"  "$_HOME/.config/opencode/skills"              "opencode"
 check_no_dup "ohmg" "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/skills" "claude-code"
@@ -529,8 +550,8 @@ If no → skip silently. Never re-ask.
 |----------|--------|--------------|
 | **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, vibe-kanban, agentation, agent-browser, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
 | **Platform Setup** | omc | claude-code |
-| **Platform Setup** | ohmg | gemini-cli, antigravity |
-| **Platform Setup** | omx | codex, claude-code, gemini-cli |
+| **Platform Setup** | ohmg | antigravity |
+| **Platform Setup** | omx | codex, claude-code |
 | **Planning & Review** | browser-harness *(self-healing LLM browser automation via CDP — agent-editable `agent_helpers.py`, domain skills, Browser Use Cloud; setup: "Set up https://github.com/browser-use/browser-harness for me")*, playwriter *(running-browser / authenticated Chrome reuse via CLI+MCP; route clean disposable checks to agent-browser)*, prompt-repetition *(decision-first prompt repetition for non-reasoning/lightweight models on long-context retrieval, options-first MCQ, or position-sensitive lookups; route broader context/retrieval fixes away instead of blanket auto-apply)*, skill-standardization *(SKILL.md validate/rewrite + canonical-vs-alias cleanup + repo-root validator / derived-surface sync for `skills.json`, README/setup, and `SKILL.toon`)*, skill-autoresearch *(repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces only when the core skill change is justified)* | All (`*`) |
 | **Agent Development** | microsoft-agent-framework *(enterprise-grade agent systems with Microsoft agent framework patterns — role separation, workflow control, policy enforcement)*, openai-agents-python *(multi-agent workflows with OpenAI Agents SDK — agents/tools/handoffs, guardrails, async pipelines)*, pydantic-ai *(typed LLM applications — schema-constrained outputs, tool integration, validation, dependency injection)* | All (`*`) |
 | **Backend** | api-design *(contract-first API design / compatibility review)*, api-documentation *(developer-facing API docs anchor for reference portals / quickstarts / SDK-webhook guides / truthful examples / auth-error guidance)*, authentication-setup *(product-auth setup router for hosted/framework-native/platform-native auth, sessions/JWTs, org data boundaries, and enterprise SSO handoff; routes hardening to security-best-practices)*, backend-testing *(packet-first backend testing for coverage-plan, fixture/reset, contract/API protection, flake-stabilization, and local-vs-CI lane-split packets; routes policy to testing-strategies, API shape to api-design, and auth implementation to authentication-setup)*, database-schema-design *(packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible field decisions, and staged evolution; routes interface work to api-design, verification to backend-testing, and reporting/telemetry follow-through outward)*, payloadcms *(Payload CMS content/collection management — typed collections, access control, hooks, REST/GraphQL API, local API patterns)*, supabase-agent-skills *(Supabase full-stack patterns — Auth, Database, Storage, Edge Functions, Realtime, RLS policies, and migration workflows)* | All (`*`) |
