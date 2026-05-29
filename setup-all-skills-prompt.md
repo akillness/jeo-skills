@@ -32,9 +32,10 @@ Check which AI platforms are installed and set the installation root:
 # ── OS / platform detection ──────────────────────────────────
 _OS="$(uname -s 2>/dev/null || echo Windows)"
 case "$_OS" in
-  Darwin*)  PLATFORM="macos"   ;;
-  Linux*)   PLATFORM="linux"   ;;
-  *)        PLATFORM="windows" ;;
+  Darwin*)               PLATFORM="macos"   ;;
+  Linux*)                PLATFORM="linux"   ;;
+  MINGW*|MSYS*|CYGWIN*)  PLATFORM="windows" ;;
+  *)                     PLATFORM="windows" ;;
 esac
 echo "=== OS: $PLATFORM ==="
 
@@ -56,7 +57,7 @@ if [ "$PLATFORM" = "windows" ]; then
 elif [ "$PLATFORM" = "macos" ]; then
   CLAUDE_CONFIG_DIR="$_HOME/.claude"
 else
-  CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME:-$_HOME/.config}/claude"
+  CLAUDE_CONFIG_DIR="$_HOME/.claude"
 fi
 echo "CLAUDE_CONFIG_DIR: $CLAUDE_CONFIG_DIR"
 
@@ -155,13 +156,13 @@ cleanup_skill_link() {
   local skill="$1"; shift
   local allowed=("$@")
 
-  for agent_dir in ~/.claude/skills ~/.codex/skills ~/.gemini/skills ~/.config/opencode/skills; do
+  for agent_dir in "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills" ~/.codex/skills ~/.gemini/skills ~/.config/opencode/skills; do
     local agent_name
     case "$agent_dir" in
-      */.claude/*)          agent_name="claude-code" ;;
-      */.codex/*)           agent_name="codex" ;;
-      */.gemini/*)          agent_name="gemini-cli" ;;
-      */.config/opencode/*) agent_name="opencode" ;;
+      */.claude/*|*/Claude/*)  agent_name="claude-code" ;;
+      */.codex/*)              agent_name="codex" ;;
+      */.gemini/*)             agent_name="gemini-cli" ;;
+      */.config/opencode/*)    agent_name="opencode" ;;
     esac
 
     local is_allowed=false
@@ -195,17 +196,10 @@ Install the tools that power the default operating flow (`$ooo` → `$graphify` 
 
 ```bash
 echo "=== Installing RTK ==="
+# WARNING: `brew install rtk` installs the wrong package (Rust Type Kit, not Rust Token Killer).
+# Use cargo or the official installer on all platforms.
 case "$PLATFORM" in
-  macos)
-    # Homebrew (preferred)
-    if command -v brew &>/dev/null; then
-      brew install rtk
-    else
-      curl -fsSL https://raw.githubusercontent.com/crates-io/rtk/main/install.sh | sh
-    fi
-    ;;
-  linux)
-    # cargo (preferred), or curl installer
+  macos|linux)
     if command -v cargo &>/dev/null; then
       cargo install rtk
     else
@@ -213,13 +207,10 @@ case "$PLATFORM" in
     fi
     ;;
   windows)
-    # winget (preferred), or cargo
-    if command -v winget &>/dev/null; then
-      winget install rtk
-    elif command -v cargo &>/dev/null; then
+    if command -v cargo &>/dev/null; then
       cargo install rtk
     else
-      echo "⚠️  Install rtk manually: https://github.com/crates-io/rtk/releases"
+      echo "⚠️  Install rtk: cargo install rtk  OR  https://github.com/crates-io/rtk/releases"
     fi
     ;;
 esac
@@ -238,15 +229,19 @@ fi
 
 ```bash
 echo "=== Installing Graphify ==="
-# pip3 on macOS/Linux, pip on Windows — try both
-PIP_CMD="pip3"
-command -v pip3 &>/dev/null || PIP_CMD="pip"
-
-uv venv ~/.agents/venvs/graphify 2>/dev/null || true
-uv pip install graphifyy --python ~/.agents/venvs/graphify/bin/python 2>&1 | tail -2
-echo "✅ graphify installed (package: graphifyy, module: graphify)"
-# Note: install name is graphifyy but import name is graphify
-~/.agents/venvs/graphify/bin/python -c "import graphify; print('graphify import OK')"
+# Package name: graphifyy — but import name is: graphify (not graphifyy)
+# Install into a dedicated venv to avoid PEP 668 restrictions on managed Python installs.
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+GRAPHIFY_VENV="$_HOME/.agents/venvs/graphify"
+if [ "$PLATFORM" = "windows" ]; then
+  GRAPHIFY_PY="$GRAPHIFY_VENV/Scripts/python.exe"
+else
+  GRAPHIFY_PY="$GRAPHIFY_VENV/bin/python"
+fi
+uv venv "$GRAPHIFY_VENV" 2>/dev/null || true
+uv pip install graphifyy --python "$GRAPHIFY_PY" 2>&1 | tail -2
+echo "✅ graphify installed (venv: $GRAPHIFY_VENV)"
+"$GRAPHIFY_PY" -c "import graphify; print('graphify import OK')"
 ```
 
 ### 3c — ooo MCP Server (Ouroboros spec-first dev loop)
@@ -273,7 +268,7 @@ fi
 # Register ooo MCP with Codex (write ~/.codex/mcp.json)
 if command -v codex &>/dev/null; then
   mkdir -p "$CODEX_MCP_DIR"
-  echo '{"mcpServers":{"ooo":{"command":"ouroboros","args":["mcp"]}}}' \
+  echo '{"mcpServers":{"ooo":{"command":"ouroboros","args":["mcp","serve"]}}}' \
     > "$CODEX_MCP_DIR/mcp.json"
   echo "✅ ooo MCP registered with Codex ($CODEX_MCP_DIR/mcp.json)"
 fi
@@ -287,14 +282,13 @@ ouroboros --version 2>/dev/null && echo "✅ ouroboros ready" || echo "⚠️  o
 echo "=== Installing Obsidian CLI ==="
 case "$PLATFORM" in
   macos)
-    command -v brew &>/dev/null && brew install obsidian \
+    # Obsidian is a cask (GUI app), not a formula — --cask is required
+    command -v brew &>/dev/null && brew install --cask obsidian \
       || echo "ℹ️  brew not found — install Obsidian from https://obsidian.md/download"
     ;;
   linux)
-    # Try snap, then flatpak, then direct AppImage
-    if command -v snap &>/dev/null; then
-      snap install obsidian --classic
-    elif command -v flatpak &>/dev/null; then
+    # Obsidian is NOT on the Snap Store — use flatpak only
+    if command -v flatpak &>/dev/null; then
       flatpak install flathub md.obsidian.Obsidian -y
     else
       echo "ℹ️  Install Obsidian AppImage from https://obsidian.md/download"
@@ -320,11 +314,11 @@ command -v obsidian &>/dev/null \
 
 ```bash
 echo "=== Bootstrapping llm-wiki vault ==="
-# Platform-aware default vault location
+# Defensive home guard (safe when run standalone without Step 0 context)
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+# Platform-aware default vault location — all platforms use ~/wiki for cross-platform Obsidian compatibility
 case "$PLATFORM" in
-  windows) WIKI_DEFAULT="${USERPROFILE:-$HOME}/wiki" ;;
-  macos)   WIKI_DEFAULT="$_HOME/wiki" ;;
-  linux)   WIKI_DEFAULT="${XDG_DATA_HOME:-$_HOME/.local/share}/wiki" ;;
+  windows|macos|linux) WIKI_DEFAULT="$_HOME/wiki" ;;
 esac
 WIKI_VAULT="${LLM_WIKI_VAULT:-$WIKI_DEFAULT}"
 
@@ -347,11 +341,17 @@ if ! command -v uvx &>/dev/null; then
   case "$PLATFORM" in
     macos|linux)
       curl -LsSf https://astral.sh/uv/install.sh | sh
+      export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
       ;;
     windows)
-      powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+      PS_CMD="pwsh"; command -v pwsh &>/dev/null || PS_CMD="powershell"
+      $PS_CMD -c "irm https://astral.sh/uv/install.ps1 | iex"
+      export PATH="${USERPROFILE//\\//}/.local/bin:${USERPROFILE//\\//}/.cargo/bin:$PATH"
       ;;
   esac
+fi
+if ! command -v uvx &>/dev/null; then
+  echo "⚠️  uvx not found after install — restart shell then re-run Step 3f"; return 0 2>/dev/null || exit 0
 fi
 
 if command -v claude &>/dev/null; then
@@ -394,7 +394,8 @@ echo "✅ agentation skill installed"
 ## Step 4 — Verification
 
 ```bash
-SKILLS_ROOT="$HOME/.agents/skills"
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
 REPO_URL="https://github.com/akillness/oh-my-skills"
 
 # Core skill check
@@ -413,11 +414,11 @@ check_no_dup() {
   local skill="$1" agent_dir="$2" agent_name="$3"
   [ -e "$agent_dir/$skill" ] && echo "⚠️  $skill found on $agent_name (should not be there)"
 }
-check_no_dup "omc"  "$HOME/.gemini/skills"          "gemini-cli"
-check_no_dup "omc"  "$HOME/.codex/skills"            "codex"
-check_no_dup "omc"  "$HOME/.config/opencode/skills"  "opencode"
-check_no_dup "ohmg" "$HOME/.claude/skills"           "claude-code"
-check_no_dup "ohmg" "$HOME/.codex/skills"            "codex"
+check_no_dup "omc"  "$HOME/.gemini/skills"                       "gemini-cli"
+check_no_dup "omc"  "$HOME/.codex/skills"                        "codex"
+check_no_dup "omc"  "$HOME/.config/opencode/skills"              "opencode"
+check_no_dup "ohmg" "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills" "claude-code"
+check_no_dup "ohmg" "$HOME/.codex/skills"                        "codex"
 echo "✅ Platform dedup verified"
 
 # Preservation check
@@ -742,8 +743,14 @@ Operating expectations:
 
 ```bash
 # Re-use PLATFORM / _HOME / SKILLS_ROOT from Step 0 if already set
-PLATFORM="${PLATFORM:-$(uname -s 2>/dev/null | grep -qi darwin && echo macos || (uname -s 2>/dev/null | grep -qi linux && echo linux || echo windows))}"
-_HOME="${_HOME:-$HOME}"
+_OS_STEP6="$(uname -s 2>/dev/null || echo Windows)"
+case "$_OS_STEP6" in
+  Darwin*)               PLATFORM="${PLATFORM:-macos}"   ;;
+  Linux*)                PLATFORM="${PLATFORM:-linux}"   ;;
+  MINGW*|MSYS*|CYGWIN*)  PLATFORM="${PLATFORM:-windows}" ;;
+  *)                     PLATFORM="${PLATFORM:-windows}" ;;
+esac
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
 SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
 REPO_URL="${REPO_URL:-https://github.com/akillness/oh-my-skills}"
 
