@@ -1,0 +1,23 @@
+{
+  "skill": "ultraqa",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "prompt": "$ultraqa --tests",
+      "expected_output": "The ultraqa skill activates, discovers repo-native test commands, runs the QA cycle, and repeats fixes until pass or concrete blocker.",
+      "checks": [
+        "Treats `$ultraqa` as a direct trigger",
+        "Preserves failure evidence",
+        "Stops only on pass, blocker, or repeated identical failure"
+      ]
+    },
+    {
+      "prompt": "$ultaqa make lint and typecheck pass",
+      "expected_output": "The typo `$ultaqa` is treated as `$ultraqa` and the same QA cycling contract is applied.",
+      "checks": [
+        "Handles the common `$ultaqa` typo",
+        "Runs lint/typecheck-oriented QA cycling"
+      ]
+    }
+  ]
+}

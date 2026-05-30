@@ -1,0 +1,14 @@
+N:ultrawork
+D:Exact-name `$ultrawork` / `$ulw` front door for high-parallelism independent work bursts. Use when separable implementation, cleanup, docs, tests, or migration lanes can proceed with clear file ownership; route coordinated shared-state work to `team` and QA/review loops to `ultraqa`.
+T:Read|Write|Bash|Grep|Glob
+G:ultrawork|$ultrawork|ulw|$ulw|omx|codex|parallel-work|burst-work|independent-lanes
+F:Codex CLI|Claude Code|Gemini CLI|OpenCode
+S:
+  1:Split work into independent lanes with explicit file ownership
+  2:Defer shared files to a coordinator integration step
+  3:Parallelize safe reads/checks/work where the runtime allows
+  4:Run full verification after integration
+R:
+  team:Use for tmux-backed coordinated workers
+  ultraqa:Use for QA/review cycling
+  autopilot:Use for full end-to-end autonomous builds

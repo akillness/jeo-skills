@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-128-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-132-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**128 local skill folders · 128 installable skills · TOON Format · Cross-platform**
+**132 local skill folders · 132 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**128 local skill folders · 128 installable skills · TOON Format · Cross-platform**
+**132 local skill folders · 132 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 128 local skill folders and 128 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+Agent Skills is a curated collection with 132 local skill folders and 132 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -310,9 +310,9 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 128 local skill folders = 128 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 132 local skill folders = 132 total installable skills
 
-### 🎯 Core Orchestration (15)
+### 🎯 Core Orchestration (13)
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
@@ -321,6 +321,10 @@ rtk init -g
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ultraqa`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | Claude-first orchestration router for oh-my-claudecode — distinguishes plugin slash skills from the `omc` shell CLI, maps `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` intents to OMX/OMA when requested, handles recovery/state issues, and routes adjacent work outward |
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$autopilot`, `$ulw`, `$ultraqa`, `$deep-interview`, `$ralplan` | Codex | Codex workflow layer with Claude parity — `$team` for coordinated workers, `$autopilot` for full autonomous builds, `$ulw`/`$ultrawork` for burst parallelism, `$ultraqa` for QA fan-out, plus tmux/psmux team runtime and omx explore/sparkshell |
+| `autopilot` | `$autopilot`, `autopilot`, `auto pilot`, `full-auto` | Codex | Exact-name Codex/OMX front door for idea-to-verified-code autonomous builds |
+| `team` | `$team`, `team mode`, `omx team`, `coordinated workers` | Codex | Exact-name coordinated multi-agent workflow; prefers `omx team` when the runtime is installed |
+| `ultrawork` | `$ultrawork`, `$ulw`, `ultrawork`, `parallel work` | Codex | Exact-name high-parallelism burst workflow for independent implementation or cleanup lanes |
+| `ultraqa` | `$ultraqa`, `$ultaqa`, `ultraqa`, `QA cycling` | Codex | Exact-name QA cycling workflow for tests/build/lint/typecheck/review loops |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity | Portable OMA harness entry — keeps `.agents` canonical, regenerates vendor views with `oma link`, and maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` with Antigravity limits stated |
 | `ooo` | `ooo`, `ouroboros`, `ooo ralph` | All | Ouroboros spec-first development loop — Socratic interview, immutable seed/spec, drift-aware execution, persistent completion until verification passes. Plugin: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
@@ -774,7 +778,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 128 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 132 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

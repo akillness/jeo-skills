@@ -1,0 +1,14 @@
+N:autopilot
+D:Exact-name Codex/OMX-compatible `$autopilot` front door for autonomous idea-to-verified-code work. Use when the user invokes `$autopilot`, autopilot, auto pilot, full-auto, or asks for an end-to-end build; route small focused edits to direct implementation and stricter spec-first loops to `ooo` or `ralph`.
+T:Read|Write|Bash|Grep|Glob
+G:autopilot|$autopilot|omx|codex|autonomous-build|full-auto|implementation|qa|verification
+F:Codex CLI|Claude Code|Gemini CLI|OpenCode
+S:
+  1:Inspect stack, likely files, test commands, and constraints before editing
+  2:Freeze a compact execution packet with goal, constraints, work areas, and verification commands
+  3:Implement in safe slices and verify after meaningful changes
+  4:Finish only after a fresh final verification pass or a concrete blocker
+R:
+  ooo:Use for immutable spec-first execution or drift-aware completion loops
+  ralph:Use for high-assurance fix/verify loops over a known plan
+  omx:Use for broader Codex runtime setup, team mode, and command parity guidance

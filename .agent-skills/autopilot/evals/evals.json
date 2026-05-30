@@ -1,0 +1,23 @@
+{
+  "skill": "autopilot",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "prompt": "$autopilot build a task API with auth and tests",
+      "expected_output": "The autopilot skill activates as the exact-name front door and runs an end-to-end plan, implementation, QA, and verification workflow.",
+      "checks": [
+        "Treats `$autopilot` as a direct trigger",
+        "Does not route first to the broad `omx` router",
+        "Includes final verification before done"
+      ]
+    },
+    {
+      "prompt": "Fix this one typo in README",
+      "expected_output": "The autopilot skill should not activate; the task should be handled as a small direct edit.",
+      "checks": [
+        "Rejects small focused edits",
+        "Does not inflate the task into a multi-phase autonomous build"
+      ]
+    }
+  ]
+}

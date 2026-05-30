@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-05-30T02:58:42Z",
-  "skill_count": 128,
+  "skill_count": 132,
   "categories": {
     "planning-review": [
       "agentation",
@@ -66,6 +66,10 @@
       "ohmg",
       "omc",
       "omx",
+      "autopilot",
+      "team",
+      "ultrawork",
+      "ultraqa",
       "survey"
     ],
     "documentation": [
@@ -4274,6 +4278,140 @@
         "Gemini",
         "Codex"
       ]
+    },
+    {
+      "name": "autopilot",
+      "description": "Run a Codex/OMX-compatible autonomous build workflow from a product or code request through planning, implementation, QA, and final verification. Use when the user invokes `$autopilot`, autopilot, auto pilot, full-auto, or asks the agent to build the whole thing end to end.",
+      "category": "core-orchestration",
+      "path": "autopilot/SKILL.md",
+      "tags": [
+        "autopilot",
+        "$autopilot",
+        "omx",
+        "codex",
+        "autonomous-build",
+        "planning",
+        "implementation",
+        "qa",
+        "verification"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "autopilot",
+      "version": "1.0.0",
+      "commands": []
+    },
+    {
+      "name": "team",
+      "description": "Run or route a coordinated multi-agent team workflow for Codex/OMX. Use when the user invokes `$team`, asks for team mode, coordinated workers, tmux workers, or multiple agents sharing a task list. Prefer `omx team` when the runtime is installed.",
+      "category": "core-orchestration",
+      "path": "team/SKILL.md",
+      "tags": [
+        "team",
+        "$team",
+        "omx",
+        "codex",
+        "multi-agent",
+        "tmux",
+        "coordination",
+        "workers",
+        "shared-task-list"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "team",
+      "version": "1.0.0",
+      "commands": []
+    },
+    {
+      "name": "ultrawork",
+      "description": "Run a high-parallelism work burst for independent implementation or cleanup lanes. Use when the user invokes `$ultrawork`, `$ulw`, ultrawork, or asks to parallelize separable work quickly. Choose `team` when workers need shared task state.",
+      "category": "core-orchestration",
+      "path": "ultrawork/SKILL.md",
+      "tags": [
+        "ultrawork",
+        "$ultrawork",
+        "ulw",
+        "$ulw",
+        "omx",
+        "codex",
+        "parallel-work",
+        "burst-work"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "ultrawork",
+      "version": "1.0.0",
+      "commands": []
+    },
+    {
+      "name": "ultraqa",
+      "description": "Run an autonomous QA cycling workflow: test, diagnose, fix, and repeat until the quality goal is met or a concrete blocker is proven. Use when the user invokes `$ultraqa`, ultraqa, QA cycling, test/build/lint repair, or the typo `$ultaqa`.",
+      "category": "core-orchestration",
+      "path": "ultraqa/SKILL.md",
+      "tags": [
+        "ultraqa",
+        "$ultraqa",
+        "ultaqa",
+        "$ultaqa",
+        "omx",
+        "codex",
+        "qa",
+        "tests",
+        "build",
+        "lint",
+        "typecheck",
+        "review"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "ultraqa",
+      "version": "1.0.0",
+      "commands": []
     }
   ]
 }

@@ -64,6 +64,22 @@ STOPWORDS = {
     "with",
 }
 
+COMMAND_SKILL_ALIASES = {
+    "$autopilot": "autopilot",
+    "autopilot": "autopilot",
+    "auto pilot": "autopilot",
+    "$team": "team",
+    "team mode": "team",
+    "$ulw": "ultrawork",
+    "ulw": "ultrawork",
+    "$ultrawork": "ultrawork",
+    "ultrawork": "ultrawork",
+    "$ultraqa": "ultraqa",
+    "ultraqa": "ultraqa",
+    "$ultaqa": "ultraqa",
+    "ultaqa": "ultraqa",
+}
+
 
 def normalize_text(text: str) -> str:
     return re.sub(r"\s+", " ", text.lower().replace("_", " ").strip())
@@ -303,6 +319,17 @@ class SkillQueryHandler:
         score = 0
         name = skill["name"].lower()
         name_phrase = name.replace("-", " ")
+
+        for alias, target_name in COMMAND_SKILL_ALIASES.items():
+            alias_norm = normalize_text(alias)
+            if (
+                target_name == name
+                and re.search(
+                    rf"(?<![A-Za-z0-9_-]){re.escape(alias_norm)}(?![A-Za-z0-9_-])",
+                    query_norm,
+                )
+            ):
+                score += 180
 
         if re.search(
             rf"(?<![A-Za-z0-9_-]){re.escape(name)}(?![A-Za-z0-9_-])",

@@ -1,0 +1,14 @@
+N:team
+D:Exact-name `$team` front door for Codex/OMX coordinated multi-agent work. Use when the user asks for team mode, tmux workers, coordinated agents, shared task state, or `$team`; prefer `omx team` when installed and route independent burst work to `ultrawork`.
+T:Read|Write|Bash|Grep|Glob
+G:team|$team|omx-team|codex|multi-agent|tmux|workers|coordination|shared-task-list
+F:Codex CLI|Claude Code|Gemini CLI|OpenCode
+S:
+  1:Check `omx` and `tmux` before starting runtime-backed team mode
+  2:Start with `omx team ...` and capture team name, panes, and state path
+  3:Monitor with `omx team status <team-name>` until tasks are terminal
+  4:Shutdown only after completion or explicit abort
+R:
+  ultrawork:Use for independent parallel lanes without shared state
+  ultraqa:Use for parallel QA/review fan-out
+  omx:Use for runtime setup and cross-platform command mapping

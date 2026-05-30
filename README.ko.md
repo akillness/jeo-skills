@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-128-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-132-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**128개 로컬 스킬 폴더 · 설치 가능 스킬 128개 · TOON 포맷 · 멀티플랫폼**
+**132개 로컬 스킬 폴더 · 설치 가능 스킬 132개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**128개 로컬 스킬 폴더 · 설치 가능 스킬 128개 · TOON 포맷 · 멀티플랫폼**
+**132개 로컬 스킬 폴더 · 설치 가능 스킬 132개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 128개 로컬 스킬 폴더와 128개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 132개 로컬 스킬 폴더와 132개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -309,7 +309,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 128개 로컬 스킬 폴더 = 총 128개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 132개 로컬 스킬 폴더 = 총 132개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (13개)
 
@@ -320,6 +320,10 @@ rtk init -g
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ultraqa`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | oh-my-claudecode용 Claude-first 라우터 — plugin slash skill과 `omc` 셸 CLI를 구분하고, `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` 의도를 필요 시 OMX/OMA로 매핑하며, recovery/state 문제와 route-out을 처리 |
 | `harness` | `harness`, `build a harness` | 전체 | 메타스킬: 도메인 전용 에이전트 팀 설계, `.claude/agents/`·`.claude/skills/` 생성, harness 검증 |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$autopilot`, `$ulw`, `$ultraqa`, `$deep-interview`, `$ralplan` | Codex | Claude 대응표가 포함된 Codex 워크플로우 레이어 — `$team`은 조율형 워커, `$autopilot`은 전체 자동 구현, `$ulw`/`$ultrawork`는 burst parallelism, `$ultraqa`는 QA fan-out에 사용 |
+| `autopilot` | `$autopilot`, `autopilot`, `auto pilot`, `full-auto` | Codex | idea-to-verified-code 자율 구현을 위한 exact-name Codex/OMX 프런트도어 |
+| `team` | `$team`, `team mode`, `omx team`, `coordinated workers` | Codex | 조율형 멀티 에이전트 워크플로 exact-name 스킬; 런타임이 있으면 `omx team` 우선 |
+| `ultrawork` | `$ultrawork`, `$ulw`, `ultrawork`, `parallel work` | Codex | 독립 구현/정리 레인을 빠르게 병렬화하는 exact-name burst workflow |
+| `ultraqa` | `$ultraqa`, `$ultaqa`, `ultraqa`, `QA cycling` | Codex | tests/build/lint/typecheck/review 루프를 위한 exact-name QA cycling 워크플로 |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity | 휴대형 OMA 하네스 진입 스킬 — `.agents`를 canonical로 유지하고 `oma link`로 vendor view를 갱신하며 team/autopilot/ultrawork/ultraqa 의도를 `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, `oma agent:parallel`로 매핑 |
 | `ooo` | `ooo`, `ouroboros`, `ooo ralph` | 전체 | Ouroboros 스펙 우선 개발 루프 — 소크라테스식 인터뷰, 불변 seed/spec, 드리프트 인식 실행, 검증 통과까지 이어가는 완료 루프. 플러그인: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | 패킷 우선 BMAD/BMM 프런트도어 — 현재 packet을 분류하고 다음 산출물 또는 gate를 고른 뒤 review / runtime / 실행 세부 작업을 바깥으로 라우팅 |
@@ -740,7 +744,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 128개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 132개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

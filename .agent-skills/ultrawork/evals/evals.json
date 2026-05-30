@@ -1,0 +1,23 @@
+{
+  "skill": "ultrawork",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "prompt": "$ulw split this cleanup across docs, tests, and API handlers",
+      "expected_output": "The ultrawork skill activates, partitions independent lanes, defers shared files, and verifies after integration.",
+      "checks": [
+        "Treats `$ulw` as a direct trigger",
+        "Requires explicit file ownership",
+        "Runs full verification after integration"
+      ]
+    },
+    {
+      "prompt": "$team 4:executor \"coordinate this shared migration\"",
+      "expected_output": "The request should route to team because shared runtime state and coordination are required.",
+      "checks": [
+        "Does not compete with exact `$team` requests",
+        "Routes coordinated worker mode to team"
+      ]
+    }
+  ]
+}

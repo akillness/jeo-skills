@@ -1,0 +1,23 @@
+{
+  "skill": "team",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "prompt": "$team 3:executor \"fix the failing TypeScript suites\"",
+      "expected_output": "The team skill activates and checks the `omx` and `tmux` runtime before starting `omx team`.",
+      "checks": [
+        "Treats `$team` as a direct trigger",
+        "Prefers runtime-backed `omx team`",
+        "Requires startup evidence and status monitoring"
+      ]
+    },
+    {
+      "prompt": "Parallelize these independent docs and test cleanups",
+      "expected_output": "The request should route to ultrawork rather than team because it does not require shared runtime state.",
+      "checks": [
+        "Routes independent lanes to ultrawork",
+        "Does not force tmux team mode"
+      ]
+    }
+  ]
+}

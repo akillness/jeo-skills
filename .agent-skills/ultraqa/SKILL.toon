@@ -1,0 +1,14 @@
+N:ultraqa
+D:Exact-name `$ultraqa` front door for QA cycling: run tests/build/lint/typecheck or review, diagnose failures, fix, and repeat until the goal passes or a concrete blocker is proven. Treat `$ultaqa` as a common typo for `$ultraqa`.
+T:Read|Write|Bash|Grep|Glob
+G:ultraqa|$ultraqa|ultaqa|$ultaqa|qa|tests|build|lint|typecheck|review|omx|codex
+F:Codex CLI|Claude Code|Gemini CLI|OpenCode
+S:
+  1:Map the request to tests, build, lint, typecheck, review, or custom goal
+  2:Run repo-native verification commands and preserve failure evidence
+  3:Diagnose and apply the smallest fix
+  4:Repeat up to five cycles, stopping after three repeated identical failures
+R:
+  ultrawork:Use for independent implementation lanes
+  team:Use for coordinated runtime workers
+  code-review:Use for review-only findings without an edit loop

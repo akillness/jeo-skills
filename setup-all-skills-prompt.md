@@ -104,7 +104,7 @@ fi
 
 ---
 
-## Step 1 — Install All 128 Skills (Batch)
+## Step 1 — Install All 132 Skills (Batch)
 
 Install all skills to the global location, then link shared skills to all detected agents.
 Re-running this step safely overwrites existing skills (symlinks are updated in place).
@@ -121,7 +121,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 128 skills to global store, link shared skills to all detected agents
+# Install ALL 132 skills to global store, link shared skills to all detected agents
 # --full-depth: discovers nested skills (7 skills require this to be found)
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
@@ -129,13 +129,13 @@ skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 
 > **Global vs Project install — why skill files may be missing**
 >
-> **Global install** (`-g`): downloads all 128 skills from the GitHub repo into the agent's global
+> **Global install** (`-g`): downloads all 132 skills from the GitHub repo into the agent's global
 > skills store (`~/.claude/skills/`, `~/.codex/skills/`, etc.). Requires `--full-depth` to discover
 > the 7 skills whose `SKILL.md` is nested in a subdirectory. Without this flag only ~120 skills
 > are found and linked.
 >
 > **Project install** (`experimental_install` / `skills restore`): reads `skills-lock.json` in the
-> project root and restores **only the skills listed there** — not all 128. If `skills-lock.json`
+> project root and restores **only the skills listed there** — not all 132. If `skills-lock.json`
 > contains only 8 entries (omc, ooo, ai-tool-compliance, llm-monitoring-dashboard, survey, harness,
 > deep-dive, deepinit) then only those 8 are restored regardless of how many are in the global store. To include more
 > skills in a project install, add them to `skills-lock.json` first.
@@ -700,11 +700,11 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (128 skills)
+## Skill Inventory (132 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
-| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, vibe-kanban, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
+| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, omc, omx, autopilot, team, ultrawork, ultraqa, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, vibe-kanban, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
 | **Platform Setup** | omc *(Claude-first OMC router; maps `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` intents to OMX/OMA when cross-runtime parity is requested)* | claude-code |
 | **Platform Setup** | ohmg *(Gemini/Antigravity OMA harness; maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` while keeping `.agents` canonical)* | antigravity |
 | **Platform Setup** | omx *(Codex workflow layer with `$team`, `$autopilot`, `$ulw`/`$ultrawork`, and `$ultraqa` equivalents for Claude team/autopilot/ultrawork/ultraqa workflows)* | codex, claude-code |
@@ -772,6 +772,10 @@ If no → skip silently. Never re-ask.
 | `agentic-skills` | `agentic-skills`, `/spec`, `/plan`, `/build`, `/test`, `/review`, `/code-simplify`, `/ship`, `spec-driven`, `source-driven development`, `google engineering practices` | Production-grade engineering framework for AI agents — spec-driven dev, incremental TDD, five-axis code review, security hardening, and disciplined git/CI/CD workflows. Plugin: `claude plugin marketplace add addyosmani/agent-skills` |
 | `research-paper-writing` | `research paper`, `academic paper` | ML/CV/NLP paper + rebuttal workflow — abstract/introduction/method/experiments, figure-table support, reviewer response, camera-ready revision |
 | `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$autopilot`, `$ulw`, `$ultraqa`, `$deep-interview`, `$ralplan` | Codex CLI workflow layer with Claude team/autopilot/ultrawork/ultraqa parity — team runtime, explore, sparkshell |
+| `autopilot` | `$autopilot`, `autopilot`, `auto pilot`, `full-auto` | Exact-name Codex/OMX front door for idea-to-verified-code autonomous builds |
+| `team` | `$team`, `team mode`, `omx team`, `coordinated workers` | Exact-name coordinated multi-agent workflow; prefers `omx team` when the runtime is installed |
+| `ultrawork` | `$ultrawork`, `$ulw`, `ultrawork`, `parallel work` | Exact-name high-parallelism burst workflow for independent implementation or cleanup lanes |
+| `ultraqa` | `$ultraqa`, `$ultaqa`, `ultraqa`, `QA cycling` | Exact-name QA cycling workflow for tests/build/lint/typecheck/review loops |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity entry for OMA; maps team/autopilot/ultrawork/ultraqa intents while keeping `.agents` canonical |
 | `diagnose` | `diagnose`, `systematic debugging`, `feedback loop`, `six-phase debug` | Systematic debugging: invest in Phase 1 (fast feedback loop), then reproduce → hypothesize → instrument → fix+test → cleanup |
 | `tdd` | `tdd`, `test-driven development`, `red-green-refactor`, `test first` | Red-green-refactor TDD using vertical slices — tests specify observable behavior through public interfaces |
