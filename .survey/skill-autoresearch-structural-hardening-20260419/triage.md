@@ -1,4 +1,0 @@
-# Triage
-- Problem: The existing `skill-autoresearch` skill is useful but still oversized and too artifact-heavy in the front door. It needs a tighter routing contract for repo-local skill ratcheting, clearer route-outs to hosted eval platforms and ML `autoresearch`, and a smaller reusable support packet.
-- Audience: Maintainers improving reusable skills, prompts, SOPs, and workflow docs across developer workflow, web/fullstack, PM/ops, marketing/content automation, and game-production repositories.
-- Why now: The repo's graph layer still flags `skill-autoresearch` on the oversized front-door watchlist, while continuous hourly maintenance increasingly depends on frozen evaluators, append-only experiment logs, and repeatable keep-or-revert decisions.

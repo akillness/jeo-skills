@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/jeo/SKILL.md` | Packet-first routing plus a dedicated route-out reference will improve trigger precision and reduce front-door sprawl without weakening the `.jeo` contract | Rewrote `jeo` around orchestration packets, added `references/intake-packets-and-route-outs.md`, expanded evals, synced compact/discovery/wiki/graph surfaces | Validation passes for skill lint, JSON integrity, catalog sync, and graph/wiki/doc refresh | Keep | Transferable pattern matches recent dense-anchor hardening across the repo |

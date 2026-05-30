@@ -1,3 +1,0 @@
-rtk_yes
-graphify_yes
-obsidian_no

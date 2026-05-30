@@ -1,4 +1,0 @@
-# Triage
-- Problem: The repo’s `deployment-automation` skill is still a 408-line front door even after its 2026-04-13 modernization. It now has the right release-execution boundary, but the main `SKILL.md` still embeds packet templates, strategy notes, and repeated route-outs that should live in focused support files.
-- Audience: Agents and developers planning or reviewing preview/staging/prod releases for web apps, backend services, and fullstack systems.
-- Why now: In this run’s required cross-domain opportunity scan (CLI/dev workflow, web/fullstack, product/ops, marketing/GTM, game development), `deployment-automation` was the highest-line-count active anchor in the live infrastructure lane and the clearest next candidate where a structural hardening pass can improve trigger clarity without adding another overlapping deployment wrapper.

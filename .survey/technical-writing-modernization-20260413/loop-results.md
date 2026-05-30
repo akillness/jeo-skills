@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `technical-writing/SKILL.md` | Turning the legacy catch-all into an internal technical-docs anchor with explicit route-outs will improve trigger precision and support-file reuse. | Rewrote the skill around six document modes, added route-outs, moved detail into `references/`, added `evals/evals.json`, and updated discovery/docs surfaces. | `validate_skill.sh` passed with 0 errors / 0 warnings; `SKILL.md` reduced from 581 lines to 320; eval JSON parsed; graph scan raised support coverage to 49 refs / 48 evals. | Keep | Transferable improvement across spec, ADR, runbook, migration, and developer-guide prompts without creating another wrapper skill. |

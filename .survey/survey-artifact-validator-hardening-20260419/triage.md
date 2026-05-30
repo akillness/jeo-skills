@@ -1,4 +1,0 @@
-# Triage
-- Problem: `survey` is still an oversized high-frequency front door, and its `.survey/{slug}/` artifact contract is enforced mostly by prose and maintainer discipline instead of a small reusable validator.
-- Audience: `oh-my-skills` maintainers and agent loops that use `survey` before planning or rewriting skills across Claude / Codex / Gemini / OpenCode-style runtimes.
-- Why now: `graphify-out/GRAPH_REPORT.md` still flags `survey` on the oversized front-door watchlist, while the repo's dominant maintenance pattern has shifted toward smaller routers plus support packets and truthful validator commands.

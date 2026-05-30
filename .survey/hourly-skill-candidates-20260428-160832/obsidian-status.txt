@@ -1,3 +1,0 @@
-2026/04/29 01:09:36 Failed to execute Obsidian URI
-
-FALLBACK_DIRECT_WRITE=/Users/jang_jennie/work/oh-my-skills-cron/obsidian-vault/hourly-survey-20260428-160832.md

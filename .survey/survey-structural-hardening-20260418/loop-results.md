@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `survey/SKILL.md` | A routing-first front door plus explicit support-doc references will improve clarity without weakening the 4-lane artifact contract | Shrink the main skill from 392 to 309 lines, move platform portability detail into a new reference, refresh evals/compact/discovery wording, and sync README/setup/manifest surfaces | `validate_skill.sh` pass, catalog sync pass, JSON parse pass | Keep | Mirrors the repo's dense-anchor cleanup pattern while preserving the canonical `.survey/{slug}/` contract |

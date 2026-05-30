@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `genkit` (+ supporting discovery files) | Clarifying `genkit` as the backend workflow/orchestration anchor, while routing direct app/client SDK work to `firebase-ai-logic`, will improve trigger precision and reuse more than adding another Firebase AI wrapper. | Rewrote `genkit`, added `references/` + `evals/`, tightened `firebase-ai-logic` trigger wording, refreshed README / README.ko / setup prompt / manifests / wiki / graph outputs. | `validate_skill.sh` passed for `genkit` and `firebase-ai-logic`; catalog sync passed; JSON validation passed. | Keep | Transferable boundary improvement for future Firebase/fullstack AI maintenance runs. |

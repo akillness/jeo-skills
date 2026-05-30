@@ -46,5 +46,18 @@ venv.bak/
 .vscode/
 .idea/
 
+# Agent/runtime state generated at the repository root.
+# Keep source skills under .agent-skills/ tracked; do not commit live session state.
+/.omc/
+/.omx/
+/.survey/
+/.codex/
+/.claude/
+/.gemini/
+/.agents/
+/.opencode/
+/.ouroboros/
+/.agent-skills/.omc/
+
 # Ensure .agent-skills is tracked (not ignored)
 !.agent-skills/

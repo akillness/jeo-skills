@@ -1,6 +1,0 @@
-agentic-ai: raw=30, kept=3, median_stars=0.0
-web-frontend: raw=4, kept=1, median_stars=0.0
-web-backend: raw=1, kept=1, median_stars=7524
-cli-open-source: raw=2, kept=1, median_stars=1578.5
-game-development: raw=30, kept=8, median_stars=0.0
-recommended_lane_count=5

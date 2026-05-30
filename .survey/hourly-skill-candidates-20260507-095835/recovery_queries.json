@@ -1,7 +1,0 @@
-{
-  "agentic_ai_skill": ["agentic ai agents skill stars:>200 pushed:>=2025-01-01", "autonomous agent framework skill stars:>500 pushed:>=2024-01-01"],
-  "web_frontend_skill": ["frontend ui component skill stars:>500 pushed:>=2025-01-01", "react frontend toolkit stars:>1000 pushed:>=2024-01-01"],
-  "web_backend_skill": ["backend api framework skill stars:>500 pushed:>=2025-01-01", "server backend framework stars:>2000 pushed:>=2024-01-01"],
-  "cli_open_source_skill": ["cli open source tool skill stars:>500 pushed:>=2025-01-01", "terminal cli framework stars:>2000 pushed:>=2024-01-01"],
-  "game_development_skill": ["game development engine toolkit stars:>500 pushed:>=2025-01-01", "gamedev framework open source stars:>2000 pushed:>=2024-01-01"]
-}

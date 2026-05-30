@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/api-documentation/SKILL.md` | A smaller routing-first front door plus one focused support packet will improve clarity without losing trigger coverage. | Rewrote `SKILL.md`, added `references/output-packets-and-navigation.md`, expanded evals with a large-portal regrouping case, refreshed `SKILL.toon`, and regenerated graph/wiki artifacts. | `validate_skill.sh` pass; `validate_catalog_sync.py` pass; `git diff --check` pass; `SKILL.md` shrank from 336 to 201 lines. | Keep | Transferable dense-anchor cleanup pattern for other oversized documentation/dev-workflow skills. |

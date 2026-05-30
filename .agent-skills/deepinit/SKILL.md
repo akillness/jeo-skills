@@ -1,12 +1,14 @@
 ---
 name: deepinit
-description: Deep codebase initialization with hierarchical AGENTS.md documentation
+description: Create or refresh hierarchical AGENTS.md documentation for Claude Code, Codex/OMX, Gemini, and Antigravity/OMA projects, preserving manual notes while excluding runtime state such as root .omc, .omx, .survey, .codex, and generated build folders.
 level: 4
 ---
 
 # Deep Init Skill
 
 Creates comprehensive, hierarchical AGENTS.md documentation across the entire codebase.
+
+Read [references/scope-and-preservation.md](references/scope-and-preservation.md) before running on a repository with existing AGENTS.md files or runtime directories. Validate results with `scripts/validate_agents_hierarchy.py`.
 
 ## Core Concept
 
@@ -86,8 +88,14 @@ This creates a navigable hierarchy:
 
 ```
 Task(subagent_type="explore", model="haiku",
-  prompt="List all directories recursively. Exclude: node_modules, .git, dist, build, __pycache__, .venv, coverage, .next, .nuxt")
+  prompt="List all directories recursively. Exclude runtime/build/cache directories from references/scope-and-preservation.md.")
 ```
+
+Default excludes:
+- `.git/`, `node_modules/`, `dist/`, `build/`, `coverage/`, `.next/`, `.nuxt/`, `__pycache__/`, `.venv/`, `venv/`
+- Root runtime state: `.omc/`, `.omx/`, `.survey/`, `.codex/`, `.claude/`, `.gemini/`, `.agents/`, `.opencode/`, `.ouroboros/`
+
+Keep `.agent-skills/` in scope because it is repository source, not runtime state.
 
 ### Step 2: Create Work Plan
 
@@ -126,6 +134,7 @@ When AGENTS.md already exists:
    - Update auto-generated content
    - Preserve manual annotations
    - Update timestamp
+   - Keep existing instructions that are still true; flag stale instructions instead of deleting them silently
 
 ### Step 5: Validate Hierarchy
 
@@ -140,11 +149,7 @@ After generation, run validation checks:
 
 Validation script pattern:
 ```bash
-# Find all AGENTS.md files
-find . -name "AGENTS.md" -type f
-
-# Check parent references
-grep -r "<!-- Parent:" --include="AGENTS.md" .
+python3 .agent-skills/deepinit/scripts/validate_agents_hierarchy.py .
 ```
 
 ## Smart Delegation
@@ -201,6 +206,17 @@ Container directory for organizing related modules.
 - [ ] Incorrect file names
 - [ ] Broken parent references
 - [ ] Missing important files
+- [ ] Documenting ignored runtime state as source architecture
+- [ ] Replacing user-authored manual notes
+
+## Runtime-Specific Notes
+
+| Runtime | Documentation rule |
+|---------|--------------------|
+| Claude Code / OMC | Root `AGENTS.md` may mention Claude workflow, but do not document `.omc/` state as source |
+| Codex / OMX | Root `AGENTS.md` should be suitable for Codex model instruction injection; do not document `.omx/` state as source |
+| Gemini / Antigravity / OMA | Document `.agents/` only when it is intentionally checked in as harness source; otherwise treat root `.agents/` as generated/runtime state |
+| `.agent-skills/` | Always allowed as source; document skill folders, scripts, references, evals, and validation commands |
 
 ## Example Output
 
@@ -319,3 +335,8 @@ When running on an existing codebase with AGENTS.md files:
 - **Batch small directories** - Process multiple at once
 - **Skip unchanged** - If directory hasn't changed, skip regeneration
 - **Parallel writes** - Multiple agents writing different files simultaneously
+
+## References
+
+- [Scope and preservation](references/scope-and-preservation.md)
+- `scripts/validate_agents_hierarchy.py`

@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/omc/SKILL.md` | Naming install topology before packet selection will improve trigger precision and reduce duplicate-install / local-checkout confusion better than another runtime wrapper. | Rewrote `omc` around topology-first routing, added `references/install-topology-and-recovery.md`, refreshed packet reference, expanded evals, and synced discovery/docs surfaces. | `validate_skill.sh` pass; JSON checks pass; catalog sync pass. | Keep | Transferable across OMC operators because the ambiguity is topology-first, not just mode-first. |

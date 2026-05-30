@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/workflow-automation/SKILL.md` | A routing-first front door with one new mode-packet reference will improve trigger clarity and reduce dense-anchor overhead without losing coverage | Shrunk `SKILL.md`, added `references/mode-packets-and-route-outs.md`, expanded evals, synced compact/discovery surfaces, refreshed graph/wiki artifacts | `validate_skill.sh` pass; catalog sync pass; graph/wiki surfaces updated consistently | Keep | Reduced from 273 to 213 lines while adding a clearer repo-maintenance packet and sharper route-outs |

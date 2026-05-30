@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/database-schema-design/SKILL.md` | Rewriting the legacy example-heavy skill around storage-lane choice, invariants, staged migrations, and backend handoffs will improve trigger quality and usefulness | Replaced the legacy skill body, added `references/` + `evals/`, updated README / README.ko / setup prompt / `skills.json` wording, and refreshed survey/wiki/graph artifacts | `validate_skill.sh` passed with 0 errors/0 warnings; JSON parse checks passed for evals and manifest | Keep | Stronger backend boundary, better trigger precision, and support coverage improved without creating a duplicate skill |

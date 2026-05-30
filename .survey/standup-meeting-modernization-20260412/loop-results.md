@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | standup-meeting/SKILL.md | A mode-selection + routing rewrite with references/evals will improve trigger precision and dry-run usefulness over the legacy template-heavy version. | Rewrote `SKILL.md`, added `references/facilitation-modes.md`, added `evals/evals.json`, updated README / README.ko / `.agent-skills/skills.json`, and refreshed graph + wiki artifacts. | `validate_skill.sh` passed with 0 errors / 0 warnings; support coverage increased to 31 skills with `references/` and 30 with `evals/`. | Keep | Frozen harness held. No new PM skill was added; routing boundaries improved instead. |

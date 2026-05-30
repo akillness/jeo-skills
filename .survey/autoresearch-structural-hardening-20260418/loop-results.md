@@ -1,4 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 0 | autoresearch/SKILL.md | Baseline is valid but oversized | Record baseline and frozen harness | Baseline accepted | Keep | Graph report listed `autoresearch` at 333 lines on the oversized watchlist |
-| 1 | autoresearch/SKILL.md | A routing-first rewrite plus one focused route-out reference will improve usability more than another broad expansion | Rewrote the front door around five operating modes, moved routing/handoff detail into `references/operating-modes-and-route-outs.md`, refreshed `evals/evals.json`, and synced discovery/docs surfaces | `validate_skill.sh` passed; JSON for `evals/evals.json` and `skills.json` parsed successfully; SKILL.md dropped to 284 lines | Keep | Boundary with `skill-autoresearch` and app-level eval tools stayed explicit |

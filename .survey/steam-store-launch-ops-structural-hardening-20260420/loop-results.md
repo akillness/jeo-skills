@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | steam-store-launch-ops | Choosing one Steam packet before intervention details will improve trigger precision, route-out clarity, and front-door shape without changing the skill boundary | Rewrote `SKILL.md` as a packet-first router, added `references/intake-packets-and-route-outs.md`, expanded evals with route-out cases, refreshed compact/discovery surfaces, and refreshed graph/wiki artifacts | `validate_skill.sh` passed with 0 errors/0 warnings; `python3 -m json.tool` passed for evals and `skills.json`; catalog sync validator reported no drift | Keep | Survey evidence favored denser front-door cleanup over a new Steam/game-marketing wrapper |

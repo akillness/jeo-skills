@@ -1,9 +1,0 @@
-[ok] Command: python3 .survey/hourly-skill-candidates-20260427-133936/s...
-   10 lines of output
-
-Output:
-   run_slug: hourly-skill-candidates-20260427-133936
-   recommended_lane_count: 5
-   single_lane_concentration: False
-   agentic-ai-skill: status=pass kept=5 raw=15 median=3810 zero_star=0 caus...
-   web-frontend-skill: status=pass kept=5 raw=15 median=29 zero_star=0 caus...

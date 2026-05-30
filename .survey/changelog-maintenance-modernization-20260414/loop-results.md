@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `changelog-maintenance/SKILL.md` | A mode-selecting rewrite with explicit route-outs will outperform the legacy semver/example dump on trigger clarity and dry-run usefulness | Rewrote the skill around four modes (`changelog`, `release-notes`, `migration-update`, `game-patch-notes`), added `references/` + `evals/`, and updated discovery surfaces | `validate_skill.sh` passed with 0 errors / 0 warnings; eval JSON parsed successfully; graph snapshot improved to 55 skills with `references/` and 54 with `evals/` | Keep | Transferable improvement across developer, product, marketing, and game-update release workflows |

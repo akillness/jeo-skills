@@ -163,7 +163,7 @@
       "sourceType": "github",
       "version": "1.0.0",
       "keyword": "deep-dive",
-      "description": "trace로 원인 가설을 조사한 뒤 deep-interview에 증거를 주입해 요구사항을 결정화하는 Claude/OMC 2단계 조사 스킬.",
+      "description": "Claude/OMC, Codex/OMX, Gemini/Antigravity/OMA에서 원인 가설을 trace한 뒤 증거를 요구사항 결정화에 주입하고 런타임별 실행 브리지로 넘기는 cross-runtime 조사 스킬.",
       "tags": [
         "deep-dive",
         "trace",
@@ -171,7 +171,11 @@
         "root-cause",
         "requirements",
         "omc",
-        "claude-code"
+        "omx",
+        "oma",
+        "claude-code",
+        "codex",
+        "antigravity"
       ],
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deep-dive",
       "addedAt": "2026-05-30T00:00:00Z",
@@ -182,14 +186,17 @@
       "sourceType": "github",
       "version": "1.0.0",
       "keyword": "deepinit",
-      "description": "parent link, 디렉터리 목적, 주요 파일, 테스트 노트, AI 에이전트 작업 지침을 담은 계층형 AGENTS.md 문서를 생성/갱신하는 스킬.",
+      "description": "Claude, Codex/OMX, Gemini, Antigravity/OMA 프로젝트에서 수동 메모를 보존하고 런타임 상태를 제외하며 parent link가 있는 계층형 AGENTS.md 문서를 생성/갱신하는 스킬.",
       "tags": [
         "deepinit",
         "deep-init",
         "AGENTS.md",
         "codebase-documentation",
         "hierarchical-docs",
-        "agent-docs"
+        "agent-docs",
+        "omx",
+        "oma",
+        "antigravity"
       ],
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deepinit",
       "addedAt": "2026-05-30T00:00:00Z",
@@ -235,7 +242,7 @@
         "ooo",
         "survey"
       ],
-      "description": "모호한 문제를 구현 전에 trace하고 deep-interview로 요구사항을 결정화할 때 선택적으로 사용한다."
+      "description": "모호한 문제를 구현 전에 trace하고 OMC/OMX/OMA 런타임에 맞춰 deep-interview식 요구사항 결정화와 실행 브리지로 넘길 때 선택적으로 사용한다."
     },
     "deepinit": {
       "version": "latest",
@@ -246,7 +253,7 @@
         "ooo",
         "survey"
       ],
-      "description": "새 코드베이스 또는 정리되지 않은 저장소의 계층형 AGENTS.md 문서화를 위해 선택적으로 사용한다."
+      "description": "새 코드베이스 또는 정리되지 않은 저장소의 계층형 AGENTS.md 문서화를 런타임 상태 제외와 parent-link 검증까지 포함해 수행할 때 선택적으로 사용한다."
     },
     "omx": {
       "version": "latest",

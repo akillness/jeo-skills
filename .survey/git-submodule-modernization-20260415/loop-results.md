@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `git-submodule/SKILL.md` | Reframing the skill around submodule choice + operator modes will improve trigger precision and practical usefulness | Rewrote the skill into intake → mode selection → command brief flow; added references, evals, docs sync, wiki notes, and graph refresh | `validate_skill.sh` passed with 0 errors / 0 warnings; JSON checks passed; discovery docs updated | Keep | Transferable developer-workflow improvement without adding another overlapping Git helper |

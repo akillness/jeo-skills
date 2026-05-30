@@ -1,3 +1,0 @@
-obsidian_cli_create=failed
-fallback=direct-write
-note_path=llm-wiki/queries/2026-04-28-hourly-survey-transport-path-eval-ratchet.md

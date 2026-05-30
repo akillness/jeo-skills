@@ -903,7 +903,7 @@
     },
     {
       "name": "deep-dive",
-      "description": "Two-stage Claude/OMC workflow that traces an ambiguous problem through parallel causal lanes, then injects the evidence into deep-interview to crystallize requirements before any execution handoff.",
+      "description": "Cross-runtime trace-to-interview workflow for Claude/OMC, Codex/OMX, and Gemini/Antigravity/OMA: trace ambiguous causal hypotheses, inject the evidence into requirements crystallization, validate artifacts, and hand off to the right runtime planner/executor.",
       "category": "core-orchestration",
       "path": "deep-dive/SKILL.md",
       "tags": [
@@ -913,39 +913,18 @@
         "root-cause",
         "requirements",
         "omc",
+        "omx",
+        "oma",
         "claude-code",
+        "codex",
+        "antigravity",
         "investigation"
-      ],
-      "platforms": [
-        "Claude Code"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "commands": []
-    },
-    {
-      "name": "deepinit",
-      "description": "Deep codebase initialization workflow that creates or refreshes hierarchical AGENTS.md documentation with parent references, directory purpose, key files, testing notes, and AI-agent working guidance.",
-      "category": "core-orchestration",
-      "path": "deepinit/SKILL.md",
-      "tags": [
-        "deepinit",
-        "deep-init",
-        "AGENTS.md",
-        "codebase-documentation",
-        "hierarchical-docs",
-        "agent-docs",
-        "initialization"
       ],
       "platforms": [
         "Claude Code",
         "Codex",
         "Gemini",
+        "Antigravity",
         "OpenCode"
       ],
       "allowed_tools": [
@@ -955,7 +934,50 @@
         "Grep",
         "Glob"
       ],
-      "commands": []
+      "commands": [
+        {
+          "command": "python3 .agent-skills/deep-dive/scripts/validate_deep_dive_artifacts.py --trace <trace.md> --spec <spec.md>",
+          "source": "deep-dive/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "deepinit",
+      "description": "Deep codebase initialization workflow that creates or refreshes hierarchical AGENTS.md documentation across Claude, Codex/OMX, Gemini, and Antigravity/OMA projects while preserving manual notes, excluding runtime state, and validating parent links.",
+      "category": "core-orchestration",
+      "path": "deepinit/SKILL.md",
+      "tags": [
+        "deepinit",
+        "deep-init",
+        "AGENTS.md",
+        "codebase-documentation",
+        "hierarchical-docs",
+        "agent-docs",
+        "omx",
+        "oma",
+        "antigravity",
+        "initialization"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini",
+        "OpenCode",
+        "Antigravity"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "commands": [
+        {
+          "command": "python3 .agent-skills/deepinit/scripts/validate_agents_hierarchy.py .",
+          "source": "deepinit/SKILL.md"
+        }
+      ]
     },
     {
       "name": "deployment-automation",

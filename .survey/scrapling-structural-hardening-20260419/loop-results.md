@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `scrapling/SKILL.md` | A routing-first intake packet will improve trigger precision and keep users on the lightest workable scraping mode | Rewrote the front door around intake-packet routing, added a route-out reference, expanded evals for API-first and unblocker escalation, and synced compact/discovery surfaces | `validate_skill.sh` passed, catalog sync passed, and `SKILL.md` dropped from 319 to 264 lines | Keep | Better matches real scraping behavior: parser/HTTP first, browser/stealth later, spiders only when crawl state matters |

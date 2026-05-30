@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | standup-meeting/SKILL.md | Converting the skill into a routing-first daily-coordination packet anchor will sharpen trigger quality and align it with the rest of the PM cluster. | Rewrote `SKILL.md`, added `references/intake-packets-and-route-outs.md`, refreshed evals / compact surfaces / discovery docs. | `validate_skill.sh` pass; catalog sync pass; stale compact wording removed; route-outs to planning / estimation / retro are clearer than baseline. | Keep | Transferable across software, product/ops, and game-delivery teams; no new overlapping PM skill needed. |

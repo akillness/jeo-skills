@@ -1,4 +1,0 @@
-# Triage
-- Problem: `database-schema-design` is still a long front-door skill and its derived discovery surfaces lag the live `SKILL.md`, so the backend storage-design lane risks blending schema modeling, API shape, auth ownership, analytics reporting, and observability into one blob.
-- Audience: AI agents and maintainers using `oh-my-skills/.agent-skills` to design storage models, staged migrations, and data-boundary decisions for backend/fullstack products, internal ops systems, marketing/customer-data workflows, and game/live-ops telemetry.
-- Why now: `graphify-out/GRAPH_REPORT.md` still flags `database-schema-design` on the oversized watchlist, the repo wiki only has the 2026-04-14 modernization pass, and `SKILL.toon` plus manifest summaries still understate the current trigger boundary.

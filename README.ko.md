@@ -74,6 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **deep-dive/deepinit 크로스런타임 강화** | `deep-dive`가 Claude/OMC, Codex/OMX, Gemini/Antigravity/OMA에서 같은 trace → interview → handoff 계약을 따르도록 runtime adapter reference와 artifact validator를 추가했습니다. `deepinit`은 런타임 상태 제외, 수동 메모 보존, AGENTS.md hierarchy validation까지 포함하도록 강화했습니다. |
 | **agent-browser 제거 및 browser-harness 승격** | `agent-browser`를 제거하고 브라우저 검증·자가 치유 브라우저 자동화 레인을 `browser-harness`로 통합했습니다. 강화된 `browser-harness` 문서는 Codex·Antigravity 실행, Chrome CDP 설정, Claude 이미지 인식/스크린샷 오류를 줄이는 PIL 파일 핸들·인메모리 리사이즈 패치를 포함합니다. 129 → **128개 스킬**. |
 | **semble: 에이전트용 토큰 효율 코드 검색** | `semble`을 추가했습니다 — grep+read 대비 토큰 사용량 ~98% 절감으로 에이전트에게 필요한 코드 청크만 정확히 반환하는 고속 코드 검색 라이브러리입니다. 로컬/원격 리포지터리를 ~250ms(CPU만 사용, GPU·API 키 불필요) 안에 인덱싱합니다. 자연어·심볼 쿼리, 의미 기반 유사 코드 탐색(`find-related`), Claude Code·Codex·Cursor·OpenCode용 MCP 서버 통합을 지원합니다. Python 라이브러리와 CLI도 제공합니다. MCP 설치: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`. 출처: [MinishLab/semble](https://github.com/MinishLab/semble). 127 → **128개 스킬**. |
 
@@ -321,8 +322,8 @@ rtk init -g
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | 패킷 우선 BMAD/BMM 프런트도어 — 현재 packet을 분류하고 다음 산출물 또는 gate를 고른 뒤 review / runtime / 실행 세부 작업을 바깥으로 라우팅 |
 | `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |
 | `bmad-idea` | `bmad-idea` | 전체 | 사전 기획 아이디어 라우터 — 거친 제품/GTM/컨설팅/게임 아이디어를 하나의 컨셉 산출물과 다음 핸드오프로 정리 |
-| `deep-dive` | `deep-dive`, `deep dive`, `trace and interview` | Claude | 원인 가설을 먼저 추적한 뒤 trace 결과를 deep-interview에 주입해 증거 기반 요구사항으로 결정화하는 2단계 조사 파이프라인 |
-| `deepinit` | `deepinit`, `deep init`, `AGENTS.md` | 전체 | parent link, 디렉터리 목적, 주요 파일, 테스트 노트, AI 에이전트 작업 지침을 담은 계층형 AGENTS.md 문서 생성/갱신 |
+| `deep-dive` | `deep-dive`, `deep dive`, `trace and interview` | 전체 | OMC, OMX, OMA를 가로지르는 조사 파이프라인 — 원인 가설을 trace하고 증거를 요구사항에 주입한 뒤 런타임별 실행 브리지로 넘김 |
+| `deepinit` | `deepinit`, `deep init`, `AGENTS.md` | 전체 | 수동 메모 보존, 런타임 상태 제외, parent-link 검증을 포함해 계층형 AGENTS.md 문서를 생성/갱신 |
 | `survey` | `survey` | 전체 | 재사용 가능한 `.survey/{slug}/` 결과물과 검증기 기반 아티팩트 계약 체크를 남기는 bounded 사전 구현 문제공간 스캔 |
 
 ### 📋 계획 및 검토 (12개)

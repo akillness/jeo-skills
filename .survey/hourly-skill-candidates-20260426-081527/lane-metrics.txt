@@ -1,5 +1,0 @@
-agentic ai skill	raw=30	kept=27	status=pass	median=2296.5	zero_star=0	causes=-
-web frontend skill	raw=30	kept=6	status=pass	median=24.5	zero_star=0	causes=-
-web backend skill	raw=10	kept=1	status=pass	median=85.0	zero_star=0	causes=-
-cli open source skill	raw=11	kept=10	status=pass	median=46	zero_star=0	causes=-
-game development skill	raw=26	kept=10	status=pass	median=22.5	zero_star=0	causes=-

@@ -1,4 +1,0 @@
-direct-write-fallback
-reason=Failed to execute Obsidian URI
-vault_path=/Users/jang_jennie/work/oh-my-skills-cron/obsidian-vault
-note_path=/Users/jang_jennie/work/oh-my-skills-cron/obsidian-vault/hourly/2026-04-27-221215-oh-my-skills.md

@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/omc/SKILL.md` | A routing-first front door with an explicit plugin-vs-CLI split will improve trigger precision more than another wrapper or a giant command catalog. | Rewrote `omc` around intake packets and route-outs; added one routing reference; refreshed evals, compact/discovery surfaces, docs guide, wiki, and graph artifacts. | `validate_skill.sh` passed; `json.tool` passed for `skills.json` and `omc/evals/evals.json`; `validate_catalog_sync.py --repo-root .` passed. | Keep | Transferable improvement: same dense-anchor cleanup pattern already working across the repo.

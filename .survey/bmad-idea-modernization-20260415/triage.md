@@ -1,4 +1,0 @@
-# Triage
-- Problem: `bmad-idea` is still a command-and-persona catalog, but the repo now treats adjacent high-value skills as decision-first routers. It lacks a clear pre-planning intake model, weakly distinguishes product / GTM / game concept use cases, and does not hand off cleanly into `bmad`, `task-planning`, `marketing-automation`, or `bmad-gds`.
-- Audience: product leads, founders, designers, marketers, consultants, and game teams who need to turn raw idea packets into one clear next artifact before planning or implementation.
-- Why now: the repo already routes `bmad` and `bmad-gds` toward `bmad-idea` for open-ended ideation, making this a visible weak anchor in the core orchestration lane.

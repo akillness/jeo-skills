@@ -1,4 +1,0 @@
-# Triage
-- Problem: The repo’s `technical-writing` skill already owns the right internal-docs boundary, but its 320-line `SKILL.md` still carries duplicated mode templates, a broken route-out section, and more handbook detail than the repo’s current routing-first front-door pattern needs.
-- Audience: Agents and developers writing internal technical specs, architecture docs, ADRs, runbooks, migration guides, and developer-facing implementation notes without drifting into API portals, end-user docs, release notes, deck artifacts, or marketing copy.
-- Why now: In this run’s required cross-domain opportunity scan (CLI/dev workflow, web/fullstack, product/ops/UX, marketing/GTM/content, and game development), `technical-writing` was the strongest bounded next target that was still oversized, highly reusable, and central to both docs and operations work after the latest `file-organization` and `api-documentation` hardening merges.

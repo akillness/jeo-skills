@@ -1,7 +1,0 @@
-{
-  "tool_name": "Agent",
-  "tool_input_preview": "{\"description\":\"Ralph loop - add Research Paper Writing skill\",\"prompt\":\"다음 깃의 Research Paper Writing 스킬을 추가해서 README.ko.md, README.md, setup-all-skills-prompt.md를 업데이트 후 깃 푸시해줘.\\n\\nGitHub URL: https:...",
-  "error": "Agent type 'oh-my-claudecode:ralph' not found. Available agents: general-purpose, statusline-setup, Explore, Plan, claude-code-guide, oh-my-claudecode:architect, oh-my-claudecode:build-fixer, oh-my-claudecode:code-reviewer, oh-my-claudecode:code-simplifier, oh-my-claudecode:analyst, oh-my-claudecode:critic, oh-my-claudecode:debugger, oh-my-claudecode:deep-executor, oh-my-claudecode:designer, oh-my-claudecode:document-specialist, oh-my-claudecode:executor, oh-my-claudecode:explore, oh-my-claudeco...",
-  "timestamp": "2026-03-14T06:58:10.372Z",
-  "retry_count": 1
-}

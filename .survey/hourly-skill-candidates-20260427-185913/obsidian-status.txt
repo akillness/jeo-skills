@@ -1,3 +1,0 @@
-direct-write fallback (obsidian-cli create failed: Failed to execute Obsidian URI)
-vault_path=/Users/jang_jennie/work/oh-my-skills-cron/obsidian-vault
-note_path=/Users/jang_jennie/work/oh-my-skills-cron/obsidian-vault/oh-my-skills/hourly-skill-candidates-20260427-185913.md

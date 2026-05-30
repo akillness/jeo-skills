@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/backend-testing/SKILL.md` | A packet-first front door with explicit route-outs will improve trigger precision without reopening cluster overlap. | Rewrote the skill around five primary packets, added `references/intake-packets-and-route-outs.md`, expanded evals with a contract-protection case, and synced compact/discovery wording. | `validate_skill.sh` passed; eval JSON valid; `skills.json` valid; catalog sync reported no drift. | Keep | The sharper packet-first entry stays aligned with `testing-strategies`, `api-design`, and `authentication-setup` instead of creating another testing wrapper. |

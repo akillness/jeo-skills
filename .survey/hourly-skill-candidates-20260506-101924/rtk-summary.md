@@ -1,9 +1,0 @@
-[ok] Command: python3 .survey/hourly-skill-candidates-20260506-101924/l...
-   8 lines of output
-
-Output:
-   recommended_lane_count 3
-   single_lane_concentration False
-   agentic ai skill: raw=30 kept=5 zero_star=20 median=0.0 status=pass causes=
-   web frontend skill: raw=5 kept=0 zero_star=4 median=0 status=degraded ca...
-   web backend skill: raw=1 kept=0 zero_star=0 median=7531 status=degraded ...

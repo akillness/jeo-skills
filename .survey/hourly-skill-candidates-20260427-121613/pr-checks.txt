@@ -1,3 +1,0 @@
-no checks reported on the 'chore/hourly-survey-20260427-121613' branch
-CHECK_RC=1
-MERGE_DECISION=blocked

@@ -1,5 +1,0 @@
-agentic-ai-skill: raw=30 kept=29 zero_star=0 median=1920.5 status=pass causes=license
-web-frontend-skill: raw=30 kept=2 zero_star=18 median=0.0 status=pass causes=license,low-signal
-web-backend-skill: raw=30 kept=2 zero_star=22 median=0.0 status=pass causes=license,low-signal
-cli-open-source-skill: raw=20 kept=7 zero_star=11 median=0.0 status=pass causes=license,low-fit,low-signal
-game-development-skill: raw=30 kept=1 zero_star=24 median=0.0 status=pass causes=archived,license,low-signal

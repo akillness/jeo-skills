@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | vibe-kanban/SKILL.md | Rewriting `vibe-kanban` around board/workspace/review routing and adding an eval harness will improve trigger precision and usability more than preserving the current setup-catalog structure | Rewrote `SKILL.md`, added workflow-first references + `evals/evals.json`, synced discovery docs/manifests/wiki/graph artifacts | Passed `validate_skill.sh`, `validate_catalog_sync.py`, and JSON validation for `evals`, `skills.json`, and `graphify-out/graph.json` | Keep | Stronger trigger clarity, cleaner route-outs, and durable ratcheting harness without adding a duplicate skill |

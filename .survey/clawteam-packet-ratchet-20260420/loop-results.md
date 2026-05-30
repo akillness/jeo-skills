@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/clawteam/SKILL.md` | A packet-first runtime front door with earlier wrong-owner checks will be clearer and more transferable than the current mode-first command-heavy version. | Rewrote the skill around one operator packet, added explicit runtime-reality rules, and added a new intake packet support reference. | `validate_skill.sh` pass; JSON valid; catalog sync pass; discovery surfaces updated; graph refreshed. | Keep | Better matches survey evidence that real ClawTeam use is tmux/worktree/operator-heavy and should route generic orchestration outward sooner. |

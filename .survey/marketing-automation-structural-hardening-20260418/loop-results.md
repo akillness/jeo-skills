@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `marketing-automation/SKILL.md` | Replacing the broad lane-catalog front door with an operating-mode router will improve trigger precision and packet clarity without creating a new wrapper skill | Rewrote the skill around five operating modes, one-primary-lane / one-packet discipline, stronger route-outs, and one new support reference | `validate_skill.sh` passed with 0 errors / 0 warnings; JSON validation passed for evals + skills manifest; supporting discovery surfaces synced | Keep | Transferable across launch, conversion, lifecycle, acquisition/content, and measurement asks |

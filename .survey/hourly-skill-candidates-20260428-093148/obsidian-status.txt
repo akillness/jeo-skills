@@ -1,3 +1,0 @@
-fallback-direct-write
-reason=obsidian-cli create unknown flag --file
-note_path=/Users/jang_jennie/work/oh-my-skills-cron/obsidian-vault/notes/hourly-skill-candidates-20260428-093148.md

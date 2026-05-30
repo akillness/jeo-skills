@@ -1,4 +1,0 @@
-# Triage
-- Problem: `web-design-guidelines` is still a legacy frontend audit skill with stale Vercel-specific wording, weak boundary guidance, and no support files even though neighboring frontend anchors have already been modernized.
-- Audience: Maintainers of the `oh-my-skills` catalog and agents/users who need broad UI review guidance without confusing it with accessibility-only, responsive-layout-only, or component-architecture-only work.
-- Why now: The frontend cluster has already clarified `web-accessibility`, `responsive-design`, `ui-component-patterns`, and `design-system`, which makes `web-design-guidelines` the remaining high-visibility weak anchor in that lane.

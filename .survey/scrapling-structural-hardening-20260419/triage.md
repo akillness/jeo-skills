@@ -1,4 +1,0 @@
-# Triage
-- Problem: `scrapling` is useful but still shaped like a broad feature tour; the next bounded win is deciding whether to shrink it into a routing-first front door that classifies parser-only, HTTP fetcher, dynamic browser, stealth, CLI/MCP, and spider use-cases before giving instructions.
-- Audience: agents and developers who need web extraction for developer tooling, web/fullstack automation, product/ops research, marketing/content collection, and game/business intelligence.
-- Why now: `graphify-out/GRAPH_REPORT.md` still lists `scrapling` on the oversized front-door watchlist (319 lines), support coverage is already complete, and recent repo maintenance has repeatedly shown that high-visibility skills improve more from sharper routing boundaries than from adding another overlapping wrapper.

@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | marketing-automation + marketing-skills-collection | A canonical-router + compatibility-alias split will improve trigger clarity and reduce discovery noise more than keeping two peer marketing skills | Rewrote the canonical skill, narrowed the alias, added refs/evals, and updated discovery surfaces | Both skills passed `validate_skill.sh`; eval JSON and `skills.json` parsed; graph/wiki/docs refreshed | Keep | Transferable pattern already matched prior React/design-system canonicalization passes |

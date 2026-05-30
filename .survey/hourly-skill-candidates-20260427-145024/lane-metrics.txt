@@ -1,9 +1,0 @@
-run_slug: hourly-skill-candidates-20260427-145024
-agentic_ai_skill: raw=40 kept=1 zero_star_raw=29 median_stars_raw=0.0 status=pass causes=license,low-signal
-web_frontend_skill: raw=4 kept=0 zero_star_raw=3 median_stars_raw=0.0 status=degraded causes=license,low-signal,stale
-web_backend_skill: raw=1 kept=0 zero_star_raw=0 median_stars_raw=7522 status=degraded causes=stale
-cli_open_source_skill: raw=0 kept=0 zero_star_raw=0 median_stars_raw=0 status=degraded causes=no-results
-game_development_skill: raw=40 kept=3 zero_star_raw=30 median_stars_raw=0.0 status=pass causes=license,low-signal
-recommended_total: 4
-recommended_lane_count: 2
-single_lane_concentration: False

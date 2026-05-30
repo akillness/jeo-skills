@@ -1,2 +1,0 @@
-Default vault name:  /Users/jang_jennie/work/oh-my-skills-cron/obsidian-vault
-Default vault path:  /Users/jang_jennie/work/oh-my-skills-cron/obsidian-vault

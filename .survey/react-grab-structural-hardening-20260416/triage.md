@@ -1,4 +1,0 @@
-# Triage
-- Problem: `react-grab` is a high-visibility web/frontend skill with a 494-line `SKILL.md`, only one reference doc, and stale installation requirements in helper scripts (`Node.js >=18` locally vs upstream `node >=22` in `package.json`).
-- Audience: Agents and maintainers using `.agent-skills` for frontend/browser-assisted React work, especially users who need fast onboarding into `react-grab` without reading a giant mixed install/API manual.
-- Why now: The repo-wide support-coverage gap is already closed, so the highest-value next win is boundary and maintenance-shape hardening on large, discovery-visible anchors. Repo-local opportunity scan across CLI/dev, web, PM/ops, marketing, and game-dev lanes shows `react-grab` is the sharpest remaining “too-dense + partially stale” candidate.

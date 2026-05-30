@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/debugging/SKILL.md` | Rewriting `debugging` around a reproduce → isolate → hypothesize → verify loop with explicit handoffs and support files will produce a stronger reusable anchor than adding another troubleshooting wrapper | Rewrote `SKILL.md`, refreshed `SKILL.toon`, added `references/` + `evals/`, updated README / README.ko / setup prompt / `skills.json`, and refreshed wiki/graph artifacts | `validate_skill.sh` passed; `evals.json` and `skills.json` parsed cleanly | Keep | Stronger code-quality boundary with `log-analysis`, `testing-strategies`, and `code-review` |

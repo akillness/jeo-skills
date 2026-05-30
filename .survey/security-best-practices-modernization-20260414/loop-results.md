@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | security-best-practices/SKILL.md | Reframing the skill around lane selection + adjacent handoffs will improve transferability over Express-only snippets. | Rewrote the skill into six hardening modes, added route-outs, support references, evals, and synchronized discovery surfaces. | Passed `validate_skill.sh`, `validate_catalog_sync.py`, and JSON parsing checks. | Keep | The layered anchor is more reusable than the old Node/Express dump and matches neighboring-skill boundaries. |

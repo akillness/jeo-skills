@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `video-production` (+ alias/docs/support) | Canonicalizing the broad programmable-video lane and narrowing the Remotion-specific alias will improve trigger clarity and reduce duplicate discovery noise without adding another skill | Rewrote `video-production`, narrowed `remotion-video-production`, added support files, updated docs/wiki/graph artifacts | Passed `validate_skill.sh` for both skills, eval JSON valid, docs surfaces aligned | Keep | Clearer canonical-vs-alias boundary and better transfer across Remotion, template/API, and repurposing asks |

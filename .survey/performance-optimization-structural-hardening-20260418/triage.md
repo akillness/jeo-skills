@@ -1,4 +1,0 @@
-# Triage
-- Problem: `performance-optimization` is still a dense high-traffic front door whose main SKILL.md is better than its legacy version but still larger than necessary for a routing-first anchor, while compact/discovery surfaces (`SKILL.toon`, manifest summaries) have drifted toward stale generic wording.
-- Audience: Maintainers of `oh-my-skills` and agents/users who need one reusable measurement-led performance-routing skill across CLI/dev workflow, web/frontend/backend/fullstack, product/ops, marketing/content performance work, and game-adjacent routing.
-- Why now: Graphify structural findings still prioritize shrinking high-degree front doors instead of adding new wrappers, and this skill is both widely reusable and still carrying stale compact/discovery residue after the earlier modernization pass.

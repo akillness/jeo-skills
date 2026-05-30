@@ -1,4 +1,0 @@
-# Triage
-- Problem: Canonicalize and upgrade the repository's broad marketing orchestration skill pair (`marketing-automation` vs `marketing-skills-collection`) so one skill is the clear general entry point and the legacy name becomes a low-noise compatibility alias instead of a near-duplicate.
-- Audience: Maintainers of `oh-my-skills`, agents selecting skills from the catalog, and users asking for broad product/growth marketing help across SaaS, web, funnel, lifecycle, SEO, copy, launch, and analytics workflows.
-- Why now: Both skills currently occupy the same marketing surface in the catalog, docs, and setup prompt, with nearly identical descriptions and no support files or evals. That makes discovery noisy, weakens trigger clarity, and invites more duplication instead of better reusable marketing guidance.

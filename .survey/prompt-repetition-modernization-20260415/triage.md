@@ -1,4 +1,0 @@
-# Triage
-- Problem: `prompt-repetition` is a high-signal idea but the current skill is an oversized research dump with weak trigger boundaries, no support files, no evals, and claims that overgeneralize beyond the strongest evidence.
-- Audience: AI coding agents, prompt/tooling maintainers, and operators who need a bounded way to decide when repeating an input prompt is actually useful versus when they should use better context structure, retrieval, examples, or reasoning.
-- Why now: The repo has already cleaned up many broad workflow anchors. `prompt-repetition` still stands out as a legacy skill with weak standardization and no support coverage, and it is used across CLI, web, PM/ops, marketing/content, and game-adjacent agent workflows whenever lightweight models or long-context non-reasoning tasks show up.

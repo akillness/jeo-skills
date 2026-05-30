@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/code-review/SKILL.md` | A smaller packet-first front door will improve trigger clarity and route-boundary truthfulness without weakening review usefulness. | Rewrote `SKILL.md` around review packets, severity, missing-evidence handling, and explicit route-outs; added `references/intake-packets-and-escalations.md`; expanded evals and synced compact/discovery surfaces. | `validate_skill.sh` passed with 0 issues; catalog sync passed; JSON parse checks passed; graph/wiki/docs surfaces refreshed consistently. | Keep | Transferable improvement for another high-degree code-quality anchor; no new wrapper introduced. |

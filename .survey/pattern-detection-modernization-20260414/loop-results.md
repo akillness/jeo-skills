@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `pattern-detection/SKILL.md` | A mode-selecting rewrite with explicit route-outs will outperform the regex-heavy legacy version | Rewrote the skill around four detection modes, confidence labels, false-positive controls, and route-outs; added `references/`, `evals/`, and discovery-surface wording updates | Passed skill-standardization validation (0 errors / 0 warnings); clearer trigger fit against code-pattern, KPI anomaly, gameplay telemetry, and reusable-rule prompts | Keep | Transferable improvement across code, logs/events, and metric anomaly prompts; no new overlapping skill added |

@@ -568,7 +568,7 @@ If no → skip silently. Never re-ask.
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
-| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, deep-dive *(trace causal hypotheses, then inject findings into deep-interview for evidence-backed requirements)*, deepinit *(generate hierarchical AGENTS.md documentation with parent links and AI-agent guidance)*, vibe-kanban, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
+| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, vibe-kanban, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
 | **Platform Setup** | omc | claude-code |
 | **Platform Setup** | ohmg | antigravity |
 | **Platform Setup** | omx | codex, claude-code |

@@ -1,2 +1,0 @@
-mode=direct-write-fallback
-fallback_note=/Users/jang_jennie/work/oh-my-skills-cron/obsidian-vault/research/hourly/hourly-skill-candidates-20260427-172031.md

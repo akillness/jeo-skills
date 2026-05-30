@@ -1,3 +1,0 @@
-| Iteration | Target | Hypothesis | Change | Validation result | Keep/Revert | Notes |
-|---|---|---|---|---|---|---|
-| 1 | `.agent-skills/vibe-kanban/SKILL.md` | A smaller routing-first front door with tracker-sync wording and one extra support packet will improve trigger precision without losing capability | Rewrote `SKILL.md`, added `references/board-packets-and-surface-selection.md`, expanded evals with tracker-linked coding-board coverage, and synced discovery surfaces | `validate_skill.sh` passed with 0 errors/0 warnings; `SKILL.md` dropped from 277 to 195 lines; JSON validation passed for `evals/evals.json` and `skills.json` | Keep | Transferable improvement: sharper board-vs-tracker-vs-non-code boundary across orchestration/platform workflows |
