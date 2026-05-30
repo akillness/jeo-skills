@@ -118,7 +118,7 @@ if (process.env.NODE_ENV === "development") {
 Use `react-grab` when the real need is **React element context capture**.
 
 Route elsewhere when the real need is:
-- **fresh disposable browser automation** → `agent-browser`
+- **fresh disposable browser automation** → `browser-harness`
 - **running-browser reuse / existing auth state** → `playwriter`
 - **rendered UI review / annotation packets** → `agentation`
 - **React performance / hydration / RSC / bundle issues** → `react-best-practices`

@@ -44,9 +44,9 @@
     {
       "id": 5,
       "prompt": "I need to automate an authenticated browser flow and keep my existing login cookies. Should I use react-grab?",
-      "expected_output": "Say no for the core job, route to `playwriter` or `agent-browser`, and keep react-grab limited to element-context capture.",
+      "expected_output": "Say no for the core job, route to `playwriter` or `browser-harness`, and keep react-grab limited to element-context capture.",
       "assertions": [
-        "Routes authenticated running-browser reuse to `playwriter` or fresh-session automation to `agent-browser`",
+        "Routes authenticated running-browser reuse to `playwriter` or fresh-session automation to `browser-harness`",
         "Explains that react-grab is for React element-context capture rather than general browser automation",
         "Keeps the route-out explicit instead of absorbing the adjacent workflow"
       ]

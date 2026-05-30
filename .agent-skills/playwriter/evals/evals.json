@@ -14,10 +14,10 @@
     {
       "id": 2,
       "prompt": "Run a repeatable headless checkout verification in CI and compare screenshots from a clean browser state.",
-      "expected_output": "The skill should not claim Playwriter is the best default; it should route the user to a fresh-session browser tool such as agent-browser.",
+      "expected_output": "The skill should not claim Playwriter is the best default; it should route the user to a fresh-session browser tool such as browser-harness.",
       "assertions": [
         "Response says playwriter is not the default for clean repeatable CI checks",
-        "Response routes to agent-browser or another fresh-session browser tool",
+        "Response routes to browser-harness or another fresh-session browser tool",
         "Response explains that reproducibility/isolation matter more than session reuse here"
       ]
     },

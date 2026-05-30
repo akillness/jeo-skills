@@ -21,7 +21,7 @@ bash .agent-skills/agentation/scripts/verify-loop.sh
 Use this when the browser-review system is iterative and structured feedback needs to survive across cycles.
 
 Typical shape:
-- choose the browser runtime first (`agent-browser` or `playwriter`)
+- choose the browser runtime first (`browser-harness` or `playwriter`)
 - capture rendered state
 - turn the issue into an `agentation` packet
 - hand the packet to the coding agent

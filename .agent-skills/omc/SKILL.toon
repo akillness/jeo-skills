@@ -13,7 +13,7 @@ S[6]{n,action,details}:
 3:surface,State the runtime surface,plugin slash skills vs shell-side `omc` CLI
 4:recommend,Give the smallest truthful command,/team or /autopilot or /ralph or setup omc or omc setup or omc team or omc ask depending on topology + packet
 5:recover,Call out real operator constraints,enable CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 and inspect plugin-dir/state/worktree behavior when relevant
-6:route-out,Hand off non-OMC ownership,jeo / ralphmode / plannotator / agent-browser / playwriter / agentation / omx / ohmg
+6:route-out,Hand off non-OMC ownership,jeo / ralphmode / plannotator / browser-harness / playwriter / agentation / omx / ohmg
 R[6]:
 1:`/team` and `omc team` are both real but they are different runtimes
 2:`/autopilot`, `/ralph`, and `/ultrawork` are in-session skills, not normal `omc` CLI subcommands

@@ -5,7 +5,7 @@ description: >
   element paths, and structured annotation packets. Use when a human needs to
   point at a real UI issue, run a sync/watch loop, or wire browser feedback into
   Claude Code, Codex, Gemini CLI, or OpenCode. Not for fresh-session browser
-  verification (`agent-browser`), running-browser reuse (`playwriter`), or
+  verification (`browser-harness`), running-browser reuse (`playwriter`), or
   plan/diff approval (`plannotator`).
 compatibility: React 18+, Node.js 18+
 allowed-tools: Read Write Bash Grep Glob
@@ -36,7 +36,7 @@ Use `agentation` when the task needs one or more of these:
 
 Do **not** use `agentation` by default for:
 
-- fresh-session browser verification or deterministic regression checks → `agent-browser`
+- fresh-session browser verification or deterministic regression checks → `browser-harness`
 - running-browser, logged-in, or extension-dependent browser reuse → `playwriter`
 - plan review, diff approval, or visual sign-off on a proposed artifact → `plannotator`
 - generic design-system, accessibility, or heuristic audits without a concrete rendered UI packet
@@ -46,7 +46,7 @@ Do **not** use `agentation` by default for:
 | If the job needs... | Use |
 |---|---|
 | Human clicks the UI and leaves exact feedback for the agent | `agentation` |
-| Browser verification in a clean repeatable session | `agent-browser` |
+| Browser verification in a clean repeatable session | `browser-harness` |
 | The user's already-open browser, cookies, or logged-in tabs | `playwriter` |
 | Review or approval of a plan/diff before execution | `plannotator` |
 
@@ -69,7 +69,7 @@ If the task is really “test the website” or “drive the logged-in browser,�
 
 `agentation` does **not** replace the browser runtime choice.
 
-- Use `agent-browser` when you want a clean disposable verification browser.
+- Use `browser-harness` when you want a clean disposable verification browser.
 - Use `playwriter` when you must reuse the user's real browser session.
 - Use `agentation` once there is a rendered page that a human or loop should annotate precisely.
 
@@ -184,7 +184,7 @@ Prefer the bundled scripts before retyping long commands:
 
 ### Example 2: Browser verification is the real job
 - Prompt: "Run a repeatable headless UI regression check and compare the results."
-- Expected behavior: route to `agent-browser`, not `agentation`, unless human annotation becomes a follow-up step.
+- Expected behavior: route to `browser-harness`, not `agentation`, unless human annotation becomes a follow-up step.
 
 ### Example 3: Logged-in browser reuse
 - Prompt: "Use the browser I'm already signed into and let me annotate a billing page issue."

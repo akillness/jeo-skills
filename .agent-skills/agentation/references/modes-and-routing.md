@@ -45,8 +45,8 @@ Choose this when:
 
 ## Route-outs
 
-### Route to `agent-browser`
-Use `agent-browser` when the real need is:
+### Route to `browser-harness`
+Use `browser-harness` when the real need is:
 - clean disposable browser sessions
 - deterministic refs / replayable checks
 - headless or CI-style verification

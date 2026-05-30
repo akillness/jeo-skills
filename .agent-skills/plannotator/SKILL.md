@@ -7,7 +7,7 @@ description: >
   the review loop on Claude Code, Gemini CLI, Codex CLI, or OpenCode. Route
   planning/spec creation to `task-planning` or `ralph`, broad PR-policy review
   to `code-review`, rendered-UI critique to `agentation`, and fresh-session
-  browser verification to `agent-browser`.
+  browser verification to `browser-harness`.
 allowed-tools: Read Bash Write
 compatibility: >
   Best for Claude Code, Gemini CLI, Codex CLI, OpenCode, and orchestration flows
@@ -35,7 +35,7 @@ It is the **human approval gate** that sits between:
 - orchestration/runtime ownership (`jeo`, `vibe-kanban`, `bmad`)
 - broader PR/code judgment (`code-review`)
 - rendered-UI bug markup (`agentation`)
-- clean browser verification (`agent-browser`)
+- clean browser verification (`browser-harness`)
 
 Read these support docs first:
 - [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
@@ -53,7 +53,7 @@ Read these support docs first:
 - **The main job is writing or refining the plan/spec itself** → `task-planning`, `ralph`, or `survey`
 - **The main job is broad PR policy, merge criteria, risk judgment, or code-owner approval** → `code-review`
 - **The main job is exact rendered-UI critique that should drive frontend fixes** → `agentation`
-- **The main job is clean disposable browser automation or deterministic website verification** → `agent-browser`
+- **The main job is clean disposable browser automation or deterministic website verification** → `browser-harness`
 - **The main job is task orchestration, board state, or multi-agent routing** → `jeo`, `vibe-kanban`, `bmad`
 - **The main job is note taxonomy, wiki curation, or long-term note-system management** → `obsidian`, `llm-wiki`
 
@@ -137,7 +137,7 @@ Do **not** flatten this into “all platforms work the same.”
 - orchestration state or multi-agent routing → `jeo`, `vibe-kanban`, `bmad`
 - broad PR policy, merge gating, or risk judgment → `code-review`
 - rendered UI bug markup → `agentation`
-- clean disposable browser verification → `agent-browser`
+- clean disposable browser verification → `browser-harness`
 - note/vault/wiki administration beyond saving reviewed artifacts → `obsidian`, `llm-wiki`
 
 ### Step 7: Use a short output contract

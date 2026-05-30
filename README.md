@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-127-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-128-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**127 local skill folders · 127 installable skills · TOON Format · Cross-platform**
+**128 local skill folders · 128 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**127 local skill folders · 127 installable skills · TOON Format · Cross-platform**
+**128 local skill folders · 128 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 127 local skill folders and 127 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+Agent Skills is a curated collection with 128 local skill folders and 128 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -55,7 +55,7 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 graph TD
     OOO["🎯 OOO\nSpec-First Control"] --> PLAN["📋 PLAN\nplannotator + bmad"]
     OOO --> EXEC["⚡ EXECUTE\nteam / bmad"]
-    OOO --> VERIFY["🔍 VERIFY\nagent-browser"]
+    OOO --> VERIFY["🔍 VERIFY\nbrowser-harness"]
     OOO --> UI["🎨 VERIFY_UI\nagentation"]
     OOO --> CLEAN["🧹 CLEANUP\nworktree"]
 
@@ -74,6 +74,7 @@ graph TD
 
 | Change | Details |
 |--------|---------|
+| **agent-browser removed; browser-harness promoted** | Removed `agent-browser` and promoted `browser-harness` as the browser verification and autonomous browser automation lane. The strengthened `browser-harness` skill now documents Codex and Antigravity execution, Chrome CDP setup, and the Claude-safe screenshot patch that avoids PIL file-handle and image resize errors. 129 → **128 skills**. |
 | **semble: token-efficient code search for agents** | Added `semble` — a fast, accurate code search library that returns only the relevant code snippets agents need, using ~98% fewer tokens than grep+read. Indexes any local or remote repository in ~250ms entirely on CPU (no GPU or API key needed). Supports natural-language and symbol queries, semantic similar-code discovery (`find-related`), and MCP server integration for Claude Code, Codex, Cursor, and OpenCode. Python library and CLI both available. Plugin: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`. Source: [MinishLab/semble](https://github.com/MinishLab/semble). |
 | **jeo removed: orchestration consolidated into ooo + bmad** | Removed the `jeo` skill and its associated hooks (`ExitPlanMode` plan-gate, `UserPromptSubmit` agentation). Orchestration is now handled by `ooo` (spec-first control loop), `bmad` (planning/routing), and `plannotator` (review gate). 128 → **127 skills**. |
 
@@ -123,8 +124,7 @@ graph TD
 | Change | Details |
 |--------|---------|
 | **game-performance-profiler: routing-first structural hardening** | Tightened `game-performance-profiler` into a smaller bottleneck-first profiling front door. It now leans on `references/mode-selection-and-route-outs.md` plus the existing packet/device/escalation references, keeps one output contract (`Game Performance Profiling Brief`), adds a build-failure route-out eval case, and sharpens discovery wording around quick packets, benchmark routes, target-device review, and deliberate profiler escalation instead of a giant optimization essay. |
-| **agent-browser: fresh-session verification rewrite** | Reframed `agent-browser` from a generic browser CLI guide into the browser-review lane's **fresh-session deterministic verification** anchor. It now chooses the clean browser lane first, enforces an observe → act → observe loop, makes route-outs explicit to `playwriter`, `agentation`, and `plannotator`, adds `references/modes-and-routing.md` plus `evals/evals.json`, and keeps auth reuse bounded instead of silently sliding into a running-browser workflow. |
-| **agentation: UI annotation router rewrite** | Reframed `agentation` from a monolithic install/config catalog into the planning-review lane's exact rendered-UI feedback router. It now chooses among copy-paste review, synced watch-loop, self-driving critique, and platform-setup modes; keeps route-outs explicit to `agent-browser`, `playwriter`, and `plannotator`; adds `references/modes-and-routing.md`, `references/platform-setup-and-hooks.md`, `references/watch-loop-and-self-driving.md`, and `evals/evals.json`; and fixes top-level discovery surfaces so the repo now consistently advertises **89 skills**. |
+| **agentation: UI annotation router rewrite** | Reframed `agentation` from a monolithic install/config catalog into the planning-review lane's exact rendered-UI feedback router. It now chooses among copy-paste review, synced watch-loop, self-driving critique, and platform-setup modes; keeps route-outs explicit to `browser-harness`, `playwriter`, and `plannotator`; adds `references/modes-and-routing.md`, `references/platform-setup-and-hooks.md`, `references/watch-loop-and-self-driving.md`, and `evals/evals.json`; and fixes top-level discovery surfaces so the repo now consistently advertises **89 skills**. |
 | **git-submodule: routing-first structural hardening** | Tightened `git-submodule` into a smaller operator front door. It still chooses submodule vs subtree/vendoring/package delivery first, but now pushes mode-specific packets into `references/mode-packets-and-hosted-constraints.md`, adds a hosted-platform boundary for GitHub Pages public-`https://` submodule limits, extends eval coverage with that hosted-constraint case, and refreshes discovery wording so recursive bootstrap, pointer updates, detached-HEAD handling, CI auth, and hosted checkout limits stay visible without turning the skill back into a giant command catalog. |
 | **bmad-idea: pre-planning concept-router rewrite** | Reframed `bmad-idea` from a legacy BMAD-CIS command/persona catalog into the repository's pre-planning idea router. It now normalizes early-stage product, GTM, consulting, and game packets; chooses one framing mode (`problem framing`, `audience and value framing`, `concept shaping`, `game concept framing`, or `story packaging`); produces one reusable concept artifact; routes cleanly to `bmad`, `task-planning`, `marketing-automation`, or `bmad-gds`; and ships `references/operating-modes.md`, `references/handoff-boundaries.md`, `references/concept-packet-template.md`, and `evals/evals.json` without increasing the skill count. |
 | **genkit: packet-first structural hardening** | Tightened `genkit` into a smaller routing-first backend AI workflow anchor. It now starts from the current packet (new capability, existing route handler, deployed flow quality, runtime/deploy, or comparison/fallback), adds `references/intake-packets-and-fallbacks.md`, expands the mode selector with `comparison-or-fallback`, keeps plain SDK / route-handler and durable-workflow fallbacks visible, extends eval coverage with a thin-route boundary case, and syncs `SKILL.toon` / `skills.toon` / `skills.json` wording so discovery surfaces stay aligned with the server-owned workflow contract instead of drifting back to a generic full-stack AI framework pitch. |
@@ -228,6 +228,29 @@ npm install -g skills
 skills --version
 ```
 
+### Vercel `skills` CLI scope and paths
+
+The Vercel `skills` CLI installs from GitHub shorthand, full Git URLs, direct skill paths, or local folders:
+
+```bash
+# Project install: writes to the current repo's agent skill directory
+npx skills add https://github.com/akillness/oh-my-skills --skill deepinit --skill deep-dive
+
+# Global install: available to that agent across projects
+npx skills add -g https://github.com/akillness/oh-my-skills --skill deepinit --skill deep-dive
+
+# Target specific agents
+npx skills add -g https://github.com/akillness/oh-my-skills --skill deepinit --skill deep-dive -a claude-code -a codex -y
+```
+
+| OS / shell | Global examples | Project examples |
+|------------|-----------------|------------------|
+| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
+| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\` | `.claude\skills\`, `.agents\skills\` |
+| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
+
+Project scope is the default and should be committed when the team needs the same skill behavior. Global scope uses `-g` and is better for personal defaults. Agent-specific paths are selected with `-a`; the portable common layer is `.agents/skills/`.
+
 ### For LLM Agents (recommended — handles all platforms automatically)
 
 ```bash
@@ -285,7 +308,7 @@ rtk init -g
 
 > Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 128 local skill folders = 128 total installable skills
 
-### 🎯 Core Orchestration (13)
+### 🎯 Core Orchestration (15)
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
@@ -299,18 +322,19 @@ rtk init -g
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |
+| `deep-dive` | `deep-dive`, `deep dive`, `trace and interview` | Claude | Two-stage investigation pipeline — trace causal hypotheses first, then inject findings into deep-interview for evidence-backed requirements |
+| `deepinit` | `deepinit`, `deep init`, `AGENTS.md` | All | Generate or refresh hierarchical AGENTS.md documentation with parent links, directory purpose, key files, testing notes, and AI-agent guidance |
 | `survey` | `survey` | All | Bounded pre-implementation landscape scan with reusable `.survey/{slug}/` artifacts plus validator-backed artifact-contract checks |
 | `clawteam` | `clawteam`, `claw team`, `multi-agent team` | All | Route ClawTeam runtime requests — manual-team, template-team, worker-agent modes with one honest operator packet before touching commands |
 | `ccpi-marketplace` | `ccpi`, `tons of skills`, `plugin marketplace` | All | Operate the Tons of Skills marketplace via the ccpi CLI and Claude plugin marketplace commands — search, install, update, list skills |
 
-### 📋 Planning & Review (13)
+### 📋 Planning & Review (12)
 
 | Skill | Keyword | Description |
 |-------|---------|-------------|
 | `plannotator` | `plan` | Visual approval gate for agent plans/diffs — annotate, approve, request changes, or save reviewed plans |
 | `agentation` | `annotate` | Exact rendered-UI feedback router — choose copy-paste review, watch-loop sync, self-driving critique, or platform setup |
-| `agent-browser` | `agent-browser` | Fresh-session browser verification anchor — clean disposable browser, snapshot refs, and explicit before/after evidence |
-| `browser-harness` | `browser-harness` | Self-healing LLM browser automation via CDP — agent-editable `agent_helpers.py`, domain skills (site-specific playbooks), Browser Use Cloud integration |
+| `browser-harness` | `browser-harness` | Self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode — replaces `agent-browser`, adds Claude-safe screenshot handling, and keeps helper/domain-skill repair loops local |
 | `playwriter` | `playwriter` | Running-browser automation for authenticated Chrome sessions and MCP browser reuse |
 | `vibe-kanban` | `kanbanview` | Coding-board control plane for bounded coding cards, tracker-linked workspaces, review queues, worktree isolation, and PR handoff |
 | `triage` | `triage` | Issue state machine: needs-triage → needs-info → ready-for-agent / ready-for-human / wontfix. All AI comments include AI disclaimer |
@@ -517,7 +541,7 @@ Spec-first development front door: clarify ambiguous requests, freeze the contra
 | Clarify / Spec | `ooo interview` | Freeze acceptance criteria before execution |
 | Plan / Review | `plannotator` + `bmad` | Shape and approve the plan without reopening settled work |
 | Runtime handoff / Execute | `omc` / `omx` / `ohmg` | Keep runtime-native config and execution in the runtime skill |
-| Verify / QA | `agent-browser` | Record browser / QA evidence before claiming completion |
+| Verify / QA | `browser-harness` | Record CDP browser / QA evidence before claiming completion |
 | Verify UI | `agentation` | Wait for explicit submit, then process UI feedback |
 | Durable knowledge | `llm-wiki` + `graphify` | File significant findings into the wiki and graph |
 

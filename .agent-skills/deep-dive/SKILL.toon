@@ -1,0 +1,1 @@
+deep-dive|deep-dive,deep dive,trace and interview,investigate deeply,root cause then requirements|Run a two-stage Claude/OMC workflow: trace the causal structure of an ambiguous problem, then inject trace findings into deep-interview to crystallize requirements. Use when the user needs evidence-backed investigation before deciding what to build or fix.|omc/deep-dive|MIT|latest

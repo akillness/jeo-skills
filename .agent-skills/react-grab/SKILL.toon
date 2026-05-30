@@ -1,5 +1,5 @@
 N:react-grab
-D:[react-grab] Capture exact React element context from a live browser UI and hand it to an AI coding agent as component name, source file path, line number, and HTML. Use for react-grab install/use, clipboard-to-agent copy, MCP-backed element selection, or plugin/API customization. Not for generic browser automation (agent-browser/playwriter), rendered-UI review (agentation), React performance audits (react-best-practices), or general design-system work.
+D:[react-grab] Capture exact React element context from a live browser UI and hand it to an AI coding agent as component name, source file path, line number, and HTML. Use for react-grab install/use, clipboard-to-agent copy, MCP-backed element selection, or plugin/API customization. Not for generic browser automation (browser-harness/playwriter), rendered-UI review (agentation), React performance audits (react-best-practices), or general design-system work.
 G:react-grab grab element-context ai-agent clipboard component-inspector dev-tools react browser mcp component-source browser-component-picker plugin freeze
 
 U[5]:
@@ -13,7 +13,7 @@ S[4]{n,action,details}:
   1,Classify,choose clipboard install/use vs MCP vs plugin/API vs troubleshooting/removal
   2,Prereqs,confirm upstream truth: Node.js >=22 and development-only browser overlay
   3,Default path,use npx -y grab@latest init unless the user explicitly needs MCP or manual framework setup
-  4,Route,send generic browser automation to agent-browser/playwriter and UI review to agentation
+  4,Route,send generic browser automation to browser-harness/playwriter and UI review to agentation
 
 R[5]:
   Use npx -y grab@latest init as the default install path from project root

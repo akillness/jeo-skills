@@ -110,6 +110,6 @@ If the operator is no longer really asking about OMC topology or runtime ownersh
 | Permission surface / bypass policy | `ralphmode` |
 | Codex-first runtime | `omx` |
 | Gemini / Antigravity portable harness | `ohmg` |
-| Fresh-session browser verification | `agent-browser` |
+| Fresh-session browser verification | `browser-harness` |
 | Running browser reuse | `playwriter` |
 | Exact rendered-UI annotation | `agentation` |

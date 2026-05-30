@@ -1,5 +1,5 @@
 N:plannotator
-D:[plan] Routing-first visual approval gate for AI agent plans, markdown specs, and diffs. Use when a human needs to review a concrete plan before execution, inspect a targeted diff in a browser, mark up a spec/PRD/architecture note, or set up the review loop on Claude Code, Gemini CLI, Codex CLI, or OpenCode. Route planning/spec creation to task-planning or ralph; broad PR policy to code-review; rendered-UI critique to agentation; fresh-session browser verification to agent-browser.
+D:[plan] Routing-first visual approval gate for AI agent plans, markdown specs, and diffs. Use when a human needs to review a concrete plan before execution, inspect a targeted diff in a browser, mark up a spec/PRD/architecture note, or set up the review loop on Claude Code, Gemini CLI, Codex CLI, or OpenCode. Route planning/spec creation to task-planning or ralph; broad PR policy to code-review; rendered-UI critique to agentation; fresh-session browser verification to browser-harness.
 G:plan planning planno plannotator plan-review diff-review markdown-review spec-review approve-plan request-changes visual-review annotate-plan review-agent-plan codex gemini opencode claude-code 계획검토 설계검토 명세검토 차이검토
 U[11]:
   scripts/install.sh — Install plannotator CLI and optional integrations

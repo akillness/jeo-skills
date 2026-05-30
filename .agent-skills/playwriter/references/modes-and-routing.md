@@ -12,7 +12,7 @@ Choose `playwriter` when the task depends on one or more of these:
 
 ## Route away from Playwriter when these matter more
 
-Choose `agent-browser` or another fresh-session browser tool when the task needs:
+Choose `browser-harness` or another fresh-session browser tool when the task needs:
 
 - disposable isolation
 - CI-style reproducibility

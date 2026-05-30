@@ -50,7 +50,7 @@ Use this reference after the front door has already identified the operator's in
 | Spec-first persistence beyond OMC runtime detail | `ralph` |
 | Approval posture, trusted-folder / bypass policy, permission surface | `ralphmode` |
 | Plan approval / review gate | `plannotator` |
-| Fresh-session browser verification | `agent-browser` |
+| Fresh-session browser verification | `browser-harness` |
 | Running authenticated browser reuse | `playwriter` |
 | Exact rendered-UI critique / annotation handoff | `agentation` |
 | Codex-first runtime orchestration | `omx` |

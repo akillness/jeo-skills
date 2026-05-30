@@ -17,7 +17,7 @@ Use this file after the request is classified. The goal is to pick **one primary
 2. If both plan review and platform setup are present, choose whichever is blocking progress now and list the other as follow-up.
 3. If the artifact does not exist yet, do not fake review — route out to planning or artifact creation.
 4. If the user really wants merge policy, CODEOWNERS, reviewer assignment, or broad PR governance, route to `code-review`.
-5. If the user wants exact rendered-UI critique or clean disposable browser automation, route to `agentation` or `agent-browser` instead of stretching `plannotator`.
+5. If the user wants exact rendered-UI critique or clean disposable browser automation, route to `agentation` or `browser-harness` instead of stretching `plannotator`.
 
 ## Manual-vs-hook reality
 - **Claude / Gemini:** strongest native or hook-driven plan-review story.

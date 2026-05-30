@@ -97,7 +97,7 @@ fi
 
 ---
 
-## Step 1 — Install All 127 Skills (Batch)
+## Step 1 — Install All 128 Skills (Batch)
 
 Install all skills to the global location, then link shared skills to all detected agents.
 Re-running this step safely overwrites existing skills (symlinks are updated in place).
@@ -114,7 +114,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 127 skills to global store, link shared skills to all detected agents
+# Install ALL 128 skills to global store, link shared skills to all detected agents
 # --full-depth: discovers nested skills (7 skills require this to be found)
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
@@ -122,15 +122,15 @@ skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 
 > **Global vs Project install — why skill files may be missing**
 >
-> **Global install** (`-g`): downloads all 127 skills from the GitHub repo into the agent's global
+> **Global install** (`-g`): downloads all 128 skills from the GitHub repo into the agent's global
 > skills store (`~/.claude/skills/`, `~/.codex/skills/`, etc.). Requires `--full-depth` to discover
 > the 7 skills whose `SKILL.md` is nested in a subdirectory. Without this flag only ~120 skills
 > are found and linked.
 >
 > **Project install** (`experimental_install` / `skills restore`): reads `skills-lock.json` in the
-> project root and restores **only the skills listed there** — not all 127. If `skills-lock.json`
-> contains only 6 entries (omc, ooo, ai-tool-compliance, llm-monitoring-dashboard, survey, harness)
-> then only those 6 are restored regardless of how many are in the global store. To include more
+> project root and restores **only the skills listed there** — not all 128. If `skills-lock.json`
+> contains only 8 entries (omc, ooo, ai-tool-compliance, llm-monitoring-dashboard, survey, harness,
+> deep-dive, deepinit) then only those 8 are restored regardless of how many are in the global store. To include more
 > skills in a project install, add them to `skills-lock.json` first.
 >
 > **Root cause summary**:
@@ -147,6 +147,22 @@ skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 ---
 
 ## Step 2 — Fix Platform-Specific Skill Links (Dedup)
+
+### Vercel `skills` CLI scope map
+
+`skills add <source>` installs to project scope by default; `skills add -g <source>` installs globally for the selected agent. Use `-a claude-code`, `-a codex`, `-a gemini-cli`, or `-a opencode` to target one agent instead of auto-detection.
+
+| OS / shell | Global examples | Project examples |
+|------------|-----------------|------------------|
+| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
+| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\` | `.claude\skills\`, `.agents\skills\` |
+| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
+
+Install the Claude-derived skills added to this repo:
+
+```bash
+skills add -g "$REPO_URL" --skill deepinit --skill deep-dive -a claude-code --yes --copy --full-depth
+```
 
 Platform-specific skills must only appear on their target agent(s).
 This step **re-links** them with correct `-a` targeting, replacing the `*` links from Step 1.
@@ -548,15 +564,15 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (127 skills)
+## Skill Inventory (128 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
-| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, vibe-kanban, agentation, agent-browser, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
+| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, deep-dive *(trace causal hypotheses, then inject findings into deep-interview for evidence-backed requirements)*, deepinit *(generate hierarchical AGENTS.md documentation with parent links and AI-agent guidance)*, vibe-kanban, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
 | **Platform Setup** | omc | claude-code |
 | **Platform Setup** | ohmg | antigravity |
 | **Platform Setup** | omx | codex, claude-code |
-| **Planning & Review** | browser-harness *(self-healing LLM browser automation via CDP — agent-editable `agent_helpers.py`, domain skills, Browser Use Cloud; setup: "Set up https://github.com/browser-use/browser-harness for me")*, playwriter *(running-browser / authenticated Chrome reuse via CLI+MCP; route clean disposable checks to agent-browser)*, prompt-repetition *(decision-first prompt repetition for non-reasoning/lightweight models on long-context retrieval, options-first MCQ, or position-sensitive lookups; route broader context/retrieval fixes away instead of blanket auto-apply)*, skill-standardization *(SKILL.md validate/rewrite + canonical-vs-alias cleanup + repo-root validator / derived-surface sync for `skills.json`, README/setup, and `SKILL.toon`)*, skill-autoresearch *(repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces only when the core skill change is justified)* | All (`*`) |
+| **Planning & Review** | browser-harness *(self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode; replaces agent-browser; includes Claude-safe screenshot/PIL patch, agent-editable `agent_helpers.py`, domain skills, Browser Use Cloud)*, playwriter *(running-browser / authenticated Chrome reuse via CLI+MCP; route clean disposable checks to browser-harness)*, prompt-repetition *(decision-first prompt repetition for non-reasoning/lightweight models on long-context retrieval, options-first MCQ, or position-sensitive lookups; route broader context/retrieval fixes away instead of blanket auto-apply)*, skill-standardization *(SKILL.md validate/rewrite + canonical-vs-alias cleanup + repo-root validator / derived-surface sync for `skills.json`, README/setup, and `SKILL.toon`)*, skill-autoresearch *(repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces only when the core skill change is justified)* | All (`*`) |
 | **Agent Development** | microsoft-agent-framework *(enterprise-grade agent systems with Microsoft agent framework patterns — role separation, workflow control, policy enforcement)*, openai-agents-python *(multi-agent workflows with OpenAI Agents SDK — agents/tools/handoffs, guardrails, async pipelines)*, pydantic-ai *(typed LLM applications — schema-constrained outputs, tool integration, validation, dependency injection)* | All (`*`) |
 | **Backend** | api-design *(contract-first API design / compatibility review)*, api-documentation *(developer-facing API docs anchor for reference portals / quickstarts / SDK-webhook guides / truthful examples / auth-error guidance)*, authentication-setup *(product-auth setup router for hosted/framework-native/platform-native auth, sessions/JWTs, org data boundaries, and enterprise SSO handoff; routes hardening to security-best-practices)*, backend-testing *(packet-first backend testing for coverage-plan, fixture/reset, contract/API protection, flake-stabilization, and local-vs-CI lane-split packets; routes policy to testing-strategies, API shape to api-design, and auth implementation to authentication-setup)*, database-schema-design *(packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible field decisions, and staged evolution; routes interface work to api-design, verification to backend-testing, and reporting/telemetry follow-through outward)*, payloadcms *(Payload CMS content/collection management — typed collections, access control, hooks, REST/GraphQL API, local API patterns)*, supabase-agent-skills *(Supabase full-stack patterns — Auth, Database, Storage, Edge Functions, Realtime, RLS policies, and migration workflows)* | All (`*`) |
 | **Design Tools** | stitch-skills *(Agent Skills for Stitch MCP — generate high-fidelity UI screens, multi-page websites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, Remotion walkthrough videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills`)*, compresso *(free offline desktop video/image compression via Tauri+React — batch compress, trim/split, convert, embed subtitles; uses FFmpeg/pngquant/jpegoptim/gifski. Install: `brew install --cask codeforreal1/tap/compresso`)*, open-design *(local-first open-source design tool — generate prototypes, decks, and media artifacts using installed coding agents; 72 built-in design systems, 5 visual directions, multi-format export HTML/PDF/PPTX/ZIP/Markdown, AI media via gpt-image-2 and Seedance 2.0. Plugin: `claude plugin marketplace add nexu-io/open-design`)* | All (`*`) |
@@ -601,8 +617,7 @@ If no → skip silently. Never re-ask.
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
 | `bmad-gds` | `bmad-gds` | Game-production orchestrator for ideas, GDDs, playtest notes, bugs, and launch beats |
 | `bmad-idea` | `bmad-idea` | Pre-planning idea router for product, GTM, consulting, and game concepts → choose one framing mode and one concept artifact |
-| `agent-browser` | `agent-browser` | Fresh-session browser verification anchor — choose a clean disposable browser, use snapshot refs, and prove before/after state with explicit evidence |
-| `browser-harness` | `browser-harness`, `self-healing browser`, `llm browser automation`, `cdp agent`, `chrome devtools agent` | Self-healing LLM browser automation via CDP — agent-editable `agent_helpers.py`, community domain skills (site-specific playbooks), optional Browser Use Cloud (3 concurrent browsers, proxies, captcha). Setup: paste "Set up https://github.com/browser-use/browser-harness for me" into Claude Code |
+| `browser-harness` | `browser-harness`, `self-healing browser`, `llm browser automation`, `cdp agent`, `chrome devtools agent`, `codex browser`, `antigravity browser`, `claude screenshot error`, `claude image error` | Self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode — replaces agent-browser for clean browser verification, uses agent-editable `agent_helpers.py` and domain skills, and documents Claude-safe screenshot handling |
 | `obsidian` | `obsidian`, `obsidian plugin`, `obsidian cli`, `obsidian automation`, `obsidian development`, `obsidian eslint`, `obsidian markdown`, `obsidian bases`, `json-canvas`, `obsidian vault`, `obsidian uri` | **Unified Obsidian skill (v2.0)** — plugin development (27 ESLint rules, boilerplate, submission) + CLI automation (commands, TUI, URI handoff, developer mode) + content patterns (markdown, Bases, JSON Canvas). Plugin: `claude plugin marketplace add akillness/oh-my-skills` |
 | `obsidian-cli` | `obsidian cli`, `obsidian terminal`, `obsidian plugin reload`, `obsidian://` | *(alias → `obsidian`)* Routing-first Obsidian desktop automation — official CLI command/TUI mode, developer commands, URI handoff |
 | `obsidian-plugin` | `obsidian plugin`, `create obsidian plugin` | *(alias → `obsidian`)* Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility |

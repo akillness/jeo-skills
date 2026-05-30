@@ -1,5 +1,5 @@
 N:playwriter
-D:Reuse a running Chrome session for browser automation via Playwriter CLI + MCP. Use when the task depends on the browser the user already has open — existing logins, cookies, extensions, passkey-friendly flows, or live-tab continuity. Route repeatable fresh-browser or CI-style checks to `agent-browser` instead.
+D:Reuse a running Chrome session for browser automation via Playwriter CLI + MCP. Use when the task depends on the browser the user already has open — existing logins, cookies, extensions, passkey-friendly flows, or live-tab continuity. Route repeatable fresh-browser or CI-style checks to `browser-harness` instead.
 G:playwriter playwright browser-automation chrome-extension mcp authenticated stateful session-reuse running-browser existing-logins live-browser
 
 U[5]:
@@ -10,7 +10,7 @@ U[5]:
   Handle login-heavy flows where manual auth handoff is realistic
 
 S[6]{n,action,details}:
-  1,Choose runtime,Pick `playwriter` only when the running browser matters; route clean repeatable checks to `agent-browser`
+  1,Choose runtime,Pick `playwriter` only when the running browser matters; route clean repeatable checks to `browser-harness`
   2,Install,Install Playwriter CLI and extension; enable the extension on the target tab
   3,Start runtime,Run `playwriter browser start` when needed and `playwriter session new` to get a session id
   4,Observe,Use `playwriter -s <id> -e 'console.log(await snapshot({ page }))'` before each action
@@ -26,5 +26,5 @@ R[5]:
 
 E[3]{desc,in,out}:
   "Logged-in Jira browser task","Use my already logged-in Chrome to update a Jira issue and keep the same browser context","Chooses playwriter, enables extension/session workflow, and explains why running-browser reuse matters"
-  "Repeatable CI browser test","Run a disposable headless checkout flow in CI and compare evidence","Routes away from playwriter to agent-browser because fresh-session determinism matters more"
+  "Repeatable CI browser test","Run a disposable headless checkout flow in CI and compare evidence","Routes away from playwriter to browser-harness because fresh-session determinism matters more"
   "MCP browser bridge","Connect Codex or Claude to the browser I already have open","Explains MCP config plus session/runtime expectations for a running browser"

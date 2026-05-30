@@ -1,6 +1,6 @@
 ---
 name: playwriter
-description: "Reuse a running Chrome session for browser automation via Playwriter CLI + MCP. Use when the task depends on the browser the user already has open — existing logins, cookies, extensions, passkey-friendly flows, or live-tab continuity. Route repeatable fresh-browser or CI-style checks to `agent-browser` instead."
+description: "Reuse a running Chrome session for browser automation via Playwriter CLI + MCP. Use when the task depends on the browser the user already has open — existing logins, cookies, extensions, passkey-friendly flows, or live-tab continuity. Route repeatable fresh-browser or CI-style checks to `browser-harness` instead."
 license: MIT
 compatibility: Requires Chrome/Chromium plus the Playwriter extension and CLI (`npm install -g playwriter` or `npx playwriter@latest`). Works best for local headed browser workflows where reusing the current browser session matters more than CI-grade determinism.
 metadata:
@@ -29,7 +29,7 @@ Do **not** use `playwriter` by default for:
 
 - CI-style repeatable browser checks
 - fresh-session verification that should not touch the user’s real browser profile
-- simple scraping or deterministic form checks that fit `agent-browser`
+- simple scraping or deterministic form checks that fit `browser-harness`
 - tasks that need the strongest isolation or the least user-state coupling
 
 ## Quick routing rule
@@ -38,15 +38,15 @@ Do **not** use `playwriter` by default for:
 |---|---|
 | The browser the user already has open | `playwriter` |
 | Existing logins / cookies / extensions | `playwriter` |
-| A clean, reproducible, disposable session | `agent-browser` |
-| Headless verification / screenshot diffs / isolated checks | `agent-browser` |
+| A clean, reproducible, disposable session | `browser-harness` |
+| Headless verification / screenshot diffs / isolated checks | `browser-harness` |
 | Hosted or cloud browser infrastructure | a provider-specific or cloud-browser skill |
 
 ## Instructions
 
 ### Step 1: Pick the right browser runtime
 
-Use `playwriter` only when running-browser reuse is the requirement. If the task is really about a clean disposable browser or CI-style reproducibility, route to `agent-browser` instead.
+Use `playwriter` only when running-browser reuse is the requirement. If the task is really about a clean disposable browser or CI-style reproducibility, route to `browser-harness` instead.
 
 ### Step 2: Follow the core workflow
 
@@ -187,7 +187,7 @@ Common uses:
 | Wrong tab/page state | Re-run `snapshot({ page })` and confirm you are on the expected tab before clicking |
 | Stale / broken session | `playwriter session reset <id>` |
 | Quoting breaks JavaScript | Use a heredoc for `-e` input |
-| Need repeatable isolated automation | Route to `agent-browser` instead |
+| Need repeatable isolated automation | Route to `browser-harness` instead |
 | Browser state is too messy / human interference | Start a fresh session or use a fresh-session browser tool |
 
 ## Examples
@@ -198,7 +198,7 @@ Common uses:
 
 ### Example 2: Clean browser verification
 - Prompt: "Run a repeatable headless checkout test in CI and compare screenshots."
-- Expected skill behavior: route away from `playwriter` to `agent-browser` or another fresh-session tool because isolation matters more than session reuse.
+- Expected skill behavior: route away from `playwriter` to `browser-harness` or another fresh-session tool because isolation matters more than session reuse.
 
 ### Example 3: MCP browser bridge
 - Prompt: "Connect Codex or Claude to the browser I already have open so it can use my current tabs and cookies."

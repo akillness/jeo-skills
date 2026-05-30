@@ -37,7 +37,7 @@ Before opening or syncing a card, capture:
 ## Route-outs to keep honest
 - planning and approval before coding → `task-planning`, `survey`, `plannotator`, `jeo`
 - code review without a real board lifecycle → `code-review`
-- exact rendered-UI/browser work → `agentation`, `agent-browser`, `playwriter`
+- exact rendered-UI/browser work → `agentation`, `browser-harness`, `playwriter`
 - PM rituals or roadmap coordination → PM skills
 - marketing/content approvals → `marketing-automation`
 - non-code milestone / launch planning in games → `bmad-gds`

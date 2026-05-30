@@ -217,7 +217,7 @@ Route out when:
 - **spec-first persistence method beyond OMC runtime detail** → `ralph`
 - **approval posture, trusted-folder / bypass policy, permission surface** → `ralphmode`
 - **plan review / approval gate** → `plannotator`
-- **fresh-session browser verification** → `agent-browser`
+- **fresh-session browser verification** → `browser-harness`
 - **running authenticated browser reuse** → `playwriter`
 - **exact rendered-UI critique / annotation handoff** → `agentation`
 - **Codex-first runtime orchestration** → `omx`

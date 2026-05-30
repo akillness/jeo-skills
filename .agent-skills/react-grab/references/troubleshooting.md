@@ -18,7 +18,7 @@ Before deeper debugging, verify:
 | Clipboard copy works poorly on transient hover UI | target disappears before capture | use `freeze()` / `unfreeze()` primitives workflow |
 | MCP tool returns empty | no recent browser-side selection | select/hover element first, then call `get_element_context` |
 | `grab init` fails immediately | old Node version or broken package-manager environment | upgrade to Node 22+ and retry from repo root |
-| Agent-specific install feels wrong for browser automation | user actually wants browser control, not element capture | route to `agent-browser` or `playwriter` |
+| Agent-specific install feels wrong for browser automation | user actually wants browser control, not element capture | route to `browser-harness` or `playwriter` |
 
 ## Quick commands
 
@@ -39,7 +39,7 @@ npx -y grab@latest remove <agent>
 ## When to escalate out of react-grab
 
 Escalate when the issue is really about:
-- full browser automation, auth state, navigation, screenshots, or replay → `agent-browser` / `playwriter`
+- full browser automation, auth state, navigation, screenshots, or replay → `browser-harness` / `playwriter`
 - visual review packets, layout comments, rendered annotations → `agentation`
 - React performance, hydration, bundle size, or rerender churn → `react-best-practices`
 

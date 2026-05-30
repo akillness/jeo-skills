@@ -5,7 +5,7 @@ description: >
   agent as component name, source file path, line number, and HTML. Use when the user wants
   `react-grab`, element-context copy, component-source lookup from the browser, clipboard-to-agent
   React debugging, or MCP-backed element selection for React apps. Not for generic browser automation
-  or login/session reuse (`agent-browser`, `playwriter`), broad UI annotation/review (`agentation`),
+  or login/session reuse (`browser-harness`, `playwriter`), broad UI annotation/review (`agentation`),
   React performance audits (`react-best-practices`), or general design-system work (`design-system`).
   Triggers on: react-grab, grab element context, copy component to AI, browser component picker,
   React component inspector, clipboard component source, get element context from browser, grab UI element.
@@ -33,7 +33,7 @@ metadata:
 - Build a custom plugin or use the primitives API for a project-specific workflow
 
 Do **not** use this skill for:
-- Fresh-session browser automation, auth flows, or disposable browser verification → `agent-browser`
+- Fresh-session browser automation, auth flows, or disposable browser verification → `browser-harness`
 - Running-browser reuse with existing cookies/extensions/logins → `playwriter`
 - Human feedback / annotation packets on rendered UI → `agentation`
 - React performance diagnosis, rerender churn, hydration, bundle, or RSC/client-boundary work → `react-best-practices`
@@ -136,7 +136,7 @@ npx -y grab@latest remove <agent>
 Keep `react-grab` focused on **React element context capture from the browser**.
 
 Route out when the user is actually asking for:
-- general browser automation → `agent-browser` or `playwriter`
+- general browser automation → `browser-harness` or `playwriter`
 - UI review / visual annotation → `agentation`
 - performance / profiling / hydration / bundle / RSC issues → `react-best-practices`
 - reusable component-system design → `design-system` or `ui-component-patterns`
@@ -171,7 +171,7 @@ Keep the main answer short unless the user explicitly asks for the long path.
 1. Confirm Node 22+ prerequisite.
 2. Run `npx -y grab@latest add mcp`.
 3. Explain that the browser selection happens first, then the agent calls `get_element_context`.
-4. Route generic browser-control questions to `agent-browser` / `playwriter` if needed.
+4. Route generic browser-control questions to `browser-harness` / `playwriter` if needed.
 
 ### Example 3: custom plugin workflow
 

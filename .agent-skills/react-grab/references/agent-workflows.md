@@ -100,7 +100,7 @@ npx -y grab@latest remove <agent>
 Use `react-grab` for **exact React element context**.
 
 Route out when the user really wants:
-- browser navigation, auth, screenshots, or scripted flow control → `agent-browser` or `playwriter`
+- browser navigation, auth, screenshots, or scripted flow control → `browser-harness` or `playwriter`
 - rendered-UI markup/annotation and review packets → `agentation`
 - performance triage on the React app itself → `react-best-practices`
 

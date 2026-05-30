@@ -18,7 +18,7 @@ If the real need is missing one of those pieces, another skill is usually a bett
 ## Route-outs
 - **Planning before coding** → `task-planning`, `survey`, `plannotator`
 - **Single-agent coding run** → direct coding/orchestration skill
-- **Browser review / exact UI feedback** → `agentation`, `agent-browser`, `playwriter`
+- **Browser review / exact UI feedback** → `agentation`, `browser-harness`, `playwriter`
 - **PM-only rituals** → `task-planning`, `standup-meeting`, `sprint-retrospective`
 - **Marketing/content coordination** → `marketing-automation`
 - **Game-production planning without coding workspaces** → `bmad-gds`

@@ -157,6 +157,43 @@
           "reason": "Use playwriter when Harness outputs need live browser-state verification."
         }
       ]
+    },
+    "deep-dive": {
+      "source": "akillness/oh-my-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "deep-dive",
+      "description": "trace로 원인 가설을 조사한 뒤 deep-interview에 증거를 주입해 요구사항을 결정화하는 Claude/OMC 2단계 조사 스킬.",
+      "tags": [
+        "deep-dive",
+        "trace",
+        "deep-interview",
+        "root-cause",
+        "requirements",
+        "omc",
+        "claude-code"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deep-dive",
+      "addedAt": "2026-05-30T00:00:00Z",
+      "updatedAt": "2026-05-30T00:00:00Z"
+    },
+    "deepinit": {
+      "source": "akillness/oh-my-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "deepinit",
+      "description": "parent link, 디렉터리 목적, 주요 파일, 테스트 노트, AI 에이전트 작업 지침을 담은 계층형 AGENTS.md 문서를 생성/갱신하는 스킬.",
+      "tags": [
+        "deepinit",
+        "deep-init",
+        "AGENTS.md",
+        "codebase-documentation",
+        "hierarchical-docs",
+        "agent-docs"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deepinit",
+      "addedAt": "2026-05-30T00:00:00Z",
+      "updatedAt": "2026-05-30T00:00:00Z"
     }
   },
   "dependencies": {
@@ -170,15 +207,6 @@
         "omc"
       ],
       "description": "Ouroboros spec-first completion loop. jeo PLAN 단계 반복 실행 엔진."
-    },
-    "agent-browser": {
-      "version": "latest",
-      "source": "npm:agent-browser",
-      "installCommand": "npm install -g agent-browser",
-      "optional_for": [
-        "omc"
-      ],
-      "description": "AI 에이전트용 헤드리스 브라우저. jeo VERIFY 단계 기본 검증 도구. 브라우저 UI 없는 백엔드/CLI 작업은 건너뜀."
     },
     "agentation": {
       "version": "latest",
@@ -197,6 +225,28 @@
         "ooo"
       ],
       "description": "계획/구현 전 문제공간 리서치 스킬. 신규 스킬 발굴 및 landscape 분석 시 권장."
+    },
+    "deep-dive": {
+      "version": "latest",
+      "source": "akillness/oh-my-skills",
+      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deep-dive",
+      "optional_for": [
+        "omc",
+        "ooo",
+        "survey"
+      ],
+      "description": "모호한 문제를 구현 전에 trace하고 deep-interview로 요구사항을 결정화할 때 선택적으로 사용한다."
+    },
+    "deepinit": {
+      "version": "latest",
+      "source": "akillness/oh-my-skills",
+      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deepinit",
+      "optional_for": [
+        "omc",
+        "ooo",
+        "survey"
+      ],
+      "description": "새 코드베이스 또는 정리되지 않은 저장소의 계층형 AGENTS.md 문서화를 위해 선택적으로 사용한다."
     },
     "omx": {
       "version": "latest",

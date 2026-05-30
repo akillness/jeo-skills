@@ -9,7 +9,7 @@ description: >
   review queue, tracker sync for coding tasks, worktree board, parallel coding
   agents, card-based agent workflow, and vibe-kanban. Route planning-only
   requests to `task-planning` / `survey` / `plannotator`, browser/UI execution to
-  `agentation` / `agent-browser` / `playwriter`, and non-code PM / marketing /
+  `agentation` / `browser-harness` / `playwriter`, and non-code PM / marketing /
   game-production coordination to their domain skills.
 allowed-tools: Read Write Bash Grep Glob
 metadata:
@@ -48,7 +48,7 @@ Use `vibe-kanban` when one or more of these are true:
 ## When not to use this skill
 - **Planning, decomposition, or sign-off comes before any coding board** → use `task-planning`, `survey`, `jeo`, or `plannotator`
 - **The task is a single-agent coding run with no board/review/workspace need** → use the relevant coding/orchestration skill directly
-- **The real requirement is browser review or authenticated browser reuse** → use `agentation`, `agent-browser`, or `playwriter`
+- **The real requirement is browser review or authenticated browser reuse** → use `agentation`, `browser-harness`, or `playwriter`
 - **The work is mostly PM / ops coordination without coding workspaces, diffs, or PRs** → use PM workflow skills such as `task-planning`, `standup-meeting`, or `sprint-retrospective`
 - **The work is mainly marketing/content operations** → use `marketing-automation` or adjacent GTM/content skills
 - **The work is game-production planning without coding-board execution** → use `bmad-gds` or other game-production skills
@@ -59,7 +59,7 @@ Use `vibe-kanban` when one or more of these are true:
 | A board for bounded coding tasks with worktrees, review, retries, and PR handoff | `vibe-kanban` |
 | Plan review or artifact approval before coding begins | `plannotator` |
 | One agent task with no board/workspace control plane | direct coding/orchestration skill |
-| Exact rendered-UI review or browser-state reuse | `agentation` / `playwriter` / `agent-browser` |
+| Exact rendered-UI review or browser-state reuse | `agentation` / `playwriter` / `browser-harness` |
 | Non-code work coordination (PM, marketing, game ops) | the matching domain workflow skill |
 
 ## Instructions
@@ -138,7 +138,7 @@ Start with the UI or local workflow first. Bring in MCP when another orchestrato
 Keep `vibe-kanban` narrow enough to stay useful.
 - plan creation or approval → `task-planning`, `survey`, `plannotator`, `jeo`
 - code review without a board/workspace loop → `code-review`
-- browser review or QA evidence → `agentation`, `agent-browser`, `playwriter`
+- browser review or QA evidence → `agentation`, `browser-harness`, `playwriter`
 - PM-only rituals or roadmap coordination → PM skills
 - marketing/content pipeline coordination without coding workspaces → `marketing-automation`
 - game-production planning without coding-board control → `bmad-gds`

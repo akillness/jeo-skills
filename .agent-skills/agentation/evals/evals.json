@@ -14,9 +14,9 @@
     {
       "id": 2,
       "prompt": "Run a repeatable headless checkout verification and compare the result in a clean browser session.",
-      "expected_output": "Routes away from agentation to agent-browser because deterministic fresh-session verification is the real job.",
+      "expected_output": "Routes away from agentation to browser-harness because deterministic fresh-session verification is the real job.",
       "assertions": [
-        "Routes to agent-browser or an equivalent fresh-session browser verifier",
+        "Routes to browser-harness or an equivalent fresh-session browser verifier",
         "Explains that agentation is not the primary tool for deterministic browser verification"
       ]
     },

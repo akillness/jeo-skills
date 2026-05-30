@@ -56,7 +56,7 @@ Route out when:
 | `vibe-kanban` | Kanban/task movement and decomposition | Board management and work tracking |
 | `code-review` | Risk/correctness/approval judgment on code changes | Broad PR-review policy |
 | `agentation` | UI screenshot annotation → targeted code fixes | Rendered UI bug markup |
-| `agent-browser` | Clean disposable browser verification | Fresh-session browser evidence |
+| `browser-harness` | Clean disposable browser verification | Fresh-session browser evidence |
 | `obsidian` / `llm-wiki` | Durable note/wiki management | General note-system administration |
 
 ## Review quality heuristics
