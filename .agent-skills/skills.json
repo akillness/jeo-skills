@@ -2371,7 +2371,7 @@
     },
     {
       "name": "ohmg",
-      "description": "Adopt `oh-my-agent` from a Gemini CLI or Antigravity workflow. Use when the user wants a portable multi-agent harness with `.agents` as the source of truth, Gemini-native generated agents, Antigravity compatibility, or cross-vendor-ready orchestration that can later route work to Claude or Codex.",
+      "description": "Gemini / Antigravity entry for the portable oh-my-agent / OMA harness. Keeps `.agents` canonical, regenerates vendor views with `oma link`, and maps Claude team/ultrawork/ultraqa intents to OMA `/orchestrate`, `/ultrawork`, `/review`, or `oma agent:parallel` with Antigravity spawning limits stated plainly.",
       "category": "core-orchestration",
       "path": "ohmg/SKILL.md",
       "tags": [
@@ -2383,7 +2383,11 @@
         "gemini-cli",
         "antigravity",
         "portable-harness",
-        "dot-agents"
+        "dot-agents",
+        "team",
+        "ultrawork",
+        "ultraqa",
+        "review"
       ],
       "platforms": [
         "Gemini",
@@ -2396,11 +2400,16 @@
         "Grep",
         "Glob"
       ],
-      "commands": []
+      "commands": [
+        {
+          "command": "python3 .agent-skills/omx/scripts/validate-cross-runtime-workflows.py --repo-root .",
+          "source": "omx/scripts/validate-cross-runtime-workflows.py"
+        }
+      ]
     },
     {
       "name": "omc",
-      "description": "Claude-first OMC router for oh-my-claudecode. Identifies marketplace plugin vs shell CLI vs local `--plugin-dir` topology first, distinguishes plugin slash skills (`/team`, `/autopilot`, `/ralph`, `/ultrawork`) from the `omc` shell CLI (`omc setup`, `omc team`, `omc ask`), handles duplicate-install/recovery/state issues, and routes adjacent work to `jeo`, `ralphmode`, `omx`, `ohmg`, and browser-review skills.",
+      "description": "Claude-first OMC router for oh-my-claudecode. Identifies marketplace plugin vs shell CLI vs local `--plugin-dir` topology first, distinguishes plugin slash skills (`/team`, `/autopilot`, `/ralph`, `/ultrawork`, `/ultraqa`) from the `omc` shell CLI, maps Claude workflow intents to OMX/OMA when requested, handles recovery/state issues, and routes adjacent work outward.",
       "category": "core-orchestration",
       "tags": [
         "omc",
@@ -2412,11 +2421,15 @@
         "autopilot",
         "ralph",
         "ultrawork",
+        "ultraqa",
         "/team",
         "omc team",
         "omc ask",
         "cancelomc",
-        "plugin-dir"
+        "plugin-dir",
+        "omx",
+        "oma",
+        "antigravity"
       ],
       "platforms": [
         "Claude Code"
@@ -2445,11 +2458,16 @@
         "Glob",
         "Edit"
       ],
-      "commands": []
+      "commands": [
+        {
+          "command": "python3 .agent-skills/omx/scripts/validate-cross-runtime-workflows.py --repo-root .",
+          "source": "omx/scripts/validate-cross-runtime-workflows.py"
+        }
+      ]
     },
     {
       "name": "omx",
-      "description": "Multi-agent orchestration layer for OpenAI Codex CLI. Provides 30 specialized agents, 40+ workflow skills, team orchestration in tmux, persistent MCP servers, and staged pipeline execution.",
+      "description": "Multi-agent orchestration layer for OpenAI Codex CLI with Claude workflow parity. Provides `$team`, `$ulw`/`$ultrawork`, and `$ultraqa` equivalents for coordinated workers, independent burst work, and QA fan-out, plus 30+ agents, tmux/psmux team runtime, omx explore, and sparkshell.",
       "category": "core-orchestration",
       "path": "omx/SKILL.md",
       "tags": [
@@ -2458,8 +2476,10 @@
         "orchestration",
         "codex",
         "openai",
+        "team",
+        "ultrawork",
+        "ultraqa",
         "team-mode",
-        "mcp-servers",
         "workflow"
       ],
       "platforms": [
@@ -2474,7 +2494,12 @@
         "Grep",
         "Glob"
       ],
-      "commands": []
+      "commands": [
+        {
+          "command": "python3 .agent-skills/omx/scripts/validate-cross-runtime-workflows.py --repo-root .",
+          "source": "omx/scripts/validate-cross-runtime-workflows.py"
+        }
+      ]
     },
     {
       "name": "ooo",

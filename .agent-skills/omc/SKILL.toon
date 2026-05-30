@@ -1,15 +1,15 @@
 N:omc
-D:Route Claude Code–first orchestration to the truthful OMC install topology and runtime before giving commands. Distinguishes marketplace plugin slash skills from the `omc` shell CLI and local-checkout `--plugin-dir` usage, handles duplicate-install/recovery/state issues, and routes adjacent work to jeo, ralphmode, omx, ohmg, and browser-review skills.
-G:omc oh-my-claudecode claude-code /team autopilot ralph ultrawork ccg omc-team omc-ask omc-setup plugin-dir hud hooks
+D:Route Claude Code–first orchestration to the truthful OMC install topology and runtime before giving commands. Distinguishes marketplace plugin slash skills from the `omc` shell CLI and local-checkout `--plugin-dir` usage, maps Claude `/team` `/ultrawork` `/ultraqa` intents to OMX/OMA when requested, handles duplicate-install/recovery/state issues, and routes adjacent work outward.
+G:omc oh-my-claudecode claude-code /team autopilot ralph ultrawork ultraqa ccg omc-team omc-ask omc-setup plugin-dir hud hooks omx oma antigravity
 U[5]:
 1:Claude Code plugin setup, shell CLI setup, and local plugin-dir topology routing for OMC / oh-my-claudecode
 2:Truthful routing between in-session slash skills and shell-side `omc` CLI commands
-3:Mode selection for `/team`, `/autopilot`, `/ralph`, `/ultrawork`, and `omc team`
+3:Mode selection for `/team`, `/autopilot`, `/ralph`, `/ultrawork`, `/ultraqa`, and `omc team`
 4:Recovery guidance for duplicate installs, plugin-dir confusion, worktree/state drift, and HUD/update issues
 5:Explicit route-outs to jeo, ralphmode, omx, ohmg, plannotator, and browser-review skills
 S[6]{n,action,details}:
 1:topology,Identify the install topology,marketplace-plugin | shell-cli | local-plugin-dir | mixed-or-unknown
-2:classify,Pick one packet,install-topology | in-session-runtime | terminal-runtime | recovery-and-update | boundary-and-route-out
+2:classify,Pick one packet,install-topology | in-session-runtime | terminal-runtime | recovery-and-update | cross-runtime-parity | boundary-and-route-out
 3:surface,State the runtime surface,plugin slash skills vs shell-side `omc` CLI
 4:recommend,Give the smallest truthful command,/team or /autopilot or /ralph or setup omc or omc setup or omc team or omc ask depending on topology + packet
 5:recover,Call out real operator constraints,enable CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 and inspect plugin-dir/state/worktree behavior when relevant
@@ -20,7 +20,7 @@ R[6]:
 3:The npm package name is `oh-my-claude-sisyphus` while the runtime command is `omc`
 4:Local checkouts should use `--plugin-dir` / `OMC_PLUGIN_ROOT` / `omc setup --plugin-dir-mode`, not marketplace advice
 5:Native team mode depends on CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 in ~/.claude/settings.json
-6:Use references for volatile operator detail; keep the front door focused on routing
+6:Map Claude /team /ultrawork /ultraqa to OMX $team $ulw $ultraqa or OMA /orchestrate /ultrawork /review by intent not implementation identity
 E[4]{desc,in,out}:
 1:{Marketplace plugin setup,OMC 설치하고 Claude Code 안에서 바로 팀 모드까지 쓰고 싶어,Use install-topology with marketplace-plugin and give plugin install plus setup omc}
 2:{Local plugin-dir dev loop,로컬 checkout으로 OMC 수정 중인데 plugin-dir 쪽으로 어떻게 잡아야 해?,Use install-topology with local-plugin-dir and point to --plugin-dir / OMC_PLUGIN_ROOT / omc setup --plugin-dir-mode}

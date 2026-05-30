@@ -50,6 +50,17 @@
         "The response describes the one-question-at-a-time clarification pattern",
         "The response explains that deep-interview hands off to $plan/$ralph/$team after clarification"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "Claude에서 쓰던 /team, /ultrawork, /ultraqa를 Codex에서도 쓰고 싶어. OMX에서는 뭐로 매핑해?",
+      "expected_output": "The skill maps Claude /team to OMX $team or omx team, /ultrawork to $ulw or $ultrawork, and /ultraqa to $ultraqa while keeping state under .omx.",
+      "assertions": [
+        "The response maps /team to $team or omx team",
+        "The response maps /ultrawork to $ulw or $ultrawork",
+        "The response maps /ultraqa to $ultraqa",
+        "The response mentions .omx state or not reusing .omc state"
+      ]
     }
   ]
 }

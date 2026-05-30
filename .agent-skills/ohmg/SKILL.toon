@@ -1,20 +1,24 @@
 N:ohmg
-D:Ultimate multi-agent framework for Google Antigravity. Orchestrates specialized domain agents (PM, Frontend, Backend, Mobile, QA, Debug) via Serena Memory.
-G:ohmg multi-agent orchestration gemini antigravity serena-memory workflow
+D:Gemini / Antigravity entry for the portable oh-my-agent / OMA harness. Keep .agents as the source of truth, generate vendor views with oma link, and map Claude team/ultrawork/ultraqa intents to OMA /orchestrate, /ultrawork, /review, or oma agent:parallel without overclaiming Antigravity-native spawning.
+G:ohmg oh-my-agent oma gemini antigravity .agents portable-harness orchestration team ultrawork ultraqa review
 U[5]:
-  Coordinate complex multi-domain projects
-  Parallelize tasks across multiple AI agents
-  Cross-agent state management with Serena
-  Real-time observability dashboards
-  Multi-CLI vendor integration
-S[4]{n,action,details}:
-  1,Install,Run bunx oh-my-ag in root
-  2,Setup,Configure via /setup in agent
-  3,Coordinate,Use /coordinate for complex tasks
-  4,Monitor,Launch terminal or web dashboard
-R[3]:
-  Use Serena Memory for state sync
-  Verify setup with bunx oh-my-ag doctor
-  Map CLIs to agents in user-preferences.yaml
-E[1]{desc,in,out}:
-  "Spawn agent","oh-my-ag agent:spawn backend 'API task'","Backend agent initialized"
+1:Adopt oh-my-agent from Gemini CLI or Antigravity with .agents as canonical source
+2:Regenerate Gemini Claude and Codex vendor views via oma link
+3:Explain Gemini-native generated agents vs OMA CLI fallback
+4:Map Claude /team /ultrawork /ultraqa intents to OMA workflow packets
+5:Route Claude-first depth to omc and Codex-first depth to omx
+S[5]{n,action,details}:
+1:install,Install OMA,curl install.sh or bunx oh-my-agent@latest or bun install --global oh-my-agent
+2:link,Regenerate views,oma link then oma doctor
+3:team,Coordinate work,/orchestrate "task" or oma agent:parallel -i role:"task"
+4:ultrawork,Parallel burst,/ultrawork "task" or independent oma agent:parallel lanes
+5:ultraqa,QA parity,/review "target" or /ultrawork "QA target"; only call it /ultraqa when local workflow exposes that name
+R[5]:
+1:Use oh-my-agent / oma naming not old oh-my-ag
+2:Keep .agents canonical and do not hand-edit generated vendor views
+3:Antigravity can consume the harness but custom spawning may need OMA CLI fallback
+4:Generated surfaces include .gemini/agents .claude/agents and .codex/agents
+5:Dashboards are observability helpers not the whole orchestration model
+E[2]{desc,in,out}:
+1:{Antigravity team parity,I want Claude /team style work in Antigravity,Use .agents harness plus /orchestrate or oma agent:parallel and state the spawning boundary}
+2:{QA parity,Need ultraqa on OMA,Use /review or QA-focused /ultrawork with qa/security/performance lanes}

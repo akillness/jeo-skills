@@ -60,6 +60,17 @@
         "The response mentions duplicate installs, plugin-dir, state, worktree, HUD, or setup/update investigation",
         "The response references a recovery path such as setup omc, omc setup, omc update, doctor, or the install-topology reference"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "Claude의 /team /ultrawork /ultraqa를 Codex와 Antigravity에서도 쓰게 하고 싶어.",
+      "expected_output": "The skill uses the cross-runtime-parity packet, maps /team to OMX $team or OMA /orchestrate, /ultrawork to OMX $ulw or OMA /ultrawork, and /ultraqa to OMX $ultraqa or OMA /review while preserving runtime state boundaries.",
+      "assertions": [
+        "The response maps /team to $team, omx team, /orchestrate, or oma agent:parallel",
+        "The response maps /ultrawork to $ulw, $ultrawork, or OMA /ultrawork",
+        "The response maps /ultraqa to $ultraqa, /review, or QA-focused /ultrawork",
+        "The response distinguishes .omc, .omx, and .agents or OMA state boundaries"
+      ]
     }
   ]
 }

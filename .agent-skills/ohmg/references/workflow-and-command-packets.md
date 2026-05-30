@@ -26,6 +26,7 @@ oma agent:parallel -i backend:"Auth API" frontend:"Login form"
 - present workflow packets as the **portable harness layer**
 - present CLI commands as **operator tools** for verification, regeneration, spawning, and monitoring
 - do not promise every runtime exposes the same native UI or spawning mechanics
+- for Claude parity requests, map `/team` to `/orchestrate` or `oma agent:parallel`, `/ultrawork` to OMA `/ultrawork`, and `/ultraqa` to `/review` or a QA-focused `/ultrawork`
 
 ## Response pattern
 1. identify whether the user is Gemini-first, Antigravity-first, or portable-harness-first

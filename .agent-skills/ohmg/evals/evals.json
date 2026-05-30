@@ -51,6 +51,17 @@
         "The response says .agents is canonical instead of .agent",
         "The response mentions regenerating vendor views via oma link or equivalent"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "I use Claude /team, /ultrawork, and /ultraqa. How do I make those usable in Antigravity with OMA?",
+      "expected_output": "The skill maps team to /orchestrate or oma agent:parallel, ultrawork to /ultrawork or agent:parallel lanes, and ultraqa to /review or QA-focused /ultrawork while stating Antigravity custom spawning limits.",
+      "assertions": [
+        "The response maps team to /orchestrate or oma agent:parallel",
+        "The response maps ultrawork to /ultrawork or parallel lanes",
+        "The response maps ultraqa to /review or QA-focused /ultrawork",
+        "The response states Antigravity custom spawning is limited or may need OMA CLI fallback"
+      ]
     }
   ]
 }

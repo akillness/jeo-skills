@@ -74,6 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **Codex·Antigravity용 OMC 워크플로우 대응표** | `omc`, `omx`, `ohmg`를 갱신해 Claude의 `/team`, `/ultrawork`, `/ultraqa` 의도를 Codex/OMX와 Gemini/Antigravity/OMA에서도 쓸 수 있게 문서화했습니다. `$team`, `$ulw`, `$ultraqa`, OMA `/orchestrate`, `/ultrawork`, `/review`, `oma agent:parallel` 경계를 확인하는 cross-runtime reference와 validator를 추가했습니다. |
 | **deep-dive/deepinit 크로스런타임 강화** | `deep-dive`가 Claude/OMC, Codex/OMX, Gemini/Antigravity/OMA에서 같은 trace → interview → handoff 계약을 따르도록 runtime adapter reference와 artifact validator를 추가했습니다. `deepinit`은 런타임 상태 제외, 수동 메모 보존, AGENTS.md hierarchy validation까지 포함하도록 강화했습니다. |
 | **agent-browser 제거 및 browser-harness 승격** | `agent-browser`를 제거하고 브라우저 검증·자가 치유 브라우저 자동화 레인을 `browser-harness`로 통합했습니다. 강화된 `browser-harness` 문서는 Codex·Antigravity 실행, Chrome CDP 설정, Claude 이미지 인식/스크린샷 오류를 줄이는 PIL 파일 핸들·인메모리 리사이즈 패치를 포함합니다. 129 → **128개 스킬**. |
 | **semble: 에이전트용 토큰 효율 코드 검색** | `semble`을 추가했습니다 — grep+read 대비 토큰 사용량 ~98% 절감으로 에이전트에게 필요한 코드 청크만 정확히 반환하는 고속 코드 검색 라이브러리입니다. 로컬/원격 리포지터리를 ~250ms(CPU만 사용, GPU·API 키 불필요) 안에 인덱싱합니다. 자연어·심볼 쿼리, 의미 기반 유사 코드 탐색(`find-related`), Claude Code·Codex·Cursor·OpenCode용 MCP 서버 통합을 지원합니다. Python 라이브러리와 CLI도 제공합니다. MCP 설치: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`. 출처: [MinishLab/semble](https://github.com/MinishLab/semble). 127 → **128개 스킬**. |
@@ -314,10 +315,10 @@ rtk init -g
 |------|--------|--------|------|
 | `ooo` | `ooo`, `ouroboros`, `ooo interview` | 전체 | 스펙 우선 제어 루프 — 명확화, 계약 동결, 실행, 검증. 모호하거나 다단계 작업의 진입점 |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | Packet-first BMAD/BMM 계획 프런트도어 — 패킷 분류, 다음 아티팩트/게이트 선택, 런타임/검토 작업 외부 라우팅 |
-| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | oh-my-claudecode용 Claude-first 오케스트레이션 라우터 — 먼저 marketplace plugin / 셸 CLI / 로컬 `--plugin-dir` 토폴로지를 식별하고, plugin slash skill과 `omc` 셸 CLI를 구분하며, 중복 설치·recovery·state 문제를 다루고, 인접 작업은 `ralphmode`, `omx`, `ohmg`, 브라우저 검토 스킬로 route-out합니다 |
+| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ultraqa`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | oh-my-claudecode용 Claude-first 라우터 — plugin slash skill과 `omc` 셸 CLI를 구분하고, `/team`, `/ultrawork`, `/ultraqa` 의도를 필요 시 OMX/OMA로 매핑하며, recovery/state 문제와 route-out을 처리 |
 | `harness` | `harness`, `build a harness` | 전체 | 메타스킬: 도메인 전용 에이전트 팀 설계, `.claude/agents/`·`.claude/skills/` 생성, harness 검증 |
-| `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$deep-interview`, `$ralplan` | Codex | Codex CLI용 멀티에이전트 워크플로우 레이어 (v0.11.10) — 30+ 에이전트, 35+ 스킬, tmux 팀 런타임, omx explore/sparkshell |
-| `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents` | Gemini | 휴대형 `oh-my-agent` 하네스용 Gemini / Antigravity 진입 스킬 (`.agents` 소스 오브 트루스, Gemini 네이티브 투영, 크로스벤더 확장 가능) |
+| `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$ulw`, `$ultraqa`, `$deep-interview`, `$ralplan` | Codex | Claude 대응표가 포함된 Codex 워크플로우 레이어 — `$team`은 조율형 워커, `$ulw`/`$ultrawork`는 burst parallelism, `$ultraqa`는 QA fan-out에 사용 |
+| `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/orchestrate`, `/review` | Gemini / Antigravity | 휴대형 OMA 하네스 진입 스킬 — `.agents`를 canonical로 유지하고 `oma link`로 vendor view를 갱신하며 team/ultrawork/ultraqa 의도를 `/orchestrate`, `/ultrawork`, `/review`, `oma agent:parallel`로 매핑 |
 | `ooo` | `ooo`, `ouroboros`, `ooo ralph` | 전체 | Ouroboros 스펙 우선 개발 루프 — 소크라테스식 인터뷰, 불변 seed/spec, 드리프트 인식 실행, 검증 통과까지 이어가는 완료 루프. 플러그인: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | 패킷 우선 BMAD/BMM 프런트도어 — 현재 packet을 분류하고 다음 산출물 또는 gate를 고른 뒤 review / runtime / 실행 세부 작업을 바깥으로 라우팅 |
 | `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |

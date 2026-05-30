@@ -5,13 +5,14 @@ description: >
   before giving commands. Use when the user wants oh-my-claudecode / OMC in Claude Code,
   needs to choose between marketplace plugin, shell-side `omc` CLI, or local-checkout
   `--plugin-dir` usage, or needs accurate guidance on `/team`, `/autopilot`, `/ralph`,
-  `/ultrawork`, `omc setup`, `omc team`, `omc ask`, updates, HUD/hooks, duplicate installs,
-  worktree/state drift, or adjacent route-outs. Triggers on: omc, oh-my-claudecode, Claude
-  Code team mode, autopilot, /team, ralph, ultrawork, ccg, omc team, omc ask, omc setup,
+  `/ultrawork`, `/ultraqa`, `omc setup`, `omc team`, `omc ask`, updates, HUD/hooks,
+  duplicate installs, worktree/state drift, or mapping Claude workflows to Codex/OMX
+  and Gemini/Antigravity/OMA. Triggers on: omc, oh-my-claudecode, Claude Code team
+  mode, autopilot, /team, ralph, ultrawork, ultraqa, ccg, omc team, omc ask, omc setup,
   plugin-dir, OMC HUD, OMC hooks.
 allowed-tools: Read Write Bash Grep Glob Edit Agent
 metadata:
-  tags: omc, oh-my-claudecode, claude-code, multi-agent, orchestration, team, autopilot, ralph, ultrawork, ccg, hooks, hud
+  tags: omc, oh-my-claudecode, claude-code, multi-agent, orchestration, team, autopilot, ralph, ultrawork, ultraqa, ccg, hooks, hud, omx, oma, antigravity
   platforms: Claude Code
   keyword: omc
   version: 4.14.0
@@ -24,7 +25,8 @@ metadata:
 
 - The user wants **Claude Code–native orchestration** through OMC / oh-my-claudecode
 - The user needs to choose between the **marketplace plugin**, the **`omc` shell CLI**, or a **local checkout / `--plugin-dir`** workflow
-- The user asks about `/team`, `/autopilot`, `/ralph`, `/ultrawork`, `omc team`, `omc ask`, `omc setup`, `omc update`, hooks, HUD, or OMC state behavior
+- The user asks about `/team`, `/autopilot`, `/ralph`, `/ultrawork`, `/ultraqa`, `omc team`, `omc ask`, `omc setup`, `omc update`, hooks, HUD, or OMC state behavior
+- The user asks how Claude workflows such as `/team`, `/ultrawork`, or `/ultraqa` map to Codex/OMX or Gemini/Antigravity/OMA
 - The user is hitting **duplicate installs**, **plugin-dir confusion**, **worktree/state collisions**, **setup drift**, or **HUD / rate-limit / resume trouble**
 - The user really wants a **Claude-first runtime owner**, not `jeo`, `ralphmode`, `omx`, `ohmg`, or browser-review skills
 
@@ -49,7 +51,8 @@ After topology is clear enough, classify the actual job into one packet:
 2. **in-session-runtime** — choose the right slash skill inside Claude Code
 3. **terminal-runtime** — choose the right `omc ...` shell command
 4. **recovery-and-update** — fix duplicate installs, setup drift, worktree/state trouble, HUD/hooks, or resume issues
-5. **boundary-and-route-out** — the request really belongs to `jeo`, `ralphmode`, `plannotator`, browser-review skills, or another runtime
+5. **cross-runtime-parity** — map Claude slash workflows to OMX or OMA without pretending the runtimes are identical
+6. **boundary-and-route-out** — the request really belongs to `jeo`, `ralphmode`, `plannotator`, browser-review skills, or another runtime
 
 Lead with the topology and packet mentally, then give only the commands that fit that combination.
 
@@ -169,6 +172,7 @@ Use when the user wants the best **Claude Code slash skill** for the job.
 | End-to-end build from a fuzzy request | `/autopilot ...` or `autopilot: ...` | Single lead agent, idea → implementation |
 | Must keep going until verified done | `/ralph ...` or `ralph: ...` | Persistent execute → verify → fix loop |
 | Burst parallel work | `/ultrawork ...` or `ulw ...` | High parallelism without full team overhead |
+| Parallel QA / review burst | `/ultraqa ...` when installed | QA fan-out; route to OMX `$ultraqa` or OMA `/review` when the target runtime is not Claude |
 | Requirements clarification first | `/deep-interview ...` | Clarify before planning or execution |
 | Cross-model synthesis | `ccg: ...` when upstream/runtime supports it | Advisory synthesis path |
 
@@ -189,6 +193,22 @@ Use when the user wants the **shell CLI** rather than the in-session plugin surf
 
 If the user says “team mode” but is already inside Claude Code, prefer `/team`.
 If the user says “team mode” and clearly wants shell/tmux workers, prefer `omc team`.
+
+#### Packet: cross-runtime-parity
+
+Use when the user wants Claude OMC workflows to be usable from Codex or Antigravity too. Read [references/cross-runtime-workflow-map.md](references/cross-runtime-workflow-map.md), then map by intent:
+
+| Claude / OMC | Codex / OMX | Gemini / Antigravity / OMA |
+|--------------|-------------|-----------------------------|
+| `/team N:role "task"` | `$team N:role "task"` or `omx team N:role "task"` | `/orchestrate "task"` or `oma agent:parallel -i role:"task"` |
+| `/ultrawork "task"` / `ulw "task"` | `$ulw "task"` or `$ultrawork "task"` | `/ultrawork "task"` or `oma agent:parallel` for independent lanes |
+| `/ultraqa "target"` | `$ultraqa "target"` | `/review "target"` or `/ultrawork "QA target"`; use `oma agent:parallel` for explicit QA lanes |
+
+Rules:
+- State the runtime boundary first: OMC uses `.omc/`, OMX uses `.omx/`, OMA keeps `.agents/` canonical.
+- Do not claim Antigravity has Claude-style custom subagent spawning; use OMA CLI fallback when needed.
+- When the target is Codex-native, route operator details to `omx`.
+- When the target is Gemini/Antigravity portable harness work, route operator details to `ohmg`.
 
 #### Packet: recovery-and-update
 
@@ -222,6 +242,7 @@ Route out when:
 - **exact rendered-UI critique / annotation handoff** → `agentation`
 - **Codex-first runtime orchestration** → `omx`
 - **Gemini / Antigravity portable harness adoption** → `ohmg`
+- **Claude workflow parity across Codex or Antigravity** → use the cross-runtime-parity packet, then route to `omx` or `ohmg` for runtime-specific commands
 
 ### Step 5: Keep the answer truthful about volatility
 
@@ -235,6 +256,7 @@ OMC is a fast-moving upstream project. Prefer:
 Avoid:
 - pretending all commands live on one surface
 - treating `/team` and `omc team` as interchangeable
+- promising that `/ultraqa`, `$ultraqa`, and OMA `/review` are the same implementation rather than mapped workflow intents
 - claiming there is a general `omc autopilot` CLI
 - stacking installs when duplicate-path symptoms suggest recovery first
 - absorbing browser review, approvals, or non-Claude runtime ownership into OMC
@@ -274,13 +296,15 @@ Avoid:
 4. Keep the npm/package-name mismatch explicit: `oh-my-claude-sisyphus` provides the `omc` CLI.
 5. Do not improvise over `--plugin-dir` or duplicate-install symptoms; route to the topology reference.
 6. Route long-loop orchestration, approval posture, browser review, and other runtime ownership outward.
-7. Use references for volatile operator detail; keep the front door focused on truthful routing.
+7. For Codex or Antigravity parity work, map the workflow intent and then hand off to `omx` or `ohmg`; do not write their runtime state into `.omc/`.
+8. Use references for volatile operator detail; keep the front door focused on truthful routing.
 
 ## References
 
 - [references/install-topology-and-recovery.md](references/install-topology-and-recovery.md)
 - [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
 - [references/modes-reference.md](references/modes-reference.md)
+- [references/cross-runtime-workflow-map.md](references/cross-runtime-workflow-map.md)
 - [references/hooks-reference.md](references/hooks-reference.md)
 - [references/cli-reference.md](references/cli-reference.md)
 - [references/agents-catalog.md](references/agents-catalog.md)

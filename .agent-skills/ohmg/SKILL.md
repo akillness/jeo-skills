@@ -4,14 +4,16 @@ description: >
   Adopt `oh-my-agent` from a Gemini CLI or Antigravity workflow. Use when the user
   wants a portable multi-agent harness with `.agents/` as the source of truth,
   Gemini-native generated agents, Antigravity compatibility, or cross-vendor-ready
-  orchestration that can later route work to Claude or Codex. Triggers on: ohmg,
-  oh-my-agent, oma, Gemini multi-agent, Antigravity agent team, .agents, portable
-  harness, Gemini native agents, and Gemini/Antigravity orchestration. Route
+  orchestration that can later route work to Claude or Codex. Also use when mapping
+  Claude workflows such as `team`, `ultrawork`, or `ultraqa` into OMA workflows for
+  Gemini or Antigravity. Triggers on: ohmg, oh-my-agent, oma, Gemini multi-agent,
+  Antigravity agent team, .agents, portable harness, Gemini native agents,
+  ultrawork, ultraqa, and Gemini/Antigravity orchestration. Route
   Claude-first runtime orchestration to `omc` and Codex-first runtime orchestration
   to `omx`.
 allowed-tools: Read Write Bash Grep Glob
 metadata:
-  tags: ohmg, oh-my-agent, oma, multi-agent, orchestration, gemini-cli, antigravity, portable-harness, dot-agents
+  tags: ohmg, oh-my-agent, oma, multi-agent, orchestration, gemini-cli, antigravity, portable-harness, dot-agents, team, ultrawork, ultraqa
   platforms: Gemini, Antigravity
   keyword: ohmg
   version: 2.0.0
@@ -26,6 +28,7 @@ metadata:
 - You want **Antigravity** to read the same project-local multi-agent setup
 - You need a **portable `.agents/` source of truth** that can later project into Gemini, Claude, and Codex surfaces
 - You need to explain **when Gemini can use native generated agents** versus **when `oma agent:spawn` fallback** is required
+- You need OMA/Gemini/Antigravity equivalents for Claude `/team`, `/ultrawork`, or `/ultraqa`
 - You want the **Gemini / Antigravity path** without copying the full Claude-first (`omc`) or Codex-first (`omx`) runtime catalogs
 
 ## Instructions
@@ -137,6 +140,16 @@ oma dashboard:web
 
 Use these as **examples of the portable harness**, not as a promise that every runtime exposes the same native UI.
 
+### Step 5.5: Map Claude team / ultrawork / ultraqa to OMA
+
+Read [references/parallel-quality-workflows.md](references/parallel-quality-workflows.md) when the user asks to bring Claude OMC workflows to Gemini or Antigravity.
+
+| Claude / OMC intent | OMA / Gemini shape | Antigravity boundary |
+|---------------------|--------------------|----------------------|
+| `/team N:role "task"` | `/orchestrate "task"` or `oma agent:parallel -i role:"task"` | Antigravity can consume `.agents/agents/`, but explicit spawning may need OMA CLI fallback |
+| `/ultrawork "task"` | `/ultrawork "task"` or `oma agent:parallel` independent lanes | Keep `.agents/` canonical and regenerate views with `oma link` |
+| `/ultraqa "target"` | `/review "target"` or `/ultrawork "QA target"` with QA/security/performance lanes | Do not promise a native `/ultraqa` command unless the local projection exposes it |
+
 ### Step 6: Handle cross-vendor questions with explicit boundaries
 
 Use this routing logic:
@@ -168,6 +181,7 @@ Check these first:
 4. **Environment mismatch** — Gemini-native behavior differs from Antigravity capability
 5. **Monitoring confusion** — dashboard observes agent/memory activity; it is not the whole orchestration model
 6. **Mixed-vendor expectations** — if native dispatch cannot own the task, explain `oma agent:spawn` / `oma agent:parallel`
+7. **Claude workflow parity confusion** — map `team`, `ultrawork`, and `ultraqa` as workflow intents, not identical command implementations
 
 ## Examples
 
@@ -204,11 +218,13 @@ Check these first:
 5. **Route vendor-first runtime questions cleanly** — keep Claude-first runtime depth in `omc` and Codex-first runtime depth in `omx`
 6. **Use `oma link` after structure changes** — stale generated files are a common source of confusion
 7. **Treat dashboards as observability helpers** — they support the workflow; they are not the workflow itself
+8. **Map QA carefully** — OMA `/review` or `/ultrawork` can satisfy the `ultraqa` intent, but only call it `/ultraqa` when that workflow exists locally
 
 ## References
 
 - [Installation, layout, and generated surfaces](references/installation-and-layout.md)
 - [Runtime boundaries: Gemini vs Antigravity vs OMC/OMX](references/runtime-boundaries.md)
 - [Workflow and command packets](references/workflow-and-command-packets.md)
+- [Parallel and quality workflows](references/parallel-quality-workflows.md)
 - [Upstream README](https://github.com/first-fluke/oh-my-agent/blob/main/README.md)
 - [Supported agents matrix](https://github.com/first-fluke/oh-my-agent/blob/main/docs/SUPPORTED_AGENTS.md)

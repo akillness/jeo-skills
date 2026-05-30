@@ -6,18 +6,22 @@
       "sourceType": "plugin",
       "version": "4.2.15",
       "keyword": "omc",
-      "description": "Claude Code용 팀 중심 멀티에이전트 오케스트레이션. Ralph/Ultrawork 지속 실행을 포함하며 ooo 와 연동한다.",
+      "description": "Claude Code용 OMC 라우터. `/team`, `/ultrawork`, `/ultraqa`를 Claude 안에서 쓰되, 같은 의도를 Codex/OMX(`$team`, `$ulw`, `$ultraqa`)와 Gemini/Antigravity/OMA(`/orchestrate`, `/ultrawork`, `/review`)로 넘기는 대응표를 포함한다.",
       "tags": [
         "omc",
         "claude-code",
         "team",
         "autopilot",
         "ooo",
-        "ultrawork"
+        "ultrawork",
+        "ultraqa",
+        "omx",
+        "oma",
+        "antigravity"
       ],
       "installCommand": "/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode && /plugin install oh-my-claudecode && /omc:omc-setup",
       "addedAt": "2026-03-05T00:00:00Z",
-      "updatedAt": "2026-03-20T00:00:00Z",
+      "updatedAt": "2026-05-30T00:00:00Z",
       "extensions": [
         {
           "skill": "agent-observability",
@@ -260,14 +264,14 @@
       "source": "akillness/oh-my-skills",
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill omx",
       "optional_for": [],
-      "description": "OpenAI Codex CLI용 실행 백엔드. jeo EXECUTE 단계를 Codex 환경에 맞게 연결한다."
+      "description": "OpenAI Codex CLI용 실행 백엔드. Claude `/team`, `/ultrawork`, `/ultraqa` 의도를 각각 `$team`, `$ulw`/`$ultrawork`, `$ultraqa`로 매핑하고 `.omx/` 상태 경계를 지킨다."
     },
     "ohmg": {
       "version": "latest",
       "source": "akillness/oh-my-skills",
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill ohmg",
       "optional_for": [],
-      "description": "Antigravity 계열 실행 백엔드. 멀티-CLI orchestration 시 사용한다."
+      "description": "Gemini/Antigravity용 OMA 실행 백엔드. `.agents/`를 canonical source로 유지하고 Claude team/ultrawork/ultraqa 의도를 `/orchestrate`, `/ultrawork`, `/review` 또는 `oma agent:parallel`로 매핑한다."
     },
     "playwriter": {
       "version": "latest",
