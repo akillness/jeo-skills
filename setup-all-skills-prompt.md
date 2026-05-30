@@ -194,12 +194,26 @@ skills add -g "$REPO_URL" --skill omc -a 'claude-code' --yes --copy
 # mirror the install into the antigravity skills dir so `agy` discovers it.
 mkdir -p "$_HOME/.gemini/antigravity/skills"
 mkdir -p "$_HOME/.gemini/antigravity-cli/hooks"
-if ! skills add -g "$REPO_URL" --skill ohmg -a 'antigravity' --yes --copy 2>/dev/null; then
-  echo "ℹ️  skills CLI rejected '-a antigravity' — using '-a gemini-cli' + manual mirror"
+# Capture stderr so we can distinguish "unknown agent" rejection from real failures
+# (network / source / install errors) — the latter must surface, not silently fall back.
+_OHMG_ERR="$(mktemp -t ohmg_skills_err.XXXXXX 2>/dev/null || echo /tmp/ohmg_skills_err.$$)"
+if skills add -g "$REPO_URL" --skill ohmg -a 'antigravity' --yes --copy 2>"$_OHMG_ERR"; then
+  rm -f "$_OHMG_ERR"
+elif grep -qiE 'unknown agent|invalid agent|unsupported agent|agent .* not (recognized|supported|found)' "$_OHMG_ERR"; then
+  echo "ℹ️  skills CLI does not recognize '-a antigravity' — using '-a gemini-cli' + refresh mirror"
+  rm -f "$_OHMG_ERR"
   skills add -g "$REPO_URL" --skill ohmg -a 'gemini-cli' --yes --copy
-  if [ -d "$_HOME/.gemini/skills/ohmg" ] && [ ! -e "$_HOME/.gemini/antigravity/skills/ohmg" ]; then
+  if [ -d "$_HOME/.gemini/skills/ohmg" ]; then
+    # Refresh (not append) — older mirrors must not shadow the new install
+    rm -rf "$_HOME/.gemini/antigravity/skills/ohmg"
     cp -R "$_HOME/.gemini/skills/ohmg" "$_HOME/.gemini/antigravity/skills/ohmg"
+    echo "✅ ohmg mirrored to $_HOME/.gemini/antigravity/skills/ohmg"
   fi
+else
+  echo "❌ ohmg install failed (non-agent error):" >&2
+  cat "$_OHMG_ERR" >&2
+  rm -f "$_OHMG_ERR"
+  # Do not mask network/source failures with a silent fallback
 fi
 
 # omx — Codex CLI primary, also usable from Claude Code
@@ -312,7 +326,18 @@ echo "✅ graphify installed (venv: $GRAPHIFY_VENV)"
 ```bash
 echo "=== Installing ooo (Ouroboros) ==="
 _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
-PIP_CMD="pip3"; command -v pip3 &>/dev/null || PIP_CMD="pip"
+# Verify a pip command actually exists before invoking it — prior code fell back to
+# `pip` without checking, which crashed on systems with only `python3 -m pip` available.
+if command -v pip3 &>/dev/null; then
+  PIP_CMD="pip3"
+elif command -v pip &>/dev/null; then
+  PIP_CMD="pip"
+elif command -v python3 &>/dev/null && python3 -m pip --version &>/dev/null; then
+  PIP_CMD="python3 -m pip"
+else
+  echo "❌ No pip found — install Python 3 + pip first (https://pip.pypa.io/en/stable/installation/)" >&2
+  return 1 2>/dev/null || exit 1
+fi
 $PIP_CMD install "ouroboros-ai[all]"
 echo "✅ ouroboros-ai installed"
 
@@ -413,6 +438,15 @@ echo "   Set LLM_WIKI_VAULT to override the default location."
 ```bash
 echo "=== Registering semble MCP ==="
 _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+# Re-derive PLATFORM so this step works when re-run standalone after a shell restart
+if [ -z "${PLATFORM:-}" ]; then
+  case "$(uname -s 2>/dev/null || echo Windows)" in
+    Darwin*)              PLATFORM="macos"   ;;
+    Linux*)               PLATFORM="linux"   ;;
+    MINGW*|MSYS*|CYGWIN*) PLATFORM="windows" ;;
+    *)                    PLATFORM="windows" ;;
+  esac
+fi
 # Uses uvx (part of uv) — install uv if missing
 if ! command -v uvx &>/dev/null; then
   case "$PLATFORM" in
