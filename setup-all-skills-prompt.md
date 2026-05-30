@@ -491,23 +491,77 @@ fi
 
 ```bash
 echo "=== Platform Plugin Setup ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
 
-# Claude Code — oh-my-claudecode plugin (slash skills: /team, /autopilot, /ralph, /ultrawork, /ultraqa)
+# ── Claude Code: oh-my-claudecode plugin ─────────────────────────
+# Provides /team, /autopilot, /ralph, /ultrawork, /ultraqa slash commands.
+# Slash commands (/plugin, /omc:omc-setup) only execute INSIDE a Claude Code
+# session — they fail with "No such file or directory" when run in bash.
+# Use the `claude plugin` CLI subcommand for automated install; if the local
+# Claude CLI version does not support it, print the in-session fallback.
 if command -v claude &>/dev/null; then
-  /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-  /plugin install oh-my-claudecode
-  setup omc
-  echo "✅ Claude Code: oh-my-claudecode configured"
+  if claude plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode 2>/dev/null \
+     && claude plugin install oh-my-claudecode 2>/dev/null; then
+    echo "✅ Claude Code: oh-my-claudecode plugin installed"
+    echo "   Open Claude Code once and run: /omc:omc-setup"
+  else
+    echo "ℹ️  'claude plugin' CLI unavailable in this Claude version."
+    echo "   Open Claude Code and run these three slash commands manually:"
+    echo "     /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode"
+    echo "     /plugin install oh-my-claudecode"
+    echo "     /omc:omc-setup"
+  fi
 fi
 
-# OpenCode — oh-my-opencode
+# ── Codex CLI: oh-my-codex (OMX) ─────────────────────────────────
+# Without OMX, the skill manuals for omx ship to ~/.codex/skills/ but the
+# actual $team / $autopilot / $ulw / $ultraqa workflows have no runtime —
+# Codex sees the keywords as unknown. OMX provides the loader + prompts.
+if command -v codex &>/dev/null; then
+  if command -v npm &>/dev/null; then
+    npm install -g oh-my-codex 2>&1 | tail -3
+    if command -v omx &>/dev/null; then
+      omx setup
+      echo "✅ Codex: oh-my-codex (omx) configured — \$team / \$autopilot / \$ulw / \$ultraqa available"
+    else
+      echo "⚠️  omx CLI not on PATH after install — restart shell, then run: omx setup"
+    fi
+  else
+    echo "⚠️  npm not found — install Node.js to enable OMX workflows on Codex"
+    echo "   https://nodejs.org/"
+  fi
+fi
+
+# ── Antigravity / Gemini CLI: oh-my-agent (OMA) ──────────────────
+# Without OMA, the ohmg skill manual lives in ~/.gemini/antigravity/skills/
+# but /team /orchestrate /plan /work /ultrawork /review have no implementation.
+# Install order preference: bun → npm → curl installer (each is documented upstream).
+if command -v agy &>/dev/null || command -v antigravity &>/dev/null \
+   || [ -f "$_HOME/.gemini/antigravity-cli/settings.json" ] \
+   || command -v gemini &>/dev/null; then
+  if command -v bun &>/dev/null; then
+    bun install --global oh-my-agent 2>&1 | tail -3
+  elif command -v npm &>/dev/null; then
+    npm install -g oh-my-agent 2>&1 | tail -3
+  else
+    curl -fsSL https://raw.githubusercontent.com/first-fluke/oh-my-agent/main/cli/install.sh | bash
+  fi
+  if command -v oma &>/dev/null; then
+    echo "✅ Antigravity/Gemini: oh-my-agent (oma) installed — run 'oma link' inside a project"
+  else
+    echo "⚠️  oma CLI not on PATH — restart shell, then verify with: oma --version"
+  fi
+fi
+
+# ── OpenCode: oh-my-opencode ─────────────────────────────────────
 if command -v opencode &>/dev/null; then
-  curl -s https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md
-  echo "✅ OpenCode — check guide above, then run: skills add -g $REPO_URL --yes --copy"
+  echo "ℹ️  OpenCode — manual install required:"
+  echo "   https://github.com/code-yeongyu/oh-my-opencode/blob/master/docs/guide/installation.md"
+  echo "   After installing, run: skills add -g $REPO_URL --yes --copy"
 fi
 
-# agentation Official Skill (UI annotation)
-npx skills add benjitaylor/agentation -g
+# ── agentation Official Skill (UI annotation) ────────────────────
+npx -y skills add benjitaylor/agentation -g
 echo "✅ agentation skill installed"
 ```
 
