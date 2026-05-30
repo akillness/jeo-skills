@@ -291,7 +291,8 @@ npx skills add https://github.com/akillness/oh-my-skills \
 # ooo MCP — spec-first control loop
 pip install "ouroboros-ai[all]"
 claude mcp add ooo -s user -- ouroboros mcp      # Claude Code
-# Codex: writes ~/.codex/mcp.json automatically via setup-all-skills-prompt.md
+# Codex: appends [mcp_servers.ooo] to ~/.codex/config.toml via setup-all-skills-prompt.md
+# (Codex CLI reads TOML, not mcp.json — prior JSON-based registration was a silent no-op)
 
 # semble MCP — token-efficient code search
 claude mcp add semble -s user -- uvx --from "semble[mcp]" semble

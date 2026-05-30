@@ -290,7 +290,8 @@ npx skills add https://github.com/akillness/oh-my-skills \
 # ooo MCP — 스펙 우선 제어 루프
 pip install "ouroboros-ai[all]"
 claude mcp add ooo -s user -- ouroboros mcp      # Claude Code
-# Codex: setup-all-skills-prompt.md 실행 시 ~/.codex/mcp.json 자동 생성
+# Codex: setup-all-skills-prompt.md 실행 시 ~/.codex/config.toml 에 [mcp_servers.ooo] 추가
+# (Codex CLI는 TOML 만 읽음 — 이전 mcp.json 방식은 무음 무효 처리되던 버그였음)
 
 # semble MCP — 토큰 효율 코드 검색
 claude mcp add semble -s user -- uvx --from "semble[mcp]" semble

@@ -67,8 +67,15 @@ echo "=== Platform Detection ==="
 DETECTED_AGENTS=""
 if command -v claude   &>/dev/null; then echo "✅ Claude Code";  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}claude-code"; fi
 if command -v codex    &>/dev/null; then echo "✅ Codex CLI";    DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}codex"; fi
-# agy is the canonical binary name (not antigravity); some Linux packagers ship antigravity as an alias
-if command -v agy &>/dev/null || command -v antigravity &>/dev/null || [ -d "$_HOME/.gemini/antigravity" ]; then echo "✅ Antigravity CLI (agy)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}antigravity"; fi
+# agy is the canonical binary name (not antigravity); some Linux packagers ship antigravity as an alias.
+# Dir-only existence is NOT enough — stale `~/.gemini/antigravity/` from a failed prior install would
+# trigger a false positive. Require the binary OR the authoritative config marker.
+if command -v agy &>/dev/null \
+  || command -v antigravity &>/dev/null \
+  || [ -f "$_HOME/.gemini/antigravity-cli/settings.json" ]; then
+  echo "✅ Antigravity CLI (agy)"
+  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}antigravity"
+fi
 if command -v opencode &>/dev/null; then echo "✅ OpenCode";     DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}opencode"; fi
 
 [ -z "$DETECTED_AGENTS" ] && { echo "⚠️  No AI agents detected. Install at least one platform first."; exit 1; }
@@ -181,13 +188,24 @@ skills add -g "$REPO_URL" --skill omc -a 'claude-code' --yes --copy
 
 # ohmg — Antigravity CLI
 # Binary: agy (canonical); some Linux distros also ship as 'antigravity' alias
-# skills CLI globalSkillsDir = ~/.gemini/antigravity/skills; detection checks ~/.gemini/antigravity/
-# Antigravity-CLI config root = ~/.gemini/antigravity-cli/ (settings.json, hooks live here)
+# skills CLI globalSkillsDir = ~/.gemini/antigravity/skills; detection requires `agy` or
+#   ~/.gemini/antigravity-cli/settings.json (config root for agy lifecycle hooks).
+# Older Vercel skills CLI versions reject `-a antigravity`; fall back to gemini-cli and
+# mirror the install into the antigravity skills dir so `agy` discovers it.
 mkdir -p "$_HOME/.gemini/antigravity/skills"
 mkdir -p "$_HOME/.gemini/antigravity-cli/hooks"
-skills add -g "$REPO_URL" --skill ohmg -a 'antigravity' --yes --copy
+if ! skills add -g "$REPO_URL" --skill ohmg -a 'antigravity' --yes --copy 2>/dev/null; then
+  echo "ℹ️  skills CLI rejected '-a antigravity' — using '-a gemini-cli' + manual mirror"
+  skills add -g "$REPO_URL" --skill ohmg -a 'gemini-cli' --yes --copy
+  if [ -d "$_HOME/.gemini/skills/ohmg" ] && [ ! -e "$_HOME/.gemini/antigravity/skills/ohmg" ]; then
+    cp -R "$_HOME/.gemini/skills/ohmg" "$_HOME/.gemini/antigravity/skills/ohmg"
+  fi
+fi
 
 # omx — Codex CLI primary, also usable from Claude Code
+# NOTE: Codex CLI does NOT auto-load `~/.codex/skills/`. The omx skill ships its own
+# runtime via `omx setup` (Step 3g via oh-my-codex). Writing to ~/.codex/skills/ is
+# kept for parity with other agents but only takes effect through OMX's loader.
 skills add -g "$REPO_URL" --skill omx -a 'codex,claude-code' --yes --copy
 
 # ── Clean stale symlinks from non-target agents ──
@@ -307,12 +325,27 @@ if command -v claude &>/dev/null; then
   echo "✅ ooo MCP registered with Claude Code"
 fi
 
-# Register ooo MCP with Codex (write ~/.codex/mcp.json)
+# Register ooo MCP with Codex.
+# IMPORTANT: Codex CLI reads `~/.codex/config.toml` with `[mcp_servers.<name>]` blocks,
+# NOT `~/.codex/mcp.json`. Earlier setup wrote a JSON file that Codex silently ignored,
+# so the `ooo` server never registered. Append a TOML block instead, idempotently.
 if command -v codex &>/dev/null; then
   mkdir -p "$CODEX_MCP_DIR"
-  echo '{"mcpServers":{"ooo":{"command":"ouroboros","args":["mcp","serve"]}}}' \
-    > "$CODEX_MCP_DIR/mcp.json"
-  echo "✅ ooo MCP registered with Codex ($CODEX_MCP_DIR/mcp.json)"
+  CODEX_TOML="$CODEX_MCP_DIR/config.toml"
+  touch "$CODEX_TOML"
+  if ! grep -q '^\[mcp_servers\.ooo\]' "$CODEX_TOML" 2>/dev/null; then
+    {
+      printf '\n[mcp_servers.ooo]\n'
+      printf 'command = "ouroboros"\n'
+      printf 'args = ["mcp", "serve"]\n'
+    } >> "$CODEX_TOML"
+    echo "✅ ooo MCP registered with Codex ($CODEX_TOML)"
+  else
+    echo "ℹ️  ooo MCP already in $CODEX_TOML — skipping"
+  fi
+  # Remove obsolete JSON file from older installs (never read by Codex)
+  [ -f "$CODEX_MCP_DIR/mcp.json" ] && rm -f "$CODEX_MCP_DIR/mcp.json" \
+    && echo "🧹 Removed obsolete $CODEX_MCP_DIR/mcp.json (unused by Codex)"
 fi
 
 ouroboros --version 2>/dev/null && echo "✅ ouroboros ready" || echo "⚠️  ouroboros not in PATH — restart shell"
@@ -402,6 +435,21 @@ fi
 if command -v claude &>/dev/null; then
   claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
   echo "✅ semble MCP registered with Claude Code"
+fi
+
+# Register semble MCP with Codex via config.toml (same constraint as ooo: codex reads TOML, not JSON)
+if command -v codex &>/dev/null; then
+  mkdir -p "$_HOME/.codex"
+  CODEX_TOML="$_HOME/.codex/config.toml"
+  touch "$CODEX_TOML"
+  if ! grep -q '^\[mcp_servers\.semble\]' "$CODEX_TOML" 2>/dev/null; then
+    {
+      printf '\n[mcp_servers.semble]\n'
+      printf 'command = "uvx"\n'
+      printf 'args = ["--from", "semble[mcp]", "semble"]\n'
+    } >> "$CODEX_TOML"
+    echo "✅ semble MCP registered with Codex ($CODEX_TOML)"
+  fi
 fi
 ```
 
