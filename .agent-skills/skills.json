@@ -2371,7 +2371,7 @@
     },
     {
       "name": "ohmg",
-      "description": "Gemini / Antigravity entry for the portable oh-my-agent / OMA harness. Keeps `.agents` canonical, regenerates vendor views with `oma link`, and maps Claude team/ultrawork/ultraqa intents to OMA `/orchestrate`, `/ultrawork`, `/review`, or `oma agent:parallel` with Antigravity spawning limits stated plainly.",
+      "description": "Gemini / Antigravity entry for the portable oh-my-agent / OMA harness. Keeps `.agents` canonical, regenerates vendor views with `oma link`, and maps Claude team/autopilot/ultrawork/ultraqa intents to OMA `/orchestrate`, `/plan`→`/work`, `/ultrawork`, `/review`, or `oma agent:parallel` with Antigravity spawning limits stated plainly.",
       "category": "core-orchestration",
       "path": "ohmg/SKILL.md",
       "tags": [
@@ -2385,8 +2385,11 @@
         "portable-harness",
         "dot-agents",
         "team",
+        "autopilot",
         "ultrawork",
         "ultraqa",
+        "plan",
+        "work",
         "review"
       ],
       "platforms": [
@@ -2467,7 +2470,7 @@
     },
     {
       "name": "omx",
-      "description": "Multi-agent orchestration layer for OpenAI Codex CLI with Claude workflow parity. Provides `$team`, `$ulw`/`$ultrawork`, and `$ultraqa` equivalents for coordinated workers, independent burst work, and QA fan-out, plus 30+ agents, tmux/psmux team runtime, omx explore, and sparkshell.",
+      "description": "Multi-agent orchestration layer for OpenAI Codex CLI with Claude workflow parity. Provides `$team`, `$autopilot`, `$ulw`/`$ultrawork`, and `$ultraqa` equivalents for coordinated workers, full autonomous builds, independent burst work, and QA fan-out, plus 30+ agents, tmux/psmux team runtime, omx explore, and sparkshell.",
       "category": "core-orchestration",
       "path": "omx/SKILL.md",
       "tags": [
@@ -2477,6 +2480,7 @@
         "codex",
         "openai",
         "team",
+        "autopilot",
         "ultrawork",
         "ultraqa",
         "team-mode",

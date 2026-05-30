@@ -1,27 +1,30 @@
 N:omx
-D:oh-my-codex (OMX) — multi-agent workflow layer for OpenAI Codex CLI. v0.11.10: 30+ agents, 35+ skills ($plan/$ralph/$team/$ulw/$ultraqa/$deep-interview/$ralplan), tmux team runtime, omx explore, omx sparkshell, and Claude workflow parity for team/ultrawork/ultraqa.
-G:omx oh-my-codex codex openai multi-agent orchestration team ultrawork ultraqa ralph plan deep-interview ralplan deepsearch
+D:oh-my-codex (OMX) — multi-agent workflow layer for OpenAI Codex CLI. v0.11.10: 30+ agents, 35+ skills ($autopilot/$plan/$ralph/$team/$ulw/$ultraqa/$deep-interview/$ralplan), tmux team runtime, omx explore, omx sparkshell, and Claude workflow parity for team/autopilot/ultrawork/ultraqa.
+G:omx oh-my-codex codex openai multi-agent orchestration team autopilot ultrawork ultraqa ralph plan deep-interview ralplan deepsearch
 U[5]:
-1:Stronger Codex sessions with reusable role prompts (/prompts:architect) and workflow skills ($plan/$ralph/$team)
+1:Stronger Codex sessions with reusable role prompts (/prompts:architect) and workflow skills ($autopilot/$plan/$ralph/$team)
 2:Persistent execution loops until verified complete ($ralph)
 3:Coordinated parallel workers via tmux team runtime (omx team N:role "task")
-4:Independent burst parallelism ($ulw) and QA fan-out ($ultraqa) as Codex equivalents of Claude ultrawork/ultraqa
+4:Autopilot builds ($autopilot), independent burst parallelism ($ulw), and QA fan-out ($ultraqa) as Codex equivalents of Claude autopilot/ultrawork/ultraqa
 5:Socratic requirements clarification before coding ($deep-interview)
-S[6]{n,action,details}:
+S[7]{n,action,details}:
 1:install,Install OMX,npm install -g @openai/codex oh-my-codex && omx setup
 2:launch,Recommended launch,omx --madmax --high (bypass sandbox + high reasoning)
 3:plan,Plan before coding,/prompts:architect "analyze X" then $plan "ship Y" inside Codex
-4:ralph,Persistent execution,$ralph "fix all failing tests" — loops execute→verify→fix until done
-5:team,Parallel workers,omx team 3:executor "task" or $team 3:executor "task" inside Codex
-6:deep-interview,Clarify vague requests,$deep-interview "I want X" — one-question-at-a-time before planning
-R[5]:
+4:autopilot,Autonomous build,$autopilot "build X" — idea→plan→implementation→verification under .omx
+5:ralph,Persistent execution,$ralph "fix all failing tests" — loops execute→verify→fix until done
+6:team,Parallel workers,omx team 3:executor "task" or $team 3:executor "task" inside Codex
+7:deep-interview,Clarify vague requests,$deep-interview "I want X" — one-question-at-a-time before planning
+R[7]:
 1:OMX is a workflow layer around Codex — Codex does the agent work; OMX adds better prompts/workflows/runtime
 2:Default recommended launch: omx --madmax --high (--madmax = bypass approvals, --high = high reasoning effort)
 3:Team mode requires tmux (macOS/Linux) or psmux (Windows native)
-4:$deep-interview gates planning — use for vague greenfield or brownfield before $plan/$ralph/$team
-5:omx explore is read-only repo lookup; omx sparkshell is bounded shell inspection
-6:Keep Codex runtime state under .omx rather than reusing .omc state
-E[3]{desc,in,out}:
+4:$deep-interview gates planning — use for vague greenfield or brownfield before $autopilot/$plan/$ralph/$team
+5:$autopilot is the closest Codex-native match for Claude /autopilot; use $plan or $ralplan before $ralph for stricter completion loops
+6:omx explore is read-only repo lookup; omx sparkshell is bounded shell inspection
+7:Keep Codex runtime state under .omx rather than reusing .omc state
+E[4]{desc,in,out}:
 1:{Standard session,omx --madmax --high then /prompts:architect "analyze auth flow",Role prompt injects architect context; Codex analyzes boundaries then agent escalates to $plan}
 2:{Persistent fix,$ralph "fix all 12 failing tests",OMX loops execute→verify→fix until all tests pass; state persisted in .omx/}
 3:{Parallel team,omx team 3:executor "refactor API layer with tests",3 executor workers in isolated tmux/worktree sessions with shared task list}
+4:{Autopilot parity,Claude /autopilot "build task API" in Codex,Use $autopilot "build task API"; add $deep-interview first when vague}

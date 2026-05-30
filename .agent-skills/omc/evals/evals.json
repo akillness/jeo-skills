@@ -71,6 +71,17 @@
         "The response maps /ultraqa to $ultraqa, /review, or QA-focused /ultrawork",
         "The response distinguishes .omc, .omx, and .agents or OMA state boundaries"
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "Claude autopilot을 Codex랑 Antigravity에서도 쓰게 하고 싶어.",
+      "expected_output": "The skill uses the cross-runtime-parity packet, maps Claude /autopilot or autopilot: to OMX $autopilot, maps the OMA/Antigravity shape to /plan then /work, and states runtime boundaries and Antigravity native-command limits.",
+      "assertions": [
+        "The response maps /autopilot or autopilot: to $autopilot",
+        "The response maps the OMA or Antigravity path to /plan followed by /work",
+        "The response mentions $deep-interview, $plan, $ralph, /orchestrate, or oma agent:parallel as conditional escalation",
+        "The response distinguishes .omc, .omx, and .agents or states that Antigravity may not expose a native /autopilot command"
+      ]
     }
   ]
 }

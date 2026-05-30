@@ -26,7 +26,7 @@ metadata:
 - The user wants **Claude Code–native orchestration** through OMC / oh-my-claudecode
 - The user needs to choose between the **marketplace plugin**, the **`omc` shell CLI**, or a **local checkout / `--plugin-dir`** workflow
 - The user asks about `/team`, `/autopilot`, `/ralph`, `/ultrawork`, `/ultraqa`, `omc team`, `omc ask`, `omc setup`, `omc update`, hooks, HUD, or OMC state behavior
-- The user asks how Claude workflows such as `/team`, `/ultrawork`, or `/ultraqa` map to Codex/OMX or Gemini/Antigravity/OMA
+- The user asks how Claude workflows such as `/team`, `/autopilot`, `/ultrawork`, or `/ultraqa` map to Codex/OMX or Gemini/Antigravity/OMA
 - The user is hitting **duplicate installs**, **plugin-dir confusion**, **worktree/state collisions**, **setup drift**, or **HUD / rate-limit / resume trouble**
 - The user really wants a **Claude-first runtime owner**, not `jeo`, `ralphmode`, `omx`, `ohmg`, or browser-review skills
 
@@ -201,11 +201,13 @@ Use when the user wants Claude OMC workflows to be usable from Codex or Antigrav
 | Claude / OMC | Codex / OMX | Gemini / Antigravity / OMA |
 |--------------|-------------|-----------------------------|
 | `/team N:role "task"` | `$team N:role "task"` or `omx team N:role "task"` | `/orchestrate "task"` or `oma agent:parallel -i role:"task"` |
+| `/autopilot "task"` or `autopilot: task` | `$autopilot "task"`; use `$deep-interview` first for vague requests or `$plan` → `$ralph` for stricter verification | `/plan "task"` → `/work`; use `/orchestrate` or `oma agent:parallel` only when explicit parallel lanes are needed |
 | `/ultrawork "task"` / `ulw "task"` | `$ulw "task"` or `$ultrawork "task"` | `/ultrawork "task"` or `oma agent:parallel` for independent lanes |
 | `/ultraqa "target"` | `$ultraqa "target"` | `/review "target"` or `/ultrawork "QA target"`; use `oma agent:parallel` for explicit QA lanes |
 
 Rules:
 - State the runtime boundary first: OMC uses `.omc/`, OMX uses `.omx/`, OMA keeps `.agents/` canonical.
+- Treat `/autopilot` as an intent contract, not a universal command name: Codex owns `$autopilot`; OMA usually composes `/plan` and `/work`.
 - Do not claim Antigravity has Claude-style custom subagent spawning; use OMA CLI fallback when needed.
 - When the target is Codex-native, route operator details to `omx`.
 - When the target is Gemini/Antigravity portable harness work, route operator details to `ohmg`.

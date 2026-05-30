@@ -62,6 +62,17 @@
         "The response maps ultraqa to /review or QA-focused /ultrawork",
         "The response states Antigravity custom spawning is limited or may need OMA CLI fallback"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "I use Claude /autopilot. How should Antigravity use the same intent with OMA?",
+      "expected_output": "The skill maps autopilot intent to OMA /plan followed by /work, keeps .agents canonical, and explains that Antigravity may need OMA CLI fallback for explicit parallel spawning rather than a native Claude-style /autopilot command.",
+      "assertions": [
+        "The response maps autopilot intent to /plan followed by /work",
+        "The response mentions .agents as canonical or oma link",
+        "The response mentions /orchestrate or oma agent:parallel only as a conditional fallback for parallel lanes",
+        "The response does not promise a native Antigravity /autopilot command unless the local projection exposes it"
+      ]
     }
   ]
 }

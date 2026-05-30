@@ -1,9 +1,9 @@
 ---
 name: omx
-description: "Use when you need multi-agent orchestration for OpenAI Codex CLI, especially Codex equivalents of Claude `/team`, `/ultrawork`, and `/ultraqa`. Triggers on: omx, $plan, $ralph, $team, $ulw, $ultraqa, $autopilot, $deep-interview. v0.11.10 — 30+ agents, 35+ workflow skills, tmux team runtime, sparkshell, explore, ralplan."
+description: "Use when you need multi-agent orchestration for OpenAI Codex CLI, especially Codex equivalents of Claude `/team`, `/autopilot`, `/ultrawork`, and `/ultraqa`. Triggers on: omx, $plan, $ralph, $team, $ulw, $ultraqa, $autopilot, $deep-interview. v0.11.10 — 30+ agents, 35+ workflow skills, tmux team runtime, sparkshell, explore, ralplan."
 allowed-tools: Read Write Bash Grep Glob Edit Agent
 metadata:
-  tags: omx, oh-my-codex, codex, openai, multi-agent, orchestration, team, ultrawork, ultraqa, ralph, plan, deep-interview, ralplan
+  tags: omx, oh-my-codex, codex, openai, multi-agent, orchestration, team, autopilot, ultrawork, ultraqa, ralph, plan, deep-interview, ralplan
   platforms: Codex, Claude, Gemini
   keyword: omx
   version: 0.11.10
@@ -17,7 +17,7 @@ metadata:
 
 - You want a stronger Codex CLI runtime with reusable role prompts and workflow skills
 - You need coordinated parallel agents via tmux team workers
-- You want Codex/OMX equivalents for Claude `/team`, `/ultrawork`, or `/ultraqa`
+- You want Codex/OMX equivalents for Claude `/team`, `/autopilot`, `/ultrawork`, or `/ultraqa`
 - Complex tasks requiring persistent execution (`$ralph`) or consensus planning (`$ralplan`)
 - You need repository exploration (`omx explore`) or bounded shell inspection (`omx sparkshell`)
 - Cross-model consultation with `$ask-claude` or `$ask-gemini`
@@ -117,15 +117,17 @@ $team 3:executor "parallelize this refactor"
 
 ## 5. Claude Workflow Parity
 
-Read [references/parallel-quality-workflows.md](references/parallel-quality-workflows.md) when the user asks to use Claude-style `team`, `ultrawork`, or `ultraqa` from Codex.
+Read [references/parallel-quality-workflows.md](references/parallel-quality-workflows.md) when the user asks to use Claude-style `team`, `autopilot`, `ultrawork`, or `ultraqa` from Codex.
 
 | Claude / OMC intent | OMX command | Use when |
 |---------------------|-------------|----------|
 | `/team N:role "task"` | `$team N:role "task"` or `omx team N:role "task"` | Coordinated work needs a shared task list and isolated workers |
+| `/autopilot "task"` or `autopilot: task` | `$autopilot "task"` | End-to-end idea → plan → implementation → verification should stay Codex-native |
 | `/ultrawork "task"` | `$ulw "task"` or `$ultrawork "task"` | Independent lanes can run with little synchronization |
 | `/ultraqa "target"` | `$ultraqa "target"` | QA/review should fan out across test, security, performance, or UI concerns |
 
 Do not reuse `.omc/state/` from Claude sessions. OMX state and scratch belong under `.omx/`.
+For vague greenfield requests, run `$deep-interview` before `$autopilot`. For high-assurance completion loops, use `$plan` or `$ralplan` before `$ralph`.
 
 ---
 
@@ -172,10 +174,10 @@ omx sparkshell --tmux-pane %12 --tail-lines 400           # Tail tmux pane outpu
 
 ## Instructions
 
-1. **Identify intent** — match request to the best workflow skill (`$plan`, `$ralph`, `$team`, `$deep-interview`)
+1. **Identify intent** — match request to the best workflow skill (`$autopilot`, `$plan`, `$ralph`, `$team`, `$deep-interview`)
 2. **Start with the recommended launch** — `omx --madmax --high` for most sessions
 3. **Use role prompts for analysis** — `/prompts:architect "..."` before implementation
-4. **Escalate when needed** — use `$team` for coordinated workers, `$ulw` for independent burst work, and `$ultraqa` for QA fan-out
+4. **Escalate when needed** — use `$autopilot` for full autonomous build intent, `$team` for coordinated workers, `$ulw` for independent burst work, and `$ultraqa` for QA fan-out
 5. **Use `$deep-interview` for vague requests** — when intent, scope, or boundaries are unclear
 6. **Point to references** — link to the relevant references/ file for deep-dive details
 
@@ -205,6 +207,7 @@ omx team 3:executor "refactor the API layer with proper tests"
 
 ### Example 4: Claude ultrawork / ultraqa parity
 ```text
+$autopilot "build the task API end to end"
 $ulw "parallelize the independent cleanup tasks"
 $ultraqa "review the auth flow across tests, security, and performance"
 ```
@@ -236,6 +239,7 @@ One-question-at-a-time Socratic loop until intent is clear, then hands off to `$
 |--------------|--------|
 | `omx --madmax --high` | Recommended launch |
 | `/prompts:architect "..."` | Analysis and design review |
+| `$autopilot "..."` | Full autonomous idea-to-working-code pipeline |
 | `$plan "..."` | Strategic planning |
 | `$deep-interview "..."` | Clarify vague requests |
 | `$ralph "..."` | Persistent loop until done |
@@ -260,4 +264,4 @@ One-question-at-a-time Socratic loop until intent is clear, then hands off to `$
 | [references/agents-catalog.md](references/agents-catalog.md) | All 30+ agent profiles and use cases |
 | [references/skills-reference.md](references/skills-reference.md) | Full skill list with triggers and descriptions |
 | [references/cli-reference.md](references/cli-reference.md) | Complete CLI: omx team/explore/sparkshell/reasoning |
-| [references/parallel-quality-workflows.md](references/parallel-quality-workflows.md) | Claude team/ultrawork/ultraqa parity for Codex/OMX |
+| [references/parallel-quality-workflows.md](references/parallel-quality-workflows.md) | Claude team/autopilot/ultrawork/ultraqa parity for Codex/OMX |

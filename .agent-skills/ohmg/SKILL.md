@@ -5,15 +5,15 @@ description: >
   wants a portable multi-agent harness with `.agents/` as the source of truth,
   Gemini-native generated agents, Antigravity compatibility, or cross-vendor-ready
   orchestration that can later route work to Claude or Codex. Also use when mapping
-  Claude workflows such as `team`, `ultrawork`, or `ultraqa` into OMA workflows for
+  Claude workflows such as `team`, `autopilot`, `ultrawork`, or `ultraqa` into OMA workflows for
   Gemini or Antigravity. Triggers on: ohmg, oh-my-agent, oma, Gemini multi-agent,
   Antigravity agent team, .agents, portable harness, Gemini native agents,
-  ultrawork, ultraqa, and Gemini/Antigravity orchestration. Route
+  autopilot, ultrawork, ultraqa, and Gemini/Antigravity orchestration. Route
   Claude-first runtime orchestration to `omc` and Codex-first runtime orchestration
   to `omx`.
 allowed-tools: Read Write Bash Grep Glob
 metadata:
-  tags: ohmg, oh-my-agent, oma, multi-agent, orchestration, gemini-cli, antigravity, portable-harness, dot-agents, team, ultrawork, ultraqa
+  tags: ohmg, oh-my-agent, oma, multi-agent, orchestration, gemini-cli, antigravity, portable-harness, dot-agents, team, autopilot, ultrawork, ultraqa
   platforms: Gemini, Antigravity
   keyword: ohmg
   version: 2.0.0
@@ -28,7 +28,7 @@ metadata:
 - You want **Antigravity** to read the same project-local multi-agent setup
 - You need a **portable `.agents/` source of truth** that can later project into Gemini, Claude, and Codex surfaces
 - You need to explain **when Gemini can use native generated agents** versus **when `oma agent:spawn` fallback** is required
-- You need OMA/Gemini/Antigravity equivalents for Claude `/team`, `/ultrawork`, or `/ultraqa`
+- You need OMA/Gemini/Antigravity equivalents for Claude `/team`, `/autopilot`, `/ultrawork`, or `/ultraqa`
 - You want the **Gemini / Antigravity path** without copying the full Claude-first (`omc`) or Codex-first (`omx`) runtime catalogs
 
 ## Instructions
@@ -140,13 +140,14 @@ oma dashboard:web
 
 Use these as **examples of the portable harness**, not as a promise that every runtime exposes the same native UI.
 
-### Step 5.5: Map Claude team / ultrawork / ultraqa to OMA
+### Step 5.5: Map Claude team / autopilot / ultrawork / ultraqa to OMA
 
 Read [references/parallel-quality-workflows.md](references/parallel-quality-workflows.md) when the user asks to bring Claude OMC workflows to Gemini or Antigravity.
 
 | Claude / OMC intent | OMA / Gemini shape | Antigravity boundary |
 |---------------------|--------------------|----------------------|
 | `/team N:role "task"` | `/orchestrate "task"` or `oma agent:parallel -i role:"task"` | Antigravity can consume `.agents/agents/`, but explicit spawning may need OMA CLI fallback |
+| `/autopilot "task"` or `autopilot: task` | `/plan "task"` followed by `/work`; use `/orchestrate` only when the work must split into explicit lanes | Antigravity can follow the generated harness, but do not promise a native Claude-style `/autopilot` command unless the local projection exposes it |
 | `/ultrawork "task"` | `/ultrawork "task"` or `oma agent:parallel` independent lanes | Keep `.agents/` canonical and regenerate views with `oma link` |
 | `/ultraqa "target"` | `/review "target"` or `/ultrawork "QA target"` with QA/security/performance lanes | Do not promise a native `/ultraqa` command unless the local projection exposes it |
 
@@ -166,7 +167,7 @@ Use this routing logic:
   - `/team`, `/autopilot`, `/ralph`, `/ccg`, or Claude-first runtime operations
 
 - **Use `omx`** when the request is about:
-  - Codex CLI workflow skills like `$deep-interview`, `$ralplan`, `$team`, `$ralph`
+  - Codex CLI workflow skills like `$deep-interview`, `$autopilot`, `$ralplan`, `$team`, `$ralph`
   - `.omx/` runtime state and Codex-first orchestration behavior
 
 If a user wants **one portable harness that can later serve Gemini + Claude + Codex**, keep `ohmg` as the anchor and mention `omc` / `omx` as downstream vendor-first layers, not replacements for the `.agents/` source of truth.
@@ -181,7 +182,7 @@ Check these first:
 4. **Environment mismatch** — Gemini-native behavior differs from Antigravity capability
 5. **Monitoring confusion** — dashboard observes agent/memory activity; it is not the whole orchestration model
 6. **Mixed-vendor expectations** — if native dispatch cannot own the task, explain `oma agent:spawn` / `oma agent:parallel`
-7. **Claude workflow parity confusion** — map `team`, `ultrawork`, and `ultraqa` as workflow intents, not identical command implementations
+7. **Claude workflow parity confusion** — map `team`, `autopilot`, `ultrawork`, and `ultraqa` as workflow intents, not identical command implementations
 
 ## Examples
 

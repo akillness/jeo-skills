@@ -61,6 +61,17 @@
         "The response maps /ultraqa to $ultraqa",
         "The response mentions .omx state or not reusing .omc state"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "Claude /autopilot으로 하던 전체 자동 구현 흐름을 Codex OMX에서도 쓰고 싶어.",
+      "expected_output": "The skill maps Claude /autopilot to OMX $autopilot, recommends $deep-interview first for vague requests or $plan/$ralplan before $ralph for stricter verification, and keeps state under .omx.",
+      "assertions": [
+        "The response maps /autopilot to $autopilot",
+        "The response mentions $deep-interview for vague or underspecified requests",
+        "The response mentions $plan, $ralplan, or $ralph for stronger planning or verification loops",
+        "The response mentions .omx state or not reusing .omc state"
+      ]
     }
   ]
 }

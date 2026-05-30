@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate cross-runtime team/ultrawork/ultraqa documentation coverage."""
+"""Validate cross-runtime team/autopilot/ultrawork/ultraqa documentation coverage."""
 
 from __future__ import annotations
 
@@ -10,30 +10,41 @@ from pathlib import Path
 CHECKS = {
     ".agent-skills/omc/SKILL.md": [
         "cross-runtime-parity",
+        "/autopilot",
+        "$autopilot",
         "ultraqa",
         "references/cross-runtime-workflow-map.md",
     ],
     ".agent-skills/omx/SKILL.md": [
+        "$autopilot",
         "$ulw",
         "$ultraqa",
         "references/parallel-quality-workflows.md",
     ],
     ".agent-skills/ohmg/SKILL.md": [
+        "/plan",
+        "/work",
         "/orchestrate",
         "/review",
         "references/parallel-quality-workflows.md",
     ],
     ".agent-skills/omc/references/cross-runtime-workflow-map.md": [
         "$team",
+        "$autopilot",
+        "/plan",
+        "/work",
         "$ultraqa",
         "oma agent:parallel",
     ],
     ".agent-skills/omx/references/parallel-quality-workflows.md": [
         "$team",
+        "$autopilot",
         "$ulw",
         "$ultraqa",
     ],
     ".agent-skills/ohmg/references/parallel-quality-workflows.md": [
+        "/plan",
+        "/work",
         "/orchestrate",
         "/ultrawork",
         "/review",

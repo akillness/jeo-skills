@@ -410,7 +410,7 @@ fi
 ```bash
 echo "=== Platform Plugin Setup ==="
 
-# Claude Code — oh-my-claudecode plugin (slash skills: /team, /autopilot, /ralph, /ultrawork)
+# Claude Code — oh-my-claudecode plugin (slash skills: /team, /autopilot, /ralph, /ultrawork, /ultraqa)
 if command -v claude &>/dev/null; then
   /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
   /plugin install oh-my-claudecode
@@ -550,7 +550,7 @@ If no → skip silently. Never re-ask.
 | Goal | Command |
 |------|---------|
 | Start any task | `ooo interview "task"` or `bmad "task"` |
-| Claude orchestration | `autopilot: task` or `/oh-my-claudecode:team "task"` |
+| Claude orchestration | `autopilot: task` or `/oh-my-claudecode:team "task"`; Codex parity: `$autopilot`; Antigravity/OMA parity: `/plan` → `/work` |
 | Visual plan review | `plan` (plannotator keyword) |
 | Spec-first dev loop | `ooo interview "X"` or `ouroboros init start "X"` *(install: `claude plugin marketplace add Q00/ouroboros` or `pip install ouroboros-ai[all]`)* |
 | Pre-impl research | `survey "topic"` *(writes reusable `.survey/{slug}/` artifacts and validates the artifact contract before handoff)* |
@@ -569,9 +569,9 @@ If no → skip silently. Never re-ask.
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
 | **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, vibe-kanban, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
-| **Platform Setup** | omc *(Claude-first OMC router; maps `/team`, `/ultrawork`, `/ultraqa` intents to OMX/OMA when cross-runtime parity is requested)* | claude-code |
-| **Platform Setup** | ohmg *(Gemini/Antigravity OMA harness; maps team/ultrawork/ultraqa intents to `/orchestrate`, `/ultrawork`, `/review`, or `oma agent:parallel` while keeping `.agents` canonical)* | antigravity |
-| **Platform Setup** | omx *(Codex workflow layer with `$team`, `$ulw`/`$ultrawork`, and `$ultraqa` equivalents for Claude team/ultrawork/ultraqa workflows)* | codex, claude-code |
+| **Platform Setup** | omc *(Claude-first OMC router; maps `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` intents to OMX/OMA when cross-runtime parity is requested)* | claude-code |
+| **Platform Setup** | ohmg *(Gemini/Antigravity OMA harness; maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` while keeping `.agents` canonical)* | antigravity |
+| **Platform Setup** | omx *(Codex workflow layer with `$team`, `$autopilot`, `$ulw`/`$ultrawork`, and `$ultraqa` equivalents for Claude team/autopilot/ultrawork/ultraqa workflows)* | codex, claude-code |
 | **Planning & Review** | browser-harness *(self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode; replaces agent-browser; includes Claude-safe screenshot/PIL patch, agent-editable `agent_helpers.py`, domain skills, Browser Use Cloud)*, playwriter *(running-browser / authenticated Chrome reuse via CLI+MCP; route clean disposable checks to browser-harness)*, prompt-repetition *(decision-first prompt repetition for non-reasoning/lightweight models on long-context retrieval, options-first MCQ, or position-sensitive lookups; route broader context/retrieval fixes away instead of blanket auto-apply)*, skill-standardization *(SKILL.md validate/rewrite + canonical-vs-alias cleanup + repo-root validator / derived-surface sync for `skills.json`, README/setup, and `SKILL.toon`)*, skill-autoresearch *(repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces only when the core skill change is justified)* | All (`*`) |
 | **Agent Development** | microsoft-agent-framework *(enterprise-grade agent systems with Microsoft agent framework patterns — role separation, workflow control, policy enforcement)*, openai-agents-python *(multi-agent workflows with OpenAI Agents SDK — agents/tools/handoffs, guardrails, async pipelines)*, pydantic-ai *(typed LLM applications — schema-constrained outputs, tool integration, validation, dependency injection)* | All (`*`) |
 | **Backend** | api-design *(contract-first API design / compatibility review)*, api-documentation *(developer-facing API docs anchor for reference portals / quickstarts / SDK-webhook guides / truthful examples / auth-error guidance)*, authentication-setup *(product-auth setup router for hosted/framework-native/platform-native auth, sessions/JWTs, org data boundaries, and enterprise SSO handoff; routes hardening to security-best-practices)*, backend-testing *(packet-first backend testing for coverage-plan, fixture/reset, contract/API protection, flake-stabilization, and local-vs-CI lane-split packets; routes policy to testing-strategies, API shape to api-design, and auth implementation to authentication-setup)*, database-schema-design *(packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible field decisions, and staged evolution; routes interface work to api-design, verification to backend-testing, and reporting/telemetry follow-through outward)*, payloadcms *(Payload CMS content/collection management — typed collections, access control, hooks, REST/GraphQL API, local API patterns)*, supabase-agent-skills *(Supabase full-stack patterns — Auth, Database, Storage, Edge Functions, Realtime, RLS policies, and migration workflows)* | All (`*`) |
@@ -635,8 +635,8 @@ If no → skip silently. Never re-ask.
 | `strix` | `strix`, `ai pentest`, `vulnerability scan cli` | AI-driven appsec testing — Docker sandbox, LLM provider, local/GitHub/live scans, CI/CD |
 | `agentic-skills` | `agentic-skills`, `/spec`, `/plan`, `/build`, `/test`, `/review`, `/code-simplify`, `/ship`, `spec-driven`, `source-driven development`, `google engineering practices` | Production-grade engineering framework for AI agents — spec-driven dev, incremental TDD, five-axis code review, security hardening, and disciplined git/CI/CD workflows. Plugin: `claude plugin marketplace add addyosmani/agent-skills` |
 | `research-paper-writing` | `research paper`, `academic paper` | ML/CV/NLP paper + rebuttal workflow — abstract/introduction/method/experiments, figure-table support, reviewer response, camera-ready revision |
-| `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$ulw`, `$ultraqa`, `$deep-interview`, `$ralplan` | Codex CLI workflow layer with Claude team/ultrawork/ultraqa parity — team runtime, explore, sparkshell |
-| `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/orchestrate`, `/review` | Gemini / Antigravity entry for OMA; maps team/ultrawork/ultraqa intents while keeping `.agents` canonical |
+| `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$autopilot`, `$ulw`, `$ultraqa`, `$deep-interview`, `$ralplan` | Codex CLI workflow layer with Claude team/autopilot/ultrawork/ultraqa parity — team runtime, explore, sparkshell |
+| `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity entry for OMA; maps team/autopilot/ultrawork/ultraqa intents while keeping `.agents` canonical |
 | `diagnose` | `diagnose`, `systematic debugging`, `feedback loop`, `six-phase debug` | Systematic debugging: invest in Phase 1 (fast feedback loop), then reproduce → hypothesize → instrument → fix+test → cleanup |
 | `tdd` | `tdd`, `test-driven development`, `red-green-refactor`, `test first` | Red-green-refactor TDD using vertical slices — tests specify observable behavior through public interfaces |
 | `grill-with-docs` | `grill-with-docs`, `design review`, `challenge my plan` | Stress-test plans against project domain model, sharpen terminology, update CONTEXT.md and ADRs inline |

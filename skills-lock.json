@@ -6,7 +6,7 @@
       "sourceType": "plugin",
       "version": "4.2.15",
       "keyword": "omc",
-      "description": "Claude Code용 OMC 라우터. `/team`, `/ultrawork`, `/ultraqa`를 Claude 안에서 쓰되, 같은 의도를 Codex/OMX(`$team`, `$ulw`, `$ultraqa`)와 Gemini/Antigravity/OMA(`/orchestrate`, `/ultrawork`, `/review`)로 넘기는 대응표를 포함한다.",
+      "description": "Claude Code용 OMC 라우터. `/team`, `/autopilot`, `/ultrawork`, `/ultraqa`를 Claude 안에서 쓰되, 같은 의도를 Codex/OMX(`$team`, `$autopilot`, `$ulw`, `$ultraqa`)와 Gemini/Antigravity/OMA(`/orchestrate`, `/plan`→`/work`, `/ultrawork`, `/review`)로 넘기는 대응표를 포함한다.",
       "tags": [
         "omc",
         "claude-code",
@@ -264,14 +264,14 @@
       "source": "akillness/oh-my-skills",
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill omx",
       "optional_for": [],
-      "description": "OpenAI Codex CLI용 실행 백엔드. Claude `/team`, `/ultrawork`, `/ultraqa` 의도를 각각 `$team`, `$ulw`/`$ultrawork`, `$ultraqa`로 매핑하고 `.omx/` 상태 경계를 지킨다."
+      "description": "OpenAI Codex CLI용 실행 백엔드. Claude `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` 의도를 각각 `$team`, `$autopilot`, `$ulw`/`$ultrawork`, `$ultraqa`로 매핑하고 `.omx/` 상태 경계를 지킨다."
     },
     "ohmg": {
       "version": "latest",
       "source": "akillness/oh-my-skills",
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill ohmg",
       "optional_for": [],
-      "description": "Gemini/Antigravity용 OMA 실행 백엔드. `.agents/`를 canonical source로 유지하고 Claude team/ultrawork/ultraqa 의도를 `/orchestrate`, `/ultrawork`, `/review` 또는 `oma agent:parallel`로 매핑한다."
+      "description": "Gemini/Antigravity용 OMA 실행 백엔드. `.agents/`를 canonical source로 유지하고 Claude team/autopilot/ultrawork/ultraqa 의도를 `/orchestrate`, `/plan`→`/work`, `/ultrawork`, `/review` 또는 `oma agent:parallel`로 매핑한다."
     },
     "playwriter": {
       "version": "latest",
