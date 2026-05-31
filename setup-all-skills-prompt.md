@@ -1042,19 +1042,20 @@ if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in ups
 PY
 fi
 
-if command -v codex &>/dev/null; then
+if command -v codex &>/dev/null && command -v python3 &>/dev/null; then
   CODEX_HOOK="$_HOME/.codex/hooks/llm-wiki-ingest.sh"
   install_kp_wrapper "$CODEX_HOOK"
-  CODEX_TOML="$_HOME/.codex/config.toml"
-  if [ -f "$CODEX_TOML" ] && ! grep -q "llm-wiki-ingest.sh" "$CODEX_TOML"; then
-    cat >>"$CODEX_TOML" <<EOF
-
-[[hooks]]
-event = "UserPromptSubmit"
-command = "$CODEX_HOOK"
-EOF
-    echo "✅ Codex: UserPromptSubmit hook appended to config.toml"
-  fi
+  CODEX_HOOKS_JSON="$_HOME/.codex/hooks.json"
+  python3 - "$CODEX_HOOKS_JSON" "$CODEX_HOOK" <<'PY' && echo "✅ Codex: UserPromptSubmit hook registered in hooks.json"
+import json, sys, pathlib
+p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
+data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+ups = data.setdefault("hooks", {}).setdefault("UserPromptSubmit", [])
+if not any(any(h.get("command") == wrapper for h in e.get("hooks", [])) for e in ups):
+    ups.append({"hooks": [{"type": "command", "command": wrapper}]})
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+PY
 fi
 
 if (command -v gemini &>/dev/null || command -v agy &>/dev/null) && command -v python3 &>/dev/null; then
