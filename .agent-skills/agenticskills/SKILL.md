@@ -145,5 +145,4 @@ for the full list at any time.
 
 - Upstream repo: <https://github.com/akillness/oh-my-gods>
 - Upstream installer: <https://raw.githubusercontent.com/akillness/oh-my-gods/main/install.sh>
-- This repo's catalog entry: `README.md` → Code Quality table
-- Setup chaining: `setup-all-skills-prompt.md` → "Optional: oh-my-gods bundle"
+- This repo's catalog entry: `README.md` → Infrastructure table
