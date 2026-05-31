@@ -958,9 +958,152 @@ if command -v claude &>/dev/null; then
     || echo "⚠️  ooo MCP not found — run Step 3c to register"
 fi
 
+# ── Knowledge Pipeline Enforcement ───────────────────────────────
+# Wire every prompt through: prompt → RTK (bash hook, already installed)
+# → graphify (structural graph rebuild) → llm-wiki at ~/vaults/llm-wiki/
+# (Obsidian-managed vault). Per-agent hook events:
+#   Claude Code   : UserPromptSubmit
+#   Codex CLI     : UserPromptSubmit (via ~/.codex/config.toml)
+#   Antigravity / : BeforeAgent      (Gemini CLI shares ~/.gemini/settings.json)
+#   Gemini CLI
+
+KP_VAULT="$_HOME/vaults/llm-wiki"
+KP_SCRIPTS="$KP_VAULT/scripts"
+KP_INGEST="$KP_SCRIPTS/ingest-prompt.py"
+KP_RAW_URL="https://raw.githubusercontent.com/akillness/oh-my-skills/main/hooks/ingest-prompt.py"
+
+# 1. Bootstrap vault skeleton via llm-wiki skill (or minimal fallback)
+if [ ! -f "$KP_VAULT/index.md" ]; then
+  if [ -x "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" ]; then
+    bash "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" "$KP_VAULT" \
+      && echo "✅ vault bootstrapped → $KP_VAULT"
+  else
+    mkdir -p "$KP_VAULT"/raw/sources "$KP_VAULT"/raw/assets \
+             "$KP_VAULT"/wiki/sources "$KP_VAULT"/wiki/entities \
+             "$KP_VAULT"/wiki/concepts "$KP_VAULT"/wiki/queries "$KP_VAULT"/wiki/reports
+    [ -f "$KP_VAULT/index.md" ] || printf '# Index\n\n<!-- SOURCES:END -->\n<!-- QUERIES:END -->\n' > "$KP_VAULT/index.md"
+    [ -f "$KP_VAULT/log.md" ]   || printf '# Log\n' > "$KP_VAULT/log.md"
+    echo "ℹ️  llm-wiki skill missing — created minimal vault skeleton"
+  fi
+fi
+
+# 2. Install graphifyy (best-effort; the ingest script degrades gracefully)
+if command -v pipx &>/dev/null; then
+  pipx list 2>/dev/null | grep -q graphifyy \
+    || pipx install graphifyy 2>/dev/null \
+    && echo "✅ graphifyy available via pipx"
+else
+  command -v graphify &>/dev/null \
+    || echo "ℹ️  graphifyy not installed — run: pipx install graphifyy"
+fi
+
+# 3. Place the shared ingest script under the vault
+mkdir -p "$KP_SCRIPTS"
+if [ ! -f "$KP_INGEST" ]; then
+  if command -v curl &>/dev/null; then
+    curl -fsSL "$KP_RAW_URL" -o "$KP_INGEST" 2>/dev/null \
+      && chmod +x "$KP_INGEST" \
+      && echo "✅ ingest-prompt.py fetched → $KP_INGEST" \
+      || echo "⚠️  could not fetch ingest-prompt.py — copy hooks/ingest-prompt.py manually"
+  fi
+fi
+
+# 4. Per-agent wrapper installer (forwards stdin to the shared script)
+install_kp_wrapper() {
+  local dest="$1"
+  mkdir -p "$(dirname "$dest")"
+  cat >"$dest" <<EOF
+#!/bin/bash
+set -euo pipefail
+INGEST="$KP_INGEST"
+[ -x "\$INGEST" ] || exit 0
+if [ -n "\${1:-}" ]; then INPUT="\$1"; else INPUT="\$(cat 2>/dev/null || true)"; fi
+LLM_WIKI_VAULT="$KP_VAULT" printf '%s' "\$INPUT" | python3 "\$INGEST" >/dev/null 2>&1 || true
+exit 0
+EOF
+  chmod +x "$dest"
+}
+
+# 5. Register the hook in each agent's settings (idempotent JSON/TOML edit)
+if command -v claude &>/dev/null && command -v python3 &>/dev/null; then
+  CLAUDE_HOOK="${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/hooks/llm-wiki-ingest.sh"
+  install_kp_wrapper "$CLAUDE_HOOK"
+  CLAUDE_SETTINGS="${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/settings.json"
+  python3 - "$CLAUDE_SETTINGS" "$CLAUDE_HOOK" <<'PY' && echo "✅ Claude: UserPromptSubmit hook registered"
+import json, sys, pathlib
+p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
+data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+ups = data.setdefault("hooks", {}).setdefault("UserPromptSubmit", [])
+cmd = f'bash "{wrapper}"'
+if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in ups):
+    ups.append({"hooks": [{"type": "command", "command": cmd}]})
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(data, indent=2), encoding="utf-8")
+PY
+fi
+
+if command -v codex &>/dev/null; then
+  CODEX_HOOK="$_HOME/.codex/hooks/llm-wiki-ingest.sh"
+  install_kp_wrapper "$CODEX_HOOK"
+  CODEX_TOML="$_HOME/.codex/config.toml"
+  if [ -f "$CODEX_TOML" ] && ! grep -q "llm-wiki-ingest.sh" "$CODEX_TOML"; then
+    cat >>"$CODEX_TOML" <<EOF
+
+[[hooks]]
+event = "UserPromptSubmit"
+command = "$CODEX_HOOK"
+EOF
+    echo "✅ Codex: UserPromptSubmit hook appended to config.toml"
+  fi
+fi
+
+if (command -v gemini &>/dev/null || command -v agy &>/dev/null) && command -v python3 &>/dev/null; then
+  GEMINI_HOOK="$_HOME/.gemini/hooks/llm-wiki-ingest.sh"
+  install_kp_wrapper "$GEMINI_HOOK"
+  GEMINI_SETTINGS="$_HOME/.gemini/settings.json"
+  python3 - "$GEMINI_SETTINGS" "$GEMINI_HOOK" <<'PY' && echo "✅ Gemini/Antigravity: BeforeAgent hook registered"
+import json, sys, pathlib
+p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
+data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+ba = data.setdefault("hooks", {}).setdefault("BeforeAgent", [])
+cmd = f'bash "{wrapper}"'
+if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in ba):
+    ba.append({"matcher": "", "hooks": [{"name": "llm-wiki-ingest", "type": "command", "command": cmd}]})
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(data, indent=2), encoding="utf-8")
+PY
+fi
+
+# 6. Inject the Knowledge Pipeline rule block into each agent's rules file
+KP_RULES="$(cat <<'RULES'
+
+## Knowledge Pipeline (auto-applied)
+
+All prompts in this agent are captured into the canonical vault at
+`~/vaults/llm-wiki/` (Obsidian-managed) and indexed by graphify. Before
+answering any question, read `~/vaults/llm-wiki/index.md` first, then
+the relevant `wiki/` pages. File durable findings back into
+`wiki/queries/` or `wiki/reports/`. Shell commands route through `rtk`
+for token-compact output.
+
+RULES
+)"
+inject_kp_rules() {
+  local file="$1"
+  [ -f "$file" ] || return 0
+  grep -q "Knowledge Pipeline (auto-applied)" "$file" && return 0
+  printf '%s\n' "$KP_RULES" >>"$file"
+  echo "✅ rules injected → $file"
+}
+inject_kp_rules "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/CLAUDE.md"
+inject_kp_rules "$_HOME/.codex/AGENTS.md"
+inject_kp_rules "$_HOME/.gemini/GEMINI.md"
+
 echo ""
 echo "✅ Default operating rules configured (platform: $PLATFORM)"
 echo "   Baseline flow: \$ooo → \$graphify → \$rtk → \$obsidian → \$llm-wiki"
+echo "   Vault         : $KP_VAULT"
+echo "   Ingest hook   : $KP_INGEST"
 ```
 
 > **Note**: This is a default operating sequence, not a blind mandate to run every skill on every prompt. Use the smallest truthful owner step for the current job, then return to the sequence as work moves from specification to structure, execution, persistence, and durable knowledge filing.

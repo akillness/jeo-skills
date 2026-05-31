@@ -70,6 +70,12 @@ graph TD
 
 ---
 
+## 🆕 What's New in v2026-05-31
+
+| Change | Details |
+|--------|---------|
+| **Knowledge Pipeline enforcement (prompt → graphify → llm-wiki)** | `setup-all-skills-prompt.md` Step 6 now installs the prompt-capture pipeline at install time. Every user prompt routed through Claude Code (`UserPromptSubmit`), Codex (`UserPromptSubmit` via `~/.codex/config.toml`), and Antigravity/Gemini (`BeforeAgent` via `~/.gemini/settings.json`) is captured into the canonical vault at `~/vaults/llm-wiki/` (Obsidian-managed). The shared ingest script lives at `hooks/ingest-prompt.py`; per-agent thin wrappers forward stdin and `graphify` rebuilds the structural graph when `graphifyy` is importable. Rules are also injected into `CLAUDE.md`, `AGENTS.md`, and `GEMINI.md` so agents read `~/vaults/llm-wiki/index.md` first on every query. Override the vault path with `LLM_WIKI_VAULT`. |
+
 ## 🆕 What's New in v2026-05-19
 
 | Change | Details |

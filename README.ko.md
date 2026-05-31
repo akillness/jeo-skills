@@ -70,6 +70,12 @@ graph TD
 
 ---
 
+## 🆕 v2026-05-31 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **Knowledge Pipeline 강제 적용 (prompt → graphify → llm-wiki)** | `setup-all-skills-prompt.md` Step 6에서 설치 시점에 프롬프트 캡처 파이프라인을 자동 등록합니다. Claude Code(`UserPromptSubmit`), Codex(`UserPromptSubmit` via `~/.codex/config.toml`), Antigravity/Gemini(`BeforeAgent` via `~/.gemini/settings.json`)에 들어오는 모든 사용자 프롬프트가 표준 vault인 `~/vaults/llm-wiki/`(Obsidian 관리)로 캡처됩니다. 공유 ingest 스크립트는 `hooks/ingest-prompt.py`에 있고, 에이전트별 thin wrapper가 stdin을 그대로 전달합니다. `graphifyy`가 import 가능하면 구조 그래프가 함께 갱신됩니다. `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`에도 운영 규칙이 자동 주입되어 답변 전 항상 `~/vaults/llm-wiki/index.md`를 먼저 읽도록 강제됩니다. vault 경로는 `LLM_WIKI_VAULT` 환경변수로 override 가능. |
+
 ## 🆕 v2026-05-19 업데이트
 
 | 변경 | 내용 |
