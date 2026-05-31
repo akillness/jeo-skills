@@ -569,6 +569,41 @@ echo "✅ agentation skill installed"
 
 **Windows note**: Run all bash steps in **Git Bash** or **WSL2**. PowerShell users: replace `$_HOME` with `$env:USERPROFILE` and use `python` instead of `python3`.
 
+### 3h — AgenticSkills (optional: install the oh-my-gods bundle)
+
+The `agenticskills` skill wraps the upstream
+[`akillness/oh-my-gods`](https://github.com/akillness/oh-my-gods) installer.
+Run it when the user wants the full `.god-skills/` catalog (80+ skills)
+mirrored into every detected runtime in one shot.
+
+```bash
+# Opt-in: install the oh-my-gods bundle on top of oh-my-skills
+if [ "${INSTALL_OH_MY_GODS:-false}" = "true" ]; then
+  echo "▶ Installing oh-my-gods bundle via agenticskills…"
+  : "${PLATFORM:=all}"
+  : "${INSTALL_MODE:=silent}"
+  : "${WITH_LANGCHAIN:=false}"
+  PLATFORM="$PLATFORM" INSTALL_MODE="$INSTALL_MODE" WITH_LANGCHAIN="$WITH_LANGCHAIN" \
+    curl -fsSL https://raw.githubusercontent.com/akillness/oh-my-gods/main/install.sh | bash \
+      && echo "✅ oh-my-gods bundle installed (PLATFORM=$PLATFORM)" \
+      || echo "⚠️  oh-my-gods install returned non-zero — re-run manually if needed"
+else
+  echo "ℹ️  Skipping oh-my-gods bundle. To enable: INSTALL_OH_MY_GODS=true bash setup.sh"
+fi
+```
+
+Knobs (passed through to the upstream installer):
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `INSTALL_OH_MY_GODS` | `false` | Master switch — must be `true` to run 3h |
+| `PLATFORM` | `all` | `claude` · `gemini` · `codex` · `opencode` · `all` |
+| `INSTALL_MODE` | `silent` | `silent` · `auto` · `interactive` |
+| `WITH_LANGCHAIN` | `false` | Also install `langchain-ai/langchain-skills` |
+| `SKIP_BACKUP` | `false` | Skip backup of existing `~/.agent-skills` |
+
+The installer is idempotent; re-runs are safe.
+
 ---
 
 ## Step 4 — Verification

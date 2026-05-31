@@ -70,6 +70,12 @@ graph TD
 
 ---
 
+## 🆕 v2026-06-01 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **agenticskills: oh-my-gods 번들 원클릭 설치 스킬** | `agenticskills` 스킬을 추가했습니다 — [`akillness/oh-my-gods`](https://github.com/akillness/oh-my-gods) 공식 `install.sh`를 감싸는 portable 스킬로, `.god-skills/`에 있는 80여 개 카탈로그(agent-browser, agent-workflow, ai-research-skills, api-design 등)를 Claude Code · Codex CLI · Antigravity/Gemini · OpenCode에 한 번에 설치합니다. 상위 환경 변수(`PLATFORM`, `WITH_LANGCHAIN`, `INSTALL_MODE`, `SKIP_BACKUP`)를 그대로 노출하고, curl-pipe 방식과 리뷰 후 실행 방식을 모두 문서화합니다. 기존 스킬과 destinations namespace가 달라 충돌 없이 공존합니다. 트리거: `AgenticSkills`, `oh-my-gods`, `god-skills`, install gods skills. |
+
 ## 🆕 v2026-05-31 업데이트
 
 | 변경 | 내용 |
@@ -406,10 +412,11 @@ rtk init -g
 | `tdd` | 레드-그린-리팩터 TDD (수직 슬라이스) — 공개 인터페이스를 통한 행동 검증, 구현 세부사항 테스트 금지 | All |
 | `migrate-to-shoehorn` | TypeScript 테스트의 `as` 어서션을 `fromPartial()`, `fromAny()`, `fromExact()`로 타입 안전하게 교체. 테스트 코드 전용. | All |
 
-### 🏗 인프라 (14개)
+### 🏗 인프라 (15개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
+| `agenticskills` | `akillness/oh-my-gods` 번들(80+ god-skills) 원클릭 설치 스킬 — 상위 `install.sh`를 감싸 `PLATFORM`, `WITH_LANGCHAIN`, `INSTALL_MODE`, `SKIP_BACKUP` 환경 변수를 그대로 노출하며 `~/.claude/skills`, `~/.codex/skills`, `~/.gemini/skills`, `~/.opencode/skills`에 동시 미러링 | 전체 |
 | `deployment-automation` | 프리뷰 릴리즈, 스테이징/프로덕션 승격, 롤아웃 전략, 배포 후 검증, 롤백 대응, 릴리즈 하드닝을 다루는 릴리즈 실행 앵커이며, CI 작성은 `workflow-automation`, 머신 설정은 `system-environment-setup`, Vercel 전용 운영은 `vercel-deploy`로 라우팅 | 전체 |
 | `environment-setup` | `.env` 구조, env 우선순위, 검증, 시크릿 전달을 다루는 앱 구성 호환 스킬이며, 더 넓은 실행 환경 설정은 `system-environment-setup`으로 라우팅 | 전체 |
 | `firebase-ai-logic` | Firebase 앱/클라이언트 SDK에서 Gemini 기능, 스트리밍, 구조화 출력, App Check 연동을 다루는 직접 통합 레인이며, 백엔드 오케스트레이션은 `genkit`으로 라우팅 | Claude · Gemini |

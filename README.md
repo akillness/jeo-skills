@@ -70,6 +70,12 @@ graph TD
 
 ---
 
+## 🆕 What's New in v2026-06-01
+
+| Change | Details |
+|--------|---------|
+| **agenticskills: one-shot installer for the oh-my-gods bundle** | Added `agenticskills` — a portable skill that wraps the official [`akillness/oh-my-gods`](https://github.com/akillness/oh-my-gods) `install.sh` so the 80+ `.god-skills/` catalog (agent-browser, agent-workflow, ai-research-skills, api-design, …) can be installed across Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in a single command. Exposes the upstream env knobs (`PLATFORM`, `WITH_LANGCHAIN`, `INSTALL_MODE`, `SKIP_BACKUP`), documents the curl-pipe and review-first flows, and lives alongside the existing skills without destructive overlap. Triggers on: `AgenticSkills`, `oh-my-gods`, `god-skills`, install gods skills. |
+
 ## 🆕 What's New in v2026-05-31
 
 | Change | Details |
@@ -415,10 +421,11 @@ rtk init -g
 | `migrate-to-shoehorn` | Migrate TypeScript test `as` assertions to type-safe `fromPartial()`, `fromAny()`, `fromExact()` from @total-typescript/shoehorn. Test code only. | All |
 | `aider-cli-workflow` | Run a safe, reviewable Aider CLI coding loop — model setup, edit scope control, test-first prompting, diff review, and commit hygiene for local repositories | All |
 
-### 🏗 Infrastructure (16)
+### 🏗 Infrastructure (17)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
+| `agenticskills` | One-shot installer for the `akillness/oh-my-gods` bundle (80+ god-skills) — wraps the upstream `install.sh`, honors `PLATFORM`, `WITH_LANGCHAIN`, `INSTALL_MODE`, `SKIP_BACKUP`, mirrors into `~/.claude/skills`, `~/.codex/skills`, `~/.gemini/skills`, and `~/.opencode/skills`. | All |
 | `deployment-automation` | Release-execution anchor for preview releases, staging/prod promotion, rollout strategy, post-deploy verification, rollback response, and release hardening; routes CI authoring to `workflow-automation`, machine setup to `system-environment-setup`, and Vercel-specific operations to `vercel-deploy` | All |
 | `environment-setup` | App-config compatibility skill for `.env` layout, env precedence, validation, and secret handoff; routes broader runnable-machine setup to `system-environment-setup` | All |
 | `firebase-ai-logic` | Direct Firebase app/client SDK lane for Gemini-powered features, streaming, structured output, and App Check-aware in-app integration; routes backend orchestration to `genkit` | Claude · Gemini |
