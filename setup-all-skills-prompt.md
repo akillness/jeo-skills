@@ -709,9 +709,25 @@ if command -v gjc &>/dev/null; then
   GJC_CONFIG="$_HOME/.gjc/agent/config.yml"
   if [ -f "$GJC_CONFIG" ] && grep -q '^skills:' "$GJC_CONFIG" && grep -qE '^[[:space:]]+enabled:[[:space:]]*true' "$GJC_CONFIG"; then
     echo "✅ GJC skill discovery enabled ($GJC_CONFIG)"
-    grep -q "$SKILLS_ROOT" "$GJC_CONFIG" \
-      && echo "✅ GJC customDirectories references $SKILLS_ROOT" \
-      || echo "⚠️  GJC customDirectories missing $SKILLS_ROOT — re-run Step 3h"
+    # GJC expands `~` in skills.customDirectories (src: extensibility/skills.ts → expandTilde),
+    # so both "~/.agents/skills" and the absolute form are valid. A plain grep for the
+    # absolute path false-negatives when the config stores the tilde form.
+    GJC_CUSTOM_TILDE="~${SKILLS_ROOT#$_HOME}"
+    if grep -qF "$SKILLS_ROOT" "$GJC_CONFIG" || grep -qF "$GJC_CUSTOM_TILDE" "$GJC_CONFIG"; then
+      echo "✅ GJC customDirectories references $SKILLS_ROOT (tilde or absolute form)"
+      # GJC requires a frontmatter 'description' per skill (requireDescription: true), so a
+      # SKILL.md count under the dir is a faithful proxy for "discoverable by GJC".
+      GJC_SKILL_COUNT=$(find "$SKILLS_ROOT" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+      echo "✅ $GJC_SKILL_COUNT discoverable skills under $SKILLS_ROOT"
+    else
+      echo "⚠️  GJC customDirectories missing $SKILLS_ROOT — re-run Step 3h"
+    fi
+    # IMPORTANT: 'gjc skills list' shows ONLY the 4 bundled workflow skills
+    # (deep-interview, ralplan, team, ultragoal). oh-my-skills are loaded on demand
+    # from customDirectories and surface in-session as /skill:<name> — they will NOT
+    # appear in 'gjc skills list'. Seeing only 4 there is expected, not a failure.
+    echo "ℹ️  'gjc skills list' lists only bundled workflow skills; oh-my-skills load on"
+    echo "    demand and surface as /skill:<name> in-session (not via 'gjc skills list')."
   else
     echo "❌ GJC skill discovery not enabled — re-run Step 3h"
   fi
