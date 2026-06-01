@@ -589,11 +589,44 @@ if command -v gjc &>/dev/null; then
   GJC_CONFIG="$GJC_AGENT_DIR/config.yml"
   mkdir -p "$GJC_AGENT_DIR/skills"
 
-  # GJC's config.yml is plain YAML. Append a top-level `skills:` block only when one is
-  # absent (idempotent) — never rewrite an existing block. skills.* are first-class config
-  # keys, so a later `gjc` run preserves them.
-  if [ -f "$GJC_CONFIG" ] && grep -q '^skills:' "$GJC_CONFIG"; then
-    echo "ℹ️  skills block already present in $GJC_CONFIG — leaving as-is"
+  # Enable skill discovery and point customDirectories at the shared $SKILLS_ROOT.
+  # Prefer a YAML-aware idempotent merge (correctly fixes a pre-existing or disabled
+  # `skills:` block); fall back to a safe text append when PyYAML is unavailable.
+  if command -v python3 &>/dev/null && python3 -c "import yaml" 2>/dev/null; then
+    GJC_CONFIG="$GJC_CONFIG" SKILLS_ROOT="$SKILLS_ROOT" python3 - <<'PY'
+import os, pathlib, yaml
+cfg = pathlib.Path(os.environ["GJC_CONFIG"])
+root = os.environ["SKILLS_ROOT"]
+raw = cfg.read_text(encoding="utf-8") if cfg.exists() else ""
+data = yaml.safe_load(raw) if raw.strip() else {}
+if not isinstance(data, dict):
+    raise SystemExit(f"refusing to edit non-mapping YAML at {cfg}")
+sk = data.get("skills")
+if not isinstance(sk, dict):
+    sk = {}
+    data["skills"] = sk
+sk["enabled"] = True
+sk.setdefault("enablePiUser", True)
+sk.setdefault("enablePiProject", True)
+dirs = sk.get("customDirectories")
+if not isinstance(dirs, list):
+    dirs = []
+    sk["customDirectories"] = dirs
+if root not in dirs:
+    dirs.append(root)
+cfg.parent.mkdir(parents=True, exist_ok=True)
+cfg.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")
+print(f"\u2705 GJC skill discovery enabled (YAML merge) \u2192 {cfg}")
+print(f"   customDirectories includes \u2192 {root}")
+PY
+  elif [ -f "$GJC_CONFIG" ] && grep -q '^skills:' "$GJC_CONFIG"; then
+    if grep -qE '^[[:space:]]+enabled:[[:space:]]*true' "$GJC_CONFIG"; then
+      echo "ℹ️  skills block already enabled in $GJC_CONFIG — leaving as-is"
+    else
+      echo "⚠️  $GJC_CONFIG has a 'skills:' block but discovery may be OFF and PyYAML is unavailable."
+      echo "    Set 'skills.enabled: true' and add '$SKILLS_ROOT' under 'skills.customDirectories',"
+      echo "    or run: pip install pyyaml  &&  re-run Step 3h."
+    fi
   else
     touch "$GJC_CONFIG"
     cat >>"$GJC_CONFIG" <<YAML
@@ -604,10 +637,8 @@ skills:
   enablePiProject: true
   customDirectories:
     - $SKILLS_ROOT
-  ignoredSkills:
-    - "*오후*"
 YAML
-    echo "✅ GJC skill discovery enabled → $GJC_CONFIG"
+    echo "✅ GJC skill discovery enabled (appended block) → $GJC_CONFIG"
     echo "   customDirectories → $SKILLS_ROOT"
   fi
 
