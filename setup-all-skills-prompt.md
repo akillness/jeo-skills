@@ -77,6 +77,7 @@ if command -v agy &>/dev/null \
   DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}antigravity"
 fi
 if command -v opencode &>/dev/null; then echo "✅ OpenCode";     DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}opencode"; fi
+if command -v gjc      &>/dev/null; then echo "✅ Gajae Code (gjc)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}gjc"; fi
 
 [ -z "$DETECTED_AGENTS" ] && { echo "⚠️  No AI agents detected. Install at least one platform first."; exit 1; }
 echo ""
@@ -569,6 +570,59 @@ echo "✅ agentation skill installed"
 
 **Windows note**: Run all bash steps in **Git Bash** or **WSL2**. PowerShell users: replace `$_HOME` with `$env:USERPROFILE` and use `python` instead of `python3`.
 
+### 3h — Gajae Code (GJC) Skill Discovery
+
+Gajae Code (`gjc`) does **not** consume `~/.claude/skills` or `~/.codex/skills` as skills. Its
+loader only honors the `native` provider (`.gjc/skills`, `~/.gjc/agent/skills`) plus explicit
+`customDirectories`, and skill discovery is **OFF by default** (`skills.enabled: false`). That is
+the usual reason globally-installed skills never show up in GJC. The fix is to enable discovery and
+point GJC's `customDirectories` at the same shared `$SKILLS_ROOT` (`~/.agents/skills`) the other
+agents already use — no per-skill copy or symlink needed.
+
+```bash
+echo "=== Configuring Gajae Code (GJC) skill discovery ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+
+if command -v gjc &>/dev/null; then
+  GJC_AGENT_DIR="$_HOME/.gjc/agent"
+  GJC_CONFIG="$GJC_AGENT_DIR/config.yml"
+  mkdir -p "$GJC_AGENT_DIR/skills"
+
+  # GJC's config.yml is plain YAML. Append a top-level `skills:` block only when one is
+  # absent (idempotent) — never rewrite an existing block. skills.* are first-class config
+  # keys, so a later `gjc` run preserves them.
+  if [ -f "$GJC_CONFIG" ] && grep -q '^skills:' "$GJC_CONFIG"; then
+    echo "ℹ️  skills block already present in $GJC_CONFIG — leaving as-is"
+  else
+    touch "$GJC_CONFIG"
+    cat >>"$GJC_CONFIG" <<YAML
+
+skills:
+  enabled: true
+  enablePiUser: true
+  enablePiProject: true
+  customDirectories:
+    - $SKILLS_ROOT
+  ignoredSkills:
+    - "*오후*"
+YAML
+    echo "✅ GJC skill discovery enabled → $GJC_CONFIG"
+    echo "   customDirectories → $SKILLS_ROOT"
+  fi
+
+  echo "   Skills become reachable in GJC as /skill:<name> (skills.enableSkillCommands is on by default)."
+  echo "   Each SKILL.md must carry a frontmatter 'description' (GJC requires it); the oh-my-skills set already does."
+  echo "ℹ️  Optional: run 'gjc setup defaults' once in a free shell to add GJC's bundled"
+  echo "    workflow skills (deep-interview, ralplan, team, ultragoal) under ~/.gjc/agent/skills/."
+  echo "ℹ️  Hook model: GJC native hooks are pre/post TOOL hooks under .gjc/hooks/{pre,post}/"
+  echo "    (user scope: ~/.gjc/agent/hooks/{pre,post}/). GJC has no UserPromptSubmit-style"
+  echo "    prompt-ingest hook, so the Knowledge Pipeline is applied to GJC via RULES.md in Step 6."
+else
+  echo "ℹ️  gjc not installed — skipping Gajae Code skill discovery"
+fi
+```
+
 ---
 
 ## Step 4 — Verification
@@ -615,6 +669,21 @@ if [ -f /tmp/skills_before.txt ] && [ -s /tmp/skills_before.txt ]; then
     echo "Restore: skills add -g <source> --skill <name> --yes --copy"
   fi
   rm -f /tmp/skills_before.txt /tmp/skills_after.txt
+fi
+
+# GJC (Gajae Code) skill-discovery check
+if command -v gjc &>/dev/null; then
+  echo ""
+  echo "=== Gajae Code (GJC) Skill Discovery Check ==="
+  GJC_CONFIG="$_HOME/.gjc/agent/config.yml"
+  if [ -f "$GJC_CONFIG" ] && grep -q '^skills:' "$GJC_CONFIG" && grep -qE '^[[:space:]]+enabled:[[:space:]]*true' "$GJC_CONFIG"; then
+    echo "✅ GJC skill discovery enabled ($GJC_CONFIG)"
+    grep -q "$SKILLS_ROOT" "$GJC_CONFIG" \
+      && echo "✅ GJC customDirectories references $SKILLS_ROOT" \
+      || echo "⚠️  GJC customDirectories missing $SKILLS_ROOT — re-run Step 3h"
+  else
+    echo "❌ GJC skill discovery not enabled — re-run Step 3h"
+  fi
 fi
 
 # Final count
@@ -1099,6 +1168,14 @@ inject_kp_rules() {
 inject_kp_rules "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/CLAUDE.md"
 inject_kp_rules "$_HOME/.codex/AGENTS.md"
 inject_kp_rules "$_HOME/.gemini/GEMINI.md"
+
+# Gajae Code (GJC): RULES.md is a sticky always-apply rule (user scope: ~/.gjc/agent/RULES.md).
+# GJC has no UserPromptSubmit hook, so the Knowledge Pipeline reaches GJC through this rule file.
+if command -v gjc &>/dev/null; then
+  mkdir -p "$_HOME/.gjc/agent"
+  [ -f "$_HOME/.gjc/agent/RULES.md" ] || printf '# RULES\n' > "$_HOME/.gjc/agent/RULES.md"
+  inject_kp_rules "$_HOME/.gjc/agent/RULES.md"
+fi
 
 echo ""
 echo "✅ Default operating rules configured (platform: $PLATFORM)"
