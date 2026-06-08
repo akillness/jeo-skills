@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-132-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-133-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**132 local skill folders · 132 installable skills · TOON Format · Cross-platform**
+**133 local skill folders · 133 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**132 local skill folders · 132 installable skills · TOON Format · Cross-platform**
+**133 local skill folders · 133 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 132 local skill folders and 132 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+Agent Skills is a curated collection with 133 local skill folders and 133 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 What's New in v2026-06-08
+
+| Change | Details |
+|--------|---------|
+| **spec-kit: GitHub Spec-Driven Development workflow** | Added `spec-kit` — a routing-first wrapper around GitHub's [`specify` CLI](https://github.com/github/spec-kit) that installs the tool, bootstraps a project for one of 30+ supported AI agents (Claude Code, Copilot, Gemini, Codex, Cursor, opencode, Qwen, Kiro, …), and drives the SDD command pipeline (`/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`). Ships an idempotent `scripts/install.sh` (uv → pipx fallback) and a command reference, and is plugin-installable via `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit`. Route-outs: `ooo` (vendor-neutral spec-first loop), `bmad` (packet-first BMAD/BMM routing), `plannotator` (review/approval gate). 132 → **133 skills**. |
 
 ## 🆕 What's New in v2026-06-01
 
@@ -322,9 +328,9 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 132 local skill folders = 132 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 133 local skill folders = 133 total installable skills
 
-### 🎯 Core Orchestration (13)
+### 🎯 Core Orchestration (14)
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
@@ -340,6 +346,7 @@ rtk init -g
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity | Portable OMA harness entry — keeps `.agents` canonical, regenerates vendor views with `oma link`, and maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` with Antigravity limits stated |
 | `ooo` | `ooo`, `ouroboros`, `ooo ralph` | All | Ouroboros spec-first development loop — Socratic interview, immutable seed/spec, drift-aware execution, persistent completion until verification passes. Plugin: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
+| `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | All | GitHub Spec-Driven Development wrapper — install `specify-cli`, bootstrap a project for one of 30+ agents (Claude / Copilot / Gemini / Codex / Cursor / opencode / Qwen / Kiro / …), and drive the constitution → specify → clarify → plan → analyze → tasks → checklist → implement pipeline. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit` |
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |
 | `deep-dive` | `deep-dive`, `deep dive`, `trace and interview` | All | Cross-runtime investigation pipeline — trace causal hypotheses, inject evidence into requirements, validate artifacts, then hand off through OMC, OMX, or OMA |

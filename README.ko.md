@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-132-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-133-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**132개 로컬 스킬 폴더 · 설치 가능 스킬 132개 · TOON 포맷 · 멀티플랫폼**
+**133개 로컬 스킬 폴더 · 설치 가능 스킬 133개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**132개 로컬 스킬 폴더 · 설치 가능 스킬 132개 · TOON 포맷 · 멀티플랫폼**
+**133개 로컬 스킬 폴더 · 설치 가능 스킬 133개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 132개 로컬 스킬 폴더와 132개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 133개 로컬 스킬 폴더와 133개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 v2026-06-08 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **spec-kit: GitHub Spec-Driven Development 워크플로우** | `spec-kit` 스킬을 추가했습니다 — GitHub의 [`specify` CLI](https://github.com/github/spec-kit)를 감싸는 라우팅 우선 wrapper로, 도구 설치부터 30+ 지원 에이전트(Claude Code · Copilot · Gemini · Codex · Cursor · opencode · Qwen · Kiro 등) 대상 프로젝트 부트스트랩, 그리고 SDD 커맨드 파이프라인(`/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`)까지 한 스킬에서 라우팅합니다. uv → pipx fallback이 포함된 멱등 `scripts/install.sh`와 커맨드 레퍼런스를 동봉하며, 플러그인 설치 가능: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit`. Route-out: `ooo`(벤더 중립 스펙 우선 루프), `bmad`(패킷 우선 BMAD/BMM 라우팅), `plannotator`(검토·승인 게이트). 132 → **133개 스킬**. |
 
 ## 🆕 v2026-06-01 업데이트
 
@@ -321,9 +327,9 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 132개 로컬 스킬 폴더 = 총 132개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 133개 로컬 스킬 폴더 = 총 133개 설치 가능 스킬
 
-### 🎯 핵심 오케스트레이션 (13개)
+### 🎯 핵심 오케스트레이션 (14개)
 
 | 스킬 | 키워드 | 플랫폼 | 설명 |
 |------|--------|--------|------|
@@ -339,6 +345,7 @@ rtk init -g
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity | 휴대형 OMA 하네스 진입 스킬 — `.agents`를 canonical로 유지하고 `oma link`로 vendor view를 갱신하며 team/autopilot/ultrawork/ultraqa 의도를 `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, `oma agent:parallel`로 매핑 |
 | `ooo` | `ooo`, `ouroboros`, `ooo ralph` | 전체 | Ouroboros 스펙 우선 개발 루프 — 소크라테스식 인터뷰, 불변 seed/spec, 드리프트 인식 실행, 검증 통과까지 이어가는 완료 루프. 플러그인: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | 패킷 우선 BMAD/BMM 프런트도어 — 현재 packet을 분류하고 다음 산출물 또는 gate를 고른 뒤 review / runtime / 실행 세부 작업을 바깥으로 라우팅 |
+| `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | 전체 | GitHub Spec-Driven Development 래퍼 — `specify-cli` 설치, 30+ 에이전트(Claude/Copilot/Gemini/Codex/Cursor/opencode/Qwen/Kiro/…) 프로젝트 부트스트랩, 그리고 constitution → specify → clarify → plan → analyze → tasks → checklist → implement 파이프라인을 라우팅. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit` |
 | `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |
 | `bmad-idea` | `bmad-idea` | 전체 | 사전 기획 아이디어 라우터 — 거친 제품/GTM/컨설팅/게임 아이디어를 하나의 컨셉 산출물과 다음 핸드오프로 정리 |
 | `deep-dive` | `deep-dive`, `deep dive`, `trace and interview` | 전체 | OMC, OMX, OMA를 가로지르는 조사 파이프라인 — 원인 가설을 trace하고 증거를 요구사항에 주입한 뒤 런타임별 실행 브리지로 넘김 |
@@ -757,7 +764,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 132개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 133개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
