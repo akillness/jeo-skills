@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-05-30T02:58:42Z",
-  "skill_count": 132,
+  "generated": "2026-06-08T15:36:45Z",
+  "skill_count": 135,
   "categories": {
     "planning-review": [
       "agentation",
@@ -55,12 +55,14 @@
       "log-analysis",
       "pattern-detection",
       "semble",
-      "skill-autoresearch"
+      "skill-autoresearch",
+      "x-twitter-scraper"
     ],
     "core-orchestration": [
       "bmad",
       "bmad-gds",
       "bmad-idea",
+      "spec-kit",
       "deep-dive",
       "deepinit",
       "ohmg",
@@ -92,6 +94,7 @@
       "zoom-out"
     ],
     "utilities": [
+      "agenticskills",
       "aider-cli-workflow",
       "caveman",
       "ccpi-marketplace",
@@ -224,6 +227,39 @@
       ]
     },
     {
+      "name": "agenticskills",
+      "description": "One-shot installer for the akillness/oh-my-gods agent skill bundle across Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode.",
+      "category": "utilities",
+      "path": "agenticskills/SKILL.md",
+      "tags": [
+        "agenticskills",
+        "oh-my-gods",
+        "god-skills",
+        "installer",
+        "bundle",
+        "agent-skills",
+        "multi-runtime"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "agenticskills",
+      "version": "1.0.0",
+      "commands": []
+    },
+    {
       "name": "aider-cli-workflow",
       "description": "Run a safe, reviewable Aider CLI coding loop for local repositories: model setup, edit scope control, test-first prompting, commit hygiene, and fallback when agent edits drift. Use when the user wants pair-programming with Aider, not generic Git workflow or hosted PR operations.",
       "category": "utilities",
@@ -327,6 +363,39 @@
         "Glob",
         "Grep"
       ],
+      "commands": []
+    },
+    {
+      "name": "autopilot",
+      "description": "Run a Codex/OMX-compatible autonomous build workflow from a product or code request through planning, implementation, QA, and final verification. Use when the user invokes `$autopilot`, autopilot, auto pilot, full-auto, or asks the agent to build the whole thing end to end.",
+      "category": "core-orchestration",
+      "path": "autopilot/SKILL.md",
+      "tags": [
+        "autopilot",
+        "$autopilot",
+        "omx",
+        "codex",
+        "autonomous-build",
+        "planning",
+        "implementation",
+        "qa",
+        "verification"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "autopilot",
+      "version": "1.0.0",
       "commands": []
     },
     {
@@ -3439,6 +3508,46 @@
       ]
     },
     {
+      "name": "spec-kit",
+      "description": "GitHub Spec-Driven Development wrapper for installing specify-cli, bootstrapping projects for 30+ AI agents, and driving the constitution, specify, clarify, plan, analyze, tasks, checklist, and implement pipeline.",
+      "category": "core-orchestration",
+      "path": "spec-kit/SKILL.md",
+      "tags": [
+        "spec-kit",
+        "speckit",
+        "specify",
+        "sdd",
+        "spec-driven-development",
+        "planning",
+        "github",
+        "plugin",
+        "multi-agent"
+      ],
+      "platforms": [
+        "Claude",
+        "Copilot",
+        "Gemini",
+        "Codex",
+        "Cursor",
+        "OpenCode",
+        "Qwen",
+        "Kiro",
+        "All"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "spec-kit",
+      "version": "1.0.0",
+      "commands": []
+    },
+    {
       "name": "sprint-retrospective",
       "description": "Facilitate sprint retrospectives, milestone postmortems, or iteration reviews by picking one retrospective mode, reviewing prior actions first, and turning completed work into a few owned process improvements. Use when the user needs remote/hybrid retro facilitation, action-item follow-through recovery, or post-sprint/post-milestone reflection. Route planning to task-planning, sizing to task-estimation, and daily coordination to standup-meeting.",
       "category": "project-management",
@@ -3809,6 +3918,39 @@
       ]
     },
     {
+      "name": "team",
+      "description": "Run or route a coordinated multi-agent team workflow for Codex/OMX. Use when the user invokes `$team`, asks for team mode, coordinated workers, tmux workers, or multiple agents sharing a task list. Prefer `omx team` when the runtime is installed.",
+      "category": "core-orchestration",
+      "path": "team/SKILL.md",
+      "tags": [
+        "team",
+        "$team",
+        "omx",
+        "codex",
+        "multi-agent",
+        "tmux",
+        "coordination",
+        "workers",
+        "shared-task-list"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "team",
+      "version": "1.0.0",
+      "commands": []
+    },
+    {
       "name": "technical-writing",
       "description": "Write internal technical documentation for engineers and operators: technical specs, architecture docs, ADRs, runbooks, migration plans, and developer-facing implementation guides. Use when the main job is capturing a technical decision, system boundary, operating procedure, or rollout path for builders and maintainers; routes API portals to api-documentation, end-user help to user-guide-writing, release notes to changelog-maintenance, decks to presentation-builder, and GTM messaging to marketing-automation.",
       "category": "documentation",
@@ -3945,6 +4087,74 @@
         "Gemini"
       ],
       "allowed_tools": [],
+      "commands": []
+    },
+    {
+      "name": "ultraqa",
+      "description": "Run an autonomous QA cycling workflow: test, diagnose, fix, and repeat until the quality goal is met or a concrete blocker is proven. Use when the user invokes `$ultraqa`, ultraqa, QA cycling, test/build/lint repair, or the typo `$ultaqa`.",
+      "category": "core-orchestration",
+      "path": "ultraqa/SKILL.md",
+      "tags": [
+        "ultraqa",
+        "$ultraqa",
+        "ultaqa",
+        "$ultaqa",
+        "omx",
+        "codex",
+        "qa",
+        "tests",
+        "build",
+        "lint",
+        "typecheck",
+        "review"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "ultraqa",
+      "version": "1.0.0",
+      "commands": []
+    },
+    {
+      "name": "ultrawork",
+      "description": "Run a high-parallelism work burst for independent implementation or cleanup lanes. Use when the user invokes `$ultrawork`, `$ulw`, ultrawork, or asks to parallelize separable work quickly. Choose `team` when workers need shared task state.",
+      "category": "core-orchestration",
+      "path": "ultrawork/SKILL.md",
+      "tags": [
+        "ultrawork",
+        "$ultrawork",
+        "ulw",
+        "$ulw",
+        "omx",
+        "codex",
+        "parallel-work",
+        "burst-work"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "ultrawork",
+      "version": "1.0.0",
       "commands": []
     },
     {
@@ -4228,6 +4438,43 @@
       ]
     },
     {
+      "name": "x-twitter-scraper",
+      "description": "Xquik API skill for X/Twitter data and confirmation-gated X actions: tweet search, user lookup, follower extraction, media download, monitoring, webhooks, MCP, SDKs, posting, likes, DMs, and profile updates with an API key.",
+      "category": "search-analysis",
+      "path": "x-twitter-scraper/SKILL.md",
+      "tags": [
+        "xquik",
+        "x-twitter-scraper",
+        "twitter",
+        "x-api",
+        "tweet-search",
+        "followers",
+        "media",
+        "monitoring",
+        "webhooks",
+        "mcp",
+        "sdk"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini",
+        "OpenCode",
+        "ChatGPT"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "keyword": "x-twitter-scraper",
+      "version": "2.4.16",
+      "commands": []
+    },
+    {
       "name": "zeude",
       "description": "Enterprise AI adoption platform for Claude Code with OpenTelemetry usage measurement, centralized skill/MCP/hook sync, and context-aware skill suggestions. Requires Supabase + ClickHouse for self-hosted analytics.",
       "category": "utilities",
@@ -4278,140 +4525,6 @@
         "Gemini",
         "Codex"
       ]
-    },
-    {
-      "name": "autopilot",
-      "description": "Run a Codex/OMX-compatible autonomous build workflow from a product or code request through planning, implementation, QA, and final verification. Use when the user invokes `$autopilot`, autopilot, auto pilot, full-auto, or asks the agent to build the whole thing end to end.",
-      "category": "core-orchestration",
-      "path": "autopilot/SKILL.md",
-      "tags": [
-        "autopilot",
-        "$autopilot",
-        "omx",
-        "codex",
-        "autonomous-build",
-        "planning",
-        "implementation",
-        "qa",
-        "verification"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "autopilot",
-      "version": "1.0.0",
-      "commands": []
-    },
-    {
-      "name": "team",
-      "description": "Run or route a coordinated multi-agent team workflow for Codex/OMX. Use when the user invokes `$team`, asks for team mode, coordinated workers, tmux workers, or multiple agents sharing a task list. Prefer `omx team` when the runtime is installed.",
-      "category": "core-orchestration",
-      "path": "team/SKILL.md",
-      "tags": [
-        "team",
-        "$team",
-        "omx",
-        "codex",
-        "multi-agent",
-        "tmux",
-        "coordination",
-        "workers",
-        "shared-task-list"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "team",
-      "version": "1.0.0",
-      "commands": []
-    },
-    {
-      "name": "ultrawork",
-      "description": "Run a high-parallelism work burst for independent implementation or cleanup lanes. Use when the user invokes `$ultrawork`, `$ulw`, ultrawork, or asks to parallelize separable work quickly. Choose `team` when workers need shared task state.",
-      "category": "core-orchestration",
-      "path": "ultrawork/SKILL.md",
-      "tags": [
-        "ultrawork",
-        "$ultrawork",
-        "ulw",
-        "$ulw",
-        "omx",
-        "codex",
-        "parallel-work",
-        "burst-work"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "ultrawork",
-      "version": "1.0.0",
-      "commands": []
-    },
-    {
-      "name": "ultraqa",
-      "description": "Run an autonomous QA cycling workflow: test, diagnose, fix, and repeat until the quality goal is met or a concrete blocker is proven. Use when the user invokes `$ultraqa`, ultraqa, QA cycling, test/build/lint repair, or the typo `$ultaqa`.",
-      "category": "core-orchestration",
-      "path": "ultraqa/SKILL.md",
-      "tags": [
-        "ultraqa",
-        "$ultraqa",
-        "ultaqa",
-        "$ultaqa",
-        "omx",
-        "codex",
-        "qa",
-        "tests",
-        "build",
-        "lint",
-        "typecheck",
-        "review"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "ultraqa",
-      "version": "1.0.0",
-      "commands": []
     }
   ]
 }
