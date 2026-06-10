@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-133-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-134-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**133개 로컬 스킬 폴더 · 설치 가능 스킬 133개 · TOON 포맷 · 멀티플랫폼**
+**134개 로컬 스킬 폴더 · 설치 가능 스킬 134개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**133개 로컬 스킬 폴더 · 설치 가능 스킬 133개 · TOON 포맷 · 멀티플랫폼**
+**134개 로컬 스킬 폴더 · 설치 가능 스킬 134개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 133개 로컬 스킬 폴더와 133개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 134개 로컬 스킬 폴더와 134개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 v2026-06-10 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **opik: 오픈소스 LLM 옵저버빌리티 · 평가 · 최적화** | `opik` 스킬을 추가했습니다 — Comet의 [Opik](https://github.com/comet-ml/opik) 플랫폼을 감싸는 라우팅 우선 wrapper로, 서버 모드 선택(Comet.com 클라우드, `./opik.sh` Docker Compose — `--infra`/`--backend`/`--guardrails` 프로파일, Kubernetes/Helm)부터 Python SDK 설치·설정(`pip install opik` + `opik configure`), `@opik.track` 또는 50+ 프레임워크 통합(OpenAI · Anthropic · LangChain · LangGraph · LlamaIndex · CrewAI · DSPy · Ollama · Bedrock · Vercel AI SDK 등)을 통한 트레이싱, 그리고 LLM-as-a-judge 평가(Hallucination · Moderation · Answer Relevance · Context Precision), Datasets/Experiments + PyTest CI 게이트, 프로덕션 모니터링(일 4천만+ 트레이스), Opik Agent Optimizer, Opik Guardrails까지 한 스킬에서 라우팅합니다. uv → pip 설치와 선택적 로컬 self-host를 지원하는 `scripts/install.sh`와 통합 레퍼런스를 동봉하며, 플러그인 설치 가능: `npx skills add https://github.com/akillness/oh-my-skills --skill opik`. Route-out: `langsmith`(LangSmith 스택), `monitoring-observability`(비-LLM 대시보드·알림), `data-analysis`(오프라인 KPI 해석). 133 → **134개 스킬**. |
 
 ## 🆕 v2026-06-08 업데이트
 
@@ -327,7 +333,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 133개 로컬 스킬 폴더 = 총 133개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 134개 로컬 스킬 폴더 = 총 134개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (14개)
 
@@ -458,7 +464,7 @@ rtk init -g
 | `task-estimation` | software, GTM, game work 전반에서 스토리 포인트, T셔츠 사이징, split/spike 판단, 예측 안전형 불확실성 프레이밍을 담은 estimate packet anchor | 전체 |
 | `task-planning` | software, GTM, game work 전반에서 backlog cleanup, feature slicing, sprint/milestone prep, release packet을 다루고 estimation/board/review/사전 프레이밍으로의 route-out을 명시하는 packet-first planning anchor | 전체 |
 
-### 🔭 검색 및 분석 (8개)
+### 🔭 검색 및 분석 (9개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -467,6 +473,7 @@ rtk init -g
 | `codebase-search` | 디버깅/리팩터링으로 넘어가기 전에 정의/참조, config·콘텐츠 소유면, 엔트리포인트, 영향 범위를 찾도록 한 가지 검색 packet을 고르는 라우팅형 리포 탐색 | 전체 |
 | `data-analysis` | 내보내기 데이터, 실험, 텔레메트리, KPI 설명을 위한 의사결정 중심 데이터 분석 | 전체 |
 | `langsmith` | SDK 코드로 곧장 가지 않고 trace-debug, 평가, 리뷰 큐, 프롬프트 레지스트리, 멀티서비스 전파 중 한 packet을 먼저 고르는 라우팅형 LangSmith 스킬 | 전체 |
+| `opik` | Comet Opik 기반 오픈소스 LLM 옵저버빌리티·평가·최적화 — 서버 모드 라우팅(클라우드 / `./opik.sh` Docker / Kubernetes), `@opik.track` 트레이싱 + 50+ 프레임워크 통합, LLM-as-a-judge 메트릭, Datasets/Experiments + PyTest CI 게이트, 프로덕션 모니터링, Agent Optimizer, Guardrails. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill opik` | 전체 |
 | `log-analysis` | 앱·컨테이너/파드·브라우저+API·CI cascade·JSON/event·security-signal 로그 중 한 가지 evidence packet을 먼저 고른 뒤 디버깅/옵저버빌리티 작업으로 넘기는 routing-first 로그 트리아지 | 전체 |
 | `pattern-detection` | text-prefilter·structural-code-rule·log-event-pattern·metric-anomaly 중 한 packet을 먼저 고르는 라우팅형 패턴/이상 탐지 | 전체 |
 | `semble` | grep+read 대비 토큰 ~98% 절감하는 에이전트용 토큰 효율 코드 검색 — 자연어·심볼 쿼리, 의미 기반 `find-related`, Claude Code·Codex·Cursor·OpenCode용 MCP, Python 라이브러리, CPU만 사용(GPU·API 키 불필요) | 전체 |
@@ -764,7 +771,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 133개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 134개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

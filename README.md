@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-133-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-134-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**133 local skill folders · 133 installable skills · TOON Format · Cross-platform**
+**134 local skill folders · 134 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**133 local skill folders · 133 installable skills · TOON Format · Cross-platform**
+**134 local skill folders · 134 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 133 local skill folders and 133 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+Agent Skills is a curated collection with 134 local skill folders and 134 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 What's New in v2026-06-10
+
+| Change | Details |
+|--------|---------|
+| **opik: open-source LLM observability, evaluation & optimization** | Added `opik` — a routing-first wrapper around Comet's [Opik](https://github.com/comet-ml/opik) platform that picks the right server mode (Comet.com cloud, local Docker Compose via `./opik.sh` with `--infra`/`--backend`/`--guardrails` profiles, or Kubernetes/Helm), installs and configures the Python SDK (`pip install opik` + `opik configure`), wires tracing through `@opik.track` or one of 50+ framework integrations (OpenAI, Anthropic, LangChain, LangGraph, LlamaIndex, CrewAI, DSPy, Ollama, Bedrock, Vercel AI SDK, …), and drives LLM-as-a-judge evaluation (Hallucination, Moderation, Answer Relevance, Context Precision), Datasets/Experiments with PyTest CI gates, production monitoring (40M+ traces/day), Opik Agent Optimizer, and Opik Guardrails. Ships `scripts/install.sh` (uv → pip, optional local self-host) and an integration reference, and is plugin-installable via `npx skills add https://github.com/akillness/oh-my-skills --skill opik`. Route-outs: `langsmith` (LangSmith stack), `monitoring-observability` (non-LLM dashboards/alerts), `data-analysis` (offline KPI interpretation). 133 → **134 skills**. |
 
 ## 🆕 What's New in v2026-06-08
 
@@ -328,7 +334,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 133 local skill folders = 133 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 134 local skill folders = 134 total installable skills
 
 ### 🎯 Core Orchestration (14)
 
@@ -469,7 +475,7 @@ rtk init -g
 | `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing | All |
 
-### 🔭 Search & Analysis (9)
+### 🔭 Search & Analysis (10)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -478,6 +484,7 @@ rtk init -g
 | `codebase-search` | Routing-first repo navigation: choose one search packet for definitions/references, config/content ownership, entry-point discovery, or impact mapping before debugging/refactoring | All |
 | `data-analysis` | Decision-first dataset analysis for exports, experiments, telemetry, and KPI explanation | All |
 | `langsmith` | Routing-first LangSmith skill: choose one packet for trace-debug, evals, review queues, prompt-registry decisions, or cross-service propagation before touching SDK code | All |
+| `opik` | Open-source LLM observability, evaluation & optimization via Comet's Opik — server mode routing (cloud / `./opik.sh` Docker / Kubernetes), `@opik.track` tracing plus 50+ framework integrations, LLM-as-a-judge metrics, Datasets/Experiments with PyTest CI gates, production monitoring, Agent Optimizer, Guardrails. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill opik` | All |
 | `log-analysis` | Routing-first log triage: choose one evidence packet for app, container/pod, browser+API, CI cascade, JSON/event, or security-signal logs before debugging/observability work | All |
 | `pattern-detection` | Routing-first pattern/anomaly hunting: choose text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly before deeper analysis | All |
 | `github-repo-candidate-quality-gate` | Convert noisy GitHub search results into recommendation-grade candidate lists — metadata freshness, license shape, activity signals, and dependency risk scoring | All |
