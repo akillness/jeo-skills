@@ -25,12 +25,21 @@ echo "=== opik installer ==="
 echo "mode: ${OPIK_INSTALL_MODE}"
 
 echo "[1/2] Installing the opik Python SDK"
-if command -v uv >/dev/null 2>&1; then
-  uv pip install --upgrade opik
+if [ -n "${VIRTUAL_ENV:-}" ]; then
+  # Active venv: install the importable SDK into it
+  if command -v uv >/dev/null 2>&1; then
+    uv pip install --upgrade opik
+  else
+    pip install --upgrade opik
+  fi
+elif command -v uv >/dev/null 2>&1; then
+  # No venv: isolated CLI install; keeps system/Homebrew Python untouched (PEP 668)
+  uv tool install --upgrade opik
+  echo "NOTE: installed the 'opik' CLI in an isolated uv tool env."
+  echo "      For SDK usage, run 'uv pip install opik' inside your project venv."
 elif command -v pip3 >/dev/null 2>&1; then
-  pip3 install --upgrade opik
-elif command -v pip >/dev/null 2>&1; then
-  pip install --upgrade opik
+  pip3 install --upgrade opik 2>/dev/null \
+    || pip3 install --user --break-system-packages --upgrade opik
 else
   echo "ERROR: neither uv nor pip is installed." >&2
   echo "  Install uv:   curl -LsSf https://astral.sh/uv/install.sh | sh" >&2
