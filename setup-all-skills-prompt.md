@@ -434,7 +434,7 @@ fi
 echo "   Set LLM_WIKI_VAULT to override the default location."
 ```
 
-### 3f — semble MCP (token-efficient code search)
+### 3f — semble (CLI + MCP, token-efficient code search)
 
 ```bash
 echo "=== Registering semble MCP ==="
@@ -467,6 +467,13 @@ if ! command -v uvx &>/dev/null; then
   echo "⚠️  uvx not found after install — restart shell then re-run Step 3f"; return 0 2>/dev/null || exit 0
 fi
 
+# Install the semble CLI too (not just MCP) so shell-side `semble search` /
+# `semble find-related` work alongside rtk-wrapped commands in the same shell.
+if ! command -v semble &>/dev/null; then
+  uv tool install semble && echo "✅ semble CLI installed (uv tool, isolated env)" \
+    || echo "⚠️  semble CLI install failed — MCP still works via uvx"
+fi
+
 if command -v claude &>/dev/null; then
   claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
   echo "✅ semble MCP registered with Claude Code"
@@ -485,6 +492,84 @@ if command -v codex &>/dev/null; then
     } >> "$CODEX_TOML"
     echo "✅ semble MCP registered with Codex ($CODEX_TOML)"
   fi
+fi
+
+# Register semble MCP with Gemini CLI via settings.json (idempotent jq merge) —
+# keeps MCP parity with Claude/Codex on machines where the rtk Gemini hook is active
+GEMINI_JSON="$_HOME/.gemini/settings.json"
+if [ -f "$GEMINI_JSON" ] && command -v jq &>/dev/null; then
+  if jq -e '.mcpServers.semble' "$GEMINI_JSON" >/dev/null 2>&1; then
+    echo "ℹ️  semble MCP already registered with Gemini"
+  else
+    TMP_JSON="$(mktemp)"
+    jq '.mcpServers.semble = {"command":"uvx","args":["--from","semble[mcp]","semble"]}' \
+      "$GEMINI_JSON" > "$TMP_JSON" && mv "$TMP_JSON" "$GEMINI_JSON"
+    echo "✅ semble MCP registered with Gemini ($GEMINI_JSON)"
+  fi
+fi
+```
+
+### 3f-2 — RTK × semble compatibility wiring (division of labor)
+
+Both token savers from 3a and 3f are designed to run **simultaneously** in the
+same shell/agent session — they intervene at different layers and do not
+conflict:
+
+| Tool | Layer | Saves tokens by |
+|------|-------|-----------------|
+| `semble` (3f) | **what to read** | returning only relevant code chunks for discovery (~98% vs grep+read) |
+| `rtk` (3a) | **how it reads** | compressing the output of known dev commands (60–90% on git/grep/read/test/lint) |
+
+The rtk shell hook only rewrites its known command set (`git`, `grep`, `cat`,
+`test`, `lint`, …) — `semble …` invocations pass through **untouched**, so no
+exclusion config is needed. The only wiring required is the routing rule below,
+injected idempotently into each installed agent's instruction file so every
+agent uses semble for discovery first and rtk-wrapped commands for everything
+else.
+
+```bash
+echo "=== RTK × semble compatibility wiring ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+
+# 1) Verify both tools coexist on PATH
+RTK_OK=0; SEMBLE_OK=0
+command -v rtk    &>/dev/null && RTK_OK=1
+command -v semble &>/dev/null && SEMBLE_OK=1
+[ "$RTK_OK" = 1 ]    && echo "✅ rtk on PATH ($(rtk --version 2>/dev/null | head -1))" \
+                     || echo "⚠️  rtk missing — re-run Step 3a"
+[ "$SEMBLE_OK" = 1 ] && echo "✅ semble on PATH" \
+                     || echo "⚠️  semble CLI missing — re-run Step 3f (MCP-only still works via uvx)"
+
+# 2) Inject the division-of-labor routing rule into each installed agent's
+#    instruction file (marker-guarded: safe to re-run, never duplicates)
+RULE_BLOCK='<!-- RTK-SEMBLE:START -->
+## Code Search & Shell Output (rtk × semble division of labor)
+- **Code discovery** (where is X implemented, find a symbol, explore unfamiliar code):
+  `semble search "<query>" <path>` FIRST; expand from a hit with
+  `semble find-related <file> <line> <path>`. Do not grep+read full files for discovery.
+- **Exact pattern / regex verification and all other shell work**: use the normal
+  commands — the rtk hook auto-wraps them (`rtk grep`, `rtk git status`, `rtk read`,
+  `rtk test`, `rtk lint`) and compresses their output.
+- The rtk hook does NOT rewrite `semble` invocations; both tools stay active in the
+  same session. semble = first pass (what to read), rtk = every pass (output density).
+- If `semble` is not on PATH, substitute `uvx --from "semble[mcp]" semble`.
+- Check combined savings anytime with `rtk gain` and `semble savings`.
+<!-- RTK-SEMBLE:END -->'
+
+for f in "$_HOME/.claude/CLAUDE.md" "$_HOME/.codex/AGENTS.md" "$_HOME/.gemini/GEMINI.md" "$_HOME/.agents/AGENTS.md"; do
+  [ -f "$f" ] || continue
+  if grep -q 'RTK-SEMBLE:START' "$f" 2>/dev/null; then
+    echo "ℹ️  routing rule already present: $f"
+  else
+    printf '\n%s\n' "$RULE_BLOCK" >> "$f"
+    echo "✅ routing rule injected: $f"
+  fi
+done
+
+# 3) Smoke check: rtk hook must leave semble invocations untouched
+if [ "$RTK_OK" = 1 ] && [ "$SEMBLE_OK" = 1 ]; then
+  semble --help >/dev/null 2>&1 && echo "✅ semble runs cleanly alongside the rtk hook" \
+    || echo "⚠️  semble failed under the rtk shell hook — run 'rtk proxy semble --help' to debug"
 fi
 ```
 
