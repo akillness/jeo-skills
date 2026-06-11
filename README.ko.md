@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-134-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-135-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**134개 로컬 스킬 폴더 · 설치 가능 스킬 134개 · TOON 포맷 · 멀티플랫폼**
+**135개 로컬 스킬 폴더 · 설치 가능 스킬 135개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**134개 로컬 스킬 폴더 · 설치 가능 스킬 134개 · TOON 포맷 · 멀티플랫폼**
+**135개 로컬 스킬 폴더 · 설치 가능 스킬 135개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 134개 로컬 스킬 폴더와 134개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 135개 로컬 스킬 폴더와 135개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 v2026-06-11 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **cli-anything: 모든 소프트웨어를 agent-native로** | `cli-anything` 스킬을 추가했습니다 — HKUDS의 [CLI-Anything](https://github.com/HKUDS/CLI-Anything) 생태계를 감싸는 라우팅 우선 wrapper로, 네 가지 모드 중 하나를 선택합니다: CLI-Hub 패키지 매니저로 기성 harness 설치(`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), 에이전트 자율 탐색용 meta-skill 부여(`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), 임의 코드베이스·GitHub 저장소에서 7-phase 파이프라인으로 새 harness 생성(Claude Code `/plugin install cli-anything` → `/cli-anything <path>`, Codex/OpenCode/OpenClaw/Pi/Hermes/Qodercli/Copilot CLI 설치 경로 포함), 기존 harness 반복 개선(`/cli-anything:refine`/`:test`/`:validate`). GIMP · Blender · LibreOffice · OBS · Draw.io · ComfyUI · Ollama · Godot · QGIS · FreeCAD 등 40+ 프로덕션 harness, 2,461개 테스트 통과; 생성된 CLI는 Click 커맨드 + 상태형 REPL + `--json` 출력 + 자동 생성 SKILL.md를 제공합니다. PEP 668-safe `scripts/install.sh`(venv 인식 uv/pip, `CLI_ANYTHING_META_SKILL=1`로 meta-skill 옵션)와 플랫폼/커맨드 레퍼런스를 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill cli-anything`. Route-out: `harness`(에이전트 팀 설계), `browser-harness`(코드베이스 없는 GUI 대상), `ccpi-marketplace`(일반 플러그인 탐색). 134 → **135개 스킬**. |
 
 ## 🆕 v2026-06-10 업데이트
 
@@ -333,7 +339,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 134개 로컬 스킬 폴더 = 총 134개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 135개 로컬 스킬 폴더 = 총 135개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (14개)
 
@@ -375,12 +381,13 @@ rtk init -g
 | `improve-codebase-architecture` | `improve-codebase-architecture` | 삭제 테스트·심(Seam)·지역성 어휘를 사용해 얕은 모듈을 깊은 모듈로 개선하는 기회 발굴 | All |
 | `zoom-out` | `zoom-out` | 도메인 어휘로 관련 모듈, 호출자 관계, 의존성을 매핑하는 상위 아키텍처 관점 제공 | All |
 
-### 🤖 에이전트 개발 (2개)
+### 🤖 에이전트 개발 (3개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `prompt-repetition` | 비추론/경량 LLM에서 프롬프트 반복을 언제 써야 하는지 판단하는 스킬 — 긴 컨텍스트 검색, 선택지 우선 MCQ, 위치/인덱스 조회, 그리고 retrieval·강한 모델로의 route-out 포함 | 전체 |
 | `skill-standardization` | SKILL.md 검증/재작성, 중복 canonical화, 그리고 repo-root 검증 흐름 + 파생 발견면(`skills.json`, README/setup, `SKILL.toon`) 동기화 | 전체 |
+| `cli-anything` | HKUDS CLI-Anything으로 모든 소프트웨어를 agent-native CLI로 — CLI-Hub 패키지 매니저(`cli-hub list/search/install/launch`), 에이전트 자율 탐색 meta-skill, 임의 코드베이스 대상 7-phase harness 생성(`/cli-anything`), refine/test/validate 반복; 40+ harness, 2,461 테스트, REPL + `--json` CLI. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill cli-anything` | 전체 |
 
 ### ⚙️ 백엔드 (5개)
 
@@ -771,7 +778,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 134개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 135개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

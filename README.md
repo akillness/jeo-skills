@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-134-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-135-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**134 local skill folders · 134 installable skills · TOON Format · Cross-platform**
+**135 local skill folders · 135 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**134 local skill folders · 134 installable skills · TOON Format · Cross-platform**
+**135 local skill folders · 135 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 134 local skill folders and 134 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+Agent Skills is a curated collection with 135 local skill folders and 135 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -69,6 +69,12 @@ graph TD
 ```
 
 ---
+
+## 🆕 What's New in v2026-06-11
+
+| Change | Details |
+|--------|---------|
+| **cli-anything: make any software agent-native** | Added `cli-anything` — a routing-first wrapper around HKUDS's [CLI-Anything](https://github.com/HKUDS/CLI-Anything) ecosystem that picks one of four modes: install ready-made harnesses via the CLI-Hub package manager (`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), give agents the autonomous discovery meta-skill (`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), generate a new harness from any codebase or GitHub repo through the 7-phase pipeline (`/plugin install cli-anything` → `/cli-anything <path>` on Claude Code, plus Codex/OpenCode/OpenClaw/Pi/Hermes/Qodercli/Copilot CLI installs), or iterate with `/cli-anything:refine`/`:test`/`:validate`. 40+ production harnesses (GIMP, Blender, LibreOffice, OBS, Draw.io, ComfyUI, Ollama, Godot, QGIS, FreeCAD, …) with 2,461 passing tests; generated CLIs ship Click commands, stateful REPL, `--json` output, and auto-generated SKILL.md. Ships a PEP 668-safe `scripts/install.sh` (venv-aware uv/pip, optional meta-skill via `CLI_ANYTHING_META_SKILL=1`) and a platform/command reference. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill cli-anything`. Route-outs: `harness` (agent-team architecture), `browser-harness` (no-codebase GUI targets), `ccpi-marketplace` (general plugin browsing). 134 → **135 skills**. |
 
 ## 🆕 What's New in v2026-06-10
 
@@ -334,7 +340,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 134 local skill folders = 134 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 135 local skill folders = 135 total installable skills
 
 ### 🎯 Core Orchestration (14)
 
@@ -378,7 +384,7 @@ rtk init -g
 | `improve-codebase-architecture` | `improve-codebase-architecture` | Surface shallow modules and propose deepening opportunities for testability using deletion-test, seam, and locality vocabulary |
 | `zoom-out` | `zoom-out` | Get higher-level architectural perspective: maps all relevant modules, caller relationships, dependencies using domain vocabulary |
 
-### 🤖 Agent Development (5)
+### 🤖 Agent Development (6)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -387,6 +393,7 @@ rtk init -g
 | `microsoft-agent-framework` | Design enterprise-grade agent systems with Microsoft's agent framework — role separation, workflow control, policy enforcement, and multi-agent coordination patterns | All |
 | `openai-agents-python` | Build and operate multi-agent workflows with OpenAI Agents SDK (Python) — define agents/tools/handoffs, add guardrails, trace with LangSmith, run async pipelines | All |
 | `pydantic-ai` | Build typed LLM applications with PydanticAI — schema-constrained outputs, tool integration, validation, retries, and dependency injection for production AI apps | All |
+| `cli-anything` | Make any software agent-native via HKUDS CLI-Anything — CLI-Hub package manager (`cli-hub list/search/install/launch`), agent meta-skill for autonomous CLI discovery, 7-phase harness generation from any codebase (`/cli-anything`), and refine/test/validate iteration; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill cli-anything` | All |
 
 ### ⚙️ Backend (7)
 
