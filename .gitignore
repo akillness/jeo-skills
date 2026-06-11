@@ -59,5 +59,38 @@ venv.bak/
 /.ouroboros/
 /.agent-skills/.omc/
 
+# Per-agent skill copies written by `skills add` project installs
+# (source of truth stays in .agent-skills/)
+/.adal/
+/.agent/
+/.augment/
+/.codebuddy/
+/.commandcode/
+/.continue/
+/.cortex/
+/.crush/
+/.factory/
+/.goose/
+/.iflow/
+/.junie/
+/.kilocode/
+/.kiro/
+/.kode/
+/.mcpjam/
+/.mux/
+/.neovate/
+/.openhands/
+/.pi/
+/.pochi/
+/.qoder/
+/.qwen/
+/.roo/
+/.serena/
+/.trae/
+/.vibe/
+/.windsurf/
+/.zencoder/
+/skills/
+
 # Ensure .agent-skills is tracked (not ignored)
 !.agent-skills/

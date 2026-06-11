@@ -1,6 +1,126 @@
 {
   "version": 1,
   "skills": {
+    "ai-tool-compliance": {
+      "source": "akillness/oh-my-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "compliance",
+      "description": "내부 AI 툴 필수 구현 가이드(P0/P1) 기반 컴플라이언스 검증 자동화",
+      "tags": [
+        "compliance",
+        "RBAC",
+        "security",
+        "cost-tracking",
+        "audit-log",
+        "gateway",
+        "deploy-gate"
+      ],
+      "addedAt": "2026-03-03T00:00:00Z"
+    },
+    "cli-anything": {
+      "source": "akillness/oh-my-skills",
+      "sourceType": "github",
+      "computedHash": "05a29ea74fdced45d3a282250c0bbd24cab760290131ce472c308eca5df8002b"
+    },
+    "deep-dive": {
+      "source": "akillness/oh-my-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "deep-dive",
+      "description": "Claude/OMC, Codex/OMX, Gemini/Antigravity/OMA에서 원인 가설을 trace한 뒤 증거를 요구사항 결정화에 주입하고 런타임별 실행 브리지로 넘기는 cross-runtime 조사 스킬.",
+      "tags": [
+        "deep-dive",
+        "trace",
+        "deep-interview",
+        "root-cause",
+        "requirements",
+        "omc",
+        "omx",
+        "oma",
+        "claude-code",
+        "codex",
+        "antigravity"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deep-dive",
+      "addedAt": "2026-05-30T00:00:00Z",
+      "updatedAt": "2026-05-30T00:00:00Z"
+    },
+    "deepinit": {
+      "source": "akillness/oh-my-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "deepinit",
+      "description": "Claude, Codex/OMX, Gemini, Antigravity/OMA 프로젝트에서 수동 메모를 보존하고 런타임 상태를 제외하며 parent link가 있는 계층형 AGENTS.md 문서를 생성/갱신하는 스킬.",
+      "tags": [
+        "deepinit",
+        "deep-init",
+        "AGENTS.md",
+        "codebase-documentation",
+        "hierarchical-docs",
+        "agent-docs",
+        "omx",
+        "oma",
+        "antigravity"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deepinit",
+      "addedAt": "2026-05-30T00:00:00Z",
+      "updatedAt": "2026-05-30T00:00:00Z"
+    },
+    "harness": {
+      "source": "revfactory/harness",
+      "sourceType": "github",
+      "version": "1.0.1",
+      "keyword": "harness",
+      "description": "revfactory/harness 기반의 cross-platform agent harness architect. 하네스 설계, 에이전트 팀 구성, 스킬 스캐폴딩, 검증 루프 설계에 사용한다.",
+      "tags": [
+        "harness",
+        "agent-teams",
+        "orchestration",
+        "meta-skill",
+        "claude",
+        "codex",
+        "gemini",
+        "opencode"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill harness",
+      "addedAt": "2026-03-30T00:00:00Z",
+      "updatedAt": "2026-03-30T00:00:00Z",
+      "extensions": [
+        {
+          "skill": "survey",
+          "status": "recommended",
+          "reason": "Use survey first when adapting Harness to a new domain or platform."
+        },
+        {
+          "skill": "skill-standardization",
+          "status": "recommended",
+          "reason": "Use skill-standardization after scaffolding new skills from the harness."
+        },
+        {
+          "skill": "playwriter",
+          "status": "optional",
+          "reason": "Use playwriter when Harness outputs need live browser-state verification."
+        }
+      ]
+    },
+    "llm-monitoring-dashboard": {
+      "source": "akillness/oh-my-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "llm-monitoring",
+      "description": "PM용 관리자 대시보드에 LLM 사용 모니터링 페이지를 자동 생성. Tokuin CLI 기반 비용/토큰/레이턴시 추적 + PM 인사이트 + 사용자 랭킹",
+      "tags": [
+        "LLM",
+        "monitoring",
+        "dashboard",
+        "tokuin",
+        "pm-insights",
+        "ranking",
+        "cost-tracking"
+      ],
+      "addedAt": "2026-03-03T00:00:00Z"
+    },
     "omc": {
       "source": "Yeachan-Heo/oh-my-claudecode",
       "sourceType": "plugin",
@@ -69,40 +189,6 @@
         }
       ]
     },
-    "ai-tool-compliance": {
-      "source": "akillness/oh-my-skills",
-      "sourceType": "github",
-      "version": "1.0.0",
-      "keyword": "compliance",
-      "description": "내부 AI 툴 필수 구현 가이드(P0/P1) 기반 컴플라이언스 검증 자동화",
-      "tags": [
-        "compliance",
-        "RBAC",
-        "security",
-        "cost-tracking",
-        "audit-log",
-        "gateway",
-        "deploy-gate"
-      ],
-      "addedAt": "2026-03-03T00:00:00Z"
-    },
-    "llm-monitoring-dashboard": {
-      "source": "akillness/oh-my-skills",
-      "sourceType": "github",
-      "version": "1.0.0",
-      "keyword": "llm-monitoring",
-      "description": "PM용 관리자 대시보드에 LLM 사용 모니터링 페이지를 자동 생성. Tokuin CLI 기반 비용/토큰/레이턴시 추적 + PM 인사이트 + 사용자 랭킹",
-      "tags": [
-        "LLM",
-        "monitoring",
-        "dashboard",
-        "tokuin",
-        "pm-insights",
-        "ranking",
-        "cost-tracking"
-      ],
-      "addedAt": "2026-03-03T00:00:00Z"
-    },
     "survey": {
       "source": "akillness/oh-my-skills",
       "sourceType": "github",
@@ -124,172 +210,6 @@
       "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill survey",
       "addedAt": "2026-03-10T00:00:00Z",
       "updatedAt": "2026-03-10T00:00:00Z"
-    },
-    "harness": {
-      "source": "revfactory/harness",
-      "sourceType": "github",
-      "version": "1.0.1",
-      "keyword": "harness",
-      "description": "revfactory/harness 기반의 cross-platform agent harness architect. 하네스 설계, 에이전트 팀 구성, 스킬 스캐폴딩, 검증 루프 설계에 사용한다.",
-      "tags": [
-        "harness",
-        "agent-teams",
-        "orchestration",
-        "meta-skill",
-        "claude",
-        "codex",
-        "gemini",
-        "opencode"
-      ],
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill harness",
-      "addedAt": "2026-03-30T00:00:00Z",
-      "updatedAt": "2026-03-30T00:00:00Z",
-      "extensions": [
-        {
-          "skill": "survey",
-          "status": "recommended",
-          "reason": "Use survey first when adapting Harness to a new domain or platform."
-        },
-        {
-          "skill": "skill-standardization",
-          "status": "recommended",
-          "reason": "Use skill-standardization after scaffolding new skills from the harness."
-        },
-        {
-          "skill": "playwriter",
-          "status": "optional",
-          "reason": "Use playwriter when Harness outputs need live browser-state verification."
-        }
-      ]
-    },
-    "deep-dive": {
-      "source": "akillness/oh-my-skills",
-      "sourceType": "github",
-      "version": "1.0.0",
-      "keyword": "deep-dive",
-      "description": "Claude/OMC, Codex/OMX, Gemini/Antigravity/OMA에서 원인 가설을 trace한 뒤 증거를 요구사항 결정화에 주입하고 런타임별 실행 브리지로 넘기는 cross-runtime 조사 스킬.",
-      "tags": [
-        "deep-dive",
-        "trace",
-        "deep-interview",
-        "root-cause",
-        "requirements",
-        "omc",
-        "omx",
-        "oma",
-        "claude-code",
-        "codex",
-        "antigravity"
-      ],
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deep-dive",
-      "addedAt": "2026-05-30T00:00:00Z",
-      "updatedAt": "2026-05-30T00:00:00Z"
-    },
-    "deepinit": {
-      "source": "akillness/oh-my-skills",
-      "sourceType": "github",
-      "version": "1.0.0",
-      "keyword": "deepinit",
-      "description": "Claude, Codex/OMX, Gemini, Antigravity/OMA 프로젝트에서 수동 메모를 보존하고 런타임 상태를 제외하며 parent link가 있는 계층형 AGENTS.md 문서를 생성/갱신하는 스킬.",
-      "tags": [
-        "deepinit",
-        "deep-init",
-        "AGENTS.md",
-        "codebase-documentation",
-        "hierarchical-docs",
-        "agent-docs",
-        "omx",
-        "oma",
-        "antigravity"
-      ],
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deepinit",
-      "addedAt": "2026-05-30T00:00:00Z",
-      "updatedAt": "2026-05-30T00:00:00Z"
-    }
-  },
-  "dependencies": {
-    "ooo": {
-      "version": "0.29.0",
-      "source": "Q00/ouroboros",
-      "installCommand": "claude plugin marketplace add Q00/ouroboros",
-      "alternativeInstall": "pip install ouroboros-ai[all]",
-      "required_by": [],
-      "optional_for": [
-        "omc"
-      ],
-      "description": "Ouroboros spec-first completion loop. jeo PLAN 단계 반복 실행 엔진."
-    },
-    "agentation": {
-      "version": "latest",
-      "source": "benjitaylor/agentation",
-      "installCommand": "bash scripts/install.sh --with-agentation",
-      "optional_for": [],
-      "description": "UI 어노테이션 → 에이전트 코드 수정 연동. jeo `annotate` 키워드 감지 시에만 VERIFY_UI 단계 활성화."
-    },
-    "survey": {
-      "version": "latest",
-      "source": "akillness/oh-my-skills",
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill survey",
-      "optional_for": [
-        "harness",
-        "omc",
-        "ooo"
-      ],
-      "description": "계획/구현 전 문제공간 리서치 스킬. 신규 스킬 발굴 및 landscape 분석 시 권장."
-    },
-    "deep-dive": {
-      "version": "latest",
-      "source": "akillness/oh-my-skills",
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deep-dive",
-      "optional_for": [
-        "omc",
-        "ooo",
-        "survey"
-      ],
-      "description": "모호한 문제를 구현 전에 trace하고 OMC/OMX/OMA 런타임에 맞춰 deep-interview식 요구사항 결정화와 실행 브리지로 넘길 때 선택적으로 사용한다."
-    },
-    "deepinit": {
-      "version": "latest",
-      "source": "akillness/oh-my-skills",
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deepinit",
-      "optional_for": [
-        "omc",
-        "ooo",
-        "survey"
-      ],
-      "description": "새 코드베이스 또는 정리되지 않은 저장소의 계층형 AGENTS.md 문서화를 런타임 상태 제외와 parent-link 검증까지 포함해 수행할 때 선택적으로 사용한다."
-    },
-    "omx": {
-      "version": "latest",
-      "source": "akillness/oh-my-skills",
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill omx",
-      "optional_for": [],
-      "description": "OpenAI Codex CLI용 실행 백엔드. Claude `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` 의도를 각각 `$team`, `$autopilot`, `$ulw`/`$ultrawork`, `$ultraqa`로 매핑하고 `.omx/` 상태 경계를 지킨다."
-    },
-    "ohmg": {
-      "version": "latest",
-      "source": "akillness/oh-my-skills",
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill ohmg",
-      "optional_for": [],
-      "description": "Gemini/Antigravity용 OMA 실행 백엔드. `.agents/`를 canonical source로 유지하고 Claude team/autopilot/ultrawork/ultraqa 의도를 `/orchestrate`, `/plan`→`/work`, `/ultrawork`, `/review` 또는 `oma agent:parallel`로 매핑한다."
-    },
-    "playwriter": {
-      "version": "latest",
-      "source": "npm:playwriter",
-      "installCommand": "npm install -g playwriter",
-      "optional_for": [
-        "harness"
-      ],
-      "description": "Running-browser Playwright automation. Optional when Harness outputs need authenticated or stateful browser verification."
-    },
-    "skill-standardization": {
-      "version": "latest",
-      "source": "akillness/oh-my-skills",
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill skill-standardization",
-      "optional_for": [
-        "harness"
-      ],
-      "description": "Validate and normalize generated SKILL.md files after Harness scaffolds new skills."
     }
   }
 }
