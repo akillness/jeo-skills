@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-05-30T02:58:42Z",
-  "skill_count": 132,
+  "generated": "2026-06-11T13:03:17Z",
+  "skill_count": 137,
   "categories": {
     "planning-review": [
       "agentation",
@@ -20,7 +20,8 @@
     ],
     "agent-development": [
       "prompt-repetition",
-      "skill-standardization"
+      "skill-standardization",
+      "cli-anything"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -55,7 +56,8 @@
       "log-analysis",
       "pattern-detection",
       "semble",
-      "skill-autoresearch"
+      "skill-autoresearch",
+      "opik"
     ],
     "core-orchestration": [
       "bmad",
@@ -70,7 +72,9 @@
       "team",
       "ultrawork",
       "ultraqa",
-      "survey"
+      "survey",
+      "spec-kit",
+      "spec-stack"
     ],
     "documentation": [
       "changelog-maintenance",
@@ -128,7 +132,8 @@
       "unity-gamedev-skill-pack",
       "workflow-automation",
       "write-a-skill",
-      "zeude"
+      "zeude",
+      "agenticskills"
     ],
     "frontend": [
       "design-system",
@@ -203,7 +208,7 @@
     {
       "name": "agentic-skills",
       "category": "planning-review",
-      "path": ".agent-skills/agentic-skills/SKILL.md",
+      "path": "agentic-skills/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "agentic-skills",
@@ -222,6 +227,22 @@
         "Gemini",
         "Codex"
       ]
+    },
+    {
+      "name": "agenticskills",
+      "description": "One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ skills spanning agent-browser, agent-workflow, ai-research-skills, api-design, and the full god-skills catalog). Use when the user asks to add the oh-my-gods skill pack, bring in the AgenticSkills bundle, or wants every god-skill copied into Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in one step. Triggers on: AgenticSkills, agenticskills, oh-my-gods, god-skills, install oh-my-gods, bring in agentic skills bundle, install gods skills, add god skills.",
+      "category": "utilities",
+      "path": "agenticskills/SKILL.md",
+      "tags": [
+        "agenticskills",
+        "oh-my-gods",
+        "god-skills",
+        "installer",
+        "bundle",
+        "agent-skills",
+        "multi-runtime"
+      ],
+      "version": "1.0.0"
     },
     {
       "name": "aider-cli-workflow",
@@ -327,6 +348,39 @@
         "Glob",
         "Grep"
       ],
+      "commands": []
+    },
+    {
+      "name": "autopilot",
+      "description": "Run a Codex/OMX-compatible autonomous build workflow from a product or code request through planning, implementation, QA, and final verification. Use when the user invokes `$autopilot`, autopilot, auto pilot, full-auto, or asks the agent to build the whole thing end to end.",
+      "category": "core-orchestration",
+      "path": "autopilot/SKILL.md",
+      "tags": [
+        "autopilot",
+        "$autopilot",
+        "omx",
+        "codex",
+        "autonomous-build",
+        "planning",
+        "implementation",
+        "qa",
+        "verification"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "autopilot",
+      "version": "1.0.0",
       "commands": []
     },
     {
@@ -554,7 +608,7 @@
     {
       "name": "caveman",
       "category": "utilities",
-      "path": ".agent-skills/caveman/SKILL.md",
+      "path": "caveman/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "token-reduction",
@@ -624,7 +678,7 @@
     {
       "name": "claudekit",
       "category": "utilities",
-      "path": ".agent-skills/claudekit/SKILL.md",
+      "path": "claudekit/SKILL.md",
       "description": "Use this skill when you need a standardized Claude Code workflow toolkit.",
       "tags": [
         "claude-code",
@@ -667,6 +721,28 @@
         "WebFetch"
       ],
       "commands": []
+    },
+    {
+      "name": "cli-anything",
+      "description": "Make any software agent-native with HKUDS CLI-Anything — route between its four working modes: install ready-made CLI harnesses through the CLI-Hub package manager (`pip install cli-anything-hub`, then `cli-hub list/search/info/install/launch`), give agents the autonomous discovery meta-skill (`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill`), generate a brand-new CLI harness from any codebase or GitHub repo via the 7-phase pipeline (`/plugin install cli-anything` → `/cli-anything <path>`), or iterate an existing harness with `/cli-anything:refine`, `:test`, and `:validate`. 40+ production harnesses (GIMP, Blender, LibreOffice, OBS, Draw.io, ComfyUI, Ollama, Godot, QGIS, FreeCAD, …) with 2,461 passing tests, Click CLIs with REPL + `--json` output. Use when the user wants agents to drive real desktop/server software without GUI automation. Triggers on: cli-anything, cli-hub, cli-anything-hub, agent-native cli, make software agent-native, cli harness generation, /cli-anything, harness refine, agent computer use cli, HKUDS cli.",
+      "category": "agent-development",
+      "path": "cli-anything/SKILL.md",
+      "tags": [
+        "cli-anything",
+        "cli-hub",
+        "agent-native",
+        "computer-use",
+        "cli-generation",
+        "harness",
+        "click",
+        "repl",
+        "json-output",
+        "hkuds",
+        "plugin"
+      ],
+      "keyword": "cli-anything",
+      "version": "1.0.0",
+      "platforms": "Claude, Codex, OpenCode, OpenClaw, Pi, Hermes, Copilot, All"
     },
     {
       "name": "code-refactoring",
@@ -1056,7 +1132,7 @@
     {
       "name": "diagnose",
       "category": "code-quality",
-      "path": ".agent-skills/diagnose/SKILL.md",
+      "path": "diagnose/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "debugging",
@@ -1401,7 +1477,7 @@
     {
       "name": "ghgrab",
       "category": "utilities",
-      "path": ".agent-skills/ghgrab/SKILL.md",
+      "path": "ghgrab/SKILL.md",
       "description": "Search and download specific files/folders from GitHub repositories directly from",
       "tags": [
         "ghgrab",
@@ -1419,7 +1495,7 @@
     {
       "name": "git-guardrails-claude-code",
       "category": "utilities",
-      "path": ".agent-skills/git-guardrails-claude-code/SKILL.md",
+      "path": "git-guardrails-claude-code/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "git",
@@ -1574,7 +1650,7 @@
     {
       "name": "github-repo-candidate-quality-gate",
       "category": "utilities",
-      "path": ".agent-skills/github-repo-candidate-quality-gate/SKILL.md",
+      "path": "github-repo-candidate-quality-gate/SKILL.md",
       "description": "Convert noisy GitHub repository search results into recommendation-grade candidate",
       "tags": [
         "github",
@@ -1689,7 +1765,7 @@
     {
       "name": "grill-me",
       "category": "planning-review",
-      "path": ".agent-skills/grill-me/SKILL.md",
+      "path": "grill-me/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "design-review",
@@ -1709,7 +1785,7 @@
     {
       "name": "grill-with-docs",
       "category": "planning-review",
-      "path": ".agent-skills/grill-with-docs/SKILL.md",
+      "path": "grill-with-docs/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "design-review",
@@ -1779,7 +1855,7 @@
     {
       "name": "hyperfine-benchmarking",
       "category": "utilities",
-      "path": ".agent-skills/hyperfine-benchmarking/SKILL.md",
+      "path": "hyperfine-benchmarking/SKILL.md",
       "description": "Use this skill to benchmark shell commands reliably with warmup runs, statistical summaries, and exportable artifacts using hyperfine.",
       "tags": [
         "hyperfine-benchmarking"
@@ -1793,7 +1869,7 @@
     {
       "name": "improve-codebase-architecture",
       "category": "code-quality",
-      "path": ".agent-skills/improve-codebase-architecture/SKILL.md",
+      "path": "improve-codebase-architecture/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "architecture",
@@ -2104,7 +2180,7 @@
     {
       "name": "microsoft-agent-framework",
       "category": "planning-review",
-      "path": ".agent-skills/microsoft-agent-framework/SKILL.md",
+      "path": "microsoft-agent-framework/SKILL.md",
       "description": "Design enterprise-grade agent systems with Microsoft's agent framework",
       "tags": [
         "agentic-ai",
@@ -2122,7 +2198,7 @@
     {
       "name": "migrate-to-shoehorn",
       "category": "code-quality",
-      "path": ".agent-skills/migrate-to-shoehorn/SKILL.md",
+      "path": "migrate-to-shoehorn/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "typescript",
@@ -2168,7 +2244,7 @@
     {
       "name": "notebooklm",
       "category": "utilities",
-      "path": ".agent-skills/notebooklm/SKILL.md",
+      "path": "notebooklm/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "notebooklm",
@@ -2251,7 +2327,7 @@
     {
       "name": "obsidian",
       "category": "utilities",
-      "path": ".agent-skills/obsidian/SKILL.md",
+      "path": "obsidian/SKILL.md",
       "description": "Unified Obsidian skill: plugin development AND desktop automation. Use when building",
       "tags": [
         "obsidian",
@@ -2330,7 +2406,7 @@
     {
       "name": "obsidian-cli-uri-fallback",
       "category": "utilities",
-      "path": ".agent-skills/obsidian-cli-uri-fallback/SKILL.md",
+      "path": "obsidian-cli-uri-fallback/SKILL.md",
       "description": "Use when Obsidian note automation runs in cron/headless environments and",
       "tags": [
         "obsidian",
@@ -2579,7 +2655,7 @@
     {
       "name": "openai-agents-python",
       "category": "planning-review",
-      "path": ".agent-skills/openai-agents-python/SKILL.md",
+      "path": "openai-agents-python/SKILL.md",
       "description": "Build and operate multi-agent workflows with OpenAI Agents SDK (Python):",
       "tags": [
         "agentic-ai",
@@ -2665,6 +2741,27 @@
       ]
     },
     {
+      "name": "opik",
+      "description": "Run Comet's Opik — open-source LLM observability, evaluation, and optimization — from one routing-first skill: install the Python/TypeScript SDK, stand up a server (Comet.com cloud, Docker Compose via `./opik.sh`, or Kubernetes/Helm), wire tracing through `@opik.track` or one of 50+ framework integrations (OpenAI, Anthropic, LangChain, LangGraph, LlamaIndex, CrewAI, DSPy, Ollama, Bedrock, Vercel AI SDK, …), score outputs with LLM-as-a-judge metrics (Hallucination, Moderation, Answer Relevance, Context Precision), and run Datasets/Experiments evaluations including PyTest CI gates. Use when the user wants LLM tracing, prompt evaluation, production LLM monitoring, agent optimization, or guardrails with Opik. Triggers on: opik, comet opik, opik configure, opik.sh, llm observability, llm tracing, llm as a judge, hallucination metric, prompt evaluation, opik dashboard, opik guardrails, agent optimizer.",
+      "category": "search-analysis",
+      "path": "opik/SKILL.md",
+      "tags": [
+        "opik",
+        "comet",
+        "llm-observability",
+        "tracing",
+        "evaluation",
+        "llm-as-a-judge",
+        "prompt-optimization",
+        "guardrails",
+        "monitoring",
+        "plugin"
+      ],
+      "keyword": "opik",
+      "version": "1.0.0",
+      "platforms": "Claude, Gemini, Codex, OpenCode, All"
+    },
+    {
       "name": "pattern-detection",
       "description": "Routing-first pattern and anomaly hunting that chooses one packet — text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly — before suggesting tools or fixes. Use for reusable scans, suspicious repeated shapes, grouped outlier candidates, and first-pass anomaly triage across code, logs/events, telemetry, and metric tables; route root-cause log work to log-analysis, KPI explanation to data-analysis, remediation to specialist skills, and alert operations to monitoring-observability.",
       "category": "search-analysis",
@@ -2736,7 +2833,7 @@
     {
       "name": "payloadcms",
       "category": "backend",
-      "path": ".agent-skills/payloadcms/SKILL.md",
+      "path": "payloadcms/SKILL.md",
       "description": "Operate Payload CMS (Next.js-native headless CMS) in repo workflows: bootstrap a Payload app,",
       "tags": [
         "payloadcms",
@@ -3010,7 +3107,7 @@
     {
       "name": "pydantic-ai",
       "category": "backend",
-      "path": ".agent-skills/pydantic-ai/SKILL.md",
+      "path": "pydantic-ai/SKILL.md",
       "description": "Build typed LLM applications with PydanticAI: schema-constrained outputs,",
       "tags": [
         "pydantic",
@@ -3214,7 +3311,7 @@
     {
       "name": "scaffold-exercises",
       "category": "utilities",
-      "path": ".agent-skills/scaffold-exercises/SKILL.md",
+      "path": "scaffold-exercises/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "education",
@@ -3348,7 +3445,7 @@
     {
       "name": "setup-pre-commit",
       "category": "utilities",
-      "path": ".agent-skills/setup-pre-commit/SKILL.md",
+      "path": "setup-pre-commit/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "git-hooks",
@@ -3437,6 +3534,49 @@
           "source": "skill-standardization/SKILL.md"
         }
       ]
+    },
+    {
+      "name": "spec-kit",
+      "description": "Run GitHub's Spec-Driven Development (SDD) workflow via the `specify` CLI — install spec-kit, initialize a project for one of 30+ AI coding agents (Claude Code, Copilot, Gemini, Cursor, Codex, Qwen, opencode, Kiro, etc.), and drive the constitution → specify → plan → tasks → implement command pipeline. Use when the user wants to bootstrap a Spec-Driven Development project, install `specify-cli`, generate executable specs before code, or invoke the `/speckit.*` slash commands (`/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement`, `/speckit.clarify`, `/speckit.analyze`, `/speckit.checklist`). Triggers on: spec-kit, speckit, specify, specify init, spec-driven, spec driven development, SDD, /speckit, executable spec.",
+      "category": "core-orchestration",
+      "path": "spec-kit/SKILL.md",
+      "tags": [
+        "spec-kit",
+        "speckit",
+        "specify",
+        "sdd",
+        "spec-driven-development",
+        "planning",
+        "github",
+        "plugin",
+        "multi-agent"
+      ],
+      "keyword": "spec-kit",
+      "version": "1.0.0",
+      "platforms": "Claude, Copilot, Gemini, Codex, Cursor, OpenCode, Qwen, Kiro, All"
+    },
+    {
+      "name": "spec-stack",
+      "description": "Compose GitHub spec-kit, Ouroboros (ooo), and HKUDS CLI-Anything into one spec-driven delivery stack — Write → Freeze → Run, verified. Author the spec with `/speckit.*`, freeze it as an immutable ooo seed with machine-checkable acceptance criteria, arm the loop with agent-native CLI harnesses from CLI-Hub (`--json` output as evaluate evidence), and loop until verification passes. Routes three patterns — full-stack (spec-kit → ooo → cli-anything), loop-only (ooo), docs-only (spec-kit) — with explicit anti-patterns (two spec SSOTs, harness-first builds, seedless ralph loops). Use when the user wants spec-to-verified-artifact delivery, wants spec-kit and ooo to work together without fighting, or needs real software driven inside a verified loop. Triggers on: spec-stack, spec stack, write freeze run, spec to verified, speckit + ooo, ooo + cli-anything, spec-driven loop, verified delivery stack, seed with tools.",
+      "category": "core-orchestration",
+      "path": "spec-stack/SKILL.md",
+      "tags": [
+        "spec-stack",
+        "spec-kit",
+        "ooo",
+        "ouroboros",
+        "cli-anything",
+        "spec-driven",
+        "verification",
+        "loop",
+        "seed",
+        "harness",
+        "composition",
+        "sdd"
+      ],
+      "keyword": "spec-stack",
+      "version": "1.0.0",
+      "platforms": "Claude, Codex, Gemini, Cursor, OpenCode, All"
     },
     {
       "name": "sprint-retrospective",
@@ -3640,7 +3780,7 @@
     {
       "name": "supabase-agent-skills",
       "category": "backend",
-      "path": ".agent-skills/supabase-agent-skills/SKILL.md",
+      "path": "supabase-agent-skills/SKILL.md",
       "description": "Install and use Supabase Agent Skills (`supabase/agent-skills`) with AI coding",
       "tags": [
         "supabase",
@@ -3792,7 +3932,7 @@
     {
       "name": "tdd",
       "category": "code-quality",
-      "path": ".agent-skills/tdd/SKILL.md",
+      "path": "tdd/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "tdd",
@@ -3807,6 +3947,39 @@
         "Gemini",
         "Codex"
       ]
+    },
+    {
+      "name": "team",
+      "description": "Run or route a coordinated multi-agent team workflow for Codex/OMX. Use when the user invokes `$team`, asks for team mode, coordinated workers, tmux workers, or multiple agents sharing a task list. Prefer `omx team` when the runtime is installed.",
+      "category": "core-orchestration",
+      "path": "team/SKILL.md",
+      "tags": [
+        "team",
+        "$team",
+        "omx",
+        "codex",
+        "multi-agent",
+        "tmux",
+        "coordination",
+        "workers",
+        "shared-task-list"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "team",
+      "version": "1.0.0",
+      "commands": []
     },
     {
       "name": "technical-writing",
@@ -3866,7 +4039,7 @@
     {
       "name": "to-issues",
       "category": "planning-review",
-      "path": ".agent-skills/to-issues/SKILL.md",
+      "path": "to-issues/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "issues",
@@ -3886,7 +4059,7 @@
     {
       "name": "to-prd",
       "category": "planning-review",
-      "path": ".agent-skills/to-prd/SKILL.md",
+      "path": "to-prd/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "prd",
@@ -3906,7 +4079,7 @@
     {
       "name": "triage",
       "category": "planning-review",
-      "path": ".agent-skills/triage/SKILL.md",
+      "path": "triage/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "triage",
@@ -3948,9 +4121,77 @@
       "commands": []
     },
     {
+      "name": "ultraqa",
+      "description": "Run an autonomous QA cycling workflow: test, diagnose, fix, and repeat until the quality goal is met or a concrete blocker is proven. Use when the user invokes `$ultraqa`, ultraqa, QA cycling, test/build/lint repair, or the typo `$ultaqa`.",
+      "category": "core-orchestration",
+      "path": "ultraqa/SKILL.md",
+      "tags": [
+        "ultraqa",
+        "$ultraqa",
+        "ultaqa",
+        "$ultaqa",
+        "omx",
+        "codex",
+        "qa",
+        "tests",
+        "build",
+        "lint",
+        "typecheck",
+        "review"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "ultraqa",
+      "version": "1.0.0",
+      "commands": []
+    },
+    {
+      "name": "ultrawork",
+      "description": "Run a high-parallelism work burst for independent implementation or cleanup lanes. Use when the user invokes `$ultrawork`, `$ulw`, ultrawork, or asks to parallelize separable work quickly. Choose `team` when workers need shared task state.",
+      "category": "core-orchestration",
+      "path": "ultrawork/SKILL.md",
+      "tags": [
+        "ultrawork",
+        "$ultrawork",
+        "ulw",
+        "$ulw",
+        "omx",
+        "codex",
+        "parallel-work",
+        "burst-work"
+      ],
+      "platforms": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "ultrawork",
+      "version": "1.0.0",
+      "commands": []
+    },
+    {
       "name": "unity-gamedev-skill-pack",
       "category": "utilities",
-      "path": ".agent-skills/unity-gamedev-skill-pack/SKILL.md",
+      "path": "unity-gamedev-skill-pack/SKILL.md",
       "description": "Evaluate and adopt Unity game-development skill packs from external repositories",
       "tags": [
         "unity",
@@ -4211,7 +4452,7 @@
     {
       "name": "write-a-skill",
       "category": "utilities",
-      "path": ".agent-skills/write-a-skill/SKILL.md",
+      "path": "write-a-skill/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "skill-creation",
@@ -4262,7 +4503,7 @@
     {
       "name": "zoom-out",
       "category": "code-quality",
-      "path": ".agent-skills/zoom-out/SKILL.md",
+      "path": "zoom-out/SKILL.md",
       "description": "Use this skill when >",
       "tags": [
         "architecture",
@@ -4278,140 +4519,6 @@
         "Gemini",
         "Codex"
       ]
-    },
-    {
-      "name": "autopilot",
-      "description": "Run a Codex/OMX-compatible autonomous build workflow from a product or code request through planning, implementation, QA, and final verification. Use when the user invokes `$autopilot`, autopilot, auto pilot, full-auto, or asks the agent to build the whole thing end to end.",
-      "category": "core-orchestration",
-      "path": "autopilot/SKILL.md",
-      "tags": [
-        "autopilot",
-        "$autopilot",
-        "omx",
-        "codex",
-        "autonomous-build",
-        "planning",
-        "implementation",
-        "qa",
-        "verification"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "autopilot",
-      "version": "1.0.0",
-      "commands": []
-    },
-    {
-      "name": "team",
-      "description": "Run or route a coordinated multi-agent team workflow for Codex/OMX. Use when the user invokes `$team`, asks for team mode, coordinated workers, tmux workers, or multiple agents sharing a task list. Prefer `omx team` when the runtime is installed.",
-      "category": "core-orchestration",
-      "path": "team/SKILL.md",
-      "tags": [
-        "team",
-        "$team",
-        "omx",
-        "codex",
-        "multi-agent",
-        "tmux",
-        "coordination",
-        "workers",
-        "shared-task-list"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "team",
-      "version": "1.0.0",
-      "commands": []
-    },
-    {
-      "name": "ultrawork",
-      "description": "Run a high-parallelism work burst for independent implementation or cleanup lanes. Use when the user invokes `$ultrawork`, `$ulw`, ultrawork, or asks to parallelize separable work quickly. Choose `team` when workers need shared task state.",
-      "category": "core-orchestration",
-      "path": "ultrawork/SKILL.md",
-      "tags": [
-        "ultrawork",
-        "$ultrawork",
-        "ulw",
-        "$ulw",
-        "omx",
-        "codex",
-        "parallel-work",
-        "burst-work"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "ultrawork",
-      "version": "1.0.0",
-      "commands": []
-    },
-    {
-      "name": "ultraqa",
-      "description": "Run an autonomous QA cycling workflow: test, diagnose, fix, and repeat until the quality goal is met or a concrete blocker is proven. Use when the user invokes `$ultraqa`, ultraqa, QA cycling, test/build/lint repair, or the typo `$ultaqa`.",
-      "category": "core-orchestration",
-      "path": "ultraqa/SKILL.md",
-      "tags": [
-        "ultraqa",
-        "$ultraqa",
-        "ultaqa",
-        "$ultaqa",
-        "omx",
-        "codex",
-        "qa",
-        "tests",
-        "build",
-        "lint",
-        "typecheck",
-        "review"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "ultraqa",
-      "version": "1.0.0",
-      "commands": []
     }
   ]
 }
