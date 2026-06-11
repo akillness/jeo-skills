@@ -1,0 +1,35 @@
+{
+  "skill_name": "spec-stack",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use spec-stack. We need to automate product-shot retouching with GIMP: the requirements are still fuzzy, the team shares specs across Claude and Codex, and last time the agent declared success without checking the output files.",
+      "expected_output": "A spec-stack routing brief that selects the full-stack pattern and sequences spec-kit authoring, ooo seed freeze, CLI-Hub harness install, and a run/evaluate loop with artifact-level evidence.",
+      "assertions": [
+        "Output selects exactly one pattern (full-stack) and names the stack state.",
+        "Output sequences the layers in order: /speckit.* authoring before seed freeze, cli-hub search/install before any harness generation, loop last.",
+        "Output requires machine-checkable acceptance criteria mirrored into the seed and --json artifact evidence in the evaluate step, not exit codes."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "How should spec-kit and ooo work together on one repo? I'm worried they will both try to own the spec.",
+      "expected_output": "An explanation of the one-way SSOT split: spec.md is the document SSOT, seed.yaml the execution SSOT, flowing spec-kit → ooo only, with requirement changes re-entering through the spec.",
+      "assertions": [
+        "Output states the one-way flow spec.md → seed.yaml and forbids running both pipelines to completion in parallel.",
+        "Output names the two-SSOT situation as an anti-pattern explicitly.",
+        "Output keeps /speckit.implement subordinate to the ooo loop in pattern A or routes the user to docs-only if no loop is wanted."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Just generate a CLI harness for Blender so my agent can drive it.",
+      "expected_output": "A route-out to the cli-anything skill (registry search before generation) without invoking spec or seed ceremony.",
+      "assertions": [
+        "Output routes to cli-anything instead of running the spec-stack pipeline.",
+        "Output recommends cli-hub search before the 7-phase generation pipeline.",
+        "Output does not create a constitution, spec, or seed for this single-layer request."
+      ]
+    }
+  ]
+}

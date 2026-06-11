@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-135-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-137-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**135개 로컬 스킬 폴더 · 설치 가능 스킬 135개 · TOON 포맷 · 멀티플랫폼**
+**137개 로컬 스킬 폴더 · 설치 가능 스킬 137개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**135개 로컬 스킬 폴더 · 설치 가능 스킬 135개 · TOON 포맷 · 멀티플랫폼**
+**137개 로컬 스킬 폴더 · 설치 가능 스킬 137개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 135개 로컬 스킬 폴더와 135개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 137개 로컬 스킬 폴더와 137개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -74,6 +74,7 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
+| **spec-stack: Write → Freeze → Run, verified** | `spec-stack` 스킬을 추가했습니다 — `spec-kit` × `ooo` × `cli-anything`을 하나의 스펙 주도 딜리버리 스택으로 묶는 조합 스킬로, "spec-kit이 쓰고, ooo가 동결·완주하고, cli-anything이 손발이 된다"는 단일 규칙을 따릅니다. 세 가지 패턴을 라우팅합니다: **full-stack**(`/speckit.constitution` → `/speckit.specify` → ooo 인터뷰 → 기계 검증 가능한 수용 기준과 도구 명시 제약을 가진 불변 seed → `cli-hub search/install` → run/ralph ↔ evaluate에서 `--json` 산출물 증거 검사), **loop-only**(문서 아티팩트 없이 ooo seed + ralph), **docs-only**(멀티 에이전트 문서 공유용 `/speckit.*` 전체 파이프라인). 핸드오프 맵(spec.md → seed.yaml → harness 증거, 단방향 흐름)과 명시적 안티패턴(이중 SSOT, `cli-hub search` 없는 harness 생성, seed 없는 ralph 루프, exit code만으로 하는 검증)을 문서화. `scripts/install.sh`(uv/pipx/pip; `specify-cli` + `cli-anything-hub` 설치, ooo는 `SPEC_STACK_OOO=1` 또는 Claude 플러그인)와 커맨드 크로스워크 레퍼런스 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack`. Route-out: `spec-kit`/`ooo`/`cli-anything`(단일 레이어 작업), `bmad`(다음 기획 산출물), `plannotator`(플랜 승인). 135 → **137개 스킬** (게시된 카운트를 실제 137개 스킬 폴더에 재동기화 — v2026-06-08 이후 문서 카운트가 실제 추적 폴더 수보다 1 적게 어긋나 있던 것을 함께 정정). |
 | **cli-anything: 모든 소프트웨어를 agent-native로** | `cli-anything` 스킬을 추가했습니다 — HKUDS의 [CLI-Anything](https://github.com/HKUDS/CLI-Anything) 생태계를 감싸는 라우팅 우선 wrapper로, 네 가지 모드 중 하나를 선택합니다: CLI-Hub 패키지 매니저로 기성 harness 설치(`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), 에이전트 자율 탐색용 meta-skill 부여(`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), 임의 코드베이스·GitHub 저장소에서 7-phase 파이프라인으로 새 harness 생성(Claude Code `/plugin install cli-anything` → `/cli-anything <path>`, Codex/OpenCode/OpenClaw/Pi/Hermes/Qodercli/Copilot CLI 설치 경로 포함), 기존 harness 반복 개선(`/cli-anything:refine`/`:test`/`:validate`). GIMP · Blender · LibreOffice · OBS · Draw.io · ComfyUI · Ollama · Godot · QGIS · FreeCAD 등 40+ 프로덕션 harness, 2,461개 테스트 통과; 생성된 CLI는 Click 커맨드 + 상태형 REPL + `--json` 출력 + 자동 생성 SKILL.md를 제공합니다. PEP 668-safe `scripts/install.sh`(venv 인식 uv/pip, `CLI_ANYTHING_META_SKILL=1`로 meta-skill 옵션)와 플랫폼/커맨드 레퍼런스를 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill cli-anything`. Route-out: `harness`(에이전트 팀 설계), `browser-harness`(코드베이스 없는 GUI 대상), `ccpi-marketplace`(일반 플러그인 탐색). 134 → **135개 스킬**. |
 
 ## 🆕 v2026-06-10 업데이트
@@ -339,9 +340,9 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 135개 로컬 스킬 폴더 = 총 135개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 137개 로컬 스킬 폴더 = 총 137개 설치 가능 스킬
 
-### 🎯 핵심 오케스트레이션 (14개)
+### 🎯 핵심 오케스트레이션 (15개)
 
 | 스킬 | 키워드 | 플랫폼 | 설명 |
 |------|--------|--------|------|
@@ -358,6 +359,7 @@ rtk init -g
 | `ooo` | `ooo`, `ouroboros`, `ooo ralph` | 전체 | Ouroboros 스펙 우선 개발 루프 — 소크라테스식 인터뷰, 불변 seed/spec, 드리프트 인식 실행, 검증 통과까지 이어가는 완료 루프. 플러그인: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | 패킷 우선 BMAD/BMM 프런트도어 — 현재 packet을 분류하고 다음 산출물 또는 gate를 고른 뒤 review / runtime / 실행 세부 작업을 바깥으로 라우팅 |
 | `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | 전체 | GitHub Spec-Driven Development 래퍼 — `specify-cli` 설치, 30+ 에이전트(Claude/Copilot/Gemini/Codex/Cursor/opencode/Qwen/Kiro/…) 프로젝트 부트스트랩, 그리고 constitution → specify → clarify → plan → analyze → tasks → checklist → implement 파이프라인을 라우팅. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit` |
+| `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo` | 전체 | `spec-kit` × `ooo` × `cli-anything` 조합 래퍼 — spec-kit이 스펙을 쓰고, ooo가 불변 seed로 동결해 검증 통과까지 루프를 돌리고, cli-anything이 `--json` 출력으로 evaluate 단계의 증거가 되는 agent-native CLI harness를 공급; 세 패턴(full-stack / loop-only / docs-only)과 단방향 spec → seed 흐름, 명시적 안티패턴 포함. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack` |
 | `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |
 | `bmad-idea` | `bmad-idea` | 전체 | 사전 기획 아이디어 라우터 — 거친 제품/GTM/컨설팅/게임 아이디어를 하나의 컨셉 산출물과 다음 핸드오프로 정리 |
 | `deep-dive` | `deep-dive`, `deep dive`, `trace and interview` | 전체 | OMC, OMX, OMA를 가로지르는 조사 파이프라인 — 원인 가설을 trace하고 증거를 요구사항에 주입한 뒤 런타임별 실행 브리지로 넘김 |
@@ -778,7 +780,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 135개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 137개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

@@ -122,7 +122,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 135 skills to global store, link shared skills to all detected agents
+# Install ALL 137 skills to global store, link shared skills to all detected agents
 # --full-depth: discovers nested skills (7 skills require this to be found)
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
@@ -130,15 +130,15 @@ skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 
 > **Global vs Project install — why skill files may be missing**
 >
-> **Global install** (`-g`): downloads all 135 skills from the GitHub repo into the agent's global
+> **Global install** (`-g`): downloads all 137 skills from the GitHub repo into the agent's global
 > skills store (`~/.claude/skills/`, `~/.codex/skills/`, etc.). Requires `--full-depth` to discover
 > the 7 skills whose `SKILL.md` is nested in a subdirectory. Without this flag only ~120 skills
 > are found and linked.
 >
 > **Project install** (`experimental_install` / `skills restore`): reads `skills-lock.json` in the
-> project root and restores **only the skills listed there** — not all 135. If `skills-lock.json`
-> contains only 8 entries (omc, ooo, ai-tool-compliance, llm-monitoring-dashboard, survey, harness,
-> deep-dive, deepinit) then only those 8 are restored regardless of how many are in the global store. To include more
+> project root and restores **only the skills listed there** — not all 137. If `skills-lock.json`
+> contains only 10 entries (omc, ooo, ai-tool-compliance, llm-monitoring-dashboard, survey, harness,
+> deep-dive, deepinit, cli-anything, spec-stack) then only those 10 are restored regardless of how many are in the global store. To include more
 > skills in a project install, add them to `skills-lock.json` first.
 >
 > **Root cause summary**:
@@ -751,7 +751,7 @@ REPO_URL="https://github.com/akillness/oh-my-skills"
 # Core skill check
 echo ""
 echo "=== Core Skill Check ==="
-for skill in omc ohmg omx ooo stitch-skills compresso pretext god-tibo-imagen zeude plannotator agentation bmad spec-kit opik cli-anything survey harness rtk graphify obsidian llm-wiki semble; do
+for skill in omc ohmg omx ooo stitch-skills compresso pretext god-tibo-imagen zeude plannotator agentation bmad spec-kit spec-stack opik cli-anything survey harness rtk graphify obsidian llm-wiki semble; do
   [ -f "$SKILLS_ROOT/$skill/SKILL.md" ] \
     && echo "✅ $skill" \
     || echo "❌ $skill — re-run: skills add -g $REPO_URL --skill $skill --yes --copy"
@@ -901,11 +901,11 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (135 skills)
+## Skill Inventory (137 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
-| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, spec-kit *(GitHub Spec-Driven Development wrapper around `specify-cli` — install, bootstrap a project for 30+ supported agents, and drive `/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`; route vendor-neutral spec-first loops to `ooo`, packet-first BMAD/BMM routing to `bmad`, and review/approval to `plannotator`. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit`)*, omc, omx, autopilot, team, ultrawork, ultraqa, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, vibe-kanban, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
+| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, spec-kit *(GitHub Spec-Driven Development wrapper around `specify-cli` — install, bootstrap a project for 30+ supported agents, and drive `/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`; route vendor-neutral spec-first loops to `ooo`, packet-first BMAD/BMM routing to `bmad`, and review/approval to `plannotator`. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit`)*, spec-stack *(composition wrapper for `spec-kit` × `ooo` × `cli-anything` — spec-kit writes the spec, ooo freezes it as an immutable seed with machine-checkable acceptance criteria and tool-naming constraints then loops until verification passes, cli-anything supplies agent-native CLI harnesses whose `--json` output is the evaluate-step evidence; three patterns (full-stack / loop-only / docs-only) with one-way spec → seed flow and explicit anti-patterns (two SSOTs, generate-before-search, seedless ralph, exit-code-only verification). Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack`)*, omc, omx, autopilot, team, ultrawork, ultraqa, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, vibe-kanban, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
 | **Platform Setup** | omc *(Claude-first OMC router; maps `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` intents to OMX/OMA when cross-runtime parity is requested)* | claude-code |
 | **Platform Setup** | ohmg *(Gemini/Antigravity OMA harness; maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` while keeping `.agents` canonical)* | antigravity |
 | **Platform Setup** | omx *(Codex workflow layer with `$team`, `$autopilot`, `$ulw`/`$ultrawork`, and `$ultraqa` equivalents for Claude team/autopilot/ultrawork/ultraqa workflows)* | codex, claude-code |
@@ -953,6 +953,7 @@ If no → skip silently. Never re-ask.
 | `vibe-kanban` | `kanbanview` | Coding-board control plane — bounded coding cards, tracker-linked workspaces, review queues, worktree isolation, and PR handoff |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
 | `spec-kit` | `spec-kit`, `speckit`, `specify`, `specify init`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | GitHub Spec-Driven Development wrapper around `specify-cli` — install via `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git`, bootstrap a project for one of 30+ agents (Claude / Copilot / Gemini / Codex / Cursor / opencode / Qwen / Kiro / …), and drive the constitution → specify → clarify → plan → analyze → tasks → checklist → implement pipeline. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit` |
+| `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo`, `ooo + cli-anything` | Composition wrapper for `spec-kit` × `ooo` × `cli-anything` — Write → Freeze → Run, verified: author the spec with `/speckit.*`, freeze it as an immutable ooo seed (machine-checkable acceptance criteria, tool-naming constraints), arm the loop with CLI-Hub harnesses, and run/ralph ↔ evaluate with artifact-level `--json` evidence; routes single-layer work to `spec-kit`/`ooo`/`cli-anything`. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack` |
 | `bmad-gds` | `bmad-gds` | Game-production orchestrator for ideas, GDDs, playtest notes, bugs, and launch beats |
 | `bmad-idea` | `bmad-idea` | Pre-planning idea router for product, GTM, consulting, and game concepts → choose one framing mode and one concept artifact |
 | `browser-harness` | `browser-harness`, `self-healing browser`, `llm browser automation`, `cdp agent`, `chrome devtools agent`, `codex browser`, `antigravity browser`, `claude screenshot error`, `claude image error` | Self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode — replaces agent-browser for clean browser verification, uses agent-editable `agent_helpers.py` and domain skills, and documents Claude-safe screenshot handling |

@@ -189,6 +189,49 @@
         }
       ]
     },
+    "spec-stack": {
+      "source": "akillness/oh-my-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "spec-stack",
+      "description": "spec-kit × ooo × cli-anything 조합 스택 — spec-kit이 스펙을 쓰고, ooo가 불변 seed로 동결해 검증 통과까지 루프를 돌리고, cli-anything이 --json 증거를 내는 agent-native CLI harness를 공급한다. full-stack / loop-only / docs-only 세 패턴과 단방향 spec → seed 흐름.",
+      "tags": [
+        "spec-stack",
+        "spec-kit",
+        "ooo",
+        "cli-anything",
+        "spec-driven",
+        "verification",
+        "loop",
+        "seed",
+        "composition"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack",
+      "addedAt": "2026-06-11T00:00:00Z",
+      "updatedAt": "2026-06-11T00:00:00Z",
+      "extensions": [
+        {
+          "skill": "spec-kit",
+          "status": "required",
+          "reason": "Owns the spec layer — /speckit.* authoring feeds the seed interview."
+        },
+        {
+          "skill": "ooo",
+          "status": "required",
+          "reason": "Owns the loop layer — immutable seed, drift measurement, verify-before-done."
+        },
+        {
+          "skill": "cli-anything",
+          "status": "recommended",
+          "reason": "Owns the tool layer when real software is in scope — CLI-Hub harnesses provide --json evaluate evidence."
+        },
+        {
+          "skill": "plannotator",
+          "status": "optional",
+          "reason": "Human approval gate between seed freeze and the run loop on level 2+ work."
+        }
+      ]
+    },
     "survey": {
       "source": "akillness/oh-my-skills",
       "sourceType": "github",
