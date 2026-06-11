@@ -31,28 +31,45 @@ def parse_frontmatter(content: str):
     return fm_str, body
 
 
-def list_to_csv(val: str) -> str:
-    """Convert YAML array string or plain string to CSV."""
+def unquote(val: str) -> str:
+    """Strip surrounding double then single quotes from a scalar."""
+    return val.strip('"').strip("'")
+
+
+def yaml_list_to_delimited(val: str, sep: str) -> str:
+    """Convert a YAML flow-array string to a sep-joined string.
+
+    Plain (non-array) strings are returned unquoted.
+    """
     v = val.strip()
     if v.startswith('[') and v.endswith(']'):
         inner = v[1:-1].strip()
         if not inner:
             return ''
-        items = [x.strip().strip('"').strip("'") for x in inner.split(',')]
-        return ', '.join(x for x in items if x)
-    return v.strip('"').strip("'")
+        items = [unquote(x.strip()) for x in inner.split(',')]
+        return sep.join(x for x in items if x)
+    return unquote(v)
 
 
-def allowed_tools_to_space(val: str) -> str:
-    """Convert YAML array or string to space-delimited."""
-    v = val.strip()
-    if v.startswith('[') and v.endswith(']'):
-        inner = v[1:-1].strip()
-        if not inner:
-            return ''
-        items = [x.strip().strip('"').strip("'") for x in inner.split(',')]
-        return ' '.join(x for x in items if x)
-    return v.strip('"').strip("'")
+def extract_mapping_block(fm_str: str, key: str):
+    """Pull a multi-line YAML mapping `key:` block out of the frontmatter.
+
+    Returns (sub_keys_dict, full_block_text_or_None, remaining_fm_str).
+    """
+    pattern = re.compile(
+        rf'^{key}:[ \t]*\n((?:[ \t]+[^\n]*\n?)+)',
+        re.MULTILINE
+    )
+    m = pattern.search(fm_str + '\n')
+    if not m:
+        return {}, None, fm_str
+    sub = {}
+    for line in m.group(1).split('\n'):
+        sm = re.match(r'\s+(\w[\w-]*)\s*:\s*(.*)', line)
+        if sm:
+            sub[sm.group(1)] = unquote(sm.group(2).strip())
+    remaining = pattern.sub('', fm_str + '\n').strip()
+    return sub, m.group(0).rstrip(), remaining
 
 
 def truncate_desc(desc: str, max_len: int = 1024) -> str:
@@ -89,20 +106,9 @@ def fix_skill(skill_dir: Path) -> dict:
 
     # ── Special pre-extraction: auto-apply block (multi-line YAML mapping) ──
     auto_apply_val = None
-    auto_apply_pattern = re.compile(
-        r'^auto-apply:[ \t]*\n((?:[ \t]+[^\n]*\n?)+)',
-        re.MULTILINE
-    )
-    m_aa = auto_apply_pattern.search(fm_str + '\n')
-    if m_aa:
+    sub, block, fm_str = extract_mapping_block(fm_str, 'auto-apply')
+    if block is not None:
         # Build a single-line summary for metadata
-        block = m_aa.group(0).rstrip()
-        # Extract sub-keys
-        sub = {}
-        for line in m_aa.group(1).split('\n'):
-            sm = re.match(r'\s+(\w[\w-]*)\s*:\s*(.*)', line)
-            if sm:
-                sub[sm.group(1)] = sm.group(2).strip().strip('"').strip("'")
         models = sub.get('models', '')
         if not models:
             # models might be a list below
@@ -124,24 +130,9 @@ def fix_skill(skill_dir: Path) -> dict:
         if ratio:
             parts.append(f"max_context_ratio: {ratio}")
         auto_apply_val = '; '.join(parts) if parts else block
-        # Remove block from fm_str for normal parsing
-        fm_str = auto_apply_pattern.sub('', fm_str + '\n').strip()
 
     # ── Special pre-extraction: metadata block ──
-    existing_metadata = {}
-    meta_pattern = re.compile(
-        r'^metadata:[ \t]*\n((?:[ \t]+[^\n]*\n?)+)',
-        re.MULTILINE
-    )
-    m_meta = meta_pattern.search(fm_str + '\n')
-    if m_meta:
-        for line in m_meta.group(1).split('\n'):
-            mm = re.match(r'\s+(\w[\w-]*)\s*:\s*(.*)', line)
-            if mm:
-                existing_metadata[mm.group(1)] = (
-                    mm.group(2).strip().strip('"').strip("'")
-                )
-        fm_str = meta_pattern.sub('', fm_str + '\n').strip()
+    existing_metadata, _, fm_str = extract_mapping_block(fm_str, 'metadata')
 
     # ── Parse remaining top-level keys ──
     top = {}
@@ -155,14 +146,14 @@ def fix_skill(skill_dir: Path) -> dict:
     new_meta = dict(existing_metadata)
 
     # name
-    raw_name = top.get('name', dir_name).strip('"').strip("'")
+    raw_name = unquote(top.get('name', dir_name))
     if raw_name != dir_name:
         changes.append(f"name: {raw_name!r} → {dir_name!r}")
         raw_name = dir_name
     new_fm['name'] = raw_name
 
     # description
-    raw_desc = top.get('description', '').strip('"').strip("'")
+    raw_desc = unquote(top.get('description', ''))
     # Handle description that was quoted with surrounding quotes
     if raw_desc.startswith('"') and raw_desc.endswith('"'):
         raw_desc = raw_desc[1:-1]
@@ -173,11 +164,11 @@ def fix_skill(skill_dir: Path) -> dict:
 
     # license
     if 'license' in top:
-        new_fm['license'] = top['license'].strip('"').strip("'")
+        new_fm['license'] = unquote(top['license'])
 
     # compatibility
     if 'compatibility' in top:
-        v = top['compatibility'].strip('"').strip("'")
+        v = unquote(top['compatibility'])
         if len(v) > 500:
             v = v[:497] + '...'
             changes.append("compatibility truncated")
@@ -185,7 +176,7 @@ def fix_skill(skill_dir: Path) -> dict:
 
     # allowed-tools
     if 'allowed-tools' in top:
-        space = allowed_tools_to_space(top['allowed-tools'])
+        space = yaml_list_to_delimited(top['allowed-tools'], ' ')
         if space:
             orig = top['allowed-tools']
             if orig != space:
@@ -209,9 +200,9 @@ def fix_skill(skill_dir: Path) -> dict:
         if field in top:
             raw = top[field]
             if field in ('tags', 'platforms'):
-                val = list_to_csv(raw)
+                val = yaml_list_to_delimited(raw, ', ')
             else:
-                val = raw.strip('"').strip("'")
+                val = unquote(raw)
             if val:
                 new_meta[meta_key] = val
                 changes.append(f"{field} → metadata.{meta_key}")

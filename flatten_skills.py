@@ -4,11 +4,10 @@ flatten_skills.py - Flatten .agent-skills structure
 Options: --mode flat | namespace
 """
 
-import os
-import shutil
-import subprocess
-from pathlib import Path
 import argparse
+import shutil
+import sys
+from pathlib import Path
 
 
 def flatten_skills(skills_dir: Path, mode: str = "flat", dry_run: bool = False):
@@ -53,7 +52,7 @@ def flatten_skills(skills_dir: Path, mode: str = "flat", dry_run: bool = False):
             if category.exists() and not list(category.iterdir()):
                 print(f"Removing empty category: {category.name}")
                 category.rmdir()
-        except:
+        except OSError:
             pass  # Already removed or not empty
 
     print(
@@ -72,6 +71,6 @@ if __name__ == "__main__":
     skills_dir = Path(args.dir)
     if not skills_dir.exists():
         print(f"Error: {skills_dir} not found")
-        exit(1)
+        sys.exit(1)
 
     flatten_skills(skills_dir, args.mode, args.dry_run)
