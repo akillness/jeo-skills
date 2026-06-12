@@ -1,0 +1,35 @@
+{
+  "skill_name": "cli-anything",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "My agent needs to edit images with GIMP without clicking through the UI. What should I do?",
+      "expected_output": "A use-the-ecosystem routing: search CLI-Hub for an existing GIMP harness and install it, rather than generating a new harness or falling back to GUI automation.",
+      "assertions": [
+        "Output recommends `cli-hub search` / `cli-hub install gimp` (registry first) before any 7-phase generation.",
+        "Output mentions installing the upstream GIMP application alongside the harness.",
+        "Output does not propose screenshot/RPA-style GUI automation."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use cli-anything to make our internal Qt desktop tool agent-controllable. It is not in any registry.",
+      "expected_output": "A generate-harness routing: install the platform plugin and run the 7-phase pipeline against the tool's source, with refine/test/validate iteration afterward.",
+      "assertions": [
+        "Output checks or mentions the registry/CLI-Hub miss before generating.",
+        "Output sequences `/plugin install cli-anything` (or platform equivalent) then `/cli-anything <path>` with the 7-phase pipeline.",
+        "Output mentions `/cli-anything:refine`, `:test`, or `:validate` as the iteration step and notes source-code access as a prerequisite."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want to design a team of specialized agents with their own skills for my data pipeline project.",
+      "expected_output": "A route-out to the `harness` skill (agent-team architecture), since this is not a software CLI wrapper request.",
+      "assertions": [
+        "Output routes to `harness` instead of running cli-anything modes.",
+        "Output explains the boundary: cli-anything wraps software in CLIs; agent-team design belongs elsewhere.",
+        "Output does not install cli-anything-hub or start the 7-phase pipeline."
+      ]
+    }
+  ]
+}

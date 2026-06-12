@@ -26,6 +26,16 @@ echo "spec-kit ref: ${SPEC_KIT_REF}"
 echo "cli-hub spec: ${CLI_ANYTHING_HUB_SPEC}"
 echo "ooo via pip:  ${SPEC_STACK_OOO:-0}"
 
+# Fast path: all requested layers already on PATH → skip network installs.
+# Set FORCE=1 to reinstall/upgrade.
+if [ "${FORCE:-0}" != "1" ] \
+  && command -v specify >/dev/null 2>&1 \
+  && command -v cli-hub >/dev/null 2>&1 \
+  && { [ "${SPEC_STACK_OOO:-0}" != "1" ] || command -v ouroboros >/dev/null 2>&1; }; then
+  echo "All stack layers already installed — set FORCE=1 to reinstall/upgrade."
+  exit 0
+fi
+
 install_pkg() {
   # $1 = pip requirement spec, $2 = optional --from source for uv tool
   local spec="$1" from="${2:-}"

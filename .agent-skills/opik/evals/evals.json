@@ -1,0 +1,35 @@
+{
+  "skill_name": "opik",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We want to trace our LangChain RAG app's LLM calls locally before buying anything. Set us up with Opik.",
+      "expected_output": "A routing brief that picks local Docker Compose (`./opik.sh`), installs/configures the Python SDK, and wires the native LangChain integration rather than hand-rolled tracking.",
+      "assertions": [
+        "Output selects the local Docker Compose server mode (`./opik.sh`) for a no-cost local start, not Kubernetes.",
+        "Output includes `pip install opik` (or uv equivalent) and `opik configure` / `opik.configure(use_local=True)`.",
+        "Output prefers the native LangChain integration over a bare `@opik.track` decorator."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "How do I stop our chatbot from hallucinating answers in production, and catch it when it does?",
+      "expected_output": "An evaluation + production-monitoring plan: LLM-as-a-judge Hallucination metric with proper context, Datasets/Experiments for offline evals, and Online Evaluation Rules on live traffic.",
+      "assertions": [
+        "Output uses the Hallucination metric with a `context` argument and warns that empty context produces misleading scores.",
+        "Output distinguishes offline Datasets/Experiments (with PyTest CI gates) from production Online Evaluation Rules.",
+        "Output does not re-run offline experiments against live traffic as the production mechanism."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our observability stack is LangSmith and we just need better service uptime dashboards.",
+      "expected_output": "A route-out: LangSmith-stack work goes to the `langsmith` skill and generic non-LLM dashboards/alerts go to `monitoring-observability`, without installing Opik.",
+      "assertions": [
+        "Output routes LangSmith-specific work to the `langsmith` skill.",
+        "Output routes uptime/non-LLM dashboards to `monitoring-observability`.",
+        "Output does not start an Opik server install for this request."
+      ]
+    }
+  ]
+}

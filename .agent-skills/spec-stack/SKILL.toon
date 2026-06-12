@@ -1,0 +1,17 @@
+N:spec-stack
+D:Compose spec-kit, ooo (Ouroboros), and cli-anything into one spec-driven delivery stack — Write (author the spec with /speckit.*), Freeze (immutable ooo seed with machine-checkable acceptance criteria), Run (loop with agent-native CLI harnesses whose --json output is the evaluate evidence) until verification passes; three patterns: full-stack, loop-only (ooo), docs-only (spec-kit), with a one-way spec.md → seed.yaml SSOT flow.
+T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
+G:spec-stack|spec stack|write freeze run|spec-kit ooo cli-anything|spec to seed|verified delivery stack
+F:Claude|Codex|Gemini|OpenCode
+S:
+  1:Pick the pattern — full-stack (spec-kit → ooo → cli-anything), loop-only (ooo), or docs-only (spec-kit)
+  2:Write — author spec.md via /speckit.constitution → /speckit.specify → /speckit.clarify
+  3:Freeze — mirror acceptance criteria into an immutable ooo seed.yaml (one-way spec → seed; never two SSOTs)
+  4:Arm — `cli-hub search/install` agent-native harnesses; their `--json` output becomes evaluate evidence
+  5:Run — ooo run/ralph ↔ evaluate loop until acceptance criteria verify (artifacts, not exit codes)
+  6:Change control — requirement changes re-enter through the spec, then re-freeze the seed
+R:
+  spec-kit:Use for docs-only SDD pipeline work
+  ooo:Use for loop-only immutable-seed execution
+  cli-anything:Use for harness install/generation alone
+  plannotator:Use for plan review/approval gates

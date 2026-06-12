@@ -1,0 +1,17 @@
+N:cli-anything
+D:Make any software agent-native with HKUDS CLI-Anything — four routed modes: install ready-made harnesses via CLI-Hub (`cli-hub list/search/info/install/launch`), give agents the cli-hub-meta-skill for autonomous discovery, generate a new harness from any codebase/repo via the 7-phase `/cli-anything` pipeline, or iterate with `:refine`/`:test`/`:validate`; 40+ harnesses, 2,461 tests, Click CLIs with REPL + `--json`.
+T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
+G:cli-anything|cli-hub|cli-anything-hub|agent-native cli|make software agent-native|cli harness generation|/cli-anything|harness refine|HKUDS cli
+F:Claude|Codex|OpenCode|OpenClaw|Pi|Hermes|Copilot
+S:
+  1:Choose the mode — use-ecosystem, empower-agents, generate-harness, or iterate-harness (registry first; building is the exception)
+  2:Use the ecosystem — `pip install cli-anything-hub` then `cli-hub search/install/launch`; install the upstream app too
+  3:Empower agents — `npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`
+  4:Generate — platform plugin (`/plugin install cli-anything`) then `/cli-anything <path-or-repo>` (7-phase pipeline)
+  5:Iterate — `/cli-anything:refine [focus]`, `:test`, `:validate` against HARNESS.md
+  6:Use the harness — `pip install -e .`, `--json` for agents, bare command for REPL
+R:
+  harness:Use for agent-team architecture (not software wrappers)
+  browser-harness:Use for no-codebase GUI/browser targets
+  ccpi-marketplace:Use for general Claude plugin browsing
+  scrapling:Use for web scraping/extraction only

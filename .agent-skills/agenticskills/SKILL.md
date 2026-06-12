@@ -15,6 +15,7 @@ compatibility: >
   ~/.codex/skills, ~/.gemini/skills, and ~/.opencode/skills via npx-skills-add).
 metadata:
   tags: agenticskills, oh-my-gods, god-skills, installer, bundle, agent-skills, multi-runtime
+  keyword: agenticskills
   version: "1.0.0"
   upstream: https://github.com/akillness/oh-my-gods
   installer: https://raw.githubusercontent.com/akillness/oh-my-gods/main/install.sh

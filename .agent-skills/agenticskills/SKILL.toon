@@ -1,0 +1,14 @@
+N:agenticskills
+D:One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ god-skills) — wraps the official install.sh with pinned URL and env knobs (PLATFORM, WITH_LANGCHAIN, INSTALL_MODE, SKIP_BACKUP) to copy the catalog into Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in one step.
+T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
+G:AgenticSkills|agenticskills|oh-my-gods|god-skills|install oh-my-gods|install gods skills|add god skills
+F:Claude|Codex|Gemini|OpenCode
+S:
+  1:Choose runtimes — PLATFORM=claude,codex,gemini,opencode (subset allowed)
+  2:Run the pinned official installer — curl-pipe or review-first download of oh-my-gods install.sh
+  3:Control behavior with env knobs — INSTALL_MODE, WITH_LANGCHAIN, SKIP_BACKUP
+  4:Verify the canonical destination ($HOME/.agent-skills) and runtime mirrors
+R:
+  skill:Use `npx skills add --skill <name>` for selective single-skill installs
+  omc:Use for Claude-side orchestration setup after the bundle lands
+  omx:Use for Codex-side runtime setup after the bundle lands

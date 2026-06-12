@@ -1,21 +1,20 @@
 ---
 name: cli-anything
 description: >
-  Make any software agent-native with HKUDS CLI-Anything — route between its
-  four working modes: install ready-made CLI harnesses through the CLI-Hub
-  package manager (`pip install cli-anything-hub`, then `cli-hub
+  Make any software agent-native with HKUDS CLI-Anything — route between
+  four modes: install ready-made CLI harnesses via the CLI-Hub package
+  manager (`pip install cli-anything-hub`, then `cli-hub
   list/search/info/install/launch`), give agents the autonomous discovery
   meta-skill (`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill`),
-  generate a brand-new CLI harness from any codebase or GitHub repo via the
-  7-phase pipeline (`/plugin install cli-anything` → `/cli-anything <path>`),
-  or iterate an existing harness with `/cli-anything:refine`, `:test`, and
-  `:validate`. 40+ production harnesses (GIMP, Blender, LibreOffice, OBS,
-  Draw.io, ComfyUI, Ollama, Godot, QGIS, FreeCAD, …) with 2,461 passing
-  tests, Click CLIs with REPL + `--json` output. Use when the user wants
-  agents to drive real desktop/server software without GUI automation.
-  Triggers on: cli-anything, cli-hub, cli-anything-hub, agent-native cli,
-  make software agent-native, cli harness generation, /cli-anything,
-  harness refine, agent computer use cli, HKUDS cli.
+  generate a new harness from any codebase or GitHub repo via the 7-phase
+  pipeline (`/plugin install cli-anything` → `/cli-anything <path>`), or
+  iterate with `/cli-anything:refine`, `:test`, `:validate`. 40+ production
+  harnesses (GIMP, Blender, LibreOffice, OBS, ComfyUI, Ollama, Godot,
+  QGIS, …), 2,461 passing tests, Click CLIs with REPL + `--json` output.
+  Use when agents must drive real desktop/server software without GUI
+  automation. Triggers on: cli-anything, cli-hub, cli-anything-hub,
+  agent-native cli, make software agent-native, cli harness generation,
+  /cli-anything, harness refine, HKUDS cli.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: >
   Cross-platform wrapper for the CLI-Anything ecosystem usable from Claude

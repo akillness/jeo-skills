@@ -1,0 +1,17 @@
+N:opik
+D:Comet Opik open-source LLM observability/evaluation/optimization — pick a server mode (Comet.com cloud, `./opik.sh` Docker Compose, Kubernetes/Helm), install + `opik configure` the Python SDK, trace via `@opik.track` or 50+ framework integrations, score with LLM-as-a-judge metrics, gate CI with Datasets/Experiments + PyTest, monitor production, and apply Agent Optimizer/Guardrails.
+T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
+G:opik|comet opik|opik configure|opik.sh|llm observability|llm tracing|llm as a judge|hallucination metric|prompt evaluation|opik dashboard|opik guardrails|agent optimizer
+F:Claude|Gemini|Codex|OpenCode
+S:
+  1:Choose server mode — Comet.com cloud, local `./opik.sh` (--infra/--backend/--guardrails), or Kubernetes/Helm
+  2:Install + configure the SDK — `pip install opik` then `opik configure` (or `opik.configure(use_local=True)`)
+  3:Log traces — native integration first (LangChain/LangGraph/OpenAI/Anthropic/...), `@opik.track` as the generic decorator
+  4:Evaluate with LLM-as-a-judge metrics (Hallucination/Moderation/AnswerRelevance/ContextPrecision) — always pass context
+  5:Run Datasets/Experiments and gate CI via the PyTest integration
+  6:Production — dashboard, Online Evaluation Rules, Agent Optimizer, Guardrails
+R:
+  langsmith:Use when the observability stack is LangSmith
+  monitoring-observability:Use for non-LLM dashboards/alerts
+  data-analysis:Use for offline KPI/metric interpretation
+  log-analysis:Use for root-cause log forensics

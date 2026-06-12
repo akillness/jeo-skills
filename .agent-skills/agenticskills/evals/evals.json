@@ -1,0 +1,35 @@
+{
+  "skill_name": "agenticskills",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Install the whole oh-my-gods skill bundle for Claude Code and Codex on my machine.",
+      "expected_output": "A one-shot install using the pinned official install.sh with PLATFORM targeting, not per-skill manual copies.",
+      "assertions": [
+        "Output uses the official akillness/oh-my-gods install.sh (pinned URL) rather than copying skills one by one.",
+        "Output scopes the install with the PLATFORM env knob (claude + codex) instead of installing for every runtime blindly.",
+        "Output mentions the review-first flow or backup behavior (SKIP_BACKUP) before overwriting."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I only want two or three specific skills from oh-my-skills, not a giant bundle.",
+      "expected_output": "A route-out to the standard `skills add --skill <name>` flow for selective installs, since agenticskills is a bundle installer.",
+      "assertions": [
+        "Output does not run the oh-my-gods bundle installer for a selective request.",
+        "Output points to `npx skills add ... --skill <name>` (or equivalent selective flow).",
+        "Output names the boundary: agenticskills = full oh-my-gods bundle only."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The bundle install failed halfway on my Linux box. Re-run it safely.",
+      "expected_output": "A safe re-run: the installer is idempotent, use INSTALL_MODE/SKIP_BACKUP knobs deliberately, and verify the canonical destination afterward.",
+      "assertions": [
+        "Output re-runs the official installer rather than hand-patching half-installed folders.",
+        "Output references the env knobs (PLATFORM, INSTALL_MODE, WITH_LANGCHAIN, or SKIP_BACKUP) for controlled behavior.",
+        "Output verifies the canonical destination ($HOME/.agent-skills or runtime mirrors) after the re-run."
+      ]
+    }
+  ]
+}

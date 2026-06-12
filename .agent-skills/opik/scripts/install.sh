@@ -24,6 +24,13 @@ OPIK_DIR="${OPIK_DIR:-./opik}"
 echo "=== opik installer ==="
 echo "mode: ${OPIK_INSTALL_MODE}"
 
+# Fast path: SDK already installed → skip network install (FORCE=1 to upgrade).
+if [ "${FORCE:-0}" != "1" ] && [ "${OPIK_INSTALL_MODE}" = "sdk" ] \
+  && command -v opik >/dev/null 2>&1; then
+  echo "opik already installed ($(opik --version 2>/dev/null || echo unknown)) — set FORCE=1 to upgrade."
+  exit 0
+fi
+
 echo "[1/2] Installing the opik Python SDK"
 if [ -n "${VIRTUAL_ENV:-}" ]; then
   # Active venv: install the importable SDK into it

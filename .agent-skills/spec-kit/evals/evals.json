@@ -1,0 +1,35 @@
+{
+  "skill_name": "spec-kit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up GitHub spec-kit for our new project. We use Claude Code.",
+      "expected_output": "An install + init flow: install specify-cli via uv tool (pinnable ref), run `specify init` with the claude integration, then start the SDD command pipeline from /speckit.constitution.",
+      "assertions": [
+        "Output installs specify-cli via `uv tool install ... --from git+https://github.com/github/spec-kit.git` (or pipx fallback) and mentions ref pinning for reproducibility.",
+        "Output runs `specify init` with `--integration claude` (not a different agent).",
+        "Output starts the pipeline at `/speckit.constitution` before `/speckit.specify`."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our spec has open questions but the team wants to jump straight to /speckit.plan. What order should we follow?",
+      "expected_output": "Guidance to run /speckit.clarify before /speckit.plan, keeping the constitution authoritative, and using /speckit.analyze before tasks/implement.",
+      "assertions": [
+        "Output inserts `/speckit.clarify` before `/speckit.plan` when the spec is ambiguous.",
+        "Output keeps `/speckit.constitution` as the load-bearing artifact that plan/tasks must honor.",
+        "Output places `/speckit.analyze` (consistency check) before `/speckit.tasks` / `/speckit.implement`."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want a vendor-neutral spec-first loop with an immutable seed and drift tracking, not GitHub's pipeline.",
+      "expected_output": "A route-out to `ooo` (Ouroboros) for the vendor-neutral spec-first control loop, instead of forcing spec-kit.",
+      "assertions": [
+        "Output routes to the `ooo` skill for immutable-seed, drift-aware loops.",
+        "Output does not run `specify init` or the /speckit.* pipeline for this request.",
+        "Output names the boundary: spec-kit owns GitHub's SDD pipeline; ooo owns the vendor-neutral loop."
+      ]
+    }
+  ]
+}

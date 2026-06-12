@@ -1,0 +1,16 @@
+N:spec-kit
+D:GitHub Spec-Driven Development via the `specify` CLI — install specify-cli (uv tool, pinnable ref), bootstrap a project for one of 30+ AI agents (claude/copilot/gemini/codex/cursor/opencode/qwen/kiro/...), and drive the constitution → specify → clarify → plan → analyze → tasks → checklist → implement pipeline.
+T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
+G:spec-kit|speckit|specify|specify init|spec-driven|SDD|/speckit|executable spec
+F:Claude|Copilot|Gemini|Codex|Cursor|OpenCode|Qwen|Kiro
+S:
+  1:Install — `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git[@ref]` (pipx fallback); pin a ref for reproducibility
+  2:Pick the agent — `specify integration list`
+  3:Init — `specify init <dir> --integration <agent>` (or `--here --force`)
+  4:Pipeline — /speckit.constitution → /speckit.specify → (/speckit.clarify) → /speckit.plan → (/speckit.analyze) → /speckit.tasks → (/speckit.checklist) → /speckit.implement
+  5:Extensions/presets — `specify extension|preset search/add`
+R:
+  ooo:Use for a vendor-neutral spec-first loop with immutable seed and drift tracking
+  bmad:Use for packet-first BMAD/BMM artifact routing
+  plannotator:Use for review/approval of an existing plan
+  bmad-idea:Use for pre-planning concept framing
