@@ -51,24 +51,52 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 
 ## 🏗 Architecture
 
+The repository's signature flow: **search compactly → make knowledge durable →
+build spec-first → run autonomously → feed results back**. Each box is a real
+skill in this catalog.
+
 ```mermaid
 graph TD
-    OOO["🎯 OOO\nSpec-First Control"] --> PLAN["📋 PLAN\nplannotator + bmad"]
-    OOO --> EXEC["⚡ EXECUTE\nteam / bmad"]
-    OOO --> VERIFY["🔍 VERIFY\nbrowser-harness"]
-    OOO --> UI["🎨 VERIFY_UI\nagentation"]
-    OOO --> CLEAN["🧹 CLEANUP\nworktree"]
+    subgraph SEARCH["🔎 Search &amp; Context"]
+        RTK["rtk<br/>token-compact shell"]
+        SEMBLE["semble<br/>semantic code search"]
+    end
+    subgraph KNOW["🧠 Durable Knowledge"]
+        GRAPHIFY["graphify<br/>knowledge graph"]
+        LLMWIKI["llm-wiki<br/>sources → wiki"]
+        OBSIDIAN["obsidian<br/>vault automation"]
+    end
+    subgraph SPEC["📐 Spec-First Build"]
+        OOO["ooo<br/>immutable seed loop"]
+        SPECSTACK["spec-stack<br/>write → freeze → run"]
+        PONYTAIL["ponytail<br/>least-code guard"]
+    end
+    subgraph RUN["🚀 Autonomous Runtime"]
+        AUTOPILOT["autopilot<br/>idea → verified"]
+        DEEPINIT["deepinit<br/>AGENTS.md context"]
+        DEEPDIVE["deep-dive<br/>trace → interview"]
+    end
+    subgraph VENDORS["🤝 Cross-Runtime"]
+        OMC["omc · Claude Code"]
+        OHMG["ohmg · Gemini CLI"]
+        OMX["omx · Codex CLI"]
+    end
 
-    PLAN --> OMC["omc\nClaude Code"]
-    PLAN --> OHMG["ohmg\nGemini CLI"]
-    PLAN --> OMX["omx\nCodex CLI"]
-
-    SURVEY["🔭 survey"] -.-> OOO
-    GRAPHIFY["📊 graphify"] -.-> EXEC
-    AUTORESEARCH["🔬 autoresearch"] -.-> EXEC
+    RTK --> SEMBLE --> GRAPHIFY
+    GRAPHIFY --> LLMWIKI --> OBSIDIAN
+    OBSIDIAN -.->|context| OOO
+    DEEPINIT -.->|AGENTS.md| OOO
+    DEEPDIVE -.->|evidence| OOO
+    OOO --> SPECSTACK --> PONYTAIL --> AUTOPILOT
+    AUTOPILOT --> OMC
+    AUTOPILOT --> OHMG
+    AUTOPILOT --> OMX
+    AUTOPILOT -.->|results| GRAPHIFY
 ```
 
 ---
+
+<!-- WHATS-NEW:START -->
 
 ## 🆕 What's New in v2026-06-15
 
@@ -102,159 +130,9 @@ graph TD
 |--------|---------|
 | **agenticskills: one-shot installer for the oh-my-gods bundle** | Added `agenticskills` — a portable skill that wraps the official [`akillness/oh-my-gods`](https://github.com/akillness/oh-my-gods) `install.sh` so the 80+ `.god-skills/` catalog (agent-browser, agent-workflow, ai-research-skills, api-design, …) can be installed across Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in a single command. Exposes the upstream env knobs (`PLATFORM`, `WITH_LANGCHAIN`, `INSTALL_MODE`, `SKIP_BACKUP`), documents the curl-pipe and review-first flows, and lives alongside the existing skills without destructive overlap. Triggers on: `AgenticSkills`, `oh-my-gods`, `god-skills`, install gods skills. |
 
-## 🆕 What's New in v2026-05-31
+> 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 
-| Change | Details |
-|--------|---------|
-| **Knowledge Pipeline enforcement (prompt → graphify → llm-wiki)** | `setup-all-skills-prompt.md` Step 6 now installs the prompt-capture pipeline at install time. Every user prompt routed through Claude Code (`UserPromptSubmit`), Codex (`UserPromptSubmit` via `~/.codex/config.toml`), and Antigravity/Gemini (`BeforeAgent` via `~/.gemini/settings.json`) is captured into the canonical vault at `~/vaults/llm-wiki/` (Obsidian-managed). The shared ingest script lives at `hooks/ingest-prompt.py`; per-agent thin wrappers forward stdin and `graphify` rebuilds the structural graph when `graphifyy` is importable. Rules are also injected into `CLAUDE.md`, `AGENTS.md`, and `GEMINI.md` so agents read `~/vaults/llm-wiki/index.md` first on every query. Override the vault path with `LLM_WIKI_VAULT`. |
-
-## 🆕 What's New in v2026-05-19
-
-| Change | Details |
-|--------|---------|
-| **Autopilot parity for Codex and Antigravity** | Updated `omc`, `omx`, and `ohmg` so Claude `/autopilot` and `autopilot:` intent maps to Codex/OMX `$autopilot` and Gemini/Antigravity/OMA `/plan` → `/work`, with `/orchestrate` or `oma agent:parallel` reserved for explicit parallel lanes. Synced runtime references, evals, validator coverage, setup docs, and catalog metadata. |
-| **OMC workflow parity for Codex and Antigravity** | Updated `omc`, `omx`, and `ohmg` so Claude workflows `/team`, `/ultrawork`, and `/ultraqa` have documented Codex/OMX and Gemini/Antigravity/OMA equivalents. Added cross-runtime references and a validator covering `$team`, `$ulw`, `$ultraqa`, OMA `/orchestrate`, `/ultrawork`, `/review`, and `oma agent:parallel` boundaries. |
-| **deep-dive/deepinit cross-runtime hardening** | Strengthened `deep-dive` so the same trace → interview → handoff contract works through Claude/OMC, Codex/OMX, and Gemini/Antigravity/OMA, with a new runtime adapter reference and artifact validator. Strengthened `deepinit` with runtime-state exclusion, manual-note preservation, and AGENTS.md hierarchy validation. |
-| **agent-browser removed; browser-harness promoted** | Removed `agent-browser` and promoted `browser-harness` as the browser verification and autonomous browser automation lane. The strengthened `browser-harness` skill now documents Codex and Antigravity execution, Chrome CDP setup, and the Claude-safe screenshot patch that avoids PIL file-handle and image resize errors. 129 → **128 skills**. |
-| **semble: token-efficient code search for agents** | Added `semble` — a fast, accurate code search library that returns only the relevant code snippets agents need, using ~98% fewer tokens than grep+read. Indexes any local or remote repository in ~250ms entirely on CPU (no GPU or API key needed). Supports natural-language and symbol queries, semantic similar-code discovery (`find-related`), and MCP server integration for Claude Code, Codex, Cursor, and OpenCode. Python library and CLI both available. Plugin: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`. Source: [MinishLab/semble](https://github.com/MinishLab/semble). |
-| **jeo removed: orchestration consolidated into ooo + bmad** | Removed the `jeo` skill and its associated hooks (`ExitPlanMode` plan-gate, `UserPromptSubmit` agentation). Orchestration is now handled by `ooo` (spec-first control loop), `bmad` (planning/routing), and `plannotator` (review gate). 128 → **127 skills**. |
-
-## 🆕 What's New in v2026-05-04 (mattpocock skills integration)
-
-| Change | Details |
-|--------|---------|
-| **15 new skills from mattpocock/skills** | Integrated Matt Pocock's engineering skills collection (58k+ GitHub stars). New skills: `diagnose` (systematic 6-phase debugging), `tdd` (red-green-refactor vertical slices), `grill-with-docs` (design review with domain docs), `triage` (issue state machine), `improve-codebase-architecture` (deepening opportunities), `to-issues` (plan→tickets), `to-prd` (PRD generation), `zoom-out` (architectural perspective), `caveman` (~75% token reduction mode), `grill-me` (plan stress-testing), `write-a-skill` (skill creation framework), `git-guardrails-claude-code` (destructive git prevention), `setup-pre-commit` (Husky/lint-staged), `scaffold-exercises` (educational structure), `migrate-to-shoehorn` (type-safe test assertions). 98 → **113 skills**. Source: [mattpocock/skills](https://github.com/mattpocock/skills). |
-| **obsidian: unified Obsidian skill (v2.0)** | Merged `obsidian-plugin` and `obsidian-cli` into a single unified `obsidian` skill incorporating [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) content. Covers plugin development (27 ESLint rules, boilerplate, accessibility, submission), desktop CLI automation (commands, TUI, URI handoff, developer mode), and Obsidian content patterns (markdown, Bases, JSON Canvas, Defuddle). Plugin-installable: `claude plugin marketplace add akillness/oh-my-skills`. 113 → **114 skills**. |
-
-## 🆕 What's New in v2026-05-04
-
-| Change | Details |
-|--------|---------|
-| **agentic-skills: production engineering framework** | Added `agentic-skills` — a production-grade engineering skill that encodes Google-proven workflows and quality gates for AI coding agents. Covers spec-driven development (`/spec`), task planning (`/plan`), incremental TDD (`/build`), browser verification (`/test`), five-axis code review (`/review`), behavior-preserving simplification (`/code-simplify`), and disciplined git/CI/CD shipping (`/ship`). Draws from *Software Engineering at Google* (Hyrum's Law, Chesterton's Fence, Shift Left, trunk-based development). Plugin install: `/plugin marketplace add addyosmani/agent-skills`. 95 → **96 skills**. |
-| **open-design: local-first design artifact generation** | Added `open-design` — an open-source alternative to Anthropic's Claude Design that generates web/mobile/desktop prototypes, presentation decks, and media artifacts using locally-installed coding agents. Features 72 built-in design systems (Linear, Stripe, Vercel, Notion, Apple, etc.), 5 visual directions, multi-format export (HTML/PDF/PPTX/ZIP/Markdown), and AI media generation via gpt-image-2, Seedance 2.0, and HyperFrames. Supports 93 prompt templates. Plugin: `claude plugin marketplace add nexu-io/open-design`. 97 → **98 skills**. |
-| **browser-harness: self-healing LLM browser automation** | Added `browser-harness` — a self-healing framework that connects LLMs directly to Chrome via Chrome DevTools Protocol (CDP). The agent writes and improves `agent_helpers.py` helper code during execution, contributing to a community library of domain skills (site-specific playbooks). Optional Browser Use Cloud integration for concurrent browsers, residential proxies, and captcha solving. Setup via Claude Code prompt: "Set up https://github.com/browser-use/browser-harness for me". Source: [browser-use/browser-harness](https://github.com/browser-use/browser-harness). 126 → **127 skills**. |
-
-## 🆕 What's New in v2026-04-18
-
-| Change | Details |
-|--------|---------|
-| **plannotator: review-packet structural hardening** | Tightened `plannotator` into a routing-first visual approval gate for concrete plans, markdown specs, and diffs. It now chooses one primary packet (`plan-review`, `diff-review`, `markdown-review`, `platform-setup`, or `troubleshooting`), adds `references/intake-packets-and-route-outs.md`, updates platform/troubleshooting guidance around native-hook vs manual-review reality, expands `evals/evals.json` with markdown-review and Codex setup truthfulness cases, and syncs compact/setup/manifest wording so discovery surfaces stop overselling it as a generic plan-only or code-review tool. |
-| **skill-autoresearch: packet-first structural hardening** | Tightened `skill-autoresearch` into a smaller repo-local ratcheting front door. It now chooses one packet (`ratchet-eligibility`, `benchmark-readiness`, `charter-freeze`, `baseline-score`, `one-change-mutation`, `support-sync`, `final-report`, or `route-out`), allows `no ratchet justified` before mutation churn, adds `references/run-packets-and-route-outs.md`, expands `evals/evals.json`, and syncs compact/manifest/setup wording so the repo advertises `skill-autoresearch` as the local benchmark-and-ratchet layer instead of a generic eval tool. |
-| **graphify: live-skill promotion + structural hardening** | Promoted `graphify` from the hidden nested `utilities/graphify` folder into the live top-level skill catalog, tightened it into a routing-first graph front door, added `references/mode-packets-and-route-outs.md` plus `references/build-and-fallback-recipes.md`, added `SKILL.toon`, refreshed `evals/evals.json`, and synced README/setup/manifest surfaces so the durable graph lane is actually installable and discoverable. |
-| **looker-studio-bigquery: packet-first structural hardening** | Tightened `looker-studio-bigquery` into a smaller reporting front door. It now starts from one packet (`dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, or `exec-handoff`), adds `references/intake-packets-and-route-outs.md`, expands `evals/evals.json` with a Connected Sheets / exec-handoff case, and syncs `SKILL.toon` / `skills.toon` / `skills.json` plus README/setup wording so the repo advertises the BigQuery reporting lane as packet-first instead of a long BI feature tour. |
-| **web-accessibility: routing-first structural hardening** | Tightened `web-accessibility` into a smaller routing-first remediation anchor. It now starts from one primary accessibility packet (`semantics-structure`, `keyboard-focus`, `labels-announcements`, `visual-perception-reflow`, `media-alternatives`, or `routed-navigation-feedback`), adds `references/intake-packets-and-route-outs.md`, expands `evals/evals.json` with routed-app and responsive-boundary cases, and syncs `SKILL.toon` / `skills.toon` / `skills.json` plus README/setup wording so discovery surfaces stop drifting back to a generic WCAG/ARIA tutorial. |
-| **marketing-automation: operator-packet ratchet** | Tightened `marketing-automation` so the broad marketing front door now resolves vague asks into one operating mode, one primary lane, and one reusable operator packet with owner, dependencies/approvals, and proof instead of just a tactic list. Added `references/operator-packet-and-proof-stack.md`, expanded `evals/evals.json` with a legal/analytics dependency case, and synced `SKILL.toon` / manifest wording plus README/setup discovery surfaces so the repo advertises the sharper packet contract truthfully. |
-| **sprint-retrospective: structural hardening** | Tightened `sprint-retrospective` into a routing-first PM anchor for sprint retros, milestone postmortems, remote/hybrid facilitation, and dead-action-item recovery across software, product/ops, marketing/GTM, and game-delivery work. The front door now picks one retrospective mode, reviews prior commitments before new actions, keeps action counts brutally small, routes planning/sizing/daily-sync work outward, and adds `references/action-review-and-packet-shapes.md`, refreshed `evals/evals.json`, and synced compact/manifest discovery wording. |
-| **autoresearch: routing-first structural hardening** | Tightened `autoresearch` into a smaller Karpathy ML search front door. It now chooses one mode (`setup readiness`, `program.md` authoring, bounded run loop, results interpretation, or constrained-hardware adaptation), keeps the immutable `prepare.py` / 300-second / `val_bpb` contract explicit, adds `references/operating-modes-and-route-outs.md`, refreshes `evals/evals.json`, and sharpens route-outs to `skill-autoresearch` plus app-level eval / observability tools instead of acting like a giant end-to-end explainer. |
-
-## 🆕 What's New in v2026-04-20
-
-| Change | Details |
-|--------|---------|
-| **testing-strategies: gate-truth handoff ratchet** | Tightened `testing-strategies` around **which gate is actually being decided** before expanding into layer talk. It now names `merge-gate-truth`, `release-gate-truth`, or `scheduled-breadth-truth`, adds `references/gate-truth-and-release-handovers.md`, expands `evals/evals.json` with protected-branch and Steam/build-checklist boundary cases, refreshes `SKILL.toon`, and syncs README/setup/manifest wording so the skill stops blurring PR blockers with release-only or platform-launch proof. |
-| **steam-store-launch-ops: packet-first structural hardening** | Tightened `steam-store-launch-ops` into a smaller packet-first Steam launch router. It now chooses one primary packet (`page-promise-audit`, `wishlist-signal-check`, `demo-readiness-gate`, `event-timing-workback`, or `launch-ops-runbook`), adds `references/intake-packets-and-route-outs.md`, expands `evals/evals.json` with route-out and broad-GTM boundary cases, refreshes `SKILL.toon`, and syncs README/setup/manifest wording so the game lane stays Steam-specific instead of drifting into generic marketing or demo-feedback work. |
-
-## 🆕 What's New in v2026-04-17
-
-| Change | Details |
-|--------|---------|
-| **steam-store-launch-ops: bottleneck-router hardening** | Tightened `steam-store-launch-ops` into a diagnosis-first Steam launch/store router for indie games. It now separates `visibility-acquisition`, `promise-clarity`, `proof-demo-readiness`, `timing-hook-fit`, and `launch-ops-readiness`; makes the current hook explicit (coming-soon page, wishlist anomaly, demo decision, Next Fest, or launch window); recommends one intervention and one next artifact instead of a generic marketing dump; and adds `references/diagnostic-model.md`, `references/event-hooks.md`, refreshed `evals/evals.json`, and synced `SKILL.toon` without adding a duplicate game-marketing skill. |
-
-## 🆕 What's New in v2026-04-15
-
-| Change | Details |
-|--------|---------|
-| **game-performance-profiler: routing-first structural hardening** | Tightened `game-performance-profiler` into a smaller bottleneck-first profiling front door. It now leans on `references/mode-selection-and-route-outs.md` plus the existing packet/device/escalation references, keeps one output contract (`Game Performance Profiling Brief`), adds a build-failure route-out eval case, and sharpens discovery wording around quick packets, benchmark routes, target-device review, and deliberate profiler escalation instead of a giant optimization essay. |
-| **agentation: UI annotation router rewrite** | Reframed `agentation` from a monolithic install/config catalog into the planning-review lane's exact rendered-UI feedback router. It now chooses among copy-paste review, synced watch-loop, self-driving critique, and platform-setup modes; keeps route-outs explicit to `browser-harness`, `playwriter`, and `plannotator`; adds `references/modes-and-routing.md`, `references/platform-setup-and-hooks.md`, `references/watch-loop-and-self-driving.md`, and `evals/evals.json`; and fixes top-level discovery surfaces so the repo now consistently advertises **89 skills**. |
-| **git-submodule: routing-first structural hardening** | Tightened `git-submodule` into a smaller operator front door. It still chooses submodule vs subtree/vendoring/package delivery first, but now pushes mode-specific packets into `references/mode-packets-and-hosted-constraints.md`, adds a hosted-platform boundary for GitHub Pages public-`https://` submodule limits, extends eval coverage with that hosted-constraint case, and refreshes discovery wording so recursive bootstrap, pointer updates, detached-HEAD handling, CI auth, and hosted checkout limits stay visible without turning the skill back into a giant command catalog. |
-| **bmad-idea: pre-planning concept-router rewrite** | Reframed `bmad-idea` from a legacy BMAD-CIS command/persona catalog into the repository's pre-planning idea router. It now normalizes early-stage product, GTM, consulting, and game packets; chooses one framing mode (`problem framing`, `audience and value framing`, `concept shaping`, `game concept framing`, or `story packaging`); produces one reusable concept artifact; routes cleanly to `bmad`, `task-planning`, `marketing-automation`, or `bmad-gds`; and ships `references/operating-modes.md`, `references/handoff-boundaries.md`, `references/concept-packet-template.md`, and `evals/evals.json` without increasing the skill count. |
-| **genkit: packet-first structural hardening** | Tightened `genkit` into a smaller routing-first backend AI workflow anchor. It now starts from the current packet (new capability, existing route handler, deployed flow quality, runtime/deploy, or comparison/fallback), adds `references/intake-packets-and-fallbacks.md`, expands the mode selector with `comparison-or-fallback`, keeps plain SDK / route-handler and durable-workflow fallbacks visible, extends eval coverage with a thin-route boundary case, and syncs `SKILL.toon` / `skills.toon` / `skills.json` wording so discovery surfaces stay aligned with the server-owned workflow contract instead of drifting back to a generic full-stack AI framework pitch. |
-| **firebase-ai-logic: client-integration support hardening** | Upgraded `firebase-ai-logic` from a thin companion note into the Firebase lane's **app/client integration anchor**. It now chooses among direct feature fit, app wiring, production hardening, and escalation-boundary modes; adds `references/modes-and-routing.md`, `references/production-controls.md`, `references/feature-packets.md`, and `evals/evals.json`; makes route-outs explicit to `genkit` for backend workflows and `firebase-cli` for operator tasks; and removes stale setup guidance that previously blurred app SDK work with backend orchestration. |
-
-## 🆕 What's New in v2026-04-14
-
-| Change | Details |
-|--------|---------|
-| **npm-git-install: packet-first hardening** | Tightened `npm-git-install` into a smaller routing-first package-delivery anchor. It now starts from the packet teams actually have (temporary bridge, shared bridge, private-auth, artifact fallback, workspace inner loop, or durable distribution), adds `references/intake-packets-and-route-outs.md`, expands eval coverage with a shared internal tooling case, and syncs `SKILL.toon` / `skills.toon` / `skills.json` wording so compact discovery surfaces stop drifting back to stale generic Git-install language. |
-| **web-design-guidelines: UI-audit rewrite** | Reframed `web-design-guidelines` from a thin Vercel-rules fetcher into the frontend cluster's broad interface audit anchor for launch-readiness, polish/consistency, flow-friction, heuristic, and rule-overlay reviews. It now classifies findings across hierarchy, clarity, states, responsiveness basics, accessibility basics, and performance/trust signals; adds explicit route-outs to `web-accessibility`, `responsive-design`, `ui-component-patterns`, `design-system`, and `react-best-practices`; and ships `references/review-modes-and-categories.md`, `references/handoff-boundaries.md`, `references/ui-audit-packet-template.md`, and `evals/evals.json` without increasing the skill count. |
-| **monitoring-observability: packet-first hardening** | Tightened `monitoring-observability` into a smaller routing-first observability anchor. It now starts from the packet teams actually have (service-health, telemetry-foundation, dashboard/alert audit, data-pipeline trust, or game live-ops visibility), adds `references/intake-packets-and-route-outs.md`, expands eval coverage with review-audit and deployment-route-out cases, and syncs `SKILL.toon` / `skills.toon` / `skills.json` wording so compact discovery surfaces stop drifting back to the old generic monitoring-setup behavior. |
-| **performance-optimization: artifact-first hardening** | Tightened `performance-optimization` into an artifact-first measurement-led tuning anchor. It now starts from the packet teams actually have (trace, Lighthouse/CWV report, query plan, load-test diff, profiler output, or stakeholder report), adds `references/intake-packets-and-escalations.md`, sharpens route-outs to `monitoring-observability`, `debugging`, `code-refactoring`, `testing-strategies`, and `game-performance-profiler`, expands eval coverage for marketing/CWV and CI benchmark cases, and syncs compact/discovery wording so the front door no longer drifts back to stale generic optimization language. |
-| **code-refactoring: packet-first structural hardening** | Tightened `code-refactoring` into a smaller routing-first cleanup anchor. It now starts from the cleanup packet teams actually have (local cleanup, fragile legacy area, repeated migration / codemod, or cleanup-heavy diff shaping), adds `references/intake-packets-and-route-outs.md`, expands eval coverage with a search-first blast-radius route-out, and syncs `SKILL.toon` / `skills.toon` / `skills.json` so compact discovery no longer advertises a stale generic DRY/SOLID design-pattern helper. |
-| **changelog-maintenance: packet-first hardening** | Tightened `changelog-maintenance` into a smaller routing-first release-writing anchor. It now chooses one primary mode plus the smallest truthful output packet (`single-entry`, `summary-plus-links`, `migration-brief`, `patch-note-brief`, or `sync-packet`), adds `references/output-packets-and-channel-handoffs.md`, expands eval coverage with a release-notes + migration-window + sync-followups case, and syncs compact/discovery wording so the skill no longer drifts back to a generic changelog / semver template dump. |
-
-## 🆕 What's New in v2026-04-20
-
-| Change | Details |
-|--------|---------|
-| **backend-testing: packet-first structural hardening** | Tightened `backend-testing` into a packet-first backend test router. It now starts by classifying one backend testing packet (`coverage-plan`, `fixture-and-reset-plan`, `contract-and-api-checks`, `flake-stabilization`, or `execution-lane-split`), adds `references/intake-packets-and-route-outs.md`, expands eval coverage with a contract-protection case, and syncs `SKILL.toon` / README / setup / manifest wording so the skill stops drifting back to a generic “write some backend tests” catch-all. |
-
-## 🆕 What's New in v2026-04-19
-
-| Change | Details |
-|--------|---------|
-| **omc: routing-first structural hardening** | Tightened `omc` into a smaller Claude-first orchestration router. It now distinguishes plugin slash skills (`/team`, `/autopilot`, `/ralph`, `/ultrawork`) from the shell-side `omc` CLI (`omc setup`, `omc team`, `omc ask`), adds `references/intake-packets-and-route-outs.md`, refreshes eval coverage for plugin-vs-CLI and recovery cases, updates the detailed `docs/omc/README.md` guide to stop using stale `/omc:*` examples, and syncs README/setup/manifest discovery wording so users see OMC as a truthful runtime router instead of a giant command catalog. |
-| **ui-component-patterns: structural hardening** | Tightened `ui-component-patterns` into a routing-first reusable-component architecture skill. It now classifies one primary packet (`primitive-boundary`, `slot-anatomy`, `controlled-ownership`, `alternate-root-composition`, or `docs-verification`) before suggesting props, adds `references/intake-packets-and-route-outs.md`, expands eval coverage with alternate-root and Storybook/docs-verification cases, refreshes `SKILL.toon` / manifest discovery wording, and keeps `design-system`, `web-accessibility`, `responsive-design`, `state-management`, and `react-best-practices` as explicit route-outs instead of drifting back to a generic component-best-practices catch-all. |
-| **responsive-design: structural hardening** | Tightened `responsive-design` into a routing-first responsive strategy skill that chooses one primary packet (`page-layout`, `component-slot`, `dense-data`, `media-behavior`, or `verification-reflow`) before suggesting CSS. The skill now moves packet routing into `references/intake-packets-and-route-outs.md`, expands eval coverage with a launch-readiness boundary case, refreshes `SKILL.toon` / manifest discovery surfaces, and keeps `ui-component-patterns`, `web-accessibility`, `design-system`, and `web-design-guidelines` as explicit route-outs instead of letting responsive work sprawl into a generic frontend catch-all. |
-| **testing-strategies: structural hardening** | Tightened `testing-strategies` into a packet-first validation-policy router. It now starts from one policy packet (`change-risk`, `gate-design`, `flake-cost`, `release-readiness`, or `incident-ratchet`), adds `references/intake-packets-and-route-outs.md`, expands eval coverage with release-readiness and accessibility-boundary cases, refreshes `SKILL.toon` / manifest discovery wording, and keeps `backend-testing`, `debugging`, `code-review`, `web-accessibility`, and `performance-optimization` as explicit route-outs instead of drifting back into a giant generic testing manifesto. |
-
-## 🆕 What's New in v2026-04-13
-
-| Change | Details |
-|--------|---------|
-| **responsive-design: layout-adaptation rewrite** | Reframed `responsive-design` from a long generic CSS example dump into the frontend cluster's mobile-first, container-aware layout adaptation skill. It now classifies viewport-vs-container failures, prioritizes intrinsic layout before breakpoint sprawl, adds explicit route-outs to `ui-component-patterns`, `web-accessibility`, `design-system`, and `web-design-guidelines`, and ships `references/layout-decision-checklist.md`, `references/handoff-boundaries.md`, and `evals/evals.json` without increasing the skill count. |
-
-## 🆕 What's New in v2026-04-12
-
-| Change | Details |
-|--------|---------|
-| **bmad: packet-first BMAD router ratchet** | Tightened `bmad` into a packet-first BMAD/BMM front door. It now starts from the packet already in hand (idea notes, PRD, architecture draft, review feedback, brownfield repo state, or milestone pressure), chooses one next artifact or gate, keeps review/runtime boundaries explicit, adds `references/intake-packets-and-route-outs.md`, expands evals with a brownfield mixed-state case, and refreshes discovery wording so `bmad` stops reading like a generic phase catalog. |
-| **bmad-gds: game producer/orchestration rewrite** | Reframed `bmad-gds` from a generic phase catalog into a practical game-production coordination skill. It now acts as the repo's game-cluster orchestrator: normalizes mixed packets (idea, GDD, playtest notes, bug/build issues, launch targets), chooses one operating mode, produces one milestone-aware coordination brief, and routes detailed work to `game-demo-feedback-triage`, `game-build-log-triage`, `game-performance-profiler`, `steam-store-launch-ops`, `task-planning`, or `bmad-idea` as needed. Added `references/operating-modes.md`, `references/scope-boundaries.md`, and `evals/evals.json` without increasing the skill count. |
-
-## 🆕 What's New in v2026-04-08
-
-| Change | Details |
-|--------|---------|
-| **graphify: repo and corpus knowledge-graph skill** | Added a dedicated `graphify` skill for turning repositories or mixed corpora into persistent knowledge-graph artifacts with `GRAPH_REPORT.md`, `graph.json`, and HTML visualization. Covers the tested Python API pipeline, graph queries, graph-backed architecture discovery, and assistant install flows; includes `references/overview.md` and `evals/evals.json`. 84 → **85 skills**. |
-| **llm-wiki: persistent LLM-maintained markdown wiki skill** | Added a dedicated `llm-wiki` skill for turning raw sources into a compounding Obsidian or markdown knowledge base. It bootstraps a vault with `raw/`, `wiki/`, `index.md`, `log.md`, and `AGENTS.md`; ships helper scripts for bootstrap, Scrapling-powered URL ingest, query filing, and linting; and pushes schema, ingest, filing, and scaling detail into focused references. Includes `evals/` plus `skill-autoresearch-llm-wiki/` baseline, changelog, results, and dashboard artifacts. 82 → **83 skills**. |
-| **rtk: Rust Token Killer setup and operations skill** | Added a dedicated `rtk` skill for installing, verifying, and initializing Rust Token Killer across Claude Code, Codex, Gemini CLI, Cursor, Copilot, Windsurf, Cline, and OpenCode. The skill starts with `rtk gain` verification, handles the common wrong-package collision, ships install/init/status wrapper scripts, and pushes deeper platform and troubleshooting details into focused reference docs. Includes `evals/` plus `skill-autoresearch-rtk/` baseline, changelog, results, and dashboard artifacts. 81 → **82 skills**. |
-
-## 🆕 What's New in v2026-03-30
-
-| Change | Details |
-|--------|---------|
-| **harness: agent team & skill architect meta-skill** | Added a dedicated `harness` skill for designing domain-specific agent teams and generating the skills they use. Covers domain analysis, architecture pattern selection (pipeline, fan-out/fan-in, expert pool, producer-reviewer, supervisor, hierarchical delegation), `.claude/agents/` and `.claude/skills/` file generation, orchestration workflow definition, and validation with trigger evals and dry-run testing. Includes `install.sh`, `validate-harness.sh` scripts, and 5 reference docs. 80 → **81 skills**. |
-
-## 🆕 What's New in v2026-03-28
-
-| Change | Details |
-|--------|---------|
-| **obsidian-cli: routing-first Obsidian desktop automation** | Hardened `obsidian-cli` into a routing-first front door for official Obsidian desktop automation: choose CLI command/TUI mode, developer-command mode, or official `obsidian://` URI handoff first; prefer deterministic `vault=` + `path=` targeting; and route headless sync, raw filesystem writes, or richer plugin/API automation away instead of overclaiming CLI coverage. Refreshed install/troubleshooting guidance plus new intake/route-out reference included. |
-| **scrapling: routing-first adaptive web scraping skill** | Added and then hardened the dedicated `scrapling` skill so it now routes users into the lightest workable mode first: parser-only HTML, HTTP fetch, JS-rendered browser fetch, protected-target stealth, CLI/MCP operator flows, or full spiders. The implementation includes install/extract/MCP wrapper scripts plus focused references for fetchers, parser behavior, CLI/MCP, spiders, and intake-packet route-outs. 78 → **79 skills**. |
-| **strix: AI-driven application security testing skill** | Added a dedicated `strix` skill for operating the Strix CLI end-to-end: install and Docker preflight, `STRIX_LLM` provider setup, local/GitHub/live target scans, quick/standard/deep mode selection, headless CI/CD usage, and clear separation between this repo's skill and Strix internal security skills. 77 → **78 skills**. |
-
-## 🆕 What's New in v2026-03-22
-
-| Change | Details |
-|--------|---------|
-| **bmad-orchestrator renamed to bmad** | `bmad-orchestrator` skill folder renamed to `bmad`. Simplified to core BMAD workflow orchestration (Analysis → Planning → Solutioning → Implementation). Use keyword `bmad` as before. |
-| **Removed copilot-coding-agent** | `copilot-coding-agent` skill removed. 77 skills total. |
-
-## 🆕 What's New in v2026-03-19
-
-| Change | Details |
-|--------|---------|
-| **clawteam: ClawTeam runtime operator router** | Tightened `clawteam` into a packet-first ClawTeam runtime skill: choose one honest operator packet (`manual-team`, `template-launch`, `monitor-recover`, or `profile-setup`) before commands, keep tmux/worktree runtime reality explicit, and route generic orchestration or board-governance requests outward. |
-| **obsidian-plugin: Obsidian plugin development skill** | Build, validate, and publish Obsidian plugins. Covers all 27 `eslint-plugin-obsidianmd` rules, interactive boilerplate generator (`create-plugin.js`), memory management, type safety, accessibility (MANDATORY), CSS variables, vault API, and community submission validation. 75 → **76 skills**. |
-| **skill-autoresearch: eval-driven skill optimization** | New skill for improving an existing `SKILL.md` with binary evals, mutation loops, baseline scoring, and dashboard/changelog artifacts. Keeps the original `autoresearch` ML workflow separate. 76 → **77 skills**. |
-| **firebase-cli: Firebase platform operator hardening** | Upgraded `firebase-cli` into a routing-first Firebase operator anchor for install/auth, bootstrap/config, Emulator Suite workflows, scoped deploy/release flows, and admin/data operations. Added focused references for routing, bootstrap/auth, emulators/release, and admin tasks; refreshed evals/compact wording; and corrected the npm-path Node.js baseline to current `firebase-tools` requirements. |
-| **google-workspace, langsmith, react-grab added** | 3 new skills: Google Workspace REST API automation, LangSmith LLM observability/evaluation, react-grab React element context capture. 71 → **74 skills**. |
-| **research-paper-writing: ML/CV/NLP paper writing skill** | Academic paper and rebuttal workflow for Abstract, Introduction, Method, Experiments, figures/tables, reviewer responses, and camera-ready revision. Claim-evidence alignment, section planning, and reviewer-risk checks. From Prof. Peng Sida's notes plus repo support hardening. 70 → **71 skills**. |
-| **Removed ai-tool-compliance and llm-monitoring-dashboard** | Removed `ai-tool-compliance` (internal compliance automation) and `llm-monitoring-dashboard`. 72 → **70 skills**. |
-| **Removed deprecated agent-development skills** | Removed `agent-configuration`, `agent-evaluation`, `agentic-development-principles`, `agentic-principles`, `agentic-workflow`. 80 → **72 skills**. |
-| **Removed deprecated image/media skills** | Removed `image-generation`, `image-generation-mcp`, `pollinations-ai`. Use `video-production` as the canonical programmable-video skill; `remotion-video-production` remains as the compatibility alias for explicit Remotion naming. |
-| **autoresearch: Karpathy autonomous ML experiment skill** | Human-written `program.md`, agent-edited `train.py`, fixed 5-minute GPU runs, and `val_bpb` keep/revert ratcheting for real ML search. Now explicitly routes prompt / app eval work away to `skill-autoresearch` or eval platforms, and includes `scripts/`, `references/`, and `evals/`. |
-| **survey: artifact-validator hardening** | Tightened `survey` into a smaller artifact-contract-first research anchor, moved verbose output templates into a dedicated reference, and added `scripts/validate_survey_artifacts.py` so `.survey/{slug}/` folders can be checked mechanically before planning or implementation. Platform topics still normalize as `settings/rules/hooks`, with hooks treated as optional wrappers around the same portable validator. |
-| **presentation-builder: packet-first deck handoff hardening** | Tightened `presentation-builder` into a smaller routing-first deck artifact anchor. It now chooses one deck mode, one smallest useful artifact packet (`outline-brief`, `storyboard`, `review-ready-html`, `export-handoff`, or `sync-packet`), and one honest last-mile surface (HTML viewer, PPTX, PDF, Google Slides, or Figma Slides); adds `references/artifact-packets-and-last-mile-handoffs.md`; refreshes eval coverage; and syncs compact/discovery surfaces so the skill matches real deck workflows instead of acting like a giant slides essay. |
+<!-- WHATS-NEW:END -->
 
 ---
 

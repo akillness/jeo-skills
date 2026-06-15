@@ -51,24 +51,51 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 
 ## 🏗 아키텍처
 
+이 저장소의 시그니처 흐름: **압축 검색 → 지식 영속화 → 스펙 우선 개발 → 자율 실행 →
+결과 피드백**. 각 박스는 이 카탈로그의 실제 스킬입니다.
+
 ```mermaid
 graph TD
-    OOO["🎯 OOO\n스펙 우선 제어"] --> PLAN["📋 계획\nplannotator + bmad"]
-    OOO --> EXEC["⚡ 실행\nteam / bmad"]
-    OOO --> VERIFY["🔍 검증\nbrowser-harness"]
-    OOO --> UI["🎨 UI 검증\nagentation"]
-    OOO --> CLEAN["🧹 정리\nworktree"]
+    subgraph SEARCH["🔎 검색 &amp; 컨텍스트"]
+        RTK["rtk<br/>토큰 압축 셸"]
+        SEMBLE["semble<br/>의미 기반 코드 검색"]
+    end
+    subgraph KNOW["🧠 영속 지식"]
+        GRAPHIFY["graphify<br/>지식 그래프"]
+        LLMWIKI["llm-wiki<br/>소스 → 위키"]
+        OBSIDIAN["obsidian<br/>볼트 자동화"]
+    end
+    subgraph SPEC["📐 스펙 우선 개발"]
+        OOO["ooo<br/>불변 seed 루프"]
+        SPECSTACK["spec-stack<br/>작성 → 동결 → 실행"]
+        PONYTAIL["ponytail<br/>최소 코드 가드"]
+    end
+    subgraph RUN["🚀 자율 런타임"]
+        AUTOPILOT["autopilot<br/>아이디어 → 검증"]
+        DEEPINIT["deepinit<br/>AGENTS.md 컨텍스트"]
+        DEEPDIVE["deep-dive<br/>추적 → 인터뷰"]
+    end
+    subgraph VENDORS["🤝 크로스 런타임"]
+        OMC["omc · Claude Code"]
+        OHMG["ohmg · Gemini CLI"]
+        OMX["omx · Codex CLI"]
+    end
 
-    PLAN --> OMC["omc\nClaude Code"]
-    PLAN --> OHMG["ohmg\nGemini CLI"]
-    PLAN --> OMX["omx\nCodex CLI"]
-
-    SURVEY["🔭 survey"] -.-> OOO
-    GRAPHIFY["📊 graphify"] -.-> EXEC
-    AUTORESEARCH["🔬 autoresearch"] -.-> EXEC
+    RTK --> SEMBLE --> GRAPHIFY
+    GRAPHIFY --> LLMWIKI --> OBSIDIAN
+    OBSIDIAN -.->|컨텍스트| OOO
+    DEEPINIT -.->|AGENTS.md| OOO
+    DEEPDIVE -.->|근거| OOO
+    OOO --> SPECSTACK --> PONYTAIL --> AUTOPILOT
+    AUTOPILOT --> OMC
+    AUTOPILOT --> OHMG
+    AUTOPILOT --> OMX
+    AUTOPILOT -.->|결과| GRAPHIFY
 ```
 
 ---
+
+<!-- WHATS-NEW:START -->
 
 ## 🆕 v2026-06-15 업데이트
 
@@ -102,158 +129,9 @@ graph TD
 |------|------|
 | **agenticskills: oh-my-gods 번들 원클릭 설치 스킬** | `agenticskills` 스킬을 추가했습니다 — [`akillness/oh-my-gods`](https://github.com/akillness/oh-my-gods) 공식 `install.sh`를 감싸는 portable 스킬로, `.god-skills/`에 있는 80여 개 카탈로그(agent-browser, agent-workflow, ai-research-skills, api-design 등)를 Claude Code · Codex CLI · Antigravity/Gemini · OpenCode에 한 번에 설치합니다. 상위 환경 변수(`PLATFORM`, `WITH_LANGCHAIN`, `INSTALL_MODE`, `SKIP_BACKUP`)를 그대로 노출하고, curl-pipe 방식과 리뷰 후 실행 방식을 모두 문서화합니다. 기존 스킬과 destinations namespace가 달라 충돌 없이 공존합니다. 트리거: `AgenticSkills`, `oh-my-gods`, `god-skills`, install gods skills. |
 
-## 🆕 v2026-05-31 업데이트
+> 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 
-| 변경 | 내용 |
-|------|------|
-| **Knowledge Pipeline 강제 적용 (prompt → graphify → llm-wiki)** | `setup-all-skills-prompt.md` Step 6에서 설치 시점에 프롬프트 캡처 파이프라인을 자동 등록합니다. Claude Code(`UserPromptSubmit`), Codex(`UserPromptSubmit` via `~/.codex/config.toml`), Antigravity/Gemini(`BeforeAgent` via `~/.gemini/settings.json`)에 들어오는 모든 사용자 프롬프트가 표준 vault인 `~/vaults/llm-wiki/`(Obsidian 관리)로 캡처됩니다. 공유 ingest 스크립트는 `hooks/ingest-prompt.py`에 있고, 에이전트별 thin wrapper가 stdin을 그대로 전달합니다. `graphifyy`가 import 가능하면 구조 그래프가 함께 갱신됩니다. `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`에도 운영 규칙이 자동 주입되어 답변 전 항상 `~/vaults/llm-wiki/index.md`를 먼저 읽도록 강제됩니다. vault 경로는 `LLM_WIKI_VAULT` 환경변수로 override 가능. |
-
-## 🆕 v2026-05-19 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **Codex·Antigravity용 Autopilot 대응표** | `omc`, `omx`, `ohmg`를 갱신해 Claude `/autopilot` 및 `autopilot:` 의도를 Codex/OMX `$autopilot`과 Gemini/Antigravity/OMA `/plan` → `/work`로 매핑했습니다. 명시적 병렬 레인이 필요할 때만 `/orchestrate` 또는 `oma agent:parallel`을 쓰도록 경계를 정리하고, reference·eval·validator·setup 문서·catalog metadata를 동기화했습니다. |
-| **Codex·Antigravity용 OMC 워크플로우 대응표** | `omc`, `omx`, `ohmg`를 갱신해 Claude의 `/team`, `/ultrawork`, `/ultraqa` 의도를 Codex/OMX와 Gemini/Antigravity/OMA에서도 쓸 수 있게 문서화했습니다. `$team`, `$ulw`, `$ultraqa`, OMA `/orchestrate`, `/ultrawork`, `/review`, `oma agent:parallel` 경계를 확인하는 cross-runtime reference와 validator를 추가했습니다. |
-| **deep-dive/deepinit 크로스런타임 강화** | `deep-dive`가 Claude/OMC, Codex/OMX, Gemini/Antigravity/OMA에서 같은 trace → interview → handoff 계약을 따르도록 runtime adapter reference와 artifact validator를 추가했습니다. `deepinit`은 런타임 상태 제외, 수동 메모 보존, AGENTS.md hierarchy validation까지 포함하도록 강화했습니다. |
-| **agent-browser 제거 및 browser-harness 승격** | `agent-browser`를 제거하고 브라우저 검증·자가 치유 브라우저 자동화 레인을 `browser-harness`로 통합했습니다. 강화된 `browser-harness` 문서는 Codex·Antigravity 실행, Chrome CDP 설정, Claude 이미지 인식/스크린샷 오류를 줄이는 PIL 파일 핸들·인메모리 리사이즈 패치를 포함합니다. 129 → **128개 스킬**. |
-| **semble: 에이전트용 토큰 효율 코드 검색** | `semble`을 추가했습니다 — grep+read 대비 토큰 사용량 ~98% 절감으로 에이전트에게 필요한 코드 청크만 정확히 반환하는 고속 코드 검색 라이브러리입니다. 로컬/원격 리포지터리를 ~250ms(CPU만 사용, GPU·API 키 불필요) 안에 인덱싱합니다. 자연어·심볼 쿼리, 의미 기반 유사 코드 탐색(`find-related`), Claude Code·Codex·Cursor·OpenCode용 MCP 서버 통합을 지원합니다. Python 라이브러리와 CLI도 제공합니다. MCP 설치: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`. 출처: [MinishLab/semble](https://github.com/MinishLab/semble). 127 → **128개 스킬**. |
-
-## 🆕 v2026-05-04 업데이트 (mattpocock 스킬 통합)
-
-| 변경 | 내용 |
-|------|------|
-| **mattpocock/skills에서 15개 신규 스킬 추가** | GitHub 스타 58k+의 Matt Pocock 엔지니어링 스킬 컬렉션을 통합했습니다. 신규 스킬: `diagnose`(체계적 6단계 디버깅), `tdd`(레드-그린-리팩터 수직 슬라이스), `grill-with-docs`(도메인 문서 연동 설계 리뷰), `triage`(이슈 상태 머신), `improve-codebase-architecture`(아키텍처 심화 기회 발굴), `to-issues`(플랜→티켓 변환), `to-prd`(PRD 생성), `zoom-out`(아키텍처 조망), `caveman`(토큰 75% 절감 압축 모드), `grill-me`(계획 스트레스 테스트), `write-a-skill`(스킬 생성 프레임워크), `git-guardrails-claude-code`(파괴적 git 명령 차단), `setup-pre-commit`(Husky/lint-staged 설정), `scaffold-exercises`(교육 구조 생성), `migrate-to-shoehorn`(타입 안전 테스트 어서션). 98 → **113개 스킬**. 출처: [mattpocock/skills](https://github.com/mattpocock/skills). |
-| **obsidian: 통합 Obsidian 스킬 (v2.0)** | `obsidian-plugin`과 `obsidian-cli`를 단일 `obsidian` 스킬로 통합하고 [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) 콘텐츠를 반영했습니다. 플러그인 개발(27개 ESLint 규칙, 보일러플레이트, 접근성, 제출 검증), 데스크톱 CLI 자동화(명령, TUI, URI handoff, 개발자 모드), Obsidian 콘텐츠 패턴(markdown, Bases, JSON Canvas, Defuddle) 전부 포함. 플러그인 설치: `claude plugin marketplace add akillness/oh-my-skills`. 113 → **114개 스킬**. |
-
-## 🆕 v2026-05-04 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **agentic-skills: 프로덕션 엔지니어링 프레임워크** | Google 엔지니어링 실천법 기반의 프로덕션급 엔지니어링 스킬 `agentic-skills`를 추가했습니다. AI 코딩 에이전트를 위한 워크플로우와 품질 게이트를 체계화합니다. spec 주도 개발(`/spec`), 태스크 계획(`/plan`), 점진적 TDD(`/build`), 브라우저 검증(`/test`), 5개 축 코드 리뷰(`/review`), 동작 보존 단순화(`/code-simplify`), 체계적인 git/CI/CD 배포(`/ship`) 단계를 제공합니다. *Software Engineering at Google*(Hyrum's Law, Chesterton's Fence, Shift Left, 트렁크 기반 개발)에서 영감을 받았습니다. 플러그인 설치: `/plugin marketplace add addyosmani/agent-skills`. 95 → **96개 스킬**. |
-| **open-design: 로컬 우선 디자인 아티팩트 생성** | `open-design`을 추가했습니다 — Anthropic의 Claude Design에 대한 오픈소스 대안으로, 로컬에 설치된 코딩 에이전트(Claude Code, Cursor, Gemini CLI 등)를 사용해 웹/모바일/데스크톱 프로토타입, 프레젠테이션 덱, 미디어 아티팩트를 생성합니다. 72개 내장 디자인 시스템(Linear, Stripe, Vercel, Notion, Apple 등), 5가지 비주얼 방향, 멀티 포맷 내보내기(HTML/PDF/PPTX/ZIP/Markdown), gpt-image-2·Seedance 2.0·HyperFrames를 통한 AI 미디어 생성을 지원합니다. 93개 프롬프트 템플릿 포함. 플러그인: `claude plugin marketplace add nexu-io/open-design`. 97 → **98개 스킬**. |
-| **browser-harness: 자가 치유 LLM 브라우저 자동화** | `browser-harness`를 추가했습니다 — LLM 에이전트를 Chrome DevTools Protocol(CDP)로 Chrome에 직접 연결하는 자가 치유 프레임워크입니다. 에이전트가 실행 중에 `agent_helpers.py` 헬퍼 코드를 직접 작성·개선하며, 커뮤니티 도메인 스킬(사이트별 플레이북)을 활용합니다. Browser Use Cloud 연동으로 동시 브라우저 3개, 주거용 프록시, 캡차 해결을 지원합니다. 설치: Claude Code 프롬프트에 "Set up https://github.com/browser-use/browser-harness for me" 입력. 126 → **127개 스킬**. |
-
-## 🆕 v2026-04-18 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **plannotator: review-packet 구조 강화** | `plannotator`를 concrete plan·markdown spec·diff를 위한 routing-first 시각 승인 게이트로 다듬었습니다. 이제 `plan-review`, `diff-review`, `markdown-review`, `platform-setup`, `troubleshooting` 중 하나의 primary packet을 먼저 고르고, `references/intake-packets-and-route-outs.md`를 추가했으며, native-hook vs manual-review 현실을 기준으로 platform/troubleshooting 가이드를 다시 썼습니다. 또한 markdown-review와 Codex setup truthfulness 케이스를 `evals/evals.json`에 추가하고 compact/setup/manifest 문구를 함께 동기화해 discovery surface가 generic plan-only 또는 code-review 도구처럼 과장되지 않도록 맞췄습니다. |
-| **skill-autoresearch: packet-first 구조 강화** | `skill-autoresearch`를 더 작은 repo-local ratcheting front door로 다듬었습니다. 이제 `ratchet-eligibility`, `benchmark-readiness`, `charter-freeze`, `baseline-score`, `one-change-mutation`, `support-sync`, `final-report`, `route-out` 중 하나의 packet을 먼저 고르고, mutation 전에 `no ratchet justified`를 허용하며, `references/run-packets-and-route-outs.md`와 확장된 `evals/evals.json`을 함께 유지합니다. 또한 repo가 `skill-autoresearch`를 generic eval platform이 아니라 markdown/git ratchet로 광고하도록 compact/manifest/setup wording도 함께 맞췄습니다. |
-| **graphify: 라이브 스킬 승격 + 구조 강화** | 숨겨진 `utilities/graphify` 중첩 폴더에 있던 `graphify`를 실제 라이브 top-level 스킬 카탈로그로 승격하고, 라우팅-우선 graph front door로 다듬었습니다. `references/mode-packets-and-route-outs.md`와 `references/build-and-fallback-recipes.md`를 추가하고, `SKILL.toon`, `evals/evals.json`, README/setup/manifest surface까지 함께 동기화해 durable graph 레인이 실제로 설치·검색 가능하도록 맞췄습니다. |
-| **looker-studio-bigquery: packet-first 구조 강화** | `looker-studio-bigquery`를 더 작은 리포팅 front door로 다듬었습니다. 이제 `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, `exec-handoff` 중 하나의 packet에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, Connected Sheets / exec-handoff 케이스까지 `evals/evals.json`을 넓혔습니다. 또한 BigQuery 리포팅 레인이 긴 BI 기능 투어처럼 보이지 않도록 `SKILL.toon` / `skills.toon` / `skills.json`과 README/setup 문구도 함께 동기화했습니다. |
-| **web-accessibility: 라우팅 우선 구조 강화** | `web-accessibility`를 더 작은 routing-first 접근성 수정 앵커로 다듬었습니다. 이제 하나의 primary accessibility packet(`semantics-structure`, `keyboard-focus`, `labels-announcements`, `visual-perception-reflow`, `media-alternatives`, `routed-navigation-feedback`)에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, routed-app / responsive-boundary 케이스까지 `evals/evals.json`을 넓혔습니다. 또한 discovery surface가 다시 generic WCAG/ARIA 튜토리얼로 흐르지 않도록 `SKILL.toon` / `skills.toon` / `skills.json`과 README/setup 문구도 함께 동기화했습니다. |
-| **marketing-automation: operator-packet 강화** | `marketing-automation`를 broad marketing front door로 한 번 더 조였습니다. 이제 애매한 요청을 `launch-orchestration` / `conversion-surface` / `lifecycle-retention` / `acquisition-content` / `measurement-experiment` 중 하나의 operating mode, 하나의 primary lane, 그리고 owner·dependency/approval·proof를 담은 reusable operator packet 하나로 정리합니다. `references/operator-packet-and-proof-stack.md`를 추가하고, legal/analytics 의존성 케이스까지 `evals/evals.json`을 넓혔으며, `SKILL.toon` / manifest / README/setup discovery wording도 함께 동기화했습니다. |
-| **sprint-retrospective: 구조 강화** | `sprint-retrospective`를 software, product/ops, marketing/GTM, game-delivery work 전반에서 쓰는 라우팅 우선 retrospective anchor로 다듬었습니다. 이제 하나의 retrospective mode를 고르고, 이전 액션을 새 액션보다 먼저 검토하고, action count를 작게 유지하며, planning/sizing/daily-sync 작업을 바깥으로 route-out합니다. 또한 `references/action-review-and-packet-shapes.md`, 갱신된 `evals/evals.json`, 동기화된 compact/manifest discovery wording을 추가했습니다. |
-| **autoresearch: 라우팅형 구조 강화** | `autoresearch`를 더 작은 Karpathy ML 탐색 front door로 다듬었습니다. 이제 `setup readiness`, `program.md` 작성, bounded run loop, 결과 해석, constrained-hardware adaptation 중 하나의 mode를 먼저 고르고, 불변 `prepare.py` / 300초 / `val_bpb` 계약을 계속 드러내며, `references/operating-modes-and-route-outs.md`와 갱신된 `evals/evals.json`을 추가하고, 거대한 설명형 스킬이 되지 않도록 `skill-autoresearch` 및 앱 단위 eval / observability 도구로의 route-out도 더 선명하게 만들었습니다. |
-
-## 🆕 v2026-04-20 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **testing-strategies: gate-truth handoff 래칫** | `testing-strategies`를 레이어 이야기를 늘어놓기 전에 **지금 실제로 어떤 gate를 결정하는지** 먼저 밝히는 방향으로 더 다듬었습니다. 이제 `merge-gate-truth`, `release-gate-truth`, `scheduled-breadth-truth`를 먼저 이름 붙이고, `references/gate-truth-and-release-handovers.md`를 추가했으며, protected-branch / Steam 빌드 체크리스트 경계 케이스를 `evals/evals.json`에 더하고, `SKILL.toon` 및 README/setup/manifest 문구를 동기화해 PR blocker와 release-only / platform-launch proof를 다시 섞지 않게 했습니다. |
-| **steam-store-launch-ops: packet-first 구조 강화** | `steam-store-launch-ops`를 더 작은 packet-first Steam launch router로 다듬었습니다. 이제 `page-promise-audit`, `wishlist-signal-check`, `demo-readiness-gate`, `event-timing-workback`, `launch-ops-runbook` 중 하나의 primary packet을 먼저 고르고, `references/intake-packets-and-route-outs.md`를 추가했으며, `evals/evals.json`에 route-out / broad-GTM 경계 케이스를 더하고, `SKILL.toon`과 README/setup/manifest 문구를 함께 동기화해 이 레인이 generic marketing이나 demo-feedback 쪽으로 흐르지 않도록 했습니다. |
-
-## 🆕 v2026-04-17 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **steam-store-launch-ops: 병목 라우터 강화** | `steam-store-launch-ops`를 인디 게임용 Steam 출시/상점 진단 라우터로 더 날카롭게 다듬었습니다. 이제 `visibility-acquisition`, `promise-clarity`, `proof-demo-readiness`, `timing-hook-fit`, `launch-ops-readiness`를 분리하고, 현재 hook(coming-soon page, wishlist anomaly, demo decision, Next Fest, launch window)을 먼저 명시한 뒤, 일반적인 마케팅 장문 대신 **하나의 intervention**과 **하나의 next artifact**를 추천합니다. 또한 `references/diagnostic-model.md`, `references/event-hooks.md`, 갱신된 `evals/evals.json`, 동기화된 `SKILL.toon`을 추가했고, 중복 게임 마케팅 스킬은 만들지 않았습니다. |
-
-## 🆕 v2026-04-15 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **game-performance-profiler: 라우팅 우선 구조 강화** | `game-performance-profiler`를 더 작은 bottleneck-first 프로파일링 프런트도어로 다듬었습니다. 새 `references/mode-selection-and-route-outs.md`와 기존 packet/device/escalation reference를 중심으로 하나의 출력 계약(`Game Performance Profiling Brief`)을 유지하고, 빌드 실패를 `game-build-log-triage`로 보내는 경계 eval도 추가했으며, quick packet·benchmark route·target-device review·의도적인 profiler escalation 중심으로 발견 문구를 다시 맞췄습니다. |
-| **agentation: UI 어노테이션 라우터 재작성** | `agentation`을 거대한 설치/설정 카탈로그에서 계획·검토 레인의 **정확한 렌더드 UI 피드백 라우터**로 재구성했습니다. 이제 copy-paste review, synced watch-loop, self-driving critique, platform-setup 모드 중 하나를 고르고, `browser-harness`, `playwriter`, `plannotator`로의 route-out을 명시합니다. 또한 `references/modes-and-routing.md`, `references/platform-setup-and-hooks.md`, `references/watch-loop-and-self-driving.md`, `evals/evals.json`을 추가했고, 저장소 상단 발견면도 **89개 스킬** 기준으로 맞췄습니다. |
-| **git-submodule: 라우팅 우선 구조 강화** | `git-submodule`을 더 작은 운영 프런트도어로 다듬었습니다. 여전히 먼저 submodule vs subtree/vendoring/package delivery를 고르지만, 이제 모드별 명령 패킷은 `references/mode-packets-and-hosted-constraints.md`로 옮기고, GitHub Pages의 public-`https://` 서브모듈 제한을 다루는 hosted-platform 경계를 추가했으며, 그 경계를 검증하는 eval도 넣었습니다. 덕분에 recursive bootstrap, 포인터 업데이트, detached HEAD, CI auth, hosted checkout 제약을 계속 드러내면서도 스킬이 다시 거대한 명령 카탈로그로 불어나는 것을 막습니다. |
-| **bmad-idea: 사전 기획 컨셉 라우터 재작성** | `bmad-idea`를 기존 BMAD-CIS 명령/페르소나 카탈로그에서 저장소의 사전 기획 아이디어 라우터로 재구성했습니다. 이제 초기 제품/GTM/컨설팅/게임 입력을 정규화하고, `problem framing`, `audience and value framing`, `concept shaping`, `game concept framing`, `story packaging` 중 하나를 선택해 재사용 가능한 컨셉 산출물 하나를 만들며, 다음 단계는 `bmad`, `task-planning`, `marketing-automation`, `bmad-gds`로 명확히 넘깁니다. 또한 `references/operating-modes.md`, `references/handoff-boundaries.md`, `references/concept-packet-template.md`, `evals/evals.json`을 추가했고 스킬 수는 늘리지 않았습니다. |
-| **genkit: 패킷 우선 구조 강화** | `genkit`을 더 작은 routing-first 백엔드 AI 워크플로 앵커로 다듬었습니다. 이제 현재 packet(새 capability, 기존 route handler, deployed flow quality, runtime/deploy, comparison/fallback)에서 출발하고, `references/intake-packets-and-fallbacks.md`를 추가했으며, 모드 선택기에 `comparison-or-fallback`을 넣고, plain SDK / route-handler 및 durable-workflow fallback도 계속 보이게 했습니다. 또한 얇은 route 경계 케이스까지 eval 범위를 넓히고 `SKILL.toon` / `skills.toon` / `skills.json` 문구를 동기화해 discovery surface가 다시 generic full-stack AI framework 설명으로 흐르지 않게 했습니다. |
-| **firebase-ai-logic: 클라이언트 통합 지원 강화** | `firebase-ai-logic`을 얇은 보조 노트에서 Firebase 레인의 **앱/클라이언트 통합 앵커**로 끌어올렸습니다. 이제 `direct feature fit`, `app wiring`, `production hardening`, `escalation boundary` 모드 중 하나를 선택하고, `references/modes-and-routing.md`, `references/production-controls.md`, `references/feature-packets.md`, `evals/evals.json`을 추가했습니다. 또한 백엔드 워크플로는 `genkit`, 운영자 작업은 `firebase-cli`로 명확히 route-out하며, 앱 SDK 작업과 백엔드 오케스트레이션을 흐리게 하던 오래된 설정/예제 안내도 제거했습니다. |
-
-## 🆕 v2026-04-14 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **npm-git-install: 패킷 우선 강화** | `npm-git-install`을 더 작은 routing-first 패키지 전달 앵커로 다듬었습니다. 이제 팀이 실제로 가진 패킷(temporary bridge, shared bridge, private-auth, artifact fallback, workspace inner loop, durable distribution)에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, shared internal tooling 케이스까지 eval 범위를 넓혔습니다. 또한 `SKILL.toon` / `skills.toon` / `skills.json` 문구를 동기화해 compact discovery surface가 낡은 generic Git-install 설명으로 되돌아가지 않게 했습니다. |
-| **web-design-guidelines: UI 감사 재작성** | `web-design-guidelines`를 얇은 Vercel 규칙 가져오기 스킬에서 프런트엔드 클러스터의 광범위한 인터페이스 감사 앵커로 재구성했습니다. 이제 launch-readiness, polish/consistency, flow-friction, heuristic, rule-overlay 리뷰를 다루고, hierarchy, clarity, states, responsiveness basics, accessibility basics, performance/trust signals로 결과를 분류합니다. 또한 `web-accessibility`, `responsive-design`, `ui-component-patterns`, `design-system`, `react-best-practices`로의 route-out을 추가했고, 스킬 수 증가 없이 `references/review-modes-and-categories.md`, `references/handoff-boundaries.md`, `references/ui-audit-packet-template.md`, `evals/evals.json`을 제공합니다. |
-| **monitoring-observability: 패킷 우선 강화** | `monitoring-observability`를 더 작은 routing-first observability 앵커로 다듬었습니다. 이제 팀이 실제로 가진 packet(service-health, telemetry-foundation, dashboard/alert audit, data-pipeline trust, game live-ops visibility)에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, review-audit 및 deployment-route-out 케이스까지 eval 범위를 넓혔습니다. 또한 `SKILL.toon` / `skills.toon` / `skills.json` 문구를 동기화해 compact discovery surface가 예전의 generic monitoring-setup 설명으로 되돌아가지 않게 했습니다. |
-| **performance-optimization: 아티팩트 우선 강화** | `performance-optimization`을 팀이 실제로 들고 오는 성능 패킷 중심의 측정 우선 튜닝 앵커로 더 다듬었습니다. 이제 trace, Lighthouse/CWV 보고서, query plan, load-test diff, profiler 출력, stakeholder report 같은 현재 아티팩트에서 출발하고, `references/intake-packets-and-escalations.md`를 추가했으며, `monitoring-observability`, `debugging`, `code-refactoring`, `testing-strategies`, `game-performance-profiler`로의 route-out을 더 선명하게 했습니다. 또한 marketing/CWV·CI benchmark 케이스까지 eval 범위를 넓히고 compact/discovery 문구를 동기화해 예전의 generic optimization wording으로 되돌아가지 않게 했습니다. |
-| **code-refactoring: 패킷 우선 구조 강화** | `code-refactoring`을 더 작은 routing-first cleanup 앵커로 다듬었습니다. 이제 팀이 실제로 가진 cleanup packet(local cleanup, fragile legacy area, repeated migration / codemod, cleanup-heavy diff shaping)에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, search-first blast-radius route-out 케이스까지 eval 범위를 넓혔습니다. 또한 `SKILL.toon` / `skills.toon` / `skills.json`을 동기화해 compact discovery가 더 이상 낡은 DRY/SOLID design-pattern helper처럼 보이지 않게 했습니다. |
-| **changelog-maintenance: 패킷 우선 강화** | `changelog-maintenance`를 더 작은 routing-first 릴리스 작성 앵커로 다듬었습니다. 이제 하나의 primary mode와 가장 작은 truthful output packet(`single-entry`, `summary-plus-links`, `migration-brief`, `patch-note-brief`, `sync-packet`)을 고르고, `references/output-packets-and-channel-handoffs.md`를 추가했으며, 릴리스 노트 + 마이그레이션 기한 + downstream sync follow-up 케이스까지 eval 범위를 넓혔습니다. 또한 compact/discovery 문구를 맞춰 스킬이 다시 generic changelog / semver 템플릿 덤프로 흐르지 않게 했습니다. |
-
-## 🆕 v2026-04-20 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **backend-testing: 패킷 우선 구조적 하드닝** | `backend-testing`를 패킷 우선 백엔드 테스트 라우터로 더 압축했습니다. 이제 `coverage-plan`, `fixture-and-reset-plan`, `contract-and-api-checks`, `flake-stabilization`, `execution-lane-split` 중 하나의 기본 패킷에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, 계약 보호 케이스까지 eval 범위를 넓히고 `SKILL.toon` / README / setup / manifest 문구를 동기화해 스킬이 다시 막연한 “백엔드 테스트 좀 써줘” 만능 설명으로 흐르지 않게 했습니다. |
-
-## 🆕 v2026-04-19 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **omc: routing-first 구조적 하드닝** | `omc`를 더 작은 Claude-first 오케스트레이션 라우터로 압축했습니다. 이제 플러그인 slash skill (`/team`, `/autopilot`, `/ralph`, `/ultrawork`)과 셸 측 `omc` CLI (`omc setup`, `omc team`, `omc ask`)를 명확히 구분하고, `references/intake-packets-and-route-outs.md`를 추가했으며, plugin-vs-CLI / recovery 사례로 eval을 보강하고, `docs/omc/README.md`에서 더 이상 오래된 `/omc:*` 예시를 쓰지 않도록 갱신했습니다. 또한 README / setup / manifest discovery 문구를 새 경계에 맞춰 동기화해 OMC가 거대한 명령 카탈로그가 아니라 사실적인 런타임 라우터로 보이게 했습니다. |
-| **ui-component-patterns: 구조적 하드닝** | `ui-component-patterns`를 routing-first 재사용 컴포넌트 아키텍처 스킬로 더 압축했습니다. 이제 props를 제안하기 전에 `primitive-boundary`, `slot-anatomy`, `controlled-ownership`, `alternate-root-composition`, `docs-verification` 중 하나의 기본 패킷을 선택하고, `references/intake-packets-and-route-outs.md`를 추가했으며, alternate-root 조합과 Storybook/docs 검증 경계 사례를 eval에 넣고, `SKILL.toon` / manifest / README discovery 문구를 새 트리거 표면에 맞춰 갱신했습니다. 또한 `design-system`, `web-accessibility`, `responsive-design`, `state-management`, `react-best-practices`로의 route-out을 명확히 유지해 다시 일반적인 컴포넌트 베스트 프랙티스 모음으로 흐르지 않도록 했습니다. |
-| **responsive-design: 구조적 하드닝** | `responsive-design`를 CSS 예시 모음이 아니라 하나의 반응형 전략 패킷을 고르는 routing-first 스킬로 더 압축했습니다. 이제 CSS를 제안하기 전에 `page-layout`, `component-slot`, `dense-data`, `media-behavior`, `verification-reflow` 중 하나의 기본 패킷을 선택하고, 패킷 라우팅은 `references/intake-packets-and-route-outs.md`로 옮겼습니다. 또한 launch-readiness 경계 사례를 eval에 추가하고, `SKILL.toon`과 manifest/README discovery 문구를 새 트리거 표면에 맞춰 갱신했으며, `ui-component-patterns`, `web-accessibility`, `design-system`, `web-design-guidelines`로의 route-out을 명시적으로 유지해 프런트엔드 만능 스킬로 다시 비대해지지 않도록 했습니다. |
-| **testing-strategies: 구조적 하드닝** | `testing-strategies`를 패킷 우선 validation-policy 라우터로 더 압축했습니다. 이제 `change-risk`, `gate-design`, `flake-cost`, `release-readiness`, `incident-ratchet` 중 하나의 정책 패킷에서 출발하고, `references/intake-packets-and-route-outs.md`를 추가했으며, release-readiness와 accessibility 경계 사례까지 eval 범위를 넓히고 `SKILL.toon` / manifest discovery 문구를 새 트리거 표면에 맞춰 갱신했습니다. 또한 `backend-testing`, `debugging`, `code-review`, `web-accessibility`, `performance-optimization`으로의 route-out을 명시적으로 유지해 다시 거대한 일반론적 테스트 매니페스토로 돌아가지 않게 했습니다. |
-
-## 🆕 v2026-04-13 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **responsive-design: 레이아웃 적응 재작성** | `responsive-design`를 긴 CSS 예시 모음에서 프론트엔드 클러스터의 모바일 우선·컨테이너 기반 레이아웃 적응 스킬로 재정의했습니다. 이제 viewport-vs-container 실패를 분류하고, breakpoint 추가보다 intrinsic layout을 우선하며, `ui-component-patterns`, `web-accessibility`, `design-system`, `web-design-guidelines`로의 명시적 route-out을 제공합니다. `references/layout-decision-checklist.md`, `references/handoff-boundaries.md`, `evals/evals.json`도 함께 추가했고 전체 스킬 수는 그대로입니다. |
-
-## 🆕 v2026-04-12 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **bmad: 패킷 우선 BMAD 라우터 보강** | `bmad`를 패킷 우선 BMAD/BMM 프런트도어로 더 좁혔습니다. 이제 아이디어 메모, PRD, 아키텍처 초안, 리뷰 피드백, 브라운필드 저장소 상태, 마일스톤 압박처럼 **이미 손에 있는 packet**에서 시작해 다음 산출물 또는 gate 하나를 고르고, review/runtime 경계를 더 일찍 드러내며, `references/intake-packets-and-route-outs.md`와 브라운필드 혼합 상태 eval 케이스를 추가해 generic phase catalog처럼 보이던 면을 줄였습니다. |
-| **bmad-gds: 게임 프로듀서/오케스트레이션 재작성** | `bmad-gds`를 단순 단계 목록에서 실제 게임 제작 조정 스킬로 재정의했습니다. 이제 아이디어, GDD, 플레이테스트 메모, 버그/빌드 이슈, 출시 목표가 섞인 입력을 받아 하나의 운영 모드를 선택하고, 다음 마일스톤 중심 조정 브리프를 만든 뒤 필요하면 `game-demo-feedback-triage`, `game-build-log-triage`, `game-performance-profiler`, `steam-store-launch-ops`, `task-planning`, `bmad-idea`로 명시적으로 라우팅합니다. `references/operating-modes.md`, `references/scope-boundaries.md`, `evals/evals.json`도 추가했고 전체 스킬 수는 그대로입니다. |
-
-## 🆕 v2026-04-08 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **graphify: 저장소/코퍼스 지식 그래프 스킬** | 저장소나 혼합 코퍼스를 `GRAPH_REPORT.md`, `graph.json`, HTML 시각화로 변환하는 전용 `graphify` 스킬을 추가했습니다. 테스트된 Python API 기반 파이프라인, 그래프 질의, graph-backed architecture 탐색, assistant 설치 플로우를 다루며 `references/overview.md`와 `evals/evals.json`도 함께 포함합니다. 84 → **85개** |
-| **llm-wiki: 영속적 LLM 관리형 마크다운 위키 스킬** | 원시 소스를 시간이 지날수록 축적되는 Obsidian 또는 git 기반 지식 베이스로 바꾸는 전용 `llm-wiki` 스킬을 추가했습니다. `raw/`, `wiki/`, `index.md`, `log.md`, `AGENTS.md` 로 vault를 부트스트랩하고, bootstrap, Scrapling 기반 URL ingest, query filing, lint용 헬퍼 스크립트를 포함합니다. 스키마, ingest, filing, scaling 규칙은 별도 reference 문서로 분리했고, `evals/`와 `skill-autoresearch-llm-wiki/` baseline, changelog, results, dashboard 산출물도 함께 포함합니다. 82 → **83개** |
-| **rtk: Rust Token Killer 설치 및 운영 스킬** | Claude Code, Codex, Gemini CLI, Cursor, Copilot, Windsurf, Cline, OpenCode 전반에서 Rust Token Killer를 설치·검증·초기화하는 전용 `rtk` 스킬을 추가했습니다. `rtk gain` 검증을 시작점으로 두고, 잘못 설치된 동명 패키지 충돌을 복구하며, install/init/status 래퍼 스크립트와 플랫폼별 참고 문서로 흐름을 분리했습니다. `evals/`와 `skill-autoresearch-rtk/` baseline, changelog, results, dashboard 산출물도 함께 포함합니다. 81 → **82개** |
-
-## 🆕 v2026-03-30 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **harness: 에이전트 팀 & 스킬 아키텍트 메타스킬** | 도메인 전용 에이전트 팀을 설계하고 스킬을 생성하는 전용 `harness` 스킬을 추가했습니다. 도메인 분석, 아키텍처 패턴 선택(pipeline, fan-out/fan-in, expert pool, producer-reviewer, supervisor, hierarchical delegation), `.claude/agents/`·`.claude/skills/` 파일 생성, 오케스트레이션 워크플로우 정의, 트리거 eval·드라이런 검증을 포함합니다. `install.sh`, `validate-harness.sh` 스크립트와 참고 문서 5개도 포함됩니다. 80 → **81개** |
-
-## 🆕 v2026-03-28 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **obsidian-cli: 라우팅-우선 Obsidian 데스크톱 자동화** | `obsidian-cli`를 공식 Obsidian 데스크톱 자동화용 라우팅-우선 프런트도어로 하드닝했습니다. 먼저 CLI 단일 명령/TUI 모드, 개발자 명령 모드, 공식 `obsidian://` URI handoff를 구분하고, `vault=` + `path=` 중심의 결정적 타기팅을 권장하며, headless sync·단순 파일쓰기·더 풍부한 plugin/API 자동화는 억지로 CLI에 우겨넣지 않고 명시적으로 route-out 하도록 정리했습니다. 설치/문제해결 가이드와 intake/route-out 참고 문서도 함께 갱신했습니다. |
-| **scrapling: 라우팅 우선 적응형 웹 스크래핑 스킬** | 전용 `scrapling` 스킬을 추가한 뒤, 가장 가벼운 모드부터 고르게 하도록 하드닝했습니다: parser-only HTML, HTTP fetch, JS 렌더 브라우저 fetch, 보호 대상용 stealth, CLI/MCP 운영 경로, 그리고 전체 crawl용 spiders. install/extract/MCP 래퍼 스크립트와 fetcher·parser·CLI/MCP·spider·intake packet route-out 참고 문서를 함께 제공합니다. 78 → **79개** |
-| **strix: AI 기반 애플리케이션 보안 테스트 스킬** | Strix CLI를 실무적으로 운영하는 전용 `strix` 스킬 추가. 설치 및 Docker 프리플라이트, `STRIX_LLM` 공급자 설정, 로컬/GitHub/라이브 타깃 스캔, quick/standard/deep 모드 선택, 헤드리스 CI/CD 사용, 그리고 이 저장소의 스킬과 Strix 내부 보안 스킬의 차이까지 포함합니다. 77 → **78개** |
-
-## 🆕 v2026-03-22 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **bmad-orchestrator → bmad 리네임** | `bmad-orchestrator` 스킬 폴더가 `bmad`로 리네임되었습니다. 핵심 BMAD 워크플로우 오케스트레이션(분석 → 계획 → 솔루션 → 구현)으로 단순화. 키워드 `bmad`는 동일하게 사용 가능합니다. |
-| **copilot-coding-agent 제거** | `copilot-coding-agent` 스킬 제거. 총 77개 스킬. |
-
-## 🆕 v2026-03-19 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **clawteam: ClawTeam 런타임 운영 라우터** | `clawteam`을 packet-first ClawTeam 런타임 스킬로 더 좁혔습니다. 명령을 늘어놓기 전에 `manual-team`, `template-launch`, `monitor-recover`, `profile-setup` 중 하나의 운영 패킷을 먼저 고르고, tmux/worktree 런타임 현실을 숨기지 않으며, 일반 오케스트레이션이나 보드 거버넌스 요청은 바깥으로 라우팅합니다. |
-| **obsidian-plugin: Obsidian 플러그인 개발 스킬** | Obsidian 플러그인 빌드, 검증, 커뮤니티 디렉토리 제출. `eslint-plugin-obsidianmd` 27개 규칙 전체 커버, 대화형 보일러플레이트 생성기(`create-plugin.js`), 메모리 관리, 타입 안전성, 접근성(MANDATORY), CSS 변수, Vault API, 제출 검증. 75 → **76개** |
-| **skill-autoresearch: eval 기반 스킬 최적화** | 기존 `SKILL.md` 를 바이너리 eval, mutation loop, baseline scoring, dashboard/changelog 산출물로 반복 개선하는 신규 스킬. 기존 ML용 `autoresearch` 와는 별도 용도입니다. 76 → **77개** |
-| **firebase-cli: Firebase 플랫폼 운영 앵커 강화** | `firebase-cli`를 install/auth, bootstrap/config, Emulator Suite, scoped deploy/release, admin/data 작업을 고르는 라우팅형 Firebase 운영 앵커로 재구성했습니다. 라우팅·부트스트랩·에뮬레이터/릴리스·관리 작업 참고 문서를 추가하고, eval/compact 문구를 갱신했으며, npm 설치 경로의 Node.js 기준도 현재 `firebase-tools` 요구사항에 맞게 바로잡았습니다. |
-| **google-workspace, langsmith, react-grab 추가** | 3개 신규 스킬: Google Workspace REST API 자동화, LangSmith LLM 관측성/평가, react-grab React 엘리먼트 컨텍스트 캡처. 71 → **74개** |
-| **research-paper-writing: ML/CV/NLP 논문 작성 스킬** | Abstract, Introduction, Method, Experiments뿐 아니라 figure/table 지원, reviewer response, camera-ready 수정까지 다루는 학술 논문·리버틀 워크플로우. 주장-증거 정합성, 섹션 계획, reviewer-risk 점검 중심. Prof. Peng Sida 노트 기반 + 저장소 지원 보강. 70 → **71개** |
-| **ai-tool-compliance 및 llm-monitoring-dashboard 제거** | `ai-tool-compliance` (내부 컴플라이언스 자동화) 및 `llm-monitoring-dashboard` 제거. 72 → **70개** |
-| **에이전트 개발 스킬 일부 제거** | `agent-configuration`, `agent-evaluation`, `agentic-development-principles`, `agentic-principles`, `agentic-workflow` 제거. 80 → **72개** |
-| **이미지/미디어 스킬 일부 제거** | `image-generation`, `image-generation-mcp`, `pollinations-ai` 제거. 미디어는 `video-production`을 기본 프로그래머블 비디오 스킬로 사용하고, `remotion-video-production`은 명시적 Remotion 이름용 호환 별칭으로 유지 |
-| **autoresearch: Karpathy 자율 ML 실험 스킬** | 사람이 `program.md`를 쓰고 에이전트가 `train.py`를 수정하며, 5분 GPU 실행과 `val_bpb` keep/revert ratcheting으로 실제 ML 탐색을 돌립니다. 프롬프트/앱 eval 작업은 `skill-autoresearch`나 별도 eval 플랫폼으로 라우팅하고, `scripts/`, `references/`, `evals/`를 포함합니다. |
-| **survey: 아티팩트 검증기 강화** | `survey`를 더 작은 아티팩트 계약 중심 조사 앵커로 다듬고, 장황한 출력 템플릿은 별도 reference로 옮겼으며, `scripts/validate_survey_artifacts.py`를 추가해 `.survey/{slug}/` 폴더를 계획/구현 전에 기계적으로 검증할 수 있게 했습니다. 플랫폼 비교는 계속 `settings/rules/hooks`로 정규화하고, hooks는 같은 이식형 검증기를 감싸는 선택적 래퍼로 취급합니다. |
-| **presentation-builder: 패킷 우선 덱 핸드오프 강화** | `presentation-builder`를 더 작은 라우팅 우선 덱 아티팩트 앵커로 다듬었습니다. 이제 하나의 덱 모드, 하나의 최소 아티팩트 패킷(`outline-brief`, `storyboard`, `review-ready-html`, `export-handoff`, `sync-packet`), 그리고 하나의 정직한 마지막 전달 표면(HTML 뷰어, PPTX, PDF, Google Slides, Figma Slides)을 먼저 고르고, `references/artifact-packets-and-last-mile-handoffs.md`와 함께 실제 덱 제작 흐름에 맞게 동작합니다. |
+<!-- WHATS-NEW:END -->
 
 ---
 
