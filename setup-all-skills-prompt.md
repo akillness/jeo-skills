@@ -78,6 +78,10 @@ if command -v agy &>/dev/null \
 fi
 if command -v opencode &>/dev/null; then echo "✅ OpenCode";     DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}opencode"; fi
 if command -v gjc      &>/dev/null; then echo "✅ Gajae Code (gjc)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}gjc"; fi
+# jeo (jeo-code): pure-TypeScript Bun agent. Reads context files (JEO.md / AGENTS.md /
+# .jeo/context.md / CLAUDE.md) + global ~/.agents/rules, and runs hooks from
+# ~/.jeo/config.json (events: pre-tool | post-turn | post-implementation).
+if command -v jeo      &>/dev/null; then echo "✅ jeo-code (jeo)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}jeo"; fi
 
 [ -z "$DETECTED_AGENTS" ] && { echo "⚠️  No AI agents detected. Install at least one platform first."; exit 1; }
 echo ""
@@ -556,6 +560,9 @@ RULE_BLOCK='<!-- RTK-SEMBLE:START -->
 - Check combined savings anytime with `rtk gain` and `semble savings`.
 <!-- RTK-SEMBLE:END -->'
 
+# NOTE: jeo (jeo-code) is handled separately in Step 3i — its single
+# ~/.agents/rules/jeo-tool-flow.md already carries the rtk×semble block, so it is
+# intentionally excluded here to avoid a duplicate rule surface.
 for f in "$_HOME/.claude/CLAUDE.md" "$_HOME/.codex/AGENTS.md" "$_HOME/.gemini/GEMINI.md" "$_HOME/.agents/AGENTS.md"; do
   [ -f "$f" ] || continue
   if grep -q 'RTK-SEMBLE:START' "$f" 2>/dev/null; then
@@ -739,6 +746,106 @@ else
 fi
 ```
 
+### 3i — jeo-code (jeo) rules + hooks wiring
+
+`jeo` (jeo-code) is a pure-TypeScript Bun agent. It does **not** have a
+prompt-submit hook event (its events are `pre-tool | post-turn |
+post-implementation`), so — like GJC — the prompt-time Knowledge Pipeline
+reaches jeo through a **rules file**, while the durable parts (graph refresh,
+turn capture) attach as **hooks**. Skill discovery is automatic: jeo reads both
+`.claude/skills` and `.agents/skills` (symlinked to `$SKILLS_ROOT`), so the
+Step 1 global install already covers it.
+
+Three injection surfaces (all idempotent, all global so they don't touch any
+project tree):
+
+1. **Rules** → `~/.agents/rules/jeo-tool-flow.md` (jeo loads `~/.agents/rules/`
+   into `<project_context>`). Carries the rtk×semble division of labor, the
+   llm-wiki read-first/file-back rule, the graphify read-before-rebuild rule,
+   and the obsidian persistence routing.
+2. **Hooks** → `~/.jeo/config.json` `hooks` block (must be `enabled:true`):
+   `post-implementation` runs `graphify update .`; `post-turn` pipes the turn
+   into the llm-wiki ingest script. Both are guarded with `|| true` so a slow or
+   failing tool never blocks a turn (hook timeout is 30s; jeo surfaces non-zero
+   hook output to the model as advisory).
+3. **Detection** was added in Step 0 (`command -v jeo`).
+
+```bash
+echo "=== Configuring jeo-code (jeo) rules + hooks ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
+
+if command -v jeo &>/dev/null; then
+  # 1) Rules file in jeo's global rules dir (marker-guarded, never duplicates)
+  mkdir -p "$_HOME/.agents/rules"
+  JEO_RULES="$_HOME/.agents/rules/jeo-tool-flow.md"
+  if [ -f "$JEO_RULES" ] && grep -q 'JEO-TOOL-FLOW:START' "$JEO_RULES" 2>/dev/null; then
+    echo "ℹ️  jeo tool-flow rule already present: $JEO_RULES"
+  else
+    cat > "$JEO_RULES" <<RULES
+<!-- JEO-TOOL-FLOW:START -->
+# Tool Flow (semble · rtk · graphify · llm-wiki · obsidian)
+
+Global always-applied rule for the \`jeo\` runtime (loaded from ~/.agents/rules/).
+
+## Code Search & Shell Output (rtk × semble)
+- Discovery: \`semble search "<query>" <path>\` FIRST; expand with \`semble find-related <file> <line> <path>\`. No grep+read of whole files for discovery. If semble is absent, use \`uvx --from "semble[mcp]" semble\`.
+- Exact match / all other shell: normal commands; the rtk shell hook compresses output (\`rtk git status\`, \`rtk grep\`, \`rtk read\`, \`rtk test\`, \`rtk lint\`). semble = what to read, rtk = how dense. Check with \`rtk gain\` / \`semble savings\`.
+
+## Durable Structure (graphify)
+- Read \`graphify-out/GRAPH_REPORT.md\` (then graph.html, graph.json) BEFORE rebuilding. The post-implementation hook runs \`graphify update .\` automatically; after code-deleting refactors run \`graphify update . --force\`.
+
+## Knowledge Pipeline (llm-wiki, auto-applied)
+- Turn outputs are captured into ~/vaults/llm-wiki/ by the post-turn hook and indexed by graphify. Read ~/vaults/llm-wiki/index.md first on follow-ups, then wiki/ pages; file durable findings into wiki/queries/ or wiki/reports/. raw/ stays immutable.
+
+## Desktop Persistence (obsidian)
+- Persist/hand off via the official obsidian CLI/URI (\`obsidian vault="<Vault>" read path="..."\`), deterministic vault= + path=; obsidian:// URI when the desktop CLI is unavailable.
+<!-- JEO-TOOL-FLOW:END -->
+RULES
+    echo "✅ jeo tool-flow rule written: $JEO_RULES"
+  fi
+
+  # 2) Hooks in the global jeo config (jq merge; preserves oauth/providers/etc.)
+  JEO_CONFIG="$_HOME/.jeo/config.json"
+  if command -v jq &>/dev/null && [ -f "$JEO_CONFIG" ]; then
+    if jq -e '.hooks.hooks[]? | select(.run | test("graphify update|ingest-prompt"))' "$JEO_CONFIG" >/dev/null 2>&1; then
+      echo "ℹ️  jeo hooks already configured — leaving as-is"
+    else
+      cp "$JEO_CONFIG" "$JEO_CONFIG.bak.$(date +%Y%m%d-%H%M%S)"
+      TMP_JEO="$(mktemp)"
+      jq --arg vault "$KP_VAULT" '.hooks = {
+        "enabled": true,
+        "hooks": [
+          { "event": "post-implementation",
+            "run": "command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true" },
+          { "event": "post-turn",
+            "run": ("LLM_WIKI_VAULT=\"" + $vault + "\" python3 \"" + $vault + "/scripts/ingest-prompt.py\" >/dev/null 2>&1 || true") }
+        ]
+      }' "$JEO_CONFIG" > "$TMP_JEO" && mv "$TMP_JEO" "$JEO_CONFIG" \
+        && echo "✅ jeo hooks registered (post-implementation: graphify, post-turn: llm-wiki)"
+    fi
+  elif [ ! -f "$JEO_CONFIG" ]; then
+    mkdir -p "$_HOME/.jeo"
+    cat > "$JEO_CONFIG" <<JSON
+{
+  "hooks": {
+    "enabled": true,
+    "hooks": [
+      { "event": "post-implementation", "run": "command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true" },
+      { "event": "post-turn", "run": "LLM_WIKI_VAULT=\"$KP_VAULT\" python3 \"$KP_VAULT/scripts/ingest-prompt.py\" >/dev/null 2>&1 || true" }
+    ]
+  }
+}
+JSON
+    echo "✅ jeo config created with hooks ($JEO_CONFIG)"
+  else
+    echo "⚠️  jq not found — manually set ~/.jeo/config.json hooks.enabled:true and add the two hooks"
+  fi
+else
+  echo "ℹ️  jeo not installed — skipping jeo-code rules + hooks wiring"
+fi
+```
+
 ---
 
 ## Step 4 — Verification
@@ -816,6 +923,26 @@ if command -v gjc &>/dev/null; then
   else
     echo "❌ GJC skill discovery not enabled — re-run Step 3h"
   fi
+fi
+
+# jeo-code (jeo) rules + hooks check
+if command -v jeo &>/dev/null; then
+  echo ""
+  echo "=== jeo-code (jeo) Tool-Flow Check ==="
+  JEO_RULES="$_HOME/.agents/rules/jeo-tool-flow.md"
+  [ -f "$JEO_RULES" ] && grep -q 'JEO-TOOL-FLOW:START' "$JEO_RULES" \
+    && echo "✅ jeo tool-flow rule present ($JEO_RULES)" \
+    || echo "❌ jeo tool-flow rule missing — re-run Step 3i"
+  JEO_CONFIG="$_HOME/.jeo/config.json"
+  if command -v jq &>/dev/null && [ -f "$JEO_CONFIG" ]; then
+    JEO_HOOKS_ON=$(jq -r '.hooks.enabled // false' "$JEO_CONFIG" 2>/dev/null)
+    JEO_HOOK_EVENTS=$(jq -r '[.hooks.hooks[]?.event] | join(", ")' "$JEO_CONFIG" 2>/dev/null)
+    [ "$JEO_HOOKS_ON" = "true" ] \
+      && echo "✅ jeo hooks enabled — events: ${JEO_HOOK_EVENTS:-none}" \
+      || echo "❌ jeo hooks disabled — re-run Step 3i (need hooks.enabled:true)"
+  fi
+  echo "ℹ️  jeo reads .claude/skills + .agents/skills (→ \$SKILLS_ROOT); the Step 1"
+  echo "    global install already makes all skills discoverable in jeo as /skill:<name>."
 fi
 
 # Final count
@@ -1304,6 +1431,10 @@ inject_kp_rules() {
 inject_kp_rules "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/CLAUDE.md"
 inject_kp_rules "$_HOME/.codex/AGENTS.md"
 inject_kp_rules "$_HOME/.gemini/GEMINI.md"
+# jeo (jeo-code): the Knowledge Pipeline reaches jeo through Step 3i's
+# ~/.agents/rules/jeo-tool-flow.md (rule) + the post-turn ingest hook, not this
+# block — so it is intentionally not injected here. jeo also has no
+# UserPromptSubmit hook event; the post-turn hook is the closest capture point.
 
 # Gajae Code (GJC): RULES.md is a sticky always-apply rule (user scope: ~/.gjc/agent/RULES.md).
 # GJC has no UserPromptSubmit hook, so the Knowledge Pipeline reaches GJC through this rule file.
