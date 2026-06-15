@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-06-11T13:03:17Z",
-  "skill_count": 137,
+  "generated": "2026-06-15T00:00:00Z",
+  "skill_count": 139,
   "categories": {
     "planning-review": [
       "agentation",
@@ -96,6 +96,7 @@
       "zoom-out"
     ],
     "utilities": [
+      "agenticskills",
       "aider-cli-workflow",
       "caveman",
       "ccpi-marketplace",
@@ -125,6 +126,7 @@
       "ooo",
       "open-design",
       "opencontext",
+      "ponytail",
       "pretext",
       "scaffold-exercises",
       "setup-pre-commit",
@@ -132,8 +134,7 @@
       "unity-gamedev-skill-pack",
       "workflow-automation",
       "write-a-skill",
-      "zeude",
-      "agenticskills"
+      "zeude"
     ],
     "frontend": [
       "design-system",
@@ -148,6 +149,7 @@
       "web-design-guidelines"
     ],
     "creative-media": [
+      "drawio",
       "remotion-video-production",
       "video-production"
     ],
@@ -3021,6 +3023,30 @@
       "commands": []
     },
     {
+      "name": "ponytail",
+      "category": "utilities",
+      "path": "ponytail/SKILL.md",
+      "description": "Write the least code that fully solves the task — YAGNI ladder (skip → stdlib → native platform → installed dep → one line → minimum), ponytail: upgrade-path markers, lite/full/ultra/off intensity, and review/audit/debt commands; never cuts validation, data-loss handling, security, or accessibility.",
+      "tags": [
+        "yagni",
+        "over-engineering",
+        "minimalism",
+        "anti-bloat",
+        "code-review",
+        "refactoring",
+        "productivity",
+        "tech-debt"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini",
+        "Cursor",
+        "OpenCode",
+        "All"
+      ]
+    },
+    {
       "name": "presentation-builder",
       "description": "Build real deck artifacts when the user needs editable slides, not just prose: investor, roadmap/QBR, launch, architecture/demo, workshop/training, and game pitch decks. Use when the job is to choose one deck mode, one smallest useful artifact packet, and one honest handoff surface (HTML review, PPTX, PDF, Google Slides, or Figma Slides).",
       "category": "documentation",
@@ -4519,6 +4545,47 @@
         "Gemini",
         "Codex"
       ]
+    },
+    {
+      "name": "drawio",
+      "description": "Turn natural-language descriptions into editable .drawio diagrams and export them to PNG/SVG/PDF/JPG via the native draw.io desktop CLI, or turn an existing Python/JS-TS/Go/Rust codebase into an auto-laid-out structure diagram. Wraps Agents365-ai/drawio-skill: 6 diagram presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), 10,000+ official AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN shapes, 321 AI/LLM brand logos, vision self-check + auto-fix, and a 5-round iterative refinement loop. No MCP server, no daemon.",
+      "category": "creative-media",
+      "path": "drawio/SKILL.md",
+      "tags": [
+        "drawio",
+        "diagram",
+        "erd",
+        "uml",
+        "flowchart",
+        "architecture-diagram",
+        "sequence-diagram",
+        "code-visualization",
+        "shape-search",
+        "ai-logos",
+        "export",
+        "plugin"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "Cursor",
+        "Copilot",
+        "OpenClaw",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "drawio",
+      "version": "1.0.0",
+      "commands": []
     }
   ]
 }

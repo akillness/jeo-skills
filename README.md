@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-137-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**137 local skill folders · 137 installable skills · TOON Format · Cross-platform**
+**139 local skill folders · 139 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**137 local skill folders · 137 installable skills · TOON Format · Cross-platform**
+**139 local skill folders · 139 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 137 local skill folders and 137 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+Agent Skills is a curated collection with 139 local skill folders and 139 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -69,6 +69,13 @@ graph TD
 ```
 
 ---
+
+## 🆕 What's New in v2026-06-15
+
+| Change | Details |
+|--------|---------|
+| **ponytail: the laziest senior dev in the room** | Added `ponytail` — a routing-first wrapper around DietrichGebert's [Ponytail](https://github.com/DietrichGebert/ponytail) ruleset that makes the agent write the least code that fully solves the task. Before writing anything, it stops at the first rung that holds: **does this need to exist (YAGNI) → stdlib → native platform feature → already-installed dependency → one line → only then the minimum that works**, and marks every shortcut with a `ponytail:` comment naming its upgrade path so deferred work becomes a ledger, not amnesia. Intensity is set with `lite / full / ultra / off` and persists across turns; commands cover diff review (`/ponytail-review` → delete-list), whole-repo audit (`/ponytail-audit`), and debt harvest (`/ponytail-debt`). Lazy, never negligent: trust-boundary validation, data-loss handling, security, and accessibility are never cut. Upstream benchmarks report 80–94% less code, 3–6× faster, and 47–77% cheaper across Haiku/Sonnet/Opus. Ships `scripts/install.sh` (wires the upstream marketplace plugin/extension per runtime — Claude Code, Codex, Gemini, Pi, OpenCode) and a per-runtime command crosswalk. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill ponytail`. Route-outs: `caveman` (communication compression, not code volume), `code-refactoring` (behavior-preserving cleanup), `ai-slop-cleaner` (AI-generated bloat), `code-review` (severity-rated review). 137 → **138 skills**. |
+| **drawio: from text to professional diagrams** | Added `drawio` — a wrapper around Agents365-ai's [drawio-skill](https://github.com/Agents365-ai/drawio-skill) (MIT) that turns natural-language descriptions into editable `.drawio` XML and exports them to PNG / SVG / PDF / JPG via the **native draw.io desktop CLI** (no MCP server, no daemon), or turns an existing codebase (Python / JS-TS / Go / Rust) into an auto-laid-out structure diagram. Covers 6 diagram presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), search across **10,000+ official** AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN shapes (`shapesearch.py`), **321 AI/LLM brand logos** that draw.io ships none of (`aiicons.py`), a Graphviz-backed extract → auto-layout → validate pipeline with transitive reduction and nested containers, plus a vision self-check + auto-fix (≤2 rounds) and a 5-round iterative refinement loop. Ships `scripts/install.sh` (per-platform draw.io CLI detect/install + upstream skill pull, optional Graphviz) and a command/flag reference. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill drawio`. Route-outs: `mermaid`/`plantuml` (diagrams-as-code in git), `excalidraw`/`tldraw` (hand-drawn looks), `presentation-builder` (slide decks). 138 → **139 skills**. |
 
 ## 🆕 What's New in v2026-06-11
 
@@ -341,7 +348,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 137 local skill folders = 137 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 139 local skill folders = 139 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -499,10 +506,11 @@ rtk init -g
 | `github-repo-candidate-quality-gate` | Convert noisy GitHub search results into recommendation-grade candidate lists — metadata freshness, license shape, activity signals, and dependency risk scoring | All |
 | `semble` | Token-efficient code search for agents — returns only relevant code chunks using ~98% fewer tokens than grep+read. Natural-language and symbol queries, semantic `find-related`, MCP for Claude Code/Codex/Cursor/OpenCode, Python library, CPU-only with no API key | All |
 
-### 🎬 Creative Media (4)
+### 🎬 Creative Media (5)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
+| `drawio` | Text-to-diagram and codebase-to-diagram via Agents365-ai/drawio-skill — editable `.drawio` exported to PNG/SVG/PDF/JPG through the native draw.io CLI, 6 presets (ERD/UML/sequence/architecture/ML-DL/flowchart), 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/BPMN shapes, 321 AI/LLM logos, vision self-check + 5-round refinement. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill drawio` | All |
 | `remotion-video-production` | Compatibility alias for `video-production` when legacy tooling or explicit Remotion naming still expects the old skill | All |
 | `video-production` | Canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs | All |
 | `god-tibo-imagen` | Generate AI images via Codex ChatGPT backend — zero dependencies, reuses `~/.codex/auth.json`, CLI (`gti`), Node.js, and Python SDK | All |
@@ -546,10 +554,11 @@ rtk init -g
 | `ghgrab` | Search and download specific files/folders from GitHub repositories directly from terminal using ghgrab, without full repo cloning | All |
 | `obsidian-cli-uri-fallback` | Fallback handler for Obsidian URI automation in cron/headless environments — detects URI failure signatures and routes to filesystem or headless alternatives | All |
 
-### 🛠 Utilities (Productivity) (5)
+### 🛠 Utilities (Productivity) (6)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
+| `ponytail` | Write the least code that fully solves the task — YAGNI ladder (skip → stdlib → native → installed dep → one line), `ponytail:` upgrade-path markers, `lite/full/ultra/off` intensity, and `/ponytail-review` / `-audit` / `-debt` commands. Never cuts validation, data-loss handling, security, or accessibility. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill ponytail` | All |
 | `caveman` | Ultra-compressed communication mode (~75% token reduction). Activate: "caveman mode", "less tokens". Deactivate: "stop caveman" | All |
 | `write-a-skill` | Create structured agent skills: gather requirements → draft SKILL.md → review. Description field is critical for agent activation | All |
 | `git-guardrails-claude-code` | Prevent destructive git operations (force push, reset --hard, clean, branch -D) via Claude Code PreToolUse hooks | Claude |
@@ -814,7 +823,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 137 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 138 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

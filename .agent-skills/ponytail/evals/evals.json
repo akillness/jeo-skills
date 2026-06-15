@@ -1,0 +1,35 @@
+{
+  "skill_name": "ponytail",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use ponytail. Add a date picker to the signup form.",
+      "expected_output": "A minimal solution that stops at the native-platform rung — ships <input type=\"date\"> instead of installing a date library plus wrapper component — and marks the shortcut.",
+      "assertions": [
+        "Output uses the native platform feature (e.g. <input type=\"date\">) and does NOT install or wrap a third-party date library.",
+        "Output names the ladder rung it stopped at and leaves a `ponytail:` marker on the shortcut.",
+        "Output keeps trust-boundary/server-side validation rather than cutting it for fewer lines."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/ponytail-review on this diff that adds a 120-line LRUCache class and a hand-rolled email regex while a validation lib is already a dependency.",
+      "expected_output": "A confidence-grouped delete-list: collapse the LRUCache to a Map, replace the custom regex with the already-installed validation lib (installed-dependency rung), and inline single-use abstractions.",
+      "assertions": [
+        "Output returns a delete-list (what to remove/collapse), not a rewrite, and groups items by confidence.",
+        "Output prefers the already-installed dependency over the hand-rolled regex.",
+        "Output flags any over-engineering-looking code that actually guards a trust boundary as keep, not cut."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Make my agent's responses use fewer tokens and drop the filler words.",
+      "expected_output": "A route-out to the caveman skill, because this is communication compression, not reducing code volume.",
+      "assertions": [
+        "Output routes to caveman instead of applying the YAGNI code ladder.",
+        "Output does not produce a code delete-list or a `ponytail:` marker for this request.",
+        "Output distinguishes communication brevity (caveman) from less code (ponytail)."
+      ]
+    }
+  ]
+}

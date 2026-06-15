@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-137-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**137개 로컬 스킬 폴더 · 설치 가능 스킬 137개 · TOON 포맷 · 멀티플랫폼**
+**139개 로컬 스킬 폴더 · 설치 가능 스킬 139개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**137개 로컬 스킬 폴더 · 설치 가능 스킬 137개 · TOON 포맷 · 멀티플랫폼**
+**139개 로컬 스킬 폴더 · 설치 가능 스킬 139개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 137개 로컬 스킬 폴더와 137개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 139개 로컬 스킬 폴더와 139개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -69,6 +69,13 @@ graph TD
 ```
 
 ---
+
+## 🆕 v2026-06-15 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **ponytail: 회사에서 가장 게으른 시니어 개발자** | `ponytail` 스킬을 추가했습니다 — DietrichGebert의 [Ponytail](https://github.com/DietrichGebert/ponytail) 룰셋을 감싸는 라우팅 우선 wrapper로, 에이전트가 과제를 완전히 해결하는 **최소한의 코드**만 쓰도록 만듭니다. 무엇이든 쓰기 전에 가장 먼저 만족되는 단을 골라 멈춥니다: **이게 꼭 있어야 하나(YAGNI) → 표준 라이브러리 → 네이티브 플랫폼 기능 → 이미 설치된 의존성 → 한 줄 → 그제서야 동작하는 최소한**. 취한 모든 단축은 `ponytail:` 주석으로 업그레이드 경로를 명시해, 미뤄둔 일이 망각이 아니라 장부가 됩니다. 강도는 `lite / full / ultra / off`로 설정하며 턴을 넘어 유지됩니다; 명령은 diff 검토(`/ponytail-review` → 삭제 목록), 전체 저장소 감사(`/ponytail-audit`), 부채 수확(`/ponytail-debt`)을 다룹니다. 게으르지만 부주의하지 않습니다: 신뢰 경계 검증, 데이터 손실 처리, 보안, 접근성은 절대 잘라내지 않습니다. 업스트림 벤치마크 기준 코드 80–94% 감소, 3–6× 빠름, 47–77% 저렴(Haiku/Sonnet/Opus). 런타임별 업스트림 마켓플레이스 플러그인/확장을 연결하는 `scripts/install.sh`(Claude Code, Codex, Gemini, Pi, OpenCode)와 런타임별 커맨드 크로스워크 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill ponytail`. Route-out: `caveman`(코드 양이 아닌 통신 압축), `code-refactoring`(동작 보존 정리), `ai-slop-cleaner`(AI 생성 군더더기), `code-review`(심각도 기반 리뷰). 137 → **138개 스킬**. |
+| **drawio: 텍스트에서 전문 다이어그램까지** | `drawio` 스킬을 추가했습니다 — Agents365-ai의 [drawio-skill](https://github.com/Agents365-ai/drawio-skill)(MIT)을 감싸는 wrapper로, 자연어 설명을 편집 가능한 `.drawio` XML로 변환하고 **네이티브 draw.io 데스크톱 CLI**로 PNG / SVG / PDF / JPG로 내보냅니다(MCP 서버·데몬 불필요). 또는 기존 코드베이스(Python / JS-TS / Go / Rust)를 자동 배치된 구조 다이어그램으로 변환합니다. 6가지 다이어그램 프리셋(ERD, UML 클래스, 시퀀스, 아키텍처, ML/DL, 플로우차트), **10,000개 이상의 공식** AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN 셰이프 검색(`shapesearch.py`), draw.io에 없는 **321개 AI/LLM 브랜드 로고**(`aiicons.py`), Graphviz 기반 추출 → 자동 배치 → 검증 파이프라인(전이 축약·중첩 컨테이너), 렌더된 PNG를 읽어 자동 보정하는 비전 셀프체크(최대 2라운드)와 5라운드 반복 개선 루프를 제공합니다. 플랫폼별 draw.io CLI 감지/설치 + 업스트림 스킬 설치(선택적 Graphviz)를 수행하는 `scripts/install.sh`와 커맨드/플래그 레퍼런스 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill drawio`. Route-out: `mermaid`/`plantuml`(git 내 코드형 다이어그램), `excalidraw`/`tldraw`(손그림 스타일), `presentation-builder`(슬라이드 덱). 138 → **139개 스킬**. |
 
 ## 🆕 v2026-06-11 업데이트
 
@@ -340,7 +347,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 137개 로컬 스킬 폴더 = 총 137개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 139개 로컬 스킬 폴더 = 총 139개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -487,10 +494,11 @@ rtk init -g
 | `pattern-detection` | text-prefilter·structural-code-rule·log-event-pattern·metric-anomaly 중 한 packet을 먼저 고르는 라우팅형 패턴/이상 탐지 | 전체 |
 | `semble` | grep+read 대비 토큰 ~98% 절감하는 에이전트용 토큰 효율 코드 검색 — 자연어·심볼 쿼리, 의미 기반 `find-related`, Claude Code·Codex·Cursor·OpenCode용 MCP, Python 라이브러리, CPU만 사용(GPU·API 키 불필요) | 전체 |
 
-### 🎬 창의 미디어 (4개)
+### 🎬 창의 미디어 (5개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
+| `drawio` | Agents365-ai/drawio-skill 기반 텍스트→다이어그램·코드베이스→다이어그램 — 편집 가능한 `.drawio`를 네이티브 draw.io CLI로 PNG/SVG/PDF/JPG 내보내기, 6가지 프리셋(ERD/UML/시퀀스/아키텍처/ML-DL/플로우차트), 10,000개 이상 공식 AWS/Azure/GCP/Cisco/K8s/UML/BPMN 셰이프, 321개 AI/LLM 로고, 비전 셀프체크 + 5라운드 개선. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill drawio` | 전체 |
 | `remotion-video-production` | 레거시 툴링이나 명시적 Remotion 이름이 남아 있을 때 `video-production`으로 연결하는 호환 별칭 | 전체 |
 | `video-production` | Remotion, 템플릿 API, 콘텐츠 리퍼포징, QA 핸드오프를 묶는 기본 프로그래머블/자동화 비디오 스킬 | 전체 |
 | `god-tibo-imagen` | Codex ChatGPT 백엔드를 통한 AI 이미지 생성 — 의존성 없음, `~/.codex/auth.json` 재사용, CLI(`gti`), Node.js, Python SDK 지원 | 전체 |
@@ -513,7 +521,7 @@ rtk init -g
 | `game-performance-profiler` | Unity/Unreal frame-time 트리아지 — bottleneck-first profiling brief, quick packet, benchmark route, target-device 검토, profiler escalation | 전체 |
 | `steam-store-launch-ops` | Packet-first Steam launch router — page-promise audit, wishlist signal check, demo readiness, event timing workback, launch-ops runbook 중 하나를 고름 | 전체 |
 
-### 🔧 유틸리티 (16개)
+### 🔧 유틸리티 (17개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -529,6 +537,7 @@ rtk init -g
 | `obsidian-plugin` | *(alias → `obsidian`)* Obsidian 플러그인 개발 — 27개 ESLint 규칙, 보일러플레이트 생성기, 제출 검증 | 전체 |
 | `opencontext` | 라우팅-우선 프로젝트/저장소 메모리 스킬 — memory-layer choice, load-context, search-context, store-conclusions, setup-integration, repo-packer route-out 중 하나를 골라 manifest / stable link / 에이전트 핸드오프 패킷을 다루고, 메모가 겹칠 때는 최고 신뢰 소스와 freshness 경고를 고릅니다 | 전체 |
 | `workflow-automation` | 라우팅-우선 저장소 워크플로우 자동화 — task-entrypoints, bootstrap/onboarding, 로컬 CI 패리티, hook 가드레일, 유지보수 봇, 워크플로우 정리 중 하나를 고르고 환경/배포 문제로 번지지 않게 유지 | 전체 |
+| `ponytail` | 과제를 완전히 해결하는 최소한의 코드만 작성 — YAGNI 사다리(스킵 → 표준 라이브러리 → 네이티브 → 설치된 의존성 → 한 줄), `ponytail:` 업그레이드 경로 마커, `lite/full/ultra/off` 강도, `/ponytail-review` / `-audit` / `-debt` 명령. 검증·데이터 손실 처리·보안·접근성은 절대 잘라내지 않음. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill ponytail` | All |
 | `caveman` | 토큰 75% 절감 압축 통신 모드. 활성화: "caveman mode", "less tokens". 비활성화: "stop caveman" | All |
 | `write-a-skill` | 에이전트 스킬 생성 프레임워크: 요구사항 수집 → SKILL.md 초안 → 검토. description 필드가 활성화 핵심. | All |
 | `git-guardrails-claude-code` | Claude Code PreToolUse 훅으로 파괴적 git 명령(force push, reset --hard 등) 차단 | Claude |
@@ -780,7 +789,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 137개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 139개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
