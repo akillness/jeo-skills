@@ -25,6 +25,7 @@ detect() {
   if command -v codex   >/dev/null 2>&1; then echo codex;    return; fi
   if command -v gemini  >/dev/null 2>&1; then echo gemini;   return; fi
   if command -v pi      >/dev/null 2>&1; then echo pi;       return; fi
+  if command -v opencode >/dev/null 2>&1; then echo opencode; return; fi
   echo all
 }
 
