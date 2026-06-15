@@ -422,9 +422,11 @@ command -v obsidian &>/dev/null \
 echo "=== Bootstrapping llm-wiki vault ==="
 # Defensive home guard (safe when run standalone without Step 0 context)
 _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
-# Platform-aware default vault location — all platforms use ~/wiki for cross-platform Obsidian compatibility
+# Vault location — MUST match the Knowledge Pipeline (Step 6) and the jeo post-turn hook
+# (Step 3i): default ~/vaults/llm-wiki on every platform (override with LLM_WIKI_VAULT).
+# (Previously defaulted to ~/wiki, which left an orphaned vault no hook ever read.)
 case "$PLATFORM" in
-  windows|macos|linux) WIKI_DEFAULT="$_HOME/wiki" ;;
+  windows|macos|linux) WIKI_DEFAULT="$_HOME/vaults/llm-wiki" ;;
 esac
 WIKI_VAULT="${LLM_WIKI_VAULT:-$WIKI_DEFAULT}"
 
@@ -941,6 +943,16 @@ if command -v jeo &>/dev/null; then
       && echo "✅ jeo hooks enabled — events: ${JEO_HOOK_EVENTS:-none}" \
       || echo "❌ jeo hooks disabled — re-run Step 3i (need hooks.enabled:true)"
   fi
+  # hooks.enabled alone is NOT "working" — verify each hook's RUNTIME DEPENDENCY exists:
+  #   post-turn            → llm-wiki ingest script (created by Step 6 / Knowledge Pipeline)
+  #   post-implementation  → graphify binary        (Step 3b)
+  JEO_KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
+  [ -f "$JEO_KP_VAULT/scripts/ingest-prompt.py" ] \
+    && echo "✅ jeo post-turn dep present ($JEO_KP_VAULT/scripts/ingest-prompt.py)" \
+    || echo "⚠️  jeo post-turn hook will no-op — ingest script missing; run Step 6 (Knowledge Pipeline)"
+  command -v graphify &>/dev/null \
+    && echo "✅ jeo post-implementation dep present (graphify on PATH)" \
+    || echo "⚠️  jeo post-implementation hook will no-op — graphify missing; re-run Step 3b"
   echo "ℹ️  jeo reads .claude/skills + .agents/skills (→ \$SKILLS_ROOT); the Step 1"
   echo "    global install already makes all skills discoverable in jeo as /skill:<name>."
 fi
@@ -1301,7 +1313,7 @@ fi
 #   Antigravity / : BeforeAgent      (Gemini CLI shares ~/.gemini/settings.json)
 #   Gemini CLI
 
-KP_VAULT="$_HOME/vaults/llm-wiki"
+KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
 KP_SCRIPTS="$KP_VAULT/scripts"
 KP_INGEST="$KP_SCRIPTS/ingest-prompt.py"
 KP_RAW_URL="https://raw.githubusercontent.com/akillness/oh-my-skills/main/hooks/ingest-prompt.py"
