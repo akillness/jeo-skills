@@ -18,7 +18,7 @@ compatibility: >
 metadata:
   tags: retrospective, sprint-retro, postmortem, async-retro, hybrid-retro, agile, project-management, game-development
   version: "1.2"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Sprint Retrospective

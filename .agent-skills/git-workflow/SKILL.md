@@ -17,7 +17,7 @@ metadata:
   tags: git, version-control, branching, commits, rebasing, conflict-resolution, recovery, collaboration
   platforms: Claude, ChatGPT, Gemini, Codex, OpenCode
   version: "1.2"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Git Workflow

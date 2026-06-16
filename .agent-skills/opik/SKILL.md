@@ -28,7 +28,7 @@ metadata:
   version: "1.0.0"
   upstream: https://github.com/comet-ml/opik
   installer: pip install opik && opik configure
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # opik — Open-source LLM Observability, Evaluation & Optimization
@@ -171,21 +171,21 @@ Precision/Recall; heuristic metrics and custom metrics are also supported.
 - Use **Opik Agent Optimizer** (dedicated SDK) to improve prompts/agents and
   **Opik Guardrails** for safe-AI policies
 
-### Step 7 — Plugin-style installation alongside oh-my-skills
+### Step 7 — Plugin-style installation alongside jeo-skills
 
-This skill folder is plugin-installable through the standard oh-my-skills
+This skill folder is plugin-installable through the standard jeo-skills
 flow so the wrapper, references, and installer script land on disk for any
 supported agent runtime:
 
 ```bash
 # Project install (writes into .agents/skills/opik/)
-npx skills add https://github.com/akillness/oh-my-skills --skill opik
+npx skills add https://github.com/akillness/jeo-skills --skill opik
 
 # Global install for every detected agent
-npx skills add -g https://github.com/akillness/oh-my-skills --skill opik
+npx skills add -g https://github.com/akillness/jeo-skills --skill opik
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/oh-my-skills --skill opik -a claude-code -a codex -y
+npx skills add -g https://github.com/akillness/jeo-skills --skill opik -a claude-code -a codex -y
 ```
 
 The skill also ships [`scripts/install.sh`](scripts/install.sh) as a

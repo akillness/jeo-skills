@@ -13,7 +13,7 @@ metadata:
   platforms: Codex CLI, Claude Code, Gemini CLI, OpenCode
   keyword: autopilot
   version: "1.0.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   compatibility: OMX workflow alias for `$autopilot`
 ---
 

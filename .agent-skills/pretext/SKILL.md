@@ -39,7 +39,7 @@ npm install @chenglou/pretext
 
 ### Skill (any platform)
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill pretext
+npx skills add https://github.com/akillness/jeo-skills --skill pretext
 ```
 
 ## When to use

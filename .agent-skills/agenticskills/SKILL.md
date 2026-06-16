@@ -136,8 +136,8 @@ for the full list at any time.
 1. **Review before piping `curl | bash`** when the user has a security policy.
 2. **Pin a commit** if the user wants reproducibility — replace `main` in the
    installer URL with a tag or commit SHA.
-3. **Co-exist with oh-my-skills**: this bundle installs alongside the skills
-   already shipped by `akillness/oh-my-skills`; there are no destructive
+3. **Co-exist with jeo-skills**: this bundle installs alongside the skills
+   already shipped by `akillness/jeo-skills`; there are no destructive
    overlaps as the destination namespaces differ.
 4. **Re-run after upstream changes** rather than diffing individual skills —
    the upstream installer handles the canonical sync.

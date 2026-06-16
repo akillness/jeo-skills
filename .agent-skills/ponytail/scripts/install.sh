@@ -17,7 +17,7 @@
 set -euo pipefail
 
 UPSTREAM="DietrichGebert/ponytail"
-CATALOG="https://github.com/akillness/oh-my-skills"
+CATALOG="https://github.com/akillness/jeo-skills"
 
 detect() {
   if [ -n "${RUNTIME:-}" ]; then echo "$RUNTIME"; return; fi

@@ -20,7 +20,7 @@ metadata:
   platforms: Claude, Gemini, Codex, OpenCode
   keyword: bmad-idea
   version: "2.0.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # BMAD Idea Router

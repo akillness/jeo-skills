@@ -43,7 +43,7 @@ cd zeude/dashboard && pnpm install && pnpm dev
 
 ### Skill (any platform)
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill zeude
+npx skills add https://github.com/akillness/jeo-skills --skill zeude
 ```
 
 ## Requirements

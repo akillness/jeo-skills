@@ -981,7 +981,7 @@
       ],
       "compatibility": "Best for code-level and behavior-level debugging across CLI, backend, frontend, fullstack, and CI workflows. Not for observability-platform setup, pure PR review, or broad testing-strategy design.",
       "version": "2.0",
-      "source": "akillness/oh-my-skills"
+      "source": "akillness/jeo-skills"
     },
     {
       "name": "deep-dive",
@@ -1181,7 +1181,7 @@
       "commands": [],
       "compatibility": "Best when the main problem is application configuration rather than whole-machine reproducibility: env files, config layering, schema validation, and secrets handoff boundaries.",
       "version": "1.1",
-      "source": "akillness/oh-my-skills"
+      "source": "akillness/jeo-skills"
     },
     {
       "name": "fabric",
@@ -2903,7 +2903,7 @@
       ],
       "compatibility": "Best for repositories, traces, benchmarks, query plans, flame graphs, browser profiles, load-test outputs, CWV reports, profiler screenshots, and runtime notes where the main decision is what evidence means, what to tune first, and how to prove improvement. Not for observability platform setup, generic refactoring, or correctness-first debugging.",
       "version": "2.1",
-      "source": "akillness/oh-my-skills"
+      "source": "akillness/jeo-skills"
     },
     {
       "name": "plannotator",
@@ -3902,7 +3902,7 @@
       "commands": [],
       "compatibility": "Best when the task spans toolchains, local services, containers, onboarding, or cross-machine reproducibility. Use alongside `environment-setup` for application env files, env validation, and secret handoff details.",
       "version": "1.1",
-      "source": "akillness/oh-my-skills"
+      "source": "akillness/jeo-skills"
     },
     {
       "name": "task-estimation",

@@ -18,7 +18,7 @@ metadata:
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
   version: "2.1.7"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   modernization: 2026-04-12
   hardening: 2026-04-27
 ---

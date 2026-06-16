@@ -18,7 +18,7 @@ metadata:
   tags: environment-setup, reproducibility, devcontainers, docker-compose, onboarding, toolchains, local-parity
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "1.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # System & Environment Setup

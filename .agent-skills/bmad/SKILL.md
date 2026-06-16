@@ -19,7 +19,7 @@ metadata:
   platforms: Claude, Gemini, Codex, OpenCode
   keyword: bmad
   version: "2.1.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # BMAD Packet-First Router

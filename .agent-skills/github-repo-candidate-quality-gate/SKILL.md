@@ -9,7 +9,7 @@ license: MIT
 metadata:
   tags: github, search, triage, quality-gate, repo-maintenance
   version: "1.0.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # GitHub Repo Candidate Quality Gate

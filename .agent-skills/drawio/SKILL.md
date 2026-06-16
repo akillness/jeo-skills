@@ -31,7 +31,7 @@ metadata:
   version: "1.0.0"
   upstream: https://github.com/Agents365-ai/drawio-skill
   installer: npx skills add Agents365-ai/365-skills -g
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   license: MIT
 ---
 
@@ -42,7 +42,7 @@ MIT) converts a natural-language description into editable `.drawio` XML and
 exports it to PNG / SVG / PDF / JPG through the **native draw.io desktop
 CLI** — no MCP server, no background daemon. It can also turn an **existing
 codebase** into an auto-laid-out structure diagram. This skill is the
-oh-my-skills wrapper: it documents when to reach for draw.io, how to install
+jeo-skills wrapper: it documents when to reach for draw.io, how to install
 the CLI + skill (including as a plugin), and how to drive the
 plan → generate → self-check → iterate → export loop.
 
@@ -116,7 +116,7 @@ git clone https://github.com/Agents365-ai/drawio-skill.git \
   ~/.claude/skills/drawio-skill
 ```
 
-For the **oh-my-skills plugin install** of *this* wrapper, see Step 8.
+For the **jeo-skills plugin install** of *this* wrapper, see Step 8.
 
 ### Step 3 — Generate a diagram from text
 
@@ -199,21 +199,21 @@ Learn my style from ~/diagrams/brand.drawio as "mybrand"
 | Data | ER, data-flow (DFD) | Table containers, PK/FK notation |
 | Other | org charts, mind maps, wireframes | — |
 
-### Step 8 — Plugin-style installation alongside oh-my-skills
+### Step 8 — Plugin-style installation alongside jeo-skills
 
-This wrapper folder is plugin-installable through the standard oh-my-skills
+This wrapper folder is plugin-installable through the standard jeo-skills
 flow so the routing guide, references, and installer land on disk for any
 supported agent runtime:
 
 ```bash
 # Project install (writes into .agents/skills/drawio/)
-npx skills add https://github.com/akillness/oh-my-skills --skill drawio
+npx skills add https://github.com/akillness/jeo-skills --skill drawio
 
 # Global install for every detected agent
-npx skills add -g https://github.com/akillness/oh-my-skills --skill drawio
+npx skills add -g https://github.com/akillness/jeo-skills --skill drawio
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/oh-my-skills --skill drawio -a claude-code -a codex -y
+npx skills add -g https://github.com/akillness/jeo-skills --skill drawio -a claude-code -a codex -y
 ```
 
 The skill also ships [`scripts/install.sh`](scripts/install.sh) — a one-shot
@@ -273,5 +273,5 @@ When the user asks `drawio` for help, return a compact brief:
 - Local installer: [`scripts/install.sh`](scripts/install.sh)
 - Local usage/flag reference: [`references/usage.md`](references/usage.md)
 - Sibling diagram skills: `excalidraw-skill`, `mermaid`, `plantuml`, `tldraw-skill`
-- Adjacent oh-my-skills: `../presentation-builder/SKILL.md`, `../cli-anything/SKILL.md`, `../ccpi-marketplace/SKILL.md`
+- Adjacent jeo-skills: `../presentation-builder/SKILL.md`, `../cli-anything/SKILL.md`, `../ccpi-marketplace/SKILL.md`
 - License: MIT (see upstream `LICENSE`)

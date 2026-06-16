@@ -88,9 +88,9 @@ Requirements:
 claude plugin marketplace add nexu-io/open-design
 ```
 
-**Install from oh-my-skills:**
+**Install from jeo-skills:**
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill open-design
+npx skills add https://github.com/akillness/jeo-skills --skill open-design
 ```
 
 **Lifecycle commands:**

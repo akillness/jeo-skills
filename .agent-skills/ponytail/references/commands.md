@@ -18,12 +18,12 @@ In Codex the commands are skills — invoke with `@` (`@ponytail-review`).
 
 ## Install (this catalog)
 
-Plugin-installable from the oh-my-skills catalog:
+Plugin-installable from the jeo-skills catalog:
 
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill ponytail
+npx skills add https://github.com/akillness/jeo-skills --skill ponytail
 # global, non-interactive:
-npx skills add https://github.com/akillness/oh-my-skills --skill ponytail -g -y
+npx skills add https://github.com/akillness/jeo-skills --skill ponytail -g -y
 ```
 
 Or run the bundled helper, which wires the upstream marketplace plugin for the

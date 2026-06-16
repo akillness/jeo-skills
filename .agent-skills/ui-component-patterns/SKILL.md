@@ -22,7 +22,7 @@ metadata:
   tags: ui-components, react, typescript, composition, variants, slots, reusable, frontend
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.1.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   modernization: 2026-04-13
   hardening: 2026-04-19
 ---

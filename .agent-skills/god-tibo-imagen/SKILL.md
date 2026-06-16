@@ -48,7 +48,7 @@ pip install god-tibo-imagen
 
 ### Skill (any platform)
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill god-tibo-imagen
+npx skills add https://github.com/akillness/jeo-skills --skill god-tibo-imagen
 ```
 
 ## Requirements

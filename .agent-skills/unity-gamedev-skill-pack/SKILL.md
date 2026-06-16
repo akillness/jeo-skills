@@ -13,7 +13,7 @@ compatibility: >
 metadata:
   tags: unity, game-development, skill-curation, claude-code, repository-maintenance
   version: "1.0.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Unity GameDev Skill Pack

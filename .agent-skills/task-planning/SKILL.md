@@ -21,7 +21,7 @@ metadata:
   tags: task-planning, backlog-grooming, sprint-planning, milestone-planning, roadmap-slicing, feature-breakdown, launch-planning, game-development
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.1.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   modernization: 2026-04-12
   hardening: 2026-04-18
   ratchet: 2026-04-20

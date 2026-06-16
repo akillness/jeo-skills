@@ -73,7 +73,7 @@
     },
     {
       "id": 7,
-      "prompt": "I'm at the repo root of oh-my-skills. What exact command should I run to validate .agent-skills/skill-standardization, and what still needs manual review after the scripts pass?",
+      "prompt": "I'm at the repo root of jeo-skills. What exact command should I run to validate .agent-skills/skill-standardization, and what still needs manual review after the scripts pass?",
       "expected_output": "A response that gives the truthful repo-root validator command, distinguishes repo-root from skill-local execution, and lists manual review items such as compact-surface freshness or stale discovery copy.",
       "assertions": [
         "The output uses the nested repo-root path .agent-skills/skill-standardization/scripts/validate_skill.sh instead of bare scripts/validate_skill.sh",

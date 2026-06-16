@@ -13,7 +13,7 @@
     },
     {
       "id": 2,
-      "prompt": "I only want two or three specific skills from oh-my-skills, not a giant bundle.",
+      "prompt": "I only want two or three specific skills from jeo-skills, not a giant bundle.",
       "expected_output": "A route-out to the standard `skills add --skill <name>` flow for selective installs, since agenticskills is a bundle installer.",
       "assertions": [
         "Output does not run the oh-my-gods bundle installer for a selective request.",

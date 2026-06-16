@@ -16,7 +16,7 @@ metadata:
   tags: code-review, pull-request-review, diff-review, security-review, risk-review, pre-merge
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Code Review

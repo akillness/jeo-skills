@@ -2,7 +2,7 @@
   "version": 1,
   "skills": {
     "ai-tool-compliance": {
-      "source": "akillness/oh-my-skills",
+      "source": "akillness/jeo-skills",
       "sourceType": "github",
       "version": "1.0.0",
       "keyword": "compliance",
@@ -19,12 +19,12 @@
       "addedAt": "2026-03-03T00:00:00Z"
     },
     "cli-anything": {
-      "source": "akillness/oh-my-skills",
+      "source": "akillness/jeo-skills",
       "sourceType": "github",
       "computedHash": "05a29ea74fdced45d3a282250c0bbd24cab760290131ce472c308eca5df8002b"
     },
     "deep-dive": {
-      "source": "akillness/oh-my-skills",
+      "source": "akillness/jeo-skills",
       "sourceType": "github",
       "version": "1.0.0",
       "keyword": "deep-dive",
@@ -42,12 +42,12 @@
         "codex",
         "antigravity"
       ],
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deep-dive",
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill deep-dive",
       "addedAt": "2026-05-30T00:00:00Z",
       "updatedAt": "2026-05-30T00:00:00Z"
     },
     "deepinit": {
-      "source": "akillness/oh-my-skills",
+      "source": "akillness/jeo-skills",
       "sourceType": "github",
       "version": "1.0.0",
       "keyword": "deepinit",
@@ -63,12 +63,12 @@
         "oma",
         "antigravity"
       ],
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill deepinit",
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill deepinit",
       "addedAt": "2026-05-30T00:00:00Z",
       "updatedAt": "2026-05-30T00:00:00Z"
     },
     "drawio": {
-      "source": "akillness/oh-my-skills",
+      "source": "akillness/jeo-skills",
       "sourceType": "github",
       "computedHash": "0e58b5b855c53dd79932b7ee383d747d3eac6ef150b7e2595b6d23245dfa5521"
     },
@@ -88,7 +88,7 @@
         "gemini",
         "opencode"
       ],
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill harness",
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill harness",
       "addedAt": "2026-03-30T00:00:00Z",
       "updatedAt": "2026-03-30T00:00:00Z",
       "extensions": [
@@ -110,7 +110,7 @@
       ]
     },
     "llm-monitoring-dashboard": {
-      "source": "akillness/oh-my-skills",
+      "source": "akillness/jeo-skills",
       "sourceType": "github",
       "version": "1.0.0",
       "keyword": "llm-monitoring",
@@ -178,7 +178,7 @@
       ],
       "installCommand": "claude plugin marketplace add Q00/ouroboros",
       "alternativeInstall": "pip install ouroboros-ai[all]",
-      "skillInstall": "npx skills add https://github.com/akillness/oh-my-skills --skill ooo",
+      "skillInstall": "npx skills add https://github.com/akillness/jeo-skills --skill ooo",
       "addedAt": "2026-04-22T00:00:00Z",
       "updatedAt": "2026-04-22T00:00:00Z",
       "extensions": [
@@ -195,12 +195,12 @@
       ]
     },
     "ponytail": {
-      "source": "akillness/oh-my-skills",
+      "source": "akillness/jeo-skills",
       "sourceType": "github",
       "computedHash": "08ec6f9ff81f5b6f69bfdcb7aea1ea052583b0767a456c015a07cbff999ae949"
     },
     "spec-stack": {
-      "source": "akillness/oh-my-skills",
+      "source": "akillness/jeo-skills",
       "sourceType": "github",
       "version": "1.0.0",
       "keyword": "spec-stack",
@@ -216,7 +216,7 @@
         "seed",
         "composition"
       ],
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack",
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill spec-stack",
       "addedAt": "2026-06-11T00:00:00Z",
       "updatedAt": "2026-06-11T00:00:00Z",
       "extensions": [
@@ -243,7 +243,7 @@
       ]
     },
     "survey": {
-      "source": "akillness/oh-my-skills",
+      "source": "akillness/jeo-skills",
       "sourceType": "github",
       "version": "1.0.0",
       "keyword": "survey",
@@ -260,7 +260,7 @@
         "rules",
         "settings"
       ],
-      "installCommand": "npx skills add https://github.com/akillness/oh-my-skills --skill survey",
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill survey",
       "addedAt": "2026-03-10T00:00:00Z",
       "updatedAt": "2026-03-10T00:00:00Z"
     }

@@ -10,7 +10,7 @@ U[8]:
   Pass credentials and scope using --instruction or --instruction-file
   Choose quick, standard, or deep based on speed versus coverage
   Run headless scans in CI/CD and interpret exit codes 0, 1, and 2
-  Explain Strix internal skills and how they differ from oh-my-skills
+  Explain Strix internal skills and how they differ from jeo-skills
 
 S[6]{n,action,details}:
   1,Install,bash scripts/install.sh OR curl -sSL https://strix.ai/install | bash

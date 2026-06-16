@@ -18,7 +18,7 @@ metadata:
   tags: git, submodule, subtree, dependencies, version-control, ci, repo-structure
   platforms: Claude, ChatGPT, Gemini, Codex, OpenCode
   version: "2.1.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Git Submodule

@@ -17,7 +17,7 @@ metadata:
   tags: debugging, regression-isolation, reproduction, flaky-tests, git-bisect, root-cause
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Debugging

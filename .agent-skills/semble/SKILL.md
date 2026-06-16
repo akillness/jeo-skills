@@ -73,7 +73,7 @@ uv tool install semble    # uv (recommended for CLI use)
 
 ### Skill (any platform)
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill semble
+npx skills add https://github.com/akillness/jeo-skills --skill semble
 ```
 
 ## When to use

@@ -20,7 +20,7 @@ metadata:
   platforms: Claude, Gemini, Codex, OpenCode
   keyword: bmad-gds
   version: "1.0.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # BMAD Game Development Studio

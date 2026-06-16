@@ -41,7 +41,7 @@
     },
     {
       "id": 5,
-      "prompt": "Strix 내부 skill이랑 여기 oh-my-skills의 skill이 같은 개념이야?",
+      "prompt": "Strix 내부 skill이랑 여기 jeo-skills의 skill이 같은 개념이야?",
       "expected_output": "The skill clearly distinguishes Strix internal markdown knowledge packs from this repo's agent skills.",
       "assertions": [
         "The response states they are different systems",

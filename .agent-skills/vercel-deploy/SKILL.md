@@ -24,7 +24,7 @@ metadata:
   version: "2.1.0"
   modernization: 2026-04-15
   structural_hardening: 2026-04-18
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Vercel Deploy

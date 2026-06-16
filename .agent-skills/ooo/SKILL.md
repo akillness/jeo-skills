@@ -47,7 +47,7 @@ pip install ouroboros-ai[all]      # full: Claude, LiteLLM, MCP, TUI
 
 ### Skill (any platform)
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill ooo
+npx skills add https://github.com/akillness/jeo-skills --skill ooo
 ```
 
 ### Setup runtimes

@@ -16,7 +16,7 @@ compatibility: >
 metadata:
   tags: game-development, unity, unreal, logs, debugging, build-failures, ci, triage
   version: "1.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Game Build Log Triage

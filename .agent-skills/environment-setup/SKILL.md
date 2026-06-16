@@ -17,7 +17,7 @@ metadata:
   tags: environment, env-files, dotenv, env-validation, config-management, secrets-handoff
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "1.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Environment Configuration

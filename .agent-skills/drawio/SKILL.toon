@@ -10,7 +10,7 @@ S:
   4:Visualize a codebase — `pyimports/jsimports/goimports/rustimports/pyclasses` → `autolayout.py` (Graphviz, transitive reduction, --group); `validate.py` lints
   5:Resolve shapes/logos — `shapesearch.py "aws lambda"` (10k+ official), `aiicons.py "claude" --json|--embed` (321 AI/LLM logos)
   6:Self-check + iterate (2-round auto-fix, 5-round feedback) and apply style presets (default/corporate/handdrawn or learned)
-  7:Plugin install of this wrapper — `npx skills add https://github.com/akillness/oh-my-skills --skill drawio`
+  7:Plugin install of this wrapper — `npx skills add https://github.com/akillness/jeo-skills --skill drawio`
 R:
   mermaid:Use for diagrams-as-code in git, Markdown-embeddable
   plantuml:Use for UML-as-code in CI pipelines

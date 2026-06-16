@@ -26,7 +26,7 @@ metadata:
   version: "1.0.0"
   upstream: https://github.com/github/spec-kit
   installer: uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # spec-kit — Spec-Driven Development via `specify`
@@ -151,21 +151,21 @@ specify preset add <preset-name>
 
 Browse community resources at <https://github.github.io/spec-kit/community/>.
 
-### Step 6 — Plugin-style installation alongside oh-my-skills
+### Step 6 — Plugin-style installation alongside jeo-skills
 
-This skill folder is plugin-installable through the standard oh-my-skills
+This skill folder is plugin-installable through the standard jeo-skills
 flow so the wrapper, references, and installer script land on disk for any
 supported agent runtime:
 
 ```bash
 # Project install (writes into .agents/skills/spec-kit/)
-npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit
+npx skills add https://github.com/akillness/jeo-skills --skill spec-kit
 
 # Global install for every detected agent
-npx skills add -g https://github.com/akillness/oh-my-skills --skill spec-kit
+npx skills add -g https://github.com/akillness/jeo-skills --skill spec-kit
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/oh-my-skills --skill spec-kit -a claude-code -a codex -y
+npx skills add -g https://github.com/akillness/jeo-skills --skill spec-kit -a claude-code -a codex -y
 ```
 
 The skill also ships [`scripts/install.sh`](scripts/install.sh) as a

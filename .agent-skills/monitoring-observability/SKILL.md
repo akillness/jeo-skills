@@ -20,7 +20,7 @@ compatibility: >
 metadata:
   tags: observability, monitoring, telemetry, alerts, dashboards, slos, logging, traces, metrics
   version: "2.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Monitoring & Observability

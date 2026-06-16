@@ -18,7 +18,7 @@ metadata:
   tags: automation, task-runner, bootstrap, ci-parity, dev-workflow, hooks, repo-maintenance
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Workflow Automation

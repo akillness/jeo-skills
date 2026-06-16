@@ -21,7 +21,7 @@ metadata:
   tags: standup, daily-scrum, async-standup, blocker-triage, agile, project-management, delivery-sync, hybrid-teams
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.0.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   modernization: 2026-04-12
   hardening: 2026-04-19
   ratchet: 2026-04-20

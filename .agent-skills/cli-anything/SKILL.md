@@ -30,7 +30,7 @@ metadata:
   version: "1.0.0"
   upstream: https://github.com/HKUDS/CLI-Anything
   installer: pip install cli-anything-hub
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # cli-anything — Make Any Software Agent-Native
@@ -177,21 +177,21 @@ cli-anything-gimp                            # bare command → stateful REPL
 Every harness ships dual modes (REPL + subcommands), `--json` on every
 command, and a generated `SKILL.md` at `skills/cli-anything-<name>/SKILL.md`.
 
-### Step 7 — Plugin-style installation alongside oh-my-skills
+### Step 7 — Plugin-style installation alongside jeo-skills
 
-This skill folder is plugin-installable through the standard oh-my-skills
+This skill folder is plugin-installable through the standard jeo-skills
 flow so the wrapper, references, and installer script land on disk for any
 supported agent runtime:
 
 ```bash
 # Project install (writes into .agents/skills/cli-anything/)
-npx skills add https://github.com/akillness/oh-my-skills --skill cli-anything
+npx skills add https://github.com/akillness/jeo-skills --skill cli-anything
 
 # Global install for every detected agent
-npx skills add -g https://github.com/akillness/oh-my-skills --skill cli-anything
+npx skills add -g https://github.com/akillness/jeo-skills --skill cli-anything
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/oh-my-skills --skill cli-anything -a claude-code -a codex -y
+npx skills add -g https://github.com/akillness/jeo-skills --skill cli-anything -a claude-code -a codex -y
 ```
 
 The skill also ships [`scripts/install.sh`](scripts/install.sh) — a

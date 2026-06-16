@@ -47,8 +47,8 @@ npx skills add google-labs-code/stitch-skills --skill remotion --global
 npx skills add google-labs-code/stitch-skills --skill shadcn-ui --global
 npx skills add google-labs-code/stitch-skills --skill design-md --global
 
-# Install from oh-my-skills
-npx skills add https://github.com/akillness/oh-my-skills --skill stitch-skills
+# Install from jeo-skills
+npx skills add https://github.com/akillness/jeo-skills --skill stitch-skills
 ```
 
 ## When to use

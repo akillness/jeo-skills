@@ -18,7 +18,7 @@ compatibility: >
 metadata:
   tags: game-development, unity, unreal, ci-cd, github-actions, build-pipeline, release-engineering, release-candidates
   version: "1.2.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   hardening: 2026-04-19
   ratchet: 2026-04-20
 ---

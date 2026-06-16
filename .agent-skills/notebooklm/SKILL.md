@@ -44,7 +44,7 @@ git clone https://github.com/PleasePrompto/notebooklm-skill.git notebooklm
 
 ### Skill (via skills CLI)
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill notebooklm
+npx skills add https://github.com/akillness/jeo-skills --skill notebooklm
 ```
 
 ## Requirements

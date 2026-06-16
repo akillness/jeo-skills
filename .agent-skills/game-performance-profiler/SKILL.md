@@ -19,7 +19,7 @@ compatibility: >
 metadata:
   tags: game-development, unity, unreal, profiling, performance, optimization, frame-time, steam-deck
   version: "1.2"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Game Performance Profiler

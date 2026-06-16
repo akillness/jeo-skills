@@ -13,7 +13,7 @@ license: MIT
 metadata:
   tags: research-paper-writing, academic-writing, ml, cv, nlp, experiments, rebuttal
   version: "1.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # research-paper-writing

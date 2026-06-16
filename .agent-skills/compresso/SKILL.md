@@ -50,7 +50,7 @@ Download from [github.com/codeforreal1/compressO/releases](https://github.com/co
 
 ### Skill (any platform)
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills --skill compresso
+npx skills add https://github.com/akillness/jeo-skills --skill compresso
 ```
 
 ## When to use

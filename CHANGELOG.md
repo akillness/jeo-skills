@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to **oh-my-skills** are documented here.
+All notable changes to **jeo-skills** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/); the README
 "What's New" sections remain the long-form source.
 

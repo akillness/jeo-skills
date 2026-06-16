@@ -15,7 +15,7 @@ compatibility: >
 metadata:
   tags: game-development, playtesting, demo-feedback, steam-playtest, next-fest, prioritization, ux, qa, launch-ops
   version: "1.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Game Demo Feedback Triage

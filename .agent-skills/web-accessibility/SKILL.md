@@ -22,7 +22,7 @@ metadata:
   version: "2.1.0"
   modernization: 2026-04-13
   hardening: 2026-04-18
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Web Accessibility

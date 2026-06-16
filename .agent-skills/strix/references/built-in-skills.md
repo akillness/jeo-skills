@@ -7,7 +7,7 @@
 
 This repo's `strix` skill teaches an external AI agent how to operate the Strix CLI.
 
-Strix itself also has internal skills. Those live inside the Strix project and are injected into Strix agents during a scan. They are not installed through `oh-my-skills`.
+Strix itself also has internal skills. Those live inside the Strix project and are injected into Strix agents during a scan. They are not installed through `jeo-skills`.
 
 ## How Strix uses internal skills
 

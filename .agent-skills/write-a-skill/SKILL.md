@@ -70,7 +70,7 @@ Present the draft. Validate:
 - Boundaries prevent misuse?
 - Supporting files are needed or is SKILL.md sufficient?
 
-## SKILL.md template (oh-my-skills format)
+## SKILL.md template (jeo-skills format)
 
 ```yaml
 ---

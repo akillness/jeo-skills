@@ -18,7 +18,7 @@ compatibility: >
 metadata:
   tags: logs, triage, debugging, observability, incidents, ci, browser, grep
   version: "2.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Log Analysis

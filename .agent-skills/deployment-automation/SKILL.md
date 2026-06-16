@@ -21,7 +21,7 @@ metadata:
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.1.0"
   modernization: 2026-04-16
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Deployment Automation

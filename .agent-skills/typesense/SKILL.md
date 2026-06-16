@@ -29,7 +29,7 @@ metadata:
   version: "1.0.0"
   upstream: https://github.com/typesense/typesense
   installer: docker run -p 8108:8108 -v /tmp/typesense-data:/data typesense/typesense --data-dir /data --api-key=xyz
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # typesense — Installable Typo-Tolerant Search Environment
@@ -171,21 +171,21 @@ hybrid search. Details in [`references/commands.md`](references/commands.md).
 - **HA**: run a **Raft-based cluster** (typically 3 nodes) for high
   availability; upgrades are a binary swap + restart.
 
-### Step 7 — Plugin-style installation alongside oh-my-skills
+### Step 7 — Plugin-style installation alongside jeo-skills
 
-This skill folder is plugin-installable through the standard oh-my-skills
+This skill folder is plugin-installable through the standard jeo-skills
 flow so the wrapper, references, and installer land on disk for any supported
 agent runtime:
 
 ```bash
 # Project install (writes into .agents/skills/typesense/)
-npx skills add https://github.com/akillness/oh-my-skills --skill typesense
+npx skills add https://github.com/akillness/jeo-skills --skill typesense
 
 # Global install for every detected agent
-npx skills add -g https://github.com/akillness/oh-my-skills --skill typesense
+npx skills add -g https://github.com/akillness/jeo-skills --skill typesense
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/oh-my-skills --skill typesense -a claude-code -a codex -y
+npx skills add -g https://github.com/akillness/jeo-skills --skill typesense -a claude-code -a codex -y
 ```
 
 ## Output format

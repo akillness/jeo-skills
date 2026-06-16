@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-repo_root="${1:-/Users/jang_jennie/projects/oh-my-skills}"
+repo_root="${1:-/Users/jang_jennie/projects/jeo-skills}"
 validator="$repo_root/.agent-skills/skill-standardization/scripts/validate_skill.sh"
 
 tmpdir=$(mktemp -d)

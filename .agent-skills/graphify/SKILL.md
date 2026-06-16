@@ -19,7 +19,7 @@ metadata:
   tags: knowledge-graph, codebase-analysis, graphrag, architecture, graphify, corpus-analysis, persistent-memory
   platforms: Claude, ChatGPT, Gemini, Codex, OpenCode
   version: "2.0.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Graphify

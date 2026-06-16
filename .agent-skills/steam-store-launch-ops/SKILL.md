@@ -18,7 +18,7 @@ compatibility: >
 metadata:
   tags: steam, indie-games, game-marketing, launch-ops, next-fest, wishlists, store-page, demos
   version: "1.2"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Steam Store Launch Ops

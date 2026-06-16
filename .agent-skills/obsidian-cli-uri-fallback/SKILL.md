@@ -14,7 +14,7 @@ license: MIT
 metadata:
   tags: obsidian, cli, fallback, cron, headless, reliability, automation
   version: "1.0.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # obsidian-cli-uri-fallback

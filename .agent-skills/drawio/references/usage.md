@@ -30,8 +30,8 @@ npx skills add Agents365-ai/365-skills -g
 # Manual
 git clone https://github.com/Agents365-ai/drawio-skill.git ~/.claude/skills/drawio-skill
 
-# This oh-my-skills wrapper (plugin-installable)
-npx skills add https://github.com/akillness/oh-my-skills --skill drawio
+# This jeo-skills wrapper (plugin-installable)
+npx skills add https://github.com/akillness/jeo-skills --skill drawio
 ```
 
 Updates: `/plugin update drawio` (Claude Code), `skills update drawio-skill`

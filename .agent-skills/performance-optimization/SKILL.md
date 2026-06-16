@@ -21,7 +21,7 @@ metadata:
   tags: performance, profiling, bottleneck-analysis, latency, throughput, memory, bundle-size, query-plans, web-vitals, flamegraphs
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Performance Optimization

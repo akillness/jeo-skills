@@ -28,7 +28,7 @@ metadata:
   keyword: spec-stack
   version: "1.0.0"
   composes: spec-kit, ooo, cli-anything
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # spec-stack — Write → Freeze → Run, Verified
@@ -166,17 +166,17 @@ unstuck step instead of blind retries. Pattern A users who want the
 spec-kit task list can run `/speckit.implement` per task inside the loop
 — the seed still gates completion.
 
-### Step 6 — Plugin-style installation alongside oh-my-skills
+### Step 6 — Plugin-style installation alongside jeo-skills
 
 ```bash
 # Project install (writes into .agents/skills/spec-stack/)
-npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack
+npx skills add https://github.com/akillness/jeo-skills --skill spec-stack
 
 # Global install for every detected agent
-npx skills add -g https://github.com/akillness/oh-my-skills --skill spec-stack
+npx skills add -g https://github.com/akillness/jeo-skills --skill spec-stack
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/oh-my-skills --skill spec-stack -a claude-code -a codex -y
+npx skills add -g https://github.com/akillness/jeo-skills --skill spec-stack -a claude-code -a codex -y
 ```
 
 Installing `spec-stack` does not auto-install the three layer skills;

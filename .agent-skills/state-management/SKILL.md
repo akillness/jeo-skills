@@ -18,7 +18,7 @@ metadata:
   tags: state-management, react, context, redux-toolkit, zustand, jotai, tanstack-query, client-state, server-state
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.2"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # State Management

@@ -8,7 +8,7 @@ allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: >
   Requires desktop Obsidian with CLI enabled (Settings → General → Command line interface,
   installer 1.12.7+). Merged into obsidian skill v2.0.
-license: Proprietary docs, skill authored for oh-my-skills
+license: Proprietary docs, skill authored for jeo-skills
 metadata:
   tags: obsidian, cli, terminal, automation, vault, uri, developer-tools, notes, tui
   version: "2.1.0"

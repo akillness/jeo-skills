@@ -21,7 +21,7 @@ metadata:
   tags: npm, pnpm, yarn, bun, git, github, package-management, node, monorepo, private-packages
   platforms: Claude, ChatGPT, Gemini, Codex, OpenCode
   version: "2.1.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Git-Based Node Package Install

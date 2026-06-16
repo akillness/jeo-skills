@@ -22,7 +22,7 @@ metadata:
   tags: frontend, ui-review, ux, usability, design-audit, heuristics, accessibility-basics, responsive-basics
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Web Design Guidelines

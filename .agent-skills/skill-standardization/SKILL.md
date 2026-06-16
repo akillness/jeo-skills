@@ -42,7 +42,7 @@ Use `references/working-modes.md` and pick exactly one primary mode:
 Do not start with a giant blended pass if one of those modes answers the job.
 
 ### Step 2: Run the truthful validator command for the current working directory
-For `oh-my-skills` repo-root maintenance loops, use:
+For `jeo-skills` repo-root maintenance loops, use:
 
 ```bash
 bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/<skill-name>
@@ -110,10 +110,10 @@ When two skills cover the same default job closely enough that their `name + des
 Hard deletion is usually a later step, not the first move.
 
 ### Step 7: Run structural catalog sync after add / rename / remove / alias / major repositioning work
-For repo-level drift in `oh-my-skills`, use:
+For repo-level drift in `jeo-skills`, use:
 
 ```bash
-python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --repo-root /Users/jang_jennie/projects/oh-my-skills
+python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --repo-root /Users/jang_jennie/projects/jeo-skills
 ```
 
 Portable form:

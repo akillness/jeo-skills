@@ -28,7 +28,7 @@ metadata:
   platforms: Claude, Codex, Gemini, Cursor, OpenCode, All
   keyword: ponytail
   version: "1.0.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   upstream: DietrichGebert/ponytail
 ---
 

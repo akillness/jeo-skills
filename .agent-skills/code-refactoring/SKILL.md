@@ -19,7 +19,7 @@ metadata:
   tags: refactoring, code-quality, behavior-preservation, cleanup, codemod, migration, technical-debt, legacy-code
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   modernization: 2026-04-14
   hardening: 2026-04-18
 ---

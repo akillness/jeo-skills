@@ -7,7 +7,7 @@ description: >
   kepano/obsidian-skills markdown/bases/json-canvas patterns. Triggers on: obsidian plugin,
   obsidian cli, obsidian automation, obsidian development, obsidian eslint, obsidian submission,
   obsidian markdown, obsidian bases, json-canvas, obsidian vault, obsidian URI, obsidian commands.
-  Installable as a plugin: claude plugin marketplace add akillness/oh-my-skills
+  Installable as a plugin: claude plugin marketplace add akillness/jeo-skills
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: >
   Plugin dev works anywhere TypeScript/Node.js is available. CLI automation requires
@@ -18,15 +18,15 @@ metadata:
   tags: obsidian, plugin-development, eslint, cli, automation, markdown, bases, json-canvas, vault, uri
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   based-on: gapmiss/obsidian-plugin-skill, obsidian.md/help/cli, kepano/obsidian-skills
 ---
 
 # obsidian — Plugin Development + Desktop Automation
 
 > Replaces: `obsidian-plugin` · `obsidian-cli`
-> Plugin install: `claude plugin marketplace add akillness/oh-my-skills`
-> Skill install: `npx skills add https://github.com/akillness/oh-my-skills --skill obsidian`
+> Plugin install: `claude plugin marketplace add akillness/jeo-skills`
+> Skill install: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian`
 
 ## When to use this skill
 
@@ -110,10 +110,10 @@ See [references/content-patterns.md](references/content-patterns.md) for full sy
 
 ```bash
 # Install this skill as a Claude Code plugin
-claude plugin marketplace add akillness/oh-my-skills
+claude plugin marketplace add akillness/jeo-skills
 
 # Or install just the obsidian skill via skills CLI
-npx skills add https://github.com/akillness/oh-my-skills --skill obsidian
+npx skills add https://github.com/akillness/jeo-skills --skill obsidian
 ```
 
 ## Examples

@@ -12,7 +12,7 @@ metadata:
   tags: project-structure, folder-structure, feature-based-architecture, naming-conventions, monorepo, migration
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # File Organization

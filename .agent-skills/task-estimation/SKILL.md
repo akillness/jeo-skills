@@ -21,7 +21,7 @@ metadata:
   tags: task-estimation, story-points, t-shirt-sizing, planning-poker, forecasting, uncertainty, project-management, game-development
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.0.0"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   modernization: 2026-04-12
   hardening: 2026-04-19
 ---

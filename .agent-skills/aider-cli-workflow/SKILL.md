@@ -11,7 +11,7 @@ compatibility: >
 metadata:
   tags: aider, cli, ai-pair-programming, git, test-driven, code-review
   platforms: Claude, Codex, Gemini, OpenCode
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
   version: "1.0.0"
 ---
 

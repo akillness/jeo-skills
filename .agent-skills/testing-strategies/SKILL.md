@@ -19,7 +19,7 @@ metadata:
   tags: testing, test-strategy, risk-based-testing, regression-policy, flaky-tests, release-confidence
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "2.1"
-  source: akillness/oh-my-skills
+  source: akillness/jeo-skills
 ---
 
 # Testing Strategies

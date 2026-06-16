@@ -5,7 +5,7 @@ Use the smallest mode that solves the maintenance problem.
 ## Mode 1 — Validate or repair one existing skill
 Best for frontmatter, section, trigger-description, and size hygiene on a single folder.
 
-### Repo-root commands (`oh-my-skills` workflow)
+### Repo-root commands (`jeo-skills` workflow)
 ```bash
 bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/<skill-name>
 ```
@@ -89,9 +89,9 @@ Use when two skills compete for the same default job.
 ## Mode 4 — Structural catalog / discovery sync
 Use after add / rename / remove / alias / major repositioning work.
 
-### Repo-root commands (`oh-my-skills` workflow)
+### Repo-root commands (`jeo-skills` workflow)
 ```bash
-python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --repo-root /Users/jang_jennie/projects/oh-my-skills
+python3 .agent-skills/skill-standardization/scripts/validate_catalog_sync.py --repo-root /Users/jang_jennie/projects/jeo-skills
 ```
 
 ### Portable form
