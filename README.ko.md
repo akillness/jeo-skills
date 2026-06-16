@@ -2,8 +2,8 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-140-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
-[![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-140-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
@@ -37,7 +37,7 @@ Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현
 
 ```bash
 # LLM 에이전트에게 전달 — 읽고 자동으로 설치를 진행합니다
-curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-skills-prompt.md
+curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
 ```
 
 | 플랫폼 | 첫 번째 명령 |
@@ -101,33 +101,33 @@ graph TD
 
 | 변경 | 내용 |
 |------|------|
-| **typesense: 설치형 오타 허용 검색 환경** | `typesense` 스킬을 추가했습니다 — [Typesense](https://github.com/typesense/typesense)(서버 GPL-3.0, 클라이언트 Apache-2.0)를 감싸는 라우팅 우선 wrapper로, 오픈소스 **Algolia / ElasticSearch 대안**입니다. 런타임 의존성이 없는 단일 C++ 바이너리로 <50ms 즉시 검색을 제공합니다. 서버 모드 선택(**공식 Docker 이미지**, 다운로드 바이너리, 매니지드 **Typesense Cloud**), API 클라이언트 설치(Python/JS/PHP/Ruby 공식, Go/Dart/C# 커뮤니티), 타입드 컬렉션 스키마 설계, 문서 색인(개별 또는 JSONL 대량 `upsert`), 그리고 **오타 허용·패싯/필터·지오 검색·쿼리타임 정렬·그룹/distinct·동의어·큐레이션·scoped API 키·federated multi-search·벡터/하이브리드** 검색까지 안내하고, 프로덕션용 InstantSearch.js UI와 Raft 기반 HA 클러스터로 이어집니다. `scripts/install.sh`(Docker 서버 기동 + Python 클라이언트, venv/PEP 668 인식), 클라이언트·통합·검색 파라미터 레퍼런스, `SKILL.toon`, `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill typesense`. Route-out: `opik`/`langsmith`(LLM 트레이스/평가 옵저버빌리티), `semble`(에이전트 코드 검색), `monitoring-observability`(비-검색 텔레메트리). 139 → **140개 스킬**. |
+| **typesense: 설치형 오타 허용 검색 환경** | `typesense` 스킬을 추가했습니다 — [Typesense](https://github.com/typesense/typesense)(서버 GPL-3.0, 클라이언트 Apache-2.0)를 감싸는 라우팅 우선 wrapper로, 오픈소스 **Algolia / ElasticSearch 대안**입니다. 런타임 의존성이 없는 단일 C++ 바이너리로 <50ms 즉시 검색을 제공합니다. 서버 모드 선택(**공식 Docker 이미지**, 다운로드 바이너리, 매니지드 **Typesense Cloud**), API 클라이언트 설치(Python/JS/PHP/Ruby 공식, Go/Dart/C# 커뮤니티), 타입드 컬렉션 스키마 설계, 문서 색인(개별 또는 JSONL 대량 `upsert`), 그리고 **오타 허용·패싯/필터·지오 검색·쿼리타임 정렬·그룹/distinct·동의어·큐레이션·scoped API 키·federated multi-search·벡터/하이브리드** 검색까지 안내하고, 프로덕션용 InstantSearch.js UI와 Raft 기반 HA 클러스터로 이어집니다. `scripts/install.sh`(Docker 서버 기동 + Python 클라이언트, venv/PEP 668 인식), 클라이언트·통합·검색 파라미터 레퍼런스, `SKILL.toon`, `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill typesense`. Route-out: `opik`/`langsmith`(LLM 트레이스/평가 옵저버빌리티), `semble`(에이전트 코드 검색), `monitoring-observability`(비-검색 텔레메트리). 139 → **140개 스킬**. |
 
 ## 🆕 v2026-06-15 업데이트
 
 | 변경 | 내용 |
 |------|------|
-| **ponytail: 회사에서 가장 게으른 시니어 개발자** | `ponytail` 스킬을 추가했습니다 — DietrichGebert의 [Ponytail](https://github.com/DietrichGebert/ponytail) 룰셋을 감싸는 라우팅 우선 wrapper로, 에이전트가 과제를 완전히 해결하는 **최소한의 코드**만 쓰도록 만듭니다. 무엇이든 쓰기 전에 가장 먼저 만족되는 단을 골라 멈춥니다: **이게 꼭 있어야 하나(YAGNI) → 표준 라이브러리 → 네이티브 플랫폼 기능 → 이미 설치된 의존성 → 한 줄 → 그제서야 동작하는 최소한**. 취한 모든 단축은 `ponytail:` 주석으로 업그레이드 경로를 명시해, 미뤄둔 일이 망각이 아니라 장부가 됩니다. 강도는 `lite / full / ultra / off`로 설정하며 턴을 넘어 유지됩니다; 명령은 diff 검토(`/ponytail-review` → 삭제 목록), 전체 저장소 감사(`/ponytail-audit`), 부채 수확(`/ponytail-debt`)을 다룹니다. 게으르지만 부주의하지 않습니다: 신뢰 경계 검증, 데이터 손실 처리, 보안, 접근성은 절대 잘라내지 않습니다. 업스트림 벤치마크 기준 코드 80–94% 감소, 3–6× 빠름, 47–77% 저렴(Haiku/Sonnet/Opus). 런타임별 업스트림 마켓플레이스 플러그인/확장을 연결하는 `scripts/install.sh`(Claude Code, Codex, Gemini, Pi, OpenCode)와 런타임별 커맨드 크로스워크 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill ponytail`. Route-out: `caveman`(코드 양이 아닌 통신 압축), `code-refactoring`(동작 보존 정리), `ai-slop-cleaner`(AI 생성 군더더기), `code-review`(심각도 기반 리뷰). 137 → **138개 스킬**. |
-| **drawio: 텍스트에서 전문 다이어그램까지** | `drawio` 스킬을 추가했습니다 — Agents365-ai의 [drawio-skill](https://github.com/Agents365-ai/drawio-skill)(MIT)을 감싸는 wrapper로, 자연어 설명을 편집 가능한 `.drawio` XML로 변환하고 **네이티브 draw.io 데스크톱 CLI**로 PNG / SVG / PDF / JPG로 내보냅니다(MCP 서버·데몬 불필요). 또는 기존 코드베이스(Python / JS-TS / Go / Rust)를 자동 배치된 구조 다이어그램으로 변환합니다. 6가지 다이어그램 프리셋(ERD, UML 클래스, 시퀀스, 아키텍처, ML/DL, 플로우차트), **10,000개 이상의 공식** AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN 셰이프 검색(`shapesearch.py`), draw.io에 없는 **321개 AI/LLM 브랜드 로고**(`aiicons.py`), Graphviz 기반 추출 → 자동 배치 → 검증 파이프라인(전이 축약·중첩 컨테이너), 렌더된 PNG를 읽어 자동 보정하는 비전 셀프체크(최대 2라운드)와 5라운드 반복 개선 루프를 제공합니다. 플랫폼별 draw.io CLI 감지/설치 + 업스트림 스킬 설치(선택적 Graphviz)를 수행하는 `scripts/install.sh`와 커맨드/플래그 레퍼런스 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill drawio`. Route-out: `mermaid`/`plantuml`(git 내 코드형 다이어그램), `excalidraw`/`tldraw`(손그림 스타일), `presentation-builder`(슬라이드 덱). 138 → **139개 스킬**. |
+| **ponytail: 회사에서 가장 게으른 시니어 개발자** | `ponytail` 스킬을 추가했습니다 — DietrichGebert의 [Ponytail](https://github.com/DietrichGebert/ponytail) 룰셋을 감싸는 라우팅 우선 wrapper로, 에이전트가 과제를 완전히 해결하는 **최소한의 코드**만 쓰도록 만듭니다. 무엇이든 쓰기 전에 가장 먼저 만족되는 단을 골라 멈춥니다: **이게 꼭 있어야 하나(YAGNI) → 표준 라이브러리 → 네이티브 플랫폼 기능 → 이미 설치된 의존성 → 한 줄 → 그제서야 동작하는 최소한**. 취한 모든 단축은 `ponytail:` 주석으로 업그레이드 경로를 명시해, 미뤄둔 일이 망각이 아니라 장부가 됩니다. 강도는 `lite / full / ultra / off`로 설정하며 턴을 넘어 유지됩니다; 명령은 diff 검토(`/ponytail-review` → 삭제 목록), 전체 저장소 감사(`/ponytail-audit`), 부채 수확(`/ponytail-debt`)을 다룹니다. 게으르지만 부주의하지 않습니다: 신뢰 경계 검증, 데이터 손실 처리, 보안, 접근성은 절대 잘라내지 않습니다. 업스트림 벤치마크 기준 코드 80–94% 감소, 3–6× 빠름, 47–77% 저렴(Haiku/Sonnet/Opus). 런타임별 업스트림 마켓플레이스 플러그인/확장을 연결하는 `scripts/install.sh`(Claude Code, Codex, Gemini, Pi, OpenCode)와 런타임별 커맨드 크로스워크 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail`. Route-out: `caveman`(코드 양이 아닌 통신 압축), `code-refactoring`(동작 보존 정리), `ai-slop-cleaner`(AI 생성 군더더기), `code-review`(심각도 기반 리뷰). 137 → **138개 스킬**. |
+| **drawio: 텍스트에서 전문 다이어그램까지** | `drawio` 스킬을 추가했습니다 — Agents365-ai의 [drawio-skill](https://github.com/Agents365-ai/drawio-skill)(MIT)을 감싸는 wrapper로, 자연어 설명을 편집 가능한 `.drawio` XML로 변환하고 **네이티브 draw.io 데스크톱 CLI**로 PNG / SVG / PDF / JPG로 내보냅니다(MCP 서버·데몬 불필요). 또는 기존 코드베이스(Python / JS-TS / Go / Rust)를 자동 배치된 구조 다이어그램으로 변환합니다. 6가지 다이어그램 프리셋(ERD, UML 클래스, 시퀀스, 아키텍처, ML/DL, 플로우차트), **10,000개 이상의 공식** AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN 셰이프 검색(`shapesearch.py`), draw.io에 없는 **321개 AI/LLM 브랜드 로고**(`aiicons.py`), Graphviz 기반 추출 → 자동 배치 → 검증 파이프라인(전이 축약·중첩 컨테이너), 렌더된 PNG를 읽어 자동 보정하는 비전 셀프체크(최대 2라운드)와 5라운드 반복 개선 루프를 제공합니다. 플랫폼별 draw.io CLI 감지/설치 + 업스트림 스킬 설치(선택적 Graphviz)를 수행하는 `scripts/install.sh`와 커맨드/플래그 레퍼런스 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill drawio`. Route-out: `mermaid`/`plantuml`(git 내 코드형 다이어그램), `excalidraw`/`tldraw`(손그림 스타일), `presentation-builder`(슬라이드 덱). 138 → **139개 스킬**. |
 
 ## 🆕 v2026-06-11 업데이트
 
 | 변경 | 내용 |
 |------|------|
-| **spec-stack: Write → Freeze → Run, verified** | `spec-stack` 스킬을 추가했습니다 — `spec-kit` × `ooo` × `cli-anything`을 하나의 스펙 주도 딜리버리 스택으로 묶는 조합 스킬로, "spec-kit이 쓰고, ooo가 동결·완주하고, cli-anything이 손발이 된다"는 단일 규칙을 따릅니다. 세 가지 패턴을 라우팅합니다: **full-stack**(`/speckit.constitution` → `/speckit.specify` → ooo 인터뷰 → 기계 검증 가능한 수용 기준과 도구 명시 제약을 가진 불변 seed → `cli-hub search/install` → run/ralph ↔ evaluate에서 `--json` 산출물 증거 검사), **loop-only**(문서 아티팩트 없이 ooo seed + ralph), **docs-only**(멀티 에이전트 문서 공유용 `/speckit.*` 전체 파이프라인). 핸드오프 맵(spec.md → seed.yaml → harness 증거, 단방향 흐름)과 명시적 안티패턴(이중 SSOT, `cli-hub search` 없는 harness 생성, seed 없는 ralph 루프, exit code만으로 하는 검증)을 문서화. `scripts/install.sh`(uv/pipx/pip; `specify-cli` + `cli-anything-hub` 설치, ooo는 `SPEC_STACK_OOO=1` 또는 Claude 플러그인)와 커맨드 크로스워크 레퍼런스 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack`. Route-out: `spec-kit`/`ooo`/`cli-anything`(단일 레이어 작업), `bmad`(다음 기획 산출물), `plannotator`(플랜 승인). 135 → **137개 스킬** (게시된 카운트를 실제 137개 스킬 폴더에 재동기화 — v2026-06-08 이후 문서 카운트가 실제 추적 폴더 수보다 1 적게 어긋나 있던 것을 함께 정정). |
-| **cli-anything: 모든 소프트웨어를 agent-native로** | `cli-anything` 스킬을 추가했습니다 — HKUDS의 [CLI-Anything](https://github.com/HKUDS/CLI-Anything) 생태계를 감싸는 라우팅 우선 wrapper로, 네 가지 모드 중 하나를 선택합니다: CLI-Hub 패키지 매니저로 기성 harness 설치(`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), 에이전트 자율 탐색용 meta-skill 부여(`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), 임의 코드베이스·GitHub 저장소에서 7-phase 파이프라인으로 새 harness 생성(Claude Code `/plugin install cli-anything` → `/cli-anything <path>`, Codex/OpenCode/OpenClaw/Pi/Hermes/Qodercli/Copilot CLI 설치 경로 포함), 기존 harness 반복 개선(`/cli-anything:refine`/`:test`/`:validate`). GIMP · Blender · LibreOffice · OBS · Draw.io · ComfyUI · Ollama · Godot · QGIS · FreeCAD 등 40+ 프로덕션 harness, 2,461개 테스트 통과; 생성된 CLI는 Click 커맨드 + 상태형 REPL + `--json` 출력 + 자동 생성 SKILL.md를 제공합니다. PEP 668-safe `scripts/install.sh`(venv 인식 uv/pip, `CLI_ANYTHING_META_SKILL=1`로 meta-skill 옵션)와 플랫폼/커맨드 레퍼런스를 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill cli-anything`. Route-out: `harness`(에이전트 팀 설계), `browser-harness`(코드베이스 없는 GUI 대상), `ccpi-marketplace`(일반 플러그인 탐색). 134 → **135개 스킬**. |
+| **spec-stack: Write → Freeze → Run, verified** | `spec-stack` 스킬을 추가했습니다 — `spec-kit` × `ooo` × `cli-anything`을 하나의 스펙 주도 딜리버리 스택으로 묶는 조합 스킬로, "spec-kit이 쓰고, ooo가 동결·완주하고, cli-anything이 손발이 된다"는 단일 규칙을 따릅니다. 세 가지 패턴을 라우팅합니다: **full-stack**(`/speckit.constitution` → `/speckit.specify` → ooo 인터뷰 → 기계 검증 가능한 수용 기준과 도구 명시 제약을 가진 불변 seed → `cli-hub search/install` → run/ralph ↔ evaluate에서 `--json` 산출물 증거 검사), **loop-only**(문서 아티팩트 없이 ooo seed + ralph), **docs-only**(멀티 에이전트 문서 공유용 `/speckit.*` 전체 파이프라인). 핸드오프 맵(spec.md → seed.yaml → harness 증거, 단방향 흐름)과 명시적 안티패턴(이중 SSOT, `cli-hub search` 없는 harness 생성, seed 없는 ralph 루프, exit code만으로 하는 검증)을 문서화. `scripts/install.sh`(uv/pipx/pip; `specify-cli` + `cli-anything-hub` 설치, ooo는 `SPEC_STACK_OOO=1` 또는 Claude 플러그인)와 커맨드 크로스워크 레퍼런스 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack`. Route-out: `spec-kit`/`ooo`/`cli-anything`(단일 레이어 작업), `bmad`(다음 기획 산출물), `plannotator`(플랜 승인). 135 → **137개 스킬** (게시된 카운트를 실제 137개 스킬 폴더에 재동기화 — v2026-06-08 이후 문서 카운트가 실제 추적 폴더 수보다 1 적게 어긋나 있던 것을 함께 정정). |
+| **cli-anything: 모든 소프트웨어를 agent-native로** | `cli-anything` 스킬을 추가했습니다 — HKUDS의 [CLI-Anything](https://github.com/HKUDS/CLI-Anything) 생태계를 감싸는 라우팅 우선 wrapper로, 네 가지 모드 중 하나를 선택합니다: CLI-Hub 패키지 매니저로 기성 harness 설치(`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), 에이전트 자율 탐색용 meta-skill 부여(`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), 임의 코드베이스·GitHub 저장소에서 7-phase 파이프라인으로 새 harness 생성(Claude Code `/plugin install cli-anything` → `/cli-anything <path>`, Codex/OpenCode/OpenClaw/Pi/Hermes/Qodercli/Copilot CLI 설치 경로 포함), 기존 harness 반복 개선(`/cli-anything:refine`/`:test`/`:validate`). GIMP · Blender · LibreOffice · OBS · Draw.io · ComfyUI · Ollama · Godot · QGIS · FreeCAD 등 40+ 프로덕션 harness, 2,461개 테스트 통과; 생성된 CLI는 Click 커맨드 + 상태형 REPL + `--json` 출력 + 자동 생성 SKILL.md를 제공합니다. PEP 668-safe `scripts/install.sh`(venv 인식 uv/pip, `CLI_ANYTHING_META_SKILL=1`로 meta-skill 옵션)와 플랫폼/커맨드 레퍼런스를 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything`. Route-out: `harness`(에이전트 팀 설계), `browser-harness`(코드베이스 없는 GUI 대상), `ccpi-marketplace`(일반 플러그인 탐색). 134 → **135개 스킬**. |
 
 ## 🆕 v2026-06-10 업데이트
 
 | 변경 | 내용 |
 |------|------|
-| **opik: 오픈소스 LLM 옵저버빌리티 · 평가 · 최적화** | `opik` 스킬을 추가했습니다 — Comet의 [Opik](https://github.com/comet-ml/opik) 플랫폼을 감싸는 라우팅 우선 wrapper로, 서버 모드 선택(Comet.com 클라우드, `./opik.sh` Docker Compose — `--infra`/`--backend`/`--guardrails` 프로파일, Kubernetes/Helm)부터 Python SDK 설치·설정(`pip install opik` + `opik configure`), `@opik.track` 또는 50+ 프레임워크 통합(OpenAI · Anthropic · LangChain · LangGraph · LlamaIndex · CrewAI · DSPy · Ollama · Bedrock · Vercel AI SDK 등)을 통한 트레이싱, 그리고 LLM-as-a-judge 평가(Hallucination · Moderation · Answer Relevance · Context Precision), Datasets/Experiments + PyTest CI 게이트, 프로덕션 모니터링(일 4천만+ 트레이스), Opik Agent Optimizer, Opik Guardrails까지 한 스킬에서 라우팅합니다. uv → pip 설치와 선택적 로컬 self-host를 지원하는 `scripts/install.sh`와 통합 레퍼런스를 동봉하며, 플러그인 설치 가능: `npx skills add https://github.com/akillness/oh-my-skills --skill opik`. Route-out: `langsmith`(LangSmith 스택), `monitoring-observability`(비-LLM 대시보드·알림), `data-analysis`(오프라인 KPI 해석). 133 → **134개 스킬**. |
+| **opik: 오픈소스 LLM 옵저버빌리티 · 평가 · 최적화** | `opik` 스킬을 추가했습니다 — Comet의 [Opik](https://github.com/comet-ml/opik) 플랫폼을 감싸는 라우팅 우선 wrapper로, 서버 모드 선택(Comet.com 클라우드, `./opik.sh` Docker Compose — `--infra`/`--backend`/`--guardrails` 프로파일, Kubernetes/Helm)부터 Python SDK 설치·설정(`pip install opik` + `opik configure`), `@opik.track` 또는 50+ 프레임워크 통합(OpenAI · Anthropic · LangChain · LangGraph · LlamaIndex · CrewAI · DSPy · Ollama · Bedrock · Vercel AI SDK 등)을 통한 트레이싱, 그리고 LLM-as-a-judge 평가(Hallucination · Moderation · Answer Relevance · Context Precision), Datasets/Experiments + PyTest CI 게이트, 프로덕션 모니터링(일 4천만+ 트레이스), Opik Agent Optimizer, Opik Guardrails까지 한 스킬에서 라우팅합니다. uv → pip 설치와 선택적 로컬 self-host를 지원하는 `scripts/install.sh`와 통합 레퍼런스를 동봉하며, 플러그인 설치 가능: `npx skills add https://github.com/akillness/jeo-skills --skill opik`. Route-out: `langsmith`(LangSmith 스택), `monitoring-observability`(비-LLM 대시보드·알림), `data-analysis`(오프라인 KPI 해석). 133 → **134개 스킬**. |
 
 ## 🆕 v2026-06-08 업데이트
 
 | 변경 | 내용 |
 |------|------|
-| **spec-kit: GitHub Spec-Driven Development 워크플로우** | `spec-kit` 스킬을 추가했습니다 — GitHub의 [`specify` CLI](https://github.com/github/spec-kit)를 감싸는 라우팅 우선 wrapper로, 도구 설치부터 30+ 지원 에이전트(Claude Code · Copilot · Gemini · Codex · Cursor · opencode · Qwen · Kiro 등) 대상 프로젝트 부트스트랩, 그리고 SDD 커맨드 파이프라인(`/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`)까지 한 스킬에서 라우팅합니다. uv → pipx fallback이 포함된 멱등 `scripts/install.sh`와 커맨드 레퍼런스를 동봉하며, 플러그인 설치 가능: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit`. Route-out: `ooo`(벤더 중립 스펙 우선 루프), `bmad`(패킷 우선 BMAD/BMM 라우팅), `plannotator`(검토·승인 게이트). 132 → **133개 스킬**. |
+| **spec-kit: GitHub Spec-Driven Development 워크플로우** | `spec-kit` 스킬을 추가했습니다 — GitHub의 [`specify` CLI](https://github.com/github/spec-kit)를 감싸는 라우팅 우선 wrapper로, 도구 설치부터 30+ 지원 에이전트(Claude Code · Copilot · Gemini · Codex · Cursor · opencode · Qwen · Kiro 등) 대상 프로젝트 부트스트랩, 그리고 SDD 커맨드 파이프라인(`/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`)까지 한 스킬에서 라우팅합니다. uv → pipx fallback이 포함된 멱등 `scripts/install.sh`와 커맨드 레퍼런스를 동봉하며, 플러그인 설치 가능: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit`. Route-out: `ooo`(벤더 중립 스펙 우선 루프), `bmad`(패킷 우선 BMAD/BMM 라우팅), `plannotator`(검토·승인 게이트). 132 → **133개 스킬**. |
 
 ## 🆕 v2026-06-01 업데이트
 
@@ -158,13 +158,13 @@ Vercel `skills` CLI는 GitHub 축약명, 전체 Git URL, 저장소 내부 특정
 
 ```bash
 # 프로젝트 설치: 현재 저장소의 에이전트 스킬 폴더에 설치
-npx skills add https://github.com/akillness/oh-my-skills --skill deepinit --skill deep-dive
+npx skills add https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive
 
 # 글로벌 설치: 해당 에이전트에서 모든 프로젝트에 사용
-npx skills add -g https://github.com/akillness/oh-my-skills --skill deepinit --skill deep-dive
+npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive
 
 # 특정 에이전트 대상으로 설치
-npx skills add -g https://github.com/akillness/oh-my-skills --skill deepinit --skill deep-dive -a claude-code -a codex -y
+npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive -a claude-code -a codex -y
 ```
 
 | OS / 셸 | 글로벌 예시 | 프로젝트 예시 |
@@ -178,7 +178,7 @@ npx skills add -g https://github.com/akillness/oh-my-skills --skill deepinit --s
 ### LLM 에이전트용 (권장 — 모든 플랫폼 자동 처리)
 
 ```bash
-curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-skills-prompt.md
+curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
 ```
 
 ### 플랫폼별 선택
@@ -186,7 +186,7 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 #### Claude Code
 
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills \
+npx skills add https://github.com/akillness/jeo-skills \
   --skill omc --skill plannotator --skill agentation \
   --skill ooo --skill vibe-kanban
 ```
@@ -194,15 +194,15 @@ npx skills add https://github.com/akillness/oh-my-skills \
 #### Gemini CLI
 
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills \
+npx skills add https://github.com/akillness/jeo-skills \
   --skill ohmg --skill ooo --skill vibe-kanban
-antigravity extensions install https://github.com/akillness/oh-my-skills
+antigravity extensions install https://github.com/akillness/jeo-skills
 ```
 
 #### Codex CLI
 
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills \
+npx skills add https://github.com/akillness/jeo-skills \
   --skill omx --skill ooo
 ```
 
@@ -249,8 +249,8 @@ rtk init -g
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity | 휴대형 OMA 하네스 진입 스킬 — `.agents`를 canonical로 유지하고 `oma link`로 vendor view를 갱신하며 team/autopilot/ultrawork/ultraqa 의도를 `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, `oma agent:parallel`로 매핑 |
 | `ooo` | `ooo`, `ouroboros`, `ooo ralph` | 전체 | Ouroboros 스펙 우선 개발 루프 — 소크라테스식 인터뷰, 불변 seed/spec, 드리프트 인식 실행, 검증 통과까지 이어가는 완료 루프. 플러그인: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | 패킷 우선 BMAD/BMM 프런트도어 — 현재 packet을 분류하고 다음 산출물 또는 gate를 고른 뒤 review / runtime / 실행 세부 작업을 바깥으로 라우팅 |
-| `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | 전체 | GitHub Spec-Driven Development 래퍼 — `specify-cli` 설치, 30+ 에이전트(Claude/Copilot/Gemini/Codex/Cursor/opencode/Qwen/Kiro/…) 프로젝트 부트스트랩, 그리고 constitution → specify → clarify → plan → analyze → tasks → checklist → implement 파이프라인을 라우팅. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit` |
-| `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo` | 전체 | `spec-kit` × `ooo` × `cli-anything` 조합 래퍼 — spec-kit이 스펙을 쓰고, ooo가 불변 seed로 동결해 검증 통과까지 루프를 돌리고, cli-anything이 `--json` 출력으로 evaluate 단계의 증거가 되는 agent-native CLI harness를 공급; 세 패턴(full-stack / loop-only / docs-only)과 단방향 spec → seed 흐름, 명시적 안티패턴 포함. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack` |
+| `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | 전체 | GitHub Spec-Driven Development 래퍼 — `specify-cli` 설치, 30+ 에이전트(Claude/Copilot/Gemini/Codex/Cursor/opencode/Qwen/Kiro/…) 프로젝트 부트스트랩, 그리고 constitution → specify → clarify → plan → analyze → tasks → checklist → implement 파이프라인을 라우팅. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit` |
+| `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo` | 전체 | `spec-kit` × `ooo` × `cli-anything` 조합 래퍼 — spec-kit이 스펙을 쓰고, ooo가 불변 seed로 동결해 검증 통과까지 루프를 돌리고, cli-anything이 `--json` 출력으로 evaluate 단계의 증거가 되는 agent-native CLI harness를 공급; 세 패턴(full-stack / loop-only / docs-only)과 단방향 spec → seed 흐름, 명시적 안티패턴 포함. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack` |
 | `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |
 | `bmad-idea` | `bmad-idea` | 전체 | 사전 기획 아이디어 라우터 — 거친 제품/GTM/컨설팅/게임 아이디어를 하나의 컨셉 산출물과 다음 핸드오프로 정리 |
 | `deep-dive` | `deep-dive`, `deep dive`, `trace and interview` | 전체 | OMC, OMX, OMA를 가로지르는 조사 파이프라인 — 원인 가설을 trace하고 증거를 요구사항에 주입한 뒤 런타임별 실행 브리지로 넘김 |
@@ -280,7 +280,7 @@ rtk init -g
 |------|------|--------|
 | `prompt-repetition` | 비추론/경량 LLM에서 프롬프트 반복을 언제 써야 하는지 판단하는 스킬 — 긴 컨텍스트 검색, 선택지 우선 MCQ, 위치/인덱스 조회, 그리고 retrieval·강한 모델로의 route-out 포함 | 전체 |
 | `skill-standardization` | SKILL.md 검증/재작성, 중복 canonical화, 그리고 repo-root 검증 흐름 + 파생 발견면(`skills.json`, README/setup, `SKILL.toon`) 동기화 | 전체 |
-| `cli-anything` | HKUDS CLI-Anything으로 모든 소프트웨어를 agent-native CLI로 — CLI-Hub 패키지 매니저(`cli-hub list/search/install/launch`), 에이전트 자율 탐색 meta-skill, 임의 코드베이스 대상 7-phase harness 생성(`/cli-anything`), refine/test/validate 반복; 40+ harness, 2,461 테스트, REPL + `--json` CLI. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill cli-anything` | 전체 |
+| `cli-anything` | HKUDS CLI-Anything으로 모든 소프트웨어를 agent-native CLI로 — CLI-Hub 패키지 매니저(`cli-hub list/search/install/launch`), 에이전트 자율 탐색 meta-skill, 임의 코드베이스 대상 7-phase harness 생성(`/cli-anything`), refine/test/validate 반복; 40+ harness, 2,461 테스트, REPL + `--json` CLI. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything` | 전체 |
 
 ### ⚙️ 백엔드 (5개)
 
@@ -344,7 +344,7 @@ rtk init -g
 | `system-environment-setup` | 실행 가능한 저장소, 툴체인, Docker/devcontainer, 로컬 서비스, 온보딩, 설정 드리프트 진단을 다루는 정식 환경 설정 스킬 | 전체 |
 | `vercel-deploy` | linked-project 기준 프리뷰/프로덕션 배포, staged promote 흐름, alias/domain, 환경변수 범위 수정, 롤백 대응을 다루는 Vercel 전용 운영 스킬 | 전체 |
 | `zeude` | Claude Code 엔터프라이즈 AI 도입 플랫폼 — OpenTelemetry 측정, Zeude Shim을 통한 스킬/MCP/훅 중앙 동기화, 컨텍스트 인식 스킬 제안으로 3배 도입률 향상. Supabase + ClickHouse 필요 | Claude |
-| `typesense` | 자가 호스팅 가능한 오타 허용 검색 환경 구축 (오픈소스 Algolia/ElasticSearch 대안, 단일 C++ 바이너리) — Docker / 바이너리 / Typesense Cloud 중 서버 모드 선택, 클라이언트 설치, 타입드 컬렉션 스키마 설계, 색인 후 오타 허용·패싯/필터·지오·정렬·동의어·scoped API 키·federated multi-search·벡터/하이브리드 검색, 그리고 InstantSearch.js UI와 Raft HA 클러스터까지. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill typesense` | 전체 |
+| `typesense` | 자가 호스팅 가능한 오타 허용 검색 환경 구축 (오픈소스 Algolia/ElasticSearch 대안, 단일 C++ 바이너리) — Docker / 바이너리 / Typesense Cloud 중 서버 모드 선택, 클라이언트 설치, 타입드 컬렉션 스키마 설계, 색인 후 오타 허용·패싯/필터·지오·정렬·동의어·scoped API 키·federated multi-search·벡터/하이브리드 검색, 그리고 InstantSearch.js UI와 Raft HA 클러스터까지. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill typesense` | 전체 |
 
 ### 📝 문서화 (5개)
 
@@ -374,7 +374,7 @@ rtk init -g
 | `codebase-search` | 디버깅/리팩터링으로 넘어가기 전에 정의/참조, config·콘텐츠 소유면, 엔트리포인트, 영향 범위를 찾도록 한 가지 검색 packet을 고르는 라우팅형 리포 탐색 | 전체 |
 | `data-analysis` | 내보내기 데이터, 실험, 텔레메트리, KPI 설명을 위한 의사결정 중심 데이터 분석 | 전체 |
 | `langsmith` | SDK 코드로 곧장 가지 않고 trace-debug, 평가, 리뷰 큐, 프롬프트 레지스트리, 멀티서비스 전파 중 한 packet을 먼저 고르는 라우팅형 LangSmith 스킬 | 전체 |
-| `opik` | Comet Opik 기반 오픈소스 LLM 옵저버빌리티·평가·최적화 — 서버 모드 라우팅(클라우드 / `./opik.sh` Docker / Kubernetes), `@opik.track` 트레이싱 + 50+ 프레임워크 통합, LLM-as-a-judge 메트릭, Datasets/Experiments + PyTest CI 게이트, 프로덕션 모니터링, Agent Optimizer, Guardrails. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill opik` | 전체 |
+| `opik` | Comet Opik 기반 오픈소스 LLM 옵저버빌리티·평가·최적화 — 서버 모드 라우팅(클라우드 / `./opik.sh` Docker / Kubernetes), `@opik.track` 트레이싱 + 50+ 프레임워크 통합, LLM-as-a-judge 메트릭, Datasets/Experiments + PyTest CI 게이트, 프로덕션 모니터링, Agent Optimizer, Guardrails. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill opik` | 전체 |
 | `log-analysis` | 앱·컨테이너/파드·브라우저+API·CI cascade·JSON/event·security-signal 로그 중 한 가지 evidence packet을 먼저 고른 뒤 디버깅/옵저버빌리티 작업으로 넘기는 routing-first 로그 트리아지 | 전체 |
 | `pattern-detection` | text-prefilter·structural-code-rule·log-event-pattern·metric-anomaly 중 한 packet을 먼저 고르는 라우팅형 패턴/이상 탐지 | 전체 |
 | `semble` | grep+read 대비 토큰 ~98% 절감하는 에이전트용 토큰 효율 코드 검색 — 자연어·심볼 쿼리, 의미 기반 `find-related`, Claude Code·Codex·Cursor·OpenCode용 MCP, Python 라이브러리, CPU만 사용(GPU·API 키 불필요) | 전체 |
@@ -383,7 +383,7 @@ rtk init -g
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
-| `drawio` | Agents365-ai/drawio-skill 기반 텍스트→다이어그램·코드베이스→다이어그램 — 편집 가능한 `.drawio`를 네이티브 draw.io CLI로 PNG/SVG/PDF/JPG 내보내기, 6가지 프리셋(ERD/UML/시퀀스/아키텍처/ML-DL/플로우차트), 10,000개 이상 공식 AWS/Azure/GCP/Cisco/K8s/UML/BPMN 셰이프, 321개 AI/LLM 로고, 비전 셀프체크 + 5라운드 개선. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill drawio` | 전체 |
+| `drawio` | Agents365-ai/drawio-skill 기반 텍스트→다이어그램·코드베이스→다이어그램 — 편집 가능한 `.drawio`를 네이티브 draw.io CLI로 PNG/SVG/PDF/JPG 내보내기, 6가지 프리셋(ERD/UML/시퀀스/아키텍처/ML-DL/플로우차트), 10,000개 이상 공식 AWS/Azure/GCP/Cisco/K8s/UML/BPMN 셰이프, 321개 AI/LLM 로고, 비전 셀프체크 + 5라운드 개선. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill drawio` | 전체 |
 | `remotion-video-production` | 레거시 툴링이나 명시적 Remotion 이름이 남아 있을 때 `video-production`으로 연결하는 호환 별칭 | 전체 |
 | `video-production` | Remotion, 템플릿 API, 콘텐츠 리퍼포징, QA 핸드오프를 묶는 기본 프로그래머블/자동화 비디오 스킬 | 전체 |
 | `god-tibo-imagen` | Codex ChatGPT 백엔드를 통한 AI 이미지 생성 — 의존성 없음, `~/.codex/auth.json` 재사용, CLI(`gti`), Node.js, Python SDK 지원 | 전체 |
@@ -417,12 +417,12 @@ rtk init -g
 | `google-workspace` | Google Workspace REST API 자동화 — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
 | `npm-git-install` | npm / pnpm / Yarn / Bun용 라우팅-우선 Node 패키지 전달 스킬 — temporary Git bridge, SHA pin, tarball, workspace, publish-first handoff를 안전하게 선택 | 전체 |
-| `obsidian` | **통합 Obsidian 스킬 (v2.0)** — 플러그인 개발(27개 ESLint 규칙, 보일러플레이트, 제출) + CLI 자동화(명령, TUI, URI handoff, 개발자 모드) + 콘텐츠 패턴(markdown, Bases, JSON Canvas). 플러그인: `claude plugin marketplace add akillness/oh-my-skills` | 전체 |
+| `obsidian` | **통합 Obsidian 스킬 (v2.0)** — 플러그인 개발(27개 ESLint 규칙, 보일러플레이트, 제출) + CLI 자동화(명령, TUI, URI handoff, 개발자 모드) + 콘텐츠 패턴(markdown, Bases, JSON Canvas). 플러그인: `claude plugin marketplace add akillness/jeo-skills` | 전체 |
 | `obsidian-cli` | *(alias → `obsidian`)* Obsidian 데스크톱 자동화 — 공식 CLI, `obsidian://` handoff, 개발자 명령 | 전체 |
 | `obsidian-plugin` | *(alias → `obsidian`)* Obsidian 플러그인 개발 — 27개 ESLint 규칙, 보일러플레이트 생성기, 제출 검증 | 전체 |
 | `opencontext` | 라우팅-우선 프로젝트/저장소 메모리 스킬 — memory-layer choice, load-context, search-context, store-conclusions, setup-integration, repo-packer route-out 중 하나를 골라 manifest / stable link / 에이전트 핸드오프 패킷을 다루고, 메모가 겹칠 때는 최고 신뢰 소스와 freshness 경고를 고릅니다 | 전체 |
 | `workflow-automation` | 라우팅-우선 저장소 워크플로우 자동화 — task-entrypoints, bootstrap/onboarding, 로컬 CI 패리티, hook 가드레일, 유지보수 봇, 워크플로우 정리 중 하나를 고르고 환경/배포 문제로 번지지 않게 유지 | 전체 |
-| `ponytail` | 과제를 완전히 해결하는 최소한의 코드만 작성 — YAGNI 사다리(스킵 → 표준 라이브러리 → 네이티브 → 설치된 의존성 → 한 줄), `ponytail:` 업그레이드 경로 마커, `lite/full/ultra/off` 강도, `/ponytail-review` / `-audit` / `-debt` 명령. 검증·데이터 손실 처리·보안·접근성은 절대 잘라내지 않음. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill ponytail` | All |
+| `ponytail` | 과제를 완전히 해결하는 최소한의 코드만 작성 — YAGNI 사다리(스킵 → 표준 라이브러리 → 네이티브 → 설치된 의존성 → 한 줄), `ponytail:` 업그레이드 경로 마커, `lite/full/ultra/off` 강도, `/ponytail-review` / `-audit` / `-debt` 명령. 검증·데이터 손실 처리·보안·접근성은 절대 잘라내지 않음. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail` | All |
 | `caveman` | 토큰 75% 절감 압축 통신 모드. 활성화: "caveman mode", "less tokens". 비활성화: "stop caveman" | All |
 | `write-a-skill` | 에이전트 스킬 생성 프레임워크: 요구사항 수집 → SKILL.md 초안 → 검토. description 필드가 활성화 핵심. | All |
 | `git-guardrails-claude-code` | Claude Code PreToolUse 훅으로 파괴적 git 명령(force push, reset --hard 등) 차단 | Claude |
@@ -484,7 +484,7 @@ claude plugin marketplace add Q00/ouroboros
 pip install ouroboros-ai[all]
 
 # 스킬 설치 (모든 플랫폼)
-npx skills add https://github.com/akillness/oh-my-skills --skill ooo
+npx skills add https://github.com/akillness/jeo-skills --skill ooo
 
 # 사용법
 ouroboros init start "작업 관리 CLI를 만들고 싶어요"
@@ -509,7 +509,7 @@ npm install -g god-tibo-imagen
 pip install god-tibo-imagen
 
 # 스킬 설치
-npx skills add https://github.com/akillness/oh-my-skills --skill god-tibo-imagen
+npx skills add https://github.com/akillness/jeo-skills --skill god-tibo-imagen
 
 # 사용법
 gti --prompt "파란색 사각형 아이콘" --output ./icon.png
@@ -529,7 +529,7 @@ claude plugin marketplace add PleasePrompto/notebooklm-skill
 git clone https://github.com/PleasePrompto/notebooklm-skill.git ~/.claude/skills/notebooklm
 
 # 스킬 설치
-npx skills add https://github.com/akillness/oh-my-skills --skill notebooklm
+npx skills add https://github.com/akillness/jeo-skills --skill notebooklm
 
 # 최초 설정 (Google 로그인을 위해 Chrome 창이 열립니다)
 python scripts/run.py auth_manager.py setup
@@ -551,8 +551,8 @@ claude plugin marketplace add chenglou/pretext
 # npm 설치
 npm install @chenglou/pretext
 
-# oh-my-skills에서 설치
-npx skills add https://github.com/akillness/oh-my-skills --skill pretext
+# jeo-skills에서 설치
+npx skills add https://github.com/akillness/jeo-skills --skill pretext
 ```
 
 ### zeude — Claude Code 엔터프라이즈 AI 도입 플랫폼
@@ -570,7 +570,7 @@ cd zeude && cp .env.example .env
 # Supabase, ClickHouse 환경변수 설정
 
 # 스킬 설치
-npx skills add https://github.com/akillness/oh-my-skills --skill zeude
+npx skills add https://github.com/akillness/jeo-skills --skill zeude
 
 # 개발자별 Shim 설치 (대시보드에서 agent key 발급 후)
 curl -fsSL https://raw.githubusercontent.com/zep-us/zeude/main/install.sh | bash -s -- --key <AGENT_KEY>
@@ -588,8 +588,8 @@ claude plugin marketplace add codeforreal1/compressO
 # macOS Homebrew
 brew install --cask codeforreal1/tap/compresso
 
-# oh-my-skills에서 설치
-npx skills add https://github.com/akillness/oh-my-skills --skill compresso
+# jeo-skills에서 설치
+npx skills add https://github.com/akillness/jeo-skills --skill compresso
 ```
 
 ### stitch-skills — Stitch MCP 에이전트 스킬
@@ -605,8 +605,8 @@ claude plugin marketplace add google-labs-code/stitch-skills
 npx skills add google-labs-code/stitch-skills --skill stitch-design --global
 npx skills add google-labs-code/stitch-skills --skill enhance-prompt --global
 
-# oh-my-skills에서 설치
-npx skills add https://github.com/akillness/oh-my-skills --skill stitch-skills
+# jeo-skills에서 설치
+npx skills add https://github.com/akillness/jeo-skills --skill stitch-skills
 ```
 
 ### open-design — 로컬 우선 디자인 아티팩트 생성
@@ -623,8 +623,8 @@ git clone https://github.com/nexu-io/open-design.git
 cd open-design && corepack enable && pnpm install
 pnpm tools-dev run web
 
-# oh-my-skills에서 설치
-npx skills add https://github.com/akillness/oh-my-skills --skill open-design
+# jeo-skills에서 설치
+npx skills add https://github.com/akillness/jeo-skills --skill open-design
 ```
 
 ### semble — 에이전트용 토큰 효율 코드 검색
@@ -640,8 +640,8 @@ claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
 pip install semble          # pip
 uv tool install semble      # uv
 
-# oh-my-skills에서 설치
-npx skills add https://github.com/akillness/oh-my-skills --skill semble
+# jeo-skills에서 설치
+npx skills add https://github.com/akillness/jeo-skills --skill semble
 ```
 
 ### vibe-kanban — AI 에이전트 칸반 보드
@@ -744,7 +744,7 @@ npx vibe-kanban
 ⭐ 도움이 됐다면 저장소에 스타를 눌러주세요!
 
 ```bash
-gh api --silent --method PUT /user/starred/akillness/oh-my-skills >/dev/null 2>&1 || true
+gh api --silent --method PUT /user/starred/akillness/jeo-skills >/dev/null 2>&1 || true
 ```
 
 </div>

@@ -2,8 +2,8 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-140-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
-[![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-140-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
@@ -37,7 +37,7 @@ Agent Skills is a curated collection with 140 local skill folders and 140 instal
 
 ```bash
 # Send to your LLM agent — it will read and install automatically
-curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-skills-prompt.md
+curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
 ```
 
 | Platform | First Command |
@@ -102,33 +102,33 @@ graph TD
 
 | Change | Details |
 |--------|---------|
-| **typesense: installable typo-tolerant search environment** | Added `typesense` — a routing-first wrapper around [Typesense](https://github.com/typesense/typesense) (GPL-3.0 server, Apache-2.0 clients), the open-source **Algolia / ElasticSearch alternative**: a single C++ binary with no runtime dependencies and <50ms instant search. The skill picks a server mode (**official Docker image**, downloadable binary, or managed **Typesense Cloud**), installs an API client (Python/JS/PHP/Ruby official; Go/Dart/C# community), designs a typed collection schema, indexes documents (per-doc or JSONL bulk `upsert`), and drives search with **typo tolerance, faceting/filtering, geo-search, query-time sorting, grouping/distinct, synonyms, curation, scoped API keys, federated multi-search, and vector/hybrid** — then wires an InstantSearch.js UI and a Raft-based HA cluster for production. Ships `scripts/install.sh` (Docker server bring-up + Python client, venv/PEP 668-aware), a client/integration + search-parameter reference, `SKILL.toon`, and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill typesense`. Route-outs: `opik`/`langsmith` (LLM trace/eval observability), `semble` (agent code search), `monitoring-observability` (non-search telemetry). 139 → **140 skills**. |
+| **typesense: installable typo-tolerant search environment** | Added `typesense` — a routing-first wrapper around [Typesense](https://github.com/typesense/typesense) (GPL-3.0 server, Apache-2.0 clients), the open-source **Algolia / ElasticSearch alternative**: a single C++ binary with no runtime dependencies and <50ms instant search. The skill picks a server mode (**official Docker image**, downloadable binary, or managed **Typesense Cloud**), installs an API client (Python/JS/PHP/Ruby official; Go/Dart/C# community), designs a typed collection schema, indexes documents (per-doc or JSONL bulk `upsert`), and drives search with **typo tolerance, faceting/filtering, geo-search, query-time sorting, grouping/distinct, synonyms, curation, scoped API keys, federated multi-search, and vector/hybrid** — then wires an InstantSearch.js UI and a Raft-based HA cluster for production. Ships `scripts/install.sh` (Docker server bring-up + Python client, venv/PEP 668-aware), a client/integration + search-parameter reference, `SKILL.toon`, and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill typesense`. Route-outs: `opik`/`langsmith` (LLM trace/eval observability), `semble` (agent code search), `monitoring-observability` (non-search telemetry). 139 → **140 skills**. |
 
 ## 🆕 What's New in v2026-06-15
 
 | Change | Details |
 |--------|---------|
-| **ponytail: the laziest senior dev in the room** | Added `ponytail` — a routing-first wrapper around DietrichGebert's [Ponytail](https://github.com/DietrichGebert/ponytail) ruleset that makes the agent write the least code that fully solves the task. Before writing anything, it stops at the first rung that holds: **does this need to exist (YAGNI) → stdlib → native platform feature → already-installed dependency → one line → only then the minimum that works**, and marks every shortcut with a `ponytail:` comment naming its upgrade path so deferred work becomes a ledger, not amnesia. Intensity is set with `lite / full / ultra / off` and persists across turns; commands cover diff review (`/ponytail-review` → delete-list), whole-repo audit (`/ponytail-audit`), and debt harvest (`/ponytail-debt`). Lazy, never negligent: trust-boundary validation, data-loss handling, security, and accessibility are never cut. Upstream benchmarks report 80–94% less code, 3–6× faster, and 47–77% cheaper across Haiku/Sonnet/Opus. Ships `scripts/install.sh` (wires the upstream marketplace plugin/extension per runtime — Claude Code, Codex, Gemini, Pi, OpenCode) and a per-runtime command crosswalk. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill ponytail`. Route-outs: `caveman` (communication compression, not code volume), `code-refactoring` (behavior-preserving cleanup), `ai-slop-cleaner` (AI-generated bloat), `code-review` (severity-rated review). 137 → **138 skills**. |
-| **drawio: from text to professional diagrams** | Added `drawio` — a wrapper around Agents365-ai's [drawio-skill](https://github.com/Agents365-ai/drawio-skill) (MIT) that turns natural-language descriptions into editable `.drawio` XML and exports them to PNG / SVG / PDF / JPG via the **native draw.io desktop CLI** (no MCP server, no daemon), or turns an existing codebase (Python / JS-TS / Go / Rust) into an auto-laid-out structure diagram. Covers 6 diagram presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), search across **10,000+ official** AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN shapes (`shapesearch.py`), **321 AI/LLM brand logos** that draw.io ships none of (`aiicons.py`), a Graphviz-backed extract → auto-layout → validate pipeline with transitive reduction and nested containers, plus a vision self-check + auto-fix (≤2 rounds) and a 5-round iterative refinement loop. Ships `scripts/install.sh` (per-platform draw.io CLI detect/install + upstream skill pull, optional Graphviz) and a command/flag reference. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill drawio`. Route-outs: `mermaid`/`plantuml` (diagrams-as-code in git), `excalidraw`/`tldraw` (hand-drawn looks), `presentation-builder` (slide decks). 138 → **139 skills**. |
+| **ponytail: the laziest senior dev in the room** | Added `ponytail` — a routing-first wrapper around DietrichGebert's [Ponytail](https://github.com/DietrichGebert/ponytail) ruleset that makes the agent write the least code that fully solves the task. Before writing anything, it stops at the first rung that holds: **does this need to exist (YAGNI) → stdlib → native platform feature → already-installed dependency → one line → only then the minimum that works**, and marks every shortcut with a `ponytail:` comment naming its upgrade path so deferred work becomes a ledger, not amnesia. Intensity is set with `lite / full / ultra / off` and persists across turns; commands cover diff review (`/ponytail-review` → delete-list), whole-repo audit (`/ponytail-audit`), and debt harvest (`/ponytail-debt`). Lazy, never negligent: trust-boundary validation, data-loss handling, security, and accessibility are never cut. Upstream benchmarks report 80–94% less code, 3–6× faster, and 47–77% cheaper across Haiku/Sonnet/Opus. Ships `scripts/install.sh` (wires the upstream marketplace plugin/extension per runtime — Claude Code, Codex, Gemini, Pi, OpenCode) and a per-runtime command crosswalk. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail`. Route-outs: `caveman` (communication compression, not code volume), `code-refactoring` (behavior-preserving cleanup), `ai-slop-cleaner` (AI-generated bloat), `code-review` (severity-rated review). 137 → **138 skills**. |
+| **drawio: from text to professional diagrams** | Added `drawio` — a wrapper around Agents365-ai's [drawio-skill](https://github.com/Agents365-ai/drawio-skill) (MIT) that turns natural-language descriptions into editable `.drawio` XML and exports them to PNG / SVG / PDF / JPG via the **native draw.io desktop CLI** (no MCP server, no daemon), or turns an existing codebase (Python / JS-TS / Go / Rust) into an auto-laid-out structure diagram. Covers 6 diagram presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), search across **10,000+ official** AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN shapes (`shapesearch.py`), **321 AI/LLM brand logos** that draw.io ships none of (`aiicons.py`), a Graphviz-backed extract → auto-layout → validate pipeline with transitive reduction and nested containers, plus a vision self-check + auto-fix (≤2 rounds) and a 5-round iterative refinement loop. Ships `scripts/install.sh` (per-platform draw.io CLI detect/install + upstream skill pull, optional Graphviz) and a command/flag reference. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill drawio`. Route-outs: `mermaid`/`plantuml` (diagrams-as-code in git), `excalidraw`/`tldraw` (hand-drawn looks), `presentation-builder` (slide decks). 138 → **139 skills**. |
 
 ## 🆕 What's New in v2026-06-11
 
 | Change | Details |
 |--------|---------|
-| **spec-stack: Write → Freeze → Run, verified** | Added `spec-stack` — a composition skill that wires `spec-kit`, `ooo`, and `cli-anything` into one spec-driven delivery stack with a single rule: spec-kit writes, ooo freezes and loops, cli-anything is the hands. Routes between three patterns: **full-stack** (`/speckit.constitution` → `/speckit.specify` → ooo interview → immutable seed with machine-checkable acceptance criteria and tool-naming constraints → `cli-hub search/install` → run/ralph ↔ evaluate with artifact-level `--json` evidence), **loop-only** (ooo seed + ralph without document artifacts), and **docs-only** (full `/speckit.*` pipeline for multi-agent doc sharing). Documents the handoff map (spec.md → seed.yaml → harness evidence, one-way flow) and explicit anti-patterns: two spec SSOTs, generate-before-`cli-hub search`, seedless ralph loops, and exit-code-only verification. Ships `scripts/install.sh` (uv/pipx/pip; installs `specify-cli` + `cli-anything-hub`, ooo via `SPEC_STACK_OOO=1` or the Claude plugin) and a command crosswalk reference. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack`. Route-outs: `spec-kit`/`ooo`/`cli-anything` (single-layer work), `bmad` (next planning artifact), `plannotator` (plan approval). 135 → **137 skills** (also re-syncs the published count to the 137 live skill folders — docs had drifted one below the tracked folder count since v2026-06-08). |
-| **cli-anything: make any software agent-native** | Added `cli-anything` — a routing-first wrapper around HKUDS's [CLI-Anything](https://github.com/HKUDS/CLI-Anything) ecosystem that picks one of four modes: install ready-made harnesses via the CLI-Hub package manager (`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), give agents the autonomous discovery meta-skill (`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), generate a new harness from any codebase or GitHub repo through the 7-phase pipeline (`/plugin install cli-anything` → `/cli-anything <path>` on Claude Code, plus Codex/OpenCode/OpenClaw/Pi/Hermes/Qodercli/Copilot CLI installs), or iterate with `/cli-anything:refine`/`:test`/`:validate`. 40+ production harnesses (GIMP, Blender, LibreOffice, OBS, Draw.io, ComfyUI, Ollama, Godot, QGIS, FreeCAD, …) with 2,461 passing tests; generated CLIs ship Click commands, stateful REPL, `--json` output, and auto-generated SKILL.md. Ships a PEP 668-safe `scripts/install.sh` (venv-aware uv/pip, optional meta-skill via `CLI_ANYTHING_META_SKILL=1`) and a platform/command reference. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill cli-anything`. Route-outs: `harness` (agent-team architecture), `browser-harness` (no-codebase GUI targets), `ccpi-marketplace` (general plugin browsing). 134 → **135 skills**. |
+| **spec-stack: Write → Freeze → Run, verified** | Added `spec-stack` — a composition skill that wires `spec-kit`, `ooo`, and `cli-anything` into one spec-driven delivery stack with a single rule: spec-kit writes, ooo freezes and loops, cli-anything is the hands. Routes between three patterns: **full-stack** (`/speckit.constitution` → `/speckit.specify` → ooo interview → immutable seed with machine-checkable acceptance criteria and tool-naming constraints → `cli-hub search/install` → run/ralph ↔ evaluate with artifact-level `--json` evidence), **loop-only** (ooo seed + ralph without document artifacts), and **docs-only** (full `/speckit.*` pipeline for multi-agent doc sharing). Documents the handoff map (spec.md → seed.yaml → harness evidence, one-way flow) and explicit anti-patterns: two spec SSOTs, generate-before-`cli-hub search`, seedless ralph loops, and exit-code-only verification. Ships `scripts/install.sh` (uv/pipx/pip; installs `specify-cli` + `cli-anything-hub`, ooo via `SPEC_STACK_OOO=1` or the Claude plugin) and a command crosswalk reference. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack`. Route-outs: `spec-kit`/`ooo`/`cli-anything` (single-layer work), `bmad` (next planning artifact), `plannotator` (plan approval). 135 → **137 skills** (also re-syncs the published count to the 137 live skill folders — docs had drifted one below the tracked folder count since v2026-06-08). |
+| **cli-anything: make any software agent-native** | Added `cli-anything` — a routing-first wrapper around HKUDS's [CLI-Anything](https://github.com/HKUDS/CLI-Anything) ecosystem that picks one of four modes: install ready-made harnesses via the CLI-Hub package manager (`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), give agents the autonomous discovery meta-skill (`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), generate a new harness from any codebase or GitHub repo through the 7-phase pipeline (`/plugin install cli-anything` → `/cli-anything <path>` on Claude Code, plus Codex/OpenCode/OpenClaw/Pi/Hermes/Qodercli/Copilot CLI installs), or iterate with `/cli-anything:refine`/`:test`/`:validate`. 40+ production harnesses (GIMP, Blender, LibreOffice, OBS, Draw.io, ComfyUI, Ollama, Godot, QGIS, FreeCAD, …) with 2,461 passing tests; generated CLIs ship Click commands, stateful REPL, `--json` output, and auto-generated SKILL.md. Ships a PEP 668-safe `scripts/install.sh` (venv-aware uv/pip, optional meta-skill via `CLI_ANYTHING_META_SKILL=1`) and a platform/command reference. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything`. Route-outs: `harness` (agent-team architecture), `browser-harness` (no-codebase GUI targets), `ccpi-marketplace` (general plugin browsing). 134 → **135 skills**. |
 
 ## 🆕 What's New in v2026-06-10
 
 | Change | Details |
 |--------|---------|
-| **opik: open-source LLM observability, evaluation & optimization** | Added `opik` — a routing-first wrapper around Comet's [Opik](https://github.com/comet-ml/opik) platform that picks the right server mode (Comet.com cloud, local Docker Compose via `./opik.sh` with `--infra`/`--backend`/`--guardrails` profiles, or Kubernetes/Helm), installs and configures the Python SDK (`pip install opik` + `opik configure`), wires tracing through `@opik.track` or one of 50+ framework integrations (OpenAI, Anthropic, LangChain, LangGraph, LlamaIndex, CrewAI, DSPy, Ollama, Bedrock, Vercel AI SDK, …), and drives LLM-as-a-judge evaluation (Hallucination, Moderation, Answer Relevance, Context Precision), Datasets/Experiments with PyTest CI gates, production monitoring (40M+ traces/day), Opik Agent Optimizer, and Opik Guardrails. Ships `scripts/install.sh` (uv → pip, optional local self-host) and an integration reference, and is plugin-installable via `npx skills add https://github.com/akillness/oh-my-skills --skill opik`. Route-outs: `langsmith` (LangSmith stack), `monitoring-observability` (non-LLM dashboards/alerts), `data-analysis` (offline KPI interpretation). 133 → **134 skills**. |
+| **opik: open-source LLM observability, evaluation & optimization** | Added `opik` — a routing-first wrapper around Comet's [Opik](https://github.com/comet-ml/opik) platform that picks the right server mode (Comet.com cloud, local Docker Compose via `./opik.sh` with `--infra`/`--backend`/`--guardrails` profiles, or Kubernetes/Helm), installs and configures the Python SDK (`pip install opik` + `opik configure`), wires tracing through `@opik.track` or one of 50+ framework integrations (OpenAI, Anthropic, LangChain, LangGraph, LlamaIndex, CrewAI, DSPy, Ollama, Bedrock, Vercel AI SDK, …), and drives LLM-as-a-judge evaluation (Hallucination, Moderation, Answer Relevance, Context Precision), Datasets/Experiments with PyTest CI gates, production monitoring (40M+ traces/day), Opik Agent Optimizer, and Opik Guardrails. Ships `scripts/install.sh` (uv → pip, optional local self-host) and an integration reference, and is plugin-installable via `npx skills add https://github.com/akillness/jeo-skills --skill opik`. Route-outs: `langsmith` (LangSmith stack), `monitoring-observability` (non-LLM dashboards/alerts), `data-analysis` (offline KPI interpretation). 133 → **134 skills**. |
 
 ## 🆕 What's New in v2026-06-08
 
 | Change | Details |
 |--------|---------|
-| **spec-kit: GitHub Spec-Driven Development workflow** | Added `spec-kit` — a routing-first wrapper around GitHub's [`specify` CLI](https://github.com/github/spec-kit) that installs the tool, bootstraps a project for one of 30+ supported AI agents (Claude Code, Copilot, Gemini, Codex, Cursor, opencode, Qwen, Kiro, …), and drives the SDD command pipeline (`/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`). Ships an idempotent `scripts/install.sh` (uv → pipx fallback) and a command reference, and is plugin-installable via `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit`. Route-outs: `ooo` (vendor-neutral spec-first loop), `bmad` (packet-first BMAD/BMM routing), `plannotator` (review/approval gate). 132 → **133 skills**. |
+| **spec-kit: GitHub Spec-Driven Development workflow** | Added `spec-kit` — a routing-first wrapper around GitHub's [`specify` CLI](https://github.com/github/spec-kit) that installs the tool, bootstraps a project for one of 30+ supported AI agents (Claude Code, Copilot, Gemini, Codex, Cursor, opencode, Qwen, Kiro, …), and drives the SDD command pipeline (`/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`). Ships an idempotent `scripts/install.sh` (uv → pipx fallback) and a command reference, and is plugin-installable via `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit`. Route-outs: `ooo` (vendor-neutral spec-first loop), `bmad` (packet-first BMAD/BMM routing), `plannotator` (review/approval gate). 132 → **133 skills**. |
 
 ## 🆕 What's New in v2026-06-01
 
@@ -159,13 +159,13 @@ The Vercel `skills` CLI installs from GitHub shorthand, full Git URLs, direct sk
 
 ```bash
 # Project install: writes to the current repo's agent skill directory
-npx skills add https://github.com/akillness/oh-my-skills --skill deepinit --skill deep-dive
+npx skills add https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive
 
 # Global install: available to that agent across projects
-npx skills add -g https://github.com/akillness/oh-my-skills --skill deepinit --skill deep-dive
+npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/oh-my-skills --skill deepinit --skill deep-dive -a claude-code -a codex -y
+npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive -a claude-code -a codex -y
 ```
 
 | OS / shell | Global examples | Project examples |
@@ -179,7 +179,7 @@ Project scope is the default and should be committed when the team needs the sam
 ### For LLM Agents (recommended — handles all platforms automatically)
 
 ```bash
-curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-skills-prompt.md
+curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
 ```
 
 ### Choose by Platform
@@ -187,7 +187,7 @@ curl -s https://raw.githubusercontent.com/akillness/oh-my-skills/main/setup-all-
 #### Claude Code
 
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills \
+npx skills add https://github.com/akillness/jeo-skills \
   --skill omc --skill plannotator --skill agentation \
   --skill ooo --skill vibe-kanban
 ```
@@ -195,15 +195,15 @@ npx skills add https://github.com/akillness/oh-my-skills \
 #### Gemini CLI
 
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills \
+npx skills add https://github.com/akillness/jeo-skills \
   --skill ohmg --skill ooo --skill vibe-kanban
-antigravity extensions install https://github.com/akillness/oh-my-skills
+antigravity extensions install https://github.com/akillness/jeo-skills
 ```
 
 #### Codex CLI
 
 ```bash
-npx skills add https://github.com/akillness/oh-my-skills \
+npx skills add https://github.com/akillness/jeo-skills \
   --skill omx --skill ooo
 ```
 
@@ -250,8 +250,8 @@ rtk init -g
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity | Portable OMA harness entry — keeps `.agents` canonical, regenerates vendor views with `oma link`, and maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` with Antigravity limits stated |
 | `ooo` | `ooo`, `ouroboros`, `ooo ralph` | All | Ouroboros spec-first development loop — Socratic interview, immutable seed/spec, drift-aware execution, persistent completion until verification passes. Plugin: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
-| `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | All | GitHub Spec-Driven Development wrapper — install `specify-cli`, bootstrap a project for one of 30+ agents (Claude / Copilot / Gemini / Codex / Cursor / opencode / Qwen / Kiro / …), and drive the constitution → specify → clarify → plan → analyze → tasks → checklist → implement pipeline. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-kit` |
-| `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo` | All | Composition wrapper for `spec-kit` × `ooo` × `cli-anything` — spec-kit writes the spec, ooo freezes it as an immutable seed and loops until verification passes, cli-anything supplies agent-native CLI harnesses whose `--json` output is the evaluate-step evidence; three patterns (full-stack / loop-only / docs-only) with one-way spec → seed flow and explicit anti-patterns. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill spec-stack` |
+| `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | All | GitHub Spec-Driven Development wrapper — install `specify-cli`, bootstrap a project for one of 30+ agents (Claude / Copilot / Gemini / Codex / Cursor / opencode / Qwen / Kiro / …), and drive the constitution → specify → clarify → plan → analyze → tasks → checklist → implement pipeline. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit` |
+| `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo` | All | Composition wrapper for `spec-kit` × `ooo` × `cli-anything` — spec-kit writes the spec, ooo freezes it as an immutable seed and loops until verification passes, cli-anything supplies agent-native CLI harnesses whose `--json` output is the evaluate-step evidence; three patterns (full-stack / loop-only / docs-only) with one-way spec → seed flow and explicit anti-patterns. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack` |
 | `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
 | `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |
 | `deep-dive` | `deep-dive`, `deep dive`, `trace and interview` | All | Cross-runtime investigation pipeline — trace causal hypotheses, inject evidence into requirements, validate artifacts, then hand off through OMC, OMX, or OMA |
@@ -286,7 +286,7 @@ rtk init -g
 | `microsoft-agent-framework` | Design enterprise-grade agent systems with Microsoft's agent framework — role separation, workflow control, policy enforcement, and multi-agent coordination patterns | All |
 | `openai-agents-python` | Build and operate multi-agent workflows with OpenAI Agents SDK (Python) — define agents/tools/handoffs, add guardrails, trace with LangSmith, run async pipelines | All |
 | `pydantic-ai` | Build typed LLM applications with PydanticAI — schema-constrained outputs, tool integration, validation, retries, and dependency injection for production AI apps | All |
-| `cli-anything` | Make any software agent-native via HKUDS CLI-Anything — CLI-Hub package manager (`cli-hub list/search/install/launch`), agent meta-skill for autonomous CLI discovery, 7-phase harness generation from any codebase (`/cli-anything`), and refine/test/validate iteration; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill cli-anything` | All |
+| `cli-anything` | Make any software agent-native via HKUDS CLI-Anything — CLI-Hub package manager (`cli-hub list/search/install/launch`), agent meta-skill for autonomous CLI discovery, 7-phase harness generation from any codebase (`/cli-anything`), and refine/test/validate iteration; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything` | All |
 
 ### ⚙️ Backend (7)
 
@@ -355,7 +355,7 @@ rtk init -g
 | `zeude` | Enterprise AI adoption platform for Claude Code — 3× adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), and context-aware skill suggestions. Requires Supabase + ClickHouse | Claude |
 | `hyperfine-benchmarking` | Benchmark shell commands reliably with hyperfine — warmup runs, statistical summaries, parameter sweeps, export artifacts (JSON/CSV/Markdown), and regression detection | All |
 | `lmstudio-cli` | Operate LM Studio's `lms` CLI and local/remote LM Studio servers — model discovery, server status, model loading, endpoint smoke tests, and OpenAI-compatible wiring | All |
-| `typesense` | Stand up a self-hostable typo-tolerant search environment (open-source Algolia/ElasticSearch alternative, single C++ binary) — pick Docker / binary / Typesense Cloud, install a client, design a collection schema, index, and search with faceting, geo, sorting, synonyms, scoped API keys, federated multi-search, and vector/hybrid; wire an InstantSearch.js UI and a Raft HA cluster. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill typesense` | All |
+| `typesense` | Stand up a self-hostable typo-tolerant search environment (open-source Algolia/ElasticSearch alternative, single C++ binary) — pick Docker / binary / Typesense Cloud, install a client, design a collection schema, index, and search with faceting, geo, sorting, synonyms, scoped API keys, federated multi-search, and vector/hybrid; wire an InstantSearch.js UI and a Raft HA cluster. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill typesense` | All |
 
 ### 📝 Documentation (5)
 
@@ -385,7 +385,7 @@ rtk init -g
 | `codebase-search` | Routing-first repo navigation: choose one search packet for definitions/references, config/content ownership, entry-point discovery, or impact mapping before debugging/refactoring | All |
 | `data-analysis` | Decision-first dataset analysis for exports, experiments, telemetry, and KPI explanation | All |
 | `langsmith` | Routing-first LangSmith skill: choose one packet for trace-debug, evals, review queues, prompt-registry decisions, or cross-service propagation before touching SDK code | All |
-| `opik` | Open-source LLM observability, evaluation & optimization via Comet's Opik — server mode routing (cloud / `./opik.sh` Docker / Kubernetes), `@opik.track` tracing plus 50+ framework integrations, LLM-as-a-judge metrics, Datasets/Experiments with PyTest CI gates, production monitoring, Agent Optimizer, Guardrails. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill opik` | All |
+| `opik` | Open-source LLM observability, evaluation & optimization via Comet's Opik — server mode routing (cloud / `./opik.sh` Docker / Kubernetes), `@opik.track` tracing plus 50+ framework integrations, LLM-as-a-judge metrics, Datasets/Experiments with PyTest CI gates, production monitoring, Agent Optimizer, Guardrails. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill opik` | All |
 | `log-analysis` | Routing-first log triage: choose one evidence packet for app, container/pod, browser+API, CI cascade, JSON/event, or security-signal logs before debugging/observability work | All |
 | `pattern-detection` | Routing-first pattern/anomaly hunting: choose text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly before deeper analysis | All |
 | `github-repo-candidate-quality-gate` | Convert noisy GitHub search results into recommendation-grade candidate lists — metadata freshness, license shape, activity signals, and dependency risk scoring | All |
@@ -395,7 +395,7 @@ rtk init -g
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `drawio` | Text-to-diagram and codebase-to-diagram via Agents365-ai/drawio-skill — editable `.drawio` exported to PNG/SVG/PDF/JPG through the native draw.io CLI, 6 presets (ERD/UML/sequence/architecture/ML-DL/flowchart), 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/BPMN shapes, 321 AI/LLM logos, vision self-check + 5-round refinement. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill drawio` | All |
+| `drawio` | Text-to-diagram and codebase-to-diagram via Agents365-ai/drawio-skill — editable `.drawio` exported to PNG/SVG/PDF/JPG through the native draw.io CLI, 6 presets (ERD/UML/sequence/architecture/ML-DL/flowchart), 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/BPMN shapes, 321 AI/LLM logos, vision self-check + 5-round refinement. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill drawio` | All |
 | `remotion-video-production` | Compatibility alias for `video-production` when legacy tooling or explicit Remotion naming still expects the old skill | All |
 | `video-production` | Canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs | All |
 | `god-tibo-imagen` | Generate AI images via Codex ChatGPT backend — zero dependencies, reuses `~/.codex/auth.json`, CLI (`gti`), Node.js, and Python SDK | All |
@@ -430,7 +430,7 @@ rtk init -g
 | `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
 | `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |
 | `npm-git-install` | Routing-first Node package delivery skill for npm / pnpm / Yarn / Bun — choose temporary Git bridge, SHA pin, tarball, workspace, or publish-first handoff safely | All |
-| `obsidian` | **Unified Obsidian skill (v2.0)** — plugin development (27 ESLint rules, boilerplate, submission) + CLI automation (commands, TUI, URI handoff, developer mode) + content patterns (markdown, Bases, JSON Canvas). Plugin: `claude plugin marketplace add akillness/oh-my-skills` | All |
+| `obsidian` | **Unified Obsidian skill (v2.0)** — plugin development (27 ESLint rules, boilerplate, submission) + CLI automation (commands, TUI, URI handoff, developer mode) + content patterns (markdown, Bases, JSON Canvas). Plugin: `claude plugin marketplace add akillness/jeo-skills` | All |
 | `obsidian-cli` | *(alias → `obsidian`)* Route Obsidian desktop automation — official CLI, `obsidian://` handoff, developer commands | All |
 | `obsidian-plugin` | *(alias → `obsidian`)* Obsidian plugin development — 27 ESLint rules, boilerplate generator, submission | All |
 | `opencontext` | Routing-first active project/repo memory — choose memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out for manifests, stable links, cross-agent handoff packets, and highest-confidence-source / freshness checks when notes overlap | All |
@@ -443,7 +443,7 @@ rtk init -g
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
-| `ponytail` | Write the least code that fully solves the task — YAGNI ladder (skip → stdlib → native → installed dep → one line), `ponytail:` upgrade-path markers, `lite/full/ultra/off` intensity, and `/ponytail-review` / `-audit` / `-debt` commands. Never cuts validation, data-loss handling, security, or accessibility. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill ponytail` | All |
+| `ponytail` | Write the least code that fully solves the task — YAGNI ladder (skip → stdlib → native → installed dep → one line), `ponytail:` upgrade-path markers, `lite/full/ultra/off` intensity, and `/ponytail-review` / `-audit` / `-debt` commands. Never cuts validation, data-loss handling, security, or accessibility. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail` | All |
 | `caveman` | Ultra-compressed communication mode (~75% token reduction). Activate: "caveman mode", "less tokens". Deactivate: "stop caveman" | All |
 | `write-a-skill` | Create structured agent skills: gather requirements → draft SKILL.md → review. Description field is critical for agent activation | All |
 | `git-guardrails-claude-code` | Prevent destructive git operations (force push, reset --hard, clean, branch -D) via Claude Code PreToolUse hooks | Claude |
@@ -505,7 +505,7 @@ claude plugin marketplace add Q00/ouroboros
 pip install ouroboros-ai[all]
 
 # Skill install (any platform)
-npx skills add https://github.com/akillness/oh-my-skills --skill ooo
+npx skills add https://github.com/akillness/jeo-skills --skill ooo
 
 # Usage
 ouroboros init start "I want to build a task management CLI"
@@ -529,8 +529,8 @@ npm install -g god-tibo-imagen
 # Python SDK
 pip install god-tibo-imagen
 
-# Install from oh-my-skills
-npx skills add https://github.com/akillness/oh-my-skills --skill god-tibo-imagen
+# Install from jeo-skills
+npx skills add https://github.com/akillness/jeo-skills --skill god-tibo-imagen
 
 # Usage
  --output ./icon.png
@@ -549,8 +549,8 @@ claude plugin marketplace add PleasePrompto/notebooklm-skill
 # Manual clone
 git clone https://github.com/PleasePrompto/notebooklm-skill.git ~/.claude/skills/notebooklm
 
-# Install from oh-my-skills
-npx skills add https://github.com/akillness/oh-my-skills --skill notebooklm
+# Install from jeo-skills
+npx skills add https://github.com/akillness/jeo-skills --skill notebooklm
 
 # First-time setup (opens Chrome for Google login)
 python scripts/run.py auth_manager.py setup
@@ -572,8 +572,8 @@ claude plugin marketplace add chenglou/pretext
 # npm install
 npm install @chenglou/pretext
 
-# Install from oh-my-skills
-npx skills add https://github.com/akillness/oh-my-skills --skill pretext
+# Install from jeo-skills
+npx skills add https://github.com/akillness/jeo-skills --skill pretext
 ```
 
 ### zeude — Enterprise AI Adoption Platform for Claude Code
@@ -590,8 +590,8 @@ git clone https://github.com/zep-us/zeude.git
 cd zeude && cp .env.example .env
 # Configure Supabase and ClickHouse credentials
 
-# Install from oh-my-skills
-npx skills add https://github.com/akillness/oh-my-skills --skill zeude
+# Install from jeo-skills
+npx skills add https://github.com/akillness/jeo-skills --skill zeude
 
 # Per-developer Shim install (using agent key from dashboard)
 curl -fsSL https://raw.githubusercontent.com/zep-us/zeude/main/install.sh | bash -s -- --key <AGENT_KEY>
@@ -609,8 +609,8 @@ claude plugin marketplace add codeforreal1/compressO
 # macOS Homebrew
 brew install --cask codeforreal1/tap/compresso
 
-# Install from oh-my-skills
-npx skills add https://github.com/akillness/oh-my-skills --skill compresso
+# Install from jeo-skills
+npx skills add https://github.com/akillness/jeo-skills --skill compresso
 ```
 
 ### stitch-skills — Agent Skills for Stitch MCP
@@ -626,8 +626,8 @@ claude plugin marketplace add google-labs-code/stitch-skills
 npx skills add google-labs-code/stitch-skills --skill stitch-design --global
 npx skills add google-labs-code/stitch-skills --skill enhance-prompt --global
 
-# Install from oh-my-skills
-npx skills add https://github.com/akillness/oh-my-skills --skill stitch-skills
+# Install from jeo-skills
+npx skills add https://github.com/akillness/jeo-skills --skill stitch-skills
 ```
 
 ### open-design — Local-First Design Artifact Generation
@@ -644,8 +644,8 @@ git clone https://github.com/nexu-io/open-design.git
 cd open-design && corepack enable && pnpm install
 pnpm tools-dev run web
 
-# Install from oh-my-skills
-npx skills add https://github.com/akillness/oh-my-skills --skill open-design
+# Install from jeo-skills
+npx skills add https://github.com/akillness/jeo-skills --skill open-design
 ```
 
 ### flutter-bloc-clean-architecture-skill — Flutter BLoC + Clean Architecture
@@ -657,8 +657,8 @@ Agentic Flutter skill package that enforces strict clean-layer boundaries and BL
 # Direct source install
 npx skills add https://github.com/abdelhakrazi/flutter-bloc-clean-architecture-skill --skill flutter-bloc-development
 
-# Install from oh-my-skills
-npx skills add https://github.com/akillness/oh-my-skills --skill flutter-bloc-clean-architecture-skill
+# Install from jeo-skills
+npx skills add https://github.com/akillness/jeo-skills --skill flutter-bloc-clean-architecture-skill
 ```
 
 ### semble — Token-Efficient Code Search for Agents
@@ -674,8 +674,8 @@ claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
 pip install semble          # pip
 uv tool install semble      # uv
 
-# Install from oh-my-skills
-npx skills add https://github.com/akillness/oh-my-skills --skill semble
+# Install from jeo-skills
+npx skills add https://github.com/akillness/jeo-skills --skill semble
 ```
 
 ### vibe-kanban — AI Agent Kanban Board
@@ -781,7 +781,7 @@ npx vibe-kanban
 ⭐ If this helps you, star the repository!
 
 ```bash
-gh api --silent --method PUT /user/starred/akillness/oh-my-skills >/dev/null 2>&1 || true
+gh api --silent --method PUT /user/starred/akillness/jeo-skills >/dev/null 2>&1 || true
 ```
 
 </div>
