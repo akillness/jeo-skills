@@ -1,0 +1,17 @@
+N:typesense
+D:Stand up a self-hostable, typo-tolerant search environment with Typesense (open-source Algolia / ElasticSearch alternative; single C++ binary, <50ms, no runtime deps) — pick a server mode (Docker / binary / Typesense Cloud), install a client (Python/JS/PHP/Ruby official), design a collection schema, index docs, and search with typo tolerance, faceting/filtering, geo, sorting, grouping, synonyms, curation, scoped API keys, federated multi-search, and vector/hybrid; then wire an InstantSearch.js UI and a Raft HA cluster.
+T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
+G:typesense|search engine|typo-tolerant search|algolia alternative|elasticsearch alternative|instantsearch|faceted search|geo search|vector search|self-hosted search|site search|product search
+F:Claude|Gemini|Codex|OpenCode
+S:
+  1:Choose server mode — Docker (recommended), binary (typesense.org/downloads), or managed Typesense Cloud; pin a version tag and mount a real data volume
+  2:Install a client — `pip install typesense` / `npm install typesense` (official clients ship HA retry)
+  3:Design the collection schema — typed fields, `facet:true` for drill-down, `default_sorting_field`; most settings are query-time
+  4:Index documents — per-doc create or JSONL bulk import with `upsert`; size RAM to the memory-resident index
+  5:Search — q + query_by (typo-tolerant), filter_by, sort_by, facet_by, group_by, geo, vector_query, multi_search
+  6:UI + production — InstantSearch.js adapter, scoped API keys per tenant, Raft 3-node HA cluster
+R:
+  opik:Use for LLM trace/eval observability (hallucination, prompt scoring)
+  langsmith:Use for LangSmith-stack LLM tracing/evals
+  semble:Use for token-efficient agent code search over a repo
+  monitoring-observability:Use for non-search service dashboards/alerts

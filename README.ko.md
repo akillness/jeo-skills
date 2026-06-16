@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-140-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**139개 로컬 스킬 폴더 · 설치 가능 스킬 139개 · TOON 포맷 · 멀티플랫폼**
+**140개 로컬 스킬 폴더 · 설치 가능 스킬 140개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**139개 로컬 스킬 폴더 · 설치 가능 스킬 139개 · TOON 포맷 · 멀티플랫폼**
+**140개 로컬 스킬 폴더 · 설치 가능 스킬 140개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 139개 로컬 스킬 폴더와 139개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 140개 로컬 스킬 폴더와 140개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -96,6 +96,12 @@ graph TD
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-06-16 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **typesense: 설치형 오타 허용 검색 환경** | `typesense` 스킬을 추가했습니다 — [Typesense](https://github.com/typesense/typesense)(서버 GPL-3.0, 클라이언트 Apache-2.0)를 감싸는 라우팅 우선 wrapper로, 오픈소스 **Algolia / ElasticSearch 대안**입니다. 런타임 의존성이 없는 단일 C++ 바이너리로 <50ms 즉시 검색을 제공합니다. 서버 모드 선택(**공식 Docker 이미지**, 다운로드 바이너리, 매니지드 **Typesense Cloud**), API 클라이언트 설치(Python/JS/PHP/Ruby 공식, Go/Dart/C# 커뮤니티), 타입드 컬렉션 스키마 설계, 문서 색인(개별 또는 JSONL 대량 `upsert`), 그리고 **오타 허용·패싯/필터·지오 검색·쿼리타임 정렬·그룹/distinct·동의어·큐레이션·scoped API 키·federated multi-search·벡터/하이브리드** 검색까지 안내하고, 프로덕션용 InstantSearch.js UI와 Raft 기반 HA 클러스터로 이어집니다. `scripts/install.sh`(Docker 서버 기동 + Python 클라이언트, venv/PEP 668 인식), 클라이언트·통합·검색 파라미터 레퍼런스, `SKILL.toon`, `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill typesense`. Route-out: `opik`/`langsmith`(LLM 트레이스/평가 옵저버빌리티), `semble`(에이전트 코드 검색), `monitoring-observability`(비-검색 텔레메트리). 139 → **140개 스킬**. |
 
 ## 🆕 v2026-06-15 업데이트
 
@@ -225,7 +231,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 139개 로컬 스킬 폴더 = 총 139개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 140개 로컬 스킬 폴더 = 총 140개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -319,7 +325,7 @@ rtk init -g
 | `tdd` | 레드-그린-리팩터 TDD (수직 슬라이스) — 공개 인터페이스를 통한 행동 검증, 구현 세부사항 테스트 금지 | All |
 | `migrate-to-shoehorn` | TypeScript 테스트의 `as` 어서션을 `fromPartial()`, `fromAny()`, `fromExact()`로 타입 안전하게 교체. 테스트 코드 전용. | All |
 
-### 🏗 인프라 (15개)
+### 🏗 인프라 (16개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -338,6 +344,7 @@ rtk init -g
 | `system-environment-setup` | 실행 가능한 저장소, 툴체인, Docker/devcontainer, 로컬 서비스, 온보딩, 설정 드리프트 진단을 다루는 정식 환경 설정 스킬 | 전체 |
 | `vercel-deploy` | linked-project 기준 프리뷰/프로덕션 배포, staged promote 흐름, alias/domain, 환경변수 범위 수정, 롤백 대응을 다루는 Vercel 전용 운영 스킬 | 전체 |
 | `zeude` | Claude Code 엔터프라이즈 AI 도입 플랫폼 — OpenTelemetry 측정, Zeude Shim을 통한 스킬/MCP/훅 중앙 동기화, 컨텍스트 인식 스킬 제안으로 3배 도입률 향상. Supabase + ClickHouse 필요 | Claude |
+| `typesense` | 자가 호스팅 가능한 오타 허용 검색 환경 구축 (오픈소스 Algolia/ElasticSearch 대안, 단일 C++ 바이너리) — Docker / 바이너리 / Typesense Cloud 중 서버 모드 선택, 클라이언트 설치, 타입드 컬렉션 스키마 설계, 색인 후 오타 허용·패싯/필터·지오·정렬·동의어·scoped API 키·federated multi-search·벡터/하이브리드 검색, 그리고 InstantSearch.js UI와 Raft HA 클러스터까지. 플러그인: `npx skills add https://github.com/akillness/oh-my-skills --skill typesense` | 전체 |
 
 ### 📝 문서화 (5개)
 
@@ -667,7 +674,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 139개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 140개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

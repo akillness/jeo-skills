@@ -1,0 +1,35 @@
+{
+  "skill_name": "typesense",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We need fast site search for our product catalog and want to self-host, not pay Algolia. Get us started with Typesense.",
+      "expected_output": "A routing brief that picks a server mode (Docker recommended), installs a client, and sequences schema → index → search, with self-host framing vs Algolia.",
+      "assertions": [
+        "Output starts the server via the official Docker image with a pinned version tag and a mounted data volume, not `latest`.",
+        "Output sequences create-collection → index/import → search rather than jumping to search first.",
+        "Output sets the admin API key at server start and notes scoped keys for client-side/multi-tenant access."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "How do I support faceted filtering and sort-by-price in Typesense without creating a separate index per sort order like Algolia?",
+      "expected_output": "An explanation that facets need `facet: true` in the schema and that sort/searchable settings are query-time, so one collection serves many sort orders.",
+      "assertions": [
+        "Output marks the faceted field with `facet: true` in the collection schema.",
+        "Output uses query-time `sort_by` / `filter_by` / `facet_by` and states one collection serves multiple sort orders.",
+        "Output does not recommend creating a separate collection per sort order."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We want to monitor hallucinations and prompt quality in our LLM app.",
+      "expected_output": "A route-out to opik/langsmith — this is LLM observability, not a Typesense search-backend task.",
+      "assertions": [
+        "Output routes to `opik` or `langsmith` instead of standing up Typesense.",
+        "Output explains the boundary: Typesense is a search engine, not an LLM trace/eval tool.",
+        "Output does not create a Typesense collection or server for this request."
+      ]
+    }
+  ]
+}

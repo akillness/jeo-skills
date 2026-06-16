@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
+[![Skills](https://img.shields.io/badge/Skills-140-blue?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/oh-my-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**139 local skill folders · 139 installable skills · TOON Format · Cross-platform**
+**140 local skill folders · 140 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**139 local skill folders · 139 installable skills · TOON Format · Cross-platform**
+**140 local skill folders · 140 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 139 local skill folders and 139 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+Agent Skills is a curated collection with 140 local skill folders and 140 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -97,6 +97,12 @@ graph TD
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-06-16
+
+| Change | Details |
+|--------|---------|
+| **typesense: installable typo-tolerant search environment** | Added `typesense` — a routing-first wrapper around [Typesense](https://github.com/typesense/typesense) (GPL-3.0 server, Apache-2.0 clients), the open-source **Algolia / ElasticSearch alternative**: a single C++ binary with no runtime dependencies and <50ms instant search. The skill picks a server mode (**official Docker image**, downloadable binary, or managed **Typesense Cloud**), installs an API client (Python/JS/PHP/Ruby official; Go/Dart/C# community), designs a typed collection schema, indexes documents (per-doc or JSONL bulk `upsert`), and drives search with **typo tolerance, faceting/filtering, geo-search, query-time sorting, grouping/distinct, synonyms, curation, scoped API keys, federated multi-search, and vector/hybrid** — then wires an InstantSearch.js UI and a Raft-based HA cluster for production. Ships `scripts/install.sh` (Docker server bring-up + Python client, venv/PEP 668-aware), a client/integration + search-parameter reference, `SKILL.toon`, and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill typesense`. Route-outs: `opik`/`langsmith` (LLM trace/eval observability), `semble` (agent code search), `monitoring-observability` (non-search telemetry). 139 → **140 skills**. |
 
 ## 🆕 What's New in v2026-06-15
 
@@ -226,7 +232,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 139 local skill folders = 139 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 140 local skill folders = 140 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -328,7 +334,7 @@ rtk init -g
 | `migrate-to-shoehorn` | Migrate TypeScript test `as` assertions to type-safe `fromPartial()`, `fromAny()`, `fromExact()` from @total-typescript/shoehorn. Test code only. | All |
 | `aider-cli-workflow` | Run a safe, reviewable Aider CLI coding loop — model setup, edit scope control, test-first prompting, diff review, and commit hygiene for local repositories | All |
 
-### 🏗 Infrastructure (17)
+### 🏗 Infrastructure (18)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -349,6 +355,7 @@ rtk init -g
 | `zeude` | Enterprise AI adoption platform for Claude Code — 3× adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), and context-aware skill suggestions. Requires Supabase + ClickHouse | Claude |
 | `hyperfine-benchmarking` | Benchmark shell commands reliably with hyperfine — warmup runs, statistical summaries, parameter sweeps, export artifacts (JSON/CSV/Markdown), and regression detection | All |
 | `lmstudio-cli` | Operate LM Studio's `lms` CLI and local/remote LM Studio servers — model discovery, server status, model loading, endpoint smoke tests, and OpenAI-compatible wiring | All |
+| `typesense` | Stand up a self-hostable typo-tolerant search environment (open-source Algolia/ElasticSearch alternative, single C++ binary) — pick Docker / binary / Typesense Cloud, install a client, design a collection schema, index, and search with faceting, geo, sorting, synonyms, scoped API keys, federated multi-search, and vector/hybrid; wire an InstantSearch.js UI and a Raft HA cluster. Plugin: `npx skills add https://github.com/akillness/oh-my-skills --skill typesense` | All |
 
 ### 📝 Documentation (5)
 
@@ -701,7 +708,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 139 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 140 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
