@@ -1,0 +1,17 @@
+N:codeflow
+D:Turn any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive architecture map with CodeFlow — a zero-build single index.html browser app (React 18 + D3.js from pinned CDNs) that runs 100% client-side with no backend and no data collection. Pick an input (public repo, private repo with a local token, local files, PR URL, markdown vault), choose a visualization mode (folder/layer/churn/blast), and read the analysis — dependency graph, blast radius, code ownership, heuristic security scanner, pattern/anti-pattern detection, A–F health score, activity heatmap, PR impact — then export JSON/Markdown/text/SVG/PDF or wire the self-updating CodeFlow Card SVG onto a README.
+T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
+G:codeflow|code flow|visualize codebase|architecture map|dependency graph|blast radius|code ownership|codebase health score|pr impact analysis|repo architecture|wiki-link graph|obsidian graph
+F:Claude|Codex|Gemini|OpenCode
+S:
+  1:Choose run mode — online (codeflow-five.vercel.app, recommended), self-host (git clone + open index.html, no build), or the CodeFlow Card GitHub Action for a README SVG
+  2:Choose an input — public repo (owner/name), private repo (PAT/GitHub App token kept in browser memory), local files (Open Folder / drag & drop, set exclude patterns), PR URL, or markdown/Obsidian vault
+  3:Pick a visualization mode — folder, layer, churn (commit frequency), or blast (impact when a file is selected)
+  4:Read the analysis — dependency graph, blast radius, code ownership, security scan (secrets/SQLi/eval/debug), patterns + anti-patterns, A–F health score, activity heatmap, PR impact
+  5:Export or embed — JSON/Markdown/text/SVG/PDF, a shareable re-run link, or the auto-updating CodeFlow Card on a README
+R:
+  drawio:Use for editable, hand-authored architecture/ERD/UML/sequence/flowchart diagrams
+  mermaid:Use for diagrams-as-code that live in git and render in Markdown
+  semble:Use for token-efficient agent code search over a repo (symbol / find-related)
+  codebase-search:Use for a routing-first repo-navigation packet before refactoring
+  graphify:Use for a durable, committed knowledge graph (graphify-out/) instead of a throwaway browser view

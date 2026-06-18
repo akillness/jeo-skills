@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-140-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-141-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**140 local skill folders · 140 installable skills · TOON Format · Cross-platform**
+**141 local skill folders · 141 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 What is Agent Skills?
 
-**140 local skill folders · 140 installable skills · TOON Format · Cross-platform**
+**141 local skill folders · 141 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 140 local skill folders and 140 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+Agent Skills is a curated collection with 141 local skill folders and 141 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -97,6 +97,13 @@ graph TD
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-06-18
+
+| Change | Details |
+|--------|---------|
+| **codeflow: visualize codebase architecture in seconds** | Added `codeflow` — a routing-first wrapper around [CodeFlow](https://github.com/braedonsaunders/codeflow) (braedonsaunders, MIT), a **zero-build single `index.html` browser app** (React 18 + D3.js 7 + Babel from pinned CDNs) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an **interactive architecture map** — 100% client-side, **no backend, no build, no data collection**. The skill picks an input (public repo, private repo with a token kept in browser memory, local files/folder, PR URL, or markdown vault), chooses a visualization mode (**folder / layer / churn / blast**), and reads the analysis: an **interactive dependency graph**, **blast-radius** "what breaks if I change this", **code ownership** from git history, a heuristic **security scanner** (hardcoded secrets, SQL injection, `eval()`, debug statements), **pattern / anti-pattern detection**, an **A–F health score**, an **activity heatmap**, and **PR impact analysis** — then exports JSON / Markdown / text / SVG / PDF or drops a self-updating **CodeFlow Card** SVG on a README via GitHub Action. Covers 40+ languages. Ships `scripts/install.sh` (clone-or-update + open `index.html`, `CODEFLOW_NO_OPEN` knob), a feature + language reference, `SKILL.toon`, and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow`. Route-outs: `drawio`/`mermaid` (editable hand-authored diagrams), `semble` (token-efficient agent code search), `codebase-search` (repo-navigation packet), `graphify` (durable committed knowledge graph). 140 → **141 skills**. |
+
 
 ## 🆕 What's New in v2026-06-16
 
@@ -232,7 +239,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 140 local skill folders = 140 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 141 local skill folders = 141 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -376,7 +383,7 @@ rtk init -g
 | `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing | All |
 
-### 🔭 Search & Analysis (10)
+### 🔭 Search & Analysis (11)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -390,6 +397,7 @@ rtk init -g
 | `pattern-detection` | Routing-first pattern/anomaly hunting: choose text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly before deeper analysis | All |
 | `github-repo-candidate-quality-gate` | Convert noisy GitHub search results into recommendation-grade candidate lists — metadata freshness, license shape, activity signals, and dependency risk scoring | All |
 | `semble` | Token-efficient code search for agents — returns only relevant code chunks using ~98% fewer tokens than grep+read. Natural-language and symbol queries, semantic `find-related`, MCP for Claude Code/Codex/Cursor/OpenCode, Python library, CPU-only with no API key | All |
+| `codeflow` | Visualize codebase architecture in seconds — a zero-build single `index.html` browser app (React 18 + D3.js, client-side, no backend) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact; exports JSON/Markdown/SVG/PDF or a self-updating CodeFlow Card. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | All |
 
 ### 🎬 Creative Media (5)
 
@@ -708,7 +716,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 140 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 141 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

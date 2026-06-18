@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-140-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-141-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**140개 로컬 스킬 폴더 · 설치 가능 스킬 140개 · TOON 포맷 · 멀티플랫폼**
+**141개 로컬 스킬 폴더 · 설치 가능 스킬 141개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**140개 로컬 스킬 폴더 · 설치 가능 스킬 140개 · TOON 포맷 · 멀티플랫폼**
+**141개 로컬 스킬 폴더 · 설치 가능 스킬 141개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 140개 로컬 스킬 폴더와 140개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 141개 로컬 스킬 폴더와 141개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -96,6 +96,13 @@ graph TD
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-06-18 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **codeflow: 코드베이스 아키텍처를 몇 초 만에 시각화** | `codeflow` 스킬을 추가했습니다 — [CodeFlow](https://github.com/braedonsaunders/codeflow)(braedonsaunders, MIT)를 감싸는 라우팅 우선 wrapper로, **빌드가 필요 없는 단일 `index.html` 브라우저 앱**(고정 CDN의 React 18 + D3.js 7 + Babel)입니다. 모든 GitHub 저장소, 로컬 폴더, PR, 마크다운/Obsidian 볼트를 **인터랙티브 아키텍처 맵**으로 바꾸며 100% 클라이언트 사이드로 동작합니다 — **백엔드 없음, 빌드 없음, 데이터 수집 없음**. 입력 선택(공개 저장소, 브라우저 메모리에만 보관되는 토큰을 쓰는 비공개 저장소, 로컬 파일/폴더, PR URL, 마크다운 볼트), 시각화 모드 선택(**folder / layer / churn / blast**), 그리고 분석 확인: **인터랙티브 의존성 그래프**, **블래스트 반경**("이 파일을 바꾸면 무엇이 깨지나"), git 히스토리 기반 **코드 오너십**, 휴리스틱 **보안 스캐너**(하드코딩된 시크릿, SQL 인젝션, `eval()`, 디버그 구문), **패턴/안티패턴 탐지**, **A–F 헬스 스코어**, **활동 히트맵**, **PR 임팩트 분석** — 이후 JSON / Markdown / 텍스트 / SVG / PDF로 내보내거나 GitHub Action으로 README에 자동 갱신되는 **CodeFlow Card** SVG를 붙입니다. 40+ 언어 지원. `scripts/install.sh`(clone-or-update + `index.html` 열기, `CODEFLOW_NO_OPEN` 노브), 기능·언어 레퍼런스, `SKILL.toon`, `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow`. Route-out: `drawio`/`mermaid`(편집 가능한 수작업 다이어그램), `semble`(토큰 효율적 에이전트 코드 검색), `codebase-search`(저장소 탐색 패킷), `graphify`(저장소에 커밋되는 영속 지식 그래프). 140 → **141개 스킬**. |
+
 
 ## 🆕 v2026-06-16 업데이트
 
@@ -231,7 +238,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 140개 로컬 스킬 폴더 = 총 140개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 141개 로컬 스킬 폴더 = 총 141개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -365,7 +372,7 @@ rtk init -g
 | `task-estimation` | software, GTM, game work 전반에서 스토리 포인트, T셔츠 사이징, split/spike 판단, 예측 안전형 불확실성 프레이밍을 담은 estimate packet anchor | 전체 |
 | `task-planning` | software, GTM, game work 전반에서 backlog cleanup, feature slicing, sprint/milestone prep, release packet을 다루고 estimation/board/review/사전 프레이밍으로의 route-out을 명시하는 packet-first planning anchor | 전체 |
 
-### 🔭 검색 및 분석 (9개)
+### 🔭 검색 및 분석 (10개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -378,6 +385,7 @@ rtk init -g
 | `log-analysis` | 앱·컨테이너/파드·브라우저+API·CI cascade·JSON/event·security-signal 로그 중 한 가지 evidence packet을 먼저 고른 뒤 디버깅/옵저버빌리티 작업으로 넘기는 routing-first 로그 트리아지 | 전체 |
 | `pattern-detection` | text-prefilter·structural-code-rule·log-event-pattern·metric-anomaly 중 한 packet을 먼저 고르는 라우팅형 패턴/이상 탐지 | 전체 |
 | `semble` | grep+read 대비 토큰 ~98% 절감하는 에이전트용 토큰 효율 코드 검색 — 자연어·심볼 쿼리, 의미 기반 `find-related`, Claude Code·Codex·Cursor·OpenCode용 MCP, Python 라이브러리, CPU만 사용(GPU·API 키 불필요) | 전체 |
+| `codeflow` | 코드베이스 아키텍처를 몇 초 만에 시각화 — 빌드가 필요 없는 단일 `index.html` 브라우저 앱(React 18 + D3.js, 클라이언트 사이드, 백엔드 없음)으로, 모든 GitHub 저장소·로컬 폴더·PR·마크다운/Obsidian 볼트를 인터랙티브 의존성 그래프로 바꾸며 블래스트 반경, 코드 오너십, 휴리스틱 보안 스캔, 패턴/안티패턴 탐지, A–F 헬스 스코어, 활동 히트맵, PR 임팩트를 제공하고, JSON/Markdown/SVG/PDF 또는 자동 갱신 CodeFlow Card로 내보냅니다. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | 전체 |
 
 ### 🎬 창의 미디어 (5개)
 
@@ -673,8 +681,7 @@ npx vibe-kanban
 ## 📁 구조
 
 ```text
-.
-├── .agent-skills/          ← 140개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 141개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

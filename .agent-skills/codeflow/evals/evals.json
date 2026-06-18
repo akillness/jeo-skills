@@ -1,0 +1,35 @@
+{
+  "skill_name": "codeflow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just joined a team and inherited a big unfamiliar GitHub repo. Help me get an architecture overview fast without setting anything up.",
+      "expected_output": "A routing brief that points to the hosted CodeFlow app (or self-host), has them paste the repo, and reads the dependency graph / health score — no build step, client-side.",
+      "assertions": [
+        "Output recommends the online app (codeflow-five.vercel.app) or one-command self-host (git clone + open index.html) with no build step.",
+        "Output has the user paste the repo (owner/name or URL) and explore the interactive dependency graph plus the A–F health score.",
+        "Output notes that adding a GitHub token raises the 60 req/hour limit to 5,000 and that the token stays in browser memory."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Before I refactor this file I want to know exactly what would break. Can CodeFlow tell me?",
+      "expected_output": "An explanation of blast-radius analysis (select the file, use the blast visualization mode) with the caveat that dependency edges are heuristic.",
+      "assertions": [
+        "Output uses blast-radius analysis / the blast visualization mode to count affected files when the file is selected.",
+        "Output flags that CodeFlow's dependency analysis is heuristic (name-matched, scoped by file + explicit imports) and may miss dynamic imports.",
+        "Output does not claim a guaranteed/complete call-graph; suggests verifying before acting on the refactor."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I need an editable UML class diagram I can tweak and hand to the team.",
+      "expected_output": "A route-out to drawio/mermaid — CodeFlow renders heuristic auto-generated graphs, not editable hand-authored diagrams.",
+      "assertions": [
+        "Output routes to `drawio` or `mermaid` for editable, hand-authored diagrams instead of CodeFlow.",
+        "Output explains the boundary: CodeFlow visualizes existing code structure; it does not author editable diagram files.",
+        "Output does not instruct the user to build the UML diagram inside CodeFlow."
+      ]
+    }
+  ]
+}
