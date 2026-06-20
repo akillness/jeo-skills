@@ -1,0 +1,35 @@
+{
+  "skill_name": "slides-grab",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a topic and some notes. I want to generate a good-looking slide deck and then tweak it visually instead of re-prompting the whole thing each time.",
+      "expected_output": "A routing brief that installs slides-grab (npm + playwright chromium + npx skills add), plans/designs slides as slide-XX.html with a chosen design style, then uses `slides-grab edit` to drag a bbox and have the agent rewrite just that region.",
+      "assertions": [
+        "Output installs via the npm path (npm install slides-grab, npx playwright install chromium, npx skills add ./node_modules/slides-grab) and notes Node.js >= 20.",
+        "Output covers Plan → Design (self-contained slide-XX.html) and picking a style from the 35 bundled styles via list-styles / preview-styles.",
+        "Output uses `slides-grab edit` with the bbox 'select a region and ask the agent to rewrite just it' workflow rather than regenerating whole slides."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My deck is done. I need a high-fidelity PDF and also Instagram square card-news images. Can slides-grab do both, and is the PowerPoint export reliable?",
+      "expected_output": "Validate first, then `slides-grab pdf` (capture, default) for fidelity and `slides-grab png --slide-mode card-news` for square 1:1, with a clear warning that PPTX/Figma export is experimental/unstable.",
+      "assertions": [
+        "Output runs `slides-grab validate` before export and uses `slides-grab pdf` (capture default; --mode print for searchable text).",
+        "Output uses `slides-grab png` with --slide-mode card-news for Instagram square 1:1 output.",
+        "Output explicitly flags that `slides-grab convert` (PPTX) and `figma` are experimental/unstable best-effort with manual cleanup — not faithful PPTX/Figma parity."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want an editable UML class diagram I can keep tweaking inside my slide.",
+      "expected_output": "A route-out to drawio/mermaid for the editable vector diagram (embed the exported image into the slide); slides-grab does not author editable vector diagrams.",
+      "assertions": [
+        "Output routes diagram authoring to `drawio` or `mermaid` and embeds the exported image as a local ./assets/ reference in the slide.",
+        "Output explains the boundary: slides-grab builds/edits/export HTML slides, not editable vector diagram files.",
+        "Output does not claim slides-grab itself authors editable UML/vector diagrams."
+      ]
+    }
+  ]
+}

@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-141-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-142-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**141 local skill folders · 141 installable skills · TOON Format · Cross-platform**
+**142 local skill folders · 142 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,9 +18,19 @@
 
 ## 💡 What is Agent Skills?
 
-**141 local skill folders · 141 installable skills · TOON Format · Cross-platform**
+**142 local skill folders · 142 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 141 local skill folders and 141 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+Agent Skills is a curated collection with 142 local skill folders and 142 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+≔99pk..101dv
+<!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-06-20
+
+| Change | Details |
+|--------|---------|
+| **slides-grab: point-and-edit AI slide decks in HTML/CSS** | Added `slides-grab` — a routing-first wrapper around [slides-grab](https://github.com/NomaDamas/slides-grab) (NomaDamas, MIT), the **open-source Claude Design alternative** and "best harness + editor + linter for generating slides in Claude Code / Codex". The skill plans (agent drafts a structured outline), designs (each slide is a self-contained `slide-XX.html`), edits (pure-JS browser editor where you drag a bbox over any region and ask the agent to rewrite just that area, or hand-edit text/size/bold), and exports (capture-or-print PDF, per-slide PNG incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX). Picks an install path (npm package + `npx skills add`, or clone), a deck workspace (`--slides-dir`, multi-deck `decks/<name>/`), one of 35 design styles, and the supported asset flow (local `./assets/<file>` only — image via god-tibo-imagen/codex/nano-banana, fetch-video via yt-dlp, tldraw .tldr→SVG), validating with `slides-grab validate` before any export. Ships `scripts/install.sh` (npm install + Playwright Chromium + `npx skills add`), a feature + command reference, `SKILL.toon`, and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab`. Route-outs: `drawio`/`mermaid` (editable vector diagrams embedded in a slide), `presentation-builder` (packet-first planning + export-target handoff), `god-tibo-imagen` (standalone AI image generation), `open-design` (broad local design-artifact generation). 141 → **142 skills**. |
+
+## 🆕 What's New in v2026-06-18
 - Unified orchestration across Claude Code, Gemini CLI, OpenAI Codex, and OpenCode
 - Plan → Execute → Verify → Cleanup automated pipelines
 - Multi-agent team coordination with parallel execution
@@ -239,7 +249,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 141 local skill folders = 141 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 142 local skill folders = 142 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -364,13 +374,14 @@ rtk init -g
 | `lmstudio-cli` | Operate LM Studio's `lms` CLI and local/remote LM Studio servers — model discovery, server status, model loading, endpoint smoke tests, and OpenAI-compatible wiring | All |
 | `typesense` | Stand up a self-hostable typo-tolerant search environment (open-source Algolia/ElasticSearch alternative, single C++ binary) — pick Docker / binary / Typesense Cloud, install a client, design a collection schema, index, and search with faceting, geo, sorting, synonyms, scoped API keys, federated multi-search, and vector/hybrid; wire an InstantSearch.js UI and a Raft HA cluster. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill typesense` | All |
 
-### 📝 Documentation (5)
+### 📝 Documentation (6)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `changelog-maintenance` | Routing-first release-history anchor for changelogs, release notes, migration updates, and lightweight patch-note packets | All |
 | `presentation-builder` | Packet-first deck artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks, with honest last-mile handoff to HTML review, PPTX, PDF, Google Slides, or Figma Slides | All |
 | `research-paper-writing` | ML/CV/NLP academic paper + rebuttal workflow — abstract/introduction/method/experiments, figure-table support, claim-evidence alignment, reviewer response, camera-ready revision | All |
+| `slides-grab` | Generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — the open-source Claude Design alternative and "best harness + editor + linter for generating slides in Claude Code / Codex". The skill plans (agent drafts a structured outline), designs (each slide is a self-contained `slide-XX.html`), edits (pure-JS browser editor where you drag a bbox over any region and ask the agent to rewrite just that area, or hand-edit text/size/bold), and exports (capture-or-print PDF, per-slide PNG incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab` | All |
 | `technical-writing` | Internal technical docs anchor for specs, architecture docs, ADRs, runbooks, migration guides, and developer-facing implementation notes | All |
 | `user-guide-writing` | Mode-selecting user-docs anchor for onboarding guides, tutorials, task how-to articles, FAQs, help-center updates, and release-facing help refresh packets | All |
 
@@ -716,7 +727,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 141 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 142 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -738,6 +749,8 @@ npx vibe-kanban
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
 | `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
 | `open-design` | `open-design`, `local design tool`, `prototype generation` | [.agent-skills/open-design/SKILL.md](.agent-skills/open-design/SKILL.md) |
+| `codeflow` | `codeflow`, `visualize codebase`, `dependency graph` | [.agent-skills/codeflow/SKILL.md](.agent-skills/codeflow/SKILL.md) |
+| `slides-grab` | `slides-grab`, `slides grab`, `generate slides` | [.agent-skills/slides-grab/SKILL.md](.agent-skills/slides-grab/SKILL.md) |
 | `browser-harness` | `browser-harness`, `self-healing browser`, `llm browser automation` | [.agent-skills/browser-harness/SKILL.md](.agent-skills/browser-harness/SKILL.md) |
 | `pretext` | `pretext`, `text measurement`, `text layout` | [docs/pretext/README.md](docs/pretext/README.md) |
 | `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [docs/god-tibo-imagen/README.md](docs/god-tibo-imagen/README.md) |

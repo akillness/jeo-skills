@@ -1,0 +1,18 @@
+N:slides-grab
+D:Generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — the open-source Claude Design alternative and best harness + editor + linter for slides in Claude Code / Codex. One routing-first skill across Plan (agent drafts an outline), Design (each slide is a self-contained slide-XX.html), Edit (a pure-JS browser editor where you drag a bbox over any region and ask the agent to rewrite just that area, or hand-tweak text/size/bold), and Export (capture-or-print PDF, per-slide PNG incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX). Picks an install path (npm package + npx skills add, or clone), a deck workspace (--slides-dir, multi-deck decks/<name>/), one of 35 bundled design styles, and the supported asset flow (local ./assets/<file> only — image via god-tibo-imagen/codex/nano-banana, fetch-video via yt-dlp, tldraw .tldr→SVG), validating with slides-grab validate before any export.
+T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
+G:slides-grab|slides grab|generate slides|slide deck|ai slides|html slides|presentation editor|edit slide|card news|slides to pdf|slides to pptx|claude design alternative|slide showcase
+F:Claude|Codex|Gemini|OpenCode
+S:
+  1:Install — npm install slides-grab + npx playwright install chromium + npx skills add ./node_modules/slides-grab -g -a codex -a claude-code --yes --copy (or read docs/installation/claude.md|codex.md; or git clone to develop). Needs Node.js >= 20
+  2:Choose a deck workspace — --slides-dir (default slides), multi-deck under decks/<name>/; discovery commands work with no deck, edit/validate/convert/pdf need slide-*.html
+  3:Plan → Design — agent drafts a structured outline, then generates each slide as a self-contained slide-XX.html; browse 35 bundled styles via list-styles / preview-styles and tell the agent which to use (or ask custom)
+  4:Edit visually — slides-grab edit launches the pure-JS browser editor; drag a bbox over a region and ask the agent to rewrite just it, or hand-edit text/size/bold; pass --mode card-news for square 1:1 decks
+  5:Add assets — store local files in <slides-dir>/assets/ as ./assets/<file> (no remote image URLs / absolute paths in saved slides); slides-grab image (god-tibo-imagen default), fetch-video (yt-dlp), tldraw (.tldr→SVG)
+  6:Validate → Export — slides-grab validate first, then pdf (capture default / --mode print searchable), png (per-slide, --slide-mode card-news for Instagram 1:1), or experimental/unstable convert (PPTX) / figma (Figma-importable PPTX)
+R:
+  drawio:Use for editable vector diagrams (architecture/ERD/UML/sequence/flowchart) embedded into a slide
+  mermaid:Use for diagrams-as-code that live in git and render in Markdown
+  presentation-builder:Use for packet-first deck planning and the export-target handoff decision without committing to the HTML pipeline
+  god-tibo-imagen:Use for standalone AI image generation rather than a full deck
+  open-design:Use for broad local design-artifact generation (web/mobile/desktop prototypes, media, 72 design systems)

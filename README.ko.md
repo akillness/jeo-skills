@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-141-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-142-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**141개 로컬 스킬 폴더 · 설치 가능 스킬 141개 · TOON 포맷 · 멀티플랫폼**
+**142개 로컬 스킬 폴더 · 설치 가능 스킬 142개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**141개 로컬 스킬 폴더 · 설치 가능 스킬 141개 · TOON 포맷 · 멀티플랫폼**
+**142개 로컬 스킬 폴더 · 설치 가능 스킬 142개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 141개 로컬 스킬 폴더와 141개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 142개 로컬 스킬 폴더와 142개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -96,6 +96,12 @@ graph TD
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-06-20 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **slides-grab: HTML/CSS AI 슬라이드 덱을 포인트-앤-에딧** | `slides-grab` 스킬을 추가했습니다 — [slides-grab](https://github.com/NomaDamas/slides-grab)(NomaDamas, MIT)를 감싸는 라우팅 우선 wrapper로, **오픈소스 Claude Design 대안**이자 "Claude Code / Codex에서 슬라이드를 생성하는 최고의 harness + 에디터 + 린터"입니다. 이 스킬은 Plan(에이전트가 구조화된 아웃라인 작성), Design(각 슬라이드는 독립적인 `slide-XX.html`), Edit(순수 JS 브라우저 에디터에서 임의 영역에 bbox를 드래그해 그 부분만 다시 쓰도록 에이전트에 요청하거나 텍스트/크기/볼드를 직접 수정), Export(캡처-또는-프린트 PDF, Instagram 1:1 카드뉴스 포함 슬라이드별 PNG, 그리고 실험적/불안정 PPTX·Figma 임포트용 PPTX)로 이어집니다. 설치 경로(npm 패키지 + `npx skills add`, 또는 clone), 덱 워크스페이스(`--slides-dir`, 멀티덱 `decks/<name>/`), 35개 디자인 스타일 중 하나, 지원되는 에셋 흐름(로컬 `./assets/<file>`만 — image는 god-tibo-imagen/codex/nano-banana, fetch-video는 yt-dlp, tldraw .tldr→SVG)을 선택하고, 모든 export 전에 `slides-grab validate`로 검증합니다. `scripts/install.sh`(npm install + Playwright Chromium + `npx skills add`), 기능·커맨드 레퍼런스, `SKILL.toon`, `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab`. Route-out: `drawio`/`mermaid`(슬라이드에 임베드되는 편집 가능한 벡터 다이어그램), `presentation-builder`(패킷 우선 기획 + export 타깃 핸드오프), `god-tibo-imagen`(독립형 AI 이미지 생성), `open-design`(광범위한 로컬 디자인 아티팩트 생성). 141 → **142개 스킬**. |
 
 ## 🆕 v2026-06-18 업데이트
 
@@ -238,7 +244,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 141개 로컬 스킬 폴더 = 총 141개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 142개 로컬 스킬 폴더 = 총 142개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -353,13 +359,15 @@ rtk init -g
 | `zeude` | Claude Code 엔터프라이즈 AI 도입 플랫폼 — OpenTelemetry 측정, Zeude Shim을 통한 스킬/MCP/훅 중앙 동기화, 컨텍스트 인식 스킬 제안으로 3배 도입률 향상. Supabase + ClickHouse 필요 | Claude |
 | `typesense` | 자가 호스팅 가능한 오타 허용 검색 환경 구축 (오픈소스 Algolia/ElasticSearch 대안, 단일 C++ 바이너리) — Docker / 바이너리 / Typesense Cloud 중 서버 모드 선택, 클라이언트 설치, 타입드 컬렉션 스키마 설계, 색인 후 오타 허용·패싯/필터·지오·정렬·동의어·scoped API 키·federated multi-search·벡터/하이브리드 검색, 그리고 InstantSearch.js UI와 Raft HA 클러스터까지. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill typesense` | 전체 |
 
-### 📝 문서화 (5개)
+### 📝 문서화 (6개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `changelog-maintenance` | changelog·release notes·migration update·lightweight patch-note 패킷을 다루는 routing-first 릴리스 히스토리 앵커 | 전체 |
 | `presentation-builder` | 투자/로드맵/런치/아키텍처 데모/워크숍/게임 피치 덱을 위한 패킷 우선 덱 아티팩트 앵커로, HTML 리뷰와 PPTX/PDF/Google Slides/Figma Slides 마지막 전달을 정직하게 다룸 | 전체 |
 | `research-paper-writing` | ML/CV/NLP 학술 논문 + 리버틀 워크플로우 — abstract/introduction/method/experiments, figure-table 지원, 주장-증거 정합성, reviewer response, camera-ready revision | 전체 |
+| `slides-grab` | 에이전트로 아름다운 HTML/CSS 프레젠테이션 덱을 생성·시각 편집·내보내기 — slides-grab(NomaDamas, MIT), 오픈소스 Claude Design 대안이자 "Claude Code / Codex 슬라이드 생성을 위한 최고의 harness + 에디터 + 린터". Plan(구조화된 아웃라인) → Design(독립적인 `slide-XX.html`) → Edit(순수 JS 브라우저 에디터에서 bbox 드래그로 영역 단위 재작성, 또는 텍스트/크기/볼드 수정) → Export(캡처-또는-프린트 PDF, Instagram 1:1 카드뉴스 포함 슬라이드별 PNG, 실험적/불안정 PPTX·Figma 임포트용 PPTX). 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab` | 전체 |
+
 | `technical-writing` | 스펙, 아키텍처 문서, ADR, 런북, 마이그레이션 가이드, 개발자용 구현 문서를 다루는 내부 기술 문서 앵커 | 전체 |
 | `user-guide-writing` | 온보딩 가이드, 튜토리얼, 작업형 how-to, FAQ, 헬프센터 업데이트, 출시 후 도움말 refresh packet까지 고르는 mode-selecting 사용자 문서 앵커 | 전체 |
 
@@ -681,7 +689,7 @@ npx vibe-kanban
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 141개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 142개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -702,6 +710,8 @@ npx vibe-kanban
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
 | `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
 | `open-design` | `open-design`, `local design tool`, `prototype generation` | [.agent-skills/open-design/SKILL.md](.agent-skills/open-design/SKILL.md) |
+| `codeflow` | `codeflow`, `visualize codebase`, `dependency graph` | [.agent-skills/codeflow/SKILL.md](.agent-skills/codeflow/SKILL.md) |
+| `slides-grab` | `slides-grab`, `slides grab`, `generate slides` | [.agent-skills/slides-grab/SKILL.md](.agent-skills/slides-grab/SKILL.md) |
 | `pretext` | `pretext`, `text measurement`, `text layout` | [docs/pretext/README.md](docs/pretext/README.md) |
 | `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [docs/god-tibo-imagen/README.md](docs/god-tibo-imagen/README.md) |
 | `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [docs/notebooklm/README.md](docs/notebooklm/README.md) |
