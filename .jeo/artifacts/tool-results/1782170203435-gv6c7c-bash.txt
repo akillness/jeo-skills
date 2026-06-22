@@ -1,0 +1,151 @@
+    fm_str, body = parse_frontmatter(content)
+    if fm_str is None:
+        return {'status': 'no_frontmatter'}
+
+    dir_name = skill_dir.name
+    changes = []
+
+    # ── Special pre-extraction: auto-apply block (multi-line YAML mapping) ──
+    auto_apply_val = None
+    sub, block, fm_str = extract_mapping_block(fm_str, 'auto-apply')
+    if block is not None:
+        # Build a single-line summary for metadata
+        models = sub.get('models', '')
+        if not models:
+            # models might be a list below
+            models_match = re.search(r'models:\n((?:\s+-[^\n]+\n?)+)', block)
+            if models_match:
+                models = ', '.join(
+                    re.findall(r'-\s+(.+)', models_match.group(1))
+                )
+        trigger = sub.get('trigger', '')
+        reps = sub.get('default_repetitions', '')
+        ratio = sub.get('max_context_ratio', '')
+        parts = []
+        if models:
+            parts.append(f"models: {models}")
+        if trigger:
+            parts.append(f"trigger: {trigger}")
+        if reps:
+            parts.append(f"default_repetitions: {reps}")
+        if ratio:
+            parts.append(f"max_context_ratio: {ratio}")
+        auto_apply_val = '; '.join(parts) if parts else block
+
+    # ── Special pre-extraction: metadata block ──
+    existing_metadata, _, fm_str = extract_mapping_block(fm_str, 'metadata')
+
+    # ── Parse remaining top-level keys ──
+    top = {}
+    for line in fm_str.split('\n'):
+        m = re.match(r'^(\w[\w-]*)\s*:\s*(.*)', line)
+        if m:
+            top[m.group(1)] = m.group(2).strip()
+
+    # ── Build new frontmatter ──
+    new_fm = {}
+    new_meta = dict(existing_metadata)
+
+    # name
+    raw_name = unquote(top.get('name', dir_name))
+    if raw_name != dir_name:
+        changes.append(f"name: {raw_name!r} → {dir_name!r}")
+        raw_name = dir_name
+    new_fm['name'] = raw_name
+
+    # description
+    raw_desc = unquote(top.get('description', ''))
+    # Handle description that was quoted with surrounding quotes
+    if raw_desc.startswith('"') and raw_desc.endswith('"'):
+        raw_desc = raw_desc[1:-1]
+    trunc = truncate_desc(raw_desc)
+    if trunc != raw_desc:
+        changes.append(f"description truncated ({len(raw_desc)}→{len(trunc)})")
+    new_fm['description'] = trunc
+
+    # license
+    if 'license' in top:
+        new_fm['license'] = unquote(top['license'])
+
+    # compatibility
+    if 'compatibility' in top:
+        v = unquote(top['compatibility'])
+        if len(v) > 500:
+            v = v[:497] + '...'
+            changes.append("compatibility truncated")
+        new_fm['compatibility'] = v
+
+    # allowed-tools
+    if 'allowed-tools' in top:
+        space = yaml_list_to_delimited(top['allowed-tools'], ' ')
+        if space:
+            orig = top['allowed-tools']
+            if orig != space:
+                changes.append("allowed-tools: array → space-delimited")
+            new_fm['allowed-tools'] = space
+        else:
+            changes.append("allowed-tools: empty → removed")
+
+    # Non-standard fields → metadata
+    moves = {
+        'tags': 'tags',
+        'platforms': 'platforms',
+        'keyword': 'keyword',
+        'version': 'version',
+        'source': 'source',
+        'verified': 'verified',
+        'verified-with': 'verified-with',
+        'author': 'author',
+    }
+    for field, meta_key in moves.items():
+        if field in top:
+            raw = top[field]
+            if field in ('tags', 'platforms'):
+                val = yaml_list_to_delimited(raw, ', ')
+            else:
+                val = unquote(raw)
+            if val:
+                new_meta[meta_key] = val
+                changes.append(f"{field} → metadata.{meta_key}")
+
+    if auto_apply_val:
+        new_meta['auto-apply'] = auto_apply_val
+        changes.append("auto-apply → metadata.auto-apply")
+
+    if new_meta:
+        new_fm['metadata'] = new_meta
+
+    # ── Render new frontmatter ──
+    out_lines = ['---']
+    order = ['name', 'description', 'license', 'compatibility', 'allowed-tools', 'metadata']
+    for field in order:
+        if field not in new_fm:
+            continue
+        val = new_fm[field]
+        if field == 'metadata':
+            out_lines.append('metadata:')
+            for mk, mv in val.items():
+                out_lines.append(f'  {mk}: {quote_yaml(str(mv))}')
+        elif field == 'description':
+            out_lines.append(f'description: {quote_yaml(str(val))}')
+        else:
+            out_lines.append(f'{field}: {quote_yaml(str(val))}')
+    out_lines.append('---')
+
+    new_content = '\n'.join(out_lines) + '\n\n' + body
+
+    if new_content != content:
+        skill_file.write_text(new_content, encoding='utf-8')
+        return {'status': 'fixed', 'changes': changes}
+    return {'status': 'ok', 'changes': []}
+
+
+def main():
+    if not SKILLS_DIR.exists():
+        print(f"ERROR: {SKILLS_DIR} not found", file=sys.stderr)
+        sys.exit(1)
+
+    skill_dirs = sorted(
+        d for d in SKILLS_DIR.iterdir()
+        if d.is_dir() and not d.name.startswith('.') and not d.name.startswith('__')
+    )
