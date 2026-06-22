@@ -24,6 +24,7 @@ compatibility: >
   severity-rated review judgment to `code-review`. Upstream:
   https://github.com/DietrichGebert/ponytail (MIT).
 metadata:
+  category: software-development
   tags: yagni, over-engineering, minimalism, anti-bloat, code-review, refactoring, productivity, tech-debt
   platforms: Claude, Codex, Gemini, Cursor, OpenCode, All
   keyword: ponytail
@@ -57,7 +58,7 @@ until explicitly changed; announce the current mode when it is set or changed.
   personally; aggressively collapse, inline, and delete.
 - **off** — stand down. Stop applying the ladder until reactivated.
 
-## The ladder
+## Step-by-Step Procedure (The Ladder)
 
 Before writing code, stop at the **first rung that holds**:
 
@@ -74,7 +75,7 @@ Do not climb past the first rung that solves the problem. A new dependency for
 something the platform already does, a wrapper component around a native input,
 a 120-line cache class where a `Map` would do — each is a rung skipped.
 
-## Lazy, not negligent
+## Edge Cases & Pitfalls (Lazy, not negligent)
 
 Laziness is about effort, not correctness. These are **never** on the chopping
 block, at any intensity:
