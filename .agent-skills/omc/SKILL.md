@@ -15,7 +15,7 @@ metadata:
   tags: omc, oh-my-claudecode, claude-code, multi-agent, orchestration, team, autopilot, ralph, ultrawork, ultraqa, ccg, hooks, hud, omx, oma, antigravity
   platforms: Claude Code
   keyword: omc
-  version: 4.14.0
+  version: 4.14.7
   source: Yeachan-Heo/oh-my-claudecode
 ---
 

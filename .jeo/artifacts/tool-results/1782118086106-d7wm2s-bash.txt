@@ -1,0 +1,81 @@
+     446 /tmp/omc_readme.txt
+English | [한국어](README.ko.md) | [中文](README.zh.md) | [日本語](README.ja.md) | [Español](README.es.md) | [Tiếng Việt](README.vi.md) | [Português](README.pt.md)
+# oh-my-claudecode
+[![npm version](https://img.shields.io/npm/v/oh-my-claude-sisyphus?color=cb3837)](https://www.npmjs.com/package/oh-my-claude-sisyphus)
+[![npm downloads](https://img.shields.io/npm/dm/oh-my-claude-sisyphus?color=blue)](https://www.npmjs.com/package/oh-my-claude-sisyphus)
+[![GitHub stars](https://img.shields.io/github/stars/Yeachan-Heo/oh-my-claudecode?style=flat&color=yellow)](https://github.com/Yeachan-Heo/oh-my-claudecode/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Sponsor](https://img.shields.io/badge/Sponsor-❤️-red?style=flat&logo=github)](https://github.com/sponsors/Yeachan-Heo)
+[![Discord](https://img.shields.io/discord/1452487457085063218?color=5865F2&logo=discord&logoColor=white&label=Discord)](https://discord.gg/sj4exxQ9v)
+> **For Codex users:** Check out [oh-my-codex](https://github.com/Yeachan-Heo/oh-my-codex) — the same orchestration experience for OpenAI Codex CLI.
+**Multi-agent orchestration for Claude Code. Zero learning curve.**
+_Don't learn Claude Code. Just use OMC._
+[Get Started](#quick-start) • [Documentation](https://yeachan-heo.github.io/oh-my-claudecode-website) • [CLI Reference](https://yeachan-heo.github.io/oh-my-claudecode-website/docs/#cli-reference) • [Workflows](https://yeachan-heo.github.io/oh-my-claudecode-website/docs/#workflows) • [Migration Guide](docs/MIGRATION.md) • [Discord](https://discord.gg/sj4exxQ9v)
+---
+## Core Maintainers
+| Role | Name | GitHub |
+| -------------- | ----------- | ---------------------------------------------- |
+| Creator & Lead | Yeachan Heo | [@Yeachan-Heo](https://github.com/Yeachan-Heo) |
+## Ambassadors
+| Name | GitHub |
+| ---------- | ------------------------------------------------ |
+| Sigrid Jin | [@sigridjineth](https://github.com/sigridjineth) |
+## Document Specialists
+| Name | GitHub |
+| ------- | -------------------------------------- |
+| devswha | [@devswha](https://github.com/devswha) |
+## Top Collaborators
+| Name | GitHub | Commits |
+| -------------- | ---------------------------------------------- | ------- |
+| JunghwanNA | [@shaun0927](https://github.com/shaun0927) | 65 |
+| riftzen-bit | [@riftzen-bit](https://github.com/riftzen-bit) | 52 |
+| Seunggwan Song | [@Nathan-Song](https://github.com/Nathan-Song) | 20 |
+| BLUE | [@blue-int](https://github.com/blue-int) | 20 |
+| Junho Yeo | [@junhoyeo](https://github.com/junhoyeo) | 15 |
+## Quick Start
+**Step 1: Install**
+Marketplace/plugin install (recommended for most Claude Code users).
+These are Claude Code slash commands — enter them **one at a time** (pasting both lines at once will fail):
+```bash
+/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
+```
+Then:
+```bash
+/plugin install oh-my-claudecode
+```
+If you prefer the npm CLI/runtime path instead of the marketplace flow:
+```bash
+npm i -g oh-my-claude-sisyphus@latest
+```
+> **Known npm warning:** npm may print `deprecated prebuild-install@7.1.3` during the CLI install.
+> This currently comes from the upstream `better-sqlite3` native-addon dependency
+> (`better-sqlite3 -> prebuild-install`); `prebuild-install@7.1.3` is still the latest
+> published version, so there is no safe repo-side dependency bump or override to remove
+> the warning yet. The warning is tracked in [#2913](https://github.com/Yeachan-Heo/oh-my-claudecode/issues/2913)
+> and does not by itself mean the OMC CLI install failed.
+**Step 2: Setup**
+```bash
+# Inside a Claude Code / OMC session
+/setup
+/omc-setup
+# From your terminal
+omc setup
+```
+If you run OMC via `omc --plugin-dir
+` or `claude --plugin-dir
+`, add `--plugin-dir-mode` to `omc setup` (or export `OMC_PLUGIN_ROOT` before running it) so the installer doesn't duplicate skills/agents that the plugin already provides at runtime. See the [Plugin directory flags section in REFERENCE.md](./docs/REFERENCE.md#plugin-directory-flags) for a complete decision matrix and all available flags.
+**Step 3: Build something**
+```bash
+# Inside a Claude Code / OMC session
+/autopilot "build a REST API for managing tasks"
+# Natural-language in-session shortcut
+autopilot: build a REST API for managing tasks
+```
+That's it. Everything else is automatic.
+### CLI Commands vs In-Session Skills
+OMC exposes two different surfaces:
+- **Terminal CLI commands**: run `omc ...` from your shell after installing the npm/runtime path (`npm i -g oh-my-claude-sisyphus@latest`) or from a local checkout.
+- **In-session skills**: run `/...` inside a Claude Code session after installing the plugin/setup flow.
+| Feature | Terminal CLI | In-session skill | Notes |
+| ---------------------------------------------- | --------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Setup | `omc setup` | `/setup` or `/omc-setup` | Both are real entrypoints. `/setup` is the easiest plugin-first path. |

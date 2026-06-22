@@ -1,0 +1,73 @@
+ .agent-skills/frontend-design-system/SKILL.md      |   79 -
+ .agent-skills/frontend-design-system/SKILL.toon    |   25 -
+ .../frontend-design-system/evals/evals.json        |   25 -
+ .../references/alias-routing.md                    |   24 -
+ .../references/compact-surface-sync.md             |   29 -
+ .agent-skills/marketing-skills-collection/SKILL.md |   91 -
+ .../marketing-skills-collection/SKILL.toon         |   27 -
+ .../marketing-skills-collection/evals/evals.json   |   35 -
+ .../references/alias-resolution-checklist.md       |   36 -
+ .../references/legacy-intake-and-route-outs.md     |   44 -
+ .agent-skills/obsidian-cli-uri-fallback/SKILL.md   |   57 -
+ .agent-skills/obsidian-cli/SKILL.md                |  256 --
+ .agent-skills/obsidian-cli/SKILL.toon              |   39 -
+ .agent-skills/obsidian-cli/evals/evals.json        |   68 -
+ .../references/commands-and-developer-tools.md     |   86 -
+ .../references/installation-and-troubleshooting.md |   62 -
+ .../references/intake-packets-and-route-outs.md    |   48 -
+ .../obsidian-cli/references/uri-and-callbacks.md   |  104 -
+ .../references/vault-and-file-targeting.md         |   72 -
+ .agent-skills/obsidian-cli/scripts/install.sh      |   35 -
+ .agent-skills/obsidian-cli/scripts/open-uri.sh     |   25 -
+ .agent-skills/obsidian-cli/scripts/run-command.sh  |   19 -
+ .../SKILL.md.baseline                              |   40 -
+ .../skill-autoresearch-obsidian-cli/changelog.md   |   15 -
+ .../skill-autoresearch-obsidian-cli/dashboard.html |  116 -
+ .../skill-autoresearch-obsidian-cli/results.json   |   67 -
+ .../skill-autoresearch-obsidian-cli/results.tsv    |    3 -
+ .agent-skills/obsidian-plugin/SKILL.md             |  241 --
+ .agent-skills/obsidian-plugin/SKILL.toon           |   19 -
+ .agent-skills/obsidian-plugin/evals/evals.json     |   57 -
+ .../obsidian-plugin/references/accessibility.md    |  110 -
+ .../obsidian-plugin/references/code-quality.md     |  109 -
+ .../obsidian-plugin/references/css-styling.md      |   89 -
+ .../obsidian-plugin/references/file-operations.md  |   70 -
+ .../references/memory-management.md                |   70 -
+ .../obsidian-plugin/references/submission.md       |   90 -
+ .../obsidian-plugin/references/type-safety.md      |   60 -
+ .agent-skills/obsidian-plugin/references/ui-ux.md  |   67 -
+ .../obsidian-plugin/scripts/create-plugin.js       |  228 --
+ .agent-skills/obsidian-plugin/scripts/install.sh   |   83 -
+ .agent-skills/ohmg/SKILL.md                        |   50 +-
+ .agent-skills/omc/SKILL.md                         |    2 +-
+ .agent-skills/omx/SKILL.md                         |    4 +-
+ .../vercel-react-best-practices/AGENTS.md          | 2516 --------------------
+ .agent-skills/vercel-react-best-practices/SKILL.md |   81 -
+ .../vercel-react-best-practices/SKILL.toon         |   25 -
+ .../vercel-react-best-practices/evals/evals.json   |   25 -
+ .../references/alias-routing.md                    |   24 -
+ .../references/measurement-route-outs.md           |   21 -
+ .jeo/input-history                                 |    8 +
+ assets/architecture.svg                            |   69 +-
+ 51 files changed, 103 insertions(+), 5542 deletions(-)
+---
+ D .agent-skills/frontend-design-system/SKILL.md
+ D .agent-skills/frontend-design-system/SKILL.toon
+ D .agent-skills/frontend-design-system/evals/evals.json
+ D .agent-skills/frontend-design-system/references/alias-routing.md
+ D .agent-skills/frontend-design-system/references/compact-surface-sync.md
+ D .agent-skills/marketing-skills-collection/SKILL.md
+ D .agent-skills/marketing-skills-collection/SKILL.toon
+ D .agent-skills/marketing-skills-collection/evals/evals.json
+ D .agent-skills/marketing-skills-collection/references/alias-resolution-checklist.md
+ D .agent-skills/marketing-skills-collection/references/legacy-intake-and-route-outs.md
+ D .agent-skills/obsidian-cli-uri-fallback/SKILL.md
+ D .agent-skills/obsidian-cli/SKILL.md
+ D .agent-skills/obsidian-cli/SKILL.toon
+ D .agent-skills/obsidian-cli/evals/evals.json
+ D .agent-skills/obsidian-cli/references/commands-and-developer-tools.md
+ D .agent-skills/obsidian-cli/references/installation-and-troubleshooting.md
+ D .agent-skills/obsidian-cli/references/intake-packets-and-route-outs.md
+ D .agent-skills/obsidian-cli/references/uri-and-callbacks.md
+ D .agent-skills/obsidian-cli/references/vault-and-file-targeting.md
+ D .agent-skills/obsidian-cli/scripts/install.sh

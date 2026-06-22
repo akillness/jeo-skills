@@ -1,12 +1,12 @@
 ---
 name: omx
-description: "Use when you need multi-agent orchestration for OpenAI Codex CLI, especially Codex equivalents of Claude `/team`, `/autopilot`, `/ultrawork`, and `/ultraqa`. Triggers on: omx, $plan, $ralph, $team, $ulw, $ultraqa, $autopilot, $deep-interview. v0.11.10 — 30+ agents, 35+ workflow skills, tmux team runtime, sparkshell, explore, ralplan."
+description: "Use when you need multi-agent orchestration for OpenAI Codex CLI, especially Codex equivalents of Claude `/team`, `/autopilot`, `/ultrawork`, and `/ultraqa`. Triggers on: omx, $plan, $ralph, $team, $ulw, $ultraqa, $autopilot, $deep-interview, $prometheus-strict. v0.18.14 — 30+ agents, 35+ workflow skills, tmux team runtime, sparkshell, explore, ralplan, prometheus-strict, best-practice-research, autoresearch-goal."
 allowed-tools: Read Write Bash Grep Glob Edit Agent
 metadata:
   tags: omx, oh-my-codex, codex, openai, multi-agent, orchestration, team, autopilot, ultrawork, ultraqa, ralph, plan, deep-interview, ralplan
   platforms: Codex, Claude, Gemini
   keyword: omx
-  version: 0.11.10
+  version: 0.18.14
   source: Yeachan-Heo/oh-my-codex
 ---
 

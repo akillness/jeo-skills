@@ -1,35 +1,35 @@
 ---
 name: ohmg
 description: >
-  Adopt `oh-my-agent` from a Gemini CLI or Antigravity workflow. Use when the user
-  wants a portable multi-agent harness with `.agents/` as the source of truth,
-  Gemini-native generated agents, Antigravity compatibility, or cross-vendor-ready
-  orchestration that can later route work to Claude or Codex. Also use when mapping
-  Claude workflows such as `team`, `autopilot`, `ultrawork`, or `ultraqa` into OMA workflows for
-  Gemini or Antigravity. Triggers on: ohmg, oh-my-agent, oma, Gemini multi-agent,
-  Antigravity agent team, .agents, portable harness, Gemini native agents,
-  autopilot, ultrawork, ultraqa, and Gemini/Antigravity orchestration. Route
-  Claude-first runtime orchestration to `omc` and Codex-first runtime orchestration
-  to `omx`.
+  Adopt `oh-my-agent` as a cross-vendor portable multi-agent harness. Use when the user
+  wants a single `.agents/` source of truth that projects into any AI IDE or runtime —
+  Claude Code, Codex, Gemini CLI, Antigravity, Cursor, Grok Build, Kimi Code, OpenCode,
+  Pi, Qwen Code, Reasonix, Amp, GitHub Copilot, or Kiro CLI — without duplicating agent
+  definitions. Also use when mapping Claude workflows (`team`, `autopilot`, `ultrawork`,
+  `ultraqa`) into OMA equivalents for any vendor. Triggers on: ohmg, oh-my-agent, oma,
+  portable harness, .agents, cross-vendor agents, Gemini multi-agent, Antigravity agent
+  team, autopilot, ultrawork, ultraqa, claude code agents, codex agents, cursor agents.
+  Route Claude Code–native runtime orchestration to `omc` and Codex CLI–native runtime
+  orchestration to `omx`.
 allowed-tools: Read Write Bash Grep Glob
 metadata:
-  tags: ohmg, oh-my-agent, oma, multi-agent, orchestration, gemini-cli, antigravity, portable-harness, dot-agents, team, autopilot, ultrawork, ultraqa
-  platforms: Gemini, Antigravity
+  tags: ohmg, oh-my-agent, oma, multi-agent, orchestration, gemini-cli, antigravity, cursor, opencode, grok-build, kiro-cli, portable-harness, dot-agents, team, autopilot, ultrawork, ultraqa
+  platforms: Claude Code, Codex, Gemini, Antigravity, Cursor, OpenCode, Grok Build, Kiro CLI, and more
   keyword: ohmg
-  version: 2.0.0
+  version: 10.4.1
   source: first-fluke/oh-my-agent
 ---
 
-# ohmg — Gemini / Antigravity entry for oh-my-agent
+# ohmg — Cross-vendor portable multi-agent harness (oh-my-agent v10.4.1)
 
 ## When to use this skill
 
-- You want to adopt **`oh-my-agent`** from a **Gemini CLI** workflow
-- You want **Antigravity** to read the same project-local multi-agent setup
-- You need a **portable `.agents/` source of truth** that can later project into Gemini, Claude, and Codex surfaces
-- You need to explain **when Gemini can use native generated agents** versus **when `oma agent:spawn` fallback** is required
-- You need OMA/Gemini/Antigravity equivalents for Claude `/team`, `/autopilot`, `/ultrawork`, or `/ultraqa`
-- You want the **Gemini / Antigravity path** without copying the full Claude-first (`omc`) or Codex-first (`omx`) runtime catalogs
+- You want to adopt **`oh-my-agent`** as a **portable multi-agent harness** across any AI IDE
+- You want a single **`.agents/` source of truth** that projects into Claude Code, Codex, Gemini, Antigravity, Cursor, Grok Build, Kimi Code, OpenCode, Pi, Qwen Code, Reasonix, Amp, GitHub Copilot, or Kiro CLI
+- You need OMA equivalents for Claude `/team`, `/autopilot`, `/ultrawork`, or `/ultraqa` on any runtime
+- You need **specialized domain agents** (frontend, backend, architecture, QA, PM, DB, mobile, infra, debug, design, etc.) that stay consistent across runtimes
+- You need to explain **when native generated agent files are used** versus **when `oma agent:spawn` fallback** is required
+- You want the **vendor-agnostic harness path** without locking into the full Claude-first (`omc`) or Codex-first (`omx`) runtime stacks
 
 ## Instructions
 
@@ -37,14 +37,14 @@ metadata:
 
 Determine which of these the user actually wants:
 
-1. **Gemini CLI first** — they want Gemini-native agent files and Gemini-centric usage
-2. **Antigravity first** — they want Antigravity to consume a portable agent harness
-3. **Portable harness first** — they want one project-local source of truth that can later project into Gemini, Claude, or Codex
-4. **Vendor-first runtime instead** — they actually want Claude-first orchestration (`omc`) or Codex-first orchestration (`omx`)
+1. **Portable harness first** — they want one `.agents/` source of truth that projects to any supported runtime
+2. **Specific runtime first** — they have a primary IDE but want multi-agent support via OMA
+3. **Claude Code native instead** — route to `omc`
+4. **Codex CLI native instead** — route to `omx`
 
 If the request is really about **Claude Code-native orchestration**, route to `omc`.
 If the request is really about **Codex CLI-native orchestration**, route to `omx`.
-Use `ohmg` when the center of gravity is **Gemini CLI / Antigravity + portable harness adoption**.
+Use `ohmg` when the user wants the **cross-vendor portable harness** or their runtime is not Claude Code or Codex.
 
 ### Step 2: Teach the current upstream mental model
 

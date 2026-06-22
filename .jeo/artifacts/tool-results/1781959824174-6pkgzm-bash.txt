@@ -1,0 +1,28 @@
+=== ko changelog header area (95-106) ===
+2:---
+4:<!-- WHATS-NEW:START -->
+6:## 🆕 v2026-06-18 업데이트
+8:| 변경 | 내용 |
+9:|------|------|
+10:| **codeflow: 코드베이스 아키텍처를 몇 초 만에 시각화** | `codeflow` 스킬을 추가했습니다 — [CodeFlow](https://github.com/braedonsaunders/codeflow)(braedonsaunders, MIT)를 감싸는 라우팅 우선 wrapper로, **빌드가 필요 없는 단일 `index.html` 브라우저 앱**(고정 CDN의 React 18 + D3.js 7 + Babel)입니다. 모든 GitHub 저장소, 로컬 폴더, PR, 마크다운/Obsidian 볼트를 **인터랙티브 아키텍처 맵**으로 바꾸며 100% 클라이언트 사이드로 동작합니다 — **백엔드 없음, 빌드 없음, 데이터 수집 없음**. 입력 선택(공개 저장소, 브라우저 메모리에만 보관되는 토큰을 쓰는 비공개 저장소, 로컬 파일/폴더, PR URL, 마크다운 볼트), 시각화 모드 선택(**folder / layer / churn / blast**), 그리고 분석 확인: **인터랙티브 의존성 그래프**, **블래스트 반경**("이 파일을 바꾸면 무엇이 깨지나"), git 히스토리 기반 **코드 오너십**, 휴리스틱 **보안 스캐너**(하드코딩된 시크릿, SQL 인젝션, `eval()`, 디버그 구문), **패턴/안티패턴 탐지**, **A–F 헬스 스코어**, **활동 히트맵**, **PR 임팩트 분석** — 이후 JSON / Markdown / 텍스트 / SVG / PDF로 내보내거나 GitHub Action으로 README에 자동 갱신되는 **CodeFlow Card** SVG를 붙입니다. 40+ 언어 지원. `scripts/install.sh`(clone-or-update + `index.html` 열기, `CODEFLOW_NO_OPEN` 노브), 기능·언어 레퍼런스, `SKILL.toon`, `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow`. Route-out: `drawio`/`mermaid`(편집 가능한 수작업 다이어그램), `semble`(토큰 효율적 에이전트 코드 검색), `codebase-search`(저장소 탐색 패킷), `graphify`(저장소에 커밋되는 영속 지식 그래프). 140 → **141개 스킬**. |
+
+=== ko writing/docs table - find slides-grab neighbors ===
+118:| **drawio: 텍스트에서 전문 다이어그램까지** | `drawio` 스킬을 추가했습니다 — Agents365-ai의 [drawio-skill](https://github.com/Agents365-ai/drawio-skill)(MIT)을 감싸는 wrapper로, 자연어 설명을 편집 가능한 `.drawio` XML로 변환하고 **네이티브 draw.io 데스크톱 CLI**로 PNG / SVG / PDF / JPG로 내보냅니다(MCP 서버·데몬 불필요). 또는 기존 코드베이스(Python / JS-TS / Go / Rust)를 자동 배치된 구조 다이어그램으로 변환합니다. 6가지 다이어그램 프리셋(ERD, UML 클래스, 시퀀스, 아키텍처, ML/DL, 플로우차트), **10,000개 이상의 공식** AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN 셰이프 검색(`shapesearch.py`), draw.io에 없는 **321개 AI/LLM 브랜드 로고**(`aiicons.py`), Graphviz 기반 추출 → 자동 배치 → 검증 파이프라인(전이 축약·중첩 컨테이너), 렌더된 PNG를 읽어 자동 보정하는 비전 셀프체크(최대 2라운드)와 5라운드 반복 개선 루프를 제공합니다. 플랫폼별 draw.io CLI 감지/설치 + 업스트림 스킬 설치(선택적 Graphviz)를 수행하는 `scripts/install.sh`와 커맨드/플래그 레퍼런스 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill drawio`. Route-out: `mermaid`/`plantuml`(git 내 코드형 다이어그램), `excalidraw`/`tldraw`(손그림 스타일), `presentation-builder`(슬라이드 덱). 138 → **139개 스킬**. |
+360:| `changelog-maintenance` | changelog·release notes·migration update·lightweight patch-note 패킷을 다루는 routing-first 릴리스 히스토리 앵커 | 전체 |
+361:| `presentation-builder` | 투자/로드맵/런치/아키텍처 데모/워크숍/게임 피치 덱을 위한 패킷 우선 덱 아티팩트 앵커로, HTML 리뷰와 PPTX/PDF/Google Slides/Figma Slides 마지막 전달을 정직하게 다룸 | 전체 |
+362:| `research-paper-writing` | ML/CV/NLP 학술 논문 + 리버틀 워크플로우 — abstract/introduction/method/experiments, figure-table 지원, 주장-증거 정합성, reviewer response, camera-ready revision | 전체 |
+363:| `technical-writing` | 스펙, 아키텍처 문서, ADR, 런북, 마이그레이션 가이드, 개발자용 구현 문서를 다루는 내부 기술 문서 앵커 | 전체 |
+364:| `user-guide-writing` | 온보딩 가이드, 튜토리얼, 작업형 how-to, FAQ, 헬프센터 업데이트, 출시 후 도움말 refresh packet까지 고르는 mode-selecting 사용자 문서 앵커 | 전체 |
+742:| `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |
+
+=== ko related docs table (open-design/browser-harness) ===
+125:| **cli-anything: 모든 소프트웨어를 agent-native로** | `cli-anything` 스킬을 추가했습니다 — HKUDS의 [CLI-Anything](https://github.com/HKUDS/CLI-Anything) 생태계를 감싸는 라우팅 우선 wrapper로, 네 가지 모드 중 하나를 선택합니다: CLI-Hub 패키지 매니저로 기성 harness 설치(`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), 에이전트 자율 탐색용 meta-skill 부여(`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), 임의 코드베이스·GitHub 저장소에서 7-phase 파이프라인으로 새 harness 생성(Claude Code `/plugin install cli-anything` → `/cli-anything <path>`, Codex/OpenCode/OpenClaw/Pi/Hermes/Qodercli/Copilot CLI 설치 경로 포함), 기존 harness 반복 개선(`/cli-anything:refine`/`:test`/`:validate`). GIMP · Blender · LibreOffice · OBS · Draw.io · ComfyUI · Ollama · Godot · QGIS · FreeCAD 등 40+ 프로덕션 harness, 2,461개 테스트 통과; 생성된 CLI는 Click 커맨드 + 상태형 REPL + `--json` 출력 + 자동 생성 SKILL.md를 제공합니다. PEP 668-safe `scripts/install.sh`(venv 인식 uv/pip, `CLI_ANYTHING_META_SKILL=1`로 meta-skill 옵션)와 플랫폼/커맨드 레퍼런스를 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything`. Route-out: `harness`(에이전트 팀 설계), `browser-harness`(코드베이스 없는 GUI 대상), `ccpi-marketplace`(일반 플러그인 탐색). 134 → **135개 스킬**. |
+273:| `browser-harness` | `browser-harness` | Claude Code, Codex, Antigravity, Gemini CLI, OpenCode용 CDP 기반 자가 치유 브라우저 자동화 — `agent-browser`를 대체하고 Claude-safe 스크린샷 처리와 helper/domain-skill 복구 루프를 문서화 |
+310:| `open-design` | 로컬 우선 오픈소스 디자인 도구 — 설치된 코딩 에이전트를 사용해 프로토타입·덱·미디어 아티팩트를 생성합니다. 72개 내장 디자인 시스템, 5가지 비주얼 방향, 멀티 포맷 내보내기(HTML/PDF/PPTX/ZIP). 플러그인: `claude plugin marketplace add nexu-io/open-design` | 전체 |
+469:| Verify / QA | `browser-harness` | 완료 주장 전에 CDP 브라우저 / QA 근거를 기록 |
+620:### open-design — 로컬 우선 디자인 아티팩트 생성
+621:> 키워드: `open-design`, `local design tool`, `prototype generation` | [GitHub](https://github.com/nexu-io/open-design)
+627:claude plugin marketplace add nexu-io/open-design
+630:git clone https://github.com/nexu-io/open-design.git
+631:cd open-design && corepack enable && pnpm install
+635:npx skills add https://github.com/akillness/jeo-skills --skill open-design

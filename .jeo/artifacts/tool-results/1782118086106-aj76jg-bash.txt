@@ -1,0 +1,81 @@
+     345 /tmp/omx_readme.txt
+# oh-my-codex (OMX)
+Start Codex stronger, then let OMX add better prompts, workflows, and runtime help when the work grows.
+[![npm version](https://img.shields.io/npm/v/oh-my-codex)](https://www.npmjs.com/package/oh-my-codex)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
+[![Discord](https://img.shields.io/discord/1452487457085063218?color=5865F2&logo=discord&logoColor=white&label=Discord)](https://discord.gg/sj4exxQ9v)
+**Website:** https://yeachan-heo.github.io/oh-my-codex-website/
+**Docs:** [Getting Started](./docs/getting-started.html) · [Agents](./docs/agents.html) · [Skills](./docs/skills.html) · [Integrations](./docs/integrations.html) · [Demo](./DEMO.md) · [OpenClaw guide](./docs/openclaw-integration.md)
+**Community:** [Discord](https://discord.gg/sj4exxQ9v) — shared OMX/community server for oh-my-codex and related tooling.
+## Official project and package
+The official/original OMX project is this repository, [`Yeachan-Heo/oh-my-codex`](https://github.com/Yeachan-Heo/oh-my-codex), and the official npm package for this project is [`oh-my-codex`](https://www.npmjs.com/package/oh-my-codex). Install this project with `npm install -g oh-my-codex` (or alongside Codex CLI as shown below).
+Third-party projects or forks that use names such as “OMX v2” are not official continuations, replacements, or release lines for this repository unless this README or the docs explicitly say so. When in doubt, trust this repository and the `oh-my-codex` package as the official install target.
+OMX is a workflow layer for [OpenAI Codex CLI](https://github.com/openai/codex).
+🚨 CAUTION — RECOMMENDED DEFAULT ONLY: macOS or Linux with Codex CLI.
+OMX is primarily designed and actively tuned for that path.
+Native Windows and Codex App are not the default experience, may break or behave inconsistently, and currently receive less support.
+It keeps Codex as the execution engine and makes it easier to:
+- start a stronger Codex session by default
+- run one consistent workflow from clarification to completion
+- invoke the canonical default workflow with `$deep-interview`, `$ralplan`, and `$ultragoal`
+- keep project guidance, plans, logs, and state in `.omx/`
+## Core Maintainers
+| Role | Name | GitHub |
+| --- | --- | --- |
+| Creator & Lead | Yeachan Heo | [@Yeachan-Heo](https://github.com/Yeachan-Heo) |
+| Maintainer | Doyun Ha | [@HaD0Yun](https://github.com/HaD0Yun) |
+| Maintainer | Valeriy Pavlovich | [@iqdoctor](https://github.com/iqdoctor) |
+## Ambassadors
+| Name | GitHub |
+| --- | --- |
+| Sigrid Jin | [@sigridjineth](https://github.com/sigridjineth) |
+## Top Collaborators
+| Name | GitHub |
+| --- | --- |
+| Doyun Ha | [@HaD0Yun](https://github.com/HaD0Yun) |
+| Junho Yeo | [@junhoyeo](https://github.com/junhoyeo) |
+| JiHongKim98 | [@JiHongKim98](https://github.com/JiHongKim98) |
+| Lor | [@gobylor](https://github.com/gobylor) |
+| HyunjunJeon | [@HyunjunJeon](https://github.com/HyunjunJeon) |
+## Recommended default flow
+If you want the default OMX experience, start here:
+Choose one install path. If Codex CLI is already installed (Homebrew, npm, or another supported method):
+```bash
+codex --version
+npm install -g oh-my-codex
+omx setup
+# from the git project you want Codex to edit; choose a task-specific name
+omx --worktree=feat/task --madmax --xhigh
+```
+If you do not have Codex CLI yet and want npm to manage it:
+```bash
+npm install -g @openai/codex
+npm install -g oh-my-codex
+omx setup
+```
+Do not run a combined `npm install -g @openai/codex oh-my-codex` over an existing Homebrew-owned `codex` binary such as `/opt/homebrew/bin/codex`; npm may fail with `EEXIST` when `@openai/codex` tries to create the same binary. OMX only needs a working, authenticated `codex` command on `PATH`; it does not require Codex to be installed through npm.
+On a real `oh-my-codex` version bump, the global npm install now prints an explicit reminder instead of launching `omx setup` automatically. When you're ready, run `omx setup` manually or use `omx update` to check npm and then run the same setup refresh path.
+OMX also checks for npm updates at launch on a throttled cadence and prompts before scheduling the update after the current session exits. Set `OMX_AUTO_UPDATE=0` to disable the launch-time check, or set `OMX_AUTO_UPDATE=defer` to schedule the same deferred update without prompting.
+**Codex plugin install note:** this repo also ships an official Codex plugin layout at `plugins/oh-my-codex` with marketplace metadata in `.agents/plugins/marketplace.json`. That plugin bundles the mirrored skill surface plus plugin-scoped companion metadata for official Codex lifecycle hooks, optional MCP compatibility servers, and apps. It is still **not** a replacement for `npm install -g oh-my-codex` plus `omx setup`: plugin-scoped hooks launch the installed `omx` CLI, legacy setup mode installs native agents and prompts, and plugin setup mode relies on plugin discovery for bundled skills while archiving/removing legacy OMX-managed prompts/native-agent TOMLs so stale role files cannot shadow plugin behavior. Plugin mode still needs a persistent scope `AGENTS.md` (`~/.codex/AGENTS.md` for user setup or `./AGENTS.md` for project setup) as the durable orchestration guidance layer; session-scoped AGENTS files only compose that durable guidance with runtime overlays and are not a replacement.
+Then work normally inside Codex:
+```text
+# Durable objective/checkpoints for a long task:
+/goal Create a safe authentication refactor plan, implement it, and verify login, logout, and refresh-token behavior.
+$deep-interview "clarify the authentication change"
+$ralplan "approve the auth plan and review tradeoffs"
+$prometheus-strict "stress-test the plan before durable execution"
+$ultragoal "turn the approved plan into durable Codex goals"
+```
+That is the main path.
+Before you treat the runtime as ready, run the quick-start smoke test below: `omx doctor` verifies the install shape, while `omx exec` proves the active Codex runtime can actually authenticate and complete a model call from the current environment.
+Start OMX strongly, clarify first when needed, approve the plan, optionally use `$prometheus-strict` for interview-driven plan hardening on high-risk work, then use `$ultragoal` as the default durable completion wrapper. Use `$team` inside that execution path only when a specific Ultragoal story needs coordinated parallel work; use `$ralph` when you intentionally want a single-owner completion loop instead of a durable multi-goal run.
+## What OMX is for
+Use OMX if you already like Codex and want a better day-to-day runtime around it:
+- a standard workflow built around `$deep-interview` -> `$ralplan` -> `$ultragoal`, with `$prometheus-strict` available when plans need stricter interview/critique/synthesis before execution and optional `.omx/plans/prometheus-strict/` artifacts
+- research boundaries: use `$best-practice-research` for ordinary pre-planning official/upstream evidence, `$autoresearch` for bounded validator-gated research artifacts, `$autoresearch-goal` for goal-mode research missions, and feed any research findings into `$ralplan` for architecture synthesis
+- durable multi-goal handoffs with `$ultragoal` and `.omx/ultragoal` artifacts as the default completion path after planning
+- specialist roles and supporting skills when the task needs them
+- project guidance through scoped `AGENTS.md`
+- durable state under `.omx/` for plans, logs, memory, and mode tracking
+If you want plain Codex with no extra workflow layer, you probably do not need OMX.

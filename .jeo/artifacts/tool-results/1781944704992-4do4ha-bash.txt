@@ -1,0 +1,58 @@
+=== presentation-builder / slide rows in README.md ===
+119:| **drawio: from text to professional diagrams** | Added `drawio` — a wrapper around Agents365-ai's [drawio-skill](https://github.com/Agents365-ai/drawio-skill) (MIT) that turns natural-language descriptions into editable `.drawio` XML and exports them to PNG / SVG / PDF / JPG via the **native draw.io desktop CLI** (no MCP server, no daemon), or turns an existing codebase (Python / JS-TS / Go / Rust) into an auto-laid-out structure diagram. Covers 6 diagram presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), search across **10,000+ official** AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN shapes (`shapesearch.py`), **321 AI/LLM brand logos** that draw.io ships none of (`aiicons.py`), a Graphviz-backed extract → auto-layout → validate pipeline with transitive reduction and nested containers, plus a vision self-check + auto-fix (≤2 rounds) and a 5-round iterative refinement loop. Ships `scripts/install.sh` (per-platform draw.io CLI detect/install + upstream skill pull, optional Graphviz) and a command/flag reference. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill drawio`. Route-outs: `mermaid`/`plantuml` (diagrams-as-code in git), `excalidraw`/`tldraw` (hand-drawn looks), `presentation-builder` (slide decks). 138 → **139 skills**. |
+318:| `open-design` | Local-first open-source design tool — generate prototypes, decks, and media artifacts using installed coding agents. 72 built-in design systems, 5 visual directions, multi-format export (HTML/PDF/PPTX/ZIP). Plugin: `claude plugin marketplace add nexu-io/open-design` | All |
+372:| `presentation-builder` | Packet-first deck artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks, with honest last-mile handoff to HTML review, PPTX, PDF, Google Slides, or Figma Slides | All |
+438:| `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
+644:Open-source alternative to Anthropic's Claude Design. Generates web, mobile, and desktop prototypes, presentation decks, and media artifacts using locally-installed coding agents (Claude Code, Cursor, Gemini CLI, GitHub Copilot, etc.). Includes 72 built-in design systems, 5 visual directions, 93 media prompt templates, and multi-format export.
+=== catalog section headers near 400 ===
+1:156:### Step 0: Install `skills` CLI
+2:163:### Vercel `skills` CLI scope and paths
+3:186:### For LLM Agents (recommended — handles all platforms automatically)
+4:192:### Choose by Platform
+5:194:#### Claude Code
+6:202:#### Gemini CLI
+7:210:#### Codex CLI
+8:217:#### Core Tool Setup (all platforms)
+9:244:### 🎯 Core Orchestration (15)
+10:246:| Skill | Keyword | Platform | Description |
+11:270:### 📋 Planning & Review (12)
+12:272:| Skill | Keyword | Description |
+13:287:### 🤖 Agent Development (6)
+14:289:| Skill | Description | Platforms |
+15:298:### ⚙️ Backend (7)
+16:300:| Skill | Description | Platforms |
+17:310:### 🎨 Frontend (14)
+18:312:| Skill | Description | Platforms |
+19:329:### 🔍 Code Quality (10)
+20:331:| Skill | Description | Platforms |
+21:344:### 🏗 Infrastructure (18)
+22:346:| Skill | Description | Platforms |
+23:367:### 📝 Documentation (5)
+24:369:| Skill | Description | Platforms |
+25:377:### 📊 Project Management (4)
+26:379:| Skill | Description | Platforms |
+27:386:### 🔭 Search & Analysis (11)
+28:388:| Skill | Description | Platforms |
+29:402:### 🎬 Creative Media (5)
+30:404:| Skill | Description | Platforms |
+31:412:### 📢 Marketing (2)
+32:414:| Skill | Description | Platforms |
+33:419:### 🎮 Game Development (6)
+34:421:| Skill | Description | Platforms |
+35:430:### 🔧 Utilities (14)
+36:432:| Skill | Description | Platforms |
+37:450:### 🛠 Utilities (Productivity) (6)
+38:452:| Skill | Description | Platforms |
+39:480:### ooo — Spec-First Control Loop
+40:494:### plannotator — Visual Plan Review
+41:503:### ooo — Ouroboros Specification-First Development
+42:525:### god-tibo-imagen — AI Image Generation via Codex Backend
+43:548:### notebooklm — Google NotebookLM Integration for Claude Code
+44:571:### pretext — Fast Multiline Text Measurement & Layout
+45:587:### zeude — Enterprise AI Adoption Platform for Claude Code
+46:608:### compresso — Offline Batch Video & Image Compression
+47:624:### stitch-skills — Agent Skills for Stitch MCP
+48:641:### open-design — Local-First Design Artifact Generation
+49:659:### flutter-bloc-clean-architecture-skill — Flutter BLoC + Clean Architecture
+50:672:### semble — Token-Efficient Code Search for Agents
+51:689:### vibe-kanban — AI Agent Kanban Board
