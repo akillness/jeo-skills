@@ -1,231 +1,311 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 820" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="0 0 1200 570" width="100%" height="100%">
   <defs>
-    <!-- Background Gradient -->
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0F172A" />
-      <stop offset="100%" stop-color="#1E293B" />
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#060B14"/>
+      <stop offset="50%" stop-color="#0A1525"/>
+      <stop offset="100%" stop-color="#0D1B2E"/>
     </linearGradient>
-
-    <!-- Box Gradient -->
-    <linearGradient id="boxGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#334155" />
-      <stop offset="100%" stop-color="#1E293B" />
+    <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="14" cy="14" r="1" fill="#1E3A5F" opacity="0.3"/>
+    </pattern>
+    <!-- Pipeline step gradients -->
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1D4ED8"/><stop offset="100%" stop-color="#3B82F6"/>
     </linearGradient>
-
-    <!-- Highlight Gradients for different subgraphs -->
-    <linearGradient id="searchGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#3B82F6" />
-      <stop offset="100%" stop-color="#2563EB" />
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5B21B6"/><stop offset="100%" stop-color="#8B5CF6"/>
     </linearGradient>
-    <linearGradient id="knowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8B5CF6" />
-      <stop offset="100%" stop-color="#6D28D9" />
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#065F46"/><stop offset="100%" stop-color="#10B981"/>
     </linearGradient>
-    <linearGradient id="specGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#10B981" />
-      <stop offset="100%" stop-color="#059669" />
+    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#92400E"/><stop offset="100%" stop-color="#F59E0B"/>
     </linearGradient>
-    <linearGradient id="execGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F59E0B" />
-      <stop offset="100%" stop-color="#D97706" />
+    <linearGradient id="g5" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#831843"/><stop offset="100%" stop-color="#EC4899"/>
     </linearGradient>
-
-    <!-- Glow Effect -->
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="8" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    <!-- Rainbow top bar -->
+    <linearGradient id="topBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1D4ED8" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#3B82F6"/>
+      <stop offset="40%" stop-color="#8B5CF6"/>
+      <stop offset="60%" stop-color="#10B981"/>
+      <stop offset="80%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EC4899" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Harness card gradients -->
+    <linearGradient id="hOmc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1D4ED8"/><stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="hOmx" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#92400E"/><stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="hOhmg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#065F46"/><stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <!-- Filters -->
+    <filter id="titleGlow" x="-10%" y="-40%" width="120%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-
-    <!-- Arrowhead -->
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8" />
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="116%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="stepGlow" x="-3%" y="-5%" width="106%" height="115%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Arrow markers -->
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#334155"/>
+    </marker>
+    <marker id="arrC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#10B981"/>
     </marker>
   </defs>
-  <!-- Harness Gradient -->
-  <defs>
-    <linearGradient id="harnessGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#EC4899" />
-      <stop offset="100%" stop-color="#BE185D" />
-    </linearGradient>
-    <linearGradient id="omcGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#3B82F6" />
-      <stop offset="100%" stop-color="#1D4ED8" />
-    </linearGradient>
-    <linearGradient id="omxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#F59E0B" />
-      <stop offset="100%" stop-color="#B45309" />
-    </linearGradient>
-    <linearGradient id="ohmgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#10B981" />
-      <stop offset="100%" stop-color="#047857" />
-    </linearGradient>
-  </defs>
 
-  <rect width="1000" height="820" fill="url(#bgGradient)" rx="16" />
+  <!-- Background -->
+  <rect width="1200" height="570" fill="url(#bg)" rx="18"/>
+  <rect width="1200" height="570" fill="url(#dots)" rx="18" opacity="0.6"/>
+  <!-- Rainbow top accent bar -->
+  <rect x="0" y="0" width="1200" height="3" fill="url(#topBar)" rx="2"/>
 
-  <!-- Global Title -->
-  <text x="500" y="50" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="bold" fill="#F8FAFC" text-anchor="middle" letter-spacing="1">Agent Skills Ecosystem Architecture</text>
-  <text x="500" y="80" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#94A3B8" text-anchor="middle">Runtime-Agnostic Workflow Orchestration (Claude / Gemini / Codex / Cursor / OpenCode)</text>
+  <!-- ═══════════════ TITLE (y: 14–100) ═══════════════ -->
+  <ellipse cx="600" cy="52" rx="140" ry="32" fill="#10B981" opacity="0.04"/>
+  <text x="600" y="50"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+        font-size="34" font-weight="800" fill="#F1F5F9" text-anchor="middle"
+        letter-spacing="2" filter="url(#titleGlow)">✦ Agent Skills</text>
+  <text x="600" y="70"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+        font-size="11.5" fill="#4B5563" text-anchor="middle" letter-spacing="3">
+    SPEC-FIRST · MULTI-AGENT · CROSS-PLATFORM · TOON FORMAT
+  </text>
 
-  <!-- SUBGRAPHS -->
-  
-  <!-- 1. Search & Context (Top Left) -->
-  <rect x="50" y="130" width="260" height="200" fill="none" stroke="url(#searchGrad)" stroke-width="2" rx="12" stroke-dasharray="6,4" />
-  <rect x="65" y="115" width="160" height="30" fill="#0F172A" />
-  <text x="75" y="135" font-family="sans-serif" font-size="16" font-weight="bold" fill="#60A5FA">🔎 Search &amp; Context</text>
+  <!-- Platform badges (y=78, h=22) -->
+  <rect x="344" y="78" width="88" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
+  <text x="388" y="93" font-family="sans-serif" font-size="11" font-weight="700" fill="#60A5FA" text-anchor="middle">136 Skills</text>
+  <rect x="440" y="78" width="68" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
+  <text x="474" y="93" font-family="sans-serif" font-size="11" fill="#A78BFA" text-anchor="middle">Claude</text>
+  <rect x="516" y="78" width="68" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
+  <text x="550" y="93" font-family="sans-serif" font-size="11" fill="#34D399" text-anchor="middle">Gemini</text>
+  <rect x="592" y="78" width="66" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
+  <text x="625" y="93" font-family="sans-serif" font-size="11" fill="#FBBF24" text-anchor="middle">Codex</text>
+  <rect x="666" y="78" width="84" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
+  <text x="708" y="93" font-family="sans-serif" font-size="11" fill="#FB923C" text-anchor="middle">OpenCode</text>
+  <rect x="758" y="78" width="66" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
+  <text x="791" y="93" font-family="sans-serif" font-size="11" fill="#F87171" text-anchor="middle">Cursor</text>
+  <rect x="832" y="78" width="54" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
+  <text x="859" y="93" font-family="sans-serif" font-size="11" fill="#6EE7B7" text-anchor="middle">MIT</text>
 
-  <g transform="translate(70, 160)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">rtk</text>
-  </g>
-  <g transform="translate(70, 215)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">semble</text>
-  </g>
-  <g transform="translate(70, 270)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">codebase-search</text>
-  </g>
+  <!-- ═══════════════ WORKFLOW PIPELINE (y: 106–242) ═══════════════ -->
+  <text x="60" y="112" font-family="sans-serif" font-size="9" fill="#334155" letter-spacing="2.5" font-weight="600">WORKFLOW PIPELINE</text>
+  <line x1="60" y1="116" x2="1140" y2="116" stroke="#1A2E4A" stroke-width="1"/>
+  <!-- Connector track -->
+  <line x1="60" y1="159" x2="1140" y2="159" stroke="#1A2E4A" stroke-width="1.5" stroke-dasharray="3,5"/>
 
-  <!-- 2. Durable Knowledge (Bottom Left) -->
-  <rect x="50" y="370" width="260" height="200" fill="none" stroke="url(#knowGrad)" stroke-width="2" rx="12" stroke-dasharray="6,4" />
-  <rect x="65" y="355" width="180" height="30" fill="#151F33" />
-  <text x="75" y="375" font-family="sans-serif" font-size="16" font-weight="bold" fill="#A78BFA">🧠 Durable Knowledge</text>
+  <!-- Step 1 — Search & Context (x=60, w=200, y=118, h=82) -->
+  <g transform="translate(60, 118)" filter="url(#stepGlow)">
+    <rect width="200" height="82" fill="#0B1526" rx="10" stroke="#1D4ED8" stroke-width="1.5"/>
+    <rect width="200" height="30" fill="url(#g1)" rx="10"/>
+    <rect y="20" width="200" height="10" fill="url(#g1)"/>
+    <text x="100" y="21" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">🔎 Search &amp; Context</text>
+    <text x="100" y="46" font-family="sans-serif" font-size="11" fill="#93C5FD" text-anchor="middle">semble · rtk</text>
+    <text x="100" y="61" font-family="sans-serif" font-size="11" fill="#93C5FD" text-anchor="middle">codebase-search</text>
+    <text x="100" y="76" font-family="sans-serif" font-size="9" fill="#334155" text-anchor="middle" letter-spacing="1.5">DISCOVER</text>
+  </g>
+  <line x1="262" y1="159" x2="278" y2="159" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrC)"/>
 
-  <g transform="translate(70, 400)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">graphify</text>
+  <!-- Step 2 — Durable Knowledge (x=280) -->
+  <g transform="translate(280, 118)" filter="url(#stepGlow)">
+    <rect width="200" height="82" fill="#0B1526" rx="10" stroke="#6D28D9" stroke-width="1.5"/>
+    <rect width="200" height="30" fill="url(#g2)" rx="10"/>
+    <rect y="20" width="200" height="10" fill="url(#g2)"/>
+    <text x="100" y="21" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">🧠 Durable Knowledge</text>
+    <text x="100" y="46" font-family="sans-serif" font-size="11" fill="#C4B5FD" text-anchor="middle">llm-wiki · graphify</text>
+    <text x="100" y="61" font-family="sans-serif" font-size="11" fill="#C4B5FD" text-anchor="middle">obsidian · okf</text>
+    <text x="100" y="76" font-family="sans-serif" font-size="9" fill="#334155" text-anchor="middle" letter-spacing="1.5">PERSIST</text>
   </g>
-  <g transform="translate(70, 455)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">llm-wiki</text>
-  </g>
-  <g transform="translate(70, 510)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">obsidian</text>
-  </g>
+  <line x1="482" y1="159" x2="498" y2="159" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrC)"/>
 
-  <!-- 3. Spec-First Core (Center) -->
-  <rect x="370" y="200" width="260" height="300" fill="none" stroke="url(#specGrad)" stroke-width="3" rx="12" filter="url(#glow)" />
-  <rect x="390" y="185" width="180" height="30" fill="#111B2D" />
-  <text x="400" y="205" font-family="sans-serif" font-size="16" font-weight="bold" fill="#34D399">📐 Spec-First Core</text>
+  <!-- Step 3 — Spec-First Core (x=500) -->
+  <g transform="translate(500, 118)" filter="url(#stepGlow)">
+    <rect width="200" height="82" fill="#0B1526" rx="10" stroke="#10B981" stroke-width="2"/>
+    <rect width="200" height="30" fill="url(#g3)" rx="10"/>
+    <rect y="20" width="200" height="10" fill="url(#g3)"/>
+    <text x="100" y="21" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">📐 Spec-First Core</text>
+    <text x="100" y="46" font-family="sans-serif" font-size="11" fill="#6EE7B7" text-anchor="middle">ooo · bmad · spec-kit</text>
+    <text x="100" y="61" font-family="sans-serif" font-size="11" fill="#6EE7B7" text-anchor="middle">plannotator · spec-stack</text>
+    <text x="100" y="76" font-family="sans-serif" font-size="9" fill="#334155" text-anchor="middle" letter-spacing="1.5">PLAN &amp; FREEZE</text>
+  </g>
+  <line x1="702" y1="159" x2="718" y2="159" stroke="#10B981" stroke-width="2" marker-end="url(#arrC)"/>
 
-  <g transform="translate(390, 240)">
-    <rect width="220" height="50" fill="url(#boxGradient)" rx="6" stroke="#10B981" stroke-width="2" />
-    <text x="110" y="30" font-family="sans-serif" font-size="16" font-weight="bold" fill="#F1F5F9" text-anchor="middle">ooo (Ouroboros)</text>
+  <!-- Step 4 — Execute (x=720) -->
+  <g transform="translate(720, 118)" filter="url(#stepGlow)">
+    <rect width="200" height="82" fill="#0B1526" rx="10" stroke="#F59E0B" stroke-width="1.5"/>
+    <rect width="200" height="30" fill="url(#g4)" rx="10"/>
+    <rect y="20" width="200" height="10" fill="url(#g4)"/>
+    <text x="100" y="21" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">🚀 Execute</text>
+    <text x="100" y="46" font-family="sans-serif" font-size="11" fill="#FCD34D" text-anchor="middle">autopilot · team</text>
+    <text x="100" y="61" font-family="sans-serif" font-size="11" fill="#FCD34D" text-anchor="middle">ultrawork · deep-dive</text>
+    <text x="100" y="76" font-family="sans-serif" font-size="9" fill="#334155" text-anchor="middle" letter-spacing="1.5">BUILD</text>
   </g>
-  <g transform="translate(390, 310)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">bmad (Planning)</text>
-  </g>
-  <g transform="translate(390, 370)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">plannotator (Review)</text>
-  </g>
-  <g transform="translate(390, 430)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">spec-stack</text>
-  </g>
+  <line x1="922" y1="159" x2="938" y2="159" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrC)"/>
 
-  <!-- 4. Autonomous Execution (Right) -->
-  <rect x="690" y="130" width="260" height="440" fill="none" stroke="url(#execGrad)" stroke-width="2" rx="12" stroke-dasharray="6,4" />
-  <rect x="710" y="115" width="220" height="30" fill="#111A2C" />
-  <text x="720" y="135" font-family="sans-serif" font-size="16" font-weight="bold" fill="#FBBF24">🚀 Autonomous Execution</text>
-
-  <g transform="translate(710, 160)">
-    <rect width="220" height="50" fill="url(#boxGradient)" rx="6" stroke="#F59E0B" stroke-width="2" />
-    <text x="110" y="30" font-family="sans-serif" font-size="16" font-weight="bold" fill="#F1F5F9" text-anchor="middle">autopilot</text>
-  </g>
-  <g transform="translate(710, 230)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">team (Multi-Agent)</text>
-  </g>
-  <g transform="translate(710, 290)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">ultrawork (Parallel)</text>
-  </g>
-  <g transform="translate(710, 350)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">ultraqa (Test/Fix Loop)</text>
-  </g>
-  <g transform="translate(710, 410)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">deep-dive (Trace)</text>
-  </g>
-  <g transform="translate(710, 470)">
-    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
-    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">deepinit (Context)</text>
+  <!-- Step 5 — Verify & Ship (x=940) -->
+  <g transform="translate(940, 118)" filter="url(#stepGlow)">
+    <rect width="200" height="82" fill="#0B1526" rx="10" stroke="#EC4899" stroke-width="1.5"/>
+    <rect width="200" height="30" fill="url(#g5)" rx="10"/>
+    <rect y="20" width="200" height="10" fill="url(#g5)"/>
+    <text x="100" y="21" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">✅ Verify &amp; Ship</text>
+    <text x="100" y="46" font-family="sans-serif" font-size="11" fill="#FBCFE8" text-anchor="middle">ultraqa · browser-harness</text>
+    <text x="100" y="61" font-family="sans-serif" font-size="11" fill="#FBCFE8" text-anchor="middle">agentation · tdd</text>
+    <text x="100" y="76" font-family="sans-serif" font-size="9" fill="#334155" text-anchor="middle" letter-spacing="1.5">SHIP</text>
   </g>
 
-  <!-- ARROWS & CONNECTIONS -->
-  
-  <!-- Search -> Knowledge -->
-  <path d="M 180 330 L 180 360" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,4" />
+  <!-- Feedback arc -->
+  <path d="M 1040 200 L 1040 220 L 160 220 L 160 200"
+        fill="none" stroke="#1A2E4A" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+  <text x="600" y="235" font-family="sans-serif" font-size="9" fill="#334155"
+        text-anchor="middle" letter-spacing="1.5">RESULTS FEED BACK</text>
 
-  <!-- Search -> Spec Core -->
-  <path d="M 310 230 L 360 230" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
-  <text x="335" y="220" font-family="sans-serif" font-size="12" fill="#94A3B8" text-anchor="middle">context</text>
+  <!-- ═══════════════ SKILL CATEGORIES (y: 252–406) ═══════════════ -->
+  <text x="60" y="252" font-family="sans-serif" font-size="9" fill="#334155" letter-spacing="2.5" font-weight="600">SKILL CATEGORIES  ·  10 DOMAINS  ·  136 SKILLS</text>
+  <line x1="60" y1="256" x2="1140" y2="256" stroke="#1A2E4A" stroke-width="1"/>
 
-  <!-- Knowledge -> Spec Core -->
-  <path d="M 310 470 L 340 470 L 340 260 L 360 260" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
-  <text x="325" y="360" font-family="sans-serif" font-size="12" fill="#94A3B8" text-anchor="middle" transform="rotate(-90 325 360)">retrieval</text>
+  <!-- Row 1 (y=262, h=60) — W=206, G=12, x: 60, 278, 496, 714, 932 -->
+  <g transform="translate(60, 262)">
+    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
+    <rect width="4" height="60" fill="#3B82F6" rx="2"/>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🎯</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Core Orchestration</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">ooo · bmad · omc · omx · ohmg</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#3B82F6" text-anchor="end">15</text>
+  </g>
+  <g transform="translate(278, 262)">
+    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
+    <rect width="4" height="60" fill="#8B5CF6" rx="2"/>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">📋</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Planning &amp; Review</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">plannotator · vibe-kanban · triage</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#8B5CF6" text-anchor="end">12</text>
+  </g>
+  <g transform="translate(496, 262)">
+    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
+    <rect width="4" height="60" fill="#EC4899" rx="2"/>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🎨</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Frontend</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">react · design-system · a11y · UI</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#EC4899" text-anchor="end">12</text>
+  </g>
+  <g transform="translate(714, 262)">
+    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
+    <rect width="4" height="60" fill="#06B6D4" rx="2"/>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">⚙️</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Backend</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">api · auth · database · supabase</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#06B6D4" text-anchor="end">7</text>
+  </g>
+  <g transform="translate(932, 262)">
+    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
+    <rect width="4" height="60" fill="#10B981" rx="2"/>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🔍</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Code Quality</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">review · tdd · debug · refactor</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#10B981" text-anchor="end">10</text>
+  </g>
 
-  <!-- Spec Core -> Execution -->
-  <path d="M 630 260 L 680 260" fill="none" stroke="#10B981" stroke-width="3" marker-end="url(#arrow)" />
-  <text x="655" y="250" font-family="sans-serif" font-size="12" font-weight="bold" fill="#10B981" text-anchor="middle">dispatch</text>
-  
-  <path d="M 630 330 L 660 330 L 660 185 L 680 185" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
-  <path d="M 630 390 L 670 390 L 670 250 L 680 250" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
-  <path d="M 630 450 L 660 450 L 660 310 L 680 310" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <!-- Row 2 (y=334) -->
+  <g transform="translate(60, 334)">
+    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
+    <rect width="4" height="60" fill="#F59E0B" rx="2"/>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🏗</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Infrastructure</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">deploy · firebase · monitoring</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#F59E0B" text-anchor="end">18</text>
+  </g>
+  <g transform="translate(278, 334)">
+    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
+    <rect width="4" height="60" fill="#94A3B8" rx="2"/>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">📝</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Documentation</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">changelog · slides · writing</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#94A3B8" text-anchor="end">6</text>
+  </g>
+  <g transform="translate(496, 334)">
+    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
+    <rect width="4" height="60" fill="#0EA5E9" rx="2"/>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🔭</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Search &amp; Analysis</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">semble · opik · data-analysis</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#0EA5E9" text-anchor="end">11</text>
+  </g>
+  <g transform="translate(714, 334)">
+    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
+    <rect width="4" height="60" fill="#A855F7" rx="2"/>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🎮</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Game Development</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">unity · steam · game-ci · profiler</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#A855F7" text-anchor="end">6</text>
+  </g>
+  <g transform="translate(932, 334)">
+    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
+    <rect width="4" height="60" fill="#F97316" rx="2"/>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🛠</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Utilities &amp; Creative</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">drawio · video · git · fabric</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#F97316" text-anchor="end">23</text>
+  </g>
 
-  <!-- Execution -> Knowledge (Feedback Loop) -->
-  <path d="M 820 570 L 820 585 L 180 585 L 180 560" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="6,4" />
-  <text x="500" y="580" font-family="sans-serif" font-size="12" fill="#F59E0B" text-anchor="middle">results &amp; feedback loop</text>
+  <!-- ═══════════════ HARNESSES PANEL (y: 408–546) ═══════════════ -->
+  <text x="60" y="412" font-family="sans-serif" font-size="9" fill="#334155" letter-spacing="2.5" font-weight="600">RECOMMENDED HARNESSES</text>
+  <line x1="60" y1="416" x2="1140" y2="416" stroke="#1A2E4A" stroke-width="1"/>
 
-
-  <!-- ===== RECOMMENDED HARNESSES PANEL ===== -->
-  <!-- Section border -->
-  <rect x="50" y="610" width="900" height="190" fill="none" stroke="url(#harnessGrad)" stroke-width="2" rx="12" stroke-dasharray="6,4" />
-  <rect x="70" y="595" width="240" height="30" fill="#0F172A" />
-  <text x="80" y="615" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="bold" fill="#F472B6">🔌 Recommended Harnesses</text>
-
-  <!-- Connector arrow from Execution section down -->
-  <path d="M 820 570 L 820 600 L 820 610" fill="none" stroke="#F472B6" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,3" opacity="0.6" />
-
-  <!-- OMC box — Claude Code -->
+  <!-- OMC card (x=60, w=346, y=422, h=122) -->
   <a xlink:href="https://github.com/Yeachan-Heo/oh-my-claudecode" target="_blank">
-    <rect x="80" y="640" width="260" height="130" fill="url(#boxGradient)" rx="10" stroke="#3B82F6" stroke-width="2" />
-    <rect x="80" y="640" width="260" height="36" fill="url(#omcGrad)" rx="10" />
-    <rect x="80" y="664" width="260" height="12" fill="url(#omcGrad)" />
-    <text x="210" y="664" font-family="sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF" text-anchor="middle">omc · oh-my-claudecode</text>
-    <text x="210" y="689" font-family="sans-serif" font-size="12" fill="#CBD5E1" text-anchor="middle">Claude Code native harness</text>
-    <text x="210" y="708" font-family="sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">/autopilot · /team · /ralph · /ultrawork</text>
-    <text x="210" y="726" font-family="sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">/ultraqa · hooks · HUD · marketplace plugin</text>
-    <text x="210" y="748" font-family="sans-serif" font-size="10" fill="#60A5FA" text-anchor="middle">v4.14.7 · npm i -g oh-my-claude-sisyphus</text>
+    <g transform="translate(60, 422)" filter="url(#shadow)">
+      <rect width="346" height="122" fill="#0B1526" rx="12" stroke="#2563EB" stroke-width="1.5"/>
+      <rect width="346" height="34" fill="url(#hOmc)" rx="12"/>
+      <rect y="22" width="346" height="12" fill="url(#hOmc)"/>
+      <text x="173" y="24" font-family="sans-serif" font-size="14" font-weight="700" fill="#FFF" text-anchor="middle">omc · oh-my-claudecode</text>
+      <text x="173" y="54" font-family="sans-serif" font-size="12" fill="#93C5FD" text-anchor="middle">Claude Code Native Harness</text>
+      <text x="173" y="74" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">/autopilot · /team · /ralph · /ultrawork</text>
+      <text x="173" y="92" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">/ultraqa · hooks · HUD · marketplace</text>
+      <text x="173" y="114" font-family="sans-serif" font-size="10" fill="#3B82F6" text-anchor="middle">v4.14.7 · npm i -g oh-my-claude-sisyphus</text>
+    </g>
   </a>
 
-  <!-- OMX box — Codex CLI -->
+  <!-- OMX card (x=426, w=346, y=422) -->
   <a xlink:href="https://github.com/Yeachan-Heo/oh-my-codex" target="_blank">
-    <rect x="370" y="640" width="260" height="130" fill="url(#boxGradient)" rx="10" stroke="#F59E0B" stroke-width="2" />
-    <rect x="370" y="640" width="260" height="36" fill="url(#omxGrad)" rx="10" />
-    <rect x="370" y="664" width="260" height="12" fill="url(#omxGrad)" />
-    <text x="500" y="664" font-family="sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF" text-anchor="middle">omx · oh-my-codex</text>
-    <text x="500" y="689" font-family="sans-serif" font-size="12" fill="#CBD5E1" text-anchor="middle">OpenAI Codex CLI harness</text>
-    <text x="500" y="708" font-family="sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">$autopilot · $team · $ralph · $ultrawork</text>
-    <text x="500" y="726" font-family="sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">$ralplan · $prometheus-strict · sparkshell</text>
-    <text x="500" y="748" font-family="sans-serif" font-size="10" fill="#FBBF24" text-anchor="middle">v0.18.14 · npm i -g oh-my-codex</text>
+    <g transform="translate(426, 422)" filter="url(#shadow)">
+      <rect width="346" height="122" fill="#0B1526" rx="12" stroke="#D97706" stroke-width="1.5"/>
+      <rect width="346" height="34" fill="url(#hOmx)" rx="12"/>
+      <rect y="22" width="346" height="12" fill="url(#hOmx)"/>
+      <text x="173" y="24" font-family="sans-serif" font-size="14" font-weight="700" fill="#FFF" text-anchor="middle">omx · oh-my-codex</text>
+      <text x="173" y="54" font-family="sans-serif" font-size="12" fill="#FCD34D" text-anchor="middle">OpenAI Codex CLI Harness</text>
+      <text x="173" y="74" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">$autopilot · $team · $ralph · $ultrawork</text>
+      <text x="173" y="92" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">$ralplan · $prometheus-strict · sparkshell</text>
+      <text x="173" y="114" font-family="sans-serif" font-size="10" fill="#F59E0B" text-anchor="middle">v0.18.14 · npm i -g oh-my-codex</text>
+    </g>
   </a>
 
-  <!-- OHMG box — Cross-vendor -->
+  <!-- OHMG card (x=792, w=346, y=422) -->
   <a xlink:href="https://github.com/first-fluke/oh-my-agent" target="_blank">
-    <rect x="660" y="640" width="260" height="130" fill="url(#boxGradient)" rx="10" stroke="#10B981" stroke-width="2" />
-    <rect x="660" y="640" width="260" height="36" fill="url(#ohmgGrad)" rx="10" />
-    <rect x="660" y="664" width="260" height="12" fill="url(#ohmgGrad)" />
-    <text x="790" y="664" font-family="sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF" text-anchor="middle">ohmg · oh-my-agent</text>
-    <text x="790" y="689" font-family="sans-serif" font-size="12" fill="#CBD5E1" text-anchor="middle">Cross-vendor portable harness</text>
-    <text x="790" y="708" font-family="sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">Claude · Codex · Gemini · Cursor · Grok</text>
-    <text x="790" y="726" font-family="sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">OpenCode · Kiro · Amp · GitHub Copilot · +</text>
-    <text x="790" y="748" font-family="sans-serif" font-size="10" fill="#34D399" text-anchor="middle">v10.4.1 · bunx oh-my-agent@latest</text>
+    <g transform="translate(792, 422)" filter="url(#shadow)">
+      <rect width="346" height="122" fill="#0B1526" rx="12" stroke="#059669" stroke-width="1.5"/>
+      <rect width="346" height="34" fill="url(#hOhmg)" rx="12"/>
+      <rect y="22" width="346" height="12" fill="url(#hOhmg)"/>
+      <text x="173" y="24" font-family="sans-serif" font-size="14" font-weight="700" fill="#FFF" text-anchor="middle">ohmg · oh-my-agent</text>
+      <text x="173" y="54" font-family="sans-serif" font-size="12" fill="#6EE7B7" text-anchor="middle">Cross-Vendor Portable Harness</text>
+      <text x="173" y="74" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">Claude · Codex · Gemini · Cursor · Grok</text>
+      <text x="173" y="92" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">OpenCode · Kiro · Amp · Copilot · +</text>
+      <text x="173" y="114" font-family="sans-serif" font-size="10" fill="#10B981" text-anchor="middle">v10.4.1 · bunx oh-my-agent@latest</text>
+    </g>
   </a>
 
+  <!-- Footer -->
+  <text x="600" y="560" font-family="sans-serif" font-size="9" fill="#1E3A5F" text-anchor="middle">
+    github.com/akillness/jeo-skills  ·  MIT License  ·  TOON Format  ·  40–50% token savings  ·  npx skills add https://github.com/akillness/jeo-skills
+  </text>
 </svg>

@@ -20,12 +20,9 @@
 
 ## 💡 What is Agent Skills?
 
-**136 local skill folders · 136 installable skills · TOON Format · Cross-platform**
+A curated collection of 136 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
 
 
-Agent Skills is a curated collection with 136 local skill folders and 136 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
-
-≔99pk..101dv
 <!-- WHATS-NEW:START -->
 
 ## 🆕 What's New in v2026-06-22
@@ -80,11 +77,8 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ## 🏗 Architecture
 
-The repository's signature flow: **search compactly → make knowledge durable →
-build spec-first → run autonomously → feed results back**. Each box is a real
-skill in this catalog.
-
 <img src="assets/architecture.svg" alt="Agent Skills Architecture" width="100%">
+
 
 ---
 

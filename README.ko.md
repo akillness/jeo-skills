@@ -18,12 +18,8 @@
 
 ## 💡 Agent Skills란?
 
-**143개 로컬 스킬 폴더 · 설치 가능 스킬 143개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode를 위한 136개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 143개 로컬 스킬 폴더와 143개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
-- Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
-- 계획 → 실행 → 검증 → 정리 자동화 파이프라인
-- 병렬 실행이 가능한 멀티 에이전트 팀 조율
 
 ---
 
@@ -51,10 +47,8 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ## 🏗 아키텍처
 
-이 저장소의 시그니처 흐름: **압축 검색 → 지식 영속화 → 스펙 우선 개발 → 자율 실행 →
-결과 피드백**. 각 박스는 이 카탈로그의 실제 스킬입니다.
-
 <img src="assets/architecture.svg" alt="Agent Skills Architecture" width="100%">
+
 
 ---
 
