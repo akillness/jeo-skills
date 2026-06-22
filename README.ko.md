@@ -54,44 +54,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 이 저장소의 시그니처 흐름: **압축 검색 → 지식 영속화 → 스펙 우선 개발 → 자율 실행 →
 결과 피드백**. 각 박스는 이 카탈로그의 실제 스킬입니다.
 
-```mermaid
-graph TD
-    subgraph SEARCH["🔎 검색 &amp; 컨텍스트"]
-        RTK["rtk<br/>토큰 압축 셸"]
-        SEMBLE["semble<br/>의미 기반 코드 검색"]
-    end
-    subgraph KNOW["🧠 영속 지식"]
-        GRAPHIFY["graphify<br/>지식 그래프"]
-        LLMWIKI["llm-wiki<br/>소스 → 위키"]
-        OBSIDIAN["obsidian<br/>볼트 자동화"]
-    end
-    subgraph SPEC["📐 스펙 우선 개발"]
-        OOO["ooo<br/>불변 seed 루프"]
-        SPECSTACK["spec-stack<br/>작성 → 동결 → 실행"]
-        PONYTAIL["ponytail<br/>최소 코드 가드"]
-    end
-    subgraph RUN["🚀 자율 런타임"]
-        AUTOPILOT["autopilot<br/>아이디어 → 검증"]
-        DEEPINIT["deepinit<br/>AGENTS.md 컨텍스트"]
-        DEEPDIVE["deep-dive<br/>추적 → 인터뷰"]
-    end
-    subgraph VENDORS["🤝 크로스 런타임"]
-        OMC["omc · Claude Code"]
-        OHMG["ohmg · Gemini CLI"]
-        OMX["omx · Codex CLI"]
-    end
-
-    RTK --> SEMBLE --> GRAPHIFY
-    GRAPHIFY --> LLMWIKI --> OBSIDIAN
-    OBSIDIAN -.->|컨텍스트| OOO
-    DEEPINIT -.->|AGENTS.md| OOO
-    DEEPDIVE -.->|근거| OOO
-    OOO --> SPECSTACK --> PONYTAIL --> AUTOPILOT
-    AUTOPILOT --> OMC
-    AUTOPILOT --> OHMG
-    AUTOPILOT --> OMX
-    AUTOPILOT -.->|결과| GRAPHIFY
-```
+<img src="assets/architecture.svg" alt="Agent Skills Architecture" width="100%">
 
 ---
 

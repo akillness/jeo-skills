@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#1E293B" />
+    </linearGradient>
+
+    <!-- Box Gradient -->
+    <linearGradient id="boxGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#1E293B" />
+    </linearGradient>
+
+    <!-- Highlight Gradients for different subgraphs -->
+    <linearGradient id="searchGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#2563EB" />
+    </linearGradient>
+    <linearGradient id="knowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#6D28D9" />
+    </linearGradient>
+    <linearGradient id="specGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <linearGradient id="execGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+
+    <!-- Glow Effect -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- Arrowhead -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8" />
+    </marker>
+  </defs>
+
+  <rect width="1000" height="600" fill="url(#bgGradient)" rx="16" />
+
+  <!-- Global Title -->
+  <text x="500" y="50" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="bold" fill="#F8FAFC" text-anchor="middle" letter-spacing="1">Agent Skills Ecosystem Architecture</text>
+  <text x="500" y="80" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#94A3B8" text-anchor="middle">Runtime-Agnostic Workflow Orchestration (Claude / Gemini / Codex / Cursor / OpenCode)</text>
+
+  <!-- SUBGRAPHS -->
+  
+  <!-- 1. Search & Context (Top Left) -->
+  <rect x="50" y="130" width="260" height="200" fill="none" stroke="url(#searchGrad)" stroke-width="2" rx="12" stroke-dasharray="6,4" />
+  <rect x="65" y="115" width="160" height="30" fill="#0F172A" />
+  <text x="75" y="135" font-family="sans-serif" font-size="16" font-weight="bold" fill="#60A5FA">🔎 Search &amp; Context</text>
+
+  <g transform="translate(70, 160)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">rtk</text>
+  </g>
+  <g transform="translate(70, 215)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">semble</text>
+  </g>
+  <g transform="translate(70, 270)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">codebase-search</text>
+  </g>
+
+  <!-- 2. Durable Knowledge (Bottom Left) -->
+  <rect x="50" y="370" width="260" height="200" fill="none" stroke="url(#knowGrad)" stroke-width="2" rx="12" stroke-dasharray="6,4" />
+  <rect x="65" y="355" width="180" height="30" fill="#151F33" />
+  <text x="75" y="375" font-family="sans-serif" font-size="16" font-weight="bold" fill="#A78BFA">🧠 Durable Knowledge</text>
+
+  <g transform="translate(70, 400)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">graphify</text>
+  </g>
+  <g transform="translate(70, 455)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">llm-wiki</text>
+  </g>
+  <g transform="translate(70, 510)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">obsidian</text>
+  </g>
+
+  <!-- 3. Spec-First Core (Center) -->
+  <rect x="370" y="200" width="260" height="300" fill="none" stroke="url(#specGrad)" stroke-width="3" rx="12" filter="url(#glow)" />
+  <rect x="390" y="185" width="180" height="30" fill="#111B2D" />
+  <text x="400" y="205" font-family="sans-serif" font-size="16" font-weight="bold" fill="#34D399">📐 Spec-First Core</text>
+
+  <g transform="translate(390, 240)">
+    <rect width="220" height="50" fill="url(#boxGradient)" rx="6" stroke="#10B981" stroke-width="2" />
+    <text x="110" y="30" font-family="sans-serif" font-size="16" font-weight="bold" fill="#F1F5F9" text-anchor="middle">ooo (Ouroboros)</text>
+  </g>
+  <g transform="translate(390, 310)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">bmad (Planning)</text>
+  </g>
+  <g transform="translate(390, 370)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">plannotator (Review)</text>
+  </g>
+  <g transform="translate(390, 430)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">spec-stack</text>
+  </g>
+
+  <!-- 4. Autonomous Execution (Right) -->
+  <rect x="690" y="130" width="260" height="440" fill="none" stroke="url(#execGrad)" stroke-width="2" rx="12" stroke-dasharray="6,4" />
+  <rect x="710" y="115" width="220" height="30" fill="#111A2C" />
+  <text x="720" y="135" font-family="sans-serif" font-size="16" font-weight="bold" fill="#FBBF24">🚀 Autonomous Execution</text>
+
+  <g transform="translate(710, 160)">
+    <rect width="220" height="50" fill="url(#boxGradient)" rx="6" stroke="#F59E0B" stroke-width="2" />
+    <text x="110" y="30" font-family="sans-serif" font-size="16" font-weight="bold" fill="#F1F5F9" text-anchor="middle">autopilot</text>
+  </g>
+  <g transform="translate(710, 230)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">team (Multi-Agent)</text>
+  </g>
+  <g transform="translate(710, 290)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">ultrawork (Parallel)</text>
+  </g>
+  <g transform="translate(710, 350)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">ultraqa (Test/Fix Loop)</text>
+  </g>
+  <g transform="translate(710, 410)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">deep-dive (Trace)</text>
+  </g>
+  <g transform="translate(710, 470)">
+    <rect width="220" height="40" fill="url(#boxGradient)" rx="6" stroke="#475569" stroke-width="1" />
+    <text x="110" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#E2E8F0" text-anchor="middle">deepinit (Context)</text>
+  </g>
+
+  <!-- ARROWS & CONNECTIONS -->
+  
+  <!-- Search -> Knowledge -->
+  <path d="M 180 330 L 180 360" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,4" />
+
+  <!-- Search -> Spec Core -->
+  <path d="M 310 230 L 360 230" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <text x="335" y="220" font-family="sans-serif" font-size="12" fill="#94A3B8" text-anchor="middle">context</text>
+
+  <!-- Knowledge -> Spec Core -->
+  <path d="M 310 470 L 340 470 L 340 260 L 360 260" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <text x="325" y="360" font-family="sans-serif" font-size="12" fill="#94A3B8" text-anchor="middle" transform="rotate(-90 325 360)">retrieval</text>
+
+  <!-- Spec Core -> Execution -->
+  <path d="M 630 260 L 680 260" fill="none" stroke="#10B981" stroke-width="3" marker-end="url(#arrow)" />
+  <text x="655" y="250" font-family="sans-serif" font-size="12" font-weight="bold" fill="#10B981" text-anchor="middle">dispatch</text>
+  
+  <path d="M 630 330 L 660 330 L 660 185 L 680 185" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M 630 390 L 670 390 L 670 250 L 680 250" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M 630 450 L 660 450 L 660 310 L 680 310" fill="none" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Execution -> Knowledge (Feedback Loop) -->
+  <path d="M 820 570 L 820 585 L 180 585 L 180 560" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="6,4" />
+  <text x="500" y="580" font-family="sans-serif" font-size="12" fill="#F59E0B" text-anchor="middle">results &amp; feedback loop</text>
+
+</svg>

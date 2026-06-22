@@ -65,44 +65,7 @@ The repository's signature flow: **search compactly → make knowledge durable �
 build spec-first → run autonomously → feed results back**. Each box is a real
 skill in this catalog.
 
-```mermaid
-graph TD
-    subgraph SEARCH["🔎 Search &amp; Context"]
-        RTK["rtk<br/>token-compact shell"]
-        SEMBLE["semble<br/>semantic code search"]
-    end
-    subgraph KNOW["🧠 Durable Knowledge"]
-        GRAPHIFY["graphify<br/>knowledge graph"]
-        LLMWIKI["llm-wiki<br/>sources → wiki"]
-        OBSIDIAN["obsidian<br/>vault automation"]
-    end
-    subgraph SPEC["📐 Spec-First Build"]
-        OOO["ooo<br/>immutable seed loop"]
-        SPECSTACK["spec-stack<br/>write → freeze → run"]
-        PONYTAIL["ponytail<br/>least-code guard"]
-    end
-    subgraph RUN["🚀 Autonomous Runtime"]
-        AUTOPILOT["autopilot<br/>idea → verified"]
-        DEEPINIT["deepinit<br/>AGENTS.md context"]
-        DEEPDIVE["deep-dive<br/>trace → interview"]
-    end
-    subgraph VENDORS["🤝 Cross-Runtime"]
-        OMC["omc · Claude Code"]
-        OHMG["ohmg · Gemini CLI"]
-        OMX["omx · Codex CLI"]
-    end
-
-    RTK --> SEMBLE --> GRAPHIFY
-    GRAPHIFY --> LLMWIKI --> OBSIDIAN
-    OBSIDIAN -.->|context| OOO
-    DEEPINIT -.->|AGENTS.md| OOO
-    DEEPDIVE -.->|evidence| OOO
-    OOO --> SPECSTACK --> PONYTAIL --> AUTOPILOT
-    AUTOPILOT --> OMC
-    AUTOPILOT --> OHMG
-    AUTOPILOT --> OMX
-    AUTOPILOT -.->|results| GRAPHIFY
-```
+<img src="assets/architecture.svg" alt="Agent Skills Architecture" width="100%">
 
 ---
 
