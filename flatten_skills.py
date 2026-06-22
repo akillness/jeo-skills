@@ -19,32 +19,19 @@ def flatten_skills(skills_dir: Path, mode: str = "flat", dry_run: bool = False):
         if d.is_dir() and d.name not in ["templates", "scripts", "__pycache__"]
     ]
 
-    moves = []
-
-    for category in categories:
-        skill_folders = [d for d in category.iterdir() if d.is_dir()]
-
-        for skill_folder in skill_folders:
-            skill_name = skill_folder.name
-
-            if mode == "namespace":
-                new_name = f"{category.name}--{skill_name}"
-            else:  # flat
-                new_name = skill_name
-
-            new_path = skills_dir / new_name
-            moves.append((skill_folder, new_path))
-
     if dry_run:
         print("DRY RUN - Would move:")
-        for src, dst in moves:
-            print(f"  {src.relative_to(skills_dir)} -> {dst.name}")
-        return
 
-    # Execute moves
-    for src, dst in moves:
-        print(f"Moving {src.name} -> {dst.name}")
-        shutil.move(str(src), str(dst))
+    for category in categories:
+        for skill_folder in [d for d in category.iterdir() if d.is_dir()]:
+            new_name = f"{category.name}--{skill_folder.name}" if mode == "namespace" else skill_folder.name
+            new_path = skills_dir / new_name
+            
+            if dry_run:
+                print(f"  {skill_folder.relative_to(skills_dir)} -> {new_path.name}")
+            else:
+                print(f"Moving {skill_folder.name} -> {new_path.name}")
+                shutil.move(str(skill_folder), str(new_path))
 
     # Remove empty category folders
     for category in categories:
