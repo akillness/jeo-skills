@@ -2,13 +2,15 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-143-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-136-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**143 local skill folders · 143 installable skills · TOON Format · Cross-platform**
+**136 local skill folders · 136 installable skills · TOON Format · Cross-platform**
+
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,11 +20,21 @@
 
 ## 💡 What is Agent Skills?
 
-**143 local skill folders · 143 installable skills · TOON Format · Cross-platform**
+**136 local skill folders · 136 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 143 local skill folders and 143 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+
+Agent Skills is a curated collection with 136 local skill folders and 136 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+
 ≔99pk..101dv
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-06-22
+
+| Change | Details |
+|--------|----------|
+| **Cleanup: drop 7 legacy/alias skills, update harness versions** | Removed `agent-browser` (empty shell superseded by `browser-harness`), `obsidian-cli`, `obsidian-plugin`, `obsidian-cli-uri-fallback` (consolidated into `obsidian` v2.0), `frontend-design-system`, `vercel-react-best-practices`, `marketing-skills-collection` (alias-only stubs pointing at `design-system`, `react-best-practices`, `marketing-automation`). Updated `omc` v4.14.0 → **v4.14.7**, `omx` v0.11.10 → **v0.18.14** (adds `$prometheus-strict` / `$best-practice-research` / `$autoresearch-goal`), `ohmg` v2.0.0 → **v10.4.1** (cross-vendor: Claude Code · Codex · Gemini · Antigravity · Cursor · Grok Build · Kiro CLI · Amp · …). Architecture SVG expanded with clickable Recommended Harnesses panel (omc / omx / ohmg GitHub links). 143 → **136 skills**. |
+
+
 
 ## 🆕 What's New in v2026-06-21
 
@@ -287,19 +299,20 @@ rtk init -g
 | `payloadcms` | Operate Payload CMS (Next.js-native headless CMS) — bootstrap app, configure collections/globals, manage auth/access control, migrations, REST/GraphQL/Local API, and plugin authoring | All |
 | `supabase-agent-skills` | Install and use Supabase Agent Skills with AI coding agents — covers install modes, skill selection, Supabase CLI integration, and agent-assisted database/auth/storage workflows | All |
 
-### 🎨 Frontend (14)
+### 🎨 Frontend (12)
+
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `design-system` | Canonical frontend UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface system direction; routes component API, responsive layout, accessibility remediation, and broad UI critique to adjacent skills | All |
-| `frontend-design-system` | Compatibility alias for `design-system` when legacy tooling or exact-name workflows still expect the old name | All |
+
 | `stitch-skills` | Agent Skills for Stitch MCP — generate high-fidelity UI screens, multi-page websites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, Remotion walkthrough videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills` | All |
 | `compresso` | Free offline desktop video/image compression (Tauri+React) — batch compress, trim/split videos, convert formats, embed subtitles, manage metadata. Uses FFmpeg/pngquant/jpegoptim/gifski. Plugin: `claude plugin marketplace add codeforreal1/compressO` | All |
 | `open-design` | Local-first open-source design tool — generate prototypes, decks, and media artifacts using installed coding agents. 72 built-in design systems, 5 visual directions, multi-format export (HTML/PDF/PPTX/ZIP). Plugin: `claude plugin marketplace add nexu-io/open-design` | All |
 | `pretext` | Fast, accurate multiline text measurement & layout without DOM reflow — `prepare`/`layout` for height, `prepareWithSegments`/`layoutWithLines` for per-line access, emoji/CJK/RTL support, DOM/Canvas/SVG output. npm: `@chenglou/pretext` | All |
 | `react-best-practices` | Measurement-led React & Next.js performance audits for waterfalls, bundle size, RSC/client boundaries, hydration, rerender churn, and slow routes | All |
 | `react-grab` | Browser element context capture — point at UI element, copy React component name, file path, HTML to clipboard for AI agents | All |
-| `vercel-react-best-practices` | Compatibility alias for `react-best-practices` when legacy tooling or exact-name workflows still expect the Vercel variant | Claude · Gemini · Codex |
+
 | `responsive-design` | Routing-first responsive layout strategy for page-shell, component-slot, dense-data, media, and reflow-verification packets | All |
 | `state-management` | React/fullstack ownership-packet decisions across local, Context, URL/form, client-store, and server-state/router data layers | All |
 | `ui-component-patterns` | Routing-first reusable-component architecture for primitive-boundary, slot-anatomy, controlled-ownership, alternate-root, and docs-verification packets | All |
@@ -390,12 +403,13 @@ rtk init -g
 | `god-tibo-imagen` | Generate AI images via Codex ChatGPT backend — zero dependencies, reuses `~/.codex/auth.json`, CLI (`gti`), Node.js, and Python SDK | All |
 | `notebooklm` | Query Google NotebookLM notebooks directly from Claude Code — source-grounded citation-backed answers via Patchright browser automation, persistent Google auth, and notebook library management | Claude Code |
 
-### 📢 Marketing (2)
+### 📢 Marketing (1)
+
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `marketing-automation` | Canonical broad marketing front door — choose one operating mode, one primary lane, and one reusable operator packet with owner, dependencies/approvals, and proof across launch, conversion, lifecycle, acquisition/content, and measurement work | All |
-| `marketing-skills-collection` | Compatibility alias for `marketing-automation` in legacy prompt packs and catalogs | All |
+
 
 ### 🎮 Game Development (6)
 
@@ -408,7 +422,8 @@ rtk init -g
 | `steam-store-launch-ops` | Packet-first Steam launch router — choose page-promise audit, wishlist signal check, demo readiness, event timing workback, or launch-ops runbook | All |
 | `unity-gamedev-skill-pack` | Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package with validation and integration guidance | All |
 
-### 🔧 Utilities (15)
+### 🔧 Utilities (12)
+
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -422,13 +437,12 @@ rtk init -g
 
 | `npm-git-install` | Routing-first Node package delivery skill for npm / pnpm / Yarn / Bun — choose temporary Git bridge, SHA pin, tarball, workspace, or publish-first handoff safely | All |
 | `obsidian` | **Unified Obsidian skill (v2.0)** — plugin development (27 ESLint rules, boilerplate, submission) + CLI automation (commands, TUI, URI handoff, developer mode) + content patterns (markdown, Bases, JSON Canvas). Plugin: `claude plugin marketplace add akillness/jeo-skills` | All |
-| `obsidian-cli` | *(alias → `obsidian`)* Route Obsidian desktop automation — official CLI, `obsidian://` handoff, developer commands | All |
-| `obsidian-plugin` | *(alias → `obsidian`)* Obsidian plugin development — 27 ESLint rules, boilerplate generator, submission | All |
+
 | `opencontext` | Routing-first active project/repo memory — choose memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out for manifests, stable links, cross-agent handoff packets, and highest-confidence-source / freshness checks when notes overlap | All |
 | `workflow-automation` | Routing-first repo workflow automation — choose one mode for task-entrypoints, bootstrap/onboarding, local-CI parity, hook guardrails, maintenance bots, or workflow cleanup without drifting into environment/deploy work | All |
 | `claudekit` | Standardized Claude Code workflow toolkit — claudekit plugin installation, init, update, hook management, and workspace configuration for consistent Claude Code setups | All |
 | `ghgrab` | Search and download specific files/folders from GitHub repositories directly from terminal using ghgrab, without full repo cloning | All |
-| `obsidian-cli-uri-fallback` | Fallback handler for Obsidian URI automation in cron/headless environments — detects URI failure signatures and routes to filesystem or headless alternatives | All |
+
 
 ### 🛠 Utilities (Productivity) (6)
 
@@ -754,7 +768,7 @@ npx vibe-kanban
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
 | `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
-| `obsidian-cli` | [Obsidian CLI Help](https://obsidian.md/help/cli) | Proprietary |
+
 | `llm-wiki` | [karpathy/llm-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | — |
 | `graphify` | [safishamsi/graphify](https://github.com/safishamsi/graphify) | MIT |
 | `browser-harness` | [browser-use/browser-harness](https://github.com/browser-use/browser-harness) | MIT |
