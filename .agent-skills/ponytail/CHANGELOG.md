@@ -6,6 +6,17 @@ Semantic versioning per [SemVer](https://semver.org/).
 
 ---
 
+## [1.2.0] — 2026-06-22
+
+### Added
+- `metadata` block in `SKILL.md`: `category`, `tags`, `platforms`, `keyword`, `version`, `source`, `upstream` — aligns with skill-standardization schema
+
+### Changed
+- SKILL.md description rewritten with imperative verb lead; trigger list expanded (`ponytail review`, `ponytail audit`, `ponytail debt`, `lazy dev`)
+- `SKILL.md` compatibility block updated to include `ai-slop-cleaner` route-out
+
+---
+
 ## [1.1.0] — 2025-07-10
 
 ### Added
@@ -54,11 +65,3 @@ Semantic versioning per [SemVer](https://semver.org/).
 
 ### Changed
 - Description rewritten to be trigger-oriented; now activates on: `ponytail`, `write less code`, `YAGNI`, `anti-bloat`, `minimal code`, `do I need this`, `lazy senior dev`
-
----
-
-## [0.1.0] — 2025-03-01
-
-### Added
-- Prototype skill — YAGNI ladder (5 rungs), `ponytail:` marker convention, and basic `/ponytail-review` command spec
-- Internal draft — not published to catalog

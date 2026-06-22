@@ -175,6 +175,10 @@ Run `/ponytail-debt` to harvest all markers into a tech-debt ledger.
 
 See [`CHANGELOG.md`](CHANGELOG.md) for the full history.
 
+### [1.2.0] — 2026-06-22
+- Added `metadata` block to `SKILL.md` (category, tags, platforms, keyword, version, source, upstream)
+- Expanded trigger list; added `ai-slop-cleaner` route-out to compatibility block
+
 ### [1.1.0] — 2025-07-10
 - Added `README.md` with full per-runtime install crosswalk and MCP server setup
 - Added demo GIF (`assets/ponytail-demo.gif`) — animated YAGNI ladder walkthrough
@@ -193,9 +197,7 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full history.
 - Added `SKILL.toon` compact rendering for token-limited runtimes
 - Route-outs to `caveman` and `code-refactoring` made explicit in SKILL.md
 
-### [0.1.0] — 2025-03-01
-- Prototype: YAGNI ladder (5 rungs), `ponytail:` marker convention, `/ponytail-review` command spec (internal draft)
-
 ---
+
 
 <sub>Upstream: <a href="https://github.com/DietrichGebert/ponytail">DietrichGebert/ponytail</a> (MIT) · Catalog: <a href="https://github.com/akillness/oh-my-skills">akillness/oh-my-skills</a> · "Done. He'd be proud. He won't say it."</sub>
