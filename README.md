@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-142-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-143-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**142 local skill folders · 142 installable skills · TOON Format · Cross-platform**
+**143 local skill folders · 143 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -18,11 +18,18 @@
 
 ## 💡 What is Agent Skills?
 
-**142 local skill folders · 142 installable skills · TOON Format · Cross-platform**
+**143 local skill folders · 143 installable skills · TOON Format · Cross-platform**
 
-Agent Skills is a curated collection with 142 local skill folders and 142 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
+Agent Skills is a curated collection with 143 local skill folders and 143 installable skills for LLM-based development workflows. Built around `ooo` (spec-first), `bmad` (planning), and `plannotator` (review) as the core orchestration trio, it provides:
 ≔99pk..101dv
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-06-21
+
+| Change | Details |
+|--------|---------|
+| **okf: Open Knowledge Format — portable AI agent knowledge bundles** | Added `okf` — a routing-first skill for Google's [Open Knowledge Format (OKF)](https://github.com/google/open-knowledge-format) specification, which formalizes the **LLM-Wiki pattern** into a portable, interoperable open spec: **just markdown, just files, just YAML frontmatter**. The skill authors OKF-compliant knowledge atoms (YAML frontmatter with `type`/`title`/`description`/`resource`/`tags`/`timestamp` + Markdown body sections: Overview, Schema, Examples, Joins/Relations, Citations), validates bundles with a Python linter (checks required fields across all `.md` files), distributes bundles as tarballs / git repos / filesystem mounts, and provides a Python consume helper so agents can load and filter atoms by type or tag. Integrates with `llm-wiki` (promote raw wiki captures to OKF format), `obsidian` (vault automation), `graphify` (durable committed graphs), and `scrapling` (web-content extraction into OKF docs). Ships `scripts/install.sh` (pyyaml install + optional bundle validation), a full field/section reference (`references/usage.md`), and `SKILL.toon`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill okf`. Route-outs: `llm-wiki` (raw source capture + vault maintenance), `obsidian` (Obsidian vault automation), `graphify` (committed knowledge graphs), `scrapling` (web content to OKF). 142 → **143 skills**. |
+
 
 ## 🆕 What's New in v2026-06-20
 
@@ -401,7 +408,7 @@ rtk init -g
 | `steam-store-launch-ops` | Packet-first Steam launch router — choose page-promise audit, wishlist signal check, demo readiness, event timing workback, or launch-ops runbook | All |
 | `unity-gamedev-skill-pack` | Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package with validation and integration guidance | All |
 
-### 🔧 Utilities (14)
+### 🔧 Utilities (15)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -411,6 +418,8 @@ rtk init -g
 | `git-workflow` | Local Git branch, commit, rebase, conflict, push-safety, and recovery workflows | All |
 | `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
 | `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |
+| `okf` | Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files (type/title/description/resource/tags/timestamp) for portable, interoperable AI-agent knowledge sharing. Formalizes the LLM-Wiki pattern. Includes Python linter, consume helper, and distribution guide. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill okf` | All |
+
 | `npm-git-install` | Routing-first Node package delivery skill for npm / pnpm / Yarn / Bun — choose temporary Git bridge, SHA pin, tarball, workspace, or publish-first handoff safely | All |
 | `obsidian` | **Unified Obsidian skill (v2.0)** — plugin development (27 ESLint rules, boilerplate, submission) + CLI automation (commands, TUI, URI handoff, developer mode) + content patterns (markdown, Bases, JSON Canvas). Plugin: `claude plugin marketplace add akillness/jeo-skills` | All |
 | `obsidian-cli` | *(alias → `obsidian`)* Route Obsidian desktop automation — official CLI, `obsidian://` handoff, developer commands | All |

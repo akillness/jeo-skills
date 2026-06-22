@@ -1,0 +1,19 @@
+N:okf
+D:Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type/title/description/resource/tags/timestamp fields for portable, interoperable AI-agent knowledge sharing. Formalizes the LLM-Wiki pattern into a vendor-neutral open spec: just markdown, just files, just YAML frontmatter.
+T:Read|Write|Edit|Bash|Grep|Glob|WebFetch
+G:okf|open knowledge format|knowledge bundle|okf document|llm wiki standard|knowledge atom|agent context format|okf frontmatter|okf bundle|knowledge interoperability
+F:Claude|Codex|Gemini|Cursor|Copilot|OpenCode|All
+S:
+  1:Bootstrap a bundle — `mkdir my-knowledge-bundle && mkdir -p tables metrics runbooks concepts api`
+  2:Author an atom — add YAML frontmatter (type/title/description + optional resource/tags/timestamp) + Markdown body (Overview, Schema, Examples, Joins, Citations)
+  3:Cross-link atoms — use absolute bundle-root links `/tables/customers.md` (recommended) or relative `./other.md`
+  4:Validate — run the bundled Python linter; checks type/title/description presence in all OKF .md files
+  5:Distribute — tarball, git repo (recommended for freshness via timestamp), or filesystem mount
+  6:Consume — walk bundle with pyyaml, filter by frontmatter.type, inject relevant atoms into agent context
+  7:Integrate with llm-wiki — promote raw wiki captures to OKF format (add required frontmatter + organize into typed subdirectories)
+  8:Plugin install — `npx skills add https://github.com/akillness/jeo-skills --skill okf`
+R:
+  llm-wiki:Raw source capture, summarization, and git/Obsidian vault maintenance
+  obsidian:Obsidian vault automation (plugin dev, CLI, URI handoff)
+  graphify:Durable committed knowledge graphs from code and docs
+  scrapling:Web-content extraction to feed OKF knowledge documents

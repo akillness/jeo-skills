@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-142-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-143-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**142개 로컬 스킬 폴더 · 설치 가능 스킬 142개 · TOON 포맷 · 멀티플랫폼**
+**143개 로컬 스킬 폴더 · 설치 가능 스킬 143개 · TOON 포맷 · 멀티플랫폼**
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,9 +18,9 @@
 
 ## 💡 Agent Skills란?
 
-**142개 로컬 스킬 폴더 · 설치 가능 스킬 142개 · TOON 포맷 · 멀티플랫폼**
+**143개 로컬 스킬 폴더 · 설치 가능 스킬 143개 · TOON 포맷 · 멀티플랫폼**
 
-Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 142개 로컬 스킬 폴더와 142개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
+Agent Skills는 LLM 기반 개발 워크플로우를 위한 컬렉션으로, 현재 143개 로컬 스킬 폴더와 143개 설치 가능 스킬을 제공합니다. `ooo`(스펙 우선), `bmad`(계획), `plannotator`(검토)를 핵심 오케스트레이션 트리오로 구축되었으며 다음을 제공합니다:
 - Claude Code, Gemini CLI, OpenAI Codex, OpenCode 전반에 걸친 통합 오케스트레이션
 - 계획 → 실행 → 검증 → 정리 자동화 파이프라인
 - 병렬 실행이 가능한 멀티 에이전트 팀 조율
@@ -59,6 +59,13 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-06-21 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **okf: Open Knowledge Format — 이식 가능한 AI 에이전트 지식 번들** | `okf` 스킬을 추가했습니다 — Google의 [Open Knowledge Format(OKF)](https://github.com/google/open-knowledge-format) 명세를 위한 라우팅 우선 스킬로, **LLM-Wiki 패턴**을 벤더 중립적 개방형 표준으로 형식화합니다: **그냥 마크다운, 그냥 파일, 그냥 YAML 프론트매터**. `type`/`title`/`description`/`resource`/`tags`/`timestamp` 필드를 가진 YAML 프론트매터와 마크다운 본문(Overview, Schema, Examples, Joins/Relations, Citations)으로 OKF 호환 지식 원자를 작성하고, Python 린터로 번들 검증(모든 `.md` 파일의 필수 필드 확인), tarball / git 저장소 / 파일시스템 마운트로 배포하며, 에이전트가 타입이나 태그로 원자를 필터링할 수 있는 Python consume 헬퍼를 제공합니다. `llm-wiki`(raw 위키 캡처를 OKF 포맷으로 승격), `obsidian`(볼트 자동화), `graphify`(영속 지식 그래프), `scrapling`(웹 콘텐츠 → OKF 문서)과 통합됩니다. `scripts/install.sh`(pyyaml 설치 + 선택적 번들 검증), 전체 필드/섹션 레퍼런스(`references/usage.md`), `SKILL.toon` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill okf`. Route-out: `llm-wiki`(raw 소스 수집 + vault 운영), `obsidian`(Obsidian vault 자동화), `graphify`(커밋 지식 그래프), `scrapling`(웹 콘텐츠 → OKF). 142 → **143개 스킬**. |
+
 
 ## 🆕 v2026-06-20 업데이트
 
@@ -385,7 +392,7 @@ rtk init -g
 | `game-performance-profiler` | Unity/Unreal frame-time 트리아지 — bottleneck-first profiling brief, quick packet, benchmark route, target-device 검토, profiler escalation | 전체 |
 | `steam-store-launch-ops` | Packet-first Steam launch router — page-promise audit, wishlist signal check, demo readiness, event timing workback, launch-ops runbook 중 하나를 고름 | 전체 |
 
-### 🔧 유틸리티 (17개)
+### 🔧 유틸리티 (18개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -395,6 +402,8 @@ rtk init -g
 | `git-workflow` | 로컬 Git 브랜치, 커밋, 리베이스, 충돌 해결, 안전한 푸시, 복구 워크플로우 | 전체 |
 | `google-workspace` | Google Workspace REST API 자동화 — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | 전체 |
 | `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
+| `okf` | Google의 Open Knowledge Format(OKF) 번들 생성·검증·소비 — `type`/`title`/`description`/`resource`/`tags`/`timestamp` YAML 프론트매터 마크다운 파일로 이식 가능한 AI 에이전트 지식 공유. LLM-Wiki 패턴을 공식화. Python 린터·consume 헬퍼·배포 가이드 포함. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill okf` | 전체 |
+
 | `npm-git-install` | npm / pnpm / Yarn / Bun용 라우팅-우선 Node 패키지 전달 스킬 — temporary Git bridge, SHA pin, tarball, workspace, publish-first handoff를 안전하게 선택 | 전체 |
 | `obsidian` | **통합 Obsidian 스킬 (v2.0)** — 플러그인 개발(27개 ESLint 규칙, 보일러플레이트, 제출) + CLI 자동화(명령, TUI, URI handoff, 개발자 모드) + 콘텐츠 패턴(markdown, Bases, JSON Canvas). 플러그인: `claude plugin marketplace add akillness/jeo-skills` | 전체 |
 | `obsidian-cli` | *(alias → `obsidian`)* Obsidian 데스크톱 자동화 — 공식 CLI, `obsidian://` handoff, 개발자 명령 | 전체 |

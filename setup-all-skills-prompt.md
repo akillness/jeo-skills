@@ -109,7 +109,7 @@ fi
 
 ---
 
-## Step 1 — Install All 142 Skills (Batch)
+## Step 1 — Install All 143 Skills (Batch)
 
 Install all skills to the global location, then link shared skills to all detected agents.
 Re-running this step safely overwrites existing skills (symlinks are updated in place).
@@ -126,7 +126,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 142 skills to global store, link shared skills to all detected agents
+# Install ALL 143 skills to global store, link shared skills to all detected agents
 # --full-depth: discovers nested skills (7 skills require this to be found)
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
@@ -134,13 +134,13 @@ skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 
 > **Global vs Project install — why skill files may be missing**
 >
-> **Global install** (`-g`): downloads all 142 skills from the GitHub repo into the agent's global
+> **Global install** (`-g`): downloads all 143 skills from the GitHub repo into the agent's global
 > skills store (`~/.claude/skills/`, `~/.codex/skills/`, etc.). Requires `--full-depth` to discover
 > the 7 skills whose `SKILL.md` is nested in a subdirectory. Without this flag only ~120 skills
 > are found and linked.
 >
 > **Project install** (`experimental_install` / `skills restore`): reads `skills-lock.json` in the
-> project root and restores **only the skills listed there** — not all 142. If `skills-lock.json`
+> project root and restores **only the skills listed there** — not all 143. If `skills-lock.json`
 > contains only 10 entries (omc, ooo, ai-tool-compliance, llm-monitoring-dashboard, survey, harness,
 > deep-dive, deepinit, cli-anything, spec-stack) then only those 10 are restored regardless of how many are in the global store. To include more
 > skills in a project install, add them to `skills-lock.json` first.
@@ -1040,7 +1040,7 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (142 skills)
+## Skill Inventory (143 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
@@ -1100,6 +1100,8 @@ If no → skip silently. Never re-ask.
 | `obsidian-cli` | `obsidian cli`, `obsidian terminal`, `obsidian plugin reload`, `obsidian://` | *(alias → `obsidian`)* Routing-first Obsidian desktop automation — official CLI command/TUI mode, developer commands, URI handoff |
 | `obsidian-plugin` | `obsidian plugin`, `create obsidian plugin` | *(alias → `obsidian`)* Obsidian plugin development — 27 ESLint rules, boilerplate generator, accessibility |
 | `llm-wiki` | `llm-wiki`, `obsidian wiki`, `research vault` | Persistent markdown wiki maintenance — bootstrap raw/wiki layers, ingest sources, file queries, run lint passes |
+| `okf` | `okf`, `open knowledge format`, `knowledge bundle`, `okf document`, `knowledge atom`, `agent context format` | Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files (type/title/description/resource/tags/timestamp) for portable, interoperable AI-agent knowledge sharing; Python linter, consume helper, distribution guide |
+
 | `game-build-log-triage` | `game build log`, `unity build failed`, `unreal packaging error` | Unity/Unreal build/editor/package log triage — isolate the first actionable engine/build failure |
 | `game-ci-cd-pipeline` | `game ci`, `unity build pipeline`, `unreal release pipeline` | Routing-first game CI/CD packets — classify branch-gate vs nightly/package-candidate vs release/certification lane, then choose setup, stage split, cache policy, preflight checks, artifact/release hygiene, or CI trust |
 | `game-demo-feedback-triage` | `playtest feedback`, `demo feedback`, `steam feedback triage` | Cluster demo/playtest/community feedback into fix-first priorities and explicit handoffs |

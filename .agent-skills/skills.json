@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-06-15T00:00:00Z",
-  "skill_count": 139,
+  "skill_count": 143,
   "categories": {
     "planning-review": [
       "agentation",
@@ -134,7 +134,8 @@
       "unity-gamedev-skill-pack",
       "workflow-automation",
       "write-a-skill",
-      "zeude"
+      "zeude",
+      "okf"
     ],
     "frontend": [
       "design-system",
@@ -4585,6 +4586,46 @@
       ],
       "keyword": "drawio",
       "version": "1.0.0",
+      "commands": []
+    },
+    {
+      "name": "okf",
+      "description": "Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type/title/description/resource/tags/timestamp fields for portable, interoperable AI-agent knowledge sharing. OKF formalizes the LLM-Wiki pattern into a vendor-neutral open specification so any producer can write and any agent can consume without translation. Routes: llm-wiki for raw source capture + vault maintenance, obsidian for Obsidian-vault workflows, graphify for durable committed graphs, scrapling for web-content extraction into OKF docs. Triggers on: okf, open knowledge format, knowledge bundle, okf document, llm wiki standard, knowledge atom, agent context format, okf frontmatter, okf bundle, knowledge interoperability.",
+      "category": "utilities",
+      "path": "okf/SKILL.md",
+      "tags": [
+        "okf",
+        "open-knowledge-format",
+        "knowledge-bundle",
+        "llm-wiki",
+        "knowledge-graph",
+        "metadata",
+        "context-engineering",
+        "interoperability",
+        "yaml-frontmatter",
+        "google",
+        "agent-context"
+      ],
+      "keywords": [
+        "okf",
+        "open knowledge format",
+        "knowledge bundle",
+        "okf document",
+        "knowledge atom",
+        "agent context format",
+        "okf frontmatter",
+        "okf bundle",
+        "knowledge interoperability"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
       "commands": []
     }
   ]
