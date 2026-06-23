@@ -2,14 +2,16 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-136-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-137-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**136 local skill folders · 136 installable skills · TOON Format · Cross-platform**
+**137 local skill folders · 137 installable skills · TOON Format · Cross-platform**
+
 
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
@@ -20,16 +22,24 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 136 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 137 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+
 
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-06-23
+
+| Change | Details |
+|--------|----------|
+| **academic-research: full research-to-publication pipeline** | Added `academic-research` — a jeo-skills routing wrapper for the [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) ARS suite (v3.13.0). Single skill, 4 reference pipelines, 27 modes, 39-agent ensemble: `deep-research` (8 modes incl. PRISMA, socratic, 3W-scan, fact-check), `academic-paper` (11 modes incl. plan, revision, citation-check, disclosure, rebuttal-audit), `academic-paper-reviewer` (6 modes incl. EIC+R1/R2/R3+Devil's Advocate, calibration), and `academic-pipeline` (10-stage end-to-end orchestrator with Material Passport, L3 claim-faithfulness gates, three-index citation triangulation, cross-model verification). Human-in-the-loop throughout with mandatory `[USER CHECKPOINT]` gates. 4 reference docs included. Plugin: `claude plugin marketplace add Imbad0202/academic-research-skills`. 136 → **137 skills**. |
 
 ## 🆕 What's New in v2026-06-22
 
 | Change | Details |
 |--------|----------|
 | **Cleanup: drop 7 legacy/alias skills, update harness versions** | Removed `agent-browser` (empty shell superseded by `browser-harness`), `obsidian-cli`, `obsidian-plugin`, `obsidian-cli-uri-fallback` (consolidated into `obsidian` v2.0), `frontend-design-system`, `vercel-react-best-practices`, `marketing-skills-collection` (alias-only stubs pointing at `design-system`, `react-best-practices`, `marketing-automation`). Updated `omc` v4.14.0 → **v4.14.7**, `omx` v0.11.10 → **v0.18.14** (adds `$prometheus-strict` / `$best-practice-research` / `$autoresearch-goal`), `ohmg` v2.0.0 → **v10.4.1** (cross-vendor: Claude Code · Codex · Gemini · Antigravity · Cursor · Grok Build · Kiro CLI · Amp · …). Architecture SVG expanded with clickable Recommended Harnesses panel (omc / omx / ohmg GitHub links). 143 → **136 skills**. |
+
 
 
 
@@ -371,7 +381,8 @@ rtk init -g
 | `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing | All |
 
-### 🔭 Search & Analysis (11)
+### 🔭 Search & Analysis (12)
+
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -386,6 +397,8 @@ rtk init -g
 | `github-repo-candidate-quality-gate` | Convert noisy GitHub search results into recommendation-grade candidate lists — metadata freshness, license shape, activity signals, and dependency risk scoring | All |
 | `semble` | Token-efficient code search for agents — returns only relevant code chunks using ~98% fewer tokens than grep+read. Natural-language and symbol queries, semantic `find-related`, MCP for Claude Code/Codex/Cursor/OpenCode, Python library, CPU-only with no API key | All |
 | `codeflow` | Visualize codebase architecture in seconds — a zero-build single `index.html` browser app (React 18 + D3.js, client-side, no backend) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact; exports JSON/Markdown/SVG/PDF or a self-updating CodeFlow Card. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | All |
+| `academic-research` | Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes: full/quick/review/lit-review/three-way-scan/fact-check/socratic/systematic-review), academic-paper (11 modes: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer (6 modes: full/quick/guided/methodology-focus/re-review/calibration), and a 10-stage end-to-end pipeline orchestrator with Material Passport, claim-faithfulness gates, and cross-model verification. Human-in-the-loop throughout. Plugin (upstream): `claude plugin marketplace add Imbad0202/academic-research-skills` | All |
+
 
 ### 🎬 Creative Media (5)
 
@@ -771,7 +784,9 @@ npx vibe-kanban
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |
 | `autoresearch` | Andrej Karpathy methodology | — |
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |
+| `academic-research` | [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) | CC-BY-NC-4.0 |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
+
 
 ---
 

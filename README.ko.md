@@ -2,13 +2,15 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-143-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-137-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**143개 로컬 스킬 폴더 · 설치 가능 스킬 143개 · TOON 포맷 · 멀티플랫폼**
+**137개 로컬 스킬 폴더 · 설치 가능 스킬 137개 · TOON 포맷 · 멀티플랫폼**
+
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
 
@@ -18,7 +20,8 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode를 위한 136개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode를 위한 137개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+
 
 
 ---
@@ -54,7 +57,14 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-06-23 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **academic-research: 연구 발견부터 논문 출판까지 전체 파이프라인** | `academic-research` 스킬을 추가했습니다 — [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) ARS 스위트(v3.13.0)를 위한 jeo-skills 라우팅 wrapper입니다. 단일 스킬, 4개의 참조 파이프라인, 27가지 모드, 39-에이전트 앙상블: `deep-research`(8가지 모드: full/quick/review/lit-review/three-way-scan/fact-check/socratic/systematic-review), `academic-paper`(11가지 모드: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), `academic-paper-reviewer`(6가지 모드: EIC+R1/R2/R3+Devil's Advocate 포함 full/quick/guided/methodology-focus/re-review/calibration), `academic-pipeline`(Material Passport·L3 주장-충실성 게이트·3중 인용 검증·크로스 모델 검증이 포함된 10단계 엔드투엔드 오케스트레이터). 전 과정에서 인간-루프(human-in-the-loop) 유지, 필수 `[USER CHECKPOINT]` 게이트 적용. 4개의 참조 문서 포함. 플러그인(업스트림 전체 스위트): `claude plugin marketplace add Imbad0202/academic-research-skills`. 136 → **137개 스킬**. |
+
 ## 🆕 v2026-06-21 업데이트
+
 
 | 변경 | 내용 |
 |------|------|
@@ -344,7 +354,8 @@ rtk init -g
 | `task-estimation` | software, GTM, game work 전반에서 스토리 포인트, T셔츠 사이징, split/spike 판단, 예측 안전형 불확실성 프레이밍을 담은 estimate packet anchor | 전체 |
 | `task-planning` | software, GTM, game work 전반에서 backlog cleanup, feature slicing, sprint/milestone prep, release packet을 다루고 estimation/board/review/사전 프레이밍으로의 route-out을 명시하는 packet-first planning anchor | 전체 |
 
-### 🔭 검색 및 분석 (10개)
+### 🔭 검색 및 분석 (11개)
+
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -358,6 +369,8 @@ rtk init -g
 | `pattern-detection` | text-prefilter·structural-code-rule·log-event-pattern·metric-anomaly 중 한 packet을 먼저 고르는 라우팅형 패턴/이상 탐지 | 전체 |
 | `semble` | grep+read 대비 토큰 ~98% 절감하는 에이전트용 토큰 효율 코드 검색 — 자연어·심볼 쿼리, 의미 기반 `find-related`, Claude Code·Codex·Cursor·OpenCode용 MCP, Python 라이브러리, CPU만 사용(GPU·API 키 불필요) | 전체 |
 | `codeflow` | 코드베이스 아키텍처를 몇 초 만에 시각화 — 빌드가 필요 없는 단일 `index.html` 브라우저 앱(React 18 + D3.js, 클라이언트 사이드, 백엔드 없음)으로, 모든 GitHub 저장소·로컬 폴더·PR·마크다운/Obsidian 볼트를 인터랙티브 의존성 그래프로 바꾸며 블래스트 반경, 코드 오너십, 휴리스틱 보안 스캔, 패턴/안티패턴 탐지, A–F 헬스 스코어, 활동 히트맵, PR 임팩트를 제공하고, JSON/Markdown/SVG/PDF 또는 자동 갱신 CodeFlow Card로 내보냅니다. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | 전체 |
+| `academic-research` | 연구 발견부터 논문 출판까지 전체 학술 연구 파이프라인 — 4개의 참조 파이프라인, 27가지 모드, 39-에이전트 앙상블: deep-research(8가지 모드: full/quick/review/lit-review/three-way-scan/fact-check/socratic/PRISMA systematic-review), academic-paper(11가지 모드: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer(6가지 모드: EIC+R1/R2/R3+Devil's Advocate, calibration), academic-pipeline(Material Passport·L3 주장-충실성 게이트·3중 인용 검증을 포함한 10단계 오케스트레이터). 전 과정 human-in-the-loop. 플러그인(업스트림): `claude plugin marketplace add Imbad0202/academic-research-skills` | 전체 |
+
 
 ### 🎬 창의 미디어 (5개)
 
@@ -716,7 +729,9 @@ npx vibe-kanban
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |
 | `autoresearch` | Andrej Karpathy methodology | — |
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |
+| `academic-research` | [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) | CC-BY-NC-4.0 |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
+
 
 ---
 

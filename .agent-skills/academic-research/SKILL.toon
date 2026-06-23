@@ -1,0 +1,19 @@
+N:academic-research
+D:Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble (deep-research 8 modes, academic-paper 11 modes, academic-paper-reviewer 6 modes, academic-pipeline 10-stage orchestrator). Routes each request to the right pipeline and mode. Human-in-the-loop throughout. Plugin (upstream): `claude plugin marketplace add Imbad0202/academic-research-skills`
+G:academic-research deep-research paper-writing peer-review literature-review systematic-review citation-check research-pipeline scholarly-publishing ars
+
+U[8]:
+  Conducting deep literature research on a topic (8 modes incl. socratic, PRISMA, 3W-scan)
+  Writing a new academic paper from scratch, outline-only, or guided plan mode
+  Revising a paper based on reviewer comments (revision or revision-coach mode)
+  Peer review simulation: EIC + R1/R2/R3 + Devil's Advocate (6 reviewer modes)
+  Fact-checking or citation verification against Semantic Scholar / OpenAlex / Crossref
+  Generating abstracts, converting to LaTeX/IEEE, producing AI disclosure statements
+  Calibrating reviewer quality against a gold set
+  Orchestrating the full 10-stage research-to-publication pipeline
+
+S[4]{n,action,details}:
+  1,Pick the pipeline,Choose: deep-research (discover/synthesize) · academic-paper (write/revise) · academic-paper-reviewer (evaluate) · academic-pipeline (end-to-end 10 stages)
+  2,Confirm mode and input,State pipeline + mode explicitly; for socratic/plan modes start Socratic dialogue immediately; confirm format/venue (APA 7.0 / IEEE / LaTeX / NeurIPS / ICLR / CVPR)
+  3,Execute with human-in-the-loop,Follow the matching reference file; never skip [USER CHECKPOINT] gates; for academic-pipeline confirm at each of the 10 stage boundaries
+  4,Return structured output packet,Include: Pipeline · Mode · Topic/Input · Output artifact · Citations · Integrity status · Next step recommendation
