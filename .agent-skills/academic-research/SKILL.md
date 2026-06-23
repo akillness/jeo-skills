@@ -1,29 +1,16 @@
 ---
 name: academic-research
-description: >
-  Full academic research pipeline from discovery to publication — 4 reference pipelines,
-  27 modes, 39-agent ensemble. Covers deep literature research (8 modes), paper writing
-  (11 modes), peer review simulation (6 modes), and end-to-end pipeline orchestration
-  (10 stages). Routes each request to the right pipeline and mode based on the user's
-  stage: researching, writing, reviewing, or orchestrating the full research-to-paper
-  workflow. Human-in-the-loop throughout — AI is copilot, not pilot.
-  Triggers on: academic research, deep research, research paper, paper writing, peer review,
-  literature review, systematic review, fact-check claims, research pipeline, ars-plan,
-  academic pipeline, write a paper, review this paper, citation check, scholarly publishing.
-  Plugin (upstream full suite): `claude plugin marketplace add Imbad0202/academic-research-skills`
+description: ">"
+compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
-compatibility: >
-  All platforms (Claude Code, Gemini CLI, Codex CLI, OpenCode). Deep-research and
-  academic-paper modes work with any LLM. Cross-model integrity verification (Stage 7
-  of academic-pipeline) requires OpenAI-compatible endpoints. Citation verification gates
-  use Semantic Scholar / OpenAlex / Crossref REST APIs (no API key needed for basic use).
 metadata:
   tags: academic-research, deep-research, paper-writing, peer-review, literature-review, systematic-review, citation-check, research-pipeline, scholarly-publishing, ars
-  version: "1.0.0"
-  source: https://github.com/Imbad0202/academic-research-skills
-  upstream_version: "3.13.0"
+  version: 1.0.0
+  source: "https://github.com/Imbad0202/academic-research-skills"
+  upstream_version: 3.13.0
   license: CC-BY-NC-4.0
 ---
+
 
 # academic-research
 
