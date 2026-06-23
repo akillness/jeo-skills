@@ -1,21 +1,16 @@
 ---
 name: autopilot
-description: >
-  Run a Codex/OMX-compatible autonomous build workflow from a product or code
-  request through planning, implementation, QA, and final verification. Use when
-  the user explicitly invokes `$autopilot`, `autopilot`, `auto pilot`, full-auto,
-  or asks the agent to build the whole thing end to end. Route small one-file
-  fixes to direct implementation and high-assurance completion loops to `ooo` or
-  `ralph`.
+description: ">"
 allowed-tools: Read Write Bash Grep Glob
 metadata:
   tags: autopilot, omx, codex, autonomous-build, planning, implementation, qa, verification
   platforms: Codex CLI, Claude Code, Gemini CLI, OpenCode
   keyword: autopilot
-  version: "1.0.0"
+  version: 1.0.0
   source: akillness/jeo-skills
-  compatibility: OMX workflow alias for `$autopilot`
+  compatibility: "OMX workflow alias for `$autopilot`"
 ---
+
 
 # Autopilot
 

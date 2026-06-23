@@ -1,12 +1,6 @@
 ---
 name: agentation
-description: >
-  Capture exact rendered-UI feedback and hand it to an agent as selectors,
-  element paths, and structured annotation packets. Use when a human needs to
-  point at a real UI issue, run a sync/watch loop, or wire browser feedback into
-  Claude Code, Codex, Gemini CLI, or OpenCode. Not for fresh-session browser
-  verification (`browser-harness`), running-browser reuse (`playwriter`), or
-  plan/diff approval (`plannotator`).
+description: ">"
 compatibility: React 18+, Node.js 18+
 allowed-tools: Read Write Bash Grep Glob
 metadata:
@@ -16,6 +10,7 @@ metadata:
   version: 1.1.0
   source: benjitaylor/agentation
 ---
+
 
 # agentation
 
