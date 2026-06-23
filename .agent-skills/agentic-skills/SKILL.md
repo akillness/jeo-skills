@@ -1,26 +1,16 @@
 ---
 name: agentic-skills
-description: Use this skill when >
-  Production-grade software engineering framework that encodes Google-proven workflows, quality
-  gates, and best practices for AI coding agents. Use when you need structured development
-  lifecycle guidance: spec-driven development, incremental implementation, test-driven development,
-  security hardening, performance optimization, or disciplined git/CI/CD workflows.
-  Triggers on: agentic-skills, agent skills engineering, spec-driven, source-driven development,
-  incremental implementation, production engineering workflow, /spec, /plan, /build, /test,
-  /review, /code-simplify, /ship, google engineering practices, code as liability.
-allowed-tools: Bash Read Write Edit Glob Grep WebFetch Agent
-compatibility: >
-  Works with Claude Code, Gemini CLI, Codex CLI, Cursor, Windsurf, and OpenCode.
-  Claude Code plugin install: /plugin marketplace add addyosmani/agent-skills
-  Gemini CLI: gemini skills install https://github.com/addyosmani/agent-skills.git --path skills
-  Cursor/Windsurf: copy SKILL.md files into .cursor/rules/ or rules configuration
+description: "Use this skill when >"
 license: MIT
+compatibility: ">"
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch Agent
 metadata:
   tags: agentic-skills, production-engineering, spec-driven, tdd, code-review, security, performance, git-workflow, ci-cd, google-practices
-  version: "1.0"
-  source: https://github.com/addyosmani/agent-skills
+  version: 1.0
+  source: "https://github.com/addyosmani/agent-skills"
   plugin: addyosmani/agent-skills
 ---
+
 
 # agentic-skills — Production Engineering Framework for AI Agents
 

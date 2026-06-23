@@ -1,27 +1,15 @@
 ---
 name: autoresearch
-description: >
-  Run Karpathy-style autonomous ML search on a real training repository. Use when
-  the user needs to set up or operate `karpathy/autoresearch`, choose the right
-  run mode (setup, `program.md`, bounded loop, result interpretation, or
-  constrained-hardware adaptation), and preserve the immutable `prepare.py` /
-  300-second / `val_bpb` contract. Not for prompt evaluation, LLM app
-  observability, or repo-local `SKILL.md` optimization — route those to
-  LangSmith, Promptfoo, Braintrust, or `skill-autoresearch`. Triggers on:
-  autoresearch, autonomous ML experiments, `program.md`, `train.py`, `val_bpb`,
-  overnight GPU loop, fixed eval harness.
+description: ">"
+compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
-compatibility: >
-  Official path assumes a single NVIDIA GPU on Linux with CUDA; ~40GB VRAM is a
-  comfortable default for MAX_SEQ_LEN=2048, but lower-VRAM and community-fork
-  paths exist for RTX 4090 / 3090, GTX 1660 Ti, Apple Silicon MLX, and Windows
-  RTX. Python 3.10+ and uv required. Dataset: ~6543 FineWeb-Edu parquet shards.
 metadata:
   tags: autoresearch, ml-experiments, autonomous-research, karpathy, gpu, train, val-bpb, overnight, ratcheting
-  version: "1.2.0"
-  source: https://github.com/karpathy/autoresearch
+  version: 1.2.0
+  source: "https://github.com/karpathy/autoresearch"
   license: MIT
 ---
+
 
 # autoresearch
 

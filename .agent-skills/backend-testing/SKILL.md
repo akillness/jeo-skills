@@ -1,22 +1,14 @@
 ---
 name: backend-testing
-description: >
-  Turn backend test ambiguity into one practical backend test packet. Use when the
-  user needs API/service/repository/auth-flow coverage design, fixture or seed/reset
-  strategy, container-vs-mock dependency choices, contract/API compatibility checks,
-  or flaky backend-suite stabilization across local and CI. Route org-wide testing
-  policy to `testing-strategies`, API shape decisions to `api-design`, and auth
-  implementation to `authentication-setup`.
-compatibility: >
-  Best for backend-focused work in Node, Python, Java, and similar service stacks
-  where the agent must choose the smallest credible mix of unit, integration,
-  contract, and smoke coverage before or alongside implementation.
+description: ">"
+compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep
 metadata:
   tags: testing, backend, api-test, integration-test, contract-test, testcontainers, ci
   platforms: Claude, ChatGPT, Gemini
-  version: "1.2.0"
+  version: 1.2.0
 ---
+
 
 # Backend Testing
 
