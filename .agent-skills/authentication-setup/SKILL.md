@@ -1,27 +1,17 @@
 ---
 name: authentication-setup
-description: >
-  Design or refactor product authentication setup for web apps and APIs. Use when
-  the user needs to choose hosted, framework-native, platform-native, enterprise-
-  add-on, or self-hosted auth; define sessions vs JWTs; wire OAuth/social login,
-  passkeys, org/member models, callback/cookie environment setup, or SSO/SCIM
-  rollout boundaries before implementation. Not for deeper authorization policy,
-  general security hardening, API contract design, backend test planning, or pure
-  database modeling.
-allowed-tools: Bash Read Write Edit Glob Grep
-compatibility: >
-  Best for SaaS, internal tools, B2B web apps, APIs, and fullstack frameworks such
-  as Next.js, React, Node, Python, and Postgres/Supabase-style stacks where auth
-  setup decisions cross frontend, backend, data, deployment, and enterprise
-  customer handoff.
+description: ">"
 license: MIT
+compatibility: ">"
+allowed-tools: Bash Read Write Edit Glob Grep
 metadata:
-  version: "2.1.0"
+  version: 2.1.0
   modernization: 2026-04-14
   structural_hardening: 2026-04-17
   tags: authentication-setup, auth, sessions, jwt, oauth, passkeys, sso, scim, product-auth, backend
   platforms: Claude, ChatGPT, Gemini
 ---
+
 
 # Authentication Setup
 

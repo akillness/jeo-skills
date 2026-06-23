@@ -1,19 +1,15 @@
 ---
 name: aider-cli-workflow
-description: >
-  Run a safe, reviewable Aider CLI coding loop for local repositories: model setup,
-  edit scope control, test-first prompting, commit hygiene, and fallback when agent edits drift.
-  Use when the user wants pair-programming with Aider, not generic Git workflow or hosted PR operations.
+description: ">"
+compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep
-compatibility: >
-  Best for terminals with `aider` installed and Git-enabled repos where an AI pair-programming
-  loop should stay test-backed and commit-safe.
 metadata:
   tags: aider, cli, ai-pair-programming, git, test-driven, code-review
   platforms: Claude, Codex, Gemini, OpenCode
   source: akillness/jeo-skills
-  version: "1.0.0"
+  version: 1.0.0
 ---
+
 
 # Aider CLI Workflow
 
