@@ -1,25 +1,16 @@
 ---
 name: agenticskills
-description: >
-  One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ skills
-  spanning agent-browser, agent-workflow, ai-research-skills, api-design, and the
-  full god-skills catalog). Use when the user asks to add the oh-my-gods skill
-  pack, bring in the AgenticSkills bundle, or wants every god-skill copied into
-  Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in one step.
-  Triggers on: AgenticSkills, agenticskills, oh-my-gods, god-skills, install
-  oh-my-gods, bring in agentic skills bundle, install gods skills, add god skills.
+description: ">"
+compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
-compatibility: >
-  Works with Claude Code, Codex CLI, Antigravity/Gemini CLI, and OpenCode.
-  Canonical destination: $HOME/.agent-skills (mirrored to ~/.claude/skills,
-  ~/.codex/skills, ~/.gemini/skills, and ~/.opencode/skills via npx-skills-add).
 metadata:
   tags: agenticskills, oh-my-gods, god-skills, installer, bundle, agent-skills, multi-runtime
   keyword: agenticskills
-  version: "1.0.0"
-  upstream: https://github.com/akillness/oh-my-gods
-  installer: https://raw.githubusercontent.com/akillness/oh-my-gods/main/install.sh
+  version: 1.0.0
+  upstream: "https://github.com/akillness/oh-my-gods"
+  installer: "https://raw.githubusercontent.com/akillness/oh-my-gods/main/install.sh"
 ---
+
 
 # AgenticSkills — One-shot installer for oh-my-gods
 
