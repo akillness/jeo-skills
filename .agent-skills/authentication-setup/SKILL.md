@@ -14,6 +14,8 @@ metadata:
 
 
 
+
+
 # Authentication Setup
 
 Use this skill when the real job is **choosing and structuring product authentication for a real app**, not dumping JWT snippets or pretending authentication, authorization, security hardening, and docs are all the same task.
