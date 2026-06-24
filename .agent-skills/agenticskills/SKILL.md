@@ -12,6 +12,7 @@ metadata:
 ---
 
 
+
 # AgenticSkills — One-shot installer for oh-my-gods
 
 > **Keywords**: `AgenticSkills` · `agenticskills` · `oh-my-gods` · `god-skills`
