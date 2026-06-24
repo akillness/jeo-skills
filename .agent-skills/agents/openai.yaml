@@ -1,0 +1,4 @@
+interface:
+  display_name: "LLM Wiki"
+  short_description: "Build and maintain LLM wiki vaults"
+  default_prompt: "Use $llm-wiki to design or maintain an Obsidian-based LLM wiki."

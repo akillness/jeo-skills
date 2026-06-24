@@ -1,0 +1,57 @@
+{
+  "skill_name": "code-refactoring",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Refactor this 180-line checkout handler into smaller units without changing behavior. We already have unit tests, but the integration suite is slow.",
+      "expected_output": "Chooses a local safe refactor mode, states the behavior to preserve, proposes reviewable slices, and uses existing tests/typecheck as guardrails rather than redesigning everything.",
+      "assertions": [
+        "Response explicitly chooses a refactor mode",
+        "Response names preserved behavior or invariants",
+        "Response includes verification steps",
+        "Response avoids routing the whole task to debugging unless behavior is unclear"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We need to replace a deprecated client API across 220 TypeScript files before the framework upgrade. What refactor workflow should we use?",
+      "expected_output": "Chooses repetitive migration / codemod mode, recommends piloting on a subset before repo-wide rollout, and keeps mechanical migration separate from semantic follow-up.",
+      "assertions": [
+        "Response chooses repetitive migration or codemod mode",
+        "Response mentions source and target pattern definition",
+        "Response recommends sample-first or pilot-first verification",
+        "Response includes verification beyond just trust in automation"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "This reporting module is full of conditionals and globals, but we barely trust the tests. Help me refactor it safely.",
+      "expected_output": "Chooses behavior freeze first mode, recommends characterization or guardrail creation before broad structural edits, and emphasizes small seams instead of a heroic rewrite.",
+      "assertions": [
+        "Response chooses behavior freeze first mode",
+        "Response recommends characterization tests, captured examples, or another behavior-freezing guardrail",
+        "Response emphasizes incremental cleanup",
+        "Response does not frame the task as a pure design-pattern catalog"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review this refactor PR and tell me whether it is safe to merge.",
+      "expected_output": "Routes primary ownership to code-review because the task is review judgment rather than planning or applying a refactor.",
+      "assertions": [
+        "Response mentions routing to code-review",
+        "Response distinguishes refactor planning from review judgment"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Before we refactor anything, find every call site and wrapper around this old helper so we can see the blast radius.",
+      "expected_output": "Routes the primary task to codebase-search because the immediate need is symbol inventory / impact mapping rather than a cleanup brief.",
+      "assertions": [
+        "Response routes to codebase-search or explicitly says the task is impact mapping first",
+        "Response does not present a full refactor plan as the primary answer",
+        "Response keeps code-refactoring positioned as the behavior-preserving cleanup lane after the map exists"
+      ]
+    }
+  ]
+}
