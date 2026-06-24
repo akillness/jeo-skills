@@ -16,6 +16,8 @@ metadata:
 
 
 
+
+
 # Authentication Setup
 
 Use this skill when the real job is **choosing and structuring product authentication for a real app**, not dumping JWT snippets or pretending authentication, authorization, security hardening, and docs are all the same task.
@@ -29,10 +31,10 @@ Use this skill when the real job is **choosing and structuring product authentic
 - recording callback URLs, cookie domains, preview/staging drift, and rollout notes
 
 Read these support docs before choosing the lane or handoff:
-- [references/auth-decision-matrix.md](references/auth-decision-matrix.md)
-- [references/boundary-checklist.md](references/boundary-checklist.md)
-- [references/session-and-deployment-notes.md](references/session-and-deployment-notes.md)
-- [references/enterprise-and-migration-notes.md](references/enterprise-and-migration-notes.md)
+- [references/auth-decision-matrix.md](../authentication-setup--references/auth-decision-matrix.md)
+- [references/boundary-checklist.md](../authentication-setup--references/boundary-checklist.md)
+- [references/session-and-deployment-notes.md](../authentication-setup--references/session-and-deployment-notes.md)
+- [references/enterprise-and-migration-notes.md](../authentication-setup--references/enterprise-and-migration-notes.md)
 
 ## When to use this skill
 - Set up auth for a new web app, SaaS product, admin app, or API-backed product
@@ -75,7 +77,7 @@ Ask or infer:
 4. Which auth/data pieces are already fixed by the current stack?
 
 ### Step 2: Choose the smallest credible auth lane
-Use [auth-decision-matrix.md](references/auth-decision-matrix.md) instead of rebuilding the landscape from memory.
+Use [auth-decision-matrix.md](../authentication-setup--references/auth-decision-matrix.md) instead of rebuilding the landscape from memory.
 
 Default lane chooser:
 - **Hosted auth** when speed, prebuilt UX, providers, MFA/passkeys, and polished onboarding matter most
@@ -88,7 +90,7 @@ Rules:
 1. Recommend one primary lane and at most one fallback.
 2. If the backend platform is already fixed, evaluate platform-native first.
 3. If enterprise identity is mentioned, branch there explicitly instead of flattening it into consumer login.
-4. If migration or cutover risk matters, pull in [enterprise-and-migration-notes.md](references/enterprise-and-migration-notes.md).
+4. If migration or cutover risk matters, pull in [enterprise-and-migration-notes.md](../authentication-setup--references/enterprise-and-migration-notes.md).
 
 ### Step 3: Draw the provider/app ownership boundary
 Before implementation, state who owns what.
@@ -98,10 +100,10 @@ Minimum boundary packet:
 - **Application usually owns:** local user/profile records, org/workspace membership, roles/entitlements, billing-linked access, admin/support exceptions, domain-specific authorization
 - **Shared edge:** claims copied into tokens or sessions, webhook/user sync, callback URLs, middleware, cookie config, audit/event visibility
 
-Use [boundary-checklist.md](references/boundary-checklist.md) to keep the skill from drifting into neighboring lanes.
+Use [boundary-checklist.md](../authentication-setup--references/boundary-checklist.md) to keep the skill from drifting into neighboring lanes.
 
 ### Step 4: Choose the session and login model deliberately
-Use [session-and-deployment-notes.md](references/session-and-deployment-notes.md) for the detailed heuristics.
+Use [session-and-deployment-notes.md](../authentication-setup--references/session-and-deployment-notes.md) for the detailed heuristics.
 
 Quick defaults:
 - **Server sessions / signed cookies** for browser-heavy apps, SSR, and middleware-friendly auth state
@@ -133,7 +135,7 @@ Record:
 If the request slides into broader schema design, route deeper modeling to `database-schema-design`.
 
 ### Step 6: Branch enterprise or migration work explicitly
-If the request includes SSO, SCIM, domain verification, existing-user linking, provider migration, or self-hosted cutover risk, use [enterprise-and-migration-notes.md](references/enterprise-and-migration-notes.md).
+If the request includes SSO, SCIM, domain verification, existing-user linking, provider migration, or self-hosted cutover risk, use [enterprise-and-migration-notes.md](../authentication-setup--references/enterprise-and-migration-notes.md).
 
 Name these items directly:
 - whether this is an add-on vs replacement

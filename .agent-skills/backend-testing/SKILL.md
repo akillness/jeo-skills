@@ -10,6 +10,8 @@ metadata:
 ---
 
 
+
+
 # Backend Testing
 
 Use this skill as a **packet-first backend testing router**.
@@ -22,9 +24,9 @@ The job is not to dump boilerplate for every framework. The job is to:
 5. route policy, contract-shape, and auth-implementation work away when they are the real task.
 
 Read these when needed:
-- [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md)
-- [references/test-layer-matrix.md](references/test-layer-matrix.md)
-- [references/stability-checklist.md](references/stability-checklist.md)
+- references/intake-packets-and-route-outs.md
+- references/test-layer-matrix.md
+- references/stability-checklist.md
 
 ## When to use this skill
 - Add or repair backend coverage for APIs, services, repositories, workers, integrations, or auth flows

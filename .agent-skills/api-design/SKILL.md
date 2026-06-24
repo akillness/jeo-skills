@@ -15,6 +15,8 @@ metadata:
 
 
 
+
+
 # API Design
 
 Use this skill to turn a vague integration idea, backend feature, or service boundary into a stable API contract that other skills can build on.
@@ -26,7 +28,7 @@ The job is not to generate pretty docs. The job is to:
 - produce a contract artifact that implementation, testing, and documentation can share
 - surface tradeoffs before the team hardens the wrong interface
 
-Read [references/contract-review-checklist.md](references/contract-review-checklist.md) and [references/boundary-guide.md](references/boundary-guide.md) before handling unusual or high-risk API work.
+Read [references/contract-review-checklist.md](../api-design--references/contract-review-checklist.md) and [references/boundary-guide.md](../api-design--references/boundary-guide.md) before handling unusual or high-risk API work.
 
 If the user mainly needs:
 - **reference docs, tutorials, example-heavy guides, or doc portal setup** → use `api-documentation`

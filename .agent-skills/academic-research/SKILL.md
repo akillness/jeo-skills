@@ -15,6 +15,8 @@ metadata:
 
 
 
+
+
 # academic-research
 
 A routing-first front door for the full **Academic Research Skills (ARS)** suite — 4 pipelines, 27 modes, spanning the complete research-to-publication lifecycle.
@@ -22,10 +24,10 @@ A routing-first front door for the full **Academic Research Skills (ARS)** suite
 > **AI is copilot, not pilot.** ARS handles the grunt work (hunting references, verifying citations, checking logical consistency, formatting). You handle the parts that require your brain: defining the question, choosing the method, interpreting results, and writing the sentence after "I argue that."
 
 Read these pipeline references before executing:
-- [references/deep-research-pipeline.md](references/deep-research-pipeline.md)
-- [references/academic-paper-pipeline.md](references/academic-paper-pipeline.md)
-- [references/academic-paper-reviewer-pipeline.md](references/academic-paper-reviewer-pipeline.md)
-- [references/academic-pipeline-stages.md](references/academic-pipeline-stages.md)
+- [references/deep-research-pipeline.md](../academic-research--references/deep-research-pipeline.md)
+- [references/academic-paper-pipeline.md](../academic-research--references/academic-paper-pipeline.md)
+- [references/academic-paper-reviewer-pipeline.md](../academic-research--references/academic-paper-reviewer-pipeline.md)
+- [references/academic-pipeline-stages.md](../academic-research--references/academic-pipeline-stages.md)
 
 ## Plugin Installation
 
@@ -120,10 +122,10 @@ If ambiguous between deep-research and academic-paper: the user doing *discovery
 ### Step 3: Execute with human-in-the-loop
 
 Follow the pipeline reference for the chosen mode:
-- **deep-research**: Read [references/deep-research-pipeline.md](references/deep-research-pipeline.md)
-- **academic-paper**: Read [references/academic-paper-pipeline.md](references/academic-paper-pipeline.md)
-- **academic-paper-reviewer**: Read [references/academic-paper-reviewer-pipeline.md](references/academic-paper-reviewer-pipeline.md)
-- **academic-pipeline (10-stage)**: Read [references/academic-pipeline-stages.md](references/academic-pipeline-stages.md)
+- **deep-research**: Read [references/deep-research-pipeline.md](../academic-research--references/deep-research-pipeline.md)
+- **academic-paper**: Read [references/academic-paper-pipeline.md](../academic-research--references/academic-paper-pipeline.md)
+- **academic-paper-reviewer**: Read [references/academic-paper-reviewer-pipeline.md](../academic-research--references/academic-paper-reviewer-pipeline.md)
+- **academic-pipeline (10-stage)**: Read [references/academic-pipeline-stages.md](../academic-research--references/academic-pipeline-stages.md)
 
 Checkpoints marked **[USER CHECKPOINT]** require explicit user confirmation before continuing. Never skip them.
 
