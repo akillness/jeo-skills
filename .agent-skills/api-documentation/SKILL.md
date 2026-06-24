@@ -16,6 +16,8 @@ metadata:
 
 
 
+
+
 # API Documentation
 
 Use this skill when the main job is **publishing or refreshing developer-facing API docs that help integrators reach first success, understand reference truth, and stay unblocked as the API evolves**.
@@ -30,10 +32,10 @@ Use this skill when the main job is **publishing or refreshing developer-facing 
 - migration updates attached to the docs surface
 
 Read these support docs before choosing the mode or output packet:
-- [references/documentation-modes-and-boundaries.md](references/documentation-modes-and-boundaries.md)
-- [references/output-packets-and-navigation.md](references/output-packets-and-navigation.md)
-- [references/example-and-reference-checklist.md](references/example-and-reference-checklist.md)
-- [references/publishing-and-drift-control.md](references/publishing-and-drift-control.md)
+- [references/documentation-modes-and-boundaries.md](../api-documentation--references/documentation-modes-and-boundaries.md)
+- [references/output-packets-and-navigation.md](../api-documentation--references/output-packets-and-navigation.md)
+- [references/example-and-reference-checklist.md](../api-documentation--references/example-and-reference-checklist.md)
+- [references/publishing-and-drift-control.md](../api-documentation--references/publishing-and-drift-control.md)
 
 ## When to use this skill
 - A team needs API reference, quickstarts, or portal pages that external developers, partners, or internal integrators can actually use.
@@ -119,7 +121,7 @@ Common packet choices:
 - one docs-gap / drift checklist for unresolved truth-source issues
 - one navigation/grouping proposal for a large API surface
 
-Use [references/output-packets-and-navigation.md](references/output-packets-and-navigation.md) for mode skeletons and portal/grouping guidance.
+Use [references/output-packets-and-navigation.md](../api-documentation--references/output-packets-and-navigation.md) for mode skeletons and portal/grouping guidance.
 
 ### Step 5: Apply API-doc rules instead of generic writing advice
 Use these rules aggressively:
@@ -140,7 +142,7 @@ Before finalizing, record:
 - drift hotspots: auth, limits, retries, versioning, webhook fields, SDK examples, migration notes
 - companion docs that must stay aligned: quickstarts, SDK pages, changelog entries, Postman collections, portal navigation
 
-Use [references/publishing-and-drift-control.md](references/publishing-and-drift-control.md) as the anti-drift checklist.
+Use [references/publishing-and-drift-control.md](../api-documentation--references/publishing-and-drift-control.md) as the anti-drift checklist.
 
 ### Step 7: Verify output quality
 Before shipping, check:

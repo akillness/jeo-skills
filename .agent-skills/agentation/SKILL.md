@@ -15,6 +15,8 @@ metadata:
 
 
 
+
+
 # agentation
 
 `agentation` is the **rendered-UI feedback bridge** in this repo.
@@ -204,9 +206,9 @@ Prefer the bundled scripts before retyping long commands:
 ## References
 
 Deep-dive docs in this skill:
-- [modes-and-routing](./references/modes-and-routing.md)
-- [platform-setup-and-hooks](./references/platform-setup-and-hooks.md)
-- [watch-loop-and-self-driving](./references/watch-loop-and-self-driving.md)
+- modes-and-routing
+- platform-setup-and-hooks
+- watch-loop-and-self-driving
 
 Primary sources:
 - https://github.com/benjitaylor/agentation
