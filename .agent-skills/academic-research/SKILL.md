@@ -15,6 +15,7 @@ metadata:
 
 
 
+
 # academic-research
 
 A routing-first front door for the full **Academic Research Skills (ARS)** suite — 4 pipelines, 27 modes, spanning the complete research-to-publication lifecycle.

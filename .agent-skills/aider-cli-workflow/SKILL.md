@@ -14,6 +14,7 @@ metadata:
 
 
 
+
 # Aider CLI Workflow
 
 Use this skill when the user explicitly wants an **Aider-based coding loop** in a local repo.
