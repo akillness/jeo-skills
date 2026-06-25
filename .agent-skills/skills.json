@@ -19,9 +19,10 @@
       "vibe-kanban"
     ],
     "agent-development": [
+      "awesome-agent-skills",
+      "cli-anything",
       "prompt-repetition",
-      "skill-standardization",
-      "cli-anything"
+      "skill-standardization"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -413,6 +414,10 @@
         "WebFetch"
       ],
       "commands": []
+    },
+    {
+      "name": "awesome-agent-skills",
+      "description": "Routing front door for the Awesome Agent Skills collection (Shubhamsaboo/awesome-llm-apps) — 19 expert personas + a self-improving optimizer across 6 reference pipelines (coding, research, writing, planning, data, self-improving). Classifies the request, picks pipeline + persona, executes with that persona's framework/output and integrity guardrails. Plugin: npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills"
     },
     {
       "name": "backend-testing",
@@ -1151,6 +1156,47 @@
         "Gemini",
         "Codex"
       ]
+    },
+    {
+      "name": "drawio",
+      "description": "Turn natural-language descriptions into editable .drawio diagrams and export them to PNG/SVG/PDF/JPG via the native draw.io desktop CLI, or turn an existing Python/JS-TS/Go/Rust codebase into an auto-laid-out structure diagram. Wraps Agents365-ai/drawio-skill: 6 diagram presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), 10,000+ official AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN shapes, 321 AI/LLM brand logos, vision self-check + auto-fix, and a 5-round iterative refinement loop. No MCP server, no daemon.",
+      "category": "creative-media",
+      "path": "drawio/SKILL.md",
+      "tags": [
+        "drawio",
+        "diagram",
+        "erd",
+        "uml",
+        "flowchart",
+        "architecture-diagram",
+        "sequence-diagram",
+        "code-visualization",
+        "shape-search",
+        "ai-logos",
+        "export",
+        "plugin"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "Cursor",
+        "Copilot",
+        "OpenClaw",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "drawio",
+      "version": "1.0.0",
+      "commands": []
     },
     {
       "name": "environment-setup",
@@ -2492,6 +2538,46 @@
           "source": "omx/scripts/validate-cross-runtime-workflows.py"
         }
       ]
+    },
+    {
+      "name": "okf",
+      "description": "Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type/title/description/resource/tags/timestamp fields for portable, interoperable AI-agent knowledge sharing. OKF formalizes the LLM-Wiki pattern into a vendor-neutral open specification so any producer can write and any agent can consume without translation. Routes: llm-wiki for raw source capture + vault maintenance, obsidian for Obsidian-vault workflows, graphify for durable committed graphs, scrapling for web-content extraction into OKF docs. Triggers on: okf, open knowledge format, knowledge bundle, okf document, llm wiki standard, knowledge atom, agent context format, okf frontmatter, okf bundle, knowledge interoperability.",
+      "category": "utilities",
+      "path": "okf/SKILL.md",
+      "tags": [
+        "okf",
+        "open-knowledge-format",
+        "knowledge-bundle",
+        "llm-wiki",
+        "knowledge-graph",
+        "metadata",
+        "context-engineering",
+        "interoperability",
+        "yaml-frontmatter",
+        "google",
+        "agent-context"
+      ],
+      "keywords": [
+        "okf",
+        "open knowledge format",
+        "knowledge bundle",
+        "okf document",
+        "knowledge atom",
+        "agent context format",
+        "okf frontmatter",
+        "okf bundle",
+        "knowledge interoperability"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "commands": []
     },
     {
       "name": "omc",
@@ -4546,87 +4632,6 @@
         "Gemini",
         "Codex"
       ]
-    },
-    {
-      "name": "drawio",
-      "description": "Turn natural-language descriptions into editable .drawio diagrams and export them to PNG/SVG/PDF/JPG via the native draw.io desktop CLI, or turn an existing Python/JS-TS/Go/Rust codebase into an auto-laid-out structure diagram. Wraps Agents365-ai/drawio-skill: 6 diagram presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), 10,000+ official AWS/Azure/GCP/Cisco/Kubernetes/UML/BPMN shapes, 321 AI/LLM brand logos, vision self-check + auto-fix, and a 5-round iterative refinement loop. No MCP server, no daemon.",
-      "category": "creative-media",
-      "path": "drawio/SKILL.md",
-      "tags": [
-        "drawio",
-        "diagram",
-        "erd",
-        "uml",
-        "flowchart",
-        "architecture-diagram",
-        "sequence-diagram",
-        "code-visualization",
-        "shape-search",
-        "ai-logos",
-        "export",
-        "plugin"
-      ],
-      "platforms": [
-        "Claude Code",
-        "Codex CLI",
-        "Gemini CLI",
-        "Cursor",
-        "Copilot",
-        "OpenClaw",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "keyword": "drawio",
-      "version": "1.0.0",
-      "commands": []
-    },
-    {
-      "name": "okf",
-      "description": "Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type/title/description/resource/tags/timestamp fields for portable, interoperable AI-agent knowledge sharing. OKF formalizes the LLM-Wiki pattern into a vendor-neutral open specification so any producer can write and any agent can consume without translation. Routes: llm-wiki for raw source capture + vault maintenance, obsidian for Obsidian-vault workflows, graphify for durable committed graphs, scrapling for web-content extraction into OKF docs. Triggers on: okf, open knowledge format, knowledge bundle, okf document, llm wiki standard, knowledge atom, agent context format, okf frontmatter, okf bundle, knowledge interoperability.",
-      "category": "utilities",
-      "path": "okf/SKILL.md",
-      "tags": [
-        "okf",
-        "open-knowledge-format",
-        "knowledge-bundle",
-        "llm-wiki",
-        "knowledge-graph",
-        "metadata",
-        "context-engineering",
-        "interoperability",
-        "yaml-frontmatter",
-        "google",
-        "agent-context"
-      ],
-      "keywords": [
-        "okf",
-        "open knowledge format",
-        "knowledge bundle",
-        "okf document",
-        "knowledge atom",
-        "agent context format",
-        "okf frontmatter",
-        "okf bundle",
-        "knowledge interoperability"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Edit",
-        "Bash",
-        "Grep",
-        "Glob",
-        "WebFetch"
-      ],
-      "commands": []
     }
   ]
 }

@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-137-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-138-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**137개 로컬 스킬 폴더 · 설치 가능 스킬 137개 · TOON 포맷 · 멀티플랫폼**
+**138개 로컬 스킬 폴더 · 설치 가능 스킬 138개 · TOON 포맷 · 멀티플랫폼**
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +20,7 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode를 위한 137개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode를 위한 138개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
 
 
@@ -56,6 +56,12 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-06-24 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **awesome-agent-skills: 하나의 라우터에 담은 19개 전문가 페르소나** | `awesome-agent-skills` 스킬을 추가했습니다 — [Shubhamsaboo/awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills)의 Awesome Agent Skills 컬렉션을 위한 jeo-skills 라우팅 프런트 도어입니다. 단일 스킬, **6개의 참조 파이프라인**, 19개 전문가 페르소나 + 자기개선(self-improving) 옵티마이저: **coding**(python-expert, code-reviewer, debugger, fullstack-developer), **research**(deep-research, fact-checker, academic-researcher), **writing**(technical-writer, content-creator, editor, email-drafter, meeting-notes), **planning**(project-planner, sprint-planner, strategy-advisor, decision-helper, ux-designer), **data**(data-analyst, visualization-expert), **self-improving**(Google ADK Executor+Analyst+Mutator 스킬 최적화 루프). 요청을 알맞은 파이프라인 + 페르소나로 분류하고, 해당 페르소나의 프레임워크와 출력 형식으로 실행하며, 무결성 가드레일(인용 날조 금지, 모든 지적은 근거 제시, 페르소나 충실성, 고위험 결정은 인간-루프 유지)을 적용합니다. 6개의 참조 문서, `SKILL.toon`, `scripts/install.sh`(`GLOBAL` / `WITH_UPSTREAM` / `AGENTS` 노브) 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills` (업스트림 전체 컬렉션: `npx skills add shubhamsaboo/awesome-agent-skills`). Route-out: `academic-research`(인용 게이트 출판 파이프라인), `omc`/`omx`/`ohmg`(멀티 에이전트 오케스트레이션), `semble`(저장소 코드 검색), `code-refactoring`, `marketing-automation`, `drawio`/`slides-grab`. 137 → **138개 스킬**. |
 
 ## 🆕 v2026-06-23 업데이트
 
@@ -261,13 +267,14 @@ rtk init -g
 | `improve-codebase-architecture` | `improve-codebase-architecture` | 삭제 테스트·심(Seam)·지역성 어휘를 사용해 얕은 모듈을 깊은 모듈로 개선하는 기회 발굴 | All |
 | `zoom-out` | `zoom-out` | 도메인 어휘로 관련 모듈, 호출자 관계, 의존성을 매핑하는 상위 아키텍처 관점 제공 | All |
 
-### 🤖 에이전트 개발 (3개)
+### 🤖 에이전트 개발 (4개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `prompt-repetition` | 비추론/경량 LLM에서 프롬프트 반복을 언제 써야 하는지 판단하는 스킬 — 긴 컨텍스트 검색, 선택지 우선 MCQ, 위치/인덱스 조회, 그리고 retrieval·강한 모델로의 route-out 포함 | 전체 |
 | `skill-standardization` | SKILL.md 검증/재작성, 중복 canonical화, 그리고 repo-root 검증 흐름 + 파생 발견면(`skills.json`, README/setup, `SKILL.toon`) 동기화 | 전체 |
 | `cli-anything` | HKUDS CLI-Anything으로 모든 소프트웨어를 agent-native CLI로 — CLI-Hub 패키지 매니저(`cli-hub list/search/install/launch`), 에이전트 자율 탐색 meta-skill, 임의 코드베이스 대상 7-phase harness 생성(`/cli-anything`), refine/test/validate 반복; 40+ harness, 2,461 테스트, REPL + `--json` CLI. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything` | 전체 |
+| `awesome-agent-skills` | [Awesome Agent Skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills) 컬렉션을 위한 라우팅 프런트 도어 — 6개 참조 파이프라인(coding · research · writing · planning · data · self-improving)에 19개 전문가 페르소나 + 자기개선 옵티마이저. 요청을 파이프라인 + 페르소나로 분류하고 해당 페르소나의 프레임워크/출력과 무결성 가드레일로 실행. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills` (업스트림: `npx skills add shubhamsaboo/awesome-agent-skills`) | 전체 |
 
 ### ⚙️ 백엔드 (5개)
 

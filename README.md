@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-137-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-138-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
@@ -10,7 +10,7 @@
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**137 local skill folders · 137 installable skills · TOON Format · Cross-platform**
+**138 local skill folders · 138 installable skills · TOON Format · Cross-platform**
 
 
 
@@ -22,11 +22,18 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 137 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 138 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
 
 
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-06-24
+
+| Change | Details |
+|--------|----------|
+| **awesome-agent-skills: 19 expert personas in one router** | Added `awesome-agent-skills` — a jeo-skills routing front door for the [Shubhamsaboo/awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills) Awesome Agent Skills collection. One skill, **6 reference pipelines**, 19 expert-persona skills + a self-improving optimizer: **coding** (python-expert, code-reviewer, debugger, fullstack-developer), **research** (deep-research, fact-checker, academic-researcher), **writing** (technical-writer, content-creator, editor, email-drafter, meeting-notes), **planning** (project-planner, sprint-planner, strategy-advisor, decision-helper, ux-designer), **data** (data-analyst, visualization-expert), and **self-improving** (Google ADK Executor+Analyst+Mutator skill-optimization loop). Routes each request to the right pipeline + persona, then executes with that persona's framework and output format; integrity guardrails (no fabricated citations, justify every finding, persona fidelity, human-in-the-loop for high-stakes calls). Ships 6 reference docs, `SKILL.toon`, and `scripts/install.sh` (`GLOBAL` / `WITH_UPSTREAM` / `AGENTS` knobs). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills` (upstream full collection: `npx skills add shubhamsaboo/awesome-agent-skills`). Route-outs: `academic-research` (citation-gated publication pipeline), `omc`/`omx`/`ohmg` (multi-agent orchestration), `semble` (repo code search), `code-refactoring`, `marketing-automation`, `drawio`/`slides-grab`. 137 → **138 skills**. |
+
 
 ## 🆕 What's New in v2026-06-23
 
@@ -235,7 +242,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 142 local skill folders = 142 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 138 local skill folders = 138 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -280,7 +287,7 @@ rtk init -g
 | `improve-codebase-architecture` | `improve-codebase-architecture` | Surface shallow modules and propose deepening opportunities for testability using deletion-test, seam, and locality vocabulary |
 | `zoom-out` | `zoom-out` | Get higher-level architectural perspective: maps all relevant modules, caller relationships, dependencies using domain vocabulary |
 
-### 🤖 Agent Development (6)
+### 🤖 Agent Development (7)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -290,6 +297,7 @@ rtk init -g
 | `openai-agents-python` | Build and operate multi-agent workflows with OpenAI Agents SDK (Python) — define agents/tools/handoffs, add guardrails, trace with LangSmith, run async pipelines | All |
 | `pydantic-ai` | Build typed LLM applications with PydanticAI — schema-constrained outputs, tool integration, validation, retries, and dependency injection for production AI apps | All |
 | `cli-anything` | Make any software agent-native via HKUDS CLI-Anything — CLI-Hub package manager (`cli-hub list/search/install/launch`), agent meta-skill for autonomous CLI discovery, 7-phase harness generation from any codebase (`/cli-anything`), and refine/test/validate iteration; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything` | All |
+| `awesome-agent-skills` | Routing front door for the [Awesome Agent Skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills) collection — 19 expert personas + a self-improving optimizer in 6 reference pipelines (coding · research · writing · planning · data · self-improving). Classifies the request, picks pipeline + persona, executes with that persona's framework/output and integrity guardrails. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills` (upstream: `npx skills add shubhamsaboo/awesome-agent-skills`) | All |
 
 ### ⚙️ Backend (7)
 
