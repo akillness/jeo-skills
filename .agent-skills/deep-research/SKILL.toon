@@ -1,0 +1,27 @@
+N:deep-research
+D:Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep (parallel per-item investigation + field-coverage validation), report (TOC + per-field markdown), web-search (research agent + 5 routed source modules). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research`
+G:deep-research structured-research research-outline web-search literature-review benchmark competitor-analysis due-diligence parallel-agents report-generation human-in-the-loop
+
+P[4]{phase,pipeline}:
+  outline,/research · /research-add-items · /research-add-fields — generate + extend outline.yaml/fields.yaml
+  deep,/research-deep — parallel per-item investigation into validated JSON (validate_json.py coverage gate)
+  report,/research-report — TOC with anchor links + per-field-category markdown report
+  web-search,web-search agent + 5 routed modules (github-debug · general-web · academic-papers · chinese-tech · stackoverflow)
+
+U[4]:
+  Research a set of comparable things (models, papers, tools, companies) along consistent fields
+  Survey / benchmark review / literature review / competitor analysis / due diligence needing a structured outline first
+  Want parallel, source-cited investigation landing in a shareable markdown report
+  Need to extend an existing outline with more items or more fields
+
+S[4]{n,action,details}:
+  1,Pick the phase,Classify against the routing table; state "phase → command" explicitly (default to next unfinished phase if outline.yaml exists)
+  2,Load the pipeline,Read references/<phase>-pipeline.md; always load web-search-pipeline.md + the right source module before searching
+  3,Execute with discipline,Reproduce prompt templates verbatim (substitute {xxx} only); confirm each AskUserQuestion gate; mark unknowns [uncertain]; validate JSON before done
+  4,Return the phase output,outline.yaml+fields.yaml · validated per-item JSON + summary · generate_report.py+report.md; close with Next step to the next phase
+
+ROUTE-OUT:
+  Research-to-publication with citation gates → academic-research
+  Autonomous ML experiment search → autoresearch
+  Token-efficient repo code search → semble
+  Multi-agent build/verify orchestration → omc / omx / ohmg

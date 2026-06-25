@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-138-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**138개 로컬 스킬 폴더 · 설치 가능 스킬 138개 · TOON 포맷 · 멀티플랫폼**
+**139개 로컬 스킬 폴더 · 설치 가능 스킬 139개 · TOON 포맷 · 멀티플랫폼**
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +20,7 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode를 위한 138개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode를 위한 139개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
 
 
@@ -61,6 +61,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 | 변경 | 내용 |
 |------|------|
+| **deep-research: 구조화된 병렬 딥리서치 워크플로** | `deep-research` 스킬을 추가했습니다 — [Weizhena/Deep-Research-skills](https://github.com/Weizhena/Deep-Research-skills)(RhinoInsight, arXiv:2511.18743에서 영감)를 위한 jeo-skills 라우팅 프런트 도어입니다. 단일 스킬, **4개의 참조 파이프라인**: **outline**(`/research` · `/research-add-items` · `/research-add-fields` → 확장 가능한 `outline.yaml` + `fields.yaml`), **deep**(`/research-deep` → 항목별 병렬 web-search 에이전트가 검증된 JSON 작성, `validate_json.py` 필드 커버리지 게이트), **report**(`/research-report` → 앵커 링크 목차 + 필드 카테고리별 `report.md`), **web-search**(리서치 에이전트 + 5개 라우팅 소스 모듈: github-debug, general-web, academic-papers, chinese-tech, stackoverflow). 모든 단계에서 인간-루프(항목·필드·기간·배치 크기·목차 필드 확인), 프롬프트 템플릿은 변수만 치환하는 엄격한 계약, 근거 우선이며 불확실한 값은 `[uncertain]`으로 표시 — 값을 날조하지 않습니다. 4개의 참조 문서, `SKILL.toon`, `scripts/validate_json.py`, `scripts/install.sh`(`GLOBAL` / `WITH_DEPS` / `WITH_UPSTREAM` / `AGENTS` 노브) 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research`. Route-out: `academic-research`(인용 게이트 출판 파이프라인), `autoresearch`(ML 실험 탐색), `semble`(저장소 코드 검색). 138 → **139개 스킬**. |
 | **awesome-agent-skills: 하나의 라우터에 담은 18개 전문가 페르소나** | `awesome-agent-skills` 스킬을 추가했습니다 — [Shubhamsaboo/awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills)의 Awesome Agent Skills 컬렉션을 위한 jeo-skills 라우팅 프런트 도어입니다. 단일 스킬, **6개의 참조 파이프라인**, 18개 전문가 페르소나 + 자기개선(self-improving) 옵티마이저: **coding**(python-expert, debugger, fullstack-developer), **research**(deep-research, fact-checker, academic-researcher), **writing**(technical-writer, content-creator, editor, email-drafter, meeting-notes), **planning**(project-planner, sprint-planner, strategy-advisor, decision-helper, ux-designer), **data**(data-analyst, visualization-expert), **self-improving**(Google ADK Executor+Analyst+Mutator 스킬 최적화 루프). 요청을 알맞은 파이프라인 + 페르소나로 분류하고, 해당 페르소나의 프레임워크와 출력 형식으로 실행하며, 무결성 가드레일(인용 날조 금지, 모든 지적은 근거 제시, 페르소나 충실성, 고위험 결정은 인간-루프 유지)을 적용합니다. 6개의 참조 문서, `SKILL.toon`, `scripts/install.sh`(`GLOBAL` / `WITH_UPSTREAM` / `AGENTS` 노브) 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills` (업스트림 전체 컬렉션: `npx skills add shubhamsaboo/awesome-agent-skills`). Route-out: `academic-research`(인용 게이트 출판 파이프라인), `omc`/`omx`/`ohmg`(멀티 에이전트 오케스트레이션), `semble`(저장소 코드 검색), `code-refactoring`, `marketing-automation`, `drawio`/`slides-grab`. 137 → **138개 스킬**. |
 
 ## 🆕 v2026-06-23 업데이트
@@ -361,7 +362,7 @@ rtk init -g
 | `task-estimation` | software, GTM, game work 전반에서 스토리 포인트, T셔츠 사이징, split/spike 판단, 예측 안전형 불확실성 프레이밍을 담은 estimate packet anchor | 전체 |
 | `task-planning` | software, GTM, game work 전반에서 backlog cleanup, feature slicing, sprint/milestone prep, release packet을 다루고 estimation/board/review/사전 프레이밍으로의 route-out을 명시하는 packet-first planning anchor | 전체 |
 
-### 🔭 검색 및 분석 (11개)
+### 🔭 검색 및 분석 (12개)
 
 
 | 스킬 | 설명 | 플랫폼 |
@@ -370,6 +371,7 @@ rtk init -g
 | `skill-autoresearch` | 하나의 packet(ratchet-eligibility/ready/charter/baseline/mutation/support-sync/final report)을 먼저 고르고, `no ratchet justified`도 허용한 뒤 eval을 고정하고 점수로 keep/revert를 결정하며, hosted eval / ML autoresearch 작업은 바깥으로 라우팅하는 repo-local 스킬 ratcheting 루프 | 전체 |
 | `codebase-search` | 디버깅/리팩터링으로 넘어가기 전에 정의/참조, config·콘텐츠 소유면, 엔트리포인트, 영향 범위를 찾도록 한 가지 검색 packet을 고르는 라우팅형 리포 탐색 | 전체 |
 | `data-analysis` | 내보내기 데이터, 실험, 텔레메트리, KPI 설명을 위한 의사결정 중심 데이터 분석 | 전체 |
+| `deep-research` | 구조화된 인간-루프 딥리서치 워크플로([Weizhena/Deep-Research-skills](https://github.com/Weizhena/Deep-Research-skills))를 위한 라우팅 프런트 도어 — 주제를 확장 가능한 아웃라인으로 만들고, 항목별 병렬 web-search 에이전트로 검증된 JSON을 수집한 뒤 완전한 마크다운 리포트를 생성. 단일 스킬, 4개 참조 파이프라인(outline · deep · report · web-search) + 5개 라우팅 소스 모듈. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research` | 전체 |
 | `langsmith` | SDK 코드로 곧장 가지 않고 trace-debug, 평가, 리뷰 큐, 프롬프트 레지스트리, 멀티서비스 전파 중 한 packet을 먼저 고르는 라우팅형 LangSmith 스킬 | 전체 |
 | `opik` | Comet Opik 기반 오픈소스 LLM 옵저버빌리티·평가·최적화 — 서버 모드 라우팅(클라우드 / `./opik.sh` Docker / Kubernetes), `@opik.track` 트레이싱 + 50+ 프레임워크 통합, LLM-as-a-judge 메트릭, Datasets/Experiments + PyTest CI 게이트, 프로덕션 모니터링, Agent Optimizer, Guardrails. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill opik` | 전체 |
 | `log-analysis` | 앱·컨테이너/파드·브라우저+API·CI cascade·JSON/event·security-signal 로그 중 한 가지 evidence packet을 먼저 고른 뒤 디버깅/옵저버빌리티 작업으로 넘기는 routing-first 로그 트리아지 | 전체 |

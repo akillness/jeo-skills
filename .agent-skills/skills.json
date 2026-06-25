@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-06-15T00:00:00Z",
-  "skill_count": 143,
+  "skill_count": 144,
   "categories": {
     "planning-review": [
       "agentation",
@@ -53,6 +53,7 @@
       "autoresearch",
       "codebase-search",
       "data-analysis",
+      "deep-research",
       "langsmith",
       "log-analysis",
       "pattern-detection",
@@ -1026,6 +1027,50 @@
         {
           "command": "python3 .agent-skills/deep-dive/scripts/validate_deep_dive_artifacts.py --trace <trace.md> --spec <spec.md>",
           "source": "deep-dive/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "deep-research",
+      "description": "Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines (outline, deep, report, web-search) with 5 routed source modules. Plugin: npx skills add https://github.com/akillness/jeo-skills --skill deep-research",
+      "category": "search-analysis",
+      "path": "deep-research/SKILL.md",
+      "tags": [
+        "deep-research",
+        "structured-research",
+        "research-outline",
+        "web-search",
+        "literature-review",
+        "benchmark",
+        "competitor-analysis",
+        "due-diligence",
+        "parallel-agents",
+        "report-generation",
+        "human-in-the-loop"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini",
+        "Cursor",
+        "Copilot",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebSearch",
+        "WebFetch",
+        "Task"
+      ],
+      "commands": [
+        {
+          "command": "python .agent-skills/deep-research/scripts/validate_json.py -f {topic}/fields.yaml -j {output_dir}/{item_slug}.json",
+          "source": "deep-research/SKILL.md"
         }
       ]
     },

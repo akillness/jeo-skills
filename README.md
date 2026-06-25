@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-138-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
@@ -10,7 +10,7 @@
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**138 local skill folders · 138 installable skills · TOON Format · Cross-platform**
+**139 local skill folders · 139 installable skills · TOON Format · Cross-platform**
 
 
 
@@ -22,7 +22,7 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 138 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 139 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
 
 
 
@@ -32,6 +32,7 @@ A curated collection of 138 agent skills for spec-first, multi-agent LLM workflo
 
 | Change | Details |
 |--------|----------|
+| **deep-research: structured, parallel deep-research workflow** | Added `deep-research` — a jeo-skills routing front door for [Weizhena/Deep-Research-skills](https://github.com/Weizhena/Deep-Research-skills) (inspired by RhinoInsight, arXiv:2511.18743). One skill, **4 reference pipelines**: **outline** (`/research` · `/research-add-items` · `/research-add-fields` → extensible `outline.yaml` + `fields.yaml`), **deep** (`/research-deep` → parallel per-item web-search agents writing validated JSON, gated by `validate_json.py` field-coverage), **report** (`/research-report` → TOC with anchor links + per-field-category `report.md`), and **web-search** (the research agent + 5 routed source modules: github-debug, general-web, academic-papers, chinese-tech, stackoverflow). Human-in-the-loop at every stage (items, fields, time range, batch size, TOC fields); verbatim prompt-template contract; evidence-first with `[uncertain]` marking — never fabricates values. Ships 4 reference docs, `SKILL.toon`, `scripts/validate_json.py`, and `scripts/install.sh` (`GLOBAL` / `WITH_DEPS` / `WITH_UPSTREAM` / `AGENTS` knobs). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research`. Route-outs: `academic-research` (citation-gated publication pipeline), `autoresearch` (ML experiment search), `semble` (repo code search). 138 → **139 skills**. |
 | **awesome-agent-skills: 18 expert personas in one router** | Added `awesome-agent-skills` — a jeo-skills routing front door for the [Shubhamsaboo/awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills) Awesome Agent Skills collection. One skill, **6 reference pipelines**, 18 expert-persona skills + a self-improving optimizer: **coding** (python-expert, debugger, fullstack-developer), **research** (deep-research, fact-checker, academic-researcher), **writing** (technical-writer, content-creator, editor, email-drafter, meeting-notes), **planning** (project-planner, sprint-planner, strategy-advisor, decision-helper, ux-designer), **data** (data-analyst, visualization-expert), and **self-improving** (Google ADK Executor+Analyst+Mutator skill-optimization loop). Routes each request to the right pipeline + persona, then executes with that persona's framework and output format; integrity guardrails (no fabricated citations, justify every finding, persona fidelity, human-in-the-loop for high-stakes calls). Ships 6 reference docs, `SKILL.toon`, and `scripts/install.sh` (`GLOBAL` / `WITH_UPSTREAM` / `AGENTS` knobs). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills` (upstream full collection: `npx skills add shubhamsaboo/awesome-agent-skills`). Route-outs: `academic-research` (citation-gated publication pipeline), `omc`/`omx`/`ohmg` (multi-agent orchestration), `semble` (repo code search), `code-refactoring`, `marketing-automation`, `drawio`/`slides-grab`. 137 → **138 skills**. |
 
 
@@ -389,12 +390,13 @@ rtk init -g
 | `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing | All |
 
-### 🔭 Search & Analysis (12)
+### 🔭 Search & Analysis (13)
 
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `autoresearch` | Karpathy autonomous ML search front door — choose setup / `program.md` / bounded loop / results interpretation / constrained-hardware mode, preserve immutable `prepare.py` + 300s + `val_bpb`, route prompt/skill eval elsewhere | All |
+| `deep-research` | Routing front door for a structured, human-in-the-loop deep-research workflow ([Weizhena/Deep-Research-skills](https://github.com/Weizhena/Deep-Research-skills)) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines (outline · deep · report · web-search) + 5 routed source modules. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research` | All |
 | `skill-autoresearch` | Repo-local skill ratcheting loop: choose one packet (ratchet eligibility, readiness, charter, baseline, mutation, support-sync, final report), allow `no ratchet justified`, freeze evals, keep or revert by score, and route hosted eval / ML autoresearch work outward | All |
 | `codebase-search` | Routing-first repo navigation: choose one search packet for definitions/references, config/content ownership, entry-point discovery, or impact mapping before debugging/refactoring | All |
 | `data-analysis` | Decision-first dataset analysis for exports, experiments, telemetry, and KPI explanation | All |
