@@ -45,6 +45,9 @@ persona, then executes with that persona's discipline.
 > matches, this front door routes deterministically: identify the work type → pick
 > the pipeline → load the persona's framework → produce the persona's output packet.
 
+Each reference holds the **dismantled-and-merged upstream skill text** (per-skill
+frontmatter stripped, headings nested) — not a paraphrase — so the persona's full
+framework is self-contained here. `code-reviewer` is intentionally excluded.
 Read the matching pipeline reference before executing:
 - [references/coding-pipeline.md](references/coding-pipeline.md) — python-expert · debugger · fullstack-developer
 - [references/research-pipeline.md](references/research-pipeline.md) — deep-research · fact-checker · academic-researcher
