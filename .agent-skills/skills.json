@@ -417,7 +417,7 @@
     },
     {
       "name": "awesome-agent-skills",
-      "description": "Routing front door for the Awesome Agent Skills collection (Shubhamsaboo/awesome-llm-apps) — 19 expert personas + a self-improving optimizer across 6 reference pipelines (coding, research, writing, planning, data, self-improving). Classifies the request, picks pipeline + persona, executes with that persona's framework/output and integrity guardrails. Plugin: npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills"
+      "description": "Routing front door for the Awesome Agent Skills collection (Shubhamsaboo/awesome-llm-apps) — 18 expert personas + a self-improving optimizer across 6 reference pipelines (coding, research, writing, planning, data, self-improving). Classifies the request, picks pipeline + persona, executes with that persona's framework/output and integrity guardrails. Plugin: npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills"
     },
     {
       "name": "backend-testing",
