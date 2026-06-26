@@ -28,9 +28,14 @@ bash scripts/install.sh
 
 ## jeo-code (jeo)
 
-`jeo` discovers the skill automatically (`~/.agents/skills`), and the 45 commands
-surface as **slash aliases** straight from the `aliases:` frontmatter in `SKILL.md`
-— no per-command files needed. Confirm with `jeo skills obsidian-second-brain`.
+`jeo` discovers the skill automatically (`~/.agents/skills`). The 45 commands are
+declared in the `aliases:` frontmatter of `SKILL.md`, so jeo lists them as
+**slash aliases** in `jeo skills obsidian-second-brain`, the skill picker, and
+shell autocomplete. Note: in current `jeo-code` (v0.7.x) a skill is *invoked* only
+via the `$` entrypoint — run `$obsidian-second-brain <intent>` (or `$obsidian` by
+unique prefix). Typing `/idea-discovery` does not load the skill in jeo; the slash
+names are discovery/autocomplete hints here and remain live commands under Claude
+Code. Confirm registration with `jeo skills obsidian-second-brain`.
 
 `install.sh` also registers an **advisory** write-time AI-first validator as a
 `post-turn` hook in `~/.jeo/config.json`:
