@@ -1,0 +1,36 @@
+N:obsidian-second-brain
+D:Routing front door for obsidian-second-brain — a self-rewriting Obsidian vault that evolves Karpathy's LLM-Wiki pattern. Every source REWRITES existing pages instead of appending: people updated, claims revised, contradictions reconciled, patterns synthesized automatically. 45 commands across 4 layers, background + 4 scheduled agents, 4 role presets, AI-first write validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode.
+T:Read|Write|Edit|Bash|Grep|Glob|WebFetch
+G:obsidian second brain|second brain|self-rewriting vault|llm wiki|obsidian-save|obsidian-ingest|obsidian-reconcile|obsidian-challenge|obsidian-architect|vault automation|vault-first research
+F:Claude|Codex|Gemini|OpenCode|All
+
+L[4]{layer,commands}:
+  Operations(28),save · ingest · synthesize · reconcile · export · daily · calendar(4, Claude Code only) · log · task · person · decide · capture · find · review · board · project · health · adr · visualize · learn · init · architect · create-command
+  Thinking(7),challenge · panel · emerge · connect · vault-deep-synthesis · idea-discovery · graduate
+  Context(1),world (identity + state, progressive L0-L3 token budgets)
+  Research(7),x-read · x-pulse · research · research-deep · notebooklm · youtube · podcast
+
+U[6]:
+  User wants an Obsidian vault that maintains itself, not a static filing cabinet
+  Capture work into the vault: save a conversation, ingest URL/PDF/audio/screenshot, daily notes, tasks/people/decisions
+  Reconcile contradictions and synthesize cross-source patterns automatically
+  Thinking tools that push back: challenge a decision against your own history, panel, surface unnamed patterns
+  Pull research into the vault: X read/pulse, web research, vault-first deep research, NotebookLM, YouTube, podcast
+  Install/build the second-brain skill on Claude Code, Codex CLI, Gemini CLI, or OpenCode (incl. open models like Hermes)
+
+S[5]{n,action,details}:
+  1,Classify into a layer,Pick Operations/Thinking/Context/Research first, then the command; state the route explicitly (e.g. "Operations → /obsidian-ingest")
+  2,Honor the AI-first vault rule,Every note: `## For future Claude` preamble + retrieval frontmatter · rewrite don't append · bi-temporal facts · Two-Output Rule · raw/ is immutable
+  3,Run the command and propagate,ingest saves raw/ then rewrites 5-15 pages, resolves contradictions, synthesizes, updates index/log/daily
+  4,Install per CLI,Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` · upstream Claude Code quick-install · Codex/Gemini/OpenCode via build.sh
+  5,Automate to keep alive,Background agent (post-compaction) + scheduled morning/nightly/weekly/health agents + save reminders
+
+R:
+  obsidian:Obsidian plugin dev, CLI automation, URI handoff, JSON Canvas, Bases content patterns
+  llm-wiki:Underlying raw/wiki markdown layer, source summaries, query filing, lint passes
+  okf:Export the vault as a portable, vendor-neutral Open Knowledge Format bundle
+  notebooklm:Standalone source-grounded NotebookLM queries outside a vault workflow
+  scrapling:Adaptive web scraping when you only need raw extraction, not vault ingestion
+
+PLUGIN:npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain
+UPSTREAM:https://github.com/akillness/obsidian-second-brain (origin: eugeniughelbur/obsidian-second-brain, MIT)

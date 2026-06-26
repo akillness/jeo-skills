@@ -109,7 +109,7 @@ fi
 
 ---
 
-## Step 1 — Install All 138 Skills (Batch)
+## Step 1 — Install All 139 Skills (Batch)
 
 Install all skills to the global location, then link shared skills to all detected agents.
 Re-running this step safely overwrites existing skills (symlinks are updated in place).
@@ -126,7 +126,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 138 skills to global store, link shared skills to all detected agents
+# Install ALL 139 skills to global store, link shared skills to all detected agents
 # --full-depth: discovers nested skills (7 skills require this to be found)
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
@@ -134,7 +134,7 @@ skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 
 > **Global vs Project install — why skill files may be missing**
 >
-> **Global install** (`-g`): downloads all 138 skills from the GitHub repo into the agent's global
+> **Global install** (`-g`): downloads all 139 skills from the GitHub repo into the agent's global
 > skills store (`~/.claude/skills/`, `~/.codex/skills/`, etc.). Requires `--full-depth` to discover
 > the 7 skills whose `SKILL.md` is nested in a subdirectory. Without this flag only ~120 skills
 > are found and linked.
@@ -1040,7 +1040,7 @@ If no → skip silently. Never re-ask.
 
 ---
 
-## Skill Inventory (138 skills)
+## Skill Inventory (139 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
@@ -1099,6 +1099,7 @@ If no → skip silently. Never re-ask.
 | `obsidian` | `obsidian`, `obsidian plugin`, `obsidian cli`, `obsidian automation`, `obsidian development`, `obsidian eslint`, `obsidian markdown`, `obsidian bases`, `json-canvas`, `obsidian vault`, `obsidian uri` | **Unified Obsidian skill (v2.0)** — plugin development (27 ESLint rules, boilerplate, submission) + CLI automation (commands, TUI, URI handoff, developer mode) + content patterns (markdown, Bases, JSON Canvas). Plugin: `claude plugin marketplace add akillness/jeo-skills` |
 | `llm-wiki` | `llm-wiki`, `obsidian wiki`, `research vault` | Persistent markdown wiki maintenance — bootstrap raw/wiki layers, ingest sources, file queries, run lint passes |
 | `okf` | `okf`, `open knowledge format`, `knowledge bundle`, `okf document`, `knowledge atom`, `agent context format` | Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files (type/title/description/resource/tags/timestamp) for portable, interoperable AI-agent knowledge sharing; Python linter, consume helper, distribution guide |
+| `obsidian-second-brain` | `obsidian second brain`, `second brain`, `self-rewriting vault`, `llm wiki`, `obsidian-save`, `obsidian-ingest`, `obsidian-reconcile`, `obsidian-challenge`, `obsidian-architect`, `vault automation`, `vault-first research` | Routing front door for **obsidian-second-brain** — a self-rewriting Obsidian vault evolving Karpathy's LLM-Wiki: every source REWRITES existing pages, reconciles contradictions, and synthesizes patterns automatically. 45 commands across 4 layers (Operations / Thinking / Context / Research) + background & scheduled agents + 4 role presets + AI-first write validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` |
 
 | `game-build-log-triage` | `game build log`, `unity build failed`, `unreal packaging error` | Unity/Unreal build/editor/package log triage — isolate the first actionable engine/build failure |
 | `game-ci-cd-pipeline` | `game ci`, `unity build pipeline`, `unreal release pipeline` | Routing-first game CI/CD packets — classify branch-gate vs nightly/package-candidate vs release/certification lane, then choose setup, stage split, cache policy, preflight checks, artifact/release hygiene, or CI trust |

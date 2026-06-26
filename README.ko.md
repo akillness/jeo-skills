@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-138-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**138개 로컬 스킬 폴더 · 설치 가능 스킬 138개 · TOON 포맷 · 멀티플랫폼**
+**139개 로컬 스킬 폴더 · 설치 가능 스킬 139개 · TOON 포맷 · 멀티플랫폼**
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +20,7 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode를 위한 138개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode를 위한 139개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
 
 
@@ -62,6 +62,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 | 변경 | 상세 |
 |------|------|
 | **awesome-agent-skills 제거** | `awesome-agent-skills`(06-24 추가)를 카탈로그에서 제거했습니다. Shubhamsaboo/awesome-llm-apps 라우팅 프런트 도어는 더 이상 번들 스킬로 제공되지 않으며, 18개 전문 페르소나는 업스트림에서 `npx skills add shubhamsaboo/awesome-agent-skills`로 계속 사용할 수 있습니다. 카탈로그(`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`) 갱신. 139 → **138개 스킬**. |
+| **obsidian-second-brain: 스스로 다시 쓰는 Obsidian 볼트** | `obsidian-second-brain` 스킬을 추가했습니다 — [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain)(원본 [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain), MIT)을 위한 jeo-skills 라우팅 프런트 도어로, [Karpathy의 LLM-Wiki 패턴](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)을 **스스로 다시 쓰는 볼트**로 발전시킵니다: 모든 소스가 새 노트를 덧붙이는 대신 기존 페이지를 다시 씁니다(인물 갱신, 주장 수정, 모순 자동 조정, 교차 소스 패턴 자동 종합). 단일 스킬이 **4개 레이어 45개 명령**을 매핑합니다 — Operations(28: save/ingest/synthesize/reconcile/export/daily/calendar/architect/…), Thinking Tools(7: challenge/panel/emerge/connect/…), Context Engine(1: world), Research Toolkit(7: x-read/x-pulse/research/research-deep/notebooklm/youtube/podcast) — 여기에 백그라운드 에이전트 + 4개 스케줄 에이전트(morning/nightly/weekly/health), 4개 역할 프리셋(executive/builder/creator/researcher), 쓰기 시점 AI-first 볼트 검증기를 더합니다. 크로스 CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode(Hermes 같은 오픈 모델 포함). `/research` + `/research-deep`는 키 없이도 동작합니다. `SKILL.md` + `SKILL.toon`, 참조 문서 3개(`commands.md`, `install.md`, `vault-architecture.md`), `scripts/install.sh`(`GLOBAL` / `WITH_UPSTREAM` / `VAULT` / `AGENTS` 노브) 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain`. Route-out: `obsidian`(플러그인/CLI/URI 자동화), `llm-wiki`(raw 마크다운 위키 레이어), `okf`(이식 가능한 지식 번들), `notebooklm`(소스 기반 질의), `scrapling`(웹 추출). 138 → **139개 스킬**. |
 
 ## 🆕 v2026-06-24 업데이트
 
@@ -367,7 +368,7 @@ rtk init -g
 | `game-performance-profiler` | Unity/Unreal frame-time 트리아지 — bottleneck-first profiling brief, quick packet, benchmark route, target-device 검토, profiler escalation | 전체 |
 | `steam-store-launch-ops` | Packet-first Steam launch router — page-promise audit, wishlist signal check, demo readiness, event timing workback, launch-ops runbook 중 하나를 고름 | 전체 |
 
-### 🔧 유틸리티 (18개)
+### 🔧 유틸리티 (19개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -381,6 +382,7 @@ rtk init -g
 
 | `npm-git-install` | npm / pnpm / Yarn / Bun용 라우팅-우선 Node 패키지 전달 스킬 — temporary Git bridge, SHA pin, tarball, workspace, publish-first handoff를 안전하게 선택 | 전체 |
 | `obsidian` | **통합 Obsidian 스킬 (v2.0)** — 플러그인 개발(27개 ESLint 규칙, 보일러플레이트, 제출) + CLI 자동화(명령, TUI, URI handoff, 개발자 모드) + 콘텐츠 패턴(markdown, Bases, JSON Canvas). 플러그인: `claude plugin marketplace add akillness/jeo-skills` | 전체 |
+| `obsidian-second-brain` | **스스로 다시 쓰는 Obsidian 볼트**를 위한 라우팅 프런트 도어 (Karpathy의 LLM-Wiki를 발전) — 모든 소스가 기존 페이지를 다시 쓰고, 모순을 자동 조정하며, 패턴을 자동 종합. 4개 레이어 45개 명령(Operations / Thinking / Context / Research) + 백그라운드·스케줄 에이전트 + 4개 역할 프리셋 + AI-first 쓰기 검증기. 크로스 CLI. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` | 전체 |
 | `obsidian-cli` | *(alias → `obsidian`)* Obsidian 데스크톱 자동화 — 공식 CLI, `obsidian://` handoff, 개발자 명령 | 전체 |
 | `obsidian-plugin` | *(alias → `obsidian`)* Obsidian 플러그인 개발 — 27개 ESLint 규칙, 보일러플레이트 생성기, 제출 검증 | 전체 |
 | `opencontext` | 라우팅-우선 프로젝트/저장소 메모리 스킬 — memory-layer choice, load-context, search-context, store-conclusions, setup-integration, repo-packer route-out 중 하나를 골라 manifest / stable link / 에이전트 핸드오프 패킷을 다루고, 메모가 겹칠 때는 최고 신뢰 소스와 freshness 경고를 고릅니다 | 전체 |
@@ -690,6 +692,7 @@ npx vibe-kanban
 | `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `obsidian-cli` | [Obsidian CLI Help](https://obsidian.md/help/cli) | Proprietary |
 | `llm-wiki` | [karpathy/llm-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | — |
+| `obsidian-second-brain` | [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain) (포크: [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain)) | MIT |
 | `graphify` | [safishamsi/graphify](https://github.com/safishamsi/graphify) | MIT |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
 | `semble` | [MinishLab/semble](https://github.com/MinishLab/semble) | MIT |
