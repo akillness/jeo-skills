@@ -13,6 +13,9 @@ metadata:
 
 
 
+
+
+
 # compresso — Offline Batch Video & Image Compression
 
 > Free, open-source, fully offline desktop compression powered by FFmpeg, pngquant, jpegoptim, and gifski.

@@ -14,6 +14,9 @@ metadata:
 
 
 
+
+
+
 # Changelog Maintenance
 
 Use this skill when the deliverable is **release history or shipped-change communication**, not a broad documentation or launch-campaign bundle.

@@ -13,6 +13,9 @@ metadata:
 
 
 
+
+
+
 # browser-harness - self-healing LLM browser automation
 
 > **Keyword**: `browser-harness` · `self-healing browser` · `llm browser automation` · `cdp agent`

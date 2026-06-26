@@ -13,6 +13,9 @@ metadata:
 
 
 
+
+
+
 # claudekit — Claude Code workflow toolkit
 
 `claudekit` is an opinionated Claude Code plugin that bundles reusable skills/agents and an interactive setup wizard.

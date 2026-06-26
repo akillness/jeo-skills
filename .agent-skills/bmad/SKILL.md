@@ -13,6 +13,9 @@ metadata:
 
 
 
+
+
+
 # BMAD Packet-First Router
 
 Use `bmad` as the **common-layer BMAD/BMM front door**.

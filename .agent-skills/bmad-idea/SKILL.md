@@ -13,6 +13,9 @@ metadata:
 
 
 
+
+
+
 # BMAD Idea Router
 
 Use this skill as the repository's **pre-planning creative intake and concept-routing layer**.

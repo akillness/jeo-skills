@@ -13,6 +13,9 @@ metadata:
 
 
 
+
+
+
 # ccpi-marketplace — Tons of Skills CLI & Plugin Marketplace Operations
 
 Use this skill when the task is operating the **Tons of Skills** ecosystem through CLI commands instead of manual browsing.
