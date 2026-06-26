@@ -74,6 +74,57 @@ Route out when the real job is narrower:
 - **`notebooklm`** — standalone source-grounded NotebookLM queries outside a vault workflow.
 - **`scrapling`** — adaptive web scraping when you only need raw content extraction, not vault ingestion.
 
+
+## Invoking in jeo — the `$` entrypoint
+
+In `jeo-code` (jeo) a skill loads **only** through the `$` entrypoint, never through
+`/slash` typing. The `aliases:` frontmatter still publishes all 45 names into
+`jeo skills`, the skill picker, and shell autocomplete for discovery, but the live
+trigger is:
+
+```
+$obsidian-second-brain <command-or-intent> [args]
+```
+
+`$obsidian-s` (or any unambiguous prefix) resolves too; bare `$obsidian` does **not** —
+that exact-matches the separate `obsidian` skill. Everything after the skill token is
+handed to this file as the **intent**. Dispatch the intent deterministically:
+
+1. **Explicit command** — if the first intent word matches one of the 45 command names
+   (with or without a leading `/` and with or without the `obsidian-` prefix), run that
+   exact command and treat the rest of the line as its arguments. All of these route to
+   `/obsidian-ingest`:
+
+   ```
+   $obsidian-second-brain /obsidian-ingest https://example.com/post
+   $obsidian-second-brain obsidian-ingest https://example.com/post
+   $obsidian-second-brain ingest https://example.com/post
+   ```
+
+   More examples:
+
+   ```
+   $obsidian-second-brain save                    → /obsidian-save
+   $obsidian-second-brain reconcile               → /obsidian-reconcile
+   $obsidian-second-brain challenge "migrate to X" → /obsidian-challenge
+   $obsidian-second-brain research-deep "rag eval" → /research-deep
+   $obsidian-second-brain world                   → /obsidian-world
+   $obsidian-second-brain x-read <url>            → /x-read
+   ```
+
+   The non-prefixed names that stay literal (no `obsidian-`): `create-command`,
+   `idea-discovery`, `notebooklm`, `podcast`, `research`, `research-deep`,
+   `vault-deep-synthesis`, `x-pulse`, `x-read`, `youtube`.
+
+2. **Natural-language intent** — if the first word is not a command name, classify the
+   request through Step 1 below (layer → command) and state the route before acting,
+   e.g. `$obsidian-second-brain save everything from this chat` → *"Operations →
+   `/obsidian-save`"*.
+
+The chosen command's behavior, the AI-first vault rule, and propagation are identical to
+the slash version — only the trigger surface (`$` instead of `/`) differs. Full command
+table in [references/commands.md](references/commands.md).
+
 ## Instructions
 
 ### Step 1 — Classify the request into one of the 4 layers
@@ -117,7 +168,7 @@ For the high-leverage flows:
 Install path differs per CLI; vault behavior is identical. Full matrix + research-toolkit key table in [references/install.md](references/install.md).
 
 - **Plugin (recommended for this jeo-skill front door):** `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` (or `bash scripts/install.sh`).
-- **jeo-code (jeo):** discovered automatically; the 45 commands surface as slash aliases from `SKILL.md` frontmatter. `JEO=1 VAULT=<dir> bash scripts/install.sh` also registers an advisory write-time AI-first validator as a `post-turn` hook (jq-merged with backup, append-only, idempotent; remove with `UNINSTALL=1`). The Claude-only `/` palette, SessionStart loader, and PostCompact agent are not ported — jeo lacks those hook events.
+- **jeo-code (jeo):** discovered automatically. Invoke via the `$` entrypoint — `$obsidian-second-brain <command-or-intent>` (see [Invoking in jeo](#invoking-in-jeo--the--entrypoint)); the 45 names from the `aliases:` frontmatter surface in `jeo skills` / picker / autocomplete for discovery, but jeo never loads a skill from `/slash` typing. `JEO=1 VAULT=<dir> bash scripts/install.sh` also registers an advisory write-time AI-first validator as a `post-turn` hook (jq-merged with backup, append-only, idempotent; remove with `UNINSTALL=1`). The Claude-only `/` palette, SessionStart loader, and PostCompact agent are not ported — jeo lacks those hook events.
 - **Upstream Claude Code:** `curl -fsSL https://raw.githubusercontent.com/akillness/obsidian-second-brain/main/scripts/quick-install.sh | bash`, then `/obsidian-init`.
 - **Upstream Codex / Gemini / OpenCode:** `git clone` then `bash scripts/build.sh --platform <codex-cli|gemini-cli|opencode>` and copy `dist/<platform>/` into the vault. Codex needs `bash scripts/install-codex-wrappers.sh` for named command shims.
 - **Research toolkit (optional):** `cp .env.example ~/.config/obsidian-second-brain/.env`, add keys, `uv sync`. Or `bash scripts/install.sh` and answer "y" to the research prompt. `/research` + `/research-deep` work key-less.
