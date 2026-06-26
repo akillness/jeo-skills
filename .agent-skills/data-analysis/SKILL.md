@@ -1,20 +1,14 @@
 ---
 name: data-analysis
-description: >
-  Analyze datasets with a decision-first workflow. Use when the user needs to
-  inspect CSV/JSON/Parquet/SQL extracts, validate data quality, explain trends,
-  compare segments, summarize experiment or telemetry results, or turn raw tables
-  into evidence-backed findings — even if they ask in domain language like KPI,
-  retention, funnel, cohort, revenue, campaign, export, dashboard data, or game
-  telemetry. Choose the right lane (spreadsheet-scale triage, SQL slicing,
-  notebook/statistical analysis, or stakeholder-ready summary) and hand off
-  cleanly to dashboard, anomaly-detection, or implementation skills when needed.
+description: ">"
 allowed-tools: Read Grep Glob Bash
 metadata:
   tags: data-analysis, csv, sql, notebooks, telemetry, experimentation, analytics
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.0"
+  version: 2.0
 ---
+
+
 
 # Data Analysis
 

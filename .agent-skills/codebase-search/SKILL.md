@@ -1,20 +1,14 @@
 ---
 name: codebase-search
-description: >
-  Route repo-navigation requests to the right search packet before editing anything.
-  Use when the user needs to find where something lives, who references it, which
-  files own a config/content surface, what must be inspected before a change, or
-  how to narrow a large repo without drifting into debugging or refactoring.
-  Choose one packet: exact-text, symbol/indexed, structural, config/content,
-  hosted search, or graph/path trace. Triggers on: where is this defined, who uses
-  this, find call sites, config ownership, entry point, impact before refactor,
-  shortcode/frontmatter search, scene/asset reference hunt, repo archaeology.
+description: ">"
 allowed-tools: Read Grep Glob Bash
 metadata:
   tags: codebase-search, code-navigation, repo-triage, impact-analysis, grep, ripgrep, ast-grep
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.1"
+  version: 2.1
 ---
+
+
 
 # Codebase Search
 

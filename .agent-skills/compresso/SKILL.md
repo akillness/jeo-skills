@@ -1,14 +1,6 @@
 ---
 name: compresso
-description: >
-  AI agent skill for CompressO — a free, open-source, offline desktop tool for
-  batch video and image compression built with Tauri + React. Use when the user
-  needs to compress, trim, convert, or embed subtitles into video/image files
-  locally without any network dependency. Covers installation (Homebrew, DMG,
-  MSI, AppImage, DEB), build from source (Rust + Node.js + pnpm), and guidance
-  on FFmpeg/pngquant/jpegoptim/gifski pipelines. Triggers on: compresso,
-  compress video, compress image, batch compression, ffmpeg compression,
-  tauri desktop compression, offline video compress.
+description: ">"
 allowed-tools: Read Write Bash Grep Glob WebFetch
 metadata:
   tags: compresso, compression, video-compression, image-compression, batch-compression, ffmpeg, tauri, offline, cross-platform, pngquant, jpegoptim, gifski
@@ -18,6 +10,8 @@ metadata:
   source: codeforreal1/compressO
   license: AGPL-3.0
 ---
+
+
 
 # compresso — Offline Batch Video & Image Compression
 

@@ -1,24 +1,16 @@
 ---
 name: debugging
-description: >
-  Run a reproduce → isolate → verify debugging workflow for concrete bugs,
-  regressions, flaky failures, and environment-specific behavior. Use when the
-  user already has a failing command, test, request, UI flow, or narrowed symptom
-  and needs root-cause diagnosis, regression isolation, or fix verification rather
-  than raw log-line selection, broad test-policy design, PR review, or generic
-  performance tuning.
+description: ">"
+compatibility: ">"
 allowed-tools: Read Grep Glob Bash Write
-compatibility: >
-  Best for code-level and behavior-level debugging across CLI, backend, frontend,
-  fullstack, CI, and game/runtime workflows after the failure is concrete enough
-  to test. Not for symptom-first log triage, observability-platform setup,
-  preventive diff review, or broad performance-optimization strategy.
 metadata:
   tags: debugging, regression-isolation, reproduction, flaky-tests, git-bisect, root-cause
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.1"
+  version: 2.1
   source: akillness/jeo-skills
 ---
+
+
 
 # Debugging
 

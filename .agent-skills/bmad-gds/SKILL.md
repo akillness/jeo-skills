@@ -1,27 +1,17 @@
 ---
 name: bmad-gds
-description: >
-  Orchestrate AI-assisted indie game development across concepting, GDD shaping,
-  milestone planning, playtest synthesis, build triage, and launch-readiness
-  decisions. Use when a solo developer or small game team needs one coordinating
-  skill to turn a mixed packet — idea notes, backlog state, playtest feedback,
-  bug/build issues, or a festival/release target — into the next game-production
-  artifact and route specialist work to the right downstream skill. Triggers on:
-  bmad-gds, game studio workflow, game milestone plan, GDD to backlog,
-  playtest-to-priorities, game producer copilot, indie game planning, demo prep.
+description: ">"
+compatibility: ">"
 allowed-tools: Read Write Bash Grep Glob
-compatibility: >
-  Best for solo developers and small teams working in Unity, Unreal, Godot, or
-  custom-engine projects. This is a coordination and routing skill, not a
-  substitute for engine-specific debugging, detailed profiling, or full launch
-  marketing execution.
 metadata:
   tags: bmad, gds, game-development, game-production, gdd, milestone-planning, playtesting, launch-ops, orchestration
   platforms: Claude, Gemini, Codex, OpenCode
   keyword: bmad-gds
-  version: "1.0.0"
+  version: 1.0.0
   source: akillness/jeo-skills
 ---
+
+
 
 # BMAD Game Development Studio
 

@@ -1,37 +1,19 @@
 ---
 name: cli-anything
-description: >
-  Make any software agent-native with HKUDS CLI-Anything — route between
-  four modes: install ready-made CLI harnesses via the CLI-Hub package
-  manager (`pip install cli-anything-hub`, then `cli-hub
-  list/search/info/install/launch`), give agents the autonomous discovery
-  meta-skill (`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill`),
-  generate a new harness from any codebase or GitHub repo via the 7-phase
-  pipeline (`/plugin install cli-anything` → `/cli-anything <path>`), or
-  iterate with `/cli-anything:refine`, `:test`, `:validate`. 40+ production
-  harnesses (GIMP, Blender, LibreOffice, OBS, ComfyUI, Ollama, Godot,
-  QGIS, …), 2,461 passing tests, Click CLIs with REPL + `--json` output.
-  Use when agents must drive real desktop/server software without GUI
-  automation. Triggers on: cli-anything, cli-hub, cli-anything-hub,
-  agent-native cli, make software agent-native, cli harness generation,
-  /cli-anything, harness refine, HKUDS cli.
+description: ">"
+compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
-compatibility: >
-  Cross-platform wrapper for the CLI-Anything ecosystem usable from Claude
-  Code (marketplace plugin), Codex (bundled skill installer), OpenCode
-  (commands), OpenClaw, Pi, Hermes, Qodercli, GitHub Copilot CLI, and Goose.
-  Routes agent-team architecture to `harness`, Claude plugin marketplace
-  browsing to `ccpi-marketplace`, and no-codebase GUI/browser automation to
-  `browser-harness`.
 metadata:
   tags: cli-anything, cli-hub, agent-native, computer-use, cli-generation, harness, click, repl, json-output, hkuds, plugin
   platforms: Claude, Codex, OpenCode, OpenClaw, Pi, Hermes, Copilot, All
   keyword: cli-anything
-  version: "1.0.0"
-  upstream: https://github.com/HKUDS/CLI-Anything
+  version: 1.0.0
+  upstream: "https://github.com/HKUDS/CLI-Anything"
   installer: pip install cli-anything-hub
   source: akillness/jeo-skills
 ---
+
+
 
 # cli-anything — Make Any Software Agent-Native
 

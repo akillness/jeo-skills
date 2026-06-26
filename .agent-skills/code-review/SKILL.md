@@ -1,23 +1,16 @@
 ---
 name: code-review
-description: >
-  Turn a PR, diff, merge request, or patch stack into one evidence-first review
-  brief. Use when the main job is deciding approve vs request-changes vs block,
-  naming the highest-risk findings, calling out missing proof for risky paths,
-  and routing Git cleanup, debugging, test-policy, visual-review, or repo-admin
-  work to the right neighboring skill instead of absorbing it.
+description: ">"
+compatibility: ">"
 allowed-tools: Read Grep Glob Bash Write
-compatibility: >
-  Best for code and change-set review across CLI/dev workflow, backend,
-  frontend, fullstack, and game-programming repos. Not for local Git mechanics,
-  runtime debugging, broad testing-program design, pure UI critique, or hosted
-  PR / repository administration.
 metadata:
   tags: code-review, pull-request-review, diff-review, security-review, risk-review, pre-merge
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.1"
+  version: 2.1
   source: akillness/jeo-skills
 ---
+
+
 
 # Code Review
 

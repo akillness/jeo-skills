@@ -1,43 +1,20 @@
 ---
 name: codeflow
-description: >
-  Turn any GitHub repo, local folder, PR, or markdown/Obsidian vault into an
-  interactive architecture map with CodeFlow — a zero-build, single
-  `index.html` browser app (React 18 + D3.js from pinned CDNs) that runs 100%
-  client-side with no backend and no data collection. One routing-first skill:
-  choose an input (public repo, private repo with a local token, local
-  files/folder, PR URL, or markdown vault), pick a visualization mode
-  (folder / layer / churn / blast), and read the analysis — interactive
-  dependency graph, blast-radius "what breaks if I change this", code
-  ownership from git history, a heuristic security scanner (hardcoded
-  secrets, SQL injection, eval, debug statements), design-pattern and
-  anti-pattern detection, an A–F health score, an activity heatmap, and PR
-  impact analysis — then export JSON / Markdown / text / SVG / PDF or drop a
-  self-updating CodeFlow Card SVG on a README via GitHub Action. Use when the
-  user wants to understand an unfamiliar codebase, scope a change's blast
-  radius, audit architecture health, or visualize note/wiki-link graphs.
-  Triggers on: codeflow, code flow, visualize codebase, architecture map,
-  dependency graph, blast radius, code ownership, codebase health score,
-  pr impact analysis, repo architecture, wiki-link graph, obsidian graph.
+description: ">"
+compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
-compatibility: >
-  Cross-platform codebase-visualization wrapper usable from Claude Code,
-  Codex, Gemini CLI, and OpenCode. Wraps the upstream CodeFlow web app
-  (braedonsaunders/codeflow, MIT) — a single self-hosted `index.html` plus an
-  optional CodeFlow Card GitHub Action. No MCP server, no daemon, no build
-  step. Routes editable diagram authoring to `drawio`/`mermaid`,
-  token-efficient agent code search to `semble`, repo navigation packets to
-  `codebase-search`, and durable knowledge-graph generation to `graphify`.
 metadata:
   tags: codeflow, codebase-visualization, dependency-graph, blast-radius, code-ownership, health-score, pr-impact, security-scanner, wiki-link-graph, plugin
   platforms: Claude, Codex, Gemini, OpenCode, All
   keyword: codeflow
-  version: "1.0.0"
-  upstream: https://github.com/braedonsaunders/codeflow
-  installer: git clone https://github.com/braedonsaunders/codeflow.git && open codeflow/index.html
+  version: 1.0.0
+  upstream: "https://github.com/braedonsaunders/codeflow"
+  installer: "git clone https://github.com/braedonsaunders/codeflow.git && open codeflow/index.html"
   source: akillness/jeo-skills
   license: MIT
 ---
+
+
 
 # codeflow — Visualize Codebase Architecture in Seconds
 

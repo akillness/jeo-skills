@@ -1,26 +1,17 @@
 ---
 name: bmad
-description: >
-  Route BMAD/BMM work from the packet the user already has now: idea notes, product
-  brief, PRD, architecture draft, review feedback, existing repo state, or milestone
-  pressure. Use when the user wants a structured BMAD workflow, asks what phase or
-  artifact comes next, needs a portable front door across Claude/Codex/Gemini/OpenCode,
-  or needs to decide whether the next move is ideation, planning, architecture, review,
-  execution slicing, or a runtime handoff. Triggers on: bmad, BMAD, BMM, workflow-init,
-  workflow-status, what phase are we in, what should we write next, product brief,
-  PRD, architecture next, sprint plan, brownfield planning, existing repo BMAD.
+description: ">"
+compatibility: ">"
 allowed-tools: Read Write Bash Grep Glob
-compatibility: >
-  Core packet-first BMAD/BMM router for Claude, Codex, Gemini, and OpenCode workflows.
-  Runtime-specific orchestration belongs in `omc`, `omx`, or `ohmg`; approval gates
-  belong in `plannotator`; execution slicing belongs in `task-planning`.
 metadata:
   tags: bmad, workflow, orchestration, phased-development, planning, architecture, implementation
   platforms: Claude, Gemini, Codex, OpenCode
   keyword: bmad
-  version: "2.1.0"
+  version: 2.1.0
   source: akillness/jeo-skills
 ---
+
+
 
 # BMAD Packet-First Router
 
