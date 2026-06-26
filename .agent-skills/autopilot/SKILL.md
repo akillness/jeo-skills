@@ -19,6 +19,9 @@ metadata:
 
 
 
+
+
+
 # Autopilot
 
 Use this skill as the exact-name front door for `$autopilot` in Codex-style skill

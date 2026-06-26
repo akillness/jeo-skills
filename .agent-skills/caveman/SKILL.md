@@ -12,6 +12,9 @@ metadata:
 
 
 
+
+
+
 # Caveman
 
 Ultra-compressed communication. ~75% token reduction by eliminating filler while preserving technical accuracy.

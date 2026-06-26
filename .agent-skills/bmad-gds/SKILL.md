@@ -13,6 +13,9 @@ metadata:
 
 
 
+
+
+
 # BMAD Game Development Studio
 
 Use this skill as the **game producer / orchestration layer** for the repository's game-development cluster.

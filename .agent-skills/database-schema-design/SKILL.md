@@ -14,6 +14,9 @@ metadata:
 
 
 
+
+
+
 # Database Schema Design
 
 Use this skill when the main job is **choosing and evolving the storage model**, not dumping generic SQL or ORM snippets.
