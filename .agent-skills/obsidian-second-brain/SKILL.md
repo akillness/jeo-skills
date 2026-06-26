@@ -21,6 +21,7 @@ description: >
   raw markdown wiki layer, `okf` for portable knowledge bundles, `notebooklm` for
   source-grounded NotebookLM queries, `scrapling` for web-content extraction.
 allowed-tools: Read Write Edit Bash Grep Glob WebFetch
+aliases: /create-command /idea-discovery /notebooklm /obsidian-adr /obsidian-agenda /obsidian-architect /obsidian-board /obsidian-calendar /obsidian-capture /obsidian-catchup /obsidian-challenge /obsidian-connect /obsidian-daily /obsidian-decide /obsidian-emerge /obsidian-export /obsidian-find /obsidian-graduate /obsidian-health /obsidian-init /obsidian-ingest /obsidian-learn /obsidian-log /obsidian-meeting /obsidian-panel /obsidian-person /obsidian-project /obsidian-projects /obsidian-recap /obsidian-reconcile /obsidian-recurring /obsidian-review /obsidian-save /obsidian-schedule /obsidian-synthesize /obsidian-task /obsidian-visualize /obsidian-world /podcast /research /research-deep /vault-deep-synthesis /x-pulse /x-read /youtube
 compatibility: >
   Cross-CLI — one codebase builds dispatchers for Claude Code (CLAUDE.md), Codex
   CLI / OpenCode (AGENTS.md), and Gemini CLI (GEMINI.md). The vault behavior is
@@ -116,6 +117,7 @@ For the high-leverage flows:
 Install path differs per CLI; vault behavior is identical. Full matrix + research-toolkit key table in [references/install.md](references/install.md).
 
 - **Plugin (recommended for this jeo-skill front door):** `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` (or `bash scripts/install.sh`).
+- **jeo-code (jeo):** discovered automatically; the 45 commands surface as slash aliases from `SKILL.md` frontmatter. `JEO=1 VAULT=<dir> bash scripts/install.sh` also registers an advisory write-time AI-first validator as a `post-turn` hook (jq-merged with backup, append-only, idempotent; remove with `UNINSTALL=1`). The Claude-only `/` palette, SessionStart loader, and PostCompact agent are not ported — jeo lacks those hook events.
 - **Upstream Claude Code:** `curl -fsSL https://raw.githubusercontent.com/akillness/obsidian-second-brain/main/scripts/quick-install.sh | bash`, then `/obsidian-init`.
 - **Upstream Codex / Gemini / OpenCode:** `git clone` then `bash scripts/build.sh --platform <codex-cli|gemini-cli|opencode>` and copy `dist/<platform>/` into the vault. Codex needs `bash scripts/install-codex-wrappers.sh` for named command shims.
 - **Research toolkit (optional):** `cp .env.example ~/.config/obsidian-second-brain/.env`, add keys, `uv sync`. Or `bash scripts/install.sh` and answer "y" to the research prompt. `/research` + `/research-deep` work key-less.

@@ -5,26 +5,38 @@
 # clone the full upstream vault skill (45 commands + background/scheduled agents)
 # from akillness/obsidian-second-brain.
 #
+# It additionally wires the skill into jeo-code (jeo): the 45 commands surface as
+# slash aliases automatically (from SKILL.md frontmatter), and a write-time
+# AI-first validator is registered as an advisory post-turn hook.
+#
 # Idempotent and safe to re-run.
 #
 # Env knobs:
 #   GLOBAL=1        - install the skill globally (npx skills add -g)
 #   WITH_UPSTREAM=1 - also clone the full upstream obsidian-second-brain vault skill
-#   VAULT=<dir>     - when WITH_UPSTREAM=1, run upstream setup.sh against this vault
+#   VAULT=<dir>     - vault root for the jeo AI-first hook (and upstream setup.sh)
 #   AGENTS=<list>   - comma/space agents for -a targeting (e.g. "claude-code,codex")
+#   JEO=1|0|auto    - jeo wiring: 1 force, 0 skip, auto (default) wires when
+#                     ~/.jeo/config.json exists
+#   JEO_CONFIG=<f>  - override jeo config path (default ~/.jeo/config.json)
+#   UNINSTALL=1     - remove the jeo AI-first hook (with backup) and exit
 #
 # Usage:
 #   bash scripts/install.sh
+#   JEO=1 VAULT="$HOME/.llm-wiki" bash scripts/install.sh
 #   GLOBAL=1 WITH_UPSTREAM=1 VAULT="$HOME/my-vault" AGENTS="claude-code,codex" bash scripts/install.sh
+#   UNINSTALL=1 bash scripts/install.sh
 
 set -euo pipefail
 
 log()  { printf '\033[1;34m[obsidian-second-brain]\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m[obsidian-second-brain]\033[0m %s\n' "$*" >&2; }
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_URL="https://github.com/akillness/jeo-skills"
 UPSTREAM_URL="https://github.com/akillness/obsidian-second-brain"
 SKILL="obsidian-second-brain"
+JEO_CONFIG="${JEO_CONFIG:-$HOME/.jeo/config.json}"
 
 # Build optional flags
 GLOBAL_FLAG=""
@@ -79,7 +91,155 @@ install_upstream() {
   fi
 }
 
+# Locate the installed AI-first adapter (prefer the installed skill dirs).
+resolve_adapter() {
+  local cand
+  for cand in \
+    "$HOME/.agents/skills/$SKILL/scripts/jeo-validate-ai-first.sh" \
+    "$HOME/.claude/skills/$SKILL/scripts/jeo-validate-ai-first.sh" \
+    "$SCRIPT_DIR/jeo-validate-ai-first.sh"; do
+    if [ -f "$cand" ]; then
+      printf '%s' "$cand"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Register the advisory AI-first validator as a jeo post-turn hook.
+wire_jeo() {
+  case "${JEO:-auto}" in
+    0) return 0 ;;
+    1) ;;  # forced
+    *) [ -f "$JEO_CONFIG" ] || return 0 ;;  # auto: only when jeo is present
+  esac
+
+  if [ ! -f "$JEO_CONFIG" ]; then
+    warn "JEO requested but $JEO_CONFIG not found — skipping jeo wiring."
+    return 0
+  fi
+  if ! command -v jq >/dev/null 2>&1; then
+    warn "jq not found — cannot safely edit $JEO_CONFIG. Install jq and re-run with JEO=1."
+    return 0
+  fi
+
+  local adapter
+  if ! adapter="$(resolve_adapter)"; then
+    warn "AI-first adapter not found — skipping jeo hook (re-run after the skill is installed)."
+    return 0
+  fi
+  chmod +x "$adapter" 2>/dev/null || true
+
+  local vault="${VAULT:-$HOME/.llm-wiki}"
+  if [ ! -d "$vault" ]; then
+    warn "Vault '$vault' not found — set VAULT=<dir> to enable the AI-first hook. Skipping hook."
+    return 0
+  fi
+
+  local run="OBSIDIAN_VAULT_PATH=\"$vault\" bash \"$adapter\""
+  local bak tmp
+  bak="$JEO_CONFIG.bak.osb-$(date +%Y%m%d-%H%M%S)"
+  cp "$JEO_CONFIG" "$bak"
+  tmp="$(mktemp)"
+
+  if jq -e '.hooks.hooks[]? | select((.run // "") | test("jeo-validate-ai-first"))' "$JEO_CONFIG" >/dev/null 2>&1; then
+    log "AI-first hook already present — refreshing its run command (vault: $vault)"
+    jq --arg run "$run" '
+      .hooks.hooks |= map(
+        if ((.run // "") | test("jeo-validate-ai-first"))
+        then { event: "post-turn", match: { tool: "write|edit" }, run: $run, timeoutMs: 15000 }
+        else . end)
+    ' "$JEO_CONFIG" > "$tmp"
+  else
+    log "Adding AI-first post-turn hook (advisory) for vault: $vault"
+    # Append only — never reassign the array, to preserve existing jeo hooks.
+    jq --arg run "$run" '
+      .hooks = (.hooks // {}) |
+      .hooks.hooks = ((.hooks.hooks // []) + [{
+        event: "post-turn",
+        match: { tool: "write|edit" },
+        run: $run,
+        timeoutMs: 15000
+      }])
+    ' "$JEO_CONFIG" > "$tmp"
+  fi
+
+  if [ -s "$tmp" ] && jq empty "$tmp" 2>/dev/null; then
+    mv "$tmp" "$JEO_CONFIG"
+    log "jeo config updated (backup: $bak)"
+  else
+    rm -f "$tmp"
+    warn "Merged config invalid — left $JEO_CONFIG unchanged (backup at $bak)."
+  fi
+}
+
+# Remove the AI-first hook and restore a clean config.
+uninstall_jeo() {
+  if [ ! -f "$JEO_CONFIG" ]; then
+    warn "$JEO_CONFIG not found — nothing to uninstall."
+    return 0
+  fi
+  if ! command -v jq >/dev/null 2>&1; then
+    warn "jq required to uninstall the hook safely. Aborting."
+    return 0
+  fi
+  local bak tmp
+  bak="$JEO_CONFIG.bak.osb-uninstall-$(date +%Y%m%d-%H%M%S)"
+  cp "$JEO_CONFIG" "$bak"
+  tmp="$(mktemp)"
+  jq '.hooks.hooks |= (map(select(((.run // "") | test("jeo-validate-ai-first")) | not)))' \
+    "$JEO_CONFIG" > "$tmp"
+  if [ -s "$tmp" ] && jq empty "$tmp" 2>/dev/null; then
+    mv "$tmp" "$JEO_CONFIG"
+    log "Removed AI-first hook from $JEO_CONFIG (backup: $bak)"
+  else
+    rm -f "$tmp"
+    warn "Uninstall produced invalid config — left unchanged (backup at $bak)."
+  fi
+}
+
+# Report what got wired and the deliberately-unported Claude-only surfaces.
+verify_report() {
+  local skill_md=""
+  local cand
+  for cand in \
+    "$HOME/.agents/skills/$SKILL/SKILL.md" \
+    "$HOME/.claude/skills/$SKILL/SKILL.md" \
+    "$SCRIPT_DIR/../SKILL.md"; do
+    [ -f "$cand" ] && { skill_md="$cand"; break; }
+  done
+
+  if [ -n "$skill_md" ]; then
+    local n
+    n="$(grep -m1 '^aliases:' "$skill_md" | grep -o '/[A-Za-z0-9-]*' | wc -l | tr -d ' ')"
+    log "Slash aliases declared in SKILL.md: ${n:-0} (expect 45)"
+  fi
+
+  if command -v jq >/dev/null 2>&1 && [ -f "$JEO_CONFIG" ]; then
+    if jq -e '.hooks.hooks[]? | select((.run // "") | test("jeo-validate-ai-first"))' "$JEO_CONFIG" >/dev/null 2>&1; then
+      log "jeo AI-first hook: present"
+    else
+      log "jeo AI-first hook: not registered (set JEO=1 VAULT=<dir> to enable)"
+    fi
+    jq empty "$JEO_CONFIG" >/dev/null 2>&1 && log "jeo config: valid JSON" || warn "jeo config: INVALID JSON"
+  fi
+
+  log "Not ported to jeo (Claude Code only): / dispatcher palette, SessionStart"
+  log "context loader, PostCompact background agent. Vault behavior is identical;"
+  log "only the trigger surface differs."
+}
+
+# ---- main ----
+if [ "${UNINSTALL:-0}" = "1" ]; then
+  log "Uninstalling jeo AI-first hook"
+  uninstall_jeo
+  log "Uninstall complete."
+  exit 0
+fi
+
 log "Starting $SKILL setup"
 install_skill
 install_upstream
+wire_jeo
+verify_report
 log "Done. See .agent-skills/$SKILL/SKILL.md for the routing guide and 45-command reference."

@@ -22,6 +22,39 @@ bash scripts/install.sh
 - `WITH_UPSTREAM=1` — also clone the full upstream vault skill (45 commands + agents)
 - `VAULT=<dir>` — when `WITH_UPSTREAM=1`, run the upstream `setup.sh` against this vault
 - `AGENTS=<list>` — comma/space agent targets for `-a` (e.g. `claude-code,codex`)
+- `JEO=1|0|auto` — jeo wiring: `1` force, `0` skip, `auto` (default) wires when `~/.jeo/config.json` exists
+- `JEO_CONFIG=<file>` — override the jeo config path (default `~/.jeo/config.json`)
+- `UNINSTALL=1` — remove the jeo AI-first hook (creates a backup) and exit
+
+## jeo-code (jeo)
+
+`jeo` discovers the skill automatically (`~/.agents/skills`), and the 45 commands
+surface as **slash aliases** straight from the `aliases:` frontmatter in `SKILL.md`
+— no per-command files needed. Confirm with `jeo skills obsidian-second-brain`.
+
+`install.sh` also registers an **advisory** write-time AI-first validator as a
+`post-turn` hook in `~/.jeo/config.json`:
+
+```bash
+JEO=1 VAULT="$HOME/.llm-wiki" bash scripts/install.sh
+```
+
+The hook runs `scripts/jeo-validate-ai-first.sh`, which normalizes jeo's payload
+(single `.args.filePath` and batch `.calls[].args.filePath`) and checks each
+markdown file written inside `VAULT` for AI-first frontmatter
+(`date`/`type`/`tags`/`ai-first`), a `## For future Claude` preamble, and
+ASCII-only content. It only **warns** (never reverts a write), and ignores files
+outside the vault and non-markdown files.
+
+Config safety: the installer backs up `~/.jeo/config.json` (which holds live
+tokens) before editing, merges with `jq` (append-only — existing hooks such as
+`graphify update .` are preserved), re-validates with `jq empty`, and restores the
+backup if the result is invalid. The wiring is idempotent. Remove it with
+`UNINSTALL=1 bash scripts/install.sh`.
+
+Deliberately **not** ported to jeo (Claude Code only): the `/` dispatcher palette,
+the SessionStart context loader, and the PostCompact background agent — jeo has no
+matching hook events. Vault behavior is identical; only the trigger surface differs.
 
 ## Upstream — Claude Code (default)
 
