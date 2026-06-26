@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-06-15T00:00:00Z",
-  "skill_count": 142,
+  "skill_count": 143,
   "categories": {
     "planning-review": [
       "agentation",
@@ -141,6 +141,7 @@
     ],
     "frontend": [
       "design-system",
+      "devup-ui",
       "frontend-design-system",
       "react-best-practices",
       "react-grab",
@@ -4729,6 +4730,55 @@
         "ChatGPT",
         "Gemini",
         "Codex"
+      ]
+    },
+    {
+      "name": "devup-ui",
+      "description": "Routing-first front door for Devup UI — a zero-runtime CSS-in-JS library whose Rust + WebAssembly preprocessor extracts every style at build time, so no styling JavaScript ships at runtime. Use to adopt or integrate Devup UI, wire the build-time plugin into Next.js / Vite / Rsbuild / Webpack / Bun, write styles with the Box/css props or the styled-components-compatible styled() API, set up type-safe theming with devup.json, use responsive arrays and pseudo selectors, ship React Server Components without a client Provider, or migrate off styled-components / Emotion / Tailwind / Panda / vanilla-extract to a zero-runtime setup. Triggers on: devup, devup-ui, @devup-ui/react, zero runtime css-in-js, build-time css extraction, devup.json theme, next-plugin DevupUI, vite-plugin DevupUI, styled() zero runtime, migrate styled-components to zero runtime, rust css preprocessor. Routes: design-system (token governance), ui-component-patterns (component API/anatomy), responsive-design (layout strategy), web-accessibility (a11y), react-best-practices (bundle/RSC/rerender perf). Plugin: npx skills add https://github.com/akillness/jeo-skills --skill devup-ui",
+      "category": "frontend",
+      "path": "devup-ui/SKILL.md",
+      "tags": [
+        "devup-ui",
+        "css-in-js",
+        "zero-runtime",
+        "build-time-extraction",
+        "styled",
+        "theming",
+        "react",
+        "nextjs",
+        "vite",
+        "rust",
+        "wasm"
+      ],
+      "platforms": [
+        "All"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "commands": [
+        {
+          "command": "npx skills add https://github.com/akillness/jeo-skills --skill devup-ui",
+          "source": "frontend/devup-ui/SKILL.md"
+        },
+        {
+          "command": "bash scripts/install.sh",
+          "source": "frontend/devup-ui/SKILL.md"
+        },
+        {
+          "command": "BUNDLER=next PROJECT=/path/to/app bash scripts/install.sh",
+          "source": "frontend/devup-ui/SKILL.md"
+        },
+        {
+          "command": "npm install @devup-ui/react @devup-ui/next-plugin",
+          "source": "frontend/devup-ui/SKILL.md"
+        }
       ]
     }
   ]

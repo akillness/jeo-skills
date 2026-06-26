@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-141-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
@@ -10,7 +10,7 @@
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**139 local skill folders · 139 installable skills · TOON Format · Cross-platform**
+**141 local skill folders · 141 installable skills · TOON Format · Cross-platform**
 
 
 
@@ -22,7 +22,7 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 139 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 141 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
 
 
 
@@ -32,8 +32,10 @@ A curated collection of 139 agent skills for spec-first, multi-agent LLM workflo
 
 | Change | Details |
 |--------|----------|
+| **open-code-review: AI code review via the `ocr` CLI** | Added `open-code-review` — a routing-first operator front door for Alibaba's [open-code-review](https://github.com/alibaba/open-code-review) (`ocr`), an open-source AI code-review CLI that reads Git diffs (or whole files) and emits structured, line-level review comments through a configured LLM. The skill confirms prerequisites (`ocr llm test` + provider config without ever hardcoding API keys), distills `--background` business context, then picks the lightest invocation — workspace review, single commit, `--from/--to` branch range, or full-file `ocr scan` with `--preview`/`--max-tokens-budget` cost control — classifies findings into High/Medium/Low, and auto-fixes only safe High/Medium items on explicit intent. Ships `SKILL.md` + `SKILL.toon`, 3 reference docs (`intake-and-modes.md`, `configuration-and-rules.md`, `cicd-and-plugins.md`), `scripts/install.sh` (`npm` / `release` / `source` methods), `scripts/run-review.sh`, `scripts/run-scan.sh`, and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill open-code-review` (upstream: `/plugin marketplace add alibaba/open-code-review`, `codex plugin marketplace add alibaba/open-code-review`). Route-outs: `code-review` (human approve/block judgment), `git-workflow` (Git mechanics), `debugging` (live-failure reproduction). 140 → **141 skills**. |
 | **awesome-agent-skills removed** | Removed `awesome-agent-skills` (added 06-24) from the catalog. The Shubhamsaboo/awesome-llm-apps routing front door is no longer shipped as a bundled skill; its 18 expert personas remain available upstream via `npx skills add shubhamsaboo/awesome-agent-skills`. Catalog surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`) updated. 139 → **138 skills**. |
 | **obsidian-second-brain: a self-rewriting Obsidian vault** | Added `obsidian-second-brain` — a jeo-skills routing front door for [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain) (origin [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain), MIT), an evolution of [Karpathy's LLM-Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) into **a vault that rewrites itself**: every source REWRITES existing pages instead of appending (people updated, claims revised, contradictions reconciled, cross-source patterns synthesized automatically). One skill maps **45 commands across 4 layers** — Operations (28: save/ingest/synthesize/reconcile/export/daily/calendar/architect/…), Thinking Tools (7: challenge/panel/emerge/connect/…), Context Engine (1: world), Research Toolkit (7: x-read/x-pulse/research/research-deep/notebooklm/youtube/podcast) — plus a background agent + 4 scheduled agents (morning/nightly/weekly/health), 4 role presets (executive/builder/creator/researcher), and a write-time AI-first vault validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode (incl. open models like Hermes). `/research` + `/research-deep` work key-less. Ships `SKILL.md` + `SKILL.toon`, 3 reference docs (`commands.md`, `install.md`, `vault-architecture.md`), and `scripts/install.sh` (`GLOBAL` / `WITH_UPSTREAM` / `VAULT` / `AGENTS` knobs). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain`. Route-outs: `obsidian` (plugin/CLI/URI automation), `llm-wiki` (raw markdown wiki layer), `okf` (portable knowledge bundles), `notebooklm` (source-grounded queries), `scrapling` (web extraction). 138 → **139 skills**. |
+| **devup-ui: zero-runtime CSS-in-JS adoption** | Added `devup-ui` — a jeo-skills routing front door for [dev-five-git/devup-ui](https://github.com/dev-five-git/devup-ui) (Apache-2.0, [docs](https://devup-ui.com)), a **zero-runtime CSS-in-JS** library whose Rust + WebAssembly preprocessor extracts every style at build time (Zero Config · Zero FOUC · Zero Runtime · full CSS-in-JS syntax coverage). The skill routes adoption: pick the build-time bundler plugin first (`@devup-ui/next-plugin` / `vite-plugin` / `rsbuild-plugin` / `webpack-plugin` / `bun-plugin`), style with `Box`/`css` props or the styled-components-compatible `styled()` API (4px spacing scale, responsive arrays, `_hover` pseudo selectors, dynamic values → CSS variables), set up type-safe `devup.json` theming with zero-cost theme switching, ship React Server Components without a client Provider, and migrate off styled-components / Emotion / Tailwind / Panda / vanilla-extract. Ships `SKILL.md` + `SKILL.toon`, 3 reference docs (`installation-and-plugins.md`, `styling-api.md`, `theming-and-migration.md`), and `scripts/install.sh` (`GLOBAL` / `BUNDLER` / `PROJECT` / `PKG_MANAGER` / `AGENTS` knobs). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill devup-ui`. Route-outs: `design-system` (token governance), `ui-component-patterns` (component API/anatomy), `responsive-design` (layout strategy), `web-accessibility` (a11y), `react-best-practices` (bundle/RSC/rerender perf). 139 → **140 skills**. |
 
 ## 🆕 What's New in v2026-06-24
 
@@ -156,7 +158,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 139 local skill folders = 139 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 141 local skill folders = 141 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -224,12 +226,13 @@ rtk init -g
 | `payloadcms` | Operate Payload CMS (Next.js-native headless CMS) — bootstrap app, configure collections/globals, manage auth/access control, migrations, REST/GraphQL/Local API, and plugin authoring | All |
 | `supabase-agent-skills` | Install and use Supabase Agent Skills with AI coding agents — covers install modes, skill selection, Supabase CLI integration, and agent-assisted database/auth/storage workflows | All |
 
-### 🎨 Frontend (12)
+### 🎨 Frontend (13)
 
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `design-system` | Canonical frontend UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface system direction; routes component API, responsive layout, accessibility remediation, and broad UI critique to adjacent skills | All |
+| `devup-ui` | Zero-runtime CSS-in-JS adoption — wire the build-time Rust/WASM plugin into Next.js/Vite/Rsbuild/Webpack/Bun, style with `Box`/`css` props or the styled-components-compatible `styled()` API, type-safe `devup.json` theming, and migration off styled-components/Emotion/Tailwind. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill devup-ui` | All |
 
 | `stitch-skills` | Agent Skills for Stitch MCP — generate high-fidelity UI screens, multi-page websites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, Remotion walkthrough videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills` | All |
 | `compresso` | Free offline desktop video/image compression (Tauri+React) — batch compress, trim/split videos, convert formats, embed subtitles, manage metadata. Uses FFmpeg/pngquant/jpegoptim/gifski. Plugin: `claude plugin marketplace add codeforreal1/compressO` | All |
@@ -244,13 +247,14 @@ rtk init -g
 | `web-accessibility` | Routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback | All |
 | `web-design-guidelines` | Broad web UI audit for hierarchy, clarity, consistency, states, responsiveness basics, and accessibility basics | All |
 
-### 🔍 Code Quality (10)
+### 🔍 Code Quality (11)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `agentic-skills` | Production-grade engineering framework (Google practices) — spec-driven development, incremental implementation, TDD, security hardening, performance optimization, and disciplined git/CI/CD workflows across `/spec` `/plan` `/build` `/test` `/review` `/code-simplify` `/ship` phases. Plugin: `/plugin marketplace add addyosmani/agent-skills` | All |
 | `code-refactoring` | Behavior-preserving structural cleanup, decomposition, duplication removal, and codemod planning | All |
 | `code-review` | Evidence-first diff / PR review with severity, missing-proof checks, and route-outs | All |
+| `open-code-review` | Routing-first AI review via Alibaba's `ocr` CLI — confirm prereqs/LLM config, pass `--background` context, pick workspace / commit / branch-range / full-file `scan`, classify findings High/Medium/Low, and auto-fix safe items on intent; routes human approve/block judgment to `code-review`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill open-code-review` | All |
 | `debugging` | Routing-first diagnosis for concrete bugs, regressions, flaky failures, and env-specific behavior; routes raw logs to `log-analysis` and perf-only work to `performance-optimization` | All |
 | `performance-optimization` | Artifact-first measurement-led bottleneck analysis and tuning across latency, throughput, memory, bundle, CWV, and frame-budget work | All |
 | `testing-strategies` | Packet-first validation policy for merge-gate truth, release-only proof, scheduled breadth, and cross-domain test-policy handoffs | All |
@@ -709,6 +713,7 @@ npx vibe-kanban
 | `autoresearch` | Andrej Karpathy methodology | — |
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |
 | `academic-research` | [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) | CC-BY-NC-4.0 |
+| `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
 

@@ -1,0 +1,33 @@
+N:devup-ui
+D:[devup-ui] Routing-first front door for Devup UI — a zero-runtime CSS-in-JS library whose Rust + WebAssembly preprocessor extracts every style at build time, so no styling JavaScript ships at runtime. Use to adopt/integrate Devup UI, wire the build-time plugin into Next.js/Vite/Rsbuild/Webpack/Bun, write styles with Box/css props or the styled-components-compatible styled() API, set up type-safe theming with devup.json, or migrate off styled-components/Emotion/Tailwind/Panda/vanilla-extract to zero runtime.
+G:devup devup-ui @devup-ui/react zero-runtime css-in-js build-time-extraction devup.json next-plugin vite-plugin styled theming react nextjs rust wasm
+
+U[6]:
+  Pick the bundler plugin first (next/vite/rsbuild/webpack/bun) — it is the load-bearing step that makes everything else work
+  Use for adopting Devup UI, wiring the build-time plugin, or migrating from a runtime CSS-in-JS library
+  Write styles with Box/css props or styled() — both compile away at build time; dynamic values become CSS variables
+  Use devup.json for type-safe tokens and zero-cost theme switching; never add a client Provider (breaks RSC + zero runtime)
+  Numeric spacing props multiply by 4px; array values are responsive; _hover/_focus are pseudo selectors
+  Route out broader concerns: tokens to design-system, component API to ui-component-patterns, layout to responsive-design, a11y to web-accessibility, perf to react-best-practices
+
+S[5]{n,action,details}:
+  1,Intake,capture bundler React-mode theming origin and package-manager before editing config
+  2,Install,npm install @devup-ui/react plus exactly one bundler plugin, or bash scripts/install.sh (GLOBAL/BUNDLER/PROJECT/PKG_MANAGER knobs)
+  3,Wire plugin,register DevupUI in next.config/vite.config/rsbuild.config/webpack.config or import @devup-ui/bun-plugin — see references/installation-and-plugins.md
+  4,Write styles,use Box/css props or styled('tag',{...}) with shorthands responsive arrays and pseudo selectors — see references/styling-api.md
+  5,Theme or migrate,define devup.json tokens for type-safe zero-cost theme switching, port from styled-components/Emotion/Tailwind/Panda/vanilla-extract — see references/theming-and-migration.md
+
+R[6]:
+  All styles extract at build time; there is no runtime style engine and no client Provider
+  RSC works out of the box with Zero FOUC — adding a Provider breaks the zero-runtime guarantee
+  Static literals and theme tokens extract best; deep runtime indirection forces CSS variables
+  Class names use compact base-37 encoding for minimal CSS output
+  styled('tag',{...}) is styled-components/Emotion compatible to ease migration
+  Devup UI is a styling layer — route system/component/layout/a11y/perf concerns to adjacent skills
+
+E[5]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill devup-ui
+  Install pkgs,npm install @devup-ui/react @devup-ui/next-plugin
+  Helper,BUNDLER=vite PROJECT=. PKG_MANAGER=pnpm bash scripts/install.sh
+  Next.js config,import { DevupUI } from '@devup-ui/next-plugin'; export default DevupUI({})
+  Vite config,plugins: [react(), DevupUI()] from '@devup-ui/vite-plugin'

@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-141-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**139개 로컬 스킬 폴더 · 설치 가능 스킬 139개 · TOON 포맷 · 멀티플랫폼**
+**141개 로컬 스킬 폴더 · 설치 가능 스킬 141개 · TOON 포맷 · 멀티플랫폼**
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +20,7 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode를 위한 139개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode를 위한 141개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
 
 
@@ -61,8 +61,10 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 | 변경 | 상세 |
 |------|------|
+| **open-code-review: `ocr` CLI 기반 AI 코드 리뷰** | `open-code-review` 스킬을 추가했습니다 — Alibaba [open-code-review](https://github.com/alibaba/open-code-review)(`ocr`)를 위한 라우팅 우선 오퍼레이터 프런트 도어. `ocr`은 Git diff(또는 전체 파일)를 읽어 설정된 LLM으로 구조화된 라인 단위 리뷰 코멘트를 생성하는 오픈소스 AI 코드 리뷰 CLI입니다. 이 스킬은 사전 요건(`ocr llm test` + API 키를 절대 하드코딩하지 않는 provider 설정)을 확인하고, `--background` 비즈니스 컨텍스트를 추출한 뒤 가장 가벼운 실행 경로를 선택합니다 — 워크스페이스 리뷰, 단일 커밋, `--from/--to` 브랜치 범위, 또는 `--preview`/`--max-tokens-budget`로 비용을 제어하는 전체 파일 `ocr scan` — 그리고 결과를 High/Medium/Low로 분류하고, 명시적 의도가 있을 때만 안전한 High/Medium 항목을 자동 수정합니다. `SKILL.md` + `SKILL.toon`, 참조 문서 3개(`intake-and-modes.md`, `configuration-and-rules.md`, `cicd-and-plugins.md`), `scripts/install.sh`(`npm` / `release` / `source` 방식), `scripts/run-review.sh`, `scripts/run-scan.sh`, `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill open-code-review` (업스트림: `/plugin marketplace add alibaba/open-code-review`, `codex plugin marketplace add alibaba/open-code-review`). Route-out: `code-review`(사람의 승인/차단 판단), `git-workflow`(Git 기계적 작업), `debugging`(실시간 장애 재현). 140 → **141개 스킬**. |
 | **awesome-agent-skills 제거** | `awesome-agent-skills`(06-24 추가)를 카탈로그에서 제거했습니다. Shubhamsaboo/awesome-llm-apps 라우팅 프런트 도어는 더 이상 번들 스킬로 제공되지 않으며, 18개 전문 페르소나는 업스트림에서 `npx skills add shubhamsaboo/awesome-agent-skills`로 계속 사용할 수 있습니다. 카탈로그(`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`) 갱신. 139 → **138개 스킬**. |
 | **obsidian-second-brain: 스스로 다시 쓰는 Obsidian 볼트** | `obsidian-second-brain` 스킬을 추가했습니다 — [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain)(원본 [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain), MIT)을 위한 jeo-skills 라우팅 프런트 도어로, [Karpathy의 LLM-Wiki 패턴](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)을 **스스로 다시 쓰는 볼트**로 발전시킵니다: 모든 소스가 새 노트를 덧붙이는 대신 기존 페이지를 다시 씁니다(인물 갱신, 주장 수정, 모순 자동 조정, 교차 소스 패턴 자동 종합). 단일 스킬이 **4개 레이어 45개 명령**을 매핑합니다 — Operations(28: save/ingest/synthesize/reconcile/export/daily/calendar/architect/…), Thinking Tools(7: challenge/panel/emerge/connect/…), Context Engine(1: world), Research Toolkit(7: x-read/x-pulse/research/research-deep/notebooklm/youtube/podcast) — 여기에 백그라운드 에이전트 + 4개 스케줄 에이전트(morning/nightly/weekly/health), 4개 역할 프리셋(executive/builder/creator/researcher), 쓰기 시점 AI-first 볼트 검증기를 더합니다. 크로스 CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode(Hermes 같은 오픈 모델 포함). `/research` + `/research-deep`는 키 없이도 동작합니다. `SKILL.md` + `SKILL.toon`, 참조 문서 3개(`commands.md`, `install.md`, `vault-architecture.md`), `scripts/install.sh`(`GLOBAL` / `WITH_UPSTREAM` / `VAULT` / `AGENTS` 노브) 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain`. Route-out: `obsidian`(플러그인/CLI/URI 자동화), `llm-wiki`(raw 마크다운 위키 레이어), `okf`(이식 가능한 지식 번들), `notebooklm`(소스 기반 질의), `scrapling`(웹 추출). 138 → **139개 스킬**. |
+| **devup-ui: 제로 런타임 CSS-in-JS 도입** | `devup-ui`를 추가했습니다 — [dev-five-git/devup-ui](https://github.com/dev-five-git/devup-ui)(Apache-2.0, [문서](https://devup-ui.com))를 위한 jeo-skills 라우팅 프런트 도어로, Rust + WebAssembly 전처리기가 모든 스타일을 빌드 타임에 추출하는 **제로 런타임 CSS-in-JS** 라이브러리입니다(Zero Config · Zero FOUC · Zero Runtime · 모든 CSS-in-JS 문법 지원). 스킬은 도입을 라우팅합니다: 먼저 빌드 타임 번들러 플러그인을 선택하고(`@devup-ui/next-plugin` / `vite-plugin` / `rsbuild-plugin` / `webpack-plugin` / `bun-plugin`), `Box`/`css` props 또는 styled-components 호환 `styled()` API로 스타일링하며(4px 스페이싱 스케일, 반응형 배열, `_hover` 가상 선택자, 동적 값 → CSS 변수), 타입 세이프 `devup.json` 테마와 제로 코스트 테마 전환을 설정하고, 클라이언트 Provider 없이 RSC를 사용하며, styled-components/Emotion/Tailwind/Panda/vanilla-extract에서 마이그레이션합니다. `SKILL.md` + `SKILL.toon`, 참조 문서 3개(`installation-and-plugins.md`, `styling-api.md`, `theming-and-migration.md`), `scripts/install.sh`(`GLOBAL` / `BUNDLER` / `PROJECT` / `PKG_MANAGER` / `AGENTS` 노브) 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill devup-ui`. Route-out: `design-system`(토큰 거버넌스), `ui-component-patterns`(컴포넌트 API/구조), `responsive-design`(레이아웃 전략), `web-accessibility`(접근성), `react-best-practices`(번들/RSC/리렌더 성능). 139 → **140개 스킬**. |
 
 ## 🆕 v2026-06-24 업데이트
 
@@ -186,7 +188,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 142개 로컬 스킬 폴더 = 총 142개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 141개 로컬 스킬 폴더 = 총 141개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -247,11 +249,12 @@ rtk init -g
 | `backend-testing` | 커버리지 계획, fixture/reset 전략, 계약/API 보호, flaky-suite 안정화, 로컬-vs-CI lane 분리를 다루는 패킷 우선 백엔드 테스트 스킬 | 전체 |
 | `database-schema-design` | 관계형·문서형·하이브리드 스키마, queryable-vs-flexible 필드 판단, 단계적 스키마 변경, 그리고 API/인증/테스트/리포팅 인접 스킬 route-out을 다루는 패킷형 스토리지 모델 설계 | 전체 |
 
-### 🎨 프론트엔드 (12개)
+### 🎨 프론트엔드 (13개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `design-system` | 디자인 토큰 거버넌스, 비주얼 언어 규칙, 프리미티브 네이밍, 교차 화면 시스템 방향을 맡는 기본 프론트엔드 UI 시스템 앵커이며, 컴포넌트 API·반응형 레이아웃·접근성 수정·광범위한 UI 평가는 인접 스킬로 route-out합니다 | 전체 |
+| `devup-ui` | 제로 런타임 CSS-in-JS 도입 — 빌드 타임 Rust/WASM 플러그인을 Next.js/Vite/Rsbuild/Webpack/Bun에 연결하고, `Box`/`css` props 또는 styled-components 호환 `styled()` API로 스타일링하며, 타입 세이프 `devup.json` 테마와 styled-components/Emotion/Tailwind에서의 마이그레이션을 지원합니다. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill devup-ui` | 전체 |
 | `frontend-design-system` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `design-system` 호환 별칭 | 전체 |
 | `stitch-skills` | Stitch MCP 에이전트 스킬 — 고품질 UI 화면 생성, 멀티페이지 웹사이트, DESIGN.md 문서화, 프롬프트 향상, React/shadcn-ui 변환, Remotion 동영상 생성. 플러그인: `claude plugin marketplace add google-labs-code/stitch-skills` | 전체 |
 | `compresso` | 무료 오프라인 데스크톱 동영상/이미지 압축 (Tauri+React) — 배치 압축, 동영상 트리밍/분할, 포맷 변환, 자막 삽입, 메타데이터 관리. FFmpeg/pngquant/jpegoptim/gifski 사용. 플러그인: `claude plugin marketplace add codeforreal1/compressO` | 전체 |
@@ -266,13 +269,14 @@ rtk init -g
 | `web-accessibility` | semantics, keyboard/focus, labels/announcements, reflow, media alternatives, routed-app feedback를 다루는 routing-first 접근성 수정·검증 스킬 | 전체 |
 | `web-design-guidelines` | hierarchy, clarity, consistency, state, responsiveness/accessibility basics를 보는 broad 웹 UI 감사 | 전체 |
 
-### 🔍 코드 품질 (9개)
+### 🔍 코드 품질 (10개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
 | `agentic-skills` | Google 엔지니어링 실천법 기반 프로덕션 엔지니어링 프레임워크 — spec 주도 개발, 점진적 구현, TDD, 보안 강화, 성능 최적화, 체계적인 git/CI/CD 워크플로우를 `/spec` `/plan` `/build` `/test` `/review` `/code-simplify` `/ship` 단계로 제공. 플러그인: `/plugin marketplace add addyosmani/agent-skills` | 전체 |
 | `code-refactoring` | 동작 보존 중심 구조 정리, 분해, 중복 제거, codemod 계획 | 전체 |
 | `code-review` | 심각도·증거 공백 점검·route-out을 포함한 evidence-first diff / PR 리뷰 | 전체 |
+| `open-code-review` | Alibaba `ocr` CLI 기반 라우팅 우선 AI 리뷰 — 사전 요건/LLM 설정 확인, `--background` 컨텍스트 전달, 워크스페이스 / 커밋 / 브랜치 범위 / 전체 파일 `scan` 선택, 결과를 High/Medium/Low로 분류, 의도가 있을 때만 안전 항목 자동 수정; 사람의 승인/차단 판단은 `code-review`로 라우팅. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill open-code-review` | 전체 |
 | `debugging` | 구체적인 버그·회귀·flaky 실패·환경별 이상 동작을 위한 routing-first 진단 스킬; raw log는 `log-analysis`, 순수 성능 작업은 `performance-optimization`으로 라우팅 | 전체 |
 | `performance-optimization` | trace·보고서·query plan 같은 현재 아티팩트에서 출발해 지연시간·처리량·메모리·번들·CWV·프레임 예산 병목을 측정 중심으로 분석하고 튜닝 | 전체 |
 | `testing-strategies` | merge-gate truth, release-only proof, scheduled breadth, cross-domain handoff를 다루는 패킷 우선 검증 정책 | 전체 |
@@ -701,6 +705,7 @@ npx vibe-kanban
 | `autoresearch` | Andrej Karpathy methodology | — |
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |
 | `academic-research` | [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) | CC-BY-NC-4.0 |
+| `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
 
