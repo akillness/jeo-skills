@@ -20,10 +20,11 @@ S[8]{n,action,details}:
   7,Route out,Send simple locate/reference work to codebase-search, narrative knowledge-base work to llm-wiki, and project-memory handoff to opencontext
   8,Return brief,Produce one concise graph brief with scope, artifacts, fallback truth, and next steps
 
-R[6]:
+R[7]:
   Do not force Graphify when the real bottleneck is search-first repo navigation
   Keep assistant-native install, local build, refresh, query, and fallback as distinct modes
   Use the smallest scope that answers the question
   Treat structural fallback as an honest first-class mode when native extraction is weak
   Read `GRAPH_REPORT.md` before over-using raw `graph.json`
   Label portability/path-leak limitations honestly when artifacts are machine-specific
+  After a wiki build or `pip install --upgrade graphifyy`, run scripts/patch_wikilink.py if `[[…]]` links break — graphify emits raw-label links that miss its slugged pages; wire the idempotent patcher into the install/upgrade step so the fix survives

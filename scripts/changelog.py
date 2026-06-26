@@ -22,7 +22,7 @@ import sys
 from collections import defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-WINDOW = 5
+WINDOW = 3
 START = "<!-- WHATS-NEW:START -->"
 END = "<!-- WHATS-NEW:END -->"
 

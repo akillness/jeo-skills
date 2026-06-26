@@ -81,12 +81,36 @@ Fallback output rule:
 - still write the normal durable artifact names when possible
 - label the result as a **graphify-style structural fallback**, not a native semantic graph build
 - explain why the fallback was chosen
+## `wikilink-normalization-patch`
+Use when a generated wiki/vault is full of broken `[[…]]` links after a graphify wiki build, or after `pip install --upgrade graphifyy`.
+
+**Root cause:** graphify saves community / god-node pages under a *slugged* filename via `_safe_filename(label)` (spaces → `_`, `/` → `-`, `:` → `-`, e.g. `Community 36` → `Community_36.md`) but its wiki generator emits wikilinks with the *raw* label (`[[Community 36]]`). Raw-label links never resolve to the slugged file, so every spaced/special label becomes a broken link across the whole vault. This is a **generator-side** bug, not a vault-lint problem — regex-fixing the already-generated files does not survive the next rebuild.
+
+**Durable local fix** — ship and run the idempotent patcher (`scripts/patch_wikilink.py`). It rewrites every raw-label wikilink site to `[[slug|label]]` via a `_wikilink` helper and is a no-op once applied:
+
+```bash
+# verify the transform logic without touching anything
+python3 scripts/patch_wikilink.py --self-test
+# report whether the installed wiki.py is patched
+python3 scripts/patch_wikilink.py --check
+# apply (auto-locates graphify, writes a .bak)
+python3 scripts/patch_wikilink.py
+# or target an explicit install
+python3 scripts/patch_wikilink.py --path "$(python3 -c 'import graphify,os;print(os.path.dirname(graphify.__file__))')/wiki.py"
+```
+
+**Apply it to config so it self-heals.** Because the fix is an in-place `site-packages/graphify/wiki.py` edit, `pip install --upgrade graphifyy` wipes it. Make the patch durable by wiring it into the same place that runs graphify:
+- jeo: add to the `post-implementation` hook in `~/.jeo/config.json` ahead of `graphify update .` — e.g. `python3 <skill>/scripts/patch_wikilink.py --check >/dev/null 2>&1 || python3 <skill>/scripts/patch_wikilink.py`.
+- any runtime: run the patcher in the install/upgrade step right after `pip install graphifyy`.
+
+The permanent fix is an upstream PR to [safishamsi/graphify](https://github.com/safishamsi/graphify); the patcher is the durable bridge until it lands.
 
 ## Common failure patterns
 - **Package/command confusion**: `graphifyy` is the package, `graphify` is the CLI
 - **Large noisy repo**: shrink the scope or add ignores before retrying
 - **Markdown-heavy corpus**: choose structural fallback sooner
 - **Machine-specific artifact leakage**: tell the user if output paths or caches are local-machine specific
+- **Broken `[[…]]` links after a wiki build**: raw-label vs slugged-filename mismatch — run `scripts/patch_wikilink.py` (see `wikilink-normalization-patch`), don't just regex the generated vault
 - **Search-only request**: route to `codebase-search` instead of forcing a graph
 
 ## Neighboring ownership reminder

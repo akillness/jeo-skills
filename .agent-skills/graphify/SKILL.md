@@ -18,7 +18,7 @@ compatibility: >
 metadata:
   tags: knowledge-graph, codebase-analysis, graphrag, architecture, graphify, corpus-analysis, persistent-memory
   platforms: Claude, ChatGPT, Gemini, Codex, OpenCode
-  version: "2.0.0"
+  version: "2.1.0"
   source: akillness/jeo-skills
 ---
 
@@ -217,10 +217,12 @@ Required qualities:
 6. Route narrative memory to `llm-wiki` and project memory to `opencontext`.
 7. Refresh compact and discovery surfaces whenever the front-door wording changes materially.
 8. If a graph build is machine-specific or path-leaky, say so instead of presenting it as portable truth.
+9. After a graphify wiki build — or any `pip install --upgrade graphifyy` — run `scripts/patch_wikilink.py` if links look broken. graphify's generator emits raw-label `[[Community 36]]` links that never resolve to its slugged `Community_36.md` pages; the patcher normalizes every link site to `[[slug|label]]` and is idempotent. Wire it into the install/upgrade step (jeo: the `post-implementation` hook ahead of `graphify update .`) so the fix survives upgrades. See `wikilink-normalization-patch` in the build recipes.
 
 ## References
 - [Mode packets and route-outs](references/mode-packets-and-route-outs.md)
 - [Build and fallback recipes](references/build-and-fallback-recipes.md)
+- [`scripts/patch_wikilink.py`](scripts/patch_wikilink.py) — idempotent wikilink-normalization patch for `graphify/wiki.py` (run `--self-test` to verify, `--check` to report status)
 - `../codebase-search/SKILL.md`
 - `../llm-wiki/SKILL.md`
 - `../opencontext/SKILL.md`
