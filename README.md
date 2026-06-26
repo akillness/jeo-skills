@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-138-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
@@ -10,7 +10,7 @@
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**139 local skill folders · 139 installable skills · TOON Format · Cross-platform**
+**138 local skill folders · 138 installable skills · TOON Format · Cross-platform**
 
 
 
@@ -22,11 +22,17 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 139 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 138 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
 
 
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-06-26
+
+| Change | Details |
+|--------|----------|
+| **awesome-agent-skills removed** | Removed `awesome-agent-skills` (added 06-24) from the catalog. The Shubhamsaboo/awesome-llm-apps routing front door is no longer shipped as a bundled skill; its 18 expert personas remain available upstream via `npx skills add shubhamsaboo/awesome-agent-skills`. Catalog surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`) updated. 139 → **138 skills**. |
 
 ## 🆕 What's New in v2026-06-24
 
@@ -52,12 +58,6 @@ A curated collection of 139 agent skills for spec-first, multi-agent LLM workflo
 | Change | Details |
 |--------|---------|
 | **okf: Open Knowledge Format — portable AI agent knowledge bundles** | Added `okf` — a routing-first skill for Google's [Open Knowledge Format (OKF)](https://github.com/google/open-knowledge-format) specification, which formalizes the **LLM-Wiki pattern** into a portable, interoperable open spec: **just markdown, just files, just YAML frontmatter**. The skill authors OKF-compliant knowledge atoms (YAML frontmatter with `type`/`title`/`description`/`resource`/`tags`/`timestamp` + Markdown body sections: Overview, Schema, Examples, Joins/Relations, Citations), validates bundles with a Python linter (checks required fields across all `.md` files), distributes bundles as tarballs / git repos / filesystem mounts, and provides a Python consume helper so agents can load and filter atoms by type or tag. Integrates with `llm-wiki` (promote raw wiki captures to OKF format), `obsidian` (vault automation), `graphify` (durable committed graphs), and `scrapling` (web-content extraction into OKF docs). Ships `scripts/install.sh` (pyyaml install + optional bundle validation), a full field/section reference (`references/usage.md`), and `SKILL.toon`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill okf`. Route-outs: `llm-wiki` (raw source capture + vault maintenance), `obsidian` (Obsidian vault automation), `graphify` (committed knowledge graphs), `scrapling` (web content to OKF). 142 → **143 skills**. |
-
-## 🆕 What's New in v2026-06-20
-
-| Change | Details |
-|--------|---------|
-| **slides-grab: point-and-edit AI slide decks in HTML/CSS** | Added `slides-grab` — a routing-first wrapper around [slides-grab](https://github.com/NomaDamas/slides-grab) (NomaDamas, MIT), the **open-source Claude Design alternative** and "best harness + editor + linter for generating slides in Claude Code / Codex". The skill plans (agent drafts a structured outline), designs (each slide is a self-contained `slide-XX.html`), edits (pure-JS browser editor where you drag a bbox over any region and ask the agent to rewrite just that area, or hand-edit text/size/bold), and exports (capture-or-print PDF, per-slide PNG incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX). Picks an install path (npm package + `npx skills add`, or clone), a deck workspace (`--slides-dir`, multi-deck `decks/<name>/`), one of 35 design styles, and the supported asset flow (local `./assets/<file>` only — image via god-tibo-imagen/codex/nano-banana, fetch-video via yt-dlp, tldraw .tldr→SVG), validating with `slides-grab validate` before any export. Ships `scripts/install.sh` (npm install + Playwright Chromium + `npx skills add`), a feature + command reference, `SKILL.toon`, and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab`. Route-outs: `drawio`/`mermaid` (editable vector diagrams embedded in a slide), `presentation-builder` (packet-first planning + export-target handoff), `god-tibo-imagen` (standalone AI image generation), `open-design` (broad local design-artifact generation). 141 → **142 skills**. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 
@@ -210,7 +210,6 @@ rtk init -g
 | `openai-agents-python` | Build and operate multi-agent workflows with OpenAI Agents SDK (Python) — define agents/tools/handoffs, add guardrails, trace with LangSmith, run async pipelines | All |
 | `pydantic-ai` | Build typed LLM applications with PydanticAI — schema-constrained outputs, tool integration, validation, retries, and dependency injection for production AI apps | All |
 | `cli-anything` | Make any software agent-native via HKUDS CLI-Anything — CLI-Hub package manager (`cli-hub list/search/install/launch`), agent meta-skill for autonomous CLI discovery, 7-phase harness generation from any codebase (`/cli-anything`), and refine/test/validate iteration; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything` | All |
-| `awesome-agent-skills` | Routing front door for the [Awesome Agent Skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills) collection — 18 expert personas + a self-improving optimizer in 6 reference pipelines (coding · research · writing · planning · data · self-improving). Classifies the request, picks pipeline + persona, executes with that persona's framework/output and integrity guardrails. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills` (upstream: `npx skills add shubhamsaboo/awesome-agent-skills`) | All |
 
 ### ⚙️ Backend (7)
 
@@ -351,7 +350,7 @@ rtk init -g
 | `steam-store-launch-ops` | Packet-first Steam launch router — choose page-promise audit, wishlist signal check, demo readiness, event timing workback, or launch-ops runbook | All |
 | `unity-gamedev-skill-pack` | Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package with validation and integration guidance | All |
 
-### 🔧 Utilities (12)
+### 🔧 Utilities (13)
 
 
 | Skill | Description | Platforms |
@@ -366,6 +365,7 @@ rtk init -g
 
 | `npm-git-install` | Routing-first Node package delivery skill for npm / pnpm / Yarn / Bun — choose temporary Git bridge, SHA pin, tarball, workspace, or publish-first handoff safely | All |
 | `obsidian` | **Unified Obsidian skill (v2.0)** — plugin development (27 ESLint rules, boilerplate, submission) + CLI automation (commands, TUI, URI handoff, developer mode) + content patterns (markdown, Bases, JSON Canvas). Plugin: `claude plugin marketplace add akillness/jeo-skills` | All |
+| `obsidian-second-brain` | Routing front door for a **self-rewriting Obsidian vault** (evolves Karpathy's LLM-Wiki) — every source REWRITES existing pages, reconciles contradictions, and synthesizes patterns automatically. 45 commands across 4 layers (Operations / Thinking / Context / Research) + background & scheduled agents + 4 role presets + AI-first write validator. Cross-CLI. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` | All |
 
 | `opencontext` | Routing-first active project/repo memory — choose memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out for manifests, stable links, cross-agent handoff packets, and highest-confidence-source / freshness checks when notes overlap | All |
 | `workflow-automation` | Routing-first repo workflow automation — choose one mode for task-entrypoints, bootstrap/onboarding, local-CI parity, hook guardrails, maintenance bots, or workflow cleanup without drifting into environment/deploy work | All |
@@ -699,6 +699,7 @@ npx vibe-kanban
 | `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 
 | `llm-wiki` | [karpathy/llm-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | — |
+| `obsidian-second-brain` | [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain) (fork: [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain)) | MIT |
 | `graphify` | [safishamsi/graphify](https://github.com/safishamsi/graphify) | MIT |
 | `browser-harness` | [browser-use/browser-harness](https://github.com/browser-use/browser-harness) | MIT |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |

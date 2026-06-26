@@ -18,6 +18,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/); the README
 - **rtk × semble compatibility wiring** — Step 3f now also installs the semble CLI and registers its MCP with Gemini; new Step 3f-2 injects a division-of-labor routing rule (semble = what to read, rtk = how dense) into each agent's instruction file. (`3cd9497`)
 
 ### Removed
+- **`awesome-agent-skills`** — removed the [Shubhamsaboo/awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills) routing front door from the catalog (added in `9356fe7`, never shipped in a tagged release). Its 18 expert personas + self-improving optimizer remain available upstream via `npx skills add shubhamsaboo/awesome-agent-skills`. Catalog surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`) updated. (139 → 138)
 - Generated `.agent-skills-wiki/`, `docs/`, `graphify-out/`, and `llm-wiki/` artifacts (257 files) from the repo; `.agent-skills/` remains the single source of truth. (`9548203`)
 
 ## [2026-06-11] — cli-anything + spec-stack (→ 137 skills)

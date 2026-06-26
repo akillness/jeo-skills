@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-139-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-138-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**139개 로컬 스킬 폴더 · 설치 가능 스킬 139개 · TOON 포맷 · 멀티플랫폼**
+**138개 로컬 스킬 폴더 · 설치 가능 스킬 138개 · TOON 포맷 · 멀티플랫폼**
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +20,7 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode를 위한 139개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode를 위한 138개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
 
 
@@ -57,6 +57,12 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-06-26 업데이트
+
+| 변경 | 상세 |
+|------|------|
+| **awesome-agent-skills 제거** | `awesome-agent-skills`(06-24 추가)를 카탈로그에서 제거했습니다. Shubhamsaboo/awesome-llm-apps 라우팅 프런트 도어는 더 이상 번들 스킬로 제공되지 않으며, 18개 전문 페르소나는 업스트림에서 `npx skills add shubhamsaboo/awesome-agent-skills`로 계속 사용할 수 있습니다. 카탈로그(`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`) 갱신. 139 → **138개 스킬**. |
+
 ## 🆕 v2026-06-24 업데이트
 
 | 변경 | 내용 |
@@ -82,12 +88,6 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 | 변경 | 내용 |
 |------|------|
 | **slides-grab: HTML/CSS AI 슬라이드 덱을 포인트-앤-에딧** | `slides-grab` 스킬을 추가했습니다 — [slides-grab](https://github.com/NomaDamas/slides-grab)(NomaDamas, MIT)를 감싸는 라우팅 우선 wrapper로, **오픈소스 Claude Design 대안**이자 "Claude Code / Codex에서 슬라이드를 생성하는 최고의 harness + 에디터 + 린터"입니다. 이 스킬은 Plan(에이전트가 구조화된 아웃라인 작성), Design(각 슬라이드는 독립적인 `slide-XX.html`), Edit(순수 JS 브라우저 에디터에서 임의 영역에 bbox를 드래그해 그 부분만 다시 쓰도록 에이전트에 요청하거나 텍스트/크기/볼드를 직접 수정), Export(캡처-또는-프린트 PDF, Instagram 1:1 카드뉴스 포함 슬라이드별 PNG, 그리고 실험적/불안정 PPTX·Figma 임포트용 PPTX)로 이어집니다. 설치 경로(npm 패키지 + `npx skills add`, 또는 clone), 덱 워크스페이스(`--slides-dir`, 멀티덱 `decks/<name>/`), 35개 디자인 스타일 중 하나, 지원되는 에셋 흐름(로컬 `./assets/<file>`만 — image는 god-tibo-imagen/codex/nano-banana, fetch-video는 yt-dlp, tldraw .tldr→SVG)을 선택하고, 모든 export 전에 `slides-grab validate`로 검증합니다. `scripts/install.sh`(npm install + Playwright Chromium + `npx skills add`), 기능·커맨드 레퍼런스, `SKILL.toon`, `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab`. Route-out: `drawio`/`mermaid`(슬라이드에 임베드되는 편집 가능한 벡터 다이어그램), `presentation-builder`(패킷 우선 기획 + export 타깃 핸드오프), `god-tibo-imagen`(독립형 AI 이미지 생성), `open-design`(광범위한 로컬 디자인 아티팩트 생성). 141 → **142개 스킬**. |
-
-## 🆕 v2026-06-18 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **codeflow: 코드베이스 아키텍처를 몇 초 만에 시각화** | `codeflow` 스킬을 추가했습니다 — [CodeFlow](https://github.com/braedonsaunders/codeflow)(braedonsaunders, MIT)를 감싸는 라우팅 우선 wrapper로, **빌드가 필요 없는 단일 `index.html` 브라우저 앱**(고정 CDN의 React 18 + D3.js 7 + Babel)입니다. 모든 GitHub 저장소, 로컬 폴더, PR, 마크다운/Obsidian 볼트를 **인터랙티브 아키텍처 맵**으로 바꾸며 100% 클라이언트 사이드로 동작합니다 — **백엔드 없음, 빌드 없음, 데이터 수집 없음**. 입력 선택(공개 저장소, 브라우저 메모리에만 보관되는 토큰을 쓰는 비공개 저장소, 로컬 파일/폴더, PR URL, 마크다운 볼트), 시각화 모드 선택(**folder / layer / churn / blast**), 그리고 분석 확인: **인터랙티브 의존성 그래프**, **블래스트 반경**("이 파일을 바꾸면 무엇이 깨지나"), git 히스토리 기반 **코드 오너십**, 휴리스틱 **보안 스캐너**(하드코딩된 시크릿, SQL 인젝션, `eval()`, 디버그 구문), **패턴/안티패턴 탐지**, **A–F 헬스 스코어**, **활동 히트맵**, **PR 임팩트 분석** — 이후 JSON / Markdown / 텍스트 / SVG / PDF로 내보내거나 GitHub Action으로 README에 자동 갱신되는 **CodeFlow Card** SVG를 붙입니다. 40+ 언어 지원. `scripts/install.sh`(clone-or-update + `index.html` 열기, `CODEFLOW_NO_OPEN` 노브), 기능·언어 레퍼런스, `SKILL.toon`, `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow`. Route-out: `drawio`/`mermaid`(편집 가능한 수작업 다이어그램), `semble`(토큰 효율적 에이전트 코드 검색), `codebase-search`(저장소 탐색 패킷), `graphify`(저장소에 커밋되는 영속 지식 그래프). 140 → **141개 스킬**. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 
@@ -235,7 +235,6 @@ rtk init -g
 | `prompt-repetition` | 비추론/경량 LLM에서 프롬프트 반복을 언제 써야 하는지 판단하는 스킬 — 긴 컨텍스트 검색, 선택지 우선 MCQ, 위치/인덱스 조회, 그리고 retrieval·강한 모델로의 route-out 포함 | 전체 |
 | `skill-standardization` | SKILL.md 검증/재작성, 중복 canonical화, 그리고 repo-root 검증 흐름 + 파생 발견면(`skills.json`, README/setup, `SKILL.toon`) 동기화 | 전체 |
 | `cli-anything` | HKUDS CLI-Anything으로 모든 소프트웨어를 agent-native CLI로 — CLI-Hub 패키지 매니저(`cli-hub list/search/install/launch`), 에이전트 자율 탐색 meta-skill, 임의 코드베이스 대상 7-phase harness 생성(`/cli-anything`), refine/test/validate 반복; 40+ harness, 2,461 테스트, REPL + `--json` CLI. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything` | 전체 |
-| `awesome-agent-skills` | [Awesome Agent Skills](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/awesome_agent_skills) 컬렉션을 위한 라우팅 프런트 도어 — 6개 참조 파이프라인(coding · research · writing · planning · data · self-improving)에 18개 전문가 페르소나 + 자기개선 옵티마이저. 요청을 파이프라인 + 페르소나로 분류하고 해당 페르소나의 프레임워크/출력과 무결성 가드레일로 실행. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills` (업스트림: `npx skills add shubhamsaboo/awesome-agent-skills`) | 전체 |
 
 ### ⚙️ 백엔드 (5개)
 

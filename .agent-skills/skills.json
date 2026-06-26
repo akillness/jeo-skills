@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-06-15T00:00:00Z",
-  "skill_count": 144,
+  "skill_count": 142,
   "categories": {
     "planning-review": [
       "agentation",
@@ -19,7 +19,6 @@
       "vibe-kanban"
     ],
     "agent-development": [
-      "awesome-agent-skills",
       "cli-anything",
       "prompt-repetition",
       "skill-standardization"
@@ -122,6 +121,7 @@
       "notebooklm",
       "npm-git-install",
       "obsidian",
+      "obsidian-second-brain",
       "obsidian-cli",
       "obsidian-cli-uri-fallback",
       "obsidian-plugin",
@@ -415,10 +415,6 @@
         "WebFetch"
       ],
       "commands": []
-    },
-    {
-      "name": "awesome-agent-skills",
-      "description": "Routing front door for the Awesome Agent Skills collection (Shubhamsaboo/awesome-llm-apps) — 18 expert personas + a self-improving optimizer across 6 reference pipelines (coding, research, writing, planning, data, self-improving). Classifies the request, picks pipeline + persona, executes with that persona's framework/output and integrity guardrails. Plugin: npx skills add https://github.com/akillness/jeo-skills --skill awesome-agent-skills"
     },
     {
       "name": "backend-testing",
@@ -2440,6 +2436,63 @@
         "ChatGPT",
         "Gemini",
         "Codex"
+      ]
+    },
+    {
+      "name": "obsidian-second-brain",
+      "description": "Routing-first front door for obsidian-second-brain — a self-rewriting Obsidian vault that evolves Karpathy's LLM-Wiki pattern. Every source REWRITES existing pages instead of appending: people updated, claims revised, contradictions reconciled, cross-source patterns synthesized automatically. Ships 45 slash commands across 4 layers (Operations, Thinking Tools, Context Engine, Research Toolkit), a background agent + 4 scheduled agents, 4 role presets, and a write-time AI-first validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode. Use when the user wants a knowledge vault that maintains itself, to save/ingest meetings/voice/screenshots/URLs into Obsidian, reconcile contradictions, challenge a decision against their own history, run vault-first or open-web research, or install the second-brain skill. Triggers on: obsidian second brain, second brain, self-rewriting vault, llm wiki, obsidian-save, obsidian-ingest, obsidian-reconcile, obsidian-challenge, obsidian-architect, vault automation, vault-first research. Routes: obsidian (plugin/CLI/URI), llm-wiki (raw wiki layer), okf (portable bundles), notebooklm (grounded queries), scrapling (web extraction). Plugin: npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain",
+      "category": "utilities",
+      "path": "obsidian-second-brain/SKILL.md",
+      "tags": [
+        "obsidian-second-brain",
+        "obsidian",
+        "second-brain",
+        "llm-wiki",
+        "knowledge-vault",
+        "note-taking",
+        "self-rewriting",
+        "contradiction-reconciliation",
+        "synthesis",
+        "research-toolkit",
+        "cross-cli",
+        "claude-code",
+        "codex",
+        "gemini",
+        "opencode"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini",
+        "OpenCode",
+        "All"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "commands": [
+        {
+          "command": "npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain",
+          "source": "utilities/obsidian-second-brain/SKILL.md"
+        },
+        {
+          "command": "bash scripts/install.sh",
+          "source": "utilities/obsidian-second-brain/SKILL.md"
+        },
+        {
+          "command": "GLOBAL=1 WITH_UPSTREAM=1 VAULT=\"$HOME/my-vault\" bash scripts/install.sh",
+          "source": "utilities/obsidian-second-brain/SKILL.md"
+        },
+        {
+          "command": "curl -fsSL https://raw.githubusercontent.com/akillness/obsidian-second-brain/main/scripts/quick-install.sh | bash",
+          "source": "utilities/obsidian-second-brain/SKILL.md"
+        }
       ]
     },
     {
