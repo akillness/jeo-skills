@@ -1,22 +1,17 @@
 ---
 name: browser-harness
-description: >
-  Self-healing browser automation framework that connects LLM agents directly to Chrome via CDP.
-  Use when the user needs autonomous browser tasks, clean browser verification, Codex or Antigravity
-  browser control, Claude-safe screenshots, adaptive helper code in `agent_helpers.py`, domain skills,
-  or Browser Use Cloud escalation. Triggers on:
-  browser-harness, self-healing browser, llm browser automation, cdp agent, chrome devtools agent,
-  codex browser automation, antigravity browser automation, claude screenshot error, claude image error,
-  agent browser task, browser-use harness, domain skills browser.
-allowed-tools: Bash Read Write Edit Glob Grep WebFetch
-compatibility: Requires Python 3.10+ and Chrome/Chromium with remote debugging enabled. Works from Claude Code, Codex CLI, Antigravity (`agy`), Gemini CLI, and OpenCode when the agent can edit/run the local Python workspace. Includes a Claude-safe screenshot patch for PIL file-handle and image-size issues.
+description: ">"
 license: MIT
+compatibility: "Requires Python 3.10+ and Chrome/Chromium with remote debugging enabled. Works from Claude Code, Codex CLI, Antigravity (`agy`), Gemini CLI, and OpenCode when the agent can edit/run the local Python workspace. Includes a Claude-safe screenshot patch for PIL file-handle and image-size issues."
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 metadata:
   tags: browser-harness, browser-automation, self-healing, cdp, chrome-devtools-protocol, llm-browser, codex, antigravity, claude-code, claude-vision-safe, screenshot, domain-skills
-  version: "1.1.0"
-  source: https://github.com/browser-use/browser-harness
+  version: 1.1.0
+  source: "https://github.com/browser-use/browser-harness"
   platforms: Claude Code, Codex, Antigravity, Gemini CLI, OpenCode
 ---
+
+
 
 # browser-harness - self-healing LLM browser automation
 

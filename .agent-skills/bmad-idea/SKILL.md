@@ -1,27 +1,17 @@
 ---
 name: bmad-idea
-description: >
-  Turn raw ideas into one clear pre-planning concept artifact by choosing the right
-  creative framing mode: problem framing, audience and value framing, concept
-  shaping, game concept pillars, or story packaging. Use when the user has an
-  early-stage product, GTM, content, consulting, or game idea and needs the next
-  artifact before PRDs, sprint plans, launch execution, or game-production routing.
-  Triggers on: bmad-idea, idea brief, concept brief, design thinking, positioning,
-  brainstorm this, shape this idea, turn this into a pitch, game concept, core
-  loop, product story, what should we clarify before planning.
+description: ">"
+compatibility: ">"
 allowed-tools: Read Write Bash Grep Glob
-compatibility: >
-  Cross-platform pre-planning router for Claude, Codex, Gemini, and OpenCode.
-  Downstream planning belongs in `bmad` or `task-planning`; broader marketing
-  routing belongs in `marketing-automation`; game-production coordination belongs
-  in `bmad-gds`.
 metadata:
   tags: bmad, ideation, concept-design, problem-framing, positioning, storytelling, product-discovery, game-concept, creative-routing
   platforms: Claude, Gemini, Codex, OpenCode
   keyword: bmad-idea
-  version: "2.0.0"
+  version: 2.0.0
   source: akillness/jeo-skills
 ---
+
+
 
 # BMAD Idea Router
 

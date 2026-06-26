@@ -1,21 +1,16 @@
 ---
 name: caveman
-description: Use this skill when >
-  Ultra-compressed communication mode that reduces token usage by ~75% by eliminating
-  articles, filler words, pleasantries, and hedging while preserving technical accuracy.
-  Activate with "caveman mode", "less tokens", "be brief", or "/caveman". Deactivate
-  with "stop caveman" or "normal mode".
+description: "Use this skill when >"
+compatibility: ">"
 allowed-tools: Read Grep Glob Bash Write Edit
-compatibility: >
-  Universal — works in any conversation context. Remains active until explicitly
-  stopped. Makes exceptions for security warnings, irreversible action confirmations,
-  and multi-step sequences where fragments risk confusion.
 metadata:
   tags: token-reduction, communication, brevity, compression, productivity
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "1.0"
+  version: 1.0
   source: mattpocock/skills
 ---
+
+
 
 # Caveman
 

@@ -1,28 +1,18 @@
 ---
 name: code-refactoring
-description: >
-  Turn a cleanup packet into one behavior-preserving refactor brief. Use when the
-  user needs to simplify a messy function, component, service, script, or module;
-  split an oversized diff into safer cleanup slices; freeze behavior before
-  touching fragile legacy code; or plan a repeated migration / codemod without
-  changing intended behavior. Route diagnosis to `debugging`, review judgment to
-  `code-review`, validation-program design to `testing-strategies`, bottleneck-led
-  tuning to `performance-optimization`, and pure symbol inventory or impact mapping
-  to `codebase-search`.
+description: ">"
+compatibility: ">"
 allowed-tools: Read Grep Glob Bash Write
-compatibility: >
-  Best for CLI, backend, frontend, fullstack, and game-programming codebases where
-  the main task is structural cleanup with explicit verification. Not for proving a
-  bug exists, approving a PR, choosing org-wide test policy, or isolating a
-  performance bottleneck from traces or benchmarks.
 metadata:
   tags: refactoring, code-quality, behavior-preservation, cleanup, codemod, migration, technical-debt, legacy-code
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: "2.1"
+  version: 2.1
   source: akillness/jeo-skills
   modernization: 2026-04-14
   hardening: 2026-04-18
 ---
+
+
 
 # Code Refactoring
 

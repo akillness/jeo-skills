@@ -1,27 +1,18 @@
 ---
 name: database-schema-design
-description: >
-  Design storage-model and migration-safety packets for relational, document-heavy,
-  and hybrid data systems. Use when the user needs entity ownership, constraints,
-  indexes, multi-tenant or audit boundaries, staged schema changes, or queryable-vs-
-  flexible field decisions across backend/fullstack products, internal ops tools,
-  marketing/customer-data workflows, or game/live-ops systems. Route API contracts
-  to `api-design`, auth-owned identity/session modeling to `authentication-setup`,
-  verification to `backend-testing`, and reporting/telemetry follow-through to
-  `looker-studio-bigquery` or `monitoring-observability`.
-allowed-tools: Bash Read Write Edit Glob Grep
-compatibility: >
-  Best for backend and fullstack systems where schema choices must balance integrity,
-  query shape, lifecycle rules, and rollout safety across PostgreSQL, MySQL, SQLite,
-  MongoDB, Firestore, and similar stacks.
+description: ">"
 license: MIT
+compatibility: ">"
+allowed-tools: Bash Read Write Edit Glob Grep
 metadata:
-  version: "2.1.0"
+  version: 2.1.0
   modernization: 2026-04-14
   hardening: 2026-04-19
   tags: database, schema-design, migrations, indexing, constraints, relational, nosql, backend
   platforms: Claude, ChatGPT, Gemini
 ---
+
+
 
 # Database Schema Design
 

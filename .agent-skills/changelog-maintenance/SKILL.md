@@ -1,20 +1,18 @@
 ---
 name: changelog-maintenance
 description: "Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, and what's new. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `user-guide-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`."
-allowed-tools: Read Write Edit Glob Grep
-compatibility: >
-  Best for docs-as-code repositories, GitHub/GitLab release workflows, changeset /
-  release-PR automation, customer-update hubs, and game patch-note surfaces where the
-  output lives in Markdown, release entries, docs sites, in-product feeds, or store
-  announcements.
 license: MIT
+compatibility: ">"
+allowed-tools: Read Write Edit Glob Grep
 metadata:
   tags: changelog, release-notes, patch-notes, migration, semantic-versioning, documentation, release-communication
   platforms: Claude, ChatGPT, Gemini
-  version: "2.1.0"
+  version: 2.1.0
   modernization: 2026-04-14
   hardening: 2026-04-18
 ---
+
+
 
 # Changelog Maintenance
 

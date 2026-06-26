@@ -1,16 +1,9 @@
 ---
 name: deep-dive
 description: "Cross-runtime 2-stage pipeline for Claude Code, Codex/OMX, and Gemini/Antigravity/OMA: trace causal hypotheses, inject evidence into deep-interview style requirements crystallization, then hand off to the right runtime planner/executor."
-argument-hint: "<problem or exploration target>"
-triggers:
-  - "deep dive"
-  - "deep-dive"
-  - "trace and interview"
-  - "investigate deeply"
-pipeline: [deep-dive, runtime-adapter, planner-executor]
-next-skill: runtime-adapter
-handoff: ".omc/specs/deep-dive-{slug}.md | .omx/specs/deep-dive-{slug}.md | .agents/specs/deep-dive-{slug}.md"
 ---
+
+
 
 <Purpose>
 Deep Dive orchestrates a 2-stage pipeline that first investigates WHY something happened (trace) then precisely defines WHAT to do about it (deep-interview). The trace stage runs 3 parallel causal investigation lanes, and its findings feed into the interview stage via a 3-point injection mechanism — enriching the starting point, providing system context, and seeding initial questions. The result is a runtime-portable spec grounded in evidence, not assumptions.

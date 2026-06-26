@@ -1,21 +1,15 @@
 ---
 name: clawteam
-description: >
-  Route explicit ClawTeam runtime requests into one honest operator packet before
-  touching commands: manual-team, template-launch, monitor-recover, or
-  profile-setup. Use when the user specifically wants ClawTeam's
-  team/task/inbox/worktree/board workflow for parallel developer work,
-  product/ops research, content operations, or game-production coordination.
-  Not for generic multi-agent routing, board-only governance, or lightweight
-  subtask fan-out when `jeo`, `omc`, `omx`, `ohmg`, `vibe-kanban`, or built-in
-  delegation already fit.
-allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+description: ">"
 license: MIT
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 metadata:
   tags: clawteam, multi-agent, swarm, orchestration, tmux, git-worktree, autonomous, python, routing
-  version: "1.2"
-  source: https://github.com/HKUDS/ClawTeam
+  version: 1.2
+  source: "https://github.com/HKUDS/ClawTeam"
 ---
+
+
 
 # clawteam — ClawTeam runtime operator router
 

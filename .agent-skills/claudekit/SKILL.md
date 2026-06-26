@@ -1,9 +1,6 @@
 ---
 name: claudekit
-description: >
-  Use this skill when you need a standardized Claude Code workflow toolkit.
-  It covers claudekit plugin installation, init-wizard scaffolding for rules/modes/hooks/MCP,
-  and safe operating guidance for team adoption.
+description: ">"
 allowed-tools: Read Write Bash Grep Glob WebFetch
 metadata:
   tags: claude-code, workflow, plugin, skills, agents, mcp, hooks
@@ -13,6 +10,8 @@ metadata:
   source: duthaho/claudekit
   license: MIT
 ---
+
+
 
 # claudekit — Claude Code workflow toolkit
 
