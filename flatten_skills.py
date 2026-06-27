@@ -16,7 +16,12 @@ def flatten_skills(skills_dir: Path, mode: str = "flat", dry_run: bool = False):
     categories = [
         d
         for d in skills_dir.iterdir()
-        if d.is_dir() and d.name not in ["templates", "scripts", "__pycache__"]
+        if d.is_dir()
+        and d.name not in ["templates", "scripts", "__pycache__"]
+        # A folder that already contains SKILL.md is itself a flattened skill,
+        # not a category. Treating it as a category would wrongly merge its
+        # internal references/evals folders as skills and cause collisions.
+        and not (d / "SKILL.md").exists()
     ]
 
     if dry_run:
