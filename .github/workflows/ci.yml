@@ -1,0 +1,17 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python fix_frontmatter.py
+      - run: python flatten_skills.py
