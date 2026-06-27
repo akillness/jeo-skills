@@ -20,20 +20,52 @@ def flatten_skills(skills_dir: Path, mode: str = "flat", dry_run: bool = False):
     ]
 
     if dry_run:
-        print("DRY RUN - Would move:")
+        for category in categories:
 
+            for skill_folder in [d for d in category.iterdir() if d.is_dir()]:
+                new_name = (
+                    f"{category.name}--{skill_folder.name}"
+                    if mode == "namespace"
+                    else skill_folder.name
+                )
+                print(f"  {skill_folder.relative_to(skills_dir)} -> {new_name}")
+        print(
+            "\n✅ Done! Now run: python3 .agent-skills/scripts/generate_compact_skills.py"
+        )
+        return
+
+    def overwrite(path: Path):
+        """Remove an existing destination so a move never nests inside it."""
+        if not path.exists() and not path.is_symlink():
+            return
+        if path.is_dir() and not path.is_symlink():
+            shutil.rmtree(path)
+        else:
+            path.unlink()
+
+    # Phase 1: stage every skill folder into a scratch directory. Staging first
+    # avoids shutil.move nesting a source inside an existing destination (which
+    # raises shutil.Error) when the target name collides with a category folder
+    # (e.g. category "evals" containing skill "evals") or a prior skill.
+    staging = skills_dir / ".flatten_staging"
+    overwrite(staging)
+    staging.mkdir()
+
+    planned = []  # (staged_path, final_path)
     for category in categories:
         for skill_folder in [d for d in category.iterdir() if d.is_dir()]:
-            new_name = f"{category.name}--{skill_folder.name}" if mode == "namespace" else skill_folder.name
-            new_path = skills_dir / new_name
-            
-            if dry_run:
-                print(f"  {skill_folder.relative_to(skills_dir)} -> {new_path.name}")
-            else:
-                print(f"Moving {skill_folder.name} -> {new_path.name}")
-                shutil.move(str(skill_folder), str(new_path))
+            new_name = (
+                f"{category.name}--{skill_folder.name}"
+                if mode == "namespace"
+                else skill_folder.name
+            )
+            staged_path = staging / new_name
+            overwrite(staged_path)
+            print(f"Staging {skill_folder.name} -> {new_name}")
+            shutil.move(str(skill_folder), str(staged_path))
+            planned.append((staged_path, skills_dir / new_name))
 
-    # Remove empty category folders
+    # Remove empty category folders before moving skills back to the top level.
     for category in categories:
         try:
             if category.exists() and not list(category.iterdir()):
@@ -41,6 +73,16 @@ def flatten_skills(skills_dir: Path, mode: str = "flat", dry_run: bool = False):
                 category.rmdir()
         except OSError:
             pass  # Already removed or not empty
+
+    # Phase 2: move staged skills to their final top-level destinations,
+    # overwriting any leftover directory that shares the same name.
+    for staged_path, final_path in planned:
+        overwrite(final_path)
+        print(f"Moving {staged_path.name} -> {final_path.name}")
+        shutil.move(str(staged_path), str(final_path))
+
+    overwrite(staging)
+
 
     print(
         "\n✅ Done! Now run: python3 .agent-skills/scripts/generate_compact_skills.py"
