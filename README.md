@@ -4,15 +4,12 @@
 
 [![Skills](https://img.shields.io/badge/Skills-141-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
-
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
 **141 local skill folders · 141 installable skills · TOON Format · Cross-platform**
-
-
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -23,8 +20,6 @@
 ## 💡 What is Agent Skills?
 
 A curated collection of 141 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
-
-
 
 <!-- WHATS-NEW:START -->
 
@@ -59,16 +54,42 @@ A curated collection of 141 agent skills for spec-first, multi-agent LLM workflo
 
 ## 📦 Installation
 
-> **Cross-platform**: macOS, Linux, and Windows (Git Bash / WSL2) are all supported. The installer auto-detects your OS in Step 0 and picks the right package manager (`brew` / `snap` / `winget`) and paths (`$HOME` / `$USERPROFILE` / `$XDG_DATA_HOME`) for each tool.
+> **Cross-platform**: macOS, Linux, and Windows (Git Bash / WSL2) are all supported. The LLM installer auto-detects your OS and picks the right package manager (`brew` / `snap` / `winget`) and paths (`$HOME` / `$USERPROFILE` / `$XDG_DATA_HOME`) for each tool.
 
-### Step 0: Install `skills` CLI
+### ✨ Recommended: LLM-driven install (one prompt, all platforms)
+
+Hand the setup prompt to your coding agent (Claude Code, Codex, Gemini CLI, …). It reads the guide, detects your OS, installs the `skills` CLI, adds every skill into the correct per-agent paths, and registers the MCP/shell tools — no manual steps.
+
+```bash
+# Fetch the delegation guide and hand it to your agent
+curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
+```
+
+Or just paste the URL into the agent chat:
+
+> Read `https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md` in full and follow it to install the jeo-skills.
+
+The agent runs a **full install by default** (say "core only" or "minimal" to narrow it) and will:
+
+- detect macOS / Linux / Windows and select `brew` / `snap` / `winget` + the right install paths,
+- install the `skills` CLI and add skills with correct `-a` agent targeting (no duplicate platform exposure),
+- register MCP tools (`ooo`, `semble`), shell tooling (`rtk`), and the `oh-my-claudecode` plugin,
+- **preserve any pre-existing skills** — it only adds or updates, never deletes.
+
+---
+
+### Manual install (advanced / CI / no-agent)
+
+For scripted or CI environments where no agent is in the loop, run the steps yourself.
+
+#### Step 0: Install `skills` CLI
 
 ```bash
 npm install -g skills
 skills --version
 ```
 
-### Vercel `skills` CLI scope and paths
+#### Scope and paths
 
 The Vercel `skills` CLI installs from GitHub shorthand, full Git URLs, direct skill paths, or local folders:
 
@@ -91,38 +112,25 @@ npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --ski
 
 Project scope is the default and should be committed when the team needs the same skill behavior. Global scope uses `-g` and is better for personal defaults. Agent-specific paths are selected with `-a`; the portable common layer is `.agents/skills/`.
 
-### For LLM Agents (recommended — handles all platforms automatically)
+#### Choose by platform
 
 ```bash
-curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
-```
-
-### Choose by Platform
-
-#### Claude Code
-
-```bash
+# Claude Code
 npx skills add https://github.com/akillness/jeo-skills \
   --skill omc --skill plannotator --skill agentation \
   --skill ooo --skill vibe-kanban
-```
 
-#### Gemini CLI
-
-```bash
+# Gemini CLI
 npx skills add https://github.com/akillness/jeo-skills \
   --skill ohmg --skill ooo --skill vibe-kanban
 antigravity extensions install https://github.com/akillness/jeo-skills
-```
 
-#### Codex CLI
-
-```bash
+# Codex CLI
 npx skills add https://github.com/akillness/jeo-skills \
   --skill omx --skill ooo
 ```
 
-#### Core Tool Setup (all platforms)
+#### Core tool setup (all platforms)
 
 ```bash
 # ooo MCP — spec-first control loop
@@ -217,7 +225,6 @@ rtk init -g
 
 ### 🎨 Frontend (13)
 
-
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `design-system` | Canonical frontend UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface system direction; routes component API, responsive layout, accessibility remediation, and broad UI critique to adjacent skills | All |
@@ -297,7 +304,6 @@ rtk init -g
 
 ### 🔭 Search & Analysis (13)
 
-
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `autoresearch` | Karpathy autonomous ML search front door — choose setup / `program.md` / bounded loop / results interpretation / constrained-hardware mode, preserve immutable `prepare.py` + 300s + `val_bpb`, route prompt/skill eval elsewhere | All |
@@ -314,7 +320,6 @@ rtk init -g
 | `codeflow` | Visualize codebase architecture in seconds — a zero-build single `index.html` browser app (React 18 + D3.js, client-side, no backend) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact; exports JSON/Markdown/SVG/PDF or a self-updating CodeFlow Card. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | All |
 | `academic-research` | Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes: full/quick/review/lit-review/three-way-scan/fact-check/socratic/systematic-review), academic-paper (11 modes: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer (6 modes: full/quick/guided/methodology-focus/re-review/calibration), and a 10-stage end-to-end pipeline orchestrator with Material Passport, claim-faithfulness gates, and cross-model verification. Human-in-the-loop throughout. Plugin (upstream): `claude plugin marketplace add Imbad0202/academic-research-skills` | All |
 
-
 ### 🎬 Creative Media (5)
 
 | Skill | Description | Platforms |
@@ -327,11 +332,9 @@ rtk init -g
 
 ### 📢 Marketing (1)
 
-
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `marketing-automation` | Canonical broad marketing front door — choose one operating mode, one primary lane, and one reusable operator packet with owner, dependencies/approvals, and proof across launch, conversion, lifecycle, acquisition/content, and measurement work | All |
-
 
 ### 🎮 Game Development (6)
 
@@ -345,7 +348,6 @@ rtk init -g
 | `unity-gamedev-skill-pack` | Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package with validation and integration guidance | All |
 
 ### 🔧 Utilities (13)
-
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -365,7 +367,6 @@ rtk init -g
 | `workflow-automation` | Routing-first repo workflow automation — choose one mode for task-entrypoints, bootstrap/onboarding, local-CI parity, hook guardrails, maintenance bots, or workflow cleanup without drifting into environment/deploy work | All |
 | `claudekit` | Standardized Claude Code workflow toolkit — claudekit plugin installation, init, update, hook management, and workspace configuration for consistent Claude Code setups | All |
 | `ghgrab` | Search and download specific files/folders from GitHub repositories directly from terminal using ghgrab, without full repo cloning | All |
-
 
 ### 🛠 Utilities (Productivity) (6)
 
@@ -704,7 +705,6 @@ npx vibe-kanban
 | `academic-research` | [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) | CC-BY-NC-4.0 |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
-
 
 ---
 

@@ -88,16 +88,42 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ## 📦 설치
 
-> **크로스 플랫폼**: macOS, Linux, Windows(Git Bash / WSL2) 모두 지원합니다. 설치 스크립트가 Step 0에서 OS를 자동 감지하여 적합한 패키지 매니저(`brew` / `snap` / `winget`)와 경로(`$HOME` / `$USERPROFILE` / `$XDG_DATA_HOME`)를 선택합니다.
+> **크로스 플랫폼**: macOS, Linux, Windows(Git Bash / WSL2) 모두 지원합니다. LLM 설치 프롬프트가 OS를 자동 감지하여 적합한 패키지 매니저(`brew` / `snap` / `winget`)와 경로(`$HOME` / `$USERPROFILE` / `$XDG_DATA_HOME`)를 선택합니다.
 
-### 0단계: `skills` CLI 설치
+### ✨ 권장: LLM 위임 설치 (프롬프트 하나로 전 플랫폼 자동 처리)
+
+설치 프롬프트를 사용 중인 코딩 에이전트(Claude Code, Codex, Gemini CLI, …)에 그대로 건네세요. 에이전트가 가이드를 읽고 OS를 감지해 `skills` CLI를 설치하고, 모든 스킬을 에이전트별 올바른 경로에 추가하며, MCP/셸 도구까지 등록합니다 — 수동 단계가 없습니다.
+
+```bash
+# 위임 가이드를 가져와 에이전트에게 전달
+curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
+```
+
+또는 에이전트 채팅창에 URL을 그대로 붙여넣으세요:
+
+> `https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md` 를 전부 읽고 그대로 따라 jeo-skills를 설치해줘.
+
+에이전트는 기본적으로 **전체 설치(full install)** 를 수행하며("core only" 또는 "minimal"이라고 하면 범위를 좁힙니다) 다음을 처리합니다:
+
+- macOS / Linux / Windows를 감지해 `brew` / `snap` / `winget`과 알맞은 설치 경로 선택,
+- `skills` CLI 설치 및 올바른 `-a` 에이전트 타게팅으로 스킬 추가(플랫폼 스킬 중복 노출 방지),
+- MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), `oh-my-claudecode` 플러그인 등록,
+- **기존 스킬 보존** — 추가/갱신만 하고 절대 삭제하지 않음.
+
+---
+
+### 수동 설치 (고급 / CI / 에이전트 없는 환경)
+
+루프에 에이전트가 없는 스크립트·CI 환경에서는 단계를 직접 실행하세요.
+
+#### 0단계: `skills` CLI 설치
 
 ```bash
 npm install -g skills
 skills --version
 ```
 
-### Vercel `skills` CLI 범위와 경로
+#### 범위와 경로
 
 Vercel `skills` CLI는 GitHub 축약명, 전체 Git URL, 저장소 내부 특정 스킬 경로, 로컬 폴더를 모두 설치 소스로 받을 수 있습니다.
 
@@ -120,33 +146,20 @@ npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --ski
 
 프로젝트 범위가 기본값이며 팀과 공유해야 하는 스킬은 커밋합니다. 글로벌 범위는 `-g`를 붙이며 개인 기본값에 적합합니다. `-a`로 에이전트별 경로를 고르고, 이식 가능한 공통 계층은 `.agents/skills/`입니다.
 
-### LLM 에이전트용 (권장 — 모든 플랫폼 자동 처리)
+#### 플랫폼별 선택
 
 ```bash
-curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
-```
-
-### 플랫폼별 선택
-
-#### Claude Code
-
-```bash
+# Claude Code
 npx skills add https://github.com/akillness/jeo-skills \
   --skill omc --skill plannotator --skill agentation \
   --skill ooo --skill vibe-kanban
-```
 
-#### Gemini CLI
-
-```bash
+# Gemini CLI
 npx skills add https://github.com/akillness/jeo-skills \
   --skill ohmg --skill ooo --skill vibe-kanban
 antigravity extensions install https://github.com/akillness/jeo-skills
-```
 
-#### Codex CLI
-
-```bash
+# Codex CLI
 npx skills add https://github.com/akillness/jeo-skills \
   --skill omx --skill ooo
 ```
