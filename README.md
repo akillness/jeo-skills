@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-144-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-143-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**144 local skill folders · 144 installable skills · TOON Format · Cross-platform**
+**143 local skill folders · 143 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -19,7 +19,7 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 144 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 143 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
 
 <!-- WHATS-NEW:START -->
 ## 🆕 What's New in v2026-06-29
@@ -161,7 +161,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 144 local skill folders = 144 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 143 local skill folders = 143 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -367,7 +367,6 @@ rtk init -g
 | `okf` | Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files (type/title/description/resource/tags/timestamp) for portable, interoperable AI-agent knowledge sharing. Formalizes the LLM-Wiki pattern. Includes Python linter, consume helper, and distribution guide. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill okf` | All |
 
 | `npm-git-install` | Routing-first Node package delivery skill for npm / pnpm / Yarn / Bun — choose temporary Git bridge, SHA pin, tarball, workspace, or publish-first handoff safely | All |
-| `obsidian` | **Unified Obsidian skill (v2.0)** — plugin development (27 ESLint rules, boilerplate, submission) + CLI automation (commands, TUI, URI handoff, developer mode) + content patterns (markdown, Bases, JSON Canvas). Plugin: `claude plugin marketplace add akillness/jeo-skills` | All |
 | `obsidian-second-brain` | Routing front door for a **self-rewriting Obsidian vault** (evolves Karpathy's LLM-Wiki) — every source REWRITES existing pages, reconciles contradictions, and synthesizes patterns automatically. 45 commands across 4 layers (Operations / Thinking / Context / Research) + background & scheduled agents + 4 role presets + AI-first write validator. Cross-CLI. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` | All |
 
 | `opencontext` | Routing-first active project/repo memory — choose memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out for manifests, stable links, cross-agent handoff packets, and highest-confidence-source / freshness checks when notes overlap | All |
@@ -645,7 +644,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 144 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 143 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
