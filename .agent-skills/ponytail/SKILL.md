@@ -1,27 +1,24 @@
 ---
 name: ponytail
 description: >
-  Make the agent write the least code that fully solves the task — think like
-  the laziest senior dev in the room, whose best code is the code he never
-  wrote. Before writing anything, stop at the first rung that holds: does this
-  need to exist (YAGNI) → stdlib → native platform feature → an already-installed
-  dependency → one line → only then the minimum that works. Mark every shortcut
-  taken with a `ponytail:` comment naming its upgrade path so deferred work
-  becomes a ledger, not amnesia. Use when the user wants less code, anti-bloat
-  or anti-over-engineering guidance, a YAGNI/minimalism pass, a delete-list
-  review of a diff, a whole-repo over-engineering audit, or a tech-debt harvest
-  of deferred shortcuts. Set intensity with lite / full / ultra / off. Lazy,
-  never negligent: validation, data-loss handling, security, and accessibility
-  are never cut. Triggers on: ponytail, write less code, YAGNI, over-engineering,
-  anti-bloat, minimal code, do I need this, ponytail review, ponytail audit,
-  ponytail debt, lazy dev.
+  Make the agent solve coding tasks with the least code that remains correct.
+  Before writing code, walk the Ponytail ladder: skip what need not exist, then
+  prefer stdlib, native platform features, already-installed dependencies, one
+  line, and only then the minimum custom code. Use when the user asks for
+  ponytail mode, less code, YAGNI, anti-bloat, minimal code, an
+  over-engineering review, a current-diff delete-list, a whole-repo bloat audit,
+  or a `ponytail:` tech-debt harvest. Keep validation, data-loss handling,
+  security, and accessibility. Mark shortcuts with `ponytail:` plus the upgrade
+  path. Triggers on: ponytail, /ponytail, /ponytail-review, /ponytail-audit,
+  /ponytail-debt, write less code, YAGNI, over-engineering, anti-bloat, minimal
+  code, do I need this, lazy dev.
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Universal — works in any code-writing context and stays active until set to
   off. Mode (lite/full/ultra/off) persists across turns. Routes communication
   compression to `caveman`, behavior-preserving cleanup of existing code to
-  `code-refactoring`, AI-generated bloat removal to `ai-slop-cleaner`, and
-  severity-rated review judgment to `code-review`. Upstream:
+  `code-refactoring`, and correctness/security review beyond bloat to
+  `code-review`. Upstream:
   https://github.com/DietrichGebert/ponytail (MIT).
 metadata:
   category: software-development
@@ -138,8 +135,8 @@ instruction-only adapters).
   use `caveman`.
 - The need is **behavior-preserving cleanup** of existing code (extract, rename,
   split) → use `code-refactoring`.
-- The need is removing **AI-generated slop** with a deletion-first, regression-
-  safe workflow → use `ai-slop-cleaner`.
+- The need is removing **AI-generated slop** for correctness, regressions, or
+  safety → use `code-review`; Ponytail can still handle the bloat-only slice.
 - The need is **severity-rated review** of correctness, SOLID, and quality
   beyond bloat → use `code-review`.
 
@@ -154,15 +151,18 @@ instruction-only adapters).
    validation, data-loss handling, security, accessibility. If a cut weakens
    one, keep the code — it is not bloat.
 4. **Mark every shortcut** with a `ponytail:` comment naming the upgrade path.
-5. **For `/ponytail-review`**, read the current diff and return a delete-list:
-   what to remove, what to collapse to one line, what platform/stdlib feature
-   replaces a hand-rolled block — grouped by confidence.
+5. **For `/ponytail-review`**, inspect the current diff only and return a
+   delete-list grouped by confidence. Each item must name the file, the bloat,
+   the lower ladder rung that replaces it, and any never-cut reason to keep it.
 6. **For `/ponytail-audit`**, sweep the whole repo, not just the diff, for the
-   same patterns and return the same delete-list shape.
+   same patterns and return the same delete-list shape. Do not edit during the
+   audit unless the user explicitly asks for fixes.
 7. **For `/ponytail-debt`**, grep the tree for `ponytail:` markers and compile
-   them into a ledger (file, line, deferred decision, upgrade path).
+   them into a ledger (file, line, deferred decision, upgrade path). Do not
+   treat unmarked TODOs as Ponytail debt.
 8. **Keep the mode active** across turns until the user sets `off` or a new
-   level.
+   level. In Pi, if persistence is not implemented by the host, restate the
+   active mode at the start of Ponytail-triggered turns.
 
 ## Examples
 
@@ -220,6 +220,6 @@ instruction-only adapters).
 - Benchmarks (80–94% less code, 3–6× faster, 47–77% cheaper): https://github.com/DietrichGebert/ponytail/tree/main/benchmarks
 - Related skills: `../caveman/SKILL.md` (communication compression),
   `../code-refactoring/SKILL.md` (behavior-preserving cleanup),
-  `../code-review/SKILL.md` (severity-rated review)
+  `../code-review/SKILL.md` (severity-rated review and AI-slop correctness passes)
 - Project standards: `../skill-standardization/SKILL.md`
 - Validator: `../skill-standardization/scripts/validate_skill.sh`

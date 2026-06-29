@@ -6,6 +6,16 @@ Semantic versioning per [SemVer](https://semver.org/).
 
 ---
 
+## [1.2.1] — 2026-06-30
+
+### Changed
+- Shortened `SKILL.md` frontmatter description below validator guidance while preserving trigger coverage.
+- Clarified `/ponytail-review`, `/ponytail-audit`, and `/ponytail-debt` output contracts.
+- Removed stale `ai-slop-cleaner` route-out; correctness/security review now routes to `code-review`.
+- Updated README install examples and catalog link from `oh-my-skills` to `jeo-skills`.
+
+---
+
 ## [1.2.0] — 2026-06-22
 
 ### Added
@@ -13,7 +23,7 @@ Semantic versioning per [SemVer](https://semver.org/).
 
 ### Changed
 - SKILL.md description rewritten with imperative verb lead; trigger list expanded (`ponytail review`, `ponytail audit`, `ponytail debt`, `lazy dev`)
-- `SKILL.md` compatibility block updated to include `ai-slop-cleaner` route-out
+- `SKILL.md` compatibility block route-out wording expanded
 
 ---
 
@@ -53,7 +63,7 @@ Semantic versioning per [SemVer](https://semver.org/).
 - `references/commands.md` — per-runtime command and install crosswalk
 - `scripts/install.sh` — auto-detect runtime, print (or with `APPLY=1` run) the right install command
 - `evals/evals.json` — two canonical evals: native date picker vs. flatpickr, delete-list review of LRUCache + hand-rolled email regex
-- Upstream credit: `DietrichGebert/ponytail` (MIT); catalog: `akillness/oh-my-skills`
+- Upstream credit: `DietrichGebert/ponytail` (MIT); catalog: `akillness/jeo-skills`
 
 ---
 

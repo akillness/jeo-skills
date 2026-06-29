@@ -30,21 +30,21 @@ Every shortcut taken gets a `ponytail:` comment naming its upgrade path so "late
 
 ### Quick (any runtime)
 
-bash
-npx skills add https://github.com/akillness/oh-my-skills --skill ponytail
+```bash
+npx skills add https://github.com/akillness/jeo-skills --skill ponytail
 # global, non-interactive:
-npx skills add https://github.com/akillness/oh-my-skills --skill ponytail -g -y
-
+npx skills add https://github.com/akillness/jeo-skills --skill ponytail -g -y
+```
 
 Or run the bundled auto-detect helper:
 
-bash
+```bash
 # prints the right install command; set APPLY=1 to actually run it
 bash .agent-skills/ponytail/scripts/install.sh
 
 # force a specific runtime and apply immediately
 RUNTIME=claude APPLY=1 bash .agent-skills/ponytail/scripts/install.sh
-
+```
 
 ---
 
@@ -75,7 +75,7 @@ Add ponytail's rules via the MCP server entry in `~/Library/Application Support/
         "-y",
         "skills",
         "serve",
-        "https://github.com/akillness/oh-my-skills",
+        "https://github.com/akillness/jeo-skills",
         "--skill",
         "ponytail"
       ]
@@ -113,9 +113,9 @@ In Codex, prefix commands with `@` instead of `/`.
 | Command | What it does |
 |---------|-------------|
 | `/ponytail [lite\|full\|ultra\|off]` | Set intensity, or report current level with no argument. Default on activation: **full**. Mode persists until changed. |
-| `/ponytail-review` | Review the **current diff** for over-engineering → returns a delete-list grouped by confidence. |
-| `/ponytail-audit` | Audit the **whole repo** (not just the diff) for the same patterns. |
-| `/ponytail-debt` | Harvest all `ponytail:` markers in the tree into a tech-debt ledger. |
+| `/ponytail-review` | Review the **current diff** only → delete-list grouped by confidence, with file, bloat, lower ladder rung, and any keep reason. |
+| `/ponytail-audit` | Audit the **whole repo** (not just the diff) for the same patterns; do not edit unless asked. |
+| `/ponytail-debt` | Harvest only `ponytail:` markers in the tree into a tech-debt ledger; unmarked TODOs are not Ponytail debt. |
 | `/ponytail-help` | Quick command reference. |
 
 ### Intensity levels
@@ -146,15 +146,15 @@ If cutting code would weaken one of these, that code is not bloat.
 
 Every shortcut gets a one-line comment naming its upgrade path:
 
-js
+```js
 // ponytail: in-memory map — swap for Redis when this needs to survive a restart
 const seen = new Map()
+```
 
-
-html
+```html
 <!-- ponytail: browser has one -->
 <input type="date">
-
+```
 
 Run `/ponytail-debt` to harvest all markers into a tech-debt ledger.
 
@@ -175,9 +175,15 @@ Run `/ponytail-debt` to harvest all markers into a tech-debt ledger.
 
 See [`CHANGELOG.md`](CHANGELOG.md) for the full history.
 
+### [1.2.1] — 2026-06-30
+- Shortened the `SKILL.md` description while preserving Ponytail trigger coverage.
+- Clarified `/ponytail-review`, `/ponytail-audit`, and `/ponytail-debt` output contracts.
+- Removed stale `ai-slop-cleaner` route-out; correctness/security review routes to `code-review`.
+- Updated install examples from `oh-my-skills` to `jeo-skills`.
+
 ### [1.2.0] — 2026-06-22
 - Added `metadata` block to `SKILL.md` (category, tags, platforms, keyword, version, source, upstream)
-- Expanded trigger list; added `ai-slop-cleaner` route-out to compatibility block
+- Expanded trigger list and route-out wording.
 
 ### [1.1.0] — 2025-07-10
 - Added `README.md` with full per-runtime install crosswalk and MCP server setup
@@ -193,11 +199,7 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full history.
 - Initial release: SKILL.md, `references/commands.md`, `scripts/install.sh`, `evals/evals.json`
 - Four intensity levels (lite / full / ultra / off), YAGNI ladder, `ponytail:` marker convention
 
-### [0.2.0] — 2025-04-14
-- Added `SKILL.toon` compact rendering for token-limited runtimes
-- Route-outs to `caveman` and `code-refactoring` made explicit in SKILL.md
-
 ---
 
 
-<sub>Upstream: <a href="https://github.com/DietrichGebert/ponytail">DietrichGebert/ponytail</a> (MIT) · Catalog: <a href="https://github.com/akillness/oh-my-skills">akillness/oh-my-skills</a> · "Done. He'd be proud. He won't say it."</sub>
+<sub>Upstream: <a href="https://github.com/DietrichGebert/ponytail">DietrichGebert/ponytail</a> (MIT) · Catalog: <a href="https://github.com/akillness/jeo-skills">akillness/jeo-skills</a> · "Done. He'd be proud. He won't say it."</sub>
