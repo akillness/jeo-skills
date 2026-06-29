@@ -1,0 +1,37 @@
+N:webtoon-harness
+D:[webtoon-harness] Run an end-to-end webtoon production harness — a 27-agent / 4-phase Claude Code agent team that takes one episode from trend research to a finished vertical-scroll viewer. Research trends -> dialogue-heavy high-tension twist-every-episode scenario -> reference sheets first -> 50+ panels with in-image Korean speech-bubble bake via codex-image -> 6-axis validate/regenerate loop -> vertical-scroll viewer. Packages revfactory/webtoon-harness; trend-research web extraction routes through the scrapling skill.
+G:webtoon agent-team multi-agent content-production codex-image panel-render trend-research scrapling vertical-scroll claude-code
+
+U[7]:
+  Produce a full webtoon episode from trend research to a finished vertical-scroll viewer
+  Research webtoon trends: genre/trope momentum, platform rankings, reader reactions, hook/twist reverse-engineering
+  Write a dialogue-heavy high-tension scenario with a twist every episode and a 50+ panel beat sheet
+  Render character reference sheets first, then 50+ panels with in-image baked Korean speech bubbles
+  Run the 6-axis panel validate-regenerate loop until every panel passes
+  Assemble panels into a no-overlay vertical-scroll viewer and package a release
+  Follow-ups: next episode, stronger twist, redraw panel N, re-run only one phase
+
+S[7]{n,phase,details}:
+  0,Context check,detect fresh / next-episode / partial / new-project run mode from _workspace/
+  1,Prep,record brief and create _workspace/ tree
+  2,Research,5-member team; 4 investigators gather via scrapling -> trend-brief.md
+  3,Scenario,9-member team; concept->world->cast->arc->{twist,tension}->beatsheet->script_final
+  4,Visual,9-member team; style bible -> reference sheets FIRST -> shotlist+lettering -> prompts -> codex-image render (batches of 5) -> panel-validator loop
+  5,Assembly,4-member team; no-overlay index.html -> qa PASS -> RELEASE/ep{NN}/
+  6,Wrap-up,update continuity and emit next-episode seed
+
+R[7]:
+  Agent teams require CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1; only one team active per session (TeamCreate/TeamDelete per phase)
+  Spawn every team member and Agent call with model: opus
+  codex CLI image_generation for panels; keep global concurrency at <=5 sessions; max 3 regenerations per panel
+  Speech bubbles are baked into the panel PNG (in-image) — assembly has NO text overlay, no double captioning
+  Reference sheets render BEFORE panels as the cross-episode consistency SSOT
+  Trend-research web extraction routes through the scrapling skill; respect ToS/robots/rate-limits/copyright; source URL + observation date per claim
+  Preserve every intermediate artifact under _workspace/; never delete it
+
+E[5]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness
+  Scaffold harness,bash scripts/install.sh
+  Trigger via prompt,"트렌드 반영해서 웹툰 1화 만들어줘"
+  Trigger via prompt,"다음 화 만들어"
+  Trigger via prompt,"패널 23번 다시 그려"

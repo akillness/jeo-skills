@@ -1,0 +1,65 @@
+{
+  "skill_name": "webtoon-harness",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "트렌드 반영해서 웹툰 1화 만들어줘.",
+      "expected_output": "The skill triggers and runs the full 6-phase webtoon production pipeline with phase-rebuilt agent teams.",
+      "assertions": [
+        "The response builds phase teams (research → scenario → visual → assembly) with TeamCreate/TeamDelete",
+        "The response mentions CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1",
+        "The research phase gathers web data via the scrapling skill",
+        "The output targets a vertical-scroll viewer (index.html) with in-image baked bubbles"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "다음 화 만들어.",
+      "expected_output": "Phase 0 detects an existing _workspace/, reuses world/style/continuity, and regenerates only from the episode stage onward.",
+      "assertions": [
+        "The response reuses 02_story, style-bible, character-sheets, refs/, and continuity.md",
+        "The response does NOT re-render reference sheets",
+        "The response increments the episode number"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "패널 23번 다시 그려.",
+      "expected_output": "A partial visual re-run re-renders and re-validates only panel 23, then re-assembles.",
+      "assertions": [
+        "The response re-runs only the visual phase for panel 23 (prompt-smith + the panel-artist + panel-validator)",
+        "The response re-assembles the viewer after the re-render",
+        "The response does not re-run research or scenario phases"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "이번 화 반전 더 강하게.",
+      "expected_output": "A partial scenario re-run (twist-master, script-editor) plus re-running affected downstream phases.",
+      "assertions": [
+        "The response re-runs the scenario team's twist-master and script-editor",
+        "The response re-runs affected downstream stages (shotlist → render → assemble)",
+        "The response preserves prior artifacts under _workspace/"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "요즘 인기 웹툰 트렌드만 조사해줘.",
+      "expected_output": "Runs the research team only, gathering platform rankings and reader reactions via scrapling into trend-brief.md.",
+      "assertions": [
+        "The response runs the 5-member research team",
+        "Web extraction routes through the scrapling skill with source URL + observation date per claim",
+        "The response synthesizes one actionable trend-brief.md"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "재미있는 웹툰 하나 추천해줘.",
+      "expected_output": "The skill does NOT trigger; this is a recommendation/critique request answered directly.",
+      "assertions": [
+        "The response does not build agent teams or run the production pipeline",
+        "The response answers the recommendation directly"
+      ]
+    }
+  ]
+}

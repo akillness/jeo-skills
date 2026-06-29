@@ -126,6 +126,11 @@
       ],
       "addedAt": "2026-03-03T00:00:00Z"
     },
+    "obsidian-second-brain": {
+      "source": "akillness/jeo-skills",
+      "sourceType": "github",
+      "computedHash": "45cf09f1d623710b5f2ae03d13d8697a11ca382035bc06d333d4d1b5bf4b2a9e"
+    },
     "omc": {
       "source": "Yeachan-Heo/oh-my-claudecode",
       "sourceType": "plugin",
@@ -263,6 +268,40 @@
       "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill survey",
       "addedAt": "2026-03-10T00:00:00Z",
       "updatedAt": "2026-03-10T00:00:00Z"
+    },
+    "webtoon-harness": {
+      "source": "akillness/jeo-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "webtoon-harness",
+      "description": "revfactory/webtoon-harness 기반 웹툰 제작 하네스 — 27개 에이전트 / 4단계 팀으로 트렌드 리서치부터 세로 스크롤 뷰어까지 한 회차를 자동 제작. 대사 위주·고긴장·매 회차 반전 시나리오, 레퍼런스 시트 선행, codex-image 병렬 패널 렌더(in-image 말풍선 베이크), 6축 검증-재생성 루프. 트렌드 리서치의 웹 추출은 scrapling 스킬로 라우팅.",
+      "tags": [
+        "webtoon",
+        "agent-team",
+        "multi-agent",
+        "content-production",
+        "codex-image",
+        "panel-render",
+        "trend-research",
+        "scrapling",
+        "vertical-scroll",
+        "claude-code"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness",
+      "addedAt": "2026-06-29T00:00:00Z",
+      "updatedAt": "2026-06-29T00:00:00Z",
+      "extensions": [
+        {
+          "skill": "scrapling",
+          "status": "recommended",
+          "reason": "Owns the web-extraction layer for the trend-research phase — pick the lightest workable scraping mode."
+        },
+        {
+          "skill": "harness",
+          "status": "recommended",
+          "reason": "Use harness to evolve or re-architect the webtoon agent team and skills."
+        }
+      ]
     }
   }
 }

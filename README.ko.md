@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-141-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-144-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**141개 로컬 스킬 폴더 · 설치 가능 스킬 141개 · TOON 포맷 · 멀티플랫폼**
+**144개 로컬 스킬 폴더 · 설치 가능 스킬 144개 · TOON 포맷 · 멀티플랫폼**
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +20,7 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode를 위한 141개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode를 위한 144개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
 
 
@@ -56,6 +56,13 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-06-29 업데이트
+
+| 변경 | 상세 |
+|------|------|
+| **webtoon-harness: 27개 에이전트 웹툰 제작 팀** | `webtoon-harness` 스킬을 추가했습니다 — [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness)(MIT)를 jeo-skills 플러그인으로 패키징한 것으로, **27개 전문 에이전트**를 **4개 단계별 재구성 팀**(리서치 → 시나리오 → 비주얼 → 조립검수)으로 운영해 웹툰 **한 회차를 트렌드 조사부터 세로 스크롤 뷰어까지** 자동 제작하는 Claude Code 하네스입니다. 인기 웹툰 트렌드 조사 → 대사 위주·고긴장·매 회차 반전 시나리오 → 캐릭터 레퍼런스 시트 **선행 렌더**(회차 간 일관성의 단일 진실원천) → 회차당 **50+ 패널**을 `codex-image`로 **말풍선·한글 대사 in-image 베이크** 병렬 렌더(동시 ≤5 codex 세션) → **panel-validator 6축 검증-재생성 루프**로 전 패널 통과 → **오버레이 없는 세로 스크롤 뷰어** 조립. Phase 0 후속 라우팅이 "다음 화", "반전 더 강하게", "패널 N번 다시 그려"를 처리합니다. Phase 2 트렌드 리서치의 웹 추출은 **`scrapling`** 스킬로 라우팅합니다(가장 가벼운 스크래핑 모드 선택, ToS/robots/rate-limit/저작권 준수, 주장마다 출처 URL + 관측 일자). `SKILL.md` + `SKILL.toon`, 참조 문서 4개(`agent-teams.md`, `workflow.md`, `trend-research-scrapling.md`, `install.md`), `scripts/install.sh`(`TARGET` / `GLOBAL` / `REF` 노브로 업스트림 `.claude/agents` + `.claude/skills`를 프로젝트에 스캐폴딩), `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness`. Route-out: `scrapling`(웹 추출), `harness`(에이전트 팀·스킬 진화). 143 → **144개 스킬**. |
+
 
 ## 🆕 v2026-06-26 업데이트
 
@@ -189,7 +196,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 141개 로컬 스킬 폴더 = 총 141개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 144개 로컬 스킬 폴더 = 총 144개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -346,7 +353,7 @@ rtk init -g
 | `academic-research` | 연구 발견부터 논문 출판까지 전체 학술 연구 파이프라인 — 4개의 참조 파이프라인, 27가지 모드, 39-에이전트 앙상블: deep-research(8가지 모드: full/quick/review/lit-review/three-way-scan/fact-check/socratic/PRISMA systematic-review), academic-paper(11가지 모드: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer(6가지 모드: EIC+R1/R2/R3+Devil's Advocate, calibration), academic-pipeline(Material Passport·L3 주장-충실성 게이트·3중 인용 검증을 포함한 10단계 오케스트레이터). 전 과정 human-in-the-loop. 플러그인(업스트림): `claude plugin marketplace add Imbad0202/academic-research-skills` | 전체 |
 
 
-### 🎬 창의 미디어 (5개)
+### 🎬 창의 미디어 (6개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -355,6 +362,7 @@ rtk init -g
 | `video-production` | Remotion, 템플릿 API, 콘텐츠 리퍼포징, QA 핸드오프를 묶는 기본 프로그래머블/자동화 비디오 스킬 | 전체 |
 | `god-tibo-imagen` | Codex ChatGPT 백엔드를 통한 AI 이미지 생성 — 의존성 없음, `~/.codex/auth.json` 재사용, CLI(`gti`), Node.js, Python SDK 지원 | 전체 |
 | `notebooklm` | Claude Code에서 Google NotebookLM 노트북을 직접 조회 — Patchright 브라우저 자동화로 출처 기반 인용 답변, 영구 Google 인증, 노트북 라이브러리 관리 지원 | Claude Code |
+| `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness)(MIT)를 패키징한 엔드투엔드 웹툰 제작 하네스 — 27개 에이전트·4단계 팀이 트렌드 조사부터 세로 스크롤 뷰어까지 한 회차를 제작: 대사 위주·매 회차 반전 시나리오, 레퍼런스 시트 선행, codex-image로 말풍선 in-image 베이크한 50+ 패널 렌더, 6축 검증-재생성 루프, 오버레이 없는 조립. Phase 2 트렌드 리서치의 웹 추출은 `scrapling` 스킬로 라우팅. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness` | Claude Code |
 
 ### 📢 마케팅 (2개)
 
@@ -635,6 +643,7 @@ npx vibe-kanban
 | [smolagents](https://github.com/huggingface/smolagents) | 25.9k | HuggingFace 코드 사고 경량 에이전트 라이브러리 |
 | [agency-agents](https://github.com/msitarzewski/agency-agents) | 21.2k | 9개 부서의 61개 특화 AI 에이전트 |
 | [revfactory/harness](https://github.com/revfactory/harness) | meta-skill | 에이전트 팀 · 스킬 하네스 설계 플러그인 |
+| [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | harness | 27개 에이전트 웹툰 제작 팀(트렌드 → 세로 스크롤 뷰어) 플러그인 |
 
 > 설치 및 연동 가이드 → [docs/harness/README.ko.md](docs/harness/README.ko.md) · 패키징된 스킬 → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
 
@@ -643,7 +652,7 @@ npx vibe-kanban
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 142개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 144개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -671,6 +680,7 @@ npx vibe-kanban
 | `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [docs/notebooklm/README.md](docs/notebooklm/README.md) |
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
+| `webtoon-harness` | `웹툰 만들어`, `웹툰 하네스` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.ko.md](docs/harness/README.ko.md) |
@@ -695,6 +705,7 @@ npx vibe-kanban
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
 | `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
+| `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | MIT |
 | `obsidian-cli` | [Obsidian CLI Help](https://obsidian.md/help/cli) | Proprietary |
 | `llm-wiki` | [karpathy/llm-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | — |
 | `obsidian-second-brain` | [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain) (포크: [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain)) | MIT |

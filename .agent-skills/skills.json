@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-06-15T00:00:00Z",
-  "skill_count": 143,
+  "skill_count": 144,
   "categories": {
     "planning-review": [
       "agentation",
@@ -155,7 +155,8 @@
     "creative-media": [
       "drawio",
       "remotion-video-production",
-      "video-production"
+      "video-production",
+      "webtoon-harness"
     ],
     "marketing": [
       "marketing-automation",
@@ -4778,6 +4779,49 @@
         {
           "command": "npm install @devup-ui/react @devup-ui/next-plugin",
           "source": "frontend/devup-ui/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "webtoon-harness",
+      "description": "Run an end-to-end webtoon production harness — a 27-agent / 4-phase Claude Code agent team that takes one episode from trend research to a finished vertical-scroll viewer. Research popular trends, write a dialogue-heavy high-tension twist-every-episode scenario, render character reference sheets first, render 50+ panels with in-image Korean speech-bubble baking via codex-image, run a 6-axis validate/regenerate loop, and assemble a vertical-scroll viewer. Packages revfactory/webtoon-harness; trend-research web extraction routes through the scrapling skill. Triggers on: webtoon harness, make a webtoon, produce a webtoon episode, next episode, redraw panel, stronger twist, webtoon trend research.",
+      "category": "creative-media",
+      "path": "webtoon-harness/SKILL.md",
+      "tags": [
+        "webtoon",
+        "agent-team",
+        "multi-agent",
+        "content-production",
+        "codex-image",
+        "panel-render",
+        "trend-research",
+        "scrapling",
+        "vertical-scroll",
+        "claude-code"
+      ],
+      "platforms": [
+        "Claude"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch",
+        "Agent"
+      ],
+      "scripts": [
+        {
+          "file": "scripts/install.sh",
+          "description": "Scaffold the revfactory/webtoon-harness agents+skills into a target project .claude/"
+        }
+      ],
+      "commands": [
+        {
+          "command": "bash scripts/install.sh",
+          "source": "creative-media/webtoon-harness/scripts/install.sh"
         }
       ]
     }

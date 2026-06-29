@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-141-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-144-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**141 local skill folders · 141 installable skills · TOON Format · Cross-platform**
+**144 local skill folders · 144 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -19,9 +19,15 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 141 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 144 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
 
 <!-- WHATS-NEW:START -->
+## 🆕 What's New in v2026-06-29
+
+| Change | Details |
+|--------|----------|
+| **webtoon-harness: 27-agent webtoon production team** | Added `webtoon-harness` — a jeo-skills plugin packaging [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) (MIT), a Claude Code harness that builds **one webtoon episode end to end** with **27 specialized agents in 4 phase-rebuilt teams** (research → scenario → visual → assembly). It researches popular webtoon trends, writes a dialogue-heavy, high-tension, twist-every-episode scenario, renders character reference sheets **first** (the cross-episode consistency SSOT), batch-renders **50+ panels** per episode with **in-image Korean speech-bubble baking** via `codex-image` (≤5 concurrent codex sessions), runs a **6-axis validate–regenerate loop** until every panel passes, and assembles a **no-overlay vertical-scroll viewer**. Phase-0 follow-up routing handles "next episode", "stronger twist", and "redraw panel N". The Phase-2 trend-research web extraction routes through the **`scrapling`** skill (pick the lightest workable scraping mode; respect ToS/robots/rate-limits/copyright; source URL + observation date per claim). Ships `SKILL.md` + `SKILL.toon`, 4 reference docs (`agent-teams.md`, `workflow.md`, `trend-research-scrapling.md`, `install.md`), `scripts/install.sh` (`TARGET` / `GLOBAL` / `REF` knobs that scaffold the upstream `.claude/agents` + `.claude/skills` into a project), and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness`. Route-outs: `scrapling` (web extraction), `harness` (evolve the agent team & skills). 143 → **144 skills**. |
+
 
 ## 🆕 What's New in v2026-06-26
 
@@ -155,7 +161,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 141 local skill folders = 141 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 144 local skill folders = 144 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -320,7 +326,7 @@ rtk init -g
 | `codeflow` | Visualize codebase architecture in seconds — a zero-build single `index.html` browser app (React 18 + D3.js, client-side, no backend) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact; exports JSON/Markdown/SVG/PDF or a self-updating CodeFlow Card. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | All |
 | `academic-research` | Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes: full/quick/review/lit-review/three-way-scan/fact-check/socratic/systematic-review), academic-paper (11 modes: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer (6 modes: full/quick/guided/methodology-focus/re-review/calibration), and a 10-stage end-to-end pipeline orchestrator with Material Passport, claim-faithfulness gates, and cross-model verification. Human-in-the-loop throughout. Plugin (upstream): `claude plugin marketplace add Imbad0202/academic-research-skills` | All |
 
-### 🎬 Creative Media (5)
+### 🎬 Creative Media (6)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -329,6 +335,7 @@ rtk init -g
 | `video-production` | Canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs | All |
 | `god-tibo-imagen` | Generate AI images via Codex ChatGPT backend — zero dependencies, reuses `~/.codex/auth.json`, CLI (`gti`), Node.js, and Python SDK | All |
 | `notebooklm` | Query Google NotebookLM notebooks directly from Claude Code — source-grounded citation-backed answers via Patchright browser automation, persistent Google auth, and notebook library management | Claude Code |
+| `webtoon-harness` | End-to-end webtoon production harness packaging [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) (MIT) — 27 agents in 4 phase-rebuilt teams take one episode from trend research to a finished vertical-scroll viewer: dialogue-heavy twist-every-episode scenario, reference sheets first, 50+ panels rendered with in-image Korean speech-bubble baking via codex-image, a 6-axis validate–regenerate loop, then no-overlay assembly. Phase-2 trend research routes web extraction through the `scrapling` skill. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness` | Claude Code |
 
 ### 📢 Marketing (1)
 
@@ -628,6 +635,7 @@ npx vibe-kanban
 | [smolagents](https://github.com/huggingface/smolagents) | 25.9k | HuggingFace code-thinking agent library |
 | [agency-agents](https://github.com/msitarzewski/agency-agents) | 21.2k | 61 specialized AI agents across 9 divisions |
 | [revfactory/harness](https://github.com/revfactory/harness) | meta-skill | Agent team & skill architect plugin / scaffold |
+| [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | harness | 27-agent webtoon production team (trend → vertical-scroll viewer) plugin |
 
 > Install & integration notes → [docs/harness/README.md](docs/harness/README.md) · packaged skill → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
 
@@ -637,7 +645,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 142 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 144 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -667,6 +675,7 @@ npx vibe-kanban
 | `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [docs/notebooklm/README.md](docs/notebooklm/README.md) |
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
+| `webtoon-harness` | `webtoon harness`, `make a webtoon` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.md](docs/harness/README.md) |
@@ -692,6 +701,7 @@ npx vibe-kanban
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
 | `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
+| `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | MIT |
 
 | `llm-wiki` | [karpathy/llm-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | — |
 | `obsidian-second-brain` | [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain) (fork: [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain)) | MIT |
