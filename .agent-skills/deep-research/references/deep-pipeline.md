@@ -74,15 +74,6 @@ Task is complete only after validation passes.
 """
 ```
 
-> `{validate_script}` keeps the prompt verbatim-substitutable while resolving to
-> the validator that **actually exists on this machine** — never a hardcoded
-> path. The upstream original hardcodes `~/.claude/skills/research/validate_json.py`,
-> which is absent in a jeo-skills install; the Step 3 `ls … | head -n1` probe
-> instead selects the first real install root (`~/.agents/skills/…`, the repo
-> checkout, or a `~/.claude/skills/…` copy), so the same template works wherever
-> the skill is installed.
-
-
 **One-shot Example** (assuming researching GitHub Copilot):
 
 ```
@@ -105,7 +96,7 @@ Read {project_dir}/fields.yaml to get all field definitions
 
 ## Validation
 After completing JSON output, run validation script to ensure complete field coverage:
-python "$validate_script" -f {project_dir}/fields.yaml -j {project_dir}/results/GitHub_Copilot.json
+python {validate_script} -f {project_dir}/fields.yaml -j {project_dir}/results/GitHub_Copilot.json
 
 Task is complete only after validation passes.
 ```
