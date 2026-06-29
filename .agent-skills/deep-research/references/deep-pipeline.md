@@ -35,7 +35,19 @@ list and execution config (including `items_per_agent`).
 - `{output_dir}`: `execution.output_dir` from `outline.yaml` (default: `./results`)
 - `{fields_path}`: absolute path to `{topic}/fields.yaml`
 - `{output_path}`: absolute path to `{output_dir}/{item_name_slug}.json` (slugify `item_name`: replace spaces with `_`, remove special chars)
-- `{validate_script}`: absolute path to the shipped validator — `<skill_dir>/scripts/validate_json.py` (in jeo-skills: `.agent-skills/deep-research/scripts/validate_json.py`)
+- `{validate_script}`: absolute path to the shipped validator, **resolved
+  dynamically from the filesystem** (the skill ships under different roots — do
+  not hardcode). Probe the real install roots and take the first that exists:
+  ```bash
+  validate_script="$(ls \
+    "$HOME/.agents/skills/deep-research/scripts/validate_json.py" \
+    "$PWD/.agent-skills/deep-research/scripts/validate_json.py" \
+    "$HOME/.claude/skills/deep-research/scripts/validate_json.py" \
+    "$HOME/.claude/skills/research/validate_json.py" \
+    2>/dev/null | head -n1)"
+  [ -n "$validate_script" ] || { echo "validate_json.py not found"; exit 1; }
+  ```
+
 
 **Prompt Template:**
 
@@ -62,12 +74,14 @@ Task is complete only after validation passes.
 """
 ```
 
-> `{validate_script}` keeps the prompt verbatim-substitutable while pointing at
-> the script that actually ships with this skill
-> (`.agent-skills/deep-research/scripts/validate_json.py`, or wherever the skill
-> is installed). The upstream original hardcodes
-> `~/.claude/skills/research/validate_json.py`, which does not exist in a
-> jeo-skills install — resolve `{validate_script}` to the shipped path instead.
+> `{validate_script}` keeps the prompt verbatim-substitutable while resolving to
+> the validator that **actually exists on this machine** — never a hardcoded
+> path. The upstream original hardcodes `~/.claude/skills/research/validate_json.py`,
+> which is absent in a jeo-skills install; the Step 3 `ls … | head -n1` probe
+> instead selects the first real install root (`~/.agents/skills/…`, the repo
+> checkout, or a `~/.claude/skills/…` copy), so the same template works wherever
+> the skill is installed.
+
 
 **One-shot Example** (assuming researching GitHub Copilot):
 
@@ -91,7 +105,8 @@ Read {project_dir}/fields.yaml to get all field definitions
 
 ## Validation
 After completing JSON output, run validation script to ensure complete field coverage:
-python ~/.agents/skills/deep-research/scripts/validate_json.py -f {project_dir}/fields.yaml -j {project_dir}/results/GitHub_Copilot.json
+python "$validate_script" -f {project_dir}/fields.yaml -j {project_dir}/results/GitHub_Copilot.json
+
 Task is complete only after validation passes.
 ```
 
@@ -119,11 +134,12 @@ After all items complete, output:
 `validate_json.py` (PyYAML required) checks each item's JSON against
 `fields.yaml`:
 
-```bash
-python .agent-skills/deep-research/scripts/validate_json.py \
+bash
+# {validate_script} is resolved dynamically (see Step 3) — never hardcoded
+python "$validate_script" \
   -f {topic}/fields.yaml \
   -j {output_dir}/{item_slug}.json
-```
+
 
 - Reads `field_categories[].fields[]` from `fields.yaml`; a field is required
   when `required: true`.
