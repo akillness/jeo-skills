@@ -28,7 +28,7 @@ metadata:
   tags: deep-research, structured-research, research-outline, web-search, literature-review, benchmark, competitor-analysis, due-diligence, parallel-agents, report-generation, human-in-the-loop
   platforms: Claude, Codex, Gemini, Cursor, Copilot, OpenCode, All
   keyword: deep-research
-  version: "1.0.0"
+  version: "1.0.1"
   upstream: https://github.com/Weizhena/Deep-Research-skills
   source: akillness/jeo-skills
   license: MIT

@@ -137,9 +137,11 @@ def main():
         print("[WARN] No JSON files found")
         sys.exit(0)
     results = []
+    missing_files = 0
     for json_path in json_files:
         if not json_path.exists():
             print(f"[WARN] File not found: {json_path}")
+            missing_files += 1
             continue
         result = validate_json(json_path, all_fields, required_fields, field_categories)
         results.append(result)
@@ -152,8 +154,14 @@ def main():
     avg_coverage = sum(r["coverage_rate"] for r in results) / len(results) if results else 0
     print(f"Validation passed: {passed}/{len(results)}")
     print(f"Average coverage: {avg_coverage:.1f}%")
-    if passed < len(results):
+    if missing_files:
+        print(f"[ERROR] {missing_files} requested file(s) not found")
+    # Fail the gate if any required field is missing OR a requested file was
+    # absent. A missing file must never count as a pass (the deep phase treats
+    # a clean exit as "item done"), so we exit non-zero when nothing validated.
+    if missing_files or passed < len(results) or not results:
         sys.exit(1)
+
 
 
 if __name__ == "__main__":

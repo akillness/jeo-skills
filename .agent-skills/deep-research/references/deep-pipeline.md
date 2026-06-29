@@ -35,6 +35,7 @@ list and execution config (including `items_per_agent`).
 - `{output_dir}`: `execution.output_dir` from `outline.yaml` (default: `./results`)
 - `{fields_path}`: absolute path to `{topic}/fields.yaml`
 - `{output_path}`: absolute path to `{output_dir}/{item_name_slug}.json` (slugify `item_name`: replace spaces with `_`, remove special chars)
+- `{validate_script}`: absolute path to the shipped validator — `<skill_dir>/scripts/validate_json.py` (in jeo-skills: `.agent-skills/deep-research/scripts/validate_json.py`)
 
 **Prompt Template:**
 
@@ -56,14 +57,17 @@ Read {fields_path} to get all field definitions
 
 ## Validation
 After completing JSON output, run validation script to ensure complete field coverage:
-python ~/.claude/skills/research/validate_json.py -f {fields_path} -j {output_path}
+python {validate_script} -f {fields_path} -j {output_path}
 Task is complete only after validation passes.
 """
 ```
 
-> In jeo-skills the validation script ships at
-> `.agent-skills/deep-research/scripts/validate_json.py`. Use that path (or
-> wherever the skill is installed) in place of `~/.claude/skills/research/validate_json.py`.
+> `{validate_script}` keeps the prompt verbatim-substitutable while pointing at
+> the script that actually ships with this skill
+> (`.agent-skills/deep-research/scripts/validate_json.py`, or wherever the skill
+> is installed). The upstream original hardcodes
+> `~/.claude/skills/research/validate_json.py`, which does not exist in a
+> jeo-skills install — resolve `{validate_script}` to the shipped path instead.
 
 **One-shot Example** (assuming researching GitHub Copilot):
 
@@ -87,7 +91,7 @@ Read {project_dir}/fields.yaml to get all field definitions
 
 ## Validation
 After completing JSON output, run validation script to ensure complete field coverage:
-python ~/.claude/skills/research/validate_json.py -f {project_dir}/fields.yaml -j {project_dir}/results/GitHub_Copilot.json
+python ~/.agents/skills/deep-research/scripts/validate_json.py -f {project_dir}/fields.yaml -j {project_dir}/results/GitHub_Copilot.json
 Task is complete only after validation passes.
 ```
 
@@ -128,6 +132,8 @@ python .agent-skills/deep-research/scripts/validate_json.py \
 - Reports coverage %, missing required/optional fields by category, and extra
   fields. **PASS** only when there are no missing required fields; the process
   exits non-zero otherwise, so an item is "done" only after a clean pass.
+- A requested `-j` file that does not exist (item never written) also exits
+  non-zero — a missing output can never be silently counted as a pass.
 
 ## Next step
 
