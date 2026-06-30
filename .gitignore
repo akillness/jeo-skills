@@ -94,3 +94,7 @@ venv.bak/
 
 # Ensure .agent-skills is tracked (not ignored)
 !.agent-skills/
+
+# Skill-specific build artifacts and source clones
+.agent-skills/*/bin/
+.agent-skills/*/.src/
