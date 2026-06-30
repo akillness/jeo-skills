@@ -82,6 +82,15 @@ if command -v gjc      &>/dev/null; then echo "✅ Gajae Code (gjc)"; DETECTED_A
 # .jeo/context.md / CLAUDE.md) + global ~/.agents/rules, and runs hooks from
 # ~/.jeo/config.json (events: pre-tool | post-turn | post-implementation).
 if command -v jeo      &>/dev/null; then echo "✅ jeo-code (jeo)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}jeo"; fi
+# pi (jeo-pi): the pi coding agent (@earendil-works/pi-coding-agent) with the jeo-pi
+# extension suite. Config root ~/.pi/agent (settings.json / mcp.json); loads AGENTS.md
+# from ~/.pi/agent + cwd ancestors, and reaches durable hooks via the bundled
+# `tool-flow` extension (turn_end -> graphify + llm-wiki). `pi` is a generic binary
+# name, so require the authoritative config dir to avoid false positives.
+if command -v pi &>/dev/null && [ -d "$_HOME/.pi/agent" ]; then
+  echo "✅ pi (jeo-pi)"
+  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}pi"
+fi
 
 [ -z "$DETECTED_AGENTS" ] && { echo "⚠️  No AI agents detected. Install at least one platform first."; exit 1; }
 echo ""
@@ -850,6 +859,84 @@ fi
 
 ---
 
+### 3j — pi (jeo-pi) rules + MCP wiring
+
+`pi` (the [earendil-works/pi](https://github.com/earendil-works/pi) coding agent, used by
+the **jeo-pi** extension suite) is configured differently from jeo-code — there is **no
+`~/.jeo/config.json`-style shell-hook file**. Its surfaces map like this:
+
+| jeo-code (Step 3i) | pi / jeo-pi equivalent |
+|---|---|
+| Rules → `~/.agents/rules/jeo-tool-flow.md` | Context file → `~/.pi/agent/AGENTS.md` (pi loads `AGENTS.md` from its agent dir + cwd ancestors) |
+| Hooks → `~/.jeo/config.json` (`post-implementation`, `post-turn`) | The bundled **`tool-flow` extension** (`turn_end` → graphify + llm-wiki ingest). Ships with jeo-pi; no shell hook to wire here. |
+| MCP → Codex `config.toml` / `claude mcp add` | `~/.pi/agent/mcp.json` (`mcpServers` map) |
+
+So this step does two things, both idempotent and global: inject the tool-flow rule into
+pi's global `AGENTS.md`, and register the semble MCP in pi's `mcp.json`. The durable
+graphify/llm-wiki side effects are handled by the jeo-pi `tool-flow` extension at runtime —
+keep jeo-pi up to date (`pi install .` in the jeo-pi repo, or update the published package)
+to receive it.
+
+```bash
+echo "=== Configuring pi (jeo-pi) rules + MCP ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+
+if command -v pi &>/dev/null && [ -d "$_HOME/.pi/agent" ]; then
+  # 1) Tool-flow rule in pi's global AGENTS.md (marker-guarded, never duplicates).
+  #    pi's resource loader reads AGENTS.md from the agent dir (~/.pi/agent) plus every
+  #    cwd ancestor, so this is the always-applied global surface.
+  PI_AGENTS="$_HOME/.pi/agent/AGENTS.md"
+  mkdir -p "$_HOME/.pi/agent"
+  touch "$PI_AGENTS"
+  if grep -q 'JEO-TOOL-FLOW:START' "$PI_AGENTS" 2>/dev/null; then
+    echo "ℹ️  pi tool-flow rule already present: $PI_AGENTS"
+  else
+    cat >> "$PI_AGENTS" <<'PIRULES'
+
+<!-- JEO-TOOL-FLOW:START -->
+# Tool Flow (semble · rtk · graphify · llm-wiki · obsidian)
+
+Global always-applied rule for the `pi` runtime (loaded from ~/.pi/agent/AGENTS.md).
+
+## Code Search & Shell Output (rtk × semble)
+- Discovery: `semble search "<query>" <path>` FIRST; expand with `semble find-related <file> <line> <path>`. No grep+read of whole files for discovery. If semble is absent, use `uvx --from "semble[mcp]" semble`.
+- Exact match / all other shell: normal commands; the rtk shell hook compresses output (`rtk git status`, `rtk grep`, `rtk read`, `rtk test`, `rtk lint`). semble = what to read, rtk = how dense.
+
+## Durable Structure (graphify)
+- Read `graphify-out/GRAPH_REPORT.md` (then graph.html, graph.json) BEFORE rebuilding. The jeo-pi tool-flow extension runs `graphify update .` automatically after edits; after code-deleting refactors run `graphify update . --force`.
+
+## Knowledge Pipeline (llm-wiki, auto-applied)
+- Turn outputs are captured into ~/vaults/llm-wiki/ by the jeo-pi tool-flow extension. Read ~/vaults/llm-wiki/index.md first on follow-ups, then wiki/ pages; file durable findings into wiki/queries/ or wiki/reports/. raw/ stays immutable.
+
+## Desktop Persistence (obsidian)
+- Persist/hand off via the official obsidian CLI/URI (`obsidian vault="<Vault>" read path="..."`), deterministic vault= + path=; obsidian:// URI when the desktop CLI is unavailable.
+<!-- JEO-TOOL-FLOW:END -->
+PIRULES
+    echo "✅ pi tool-flow rule written: $PI_AGENTS"
+  fi
+
+  # 2) Register semble MCP in pi's mcp.json (idempotent jq merge; preserves other servers).
+  PI_MCP="$_HOME/.pi/agent/mcp.json"
+  if command -v jq &>/dev/null; then
+    [ -f "$PI_MCP" ] || echo '{"mcpServers":{}}' > "$PI_MCP"
+    if jq -e '.mcpServers.semble' "$PI_MCP" >/dev/null 2>&1; then
+      echo "ℹ️  semble MCP already registered with pi"
+    else
+      TMP_PI="$(mktemp)"
+      jq '.mcpServers.semble = {"command":"uvx","args":["--from","semble[mcp]","semble"]}' \
+        "$PI_MCP" > "$TMP_PI" && mv "$TMP_PI" "$PI_MCP" \
+        && echo "✅ semble MCP registered with pi ($PI_MCP)"
+    fi
+  else
+    echo "⚠️  jq not found — manually add semble to $PI_MCP under .mcpServers"
+  fi
+else
+  echo "ℹ️  pi (jeo-pi) not installed — skipping pi rules + MCP wiring"
+fi
+```
+
+---
+
 ## Step 4 — Verification
 
 ```bash
@@ -955,6 +1042,32 @@ if command -v jeo &>/dev/null; then
     || echo "⚠️  jeo post-implementation hook will no-op — graphify missing; re-run Step 3b"
   echo "ℹ️  jeo reads .claude/skills + .agents/skills (→ \$SKILLS_ROOT); the Step 1"
   echo "    global install already makes all skills discoverable in jeo as /skill:<name>."
+fi
+
+# pi (jeo-pi) rules + MCP check
+if command -v pi &>/dev/null && [ -d "$_HOME/.pi/agent" ]; then
+  echo ""
+  echo "=== pi (jeo-pi) Tool-Flow Check ==="
+  PI_AGENTS="$_HOME/.pi/agent/AGENTS.md"
+  [ -f "$PI_AGENTS" ] && grep -q 'JEO-TOOL-FLOW:START' "$PI_AGENTS" \
+    && echo "✅ pi tool-flow rule present ($PI_AGENTS)" \
+    || echo "❌ pi tool-flow rule missing — re-run Step 3j"
+  PI_MCP="$_HOME/.pi/agent/mcp.json"
+  if command -v jq &>/dev/null && [ -f "$PI_MCP" ]; then
+    jq -e '.mcpServers.semble' "$PI_MCP" >/dev/null 2>&1 \
+      && echo "✅ pi semble MCP registered ($PI_MCP)" \
+      || echo "⚠️  pi semble MCP missing — re-run Step 3j"
+  fi
+  # The durable graphify/llm-wiki side effects are NOT a shell hook on pi — they ship as
+  # the bundled `tool-flow` extension in jeo-pi. Confirm jeo-pi exposes it.
+  if pi --version &>/dev/null; then
+    echo "ℹ️  Durable hooks (graphify + llm-wiki) run via the jeo-pi 'tool-flow' extension."
+    echo "    Ensure jeo-pi is current (pi install . in the jeo-pi repo, or update the package)"
+    echo "    so the extension is loaded; it self-no-ops when graphify/the vault are absent."
+  fi
+  command -v graphify &>/dev/null \
+    && echo "✅ pi tool-flow graphify dep present (graphify on PATH)" \
+    || echo "⚠️  pi tool-flow graphify step will no-op — graphify missing; re-run Step 3b"
 fi
 
 # Final count
