@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-143-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-144-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**144 local skill folders · 143 installable skills · TOON Format · Cross-platform**
+**144 local skill folders · 144 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -19,7 +19,7 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 143 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 144 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
 
 <!-- WHATS-NEW:START -->
 ## 🆕 What's New in v2026-06-29
@@ -27,6 +27,8 @@ A curated collection of 143 agent skills for spec-first, multi-agent LLM workflo
 | Change | Details |
 |--------|----------|
 | **webtoon-harness: 27-agent webtoon production team** | Added `webtoon-harness` — a jeo-skills plugin packaging [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) (MIT), a Claude Code harness that builds **one webtoon episode end to end** with **27 specialized agents in 4 phase-rebuilt teams** (research → scenario → visual → assembly). It researches popular webtoon trends, writes a dialogue-heavy, high-tension, twist-every-episode scenario, renders character reference sheets **first** (the cross-episode consistency SSOT), batch-renders **50+ panels** per episode with **in-image Korean speech-bubble baking** via `codex-image` (≤5 concurrent codex sessions), runs a **6-axis validate–regenerate loop** until every panel passes, and assembles a **no-overlay vertical-scroll viewer**. Phase-0 follow-up routing handles "next episode", "stronger twist", and "redraw panel N". The Phase-2 trend-research web extraction routes through the **`scrapling`** skill (pick the lightest workable scraping mode; respect ToS/robots/rate-limits/copyright; source URL + observation date per claim). Ships `SKILL.md` + `SKILL.toon`, 4 reference docs (`agent-teams.md`, `workflow.md`, `trend-research-scrapling.md`, `install.md`), `scripts/install.sh` (`TARGET` / `GLOBAL` / `REF` knobs that scaffold the upstream `.claude/agents` + `.claude/skills` into a project), and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness`. Route-outs: `scrapling` (web extraction), `harness` (evolve the agent team & skills). 143 → **144 skills**. |
+| **obsidian removed** | Removed the unified `obsidian` skill folder and its catalog/README/install-prompt entries (`obsidian`, `obsidian-cli`, `obsidian-cli-uri-fallback`, `obsidian-plugin`); `obsidian-second-brain` is retained as the canonical Obsidian front door. Catalog surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`) updated. 144 → **143 skills**. |
+| **perfectpixel: AI animation sprite generation** | Added `perfectpixel` — a jeo-skills routing front door for [gykim80/perfectpixel-studio](https://github.com/gykim80/perfectpixel-studio) (MIT) that drives the installed desktop app's generation pipeline (prompt → AI image gen → background matting → frame extraction → quality check → corrective regeneration → pixel quantization) headlessly through the `ppgen` CLI. From one text description it builds a character plus animation states (100+ presets across idle/locomotion, combat, magic, damage, emotion, and interaction) and 8-direction sprite sets (5 AI-generated + 3 horizontally mirrored), then exports a game-engine-ready bundle (sprite sheet · `manifest.json` · Aseprite JSON · per-state GIF/APNG · individual frame PNGs). Supports four image backends — Gemini (`gemini-3-pro-image`), OpenRouter, fal.ai, BytePlus — plus `god-tibo-imagen` (Codex/ChatGPT backend via `~/.codex/auth.json`, no API key); resolves provider/keys via `config.json` → `.env`/`.env.local` → OS env → CLI flags. Ships `SKILL.md` + `SKILL.toon`, 2 reference docs (`presets.md`, `providers.md`), and `scripts/install.sh` (reuse-or-download prebuilt binary, else Go source build via `PERFECTPIXEL_SRC`/bundled `.src`/clone; `PP_VERSION` / `PP_BUILD` knobs). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill perfectpixel`. Route-outs: `bmad-gds` (game production orchestration), `unity-gamedev-skill-pack` (engine integration), `compresso` (asset compression). 143 → **144 skills**. |
 
 
 ## 🆕 What's New in v2026-06-26
@@ -161,7 +163,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 144 local skill folders = 143 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 144 local skill folders = 144 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -343,17 +345,17 @@ rtk init -g
 |-------|-------------|-----------|
 | `marketing-automation` | Canonical broad marketing front door — choose one operating mode, one primary lane, and one reusable operator packet with owner, dependencies/approvals, and proof across launch, conversion, lifecycle, acquisition/content, and measurement work | All |
 
-### 🎮 Game Development (6)
+### 🎮 Game Development (7)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
 | `game-build-log-triage` | Unity/Unreal build, cook, package, editor, signing, and CI log triage — isolate the first actionable engine/build failure | All |
 | `game-ci-cd-pipeline` | Game pipeline packet router — classify branch-gate vs nightly/package-candidate vs release/certification lane, then choose setup, stage split, cache policy, preflight, artifact/release hygiene, or CI-signal hardening | All |
 | `game-demo-feedback-triage` | Turn playtest/demo/community feedback into weighted themes, fix-first priorities, and explicit handoffs | All |
-|| `game-performance-profiler` | Unity/Unreal frame-time triage — bottleneck-first profiling brief, quick packets, benchmark routes, target-device review, and deliberate profiler escalation | All |
-|| `perfectpixel` | AI animation sprite generation studio — generate character animations, sprite sheets, and 8-direction sprite sets from a text description using god-tibo-imagen and gemini models | All |
-|| `steam-store-launch-ops` | Packet-first Steam launch router — choose page-promise audit, wishlist signal check, demo readiness, event timing workback, or launch-ops runbook | All |
-|| `unity-gamedev-skill-pack` | Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package with validation and integration guidance | All |
+| `game-performance-profiler` | Unity/Unreal frame-time triage — bottleneck-first profiling brief, quick packets, benchmark routes, target-device review, and deliberate profiler escalation | All |
+| `perfectpixel` | AI animation sprite generation studio — generate character animations, sprite sheets, and 8-direction sprite sets from a text description using god-tibo-imagen and gemini models | All |
+| `steam-store-launch-ops` | Packet-first Steam launch router — choose page-promise audit, wishlist signal check, demo readiness, event timing workback, or launch-ops runbook | All |
+| `unity-gamedev-skill-pack` | Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package with validation and integration guidance | All |
 
 ### 🔧 Utilities (13)
 
