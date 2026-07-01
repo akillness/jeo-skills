@@ -331,6 +331,30 @@
           "reason": "Use harness to evolve or re-architect the webtoon agent team and skills."
         }
       ]
+    },
+
+    "scrapling": {
+      "source": "akillness/jeo-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "scrapling",
+      "description": "D4Vinci/Scrapling(BSD-3-Clause) 기반 라우팅 우선 적응형 웹 스크래핑 — 하나의 intake packet으로 parser-only(Selector), HTTP fetch(Fetcher), JS 브라우저(DynamicFetcher), stealth escalation(StealthyFetcher), MCP, spiders 중 가장 가벼운 경로를 선택. adaptive=True 셀렉터 드리프트 복구, CLI/shell/MCP/spider 오퍼레이터 표면을 하나의 라우팅 로직으로 계층화하며 사이트 ToS/robots/rate-limit/저작권을 항상 준수.",
+      "tags": [
+        "scrapling",
+        "web-scraping",
+        "crawling",
+        "adaptive-scraping",
+        "mcp",
+        "cli",
+        "playwright",
+        "cloudflare",
+        "spiders",
+        "python"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill scrapling",
+      "addedAt": "2026-07-01T00:00:00Z",
+      "updatedAt": "2026-07-01T00:00:00Z"
     }
+
   }
 }

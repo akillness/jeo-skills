@@ -58,9 +58,15 @@ Use this rule set:
 
 Detailed packet examples and route-outs live in [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md).
 
-### Step 2: Install only the profile you need
+### Step 2: Install the skill (plugin) and only the package profile you need
 
-Use a virtual environment unless the user explicitly wants a system install.
+Register this routing skill as a jeo-skills plugin, then install the upstream Scrapling package profile.
+
+```bash
+npx skills add https://github.com/akillness/jeo-skills --skill scrapling
+```
+
+Use a virtual environment for the Python package unless the user explicitly wants a system install.
 
 ```bash
 bash scripts/install.sh --profile parser
@@ -69,6 +75,9 @@ bash scripts/install.sh --profile shell
 bash scripts/install.sh --profile ai
 bash scripts/install.sh --profile all
 ```
+
+`scripts/install.sh` performs both steps together by default; use `SKIP_SKILL=1` to install only the Python package, or `SKIP_PACKAGE=1` to register only the plugin (see the script header for `GLOBAL`/`AGENTS` knobs).
+
 
 Installation guidance:
 
@@ -257,7 +266,8 @@ Route from repeated fetches into spiders with checkpointing and session control.
 - [references/parser-and-adaptive.md](references/parser-and-adaptive.md)
 - [references/cli-and-mcp.md](references/cli-and-mcp.md)
 - [references/spiders.md](references/spiders.md)
-- [scripts/install.sh](scripts/install.sh)
+- [scripts/install.sh](scripts/install.sh) — installs this skill as a plugin (`npx skills add`) plus the upstream Python package profile
+
 - [scripts/run-extract.sh](scripts/run-extract.sh)
 - [scripts/run-mcp.sh](scripts/run-mcp.sh)
 - [Scrapling GitHub Repository](https://github.com/D4Vinci/Scrapling)

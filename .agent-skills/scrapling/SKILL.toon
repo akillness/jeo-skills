@@ -14,7 +14,8 @@ U[8]:
 
 S[6]{n,action,details}:
   1,Intake,capture target class output scope constraints and source-of-truth before choosing a mode
-  2,Install,bash scripts/install.sh --profile parser|fetchers|shell|ai|all and run scrapling install only for browser-backed paths
+  2,Install,npx skills add https://github.com/akillness/jeo-skills --skill scrapling then bash scripts/install.sh --profile parser|fetchers|shell|ai|all and run scrapling install only for browser-backed paths
+
   3,Choose extraction,use Selector or Fetcher first then escalate to DynamicFetcher or StealthyFetcher only when evidence requires it
   4,Handle drift,use adaptive=True and auto_save or retrieve or relocate only for brittle selectors
   5,Choose surface,use bash scripts/run-extract.sh or bash scripts/run-mcp.sh when CLI or agent access is better than bespoke code
