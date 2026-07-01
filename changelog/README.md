@@ -1,7 +1,7 @@
 # Changelog
 
 Full project history lives here as **monthly files**; the top-level `README.md`
-and `README.ko.md` show only the **latest 3 dates** between the
+and `README.ko.md` show only the **latest 5 dates** between the
 `<!-- WHATS-NEW:START -->` / `<!-- WHATS-NEW:END -->` markers. That window is
 **generated**, not hand-edited — which is what keeps the skill counts and dates
 from drifting out of sync the way they used to.
