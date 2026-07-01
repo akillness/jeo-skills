@@ -55,6 +55,8 @@ venv.bak/
 /.claude/
 /.gemini/
 /.agents/
+/.jeo/
+
 /.opencode/
 /.ouroboros/
 /.agent-skills/.omc/
