@@ -1371,6 +1371,23 @@ R:
   monitoring-observability:Use for non-LLM dashboards/alerts
   data-analysis:Use for offline KPI/metric interpretation
   log-analysis:Use for root-cause log forensics
+N:paperbanana
+D:[paperbanana] Route academic-figure work into the lightest workable PaperBanana mode instead of jumping straight to a full multi-agent generation run. Use when the user needs publication-quality methodology diagrams, statistical plots, figure evaluation, polishing an existing figure, batch/sweep generation, or a full-paper figure package from text or PDF.
+G:paperbanana academic-figures diagram-generation statistical-plots multi-agent vlm-as-judge mcp cli publication python plan-then-refine
+S[7]{n,action,details}:
+  1,Intake,capture artifact class source provider-keys budget and quality need before choosing a mode
+  2,Install,bash scripts/install.sh --profile plot|diagram|pdf|studio|mcp|all then set one provider key
+  3,Understand pipeline,phase0 optimize then phase1 retriever planner stylist then phase2 visualizer critic loop
+  4,Run lightest mode,bash scripts/run.sh plot for data or generate for one diagram add optimize or auto only on evidence
+  5,Fix before regenerate,use evaluate to judge or polish to guided-edit an existing figure not a fresh run
+  6,Scale,use batch plot-batch sweep or orchestrate only when many figures or a whole paper is the real problem
+  7,Expose to agents,bash scripts/run-mcp.sh or the Claude Code skills when agent or IDE access beats a bespoke script
+R[4]:
+  Statistical plots are the cheapest artifact because they never touch an image-gen provider
+  Plan-then-refine keeps the cheap text stage separate from the expensive render stage
+  A Critic loop plus VLM-as-Judge evaluation gates quality before claiming publication readiness
+  Generative figures are the wrong tool for exact vector art, trivial charts, or brand-locked design
+
 N:pattern-detection
 D:Route repeated pattern, rule, and anomaly work into one detection packet before suggesting tools or fixes. Use when the user needs reusable scans, suspicious repeated shapes, grouped outlier candidates, or first-pass anomaly triage across code, logs/events, telemetry, and metric tables.
 G:patterns anomalies outliers structural-search telemetry detection routing

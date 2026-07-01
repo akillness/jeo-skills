@@ -1,0 +1,77 @@
+{
+  "skill_name": "paperbanana",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "results.csv에 벤치마크별 정확도가 있어. PaperBanana로 막대 차트를 만들고 싶은데 어디서 시작해?",
+      "expected_output": "The skill starts with the plot mode, noting it needs only a VLM key and no image-gen provider.",
+      "assertions": [
+        "The response recommends `paperbanana plot` (or `plot-batch`) first",
+        "The response notes plots use VLM-generated matplotlib and need no image-generation provider/key"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "method.txt에 방법론 설명이 있어. 논문용 방법론 다이어그램 하나가 필요해.",
+      "expected_output": "The skill uses generate with a caption and does not default to batch/orchestrate.",
+      "assertions": [
+        "The response recommends `paperbanana generate --input ... --caption ...`",
+        "The response treats a single-diagram generate as the default before batch/sweep/orchestrate"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "이미 만든 figure.png가 거의 맞는데 스타일만 조금 다듬고 싶어. 다시 처음부터 생성해야 해?",
+      "expected_output": "The skill fixes the existing figure with polish or evaluate instead of a fresh generation run.",
+      "assertions": [
+        "The response recommends `paperbanana polish` (or `evaluate`) on the existing figure",
+        "The response advises against rerunning the full pipeline just to nudge one figure"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "PaperBanana 파이프라인이 실제로 어떻게 동작하는지, 왜 두 단계로 나눠져 있는지 설명해줘.",
+      "expected_output": "The skill explains the two-phase plan-then-refine pipeline with the retriever/planner/stylist and visualizer/critic loop.",
+      "assertions": [
+        "The response describes Phase 1 linear planning (Retriever, Planner, Stylist) and Phase 2 Visualizer-Critic refinement loop",
+        "The response explains the cheap text-planning stage is separated from the expensive image-rendering stage"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "논문 전체의 그림들을 한 번에 만들고 싶어. PaperBanana에서 뭘 써야 해?",
+      "expected_output": "The skill escalates to orchestrate for a full-paper figure package and suggests a dry-run first.",
+      "assertions": [
+        "The response recommends `paperbanana orchestrate` for a full-paper figure package",
+        "The response mentions `--dry-run` (or inspecting the plan) before spending credits"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "생성한 다이어그램이 출판 수준인지 객관적으로 점수를 매기고 싶어.",
+      "expected_output": "The skill uses evaluate (VLM-as-Judge) and names the scored dimensions.",
+      "assertions": [
+        "The response recommends `paperbanana evaluate` with a generated and reference image",
+        "The response mentions Faithfulness, Readability, Conciseness, or Aesthetics dimensions"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "그냥 막대 두 개짜리 아주 단순한 차트인데 굳이 PaperBanana 멀티에이전트로 돌려야 해?",
+      "expected_output": "The skill route-outs to plain matplotlib/plotly for a trivial chart instead of a full multi-agent run.",
+      "assertions": [
+        "The response says a trivial chart can be written directly in matplotlib/plotly",
+        "The response does not force the full multi-agent generation loop for a two-bar chart"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "PaperBanana를 IDE 에이전트가 도구로 쓰게 하고 싶어.",
+      "expected_output": "The skill exposes the MCP server or Claude Code skills instead of a bespoke script.",
+      "assertions": [
+        "The response mentions the PaperBanana MCP server (uvx --from paperbanana[mcp]) or bundled Claude Code skills",
+        "The response names MCP tools such as generate_diagram, generate_plot, or evaluate_diagram"
+      ]
+    }
+  ]
+}

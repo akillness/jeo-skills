@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-06-29T13:43:33Z",
-  "skill_count": 144,
+  "skill_count": 145,
   "categories": {
     "planning-review": [
       "agentation",
@@ -153,6 +153,7 @@
     ],
     "creative-media": [
       "drawio",
+      "paperbanana",
       "remotion-video-production",
       "slides-grab",
       "video-production",
@@ -2709,6 +2710,36 @@
       ],
       "keyword": "opik",
       "version": "1.0.0"
+    },
+    {
+      "name": "paperbanana",
+      "description": "Route academic-figure work into the lightest workable PaperBanana mode instead of jumping straight to a full multi-agent generation run. Use when the user needs publication-quality methodology diagrams, statistical plots, figure evaluation, polishing an existing figure, batch/sweep generation, or a full-paper figure package from text or PDF. Even if the user does not say \"paperbanana\" — also triggers on: academic figure, methodology diagram, publication figure, generate diagram from paper, statistical plot from CSV, figure evaluation, polish figure, NeurIPS/ICML figure, arxiv illustration, plan-then-refine diagram pipeline.",
+      "category": "creative-media",
+      "path": "paperbanana/SKILL.md",
+      "tags": [
+        "paperbanana",
+        "academic-figures",
+        "diagram-generation",
+        "statistical-plots",
+        "multi-agent",
+        "vlm-as-judge",
+        "mcp",
+        "cli",
+        "publication",
+        "python"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "paperbanana",
+      "version": "1.0"
     },
     {
       "name": "pattern-detection",

@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-144-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-145-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**144개 로컬 스킬 폴더 · 설치 가능 스킬 144개 · TOON 포맷 · 멀티플랫폼**
+**145개 로컬 스킬 폴더 · 설치 가능 스킬 145개 · TOON 포맷 · 멀티플랫폼**
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +20,7 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode를 위한 144개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode를 위한 145개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
 
 
@@ -61,6 +61,8 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 | 변경 | 상세 |
 |------|------|
+| **paperbanana: 라우팅 우선 학술 일러스트레이션** | `paperbanana` 스킬을 추가했습니다 — [llmsresearch/paperbanana](https://github.com/llmsresearch/paperbanana)(MIT)의 라우팅 front door로, 텍스트나 논문을 **2단계 plan-then-refine 멀티 에이전트 파이프라인**(Phase 0 입력 최적화 → Phase 1 Retriever/Planner/Stylist → Phase 2 Visualizer/Critic 루프)으로 출판 품질 그림으로 변환합니다. 각 요청을 **가장 가벼운 모드**로 라우팅합니다: `plot`(VLM만으로 통계 차트, 이미지 생성 키 불필요) < `generate`(방법론 다이어그램 한 장) < `batch`/`plot-batch`/`sweep`/`orchestrate`(다수 그림 / 논문 전체 패키지). `evaluate`(Faithfulness/Readability/Conciseness/Aesthetics를 VLM-as-Judge로 채점)와 `polish`(가이드 편집)로 재생성 전에 그림을 개선합니다. 프로바이더 무관(OpenAI/Azure/Gemini/Atlas/OpenRouter), venue 스타일 팩(neurips/icml/acl/ieee) 지원. `SKILL.md` + `SKILL.toon`, 참조 문서 5개(`intake-and-route-outs.md`, `pipeline-and-agents.md`, `modes-and-cli.md`, `providers-and-config.md`, `evaluation-and-venues.md`), `scripts/install.sh` + `run.sh` + `run-mcp.sh`, `evals/evals.json` 동봉. Route-out: 정밀·단순 그림은 matplotlib/TikZ/벡터 편집기. 144 → **145개 스킬**. |
+
 | **webtoon-harness: 27개 에이전트 웹툰 제작 팀** | `webtoon-harness` 스킬을 추가했습니다 — [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness)(MIT)를 jeo-skills 플러그인으로 패키징한 것으로, **27개 전문 에이전트**를 **4개 단계별 재구성 팀**(리서치 → 시나리오 → 비주얼 → 조립검수)으로 운영해 웹툰 **한 회차를 트렌드 조사부터 세로 스크롤 뷰어까지** 자동 제작하는 Claude Code 하네스입니다. 인기 웹툰 트렌드 조사 → 대사 위주·고긴장·매 회차 반전 시나리오 → 캐릭터 레퍼런스 시트 **선행 렌더**(회차 간 일관성의 단일 진실원천) → 회차당 **50+ 패널**을 `codex-image`로 **말풍선·한글 대사 in-image 베이크** 병렬 렌더(동시 ≤5 codex 세션) → **panel-validator 6축 검증-재생성 루프**로 전 패널 통과 → **오버레이 없는 세로 스크롤 뷰어** 조립. Phase 0 후속 라우팅이 "다음 화", "반전 더 강하게", "패널 N번 다시 그려"를 처리합니다. Phase 2 트렌드 리서치의 웹 추출은 **`scrapling`** 스킬로 라우팅합니다(가장 가벼운 스크래핑 모드 선택, ToS/robots/rate-limit/저작권 준수, 주장마다 출처 URL + 관측 일자). `SKILL.md` + `SKILL.toon`, 참조 문서 4개(`agent-teams.md`, `workflow.md`, `trend-research-scrapling.md`, `install.md`), `scripts/install.sh`(`TARGET` / `GLOBAL` / `REF` 노브로 업스트림 `.claude/agents` + `.claude/skills`를 프로젝트에 스캐폴딩), `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness`. Route-out: `scrapling`(웹 추출), `harness`(에이전트 팀·스킬 진화). 143 → **144개 스킬**. |
 | **obsidian 제거** | 통합 `obsidian` 스킬 폴더와 해당 카탈로그/README/설치-프롬프트 항목(`obsidian`, `obsidian-cli`, `obsidian-cli-uri-fallback`, `obsidian-plugin`)을 제거했습니다. Obsidian 대표 front door로는 `obsidian-second-brain`을 유지합니다. 카탈로그 표면(`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`)을 갱신했습니다. 144 → **143개 스킬**. |
 | **perfectpixel: AI 애니메이션 스프라이트 생성** | `perfectpixel` 스킬을 추가했습니다 — [gykim80/perfectpixel-studio](https://github.com/gykim80/perfectpixel-studio)(MIT)의 설치형 데스크톱 앱과 **동일한** 생성 파이프라인(프롬프트 → AI 이미지 생성 → 배경 제거 → 프레임 추출 → 품질 검사 → 보정 재생성 → 픽셀 양자화)을 헤드리스 `ppgen` CLI로 구동하는 jeo-skills 라우팅 front door입니다. 텍스트 설명 한 줄로 캐릭터와 동작 애니메이션(대기/이동·전투·마법·피해·감정·상호작용 **100여 종 프리셋**), **8방향 스프라이트 세트**(5방향 AI 생성 + 3방향 수평 미러링)를 만들고, 게임 엔진용 번들(스프라이트시트 · `manifest.json` · Aseprite JSON · 상태별 GIF/APNG · 개별 프레임 PNG)로 내보냅니다. 이미지 백엔드 4종 — Gemini(`gemini-3-pro-image`), OpenRouter, fal.ai, BytePlus — 과 `god-tibo-imagen`(Codex/ChatGPT 백엔드, `~/.codex/auth.json` 사용, API 키 불필요)을 지원하며, 프로바이더/키는 `config.json` → `.env`/`.env.local` → OS 환경변수 → CLI 플래그 순으로 해석합니다. `SKILL.md` + `SKILL.toon`, 참조 문서 2개(`presets.md`, `providers.md`), `scripts/install.sh`(프리빌트 바이너리 재사용/다운로드, 실패 시 `PERFECTPIXEL_SRC`/동봉 `.src`/클론으로 Go 소스 빌드; `PP_VERSION` / `PP_BUILD` 노브) 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill perfectpixel`. Route-out: `bmad-gds`(게임 제작 오케스트레이션), `unity-gamedev-skill-pack`(엔진 통합), `compresso`(에셋 압축). 143 → **144개 스킬**. |
@@ -198,7 +200,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 144개 로컬 스킬 폴더 = 총 144개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 145개 로컬 스킬 폴더 = 총 145개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -355,7 +357,7 @@ rtk init -g
 | `academic-research` | 연구 발견부터 논문 출판까지 전체 학술 연구 파이프라인 — 4개의 참조 파이프라인, 27가지 모드, 39-에이전트 앙상블: deep-research(8가지 모드: full/quick/review/lit-review/three-way-scan/fact-check/socratic/PRISMA systematic-review), academic-paper(11가지 모드: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer(6가지 모드: EIC+R1/R2/R3+Devil's Advocate, calibration), academic-pipeline(Material Passport·L3 주장-충실성 게이트·3중 인용 검증을 포함한 10단계 오케스트레이터). 전 과정 human-in-the-loop. 플러그인(업스트림): `claude plugin marketplace add Imbad0202/academic-research-skills` | 전체 |
 
 
-### 🎬 창의 미디어 (6개)
+### 🎬 창의 미디어 (7개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -365,6 +367,7 @@ rtk init -g
 | `god-tibo-imagen` | Codex ChatGPT 백엔드를 통한 AI 이미지 생성 — 의존성 없음, `~/.codex/auth.json` 재사용, CLI(`gti`), Node.js, Python SDK 지원 | 전체 |
 | `notebooklm` | Claude Code에서 Google NotebookLM 노트북을 직접 조회 — Patchright 브라우저 자동화로 출처 기반 인용 답변, 영구 Google 인증, 노트북 라이브러리 관리 지원 | Claude Code |
 | `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness)(MIT)를 패키징한 엔드투엔드 웹툰 제작 하네스 — 27개 에이전트·4단계 팀이 트렌드 조사부터 세로 스크롤 뷰어까지 한 회차를 제작: 대사 위주·매 회차 반전 시나리오, 레퍼런스 시트 선행, codex-image로 말풍선 in-image 베이크한 50+ 패널 렌더, 6축 검증-재생성 루프, 오버레이 없는 조립. Phase 2 트렌드 리서치의 웹 추출은 `scrapling` 스킬로 라우팅. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness` | Claude Code |
+| `paperbanana` | [llmsresearch/paperbanana](https://github.com/llmsresearch/paperbanana)(MIT)를 패키징한 라우팅 우선 학술 일러스트레이션 — 텍스트나 논문을 2단계 plan-then-refine 멀티 에이전트 파이프라인(Retriever/Planner/Stylist → Visualizer/Critic)으로 출판 품질 그림으로 변환. 가장 가벼운 모드로 라우팅: `plot`(VLM만 사용하는 차트) < `generate`(다이어그램 한 장) < `batch`/`sweep`/`orchestrate`, 재생성 전 `evaluate`(VLM-as-Judge)와 `polish`로 개선. 프로바이더 무관, venue 스타일 팩(neurips/icml/acl/ieee). 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana` | 전체 |
 
 ### 📢 마케팅 (2개)
 

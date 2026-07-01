@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-144-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-145-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**144 local skill folders · 144 installable skills · TOON Format · Cross-platform**
+**145 local skill folders · 145 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -19,13 +19,14 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 144 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 145 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
 
 <!-- WHATS-NEW:START -->
 ## 🆕 What's New in v2026-06-29
 
 | Change | Details |
 |--------|----------|
+| **paperbanana: routing-first academic illustration** | Added `paperbanana` — a routing front door for [llmsresearch/paperbanana](https://github.com/llmsresearch/paperbanana) (MIT), an agentic framework that turns text or a paper into publication-quality figures with a **two-phase, plan-then-refine, multi-agent pipeline** (Phase 0 input optimization → Phase 1 Retriever/Planner/Stylist → Phase 2 Visualizer/Critic loop). The skill routes each request to the **smallest workable mode**: `plot` (VLM-only statistical charts, no image-gen key) < `generate` (one methodology diagram) < `batch`/`plot-batch`/`sweep`/`orchestrate` (many figures / full-paper package), with `evaluate` (VLM-as-Judge on Faithfulness/Readability/Conciseness/Aesthetics) and `polish` (guided edit) to fix figures before regenerating. Provider-agnostic (OpenAI/Azure/Gemini/Atlas/OpenRouter); venue style packs (neurips/icml/acl/ieee). Ships `SKILL.md` + `SKILL.toon`, 5 reference docs (`intake-and-route-outs.md`, `pipeline-and-agents.md`, `modes-and-cli.md`, `providers-and-config.md`, `evaluation-and-venues.md`), `scripts/install.sh` + `run.sh` + `run-mcp.sh`, and `evals/evals.json`. Route-outs: matplotlib/TikZ/vector editors for exact or trivial figures. 144 → **145 skills**. |
 | **webtoon-harness: 27-agent webtoon production team** | Added `webtoon-harness` — a jeo-skills plugin packaging [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) (MIT), a Claude Code harness that builds **one webtoon episode end to end** with **27 specialized agents in 4 phase-rebuilt teams** (research → scenario → visual → assembly). It researches popular webtoon trends, writes a dialogue-heavy, high-tension, twist-every-episode scenario, renders character reference sheets **first** (the cross-episode consistency SSOT), batch-renders **50+ panels** per episode with **in-image Korean speech-bubble baking** via `codex-image` (≤5 concurrent codex sessions), runs a **6-axis validate–regenerate loop** until every panel passes, and assembles a **no-overlay vertical-scroll viewer**. Phase-0 follow-up routing handles "next episode", "stronger twist", and "redraw panel N". The Phase-2 trend-research web extraction routes through the **`scrapling`** skill (pick the lightest workable scraping mode; respect ToS/robots/rate-limits/copyright; source URL + observation date per claim). Ships `SKILL.md` + `SKILL.toon`, 4 reference docs (`agent-teams.md`, `workflow.md`, `trend-research-scrapling.md`, `install.md`), `scripts/install.sh` (`TARGET` / `GLOBAL` / `REF` knobs that scaffold the upstream `.claude/agents` + `.claude/skills` into a project), and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness`. Route-outs: `scrapling` (web extraction), `harness` (evolve the agent team & skills). 143 → **144 skills**. |
 | **obsidian removed** | Removed the unified `obsidian` skill folder and its catalog/README/install-prompt entries (`obsidian`, `obsidian-cli`, `obsidian-cli-uri-fallback`, `obsidian-plugin`); `obsidian-second-brain` is retained as the canonical Obsidian front door. Catalog surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`) updated. 144 → **143 skills**. |
 | **perfectpixel: AI animation sprite generation** | Added `perfectpixel` — a jeo-skills routing front door for [gykim80/perfectpixel-studio](https://github.com/gykim80/perfectpixel-studio) (MIT) that drives the installed desktop app's generation pipeline (prompt → AI image gen → background matting → frame extraction → quality check → corrective regeneration → pixel quantization) headlessly through the `ppgen` CLI. From one text description it builds a character plus animation states (100+ presets across idle/locomotion, combat, magic, damage, emotion, and interaction) and 8-direction sprite sets (5 AI-generated + 3 horizontally mirrored), then exports a game-engine-ready bundle (sprite sheet · `manifest.json` · Aseprite JSON · per-state GIF/APNG · individual frame PNGs). Supports four image backends — Gemini (`gemini-3-pro-image`), OpenRouter, fal.ai, BytePlus — plus `god-tibo-imagen` (Codex/ChatGPT backend via `~/.codex/auth.json`, no API key); resolves provider/keys via `config.json` → `.env`/`.env.local` → OS env → CLI flags. Ships `SKILL.md` + `SKILL.toon`, 2 reference docs (`presets.md`, `providers.md`), and `scripts/install.sh` (reuse-or-download prebuilt binary, else Go source build via `PERFECTPIXEL_SRC`/bundled `.src`/clone; `PP_VERSION` / `PP_BUILD` knobs). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill perfectpixel`. Route-outs: `bmad-gds` (game production orchestration), `unity-gamedev-skill-pack` (engine integration), `compresso` (asset compression). 143 → **144 skills**. |
@@ -163,7 +164,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 144 local skill folders = 144 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 145 local skill folders = 145 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -328,7 +329,7 @@ rtk init -g
 | `codeflow` | Visualize codebase architecture in seconds — a zero-build single `index.html` browser app (React 18 + D3.js, client-side, no backend) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact; exports JSON/Markdown/SVG/PDF or a self-updating CodeFlow Card. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | All |
 | `academic-research` | Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes: full/quick/review/lit-review/three-way-scan/fact-check/socratic/systematic-review), academic-paper (11 modes: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer (6 modes: full/quick/guided/methodology-focus/re-review/calibration), and a 10-stage end-to-end pipeline orchestrator with Material Passport, claim-faithfulness gates, and cross-model verification. Human-in-the-loop throughout. Plugin (upstream): `claude plugin marketplace add Imbad0202/academic-research-skills` | All |
 
-### 🎬 Creative Media (6)
+### 🎬 Creative Media (7)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -338,6 +339,7 @@ rtk init -g
 | `god-tibo-imagen` | Generate AI images via Codex ChatGPT backend — zero dependencies, reuses `~/.codex/auth.json`, CLI (`gti`), Node.js, and Python SDK | All |
 | `notebooklm` | Query Google NotebookLM notebooks directly from Claude Code — source-grounded citation-backed answers via Patchright browser automation, persistent Google auth, and notebook library management | Claude Code |
 | `webtoon-harness` | End-to-end webtoon production harness packaging [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) (MIT) — 27 agents in 4 phase-rebuilt teams take one episode from trend research to a finished vertical-scroll viewer: dialogue-heavy twist-every-episode scenario, reference sheets first, 50+ panels rendered with in-image Korean speech-bubble baking via codex-image, a 6-axis validate–regenerate loop, then no-overlay assembly. Phase-2 trend research routes web extraction through the `scrapling` skill. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness` | Claude Code |
+| `paperbanana` | Routing-first academic illustration packaging [llmsresearch/paperbanana](https://github.com/llmsresearch/paperbanana) (MIT) — turns text or a paper into publication-quality figures via a two-phase plan-then-refine multi-agent pipeline (Retriever/Planner/Stylist → Visualizer/Critic). Routes to the smallest workable mode: `plot` (VLM-only charts) < `generate` (one diagram) < `batch`/`sweep`/`orchestrate`, with `evaluate` (VLM-as-Judge) and `polish` to fix figures before regenerating. Provider-agnostic; venue style packs (neurips/icml/acl/ieee). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana` | All |
 
 ### 📢 Marketing (1)
 
@@ -647,7 +649,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 144 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 145 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

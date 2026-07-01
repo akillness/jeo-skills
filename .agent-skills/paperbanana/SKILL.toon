@@ -1,0 +1,40 @@
+N:paperbanana
+D:[paperbanana] Route academic-figure work into the lightest workable PaperBanana mode instead of jumping straight to a full multi-agent generation run. Use when the user needs publication-quality methodology diagrams, statistical plots, figure evaluation, polishing an existing figure, batch/sweep generation, or a full-paper figure package from text or PDF.
+G:paperbanana academic-figures diagram-generation statistical-plots multi-agent vlm-as-judge mcp cli publication python plan-then-refine
+
+U[8]:
+  Capture one intake packet: artifact class, source, provider keys, and quality need before choosing a mode
+  Render data-driven charts with plot or plot-batch first because they need only a VLM key, no image-gen
+  Generate a single diagram with generate before reaching for batch, sweep, or orchestrate
+  Fix an existing figure with polish or evaluate before paying for a full regeneration
+  Treat optimize, auto, iterations, and num-candidates as cost dials raised only on evidence
+  Pick the cheapest provider that meets quality since the pipeline is provider-agnostic
+  Use venue style packs neurips icml acl ieee instead of hand-tuning aesthetics per run
+  Route out to matplotlib, TikZ, a vector editor, or a designer when generative figures are the wrong tool
+
+S[7]{n,action,details}:
+  1,Intake,capture artifact class source provider-keys budget and quality need before choosing a mode
+  2,Install,bash scripts/install.sh --profile plot|diagram|pdf|studio|mcp|all then set one provider key
+  3,Understand pipeline,phase0 optimize then phase1 retriever planner stylist then phase2 visualizer critic loop
+  4,Run lightest mode,bash scripts/run.sh plot for data or generate for one diagram add optimize or auto only on evidence
+  5,Fix before regenerate,use evaluate to judge or polish to guided-edit an existing figure not a fresh run
+  6,Scale,use batch plot-batch sweep or orchestrate only when many figures or a whole paper is the real problem
+  7,Expose to agents,bash scripts/run-mcp.sh or the Claude Code skills when agent or IDE access beats a bespoke script
+
+R[8]:
+  The smallest workable mode beats a full generation run most of the time
+  Statistical plots are the cheapest artifact because they never touch an image-gen provider
+  Plan-then-refine keeps the cheap text stage separate from the expensive render stage
+  A Critic loop plus VLM-as-Judge evaluation gates quality before claiming publication readiness
+  Retrieval-augmented planning uses concrete reference examples instead of a blank prompt
+  Venue style packs make aesthetics reproducible rather than hand-tuned per figure
+  Cost dials optimize auto iterations candidates should be raised only when a plain run underdelivers
+  Generative figures are the wrong tool for exact vector art, trivial charts, or brand-locked design
+
+E[6]{type,command}:
+  Plot,bash scripts/run.sh plot --data results.csv --intent "Bar chart of accuracy across benchmarks"
+  Diagram,bash scripts/run.sh generate --input method.txt --caption "Overview of our framework"
+  Refine,bash scripts/run.sh generate --input method.txt --caption "Overview" --optimize --auto
+  Evaluate,bash scripts/run.sh evaluate --generated out.png --reference human.png --context method.txt --caption "Overview"
+  Polish,bash scripts/run.sh polish --input figure.png --venue icml --iterations 2
+  MCP,bash scripts/run-mcp.sh
