@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-145-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-146-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**145 local skill folders · 145 installable skills · TOON Format · Cross-platform**
+**146 local skill folders · 146 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -19,13 +19,14 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 145 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 146 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
 
 <!-- WHATS-NEW:START -->
-## 🆕 What's New in v2026-06-29
+## 🆕 What's New in v2026-07-01
 
 | Change | Details |
 |--------|----------|
+| **heretic: automatic abliteration & refusal-direction interpretability** | Added `heretic` — a routing-first plugin packaging [p-e-w/heretic](https://github.com/p-e-w/heretic) (**AGPL-3.0**), a tool that removes refusal/over-refusal behaviour from open-weight transformer models via **parametrized directional ablation ("abliteration")** — *no fine-tuning*. It computes per-layer refusal directions (difference-of-means of harmful vs harmless first-token residuals), orthogonalizes the attention out-projection + MLP down-projection against them, and runs an **Optuna TPE optimizer** to jointly minimize refusals **and** KL-divergence from the original. The skill routes to the **smallest workable mode**: `decensor` (`heretic <model>`, fully automatic) · `configure` (`--quantization bnb_4bit` / `--n-trials` / `--kl-divergence-target`) · `evaluate` (`--evaluate-model` → refusals + KL) · `research` (`[research]` extra: `--print-residual-geometry`, PaCMAP `--plot-residuals`) · `discover` (route web extraction through **`scrapling`** to find base/existing-heretic models, datasets, benchmarks). Responsible-use guardrails throughout: only modify models you may modify, honour base-model licenses + platform ToS, and never abliterate to produce a model for genuinely illegal/harmful content. Ships `SKILL.md` + `SKILL.toon`, 4 reference docs (`abliteration-and-optimization.md`, `cli-and-config.md`, `research-and-scrapling.md`, `install.md`), `scripts/install.sh` (`RESEARCH` / `UV` / `REF` / `CHECK` / `DRY` knobs; verifies PyTorch ≥ 2.2, does not install torch), and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill heretic`. Route-out: `scrapling` (web extraction). 145 → **146 skills**. |
 | **paperbanana: routing-first academic illustration** | Added `paperbanana` — a routing front door for [llmsresearch/paperbanana](https://github.com/llmsresearch/paperbanana) (MIT), an agentic framework that turns text or a paper into publication-quality figures with a **two-phase, plan-then-refine, multi-agent pipeline** (Phase 0 input optimization → Phase 1 Retriever/Planner/Stylist → Phase 2 Visualizer/Critic loop). The skill routes each request to the **smallest workable mode**: `plot` (VLM-only statistical charts, no image-gen key) < `generate` (one methodology diagram) < `batch`/`plot-batch`/`sweep`/`orchestrate` (many figures / full-paper package), with `evaluate` (VLM-as-Judge on Faithfulness/Readability/Conciseness/Aesthetics) and `polish` (guided edit) to fix figures before regenerating. Provider-agnostic (OpenAI/Azure/Gemini/Atlas/OpenRouter); venue style packs (neurips/icml/acl/ieee). Ships `SKILL.md` + `SKILL.toon`, 5 reference docs (`intake-and-route-outs.md`, `pipeline-and-agents.md`, `modes-and-cli.md`, `providers-and-config.md`, `evaluation-and-venues.md`), `scripts/install.sh` + `run.sh` + `run-mcp.sh`, and `evals/evals.json`. Route-outs: matplotlib/TikZ/vector editors for exact or trivial figures. 144 → **145 skills**. |
 | **webtoon-harness: 27-agent webtoon production team** | Added `webtoon-harness` — a jeo-skills plugin packaging [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) (MIT), a Claude Code harness that builds **one webtoon episode end to end** with **27 specialized agents in 4 phase-rebuilt teams** (research → scenario → visual → assembly). It researches popular webtoon trends, writes a dialogue-heavy, high-tension, twist-every-episode scenario, renders character reference sheets **first** (the cross-episode consistency SSOT), batch-renders **50+ panels** per episode with **in-image Korean speech-bubble baking** via `codex-image` (≤5 concurrent codex sessions), runs a **6-axis validate–regenerate loop** until every panel passes, and assembles a **no-overlay vertical-scroll viewer**. Phase-0 follow-up routing handles "next episode", "stronger twist", and "redraw panel N". The Phase-2 trend-research web extraction routes through the **`scrapling`** skill (pick the lightest workable scraping mode; respect ToS/robots/rate-limits/copyright; source URL + observation date per claim). Ships `SKILL.md` + `SKILL.toon`, 4 reference docs (`agent-teams.md`, `workflow.md`, `trend-research-scrapling.md`, `install.md`), `scripts/install.sh` (`TARGET` / `GLOBAL` / `REF` knobs that scaffold the upstream `.claude/agents` + `.claude/skills` into a project), and `evals/evals.json`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness`. Route-outs: `scrapling` (web extraction), `harness` (evolve the agent team & skills). 143 → **144 skills**. |
 | **obsidian removed** | Removed the unified `obsidian` skill folder and its catalog/README/install-prompt entries (`obsidian`, `obsidian-cli`, `obsidian-cli-uri-fallback`, `obsidian-plugin`); `obsidian-second-brain` is retained as the canonical Obsidian front door. Catalog surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md`, `skills.json`) updated. 144 → **143 skills**. |
@@ -164,7 +165,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 145 local skill folders = 145 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 146 local skill folders = 146 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -311,10 +312,11 @@ rtk init -g
 | `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing | All |
 
-### 🔭 Search & Analysis (13)
+### 🔭 Search & Analysis (14)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
+| `heretic` | Automatic **abliteration** + refusal-direction interpretability packaging [p-e-w/heretic](https://github.com/p-e-w/heretic) (**AGPL-3.0**) — removes refusal/over-refusal from open-weight transformer models via parametrized directional ablation (no fine-tuning): per-layer refusal directions (difference-of-means of harmful vs harmless residuals) orthogonalize attention + MLP matrices, and an **Optuna TPE** optimizer jointly minimizes refusals and KL-divergence from the original. Routes to the smallest mode: `decensor` < `configure` (`bnb_4bit` / trials / KL target) < `evaluate` (refusals + KL) < `research` (`--print-residual-geometry`, PaCMAP `--plot-residuals`) < `discover` (web extraction via `scrapling`). Responsible-use guardrails: modify only models you may modify; honour licenses/ToS; never abliterate for illegal/harmful content. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill heretic` | All |
 | `autoresearch` | Karpathy autonomous ML search front door — choose setup / `program.md` / bounded loop / results interpretation / constrained-hardware mode, preserve immutable `prepare.py` + 300s + `val_bpb`, route prompt/skill eval elsewhere | All |
 | `deep-research` | Routing front door for a structured, human-in-the-loop deep-research workflow ([Weizhena/Deep-Research-skills](https://github.com/Weizhena/Deep-Research-skills)) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines (outline · deep · report · web-search) + 5 routed source modules. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research` | All |
 | `skill-autoresearch` | Repo-local skill ratcheting loop: choose one packet (ratchet eligibility, readiness, charter, baseline, mutation, support-sync, final report), allow `no ratchet justified`, freeze evals, keep or revert by score, and route hosted eval / ML autoresearch work outward | All |
@@ -649,7 +651,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 145 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 146 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -680,6 +682,7 @@ npx vibe-kanban
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `webtoon-harness` | `webtoon harness`, `make a webtoon` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
+| `heretic` | `heretic`, `abliterate`, `decensor a model` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.md](docs/harness/README.md) |
@@ -706,6 +709,7 @@ npx vibe-kanban
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
 | `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | MIT |
+| `heretic` | [p-e-w/heretic](https://github.com/p-e-w/heretic) | AGPL-3.0-or-later |
 
 | `llm-wiki` | [karpathy/llm-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | — |
 | `obsidian-second-brain` | [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain) (fork: [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain)) | MIT |

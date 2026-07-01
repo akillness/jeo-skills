@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-145-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-146-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**145개 로컬 스킬 폴더 · 설치 가능 스킬 145개 · TOON 포맷 · 멀티플랫폼**
+**146개 로컬 스킬 폴더 · 설치 가능 스킬 146개 · TOON 포맷 · 멀티플랫폼**
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +20,7 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode를 위한 145개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode를 위한 146개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
 
 
@@ -57,10 +57,11 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 <!-- WHATS-NEW:START -->
 
-## 🆕 v2026-06-29 업데이트
+## 🆕 v2026-07-01 업데이트
 
 | 변경 | 상세 |
 |------|------|
+| **heretic: 자동 어블리터레이션 & 거부 방향 해석가능성** | `heretic` 스킬을 추가했습니다 — [p-e-w/heretic](https://github.com/p-e-w/heretic)(**AGPL-3.0**)를 라우팅 우선 플러그인으로 패키징한 것으로, **파라미터화된 방향성 절제("어블리터레이션")**로 오픈웨이트 트랜스포머 모델의 거부/과잉거부 행동을 제거합니다 — *후속 학습 없이*. 층별 거부 방향(유해 vs 무해 프롬프트 첫 토큰 잔차의 차이-평균)을 구해 어텐션 out-projection + MLP down-projection 행렬을 직교화하고, **Optuna TPE 옵티마이저**로 거부율과 원본 대비 KL 발산을 **동시에** 최소화합니다. **가장 가벼운 모드**로 라우팅합니다: `decensor`(`heretic <model>`, 완전 자동) · `configure`(`--quantization bnb_4bit` / `--n-trials` / `--kl-divergence-target`) · `evaluate`(`--evaluate-model` → 거부 수 + KL) · `research`(`[research]` 엑스트라: `--print-residual-geometry`, PaCMAP `--plot-residuals`) · `discover`(베이스/기존 heretic 모델·데이터셋·벤치마크 조사를 **`scrapling`** 스킬로 라우팅). 책임 있는 사용 가드레일 전반 적용: 수정 권한이 있는 모델에만 사용, 베이스 모델 라이선스 + 플랫폼 ToS 준수, 진짜 불법·유해 콘텐츠용 모델 제작에는 절대 사용 금지. `SKILL.md` + `SKILL.toon`, 참조 문서 4개(`abliteration-and-optimization.md`, `cli-and-config.md`, `research-and-scrapling.md`, `install.md`), `scripts/install.sh`(`RESEARCH` / `UV` / `REF` / `CHECK` / `DRY` 노브; PyTorch ≥ 2.2 검증, torch는 설치하지 않음), `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill heretic`. Route-out: `scrapling`(웹 추출). 145 → **146개 스킬**. |
 | **paperbanana: 라우팅 우선 학술 일러스트레이션** | `paperbanana` 스킬을 추가했습니다 — [llmsresearch/paperbanana](https://github.com/llmsresearch/paperbanana)(MIT)의 라우팅 front door로, 텍스트나 논문을 **2단계 plan-then-refine 멀티 에이전트 파이프라인**(Phase 0 입력 최적화 → Phase 1 Retriever/Planner/Stylist → Phase 2 Visualizer/Critic 루프)으로 출판 품질 그림으로 변환합니다. 각 요청을 **가장 가벼운 모드**로 라우팅합니다: `plot`(VLM만으로 통계 차트, 이미지 생성 키 불필요) < `generate`(방법론 다이어그램 한 장) < `batch`/`plot-batch`/`sweep`/`orchestrate`(다수 그림 / 논문 전체 패키지). `evaluate`(Faithfulness/Readability/Conciseness/Aesthetics를 VLM-as-Judge로 채점)와 `polish`(가이드 편집)로 재생성 전에 그림을 개선합니다. 프로바이더 무관(OpenAI/Azure/Gemini/Atlas/OpenRouter), venue 스타일 팩(neurips/icml/acl/ieee) 지원. `SKILL.md` + `SKILL.toon`, 참조 문서 5개(`intake-and-route-outs.md`, `pipeline-and-agents.md`, `modes-and-cli.md`, `providers-and-config.md`, `evaluation-and-venues.md`), `scripts/install.sh` + `run.sh` + `run-mcp.sh`, `evals/evals.json` 동봉. Route-out: 정밀·단순 그림은 matplotlib/TikZ/벡터 편집기. 144 → **145개 스킬**. |
 
 | **webtoon-harness: 27개 에이전트 웹툰 제작 팀** | `webtoon-harness` 스킬을 추가했습니다 — [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness)(MIT)를 jeo-skills 플러그인으로 패키징한 것으로, **27개 전문 에이전트**를 **4개 단계별 재구성 팀**(리서치 → 시나리오 → 비주얼 → 조립검수)으로 운영해 웹툰 **한 회차를 트렌드 조사부터 세로 스크롤 뷰어까지** 자동 제작하는 Claude Code 하네스입니다. 인기 웹툰 트렌드 조사 → 대사 위주·고긴장·매 회차 반전 시나리오 → 캐릭터 레퍼런스 시트 **선행 렌더**(회차 간 일관성의 단일 진실원천) → 회차당 **50+ 패널**을 `codex-image`로 **말풍선·한글 대사 in-image 베이크** 병렬 렌더(동시 ≤5 codex 세션) → **panel-validator 6축 검증-재생성 루프**로 전 패널 통과 → **오버레이 없는 세로 스크롤 뷰어** 조립. Phase 0 후속 라우팅이 "다음 화", "반전 더 강하게", "패널 N번 다시 그려"를 처리합니다. Phase 2 트렌드 리서치의 웹 추출은 **`scrapling`** 스킬로 라우팅합니다(가장 가벼운 스크래핑 모드 선택, ToS/robots/rate-limit/저작권 준수, 주장마다 출처 URL + 관측 일자). `SKILL.md` + `SKILL.toon`, 참조 문서 4개(`agent-teams.md`, `workflow.md`, `trend-research-scrapling.md`, `install.md`), `scripts/install.sh`(`TARGET` / `GLOBAL` / `REF` 노브로 업스트림 `.claude/agents` + `.claude/skills`를 프로젝트에 스캐폴딩), `evals/evals.json` 동봉. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness`. Route-out: `scrapling`(웹 추출), `harness`(에이전트 팀·스킬 진화). 143 → **144개 스킬**. |
@@ -200,7 +201,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 145개 로컬 스킬 폴더 = 총 145개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 146개 로컬 스킬 폴더 = 총 146개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -338,11 +339,12 @@ rtk init -g
 | `task-estimation` | software, GTM, game work 전반에서 스토리 포인트, T셔츠 사이징, split/spike 판단, 예측 안전형 불확실성 프레이밍을 담은 estimate packet anchor | 전체 |
 | `task-planning` | software, GTM, game work 전반에서 backlog cleanup, feature slicing, sprint/milestone prep, release packet을 다루고 estimation/board/review/사전 프레이밍으로의 route-out을 명시하는 packet-first planning anchor | 전체 |
 
-### 🔭 검색 및 분석 (12개)
+### 🔭 검색 및 분석 (13개)
 
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
+| `heretic` | 자동 **어블리터레이션** + 거부 방향 해석가능성 — [p-e-w/heretic](https://github.com/p-e-w/heretic)(**AGPL-3.0**)를 패키징. 파라미터화된 방향성 절제로 오픈웨이트 트랜스포머 모델의 거부/과잉거부를 후속 학습 없이 제거: 층별 거부 방향(유해 vs 무해 잔차의 차이-평균)으로 어텐션 + MLP 행렬을 직교화하고, **Optuna TPE** 옵티마이저가 거부율과 원본 대비 KL 발산을 동시 최소화. 가장 가벼운 모드로 라우팅: `decensor` < `configure`(`bnb_4bit` / 트라이얼 / KL 타깃) < `evaluate`(거부 수 + KL) < `research`(`--print-residual-geometry`, PaCMAP `--plot-residuals`) < `discover`(웹 추출은 `scrapling`). 책임 있는 사용 가드레일: 수정 권한 있는 모델에만, 라이선스/ToS 준수, 불법·유해 콘텐츠용 절대 금지. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill heretic` | 전체 |
 | `autoresearch` | Karpathy 자율 ML 탐색 front door — setup / `program.md` / bounded loop / 결과 해석 / constrained-hardware mode 중 하나를 고르고, 불변 `prepare.py` + 300초 + `val_bpb` 계약을 지키며, 프롬프트/스킬 eval은 별도 라우팅 | 전체 |
 | `skill-autoresearch` | 하나의 packet(ratchet-eligibility/ready/charter/baseline/mutation/support-sync/final report)을 먼저 고르고, `no ratchet justified`도 허용한 뒤 eval을 고정하고 점수로 keep/revert를 결정하며, hosted eval / ML autoresearch 작업은 바깥으로 라우팅하는 repo-local 스킬 ratcheting 루프 | 전체 |
 | `codebase-search` | 디버깅/리팩터링으로 넘어가기 전에 정의/참조, config·콘텐츠 소유면, 엔트리포인트, 영향 범위를 찾도록 한 가지 검색 packet을 고르는 라우팅형 리포 탐색 | 전체 |
@@ -655,7 +657,7 @@ npx vibe-kanban
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 143개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 146개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -684,6 +686,7 @@ npx vibe-kanban
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `webtoon-harness` | `웹툰 만들어`, `웹툰 하네스` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
+| `heretic` | `heretic`, `어블리터레이션`, `모델 검열 제거` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.ko.md](docs/harness/README.ko.md) |
@@ -709,6 +712,7 @@ npx vibe-kanban
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
 | `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | MIT |
+| `heretic` | [p-e-w/heretic](https://github.com/p-e-w/heretic) | AGPL-3.0-or-later |
 | `llm-wiki` | [karpathy/llm-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | — |
 | `obsidian-second-brain` | [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain) (포크: [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain)) | MIT |
 | `graphify` | [safishamsi/graphify](https://github.com/safishamsi/graphify) | MIT |

@@ -269,6 +269,35 @@
       "addedAt": "2026-03-10T00:00:00Z",
       "updatedAt": "2026-03-10T00:00:00Z"
     },
+    "heretic": {
+      "source": "akillness/jeo-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "heretic",
+      "description": "p-e-w/heretic 기반 자동 방향성 절제(어블리터레이션) + LLM 해석가능성 툴킷 — 후속 학습 없이 오픈웨이트 트랜스포머 모델의 거부/과잉거부를 제거하고 거부 방향의 기하를 분석. 유해/무해 프롬프트의 첫 토큰 잔차 차이-평균으로 층별 거부 방향을 구해 어텐션/MLP 행렬을 직교화하고, Optuna TPE 최적화로 거부율과 원본 대비 KL 발산을 동시 최소화. 사용자가 수정 권한을 가진 모델에만 사용(AGPL-3.0). 모델 탐색·데이터셋·벤치마크 웹 조사는 scrapling 스킬로 라우팅.",
+      "tags": [
+        "heretic",
+        "abliteration",
+        "directional-ablation",
+        "decensor",
+        "refusal-direction",
+        "interpretability",
+        "residual-geometry",
+        "llm-safety-research",
+        "optuna",
+        "scrapling"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill heretic",
+      "addedAt": "2026-07-01T00:00:00Z",
+      "updatedAt": "2026-07-01T00:00:00Z",
+      "extensions": [
+        {
+          "skill": "scrapling",
+          "status": "recommended",
+          "reason": "Owns web extraction for the discover mode — locating base/existing-heretic models, datasets, and benchmark/prior-art data; pick the lightest workable scraping mode."
+        }
+      ]
+    },
     "webtoon-harness": {
       "source": "akillness/jeo-skills",
       "sourceType": "github",

@@ -1,0 +1,41 @@
+N:heretic
+D:[heretic] Run Heretic — fully automatic directional-ablation ("abliteration") + LLM-interpretability toolkit that removes refusal/over-refusal from open-weight transformer models WITHOUT post-training, and analyses refusal-direction geometry. Computes per-layer refusal directions (difference-of-means of harmful vs harmless first-token residuals), orthogonalizes attention/MLP matrices against them, and runs an Optuna TPE optimizer to minimize refusals AND KL-divergence from the original. Packages p-e-w/heretic (AGPL-3.0). Model discovery / dataset / benchmark web research routes through the scrapling skill.
+G:heretic abliteration directional-ablation decensor refusal-direction interpretability residual-geometry llm-safety-research optuna scrapling
+
+U[6]:
+  Decensor / abliterate / un-refuse an open-weight model the user has the right to modify
+  Reduce benign over-refusal while preserving capability (low KL-divergence)
+  Tune the ablation: quantization to fit VRAM, trial budget, KL target; then save/upload/chat/evaluate
+  Evaluate a model: refusal count on harmful prompts + KL-divergence vs the original
+  Interpretability research: refusal-direction geometry table, PaCMAP residual plots
+  Discover base models / existing heretic models / benchmarks via scrapling
+
+M[5]{mode,trigger,command}:
+  decensor,"abliterate/decensor <model>",heretic <model>  (fully automatic; then save/upload/chat/evaluate)
+  configure,"fit in 16GB / more trials / less brain damage",edit config.*.toml or flags: --quantization bnb_4bit / --n-trials / --kl-divergence-target
+  evaluate,"how censored is it / did it work",heretic --model <orig> --evaluate-model <candidate> -> refusals + KL
+  research,"plot residuals / refusal geometry",pip install -U 'heretic-llm[research]'; --plot-residuals / --print-residual-geometry
+  discover,"find base model / existing heretic model / benchmarks",route web extraction through the scrapling skill (lightest mode)
+
+S[5]{n,step,details}:
+  1,Classify,pick smallest mode (decensor/configure/evaluate/research/discover); recommendation-only or clearly-illegal-purpose requests do NOT launch a run
+  2,Confirm rights+hardware,model must be modifiable by the user; need a GPU + VRAM (offer --quantization bnb_4bit); warn on multi-hour runtime / PaCMAP CPU cost
+  3,Discover,if the live web is needed (base model / existing heretic version / benchmark baseline) route to scrapling
+  4,Run,install & run the smallest command for the mode; prefer `uv run heretic` for pinned reproducibility
+  5,Report,refusals + KL + checkpoint/plot paths + follow-ups (save/upload/chat/evaluate/benchmark)
+
+R[7]:
+  Responsible use: AGPL-3.0; only modify models you have the right to modify; respect base-model license + platform ToS
+  Abliteration lowers refusals on ALL topics — never produce a model for genuinely illegal/harmful content or to evade controls you are bound by
+  Report BOTH metrics: lower refusals = less censored, lower KL = less capability damage; a good abliteration matches others' refusals at much lower KL
+  MXFP4 / gpt-oss needs PyTorch 2.6+ (torch.accelerator); PyTorch 2.2+ is the floor otherwise
+  CUDA OOM -> quantization = bnb_4bit, lower max_batch_size, or a smaller model
+  Research features (--plot-residuals / --print-residual-geometry) require the [research] extra; PaCMAP is CPU-heavy (hour+ on large models)
+  Refusal/KL numbers are platform- and hardware-dependent; report the environment; re-evaluate before shipping
+
+E[5]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill heretic
+  Install tool,pip install -U heretic-llm   (RESEARCH=1 bash scripts/install.sh for extras)
+  Decensor,heretic Qwen/Qwen3-4B-Instruct-2507
+  Fit in VRAM,heretic <model> --quantization bnb_4bit
+  Evaluate,heretic --model google/gemma-3-12b-it --evaluate-model p-e-w/gemma-3-12b-it-heretic
