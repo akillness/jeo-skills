@@ -44,6 +44,20 @@ Create the wiki skeleton first:
 bash scripts/bootstrap-vault.sh /path/to/vault
 ```
 
+Under the `jeo` runtime, do not invent a new vault location: the tool-flow rule
+(`~/.agents/rules/jeo-tool-flow.md`) and the post-turn ingest hook both resolve
+the vault from `$LLM_WIKI_VAULT`, defaulting to `~/vaults/llm-wiki`. Pass that
+same path to `bootstrap-vault.sh` so the skill's vault and jeo's fixed global
+wiki stay one and the same:
+
+```bash
+bash scripts/bootstrap-vault.sh "${LLM_WIKI_VAULT:-$HOME/vaults/llm-wiki}"
+```
+
+`setup-all-skills-prompt.md` (Step 3e / Step 6) already calls this script with
+that exact path during install, so a fresh `jeo` setup and a manual bootstrap
+never diverge.
+
 The bootstrap creates:
 
 - `raw/sources/` for immutable source markdown or copied files

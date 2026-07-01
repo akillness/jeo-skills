@@ -431,6 +431,7 @@ command -v obsidian &>/dev/null \
 echo "=== Bootstrapping llm-wiki vault ==="
 # Defensive home guard (safe when run standalone without Step 0 context)
 _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
 # Vault location — MUST match the Knowledge Pipeline (Step 6) and the jeo post-turn hook
 # (Step 3i): default ~/vaults/llm-wiki on every platform (override with LLM_WIKI_VAULT).
 # (Previously defaulted to ~/wiki, which left an orphaned vault no hook ever read.)
@@ -439,10 +440,23 @@ case "$PLATFORM" in
 esac
 WIKI_VAULT="${LLM_WIKI_VAULT:-$WIKI_DEFAULT}"
 
-if [ ! -d "$WIKI_VAULT" ]; then
-  mkdir -p "$WIKI_VAULT/raw" "$WIKI_VAULT/wiki"
-  touch "$WIKI_VAULT/index.md" "$WIKI_VAULT/log.md"
-  echo "✅ wiki vault bootstrapped at $WIKI_VAULT"
+# Reuse the llm-wiki skill's own bootstrap script so the vault structure this
+# step creates never drifts from what .agent-skills/llm-wiki/SKILL.md documents
+# (raw/sources, raw/assets, wiki/{sources,entities,concepts,queries,reports},
+# AGENTS.md schema, templated index.md/log.md) — the same script Step 6 reuses.
+# Only fall back to a minimal skeleton if the skill was never installed (Step 1).
+if [ ! -f "$WIKI_VAULT/index.md" ]; then
+  if [ -x "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" ]; then
+    bash "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" "$WIKI_VAULT" \
+      && echo "✅ wiki vault bootstrapped via llm-wiki skill → $WIKI_VAULT"
+  else
+    mkdir -p "$WIKI_VAULT"/raw/sources "$WIKI_VAULT"/raw/assets \
+             "$WIKI_VAULT"/wiki/sources "$WIKI_VAULT"/wiki/entities \
+             "$WIKI_VAULT"/wiki/concepts "$WIKI_VAULT"/wiki/queries "$WIKI_VAULT"/wiki/reports
+    touch "$WIKI_VAULT/index.md" "$WIKI_VAULT/log.md"
+    echo "ℹ️  llm-wiki skill missing at $SKILLS_ROOT/llm-wiki — re-run Step 1, then re-run this"
+    echo "   step to upgrade to the full schema. Created minimal vault skeleton for now."
+  fi
 else
   echo "✅ wiki vault exists at $WIKI_VAULT"
 fi
