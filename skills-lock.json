@@ -170,7 +170,7 @@
       "sourceType": "github",
       "version": "0.29.0",
       "keyword": "ooo",
-      "description": "Ouroboros v0.29.0 기반의 specification-first development loop. Socratic interview, immutable seed/spec, drift-aware execution, 검증 통과까지 이어가는 완료 루프. 플러그인: claude plugin marketplace add Q00/ouroboros",
+      "description": "Ouroboros v0.29.0 기반의 specification-first development loop. 라이브 git 데이터(커밋·churn·기여자)에 근거한 Socratic interview, immutable seed/spec, seed→plan 단방향으로 spec-kit(/speckit.plan → /speckit.tasks)이 렌더링하는 실행 계획, drift-aware execution, 검증 통과까지 이어가는 완료 루프. 설치 knob: OOO_GIT_INTERVIEW, OOO_SPEC_KIT. 플러그인: claude plugin marketplace add Q00/ouroboros",
       "tags": [
         "ooo",
         "ouroboros",
@@ -179,14 +179,22 @@
         "verification",
         "evaluation",
         "mcp",
-        "plugin"
+        "plugin",
+        "git-aware",
+        "spec-kit",
+        "execution-planning"
       ],
       "installCommand": "claude plugin marketplace add Q00/ouroboros",
       "alternativeInstall": "pip install ouroboros-ai[all]",
       "skillInstall": "npx skills add https://github.com/akillness/jeo-skills --skill ooo",
       "addedAt": "2026-04-22T00:00:00Z",
-      "updatedAt": "2026-04-22T00:00:00Z",
+      "updatedAt": "2026-07-02T00:00:00Z",
       "extensions": [
+        {
+          "skill": "spec-kit",
+          "status": "recommended",
+          "reason": "Execution-planning stage: the frozen seed is rendered into plan.md/tasks.md via /speckit.plan → /speckit.tasks (installed by default via OOO_SPEC_KIT=1)."
+        },
         {
           "skill": "agent-observability",
           "status": "survey-candidate",

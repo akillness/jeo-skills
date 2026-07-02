@@ -1,0 +1,38 @@
+N:open-code-review
+D:[open-code-review] Run AI-powered code review through Alibaba's open-code-review (ocr) CLI instead of hand-reviewing diffs. Use when the user asks to review code, a PR/MR, staged/unstaged/untracked changes, a single commit, a branch range, or to scan whole files for bugs, security, performance, and quality issues.
+G:open-code-review ocr ai-code-review pull-request-review diff-review security-review cli plugin alibaba git
+
+U[8]:
+  Confirm ocr is installed and the LLM is configured before promising a review
+  Distill one business-context sentence and pass it via --background / -b
+  Choose one mode: workspace review, single commit, branch range, or full-file scan
+  Default agent/CI output to --audience agent and --format json
+  Classify OCR comments into High/Medium/Low and drop Low noise unless asked
+  Never invent or hardcode API keys; stop and ask the user for credentials
+  Auto-fix only on explicit intent, safe High/Medium items, and verify before committing
+  Route approve/block judgment to code-review, Git cleanup to git-workflow, debugging to debugging
+
+S[6]{n,action,details}:
+  1,Prerequisites,which ocr and ocr llm test then bash scripts/install.sh --method npm|release|source if missing
+  2,Context,read commit/branch/intent and distill one --background requirement sentence
+  3,Choose mode,bash scripts/run-review.sh for workspace --commit or --from/--to or bash scripts/run-scan.sh for whole-file audit
+  4,Classify,group comments by High/Medium/Low priority and report High and Medium with path:line
+  5,Fix,apply only safe High/Medium fixes on explicit intent then re-run tests and confirm
+  6,Integrate,wire ocr into Claude Code/Codex plugins or CI with ocr review --from --to --format json
+
+R[7]:
+  OCR is tooling signal not the final approve/block verdict
+  --background context materially improves review relevance
+  Use --preview and --max-tokens-budget to bound scan scope and cost
+  Use a commit SHA for --to in CI so fork PRs resolve
+  Lower --concurrency to dodge LLM rate limits
+  Custom rule.json layers (project/global/--rule) override system rules first-match-wins
+  Never fabricate API keys; ask the user when credentials are missing
+
+E[6]{type,command}:
+  Prereq,which ocr && ocr llm test
+  Install,bash scripts/install.sh --method npm
+  Workspace,bash scripts/run-review.sh -b "Adding rate limiting to the login API"
+  Branch,bash scripts/run-review.sh --from origin/main --to feature-x --format json --concurrency 4
+  Scan,bash scripts/run-scan.sh --path internal --max-tokens-budget 500000 --preview
+  CI,ocr review --from origin/main --to "$COMMIT_SHA" --format json

@@ -1,0 +1,69 @@
+{
+  "skill_name": "open-code-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "내 작업 디렉터리에 있는 변경사항을 open-code-review로 리뷰하고 싶어. 어떻게 시작해?",
+      "expected_output": "The skill verifies ocr is installed and the LLM is configured, then runs workspace review with business context.",
+      "assertions": [
+        "The response checks `ocr llm test` or installation before reviewing",
+        "The response runs `ocr review` (workspace mode) or `bash scripts/run-review.sh`",
+        "The response recommends passing context via `--background` / `-b`"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "feature 브랜치를 main과 비교해서 ocr로 리뷰하려면?",
+      "expected_output": "The skill uses a branch-range review with --from/--to.",
+      "assertions": [
+        "The response uses `--from` and `--to` refs",
+        "The response does not use workspace or single-commit mode for a branch comparison"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "diff가 없는 낯선 레포 전체를 ocr로 점검하고 싶은데 비용이 걱정돼.",
+      "expected_output": "The skill uses ocr scan with a preview and a token budget.",
+      "assertions": [
+        "The response recommends `ocr scan` rather than `ocr review`",
+        "The response mentions `--preview` and/or `--max-tokens-budget` to control cost"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "ocr llm test가 실패해. LLM을 어떻게 설정해?",
+      "expected_output": "The skill guides provider configuration without inventing keys.",
+      "assertions": [
+        "The response shows `ocr config provider`/`ocr config set` or the OCR_LLM_* env vars",
+        "The response explicitly refuses to fabricate or hardcode an API key and asks the user for credentials"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "이 위험한 마이그레이션 PR을 승인해도 될지 판단해줘.",
+      "expected_output": "The skill runs OCR for signal but routes the approve/block judgment to code-review.",
+      "assertions": [
+        "The response distinguishes tooling output from review judgment",
+        "The response routes the merge decision to the `code-review` skill"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "ocr를 우리 GitHub Actions CI에 붙이고 싶어.",
+      "expected_output": "The skill gives the JSON CI invocation and the commit-SHA caveat.",
+      "assertions": [
+        "The response uses `ocr review --from ... --to ... --format json`",
+        "The response recommends a commit SHA for `--to` to handle fork PRs/MRs"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "ocr를 Claude Code나 Codex에 플러그인으로 설치하려면?",
+      "expected_output": "The skill explains the plugin marketplace / npx skills install paths.",
+      "assertions": [
+        "The response includes `/plugin marketplace add alibaba/open-code-review` or `codex plugin marketplace add` or `npx skills add`",
+        "The response notes the ocr CLI + configured LLM are still prerequisites"
+      ]
+    }
+  ]
+}

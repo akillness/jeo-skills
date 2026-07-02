@@ -77,6 +77,14 @@ if command -v agy &>/dev/null \
   DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}antigravity"
 fi
 if command -v opencode &>/dev/null; then echo "✅ OpenCode";     DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}opencode"; fi
+# jeopi: the oh-my-pi-based spec-first coding agent (akillness/jeopi). Native skill
+# roots: ~/.jeopi/agent/skills (global) and .jeopi/skills/ (project). jeopi ALSO
+# auto-discovers ~/.agents/skills, ~/.claude/skills, ~/.codex/skills, and
+# ~/.config/opencode/skills, so the Step 1 global install is picked up with zero
+# extra linking. The `jeopi` binary or the ~/.jeopi config root marks it installed.
+if command -v jeopi &>/dev/null || [ -d "$_HOME/.jeopi" ]; then
+  echo "✅ jeopi"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}jeopi"
+fi
 if command -v gjc      &>/dev/null; then echo "✅ Gajae Code (gjc)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}gjc"; fi
 # jeo (jeo-code): pure-TypeScript Bun agent. Reads context files (JEO.md / AGENTS.md /
 # .jeo/context.md / CLAUDE.md) + global ~/.agents/rules, and runs hooks from
@@ -178,6 +186,20 @@ skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 | macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
 | Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\` | `.claude\skills\`, `.agents\skills\` |
 | Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
+
+> **jeopi has no Vercel `skills` CLI agent id — and needs none.** jeopi natively
+> discovers skills from `~/.agents/skills/` (populated by Step 1) plus the
+> `.claude` / `.codex` / `.config/opencode` global dirs and their project-level
+> counterparts, so every skill installed above is already visible inside `jeopi`.
+> jeopi's own native roots are `~/.jeopi/agent/skills/` (global) and
+> `.jeopi/skills/` (project); pin a skill there only when you want it scoped to
+> jeopi alone:
+>
+> ```bash
+> # optional: jeopi-only pin (otherwise Step 1 already covers jeopi)
+> mkdir -p "$_HOME/.jeopi/agent/skills"
+> cp -R "$SKILLS_ROOT/deep-research" "$_HOME/.jeopi/agent/skills/deep-research"
+> ```
 
 Install the Claude-derived skills added to this repo:
 
@@ -335,7 +357,7 @@ echo "✅ graphify installed (venv: $GRAPHIFY_VENV)"
 "$GRAPHIFY_PY" -c "import graphify; print('graphify import OK')"
 ```
 
-### 3c — ooo MCP Server (Ouroboros spec-first dev loop)
+### 3c — ooo MCP Server (Ouroboros spec-first dev loop + git-aware interview + spec-kit plan stage)
 
 ```bash
 echo "=== Installing ooo (Ouroboros) ==="
@@ -388,6 +410,41 @@ if command -v codex &>/dev/null; then
 fi
 
 ouroboros --version 2>/dev/null && echo "✅ ouroboros ready" || echo "⚠️  ouroboros not in PATH — restart shell"
+
+# ── Bind the interview philosophy to updated git data ──────────────────
+# The Socratic interview's brownfield Context weighting (15%) is scored against
+# .ouroboros/interview-context.md, regenerated from LIVE git data (commits,
+# churn hotspots, contributors, working-tree state) — never from chat memory.
+# Designate at install time; skip with OOO_GIT_INTERVIEW=0.
+OOO_GIT_INTERVIEW="${OOO_GIT_INTERVIEW:-1}"
+OOO_CTX_GEN="$SKILLS_ROOT/ooo/scripts/git-interview-context.sh"
+if [ "$OOO_GIT_INTERVIEW" = "1" ] && [ -f "$OOO_CTX_GEN" ]; then
+  if git rev-parse --show-toplevel &>/dev/null; then
+    bash "$OOO_CTX_GEN" && echo "✅ ooo git-interview context generated (.ouroboros/interview-context.md)"
+  else
+    echo "ℹ️  not inside a git repo — run 'bash $OOO_CTX_GEN' from a repo before each interview"
+  fi
+  echo "   Rule: regenerate before EVERY interview so Context is scored against updated git data"
+fi
+
+# ── spec-kit for the execution-planning stage (seed → plan, one-way) ────
+# After the seed freezes, spec-kit renders the reviewable execution plan:
+# /speckit.plan → /speckit.tasks. The seed stays the contract SSOT.
+# Designate at install time; skip with OOO_SPEC_KIT=0.
+OOO_SPEC_KIT="${OOO_SPEC_KIT:-1}"
+if [ "$OOO_SPEC_KIT" = "1" ]; then
+  if command -v specify &>/dev/null; then
+    echo "✅ spec-kit already installed ($(specify --version 2>/dev/null || echo ok))"
+  elif command -v uv &>/dev/null; then
+    uv tool install --force specify-cli --from "git+https://github.com/github/spec-kit.git@${SPEC_KIT_REF:-main}" \
+      && echo "✅ spec-kit (specify-cli) installed — ooo plan stage: /speckit.plan → /speckit.tasks"
+  elif command -v pipx &>/dev/null; then
+    pipx install --force "git+https://github.com/github/spec-kit.git@${SPEC_KIT_REF:-main}" \
+      && echo "✅ spec-kit (specify-cli) installed via pipx"
+  else
+    echo "⚠️  neither uv nor pipx found — skipping spec-kit; ooo plan stage falls back to seed-only"
+  fi
+fi
 ```
 
 ### 3d — Obsidian CLI (desktop vault persistence)
@@ -1155,7 +1212,7 @@ If no → skip silently. Never re-ask.
 | Start any task | `ooo interview "task"` or `bmad "task"` |
 | Claude orchestration | `autopilot: task` or `/oh-my-claudecode:team "task"`; Codex parity: `$autopilot`; Antigravity/OMA parity: `/plan` → `/work` |
 | Visual plan review | `plan` (plannotator keyword) |
-| Spec-first dev loop | `ooo interview "X"` or `ouroboros init start "X"` *(install: `claude plugin marketplace add Q00/ouroboros` or `pip install ouroboros-ai[all]`)* |
+| Spec-first dev loop | `ooo interview "X"` or `ouroboros init start "X"` — interview grounded in live git data; after seed freeze: `/speckit.plan` → `/speckit.tasks` *(install: `claude plugin marketplace add Q00/ouroboros` or `pip install ouroboros-ai[all]`; integrations: `bash $SKILLS_ROOT/ooo/scripts/install.sh`)* |
 | Pre-impl research | `survey "topic"` *(writes reusable `.survey/{slug}/` artifacts and validates the artifact contract before handoff)* |
 | Agent team design | `harness "design team for X"` |
 | UI annotation | `annotate` (agentation keyword) |
@@ -1304,18 +1361,23 @@ After installation, treat the following sequence as the **default operating rail
 Start from `$ooo` whenever the request is ambiguous, multi-step, or likely to drift without an explicit contract.
 
 ```bash
-# Purpose: reduce ambiguity, freeze the contract, execute, and verify before done
+# Purpose: reduce ambiguity, freeze the contract, plan via spec-kit, execute, verify before done
 # Activation: "ooo", "ouroboros", "ooo ralph", "ooo interview"
 
 # Good defaults:
+# - regenerate .ouroboros/interview-context.md from live git data before every interview
+#   (bash $SKILLS_ROOT/ooo/scripts/git-interview-context.sh)
 # - clarify before coding when the request is vague
 # - freeze acceptance criteria before larger implementation work
+# - render the execution plan from the frozen seed: /speckit.plan → /speckit.tasks
 # - keep looping until verification actually passes
 ```
 
 Operating expectations:
+- Ground the interview in updated git data — churn hotspots and a dirty working tree are questions, not assumptions.
 - Clarify before coding when the request is vague enough to risk drift.
 - Freeze the seed/spec before substantial execution work.
+- Plan one-way from the seed: spec-kit renders `plan.md`/`tasks.md`; requirement changes go seed-first, then re-render.
 - Do not silently rewrite acceptance criteria mid-run.
 - Treat verification as part of completion, not a final optional check.
 

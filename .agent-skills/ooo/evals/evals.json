@@ -1,0 +1,36 @@
+{
+  "skill": "ooo",
+  "version": "0.29.0",
+  "cases": [
+    {
+      "id": "trigger-spec-first-loop",
+      "prompt": "This request is vague — run an ooo interview, freeze a seed, and keep looping until the tests actually pass.",
+      "should_trigger": true,
+      "expected_behavior": "Activates ooo: Socratic interview to ambiguity <= 0.2, immutable seed, run/evaluate loop until verified."
+    },
+    {
+      "id": "trigger-git-aware-interview",
+      "prompt": "Interview me about this refactor, but ground your questions in what actually changed in git recently — churn, contributors, dirty tree.",
+      "should_trigger": true,
+      "expected_behavior": "Regenerates .ouroboros/interview-context.md via scripts/git-interview-context.sh and scores the brownfield Context weighting against it; churn hotspots become interview questions."
+    },
+    {
+      "id": "trigger-seed-to-plan",
+      "prompt": "The ooo seed is frozen — render the execution plan and task breakdown from it before we start the run loop.",
+      "should_trigger": true,
+      "expected_behavior": "Uses spec-kit /speckit.plan then /speckit.tasks derived from the frozen seed; seed stays the contract SSOT (one-way seed -> plan); completion still gated by the ooo evaluate loop."
+    },
+    {
+      "id": "near-miss-spec-authoring",
+      "prompt": "I want spec-kit to write the spec documents first and have ooo freeze that spec as its seed afterwards.",
+      "should_trigger": false,
+      "expected_behavior": "Routes to spec-stack: spec-kit authors the spec (docs as SSOT, spec -> seed direction); ooo's own plan stage only goes seed -> plan."
+    },
+    {
+      "id": "structural-install-knobs",
+      "prompt": "Install ooo but skip the spec-kit integration and skip the git interview wiring.",
+      "should_trigger": true,
+      "expected_behavior": "Runs OOO_SPEC_KIT=0 OOO_GIT_INTERVIEW=0 bash scripts/install.sh; base ouroboros-ai install proceeds without the two integrations."
+    }
+  ]
+}

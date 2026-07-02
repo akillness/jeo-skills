@@ -4,7 +4,7 @@
 
 [![Skills](https://img.shields.io/badge/Skills-146-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
-[![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
@@ -19,7 +19,7 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 146 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, and OpenCode.
+A curated collection of 146 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 ## 📦 Installation
 
@@ -75,9 +75,9 @@ npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --ski
 
 | OS / shell | Global examples | Project examples |
 |------------|-----------------|------------------|
-| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
-| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\` | `.claude\skills\`, `.agents\skills\` |
-| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
+| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/` |
+| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\`, `$env:USERPROFILE\.jeopi\agent\skills\` | `.claude\skills\`, `.agents\skills\`, `.jeopi\skills\` |
+| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/` |
 
 Project scope is the default and should be committed when the team needs the same skill behavior. Global scope uses `-g` and is better for personal defaults. Agent-specific paths are selected with `-a`; the portable common layer is `.agents/skills/`.
 
@@ -97,6 +97,12 @@ antigravity extensions install https://github.com/akillness/jeo-skills
 # Codex CLI
 npx skills add https://github.com/akillness/jeo-skills \
   --skill omx --skill ooo
+
+# jeopi — no `-a` id needed: jeopi natively discovers ~/.agents/skills plus the
+# .claude/.codex/.config/opencode skill dirs, so a global install is enough.
+npx skills add -g https://github.com/akillness/jeo-skills \
+  --skill deep-research --skill god-tibo-imagen --skill perfectpixel
+# optional jeopi-only pin: ~/.jeopi/agent/skills/<skill> (global) or .jeopi/skills/<skill> (project)
 ```
 
 #### Core tool setup (all platforms)
@@ -130,7 +136,7 @@ rtk init -g
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
-| `ooo` | `ooo`, `ouroboros`, `ooo interview` | All | Spec-first control loop — clarify, freeze, execute, verify. Entry point for any ambiguous or multi-step task |
+| `ooo` | `ooo`, `ouroboros`, `ooo interview` | All | Spec-first control loop — git-grounded interview, freeze, spec-kit plan, execute, verify. Entry point for any ambiguous or multi-step task |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM planning front door — classify packet, choose next artifact or gate, route runtime/review work outward |
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ultraqa`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | Claude-first orchestration router for oh-my-claudecode — distinguishes plugin slash skills from the `omc` shell CLI, maps `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` intents to OMX/OMA when requested, handles recovery/state issues, and routes adjacent work outward |
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
@@ -140,7 +146,7 @@ rtk init -g
 | `ultrawork` | `$ultrawork`, `$ulw`, `ultrawork`, `parallel work` | Codex | Exact-name high-parallelism burst workflow for independent implementation or cleanup lanes |
 | `ultraqa` | `$ultraqa`, `$ultaqa`, `ultraqa`, `QA cycling` | Codex | Exact-name QA cycling workflow for tests/build/lint/typecheck/review loops |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity | Portable OMA harness entry — keeps `.agents` canonical, regenerates vendor views with `oma link`, and maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` with Antigravity limits stated |
-| `ooo` | `ooo`, `ouroboros`, `ooo ralph` | All | Ouroboros spec-first development loop — Socratic interview, immutable seed/spec, drift-aware execution, persistent completion until verification passes. Plugin: `claude plugin marketplace add Q00/ouroboros` |
+| `ooo` | `ooo`, `ouroboros`, `ooo ralph` | All | Ouroboros spec-first development loop — Socratic interview grounded in live git data, immutable seed/spec, spec-kit execution planning (seed → `/speckit.plan` → `/speckit.tasks`), drift-aware execution, persistent completion until verification passes. Plugin: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
 | `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | All | GitHub Spec-Driven Development wrapper — install `specify-cli`, bootstrap a project for one of 30+ agents (Claude / Copilot / Gemini / Codex / Cursor / opencode / Qwen / Kiro / …), and drive the constitution → specify → clarify → plan → analyze → tasks → checklist → implement pipeline. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit` |
 | `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo` | All | Composition wrapper for `spec-kit` × `ooo` × `cli-anything` — spec-kit writes the spec, ooo freezes it as an immutable seed and loops until verification passes, cli-anything supplies agent-native CLI harnesses whose `--json` output is the evaluate-step evidence; three patterns (full-stack / loop-only / docs-only) with one-way spec → seed flow and explicit anti-patterns. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack` |
@@ -374,11 +380,12 @@ TOON (Token-Oriented Object Notation) compresses the skill catalog and auto-inje
 ### ooo — Spec-First Control Loop
 > Keyword: `ooo` · `ouroboros` · `ooo interview` | Platforms: Claude · Codex · Gemini · OpenCode
 
-Spec-first development front door: clarify ambiguous requests, freeze the contract, execute, and verify before claiming done. MCP server install: `claude mcp add ooo -s user -- ouroboros mcp`.
+Spec-first development front door: clarify ambiguous requests with a **git-grounded interview**, freeze the contract, render the execution plan through **spec-kit**, execute, and verify before claiming done. MCP server install: `claude mcp add ooo -s user -- ouroboros mcp`.
 
 | Phase | Owner | Description |
 |-------|-------|-------------|
-| Clarify / Spec | `ooo interview` | Freeze acceptance criteria before execution |
+| Clarify / Spec | `ooo interview` | Interview grounded in live git data (`.ouroboros/interview-context.md`: commits · churn · contributors, regenerated every interview); freeze acceptance criteria before execution |
+| Plan | `spec-kit` (`/speckit.plan` → `/speckit.tasks`) | Render the reviewable execution plan **from the frozen seed** (one-way seed → plan; installed by default via `OOO_SPEC_KIT=1`) |
 | Plan / Review | `plannotator` + `bmad` | Shape and approve the plan without reopening settled work |
 | Runtime handoff / Execute | `omc` / `omx` / `ohmg` | Keep runtime-native config and execution in the runtime skill |
 | Verify / QA | `browser-harness` | Record CDP browser / QA evidence before claiming completion |
@@ -397,7 +404,7 @@ bash scripts/install.sh --all
 ### ooo — Ouroboros Specification-First Development
 > Keyword: `ooo`, `ouroboros`, `ooo ralph` | [Docs](docs/ooo/README.md) | [GitHub](https://github.com/Q00/ouroboros)
 
-Socratic interview → immutable seed/spec → execute against the contract → verify before done → keep looping until completion is actually verified. Installable as a Claude Code plugin or via pip.
+Socratic interview **grounded in updated git data** → immutable seed/spec → **spec-kit renders the execution plan from the seed** → execute against the contract → verify before done → keep looping until completion is actually verified. Installable as a Claude Code plugin or via pip; the skill installer wires both integrations by default.
 
 ```bash
 # Plugin install (Claude Code)
@@ -409,8 +416,14 @@ pip install ouroboros-ai[all]
 # Skill install (any platform)
 npx skills add https://github.com/akillness/jeo-skills --skill ooo
 
+# One-shot installer: skill + ouroboros-ai + git-aware interview + spec-kit
+bash .agent-skills/ooo/scripts/install.sh
+# knobs: OOO_GIT_INTERVIEW=0 · OOO_SPEC_KIT=0 · SPEC_KIT_REF=<ref>
+
 # Usage
+bash .agent-skills/ooo/scripts/git-interview-context.sh   # refresh live git context
 ouroboros init start "I want to build a task management CLI"
+# after seed freeze: /speckit.plan → /speckit.tasks (from the seed)
 ouroboros run workflow seed.yaml
 ouroboros run resume
 ouroboros tui monitor
@@ -688,6 +701,12 @@ npx vibe-kanban
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-07-02
+
+| Change | Details |
+|--------|----------|
+| **ooo: git-grounded interview + spec-kit execution planning** | The `ooo` (Ouroboros) skill now binds its interview philosophy to **updated git data** and its execution-planning stage to **spec-kit**. New `scripts/git-interview-context.sh` regenerates `.ouroboros/interview-context.md` from live git evidence (branch/HEAD, recent commits, churn hotspots, active contributors, working-tree state) so the Socratic interview's brownfield **Context weighting (15%)** is scored against the repo as it is *now* — churn hotspots become interview questions, a dirty working tree is a question, not an assumption. New `scripts/install.sh` designates both integrations at install time (`OOO_GIT_INTERVIEW=1`, `OOO_SPEC_KIT=1` defaults; `SPEC_KIT_REF` to pin): after the seed freezes, spec-kit renders the reviewable execution plan via `/speckit.plan` → `/speckit.tasks` **from the seed** (one-way seed → plan; the seed stays the contract SSOT — spec-first authoring remains `spec-stack`). Flow is now `git data → Interview → Seed → Plan (spec-kit) → Execute → Evaluate → Evolve`. `SKILL.md` (+2 operating rules), `SKILL.toon`, new `evals/evals.json`, and catalog surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md` Step 3c + Rule 1, `skills.json`/`skills.toon`, `skills-lock.json`) updated. 146 skills (no count change). |
+
 ## 🆕 What's New in v2026-07-01
 
 | Change | Details |
@@ -722,12 +741,6 @@ npx vibe-kanban
 | Change | Details |
 |--------|----------|
 | **academic-research: full research-to-publication pipeline** | Added `academic-research` — a jeo-skills routing wrapper for the [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) ARS suite (v3.13.0). Single skill, 4 reference pipelines, 27 modes, 39-agent ensemble: `deep-research` (8 modes incl. PRISMA, socratic, 3W-scan, fact-check), `academic-paper` (11 modes incl. plan, revision, citation-check, disclosure, rebuttal-audit), `academic-paper-reviewer` (6 modes incl. EIC+R1/R2/R3+Devil's Advocate, calibration), and `academic-pipeline` (10-stage end-to-end orchestrator with Material Passport, L3 claim-faithfulness gates, three-index citation triangulation, cross-model verification). Human-in-the-loop throughout with mandatory `[USER CHECKPOINT]` gates. 4 reference docs included. Plugin: `claude plugin marketplace add Imbad0202/academic-research-skills`. 136 → **137 skills**. |
-
-## 🆕 What's New in v2026-06-22
-
-| Change | Details |
-|--------|----------|
-| **Cleanup: drop 7 legacy/alias skills, update harness versions** | Removed `agent-browser` (empty shell superseded by `browser-harness`), `obsidian-cli`, `obsidian-plugin`, `obsidian-cli-uri-fallback` (consolidated into `obsidian` v2.0), `frontend-design-system`, `vercel-react-best-practices`, `marketing-skills-collection` (alias-only stubs pointing at `design-system`, `react-best-practices`, `marketing-automation`). Updated `omc` v4.14.0 → **v4.14.7**, `omx` v0.11.10 → **v0.18.14** (adds `$prometheus-strict` / `$best-practice-research` / `$autoresearch-goal`), `ohmg` v2.0.0 → **v10.4.1** (cross-vendor: Claude Code · Codex · Gemini · Antigravity · Cursor · Grok Build · Kiro CLI · Amp · …). Architecture SVG expanded with clickable Recommended Harnesses panel (omc / omx / ohmg GitHub links). 143 → **136 skills**. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 
