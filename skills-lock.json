@@ -170,7 +170,7 @@
       "sourceType": "github",
       "version": "0.29.0",
       "keyword": "ooo",
-      "description": "Ouroboros v0.29.0 기반의 specification-first development loop. 라이브 git 데이터(커밋·churn·기여자)에 근거한 Socratic interview, immutable seed/spec, seed→plan 단방향으로 spec-kit(/speckit.plan → /speckit.tasks)이 렌더링하는 실행 계획, drift-aware execution, 검증 통과까지 이어가는 완료 루프. 설치 knob: OOO_GIT_INTERVIEW, OOO_SPEC_KIT. 플러그인: claude plugin marketplace add Q00/ouroboros",
+      "description": "Ouroboros v0.29.0 기반의 specification-first development loop. 라이브 git 데이터(커밋·churn·기여자)에 근거한 Socratic interview, immutable seed/spec, seed→plan 단방향으로 spec-kit(/speckit.plan → /speckit.tasks)이 렌더링하는 실행 계획, cli-anything CLI-Hub harness로 실행하는 execute 단계(--json 출력 = evaluate 증거), drift-aware execution, 검증 통과까지 이어가는 완료 루프. 설치 knob: OOO_GIT_INTERVIEW, OOO_SPEC_KIT, OOO_CLI_ANYTHING. 플러그인: claude plugin marketplace add Q00/ouroboros",
       "tags": [
         "ooo",
         "ouroboros",
@@ -182,7 +182,10 @@
         "plugin",
         "git-aware",
         "spec-kit",
-        "execution-planning"
+        "execution-planning",
+        "cli-anything",
+        "cli-hub",
+        "harness-execution"
       ],
       "installCommand": "claude plugin marketplace add Q00/ouroboros",
       "alternativeInstall": "pip install ouroboros-ai[all]",
@@ -194,6 +197,11 @@
           "skill": "spec-kit",
           "status": "recommended",
           "reason": "Execution-planning stage: the frozen seed is rendered into plan.md/tasks.md via /speckit.plan → /speckit.tasks (installed by default via OOO_SPEC_KIT=1)."
+        },
+        {
+          "skill": "cli-anything",
+          "status": "recommended",
+          "reason": "Execute stage: run drives real software through CLI-Hub harnesses whose --json output is the evaluate-stage evidence (installed by default via OOO_CLI_ANYTHING=1)."
         },
         {
           "skill": "agent-observability",

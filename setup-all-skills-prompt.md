@@ -357,7 +357,7 @@ echo "✅ graphify installed (venv: $GRAPHIFY_VENV)"
 "$GRAPHIFY_PY" -c "import graphify; print('graphify import OK')"
 ```
 
-### 3c — ooo MCP Server (Ouroboros spec-first dev loop + git-aware interview + spec-kit plan stage)
+### 3c — ooo MCP Server (Ouroboros spec-first dev loop + git-aware interview + spec-kit plan + cli-anything execute)
 
 ```bash
 echo "=== Installing ooo (Ouroboros) ==="
@@ -443,6 +443,31 @@ if [ "$OOO_SPEC_KIT" = "1" ]; then
       && echo "✅ spec-kit (specify-cli) installed via pipx"
   else
     echo "⚠️  neither uv nor pipx found — skipping spec-kit; ooo plan stage falls back to seed-only"
+  fi
+fi
+
+# ── cli-anything harnesses for the execute stage (--json = evidence) ────
+# The run/execute stage drives real software through agent-native CLI-Hub
+# harnesses (cli-hub search → install → launch); every harness command
+# supports --json, and that structured output is the evidence the evaluate
+# stage accepts (artifacts, not exit codes).
+# Designate at install time; skip with OOO_CLI_ANYTHING=0.
+OOO_CLI_ANYTHING="${OOO_CLI_ANYTHING:-1}"
+if [ "$OOO_CLI_ANYTHING" = "1" ]; then
+  if command -v cli-hub &>/dev/null; then
+    echo "✅ cli-anything already installed ($(cli-hub --version 2>/dev/null || echo ok))"
+  elif [ -f "$SKILLS_ROOT/cli-anything/scripts/install.sh" ]; then
+    bash "$SKILLS_ROOT/cli-anything/scripts/install.sh" \
+      && echo "✅ cli-anything (CLI-Hub) installed — ooo execute stage: cli-hub search → install → launch"
+  elif command -v uv &>/dev/null; then
+    uv tool install --upgrade "${CLI_ANYTHING_HUB_SPEC:-cli-anything-hub}" \
+      && echo "✅ cli-anything (CLI-Hub) installed via uv"
+  elif command -v pip3 &>/dev/null; then
+    pip3 install --upgrade "${CLI_ANYTHING_HUB_SPEC:-cli-anything-hub}" 2>/dev/null \
+      || pip3 install --user --break-system-packages --upgrade "${CLI_ANYTHING_HUB_SPEC:-cli-anything-hub}"
+    command -v cli-hub &>/dev/null && echo "✅ cli-anything (CLI-Hub) installed via pip3"
+  else
+    echo "⚠️  neither uv nor pip found — skipping cli-anything; ooo execute stage falls back to direct shell"
   fi
 fi
 ```
@@ -1212,7 +1237,7 @@ If no → skip silently. Never re-ask.
 | Start any task | `ooo interview "task"` or `bmad "task"` |
 | Claude orchestration | `autopilot: task` or `/oh-my-claudecode:team "task"`; Codex parity: `$autopilot`; Antigravity/OMA parity: `/plan` → `/work` |
 | Visual plan review | `plan` (plannotator keyword) |
-| Spec-first dev loop | `ooo interview "X"` or `ouroboros init start "X"` — interview grounded in live git data; after seed freeze: `/speckit.plan` → `/speckit.tasks` *(install: `claude plugin marketplace add Q00/ouroboros` or `pip install ouroboros-ai[all]`; integrations: `bash $SKILLS_ROOT/ooo/scripts/install.sh`)* |
+| Spec-first dev loop | `ooo interview "X"` or `ouroboros init start "X"` — interview grounded in live git data; after seed freeze: `/speckit.plan` → `/speckit.tasks`; execute via `cli-hub` harnesses (`--json` = evaluate evidence) *(install: `claude plugin marketplace add Q00/ouroboros` or `pip install ouroboros-ai[all]`; integrations: `bash $SKILLS_ROOT/ooo/scripts/install.sh`)* |
 | Pre-impl research | `survey "topic"` *(writes reusable `.survey/{slug}/` artifacts and validates the artifact contract before handoff)* |
 | Agent team design | `harness "design team for X"` |
 | UI annotation | `annotate` (agentation keyword) |
@@ -1361,7 +1386,7 @@ After installation, treat the following sequence as the **default operating rail
 Start from `$ooo` whenever the request is ambiguous, multi-step, or likely to drift without an explicit contract.
 
 ```bash
-# Purpose: reduce ambiguity, freeze the contract, plan via spec-kit, execute, verify before done
+# Purpose: reduce ambiguity, freeze the contract, plan via spec-kit, execute via cli-anything harnesses, verify before done
 # Activation: "ooo", "ouroboros", "ooo ralph", "ooo interview"
 
 # Good defaults:
@@ -1370,6 +1395,8 @@ Start from `$ooo` whenever the request is ambiguous, multi-step, or likely to dr
 # - clarify before coding when the request is vague
 # - freeze acceptance criteria before larger implementation work
 # - render the execution plan from the frozen seed: /speckit.plan → /speckit.tasks
+# - execute through cli-anything harnesses: cli-hub search → install → launch
+#   (--json output is the evaluate-stage evidence; name harnesses in seed constraints)
 # - keep looping until verification actually passes
 ```
 
@@ -1378,6 +1405,7 @@ Operating expectations:
 - Clarify before coding when the request is vague enough to risk drift.
 - Freeze the seed/spec before substantial execution work.
 - Plan one-way from the seed: spec-kit renders `plan.md`/`tasks.md`; requirement changes go seed-first, then re-render.
+- Execute through contracted harnesses: registry first (`cli-hub search`), harnesses named in seed constraints, `--json` artifacts as evaluate evidence.
 - Do not silently rewrite acceptance criteria mid-run.
 - Treat verification as part of completion, not a final optional check.
 

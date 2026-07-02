@@ -3,7 +3,7 @@
 #
 # Installs this skill from jeo-skills (as a plugin), the upstream
 # ouroboros-ai Python package (Q00/ouroboros, MIT), and — by default —
-# the two integrations that bind the Ouroboros philosophy to a real repo:
+# the three integrations that bind the Ouroboros philosophy to a real repo:
 #
 #   1. git-aware interview: generates .ouroboros/interview-context.md from
 #      live git data so the Socratic interview's brownfield Context weighting
@@ -12,6 +12,10 @@
 #      frozen seed can be rendered into a reviewable execution plan via
 #      /speckit.plan → /speckit.tasks before /speckit.implement runs inside
 #      the ooo verify loop.
+#   3. cli-anything execute harnesses: installs the CLI-Hub package manager
+#      (`cli-hub`) so the run/execute stage drives real software through
+#      agent-native CLI harnesses whose `--json` output is the evidence the
+#      evaluate stage accepts (artifacts, not exit codes).
 #
 # Idempotent and safe to re-run.
 #
@@ -24,12 +28,14 @@
 #   OOO_GIT_INTERVIEW=0   - do NOT wire the git-aware interview context (default: 1)
 #   OOO_SPEC_KIT=0        - do NOT install spec-kit/`specify-cli` (default: 1)
 #   SPEC_KIT_REF=<ref>    - git ref for specify-cli when OOO_SPEC_KIT=1 (default: main)
+#   OOO_CLI_ANYTHING=0    - do NOT install cli-anything/CLI-Hub (default: 1)
+#   CLI_ANYTHING_HUB_SPEC - pip spec for CLI-Hub (default: cli-anything-hub; pinnable)
 #   PYTHON_BIN=<path>     - python interpreter to use (default: python3)
 #
 # Usage:
 #   bash scripts/install.sh
 #   GLOBAL=1 AGENTS="claude-code,codex" bash scripts/install.sh
-#   OOO_SPEC_KIT=0 OOO_GIT_INTERVIEW=0 bash scripts/install.sh   # base ooo only
+#   OOO_SPEC_KIT=0 OOO_GIT_INTERVIEW=0 OOO_CLI_ANYTHING=0 bash scripts/install.sh   # base ooo only
 
 set -euo pipefail
 
@@ -44,6 +50,7 @@ PYTHON_BIN="${PYTHON_BIN:-python3}"
 OOO_EXTRAS="${OOO_EXTRAS:-all}"
 OOO_GIT_INTERVIEW="${OOO_GIT_INTERVIEW:-1}"
 OOO_SPEC_KIT="${OOO_SPEC_KIT:-1}"
+OOO_CLI_ANYTHING="${OOO_CLI_ANYTHING:-1}"
 
 # ---- step 1: skill (plugin) install ----
 install_skill() {
@@ -135,11 +142,44 @@ install_spec_kit() {
   fi
 }
 
+# ---- step 5: cli-anything harnesses for the execute stage ----
+install_cli_anything() {
+  if [ "$OOO_CLI_ANYTHING" != "1" ]; then
+    log "OOO_CLI_ANYTHING=0 — skipping cli-anything install"
+    return 0
+  fi
+  if command -v cli-hub >/dev/null 2>&1; then
+    log "cli-hub already installed ($(cli-hub --version 2>/dev/null || echo ok)) — skipping"
+    return 0
+  fi
+  local sibling="$SCRIPT_DIR/../../cli-anything/scripts/install.sh"
+  if [ -f "$sibling" ]; then
+    log "installing cli-anything (CLI-Hub) via sibling skill installer"
+    bash "$sibling" \
+      || { warn "cli-anything install failed — execute stage falls back to direct shell"; return 0; }
+    return 0
+  fi
+  local spec="${CLI_ANYTHING_HUB_SPEC:-cli-anything-hub}"
+  if command -v uv >/dev/null 2>&1; then
+    log "installing CLI-Hub via uv tool"
+    uv tool install --upgrade "$spec" \
+      || warn "uv install failed — execute stage falls back to direct shell"
+  elif command -v pip3 >/dev/null 2>&1; then
+    log "installing CLI-Hub via pip3"
+    pip3 install --upgrade "$spec" 2>/dev/null \
+      || pip3 install --user --break-system-packages --upgrade "$spec" \
+      || warn "pip install failed — execute stage falls back to direct shell"
+  else
+    warn "neither uv nor pip found — skipping cli-anything (install uv, then re-run)"
+  fi
+}
+
 # ---- main ----
-log "Starting $SKILL setup (git-interview: $OOO_GIT_INTERVIEW, spec-kit: $OOO_SPEC_KIT)"
+log "Starting $SKILL setup (git-interview: $OOO_GIT_INTERVIEW, spec-kit: $OOO_SPEC_KIT, cli-anything: $OOO_CLI_ANYTHING)"
 install_skill
 install_package
 wire_git_interview
 install_spec_kit
-log "Done. Flow: interview (git-grounded) → seed → /speckit.plan + /speckit.tasks → run → evaluate."
+install_cli_anything
+log "Done. Flow: interview (git-grounded) → seed → /speckit.plan + /speckit.tasks → run (cli-hub harnesses) → evaluate (--json artifacts)."
 log "See .agent-skills/$SKILL/SKILL.md for the full workflow."

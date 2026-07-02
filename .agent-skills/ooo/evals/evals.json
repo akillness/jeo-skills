@@ -30,7 +30,19 @@
       "id": "structural-install-knobs",
       "prompt": "Install ooo but skip the spec-kit integration and skip the git interview wiring.",
       "should_trigger": true,
-      "expected_behavior": "Runs OOO_SPEC_KIT=0 OOO_GIT_INTERVIEW=0 bash scripts/install.sh; base ouroboros-ai install proceeds without the two integrations."
+      "expected_behavior": "Runs OOO_SPEC_KIT=0 OOO_GIT_INTERVIEW=0 bash scripts/install.sh; base ouroboros-ai install proceeds; cli-anything still installs unless OOO_CLI_ANYTHING=0 is also set."
+    },
+    {
+      "id": "trigger-harness-execute",
+      "prompt": "Run the ooo loop against this seed, but execute the image-processing steps through a real CLI harness with --json evidence instead of shelling out blindly.",
+      "should_trigger": true,
+      "expected_behavior": "Execute stage uses cli-anything: cli-hub search/install for the harness, harness named in seed constraints, --json output verified as artifacts (not exit codes) at the evaluate stage."
+    },
+    {
+      "id": "near-miss-harness-only",
+      "prompt": "Just generate a CLI harness for GIMP, no spec or verification loop needed.",
+      "should_trigger": false,
+      "expected_behavior": "Routes to cli-anything directly (registry search first, then /cli-anything generation); no seed or loop ceremony."
     }
   ]
 }

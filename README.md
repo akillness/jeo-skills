@@ -136,7 +136,7 @@ rtk init -g
 
 | Skill | Keyword | Platform | Description |
 |-------|---------|----------|-------------|
-| `ooo` | `ooo`, `ouroboros`, `ooo interview` | All | Spec-first control loop — git-grounded interview, freeze, spec-kit plan, execute, verify. Entry point for any ambiguous or multi-step task |
+| `ooo` | `ooo`, `ouroboros`, `ooo interview` | All | Spec-first control loop — git-grounded interview, freeze, spec-kit plan, cli-anything harness execute, verify. Entry point for any ambiguous or multi-step task |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM planning front door — classify packet, choose next artifact or gate, route runtime/review work outward |
 | `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ultraqa`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | Claude-first orchestration router for oh-my-claudecode — distinguishes plugin slash skills from the `omc` shell CLI, maps `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` intents to OMX/OMA when requested, handles recovery/state issues, and routes adjacent work outward |
 | `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
@@ -146,7 +146,7 @@ rtk init -g
 | `ultrawork` | `$ultrawork`, `$ulw`, `ultrawork`, `parallel work` | Codex | Exact-name high-parallelism burst workflow for independent implementation or cleanup lanes |
 | `ultraqa` | `$ultraqa`, `$ultaqa`, `ultraqa`, `QA cycling` | Codex | Exact-name QA cycling workflow for tests/build/lint/typecheck/review loops |
 | `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity | Portable OMA harness entry — keeps `.agents` canonical, regenerates vendor views with `oma link`, and maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` with Antigravity limits stated |
-| `ooo` | `ooo`, `ouroboros`, `ooo ralph` | All | Ouroboros spec-first development loop — Socratic interview grounded in live git data, immutable seed/spec, spec-kit execution planning (seed → `/speckit.plan` → `/speckit.tasks`), drift-aware execution, persistent completion until verification passes. Plugin: `claude plugin marketplace add Q00/ouroboros` |
+| `ooo` | `ooo`, `ouroboros`, `ooo ralph` | All | Ouroboros spec-first development loop — Socratic interview grounded in live git data, immutable seed/spec, spec-kit execution planning (seed → `/speckit.plan` → `/speckit.tasks`), cli-anything harness execution (`cli-hub`, `--json` evidence), drift-aware execution, persistent completion until verification passes. Plugin: `claude plugin marketplace add Q00/ouroboros` |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
 | `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | All | GitHub Spec-Driven Development wrapper — install `specify-cli`, bootstrap a project for one of 30+ agents (Claude / Copilot / Gemini / Codex / Cursor / opencode / Qwen / Kiro / …), and drive the constitution → specify → clarify → plan → analyze → tasks → checklist → implement pipeline. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit` |
 | `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo` | All | Composition wrapper for `spec-kit` × `ooo` × `cli-anything` — spec-kit writes the spec, ooo freezes it as an immutable seed and loops until verification passes, cli-anything supplies agent-native CLI harnesses whose `--json` output is the evaluate-step evidence; three patterns (full-stack / loop-only / docs-only) with one-way spec → seed flow and explicit anti-patterns. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack` |
@@ -380,13 +380,14 @@ TOON (Token-Oriented Object Notation) compresses the skill catalog and auto-inje
 ### ooo — Spec-First Control Loop
 > Keyword: `ooo` · `ouroboros` · `ooo interview` | Platforms: Claude · Codex · Gemini · OpenCode
 
-Spec-first development front door: clarify ambiguous requests with a **git-grounded interview**, freeze the contract, render the execution plan through **spec-kit**, execute, and verify before claiming done. MCP server install: `claude mcp add ooo -s user -- ouroboros mcp`.
+Spec-first development front door: clarify ambiguous requests with a **git-grounded interview**, freeze the contract, render the execution plan through **spec-kit**, execute through **cli-anything harnesses**, and verify before claiming done. MCP server install: `claude mcp add ooo -s user -- ouroboros mcp`.
 
 | Phase | Owner | Description |
 |-------|-------|-------------|
 | Clarify / Spec | `ooo interview` | Interview grounded in live git data (`.ouroboros/interview-context.md`: commits · churn · contributors, regenerated every interview); freeze acceptance criteria before execution |
 | Plan | `spec-kit` (`/speckit.plan` → `/speckit.tasks`) | Render the reviewable execution plan **from the frozen seed** (one-way seed → plan; installed by default via `OOO_SPEC_KIT=1`) |
 | Plan / Review | `plannotator` + `bmad` | Shape and approve the plan without reopening settled work |
+| Execute | `cli-anything` (`cli-hub search` → `install` → `launch`) | Drive real software through agent-native CLI harnesses; `--json` output is the evaluate-stage evidence (installed by default via `OOO_CLI_ANYTHING=1`) |
 | Runtime handoff / Execute | `omc` / `omx` / `ohmg` | Keep runtime-native config and execution in the runtime skill |
 | Verify / QA | `browser-harness` | Record CDP browser / QA evidence before claiming completion |
 | Verify UI | `agentation` | Wait for explicit submit, then process UI feedback |
@@ -404,7 +405,7 @@ bash scripts/install.sh --all
 ### ooo — Ouroboros Specification-First Development
 > Keyword: `ooo`, `ouroboros`, `ooo ralph` | [Docs](docs/ooo/README.md) | [GitHub](https://github.com/Q00/ouroboros)
 
-Socratic interview **grounded in updated git data** → immutable seed/spec → **spec-kit renders the execution plan from the seed** → execute against the contract → verify before done → keep looping until completion is actually verified. Installable as a Claude Code plugin or via pip; the skill installer wires both integrations by default.
+Socratic interview **grounded in updated git data** → immutable seed/spec → **spec-kit renders the execution plan from the seed** → **execute through cli-anything harnesses** (`--json` output = evaluate evidence) → verify before done → keep looping until completion is actually verified. Installable as a Claude Code plugin or via pip; the skill installer wires all three integrations by default.
 
 ```bash
 # Plugin install (Claude Code)
@@ -416,14 +417,15 @@ pip install ouroboros-ai[all]
 # Skill install (any platform)
 npx skills add https://github.com/akillness/jeo-skills --skill ooo
 
-# One-shot installer: skill + ouroboros-ai + git-aware interview + spec-kit
+# One-shot installer: skill + ouroboros-ai + git interview + spec-kit + cli-anything
 bash .agent-skills/ooo/scripts/install.sh
-# knobs: OOO_GIT_INTERVIEW=0 · OOO_SPEC_KIT=0 · SPEC_KIT_REF=<ref>
+# knobs: OOO_GIT_INTERVIEW=0 · OOO_SPEC_KIT=0 · OOO_CLI_ANYTHING=0 · SPEC_KIT_REF=<ref>
 
 # Usage
 bash .agent-skills/ooo/scripts/git-interview-context.sh   # refresh live git context
 ouroboros init start "I want to build a task management CLI"
 # after seed freeze: /speckit.plan → /speckit.tasks (from the seed)
+cli-hub search <keyword> && cli-hub install <name>        # arm execute harnesses
 ouroboros run workflow seed.yaml
 ouroboros run resume
 ouroboros tui monitor
@@ -705,6 +707,7 @@ npx vibe-kanban
 
 | Change | Details |
 |--------|----------|
+| **ooo: cli-anything harness execution wired into the run stage** | The `ooo` execute stage is now bound to **cli-anything** at install time so it works immediately after setup: `scripts/install.sh` gains `OOO_CLI_ANYTHING=1` (default; `CLI_ANYTHING_HUB_SPEC` to pin) which installs the CLI-Hub package manager via the sibling `cli-anything` installer (uv-tool/pip fallback). The run stage drives real software through agent-native harnesses — `cli-hub search` → `install` → `launch` — instead of GUI automation or bare shell guessing; every harness command supports `--json`, and that structured output is the **evidence the evaluate stage accepts** (artifacts — magic bytes, structure, pixels — not exit codes). Flow is now `Interview → Seed → Plan (spec-kit) → Execute (cli-anything) → Evaluate → Evolve`; new operating rule #8 (registry first, name harnesses in seed constraints so tool drift = spec drift). `SKILL.md` (3rd binding + execute-stage rules), `SKILL.toon`, `evals/evals.json` (+2 cases), and catalog surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md` Step 3c + Rule 1, `skills.json`/`skills.toon`, `skills-lock.json` `cli-anything` recommended extension) updated. 146 skills (no count change). |
 | **ooo: git-grounded interview + spec-kit execution planning** | The `ooo` (Ouroboros) skill now binds its interview philosophy to **updated git data** and its execution-planning stage to **spec-kit**. New `scripts/git-interview-context.sh` regenerates `.ouroboros/interview-context.md` from live git evidence (branch/HEAD, recent commits, churn hotspots, active contributors, working-tree state) so the Socratic interview's brownfield **Context weighting (15%)** is scored against the repo as it is *now* — churn hotspots become interview questions, a dirty working tree is a question, not an assumption. New `scripts/install.sh` designates both integrations at install time (`OOO_GIT_INTERVIEW=1`, `OOO_SPEC_KIT=1` defaults; `SPEC_KIT_REF` to pin): after the seed freezes, spec-kit renders the reviewable execution plan via `/speckit.plan` → `/speckit.tasks` **from the seed** (one-way seed → plan; the seed stays the contract SSOT — spec-first authoring remains `spec-stack`). Flow is now `git data → Interview → Seed → Plan (spec-kit) → Execute → Evaluate → Evolve`. `SKILL.md` (+2 operating rules), `SKILL.toon`, new `evals/evals.json`, and catalog surfaces (`README.md`, `README.ko.md`, `setup-all-skills-prompt.md` Step 3c + Rule 1, `skills.json`/`skills.toon`, `skills-lock.json`) updated. 146 skills (no count change). |
 
 ## 🆕 What's New in v2026-07-01

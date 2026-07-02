@@ -4,17 +4,19 @@ description: >
   Run the Ouroboros specification-first development loop: reduce ambiguity with a
   Socratic interview grounded in live git data (commits, churn, contributors),
   freeze an immutable seed/spec, render the execution plan through spec-kit
-  (/speckit.plan → /speckit.tasks), execute against that contract, verify before
-  claiming success, and keep looping until completion is actually verified. Use
-  when the user wants spec-first clarification, git-aware interviews, immutable
-  requirements, drift-aware implementation, or a persistent completion loop that
-  should keep going until tests / checks / acceptance criteria pass. Triggers on:
-  ooo, ouroboros, interview, seed, run workflow, evaluate, evolve, ooo ralph,
-  specification first, socratic interview, git-aware interview, ambiguity
-  reduction, execution plan, persistent completion.
+  (/speckit.plan → /speckit.tasks), execute against that contract through
+  cli-anything agent-native CLI harnesses (cli-hub, --json evidence), verify
+  before claiming success, and keep looping until completion is actually
+  verified. Use when the user wants spec-first clarification, git-aware
+  interviews, immutable requirements, drift-aware implementation, harness-driven
+  execution, or a persistent completion loop that should keep going until tests
+  / checks / acceptance criteria pass. Triggers on: ooo, ouroboros, interview,
+  seed, run workflow, evaluate, evolve, ooo ralph, specification first, socratic
+  interview, git-aware interview, ambiguity reduction, execution plan, cli
+  harness execute, persistent completion.
 allowed-tools: Read Write Bash Grep Glob WebFetch Agent
 metadata:
-  tags: ooo, ouroboros, specification-first, socratic, interview, seed, evaluate, evolve, loop, completion, nine-minds, double-diamond, convergence, drift, multi-platform, mcp, plugin, git-aware, spec-kit, execution-planning
+  tags: ooo, ouroboros, specification-first, socratic, interview, seed, evaluate, evolve, loop, completion, nine-minds, double-diamond, convergence, drift, multi-platform, mcp, plugin, git-aware, spec-kit, execution-planning, cli-anything, cli-hub, harness-execution
   platforms: Claude Code, Codex CLI, Gemini CLI, OpenCode
   keyword: ooo
   version: 0.29.0
@@ -27,19 +29,20 @@ metadata:
 > Stop prompting. Start specifying.
 
 `ooo` is the **portable Ouroboros method** for spec-first development. The
-interview is grounded in **live git data**, and the frozen seed is rendered
-into an execution plan by **spec-kit** before the loop runs:
+interview is grounded in **live git data**, the frozen seed is rendered into
+an execution plan by **spec-kit**, and the run stage executes through
+**cli-anything** agent-native harnesses:
 
 ```text
 git data (commits · churn · contributors)
         ↓ (regenerated every interview)
-Interview → Seed → Plan (spec-kit) → Execute → Evaluate → Evolve
-                     ↓
-                 ooo ralph
+Interview → Seed → Plan (spec-kit) → Execute (cli-anything) → Evaluate → Evolve
+                     ↓                                            ↑
+                 ooo ralph                            --json artifact evidence
              (persist until verified)
 ```
 
-Two bindings make the philosophy concrete:
+Three bindings make the philosophy concrete:
 
 1. **Git-aware interview** — the Socratic interview scores its brownfield
    Context weighting against `.ouroboros/interview-context.md`, a derived
@@ -50,6 +53,12 @@ Two bindings make the philosophy concrete:
    spec-kit's `/speckit.plan` → `/speckit.tasks` render the reviewable
    execution plan *from the seed*. The seed stays the contract SSOT;
    spec-kit owns only the plan artifact (direction: seed → plan).
+3. **cli-anything execute harnesses** — the run stage drives real software
+   through CLI-Hub harnesses (`cli-hub search` → `install` → `launch`)
+   instead of brittle GUI automation or bare shell guessing. Every harness
+   command supports `--json`; that structured output is the artifact
+   evidence the evaluate stage accepts. Name the harnesses in seed
+   constraints so tool drift becomes measurable spec drift.
 
 ## Installation
 
@@ -68,14 +77,16 @@ pip install ouroboros-ai[all]      # full: Claude, LiteLLM, MCP, TUI
 ```bash
 npx skills add https://github.com/akillness/jeo-skills --skill ooo
 
-# One-shot installer: skill + ouroboros-ai + git-aware interview + spec-kit
+# One-shot installer: skill + ouroboros-ai + git interview + spec-kit + cli-anything
 bash scripts/install.sh
 GLOBAL=1 AGENTS="claude-code,codex" bash scripts/install.sh
 
 # Knobs (designate at install time):
 #   OOO_GIT_INTERVIEW=0  — skip git-aware interview wiring   (default: on)
 #   OOO_SPEC_KIT=0       — skip spec-kit/`specify-cli`        (default: on)
+#   OOO_CLI_ANYTHING=0   — skip cli-anything/CLI-Hub          (default: on)
 #   SPEC_KIT_REF=v0.0.10 — pin the spec-kit git ref
+#   CLI_ANYTHING_HUB_SPEC="cli-anything-hub==0.2.0" — pin CLI-Hub
 #   SKIP_PACKAGE=1 / SKIP_SKILL=1 / OOO_EXTRAS=mcp
 ```
 
@@ -97,6 +108,7 @@ ouroboros setup --runtime opencode --opencode-mode plugin
 - Measure **drift** against the original contract
 - Repeated failures need structured **unstuck** step instead of blind retries
 - The frozen seed should become a **reviewable spec-kit execution plan** before implementation
+- Execution must drive **real software through agent-native CLI harnesses** with `--json` artifact evidence
 
 ## Do not use when
 
@@ -105,6 +117,7 @@ ouroboros setup --runtime opencode --opencode-mode plugin
 - Task needs integrated project ledgers + plan review + cleanup workflow → `jeo`
 - Task is only pre-implementation landscape research → `survey`
 - spec-kit should **author the spec itself** (spec → seed direction, docs as SSOT) → `spec-stack`
+- Only **installing or generating a CLI harness**, no seed/loop → `cli-anything`
 
 ## Core commands
 
@@ -175,6 +188,24 @@ ouroboros run workflow <seed.yaml> --sequential
 ouroboros run workflow <seed.yaml> --no-qa
 ouroboros run resume [execution-id]
 ```
+
+**Harness-driven execution (cli-anything)** — with `OOO_CLI_ANYTHING=1`
+(installer default), the run stage drives real software through agent-native
+CLI harnesses instead of GUI automation or bare shell guessing:
+
+```bash
+cli-hub search <keyword>      # registry first — 40+ harnesses exist
+cli-hub install <name>        # install harness (+ the upstream app)
+cli-anything-<name> --json …  # structured output = evaluate-stage evidence
+```
+
+Execute-stage rules:
+- **Registry before generation** — `cli-hub search` costs seconds; only
+  generate a new harness (`/cli-anything <path-or-repo>`) when no match.
+- **Name harnesses in seed constraints** (e.g. "image ops go through
+  `cli-anything-gimp`") so tool drift becomes measurable spec drift.
+- **`--json` output is the evidence** the evaluate stage accepts — verify
+  artifacts (magic bytes, structure, pixels), not exit codes.
 
 **Options**
 | Flag | Purpose |
@@ -324,15 +355,19 @@ claude mcp add ouroboros -- uvx --from ouroboros-ai[mcp] ouroboros mcp serve
 5. **Measure drift** against the original seed, not latest chat rationale
 6. **Verify before done** — tests, checks, and acceptance criteria matter more than confidence
 7. **Treat failure as data** — every failed loop feeds the next attempt
-8. **Keep runtime ownership separate** — platform hooks belong in `omc` / `omx` / `ohmg`
+8. **Execute through contracted harnesses** — registry first
+   (`cli-hub search`), name harnesses in seed constraints, and treat
+   harness `--json` output as the evaluate-stage evidence
+9. **Keep runtime ownership separate** — platform hooks belong in `omc` / `omx` / `ohmg`
 
 ## Examples
 
 ```bash
-# Full spec-first flow (git-grounded interview → seed → spec-kit plan → run)
+# Full spec-first flow (git interview → seed → spec-kit plan → harness run)
 bash scripts/git-interview-context.sh          # refresh live git context
 ouroboros init start "build a REST API with auth"
 # after seed freeze: /speckit.plan → /speckit.tasks (spec-kit, from the seed)
+cli-hub search api && cli-hub install <name>   # arm execute-stage harnesses
 ouroboros run workflow .ouroboros/seeds/seed_<hash>.yaml
 ouroboros status executions
 

@@ -2536,7 +2536,7 @@
     },
     {
       "name": "ooo",
-      "description": "Run the Ouroboros specification-first development loop: reduce ambiguity with a Socratic interview grounded in live git data (commits, churn, contributors), freeze an immutable seed/spec, render the execution plan through spec-kit (/speckit.plan → /speckit.tasks), execute against that contract, verify before claiming success, and keep looping until completion is actually verified. Use when the user wants spec-first clarification, git-aware interviews, immutable requirements, drift-aware implementation, or a persistent completion loop that should keep going until tests / checks / acceptance criteria pass. Triggers on: ooo, ouroboros, interview, seed, run workflow, evaluate, evolve, ooo ralph, specification first, socratic interview, git-aware interview, ambiguity reduction, execution plan, persistent completion.",
+      "description": "Run the Ouroboros specification-first development loop: reduce ambiguity with a Socratic interview grounded in live git data (commits, churn, contributors), freeze an immutable seed/spec, render the execution plan through spec-kit (/speckit.plan → /speckit.tasks), execute against that contract through cli-anything agent-native CLI harnesses (cli-hub, --json evidence), verify before claiming success, and keep looping until completion is actually verified. Use when the user wants spec-first clarification, git-aware interviews, immutable requirements, drift-aware implementation, harness-driven execution, or a persistent completion loop that should keep going until tests / checks / acceptance criteria pass. Triggers on: ooo, ouroboros, interview, seed, run workflow, evaluate, evolve, ooo ralph, specification first, socratic interview, git-aware interview, ambiguity reduction, execution plan, cli harness execute, persistent completion.",
       "category": "utilities",
       "path": "ooo/SKILL.md",
       "tags": [
@@ -2559,7 +2559,10 @@
         "plugin",
         "git-aware",
         "spec-kit",
-        "execution-planning"
+        "execution-planning",
+        "cli-anything",
+        "cli-hub",
+        "harness-execution"
       ],
       "platforms": [
         "Claude Code",
