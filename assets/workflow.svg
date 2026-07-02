@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#050B14"/>
+      <stop offset="50%" stop-color="#0A1527"/>
+      <stop offset="100%" stop-color="#0D1E36"/>
+    </linearGradient>
+    
+    <!-- Grid Pattern -->
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="15" cy="15" r="1" fill="#1E3E66" opacity="0.3"/>
+    </pattern>
+    
+    <!-- Box Gradients -->
+    <linearGradient id="g-install" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="g-ooo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7C3AED"/><stop offset="100%" stop-color="#6D28D9"/>
+    </linearGradient>
+    <linearGradient id="g-spec" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#DB2777"/><stop offset="100%" stop-color="#C11F5E"/>
+    </linearGradient>
+    <linearGradient id="g-cli" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="g-eval" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D97706"/><stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+    <linearGradient id="g-wiki" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0891B2"/><stop offset="100%" stop-color="#0E7490"/>
+    </linearGradient>
+    
+    <!-- Arrow Marker -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-loop" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#D97706"/>
+    </marker>
+    
+    <!-- Drop Shadow -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="600" fill="url(#bg)" rx="16"/>
+  <rect width="1000" height="600" fill="url(#grid)" rx="16"/>
+  
+  <!-- Header -->
+  <text x="500" y="50" font-family="-apple-system, sans-serif" font-size="28" font-weight="800" fill="#F1F5F9" text-anchor="middle" letter-spacing="1">jeo-skills Workflow &amp; Architecture</text>
+  <text x="500" y="75" font-family="-apple-system, sans-serif" font-size="13" fill="#64748B" text-anchor="middle" letter-spacing="2">SPEC-FIRST INSTALLATION AND EFFICIENT OPERATING FLOW</text>
+
+  <!-- ================= SECTION 1: INSTALLATION FLOW (y: 110-250) ================= -->
+  <text x="60" y="125" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#38BDF8" letter-spacing="2.5">1. INSTALLATION FLOW</text>
+  <line x1="60" y1="135" x2="940" y2="135" stroke="#1E293B" stroke-width="2"/>
+
+  <!-- Step 1: npx skills add -->
+  <rect x="60" y="155" width="240" height="75" rx="10" fill="url(#g-install)" filter="url(#shadow)"/>
+  <text x="180" y="185" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">Step 1 — npx skills add</text>
+  <text x="180" y="205" font-family="Courier, monospace" font-size="10.5" fill="#E2E8F0" text-anchor="middle">Downloads skill wrappers &amp; scripts</text>
+
+  <!-- Connect 1 -> 2 -->
+  <path d="M 300 192.5 L 375 192.5" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: install.sh -->
+  <rect x="380" y="155" width="240" height="75" rx="10" fill="url(#g-install)" filter="url(#shadow)"/>
+  <text x="500" y="185" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">Step 2 — install.sh</text>
+  <text x="500" y="205" font-family="Courier, monospace" font-size="10.5" fill="#E2E8F0" text-anchor="middle">Installs python pkgs, spec-kit &amp; cli-hub</text>
+
+  <!-- Connect 2 -> 3 -->
+  <path d="M 620 192.5 L 695 192.5" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Step 3: setup-all-skills-prompt -->
+  <rect x="700" y="155" width="240" height="75" rx="10" fill="url(#g-install)" filter="url(#shadow)"/>
+  <text x="820" y="185" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">Step 3 — setup-all-skills</text>
+  <text x="820" y="205" font-family="Courier, monospace" font-size="10.5" fill="#E2E8F0" text-anchor="middle">Registers rules &amp; MCPs in agent context</text>
+
+
+  <!-- ================= SECTION 2: EFFICIENT OPERATING FLOW (y: 290-550) ================= -->
+  <text x="60" y="325" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#A78BFA" letter-spacing="2.5">2. DEFAULT OPERATING RAIL (TOOL FLOW)</text>
+  <line x1="60" y1="335" x2="940" y2="335" stroke="#1E293B" stroke-width="2"/>
+
+  <!-- 1. ooo (Clarify & Seed) -->
+  <rect x="60" y="360" width="140" height="90" rx="10" fill="url(#g-ooo)" filter="url(#shadow)"/>
+  <text x="130" y="395" font-family="-apple-system, sans-serif" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">ooo</text>
+  <text x="130" y="415" font-family="-apple-system, sans-serif" font-size="11" fill="#E9D5FF" text-anchor="middle">Socratic Interview</text>
+  <text x="130" y="430" font-family="-apple-system, sans-serif" font-size="10" fill="#C084FC" text-anchor="middle">(Git-Grounded Context)</text>
+
+  <!-- Connect 1 -> 2 -->
+  <path d="M 200 405 L 235 405" stroke="#475569" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- 2. spec-kit (Plan & Tasks) -->
+  <rect x="240" y="360" width="140" height="90" rx="10" fill="url(#g-spec)" filter="url(#shadow)"/>
+  <text x="310" y="395" font-family="-apple-system, sans-serif" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">spec-kit</text>
+  <text x="310" y="415" font-family="-apple-system, sans-serif" font-size="11" fill="#FCE7F3" text-anchor="middle">Execution Plan</text>
+  <text x="310" y="430" font-family="-apple-system, sans-serif" font-size="10" fill="#F472B6" text-anchor="middle">(/speckit.plan &amp; tasks)</text>
+
+  <!-- Connect 2 -> 3 -->
+  <path d="M 380 405 L 415 405" stroke="#475569" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- 3. cli-anything (Execute) -->
+  <rect x="420" y="360" width="140" height="90" rx="10" fill="url(#g-cli)" filter="url(#shadow)"/>
+  <text x="490" y="395" font-family="-apple-system, sans-serif" font-size="15" font-weight="800" fill="#FFFFFF" text-anchor="middle">cli-anything</text>
+  <text x="490" y="415" font-family="-apple-system, sans-serif" font-size="11" fill="#D1FAE5" text-anchor="middle">Harness Execution</text>
+  <text x="490" y="430" font-family="-apple-system, sans-serif" font-size="10" fill="#34D399" text-anchor="middle">(cli-hub search/install)</text>
+
+  <!-- Connect 3 -> 4 -->
+  <path d="M 560 405 L 595 405" stroke="#475569" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- 4. evaluate (Verify & Drift) -->
+  <rect x="600" y="360" width="140" height="90" rx="10" fill="url(#g-eval)" filter="url(#shadow)"/>
+  <text x="670" y="395" font-family="-apple-system, sans-serif" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">evaluate</text>
+  <text x="670" y="415" font-family="-apple-system, sans-serif" font-size="11" fill="#FEF3C7" text-anchor="middle">Verification Gate</text>
+  <text x="670" y="430" font-family="-apple-system, sans-serif" font-size="10" fill="#FBBF24" text-anchor="middle">(--json artifact checks)</text>
+
+  <!-- Loop back from 4 to 3 (ooo ralph loop) -->
+  <path d="M 670 360 C 670 300, 490 300, 490 350" stroke="#D97706" stroke-width="2" stroke-dasharray="4,4" fill="none" marker-end="url(#arrow-loop)"/>
+  <text x="580" y="315" font-family="-apple-system, sans-serif" font-size="9.5" fill="#FBBF24" text-anchor="middle">ooo ralph completion loop (on failure)</text>
+
+  <!-- Connect 4 -> 5 -->
+  <path d="M 740 405 L 775 405" stroke="#10B981" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- 5. llm-wiki / graphify (Durable Memory) -->
+  <rect x="780" y="360" width="160" height="90" rx="10" fill="url(#g-wiki)" filter="url(#shadow)"/>
+  <text x="860" y="390" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#FFFFFF" text-anchor="middle">llm-wiki &amp; graphify</text>
+  <text x="860" y="410" font-family="-apple-system, sans-serif" font-size="10.5" fill="#CFFAFE" text-anchor="middle">Durable Memory Graph</text>
+  <text x="860" y="425" font-family="-apple-system, sans-serif" font-size="9.5" fill="#22D3EE" text-anchor="middle">(Obsidian Wiki &amp; post-turn hooks)</text>
+
+  <!-- Legend / Info Box -->
+  <rect x="60" y="485" width="880" height="85" rx="8" fill="#0B132B" stroke="#1E293B" stroke-width="1.5"/>
+  <text x="80" y="508" font-family="-apple-system, sans-serif" font-size="11.5" font-weight="700" fill="#94A3B8">✦ Operating Principle:</text>
+  <text x="80" y="528" font-family="-apple-system, sans-serif" font-size="11" fill="#E2E8F0">1. Socratic Ambiguity Gate blocks mutation tools until ambiguity score is &lt;= 20% (locks codebase, protects code).</text>
+  <text x="80" y="546" font-family="-apple-system, sans-serif" font-size="11" fill="#E2E8F0">2. Planning blueprint (spec-kit) is generated one-way from the frozen seed.</text>
+  <text x="80" y="562" font-family="-apple-system, sans-serif" font-size="11" fill="#E2E8F0">3. Execution (cli-anything) drives real software through agent-native harnesses; --json evidence verified at evaluation.</text>
+</svg>
