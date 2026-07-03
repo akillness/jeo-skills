@@ -22,17 +22,17 @@
 A curated collection of 147 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 
-## 🎮 Joc Agent & The Legendary Equipment Set
+## 🎮 Jeo Agent & The Legendary Equipment Set
 
-`jeo-skills` acts as a legendary equipment set for the `@../jeo-code` Socratic spec-first AI coding agent, **Joc** (`joc`). Each core skill equips Joc with a powerful tool to conquer complex codebases safely and efficiently:
+`jeo-skills` acts as a legendary equipment set for the `@../jeo-code` Socratic spec-first AI coding agent, **Jeo** (`jeo`). Each core skill equips Jeo with a powerful tool to conquer complex codebases safely and efficiently:
 
-| Equipment | Item | Core Skill / Hook | Role for Joc |
+| Equipment | Item | Core Skill / Hook | Role for Jeo |
 | :--- | :--- | :--- | :--- |
-| **Robe of Clarity** | <img src="assets/joc-robe.gif" width="64" height="64"><br>Robe | [`ooo`](.agent-skills/ooo/SKILL.md) / `joc deep-interview` | **Socratic Ambiguity Gate**: Wraps Joc in wisdom, ensuring requirements are fully crystallized before coding. |
-| **Armor of Lock** | <img src="assets/joc-armor.gif" width="64" height="64"><br>Armor | [`ooo`](.agent-skills/ooo/SKILL.md) / `MutationGuard` | **Secure Codebase Mutation Guard**: Blocks codebase modifications while the Socratic interview is active. |
-| **Boots of Swiftness** | <img src="assets/joc-shoes.gif" width="64" height="64"><br>Shoes | [`cli-anything`](.agent-skills/cli-anything/SKILL.md) / `joc team` | **Bounded Executor**: Drives real software through agent-native CLI harnesses swiftly and safely. |
-| **Staff of Planning** | <img src="assets/joc-staff.gif" width="64" height="64"><br>Staff | [`spec-kit`](.agent-skills/spec-kit/SKILL.md) / `joc ralplan` | **Critiqued Planning Blueprint**: Channels architectural direction and planning power from frozen seeds. |
-| **Carpet of Verification** | <img src="assets/joc-carpet.gif" width="64" height="64"><br>Carpet | [`ooo`](.agent-skills/ooo/SKILL.md) / `joc ultragoal` | **Durable Checkpoint Verification**: Flies over the codebase to verify success via `--json` output checks. |
+| **Robe of Clarity** | <img src="assets/jeo-robe.gif" width="64" height="64"><br>Robe | [`ooo`](.agent-skills/ooo/SKILL.md) / `jeo deep-interview` | **Socratic Ambiguity Gate**: Wraps Jeo in wisdom, ensuring requirements are fully crystallized before coding. |
+| **Armor of Lock** | <img src="assets/jeo-armor.gif" width="64" height="64"><br>Armor | [`ooo`](.agent-skills/ooo/SKILL.md) / `MutationGuard` | **Secure Codebase Mutation Guard**: Blocks codebase modifications while the Socratic interview is active. |
+| **Boots of Swiftness** | <img src="assets/jeo-shoes.gif" width="64" height="64"><br>Shoes | [`cli-anything`](.agent-skills/cli-anything/SKILL.md) / `jeo team` | **Bounded Executor**: Drives real software through agent-native CLI harnesses swiftly and safely. |
+| **Staff of Planning** | <img src="assets/jeo-staff.gif" width="64" height="64"><br>Staff | [`spec-kit`](.agent-skills/spec-kit/SKILL.md) / `jeo ralplan` | **Critiqued Planning Blueprint**: Channels architectural direction and planning power from frozen seeds. |
+| **Carpet of Verification** | <img src="assets/jeo-carpet.gif" width="64" height="64"><br>Carpet | [`ooo`](.agent-skills/ooo/SKILL.md) / `jeo ultragoal` | **Durable Checkpoint Verification**: Flies over the codebase to verify success via `--json` output checks. |
 
 *These animated items were generated using `god-tibo-imagen` (Codex ChatGPT backend) and compiled using `PIL`.*
 
