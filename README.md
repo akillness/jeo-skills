@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-146-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-147-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**146 local skill folders · 146 installable skills · TOON Format · Cross-platform**
+**147 local skill folders · 147 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -19,7 +19,7 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 146 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+A curated collection of 147 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 
 ## 🎮 Joc Agent & The Legendary Equipment Set
@@ -150,7 +150,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 146 local skill folders = 146 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 147 local skill folders = 147 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -205,6 +205,7 @@ rtk init -g
 | `openai-agents-python` | Build and operate multi-agent workflows with OpenAI Agents SDK (Python) — define agents/tools/handoffs, add guardrails, trace with LangSmith, run async pipelines | All |
 | `pydantic-ai` | Build typed LLM applications with PydanticAI — schema-constrained outputs, tool integration, validation, retries, and dependency injection for production AI apps | All |
 | `cli-anything` | Make any software agent-native via HKUDS CLI-Anything — CLI-Hub package manager (`cli-hub list/search/install/launch`), agent meta-skill for autonomous CLI discovery, 7-phase harness generation from any codebase (`/cli-anything`), and refine/test/validate iteration; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything` | All |
+| `upskill` | Wrap HKUDS UpSkill — capture Claude Code session failures, have a strong Teacher model draft a skill, validate it against a weak Student model in a closed Ralph Loop (up to 3 rounds), then auto-serve validated skills so a cheap Flash model performs like a Pro model. Terminal-Bench 2.0: Flash+UpSkill beat Pro at 41% lower cost. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill upskill` | Claude Code |
 
 ### ⚙️ Backend (7)
 
@@ -646,7 +647,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 146 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 147 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

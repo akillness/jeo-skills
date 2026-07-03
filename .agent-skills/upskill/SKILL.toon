@@ -1,0 +1,15 @@
+N:upskill
+D:Wrap HKUDS UpSkill — capture Claude Code session failures, have a strong Teacher model draft a skill, validate it against a weak Student model in a closed Ralph Loop (up to 3 rounds), then auto-serve validated skills so a cheap Flash model performs like a Pro model. Terminal-Bench 2.0: Flash+UpSkill beat Pro at 41% lower cost.
+T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
+G:upskill|up-skill|flash to pro|teacher student distillation|ralph loop skill validation|distill agent failures into skills
+F:Claude Code
+S:
+  1:Install — `curl -sSL https://raw.githubusercontent.com/HKUDS/Upskill/main/cc-integration/install.sh | bash -s -- --remote` (or `scripts/install.sh`)
+  2:Configure — edit `~/.claude/upskill.conf`: UPSKILL_TEACHER (strong), UPSKILL_STUDENT (weak); Daily model stays independent
+  3:Enable per project — `/upskill-configure` merges SessionStart/SessionEnd/UserPromptSubmit hooks
+  4:Build — `/upskill-build` after a failure (or on a success) runs Teacher-analyze → generate → Ralph-validate against Student (up to 3 rounds)
+  5:Serve — `/upskill-run` (interactive, default) or auto keyword-match (`/upskill-mode auto`); manage with `/upskill-list` `/upskill-status` `/upskill-remove` `/upskill-uninstall`
+R:
+  skill-autoresearch:Use for repo-local skill-quality ratcheting (freeze benchmark, mutate, keep/revert by score), not live session distillation
+  write-a-skill:Use for hand-authoring a new SKILL.md from scratch
+  skill-standardization:Use for spec-compliance validation/rewrite of an existing SKILL.md

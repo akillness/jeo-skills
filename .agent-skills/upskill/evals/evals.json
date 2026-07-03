@@ -1,0 +1,45 @@
+{
+  "skill_name": "upskill",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want my cheap Haiku model to stop failing the same kind of terminal task over and over. What tool handles that without switching to Opus permanently?",
+      "expected_output": "Introduce UpSkill: install it, set a strong Teacher (e.g. claude-opus) and Haiku as the Student in ~/.claude/upskill.conf, enable /upskill-configure per project, then run /upskill-build after a failure so the Ralph Loop validates a skill against Haiku before it's stored and auto-served.",
+      "assertions": [
+        "Output names UPSKILL_TEACHER and UPSKILL_STUDENT as separate config values in ~/.claude/upskill.conf, distinct from the Daily model in settings.json.",
+        "Output mentions the Ralph Loop validating the skill against the Student model before storage.",
+        "Output does not suggest permanently switching the daily model to Opus."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "A session just failed. How do I turn that into a reusable skill for next time?",
+      "expected_output": "Run /upskill-build (auto-detects the failed session via the pending flag from the after-session hook), pick the failed session, let the Teacher analyze it and draft a skill, and the Ralph Loop validates it against the Student model (up to 3 rounds) before storing it.",
+      "assertions": [
+        "Output recommends /upskill-build as the concrete next command.",
+        "Output explains the skill is validated (Ralph Loop) before being stored, not saved immediately.",
+        "Output does not claim /upskill-build only works on failures — it should not contradict success-session distillation being supported."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "How do I make my skills library ratchet in quality over time in this jeo-skills repo — not for a live agent session, just repo-local skill authoring?",
+      "expected_output": "Route to skill-autoresearch for repo-local skill-quality ratcheting (freeze a benchmark, mutate one change, keep/revert by score), since upskill is about live Claude Code session distillation via Teacher/Student/Ralph Loop, not repo-local SKILL.md authoring quality.",
+      "assertions": [
+        "Output routes to `skill-autoresearch`, not `upskill`, for this request.",
+        "Output states the distinguishing boundary: upskill = live session failure distillation; skill-autoresearch = repo-local ratcheting loop.",
+        "Output does not attempt to run /upskill-build or install UpSkill for this request."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Once I have a few validated skills, how does Claude Code actually see and use them day to day?",
+      "expected_output": "Explain the two delivery channels: the global ~/.claude/upskill-store/CLAUDE.md index (always loaded, ~5 lines per skill) and the full SKILL.md loaded on demand — via /upskill-run in interactive mode (default) or auto keyword-matching in auto mode, switchable with /upskill-mode.",
+      "assertions": [
+        "Output names both delivery channels: the always-loaded CLAUDE.md index and the on-demand full SKILL.md.",
+        "Output distinguishes interactive mode (default, /upskill-run) from auto mode (keyword-matched every prompt).",
+        "Output does not claim skills are injected via model fine-tuning or weight changes."
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-07-01T00:00:00Z",
-  "skill_count": 146,
+  "skill_count": 147,
   "categories": {
     "planning-review": [
       "agentation",
@@ -21,7 +21,8 @@
     "agent-development": [
       "cli-anything",
       "prompt-repetition",
-      "skill-standardization"
+      "skill-standardization",
+      "upskill"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -4326,6 +4327,36 @@
         "Grep"
       ],
       "keyword": "unity-gamedev-skill-pack",
+      "version": "1.0.0"
+    },
+    {
+      "name": "upskill",
+      "description": "Turn a weak/cheap \"Flash\" model into a \"Pro\" performer by wrapping HKUDS UpSkill — captures agent session failures, has a strong Teacher model analyze them and draft a skill, then validates it against the weak Student model in a closed Ralph Loop (up to 3 rounds) before storing it for automatic reuse. Use when the user wants to install UpSkill, run `/upskill-init`, `/upskill-configure`, `/upskill-build`, `/upskill-run`, `/upskill-list`, `/upskill-status`, `/upskill-mode`, `/upskill-model`, `/upskill-remove`, or `/upskill-uninstall`, wants a cheap model to perform closer to a Pro model without switching, or wants a good session (success or failure) distilled into a validated skill. Triggers on: upskill, up-skill, flash to pro, teacher student distillation, ralph loop skill validation, distill agent failures into skills. Routes skill-quality ratcheting to `skill-autoresearch`, scaffolding to `write-a-skill`, and spec-compliance rewrites to `skill-standardization`.",
+      "category": "agent-development",
+      "path": "upskill/SKILL.md",
+      "tags": [
+        "upskill",
+        "knowledge-distillation",
+        "teacher-student",
+        "ralph-loop",
+        "skill-generation",
+        "claude-code-hooks",
+        "terminal-bench",
+        "cost-optimization"
+      ],
+      "platforms": [
+        "Claude Code"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "upskill",
       "version": "1.0.0"
     },
     {
