@@ -123,9 +123,9 @@ npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --ski
 
 | OS / 셸 | 글로벌 예시 | 프로젝트 예시 |
 |---------|-------------|---------------|
-| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/` |
-| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\`, `$env:USERPROFILE\.jeopi\agent\skills\` | `.claude\skills\`, `.agents\skills\`, `.jeopi\skills\` |
-| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/` |
+| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/`, `$HOME/.jeo/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/`, `.jeo/skills/` |
+| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\`, `$env:USERPROFILE\.jeopi\agent\skills\`, `$env:USERPROFILE\.jeo\agent\skills\` | `.claude\skills\`, `.agents\skills\`, `.jeopi\skills\`, `.jeo\skills\` |
+| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/`, `$HOME/.jeo/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/`, `.jeo/skills/` |
 
 프로젝트 범위가 기본값이며 팀과 공유해야 하는 스킬은 커밋합니다. 글로벌 범위는 `-g`를 붙이며 개인 기본값에 적합합니다. `-a`로 에이전트별 경로를 고르고, 이식 가능한 공통 계층은 `.agents/skills/`입니다.
 
@@ -150,7 +150,7 @@ npx skills add https://github.com/akillness/jeo-skills \
 # .claude/.codex/.config/opencode 스킬 디렉터리를 네이티브로 자동 발견하므로 글로벌 설치만으로 충분합니다.
 npx skills add -g https://github.com/akillness/jeo-skills \
   --skill deep-research --skill god-tibo-imagen --skill perfectpixel
-# jeopi 전용 고정 설치(선택): ~/.jeopi/agent/skills/<skill> (글로벌) 또는 .jeopi/skills/<skill> (프로젝트)
+# jeopi/jeo 전용 고정 설치(선택): ~/.jeopi/agent/skills/<skill> (글로벌) 또는 .jeopi/skills/<skill> (프로젝트) [.jeo도 동일]
 ```
 
 #### 핵심 도구 설정 (전 플랫폼 공통)

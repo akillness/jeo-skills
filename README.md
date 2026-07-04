@@ -95,9 +95,9 @@ npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --ski
 
 | OS / shell | Global examples | Project examples |
 |------------|-----------------|------------------|
-| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/` |
-| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\`, `$env:USERPROFILE\.jeopi\agent\skills\` | `.claude\skills\`, `.agents\skills\`, `.jeopi\skills\` |
-| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/` |
+| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/`, `$HOME/.jeo/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/`, `.jeo/skills/` |
+| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\`, `$env:USERPROFILE\.jeopi\agent\skills\`, `$env:USERPROFILE\.jeo\agent\skills\` | `.claude\skills\`, `.agents\skills\`, `.jeopi\skills\`, `.jeo\skills\` |
+| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/`, `$HOME/.jeo/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/`, `.jeo/skills/` |
 
 Project scope is the default and should be committed when the team needs the same skill behavior. Global scope uses `-g` and is better for personal defaults. Agent-specific paths are selected with `-a`; the portable common layer is `.agents/skills/`.
 
@@ -122,7 +122,7 @@ npx skills add https://github.com/akillness/jeo-skills \
 # .claude/.codex/.config/opencode skill dirs, so a global install is enough.
 npx skills add -g https://github.com/akillness/jeo-skills \
   --skill deep-research --skill god-tibo-imagen --skill perfectpixel
-# optional jeopi-only pin: ~/.jeopi/agent/skills/<skill> (global) or .jeopi/skills/<skill> (project)
+# optional jeopi/jeo-only pin: ~/.jeopi/agent/skills/<skill> (global) or .jeopi/skills/<skill> (project) [Same for .jeo]
 ```
 
 #### Core tool setup (all platforms)

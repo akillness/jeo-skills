@@ -89,7 +89,7 @@ if command -v gjc      &>/dev/null; then echo "✅ Gajae Code (gjc)"; DETECTED_A
 # jeo (jeo-code): pure-TypeScript Bun agent. Reads context files (JEO.md / AGENTS.md /
 # .jeo/context.md / CLAUDE.md) + global ~/.agents/rules, and runs hooks from
 # ~/.jeo/config.json (events: pre-tool | post-turn | post-implementation).
-if command -v jeo      &>/dev/null; then echo "✅ jeo-code (jeo)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}jeo"; fi
+if command -v jeo      &>/dev/null || [ -d "$_HOME/.jeo" ]; then echo "✅ jeo-code (jeo)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}jeo"; fi
 # pi (jeo-pi): the pi coding agent (@earendil-works/pi-coding-agent) with the jeo-pi
 # extension suite. Config root ~/.pi/agent (settings.json / mcp.json); loads AGENTS.md
 # from ~/.pi/agent + cwd ancestors, and reaches durable hooks via the bundled
@@ -187,18 +187,21 @@ skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 | Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\` | `.claude\skills\`, `.agents\skills\` |
 | Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
 
-> **jeopi has no Vercel `skills` CLI agent id — and needs none.** jeopi natively
+> **jeopi and jeo have no Vercel `skills` CLI agent id — and need none.** they natively
 > discovers skills from `~/.agents/skills/` (populated by Step 1) plus the
 > `.claude` / `.codex` / `.config/opencode` global dirs and their project-level
-> counterparts, so every skill installed above is already visible inside `jeopi`.
-> jeopi's own native roots are `~/.jeopi/agent/skills/` (global) and
-> `.jeopi/skills/` (project); pin a skill there only when you want it scoped to
-> jeopi alone:
+> counterparts, so every skill installed above is already visible inside `jeopi` and `jeo`.
+> jeopi's own native roots are `~/.jeopi/agent/skills/` (global), and `.jeo` uses `~/.jeo/agent/skills/` (global). And
+> project counterparts like `.jeopi/skills/` and `.jeo/skills/`; pin a skill there only when you want it scoped to
+> jeopi or jeo alone:
 >
 > ```bash
-> # optional: jeopi-only pin (otherwise Step 1 already covers jeopi)
+> # optional: jeopi/jeo-only pin (otherwise Step 1 already covers them)
 > mkdir -p "$_HOME/.jeopi/agent/skills"
 > cp -R "$SKILLS_ROOT/deep-research" "$_HOME/.jeopi/agent/skills/deep-research"
+>
+> mkdir -p "$_HOME/.jeo/agent/skills"
+> cp -R "$SKILLS_ROOT/deep-research" "$_HOME/.jeo/agent/skills/deep-research"
 > ```
 
 Install the Claude-derived skills added to this repo:
