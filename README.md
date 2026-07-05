@@ -299,7 +299,7 @@ rtk init -g
 | `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
 | `task-planning` | Packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing | All |
 
-### 🔭 Search & Analysis (14)
+### 🔭 Search \& Analysis (15)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -317,6 +317,7 @@ rtk init -g
 | `semble` | Token-efficient code search for agents — returns only relevant code chunks using ~98% fewer tokens than grep+read. Natural-language and symbol queries, semantic `find-related`, MCP for Claude Code/Codex/Cursor/OpenCode, Python library, CPU-only with no API key | All |
 | `codeflow` | Visualize codebase architecture in seconds — a zero-build single `index.html` browser app (React 18 + D3.js, client-side, no backend) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact; exports JSON/Markdown/SVG/PDF or a self-updating CodeFlow Card. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | All |
 | `academic-research` | Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes: full/quick/review/lit-review/three-way-scan/fact-check/socratic/systematic-review), academic-paper (11 modes: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer (6 modes: full/quick/guided/methodology-focus/re-review/calibration), and a 10-stage end-to-end pipeline orchestrator with Material Passport, claim-faithfulness gates, and cross-model verification. Human-in-the-loop throughout. Plugin (upstream): `claude plugin marketplace add Imbad0202/academic-research-skills` | All |
+| `scientific-llm-benchmarks` | Benchmarks for evaluating large language models on scientific reasoning and discovery. | All |
 
 ### 🎬 Creative Media (7)
 

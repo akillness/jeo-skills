@@ -318,7 +318,7 @@ rtk init -g
 | `task-estimation` | software, GTM, game work 전반에서 스토리 포인트, T셔츠 사이징, split/spike 판단, 예측 안전형 불확실성 프레이밍을 담은 estimate packet anchor | 전체 |
 | `task-planning` | software, GTM, game work 전반에서 backlog cleanup, feature slicing, sprint/milestone prep, release packet을 다루고 estimation/board/review/사전 프레이밍으로의 route-out을 명시하는 packet-first planning anchor | 전체 |
 
-### 🔭 검색 및 분석 (13개)
+### 🔭 검색 및 분석 (14개)
 
 
 | 스킬 | 설명 | 플랫폼 |
@@ -336,6 +336,7 @@ rtk init -g
 | `semble` | grep+read 대비 토큰 ~98% 절감하는 에이전트용 토큰 효율 코드 검색 — 자연어·심볼 쿼리, 의미 기반 `find-related`, Claude Code·Codex·Cursor·OpenCode용 MCP, Python 라이브러리, CPU만 사용(GPU·API 키 불필요) | 전체 |
 | `codeflow` | 코드베이스 아키텍처를 몇 초 만에 시각화 — 빌드가 필요 없는 단일 `index.html` 브라우저 앱(React 18 + D3.js, 클라이언트 사이드, 백엔드 없음)으로, 모든 GitHub 저장소·로컬 폴더·PR·마크다운/Obsidian 볼트를 인터랙티브 의존성 그래프로 바꾸며 블래스트 반경, 코드 오너십, 휴리스틱 보안 스캔, 패턴/안티패턴 탐지, A–F 헬스 스코어, 활동 히트맵, PR 임팩트를 제공하고, JSON/Markdown/SVG/PDF 또는 자동 갱신 CodeFlow Card로 내보냅니다. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | 전체 |
 | `academic-research` | 연구 발견부터 논문 출판까지 전체 학술 연구 파이프라인 — 4개의 참조 파이프라인, 27가지 모드, 39-에이전트 앙상블: deep-research(8가지 모드: full/quick/review/lit-review/three-way-scan/fact-check/socratic/PRISMA systematic-review), academic-paper(11가지 모드: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer(6가지 모드: EIC+R1/R2/R3+Devil's Advocate, calibration), academic-pipeline(Material Passport·L3 주장-충실성 게이트·3중 인용 검증을 포함한 10단계 오케스트레이터). 전 과정 human-in-the-loop. 플러그인(업스트림): `claude plugin marketplace add Imbad0202/academic-research-skills` | 전체 |
+| `scientific-llm-benchmarks` | 과학적 추론과 발견에서 대형 언어 모델(LLM)을 평가하기 위한 벤치마크 목록 | 전체 |
 
 
 ### 🎬 창의 미디어 (7개)
