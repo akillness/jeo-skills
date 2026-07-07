@@ -310,24 +310,26 @@ Install the tools that power the default operating flow (`$ooo` → `$graphify` 
 ```bash
 echo "=== Installing RTK ==="
 _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
-# WARNING: `brew install rtk` installs the wrong package (Rust Type Kit, not Rust Token Killer).
-# Use cargo or the official installer on all platforms.
+# rtk = https://github.com/rtk-ai/rtk — Homebrew is the OFFICIAL recommended
+# install path (its own README badge links to formulae.brew.sh/formula/rtk).
+# WARNING (name collision, reversed from earlier guidance): a DIFFERENT,
+# unrelated crate also called "rtk" ("Rust Type Kit") lives on crates.io.
+# Plain `cargo install rtk` pulls THAT wrong package. If you must use cargo,
+# install straight from the rtk-ai git repo instead: `cargo install --git
+# https://github.com/rtk-ai/rtk`.
 case "$PLATFORM" in
   macos|linux)
-    if command -v cargo &>/dev/null; then
-      cargo install rtk
+    if command -v brew &>/dev/null; then
+      brew install rtk
     else
-      curl -fsSL https://raw.githubusercontent.com/crates-io/rtk/main/install.sh | sh
+      curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+      export PATH="$_HOME/.local/bin:$PATH"
     fi
-    export PATH="$_HOME/.cargo/bin:$PATH"
     ;;
   windows)
-    if command -v cargo &>/dev/null; then
-      cargo install rtk
-      export PATH="${_HOME//\\//}/.cargo/bin:$PATH"
-    else
-      echo "⚠️  Install rtk: cargo install rtk  OR  https://github.com/crates-io/rtk/releases"
-    fi
+    echo "⚠️  Install rtk on Windows: download a pre-built binary from"
+    echo "    https://github.com/rtk-ai/rtk/releases (rtk-x86_64-pc-windows-msvc.zip),"
+    echo "    extract rtk.exe onto PATH, or run under WSL and use the Linux install path."
     ;;
 esac
 
