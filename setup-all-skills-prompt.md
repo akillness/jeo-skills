@@ -1199,6 +1199,59 @@ else
   echo "ℹ️  pi (jeo-pi) not installed — skipping pi rules + MCP wiring"
 fi
 ```
+### 3k — jeopi (jeo-pi spec-first) config hooks
+
+jeopi, like jeo-code, needs hooks wired to trigger graphify and llm-wiki on every implementation and turn. This step registers those hooks in `~/.jeopi/config.json` (idempotent — skips if already present).
+
+```bash
+echo "=== Configuring jeopi (jeo-pi spec-first) hooks ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+KP_VAULT="${KP_VAULT:-${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}}"
+
+if command -v jeopi &>/dev/null || [ -d "$_HOME/.jeopi" ]; then
+  # Hooks in the global jeopi config (jq merge; preserves oauth/providers/etc.)
+  JEOPI_CONFIG="$_HOME/.jeopi/config.json"
+  if command -v jq &>/dev/null && [ -f "$JEOPI_CONFIG" ]; then
+    if jq -e '.hooks.hooks[]? | select(.run | test("graphify update|ingest-prompt"))' "$JEOPI_CONFIG" >/dev/null 2>&1; then
+      echo "ℹ️  jeopi hooks already configured — leaving as-is"
+    else
+      cp "$JEOPI_CONFIG" "$JEOPI_CONFIG.bak.$(date +%Y%m%d-%H%M%S)"
+      TMP_JEOPI="$(mktemp)"
+      jq --arg vault "$KP_VAULT" '.hooks = {
+        "enabled": true,
+        "hooks": [
+          { "event": "post-implementation",
+            "run": "command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true" },
+          { "event": "post-turn",
+            "run": ("LLM_WIKI_VAULT=\"" + $vault + "\" python3 \"" + $vault + "/scripts/ingest-prompt.py\" >/dev/null 2>&1 || true") }
+        ]
+      }' "$JEOPI_CONFIG" > "$TMP_JEOPI" && mv "$TMP_JEOPI" "$JEOPI_CONFIG" \
+        && echo "✅ jeopi hooks registered (post-implementation: graphify, post-turn: llm-wiki)"
+    fi
+  elif [ ! -f "$JEOPI_CONFIG" ]; then
+    mkdir -p "$_HOME/.jeopi"
+    cat > "$JEOPI_CONFIG" <<JSON
+{
+  "hooks": {
+    "enabled": true,
+    "hooks": [
+      { "event": "post-implementation", "run": "command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true" },
+      { "event": "post-turn", "run": "LLM_WIKI_VAULT=\"$KP_VAULT\" python3 \"$KP_VAULT/scripts/ingest-prompt.py\" >/dev/null 2>&1 || true" }
+    ]
+  }
+}
+JSON
+    echo "✅ jeopi config created with hooks ($JEOPI_CONFIG)"
+  else
+    echo "⚠️  jq not found — manually set ~/.jeopi/config.json hooks.enabled:true and add the two hooks"
+  fi
+else
+  echo "ℹ️  jeopi not installed — skipping jeopi hooks wiring"
+fi
+```
+
+---
+
 
 ---
 
