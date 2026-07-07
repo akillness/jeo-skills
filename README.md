@@ -267,7 +267,8 @@ rtk init -g
 | `genkit` | Packet-first backend AI workflow anchor for deciding whether a feature needs a reusable server-owned flow, Genkit eval/tracing, or a fallback to plain SDK routes / `survey`; routes direct app SDK work to `firebase-ai-logic` and Firebase operator tasks to `firebase-cli` | Claude · Gemini |
 | `looker-studio-bigquery` | Packet-first BigQuery dashboard/reporting lane for `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, and `exec-handoff`; routes KPI interpretation to `data-analysis` | All |
 | `monitoring-observability` | Packet-first telemetry design/review for service health, telemetry rollout, alert/dashboard audits, pipeline trust, and live-ops visibility | All |
-| `scrapling` | Routing-first adaptive web scraping: choose parser-only, HTTP fetch, JS browser, stealth escalation, MCP, or spiders from one intake packet. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill scrapling` | All |
+| `scrapling` | Routing-first adaptive web scraping: choose parser-only, HTTP fetch, JS browser, stealth escalation, MCP, or spiders from one intake packet; a dedicated research-harvesting gate (robots.txt + paywall heuristic, modeled on [ai4s-research/open-science](https://github.com/ai4s-research/open-science)) runs before scraping scientific literature, datasets, or citation sources. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill scrapling` | All |
+
 
 | `rtk` | Rust Token Killer installation and agent setup - `rtk gain` verification, package-collision repair, agent-specific `rtk init`, and direct compact shell wrappers | All |
 | `security-best-practices` | Routing-first web/application/API hardening that classifies the missing security layer (browser policy, cookies/CSRF, abuse, validation, secrets, verification) before recommending one bounded hardening brief | All |

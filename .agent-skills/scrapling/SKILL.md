@@ -5,13 +5,13 @@ description: >
   Use when the user needs HTML extraction, JS-rendered page retrieval, protected-target escalation,
   quick CLI scraping, agent-facing MCP access, or a larger crawl with Scrapling spiders. Triggers on:
   scrapling, scrape website, crawl site, adaptive scraping, selector drift, stealthy fetch, browser scraping,
-  scrape to markdown, scrapling mcp, scrapling spider.
+  scrape to markdown, scrapling mcp, scrapling spider, research harvesting, literature scraping, paper metadata.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: Requires Python 3.10+ and works best in a virtual environment. Browser-backed fetchers, CLI shell, MCP, and spiders require extras plus `scrapling install` for browser dependencies.
 license: BSD-3-Clause
 metadata:
-  tags: scrapling, web-scraping, crawling, adaptive-scraping, mcp, cli, playwright, cloudflare, spiders, python
-  version: "1.1"
+  tags: scrapling, web-scraping, crawling, adaptive-scraping, mcp, cli, playwright, cloudflare, spiders, python, research-harvesting, ai4s-research-open-science
+  version: "1.2"
   source: https://github.com/D4Vinci/Scrapling
 ---
 
@@ -229,6 +229,23 @@ class QuotesSpider(Spider):
 
 Spider details live in [references/spiders.md](references/spiders.md).
 
+### Step 7: Run the research-harvesting gate for literature/dataset targets
+
+Use this step whenever the target is scientific literature, citation metadata,
+or a dataset — not general web content — following the deterministic,
+script-backed skill pattern from
+[ai4s-research/open-science](https://github.com/ai4s-research/open-science).
+
+```bash
+python3 scripts/research_harvest_gate.py "https://arxiv.org/abs/2401.00001"
+```
+
+The gate is stdlib-only and prints one ` ```review ` fenced JSON block
+flagging a `robots.txt` disallow/crawl-delay and a known-paywalled-publisher
+heuristic. It never claims a scrape is authorized — resolve or explicitly
+accept every finding before harvesting. Full pattern and hand-off guidance
+live in [references/research-harvesting.md](references/research-harvesting.md).
+
 ## Examples
 
 ### Example 1: I already have HTML and just need selectors
@@ -249,6 +266,11 @@ Expose Scrapling through MCP instead of forcing a handwritten scraper first.
 ### Example 6: The task has become a real crawl
 Route from repeated fetches into spiders with checkpointing and session control.
 
+### Example 7: The target is a paper, dataset, or citation source
+Run `scripts/research_harvest_gate.py` first, resolve/accept its findings, then
+prefer a metadata API (Crossref/OpenAlex/Semantic Scholar) over scraping the
+rendered abstract page.
+
 ## Best practices
 
 1. Start with the smallest viable mode and escalate only on evidence.
@@ -258,6 +280,7 @@ Route from repeated fetches into spiders with checkpointing and session control.
 5. Prefer CSS selectors plus `.md` or `.txt` outputs to keep model context smaller.
 6. Treat CLI, MCP, and spiders as operator surfaces layered on top of the same routing logic, not three unrelated features.
 7. Route honestly to Playwright/Crawlee-style automation, external unblockers, or another extraction service when Scrapling is no longer the best fit.
+8. Run the research-harvesting gate before scraping scientific literature, datasets, or citation sources — never treat a clean gate result as proof of authorization.
 
 ## References
 
@@ -266,7 +289,9 @@ Route from repeated fetches into spiders with checkpointing and session control.
 - [references/parser-and-adaptive.md](references/parser-and-adaptive.md)
 - [references/cli-and-mcp.md](references/cli-and-mcp.md)
 - [references/spiders.md](references/spiders.md)
+- [references/research-harvesting.md](references/research-harvesting.md) — deterministic gate pattern for scientific literature/dataset harvesting, modeled on [ai4s-research/open-science](https://github.com/ai4s-research/open-science)
 - [scripts/install.sh](scripts/install.sh) — installs this skill as a plugin (`npx skills add`) plus the upstream Python package profile
+- [scripts/research_harvest_gate.py](scripts/research_harvest_gate.py) — stdlib-only robots.txt + paywall-heuristic gate for research harvesting
 
 - [scripts/run-extract.sh](scripts/run-extract.sh)
 - [scripts/run-mcp.sh](scripts/run-mcp.sh)

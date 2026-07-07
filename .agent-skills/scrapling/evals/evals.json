@@ -73,6 +73,17 @@
         "The response says stealth is not guaranteed",
         "The response suggests escalating to proxies, managed unblockers, or another stack if needed"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "arXiv 논문 초록이랑 메타데이터를 여러 개 긁어서 리터러처 리뷰에 쓰려고 하는데 Scrapling로 어떻게 시작해야 해?",
+      "expected_output": "The skill treats this as research harvesting: run the gate script before fetching, then prefer the lightest extraction mode.",
+      "assertions": [
+        "The response mentions running `scripts/research_harvest_gate.py` (or the research-harvesting gate) before scraping",
+        "The response says a robots.txt disallow or paywall-heuristic finding must be resolved or accepted, not silently bypassed",
+        "The response does not jump straight to StealthyFetcher or `solve_cloudflare` for a plain literature source"
+      ]
     }
   ]
 }
+

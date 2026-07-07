@@ -1,6 +1,6 @@
 N:scrapling
 D:[scrapling] Route web-scraping work into the lightest workable Scrapling mode instead of defaulting to a browser. Use when the user needs HTML extraction, JS-rendered page retrieval, protected-target escalation, quick CLI scraping, agent-facing MCP access, or a larger crawl with Scrapling spiders.
-G:scrapling web-scraping crawling adaptive-scraping mcp cli playwright cloudflare spiders python selector-drift
+G:scrapling web-scraping crawling adaptive-scraping mcp cli playwright cloudflare spiders python selector-drift research-harvesting ai4s-research-open-science
 
 U[8]:
   Capture one intake packet: target class, output, scope, and constraints before choosing tools
@@ -12,7 +12,7 @@ U[8]:
   Switch to spiders only when crawl state, queues, retries, or checkpoints are the real problem
   Route honestly to managed unblockers or other stacks when Scrapling is no longer the best fit
 
-S[6]{n,action,details}:
+S[7]{n,action,details}:
   1,Intake,capture target class output scope constraints and source-of-truth before choosing a mode
   2,Install,npx skills add https://github.com/akillness/jeo-skills --skill scrapling then bash scripts/install.sh --profile parser|fetchers|shell|ai|all and run scrapling install only for browser-backed paths
 
@@ -20,6 +20,7 @@ S[6]{n,action,details}:
   4,Handle drift,use adaptive=True and auto_save or retrieve or relocate only for brittle selectors
   5,Choose surface,use bash scripts/run-extract.sh or bash scripts/run-mcp.sh when CLI or agent access is better than bespoke code
   6,Scale or route out,move to spiders for crawl state and route to direct API interception browser automation or managed unblockers when Scrapling is the wrong layer
+  7,Research harvesting,run python3 scripts/research_harvest_gate.py on literature/dataset targets and resolve robots.txt and paywall-heuristic findings before scraping (ai4s-research/open-science pattern)
 
 R[8]:
   The lightest workable mode beats browser-first scraping most of the time
@@ -31,10 +32,11 @@ R[8]:
   Stealth is a later escalation not a guaranteed bypass
   If the real data is an API response route there instead of forcing DOM scraping
 
-E[6]{type,command}:
+E[7]{type,command}:
   Parser,python -c 'from scrapling import Selector; page=Selector("<html></html>", url="https://example.com")'
   Static CLI,bash scripts/run-extract.sh get "https://example.com" content.md --css-selector "article"
   Dynamic CLI,bash scripts/run-extract.sh fetch "https://app.example.com" content.md --network-idle
   Stealth CLI,bash scripts/run-extract.sh stealth "https://protected.example.com" content.md --solve-cloudflare
   MCP,bash scripts/run-mcp.sh --http --host 127.0.0.1 --port 8000
   Spider,python your_spider.py
+  Research gate,python3 scripts/research_harvest_gate.py "https://arxiv.org/abs/2401.00001"
