@@ -362,6 +362,17 @@ def main() -> int:
         ensure_vault()
         payload = read_payload()
         event_name = payload.get("hook_event_name") or payload.get("type") or "UserPromptSubmit"
+        # Turn-end events (Claude/Codex "Stop", Gemini/Antigravity "AfterAgent")
+        # carry no prompt text to capture — they exist only to give a
+        # graphify refresh point at the END of a turn, mirroring what
+        # jeo-code already gets from its native `post-implementation` /
+        # `post-turn` hooks. Skip straight to the graph rebuild and return;
+        # do not fall through to the prompt-capture path below.
+        if event_name in {"Stop", "AfterAgent", "post-turn"}:
+            maybe_refresh_graph()
+            return 0
+
+
         if event_name not in {"UserPromptSubmit", "BeforeAgent", "manual"}:
             return 0
         session_id = extract_session_id(payload)

@@ -411,6 +411,61 @@ if command -v codex &>/dev/null; then
   [ -f "$CODEX_MCP_DIR/mcp.json" ] && rm -f "$CODEX_MCP_DIR/mcp.json" \
     && echo "🧹 Removed obsolete $CODEX_MCP_DIR/mcp.json (unused by Codex)"
 fi
+# ── Integrity guard: repair Codex config.toml if a stray root-level
+# `hooks = <bool>` line (written before any [table] header — e.g. by an
+# external installer such as oh-my-codex in Step 3g) collides with the
+# `[hooks.state."..."]` tables Codex itself appends to track hook-trust
+# hashes. Symptom on next `codex` launch:
+#   "cannot extend value of type boolean with a dotted key"
+# Safe/idempotent: no-ops on an already-valid file; backs up before writing.
+if [ -f "$CODEX_TOML" ] && command -v python3 &>/dev/null; then
+  python3 - "$CODEX_TOML" <<'PY'
+import re, sys, shutil, datetime, pathlib
+path = pathlib.Path(sys.argv[1])
+text = path.read_text(encoding="utf-8")
+try:
+    import tomllib as _toml
+except ImportError:
+    try:
+        import tomli as _toml
+    except ImportError:
+        _toml = None
+def parses_ok(s):
+    if _toml is None:
+        return True
+    try:
+        _toml.loads(s); return True
+    except Exception:
+        return False
+if parses_ok(text):
+    sys.exit(0)
+lines = text.splitlines(keepends=True)
+fixed, in_table, removed = [], False, 0
+for line in lines:
+    stripped = line.strip()
+    if stripped.startswith("[") and not stripped.startswith("[["):
+        in_table = True; fixed.append(line); continue
+    if not in_table and re.match(r'^\s*hooks\s*=\s*(true|false)\s*(#.*)?$', line):
+        removed += 1; continue
+    fixed.append(line)
+repaired = "".join(fixed)
+if removed:
+    if re.search(r'^\[features\]', repaired, re.M):
+        if not re.search(r'\[features\][^\[]*?^\s*hooks\s*=', repaired, re.M | re.S):
+            repaired = re.sub(r'(\[features\]\s*\n)', r'\1hooks = true\n', repaired, count=1)
+    else:
+        repaired = repaired.rstrip("\n") + "\n\n[features]\nhooks = true\n"
+
+if removed and parses_ok(repaired):
+    backup = path.with_name(path.name + f".bak.{datetime.datetime.now():%Y%m%d%H%M%S}")
+    shutil.copy2(path, backup)
+    path.write_text(repaired, encoding="utf-8")
+    print(f"🧹 codex config.toml: removed {removed} conflicting root-level 'hooks' line(s) — backup: {backup.name}")
+elif not parses_ok(repaired):
+    print(f"⚠️  codex config.toml still fails to parse — inspect manually: {path}", file=sys.stderr)
+PY
+fi
+
 
 ouroboros --version 2>/dev/null && echo "✅ ouroboros ready" || echo "⚠️  ouroboros not in PATH — restart shell"
 
@@ -607,6 +662,61 @@ if command -v codex &>/dev/null; then
     echo "✅ semble MCP registered with Codex ($CODEX_TOML)"
   fi
 fi
+# ── Integrity guard: repair Codex config.toml if a stray root-level
+# `hooks = <bool>` line (written before any [table] header — e.g. by an
+# external installer such as oh-my-codex in Step 3g) collides with the
+# `[hooks.state."..."]` tables Codex itself appends to track hook-trust
+# hashes. Symptom on next `codex` launch:
+#   "cannot extend value of type boolean with a dotted key"
+# Safe/idempotent: no-ops on an already-valid file; backs up before writing.
+if [ -f "$CODEX_TOML" ] && command -v python3 &>/dev/null; then
+  python3 - "$CODEX_TOML" <<'PY'
+import re, sys, shutil, datetime, pathlib
+path = pathlib.Path(sys.argv[1])
+text = path.read_text(encoding="utf-8")
+try:
+    import tomllib as _toml
+except ImportError:
+    try:
+        import tomli as _toml
+    except ImportError:
+        _toml = None
+def parses_ok(s):
+    if _toml is None:
+        return True
+    try:
+        _toml.loads(s); return True
+    except Exception:
+        return False
+if parses_ok(text):
+    sys.exit(0)
+lines = text.splitlines(keepends=True)
+fixed, in_table, removed = [], False, 0
+for line in lines:
+    stripped = line.strip()
+    if stripped.startswith("[") and not stripped.startswith("[["):
+        in_table = True; fixed.append(line); continue
+    if not in_table and re.match(r'^\s*hooks\s*=\s*(true|false)\s*(#.*)?$', line):
+        removed += 1; continue
+    fixed.append(line)
+repaired = "".join(fixed)
+if removed:
+    if re.search(r'^\[features\]', repaired, re.M):
+        if not re.search(r'\[features\][^\[]*?^\s*hooks\s*=', repaired, re.M | re.S):
+            repaired = re.sub(r'(\[features\]\s*\n)', r'\1hooks = true\n', repaired, count=1)
+    else:
+        repaired = repaired.rstrip("\n") + "\n\n[features]\nhooks = true\n"
+
+if removed and parses_ok(repaired):
+    backup = path.with_name(path.name + f".bak.{datetime.datetime.now():%Y%m%d%H%M%S}")
+    shutil.copy2(path, backup)
+    path.write_text(repaired, encoding="utf-8")
+    print(f"🧹 codex config.toml: removed {removed} conflicting root-level 'hooks' line(s) — backup: {backup.name}")
+elif not parses_ok(repaired):
+    print(f"⚠️  codex config.toml still fails to parse — inspect manually: {path}", file=sys.stderr)
+PY
+fi
+
 
 # Register semble MCP with Gemini CLI via settings.json (idempotent jq merge) —
 # keeps MCP parity with Claude/Codex on machines where the rtk Gemini hook is active
@@ -726,6 +836,60 @@ if command -v codex &>/dev/null; then
     if command -v omx &>/dev/null; then
       omx setup
       echo "✅ Codex: oh-my-codex (omx) configured — \$team / \$autopilot / \$ulw / \$ultraqa available"
+      # ── Integrity guard: `omx setup` (external installer) has been observed
+      # writing a stray root-level `hooks = <bool>` line to config.toml that
+      # collides with the `[hooks.state."..."]` tables Codex appends to track
+      # hook-trust hashes — causing "cannot extend value of type boolean with
+      # a dotted key" on the next `codex` launch. Repair immediately.
+      _OMX_CODEX_TOML="$_HOME/.codex/config.toml"
+      if [ -f "$_OMX_CODEX_TOML" ] && command -v python3 &>/dev/null; then
+        python3 - "$_OMX_CODEX_TOML" <<'PY'
+import re, sys, shutil, datetime, pathlib
+path = pathlib.Path(sys.argv[1])
+text = path.read_text(encoding="utf-8")
+try:
+    import tomllib as _toml
+except ImportError:
+    try:
+        import tomli as _toml
+    except ImportError:
+        _toml = None
+def parses_ok(s):
+    if _toml is None:
+        return True
+    try:
+        _toml.loads(s); return True
+    except Exception:
+        return False
+if parses_ok(text):
+    sys.exit(0)
+lines = text.splitlines(keepends=True)
+fixed, in_table, removed = [], False, 0
+for line in lines:
+    stripped = line.strip()
+    if stripped.startswith("[") and not stripped.startswith("[["):
+        in_table = True; fixed.append(line); continue
+    if not in_table and re.match(r'^\s*hooks\s*=\s*(true|false)\s*(#.*)?$', line):
+        removed += 1; continue
+    fixed.append(line)
+repaired = "".join(fixed)
+if removed:
+    if re.search(r'^\[features\]', repaired, re.M):
+        if not re.search(r'\[features\][^\[]*?^\s*hooks\s*=', repaired, re.M | re.S):
+            repaired = re.sub(r'(\[features\]\s*\n)', r'\1hooks = true\n', repaired, count=1)
+    else:
+        repaired = repaired.rstrip("\n") + "\n\n[features]\nhooks = true\n"
+
+if removed and parses_ok(repaired):
+    backup = path.with_name(path.name + f".bak.{datetime.datetime.now():%Y%m%d%H%M%S}")
+    shutil.copy2(path, backup)
+    path.write_text(repaired, encoding="utf-8")
+    print(f"🧹 codex config.toml: removed {removed} conflicting root-level 'hooks' line(s) — backup: {backup.name}")
+elif not parses_ok(repaired):
+    print(f"⚠️  codex config.toml still fails to parse — inspect manually: {path}", file=sys.stderr)
+PY
+      fi
+
     else
       echo "⚠️  omx CLI not on PATH after install — restart shell, then run: omx setup"
     fi
@@ -1537,11 +1701,15 @@ fi
 # ── Knowledge Pipeline Enforcement ───────────────────────────────
 # Wire every prompt through: prompt → RTK (bash hook, already installed)
 # → graphify (structural graph rebuild) → llm-wiki at ~/vaults/llm-wiki/
-# (Obsidian-managed vault). Per-agent hook events:
-#   Claude Code   : UserPromptSubmit
-#   Codex CLI     : UserPromptSubmit (via ~/.codex/config.toml)
-#   Antigravity / : BeforeAgent      (Gemini CLI shares ~/.gemini/settings.json)
-#   Gemini CLI
+# (Obsidian-managed vault). Refreshed at TWO points per turn — prompt-in
+# (captures the prompt text) and turn-end (graph-only rebuild, no prompt
+# capture) — so the wiki/graph stay current even mid-conversation, not
+# just once per session. Per-agent hook events:
+#   Claude Code   : UserPromptSubmit (prompt-in) + Stop (turn-end)
+#   Codex CLI     : UserPromptSubmit + Stop (via ~/.codex/hooks.json)
+#   Antigravity / : BeforeAgent (prompt-in) + AfterAgent (turn-end)
+#   Gemini CLI      (shares ~/.gemini/settings.json)
+
 
 KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
 KP_SCRIPTS="$KP_VAULT/scripts"
@@ -1616,6 +1784,18 @@ if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in ups
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(data, indent=2), encoding="utf-8")
 PY
+python3 - "$CLAUDE_SETTINGS" "$CLAUDE_HOOK" <<'PY' && echo "✅ Claude: Stop hook registered (turn-end graph refresh)"
+import json, sys, pathlib
+p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
+data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+stop = data.setdefault("hooks", {}).setdefault("Stop", [])
+cmd = f'bash "{wrapper}"'
+if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in stop):
+    stop.append({"hooks": [{"type": "command", "command": cmd}]})
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(data, indent=2), encoding="utf-8")
+PY
+
 fi
 
 if command -v codex &>/dev/null && command -v python3 &>/dev/null; then
@@ -1632,6 +1812,17 @@ if not any(any(h.get("command") == wrapper for h in e.get("hooks", [])) for e in
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 PY
+python3 - "$CODEX_HOOKS_JSON" "$CODEX_HOOK" <<'PY' && echo "✅ Codex: Stop hook registered in hooks.json (turn-end graph refresh)"
+import json, sys, pathlib
+p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
+data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+stop = data.setdefault("hooks", {}).setdefault("Stop", [])
+if not any(any(h.get("command") == wrapper for h in e.get("hooks", [])) for e in stop):
+    stop.append({"hooks": [{"type": "command", "command": wrapper}]})
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+PY
+
 fi
 
 if (command -v gemini &>/dev/null || command -v agy &>/dev/null) && command -v python3 &>/dev/null; then
@@ -1649,6 +1840,18 @@ if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in ba)
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(data, indent=2), encoding="utf-8")
 PY
+python3 - "$GEMINI_SETTINGS" "$GEMINI_HOOK" <<'PY' && echo "✅ Gemini/Antigravity: AfterAgent hook registered (turn-end graph refresh)"
+import json, sys, pathlib
+p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
+data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+aa = data.setdefault("hooks", {}).setdefault("AfterAgent", [])
+cmd = f'bash "{wrapper}"'
+if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in aa):
+    aa.append({"matcher": "", "hooks": [{"name": "llm-wiki-ingest", "type": "command", "command": cmd}]})
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(data, indent=2), encoding="utf-8")
+PY
+
 fi
 
 # 6. Inject the Knowledge Pipeline rule block into each agent's rules file
