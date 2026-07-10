@@ -556,6 +556,26 @@ E[5]{type,command}:
   Helper,BUNDLER=vite PROJECT=. PKG_MANAGER=pnpm bash scripts/install.sh
   Next.js config,import { DevupUI } from '@devup-ui/next-plugin'; export default DevupUI({})
   Vite config,plugins: [react(), DevupUI()] from '@devup-ui/vite-plugin'
+N:lazyweb
+D:Design with evidence, not vibes — bring real product screenshots, UI references, competitive analysis, best practices, quick examples, paywall optimization, and mobile A/B test research into every design decision. Routes to focused modes (design workflow for creating/optimizing/improving screens, quick search for reference lookups, A/B test research) via MCP tools and lazyweb.com. Use when designing any product screen.
+G:lazyweb design design-research ui-reference product-design competitive-analysis paywall-optimization monetization a-b-testing
+
+U[5]:
+  Design, redesign, optimize, or improve any product screen (paywall, pricing, landing, signup, onboarding, dashboard, settings, checkout)
+  Competitive analysis and best-practice research for UI patterns, copywriting, and flow
+  Quick design reference lookup when you need examples before starting
+  A/B test evidence and mobile growth / monetization research
+  Paywall optimization and CTA research with conversion context
+
+S[3]{n,action,details}:
+  1,Choose the mode,`lazyweb-design` for any screen work · `lazyweb-quick-search` for direct reference lookup · `lazyweb_search_ab_tests` MCP tool for A/B evidence
+  2,Run the mode,Invoke the skill by name (when installed) or use MCP tools and workflows; pass skill: "lazyweb" metadata on tool calls
+  3,Embed & cite,Embed returned screenshots directly; cite whether each came from Lazyweb database or the web
+
+R[2]:
+  Lazyweb MCP tokens are free no-billing bearer tokens; install via `curl -fsSL https://www.lazyweb.com/install.sh | bash`
+  Screenshot URLs are signed for 365 days — download and save locally if you need long-term archival
+
 N:drawio
 D:Turn natural language into editable `.drawio` diagrams and export to PNG/SVG/PDF/JPG via the native draw.io desktop CLI, or turn an existing Python/JS-TS/Go/Rust codebase into an auto-laid-out structure diagram. Wraps Agents365-ai/drawio-skill: 6 presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/BPMN shapes, 321 AI/LLM brand logos, vision self-check + auto-fix, 5-round refinement. No MCP server, no daemon.
 T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
