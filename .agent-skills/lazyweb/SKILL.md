@@ -37,6 +37,15 @@ This skill routes to the right Lazyweb mode. Hand off by **invoking the installe
 mode skill by name** (when available), using the **Lazyweb MCP tool**, or **calling
 the workflow endpoint** — see Routing below. Never point at a `skills/<name>/SKILL.md`
 file path: that layout exists only in the source repo, not in the install.
+## Design References
+
+Quick access to curated design resources for inspiration and best practices:
+
+- **[Refero Styles](https://styles.refero.design/?q=monochrome+interface)** — Real product screenshots and monochrome interface references for cohesive design systems
+- **[React Bits](https://reactbits.dev/backgrounds/orb)** — Visual components and effects library with interactive examples
+
+These complement Lazyweb's MCP-driven research and competitive analysis. Use alongside Lazyweb searches for faster design evidence gathering.
+
 
 ## First Run
 
