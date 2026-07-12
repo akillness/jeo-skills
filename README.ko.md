@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-147-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-150-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**147개 로컬 스킬 폴더 · 설치 가능 스킬 147개 · TOON 포맷 · 멀티플랫폼**
+**150개 로컬 스킬 폴더 · 설치 가능 스킬 150개 · TOON 포맷 · 멀티플랫폼**
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +20,7 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 147개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 150개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
 
 ## 🎮 Jeo 에이전트와 전설의 장비 세트
@@ -178,7 +178,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 147개 로컬 스킬 폴더 = 총 147개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 150개 로컬 스킬 폴더 = 총 150개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -384,6 +384,8 @@ rtk init -g
 
 | `npm-git-install` | npm / pnpm / Yarn / Bun용 라우팅-우선 Node 패키지 전달 스킬 — temporary Git bridge, SHA pin, tarball, workspace, publish-first handoff를 안전하게 선택 | 전체 |
 | `obsidian-second-brain` | **스스로 다시 쓰는 Obsidian 볼트**를 위한 라우팅 프런트 도어 (Karpathy의 LLM-Wiki를 발전) — 모든 소스가 기존 페이지를 다시 쓰고, 모순을 자동 조정하며, 패턴을 자동 종합. 4개 레이어 45개 명령(Operations / Thinking / Context / Research) + 백그라운드·스케줄 에이전트 + 4개 역할 프리셋 + AI-first 쓰기 검증기. 크로스 CLI. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` | 전체 |
+| `opencut` | OpenCut 오픈소스 비디오 에디터 저장소(OpenCut-app/OpenCut) 작업 — 클론/설치, 웹/데스크톱 dev 서버 실행, Rust/WASM 코어 이해, 현재 기여 포커스 영역 확인 | 전체 |
+
 | `opencontext` | 라우팅-우선 프로젝트/저장소 메모리 스킬 — memory-layer choice, load-context, search-context, store-conclusions, setup-integration, repo-packer route-out 중 하나를 골라 manifest / stable link / 에이전트 핸드오프 패킷을 다루고, 메모가 겹칠 때는 최고 신뢰 소스와 freshness 경고를 고릅니다 | 전체 |
 | `workflow-automation` | 라우팅-우선 저장소 워크플로우 자동화 — task-entrypoints, bootstrap/onboarding, 로컬 CI 패리티, hook 가드레일, 유지보수 봇, 워크플로우 정리 중 하나를 고르고 환경/배포 문제로 번지지 않게 유지 | 전체 |
 | `ponytail` | 과제를 완전히 해결하는 최소한의 코드만 작성 — YAGNI 사다리(스킵 → 표준 라이브러리 → 네이티브 → 설치된 의존성 → 한 줄), `ponytail:` 업그레이드 경로 마커, `lite/full/ultra/off` 강도, delete-list와 debt ledger를 더 명확히 하는 `/ponytail-review` / `-audit` / `-debt` 계약. 검증·데이터 손실 처리·보안·접근성은 절대 잘라내지 않음. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail` | All |
@@ -647,7 +649,7 @@ npx vibe-kanban
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 147개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 150개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

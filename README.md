@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-148-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-150-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**148 local skill folders · 148 installable skills · TOON Format · Cross-platform**
+**150 local skill folders · 150 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -19,7 +19,7 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 148 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+A curated collection of 150 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 
 ## 🎮 Jeo Agent & The Legendary Equipment Set
@@ -150,7 +150,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 148 local skill folders = 148 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 150 local skill folders = 150 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -219,10 +219,11 @@ rtk init -g
 | `payloadcms` | Operate Payload CMS (Next.js-native headless CMS) — bootstrap app, configure collections/globals, manage auth/access control, migrations, REST/GraphQL/Local API, and plugin authoring | All |
 | `supabase-agent-skills` | Install and use Supabase Agent Skills with AI coding agents — covers install modes, skill selection, Supabase CLI integration, and agent-assisted database/auth/storage workflows | All |
 
-### 🎨 Frontend (14)
+### 🎨 Frontend (15)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
+| `astryx` | Agent-ready design system — 150+ React components built on StyleX, zero styling lock-in, component swizzling, brand theming, dark mode, CLI tooling. Proven across 13,000+ Meta apps. Routes: use `deep-agents-core` for AI-driven component design, `react-best-practices` for performance, `responsive-design` for layout verification, `react-grab` for element capture. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill astryx` | All |
 | `design-system` | Canonical frontend UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface system direction; routes component API, responsive layout, accessibility remediation, and broad UI critique to adjacent skills | All |
 | `devup-ui` | Zero-runtime CSS-in-JS adoption — wire the build-time Rust/WASM plugin into Next.js/Vite/Rsbuild/Webpack/Bun, style with `Box`/`css` props or the styled-components-compatible `styled()` API, type-safe `devup.json` theming, and migration off styled-components/Emotion/Tailwind. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill devup-ui` | All |
 | `lazyweb` | Design with evidence, not vibes — real product screenshots, UI references, competitive analysis, best practices, quick examples, paywall optimization, and A/B test research. Routes to design workflows, quick search, or A/B test evidence via MCP. Use when designing any product screen. **Design refs:** [Refero Styles](https://styles.refero.design/?q=monochrome+interface), [React Bits](https://reactbits.dev/backgrounds/orb). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill lazyweb` | All |
@@ -371,6 +372,8 @@ rtk init -g
 | `workflow-automation` | Routing-first repo workflow automation — choose one mode for task-entrypoints, bootstrap/onboarding, local-CI parity, hook guardrails, maintenance bots, or workflow cleanup without drifting into environment/deploy work | All |
 | `claudekit` | Standardized Claude Code workflow toolkit — claudekit plugin installation, init, update, hook management, and workspace configuration for consistent Claude Code setups | All |
 | `ghgrab` | Search and download specific files/folders from GitHub repositories directly from terminal using ghgrab, without full repo cloning | All |
+| `opencut` | Work with the OpenCut open-source video editor repo (OpenCut-app/OpenCut) — clone/setup, run web/desktop dev servers, understand the Rust/WASM core, and follow current contribution focus areas | All |
+
 
 ### 🛠 Utilities (Productivity) (6)
 
@@ -651,7 +654,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 148 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 150 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

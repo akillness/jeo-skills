@@ -1,0 +1,43 @@
+{
+  "skill_name": "opencut",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How do I set up OpenCut locally to work on the timeline feature?",
+      "expected_output": "The skill identifies the classic repo (opencut-app/opencut-classic) as the one people actually run, and gives Bun/Docker setup steps.",
+      "assertions": [
+        "The response distinguishes classic vs the OpenCut-app/OpenCut rewrite",
+        "The response references references/classic-setup.md or its Bun install / .env.local / docker compose steps",
+        "The response notes timeline work is a good contribution area"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I want to add fancy new export effects to OpenCut, can you help me plan the PR?",
+      "expected_output": "The skill flags export/preview as a current avoid area under active refactor and suggests confirming in Discord/issue first.",
+      "assertions": [
+        "The response mentions the preview/export refactor to a binary rendering approach",
+        "The response recommends checking with maintainers before investing effort"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "What is OpenCut's plugin-first architecture and MCP server about?",
+      "expected_output": "The skill routes to the rewrite repo (OpenCut-app/OpenCut) and describes proto/moon toolchain and rewrite goals.",
+      "assertions": [
+        "The response identifies this as the active rewrite, not the classic app",
+        "The response mentions proto/moon commands (moon run web:dev, etc.)",
+        "The response notes the rewrite is not yet accepting outside contributions"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Scrape the latest npm release notes for some unrelated package.",
+      "expected_output": "This is generic web scraping unrelated to the OpenCut codebase; the opencut skill should not activate.",
+      "assertions": [
+        "The response does not treat this as an OpenCut-specific task",
+        "The response would route to a general scraping approach instead"
+      ]
+    }
+  ]
+}

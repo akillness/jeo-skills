@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-07-01T00:00:00Z",
-  "skill_count": 148,
+  "generated": "2026-07-12",
+  "skill_count": 150,
   "categories": {
     "planning-review": [
       "agentation",
@@ -132,6 +132,7 @@
       "ooo",
       "open-design",
       "opencontext",
+      "opencut",
       "ponytail",
       "pretext",
       "scaffold-exercises",
@@ -2042,6 +2043,39 @@
       "version": "2.1.0"
     },
     {
+      "name": "lazyweb",
+      "description": "Lazyweb is the design-evidence skill for AI coding agents. Use it when designing, critiquing, or changing product UI — it provides real app screenshots, competitor references, best practices, quick examples, creative cross-category ideas, paywall optimization guidance, and mobile growth + monetization A/B test context. Routes to the right Lazyweb mode (design workflow, quick search, update, flowchart, or A/B test research) using MCP tools and the Lazyweb server at https://www.lazyweb.com/mcp. Use before designing any screen when you need design evidence instead of training-data vibes.",
+      "category": "frontend",
+      "path": "lazyweb/SKILL.md",
+      "tags": [
+        "lazyweb",
+        "design-research",
+        "ui-reference",
+        "product-design",
+        "competitive-analysis",
+        "paywall-optimization",
+        "a-b-testing",
+        "monetization"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Glob",
+        "Grep",
+        "WebFetch",
+        "AskUserQuestion"
+      ],
+      "keyword": "lazyweb",
+      "version": "1.0.0"
+    },
+    {
       "name": "llm-wiki",
       "description": "Build and maintain a persistent markdown wiki that an LLM updates on the user's behalf, usually inside an Obsidian vault or git-tracked notes repo. Use when raw sources such as web articles, papers, meeting notes, transcripts, screenshots, or past analyses need to be turned into an interlinked knowledge base with immutable source files, LLM-written wiki pages, `index.md`, `log.md`, schema rules in `AGENTS.md` or `CLAUDE.md`, source summaries, query notes, and recurring lint passes. Triggers on: llm-wiki, personal wiki, obsidian wiki, research vault, knowledge base, source ingest, persistent notes, wiki maintenance, source summaries, query filing.",
       "category": "utilities",
@@ -2714,6 +2748,39 @@
       ],
       "keyword": "opencontext",
       "version": "2.1"
+    },
+    {
+      "name": "opencut",
+      "description": "Work with the OpenCut open-source video editor repo (github.com/OpenCut-app/OpenCut) — clone/setup, run the web/desktop dev servers, understand the Rust/WASM compositor core, and follow current contribution focus areas. Use when the user asks about OpenCut, the \"open-source CapCut alternative\", opencut-classic, setting up the OpenCut monorepo (moon/proto or Bun/Docker), the OpenCut Rust core, or contributing a PR to OpenCut. Also triggers on \"opencut.app\", \"new.opencut.app\", and \"opencut-app/opencut-classic\".",
+      "category": "utilities",
+      "path": "opencut/SKILL.md",
+      "tags": [
+        "opencut",
+        "video-editor",
+        "capcut-alternative",
+        "rust",
+        "wasm",
+        "nextjs",
+        "bun",
+        "moonrepo",
+        "open-source"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "opencut",
+      "version": "1.0.0"
     },
     {
       "name": "opik",

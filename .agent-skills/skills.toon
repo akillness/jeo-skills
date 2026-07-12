@@ -2453,3 +2453,22 @@ R[6]:
   webhook monitor
   MCP setup
 zeude|zeude,ai adoption,claude code adoption,enterprise claude,opentelemetry claude,skill sync,team claude management,mcp sync,hook sync,adoption analytics|Enterprise AI adoption platform for Claude Code — 3x adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), and context-aware skill suggestions. Requires Supabase + ClickHouse. Self-hosted dashboard (Go CLI + Next.js).|zep-us/zeude|Apache-2.0|latest
+
+N:opencut
+D:Work with the OpenCut open-source video editor repo (OpenCut-app/OpenCut) — clone/setup, run web/desktop dev servers, understand the Rust/WASM core, and follow current contribution focus areas. Use when the user asks about OpenCut, the "open-source CapCut alternative", opencut-classic, or contributing a PR to OpenCut.
+G:opencut|video-editor|capcut-alternative|rust|wasm|nextjs|bun|moonrepo|open-source
+U[4]:
+  Clone and run OpenCut locally (rewrite or classic)
+  Explain project structure (apps/web, apps/desktop, rust/, docs/)
+  Give current contribution focus/avoid areas before proposing a PR
+  Distinguish the active rewrite from the archived-but-live classic app
+S[5]{n,action}:
+  1,Confirm which repo the user means: rewrite (OpenCut-app/OpenCut) or classic (opencut-app/opencut-classic)
+  2,Install the matching toolchain (proto/moon for rewrite; Bun/Docker for classic)
+  3,Orient using references/project-structure.md
+  4,Check references/contributing-focus.md before proposing PR work
+  5,Re-fetch README/CONTRIBUTING via scripts/fetch-docs.sh before quoting specifics
+R[3]:
+  clone and run OpenCut
+  OpenCut project structure
+  OpenCut contribution focus areas
