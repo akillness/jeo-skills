@@ -230,7 +230,7 @@ rtk init -g
 | `cli-anything` | HKUDS CLI-Anything으로 모든 소프트웨어를 agent-native CLI로 — CLI-Hub 패키지 매니저(`cli-hub list/search/install/launch`), 에이전트 자율 탐색 meta-skill, 임의 코드베이스 대상 7-phase harness 생성(`/cli-anything`), refine/test/validate 반복; 40+ harness, 2,461 테스트, REPL + `--json` CLI. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything` | 전체 |
 | `upskill` | HKUDS UpSkill 래핑 — Claude Code 세션 실패를 캡처하고, 강력한 Teacher 모델이 스킬을 초안하고, 약한 Student 모델 대상으로 폐루프 Ralph Loop(최대 3라운드)로 검증한 뒤, 검증된 스킬을 자동 서빙해 저렴한 Flash 모델이 Pro 모델처럼 동작하게 함. Terminal-Bench 2.0: Flash+UpSkill이 Pro보다 41% 낮은 비용으로 더 높은 성능. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill upskill` | Claude Code |
 
-### ⚙️ 백엔드 (5개)
+### ⚙️ 백엔드 (6개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -238,6 +238,7 @@ rtk init -g
 | `api-documentation` | 레퍼런스 포털·퀵스타트·SDK/웹훅 가이드·검증된 예시·인증/에러 안내를 다루는 개발자용 API 문서 앵커 | 전체 |
 | `authentication-setup` | hosted/framework-native/platform-native 인증 선택, 세션/JWT 경계, 조직 데이터, 엔터프라이즈 SSO 핸드오프를 다루는 제품 인증 설정 라우터 | 전체 |
 | `backend-testing` | 커버리지 계획, fixture/reset 전략, 계약/API 보호, flaky-suite 안정화, 로컬-vs-CI lane 분리를 다루는 패킷 우선 백엔드 테스트 스킬 | 전체 |
+| `colibri` | 소비자 하드웨어(~25GB RAM)에서 GLM-5.2(744B MoE) 실행 가능한 순수 C LLM 추론 엔진 — 전문가 디스크 스트리밍 및 LRU 캐싱, MLA 주의력, 네이티브 다중 토큰 추측 디코딩(MTP, 39–59% draft acceptance), int4 양자화. Setup/Build, 모델 다운로드 & 변환, 추론 모드, 전문가 스트리밍 튜닝, 성능 프로파일링, GPU 가속 지원. 저장소: [JustVugg/colibri](https://github.com/JustVugg/colibri) (Apache 2.0). 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill colibri` | 전체 |
 | `database-schema-design` | 관계형·문서형·하이브리드 스키마, queryable-vs-flexible 필드 판단, 단계적 스키마 변경, 그리고 API/인증/테스트/리포팅 인접 스킬 route-out을 다루는 패킷형 스토리지 모델 설계 | 전체 |
 
 ### 🎨 프론트엔드 (13개)
