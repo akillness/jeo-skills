@@ -21,6 +21,7 @@
     "agent-development": [
       "cli-anything",
       "prompt-repetition",
+      "prompts-chat",
       "skill-standardization",
       "upskill"
     ],
@@ -4879,6 +4880,40 @@
       ],
       "keyword": "zoom-out",
       "version": "1.0"
+    },
+    {
+      "name": "prompts-chat",
+      "description": "Discover and apply curated prompts from the prompts.chat collection to optimize AI interactions. Use when refining prompt engineering, finding domain-specific prompt templates, improving response quality, or building prompt-based workflows.",
+      "category": "agent-development",
+      "path": "prompts-chat/SKILL.md",
+      "tags": [
+        "prompts",
+        "prompt-engineering",
+        "ai-optimization",
+        "prompt-templates",
+        "prompt-library",
+        "prompt-discovery",
+        "workflow-automation",
+        "prompt-curation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "jeo",
+        "jeopi"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "prompts-chat",
+      "version": "1.0.0"
     }
   ]
 }
