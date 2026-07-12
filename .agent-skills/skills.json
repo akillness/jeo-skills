@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-07-12",
-  "skill_count": 150,
+  "skill_count": 152,
   "categories": {
     "planning-review": [
       "agentation",
@@ -123,6 +123,7 @@
       "graphify",
       "harness",
       "hyperfine-benchmarking",
+      "lapian-notes",
       "llm-wiki",
       "lmstudio-cli",
       "notebooklm",
@@ -138,6 +139,7 @@
       "scaffold-exercises",
       "setup-pre-commit",
       "stitch-skills",
+      "tokhub",
       "unity-gamedev-skill-pack",
       "workflow-automation",
       "write-a-skill",
@@ -2041,6 +2043,40 @@
       ],
       "keyword": "langsmith",
       "version": "2.1.0"
+    },
+    {
+      "name": "lapian-notes",
+      "description": "Work with Lapian Notes / 拉片笔记 (bkingfilm/lapian-notes) — a local-first React/Vite tool that turns a film into an editable shot-by-shot study notebook via local frame extraction and a bring-your-own-AI (no API key) ZIP round trip, producing story-line swimlanes, a structure tree, and an emotion curve. Use when the user asks about Lapian Notes, \"拉片笔记\"/\"拉片\" tooling, cloning/running this repo, the AI-analysis-package workflow, or contributing a PR. Not for generic video editing (use opencut) or generic film-analysis theory unrelated to this codebase.",
+      "category": "utilities",
+      "path": "lapian-notes/SKILL.md",
+      "tags": [
+        "lapian-notes",
+        "film-analysis",
+        "shot-by-shot",
+        "ai-assisted",
+        "react",
+        "vite",
+        "typescript",
+        "local-first",
+        "video-notes",
+        "open-source"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "lapian-notes",
+      "version": "1.0"
     },
     {
       "name": "lazyweb",
@@ -4238,6 +4274,43 @@
       ],
       "keyword": "to-prd",
       "version": "1.0"
+    },
+    {
+      "name": "tokhub",
+      "description": "Set up, run, and contribute to TokHub (github.com/yaojingang/TokHub) — an open-source AI API relay monitoring, recommendation, and OpenAI-compatible gateway system with L1/L2/L3 channel health probing, usage metering, alerts, audit, and Docker self-hosting. Use when the user asks about TokHub, \"AI API 中转站监控\", cloning/running the Go + React monorepo (TOKHUB_ROLE, sqlc, TimescaleDB, NATS), the L1/L2/L3 probe algorithm, the OpenAI-compatible `/gateway/v1/*` endpoint, or contributing a PR to TokHub. Do not use for connecting a running agent to a live TokHub instance's own API (that is covered by the project's own bundled `agent-skills/tokhub` skill inside the TokHub repo, not this one).",
+      "category": "utilities",
+      "path": "tokhub/SKILL.md",
+      "tags": [
+        "tokhub",
+        "ai-api-gateway",
+        "api-monitoring",
+        "openai-compatible",
+        "go",
+        "react",
+        "typescript",
+        "postgresql",
+        "timescaledb",
+        "redis",
+        "nats",
+        "docker",
+        "open-source"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "tokhub",
+      "version": "1.0.0"
     },
     {
       "name": "triage",

@@ -1597,6 +1597,7 @@ Skill Inventory (150 skills)
 | `claudekit` | `claudekit`, `claude hooks`, `pre tool use hook`, `post tool use hook` | Claude Code hook library — pre-built PreToolUse/PostToolUse hooks for common guardrails, auto-formatting, workflow automation |
 | `ghgrab` | `ghgrab`, `github release download`, `github asset`, `download release binary` | GitHub asset/release downloader — fetch release binaries, source archives, artifacts from public/private repos via CLI |
 | `semble` | `semble`, `code search`, `semantic code search`, `semble search`, `token-efficient search`, `find code`, `semble find-related`, `agent code search` | Token-efficient code search for agents — returns relevant code chunks using ~98% fewer tokens than grep+read. Natural-language and symbol queries, `find-related` for semantic discovery, MCP for Claude Code / Codex / Cursor / OpenCode, CPU-only. MCP: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble` |
+| `vox-director` | `vox video`, `collage video`, `motion collage`, `paper collage explainer`, `make a collage ad`, `turn topic into collage video`, `narrated explainer video`, `scrapbook video` | Turn any topic into a finished Vox-style paper-collage explainer/ad video — automated end to end on Atlas Cloud API + local ffmpeg. Script, collage keyframes, motion, voice-over, music, and captions. Triggers on Vox-style video, paper/torn-paper collage animation, motion collage, narrated explainer, or scrapbook-style tribute requests. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill vox-director` |
 
 ---
 

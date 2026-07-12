@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-150-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-152-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**150개 로컬 스킬 폴더 · 설치 가능 스킬 150개 · TOON 포맷 · 멀티플랫폼**
+**152개 로컬 스킬 폴더 · 설치 가능 스킬 152개 · TOON 포맷 · 멀티플랫폼**
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +20,7 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 150개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 152개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 
 
 ## 🎮 Jeo 에이전트와 전설의 장비 세트
@@ -178,7 +178,7 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 150개 로컬 스킬 폴더 = 총 150개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 152개 로컬 스킬 폴더 = 총 152개 설치 가능 스킬
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -347,6 +347,7 @@ rtk init -g
 | `drawio` | Agents365-ai/drawio-skill 기반 텍스트→다이어그램·코드베이스→다이어그램 — 편집 가능한 `.drawio`를 네이티브 draw.io CLI로 PNG/SVG/PDF/JPG 내보내기, 6가지 프리셋(ERD/UML/시퀀스/아키텍처/ML-DL/플로우차트), 10,000개 이상 공식 AWS/Azure/GCP/Cisco/K8s/UML/BPMN 셰이프, 321개 AI/LLM 로고, 비전 셀프체크 + 5라운드 개선. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill drawio` | 전체 |
 | `remotion-video-production` | 레거시 툴링이나 명시적 Remotion 이름이 남아 있을 때 `video-production`으로 연결하는 호환 별칭 | 전체 |
 | `video-production` | Remotion, 템플릿 API, 콘텐츠 리퍼포징, QA 핸드오프를 묶는 기본 프로그래머블/자동화 비디오 스킬 | 전체 |
+| `vox-director` | 주어진 주제를 완성된 Vox 스타일의 종이 콜라주 설명/광고 영상으로 변환 — Atlas Cloud API + 로컬 ffmpeg를 통해 엔드투엔드 자동화. 스크립트, 콜라주 키프레임, 모션, 음성, 음악, 자막 포함. Vox 스타일 영상, 종이/찢어진 종이 콜라주 애니메이션, 모션 콜라주, 내레이션 설명 영상 또는 스크랩북 스타일 tribute 요청에서 활성화. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill vox-director` | 전체 |
 | `god-tibo-imagen` | Codex ChatGPT 백엔드를 통한 AI 이미지 생성 — 의존성 없음, `~/.codex/auth.json` 재사용, CLI(`gti`), Node.js, Python SDK 지원 | 전체 |
 | `notebooklm` | Claude Code에서 Google NotebookLM 노트북을 직접 조회 — Patchright 브라우저 자동화로 출처 기반 인용 답변, 영구 Google 인증, 노트북 라이브러리 관리 지원 | Claude Code |
 | `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness)(MIT)를 패키징한 엔드투엔드 웹툰 제작 하네스 — 27개 에이전트·4단계 팀이 트렌드 조사부터 세로 스크롤 뷰어까지 한 회차를 제작: 대사 위주·매 회차 반전 시나리오, 레퍼런스 시트 선행, codex-image로 말풍선 in-image 베이크한 50+ 패널 렌더, 6축 검증-재생성 루프, 오버레이 없는 조립. Phase 2 트렌드 리서치의 웹 추출은 `scrapling` 스킬로 라우팅. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness` | Claude Code |
@@ -369,7 +370,7 @@ rtk init -g
 | `game-performance-profiler` | Unity/Unreal frame-time 트리아지 — bottleneck-first profiling brief, quick packet, benchmark route, target-device 검토, profiler escalation | 전체 |
 | `perfectpixel` | AI 애니메이션 스프라이트 생성 스튜디오 — god-tibo-imagen 및 gemini 모델을 사용하여 텍스트 설명으로부터 캐릭터 애니메이션, 스프라이트시트, 8방향 스프라이트 세트 생성 | 전체 |
 | `steam-store-launch-ops` | Packet-first Steam launch router — page-promise audit, wishlist signal check, demo readiness, event timing workback, launch-ops runbook 중 하나를 고름 | 전체 |
-
+### 🔧 유틸리티 (21개)
 ### 🔧 유틸리티 (19개)
 
 | 스킬 | 설명 | 플랫폼 |
@@ -383,7 +384,9 @@ rtk init -g
 | `okf` | Google의 Open Knowledge Format(OKF) 번들 생성·검증·소비 — `type`/`title`/`description`/`resource`/`tags`/`timestamp` YAML 프론트매터 마크다운 파일로 이식 가능한 AI 에이전트 지식 공유. LLM-Wiki 패턴을 공식화. Python 린터·consume 헬퍼·배포 가이드 포함. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill okf` | 전체 |
 
 | `npm-git-install` | npm / pnpm / Yarn / Bun용 라우팅-우선 Node 패키지 전달 스킬 — temporary Git bridge, SHA pin, tarball, workspace, publish-first handoff를 안전하게 선택 | 전체 |
-| `obsidian-second-brain` | **스스로 다시 쓰는 Obsidian 볼트**를 위한 라우팅 프런트 도어 (Karpathy의 LLM-Wiki를 발전) — 모든 소스가 기존 페이지를 다시 쓰고, 모순을 자동 조정하며, 패턴을 자동 종합. 4개 레이어 45개 명령(Operations / Thinking / Context / Research) + 백그라운드·스케줄 에이전트 + 4개 역할 프리셋 + AI-first 쓰기 검증기. 크로스 CLI. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` | 전체 |
+| `opencut` | OpenCut 오픈소스 비디오 에디터 저장소(OpenCut-app/OpenCut) 작업 — 클론/설치, 웹/데스크톱 dev 서버 실행, Rust/WASM 코어 이해, 현재 기여 포커스 영역 확인 | 전체 |
+| `tokhub` | TokHub(yaojingang/TokHub) 설정·실행·기여 — L1/L2/L3 채널 헬스 프로빙, 사용량 미터링, 알림, 감사, Docker 셀프호스팅을 갖춘 오픈소스 AI API 릴레이 모니터링/추천/OpenAI 호환 게이트웨이 시스템 | 전체 |
+| `lapian-notes` | Lapian Notes/拉片笔记(bkingfilm/lapian-notes) 작업 — 로컬 프레임 추출과 브링유어오운-AI(API 키 불필요) ZIP 왕복으로 영화를 편집 가능한 컷 단위 분석 노트로 변환, 스토리라인 스윔레인/구조 트리/감정 곡선 생성 | 전체 |
 | `opencut` | OpenCut 오픈소스 비디오 에디터 저장소(OpenCut-app/OpenCut) 작업 — 클론/설치, 웹/데스크톱 dev 서버 실행, Rust/WASM 코어 이해, 현재 기여 포커스 영역 확인 | 전체 |
 
 | `opencontext` | 라우팅-우선 프로젝트/저장소 메모리 스킬 — memory-layer choice, load-context, search-context, store-conclusions, setup-integration, repo-packer route-out 중 하나를 골라 manifest / stable link / 에이전트 핸드오프 패킷을 다루고, 메모가 겹칠 때는 최고 신뢰 소스와 freshness 경고를 고릅니다 | 전체 |
@@ -649,7 +652,7 @@ npx vibe-kanban
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 150개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 152개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

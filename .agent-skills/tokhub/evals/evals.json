@@ -1,0 +1,51 @@
+{
+  "skill_name": "tokhub",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How do I self-host TokHub locally with Docker?",
+      "expected_output": "The skill gives the Docker Compose quick-start (cp .env.example .env, docker compose up -d --build) and default entrypoints/ports.",
+      "assertions": [
+        "The response references references/local-setup.md or its Docker Compose steps",
+        "The response mentions the default localhost:8080 entrypoint and dev-only admin credentials",
+        "The response warns not to reuse dev credentials in production"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "How does TokHub decide a channel is functional_down vs connectivity_down?",
+      "expected_output": "The skill explains the L1/L2/L3 probe layers and status synthesis rules from references/project-structure.md.",
+      "assertions": [
+        "The response distinguishes L1 (connectivity), L2 (model availability), L3 (real generation)",
+        "The response explains connectivity_down vs functional_down vs auth_error distinctly"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want to submit a PR that changes TokHub's public API. What do I need to check first?",
+      "expected_output": "The skill lists pre-PR check commands and notes docs/API.md + docs/openapi.yaml must be updated for contract changes.",
+      "assertions": [
+        "The response mentions go test/go vet/npm run typecheck/npm run build/npm run test:security/open-source-preflight.sh",
+        "The response says docs/API.md and docs/openapi.yaml must be updated when the public API contract changes"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Connect my coding agent to my already-running TokHub server so it can pull usage and alert data using my login.",
+      "expected_output": "This is out of scope for this codebase-setup skill; it should route to TokHub's own bundled agent-skills/tokhub runtime-client skill instead.",
+      "assertions": [
+        "The response does not attempt to give this skill's own auth flow for a live instance",
+        "The response points to TokHub's own agent-skills/tokhub SKILL.md as the correct tool"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Scrape pricing pages from a random SaaS competitor site.",
+      "expected_output": "This is generic web scraping unrelated to the TokHub codebase; the tokhub skill should not activate.",
+      "assertions": [
+        "The response does not treat this as a TokHub-specific task",
+        "The response would route to a general scraping approach instead"
+      ]
+    }
+  ]
+}

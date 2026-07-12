@@ -1,0 +1,18 @@
+N:lapian-notes
+D:Work with Lapian Notes / 拉片笔记 (bkingfilm/lapian-notes) — a local-first React/Vite tool that turns a film into an editable shot-by-shot study notebook via local frame extraction and a bring-your-own-AI (no API key) ZIP round trip, producing story-line swimlanes, a structure tree, and an emotion curve. Use when the user asks about Lapian Notes, "拉片笔记"/"拉片" tooling, cloning/running this repo, the AI-analysis-package workflow, or contributing a PR.
+G:lapian-notes|拉片笔记|film-analysis|shot-by-shot|ai-assisted|react|vite|typescript|local-first|video-notes|open-source
+U[4]:
+  Clone and run Lapian Notes locally (end-user scripts or npm run dev)
+  Explain project structure (src/lib pipeline, components, dev-server plugins)
+  Explain the AI-analysis-package (ZIP) round-trip workflow
+  Give pre-PR check commands and where feature work clusters before a PR
+S[5]{n,action}:
+  1,Confirm whether the user needs the end-user run.bat/run.command path or the developer npm run dev path
+  2,Default developers to git clone + npm install + npm run dev
+  3,Read references/project-structure.md before touching src/lib or the dev-server plugins
+  4,Read references/contributing-focus.md before proposing PR work
+  5,Re-fetch README/package.json via scripts/fetch-docs.sh before quoting specifics
+R[3]:
+  clone and run Lapian Notes
+  Lapian Notes project structure and AI-package workflow
+  Lapian Notes contribution focus areas

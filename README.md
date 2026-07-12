@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-150-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-152-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**150 local skill folders · 150 installable skills · TOON Format · Cross-platform**
+**152 local skill folders · 152 installable skills · TOON Format · Cross-platform**
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -19,7 +19,7 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 150 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+A curated collection of 152 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 
 ## 🎮 Jeo Agent & The Legendary Equipment Set
@@ -150,7 +150,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 150 local skill folders = 150 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 152 local skill folders = 152 total installable skills
 
 ### 🎯 Core Orchestration (15)
 
@@ -331,6 +331,7 @@ rtk init -g
 | `drawio` | Text-to-diagram and codebase-to-diagram via Agents365-ai/drawio-skill — editable `.drawio` exported to PNG/SVG/PDF/JPG through the native draw.io CLI, 6 presets (ERD/UML/sequence/architecture/ML-DL/flowchart), 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/BPMN shapes, 321 AI/LLM logos, vision self-check + 5-round refinement. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill drawio` | All |
 | `remotion-video-production` | Compatibility alias for `video-production` when legacy tooling or explicit Remotion naming still expects the old skill | All |
 | `video-production` | Canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs | All |
+| `vox-director` | Turn any topic into a finished Vox-style paper-collage explainer/ad video — automated end to end on Atlas Cloud API + local ffmpeg. Script, collage keyframes, motion, voice-over, music, and captions. Triggers on Vox-style video requests, paper/torn-paper collage animation, motion collage, narrated explainers, or scrapbook-style tributes. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill vox-director` | All |
 | `god-tibo-imagen` | Generate AI images via Codex ChatGPT backend — zero dependencies, reuses `~/.codex/auth.json`, CLI (`gti`), Node.js, and Python SDK | All |
 | `notebooklm` | Query Google NotebookLM notebooks directly from Claude Code — source-grounded citation-backed answers via Patchright browser automation, persistent Google auth, and notebook library management | Claude Code |
 | `webtoon-harness` | End-to-end webtoon production harness packaging [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) (MIT) — 27 agents in 4 phase-rebuilt teams take one episode from trend research to a finished vertical-scroll viewer: dialogue-heavy twist-every-episode scenario, reference sheets first, 50+ panels rendered with in-image Korean speech-bubble baking via codex-image, a 6-axis validate–regenerate loop, then no-overlay assembly. Phase-2 trend research routes web extraction through the `scrapling` skill. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness` | Claude Code |
@@ -354,7 +355,7 @@ rtk init -g
 | `steam-store-launch-ops` | Packet-first Steam launch router — choose page-promise audit, wishlist signal check, demo readiness, event timing workback, or launch-ops runbook | All |
 | `unity-gamedev-skill-pack` | Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package with validation and integration guidance | All |
 
-### 🔧 Utilities (13)
+### 🔧 Utilities (15)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
@@ -374,6 +375,8 @@ rtk init -g
 | `claudekit` | Standardized Claude Code workflow toolkit — claudekit plugin installation, init, update, hook management, and workspace configuration for consistent Claude Code setups | All |
 | `ghgrab` | Search and download specific files/folders from GitHub repositories directly from terminal using ghgrab, without full repo cloning | All |
 | `opencut` | Work with the OpenCut open-source video editor repo (OpenCut-app/OpenCut) — clone/setup, run web/desktop dev servers, understand the Rust/WASM core, and follow current contribution focus areas | All |
+| `tokhub` | Set up, run, and contribute to TokHub (yaojingang/TokHub) — an open-source AI API relay monitoring, recommendation, and OpenAI-compatible gateway system with L1/L2/L3 channel health probing, usage metering, alerts, audit, and Docker self-hosting | All |
+| `lapian-notes` | Work with Lapian Notes / 拉片笔记 (bkingfilm/lapian-notes) — a local-first React/Vite tool that turns a film into an editable shot-by-shot study notebook via local frame extraction and a bring-your-own-AI ZIP round trip, producing story-line swimlanes, a structure tree, and an emotion curve | All |
 
 
 ### 🛠 Utilities (Productivity) (6)
@@ -655,7 +658,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 150 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

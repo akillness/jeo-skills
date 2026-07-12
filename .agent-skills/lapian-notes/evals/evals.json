@@ -1,0 +1,52 @@
+{
+  "skill": "lapian-notes",
+  "cases": [
+    {
+      "id": 1,
+      "prompt": "How do I get Lapian Notes running on my machine as a developer?",
+      "expected_output": "git clone the bkingfilm/lapian-notes repo, npm install, npm run dev, open http://localhost:5173; mention Node.js 18+ and a Chromium-based browser requirement.",
+      "assertions": [
+        "The response gives npm install and npm run dev as the setup commands",
+        "The response mentions Node.js 18+ as a requirement",
+        "The response does not require an AI API key to run the app"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My non-technical friend wants to try 拉片笔记 without installing anything themselves.",
+      "expected_output": "Point to the download-ZIP + double-click run.bat (Windows) or run.command (macOS) path; mention macOS's first-run Control-click-Open workaround.",
+      "assertions": [
+        "The response recommends the Download ZIP + run.bat/run.command flow, not npm commands",
+        "The response mentions the macOS first-launch security prompt workaround"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Does Lapian Notes call an AI API directly to generate the story structure?",
+      "expected_output": "No — it packages screenshots/subtitles/context into a ZIP with a pre-copied prompt; the user manually sends it to any AI chat tool and imports the returned JSON back in.",
+      "assertions": [
+        "The response states the app does not call an AI API itself",
+        "The response describes the ZIP export + manual AI hand-off + JSON re-import flow"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I want to add a new video transcode format — where should I look, and what should I check before opening a PR?",
+      "expected_output": "Point to transcode-server-plugin.ts and src/lib/transcode.ts; run npm run lint and npm run build before proposing the PR; note there is no test script.",
+      "assertions": [
+        "The response identifies transcode-server-plugin.ts and/or src/lib/transcode.ts as the relevant code",
+        "The response gives npm run lint and npm run build as the pre-PR checks",
+        "The response does not claim there is a test script in package.json"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Design a full video timeline editor with cutting, trimming, and multi-track export for me.",
+      "expected_output": "This is generic video editing, not shot-by-shot analysis notebook work; the lapian-notes skill should not activate — route to a video editor project like opencut instead.",
+      "assertions": [
+        "The response does not treat this as a Lapian Notes-specific task",
+        "The response suggests a dedicated video editor (e.g. opencut) rather than retrofitting lapian-notes"
+      ]
+    }
+  ]
+}

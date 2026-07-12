@@ -1,0 +1,18 @@
+N:tokhub
+D:Set up, run, and contribute to TokHub (yaojingang/TokHub) — an open-source AI API relay monitoring, recommendation, and OpenAI-compatible gateway system with L1/L2/L3 channel health probing, usage metering, alerts, audit, and Docker self-hosting. Use when the user asks about TokHub, cloning/running the Go+React monorepo, the probe algorithm, or contributing a PR.
+G:tokhub|ai-api-gateway|api-monitoring|openai-compatible|go|react|typescript|postgresql|timescaledb|redis|nats|docker|open-source
+U[4]:
+  Clone and run TokHub locally (Docker Compose or native Go/Node dev)
+  Explain the TOKHUB_ROLE process model and repo layout
+  Explain the L1/L2/L3 probe algorithm and gateway routing strategies
+  Give pre-PR check commands and PR rules before proposing a contribution
+S[5]{n,action}:
+  1,Confirm scope: run it, understand architecture, or contribute a PR
+  2,Default to Docker Compose setup (cp .env.example .env, docker compose up -d --build)
+  3,Read references/project-structure.md before touching cmd/ or internal/
+  4,Read references/contributing-focus.md before proposing PR work
+  5,Re-fetch README/CONTRIBUTING/DEPLOYMENT via scripts/fetch-docs.sh before quoting specifics
+R[3]:
+  clone and run TokHub
+  TokHub project structure and probe algorithm
+  TokHub contribution focus areas
