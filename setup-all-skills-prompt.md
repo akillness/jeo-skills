@@ -126,7 +126,7 @@ fi
 
 ---
 
-Step 1 — Install All 150 Skills (Batch)
+Step 1 — Install All 152 Skills (Batch)
 
 Install all skills to the global location, then link shared skills to all detected agents.
 Re-running this step safely overwrites existing skills (symlinks are updated in place).
@@ -143,7 +143,7 @@ Re-running this step safely overwrites existing skills (symlinks are updated in 
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 150 skills to global store, link shared skills to all detected agents
+# Install ALL 152 skills to global store, link shared skills to all detected agents
 # --full-depth: discovers nested skills (7 skills require this to be found)
 # Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
 skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
@@ -1471,7 +1471,7 @@ If no → skip silently. Never re-ask.
 
 ---
 
-Skill Inventory (150 skills)
+Skill Inventory (152 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
@@ -1533,8 +1533,8 @@ Skill Inventory (150 skills)
 | `obsidian-second-brain` | `obsidian second brain`, `second brain`, `self-rewriting vault`, `llm wiki`, `obsidian-save`, `obsidian-ingest`, `obsidian-reconcile`, `obsidian-challenge`, `obsidian-architect`, `vault automation`, `vault-first research` | Routing front door for **obsidian-second-brain** — a self-rewriting Obsidian vault evolving Karpathy's LLM-Wiki: every source REWRITES existing pages, reconciles contradictions, and synthesizes patterns automatically. 45 commands across 4 layers (Operations / Thinking / Context / Research) + background & scheduled agents + 4 role presets + AI-first write validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` |
 | `opencut` | `opencut`, `capcut alternative`, `opencut.app`, `opencut-classic`, `video editor repo` | Work with the OpenCut open-source video editor repo (OpenCut-app/OpenCut) — clone/setup, run web/desktop dev servers, understand the Rust/WASM core, and follow current contribution focus areas |
 | `tokhub` | `tokhub`, `AI API 中转站监控`, `TOKHUB_ROLE`, `L1/L2/L3 probe`, `gateway/v1`, `TimescaleDB` | Set up, run, and contribute to TokHub (yaojingang/TokHub) — an open-source AI API relay monitoring, recommendation, and OpenAI-compatible gateway system with L1/L2/L3 channel health probing, usage metering, alerts, audit, and Docker self-hosting |
-
 | `lapian-notes` | `lapian-notes`, `拉片笔记`, `拉片`, `shot-by-shot film analysis` | Work with Lapian Notes / 拉片笔记 (bkingfilm/lapian-notes) — a local-first React/Vite tool that turns a film into an editable shot-by-shot study notebook via local frame extraction and a bring-your-own-AI ZIP round trip, producing story-line swimlanes, a structure tree, and an emotion curve |
+
 
 
 | `game-build-log-triage` | `game build log`, `unity build failed`, `unreal packaging error` | Unity/Unreal build/editor/package log triage — isolate the first actionable engine/build failure |
