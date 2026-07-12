@@ -219,10 +219,11 @@ rtk init -g
 | `payloadcms` | Operate Payload CMS (Next.js-native headless CMS) — bootstrap app, configure collections/globals, manage auth/access control, migrations, REST/GraphQL/Local API, and plugin authoring | All |
 | `supabase-agent-skills` | Install and use Supabase Agent Skills with AI coding agents — covers install modes, skill selection, Supabase CLI integration, and agent-assisted database/auth/storage workflows | All |
 
-### 🎨 Frontend (15)
+### 🎨 Frontend (16)
 
 | Skill | Description | Platforms |
 |-------|-------------|-----------|
+| `ax` | The AI-era curl — fetch web pages, discover structure, extract structured data deterministically. Zero code per task: `ax <url> --outline` for discovery, `ax <url> '.selector' --row` for extraction. Token-budgeted output, safe filtering (`--where`), parse caching for free probes. 65% cost reduction vs curl/regex pipelines (benchmarked on real agent tasks). Routes: use with `deep-agents-core` for custom tools, `research` for parallel multi-URL orchestration. Official: https://ax.yusuke.run. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill ax` | All |
 | `astryx` | Agent-ready design system — 150+ React components built on StyleX, zero styling lock-in, component swizzling, brand theming, dark mode, CLI tooling. Proven across 13,000+ Meta apps. Routes: use `deep-agents-core` for AI-driven component design, `react-best-practices` for performance, `responsive-design` for layout verification, `react-grab` for element capture. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill astryx` | All |
 | `design-system` | Canonical frontend UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface system direction; routes component API, responsive layout, accessibility remediation, and broad UI critique to adjacent skills | All |
 | `devup-ui` | Zero-runtime CSS-in-JS adoption — wire the build-time Rust/WASM plugin into Next.js/Vite/Rsbuild/Webpack/Bun, style with `Box`/`css` props or the styled-components-compatible `styled()` API, type-safe `devup.json` theming, and migration off styled-components/Emotion/Tailwind. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill devup-ui` | All |
