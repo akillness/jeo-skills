@@ -340,7 +340,7 @@ rtk init -g
 | `scientific-llm-benchmarks` | 과학적 추론과 발견에서 대형 언어 모델(LLM)을 평가하기 위한 벤치마크 목록 | 전체 |
 
 
-### 🎬 창의 미디어 (7개)
+### 🎬 창의 미디어 (8개)
 
 | 스킬 | 설명 | 플랫폼 |
 |------|------|--------|
@@ -349,6 +349,7 @@ rtk init -g
 | `video-production` | Remotion, 템플릿 API, 콘텐츠 리퍼포징, QA 핸드오프를 묶는 기본 프로그래머블/자동화 비디오 스킬 | 전체 |
 | `vox-director` | 주어진 주제를 완성된 Vox 스타일의 종이 콜라주 설명/광고 영상으로 변환 — Atlas Cloud API + 로컬 ffmpeg를 통해 엔드투엔드 자동화. 스크립트, 콜라주 키프레임, 모션, 음성, 음악, 자막 포함. Vox 스타일 영상, 종이/찢어진 종이 콜라주 애니메이션, 모션 콜라주, 내레이션 설명 영상 또는 스크랩북 스타일 tribute 요청에서 활성화. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill vox-director` | 전체 |
 | `god-tibo-imagen` | Codex ChatGPT 백엔드를 통한 AI 이미지 생성 — 의존성 없음, `~/.codex/auth.json` 재사용, CLI(`gti`), Node.js, Python SDK 지원 | 전체 |
+| `motion-previs-studio` | AI 영화 모션 프리비즈 오픈소스 데스크톱 앱 — 참고 영상에서 포즈(OpenPose BODY_25), 깊이맵, 카메라 모션(광학 흐름 + RANSAC), 컨트롤 레이어, 프로덕션 번들 추출. AI 비디오 워크플로우(Seedance, ComfyUI, Blender, Runway, Kling)용. 셋업, 기능 통합, UI/로직 디버깅, 내보내기 파이프라인 최적화, Blender/ComfyUI 통합 지원. 저장소: [wassermanproductions/motion-previs-studio](https://github.com/wassermanproductions/motion-previs-studio) (Apache 2.0). 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill motion-previs-studio` | 전체 |
 | `notebooklm` | Claude Code에서 Google NotebookLM 노트북을 직접 조회 — Patchright 브라우저 자동화로 출처 기반 인용 답변, 영구 Google 인증, 노트북 라이브러리 관리 지원 | Claude Code |
 | `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness)(MIT)를 패키징한 엔드투엔드 웹툰 제작 하네스 — 27개 에이전트·4단계 팀이 트렌드 조사부터 세로 스크롤 뷰어까지 한 회차를 제작: 대사 위주·매 회차 반전 시나리오, 레퍼런스 시트 선행, codex-image로 말풍선 in-image 베이크한 50+ 패널 렌더, 6축 검증-재생성 루프, 오버레이 없는 조립. Phase 2 트렌드 리서치의 웹 추출은 `scrapling` 스킬로 라우팅. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness` | Claude Code |
 | `paperbanana` | [llmsresearch/paperbanana](https://github.com/llmsresearch/paperbanana)(MIT)를 패키징한 라우팅 우선 학술 일러스트레이션 — 텍스트나 논문을 2단계 plan-then-refine 멀티 에이전트 파이프라인(Retriever/Planner/Stylist → Visualizer/Critic)으로 출판 품질 그림으로 변환. 가장 가벼운 모드로 라우팅: `plot`(VLM만 사용하는 차트) < `generate`(다이어그램 한 장) < `batch`/`sweep`/`orchestrate`, 재생성 전 `evaluate`(VLM-as-Judge)와 `polish`로 개선. 프로바이더 무관, venue 스타일 팩(neurips/icml/acl/ieee). 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana` | 전체 |

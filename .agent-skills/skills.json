@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-07-12",
-  "skill_count": 152,
+  "skill_count": 153,
   "categories": {
     "planning-review": [
       "agentation",
@@ -160,6 +160,7 @@
     ],
     "creative-media": [
       "drawio",
+      "motion-previs-studio",
       "paperbanana",
       "remotion-video-production",
       "slides-grab",
