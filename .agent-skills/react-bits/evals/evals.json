@@ -1,0 +1,29 @@
+{
+  "name": "react-bits",
+  "evals": [
+    {
+      "description": "Verify that the agent correctly identifies the branch naming convention for react-bits",
+      "prompt": "I want to add a new text animation component to react-bits. What branch name should I use?",
+      "assertions": [
+        "feat/"
+      ]
+    },
+    {
+      "description": "Verify that the agent recommends the correct scaffolding command",
+      "prompt": "How do I scaffold a new component in react-bits?",
+      "assertions": [
+        "new:component",
+        "generateComponent.js"
+      ]
+    },
+    {
+      "description": "Verify that the agent warns about GSAP cleanup in React",
+      "prompt": "How should I write a GSAP animation inside a react-bits component to avoid memory leaks?",
+      "assertions": [
+        "useGSAP",
+        "cleanup",
+        "unmount"
+      ]
+    }
+  ]
+}

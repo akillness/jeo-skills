@@ -1,0 +1,18 @@
+N: react-bits
+D: Integrate, customize, and contribute to react-bits, the creative animated React component library.
+G: react-bits, animated components, gsap react, three fiber, tailwind v4, jsrepo
+U:
+- Install peer dependencies (gsap, motion, @react-three/fiber) in the target project before adding react-bits components.
+- Use useGSAP or clean up GSAP timelines inside useLayoutEffect to prevent memory leaks in React Strict Mode.
+- Scaffold new components using npm run new:component to maintain registry compatibility.
+- Follow the feat/<feature-name> branch naming convention for all pull requests.
+S:
+- Identify the target component and its peer dependencies from the react-bits catalog.
+- Install the required animation libraries (e.g., gsap, motion, @react-three/fiber) in the target project.
+- Copy the component source code or use jsrepo to import it.
+- Customize animation parameters (durations, eases, triggers) safely using React refs and lifecycle hooks.
+- Validate the integration by testing component mount/unmount cycles to ensure no animation memory leaks.
+R:
+- package.json: Project dependencies (GSAP, Three.js, Tailwind v4) and scripts
+- CONTRIBUTING.md: Branch naming conventions (feat/<feature-name>) and PR guidelines
+- jsrepo.config.ts: Registry configuration for component distribution
