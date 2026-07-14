@@ -1,0 +1,16 @@
+{
+  "schema_version": "2.0",
+  "source_of_truth": "typed_workflow_governance",
+  "run_root": "<repo-root>/.harness/abyssal-game-studio/<run-id>/",
+  "immutability": {"new_version_required": true, "append_only_decision_log": true},
+  "phases": [
+    {"id":"P0","depends_on":[],"requires":["raw_intake","constraints"],"outputs":["production_brief","task_manifest","research_question","player_fantasy","product_constraints","systems_goals","technical_constraints"],"parallel_tasks":[],"sequence":["derive_production_brief","derive_task_manifest","derive_research_question","derive_player_fantasy","derive_product_constraints","derive_systems_goals","derive_technical_constraints"]},
+    {"id":"P1","depends_on":["P0"],"requires":["production_brief","task_manifest","research_question","player_fantasy"],"outputs":["survey_decision_packet","comparables_table","claim_traceability","world_bible","interaction_map","readability_accessibility_spec"],"parallel_tasks":["survey","experience"],"sequence":["fan_out_survey_experience"]},
+    {"id":"P2","depends_on":["P1"],"requires":["evidence_ready_survey","product_constraints","systems_goals","world_bible"],"outputs":["segments_jtbd","value_pricing_catalog","monetization_policy","metrics_contract","rule_contract","economy_ledger","balance_model","simulator_evidence","narrative_rule_traceability"],"parallel_tasks":[],"sequence":["evidence_ready_survey_before_pm","immutable_pm_policy_before_systems","systems_rule_contract_before_narrative_traceability"]},
+    {"id":"P3","depends_on":["P2"],"requires":["immutable_rule_contract","immutable_interaction_map","technical_constraints"],"outputs":["architecture_contract","determinism_replay_contract","performance_evidence","risky_tech_validation"],"parallel_tasks":[],"sequence":["validate_engine_agnostic_implementation"]},
+    {"id":"P4","depends_on":["P3"],"requires":["engineering_evidence","immutable_rule_contract","experience_specifications","immutable_monetization_policy"],"outputs":["qa_iterations_01_20","defect_register","regression_matrix","qa_verdict"],"parallel_tasks":[],"sequence":["execute_adversarial_qa"]},
+    {"id":"P5","depends_on":["P4"],"requires":["qa_verdict","metrics_contract","performance_evidence"],"outputs":["telemetry_contract","rollback_runbook","release_readiness","feedback_intake"],"parallel_tasks":[],"sequence":["produce_telemetry_contract","produce_rollback_runbook","verify_release_readiness"]}
+  ],
+  "completion": {"requires_all":["qa_pass","ops_ready"],"blocks_on":["qa_fail","ops_stop_ship"],"veto_override_allowed":false},
+  "reentry": {"opens_only_after":"qa_verdict","max_cycles":2,"cycle":["qa_defect_evidence","director_single_owner_scope","new_immutable_artifact","qa_regression","operations_reassessment"],"on_exhausted":"close_milestone_start_new_run"}
+}

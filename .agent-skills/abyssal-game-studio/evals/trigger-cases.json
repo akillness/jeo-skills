@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "skill": "abyssal-game-studio",
+  "cases": [
+    {"id":"positive-01","should_trigger":true,"prompt":"Run a dark-fantasy RTS vertical slice from market research through QA and release operations.","expectation":"Starts the complete game-production harness."},
+    {"id":"positive-02","should_trigger":true,"prompt":"Design fair growth and counterplay for heroes and unlimited-growth characters in our strategy game.","expectation":"Routes through quantitative systems, economy, and QA gates."},
+    {"id":"positive-03","should_trigger":true,"prompt":"Before release, verify our game monetization has no P2W, transparent pricing, and a rollback plan.","expectation":"Routes through PM, QA, and live-operations gates."},
+    {"id":"positive-04","should_trigger":true,"prompt":"Research comparable dark-fantasy RTS games before creating evidence-grounded production milestones.","expectation":"Requires survey before BMAD-GDS production decisions."},
+    {"id":"positive-05","should_trigger":true,"prompt":"Run 20 adversarial playtest iterations across seven player perspectives for our strategy game.","expectation":"Applies the 20-loop QA contract and stop-ship gates."},
+    {"id":"positive-06","should_trigger":true,"prompt":"The engine is undecided; establish a game production system covering RTS input, pathing, and deterministic replay.","expectation":"Routes to the engine-agnostic harness."},
+    {"id":"positive-07","should_trigger":true,"prompt":"Put worldbuilding, VFX readability, accessibility, and economy balance under one verified game-production workflow.","expectation":"Routes to experience, systems, and QA artifact contracts."},
+    {"id":"positive-08","should_trigger":true,"prompt":"Ensure unlimited-growth characters cannot dominate the meta by validating p50/p90 progression and economy sources/sinks.","expectation":"Routes to systems economy and QA gates."},
+    {"id":"positive-09","should_trigger":true,"prompt":"Create a production harness that sends QA failures into bounded producer review without violating vetoes.","expectation":"Applies immutable artifacts and bounded QA re-entry."},
+    {"id":"positive-10","should_trigger":true,"prompt":"Coordinate research, monetization, implementation, red-team testing, and rollback for a live-service game.","expectation":"Starts the full game-studio harness."},
+    {"id":"negative-01","should_trigger":false,"prompt":"Fix this TypeScript null-handling bug.","expectation":"Routes to general debugging."},
+    {"id":"negative-02","should_trigger":false,"prompt":"Find the first compiler error in this Unity Editor build log.","expectation":"Routes to game build-log triage."},
+    {"id":"negative-03","should_trigger":false,"prompt":"How do I unwrap UVs for this Blender character model?","expectation":"Routes to 3D-production help."},
+    {"id":"negative-04","should_trigger":false,"prompt":"Write three Steam capsule taglines for our game.","expectation":"Routes to store or marketing work."},
+    {"id":"negative-05","should_trigger":false,"prompt":"Show GDScript that plays a button-click sound in Godot.","expectation":"Routes to a narrow engine implementation task."},
+    {"id":"negative-06","should_trigger":false,"prompt":"Recommend lunch for today.","expectation":"Handles as general conversation."},
+    {"id":"negative-07","should_trigger":false,"prompt":"Write a PostgreSQL migration that adds an index.","expectation":"Routes to database work."},
+    {"id":"negative-08","should_trigger":false,"prompt":"Brainstorm five horror-game ideas.","expectation":"Routes to initial ideation."},
+    {"id":"negative-09","should_trigger":false,"prompt":"Analyze an Unreal GPU frame-time profiler capture.","expectation":"Routes to the game performance profiler."},
+    {"id":"negative-10","should_trigger":false,"prompt":"Prioritize existing playtest survey responses.","expectation":"Routes to game-demo feedback triage."}
+  ]
+}

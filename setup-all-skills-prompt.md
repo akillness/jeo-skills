@@ -2,7 +2,7 @@
 
 > **For AI Agents**: Read this file in full, then execute all steps without asking for further confirmation. Default installation is **full** — only skip steps if the user explicitly requests "minimal" or "core only."
 
-> **CRITICAL — Preserve Existing Skills**: This installation MUST NOT delete or remove any skills that were not installed by this guide. Only add new skills or overwrite/update skills from this repository. Never run `skills remove`, `skills clear`, `skills reset`, or any destructive command. If a skill already exists, update it in place.
+> **CRITICAL — Preserve Existing Skills**: This guide never deletes unowned skills or directories. It only requests selected repository skills be added or updated; any existing non-target platform copies are reported for manual resolution. Never run `skills remove`, `skills clear`, `skills reset`, or an unproven destructive command.
 
 > **CRITICAL — No Duplicate Platform Exposure**: Platform-specific skills (`omc`, `ohmg`, `omx`) MUST only be linked to their target agent(s). Use `-a` to target specific agents — never use `-a '*'` for platform-specific skills.
 
@@ -104,16 +104,31 @@ fi
 echo ""
 echo "Target agents: $DETECTED_AGENTS"
 
-# Snapshot existing skills BEFORE installation (for preservation check)
+# Snapshot existing skills BEFORE installation (for preservation check).
+# Keep snapshots in one private directory so a concurrent run or a malicious /tmp symlink
+# cannot redirect a later write. Run the installation steps in the same shell to retain it.
 echo ""
 echo "=== Existing Skills (will be preserved) ==="
+_JEO_TMP_BASE="${TMPDIR:-/tmp}"
+JEO_SKILLS_INSTALL_TMP_DIR="$(mktemp -d "${_JEO_TMP_BASE%/}/jeo-skills-install.XXXXXX")" || {
+  echo "❌ Unable to create a secure installation snapshot directory; refusing installation" >&2
+  exit 1
+}
+if ! chmod 700 "$JEO_SKILLS_INSTALL_TMP_DIR" || ! printf '%s\n' 'jeo-skills installation snapshot' >"$JEO_SKILLS_INSTALL_TMP_DIR/.owner"; then
+  rm -rf "$JEO_SKILLS_INSTALL_TMP_DIR"
+  echo "❌ Unable to secure the installation snapshot directory; refusing installation" >&2
+  exit 1
+fi
+export JEO_SKILLS_INSTALL_TMP_DIR
+SKILLS_BEFORE_FILE="$JEO_SKILLS_INSTALL_TMP_DIR/skills-before.txt"
+SKILLS_AFTER_FILE="$JEO_SKILLS_INSTALL_TMP_DIR/skills-after.txt"
 if [ -d "$SKILLS_ROOT" ]; then
-  ls "$SKILLS_ROOT" 2>/dev/null | sort > /tmp/skills_before.txt
-  cat /tmp/skills_before.txt
-  echo "($(wc -l < /tmp/skills_before.txt | tr -d ' ') skills found — none will be removed)"
+  ls "$SKILLS_ROOT" 2>/dev/null | sort >"$SKILLS_BEFORE_FILE"
+  cat "$SKILLS_BEFORE_FILE"
+  echo "($(wc -l < "$SKILLS_BEFORE_FILE" | tr -d ' ') skills found — none will be removed)"
 else
   echo "(skills directory not yet created)"
-  touch /tmp/skills_before.txt
+  : >"$SKILLS_BEFORE_FILE"
 fi
 
 # Ensure skills CLI is available
@@ -126,40 +141,105 @@ fi
 
 ---
 
-Step 1 — Install All 152 Skills (Batch)
+## Step 1 — Install Shared Skills (Batch)
 
-Install all skills to the global location, then link shared skills to all detected agents.
-Re-running this step safely overwrites existing skills (symlinks are updated in place).
+Install every shared skill in the live repository manifest to the global location and link it
+only to the agents detected in Step 0. Platform-specific skills (`omc`, `ohmg`, `omx`) are
+excluded here and installed only in Step 2.
 
-> **Do not skip Step 2** — it re-links platform-specific skills to their correct agents only.
+> **Do not skip Step 2** — it is the only step that installs platform-specific skills to their documented targets.
 
 ```bash
 # ────────────────────────────────────────────────────────
 # Flag reference:
 #   -g          : install to global location (~/.agents/skills/)
-#   -a <agents> : link to specific agents (comma-separated, or '*' for all)
-#   --skill <s> : select specific skills (comma-separated, or '*' for all)
+#   -a <agents> : link to specific agents (comma-separated)
+#   --skill <s> : select one skill; repeat the flag for each selected skill
 #   --yes       : skip interactive prompts
 #   --copy      : copy files instead of symlinks (robust overwrite)
 # ────────────────────────────────────────────────────────
 
-# Install ALL 152 skills to global store, link shared skills to all detected agents
-# --full-depth: discovers nested skills (7 skills require this to be found)
-# Platform-specific skills (omc, ohmg, omx) are re-targeted in Step 2
-skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
+# Fetch the fixed repository's live manifest and build repeated --skill arguments
+# for every shared skill. Node.js is already required by the skills CLI installed above.
+MANIFEST_URL="https://raw.githubusercontent.com/akillness/jeo-skills/main/.agent-skills/skills.json"
+_MANIFEST_FILE="$(mktemp -t jeo_skills_manifest.XXXXXX)" || {
+  echo "❌ Unable to create a secure temporary manifest file; refusing installation" >&2
+  exit 1
+}
+_SHARED_SKILLS_FILE="$(mktemp -t jeo_shared_skills.XXXXXX)" || {
+  echo "❌ Unable to create a secure temporary shared-skills file; refusing installation" >&2
+  rm -f "$_MANIFEST_FILE"
+  exit 1
+}
+
+if ! curl -fsSL "$MANIFEST_URL" -o "$_MANIFEST_FILE"; then
+  echo "❌ Unable to retrieve the live skills manifest: $MANIFEST_URL" >&2
+  rm -f "$_MANIFEST_FILE" "$_SHARED_SKILLS_FILE"
+  exit 1
+fi
+
+if ! node - "$_MANIFEST_FILE" >"$_SHARED_SKILLS_FILE" <<'NODE'
+const fs = require("fs");
+let manifest;
+try {
+  manifest = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
+} catch (error) {
+  console.error(`❌ Unable to parse skills manifest: ${error.message}`);
+  process.exit(1);
+}
+if (!Array.isArray(manifest.skills)) {
+  console.error("❌ skills manifest has no skills array");
+  process.exit(1);
+}
+const excluded = new Set(["omc", "ohmg", "omx"]);
+const shared = manifest.skills.map((skill) => skill && skill.name);
+if (shared.some((name) => typeof name !== "string" || !name)) {
+  console.error("❌ skills manifest contains a skill without a valid name");
+  process.exit(1);
+}
+if (new Set(shared).size !== shared.length) {
+  console.error("❌ skills manifest contains duplicate skill names");
+  process.exit(1);
+}
+const sharedSkills = shared.filter((name) => !excluded.has(name));
+if (sharedSkills.length === 0) {
+  console.error("❌ skills manifest produced no shared skills");
+  process.exit(1);
+}
+process.stdout.write(`${sharedSkills.join("\n")}\n`);
+NODE
+then
+  rm -f "$_MANIFEST_FILE" "$_SHARED_SKILLS_FILE"
+  exit 1
+fi
+
+SHARED_SKILL_ARGS=()
+while IFS= read -r skill; do
+  [ -n "$skill" ] && SHARED_SKILL_ARGS+=(--skill "$skill")
+done <"$_SHARED_SKILLS_FILE"
+rm -f "$_MANIFEST_FILE" "$_SHARED_SKILLS_FILE"
+
+if [ "${#SHARED_SKILL_ARGS[@]}" -eq 0 ]; then
+  echo "❌ Live manifest produced no shared skills; refusing an empty install" >&2
+  exit 1
+fi
+
+# --full-depth discovers nested skills. Platform-specific skills are excluded above.
+skills add -g "$REPO_URL" "${SHARED_SKILL_ARGS[@]}" -a "$DETECTED_AGENTS" --yes --copy --full-depth
 ```
 
 > **Global vs Project install — why skill files may be missing**
 >
-> **Global install** (`-g`): downloads all 147 skills from the GitHub repo into the agent's global
-> skills store (`~/.claude/skills/`, `~/.codex/skills/`, etc.). Requires `--full-depth` to discover
-> the 7 skills whose `SKILL.md` is nested in a subdirectory. Without this flag only ~120 skills
-> are found and linked.
+> **Step 1 global install** (`-g`): downloads every shared skill from the live manifest into
+> the selected detected agents' global skill stores. **Step 2** adds `omc`, `ohmg`, and `omx`
+> to their documented platform targets, so the two steps together install the complete manifest.
+> `--full-depth` remains required to discover the 7 skills whose `SKILL.md` is nested in a
+> subdirectory. Without it only ~120 skills are found and linked.
 >
 > **Project install** (`experimental_install` / `skills restore`): reads `skills-lock.json` in the
-> project root and restores **only the skills listed there** — not all 138. If `skills-lock.json`
-> contains only 10 entries (omc, ooo, ai-tool-compliance, llm-monitoring-dashboard, survey, harness,
-> deep-dive, deepinit, cli-anything, spec-stack) then only those 10 are restored regardless of how many are in the global store. To include more
+> project root and restores **only the skills listed there** — not the whole global catalog. If
+> `skills-lock.json` contains only 10 entries (omc, ooo, ai-tool-compliance, llm-monitoring-dashboard, survey, harness,
+> deep-dive, deepinit, cli-anything, spec-stack) then only those 10 are restored regardless of how many are globally installed. To include more
 > skills in a project install, add them to `skills-lock.json` first.
 >
 > **Root cause summary**:
@@ -175,7 +255,7 @@ skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 
 ---
 
-## Step 2 — Fix Platform-Specific Skill Links (Dedup)
+## Step 2 — Install Platform-Specific Skills and Audit Copies
 
 ### Vercel `skills` CLI scope map
 
@@ -187,12 +267,12 @@ skills add -g "$REPO_URL" --skill '*' -a '*' --yes --copy --full-depth
 | Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\` | `.claude\skills\`, `.agents\skills\` |
 | Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
 
-> **jeopi and jeo have no Vercel `skills` CLI agent id — and need none.** they natively
-> discovers skills from `~/.agents/skills/` (populated by Step 1) plus the
+> **jeopi and jeo have no Vercel `skills` CLI agent id — and need none.** They natively
+> discover skills from `~/.agents/skills/` (populated by Step 1) plus the
 > `.claude` / `.codex` / `.config/opencode` global dirs and their project-level
-> counterparts, so every skill installed above is already visible inside `jeopi` and `jeo`.
-> jeopi's own native roots are `~/.jeopi/agent/skills/` (global), and `.jeo` uses `~/.jeo/agent/skills/` (global). And
-> project counterparts like `.jeopi/skills/` and `.jeo/skills/`; pin a skill there only when you want it scoped to
+> counterparts, so every shared skill installed above is already visible inside `jeopi` and `jeo`.
+> jeopi's own native roots are `~/.jeopi/agent/skills/` (global), and `.jeo` uses `~/.jeo/agent/skills/` (global). Their
+> project counterparts are `.jeopi/skills/` and `.jeo/skills/`; pin a skill there only when you want it scoped to
 > jeopi or jeo alone:
 >
 > ```bash
@@ -210,91 +290,113 @@ Install the Claude-derived skills added to this repo:
 skills add -g "$REPO_URL" --skill deepinit --skill deep-dive -a claude-code --yes --copy --full-depth
 ```
 
-Platform-specific skills must only appear on their target agent(s).
-This step **re-links** them with correct `-a` targeting, replacing the `*` links from Step 1.
+Platform-specific skills are excluded from Step 1 and are installed here only to their
+documented target agents. Existing non-target copies are audited and reported below; this
+guide never deletes them.
 
 ```bash
 # ╔══════════════════════════════════════════════════════════════╗
 # ║  Platform Skill Mapping (from SKILL.md metadata)            ║
 # ║                                                              ║
 # ║  omc       → Claude Code only                               ║
-# ║  ohmg      → Gemini CLI (+ Antigravity)                     ║
+# ║  ohmg      → Gemini CLI + Antigravity                       ║
 # ║  omx       → Codex + Claude Code + Gemini CLI               ║
 # ╚══════════════════════════════════════════════════════════════╝
 
 # omc — Claude Code only
 skills add -g "$REPO_URL" --skill omc -a 'claude-code' --yes --copy
 
-# ohmg — Antigravity CLI
-# Binary: agy (canonical); some Linux distros also ship as 'antigravity' alias
-# skills CLI globalSkillsDir = ~/.gemini/antigravity/skills; detection requires `agy` or
-#   ~/.gemini/antigravity-cli/settings.json (config root for agy lifecycle hooks).
-# Older Vercel skills CLI versions reject `-a antigravity`; fall back to gemini-cli and
-# mirror the install into the antigravity skills dir so `agy` discovers it.
+# ohmg — Gemini CLI + Antigravity CLI
+# Install the documented Gemini CLI target first. Then use the native Antigravity agent
+# when supported; older skills CLI versions fall back to a guarded mirror.
+skills add -g "$REPO_URL" --skill ohmg -a 'gemini-cli' --yes --copy
 mkdir -p "$_HOME/.gemini/antigravity/skills"
 mkdir -p "$_HOME/.gemini/antigravity-cli/hooks"
+_OHMG_MIRROR="$_HOME/.gemini/antigravity/skills/ohmg"
+_OHMG_MARKER="$_OHMG_MIRROR/.jeo-skills-guide-owned"
 # Capture stderr so we can distinguish "unknown agent" rejection from real failures
 # (network / source / install errors) — the latter must surface, not silently fall back.
-_OHMG_ERR="$(mktemp -t ohmg_skills_err.XXXXXX 2>/dev/null || echo /tmp/ohmg_skills_err.$$)"
+if ! _OHMG_ERR="$(mktemp -t ohmg_skills_err.XXXXXX)"; then
+  echo "❌ Unable to create a secure temporary error file for the Antigravity install" >&2
+  exit 1
+fi
 if skills add -g "$REPO_URL" --skill ohmg -a 'antigravity' --yes --copy 2>"$_OHMG_ERR"; then
   rm -f "$_OHMG_ERR"
 elif grep -qiE 'unknown agent|invalid agent|unsupported agent|agent .* not (recognized|supported|found)' "$_OHMG_ERR"; then
-  echo "ℹ️  skills CLI does not recognize '-a antigravity' — using '-a gemini-cli' + refresh mirror"
+  echo "ℹ️  skills CLI does not recognize '-a antigravity' — preserving Gemini CLI install and using the guarded mirror fallback"
   rm -f "$_OHMG_ERR"
-  skills add -g "$REPO_URL" --skill ohmg -a 'gemini-cli' --yes --copy
-  if [ -d "$_HOME/.gemini/skills/ohmg" ]; then
-    # Refresh (not append) — older mirrors must not shadow the new install
-    rm -rf "$_HOME/.gemini/antigravity/skills/ohmg"
-    cp -R "$_HOME/.gemini/skills/ohmg" "$_HOME/.gemini/antigravity/skills/ohmg"
-    echo "✅ ohmg mirrored to $_HOME/.gemini/antigravity/skills/ohmg"
+  if [ ! -d "$_HOME/.gemini/skills/ohmg" ]; then
+    echo "❌ Gemini CLI ohmg source is missing; cannot create Antigravity fallback mirror" >&2
+    exit 1
+  elif [ -e "$_OHMG_MIRROR" ] || [ -L "$_OHMG_MIRROR" ]; then
+    if [ -f "$_OHMG_MARKER" ] && grep -qx 'jeo-skills guide-owned ohmg Antigravity mirror' "$_OHMG_MARKER"; then
+      rm -rf "$_OHMG_MIRROR"
+      if cp -R "$_HOME/.gemini/skills/ohmg" "$_OHMG_MIRROR"; then
+        printf '%s\n' 'jeo-skills guide-owned ohmg Antigravity mirror' >"$_OHMG_MARKER"
+        echo "✅ Refreshed guide-owned ohmg mirror at $_OHMG_MIRROR"
+      else
+        echo "❌ Failed to refresh the guide-owned Antigravity ohmg mirror" >&2
+        exit 1
+      fi
+    else
+      echo "⚠️  Preserved existing Antigravity ohmg copy at $_OHMG_MIRROR (no guide-owned provenance marker); resolve it manually if replacement is intended"
+    fi
+  else
+    if cp -R "$_HOME/.gemini/skills/ohmg" "$_OHMG_MIRROR"; then
+      printf '%s\n' 'jeo-skills guide-owned ohmg Antigravity mirror' >"$_OHMG_MARKER"
+      echo "✅ Created guide-owned ohmg mirror at $_OHMG_MIRROR"
+    else
+      echo "❌ Failed to create the Antigravity ohmg mirror" >&2
+      exit 1
+    fi
   fi
 else
   echo "❌ ohmg install failed (non-agent error):" >&2
   cat "$_OHMG_ERR" >&2
   rm -f "$_OHMG_ERR"
   # Do not mask network/source failures with a silent fallback
+  exit 1
 fi
 
-# omx — Codex CLI primary, also usable from Claude Code
+# omx — Codex CLI + Claude Code + Gemini CLI
 # NOTE: Codex CLI does NOT auto-load `~/.codex/skills/`. The omx skill ships its own
 # runtime via `omx setup` (Step 3g via oh-my-codex). Writing to ~/.codex/skills/ is
 # kept for parity with other agents but only takes effect through OMX's loader.
-skills add -g "$REPO_URL" --skill omx -a 'codex,claude-code' --yes --copy
+skills add -g "$REPO_URL" --skill omx -a 'codex,claude-code,gemini-cli' --yes --copy
 
-# ── Clean stale symlinks from non-target agents ──
+# ── Audit existing non-target platform copies without deleting them ──
 echo ""
-echo "=== Cleaning duplicate platform skill links ==="
+echo "=== Auditing non-target platform skill copies ==="
 
-cleanup_skill_link() {
+audit_platform_copy() {
   local skill="$1"; shift
   local allowed=("$@")
 
-  for agent_dir in "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/skills" "$_HOME/.codex/skills" "$_HOME/.gemini/antigravity/skills" "$_HOME/.config/opencode/skills"; do
-    local agent_name
-    case "$agent_dir" in
-      */.claude/*|*/Claude/*)         agent_name="claude-code" ;;
-      */.codex/*)                     agent_name="codex" ;;
-      */.gemini/antigravity/*)        agent_name="antigravity" ;;
-      */.config/opencode/*)           agent_name="opencode" ;;
-    esac
-
+  while IFS='|' read -r agent_name agent_dir; do
     local is_allowed=false
-    for a in "${allowed[@]}"; do
-      [[ "$a" == "$agent_name" ]] && is_allowed=true
+    local allowed_agent
+    for allowed_agent in "${allowed[@]}"; do
+      [[ "$allowed_agent" == "$agent_name" ]] && is_allowed=true
     done
 
-    if ! $is_allowed && [ -e "$agent_dir/$skill" ]; then
-      rm -rf "$agent_dir/$skill"
-      echo "  Removed $skill from $agent_name (not a target platform)"
+    if ! $is_allowed && { [ -e "$agent_dir/$skill" ] || [ -L "$agent_dir/$skill" ]; }; then
+      echo "⚠️  Existing non-target copy: $skill at $agent_dir/$skill ($agent_name). Preserved; resolve manually if it should be removed."
     fi
-  done
+  done <<EOF
+shared|$SKILLS_ROOT
+claude-code|${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/skills
+codex|$_HOME/.codex/skills
+gemini-cli|$_HOME/.gemini/skills
+antigravity|$_HOME/.gemini/antigravity/skills
+opencode|$_HOME/.config/opencode/skills
+EOF
 }
 
-cleanup_skill_link "omc"       "claude-code"
-cleanup_skill_link "ohmg"      "antigravity"
-cleanup_skill_link "omx"       "codex" "claude-code"
+audit_platform_copy "omc" "claude-code"
+audit_platform_copy "ohmg" "gemini-cli" "antigravity"
+audit_platform_copy "omx" "codex" "claude-code" "gemini-cli"
 
-echo "✅ Platform skill deduplication complete"
+echo "✅ Platform skill audit complete; no existing copies were deleted"
 ```
 
 ---
@@ -396,22 +498,46 @@ fi
 # NOT `~/.codex/mcp.json`. Earlier setup wrote a JSON file that Codex silently ignored,
 # so the `ooo` server never registered. Append a TOML block instead, idempotently.
 if command -v codex &>/dev/null; then
-  mkdir -p "$CODEX_MCP_DIR"
   CODEX_TOML="$CODEX_MCP_DIR/config.toml"
-  touch "$CODEX_TOML"
-  if ! grep -q '^\[mcp_servers\.ooo\]' "$CODEX_TOML" 2>/dev/null; then
-    {
-      printf '\n[mcp_servers.ooo]\n'
-      printf 'command = "ouroboros"\n'
-      printf 'args = ["mcp", "serve"]\n'
-    } >> "$CODEX_TOML"
-    echo "✅ ooo MCP registered with Codex ($CODEX_TOML)"
-  else
-    echo "ℹ️  ooo MCP already in $CODEX_TOML — skipping"
+  if ! command -v python3 &>/dev/null; then
+    echo "❌ python3 with tomllib is required to update Codex TOML safely" >&2; exit 1
   fi
-  # Remove obsolete JSON file from older installs (never read by Codex)
-  [ -f "$CODEX_MCP_DIR/mcp.json" ] && rm -f "$CODEX_MCP_DIR/mcp.json" \
-    && echo "🧹 Removed obsolete $CODEX_MCP_DIR/mcp.json (unused by Codex)"
+  if python3 - "$CODEX_TOML" "$CODEX_MCP_DIR/mcp.json" <<'PY'
+import os, pathlib, stat, sys, tempfile
+try: import tomllib
+except ImportError: raise SystemExit("❌ python3 tomllib is required to validate Codex config.toml")
+p, obsolete = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
+def state(q):
+    try: s=os.lstat(q)
+    except FileNotFoundError: return None
+    if stat.S_ISLNK(s.st_mode) or not stat.S_ISREG(s.st_mode): raise RuntimeError(f"refusing non-regular managed file: {q}")
+    return s
+old=state(p); source=p.read_text(encoding="utf-8") if old else ""
+if "[mcp_servers.ooo]" not in source:
+    rendered=source.rstrip("\n")+'\n\n[mcp_servers.ooo]\ncommand = "ouroboros"\nargs = ["mcp", "serve"]\n'
+    tomllib.loads(rendered); p.parent.mkdir(parents=True, exist_ok=True)
+    fd,name=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent); tmp=pathlib.Path(name)
+    try:
+        with os.fdopen(fd,"w",encoding="utf-8") as out: out.write(rendered);out.flush();os.fsync(out.fileno())
+        os.chmod(tmp,stat.S_IMODE(old.st_mode) if old else 0o600); tomllib.loads(tmp.read_text(encoding="utf-8"))
+        now=state(p)
+        if (old is None)!=(now is None): raise RuntimeError("Codex config changed before replacement")
+        os.replace(tmp,p)
+    except Exception:
+        try: tmp.unlink()
+        except FileNotFoundError: pass
+        raise
+old_obsolete=state(obsolete)
+if old_obsolete:
+    now=state(obsolete)
+    if now is None: raise RuntimeError("obsolete Codex config disappeared before removal")
+    os.unlink(obsolete)
+PY
+  then
+    echo "✅ ooo MCP ensured in Codex ($CODEX_TOML)"
+  else
+    exit 1
+  fi
 fi
 # ── Integrity guard: repair Codex config.toml if a stray root-level
 # `hooks = <bool>` line (written before any [table] header — e.g. by an
@@ -420,11 +546,24 @@ fi
 # hashes. Symptom on next `codex` launch:
 #   "cannot extend value of type boolean with a dotted key"
 # Safe/idempotent: no-ops on an already-valid file; backs up before writing.
-if [ -f "$CODEX_TOML" ] && command -v python3 &>/dev/null; then
+if [ -n "${CODEX_TOML:-}" ] && [ -L "$CODEX_TOML" ]; then
+  echo "❌ Codex config is a symlink; refusing to repair its managed target: $CODEX_TOML" >&2
+  exit 1
+fi
+if [ -n "${CODEX_TOML:-}" ] && [ -f "$CODEX_TOML" ] && command -v python3 &>/dev/null; then
   python3 - "$CODEX_TOML" <<'PY'
-import re, sys, shutil, datetime, pathlib
+import os, pathlib, re, stat, sys, tempfile
 path = pathlib.Path(sys.argv[1])
-text = path.read_text(encoding="utf-8")
+def fail(message):
+    print(f"❌ {message}", file=sys.stderr)
+    raise SystemExit(1)
+if path.is_symlink():
+    fail(f"Codex config is a symlink; refusing to repair its managed target: {path}")
+try:
+    text = path.read_text(encoding="utf-8")
+    mode = stat.S_IMODE(path.stat().st_mode)
+except OSError as exc:
+    fail(f"Unable to read Codex config; leaving {path} unchanged: {exc}")
 try:
     import tomllib as _toml
 except ImportError:
@@ -432,23 +571,26 @@ except ImportError:
         import tomli as _toml
     except ImportError:
         _toml = None
-def parses_ok(s):
-    if _toml is None:
-        return True
+if _toml is None:
+    fail("python3 tomllib (or tomli) is required to validate Codex TOML before repair")
+def parses_ok(value):
     try:
-        _toml.loads(s); return True
+        _toml.loads(value)
+        return True
     except Exception:
         return False
 if parses_ok(text):
     sys.exit(0)
-lines = text.splitlines(keepends=True)
 fixed, in_table, removed = [], False, 0
-for line in lines:
+for line in text.splitlines(keepends=True):
     stripped = line.strip()
     if stripped.startswith("[") and not stripped.startswith("[["):
-        in_table = True; fixed.append(line); continue
+        in_table = True
+        fixed.append(line)
+        continue
     if not in_table and re.match(r'^\s*hooks\s*=\s*(true|false)\s*(#.*)?$', line):
-        removed += 1; continue
+        removed += 1
+        continue
     fixed.append(line)
 repaired = "".join(fixed)
 if removed:
@@ -457,15 +599,49 @@ if removed:
             repaired = re.sub(r'(\[features\]\s*\n)', r'\1hooks = true\n', repaired, count=1)
     else:
         repaired = repaired.rstrip("\n") + "\n\n[features]\nhooks = true\n"
-
-if removed and parses_ok(repaired):
-    backup = path.with_name(path.name + f".bak.{datetime.datetime.now():%Y%m%d%H%M%S}")
-    shutil.copy2(path, backup)
-    path.write_text(repaired, encoding="utf-8")
-    print(f"🧹 codex config.toml: removed {removed} conflicting root-level 'hooks' line(s) — backup: {backup.name}")
-elif not parses_ok(repaired):
-    print(f"⚠️  codex config.toml still fails to parse — inspect manually: {path}", file=sys.stderr)
+if not removed or not parses_ok(repaired):
+    fail(f"Codex config still fails to parse; leaving {path} unchanged")
+tmp_path = None
+try:
+    fd, tmp_name = tempfile.mkstemp(prefix=f".{path.name}.tmp.", dir=path.parent)
+    tmp_path = pathlib.Path(tmp_name)
+    with os.fdopen(fd, "w", encoding="utf-8") as tmp:
+        tmp.write(repaired)
+        tmp.flush()
+        os.fsync(tmp.fileno())
+    os.chmod(tmp_path, mode)
+    current = os.lstat(path)
+    if stat.S_ISLNK(current.st_mode) or not stat.S_ISREG(current.st_mode):
+        raise RuntimeError("Codex config changed type before backup")
+    backup_fd, backup_name = tempfile.mkstemp(prefix=f".{path.name}.bak.", dir=path.parent)
+    backup = pathlib.Path(backup_name)
+    try:
+        if not stat.S_ISREG(os.fstat(backup_fd).st_mode):
+            raise RuntimeError("secure backup is not a regular file")
+        source_fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        try:
+            if not stat.S_ISREG(os.fstat(source_fd).st_mode):
+                raise RuntimeError("Codex config changed before backup copy")
+            while chunk := os.read(source_fd, 65536): os.write(backup_fd, chunk)
+            os.fsync(backup_fd)
+        finally: os.close(source_fd)
+    finally: os.close(backup_fd)
+    current = os.lstat(path)
+    if stat.S_ISLNK(current.st_mode) or not stat.S_ISREG(current.st_mode):
+        raise RuntimeError("Codex config changed type before replacement")
+    os.replace(tmp_path, path)
+except Exception as exc:
+    if tmp_path is not None:
+        try:
+            tmp_path.unlink()
+        except FileNotFoundError:
+            pass
+    fail(f"Unable to repair Codex config; leaving {path} unchanged: {exc}")
+print(f"🧹 codex config.toml: removed {removed} conflicting root-level 'hooks' line(s) — backup: {backup.name}")
 PY
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
 fi
 
 
@@ -650,19 +826,35 @@ if command -v claude &>/dev/null; then
   echo "✅ semble MCP registered with Claude Code"
 fi
 
-# Register semble MCP with Codex via config.toml (same constraint as ooo: codex reads TOML, not JSON)
+# Register semble MCP with Codex through a validated, same-parent TOML replacement.
 if command -v codex &>/dev/null; then
-  mkdir -p "$_HOME/.codex"
   CODEX_TOML="$_HOME/.codex/config.toml"
-  touch "$CODEX_TOML"
-  if ! grep -q '^\[mcp_servers\.semble\]' "$CODEX_TOML" 2>/dev/null; then
-    {
-      printf '\n[mcp_servers.semble]\n'
-      printf 'command = "uvx"\n'
-      printf 'args = ["--from", "semble[mcp]", "semble"]\n'
-    } >> "$CODEX_TOML"
-    echo "✅ semble MCP registered with Codex ($CODEX_TOML)"
-  fi
+  if ! command -v python3 &>/dev/null; then echo "❌ python3 tomllib is required to update Codex settings safely" >&2; exit 1; fi
+  if python3 - "$CODEX_TOML" <<'PY'
+import os, pathlib, stat, sys, tempfile
+try: import tomllib
+except ImportError: raise SystemExit("❌ python3 tomllib is required to validate Codex config.toml")
+p=pathlib.Path(sys.argv[1])
+try: old=os.lstat(p)
+except FileNotFoundError: old=None
+if old and (stat.S_ISLNK(old.st_mode) or not stat.S_ISREG(old.st_mode)): raise SystemExit(f"❌ refusing non-regular Codex config: {p}")
+text=p.read_text(encoding="utf-8") if old else ""
+if "[mcp_servers.semble]" not in text:
+    rendered=text.rstrip("\n")+'\n\n[mcp_servers.semble]\ncommand = "uvx"\nargs = ["--from", "semble[mcp]", "semble"]\n'
+    tomllib.loads(rendered); p.parent.mkdir(parents=True,exist_ok=True)
+    fd,name=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent); tmp=pathlib.Path(name)
+    try:
+        with os.fdopen(fd,"w",encoding="utf-8") as out: out.write(rendered);out.flush();os.fsync(out.fileno())
+        os.chmod(tmp,stat.S_IMODE(old.st_mode) if old else 0o600); tomllib.loads(tmp.read_text(encoding="utf-8"))
+        now=os.lstat(p) if p.exists() or p.is_symlink() else None
+        if (old is None and now is not None) or (old and (stat.S_ISLNK(now.st_mode) or not stat.S_ISREG(now.st_mode))): raise RuntimeError("Codex config changed before replacement")
+        os.replace(tmp,p)
+    except Exception:
+        try: tmp.unlink()
+        except FileNotFoundError: pass
+        raise
+PY
+  then echo "✅ semble MCP ensured in Codex ($CODEX_TOML)"; else exit 1; fi
 fi
 # ── Integrity guard: repair Codex config.toml if a stray root-level
 # `hooks = <bool>` line (written before any [table] header — e.g. by an
@@ -671,11 +863,24 @@ fi
 # hashes. Symptom on next `codex` launch:
 #   "cannot extend value of type boolean with a dotted key"
 # Safe/idempotent: no-ops on an already-valid file; backs up before writing.
-if [ -f "$CODEX_TOML" ] && command -v python3 &>/dev/null; then
+if [ -n "${CODEX_TOML:-}" ] && [ -L "$CODEX_TOML" ]; then
+  echo "❌ Codex config is a symlink; refusing to repair its managed target: $CODEX_TOML" >&2
+  exit 1
+fi
+if [ -n "${CODEX_TOML:-}" ] && [ -f "$CODEX_TOML" ] && command -v python3 &>/dev/null; then
   python3 - "$CODEX_TOML" <<'PY'
-import re, sys, shutil, datetime, pathlib
+import os, pathlib, re, stat, sys, tempfile
 path = pathlib.Path(sys.argv[1])
-text = path.read_text(encoding="utf-8")
+def fail(message):
+    print(f"❌ {message}", file=sys.stderr)
+    raise SystemExit(1)
+if path.is_symlink():
+    fail(f"Codex config is a symlink; refusing to repair its managed target: {path}")
+try:
+    text = path.read_text(encoding="utf-8")
+    mode = stat.S_IMODE(path.stat().st_mode)
+except OSError as exc:
+    fail(f"Unable to read Codex config; leaving {path} unchanged: {exc}")
 try:
     import tomllib as _toml
 except ImportError:
@@ -683,23 +888,26 @@ except ImportError:
         import tomli as _toml
     except ImportError:
         _toml = None
-def parses_ok(s):
-    if _toml is None:
-        return True
+if _toml is None:
+    fail("python3 tomllib (or tomli) is required to validate Codex TOML before repair")
+def parses_ok(value):
     try:
-        _toml.loads(s); return True
+        _toml.loads(value)
+        return True
     except Exception:
         return False
 if parses_ok(text):
     sys.exit(0)
-lines = text.splitlines(keepends=True)
 fixed, in_table, removed = [], False, 0
-for line in lines:
+for line in text.splitlines(keepends=True):
     stripped = line.strip()
     if stripped.startswith("[") and not stripped.startswith("[["):
-        in_table = True; fixed.append(line); continue
+        in_table = True
+        fixed.append(line)
+        continue
     if not in_table and re.match(r'^\s*hooks\s*=\s*(true|false)\s*(#.*)?$', line):
-        removed += 1; continue
+        removed += 1
+        continue
     fixed.append(line)
 repaired = "".join(fixed)
 if removed:
@@ -708,30 +916,74 @@ if removed:
             repaired = re.sub(r'(\[features\]\s*\n)', r'\1hooks = true\n', repaired, count=1)
     else:
         repaired = repaired.rstrip("\n") + "\n\n[features]\nhooks = true\n"
-
-if removed and parses_ok(repaired):
-    backup = path.with_name(path.name + f".bak.{datetime.datetime.now():%Y%m%d%H%M%S}")
-    shutil.copy2(path, backup)
-    path.write_text(repaired, encoding="utf-8")
-    print(f"🧹 codex config.toml: removed {removed} conflicting root-level 'hooks' line(s) — backup: {backup.name}")
-elif not parses_ok(repaired):
-    print(f"⚠️  codex config.toml still fails to parse — inspect manually: {path}", file=sys.stderr)
+if not removed or not parses_ok(repaired):
+    fail(f"Codex config still fails to parse; leaving {path} unchanged")
+tmp_path = None
+try:
+    fd, tmp_name = tempfile.mkstemp(prefix=f".{path.name}.tmp.", dir=path.parent)
+    tmp_path = pathlib.Path(tmp_name)
+    with os.fdopen(fd, "w", encoding="utf-8") as tmp:
+        tmp.write(repaired)
+        tmp.flush()
+        os.fsync(tmp.fileno())
+    os.chmod(tmp_path, mode)
+    current = os.lstat(path)
+    if stat.S_ISLNK(current.st_mode) or not stat.S_ISREG(current.st_mode): raise RuntimeError("Codex config changed type before backup")
+    backup_fd, backup_name = tempfile.mkstemp(prefix=f".{path.name}.bak.", dir=path.parent); backup = pathlib.Path(backup_name)
+    try:
+        if not stat.S_ISREG(os.fstat(backup_fd).st_mode): raise RuntimeError("secure backup is not regular")
+        source_fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        try:
+            if not stat.S_ISREG(os.fstat(source_fd).st_mode): raise RuntimeError("Codex config changed before backup copy")
+            while chunk := os.read(source_fd, 65536): os.write(backup_fd, chunk)
+            os.fsync(backup_fd)
+        finally: os.close(source_fd)
+    finally: os.close(backup_fd)
+    current = os.lstat(path)
+    if stat.S_ISLNK(current.st_mode) or not stat.S_ISREG(current.st_mode): raise RuntimeError("Codex config changed type before replacement")
+    os.replace(tmp_path, path)
+except Exception as exc:
+    if tmp_path is not None:
+        try:
+            tmp_path.unlink()
+        except FileNotFoundError:
+            pass
+    fail(f"Unable to repair Codex config; leaving {path} unchanged: {exc}")
+print(f"🧹 codex config.toml: removed {removed} conflicting root-level 'hooks' line(s) — backup: {backup.name}")
 PY
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
 fi
 
 
-# Register semble MCP with Gemini CLI via settings.json (idempotent jq merge) —
-# keeps MCP parity with Claude/Codex on machines where the rtk Gemini hook is active
+# Register semble MCP with Gemini only when its existing settings file is safe
+# to read. Python's JSON parser validates both generated and existing content.
 GEMINI_JSON="$_HOME/.gemini/settings.json"
-if [ -f "$GEMINI_JSON" ] && command -v jq &>/dev/null; then
-  if jq -e '.mcpServers.semble' "$GEMINI_JSON" >/dev/null 2>&1; then
-    echo "ℹ️  semble MCP already registered with Gemini"
-  else
-    TMP_JSON="$(mktemp)"
-    jq '.mcpServers.semble = {"command":"uvx","args":["--from","semble[mcp]","semble"]}' \
-      "$GEMINI_JSON" > "$TMP_JSON" && mv "$TMP_JSON" "$GEMINI_JSON"
-    echo "✅ semble MCP registered with Gemini ($GEMINI_JSON)"
-  fi
+if [ -e "$GEMINI_JSON" ] || [ -L "$GEMINI_JSON" ]; then
+  if ! command -v python3 &>/dev/null; then echo "❌ python3 is required to update Gemini settings safely" >&2; exit 1; fi
+  if GEMINI_JSON="$GEMINI_JSON" python3 - <<'PY'
+import json, os, pathlib, stat, tempfile
+p=pathlib.Path(os.environ["GEMINI_JSON"])
+s=os.lstat(p)
+if stat.S_ISLNK(s.st_mode) or not stat.S_ISREG(s.st_mode): raise SystemExit(f"❌ refusing non-regular Gemini settings: {p}")
+data=json.loads(p.read_text(encoding="utf-8"))
+if "semble" not in data.get("mcpServers",{}):
+    data.setdefault("mcpServers",{})["semble"]={"command":"uvx","args":["--from","semble[mcp]","semble"]}
+    rendered=json.dumps(data,indent=2)+"\n"; json.loads(rendered)
+    fd,name=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent); tmp=pathlib.Path(name)
+    try:
+        with os.fdopen(fd,"w",encoding="utf-8") as out: out.write(rendered);out.flush();os.fsync(out.fileno())
+        os.chmod(tmp,stat.S_IMODE(s.st_mode)); json.loads(tmp.read_text(encoding="utf-8"))
+        now=os.lstat(p)
+        if stat.S_ISLNK(now.st_mode) or not stat.S_ISREG(now.st_mode): raise RuntimeError("Gemini settings changed before replacement")
+        os.replace(tmp,p)
+    except Exception:
+        try: tmp.unlink()
+        except FileNotFoundError: pass
+        raise
+PY
+  then echo "✅ semble MCP ensured in Gemini ($GEMINI_JSON)"; else exit 1; fi
 fi
 ```
 
@@ -756,18 +1008,11 @@ else.
 ```bash
 echo "=== RTK × semble compatibility wiring ==="
 _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
-
-# 1) Verify both tools coexist on PATH
 RTK_OK=0; SEMBLE_OK=0
-command -v rtk    &>/dev/null && RTK_OK=1
+command -v rtk &>/dev/null && RTK_OK=1
 command -v semble &>/dev/null && SEMBLE_OK=1
-[ "$RTK_OK" = 1 ]    && echo "✅ rtk on PATH ($(rtk --version 2>/dev/null | head -1))" \
-                     || echo "⚠️  rtk missing — re-run Step 3a"
-[ "$SEMBLE_OK" = 1 ] && echo "✅ semble on PATH" \
-                     || echo "⚠️  semble CLI missing — re-run Step 3f (MCP-only still works via uvx)"
-
-# 2) Inject the division-of-labor routing rule into each installed agent's
-#    instruction file (marker-guarded: safe to re-run, never duplicates)
+[ "$RTK_OK" = 1 ] && echo "✅ rtk on PATH ($(rtk --version 2>/dev/null | head -1))" || echo "⚠️  rtk missing — re-run Step 3a"
+[ "$SEMBLE_OK" = 1 ] && echo "✅ semble on PATH" || echo "⚠️  semble CLI missing — re-run Step 3f (MCP-only still works via uvx)"
 RULE_BLOCK='<!-- RTK-SEMBLE:START -->
 ## Code Search & Shell Output (rtk × semble division of labor)
 - **Code discovery** (where is X implemented, find a symbol, explore unfamiliar code):
@@ -781,24 +1026,44 @@ RULE_BLOCK='<!-- RTK-SEMBLE:START -->
 - If `semble` is not on PATH, substitute `uvx --from "semble[mcp]" semble`.
 - Check combined savings anytime with `rtk gain` and `semble savings`.
 <!-- RTK-SEMBLE:END -->'
-
-# NOTE: jeo (jeo-code) is handled separately in Step 3i — its single
-# ~/.agents/rules/jeo-tool-flow.md already carries the rtk×semble block, so it is
-# intentionally excluded here to avoid a duplicate rule surface.
+if ! command -v python3 &>/dev/null; then
+  echo "❌ python3 is required to update runtime instruction files safely" >&2
+  exit 1
+fi
 for f in "$_HOME/.claude/CLAUDE.md" "$_HOME/.codex/AGENTS.md" "$_HOME/.gemini/GEMINI.md" "$_HOME/.agents/AGENTS.md"; do
-  [ -f "$f" ] || continue
-  if grep -q 'RTK-SEMBLE:START' "$f" 2>/dev/null; then
-    echo "ℹ️  routing rule already present: $f"
+  if python3 - "$f" "$RULE_BLOCK" <<'PY'
+import os, pathlib, stat, sys, tempfile
+p, block = pathlib.Path(sys.argv[1]), sys.argv[2]
+try: before = os.lstat(p)
+except FileNotFoundError: raise SystemExit(0)
+if stat.S_ISLNK(before.st_mode) or not stat.S_ISREG(before.st_mode):
+    raise SystemExit(f"❌ refusing non-regular instruction file: {p}")
+with open(p, encoding="utf-8") as src: old = src.read()
+if "RTK-SEMBLE:START" in old: raise SystemExit(0)
+new = old.rstrip("\n") + "\n\n" + block + "\n"
+fd, name = tempfile.mkstemp(prefix=f".{p.name}.tmp.", dir=p.parent)
+tmp = pathlib.Path(name)
+try:
+    with os.fdopen(fd, "w", encoding="utf-8") as out:
+        out.write(new); out.flush(); os.fsync(out.fileno())
+    os.chmod(tmp, stat.S_IMODE(before.st_mode))
+    now = os.lstat(p)
+    if stat.S_ISLNK(now.st_mode) or not stat.S_ISREG(now.st_mode):
+        raise RuntimeError("instruction file changed type before replacement")
+    os.replace(tmp, p)
+except Exception:
+    try: tmp.unlink()
+    except FileNotFoundError: pass
+    raise
+PY
+  then
+    [ -e "$f" ] && echo "✅ routing rule ensured: $f"
   else
-    printf '\n%s\n' "$RULE_BLOCK" >> "$f"
-    echo "✅ routing rule injected: $f"
+    exit 1
   fi
 done
-
-# 3) Smoke check: rtk hook must leave semble invocations untouched
 if [ "$RTK_OK" = 1 ] && [ "$SEMBLE_OK" = 1 ]; then
-  semble --help >/dev/null 2>&1 && echo "✅ semble runs cleanly alongside the rtk hook" \
-    || echo "⚠️  semble failed under the rtk shell hook — run 'rtk proxy semble --help' to debug"
+  semble --help >/dev/null 2>&1 && echo "✅ semble runs cleanly alongside the rtk hook" || echo "⚠️  semble failed under the rtk shell hook — run 'rtk proxy semble --help' to debug"
 fi
 ```
 
@@ -836,7 +1101,19 @@ if command -v codex &>/dev/null; then
   if command -v npm &>/dev/null; then
     npm install -g oh-my-codex 2>&1 | tail -3
     if command -v omx &>/dev/null; then
-      omx setup
+      _OMX_CODEX_TOML="$_HOME/.codex/config.toml"
+      if [ -L "$_OMX_CODEX_TOML" ]; then
+        echo "❌ Codex config is a symlink; refusing to run OMX setup against its managed target: $_OMX_CODEX_TOML" >&2
+        exit 1
+      fi
+      if [ -e "$_OMX_CODEX_TOML" ] && [ ! -f "$_OMX_CODEX_TOML" ]; then
+        echo "❌ Codex config is not a regular file; refusing to run OMX setup: $_OMX_CODEX_TOML" >&2
+        exit 1
+      fi
+      if ! omx setup; then
+        echo "❌ Codex: oh-my-codex setup failed; configuration remains unresolved" >&2
+        exit 1
+      fi
       echo "✅ Codex: oh-my-codex (omx) configured — \$team / \$autopilot / \$ulw / \$ultraqa available"
       # ── Integrity guard: `omx setup` (external installer) has been observed
       # writing a stray root-level `hooks = <bool>` line to config.toml that
@@ -844,11 +1121,24 @@ if command -v codex &>/dev/null; then
       # hook-trust hashes — causing "cannot extend value of type boolean with
       # a dotted key" on the next `codex` launch. Repair immediately.
       _OMX_CODEX_TOML="$_HOME/.codex/config.toml"
+      if [ -L "$_OMX_CODEX_TOML" ]; then
+        echo "❌ Codex config is a symlink; refusing to repair its managed target: $_OMX_CODEX_TOML" >&2
+        exit 1
+      fi
       if [ -f "$_OMX_CODEX_TOML" ] && command -v python3 &>/dev/null; then
         python3 - "$_OMX_CODEX_TOML" <<'PY'
-import re, sys, shutil, datetime, pathlib
+import os, pathlib, re, stat, sys, tempfile
 path = pathlib.Path(sys.argv[1])
-text = path.read_text(encoding="utf-8")
+def fail(message):
+    print(f"❌ {message}", file=sys.stderr)
+    raise SystemExit(1)
+if path.is_symlink():
+    fail(f"Codex config is a symlink; refusing to repair its managed target: {path}")
+try:
+    text = path.read_text(encoding="utf-8")
+    mode = stat.S_IMODE(path.stat().st_mode)
+except OSError as exc:
+    fail(f"Unable to read Codex config; leaving {path} unchanged: {exc}")
 try:
     import tomllib as _toml
 except ImportError:
@@ -856,23 +1146,26 @@ except ImportError:
         import tomli as _toml
     except ImportError:
         _toml = None
-def parses_ok(s):
-    if _toml is None:
-        return True
+if _toml is None:
+    fail("python3 tomllib (or tomli) is required to validate Codex TOML before repair")
+def parses_ok(value):
     try:
-        _toml.loads(s); return True
+        _toml.loads(value)
+        return True
     except Exception:
         return False
 if parses_ok(text):
     sys.exit(0)
-lines = text.splitlines(keepends=True)
 fixed, in_table, removed = [], False, 0
-for line in lines:
+for line in text.splitlines(keepends=True):
     stripped = line.strip()
     if stripped.startswith("[") and not stripped.startswith("[["):
-        in_table = True; fixed.append(line); continue
+        in_table = True
+        fixed.append(line)
+        continue
     if not in_table and re.match(r'^\s*hooks\s*=\s*(true|false)\s*(#.*)?$', line):
-        removed += 1; continue
+        removed += 1
+        continue
     fixed.append(line)
 repaired = "".join(fixed)
 if removed:
@@ -881,15 +1174,44 @@ if removed:
             repaired = re.sub(r'(\[features\]\s*\n)', r'\1hooks = true\n', repaired, count=1)
     else:
         repaired = repaired.rstrip("\n") + "\n\n[features]\nhooks = true\n"
-
-if removed and parses_ok(repaired):
-    backup = path.with_name(path.name + f".bak.{datetime.datetime.now():%Y%m%d%H%M%S}")
-    shutil.copy2(path, backup)
-    path.write_text(repaired, encoding="utf-8")
-    print(f"🧹 codex config.toml: removed {removed} conflicting root-level 'hooks' line(s) — backup: {backup.name}")
-elif not parses_ok(repaired):
-    print(f"⚠️  codex config.toml still fails to parse — inspect manually: {path}", file=sys.stderr)
+if not removed or not parses_ok(repaired):
+    fail(f"Codex config still fails to parse; leaving {path} unchanged")
+tmp_path = None
+try:
+    fd, tmp_name = tempfile.mkstemp(prefix=f".{path.name}.tmp.", dir=path.parent)
+    tmp_path = pathlib.Path(tmp_name)
+    with os.fdopen(fd, "w", encoding="utf-8") as tmp:
+        tmp.write(repaired)
+        tmp.flush()
+        os.fsync(tmp.fileno())
+    os.chmod(tmp_path, mode)
+    current = os.lstat(path)
+    if stat.S_ISLNK(current.st_mode) or not stat.S_ISREG(current.st_mode): raise RuntimeError("Codex config changed type before backup")
+    backup_fd, backup_name = tempfile.mkstemp(prefix=f".{path.name}.bak.", dir=path.parent); backup = pathlib.Path(backup_name)
+    try:
+        if not stat.S_ISREG(os.fstat(backup_fd).st_mode): raise RuntimeError("secure backup is not regular")
+        source_fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        try:
+            if not stat.S_ISREG(os.fstat(source_fd).st_mode): raise RuntimeError("Codex config changed before backup copy")
+            while chunk := os.read(source_fd, 65536): os.write(backup_fd, chunk)
+            os.fsync(backup_fd)
+        finally: os.close(source_fd)
+    finally: os.close(backup_fd)
+    current = os.lstat(path)
+    if stat.S_ISLNK(current.st_mode) or not stat.S_ISREG(current.st_mode): raise RuntimeError("Codex config changed type before replacement")
+    os.replace(tmp_path, path)
+except Exception as exc:
+    if tmp_path is not None:
+        try:
+            tmp_path.unlink()
+        except FileNotFoundError:
+            pass
+    fail(f"Unable to repair Codex config; leaving {path} unchanged: {exc}")
+print(f"🧹 codex config.toml: removed {removed} conflicting root-level 'hooks' line(s) — backup: {backup.name}")
 PY
+      if [ $? -ne 0 ]; then
+        exit 1
+      fi
       fi
 
     else
@@ -953,70 +1275,49 @@ _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
 SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
 
 if command -v gjc &>/dev/null; then
-  GJC_AGENT_DIR="$_HOME/.gjc/agent"
-  GJC_CONFIG="$GJC_AGENT_DIR/config.yml"
-  mkdir -p "$GJC_AGENT_DIR/skills"
-
-  # Enable skill discovery and point customDirectories at the shared $SKILLS_ROOT.
-  # Prefer a YAML-aware idempotent merge (correctly fixes a pre-existing or disabled
-  # `skills:` block); fall back to a safe text append when PyYAML is unavailable.
-  if command -v python3 &>/dev/null && python3 -c "import yaml" 2>/dev/null; then
-    GJC_CONFIG="$GJC_CONFIG" SKILLS_ROOT="$SKILLS_ROOT" python3 - <<'PY'
-import os, pathlib, yaml
-cfg = pathlib.Path(os.environ["GJC_CONFIG"])
-root = os.environ["SKILLS_ROOT"]
-raw = cfg.read_text(encoding="utf-8") if cfg.exists() else ""
-data = yaml.safe_load(raw) if raw.strip() else {}
-if not isinstance(data, dict):
-    raise SystemExit(f"refusing to edit non-mapping YAML at {cfg}")
-sk = data.get("skills")
-if not isinstance(sk, dict):
-    sk = {}
-    data["skills"] = sk
-sk["enabled"] = True
-sk.setdefault("enablePiUser", True)
-sk.setdefault("enablePiProject", True)
-dirs = sk.get("customDirectories")
-if not isinstance(dirs, list):
-    dirs = []
-    sk["customDirectories"] = dirs
-if root not in dirs:
-    dirs.append(root)
-cfg.parent.mkdir(parents=True, exist_ok=True)
-cfg.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")
-print(f"\u2705 GJC skill discovery enabled (YAML merge) \u2192 {cfg}")
-print(f"   customDirectories includes \u2192 {root}")
-PY
-  elif [ -f "$GJC_CONFIG" ] && grep -q '^skills:' "$GJC_CONFIG"; then
-    if grep -qE '^[[:space:]]+enabled:[[:space:]]*true' "$GJC_CONFIG"; then
-      echo "ℹ️  skills block already enabled in $GJC_CONFIG — leaving as-is"
-    else
-      echo "⚠️  $GJC_CONFIG has a 'skills:' block but discovery may be OFF and PyYAML is unavailable."
-      echo "    Set 'skills.enabled: true' and add '$SKILLS_ROOT' under 'skills.customDirectories',"
-      echo "    or run: pip install pyyaml  &&  re-run Step 3h."
-    fi
-  else
-    touch "$GJC_CONFIG"
-    cat >>"$GJC_CONFIG" <<YAML
-
-skills:
-  enabled: true
-  enablePiUser: true
-  enablePiProject: true
-  customDirectories:
-    - $SKILLS_ROOT
-YAML
-    echo "✅ GJC skill discovery enabled (appended block) → $GJC_CONFIG"
-    echo "   customDirectories → $SKILLS_ROOT"
+  GJC_AGENT_DIR="$_HOME/.gjc/agent"; GJC_CONFIG="$GJC_AGENT_DIR/config.yml"
+  if ! command -v python3 &>/dev/null || ! python3 -c "import yaml" 2>/dev/null; then
+    echo "❌ PyYAML is required to parse and safely update $GJC_CONFIG; install pyyaml and re-run Step 3h" >&2
+    exit 1
   fi
-
+  if GJC_CONFIG="$GJC_CONFIG" SKILLS_ROOT="$SKILLS_ROOT" python3 - <<'PY'
+import os, pathlib, stat, tempfile, yaml
+p, root = pathlib.Path(os.environ["GJC_CONFIG"]), os.environ["SKILLS_ROOT"]
+try: old_stat = os.lstat(p)
+except FileNotFoundError: old_stat = None
+if old_stat and (stat.S_ISLNK(old_stat.st_mode) or not stat.S_ISREG(old_stat.st_mode)):
+    raise SystemExit(f"❌ refusing non-regular YAML config: {p}")
+raw = p.read_text(encoding="utf-8") if old_stat else ""
+data = yaml.safe_load(raw) if raw.strip() else {}
+if not isinstance(data, dict): raise SystemExit(f"❌ refusing non-mapping YAML at {p}")
+skills = data.setdefault("skills", {})
+if not isinstance(skills, dict): skills = data["skills"] = {}
+skills["enabled"] = True; skills.setdefault("enablePiUser", True); skills.setdefault("enablePiProject", True)
+dirs = skills.get("customDirectories")
+if not isinstance(dirs, list): dirs = skills["customDirectories"] = []
+if root not in dirs: dirs.append(root)
+rendered = yaml.safe_dump(data, sort_keys=False, allow_unicode=True)
+if not isinstance(yaml.safe_load(rendered), dict): raise RuntimeError("generated YAML failed validation")
+p.parent.mkdir(parents=True, exist_ok=True)
+fd, name = tempfile.mkstemp(prefix=f".{p.name}.tmp.", dir=p.parent); tmp = pathlib.Path(name)
+try:
+    with os.fdopen(fd, "w", encoding="utf-8") as out: out.write(rendered); out.flush(); os.fsync(out.fileno())
+    os.chmod(tmp, stat.S_IMODE(old_stat.st_mode) if old_stat else 0o600)
+    now = os.lstat(p) if p.exists() or p.is_symlink() else None
+    if (old_stat is None and now is not None) or (old_stat and (stat.S_ISLNK(now.st_mode) or not stat.S_ISREG(now.st_mode))): raise RuntimeError("config changed before replacement")
+    os.replace(tmp, p)
+except Exception:
+    try: tmp.unlink()
+    except FileNotFoundError: pass
+    raise
+PY
+  then
+    echo "✅ GJC skill discovery enabled (YAML merge) → $GJC_CONFIG"
+    echo "   customDirectories includes → $SKILLS_ROOT"
+  else
+    exit 1
+  fi
   echo "   Skills become reachable in GJC as /skill:<name> (skills.enableSkillCommands is on by default)."
-  echo "   Each SKILL.md must carry a frontmatter 'description' (GJC requires it); the jeo-skills set already does."
-  echo "ℹ️  Optional: run 'gjc setup defaults' once in a free shell to add GJC's bundled"
-  echo "    workflow skills (deep-interview, ralplan, team, ultragoal) under ~/.gjc/agent/skills/."
-  echo "ℹ️  Hook model: GJC native hooks are pre/post TOOL hooks under .gjc/hooks/{pre,post}/"
-  echo "    (user scope: ~/.gjc/agent/hooks/{pre,post}/). GJC has no UserPromptSubmit-style"
-  echo "    prompt-ingest hook, so the Knowledge Pipeline is applied to GJC via RULES.md in Step 6."
 else
   echo "ℹ️  gjc not installed — skipping Gajae Code skill discovery"
 fi
@@ -1048,78 +1349,60 @@ project tree):
 
 ```bash
 echo "=== Configuring jeo-code (jeo) rules + hooks ==="
-_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
-KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
-
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"; KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
 if command -v jeo &>/dev/null; then
-  # 1) Rules file in jeo's global rules dir (marker-guarded, never duplicates)
-  mkdir -p "$_HOME/.agents/rules"
-  JEO_RULES="$_HOME/.agents/rules/jeo-tool-flow.md"
-  if [ -f "$JEO_RULES" ] && grep -q 'JEO-TOOL-FLOW:START' "$JEO_RULES" 2>/dev/null; then
-    echo "ℹ️  jeo tool-flow rule already present: $JEO_RULES"
-  else
-    cat > "$JEO_RULES" <<RULES
-<!-- JEO-TOOL-FLOW:START -->
+  if ! command -v python3 &>/dev/null; then echo "❌ python3 is required to configure jeo safely" >&2; exit 1; fi
+  JEO_RULES="$_HOME/.agents/rules/jeo-tool-flow.md"; JEO_CONFIG="$_HOME/.jeo/config.json"
+  if JEO_RULES="$JEO_RULES" JEO_CONFIG="$JEO_CONFIG" KP_VAULT="$KP_VAULT" python3 - <<'PY'
+import json, os, pathlib, stat, tempfile
+rule, cfg, vault = pathlib.Path(os.environ["JEO_RULES"]), pathlib.Path(os.environ["JEO_CONFIG"]), os.environ["KP_VAULT"]
+def state(p):
+    try: s=os.lstat(p)
+    except FileNotFoundError: return None
+    if stat.S_ISLNK(s.st_mode) or not stat.S_ISREG(s.st_mode): raise RuntimeError(f"refusing non-regular managed file: {p}")
+    return s
+def replace(p, text, validate, backup=False):
+    old=state(p); existed=old is not None; p.parent.mkdir(parents=True,exist_ok=True); validate(text)
+    fd,name=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent); tmp=pathlib.Path(name)
+    try:
+        with os.fdopen(fd,"w",encoding="utf-8") as out: out.write(text);out.flush();os.fsync(out.fileno())
+        os.chmod(tmp,stat.S_IMODE(old.st_mode) if old else 0o600); validate(tmp.read_text(encoding="utf-8"))
+        now=state(p)
+        if (existed)!=(now is not None): raise RuntimeError("destination changed before replacement")
+        if backup and old:
+            bfd,bname=tempfile.mkstemp(prefix=f".{p.name}.bak.",dir=p.parent)
+            try:
+                if not stat.S_ISREG(os.fstat(bfd).st_mode): raise RuntimeError("backup is not regular")
+                sfd=os.open(p,os.O_RDONLY|getattr(os,"O_NOFOLLOW",0))
+                try:
+                    if not stat.S_ISREG(os.fstat(sfd).st_mode): raise RuntimeError("source changed before backup")
+                    while x:=os.read(sfd,65536): os.write(bfd,x)
+                    os.fsync(bfd)
+                finally: os.close(sfd)
+            finally: os.close(bfd)
+        if (existed)!=(state(p) is not None): raise RuntimeError("destination changed before rename")
+        os.replace(tmp,p)
+    except Exception:
+        try: tmp.unlink()
+        except FileNotFoundError: pass
+        raise
+rs=state(rule); old=rule.read_text(encoding="utf-8") if rs else ""
+if "JEO-TOOL-FLOW:START" not in old:
+    block="""<!-- JEO-TOOL-FLOW:START -->
 # Tool Flow (semble · rtk · graphify · llm-wiki · obsidian)
-
-Global always-applied rule for the \`jeo\` runtime (loaded from ~/.agents/rules/).
-
-## Code Search & Shell Output (rtk × semble)
-- Discovery: \`semble search "<query>" <path>\` FIRST; expand with \`semble find-related <file> <line> <path>\`. No grep+read of whole files for discovery. If semble is absent, use \`uvx --from "semble[mcp]" semble\`.
-- Exact match / all other shell: normal commands; the rtk shell hook compresses output (\`rtk git status\`, \`rtk grep\`, \`rtk read\`, \`rtk test\`, \`rtk lint\`). semble = what to read, rtk = how dense. Check with \`rtk gain\` / \`semble savings\`.
-
-## Durable Structure (graphify)
-- Read \`graphify-out/GRAPH_REPORT.md\` (then graph.html, graph.json) BEFORE rebuilding. The post-implementation hook runs \`graphify update .\` automatically; after code-deleting refactors run \`graphify update . --force\`.
-
-## Knowledge Pipeline (llm-wiki, auto-applied)
-- Turn outputs are captured into ~/vaults/llm-wiki/ by the post-turn hook and indexed by graphify. Read ~/vaults/llm-wiki/index.md first on follow-ups, then wiki/ pages; file durable findings into wiki/queries/ or wiki/reports/. raw/ stays immutable.
-
-## Desktop Persistence (obsidian)
-- Persist/hand off via the official obsidian CLI/URI (\`obsidian vault="<Vault>" read path="..."\`), deterministic vault= + path=; obsidian:// URI when the desktop CLI is unavailable.
+Discovery uses `semble search` first; normal shell work uses rtk output compression.
+Read graphify output and ~/vaults/llm-wiki/index.md before rebuilding or answering; persist durable findings via obsidian/llm-wiki.
 <!-- JEO-TOOL-FLOW:END -->
-RULES
-    echo "✅ jeo tool-flow rule written: $JEO_RULES"
-  fi
-
-  # 2) Hooks in the global jeo config (jq merge; preserves oauth/providers/etc.)
-  JEO_CONFIG="$_HOME/.jeo/config.json"
-  if command -v jq &>/dev/null && [ -f "$JEO_CONFIG" ]; then
-    if jq -e '.hooks.hooks[]? | select(.run | test("graphify update|ingest-prompt"))' "$JEO_CONFIG" >/dev/null 2>&1; then
-      echo "ℹ️  jeo hooks already configured — leaving as-is"
-    else
-      cp "$JEO_CONFIG" "$JEO_CONFIG.bak.$(date +%Y%m%d-%H%M%S)"
-      TMP_JEO="$(mktemp)"
-      jq --arg vault "$KP_VAULT" '.hooks = {
-        "enabled": true,
-        "hooks": [
-          { "event": "post-implementation",
-            "run": "command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true" },
-          { "event": "post-turn",
-            "run": ("LLM_WIKI_VAULT=\"" + $vault + "\" python3 \"" + $vault + "/scripts/ingest-prompt.py\" >/dev/null 2>&1 || true") }
-        ]
-      }' "$JEO_CONFIG" > "$TMP_JEO" && mv "$TMP_JEO" "$JEO_CONFIG" \
-        && echo "✅ jeo hooks registered (post-implementation: graphify, post-turn: llm-wiki)"
-    fi
-  elif [ ! -f "$JEO_CONFIG" ]; then
-    mkdir -p "$_HOME/.jeo"
-    cat > "$JEO_CONFIG" <<JSON
-{
-  "hooks": {
-    "enabled": true,
-    "hooks": [
-      { "event": "post-implementation", "run": "command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true" },
-      { "event": "post-turn", "run": "LLM_WIKI_VAULT=\"$KP_VAULT\" python3 \"$KP_VAULT/scripts/ingest-prompt.py\" >/dev/null 2>&1 || true" }
-    ]
-  }
-}
-JSON
-    echo "✅ jeo config created with hooks ($JEO_CONFIG)"
-  else
-    echo "⚠️  jq not found — manually set ~/.jeo/config.json hooks.enabled:true and add the two hooks"
-  fi
-else
-  echo "ℹ️  jeo not installed — skipping jeo-code rules + hooks wiring"
-fi
+"""
+    replace(rule, old.rstrip("\n")+"\n\n"+block, lambda _: None)
+cs=state(cfg); data=json.loads(cfg.read_text(encoding="utf-8")) if cs else {}
+hooks=data.setdefault("hooks",{}); hooks["enabled"]=True; hooks["hooks"]=[
+ {"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true"},
+ {"event":"post-turn","run":f'LLM_WIKI_VAULT="{vault}" python3 "{vault}/scripts/ingest-prompt.py" >/dev/null 2>&1 || true'}]
+replace(cfg,json.dumps(data,indent=2)+"\n",json.loads,backup=True)
+PY
+  then echo "✅ jeo tool-flow rule and hooks configured"; else exit 1; fi
+else echo "ℹ️  jeo not installed — skipping jeo-code rules + hooks wiring"; fi
 ```
 
 ---
@@ -1145,109 +1428,61 @@ to receive it.
 ```bash
 echo "=== Configuring pi (jeo-pi) rules + MCP ==="
 _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
-
 if command -v pi &>/dev/null && [ -d "$_HOME/.pi/agent" ]; then
-  # 1) Tool-flow rule in pi's global AGENTS.md (marker-guarded, never duplicates).
-  #    pi's resource loader reads AGENTS.md from the agent dir (~/.pi/agent) plus every
-  #    cwd ancestor, so this is the always-applied global surface.
-  PI_AGENTS="$_HOME/.pi/agent/AGENTS.md"
-  mkdir -p "$_HOME/.pi/agent"
-  touch "$PI_AGENTS"
-  if grep -q 'JEO-TOOL-FLOW:START' "$PI_AGENTS" 2>/dev/null; then
-    echo "ℹ️  pi tool-flow rule already present: $PI_AGENTS"
-  else
-    cat >> "$PI_AGENTS" <<'PIRULES'
-
-<!-- JEO-TOOL-FLOW:START -->
-# Tool Flow (semble · rtk · graphify · llm-wiki · obsidian)
-
-Global always-applied rule for the `pi` runtime (loaded from ~/.pi/agent/AGENTS.md).
-
-## Code Search & Shell Output (rtk × semble)
-- Discovery: `semble search "<query>" <path>` FIRST; expand with `semble find-related <file> <line> <path>`. No grep+read of whole files for discovery. If semble is absent, use `uvx --from "semble[mcp]" semble`.
-- Exact match / all other shell: normal commands; the rtk shell hook compresses output (`rtk git status`, `rtk grep`, `rtk read`, `rtk test`, `rtk lint`). semble = what to read, rtk = how dense.
-
-## Durable Structure (graphify)
-- Read `graphify-out/GRAPH_REPORT.md` (then graph.html, graph.json) BEFORE rebuilding. The jeo-pi tool-flow extension runs `graphify update .` automatically after edits; after code-deleting refactors run `graphify update . --force`.
-
-## Knowledge Pipeline (llm-wiki, auto-applied)
-- Turn outputs are captured into ~/vaults/llm-wiki/ by the jeo-pi tool-flow extension. Read ~/vaults/llm-wiki/index.md first on follow-ups, then wiki/ pages; file durable findings into wiki/queries/ or wiki/reports/. raw/ stays immutable.
-
-## Desktop Persistence (obsidian)
-- Persist/hand off via the official obsidian CLI/URI (`obsidian vault="<Vault>" read path="..."`), deterministic vault= + path=; obsidian:// URI when the desktop CLI is unavailable.
-<!-- JEO-TOOL-FLOW:END -->
-PIRULES
-    echo "✅ pi tool-flow rule written: $PI_AGENTS"
-  fi
-
-  # 2) Register semble MCP in pi's mcp.json (idempotent jq merge; preserves other servers).
-  PI_MCP="$_HOME/.pi/agent/mcp.json"
-  if command -v jq &>/dev/null; then
-    [ -f "$PI_MCP" ] || echo '{"mcpServers":{}}' > "$PI_MCP"
-    if jq -e '.mcpServers.semble' "$PI_MCP" >/dev/null 2>&1; then
-      echo "ℹ️  semble MCP already registered with pi"
-    else
-      TMP_PI="$(mktemp)"
-      jq '.mcpServers.semble = {"command":"uvx","args":["--from","semble[mcp]","semble"]}' \
-        "$PI_MCP" > "$TMP_PI" && mv "$TMP_PI" "$PI_MCP" \
-        && echo "✅ semble MCP registered with pi ($PI_MCP)"
-    fi
-  else
-    echo "⚠️  jq not found — manually add semble to $PI_MCP under .mcpServers"
-  fi
-else
-  echo "ℹ️  pi (jeo-pi) not installed — skipping pi rules + MCP wiring"
-fi
+  PI_AGENTS="$_HOME/.pi/agent/AGENTS.md"; PI_MCP="$_HOME/.pi/agent/mcp.json"
+  if ! command -v python3 &>/dev/null; then echo "❌ python3 is required to configure pi safely" >&2; exit 1; fi
+  if PI_AGENTS="$PI_AGENTS" PI_MCP="$PI_MCP" python3 - <<'PY'
+import json,os,pathlib,stat,tempfile
+def mutate(p,render,check):
+ try:s=os.lstat(p)
+ except FileNotFoundError:s=None
+ if s and (stat.S_ISLNK(s.st_mode) or not stat.S_ISREG(s.st_mode)):raise RuntimeError(f"refusing non-regular managed file: {p}")
+ old=p.read_text(encoding="utf-8") if s else "";new=render(old);check(new);p.parent.mkdir(parents=True,exist_ok=True);fd,n=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent);t=pathlib.Path(n)
+ try:
+  with os.fdopen(fd,"w",encoding="utf-8") as o:o.write(new);o.flush();os.fsync(o.fileno())
+  os.chmod(t,stat.S_IMODE(s.st_mode) if s else 0o600);check(t.read_text(encoding="utf-8"));now=os.lstat(p) if p.exists() or p.is_symlink() else None
+  if (s is None)!=(now is None) or now and (stat.S_ISLNK(now.st_mode) or not stat.S_ISREG(now.st_mode)):raise RuntimeError("destination changed before replacement")
+  os.replace(t,p)
+ except Exception:
+  try:t.unlink()
+  except FileNotFoundError:pass
+  raise
+rule,cfg=pathlib.Path(os.environ["PI_AGENTS"]),pathlib.Path(os.environ["PI_MCP"])
+mutate(rule,lambda x:x if "JEO-TOOL-FLOW:START" in x else x.rstrip("\n")+"\n\n<!-- JEO-TOOL-FLOW:START -->\n# Tool Flow (semble · rtk · graphify · llm-wiki · obsidian)\nUse semble for discovery and rtk for normal command output; read graphify and llm-wiki state first.\n<!-- JEO-TOOL-FLOW:END -->\n",lambda _:None)
+def mcp(x):
+ d=json.loads(x) if x else {};d.setdefault("mcpServers",{}).setdefault("semble",{"command":"uvx","args":["--from","semble[mcp]","semble"]});return json.dumps(d,indent=2)+"\n"
+mutate(cfg,mcp,json.loads)
+PY
+  then echo "✅ pi tool-flow rule and semble MCP configured"; else exit 1; fi
+else echo "ℹ️  pi (jeo-pi) not installed — skipping pi rules + MCP wiring"; fi
 ```
 ### 3k — jeopi (jeo-pi spec-first) config hooks
 
-jeopi, like jeo-code, needs hooks wired to trigger graphify and llm-wiki on every implementation and turn. This step registers those hooks in `~/.jeopi/config.json` (idempotent — skips if already present).
-
 ```bash
 echo "=== Configuring jeopi (jeo-pi spec-first) hooks ==="
-_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
-KP_VAULT="${KP_VAULT:-${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}}"
-
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"; KP_VAULT="${KP_VAULT:-${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}}"
 if command -v jeopi &>/dev/null || [ -d "$_HOME/.jeopi" ]; then
-  # Hooks in the global jeopi config (jq merge; preserves oauth/providers/etc.)
   JEOPI_CONFIG="$_HOME/.jeopi/config.json"
-  if command -v jq &>/dev/null && [ -f "$JEOPI_CONFIG" ]; then
-    if jq -e '.hooks.hooks[]? | select(.run | test("graphify update|ingest-prompt"))' "$JEOPI_CONFIG" >/dev/null 2>&1; then
-      echo "ℹ️  jeopi hooks already configured — leaving as-is"
-    else
-      cp "$JEOPI_CONFIG" "$JEOPI_CONFIG.bak.$(date +%Y%m%d-%H%M%S)"
-      TMP_JEOPI="$(mktemp)"
-      jq --arg vault "$KP_VAULT" '.hooks = {
-        "enabled": true,
-        "hooks": [
-          { "event": "post-implementation",
-            "run": "command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true" },
-          { "event": "post-turn",
-            "run": ("LLM_WIKI_VAULT=\"" + $vault + "\" python3 \"" + $vault + "/scripts/ingest-prompt.py\" >/dev/null 2>&1 || true") }
-        ]
-      }' "$JEOPI_CONFIG" > "$TMP_JEOPI" && mv "$TMP_JEOPI" "$JEOPI_CONFIG" \
-        && echo "✅ jeopi hooks registered (post-implementation: graphify, post-turn: llm-wiki)"
-    fi
-  elif [ ! -f "$JEOPI_CONFIG" ]; then
-    mkdir -p "$_HOME/.jeopi"
-    cat > "$JEOPI_CONFIG" <<JSON
-{
-  "hooks": {
-    "enabled": true,
-    "hooks": [
-      { "event": "post-implementation", "run": "command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true" },
-      { "event": "post-turn", "run": "LLM_WIKI_VAULT=\"$KP_VAULT\" python3 \"$KP_VAULT/scripts/ingest-prompt.py\" >/dev/null 2>&1 || true" }
-    ]
-  }
-}
-JSON
-    echo "✅ jeopi config created with hooks ($JEOPI_CONFIG)"
-  else
-    echo "⚠️  jq not found — manually set ~/.jeopi/config.json hooks.enabled:true and add the two hooks"
-  fi
-else
-  echo "ℹ️  jeopi not installed — skipping jeopi hooks wiring"
-fi
+  if ! command -v python3 &>/dev/null; then echo "❌ python3 is required to configure jeopi safely" >&2; exit 1; fi
+  if JEOPI_CONFIG="$JEOPI_CONFIG" KP_VAULT="$KP_VAULT" python3 - <<'PY'
+import json,os,pathlib,stat,tempfile
+p=pathlib.Path(os.environ["JEOPI_CONFIG"]);v=os.environ["KP_VAULT"]
+try:s=os.lstat(p)
+except FileNotFoundError:s=None
+if s and (stat.S_ISLNK(s.st_mode) or not stat.S_ISREG(s.st_mode)):raise SystemExit(f"❌ refusing non-regular jeopi config: {p}")
+d=json.loads(p.read_text(encoding="utf-8")) if s else {};d["hooks"]={"enabled":True,"hooks":[{"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true"},{"event":"post-turn","run":f'LLM_WIKI_VAULT="{v}" python3 "{v}/scripts/ingest-prompt.py" >/dev/null 2>&1 || true'}]};out=json.dumps(d,indent=2)+"\n";json.loads(out);p.parent.mkdir(parents=True,exist_ok=True);fd,n=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent);t=pathlib.Path(n)
+try:
+ with os.fdopen(fd,"w",encoding="utf-8") as o:o.write(out);o.flush();os.fsync(o.fileno())
+ os.chmod(t,stat.S_IMODE(s.st_mode) if s else 0o600);json.loads(t.read_text(encoding="utf-8"));now=os.lstat(p) if p.exists() or p.is_symlink() else None
+ if (s is None)!=(now is None) or now and (stat.S_ISLNK(now.st_mode) or not stat.S_ISREG(now.st_mode)):raise RuntimeError("jeopi config changed before replacement")
+ os.replace(t,p)
+except Exception:
+ try:t.unlink()
+ except FileNotFoundError:pass
+ raise
+PY
+  then echo "✅ jeopi hooks configured"; else exit 1; fi
+else echo "ℹ️  jeopi not installed — skipping jeopi hooks wiring"; fi
 ```
 
 ---
@@ -1286,11 +1521,19 @@ check_no_dup "ohmg" "$_HOME/.codex/skills"                        "codex"
 echo "✅ Platform dedup verified"
 
 # Preservation check
-if [ -f /tmp/skills_before.txt ] && [ -s /tmp/skills_before.txt ]; then
+if [ -n "${JEO_SKILLS_INSTALL_TMP_DIR:-}" ] \
+  && [ -f "$JEO_SKILLS_INSTALL_TMP_DIR/.owner" ] \
+  && grep -qx 'jeo-skills installation snapshot' "$JEO_SKILLS_INSTALL_TMP_DIR/.owner" \
+  && [ -f "$JEO_SKILLS_INSTALL_TMP_DIR/skills-before.txt" ]; then
+  SKILLS_BEFORE_FILE="$JEO_SKILLS_INSTALL_TMP_DIR/skills-before.txt"
+  SKILLS_AFTER_FILE="$JEO_SKILLS_INSTALL_TMP_DIR/skills-after.txt"
   echo ""
   echo "=== Preservation Check ==="
-  ls "$SKILLS_ROOT" 2>/dev/null | sort > /tmp/skills_after.txt
-  MISSING=$(comm -23 /tmp/skills_before.txt /tmp/skills_after.txt)
+  if ! ls "$SKILLS_ROOT" 2>/dev/null | sort >"$SKILLS_AFTER_FILE"; then
+    echo "❌ Unable to collect installed skills for preservation check" >&2
+    exit 1
+  fi
+  MISSING=$(comm -23 "$SKILLS_BEFORE_FILE" "$SKILLS_AFTER_FILE")
   if [ -z "$MISSING" ]; then
     echo "✅ All pre-existing skills preserved — nothing was removed"
   else
@@ -1298,7 +1541,10 @@ if [ -f /tmp/skills_before.txt ] && [ -s /tmp/skills_before.txt ]; then
     echo "$MISSING"
     echo "Restore: skills add -g <source> --skill <name> --yes --copy"
   fi
-  rm -f /tmp/skills_before.txt /tmp/skills_after.txt
+  rm -rf "$JEO_SKILLS_INSTALL_TMP_DIR"
+  unset JEO_SKILLS_INSTALL_TMP_DIR
+else
+  echo "⚠️  Preservation snapshot unavailable; run Step 0 and the final check in the same shell"
 fi
 
 # GJC (Gajae Code) skill-discovery check
@@ -1471,22 +1717,25 @@ If no → skip silently. Never re-ask.
 
 ---
 
-Skill Inventory (152 skills)
+Skill Inventory (161 skills)
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
 | **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, spec-kit *(GitHub Spec-Driven Development wrapper around `specify-cli` — install, bootstrap a project for 30+ supported agents, and drive `/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`; route vendor-neutral spec-first loops to `ooo`, packet-first BMAD/BMM routing to `bmad`, and review/approval to `plannotator`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit`)*, spec-stack *(composition wrapper for `spec-kit` × `ooo` × `cli-anything` — spec-kit writes the spec, ooo freezes it as an immutable seed with machine-checkable acceptance criteria and tool-naming constraints then loops until verification passes, cli-anything supplies agent-native CLI harnesses whose `--json` output is the evaluate-step evidence; three patterns (full-stack / loop-only / docs-only) with one-way spec → seed flow and explicit anti-patterns (two SSOTs, generate-before-search, seedless ralph, exit-code-only verification). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack`)*, omc, omx, autopilot, team, ultrawork, ultraqa, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, vibe-kanban, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
 | **Platform Setup** | omc *(Claude-first OMC router; maps `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` intents to OMX/OMA when cross-runtime parity is requested)* | claude-code |
-| **Platform Setup** | ohmg *(Gemini/Antigravity OMA harness; maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` while keeping `.agents` canonical)* | antigravity |
-| **Platform Setup** | omx *(Codex workflow layer with `$team`, `$autopilot`, `$ulw`/`$ultrawork`, and `$ultraqa` equivalents for Claude team/autopilot/ultrawork/ultraqa workflows)* | codex, claude-code |
+| **Platform Setup** | ohmg *(Gemini/Antigravity OMA harness; maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` while keeping `.agents` canonical)* | gemini-cli, antigravity |
+| **Platform Setup** | omx *(Codex workflow layer with `$team`, `$autopilot`, `$ulw`/`$ultrawork`, and `$ultraqa` equivalents for Claude team/autopilot/ultrawork/ultraqa workflows)* | codex, claude-code, gemini-cli |
 | **Planning & Review** | browser-harness *(self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode; replaces agent-browser; includes Claude-safe screenshot/PIL patch, agent-editable `agent_helpers.py`, domain skills, Browser Use Cloud)*, playwriter *(running-browser / authenticated Chrome reuse via CLI+MCP; route clean disposable checks to browser-harness)*, prompt-repetition *(decision-first prompt repetition for non-reasoning/lightweight models on long-context retrieval, options-first MCQ, or position-sensitive lookups; route broader context/retrieval fixes away instead of blanket auto-apply)*, skill-standardization *(SKILL.md validate/rewrite + canonical-vs-alias cleanup + repo-root validator / derived-surface sync for `skills.json`, README/setup, and `SKILL.toon`)*, skill-autoresearch *(repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces only when the core skill change is justified)* | All (`*`) |
 | **Agent Development** | microsoft-agent-framework *(enterprise-grade agent systems with Microsoft agent framework patterns — role separation, workflow control, policy enforcement)*, openai-agents-python *(multi-agent workflows with OpenAI Agents SDK — agents/tools/handoffs, guardrails, async pipelines)*, pydantic-ai *(typed LLM applications — schema-constrained outputs, tool integration, validation, dependency injection)*, cli-anything *(make any software agent-native via HKUDS CLI-Anything — install ready-made harnesses with the CLI-Hub package manager (`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), give agents the autonomous discovery meta-skill (`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), generate a new harness from any codebase/repo via the 7-phase `/cli-anything` pipeline on Claude Code / Codex / OpenCode / OpenClaw / Pi / Hermes / Qodercli / Copilot CLI, or iterate with `/cli-anything:refine`/`:test`/`:validate`; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs; routes agent-team architecture to `harness` and no-codebase GUI targets to `browser-harness`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything`)*, upskill *(wrap HKUDS UpSkill — capture Claude Code session failures, have a strong Teacher model draft a skill, validate it against a weak Student model in a closed Ralph Loop up to 3 rounds, then auto-serve validated skills so a cheap Flash model performs like a Pro model; Terminal-Bench 2.0: Flash+UpSkill beat Pro at 41% lower cost. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill upskill`)* | All (`*`) |
 | **Backend** | amrouter *(Self-hosted AI gateway — one endpoint, many providers with auto-fallback, cost tracking, OpenAI-compatible API)*, api-design *(contract-first API design / compatibility review)*, api-documentation *(developer-facing API docs anchor for reference portals / quickstarts / SDK-webhook guides / truthful examples / auth-error guidance)*, authentication-setup *(product-auth setup router for hosted/framework-native/platform-native auth, sessions/JWTs, org data boundaries, and enterprise SSO handoff; routes hardening to security-best-practices)*, backend-testing *(packet-first backend testing for coverage-plan, fixture/reset, contract/API protection, flake-stabilization, and local-vs-CI lane-split packets; routes policy to testing-strategies, API shape to api-design, and auth implementation to authentication-setup)*, database-schema-design *(packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible field decisions, and staged evolution; routes interface work to api-design, verification to backend-testing, and reporting/telemetry follow-through outward)*, payloadcms *(Payload CMS content/collection management — typed collections, access control, hooks, REST/GraphQL API, local API patterns)*, supabase-agent-skills *(Supabase full-stack patterns — Auth, Database, Storage, Edge Functions, Realtime, RLS policies, and migration workflows)* | All (`*`) |
+| **Backend** | colibri *(pure-C GLM-5.2 MoE inference engine for consumer hardware — build, model conversion, expert streaming/cache tuning, MTP speculative decoding, CPU/GPU inference, and API integration)* | All (`*`) |
 | **Design Tools** | stitch-skills *(Agent Skills for Stitch MCP — generate high-fidelity UI screens, multi-page websites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, Remotion walkthrough videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills`)*, compresso *(free offline desktop video/image compression via Tauri+React — batch compress, trim/split, convert, embed subtitles; uses FFmpeg/pngquant/jpegoptim/gifski. Install: `brew install --cask codeforreal1/tap/compresso`)*, open-design *(local-first open-source design tool — generate prototypes, decks, and media artifacts using installed coding agents; 72 built-in design systems, 5 visual directions, multi-format export HTML/PDF/PPTX/ZIP/Markdown, AI media via gpt-image-2 and Seedance 2.0. Plugin: `claude plugin marketplace add nexu-io/open-design`)* | All (`*`) |
 | **Creative Media** | drawio *(text-to-diagram + codebase-to-diagram via Agents365-ai/drawio-skill — editable `.drawio` exported to PNG/SVG/PDF/JPG through the native draw.io CLI, 6 presets ERD/UML/sequence/architecture/ML-DL/flowchart, 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/BPMN shapes, 321 AI/LLM logos, vision self-check + 5-round refinement; needs draw.io desktop CLI, optional Graphviz. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill drawio`)*, god-tibo-imagen *(AI image generation via Codex ChatGPT backend — zero deps, reuses `~/.codex/auth.json`, CLI `gti`, Node.js library, Python SDK, reference image inputs, dry-run mode. Plugin: `claude plugin marketplace add NomaDamas/god-tibo-imagen`)* | All (`*`) |
+| **Creative Media** | motion-previs-studio *(AI-film previsualization from reference video — pose, depth, camera motion, control layers, and production bundles)*, vox-director *(topic-to-finished Vox-style paper-collage explainer/ad video with keyframes, motion, voice-over, music, captions, Atlas Cloud API, and ffmpeg)* | All (`*`) |
 | **Creative Media** | notebooklm *(query Google NotebookLM notebooks directly from Claude Code — Patchright browser automation, source-grounded citation-backed answers, persistent Google auth, notebook library management. Local Claude Code only. Plugin: `claude plugin marketplace add PleasePrompto/notebooklm-skill`)* | claude-code |
 | **Infrastructure** | zeude *(enterprise AI adoption platform for Claude Code — 3× adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), context-aware skill suggestions. Requires Supabase + ClickHouse. Plugin: `claude plugin marketplace add zep-us/zeude`)* | Claude |
 | **Frontend** | ax *(The AI-era curl — fetch web pages, discover structure, extract structured data deterministically; zero code per task with --outline for discovery and --row for extraction; token-budgeted output and safe filtering built-in; 65%+ cost reduction vs curl-regex pipelines)*, astryx *(agent-ready design system — 150+ React components built on StyleX, zero styling lock-in, component swizzling, brand theming, dark mode, CLI tooling; proven across 13,000+ Meta apps)*, devup-ui *(zero-runtime CSS-in-JS — build-time Rust/WASM plugin for Next.js/Vite/Rsbuild/Webpack/Bun, Box/css props + styled-components-compatible styled() API, type-safe devup.json theming, migration off styled-components/Emotion/Tailwind)*, pretext *(fast, accurate multiline text measurement & layout without DOM reflow — prepare/layout for height, prepareWithSegments/layoutWithLines for per-line access, emoji/CJK/RTL, DOM·Canvas·SVG output. npm: `@chenglou/pretext`)*, design-system *(canonical UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface direction; routes component API design to ui-component-patterns, responsive layout to responsive-design, accessibility remediation to web-accessibility, and broad critique to web-design-guidelines)*, react-best-practices *(measurement-led React / Next.js performance audits for waterfalls, bundle size, hydration, rerender churn, and client-boundary mistakes)*, react-grab, responsive-design *(routing-first responsive layout strategy for page-shell, component-slot, dense-data, media, and reflow-verification packets; routes component API design to ui-component-patterns, accessibility remediation to web-accessibility, system-wide breakpoint policy to design-system, and broad UI critique to web-design-guidelines)*, state-management *(React/fullstack ownership-packet skill for local vs Context vs URL/form vs client-store vs server-state/router-data decisions)*, ui-component-patterns *(routing-first reusable-component architecture for primitive-boundary, slot-anatomy, controlled-ownership, alternate-root composition, and docs/verification packets)*, web-accessibility *(routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback; routes broad UI critique to web-design-guidelines and layout strategy to responsive-design)*, web-design-guidelines *(broad web UI audit for launch-readiness, polish/consistency, flow-friction, heuristic, and rule-overlay reviews; routes accessibility-heavy work to web-accessibility and layout adaptation to responsive-design)* | All (`*`) |
+| **Frontend** | react-bits *(animated React component library integration and contribution guidance for Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, Framer Motion, and jsrepo)* | All (`*`) |
 | **Code Quality** | aider-cli-workflow *(AI pair programming with Aider CLI — architect/editor model split, repo-map, git auto-commit, watch mode, voice, browser UI)*, agentic-skills *(production-grade engineering framework drawing from Google practices — spec-driven development `/spec`, task planning `/plan`, incremental TDD `/build`, browser verification `/test`, five-axis code review `/review`, behavior-preserving simplification `/code-simplify`, and disciplined git/CI/CD shipping `/ship`; Hyrum's Law / Chesterton's Fence / Shift Left / trunk-based development. Plugin: `claude plugin marketplace add addyosmani/agent-skills`)*, code-refactoring *(packet-first behavior-preserving cleanup for local refactors, fragile legacy freeze-first work, cleanup-heavy diff shaping, and repeated migration / codemod planning; routes diagnosis to debugging, review judgment to code-review, test-policy design to testing-strategies, bottleneck-led tuning to performance-optimization, and impact mapping to codebase-search)*, code-review *(evidence-first diff / PR review with severity, missing-proof checks, and route-outs for Git cleanup, debugging, UI critique, and repo-admin work)*, debugging *(routing-first diagnosis for concrete bugs, regressions, flaky failures, and env-specific behavior; routes symptom-first logs to log-analysis, broad test-policy work to testing-strategies, and perf-only work to performance-optimization)*, performance-optimization *(artifact-first measurement-led bottleneck analysis and tuning across traces, reports, query plans, benchmark diffs, CWV packets, and runtime/frame-budget work; routes telemetry setup to monitoring-observability and engine-specific capture interpretation to game-performance-profiler)*, testing-strategies *(packet-first validation-policy router for merge-gate truth, release-only proof, scheduled breadth, and incident-ratchet decisions; routes implementation to backend-testing, diagnosis to debugging, rollout execution to deployment-automation, game launch to steam-store-launch-ops / game-ci-cd-pipeline, accessibility-heavy validation to web-accessibility, and performance gate work to performance-optimization)* | All (`*`) |
 | **Code Quality** (mattpocock) | diagnose *(systematic 6-phase debugging: feedback loop → reproduce → hypothesize → instrument → fix+test → cleanup; invest in Phase 1 first)*, tdd *(red-green-refactor vertical slices — test behavior through public interfaces, not implementation details)*, migrate-to-shoehorn *(TypeScript test `as` assertions → type-safe fromPartial/fromAny/fromExact from @total-typescript/shoehorn; test code only)* | All (`*`) |
 | **Design Review & Architecture** (mattpocock) | grill-with-docs *(stress-test plans against domain model, sharpen terminology, update CONTEXT.md/ADRs inline)*, improve-codebase-architecture *(surface shallow modules, propose deepening opportunities using deletion-test/seam/locality vocabulary)*, zoom-out *(higher-level architectural perspective mapping modules and caller relationships using domain vocabulary)*, grill-me *(systematic plan stress-testing through relentless one-question-at-a-time decision-tree interviewing)* | All (`*`) |
@@ -1498,7 +1747,7 @@ Skill Inventory (152 skills)
 | **Search & Analysis** | autoresearch *(Karpathy ML search front door for setup / program.md / bounded loop / results interpretation / constrained-hardware adaptation; preserves the immutable prepare.py / 300s / val_bpb contract and routes prompt-skill eval away)*, codebase-search *(routing-first repo navigation that chooses one search packet for definitions/references, config-content ownership, entry-point discovery, or impact mapping before debugging / refactoring / graphify)*, data-analysis *(decision-first dataset analysis for exports, experiments, telemetry, cohort/funnel work, and stakeholder-ready evidence summaries; routes repeated anomaly hunting to pattern-detection and BI build-out to looker-studio-bigquery)*, deep-research *(routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline (/research, /research-add-items, /research-add-fields), fan out parallel web-search agents to investigate each item into validated JSON (/research-deep, validate_json.py field-coverage gate), then render a TOC + per-field markdown report (/research-report); 4 reference pipelines (outline, deep, report, web-search) + 5 routed source modules (github-debug, general-web, academic-papers, chinese-tech, stackoverflow); verbatim prompt-template contract, evidence-first with [uncertain] marking. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research`)*, langsmith *(routing-first LangSmith packet selector for trace-debug, offline evals, review queues, prompt-registry ownership, and multi-service propagation before SDK code; routes generic dashboards/alerts to `monitoring-observability` and rollout work to `deployment-automation`)*, opik *(open-source LLM observability, evaluation, and optimization via Comet's Opik — route server mode (Comet.com cloud / `./opik.sh` Docker Compose / Kubernetes-Helm), install + `opik configure` the Python SDK, wire `@opik.track` or one of 50+ framework integrations, then drive LLM-as-a-judge metrics, Datasets/Experiments with PyTest CI gates, production monitoring, Agent Optimizer, and Guardrails; routes LangSmith stacks to `langsmith`, non-LLM dashboards to `monitoring-observability`, and offline KPI work to `data-analysis`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill opik`)*, log-analysis *(routing-first log triage that chooses one evidence packet for app runtime, container/pod, browser+API, CI cascade, structured JSON, or security-signal work before debugging / observability / pattern-detection handoff)*, pattern-detection *(routing-first pattern/anomaly hunting that chooses text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly before suggesting tools or fixes; routes root-cause forensics to log-analysis, KPI explanation to data-analysis, remediation to specialist skills, and alert ops to monitoring-observability)*, github-repo-candidate-quality-gate *(evaluate GitHub repos as skill/dependency candidates — activity, maintenance health, license, API surface, community signals)*, semble *(token-efficient code search for agents — returns relevant code chunks using ~98% fewer tokens than grep+read; natural-language and symbol queries, `find-related` for semantic discovery, MCP for Claude Code / Codex / Cursor / OpenCode, CPU-only with no GPU or API key. MCP: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`)*, codeflow *(visualize codebase architecture in seconds — a zero-build single index.html browser app (React 18 + D3.js from pinned CDNs, 100% client-side, no backend, no data collection) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact across 40+ languages; exports JSON/Markdown/text/SVG/PDF or a self-updating CodeFlow Card; routes editable diagrams to drawio/mermaid, agent code search to semble, repo-navigation packets to codebase-search, and durable knowledge graphs to graphify. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow`)*, academic-research *(full research-to-publication pipeline (ARS v3.13.0) — 4 pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes incl. socratic, PRISMA, 3W-scan, fact-check), academic-paper (11 modes incl. plan, revision, citation-check, disclosure, rebuttal-audit), academic-paper-reviewer (EIC+R1/R2/R3+Devil’s Advocate+calibration), academic-pipeline (10-stage orchestrator with Material Passport, L3 claim-faithfulness gate, three-index citation triangulation, cross-model verification). Plugin: `claude plugin marketplace add Imbad0202/academic-research-skills`)*, heretic *(automatic abliteration + refusal-direction interpretability packaging p-e-w/heretic (AGPL-3.0) — removes refusal/over-refusal from open-weight transformer models via parametrized directional ablation, no fine-tuning; Optuna TPE jointly minimizes refusals and KL-divergence; routes decensor < configure (bnb_4bit/trials/KL) < evaluate < research (residual geometry / PaCMAP plots) < discover (web extraction via scrapling); responsible-use guardrails throughout. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill heretic`)* | All (`*`) |
 | **Creative Media** | remotion-video-production *(compatibility alias for video-production when legacy tooling or explicit Remotion naming still expects the old skill)*, video-production *(canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs)*, paperbanana *(routing-first academic illustration — turn text/PDF into publication-quality figures via a two-phase plan-then-refine multi-agent pipeline; routes to the smallest workable mode: plot (VLM-only charts) < generate (one diagram) < batch/sweep/orchestrate, with evaluate (VLM-as-Judge) and polish; provider-agnostic, venue style packs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana`)* | All (`*`) |
 | **Marketing** | marketing-automation | All (`*`) |
-| **Game Development** | game-build-log-triage *(Unity/Unreal build-log triage)*, game-ci-cd-pipeline *(game build/release pipeline design)*, game-demo-feedback-triage *(demo/playtest feedback synthesis)*, game-performance-profiler *(Unity/Unreal performance evidence triage)*, perfectpixel *(AI animation sprite generation studio — generate character animations, sprite sheets, and 8-direction sprite sets from a text description using god-tibo-imagen and gemini models)*, steam-store-launch-ops *(Steam store/festival/wishlist/launch operations)*, unity-gamedev-skill-pack *(Unity-specific game development patterns — scene management, physics, animation, UI Toolkit, addressables, profiling)* | All (`*`) |
+| **Game Development** | abyssal-game-studio *(engine-agnostic, evidence-gated game-production harness — BMAD-GDS, survey-backed design, fair monetization, deterministic systems, adversarial QA, and live-ops gates through portable file-backed artifacts)*, game-build-log-triage *(Unity/Unreal build-log triage)*, game-ci-cd-pipeline *(game build/release pipeline design)*, game-demo-feedback-triage *(demo/playtest feedback synthesis)*, game-performance-profiler *(Unity/Unreal performance evidence triage)*, perfectpixel *(AI animation sprite generation studio — generate character animations, sprite sheets, and 8-direction sprite sets from a text description using god-tibo-imagen and gemini models)*, steam-store-launch-ops *(Steam store/festival/wishlist/launch operations)*, unity-gamedev-skill-pack *(Unity-specific game development patterns — scene management, physics, animation, UI Toolkit, addressables, profiling)* | All (`*`) |
 | **Utilities** | ponytail *(write the least code that fully solves the task — YAGNI ladder skip→stdlib→native→installed-dep→one-line, `ponytail:` upgrade-path markers, lite/full/ultra/off intensity, sharper `/ponytail-review`/`-audit`/`-debt` delete-list and ledger contracts; never cuts validation/data-loss/security/accessibility; plugin: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail`)*, claudekit *(Claude Code hook library — pre-built PreToolUse/PostToolUse hooks for common guardrails, auto-formatting, and workflow automation)*, clawteam, fabric, file-organization *(repo structure / feature-vs-shared / route-vs-package boundary choice + migration planning)*, ghgrab *(GitHub asset/release downloader — fetch release binaries, source archives, and artifacts from public/private repos via CLI)*, git-submodule, git-workflow, google-workspace, llm-wiki, npm-git-install *(Git dependency / tarball / workspace / publish-first choice)*, obsidian *(unified: plugin dev + CLI automation + markdown/Bases/JSON Canvas — plugin: `claude plugin marketplace add akillness/jeo-skills`)*, opencontext, opencut *(OpenCut video editor repo — clone/setup, dev servers, Rust/WASM core, contribution focus areas)*, tokhub *(TokHub AI API relay monitoring/gateway repo — clone/setup, TOKHUB_ROLE model, L1/L2/L3 probe algorithm, contribution focus areas)*, lapian-notes *(Lapian Notes / 拉片笔记 film-analysis repo — clone/setup, AI-package ZIP round trip, story-structure/emotion-curve logic, contribution focus areas)*, workflow-automation *(repo task runners / bootstrap / local-CI automation)* | All (`*`) |
 
 
@@ -1573,6 +1822,7 @@ Skill Inventory (152 skills)
 | `ponytail` | `ponytail`, `/ponytail-review`, `/ponytail-audit`, `/ponytail-debt`, `write less code`, `YAGNI`, `over-engineering`, `anti-bloat`, `ponytail review`, `ponytail audit`, `ponytail debt` | Write the least code that fully solves the task — YAGNI ladder (skip → stdlib → native platform → installed dep → one line → minimum), `ponytail:` upgrade-path markers, `lite/full/ultra/off` intensity, and sharper review/audit/debt output contracts; never cuts validation, data-loss handling, security, or accessibility. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail` |
 | `drawio` | `drawio`, `draw.io`, `architecture diagram`, `ERD`, `UML diagram`, `sequence diagram`, `flowchart`, `visualize codebase`, `class hierarchy`, `export diagram` | Text-to-diagram and codebase-to-diagram via Agents365-ai/drawio-skill — editable `.drawio` exported to PNG/SVG/PDF/JPG through the native draw.io CLI, 6 presets (ERD/UML/sequence/architecture/ML-DL/flowchart), 10,000+ official shapes, 321 AI/LLM logos, vision self-check + 5-round refinement. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill drawio` |
 | `perfectpixel` | `perfectpixel`, `ppgen`, `sprite generation`, `character animation`, `sprite sheet`, `sprite atlas`, `8-direction sprite`, `god-tibo-imagen sprite`, `gemini sprite` | AI animation sprite generation studio — generate character animations, sprite sheets, and 8-direction sprite sets from a text description using god-tibo-imagen and gemini models |
+| `abyssal-game-studio` | `abyssal-game-studio`, `game production harness`, `게임 제작 하네스` | Shared engine-agnostic game-production harness — evidence-gated BMAD-GDS, survey, fair monetization, deterministic systems, adversarial QA, and live-ops workflow with portable file-backed artifacts |
 | `caveman` | `caveman`, `caveman mode`, `less tokens`, `be brief` | Ultra-compressed communication (~75% token reduction). Activate/deactivate explicitly. |
 | `grill-me` | `grill-me`, `stress-test this plan`, `challenge my design` | Systematic plan stress-testing through relentless one-question-at-a-time decision-tree interviewing |
 | `write-a-skill` | `write-a-skill`, `create a skill`, `new skill` | Create structured agent skills — description field is the critical trigger agents use for activation |
@@ -1596,11 +1846,17 @@ Skill Inventory (152 skills)
 | `codeflow` | `codeflow`, `code flow`, `visualize codebase`, `architecture map`, `dependency graph`, `blast radius`, `code ownership`, `codebase health score`, `pr impact analysis`, `wiki-link graph` | Visualize codebase architecture in seconds — a zero-build single `index.html` browser app (React 18 + D3.js, 100% client-side, no backend) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact; exports JSON/Markdown/SVG/PDF or a self-updating CodeFlow Card. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` |
 | `slides-grab` | `slides-grab`, `slides grab`, `generate slides`, `slide deck`, `ai slides`, `html slides`, `presentation editor`, `edit slide`, `card news`, `slides to pdf`, `claude design alternative` | Generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — the open-source Claude Design alternative and "best harness + editor + linter for generating slides in Claude Code / Codex". Plan (structured outline) → Design (self-contained `slide-XX.html`) → Edit (pure-JS browser editor: drag a bbox over a region and ask the agent to rewrite just it, or hand-edit text/size/bold) → Export (capture-or-print PDF, per-slide PNG incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX); 35 design styles, local `./assets/<file>` only, validate before export. Needs Node.js >= 20 + Playwright Chromium. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab` |
 | `github-repo-candidate-quality-gate` | `repo quality gate`, `github repo eval`, `dependency candidate`, `repo health` | Evaluate GitHub repos as skill/dependency candidates — activity, maintenance health, license, API surface, community signals |
-| `unity-gamedev-skill-pack` | `unity gamedev`, `unity scene`, `unity ui toolkit`, `unity addressables` | Unity-specific game development patterns — scene management, physics, animation, UI Toolkit, addressables, profiling |
+| `unity-gamedev-skill-pack` | `unity gamedev`, `unity skill pack`, `Unity workflow curation`, `unity addressables` | Review and safely adopt external Unity game-development skill packs into a reusable local package with provenance, safety gates, and validation |
 | `claudekit` | `claudekit`, `claude hooks`, `pre tool use hook`, `post tool use hook` | Claude Code hook library — pre-built PreToolUse/PostToolUse hooks for common guardrails, auto-formatting, workflow automation |
 | `ghgrab` | `ghgrab`, `github release download`, `github asset`, `download release binary` | GitHub asset/release downloader — fetch release binaries, source archives, artifacts from public/private repos via CLI |
 | `semble` | `semble`, `code search`, `semantic code search`, `semble search`, `token-efficient search`, `find code`, `semble find-related`, `agent code search` | Token-efficient code search for agents — returns relevant code chunks using ~98% fewer tokens than grep+read. Natural-language and symbol queries, `find-related` for semantic discovery, MCP for Claude Code / Codex / Cursor / OpenCode, CPU-only. MCP: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble` |
 | `vox-director` | `vox video`, `collage video`, `motion collage`, `paper collage explainer`, `make a collage ad`, `turn topic into collage video`, `narrated explainer video`, `scrapbook video` | Turn any topic into a finished Vox-style paper-collage explainer/ad video — automated end to end on Atlas Cloud API + local ffmpeg. Script, collage keyframes, motion, voice-over, music, and captions. Triggers on Vox-style video, paper/torn-paper collage animation, motion collage, narrated explainer, or scrapbook-style tribute requests. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill vox-director` |
+| `amrouter` | `amrouter`, `AI gateway`, `multi-provider gateway`, `OpenAI-compatible API`, `auto-fallback` | Self-hosted AI gateway for routing LLM, embedding, image, and audio providers with load balancing, fallback, and cost optimization |
+| `astryx` | `astryx`, `design system`, `component library`, `design tokens`, `StyleX` | Agent-ready Meta design system with 150+ accessible React components, open composition, swizzling, theming, dark mode, and CLI tooling |
+| `ax` | `ax`, `AI-era curl`, `web scraping`, `web extraction`, `ax --outline` | CLI for agent web fetching, page-structure discovery, and deterministic structured extraction with token-budgeted output |
+| `colibri` | `colibri`, `GLM-5.2`, `MoE inference`, `expert streaming`, `MTP` | Pure-C consumer-hardware LLM inference engine with model conversion, expert caching, speculative decoding, and CPU/GPU integration |
+| `motion-previs-studio` | `motion-previs-studio`, `AI-film previsualization`, `pose extraction`, `depth mapping`, `camera motion` | Desktop AI-video previsualization workflow for pose, depth, camera motion, control layers, and production bundles |
+| `react-bits` | `react-bits`, `animated React components`, `GSAP`, `Framer Motion`, `jsrepo` | Animated React component library integration, customization, and contribution workflow for Vite and Tailwind CSS v4 |
 
 ---
 
@@ -1814,109 +2070,80 @@ if [ ! -f "$KP_INGEST" ]; then
   fi
 fi
 
-# 4. Per-agent wrapper installer (forwards stdin to the shared script)
-install_kp_wrapper() {
-  local dest="$1"
-  mkdir -p "$(dirname "$dest")"
-  cat >"$dest" <<EOF
-#!/bin/bash
+# 4–5. Atomically install each wrapper and register its JSON hooks. Python 3 is
+# required here because it supplies both the native JSON parser and secure
+# same-parent temporary files; absence is a requested-configuration failure.
+secure_kp_hooks() {
+  local settings="$1" wrapper="$2" before="$3" after="$4"
+  KP_VAULT="$KP_VAULT" KP_INGEST="$KP_INGEST" python3 - "$settings" "$wrapper" "$before" "$after" <<'PY'
+import json, os, pathlib, stat, sys, tempfile
+settings, wrapper, before_event, after_event = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3], sys.argv[4]
+vault, ingest = os.environ["KP_VAULT"], os.environ["KP_INGEST"]
+def state(p):
+    try: s = os.lstat(p)
+    except FileNotFoundError: return None
+    if stat.S_ISLNK(s.st_mode) or not stat.S_ISREG(s.st_mode): raise RuntimeError(f"refusing non-regular runtime file: {p}")
+    return s
+def replace(p, text, validator, default_mode=0o600):
+    old = state(p); existed = old is not None; p.parent.mkdir(parents=True, exist_ok=True)
+    validator(text)
+    fd, name = tempfile.mkstemp(prefix=f".{p.name}.tmp.", dir=p.parent); tmp = pathlib.Path(name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as out: out.write(text); out.flush(); os.fsync(out.fileno())
+        os.chmod(tmp, stat.S_IMODE(old.st_mode) if old else default_mode); validator(tmp.read_text(encoding="utf-8"))
+        now = state(p)
+        if (existed and now is None) or (not existed and now is not None): raise RuntimeError(f"runtime file changed before replacement: {p}")
+        os.replace(tmp, p)
+    except Exception:
+        try: tmp.unlink()
+        except FileNotFoundError: pass
+        raise
+wrapper_text = f'''#!/bin/bash
 set -euo pipefail
-INGEST="$KP_INGEST"
-[ -x "\$INGEST" ] || exit 0
-if [ -n "\${1:-}" ]; then INPUT="\$1"; else INPUT="\$(cat 2>/dev/null || true)"; fi
-LLM_WIKI_VAULT="$KP_VAULT" printf '%s' "\$INPUT" | python3 "\$INGEST" >/dev/null 2>&1 || true
+INGEST="{ingest}"
+[ -x "$INGEST" ] || exit 0
+if [ -n "${{1:-}}" ]; then INPUT="$1"; else INPUT="$(cat 2>/dev/null || true)"; fi
+LLM_WIKI_VAULT="{vault}" printf '%s' "$INPUT" | python3 "$INGEST" >/dev/null 2>&1 || true
 exit 0
-EOF
-  chmod +x "$dest"
+'''
+replace(wrapper, wrapper_text, lambda _: None, 0o700)
+old = state(settings); data = json.loads(settings.read_text(encoding="utf-8")) if old else {}
+cmd = f'bash "{wrapper}"'
+for event in (before_event, after_event):
+    entries = data.setdefault("hooks", {}).setdefault(event, [])
+    if not any(any(h.get("command") == cmd or h.get("command") == str(wrapper) for h in e.get("hooks", [])) for e in entries):
+        entry = {"hooks": [{"type": "command", "command": cmd}]}
+        if event in ("BeforeAgent", "AfterAgent"): entry["matcher"] = ""; entry["hooks"][0]["name"] = "llm-wiki-ingest"
+        entries.append(entry)
+replace(settings, json.dumps(data, indent=2) + "\n", json.loads)
+PY
 }
-
-# 5. Register the hook in each agent's settings (idempotent JSON/TOML edit)
-if command -v claude &>/dev/null && command -v python3 &>/dev/null; then
+if ! command -v python3 &>/dev/null; then
+  echo "❌ python3 (with native json) is required to register Knowledge Pipeline hooks safely" >&2
+  exit 1
+fi
+if command -v claude &>/dev/null; then
   CLAUDE_HOOK="${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/hooks/llm-wiki-ingest.sh"
-  install_kp_wrapper "$CLAUDE_HOOK"
   CLAUDE_SETTINGS="${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/settings.json"
-  python3 - "$CLAUDE_SETTINGS" "$CLAUDE_HOOK" <<'PY' && echo "✅ Claude: UserPromptSubmit hook registered"
-import json, sys, pathlib
-p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
-data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-ups = data.setdefault("hooks", {}).setdefault("UserPromptSubmit", [])
-cmd = f'bash "{wrapper}"'
-if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in ups):
-    ups.append({"hooks": [{"type": "command", "command": cmd}]})
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(data, indent=2), encoding="utf-8")
-PY
-python3 - "$CLAUDE_SETTINGS" "$CLAUDE_HOOK" <<'PY' && echo "✅ Claude: Stop hook registered (turn-end graph refresh)"
-import json, sys, pathlib
-p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
-data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-stop = data.setdefault("hooks", {}).setdefault("Stop", [])
-cmd = f'bash "{wrapper}"'
-if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in stop):
-    stop.append({"hooks": [{"type": "command", "command": cmd}]})
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(data, indent=2), encoding="utf-8")
-PY
-
+  if secure_kp_hooks "$CLAUDE_SETTINGS" "$CLAUDE_HOOK" UserPromptSubmit Stop; then
+    echo "✅ Claude: UserPromptSubmit and Stop hooks registered"
+  else exit 1; fi
+fi
+if command -v codex &>/dev/null; then
+  CODEX_HOOK="$_HOME/.codex/hooks/llm-wiki-ingest.sh"; CODEX_HOOKS_JSON="$_HOME/.codex/hooks.json"
+  if secure_kp_hooks "$CODEX_HOOKS_JSON" "$CODEX_HOOK" UserPromptSubmit Stop; then
+    echo "✅ Codex: UserPromptSubmit and Stop hooks registered"
+  else exit 1; fi
+fi
+if command -v gemini &>/dev/null || command -v agy &>/dev/null; then
+  GEMINI_HOOK="$_HOME/.gemini/hooks/llm-wiki-ingest.sh"; GEMINI_SETTINGS="$_HOME/.gemini/settings.json"
+  if secure_kp_hooks "$GEMINI_SETTINGS" "$GEMINI_HOOK" BeforeAgent AfterAgent; then
+    echo "✅ Gemini/Antigravity: BeforeAgent and AfterAgent hooks registered"
+  else exit 1; fi
 fi
 
-if command -v codex &>/dev/null && command -v python3 &>/dev/null; then
-  CODEX_HOOK="$_HOME/.codex/hooks/llm-wiki-ingest.sh"
-  install_kp_wrapper "$CODEX_HOOK"
-  CODEX_HOOKS_JSON="$_HOME/.codex/hooks.json"
-  python3 - "$CODEX_HOOKS_JSON" "$CODEX_HOOK" <<'PY' && echo "✅ Codex: UserPromptSubmit hook registered in hooks.json"
-import json, sys, pathlib
-p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
-data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-ups = data.setdefault("hooks", {}).setdefault("UserPromptSubmit", [])
-if not any(any(h.get("command") == wrapper for h in e.get("hooks", [])) for e in ups):
-    ups.append({"hooks": [{"type": "command", "command": wrapper}]})
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-PY
-python3 - "$CODEX_HOOKS_JSON" "$CODEX_HOOK" <<'PY' && echo "✅ Codex: Stop hook registered in hooks.json (turn-end graph refresh)"
-import json, sys, pathlib
-p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
-data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-stop = data.setdefault("hooks", {}).setdefault("Stop", [])
-if not any(any(h.get("command") == wrapper for h in e.get("hooks", [])) for e in stop):
-    stop.append({"hooks": [{"type": "command", "command": wrapper}]})
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-PY
-
-fi
-
-if (command -v gemini &>/dev/null || command -v agy &>/dev/null) && command -v python3 &>/dev/null; then
-  GEMINI_HOOK="$_HOME/.gemini/hooks/llm-wiki-ingest.sh"
-  install_kp_wrapper "$GEMINI_HOOK"
-  GEMINI_SETTINGS="$_HOME/.gemini/settings.json"
-  python3 - "$GEMINI_SETTINGS" "$GEMINI_HOOK" <<'PY' && echo "✅ Gemini/Antigravity: BeforeAgent hook registered"
-import json, sys, pathlib
-p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
-data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-ba = data.setdefault("hooks", {}).setdefault("BeforeAgent", [])
-cmd = f'bash "{wrapper}"'
-if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in ba):
-    ba.append({"matcher": "", "hooks": [{"name": "llm-wiki-ingest", "type": "command", "command": cmd}]})
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(data, indent=2), encoding="utf-8")
-PY
-python3 - "$GEMINI_SETTINGS" "$GEMINI_HOOK" <<'PY' && echo "✅ Gemini/Antigravity: AfterAgent hook registered (turn-end graph refresh)"
-import json, sys, pathlib
-p, wrapper = pathlib.Path(sys.argv[1]), sys.argv[2]
-data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-aa = data.setdefault("hooks", {}).setdefault("AfterAgent", [])
-cmd = f'bash "{wrapper}"'
-if not any(any(h.get("command") == cmd for h in e.get("hooks", [])) for e in aa):
-    aa.append({"matcher": "", "hooks": [{"name": "llm-wiki-ingest", "type": "command", "command": cmd}]})
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(data, indent=2), encoding="utf-8")
-PY
-
-fi
-
-# 6. Inject the Knowledge Pipeline rule block into each agent's rules file
+# 6. Inject the Knowledge Pipeline rule block without following or appending to
+# a runtime instruction file. Existing instruction files are preserved by mode.
 KP_RULES="$(cat <<'RULES'
 
 ## Knowledge Pipeline (auto-applied)
@@ -1931,26 +2158,37 @@ for token-compact output.
 RULES
 )"
 inject_kp_rules() {
-  local file="$1"
-  [ -f "$file" ] || return 0
-  grep -q "Knowledge Pipeline (auto-applied)" "$file" && return 0
-  printf '%s\n' "$KP_RULES" >>"$file"
-  echo "✅ rules injected → $file"
+  local file="$1" create="${2:-0}"
+  python3 - "$file" "$KP_RULES" "$create" <<'PY'
+import os, pathlib, stat, sys, tempfile
+p, block, create = pathlib.Path(sys.argv[1]), sys.argv[2], sys.argv[3] == "1"
+try: before = os.lstat(p)
+except FileNotFoundError: before = None
+if before is None and not create: raise SystemExit(0)
+if before and (stat.S_ISLNK(before.st_mode) or not stat.S_ISREG(before.st_mode)):
+    raise SystemExit(f"❌ refusing non-regular rules file: {p}")
+old = p.read_text(encoding="utf-8") if before else "# RULES\n"
+if "Knowledge Pipeline (auto-applied)" in old: raise SystemExit(0)
+p.parent.mkdir(parents=True, exist_ok=True)
+fd, name = tempfile.mkstemp(prefix=f".{p.name}.tmp.", dir=p.parent); tmp = pathlib.Path(name)
+try:
+    with os.fdopen(fd, "w", encoding="utf-8") as out:
+        out.write(old.rstrip("\n") + "\n" + block + "\n"); out.flush(); os.fsync(out.fileno())
+    os.chmod(tmp, stat.S_IMODE(before.st_mode) if before else 0o600)
+    now = os.lstat(p) if p.exists() or p.is_symlink() else None
+    if (before is None and now is not None) or (before is not None and (stat.S_ISLNK(now.st_mode) or not stat.S_ISREG(now.st_mode))): raise RuntimeError("rules file changed before replacement")
+    os.replace(tmp, p)
+except Exception:
+    try: tmp.unlink()
+    except FileNotFoundError: pass
+    raise
+PY
 }
-inject_kp_rules "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/CLAUDE.md"
-inject_kp_rules "$_HOME/.codex/AGENTS.md"
-inject_kp_rules "$_HOME/.gemini/GEMINI.md"
-# jeo (jeo-code): the Knowledge Pipeline reaches jeo through Step 3i's
-# ~/.agents/rules/jeo-tool-flow.md (rule) + the post-turn ingest hook, not this
-# block — so it is intentionally not injected here. jeo also has no
-# UserPromptSubmit hook event; the post-turn hook is the closest capture point.
-
-# Gajae Code (GJC): RULES.md is a sticky always-apply rule (user scope: ~/.gjc/agent/RULES.md).
-# GJC has no UserPromptSubmit hook, so the Knowledge Pipeline reaches GJC through this rule file.
+inject_kp_rules "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/CLAUDE.md" || exit 1
+inject_kp_rules "$_HOME/.codex/AGENTS.md" || exit 1
+inject_kp_rules "$_HOME/.gemini/GEMINI.md" || exit 1
 if command -v gjc &>/dev/null; then
-  mkdir -p "$_HOME/.gjc/agent"
-  [ -f "$_HOME/.gjc/agent/RULES.md" ] || printf '# RULES\n' > "$_HOME/.gjc/agent/RULES.md"
-  inject_kp_rules "$_HOME/.gjc/agent/RULES.md"
+  inject_kp_rules "$_HOME/.gjc/agent/RULES.md" 1 || exit 1
 fi
 
 echo ""

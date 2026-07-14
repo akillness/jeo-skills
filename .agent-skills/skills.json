@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-07-12",
-  "skill_count": 154,
+  "skill_count": 161,
   "categories": {
     "planning-review": [
       "agentation",
@@ -41,6 +41,7 @@
       "vercel-deploy"
     ],
     "backend": [
+      "amrouter",
       "api-design",
       "api-documentation",
       "authentication-setup",
@@ -142,17 +143,19 @@
       "setup-pre-commit",
       "stitch-skills",
       "tokhub",
-      "unity-gamedev-skill-pack",
       "workflow-automation",
       "write-a-skill",
       "x-twitter-scraper",
       "zeude"
     ],
     "frontend": [
+      "astryx",
+      "ax",
       "design-system",
       "devup-ui",
       "lazyweb",
       "react-best-practices",
+      "react-bits",
       "react-grab",
       "responsive-design",
       "state-management",
@@ -167,6 +170,7 @@
       "remotion-video-production",
       "slides-grab",
       "video-production",
+      "vox-director",
       "webtoon-harness"
     ],
     "marketing": [
@@ -179,12 +183,14 @@
       "task-planning"
     ],
     "game-development": [
+      "abyssal-game-studio",
       "game-build-log-triage",
       "game-ci-cd-pipeline",
       "game-demo-feedback-triage",
       "game-performance-profiler",
       "perfectpixel",
-      "steam-store-launch-ops"
+      "steam-store-launch-ops",
+      "unity-gamedev-skill-pack"
     ]
   },
   "skills": [
@@ -216,6 +222,34 @@
         "WebFetch"
       ],
       "keyword": "academic-research",
+      "version": "1.0.0"
+    },
+    {
+      "name": "abyssal-game-studio",
+      "description": "Run an engine-agnostic, evidence-gated game-production harness for a vertical slice, feature, economy change, or release: BMAD-GDS production, survey-grounded trend research, fair monetization, deterministic systems engineering, adversarial QA, and live-ops readiness. Use for a game production workflow spanning research through release gates; do not use for isolated engine bugs, a single asset, or a narrow playtest-summary task.",
+      "category": "game-development",
+      "path": "abyssal-game-studio/SKILL.md",
+      "tags": [
+        "game-production",
+        "bmad-gds",
+        "survey",
+        "monetization",
+        "deterministic-systems",
+        "adversarial-qa",
+        "live-ops",
+        "game-development"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Bash",
+        "Task"
+      ],
+      "keyword": "abyssal-game-studio",
       "version": "1.0.0"
     },
     {
@@ -341,6 +375,26 @@
       "version": "1.0.0"
     },
     {
+      "name": "amrouter",
+      "description": "Self-hosted AI gateway: one endpoint, many providers, auto-fallback. AMRouter is an OpenAI-compatible API gateway that routes requests across dozens of LLM, embedding, image, and audio providers with automatic load balancing, fallback, and cost optimization.",
+      "category": "backend",
+      "path": "amrouter/SKILL.md",
+      "tags": [
+        "amrouter",
+        "ai-gateway",
+        "multi-provider",
+        "openai-compatible",
+        "auto-fallback",
+        "load-balancing",
+        "cost-optimization",
+        "cloudflare-workers-ai"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "amrouter",
+      "version": "1.0.0"
+    },
+    {
       "name": "api-design",
       "description": ">",
       "category": "backend",
@@ -400,6 +454,47 @@
       ],
       "keyword": "api-documentation",
       "version": "2.1.0"
+    },
+    {
+      "name": "astryx",
+      "description": "Build fully customizable, agent-ready design systems with Astryx — Meta's production design system now open source. Ships 150+ React components built on StyleX with zero styling lock-in, component swizzling, brand theming, dark mode, and CLI tooling. Use when building component libraries, design systems, UI applications, design tokens, or when teams need consistent accessible components that AI agents can understand and extend. Triggers on: astryx, design system, component library, design tokens, react components, accessible components, astryx design, stylesheets, theme customization, component composition.",
+      "category": "frontend",
+      "path": "astryx/SKILL.md",
+      "tags": [
+        "astryx",
+        "design-system",
+        "react-components",
+        "component-library",
+        "design-tokens",
+        "accessibility",
+        "stylex",
+        "theming",
+        "ui-framework",
+        "meta"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini",
+        "Cursor",
+        "OpenCode",
+        "jeopi",
+        "jeo",
+        "All"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch",
+        "Find",
+        "Search"
+      ],
+      "keyword": "astryx",
+      "version": "1.0.0"
     },
     {
       "name": "authentication-setup",
@@ -523,6 +618,25 @@
       ],
       "keyword": "backend-testing",
       "version": "1.2.0"
+    },
+    {
+      "name": "ax",
+      "description": "AI-driven fetch, discover, extract framework. ax is a command-line tool purpose-built for AI agents to fetch web pages, discover their structure, and extract structured data — replacing the classic `curl → parse → regex` loop with one deterministic, token-efficient command.",
+      "category": "frontend",
+      "path": "ax/SKILL.md",
+      "tags": [
+        "ax",
+        "web-scraping",
+        "web-extraction",
+        "cli",
+        "agent-tools",
+        "structured-data",
+        "token-efficient"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "ax",
+      "version": "1.0.0"
     },
     {
       "name": "bmad",
@@ -965,6 +1079,40 @@
       ],
       "keyword": "codeflow",
       "version": "1.0.0"
+    },
+    {
+      "name": "colibri",
+      "description": "Assist with Colibri: pure-C LLM inference engine for running GLM-5.2 (744B MoE) on consumer machines with ~25 GB RAM. Use when setting up, building, converting models, running inference, configuring expert streaming and caching, optimizing speculative decoding (MTP), GPU integration, and integrating Colibri into production pipelines. Includes build setup, model download & conversion, chat/inference modes, performance tuning, and API integration patterns.",
+      "category": "backend",
+      "path": "colibri/SKILL.md",
+      "tags": [
+        "colibri",
+        "llm-inference",
+        "glm-5.2",
+        "moe",
+        "speculative-decoding",
+        "quantization",
+        "expert-streaming",
+        "consumer-hardware",
+        "c-runtime"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "jeopi"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "colibri",
+      "version": "1.0"
     },
     {
       "name": "compresso",
@@ -2288,6 +2436,41 @@
       "version": "1.0"
     },
     {
+      "name": "motion-previs-studio",
+      "description": "Assist with Motion Previs Studio v4: a cross-platform desktop app for AI-film previsualization. Use when setting up, configuring, troubleshooting, or extending motion-previs-studio for pose extraction, depth mapping, camera motion solving, control layer export, and bundle production for AI-video workflows (Seedance, ComfyUI, Blender, Runway, Kling). Includes build setup, feature integration, UI/logic debugging, and export pipeline optimization.",
+      "category": "creative-media",
+      "path": "motion-previs-studio/SKILL.md",
+      "tags": [
+        "motion-previs",
+        "ai-video",
+        "previsualization",
+        "filmmaking",
+        "pose-extraction",
+        "depth-mapping",
+        "camera-motion",
+        "control-layers",
+        "previs",
+        "ai-film"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "jeopi"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "motion-previs-studio",
+      "version": "1.0"
+    },
+    {
       "name": "migrate-to-shoehorn",
       "description": "Use this skill when >",
       "category": "code-quality",
@@ -3252,6 +3435,39 @@
       "allowed_tools": [],
       "keyword": "react-best-practices",
       "version": "1.1.0"
+    },
+    {
+      "name": "react-bits",
+      "description": "Integrate, customize, and contribute to react-bits (github.com/DavidHDev/react-bits) — the largest and most creative library of animated React components. It covers Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, and Framer Motion integrations. Use when the user asks about react-bits, animated React components, jsrepo registry, or contributing new animated components to the react-bits repository.",
+      "category": "frontend",
+      "path": "react-bits/SKILL.md",
+      "tags": [
+        "react-bits",
+        "animated-components",
+        "gsap",
+        "three-js",
+        "framer-motion",
+        "tailwind-v4",
+        "jsrepo",
+        "react",
+        "vite"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "react-bits",
+      "version": "1.0"
     },
     {
       "name": "react-grab",
@@ -4481,7 +4697,7 @@
     {
       "name": "unity-gamedev-skill-pack",
       "description": "Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package. Use when maintainers want to import game-dev workflows (Addressables, Cinemachine, GAS, VContainer, UniTask, Wwise, etc.) without blindly trusting third-party prompts.",
-      "category": "utilities",
+      "category": "game-development",
       "path": "unity-gamedev-skill-pack/SKILL.md",
       "tags": [
         "unity",
@@ -4660,6 +4876,26 @@
       ],
       "keyword": "video-production",
       "version": "2.0"
+    },
+    {
+      "name": "vox-director",
+      "description": "Turn ONE topic into a finished Vox-style paper-collage explainer / ad video, end to end on the Atlas Cloud API + local ffmpeg — script, collage keyframes, motion, voice-over, music, captions, all automated.",
+      "category": "creative-media",
+      "path": "vox-director/SKILL.md",
+      "tags": [
+        "vox-director",
+        "vox-video",
+        "collage-video",
+        "motion-collage",
+        "paper-collage",
+        "explainer-video",
+        "atlas-cloud",
+        "ffmpeg"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "vox-director",
+      "version": "1.0.0"
     },
     {
       "name": "web-accessibility",
