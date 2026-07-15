@@ -1,16 +1,113 @@
 {
-  "schema_version": "2.0",
+  "schema_version": "2.1",
   "source_of_truth": "typed_workflow_governance",
   "run_root": "<repo-root>/.harness/abyssal-game-studio/<run-id>/",
-  "immutability": {"new_version_required": true, "append_only_decision_log": true},
+  "immutability": {
+    "new_version_required": true,
+    "append_only_decision_log": true
+  },
   "phases": [
-    {"id":"P0","depends_on":[],"requires":["raw_intake","constraints"],"outputs":["production_brief","task_manifest","research_question","player_fantasy","product_constraints","systems_goals","technical_constraints"],"parallel_tasks":[],"sequence":["derive_production_brief","derive_task_manifest","derive_research_question","derive_player_fantasy","derive_product_constraints","derive_systems_goals","derive_technical_constraints"]},
-    {"id":"P1","depends_on":["P0"],"requires":["production_brief","task_manifest","research_question","player_fantasy"],"outputs":["survey_decision_packet","comparables_table","claim_traceability","world_bible","interaction_map","readability_accessibility_spec"],"parallel_tasks":["survey","experience"],"sequence":["fan_out_survey_experience"]},
-    {"id":"P2","depends_on":["P1"],"requires":["evidence_ready_survey","product_constraints","systems_goals","world_bible"],"outputs":["segments_jtbd","value_pricing_catalog","monetization_policy","metrics_contract","rule_contract","economy_ledger","balance_model","simulator_evidence","narrative_rule_traceability"],"parallel_tasks":[],"sequence":["evidence_ready_survey_before_pm","immutable_pm_policy_before_systems","systems_rule_contract_before_narrative_traceability"]},
-    {"id":"P3","depends_on":["P2"],"requires":["immutable_rule_contract","immutable_interaction_map","technical_constraints"],"outputs":["architecture_contract","determinism_replay_contract","performance_evidence","risky_tech_validation"],"parallel_tasks":[],"sequence":["validate_engine_agnostic_implementation"]},
-    {"id":"P4","depends_on":["P3"],"requires":["engineering_evidence","immutable_rule_contract","experience_specifications","immutable_monetization_policy"],"outputs":["qa_iterations_01_20","defect_register","regression_matrix","qa_verdict"],"parallel_tasks":[],"sequence":["execute_adversarial_qa"]},
-    {"id":"P5","depends_on":["P4"],"requires":["qa_verdict","metrics_contract","performance_evidence"],"outputs":["telemetry_contract","rollback_runbook","release_readiness","feedback_intake"],"parallel_tasks":[],"sequence":["produce_telemetry_contract","produce_rollback_runbook","verify_release_readiness"]}
+    {
+      "id": "P0",
+      "depends_on": [],
+      "requires": ["raw_intake", "constraints"],
+      "outputs": ["production_brief", "task_manifest", "research_question", "player_fantasy", "product_constraints", "systems_goals", "technical_constraints", "milestone_brief"],
+      "parallel_tasks": [],
+      "sequence": ["derive_production_brief", "derive_task_manifest", "derive_research_question", "derive_player_fantasy", "derive_product_constraints", "derive_systems_goals", "derive_technical_constraints", "derive_milestone_brief"]
+    },
+    {
+      "id": "P1",
+      "depends_on": ["P0"],
+      "requires": ["production_brief", "task_manifest", "research_question", "player_fantasy"],
+      "outputs": ["survey_decision_packet", "comparables_table", "claim_traceability", "world_bible", "interaction_map", "readability_accessibility_spec"],
+      "parallel_tasks": ["survey", "experience"],
+      "sequence": ["fan_out_survey_experience"]
+    },
+    {
+      "id": "P2",
+      "depends_on": ["P1"],
+      "requires": ["survey_decision_packet", "product_constraints", "systems_goals", "world_bible"],
+      "outputs": ["segments_jtbd", "value_pricing_catalog", "monetization_policy", "metrics_contract", "rule_contract", "economy_ledger", "balance_model", "simulator_evidence", "narrative_rule_traceability"],
+      "parallel_tasks": [],
+      "sequence": ["verify_evidence_ready_survey_before_pm", "immutable_pm_policy_before_systems", "systems_rule_contract_before_narrative_traceability"]
+    },
+    {
+      "id": "P3",
+      "depends_on": ["P2"],
+      "requires": ["rule_contract", "interaction_map", "technical_constraints", "metrics_contract"],
+      "outputs": ["architecture_contract", "determinism_replay_contract", "performance_evidence", "risky_tech_validation", "operations_draft"],
+      "parallel_tasks": [],
+      "sequence": ["validate_engine_agnostic_implementation", "produce_operations_draft"]
+    },
+    {
+      "id": "P4",
+      "depends_on": ["P3"],
+      "requires": ["milestone_brief", "rule_contract", "economy_ledger", "balance_model", "simulator_evidence", "narrative_rule_traceability", "world_bible", "interaction_map", "readability_accessibility_spec", "architecture_contract", "determinism_replay_contract", "performance_evidence", "risky_tech_validation", "monetization_policy", "operations_draft"],
+      "outputs": ["qa_cases_01_20", "defect_register", "regression_matrix", "qa_verdict"],
+      "parallel_tasks": [],
+      "sequence": ["execute_adversarial_qa"]
+    },
+    {
+      "id": "P5",
+      "depends_on": ["P4"],
+      "requires": ["qa_verdict", "metrics_contract", "performance_evidence", "operations_draft"],
+      "outputs": ["telemetry_contract", "rollback_runbook", "release_readiness", "feedback_intake"],
+      "parallel_tasks": [],
+      "sequence": ["finalize_telemetry_contract", "finalize_rollback_runbook", "verify_release_readiness"]
+    }
   ],
-  "completion": {"requires_all":["qa_pass","ops_ready"],"blocks_on":["qa_fail","ops_stop_ship"],"veto_override_allowed":false},
-  "reentry": {"opens_only_after":"qa_verdict","max_cycles":2,"cycle":["qa_defect_evidence","director_single_owner_scope","new_immutable_artifact","qa_regression","operations_reassessment"],"on_exhausted":"close_milestone_start_new_run"}
+  "typed_handoffs": [
+    {"from_phase": "P0", "to_phase": "P1", "artifact": "production_brief", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P0", "to_phase": "P1", "artifact": "task_manifest", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P0", "to_phase": "P1", "artifact": "research_question", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P0", "to_phase": "P1", "artifact": "player_fantasy", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P0", "to_phase": "P2", "artifact": "product_constraints", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P0", "to_phase": "P2", "artifact": "systems_goals", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P0", "to_phase": "P3", "artifact": "technical_constraints", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P0", "to_phase": "P4", "artifact": "milestone_brief", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P1", "to_phase": "P2", "artifact": "survey_decision_packet", "required_status": "evidence-ready", "required_immutable": true, "minimum_comparables": 6},
+    {"from_phase": "P1", "to_phase": "P2", "artifact": "world_bible", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P1", "to_phase": "P3", "artifact": "interaction_map", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P1", "to_phase": "P4", "artifact": "world_bible", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P1", "to_phase": "P4", "artifact": "interaction_map", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P1", "to_phase": "P4", "artifact": "readability_accessibility_spec", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P2", "to_phase": "P3", "artifact": "rule_contract", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P2", "to_phase": "P3", "artifact": "metrics_contract", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P2", "to_phase": "P4", "artifact": "rule_contract", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P2", "to_phase": "P4", "artifact": "monetization_policy", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P2", "to_phase": "P4", "artifact": "economy_ledger", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P2", "to_phase": "P4", "artifact": "balance_model", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P2", "to_phase": "P4", "artifact": "simulator_evidence", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P2", "to_phase": "P4", "artifact": "narrative_rule_traceability", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P2", "to_phase": "P5", "artifact": "metrics_contract", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P3", "to_phase": "P4", "artifact": "architecture_contract", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P3", "to_phase": "P4", "artifact": "determinism_replay_contract", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P3", "to_phase": "P4", "artifact": "performance_evidence", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P3", "to_phase": "P4", "artifact": "risky_tech_validation", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P3", "to_phase": "P4", "artifact": "operations_draft", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P3", "to_phase": "P5", "artifact": "performance_evidence", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P3", "to_phase": "P5", "artifact": "operations_draft", "required_status": "evidence-ready", "required_immutable": true},
+    {"from_phase": "P4", "to_phase": "P5", "artifact": "qa_verdict", "accepted_statuses": ["PASS", "FAIL", "INCONCLUSIVE"], "required_immutable": true}
+  ],
+  "completion": {
+    "requires_all": ["qa_pass", "ops_ready"],
+    "blocks_on": ["qa_fail", "ops_stop_ship"],
+    "terminal_state": "COMPLETE",
+    "veto_override_allowed": false
+  },
+  "reentry": {
+    "evidence_sources": ["qa_fail", "ops_stop_ship"],
+    "max_cycles": 2,
+    "counter": "monotonic_reentry_cycle",
+    "restart_phase": "P3",
+    "required_downstream_revalidation": ["P3", "P4", "P5"],
+    "cycle": ["evidence_record", "director_single_owner_scope", "new_immutable_artifact", "downstream_contract_revalidation", "qa_regression", "operations_reassessment"],
+    "terminal_states": ["MILESTONE_CLOSED"],
+    "on_exhausted": "MILESTONE_CLOSED",
+    "automatic_restart_allowed": false,
+    "requires_external_authorization": true,
+    "requires_materially_changed_intake_constraints_fingerprint": true,
+    "later_run_requires": ["external_request_id", "new_run_id", "materially_changed_intake_or_constraints_fingerprint"],
+    "rejects": ["same_run_continuation", "same_fingerprint_restart"]
+  }
 }

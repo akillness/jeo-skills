@@ -15,7 +15,7 @@ Follow `references/role-contracts.json#game-engineering-lead`. Same seed/input/v
 Consume immutable rule contract, immutable interaction map, and technical constraints only after P2.
 
 ## Output Protocol
-Publish `engineering/architecture-contract.md`, `determinism-replay-contract.md`, `performance-evidence.md`, and `risky-tech-validation.md`, including API boundaries, seed, dataset/workload, environment, budget, results, and reproduction procedure.
+Publish `engineering/architecture-contract.md`, `determinism-replay-contract.md`, `performance-evidence.md`, and `risky-tech-validation.md`, including API boundaries, seed, dataset/workload, environment, a unit-bearing budget, measured results, and reproduction procedure.
 
 ## Error Handling
 Document minimal reproduction for non-determinism, input loss, pathing bottleneck/deadlock, or memory-budget breach. Do not connect risky technology before independent validation; return implementation-driven rule changes to the rule-contract owner.

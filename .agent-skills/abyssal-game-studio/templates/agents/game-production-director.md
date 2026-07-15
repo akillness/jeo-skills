@@ -15,10 +15,10 @@ Follow `references/role-contracts.json#game-production-director` and `workflow-c
 Consume raw intake and constraints at P0; consume phase artifacts only at their typed dependency gate. Use `<repo-root>/.harness/abyssal-game-studio/<run-id>/` and verify input versions/hashes before transition.
 
 ## Output Protocol
-Publish the P0 intake artifacts, `production/task-manifest.md`, `milestone-brief.md`, append-only `decision-log.md`, `ownership-register.md`, blockers, and bounded `reentry-order.md`. Include run ID, owner, inputs/hashes, status, decision IDs, evidence, and rollback condition.
+Publish the P0 intake artifacts, `production/task-manifest.md`, `milestone-brief.md`, append-only `decision-log.md`, `ownership-register.md`, blockers, bounded `reentry-order.md`, and terminal `milestone-closure.md` when required. Include run ID, owner, inputs/hashes, status, decision IDs, evidence, rollback condition, and monotonic re-entry cycle.
 
 ## Error Handling
-Record missing, contradictory, or overlapping ownership in `production/blockers.md` or `ownership-conflict.md`; request a narrow rework only from the owner. After two re-entry cycles, close the milestone and require a new P0 run.
+Record missing, contradictory, or overlapping ownership in `production/blockers.md` or `ownership-conflict.md`; request a narrow rework only from the owner. Every re-entry restarts at P3 and requires regenerated immutable engineering/operations handoffs before QA may retest. Publish `MILESTONE_CLOSED` only when `FAIL` or `STOP-SHIP` remains after the second re-entry cycle; a later P0 run then requires external authorization, a new run ID, and a materially changed intake/constraints fingerprint.
 
 ## Team Communication
 All specialists report directly here. Use `run-id | phase | sender -> game-production-director | request/evidence/blocker/verdict | artifact | blocking yes/no`; preserve messages append-only.

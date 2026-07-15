@@ -6,7 +6,7 @@ U[5]:
   Game vertical slices or release changes requiring research through operations
   Fair monetization and quantitative economy validation without P2W or dark patterns
   Engine-agnostic deterministic replay, performance, memory, input, and pathing contracts
-  Twenty-loop adversarial QA spanning seven player archetypes
+  Twenty-case adversarial QA spanning seven player archetypes
   Rollback-ready live-service production with non-overridable QA and operations vetoes
 
 S[7]{n,action,details}:
@@ -14,6 +14,6 @@ S[7]{n,action,details}:
   2,Run P0 BMAD-GDS intake,Create production brief task manifest and bounded role inputs one next artifact at a time.
   3,Run P1 evidence and experience,Use survey with six provenance-backed comparables and create world interaction readability accessibility artifacts.
   4,Run P2 policy then systems,Use pm; before purchase require direct price contents functional impact region/tax/refund information and fairness result; reject P2W paid random rewards deceptive direct pricing unclear direct pricing hidden odds/acquisition conditions and loss-targeted/loss-induced offers; `references/role-contracts.json` is the typed source of truth; require deterministic p50/p90 source/sink counterplay simulation evidence.
-  5,Run P3 engineering,Require engine-neutral deterministic replay and measured performance memory input and pathing contracts.
-  6,Run P4–P5 gates,Execute qa-backed 20-loop A1–A7 adversarial QA then validate telemetry rollback and operations readiness.
-  7,Honor vetoes and bounded re-entry,QA FAIL or operations STOP-SHIP cannot be overridden; allow at most two evidence-backed cycles then start a new P0 run.
+  5,Run P3 engineering then operations draft,Require engine-neutral deterministic replay and measured unit-bearing performance memory input and pathing contracts; then publish immutable operations draft for QA attack coverage.
+  6,Run P4–P5 gates,Execute qa-backed 20-case A1–A7 adversarial QA with finite watchdog budgets then validate telemetry rollback and operations readiness.
+  7,Honor vetoes and bounded re-entry,QA FAIL or operations STOP-SHIP cannot be overridden; allow at most two evidence-backed cycles, then remaining failure closes `MILESTONE_CLOSED`; a later P0 run requires external authorization new run ID and materially changed intake/constraints fingerprint.
