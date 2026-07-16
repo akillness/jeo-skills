@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "skill": "game-studio-harness",
+  "cases": [
+    {"id":"positive-01","should_trigger":true,"prompt":"게임 제작 사이클 시작해줘. 다크판타지 RTS 아이디어가 있어.","expectation":"Starts a new production cycle: run-id workspace, production brief, team materialization, Stage 1 tasks."},
+    {"id":"positive-02","should_trigger":true,"prompt":"Run the game production harness for my roguelike idea.","expectation":"Starts the full 5-role studio cycle from intake."},
+    {"id":"positive-03","should_trigger":true,"prompt":"게임 하네스 돌려서 다음 사이클 진행해.","expectation":"Resumes from the newest task manifest and last retrospective."},
+    {"id":"positive-04","should_trigger":true,"prompt":"Start a production cycle for a 2.5D dark fantasy RTS targeting an internal playtest.","expectation":"Stage 1 concept/presentation/core-build flow with the playtest as the milestone beat."},
+    {"id":"positive-05","should_trigger":true,"prompt":"스테이지 게이트 리뷰 해줘. G2 밸런스 수치가 밴드 안인지 확인하고 싶어.","expectation":"QA measures gates on the current build; director issues PASS/FIX/REDO verdicts with evidence."},
+    {"id":"positive-06","should_trigger":true,"prompt":"밸런스 사이클 재진입해줘. QA가 무한조합 익스플로잇 찾았어.","expectation":"Emergency re-entry at Stage 2 with the exploit register pre-seeded."},
+    {"id":"positive-07","should_trigger":true,"prompt":"게임 개발 사이클 3차(운영안정성/플레이 임팩트)까지 돌려줘.","expectation":"Runs the cycle through Stage 3 ops-stability and play-impact gates."},
+    {"id":"positive-08","should_trigger":true,"prompt":"Run the studio on this GDD and give me gate verdicts.","expectation":"GDD normalized into a production brief; G1–G8 measured and gated."},
+    {"id":"positive-09","should_trigger":true,"prompt":"수익화 지점이랑 밸런스가 충돌해. 기획-PM 협상 라운드 포함해서 사이클 돌려줘.","expectation":"Designer↔PM negotiation record flow with fairness caps and reward bands."},
+    {"id":"positive-10","should_trigger":true,"prompt":"컨셉 잡고 코어루프 구현까지 1차 사이클만 돌려줘.","expectation":"Stage 1 only: concept, presentation spec, resources, core loop, draft gates."},
+    {"id":"negative-01","should_trigger":false,"prompt":"Unity 빌드가 깨졌어, Editor.log 봐줘.","expectation":"Routes to game-build-log-triage."},
+    {"id":"negative-02","should_trigger":false,"prompt":"이 함수 리팩토링해줘.","expectation":"Routes to general code refactoring."},
+    {"id":"negative-03","should_trigger":false,"prompt":"스팀 상점 페이지 문구 다듬어줘.","expectation":"Routes to steam-store-launch-ops."},
+    {"id":"negative-04","should_trigger":false,"prompt":"프레임 드랍 프로파일러 캡처 분석해줘.","expectation":"Routes to game-performance-profiler."},
+    {"id":"negative-05","should_trigger":false,"prompt":"웹사이트 랜딩페이지 만들어줘.","expectation":"Routes to web/frontend skills."},
+    {"id":"negative-06","should_trigger":false,"prompt":"이 보드게임 규칙 설명해줘.","expectation":"Answered directly; no production cycle."},
+    {"id":"negative-07","should_trigger":false,"prompt":"게임 추천해줘.","expectation":"General conversation; not production."},
+    {"id":"negative-08","should_trigger":false,"prompt":"플레이테스트 설문 응답만 우선순위로 정리해줘.","expectation":"Routes to game-demo-feedback-triage."},
+    {"id":"negative-09","should_trigger":false,"prompt":"A/B 테스트 결과 분석해줘.","expectation":"Routes to ab-test-analysis."},
+    {"id":"negative-10","should_trigger":false,"prompt":"호러게임 아이디어 다섯 개 브레인스토밍해줘.","expectation":"Routes to bmad-idea pre-production ideation."}
+  ]
+}

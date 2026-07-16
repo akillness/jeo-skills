@@ -356,11 +356,11 @@ rtk init -g
 
 | 스킬 |
 |------|
-| `abyssal-game-studio` |
 | `game-build-log-triage` |
 | `game-ci-cd-pipeline` |
 | `game-demo-feedback-triage` |
 | `game-performance-profiler` |
+| `game-studio-harness` |
 | `perfectpixel` |
 | `steam-store-launch-ops` |
 | `unity-gamedev-skill-pack` |
@@ -694,6 +694,7 @@ npx vibe-kanban
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `webtoon-harness` | `웹툰 만들어`, `웹툰 하네스` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
+| `game-studio-harness` | `게임 제작 하네스`, `게임 제작 사이클`, `stage gate` | [.agent-skills/game-studio-harness/SKILL.md](.agent-skills/game-studio-harness/SKILL.md) |
 | `heretic` | `heretic`, `어블리터레이션`, `모델 검열 제거` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |

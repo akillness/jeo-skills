@@ -1,6 +1,6 @@
 {
   "version": "1.2.0",
-  "generated": "2026-07-12",
+  "generated": "2026-07-16",
   "skill_count": 161,
   "categories": {
     "planning-review": [
@@ -183,11 +183,11 @@
       "task-planning"
     ],
     "game-development": [
-      "abyssal-game-studio",
       "game-build-log-triage",
       "game-ci-cd-pipeline",
       "game-demo-feedback-triage",
       "game-performance-profiler",
+      "game-studio-harness",
       "perfectpixel",
       "steam-store-launch-ops",
       "unity-gamedev-skill-pack"
@@ -222,34 +222,6 @@
         "WebFetch"
       ],
       "keyword": "academic-research",
-      "version": "1.0.0"
-    },
-    {
-      "name": "abyssal-game-studio",
-      "description": "Run an engine-agnostic, evidence-gated game-production harness for a vertical slice, feature, economy change, or release: BMAD-GDS production, survey-grounded trend research, fair monetization, deterministic systems engineering, adversarial QA, and live-ops readiness. Use for a game production workflow spanning research through release gates; do not use for isolated engine bugs, a single asset, or a narrow playtest-summary task.",
-      "category": "game-development",
-      "path": "abyssal-game-studio/SKILL.md",
-      "tags": [
-        "game-production",
-        "bmad-gds",
-        "survey",
-        "monetization",
-        "deterministic-systems",
-        "adversarial-qa",
-        "live-ops",
-        "game-development"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "Bash",
-        "Task"
-      ],
-      "keyword": "abyssal-game-studio",
       "version": "1.0.0"
     },
     {
@@ -1729,6 +1701,41 @@
       ],
       "keyword": "game-performance-profiler",
       "version": "1.2"
+    },
+    {
+      "name": "game-studio-harness",
+      "description": "Run a 5-role game production studio as one standing harness: production director (bmad-gds intake, stage gates, retrospectives), game designer (numeric balance, combination EV, core-loop discovery, survey-grounded novelty scoring), game PM (revenue-point mapping, comeback/steady reward bands, fairness caps), game programmer (extensible stable implementation, strict new-tech verification, perf and movement-path optimization), and game QA (archetype-rotation balance breaking, benchmark surveys, gate measurement). Executes the 3-stage operating cycle behind 8 numeric quality gates. Use to start, resume, or gate-review a game production cycle; not for isolated build failures, profiler captures, or feedback-only triage.",
+      "category": "game-development",
+      "path": "game-studio-harness/SKILL.md",
+      "tags": [
+        "game-production",
+        "game-studio",
+        "bmad-gds",
+        "numeric-balance",
+        "core-loop",
+        "novelty",
+        "monetization",
+        "qa-archetypes",
+        "stage-gates",
+        "game-development"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Bash",
+        "Task"
+      ],
+      "keyword": "game-studio-harness",
+      "version": "1.0.0"
     },
     {
       "name": "genkit",

@@ -18,10 +18,6 @@ S[4]{n,action,details}:
   3,Execute with human-in-the-loop,Follow the matching reference file; never skip [USER CHECKPOINT] gates; for academic-pipeline confirm at each of the 10 stage boundaries
   4,Return structured output packet,Include: Pipeline · Mode · Topic/Input · Output artifact · Citations · Integrity status · Next step recommendation
 
-N:abyssal-game-studio
-D:Engine-agnostic, evidence-gated game-production harness for a vertical slice, feature, economy change, or release. Uses BMAD-GDS production, survey-grounded trend research, fair monetization, deterministic systems engineering, adversarial QA, and live-ops readiness through portable file-backed artifacts.
-G:abyssal-game-studio game-production game-studio bmad-gds game-design game-economy fair-monetization adversarial-qa live-ops deterministic-systems accessibility game-development
-
 N:agentation D:"Capture exact rendered-UI feedback and hand it to an agent as selectors, element paths, and structured annotation packets. Use when a human needs to point at a real UI issue, run a sync/watch loop, or wire browser feedback into Claude Code, Codex, Gemini CLI, or OpenCode. Not for fresh-session browser verification (browser-harness), running-browser reuse (playwriter), or plan/diff approval (plannotator)." T:Read|Write|Bash|Grep|Glob P:planning-review/agentation G:ui-feedback|browser-annotation|visual-feedback|mcp|react|ai-agent|design-review|css-selector
 N:agenticskills
 D:One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ god-skills) — wraps the official install.sh with pinned URL and env knobs (PLATFORM, WITH_LANGCHAIN, INSTALL_MODE, SKIP_BACKUP) to copy the catalog into Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in one step.
@@ -820,6 +816,25 @@ R[6]:
   Prefer one repeatable route or save-based pass over vague location descriptions
   Use engine-native language first: Unity Profiler Frame Debugger Unreal Insights stat unit stat gpu
   Do not let game-performance triage sprawl into build-log diagnosis generic app tuning or broad milestone coordination
+N:game-studio-harness
+D:Five-role game production studio harness: director, numeric-balance designer, revenue-band PM, verification-strict programmer, archetype-rotation QA. Runs the 3-stage operating cycle (concept/presentation/core build → balance/core-loop/novelty → ops stability/play impact) behind 8 numeric quality gates with survey-grounded trends, signed designer↔PM negotiation records, and QA broadcast discipline.
+G:game-studio-harness game-production game-studio bmad-gds numeric-balance core-loop novelty monetization reward-bands qa-archetypes stage-gates game-development
+
+U[5]:
+  Start, resume, or gate-review a full game production cycle from idea, GDD, prototype, or build
+  Numeric balance and combination design with survey-grounded core-loop discovery and novelty scoring
+  Revenue-point mapping with comeback (≤30% reversal) and steady-reward (10–20 session parity) bands under a ≤5%p paid/free fairness cap
+  Extensible, operationally stable implementation with strict new-tech verification and perf/movement-path budgets
+  Archetype-rotation QA that hunts balance breaks, benchmarks similar games via survey, and measures every gate
+
+S[6]{n,action,details}:
+  1,Scaffold the run,Create _workspace/{run-id}/ (intake design pm engineering qa ops production messages retrospectives) at the target repo root and resume from the newest task manifest when present.
+  2,Normalize intake,Director writes production-brief.md with the bmad-gds schema and picks ONE operating mode plus the next public beat.
+  3,Materialize the team,Copy templates/agents/ into the runtime (.claude/agents/ on Claude Code with agent teams; sequential sub-agents with file-backed messages elsewhere) and assign stage tasks with owner artifact and gate linkage.
+  4,Run the 3-stage cycle,Stage 1 concept/presentation/animation/resources/core build → Stage 2 balance/core-loop stability/novelty development → Stage 3 ops stability and play impact per references/stage-cycle.md.
+  5,Gate with numbers,QA measures G1–G8 per references/quality-gates.md; director issues PASS/FIX/REDO with at most 2 FIX loops; open S1 defects or missing evidence block PASS.
+  6,Close the cycle,Write the retrospective with measured gate values and the next-cycle entry decision (Stage 1 concept shift vs Stage 2 retune); never delete _workspace artifacts.
+
 N:genkit
 D:Route server-owned AI workflow work into one Genkit implementation brief. Use when the main job is deciding whether a web/backend/fullstack feature needs reusable flows, tools, retrieval, prompt files, typed contracts, evals, observability, or deployment across Firebase / Cloud Run / another backend runtime. Keep direct Firebase app/client SDK integration routed to `firebase-ai-logic`, Firebase platform/operator work routed to `firebase-cli`, and framework-choice comparisons routed to `survey`.
 G:genkit firebase ai-workflows flows tool-calling rag evaluation observability cloud-run fullstack backend developer-ui dotprompt
