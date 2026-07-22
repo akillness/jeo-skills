@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-07-16",
-  "skill_count": 164,
+  "generated": "2026-07-23",
+  "skill_count": 165,
   "categories": {
     "planning-review": [
       "agentation",
@@ -55,6 +55,7 @@
     ],
     "search-analysis": [
       "academic-research",
+      "agent-pulse",
       "autoresearch",
       "codebase-search",
       "data-analysis",
@@ -226,6 +227,34 @@
       ],
       "keyword": "academic-research",
       "version": "1.0.0"
+    },
+    {
+      "name": "agent-pulse",
+      "description": "Operate and extend barretlee/agent-pulse as an evidence-backed AI industry intelligence system: source lifecycle, safe collection, signal normalization, Event clustering, system evaluation, Scout hypotheses, privacy-safe export, and release verification.",
+      "category": "search-analysis",
+      "path": "agent-pulse/SKILL.md",
+      "tags": [
+        "agent-pulse",
+        "ai-intelligence",
+        "evidence",
+        "source-catalog",
+        "collectors",
+        "event-clustering",
+        "scout",
+        "github-pages"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "agent-pulse",
+      "version": "1.0"
     },
     {
       "name": "agentation",

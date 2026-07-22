@@ -2668,3 +2668,94 @@ G:architecture navigation context modules codebase-understanding orientation
 N:prompts-chat
 D:Discovers, adapts, and manages curated prompts.chat templates; use for prompt engineering or reusable prompt workflows, not full agent or RAG systems.
 G:prompts prompt-engineering ai-optimization prompt-templates prompt-library prompt-discovery workflow-automation prompt-curation
+
+N:gbro-collage-broll
+D:Generate editorial halftone paper-collage B-roll video assets from a brief with staged planning, asset generation, assembly, and human approval gates.
+G:collage b-roll video generation editorial halftone paper collage Gemini Omni Flash
+U[4]:
+  Turn a topic or script beat into paper-collage B-roll
+  Build visual direction and shot assets through staged gates
+  Assemble a reviewable clip with motion and timing
+  Require human approval before advancing production stages
+S[4]{n,action,details}:
+  1,Plan the beat,Define the visual brief and collage direction
+  2,Generate assets,Create and validate the required visual layers
+  3,Assemble the clip,Compose motion timing and export a review artifact
+  4,Review and hand off,Collect approval evidence before final delivery
+R[3]:
+  Preserve the editorial paper-collage visual language
+  Do not skip human approval gates
+  Keep generated assets and review artifacts traceable
+E[1]{desc,in,out}:
+  "Make a collage B-roll clip for this narration","Provide a script beat and visual direction","Reviewable paper-collage B-roll artifact with approval status"
+
+N:video-shotcraft
+D:Produce cinematic product promo and demo videos from shot recipes with beat-synced camera motion, sound design, and visual QA handoffs.
+G:cinematic video product promo demo shot recipes Remotion camera motion sound design
+U[4]:
+  Plan a product promo or demo around cinematic shot recipes
+  Translate a brief into a timed shot list and visual direction
+  Build motion, transitions, and sound design around beats
+  Export and QA a reviewable video handoff
+S[4]{n,action,details}:
+  1,Select the recipe,Choose a shot grammar and production mode for the brief
+  2,Build the shot plan,Map shots to beats, assets, camera moves, and transitions
+  3,Produce the sequence,Implement motion, timing, and sound design
+  4,Verify and hand off,Review the render and record QA or revision needs
+R[3]:
+  Keep every shot tied to a beat and intended viewer action
+  Prefer explicit shot plans over ad hoc visual assembly
+  Treat rendered review and QA as part of delivery
+E[1]{desc,in,out}:
+  "Create a cinematic product demo","Give the product brief and desired duration","Timed shot plan, rendered video, and QA handoff"
+
+N:yuwen-publish-precheck
+D:审查中文自媒体内容的发布风险并给出逐平台结论、规则依据、最小改稿和复检结果，支持抖音、小红书、微信视频号及个人规则沉淀。
+G:content moderation social media publish precheck chinese platforms sensitive words compliance
+U[5]:
+  审查口播稿、文章、图文笔记、字幕和封面文字能否发布
+  定位风险候选并结合语境、商业属性和行业规则判定
+  复盘限流、删除或处罚并沉淀个人规则
+  给出保留语气和信息量的可替换修复稿
+  导入个人词库并对修改稿执行复检
+S[6]{n,action,details}:
+  1,建立内容身份,确认目标平台商业属性和医疗金融等行业
+  2,运行词面预检,执行 scripts/scan.py 定位候选而不把命中当结论
+  3,加载规则判定,读取 judgment、通用商业行业和平台规则逐条引用
+  4,生成发布报告,输出逐平台结论、位置、规则号、严重度和检查单
+  5,保意修复复检,按 repair 参考最小改写并重跑扫描和语义检查
+  6,沉淀用户规则,维护 data 中本地规则表达库案例和历史报告
+R[6]:
+  不承诺平台 100% 过审或预测账号权重
+  永不提供谐音拆字拼音遮挡暗号等绕审手段
+  候选命中不是违规结论，零命中也不代表语义安全
+  个人白名单不能豁免法律和平台硬规则
+  用户数据只写入 data/，升级不得覆盖已沉淀内容
+  审核到发布检查单为止，不代替用户点击发布
+E[2]{desc,in,out}:
+  "发布前审查一篇带货口播稿","审查稿件能否发抖音并提供修改建议","逐平台风险报告、规则依据、修改稿和复检结果"
+  "复盘一次被限流的内容","分析处罚证据并沉淀可复用的个人规则","归因报告、案例记录和后续审核规则"
+
+N:agent-pulse
+D:Operate and extend barretlee/agent-pulse as an evidence-backed AI industry intelligence system: source lifecycle, safe collection, signal normalization, Event clustering, system evaluation, Scout hypotheses, privacy-safe export, and release verification.
+G:agent-pulse ai-intelligence evidence source-catalog collectors event-clustering scout github-pages industry-intelligence
+U[8]:
+  Run Agent Pulse locally and inspect its Control Room or public static site
+  Add or audit a SourceAdapter with lifecycle, provenance, fixtures, and failure isolation
+  Collect eligible signals, deduplicate and cluster Events, or audit source health
+  Evaluate system capability and compare a baseline for regressions
+  Generate bounded evidence-linked Scout opportunities
+  Export and validate the privacy-safe public Pages site
+  Change schemas, ranking, publication gates, or source lifecycle docs-first
+  Report facts, evidence, judgments, uncertainty, and next signals separately
+R[7]:
+  Treat Agent Pulse as evidence-backed intelligence, not a news aggregator
+  Aggregators are discovery or heat signals and never sole factual evidence
+  Do not equate heat with factual confidence
+  Do not bypass login, WAF, CAPTCHA, paywalls, robots, licenses, or rate limits
+  Keep automatic Events in review until deterministic readiness gates pass
+  Never export raw payloads, credentials, private operations, or database data to Pages
+  Do not describe Scout hypotheses, seed data, or experimental features as facts or production capability
+E[2]{desc,in,out}:
+  "Add an official RSS source to Agent Pulse","SourceAdapter extension with fixtures, lifecycle gates, and npm run check","docs-first source change with safe adapter tests and audit-ready handoff"
+  "Publish a hot Agent Pulse story from an aggregator","Evidence and readiness review before privacy-safe export","canonical original evidence, review status, and no aggregator-only publication"

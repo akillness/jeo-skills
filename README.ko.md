@@ -2,14 +2,10 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-164-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-≔12x1..12x1
-**164개 로컬 스킬 폴더 · 설치 가능 스킬 163개 · TOON 포맷 · 멀티플랫폼**
-≔23n9..23n9
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 164개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-≔181oa..181oa
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 164개 로컬 스킬 폴더 = 총 163개 설치 가능 스킬
-≔336kn..336kn
+[![Skills](https://img.shields.io/badge/Skills-165-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**165개 로컬 스킬 폴더 · 설치 가능 스킬 165개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 165개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
 ### 🎬 창의 미디어 (10개)
 
 | `drawio` |
@@ -23,21 +19,17 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 | `vox-director` |
 | `webtoon-harness` |
 
-≔668up..668up
-├── .agent-skills/          ← 164개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**164개 로컬 스킬 폴더 · 설치 가능 스킬 163개 · TOON 포맷 · 멀티플랫폼**
-≔37n9..37n9
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 164개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-≔195oa..195oa
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 164개 로컬 스킬 폴더 = 총 163개 설치 가능 스킬
-≔682up..682up
-├── .agent-skills/          ← 164개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+**165개 로컬 스킬 폴더 · 설치 가능 스킬 165개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 165개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
+├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -48,11 +40,9 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 164개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-≔201oa..201oa
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 164개 로컬 스킬 폴더 = 총 163개 설치 가능 스킬
-≔688up..688up
-├── .agent-skills/          ← 164개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 165개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
+├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo 에이전트와 전설의 장비 세트
@@ -210,9 +200,8 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 164개 로컬 스킬 폴더 = 총 163개 설치 가능 스킬
-≔692up..692up
-├── .agent-skills/          ← 164개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
+├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
@@ -349,11 +338,12 @@ rtk init -g
 | `task-estimation` |
 | `task-planning` |
 
-### 🔭 검색 및 분석 (13개)
+### 🔭 검색 및 분석 (14개)
 
 | 스킬 |
 |------|
 | `academic-research` |
+| `agent-pulse` |
 | `autoresearch` |
 | `codebase-search` |
 | `data-analysis` |
@@ -383,11 +373,12 @@ rtk init -g
 | `webtoon-harness` |
 
 
-### 📢 마케팅 (1개)
+### 📢 마케팅 (2개)
 
 | 스킬 |
 |------|
 | `marketing-automation` |
+| `yuwen-publish-precheck` |
 
 ### 🎮 게임 개발 (8개)
 
