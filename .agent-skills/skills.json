@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-07-16",
-  "skill_count": 161,
+  "skill_count": 162,
   "categories": {
     "planning-review": [
       "agentation",
@@ -170,6 +170,7 @@
       "remotion-video-production",
       "slides-grab",
       "video-production",
+      "video-shotcraft",
       "vox-director",
       "webtoon-harness"
     ],
@@ -4883,6 +4884,36 @@
       ],
       "keyword": "video-production",
       "version": "2.0"
+    },
+    {
+      "name": "video-shotcraft",
+      "description": "用镜头配方卡 + 已验收模板 + 代码/音频资产制作电影感产品视频（Remotion + 真实页面截图 + 2.5D 运镜 + 节奏卡点 + 声音设计）。Use when making a cinematic product promo or desktop demo video, naming the Ink Press template, reproducing template video effects, or building single motion-design shots with recipe cards. Triggers on: video-shotcraft, Ink Press template, product video, cinematic promo, shot recipe card, remotion video.",
+      "category": "creative-media",
+      "path": "video-shotcraft/SKILL.md",
+      "tags": [
+        "video-production",
+        "remotion",
+        "motion-design",
+        "product-promo",
+        "shot-cards",
+        "cinematic-video"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "video-shotcraft",
+      "version": "1.0"
     },
     {
       "name": "vox-director",

@@ -1717,7 +1717,9 @@ If no → skip silently. Never re-ask.
 
 ---
 
-Skill Inventory (161 skills)
+Skill Inventory (162 skills)
+≔1748hu..1748hu
+| **Creative Media** | remotion-video-production *(compatibility alias for video-production when legacy tooling or explicit Remotion naming still expects the old skill)*, video-production *(canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs)*, video-shotcraft *(cinematic product promo & demo video production using 106 shot recipe cards, Ink Press template, Remotion 2.5D camera moves, beat syncing, and sound design)*, paperbanana *(routing-first academic illustration — turn text/PDF into publication-quality figures via a two-phase plan-then-refine multi-agent pipeline; routes to the smallest workable mode: plot (VLM-only charts) < generate (one diagram) < batch/sweep/orchestrate, with evaluate (VLM-as-Judge) and polish; provider-agnostic, venue style packs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana`)* | All (`*`) |
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|

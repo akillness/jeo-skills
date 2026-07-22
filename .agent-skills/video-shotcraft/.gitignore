@@ -1,0 +1,4 @@
+node_modules/
+out/qa/
+.DS_Store
+.synapse/
