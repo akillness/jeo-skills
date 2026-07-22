@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-07-16",
-  "skill_count": 162,
+  "skill_count": 164,
   "categories": {
     "planning-review": [
       "agentation",
@@ -165,6 +165,7 @@
     ],
     "creative-media": [
       "drawio",
+      "gbro-collage-broll",
       "motion-previs-studio",
       "paperbanana",
       "remotion-video-production",
@@ -175,7 +176,8 @@
       "webtoon-harness"
     ],
     "marketing": [
-      "marketing-automation"
+      "marketing-automation",
+      "yuwen-publish-precheck"
     ],
     "project-management": [
       "sprint-retrospective",
@@ -563,6 +565,25 @@
       "version": "1.2.0"
     },
     {
+      "name": "ax",
+      "description": "AI-driven fetch, discover, extract framework. ax is a command-line tool purpose-built for AI agents to fetch web pages, discover their structure, and extract structured data — replacing the classic `curl → parse → regex` loop with one deterministic, token-efficient command.",
+      "category": "frontend",
+      "path": "ax/SKILL.md",
+      "tags": [
+        "ax",
+        "web-scraping",
+        "web-extraction",
+        "cli",
+        "agent-tools",
+        "structured-data",
+        "token-efficient"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "ax",
+      "version": "1.0.0"
+    },
+    {
       "name": "backend-testing",
       "description": ">",
       "category": "backend",
@@ -591,25 +612,6 @@
       ],
       "keyword": "backend-testing",
       "version": "1.2.0"
-    },
-    {
-      "name": "ax",
-      "description": "AI-driven fetch, discover, extract framework. ax is a command-line tool purpose-built for AI agents to fetch web pages, discover their structure, and extract structured data — replacing the classic `curl → parse → regex` loop with one deterministic, token-efficient command.",
-      "category": "frontend",
-      "path": "ax/SKILL.md",
-      "tags": [
-        "ax",
-        "web-scraping",
-        "web-extraction",
-        "cli",
-        "agent-tools",
-        "structured-data",
-        "token-efficient"
-      ],
-      "platforms": [],
-      "allowed_tools": [],
-      "keyword": "ax",
-      "version": "1.0.0"
     },
     {
       "name": "bmad",
@@ -1739,6 +1741,33 @@
       "version": "1.0.0"
     },
     {
+      "name": "gbro-collage-broll",
+      "description": "Turn a 5-second voiceover script, opinion statement, or abstract concept into an editorial halftone paper-collage assemble-from-empty B-roll video. Enforces a 3-gate approval workflow (metaphor -> still -> video via Gemini Omni Flash).",
+      "category": "creative-media",
+      "path": "gbro-collage-broll/SKILL.md",
+      "tags": [
+        "video-generation",
+        "b-roll",
+        "paper-collage",
+        "halftone",
+        "gemini-omni-flash",
+        "editorial-animation"
+      ],
+      "platforms": [
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "gbro-collage-broll",
+      "version": "1.0.0"
+    },
+    {
       "name": "genkit",
       "description": "Route server-owned AI workflow work into one Genkit implementation brief. Use when the main job is deciding whether a web/backend/fullstack feature needs reusable flows, tools, retrieval, prompt files, typed contracts, evals, observability, or deployment across Firebase / Cloud Run / another backend runtime. Choose among flow-foundation, tool-and-agent, retrieval-and-prompt, evaluation-and-observability, and deployment-runtime modes; keep direct Firebase app/client SDK integration routed to `firebase-ai-logic`, Firebase platform/operator work routed to `firebase-cli`, and framework-choice comparisons routed to `survey`.",
       "category": "infrastructure",
@@ -2444,41 +2473,6 @@
       "version": "1.0"
     },
     {
-      "name": "motion-previs-studio",
-      "description": "Assist with Motion Previs Studio v4: a cross-platform desktop app for AI-film previsualization. Use when setting up, configuring, troubleshooting, or extending motion-previs-studio for pose extraction, depth mapping, camera motion solving, control layer export, and bundle production for AI-video workflows (Seedance, ComfyUI, Blender, Runway, Kling). Includes build setup, feature integration, UI/logic debugging, and export pipeline optimization.",
-      "category": "creative-media",
-      "path": "motion-previs-studio/SKILL.md",
-      "tags": [
-        "motion-previs",
-        "ai-video",
-        "previsualization",
-        "filmmaking",
-        "pose-extraction",
-        "depth-mapping",
-        "camera-motion",
-        "control-layers",
-        "previs",
-        "ai-film"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex",
-        "jeopi"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash",
-        "Write",
-        "Edit"
-      ],
-      "keyword": "motion-previs-studio",
-      "version": "1.0"
-    },
-    {
       "name": "migrate-to-shoehorn",
       "description": "Use this skill when >",
       "category": "code-quality",
@@ -2535,6 +2529,41 @@
       ],
       "keyword": "monitoring-observability",
       "version": "2.1"
+    },
+    {
+      "name": "motion-previs-studio",
+      "description": "Assist with Motion Previs Studio v4: a cross-platform desktop app for AI-film previsualization. Use when setting up, configuring, troubleshooting, or extending motion-previs-studio for pose extraction, depth mapping, camera motion solving, control layer export, and bundle production for AI-video workflows (Seedance, ComfyUI, Blender, Runway, Kling). Includes build setup, feature integration, UI/logic debugging, and export pipeline optimization.",
+      "category": "creative-media",
+      "path": "motion-previs-studio/SKILL.md",
+      "tags": [
+        "motion-previs",
+        "ai-video",
+        "previsualization",
+        "filmmaking",
+        "pose-extraction",
+        "depth-mapping",
+        "camera-motion",
+        "control-layers",
+        "previs",
+        "ai-film"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "jeopi"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "motion-previs-studio",
+      "version": "1.0"
     },
     {
       "name": "notebooklm",
@@ -3395,6 +3424,40 @@
       ],
       "keyword": "prompt-repetition",
       "version": "3.0.0"
+    },
+    {
+      "name": "prompts-chat",
+      "description": "Discover and apply curated prompts from the prompts.chat collection to optimize AI interactions. Use when refining prompt engineering, finding domain-specific prompt templates, improving response quality, or building prompt-based workflows.",
+      "category": "agent-development",
+      "path": "prompts-chat/SKILL.md",
+      "tags": [
+        "prompts",
+        "prompt-engineering",
+        "ai-optimization",
+        "prompt-templates",
+        "prompt-library",
+        "prompt-discovery",
+        "workflow-automation",
+        "prompt-curation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "jeo",
+        "jeopi"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "prompts-chat",
+      "version": "1.0.0"
     },
     {
       "name": "pydantic-ai",
@@ -5099,6 +5162,29 @@
       "version": "2.4.16"
     },
     {
+      "name": "yuwen-publish-precheck",
+      "description": "国内自媒体发布前风险自审与保意修复：审口播稿、文章、图文笔记、字幕、封面文字能不能发抖音/小红书/微信视频号",
+      "category": "marketing",
+      "path": "yuwen-publish-precheck/SKILL.md",
+      "tags": [
+        "content-moderation",
+        "social-media",
+        "publish-precheck",
+        "chinese-platforms"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "yuwen-publish-precheck",
+      "version": "1.0.0"
+    },
+    {
       "name": "zeude",
       "description": "Enterprise AI adoption platform for Claude Code — measures team usage via OpenTelemetry, syncs skills/MCP servers/hooks from a central dashboard, and delivers context-aware skill suggestions at prompt time. Solves the Intention-Action Gap: organizations that deploy Zeude see 3x adoption improvement (6% → 18%). Requires Supabase (config) and ClickHouse (analytics). Triggers on: zeude, ai adoption, claude code adoption, enterprise claude, opentelemetry claude, skill sync, team claude management.",
       "category": "utilities",
@@ -5155,40 +5241,6 @@
       ],
       "keyword": "zoom-out",
       "version": "1.0"
-    },
-    {
-      "name": "prompts-chat",
-      "description": "Discover and apply curated prompts from the prompts.chat collection to optimize AI interactions. Use when refining prompt engineering, finding domain-specific prompt templates, improving response quality, or building prompt-based workflows.",
-      "category": "agent-development",
-      "path": "prompts-chat/SKILL.md",
-      "tags": [
-        "prompts",
-        "prompt-engineering",
-        "ai-optimization",
-        "prompt-templates",
-        "prompt-library",
-        "prompt-discovery",
-        "workflow-automation",
-        "prompt-curation"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex",
-        "jeo",
-        "jeopi"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Edit",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "prompts-chat",
-      "version": "1.0.0"
     }
   ]
 }

@@ -2,9 +2,9 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-162-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-164-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 ≔12cy..12cy
-**162 local skill folders · 162 installable skills · TOON Format · Cross-platform**
+**164 local skill folders · 164 installable skills · TOON Format · Cross-platform**
 ≔22g1..22g1
 A curated collection of 162 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
@@ -13,9 +13,9 @@ A curated collection of 162 agent skills for spec-first, multi-agent LLM workflo
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**162 local skill folders · 162 installable skills · TOON Format · Cross-platform**
+**164 local skill folders · 164 installable skills · TOON Format · Cross-platform**
 ≔666gx..666gx
-├── .agent-skills/          ← 162 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 164 skill folders (each with SKILL.md + SKILL.toon)
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -27,7 +27,7 @@ A curated collection of 162 agent skills for spec-first, multi-agent LLM workflo
 
 A curated collection of 162 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 ≔668gx..668gx
-├── .agent-skills/          ← 162 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 164 skill folders (each with SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo Agent & The Legendary Equipment Set
@@ -158,15 +158,23 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 162 local skill folders = 162 total installable skills
-≔312dy..312dy
-### 🎬 Creative Media (9)
-≔321gm..322pi
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 164 local skill folders = 163 total installable skills
+
+### 🎬 Creative Media (10)
+
+| `drawio` |
+| `gbro-collage-broll` |
+| `motion-previs-studio` |
+| `paperbanana` |
+| `remotion-video-production` |
+| `slides-grab` |
 | `video-production` |
 | `video-shotcraft` |
 | `vox-director` |
+| `webtoon-harness` |
+
 ≔658gx..658gx
-├── .agent-skills/          ← 162 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 164 skill folders (each with SKILL.md + SKILL.toon)
 
 ### 🎯 Core Orchestration (15)
 
@@ -321,18 +329,21 @@ rtk init -g
 | `semble` |
 | `skill-autoresearch` |
 
-### 🎬 Creative Media (8)
+### 🎬 Creative Media (10)
 
 | Skill |
 |-------|
 | `drawio` |
+| `gbro-collage-broll` |
 | `motion-previs-studio` |
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
 | `video-production` |
+| `video-shotcraft` |
 | `vox-director` |
 | `webtoon-harness` |
+
 
 ### 📢 Marketing (1)
 
@@ -667,7 +678,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 162 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 164 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
