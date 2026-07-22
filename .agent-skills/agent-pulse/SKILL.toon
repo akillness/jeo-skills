@@ -1,0 +1,23 @@
+N:agent-pulse
+D:Operate and extend barretlee/agent-pulse as an evidence-backed AI industry intelligence system: source lifecycle, safe collection, signal normalization, Event clustering, system evaluation, Scout hypotheses, privacy-safe export, and release verification.
+G:agent-pulse ai-intelligence evidence source-catalog collectors event-clustering scout github-pages industry-intelligence
+U[8]:
+  Run Agent Pulse locally and inspect its Control Room or public static site
+  Add or audit a SourceAdapter with lifecycle, provenance, fixtures, and failure isolation
+  Collect eligible signals, deduplicate and cluster Events, or audit source health
+  Evaluate system capability and compare a baseline for regressions
+  Generate bounded evidence-linked Scout opportunities
+  Export and validate the privacy-safe public Pages site
+  Change schemas, ranking, publication gates, or source lifecycle docs-first
+  Report facts, evidence, judgments, uncertainty, and next signals separately
+R[7]:
+  Treat Agent Pulse as evidence-backed intelligence, not a news aggregator
+  Aggregators are discovery or heat signals and never sole factual evidence
+  Do not equate heat with factual confidence
+  Do not bypass login, WAF, CAPTCHA, paywalls, robots, licenses, or rate limits
+  Keep automatic Events in review until deterministic readiness gates pass
+  Never export raw payloads, credentials, private operations, or database data to Pages
+  Do not describe Scout hypotheses, seed data, or experimental features as facts or production capability
+E[2]{desc,in,out}:
+  "Add an official RSS source to Agent Pulse","SourceAdapter extension with fixtures, lifecycle gates, and npm run check","docs-first source change with safe adapter tests and audit-ready handoff"
+  "Publish a hot Agent Pulse story from an aggregator","Evidence and readiness review before privacy-safe export","canonical original evidence, review status, and no aggregator-only publication"

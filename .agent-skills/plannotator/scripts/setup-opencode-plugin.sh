@@ -1,9 +1,6 @@
 #!/bin/bash
 # plannotator - OpenCode Plugin Registration Script
-# Registers @plannotator/opencode@latest plugin in opencode.json
-# and copies slash commands to ~/.config/opencode/command/
-#
-# Usage: ./setup-opencode-plugin.sh [--dry-run] [--project-dir DIR]
+# Registers @plannotator/opencode@latest and installs slash-command definitions.
 
 set -e
 
@@ -16,116 +13,150 @@ NC='\033[0m'
 
 DRY_RUN=false
 PROJECT_DIR="${PWD}"
-
 for arg in "$@"; do
   case $arg in
     --dry-run) DRY_RUN=true ;;
     --project-dir=*) PROJECT_DIR="${arg#*=}" ;;
-    --project-dir)   PROJECT_DIR="" ;;
+    --project-dir) PROJECT_DIR="" ;;
     -h|--help)
       echo "Usage: $0 [--dry-run] [--project-dir DIR]"
-      echo ""
-      echo "Registers plannotator OpenCode plugin:"
-      echo "  1. Adds @plannotator/opencode@latest to opencode.json"
-      echo "  2. Copies slash commands to ~/.config/opencode/command/"
-      echo ""
-      echo "Options:"
-      echo "  --project-dir DIR  Target project dir (default: current dir)"
-      echo "  --dry-run          Show what would change without writing"
-      echo "  -h, --help         Show this help"
       exit 0
       ;;
   esac
 done
 
-OPENCODE_JSON="${PROJECT_DIR}/opencode.json"
+OPENCODE_DIR="$PROJECT_DIR"
+OPENCODE_JSON="$OPENCODE_DIR/opencode.json"
 OPENCODE_COMMAND_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/opencode/command"
 PLUGIN_NAME="@plannotator/opencode@latest"
+
+fail() {
+  echo -e "${RED}✗ $1${NC}" >&2
+  exit 1
+}
+
+cleanup_owned_temp() {
+  local temp="${1:-}"
+  if [ -n "$temp" ] && [ ! -L "$temp" ] && [ -f "$temp" ]; then
+    rm -f "$temp" || true
+  fi
+}
+
+prepare_parent() {
+  local dir="$1"
+  if [ -e "$dir" ]; then
+    [ -d "$dir" ] || fail "Refusing to use non-directory config parent: ${dir}"
+  else
+    mkdir -p "$dir" || fail "Unable to create config directory: ${dir}"
+    [ -d "$dir" ] || fail "Refusing to use unsafe config directory: ${dir}"
+  fi
+}
+
+
+require_existing_parent() {
+  local dir="$1"
+  [ -d "$dir" ] || fail "Project directory does not exist: ${dir}"
+}
+require_regular_file() {
+  local path="$1"
+  [ -L "$path" ] && fail "Refusing to modify symlinked config: ${path}"
+  [ -f "$path" ] || fail "Refusing to modify missing or non-regular config: ${path}"
+}
+
+require_absent_file() {
+  local path="$1"
+  [ -L "$path" ] && fail "Refusing to create symlinked config: ${path}"
+  [ ! -e "$path" ] || fail "Refusing to replace existing config: ${path}"
+}
+
+file_mode() {
+  if [ "$(uname)" = "Darwin" ]; then
+    stat -f '%Lp' "$1"
+  else
+    stat -c '%a' "$1"
+  fi
+}
+
+validate_json() {
+  command -v python3 >/dev/null 2>&1 || fail "python3 not found — cannot validate JSON safely"
+  python3 - "$1" <<'PYEOF'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as f:
+    value = json.load(f)
+if not isinstance(value, dict):
+    raise ValueError("opencode.json root must be an object")
+PYEOF
+}
+
+validate_command_markdown() {
+  local path="$1" description="$2" command="$3"
+  command -v python3 >/dev/null 2>&1 || fail "python3 not found — cannot validate command text safely"
+  python3 - "$path" "$description" "$command" <<'PYEOF'
+import sys
+
+path, description, command = sys.argv[1:]
+with open(path, encoding="utf-8") as f:
+    text = f.read()
+if not text.startswith("---\n") or f"description: {description}" not in text or command not in text:
+    raise ValueError("command Markdown missing required validated content")
+PYEOF
+}
+
+replace_temp() {
+  local temp="$1" destination="$2" expected="$3"
+  if [ -L "$temp" ] || [ ! -f "$temp" ]; then
+    fail "Temporary config file became unsafe: ${temp}"
+  fi
+  if [ "$expected" = existing ]; then
+    require_regular_file "$destination"
+  else
+    require_absent_file "$destination"
+  fi
+  mv -f "$temp" "$destination" || fail "Unable to install ${destination}"
+}
+
+create_backup() {
+  local source="$1" parent="$2" backup
+  backup="$(mktemp "${parent}/.opencode.json.bak.XXXXXX")" || fail "Unable to create config backup"
+  if [ -L "$backup" ] || [ ! -f "$backup" ]; then
+    cleanup_owned_temp "$backup"
+    fail "Refusing to use unsafe config backup: ${backup}"
+  fi
+  require_regular_file "$source"
+  if ! cp -p "$source" "$backup"; then
+    cleanup_owned_temp "$backup"
+    fail "Unable to back up ${source}"
+  fi
+  printf '%s\n' "$backup"
+}
+
+write_command_if_absent() {
+  local destination="$1" content="$2" description="$3" command="$4" parent="$5"
+  [ -L "$destination" ] && fail "Refusing to create symlinked command file: ${destination}"
+  [ -e "$destination" ] && [ ! -f "$destination" ] && fail "Refusing to modify non-regular command file: ${destination}"
+  if [ -f "$destination" ]; then
+    return 1
+  fi
+  TEMP_FILE="$(mktemp "${parent}/.plannotator-command.XXXXXX")" || fail "Unable to create temporary command file"
+  if ! printf '%s\n' "$content" > "$TEMP_FILE" || ! validate_command_markdown "$TEMP_FILE" "$description" "$command"; then
+    cleanup_owned_temp "$TEMP_FILE"
+    fail "Generated command Markdown is invalid"
+  fi
+  replace_temp "$TEMP_FILE" "$destination" absent
+  return 0
+}
 
 echo ""
 echo -e "${BLUE}╔════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║  plannotator × OpenCode Plugin Setup       ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════╝${NC}"
 echo ""
-echo -e "${GRAY}Project dir: ${PROJECT_DIR}${NC}"
-echo ""
-
-if ! command -v plannotator &>/dev/null; then
-  echo -e "${RED}✗ plannotator CLI not found${NC}"
-  echo -e "${YELLOW}  Run ./install.sh first${NC}"
-  exit 1
-fi
-echo -e "${GREEN}✓ plannotator CLI is installed${NC}"
-echo ""
-
-# ════════════════════════════════════════════════════════════
-# PART 1: opencode.json plugin registration
-# ════════════════════════════════════════════════════════════
-echo -e "${BLUE}━━ Step 1: opencode.json plugin registration ━━━━━${NC}"
-echo ""
-
-if [ -f "$OPENCODE_JSON" ] && grep -q "plannotator" "$OPENCODE_JSON" 2>/dev/null; then
-  echo -e "${YELLOW}⚠ plannotator already in ${OPENCODE_JSON}${NC}"
-  echo -e "${GRAY}  No changes needed.${NC}"
-elif [ "$DRY_RUN" = true ]; then
-  echo -e "${YELLOW}[DRY RUN] Would add '${PLUGIN_NAME}' to ${OPENCODE_JSON}${NC}"
-else
-  if [ ! -f "$OPENCODE_JSON" ]; then
-    cat > "$OPENCODE_JSON" <<EOF
-{
-  "\$schema": "https://opencode.ai/config.json",
-  "plugin": ["${PLUGIN_NAME}"]
-}
-EOF
-    echo -e "${GREEN}✓ Created ${OPENCODE_JSON} with plannotator plugin${NC}"
-  else
-    BACKUP="${OPENCODE_JSON}.bak.$(date +%Y%m%d%H%M%S)"
-    cp "$OPENCODE_JSON" "$BACKUP"
-    echo -e "${GRAY}  Backup saved: ${BACKUP}${NC}"
-
-    if command -v python3 &>/dev/null; then
-      python3 - "$OPENCODE_JSON" "$PLUGIN_NAME" <<'PYEOF'
-import json, sys
-
-path = sys.argv[1]
-plugin = sys.argv[2]
-
-with open(path) as f:
-    config = json.load(f)
-
-plugins = config.setdefault("plugin", [])
-
-if any("plannotator" in p for p in plugins):
-    print("plannotator plugin already present — no change.")
-    sys.exit(0)
-
-plugins.append(plugin)
-
-with open(path, "w") as f:
-    json.dump(config, f, indent=2)
-    f.write("\n")
-
-print("Plugin registered.")
-PYEOF
-      echo -e "${GREEN}✓ Added plannotator plugin to ${OPENCODE_JSON}${NC}"
-    else
-      echo -e "${RED}✗ python3 not found — add manually to ${OPENCODE_JSON}:${NC}"
-      echo '  "plugin": ["'"${PLUGIN_NAME}"'"]'
-      exit 1
-    fi
-  fi
-fi
-echo ""
-
-# ════════════════════════════════════════════════════════════
-# PART 2: Slash commands for OpenCode
-# ════════════════════════════════════════════════════════════
-echo -e "${BLUE}━━ Step 2: OpenCode slash commands ━━━━━━━━━━━━━━━${NC}"
-echo ""
+command -v plannotator >/dev/null 2>&1 || fail "plannotator CLI not found; run ./install.sh first"
 
 REVIEW_CMD="${OPENCODE_COMMAND_DIR}/plannotator-review.md"
 ANNOTATE_CMD="${OPENCODE_COMMAND_DIR}/plannotator-annotate.md"
-
 REVIEW_CMD_CONTENT='---
 description: Open interactive code review for current changes
 ---
@@ -135,52 +166,118 @@ Open the plannotator code review UI for current git diff.
 !`plannotator review`
 
 Address the code review feedback above.'
-
 ANNOTATE_CMD_CONTENT='---
 description: Open interactive annotation UI for a markdown file
 ---
+
+Open the plannotator annotation UI for a markdown file.
 
 !`plannotator annotate "$ARGUMENTS"`
 
 Address the annotation feedback above.'
 
-if [ "$DRY_RUN" = true ]; then
-  echo -e "${YELLOW}[DRY RUN] Would create:${NC}"
-  echo -e "  ${REVIEW_CMD}"
-  echo -e "  ${ANNOTATE_CMD}"
-else
-  mkdir -p "$OPENCODE_COMMAND_DIR"
+[ -d "$OPENCODE_DIR" ] || fail "Project directory does not exist: ${OPENCODE_DIR}"
+[ -e "$OPENCODE_COMMAND_DIR" ] && [ ! -d "$OPENCODE_COMMAND_DIR" ] && fail "Refusing to use non-directory config parent: ${OPENCODE_COMMAND_DIR}"
 
-  if [ ! -f "$REVIEW_CMD" ]; then
-    printf '%s\n' "$REVIEW_CMD_CONTENT" > "$REVIEW_CMD"
-    echo -e "${GREEN}✓ Created /plannotator-review command${NC}"
-  else
-    echo -e "${GRAY}  /plannotator-review already exists — skipped${NC}"
-  fi
+[ -L "$OPENCODE_JSON" ] && fail "Refusing to modify symlinked config: ${OPENCODE_JSON}"
+[ -e "$OPENCODE_JSON" ] && [ ! -f "$OPENCODE_JSON" ] && fail "Refusing to modify non-regular config: ${OPENCODE_JSON}"
+[ -L "$REVIEW_CMD" ] && fail "Refusing to modify symlinked command file: ${REVIEW_CMD}"
+[ -e "$REVIEW_CMD" ] && [ ! -f "$REVIEW_CMD" ] && fail "Refusing to modify non-regular command file: ${REVIEW_CMD}"
+[ -L "$ANNOTATE_CMD" ] && fail "Refusing to modify symlinked command file: ${ANNOTATE_CMD}"
+[ -e "$ANNOTATE_CMD" ] && [ ! -f "$ANNOTATE_CMD" ] && fail "Refusing to modify non-regular command file: ${ANNOTATE_CMD}"
 
-  if [ ! -f "$ANNOTATE_CMD" ]; then
-    printf '%s\n' "$ANNOTATE_CMD_CONTENT" > "$ANNOTATE_CMD"
-    echo -e "${GREEN}✓ Created /plannotator-annotate command${NC}"
+PLUGIN_CONFIGURED=false
+if [ -f "$OPENCODE_JSON" ]; then
+  require_regular_file "$OPENCODE_JSON"
+  if python3 - "$OPENCODE_JSON" <<'PYEOF'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as f:
+    config = json.load(f)
+if not isinstance(config, dict):
+    raise ValueError("opencode.json root must be an object")
+plugins = config.get("plugin", [])
+if not isinstance(plugins, list):
+    raise ValueError("opencode.json plugin must be an array")
+sys.exit(0 if any(isinstance(item, str) and "plannotator" in item for item in plugins) else 3)
+PYEOF
+  then
+    PLUGIN_CONFIGURED=true
   else
-    echo -e "${GRAY}  /plannotator-annotate already exists — skipped${NC}"
+    status=$?
+    [ "$status" -eq 3 ] || fail "Existing JSON configuration is invalid"
   fi
 fi
-echo ""
 
-echo -e "${GREEN}OpenCode plugin setup complete!${NC}"
-echo ""
-echo -e "${BLUE}Next steps:${NC}"
-echo -e "  ${BLUE}1.${NC} ${YELLOW}Restart OpenCode${NC} for the plugin to take effect"
-echo -e "  ${BLUE}2.${NC} Add to ${GREEN}opencode.json${NC} if not auto-detected:"
-echo ""
-echo -e '    {  "'
-echo -e '      "$schema": "https://opencode.ai/config.json",'
-echo -e "      \"plugin\": [\"${PLUGIN_NAME}\"]"
-echo -e '    }'
-echo ""
-echo -e "  ${BLUE}3.${NC} Available slash commands after restart:"
-echo -e "    ${GREEN}/plannotator-review${NC}         — code review"
-echo -e "    ${GREEN}/plannotator-annotate file.md${NC} — annotate markdown"
-echo ""
-echo -e "  ${BLUE}4.${NC} The ${GREEN}submit_plan${NC} tool is automatically available to the agent"
-echo ""
+PLUGIN_CHANGED=false
+REVIEW_CHANGED=false
+ANNOTATE_CHANGED=false
+BACKUP=""
+
+if [ "$DRY_RUN" = false ]; then
+  require_existing_parent "$OPENCODE_DIR"
+  prepare_parent "$OPENCODE_COMMAND_DIR"
+  if [ "$PLUGIN_CONFIGURED" = false ]; then
+    if [ -f "$OPENCODE_JSON" ]; then
+      require_regular_file "$OPENCODE_JSON"
+      ORIGINAL_MODE="$(file_mode "$OPENCODE_JSON")" || fail "Unable to determine permissions for ${OPENCODE_JSON}"
+      TEMP_FILE="$(mktemp "${OPENCODE_DIR}/.opencode.json.XXXXXX")" || fail "Unable to create temporary config file"
+      if ! python3 - "$OPENCODE_JSON" "$TEMP_FILE" "$PLUGIN_NAME" <<'PYEOF'
+import json
+import sys
+
+path, output_path, plugin = sys.argv[1:]
+with open(path, encoding="utf-8") as f:
+    config = json.load(f)
+if not isinstance(config, dict):
+    raise ValueError("opencode.json root must be an object")
+plugins = config.setdefault("plugin", [])
+if not isinstance(plugins, list):
+    raise ValueError("opencode.json plugin must be an array")
+plugins.append(plugin)
+with open(output_path, "w", encoding="utf-8") as f:
+    json.dump(config, f, indent=2)
+    f.write("\n")
+PYEOF
+      then
+        cleanup_owned_temp "$TEMP_FILE"
+        fail "Unable to update JSON configuration"
+      fi
+      if ! validate_json "$TEMP_FILE" || ! chmod "$ORIGINAL_MODE" "$TEMP_FILE"; then
+        cleanup_owned_temp "$TEMP_FILE"
+        fail "Generated JSON configuration failed validation or permission preservation"
+      fi
+      BACKUP="$(create_backup "$OPENCODE_JSON" "$OPENCODE_DIR")"
+      replace_temp "$TEMP_FILE" "$OPENCODE_JSON" existing
+    else
+      TEMP_FILE="$(mktemp "${OPENCODE_DIR}/.opencode.json.XXXXXX")" || fail "Unable to create temporary config file"
+      if ! printf '{\n  "$schema": "https://opencode.ai/config.json",\n  "plugin": ["%s"]\n}\n' "$PLUGIN_NAME" > "$TEMP_FILE" || ! validate_json "$TEMP_FILE"; then
+        cleanup_owned_temp "$TEMP_FILE"
+        fail "Generated JSON configuration is invalid"
+      fi
+      replace_temp "$TEMP_FILE" "$OPENCODE_JSON" absent
+    fi
+    PLUGIN_CHANGED=true
+  fi
+  if write_command_if_absent "$REVIEW_CMD" "$REVIEW_CMD_CONTENT" "Open interactive code review for current changes" 'plannotator review' "$OPENCODE_COMMAND_DIR"; then
+    REVIEW_CHANGED=true
+  fi
+  if write_command_if_absent "$ANNOTATE_CMD" "$ANNOTATE_CMD_CONTENT" "Open interactive annotation UI for a markdown file" 'plannotator annotate "$ARGUMENTS"' "$OPENCODE_COMMAND_DIR"; then
+    ANNOTATE_CHANGED=true
+  fi
+fi
+
+if [ "$DRY_RUN" = true ]; then
+  echo -e "${YELLOW}[DRY RUN] No changes written.${NC}"
+else
+  [ -n "$BACKUP" ] && echo -e "${GRAY}  Backup saved: ${BACKUP}${NC}"
+  [ "$PLUGIN_CHANGED" = true ] && echo -e "${GREEN}✓ Plugin configured in ${OPENCODE_JSON}${NC}"
+  [ "$PLUGIN_CONFIGURED" = true ] && echo -e "${YELLOW}⚠ plannotator already in ${OPENCODE_JSON}${NC}"
+  [ "$REVIEW_CHANGED" = true ] && echo -e "${GREEN}✓ Created /plannotator-review command${NC}"
+  [ "$REVIEW_CHANGED" = false ] && echo -e "${GRAY}  /plannotator-review already exists — skipped${NC}"
+  [ "$ANNOTATE_CHANGED" = true ] && echo -e "${GREEN}✓ Created /plannotator-annotate command${NC}"
+  [ "$ANNOTATE_CHANGED" = false ] && echo -e "${GRAY}  /plannotator-annotate already exists — skipped${NC}"
+  echo ""
+  echo -e "${GREEN}OpenCode plugin setup complete!${NC}"
+fi

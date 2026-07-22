@@ -17,6 +17,7 @@ S[4]{n,action,details}:
   2,Confirm mode and input,State pipeline + mode explicitly; for socratic/plan modes start Socratic dialogue immediately; confirm format/venue (APA 7.0 / IEEE / LaTeX / NeurIPS / ICLR / CVPR)
   3,Execute with human-in-the-loop,Follow the matching reference file; never skip [USER CHECKPOINT] gates; for academic-pipeline confirm at each of the 10 stage boundaries
   4,Return structured output packet,Include: Pipeline · Mode · Topic/Input · Output artifact · Citations · Integrity status · Next step recommendation
+
 N:agentation D:"Capture exact rendered-UI feedback and hand it to an agent as selectors, element paths, and structured annotation packets. Use when a human needs to point at a real UI issue, run a sync/watch loop, or wire browser feedback into Claude Code, Codex, Gemini CLI, or OpenCode. Not for fresh-session browser verification (browser-harness), running-browser reuse (playwriter), or plan/diff approval (plannotator)." T:Read|Write|Bash|Grep|Glob P:planning-review/agentation G:ui-feedback|browser-annotation|visual-feedback|mcp|react|ai-agent|design-review|css-selector
 N:agenticskills
 D:One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ god-skills) — wraps the official install.sh with pinned URL and env knobs (PLATFORM, WITH_LANGCHAIN, INSTALL_MODE, SKIP_BACKUP) to copy the catalog into Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in one step.
@@ -32,6 +33,10 @@ R:
   skill:Use `npx skills add --skill <name>` for selective single-skill installs
   omc:Use for Claude-side orchestration setup after the bundle lands
   omx:Use for Codex-side runtime setup after the bundle lands
+N:amrouter
+D:Self-hosted AI gateway with one OpenAI-compatible endpoint for multi-provider LLM, embedding, image, and audio routing, automatic fallback, load balancing, and cost optimization.
+G:amrouter ai-gateway multi-provider openai-compatible auto-fallback load-balancing cost-optimization cloudflare-workers-ai
+
 N:api-design
 D:Design or refactor API contracts for REST and GraphQL systems. Use when the user needs resou...
 G:api-design REST GraphQL OpenAPI contract-design versioning backend
@@ -77,6 +82,10 @@ R[5]:
   authentication-setup
   changelog-maintenance
   user-guide-writing
+N:astryx
+D:Agent-ready Meta design system with 150+ accessible React and StyleX components, open composition, swizzling, brand theming, dark mode, and CLI tooling.
+G:astryx design-system react-components component-library design-tokens accessibility stylex theming ui-framework meta
+
 N:authentication-setup
 D:Design or refactor product authentication setup for web apps and APIs. Use when choosing hosted/framework-native/platform-native/enterprise-add-on/self-hosted auth, sessions vs JWTs, OAuth/social login, passkeys, org/member models, callback/cookie environment setup, or SSO/SCIM rollout boundaries.
 G:authentication auth sessions JWT OAuth passkeys SSO SCIM product-auth backend
@@ -166,6 +175,10 @@ R[6]:
   Split local-fast PR scheduled and release lanes intentionally
   Treat flaky tests as a trust problem
   Route policy contract-shape and auth-implementation ownership away
+N:ax
+D:AI-era curl for agent web fetching, structure discovery, and deterministic structured extraction with token-budgeted output.
+G:ax web-scraping web-extraction cli agent-tools structured-data token-efficient
+
 N:bmad
 D:Packet-first BMAD/BMM front door for idea notes, product briefs, PRDs, architecture drafts, review feedback, existing repo state, and milestone pressure. Use when the user wants to know what BMAD phase or artifact comes next, or needs a portable BMAD entrypoint before routing review, execution slicing, runtime setup, or game-production work outward.
 G:bmad workflow planning packet-first brownfield architecture prd review-gate sprint-plan runtime-handoff
@@ -386,6 +399,10 @@ R:
   semble:Use for token-efficient agent code search over a repo (symbol / find-related)
   codebase-search:Use for a routing-first repo-navigation packet before refactoring
   graphify:Use for a durable, committed knowledge graph (graphify-out/) instead of a throwaway browser view
+N:colibri
+D:Pure-C GLM-5.2 MoE inference engine for consumer hardware with expert streaming, caching, int4 conversion, MTP speculative decoding, and CPU/GPU deployment.
+G:colibri llm-inference glm-5.2 moe speculative-decoding quantization expert-streaming consumer-hardware c-runtime
+
 compresso|compresso,compress video,compress image,batch compression,ffmpeg compression,offline video compress,tauri desktop compression,pngquant,jpegoptim,gifski|Free offline desktop video/image compression (Tauri+React). Batch compress, trim, convert, embed subtitles. Uses FFmpeg/pngquant/jpegoptim/gifski. Install: brew install --cask codeforreal1/tap/compresso or download DMG/MSI/AppImage from releases.|codeforreal1/compressO|AGPL-3.0|latest
 N:data-analysis
 D:Analyze datasets to extract insights, identify patterns, and generate reports. Use when exploring...
@@ -799,6 +816,25 @@ R[6]:
   Prefer one repeatable route or save-based pass over vague location descriptions
   Use engine-native language first: Unity Profiler Frame Debugger Unreal Insights stat unit stat gpu
   Do not let game-performance triage sprawl into build-log diagnosis generic app tuning or broad milestone coordination
+N:game-studio-harness
+D:Five-role game production studio harness: director, numeric-balance designer, revenue-band PM, verification-strict programmer, archetype-rotation QA. Runs the 3-stage operating cycle (concept/presentation/core build → balance/core-loop/novelty → ops stability/play impact) behind 8 numeric quality gates with survey-grounded trends, signed designer↔PM negotiation records, and QA broadcast discipline.
+G:game-studio-harness game-production game-studio bmad-gds numeric-balance core-loop novelty monetization reward-bands qa-archetypes stage-gates game-development
+
+U[5]:
+  Start, resume, or gate-review a full game production cycle from idea, GDD, prototype, or build
+  Numeric balance and combination design with survey-grounded core-loop discovery and novelty scoring
+  Revenue-point mapping with comeback (≤30% reversal) and steady-reward (10–20 session parity) bands under a ≤5%p paid/free fairness cap
+  Extensible, operationally stable implementation with strict new-tech verification and perf/movement-path budgets
+  Archetype-rotation QA that hunts balance breaks, benchmarks similar games via survey, and measures every gate
+
+S[6]{n,action,details}:
+  1,Scaffold the run,Create _workspace/{run-id}/ (intake design pm engineering qa ops production messages retrospectives) at the target repo root and resume from the newest task manifest when present.
+  2,Normalize intake,Director writes production-brief.md with the bmad-gds schema and picks ONE operating mode plus the next public beat.
+  3,Materialize the team,Copy templates/agents/ into the runtime (.claude/agents/ on Claude Code with agent teams; sequential sub-agents with file-backed messages elsewhere) and assign stage tasks with owner artifact and gate linkage.
+  4,Run the 3-stage cycle,Stage 1 concept/presentation/animation/resources/core build → Stage 2 balance/core-loop stability/novelty development → Stage 3 ops stability and play impact per references/stage-cycle.md.
+  5,Gate with numbers,QA measures G1–G8 per references/quality-gates.md; director issues PASS/FIX/REDO with at most 2 FIX loops; open S1 defects or missing evidence block PASS.
+  6,Close the cycle,Write the retrospective with measured gate values and the next-cycle entry decision (Stage 1 concept shift vs Stage 2 retune); never delete _workspace artifacts.
+
 N:genkit
 D:Route server-owned AI workflow work into one Genkit implementation brief. Use when the main job is deciding whether a web/backend/fullstack feature needs reusable flows, tools, retrieval, prompt files, typed contracts, evals, observability, or deployment across Firebase / Cloud Run / another backend runtime. Keep direct Firebase app/client SDK integration routed to `firebase-ai-logic`, Firebase platform/operator work routed to `firebase-cli`, and framework-choice comparisons routed to `survey`.
 G:genkit firebase ai-workflows flows tool-calling rag evaluation observability cloud-run fullstack backend developer-ui dotprompt
@@ -1267,6 +1303,10 @@ E[3]{desc,in,out}:
 1:{Antigravity team parity,I want Claude /team style work in Antigravity,Use .agents harness plus /orchestrate or oma agent:parallel and state the spawning boundary}
 2:{QA parity,Need ultraqa on OMA,Use /review or QA-focused /ultrawork with qa/security/performance lanes}
 3:{Autopilot parity,I use Claude /autopilot and want it in Antigravity,Use /plan then /work and state that native /autopilot is not guaranteed}
+N:motion-previs-studio
+D:AI-film previsualization desktop app for extracting pose, depth, camera motion, control layers, and production bundles from reference video.
+G:motion-previs ai-video previsualization filmmaking pose-extraction depth-mapping camera-motion control-layers previs ai-film
+
 N:okf
 D:Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type/title/description/resource/tags/timestamp fields for portable, interoperable AI-agent knowledge sharing. Formalizes the LLM-Wiki pattern into a vendor-neutral open spec: just markdown, just files, just YAML frontmatter.
 T:Read|Write|Edit|Bash|Grep|Glob|WebFetch
@@ -1573,6 +1613,10 @@ E[4]{desc,in,out}:
   "Barrel import optimization","import { Check, X, Menu } from 'lucide-react'","import Check from 'lucide-react/dist/esm/icons/check'"
   "dynamic import","import { MonacoEditor } from './monaco-editor'","const MonacoEditor = dynamic(() => import('./monaco-editor').then(m => m.MonacoEditor), { ssr: false })"
   "functional setState","setItems([...items, ...newItems]) — items dependency","setItems(curr => [...curr, ...newItems]) — empty dependency array"
+N:react-bits
+D:Animated React component library integration and contribution guidance for Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, Framer Motion, and jsrepo.
+G:react-bits animated-components gsap three-js framer-motion tailwind-v4 jsrepo react vite
+
 N:react-grab
 D:[react-grab] Capture exact React element context from a live browser UI and hand it to an AI coding agent as component name, source file path, line number, and HTML. Use for react-grab install/use, clipboard-to-agent copy, MCP-backed element selection, or plugin/API customization. Not for generic browser automation (browser-harness/playwriter), rendered-UI review (agentation), React performance audits (react-best-practices), or general design-system work.
 G:react-grab grab element-context ai-agent clipboard component-inspector dev-tools react browser mcp component-source browser-component-picker plugin freeze
@@ -2357,6 +2401,10 @@ R[5]:
 E[2]{desc,in,out}:
   "60s product intro","Create a 60s product intro video with 6 scenes, upbeat tone, 16:9","Scene breakdown (Hook/Problem/Solution/Features/SocialProof/CTA) + Remotion file structure"
   "Onboarding walkthrough","Generate a 45s onboarding walkthrough using screenshots, 9:16 mobile format","5-step scene plan + asset list (screenshots·callouts) + text overlays + mobile-safe margins"
+N:vox-director
+D:Automated Vox-style paper-collage explainer and ad video workflow: topic to script, keyframes, motion, voice-over, music, captions, Atlas Cloud API, and ffmpeg.
+G:vox-director vox-video collage-video motion-collage paper-collage explainer-video atlas-cloud ffmpeg
+
 N:web-accessibility
 D:Routing-first web accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow/contrast/motion, media alternatives, and routed-app navigation feedback. Use when audit, WCAG, axe/Lighthouse, or "make this accessible" requests need one concrete remediation packet.
 G:accessibility|a11y|WCAG|keyboard|focus|ARIA|screen-reader|route-announcer|reflow
@@ -2508,3 +2556,206 @@ R[3]:
   clone and run OpenCut
   OpenCut project structure
   OpenCut contribution focus areas
+
+N:agentic-skills
+D:Production engineering lifecycle for spec-first, test-driven implementation, review, and staged shipping; use for disciplined software delivery with explicit quality gates.
+G:agentic-skills production-engineering spec-driven tdd code-review security performance git-workflow ci-cd google-practices
+
+N:aider-cli-workflow
+D:Runs a scope-locked, test-backed Aider coding loop with commit hygiene; use for local-repo AI pair-programming on one small feature or bug.
+G:aider cli ai-pair-programming git test-driven code-review
+
+N:browser-harness
+D:Automates and verifies multi-step browser tasks through a clean Chrome CDP session; use when repeatable autonomous browser control is needed, not an already-open authenticated profile.
+G:browser-harness browser-automation self-healing cdp chrome-devtools-protocol llm-browser codex antigravity claude-code claude-vision-safe screenshot domain-skills
+
+N:caveman
+D:Enables persistent ultra-compressed technical communication; use for explicit brevity or token-reduction requests, except where fragments risk safety or clarity.
+G:token-reduction communication brevity compression productivity
+
+N:diagnose
+D:Investigates hard, flaky, or performance failures through a six-phase feedback-loop-first debugging process; use when quick targeted debugging is insufficient.
+G:debugging feedback-loop reproduction hypothesis instrumentation post-mortem
+
+N:git-guardrails-claude-code
+D:Installs Claude Code PreToolUse safeguards against destructive Git commands; use to protect repositories, not for general Git workflow guidance.
+G:git safety hooks destructive-operations guardrails claude-code
+
+N:grill-me
+D:Stress-tests plans and designs through one-question-at-a-time decision-tree interviews; use before committing to architecture or other load-bearing proposals.
+G:design-review stress-testing planning architecture questioning validation
+
+N:grill-with-docs
+D:Stress-tests plans against domain terminology and ADRs while updating CONTEXT.md and justified ADRs; use for architecture review grounded in project documentation.
+G:design-review architecture domain-model documentation adr context-map
+
+N:heretic
+D:Runs directional ablation and refusal-direction analysis for open-weight models the user may modify; use to reduce benign over-refusal or measure refusal/KL trade-offs, not for training.
+G:heretic abliteration directional-ablation decensor refusal-direction interpretability residual-geometry llm-safety-research optuna scrapling
+
+N:hyperfine-benchmarking
+D:Benchmarks equivalent shell commands with warmups, statistical summaries, and exportable artifacts; use for reproducible CLI performance comparisons rather than one-off timing.
+G:
+
+N:improve-codebase-architecture
+D:Finds architectural friction and proposes deepening refactors for locality and testability; use for hard-to-navigate, shallow, or tightly coupled code, not quick fixes.
+G:architecture refactoring deep-modules testability locality leverage
+
+N:microsoft-agent-framework
+D:Designs enterprise multi-agent systems with role, policy, control-flow, and observability boundaries; use for governed, maintainable organizational agent workflows.
+G:agentic-ai microsoft enterprise governance orchestration
+
+N:migrate-to-shoehorn
+D:Replaces unsafe TypeScript test assertions with Shoehorn's fromPartial, fromAny, or fromExact; use in test code only, never production.
+G:typescript testing type-safety assertions migration shoehorn
+
+N:notebooklm
+D:Queries managed Google NotebookLM notebooks for citation-backed, source-grounded answers via local Claude Code browser automation; use for uploaded sources, not live web search.
+G:notebooklm google browser-automation patchright research notebook knowledge-base citation grounded-answers
+
+N:open-design
+D:Generates local-first design artifacts in prototype, deck, document, or media modes with design-system-aware export; use for those output types, not live codebase UI implementation.
+G:open-design design-tool local-first prototype deck ui-generation multi-format design-system media-generation html-export pptx-export
+
+N:openai-agents-python
+D:Builds and operates Python multi-agent workflows with OpenAI Agents SDK tools, handoffs, guardrails, and debugging; use for OpenAI-native orchestration.
+G:agentic-ai multi-agent orchestration openai python handoff
+
+N:ponytail
+D:Applies a least-code ladder that favors deletion, platform features, and existing dependencies while preserving safety; use for YAGNI, anti-bloat, or minimal-code reviews.
+G:yagni over-engineering minimalism anti-bloat code-review refactoring productivity tech-debt
+
+N:pydantic-ai
+D:Builds typed PydanticAI LLM workflows with validated structured outputs, tools, retries, and downstream handoffs; use when schema reliability matters more than free-form text.
+G:pydantic structured-output validation llm-app python
+
+N:scaffold-exercises
+D:Scaffolds lint-compliant educational exercise trees with numbered sections, variants, and required README files; use for ai-hero-cli course content.
+G:education exercises scaffolding course-content linting structure
+
+N:scientific-llm-benchmarks
+D:Reference catalog of benchmarks for evaluating LLM scientific reasoning and discovery across STEM domains; use to select or research scientific LLM evaluations.
+G:scientific-llm-benchmarks llm-benchmarks science-llms evaluation awesome-list reasoning discovery stem
+
+N:setup-pre-commit
+D:Sets up Husky and lint-staged pre-commit checks for formatting, type checking, and tests; use to add commit-time quality gates to a Node project.
+G:git-hooks pre-commit husky lint-staged prettier code-quality automation
+
+N:tdd
+D:Guides vertical-slice red-green-refactor development with public-interface behavior tests; use for test-first features or bug fixes, not post-hoc testing.
+G:tdd test-driven-development red-green-refactor vertical-slices behavior-verification
+
+N:to-issues
+D:Converts plans and PRDs into independently deliverable end-to-end issues labeled HITL or AFK; use for implementation-ticket decomposition.
+G:issues planning vertical-slices decomposition project-management tickets
+
+N:to-prd
+D:Synthesizes existing conversation and codebase context into a structured PRD for an issue tracker; use to formalize requirements without re-interviewing the user.
+G:prd requirements product documentation planning user-stories
+
+N:triage
+D:Moves tracker issues through a structured triage state machine with category and readiness decisions; use to evaluate or prepare work items for implementation.
+G:triage issues state-machine project-management bug-tracking enhancement
+
+N:write-a-skill
+D:Creates reusable SKILL.md-based agent skills through requirements, drafting, and user review; use to formalize a workflow or add a new agent capability.
+G:skill-creation agent-skills documentation reusability skill-design
+
+N:zoom-out
+D:Maps an unfamiliar code area's modules, callers, dependencies, and domain vocabulary; use for architectural orientation or change blast-radius analysis.
+G:architecture navigation context modules codebase-understanding orientation
+
+N:prompts-chat
+D:Discovers, adapts, and manages curated prompts.chat templates; use for prompt engineering or reusable prompt workflows, not full agent or RAG systems.
+G:prompts prompt-engineering ai-optimization prompt-templates prompt-library prompt-discovery workflow-automation prompt-curation
+
+N:gbro-collage-broll
+D:Generate editorial halftone paper-collage B-roll video assets from a brief with staged planning, asset generation, assembly, and human approval gates.
+G:collage b-roll video generation editorial halftone paper collage Gemini Omni Flash
+U[4]:
+  Turn a topic or script beat into paper-collage B-roll
+  Build visual direction and shot assets through staged gates
+  Assemble a reviewable clip with motion and timing
+  Require human approval before advancing production stages
+S[4]{n,action,details}:
+  1,Plan the beat,Define the visual brief and collage direction
+  2,Generate assets,Create and validate the required visual layers
+  3,Assemble the clip,Compose motion timing and export a review artifact
+  4,Review and hand off,Collect approval evidence before final delivery
+R[3]:
+  Preserve the editorial paper-collage visual language
+  Do not skip human approval gates
+  Keep generated assets and review artifacts traceable
+E[1]{desc,in,out}:
+  "Make a collage B-roll clip for this narration","Provide a script beat and visual direction","Reviewable paper-collage B-roll artifact with approval status"
+
+N:video-shotcraft
+D:Produce cinematic product promo and demo videos from shot recipes with beat-synced camera motion, sound design, and visual QA handoffs.
+G:cinematic video product promo demo shot recipes Remotion camera motion sound design
+U[4]:
+  Plan a product promo or demo around cinematic shot recipes
+  Translate a brief into a timed shot list and visual direction
+  Build motion, transitions, and sound design around beats
+  Export and QA a reviewable video handoff
+S[4]{n,action,details}:
+  1,Select the recipe,Choose a shot grammar and production mode for the brief
+  2,Build the shot plan,Map shots to beats, assets, camera moves, and transitions
+  3,Produce the sequence,Implement motion, timing, and sound design
+  4,Verify and hand off,Review the render and record QA or revision needs
+R[3]:
+  Keep every shot tied to a beat and intended viewer action
+  Prefer explicit shot plans over ad hoc visual assembly
+  Treat rendered review and QA as part of delivery
+E[1]{desc,in,out}:
+  "Create a cinematic product demo","Give the product brief and desired duration","Timed shot plan, rendered video, and QA handoff"
+
+N:yuwen-publish-precheck
+D:审查中文自媒体内容的发布风险并给出逐平台结论、规则依据、最小改稿和复检结果，支持抖音、小红书、微信视频号及个人规则沉淀。
+G:content moderation social media publish precheck chinese platforms sensitive words compliance
+U[5]:
+  审查口播稿、文章、图文笔记、字幕和封面文字能否发布
+  定位风险候选并结合语境、商业属性和行业规则判定
+  复盘限流、删除或处罚并沉淀个人规则
+  给出保留语气和信息量的可替换修复稿
+  导入个人词库并对修改稿执行复检
+S[6]{n,action,details}:
+  1,建立内容身份,确认目标平台商业属性和医疗金融等行业
+  2,运行词面预检,执行 scripts/scan.py 定位候选而不把命中当结论
+  3,加载规则判定,读取 judgment、通用商业行业和平台规则逐条引用
+  4,生成发布报告,输出逐平台结论、位置、规则号、严重度和检查单
+  5,保意修复复检,按 repair 参考最小改写并重跑扫描和语义检查
+  6,沉淀用户规则,维护 data 中本地规则表达库案例和历史报告
+R[6]:
+  不承诺平台 100% 过审或预测账号权重
+  永不提供谐音拆字拼音遮挡暗号等绕审手段
+  候选命中不是违规结论，零命中也不代表语义安全
+  个人白名单不能豁免法律和平台硬规则
+  用户数据只写入 data/，升级不得覆盖已沉淀内容
+  审核到发布检查单为止，不代替用户点击发布
+E[2]{desc,in,out}:
+  "发布前审查一篇带货口播稿","审查稿件能否发抖音并提供修改建议","逐平台风险报告、规则依据、修改稿和复检结果"
+  "复盘一次被限流的内容","分析处罚证据并沉淀可复用的个人规则","归因报告、案例记录和后续审核规则"
+
+N:agent-pulse
+D:Operate and extend barretlee/agent-pulse as an evidence-backed AI industry intelligence system: source lifecycle, safe collection, signal normalization, Event clustering, system evaluation, Scout hypotheses, privacy-safe export, and release verification.
+G:agent-pulse ai-intelligence evidence source-catalog collectors event-clustering scout github-pages industry-intelligence
+U[8]:
+  Run Agent Pulse locally and inspect its Control Room or public static site
+  Add or audit a SourceAdapter with lifecycle, provenance, fixtures, and failure isolation
+  Collect eligible signals, deduplicate and cluster Events, or audit source health
+  Evaluate system capability and compare a baseline for regressions
+  Generate bounded evidence-linked Scout opportunities
+  Export and validate the privacy-safe public Pages site
+  Change schemas, ranking, publication gates, or source lifecycle docs-first
+  Report facts, evidence, judgments, uncertainty, and next signals separately
+R[7]:
+  Treat Agent Pulse as evidence-backed intelligence, not a news aggregator
+  Aggregators are discovery or heat signals and never sole factual evidence
+  Do not equate heat with factual confidence
+  Do not bypass login, WAF, CAPTCHA, paywalls, robots, licenses, or rate limits
+  Keep automatic Events in review until deterministic readiness gates pass
+  Never export raw payloads, credentials, private operations, or database data to Pages
+  Do not describe Scout hypotheses, seed data, or experimental features as facts or production capability
+E[2]{desc,in,out}:
+  "Add an official RSS source to Agent Pulse","SourceAdapter extension with fixtures, lifecycle gates, and npm run check","docs-first source change with safe adapter tests and audit-ready handoff"
+  "Publish a hot Agent Pulse story from an aggregator","Evidence and readiness review before privacy-safe export","canonical original evidence, review status, and no aggregator-only publication"

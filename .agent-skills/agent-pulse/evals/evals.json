@@ -1,0 +1,49 @@
+{
+  "skill_name": "agent-pulse",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "In the barretlee/agent-pulse repo, add a source adapter for an official AI lab RSS feed and make it safe to activate.",
+      "expected_output": "A docs-first implementation plan that uses the SourceAdapter boundary, classifies the source, adds fixtures and success/failure/degradation tests, respects lifecycle gates, and runs focused validation plus npm run check.",
+      "assertions": [
+        "The response identifies the SourceAdapter contract and relevant source specification",
+        "The response requires fixture and failure/degradation coverage",
+        "The response keeps a new source in draft or shadow until verification and compliance gates pass",
+        "The response includes npm run check or an equivalent complete validation command"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Refresh Agent Pulse and publish a public event from the hottest aggregator story immediately.",
+      "expected_output": "A refusal to treat an aggregator as sole factual evidence, with a safe workflow that finds the canonical original source, binds evidence, keeps the Event in review when gates are incomplete, and validates privacy-safe export before publication.",
+      "assertions": [
+        "The response says aggregators are discovery or heat signals, not sole factual evidence",
+        "The response requires canonical original evidence and readiness or review gates",
+        "The response does not equate heat with factual confidence",
+        "The response includes public export and privacy validation before claiming publication"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Run the Agent Pulse Scout command and turn the result into a guaranteed investment recommendation.",
+      "expected_output": "A bounded Scout workflow that ties each hypothesis to an Event and evidence, labels it as a hypothesis, records risk and invalidation conditions, and refuses to present it as an investment conclusion.",
+      "assertions": [
+        "The response uses the bounded scout:generate command or explains its 1–18 limit",
+        "The response requires an evidence-linked triggering Event",
+        "The response labels Scout output as a hypothesis rather than a fact or investment recommendation",
+        "The response includes risk and invalidation conditions"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I changed Agent Pulse's public DTO and collector behavior. What should I verify before merging?",
+      "expected_output": "A verification packet covering docs-first review, focused tests, npm run check, export/public validation, privacy boundaries, changelog surfaces, and any remaining evidence or source-health uncertainty.",
+      "assertions": [
+        "The response includes focused tests and npm run check",
+        "The response includes export and public validation",
+        "The response checks that private control-plane data and raw payloads stay out of the public export",
+        "The response calls out changelog synchronization for user-visible changes"
+      ]
+    }
+  ]
+}

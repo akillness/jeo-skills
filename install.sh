@@ -24,7 +24,9 @@ set -euo pipefail
 
 # --- Configuration ---
 REPO_URL="https://github.com/akillness/jeo-skills.git"
-TEMP_DIR="/tmp/_skills_setup_temp_$$"
+TEMP_DIR=""
+TEMP_DIR_MARKER_FILE=".jeo-skills-installer-owned"
+TEMP_DIR_MARKER_CONTENT="jeo-skills-install-temp-v1"
 AGENT_SKILLS_DIR_NAME=".agent-skills"
 VERSION="1.3.1"
 
@@ -123,8 +125,14 @@ check_dependencies() {
 }
 
 cleanup() {
-    if [ -d "$TEMP_DIR" ]; then
-        rm -rf "$TEMP_DIR"
+    local temp_dir="${TEMP_DIR:-}"
+
+    if [ -n "$temp_dir" ] &&
+       [ -d "$temp_dir" ] &&
+       [ -f "$temp_dir/$TEMP_DIR_MARKER_FILE" ] &&
+       [ ! -L "$temp_dir/$TEMP_DIR_MARKER_FILE" ] &&
+       cmp -s "$temp_dir/$TEMP_DIR_MARKER_FILE" <(printf '%s' "$TEMP_DIR_MARKER_CONTENT"); then
+        rm -rf -- "$temp_dir"
     fi
 }
 
@@ -139,12 +147,17 @@ main() {
     check_dependencies
     echo ""
 
-    # 1. Clone repository to a temporary directory
-    print_info "Cloning skills-template repository..."
-    if [ -d "$TEMP_DIR" ]; then
-        rm -rf "$TEMP_DIR"
+    # 1. Clone repository to a securely created temporary directory
+    if ! TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/jeo-skills-install.XXXXXX")"; then
+        print_fatal "Failed to create a secure temporary directory."
     fi
-    if ! git clone --depth 1 --quiet "$REPO_URL" "$TEMP_DIR"; then
+    if ! printf '%s' "$TEMP_DIR_MARKER_CONTENT" > "$TEMP_DIR/$TEMP_DIR_MARKER_FILE"; then
+        print_fatal "Failed to mark temporary directory for safe cleanup."
+    fi
+    local clone_dir="$TEMP_DIR/repository"
+
+    print_info "Cloning skills-template repository..."
+    if ! git clone --depth 1 --quiet "$REPO_URL" "$clone_dir"; then
         print_fatal "Failed to clone repository. Check your network connection."
     fi
     print_success "Repository cloned"
@@ -168,7 +181,7 @@ main() {
     else
         print_info "Installing agent skills to current directory..."
     fi
-    if ! cp -r "$TEMP_DIR/$AGENT_SKILLS_DIR_NAME" "$AGENT_SKILLS_DIR"; then
+    if ! cp -r "$clone_dir/$AGENT_SKILLS_DIR_NAME" "$AGENT_SKILLS_DIR"; then
         print_fatal "Failed to copy agent skills. Check directory permissions."
     fi
     chmod +x "$AGENT_SKILLS_DIR/setup.sh"

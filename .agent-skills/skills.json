@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
-  "generated": "2026-07-12",
-  "skill_count": 154,
+  "generated": "2026-07-23",
+  "skill_count": 165,
   "categories": {
     "planning-review": [
       "agentation",
@@ -41,6 +41,7 @@
       "vercel-deploy"
     ],
     "backend": [
+      "amrouter",
       "api-design",
       "api-documentation",
       "authentication-setup",
@@ -54,6 +55,7 @@
     ],
     "search-analysis": [
       "academic-research",
+      "agent-pulse",
       "autoresearch",
       "codebase-search",
       "data-analysis",
@@ -142,17 +144,19 @@
       "setup-pre-commit",
       "stitch-skills",
       "tokhub",
-      "unity-gamedev-skill-pack",
       "workflow-automation",
       "write-a-skill",
       "x-twitter-scraper",
       "zeude"
     ],
     "frontend": [
+      "astryx",
+      "ax",
       "design-system",
       "devup-ui",
       "lazyweb",
       "react-best-practices",
+      "react-bits",
       "react-grab",
       "responsive-design",
       "state-management",
@@ -162,15 +166,19 @@
     ],
     "creative-media": [
       "drawio",
+      "gbro-collage-broll",
       "motion-previs-studio",
       "paperbanana",
       "remotion-video-production",
       "slides-grab",
       "video-production",
+      "video-shotcraft",
+      "vox-director",
       "webtoon-harness"
     ],
     "marketing": [
-      "marketing-automation"
+      "marketing-automation",
+      "yuwen-publish-precheck"
     ],
     "project-management": [
       "sprint-retrospective",
@@ -183,8 +191,10 @@
       "game-ci-cd-pipeline",
       "game-demo-feedback-triage",
       "game-performance-profiler",
+      "game-studio-harness",
       "perfectpixel",
-      "steam-store-launch-ops"
+      "steam-store-launch-ops",
+      "unity-gamedev-skill-pack"
     ]
   },
   "skills": [
@@ -217,6 +227,34 @@
       ],
       "keyword": "academic-research",
       "version": "1.0.0"
+    },
+    {
+      "name": "agent-pulse",
+      "description": "Operate and extend barretlee/agent-pulse as an evidence-backed AI industry intelligence system: source lifecycle, safe collection, signal normalization, Event clustering, system evaluation, Scout hypotheses, privacy-safe export, and release verification.",
+      "category": "search-analysis",
+      "path": "agent-pulse/SKILL.md",
+      "tags": [
+        "agent-pulse",
+        "ai-intelligence",
+        "evidence",
+        "source-catalog",
+        "collectors",
+        "event-clustering",
+        "scout",
+        "github-pages"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "agent-pulse",
+      "version": "1.0"
     },
     {
       "name": "agentation",
@@ -341,6 +379,26 @@
       "version": "1.0.0"
     },
     {
+      "name": "amrouter",
+      "description": "Self-hosted AI gateway: one endpoint, many providers, auto-fallback. AMRouter is an OpenAI-compatible API gateway that routes requests across dozens of LLM, embedding, image, and audio providers with automatic load balancing, fallback, and cost optimization.",
+      "category": "backend",
+      "path": "amrouter/SKILL.md",
+      "tags": [
+        "amrouter",
+        "ai-gateway",
+        "multi-provider",
+        "openai-compatible",
+        "auto-fallback",
+        "load-balancing",
+        "cost-optimization",
+        "cloudflare-workers-ai"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "amrouter",
+      "version": "1.0.0"
+    },
+    {
       "name": "api-design",
       "description": ">",
       "category": "backend",
@@ -400,6 +458,47 @@
       ],
       "keyword": "api-documentation",
       "version": "2.1.0"
+    },
+    {
+      "name": "astryx",
+      "description": "Build fully customizable, agent-ready design systems with Astryx — Meta's production design system now open source. Ships 150+ React components built on StyleX with zero styling lock-in, component swizzling, brand theming, dark mode, and CLI tooling. Use when building component libraries, design systems, UI applications, design tokens, or when teams need consistent accessible components that AI agents can understand and extend. Triggers on: astryx, design system, component library, design tokens, react components, accessible components, astryx design, stylesheets, theme customization, component composition.",
+      "category": "frontend",
+      "path": "astryx/SKILL.md",
+      "tags": [
+        "astryx",
+        "design-system",
+        "react-components",
+        "component-library",
+        "design-tokens",
+        "accessibility",
+        "stylex",
+        "theming",
+        "ui-framework",
+        "meta"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini",
+        "Cursor",
+        "OpenCode",
+        "jeopi",
+        "jeo",
+        "All"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch",
+        "Find",
+        "Search"
+      ],
+      "keyword": "astryx",
+      "version": "1.0.0"
     },
     {
       "name": "authentication-setup",
@@ -493,6 +592,25 @@
       ],
       "keyword": "autoresearch",
       "version": "1.2.0"
+    },
+    {
+      "name": "ax",
+      "description": "AI-driven fetch, discover, extract framework. ax is a command-line tool purpose-built for AI agents to fetch web pages, discover their structure, and extract structured data — replacing the classic `curl → parse → regex` loop with one deterministic, token-efficient command.",
+      "category": "frontend",
+      "path": "ax/SKILL.md",
+      "tags": [
+        "ax",
+        "web-scraping",
+        "web-extraction",
+        "cli",
+        "agent-tools",
+        "structured-data",
+        "token-efficient"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "ax",
+      "version": "1.0.0"
     },
     {
       "name": "backend-testing",
@@ -965,6 +1083,40 @@
       ],
       "keyword": "codeflow",
       "version": "1.0.0"
+    },
+    {
+      "name": "colibri",
+      "description": "Assist with Colibri: pure-C LLM inference engine for running GLM-5.2 (744B MoE) on consumer machines with ~25 GB RAM. Use when setting up, building, converting models, running inference, configuring expert streaming and caching, optimizing speculative decoding (MTP), GPU integration, and integrating Colibri into production pipelines. Includes build setup, model download & conversion, chat/inference modes, performance tuning, and API integration patterns.",
+      "category": "backend",
+      "path": "colibri/SKILL.md",
+      "tags": [
+        "colibri",
+        "llm-inference",
+        "glm-5.2",
+        "moe",
+        "speculative-decoding",
+        "quantization",
+        "expert-streaming",
+        "consumer-hardware",
+        "c-runtime"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "jeopi"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "colibri",
+      "version": "1.0"
     },
     {
       "name": "compresso",
@@ -1581,6 +1733,68 @@
       ],
       "keyword": "game-performance-profiler",
       "version": "1.2"
+    },
+    {
+      "name": "game-studio-harness",
+      "description": "Run a 5-role game production studio as one standing harness: production director (bmad-gds intake, stage gates, retrospectives), game designer (numeric balance, combination EV, core-loop discovery, survey-grounded novelty scoring), game PM (revenue-point mapping, comeback/steady reward bands, fairness caps), game programmer (extensible stable implementation, strict new-tech verification, perf and movement-path optimization), and game QA (archetype-rotation balance breaking, benchmark surveys, gate measurement). Executes the 3-stage operating cycle behind 8 numeric quality gates. Use to start, resume, or gate-review a game production cycle; not for isolated build failures, profiler captures, or feedback-only triage.",
+      "category": "game-development",
+      "path": "game-studio-harness/SKILL.md",
+      "tags": [
+        "game-production",
+        "game-studio",
+        "bmad-gds",
+        "numeric-balance",
+        "core-loop",
+        "novelty",
+        "monetization",
+        "qa-archetypes",
+        "stage-gates",
+        "game-development"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Bash",
+        "Task"
+      ],
+      "keyword": "game-studio-harness",
+      "version": "1.0.0"
+    },
+    {
+      "name": "gbro-collage-broll",
+      "description": "Turn a 5-second voiceover script, opinion statement, or abstract concept into an editorial halftone paper-collage assemble-from-empty B-roll video. Enforces a 3-gate approval workflow (metaphor -> still -> video via Gemini Omni Flash).",
+      "category": "creative-media",
+      "path": "gbro-collage-broll/SKILL.md",
+      "tags": [
+        "video-generation",
+        "b-roll",
+        "paper-collage",
+        "halftone",
+        "gemini-omni-flash",
+        "editorial-animation"
+      ],
+      "platforms": [
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "gbro-collage-broll",
+      "version": "1.0.0"
     },
     {
       "name": "genkit",
@@ -2344,6 +2558,41 @@
       ],
       "keyword": "monitoring-observability",
       "version": "2.1"
+    },
+    {
+      "name": "motion-previs-studio",
+      "description": "Assist with Motion Previs Studio v4: a cross-platform desktop app for AI-film previsualization. Use when setting up, configuring, troubleshooting, or extending motion-previs-studio for pose extraction, depth mapping, camera motion solving, control layer export, and bundle production for AI-video workflows (Seedance, ComfyUI, Blender, Runway, Kling). Includes build setup, feature integration, UI/logic debugging, and export pipeline optimization.",
+      "category": "creative-media",
+      "path": "motion-previs-studio/SKILL.md",
+      "tags": [
+        "motion-previs",
+        "ai-video",
+        "previsualization",
+        "filmmaking",
+        "pose-extraction",
+        "depth-mapping",
+        "camera-motion",
+        "control-layers",
+        "previs",
+        "ai-film"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "jeopi"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "motion-previs-studio",
+      "version": "1.0"
     },
     {
       "name": "notebooklm",
@@ -3206,6 +3455,40 @@
       "version": "3.0.0"
     },
     {
+      "name": "prompts-chat",
+      "description": "Discover and apply curated prompts from the prompts.chat collection to optimize AI interactions. Use when refining prompt engineering, finding domain-specific prompt templates, improving response quality, or building prompt-based workflows.",
+      "category": "agent-development",
+      "path": "prompts-chat/SKILL.md",
+      "tags": [
+        "prompts",
+        "prompt-engineering",
+        "ai-optimization",
+        "prompt-templates",
+        "prompt-library",
+        "prompt-discovery",
+        "workflow-automation",
+        "prompt-curation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "jeo",
+        "jeopi"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "prompts-chat",
+      "version": "1.0.0"
+    },
+    {
       "name": "pydantic-ai",
       "description": "Build typed LLM applications with PydanticAI: schema-constrained outputs, tool integration, validation, retries, and deterministic downstream handoffs. Use when users need reliable structured outputs instead of free-form text generation.",
       "category": "backend",
@@ -3252,6 +3535,39 @@
       "allowed_tools": [],
       "keyword": "react-best-practices",
       "version": "1.1.0"
+    },
+    {
+      "name": "react-bits",
+      "description": "Integrate, customize, and contribute to react-bits (github.com/DavidHDev/react-bits) — the largest and most creative library of animated React components. It covers Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, and Framer Motion integrations. Use when the user asks about react-bits, animated React components, jsrepo registry, or contributing new animated components to the react-bits repository.",
+      "category": "frontend",
+      "path": "react-bits/SKILL.md",
+      "tags": [
+        "react-bits",
+        "animated-components",
+        "gsap",
+        "three-js",
+        "framer-motion",
+        "tailwind-v4",
+        "jsrepo",
+        "react",
+        "vite"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "react-bits",
+      "version": "1.0"
     },
     {
       "name": "react-grab",
@@ -4481,7 +4797,7 @@
     {
       "name": "unity-gamedev-skill-pack",
       "description": "Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package. Use when maintainers want to import game-dev workflows (Addressables, Cinemachine, GAS, VContainer, UniTask, Wwise, etc.) without blindly trusting third-party prompts.",
-      "category": "utilities",
+      "category": "game-development",
       "path": "unity-gamedev-skill-pack/SKILL.md",
       "tags": [
         "unity",
@@ -4662,6 +4978,56 @@
       "version": "2.0"
     },
     {
+      "name": "video-shotcraft",
+      "description": "用镜头配方卡 + 已验收模板 + 代码/音频资产制作电影感产品视频（Remotion + 真实页面截图 + 2.5D 运镜 + 节奏卡点 + 声音设计）。Use when making a cinematic product promo or desktop demo video, naming the Ink Press template, reproducing template video effects, or building single motion-design shots with recipe cards. Triggers on: video-shotcraft, Ink Press template, product video, cinematic promo, shot recipe card, remotion video.",
+      "category": "creative-media",
+      "path": "video-shotcraft/SKILL.md",
+      "tags": [
+        "video-production",
+        "remotion",
+        "motion-design",
+        "product-promo",
+        "shot-cards",
+        "cinematic-video"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "video-shotcraft",
+      "version": "1.0"
+    },
+    {
+      "name": "vox-director",
+      "description": "Turn ONE topic into a finished Vox-style paper-collage explainer / ad video, end to end on the Atlas Cloud API + local ffmpeg — script, collage keyframes, motion, voice-over, music, captions, all automated.",
+      "category": "creative-media",
+      "path": "vox-director/SKILL.md",
+      "tags": [
+        "vox-director",
+        "vox-video",
+        "collage-video",
+        "motion-collage",
+        "paper-collage",
+        "explainer-video",
+        "atlas-cloud",
+        "ffmpeg"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "vox-director",
+      "version": "1.0.0"
+    },
+    {
       "name": "web-accessibility",
       "description": "Routing-first skill for web accessibility remediation and verification. Use when the main job is classifying which accessibility surface is failing — semantics, keyboard/focus, labels/announcements, visual perception/reflow, media alternatives, or routed-app navigation feedback — and turning vague audit, WCAG, axe/Lighthouse, or \"make this accessible\" requests into one concrete remediation packet. Route broad UI critique to `web-design-guidelines`, component API architecture to `ui-component-patterns`, responsive layout strategy to `responsive-design`, and system governance to `design-system`.",
       "category": "frontend",
@@ -4825,6 +5191,29 @@
       "version": "2.4.16"
     },
     {
+      "name": "yuwen-publish-precheck",
+      "description": "国内自媒体发布前风险自审与保意修复：审口播稿、文章、图文笔记、字幕、封面文字能不能发抖音/小红书/微信视频号",
+      "category": "marketing",
+      "path": "yuwen-publish-precheck/SKILL.md",
+      "tags": [
+        "content-moderation",
+        "social-media",
+        "publish-precheck",
+        "chinese-platforms"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "yuwen-publish-precheck",
+      "version": "1.0.0"
+    },
+    {
       "name": "zeude",
       "description": "Enterprise AI adoption platform for Claude Code — measures team usage via OpenTelemetry, syncs skills/MCP servers/hooks from a central dashboard, and delivers context-aware skill suggestions at prompt time. Solves the Intention-Action Gap: organizations that deploy Zeude see 3x adoption improvement (6% → 18%). Requires Supabase (config) and ClickHouse (analytics). Triggers on: zeude, ai adoption, claude code adoption, enterprise claude, opentelemetry claude, skill sync, team claude management.",
       "category": "utilities",
@@ -4881,40 +5270,6 @@
       ],
       "keyword": "zoom-out",
       "version": "1.0"
-    },
-    {
-      "name": "prompts-chat",
-      "description": "Discover and apply curated prompts from the prompts.chat collection to optimize AI interactions. Use when refining prompt engineering, finding domain-specific prompt templates, improving response quality, or building prompt-based workflows.",
-      "category": "agent-development",
-      "path": "prompts-chat/SKILL.md",
-      "tags": [
-        "prompts",
-        "prompt-engineering",
-        "ai-optimization",
-        "prompt-templates",
-        "prompt-library",
-        "prompt-discovery",
-        "workflow-automation",
-        "prompt-curation"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex",
-        "jeo",
-        "jeopi"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Edit",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "prompts-chat",
-      "version": "1.0.0"
     }
   ]
 }

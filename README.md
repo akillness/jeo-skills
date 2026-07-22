@@ -2,14 +2,17 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-153-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-165-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**165 local skill folders · 165 installable skills · TOON Format · Cross-platform**
+A curated collection of 165 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**153 local skill folders · 153 installable skills · TOON Format · Cross-platform**
+**165 local skill folders · 165 installable skills · TOON Format · Cross-platform**
+├── .agent-skills/          ← 165 skill folders (each with SKILL.md + SKILL.toon)
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -19,7 +22,8 @@
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 153 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+A curated collection of 165 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+├── .agent-skills/          ← 165 skill folders (each with SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo Agent & The Legendary Equipment Set
@@ -150,248 +154,245 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 152 local skill folders = 152 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 165 local skill folders = 165 total installable skills
+
+### 🎬 Creative Media (10)
+
+| `drawio` |
+| `gbro-collage-broll` |
+| `motion-previs-studio` |
+| `paperbanana` |
+| `remotion-video-production` |
+| `slides-grab` |
+| `video-production` |
+| `video-shotcraft` |
+| `vox-director` |
+| `webtoon-harness` |
+
+├── .agent-skills/          ← 165 skill folders (each with SKILL.md + SKILL.toon)
 
 ### 🎯 Core Orchestration (15)
 
-| Skill | Keyword | Platform | Description |
-|-------|---------|----------|-------------|
-| `ooo` | `ooo`, `ouroboros`, `ooo interview` | All | Spec-first control loop — git-grounded interview, freeze, spec-kit plan, cli-anything harness execute, verify. Entry point for any ambiguous or multi-step task |
-| `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM planning front door — classify packet, choose next artifact or gate, route runtime/review work outward |
-| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ultraqa`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | Claude-first orchestration router for oh-my-claudecode — distinguishes plugin slash skills from the `omc` shell CLI, maps `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` intents to OMX/OMA when requested, handles recovery/state issues, and routes adjacent work outward |
-| `harness` | `harness`, `build a harness` | All | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/` files, validate harness |
-| `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$autopilot`, `$ulw`, `$ultraqa`, `$deep-interview`, `$ralplan` | Codex | Codex workflow layer with Claude parity — `$team` for coordinated workers, `$autopilot` for full autonomous builds, `$ulw`/`$ultrawork` for burst parallelism, `$ultraqa` for QA fan-out, plus tmux/psmux team runtime and omx explore/sparkshell |
-| `autopilot` | `$autopilot`, `autopilot`, `auto pilot`, `full-auto` | Codex | Exact-name Codex/OMX front door for idea-to-verified-code autonomous builds |
-| `team` | `$team`, `team mode`, `omx team`, `coordinated workers` | Codex | Exact-name coordinated multi-agent workflow; prefers `omx team` when the runtime is installed |
-| `ultrawork` | `$ultrawork`, `$ulw`, `ultrawork`, `parallel work` | Codex | Exact-name high-parallelism burst workflow for independent implementation or cleanup lanes |
-| `ultraqa` | `$ultraqa`, `$ultaqa`, `ultraqa`, `QA cycling` | Codex | Exact-name QA cycling workflow for tests/build/lint/typecheck/review loops |
-| `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity | Portable OMA harness entry — keeps `.agents` canonical, regenerates vendor views with `oma link`, and maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` with Antigravity limits stated |
-| `ooo` | `ooo`, `ouroboros`, `ooo ralph` | All | Ouroboros spec-first development loop — Socratic interview grounded in live git data, immutable seed/spec, spec-kit execution planning (seed → `/speckit.plan` → `/speckit.tasks`), cli-anything harness execution (`cli-hub`, `--json` evidence), drift-aware execution, persistent completion until verification passes. Plugin: `claude plugin marketplace add Q00/ouroboros` |
-| `bmad` | `bmad`, `workflow-init`, `workflow-status` | All | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
-| `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | All | GitHub Spec-Driven Development wrapper — install `specify-cli`, bootstrap a project for one of 30+ agents (Claude / Copilot / Gemini / Codex / Cursor / opencode / Qwen / Kiro / …), and drive the constitution → specify → clarify → plan → analyze → tasks → checklist → implement pipeline. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit` |
-| `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo` | All | Composition wrapper for `spec-kit` × `ooo` × `cli-anything` — spec-kit writes the spec, ooo freezes it as an immutable seed and loops until verification passes, cli-anything supplies agent-native CLI harnesses whose `--json` output is the evaluate-step evidence; three patterns (full-stack / loop-only / docs-only) with one-way spec → seed flow and explicit anti-patterns. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack` |
-| `bmad-gds` | `bmad-gds` | All | Game-production orchestrator — turn ideas, GDDs, playtest notes, bugs, and launch beats into one milestone-aware next artifact |
-| `bmad-idea` | `bmad-idea` | All | Pre-planning idea router — turn rough product, GTM, consulting, or game ideas into one concept artifact and the next handoff |
-| `deep-dive` | `deep-dive`, `deep dive`, `trace and interview` | All | Cross-runtime investigation pipeline — trace causal hypotheses, inject evidence into requirements, validate artifacts, then hand off through OMC, OMX, or OMA |
-| `deepinit` | `deepinit`, `deep init`, `AGENTS.md` | All | Generate or refresh hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation |
-| `survey` | `survey` | All | Bounded pre-implementation landscape scan with reusable `.survey/{slug}/` artifacts plus validator-backed artifact-contract checks |
-| `clawteam` | `clawteam`, `claw team`, `multi-agent team` | All | Route ClawTeam runtime requests — manual-team, template-team, worker-agent modes with one honest operator packet before touching commands |
-| `ccpi-marketplace` | `ccpi`, `tons of skills`, `plugin marketplace` | All | Operate the Tons of Skills marketplace via the ccpi CLI and Claude plugin marketplace commands — search, install, update, list skills |
+| Skill |
+|-------|
+| `autopilot` |
+| `bmad` |
+| `bmad-gds` |
+| `bmad-idea` |
+| `deep-dive` |
+| `deepinit` |
+| `ohmg` |
+| `omc` |
+| `omx` |
+| `spec-kit` |
+| `spec-stack` |
+| `survey` |
+| `team` |
+| `ultraqa` |
+| `ultrawork` |
 
-### 📋 Planning & Review (12)
+### 📋 Planning & Review (13)
 
-| Skill | Keyword | Description |
-|-------|---------|-------------|
-| `plannotator` | `plan` | Visual approval gate for agent plans/diffs — annotate, approve, request changes, or save reviewed plans |
-| `agentation` | `annotate` | Exact rendered-UI feedback router — choose copy-paste review, watch-loop sync, self-driving critique, or platform setup |
-| `browser-harness` | `browser-harness` | Self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode — replaces `agent-browser`, adds Claude-safe screenshot handling, and keeps helper/domain-skill repair loops local |
-| `playwriter` | `playwriter` | Running-browser automation for authenticated Chrome sessions and MCP browser reuse |
-| `vibe-kanban` | `kanbanview` | Coding-board control plane for bounded coding cards, tracker-linked workspaces, review queues, worktree isolation, and PR handoff |
-| `triage` | `triage` | Issue state machine: needs-triage → needs-info → ready-for-agent / ready-for-human / wontfix. All AI comments include AI disclaimer |
-| `to-issues` | `to-issues` | Convert plans/specs into independently-grabbable vertical slice issues (HITL or AFK classification) |
-| `to-prd` | `to-prd` | Generate structured PRDs from conversation context without interviewing — problem statement, user stories, modules, testing decisions |
-| `grill-me` | `grill-me` | Systematic plan stress-testing through relentless one-question-at-a-time interviewing across the full decision tree |
-| `grill-with-docs` | `grill-with-docs` | Design review that stress-tests plans against domain model, sharpens terminology, and updates CONTEXT.md / ADRs inline |
-| `improve-codebase-architecture` | `improve-codebase-architecture` | Surface shallow modules and propose deepening opportunities for testability using deletion-test, seam, and locality vocabulary |
-| `zoom-out` | `zoom-out` | Get higher-level architectural perspective: maps all relevant modules, caller relationships, dependencies using domain vocabulary |
+| Skill |
+|-------|
+| `agentation` |
+| `agentic-skills` |
+| `browser-harness` |
+| `grill-me` |
+| `grill-with-docs` |
+| `microsoft-agent-framework` |
+| `openai-agents-python` |
+| `plannotator` |
+| `playwriter` |
+| `to-issues` |
+| `to-prd` |
+| `triage` |
+| `vibe-kanban` |
 
-### 🤖 Agent Development (7)
+### 🤖 Agent Development (5)
 
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `prompt-repetition` | Decision-first prompt repetition skill for non-reasoning/lightweight LLMs — long-context retrieval, options-first MCQ, position-sensitive lookup, and explicit route-outs to retrieval or stronger models | All |
-| `skill-standardization` | Validate/rewrite SKILL.md, canonicalize duplicates, and keep repo-root validator flows plus derived discovery surfaces (`skills.json`, README/setup, `SKILL.toon`) in sync | All |
-| `microsoft-agent-framework` | Design enterprise-grade agent systems with Microsoft's agent framework — role separation, workflow control, policy enforcement, and multi-agent coordination patterns | All |
-| `openai-agents-python` | Build and operate multi-agent workflows with OpenAI Agents SDK (Python) — define agents/tools/handoffs, add guardrails, trace with LangSmith, run async pipelines | All |
-| `pydantic-ai` | Build typed LLM applications with PydanticAI — schema-constrained outputs, tool integration, validation, retries, and dependency injection for production AI apps | All |
-| `cli-anything` | Make any software agent-native via HKUDS CLI-Anything — CLI-Hub package manager (`cli-hub list/search/install/launch`), agent meta-skill for autonomous CLI discovery, 7-phase harness generation from any codebase (`/cli-anything`), and refine/test/validate iteration; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything` | All |
-| `upskill` | Wrap HKUDS UpSkill — capture Claude Code session failures, have a strong Teacher model draft a skill, validate it against a weak Student model in a closed Ralph Loop (up to 3 rounds), then auto-serve validated skills so a cheap Flash model performs like a Pro model. Terminal-Bench 2.0: Flash+UpSkill beat Pro at 41% lower cost. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill upskill` | Claude Code |
+| Skill |
+|-------|
+| `cli-anything` |
+| `prompt-repetition` |
+| `prompts-chat` |
+| `skill-standardization` |
+| `upskill` |
 
-### ⚙️ Backend (9)
+### ⚙️ Backend (11)
 
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `amrouter` | Self-hosted AI gateway — one endpoint, many providers (OpenAI, Anthropic, Gemini, Groq, Mistral, etc.), auto-fallback combos, cost tracking, Cloudflare Workers AI automation, dashboard UI, OpenAI-compatible REST API. Route to multi-provider LLM infrastructure, resilience patterns, quota monitoring, embeddings/image/audio. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill amrouter` | All |
-| `api-design` | Contract-first REST/GraphQL API design, compatibility review, and handoff | All |
-| `api-documentation` | Developer-facing API docs anchor for reference portals, quickstarts, SDK/webhook guides, truthful examples, and auth/error guidance | All |
-| `authentication-setup` | Product-auth setup routing across hosted/framework-native/platform-native auth, sessions/JWTs, org data, and enterprise SSO handoff | All |
-| `backend-testing` | Packet-first backend testing for coverage plans, fixture/reset strategy, contract/API protection, flaky-suite stabilization, and local-vs-CI lane splits | All |
-| `colibri` | Pure-C LLM inference engine for GLM-5.2 (744B MoE) on consumer hardware (~25 GB RAM) — expert disk-streaming with LRU caching, MLA attention, native multi-token speculative decoding (MTP, 39–59% draft acceptance), int4 quantization. Covers setup/build, model download & conversion, inference modes, expert streaming tuning, performance profiling, and GPU acceleration. Repository: [JustVugg/colibri](https://github.com/JustVugg/colibri) (Apache 2.0). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill colibri` | All |
-| `database-schema-design` | Packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible fields, and route-outs to API/auth/testing/reporting neighbors | All |
-| `payloadcms` | Operate Payload CMS (Next.js-native headless CMS) — bootstrap app, configure collections/globals, manage auth/access control, migrations, REST/GraphQL/Local API, and plugin authoring | All |
-| `supabase-agent-skills` | Install and use Supabase Agent Skills with AI coding agents — covers install modes, skill selection, Supabase CLI integration, and agent-assisted database/auth/storage workflows | All |
+| Skill |
+|-------|
+| `amrouter` |
+| `api-design` |
+| `api-documentation` |
+| `authentication-setup` |
+| `backend-testing` |
+| `database-schema-design` |
+| `payloadcms` |
+| `pydantic-ai` |
+| `supabase-agent-skills` |
+| `typesense` |
+| `colibri` |
 
-### 🎨 Frontend (16)
+### 🎨 Frontend (13)
 
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `ax` | The AI-era curl — fetch web pages, discover structure, extract structured data deterministically. Zero code per task: `ax <url> --outline` for discovery, `ax <url> '.selector' --row` for extraction. Token-budgeted output, safe filtering (`--where`), parse caching for free probes. 65% cost reduction vs curl/regex pipelines (benchmarked on real agent tasks). Routes: use with `deep-agents-core` for custom tools, `research` for parallel multi-URL orchestration. Official: https://ax.yusuke.run. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill ax` | All |
-| `astryx` | Agent-ready design system — 150+ React components built on StyleX, zero styling lock-in, component swizzling, brand theming, dark mode, CLI tooling. Proven across 13,000+ Meta apps. Routes: use `deep-agents-core` for AI-driven component design, `react-best-practices` for performance, `responsive-design` for layout verification, `react-grab` for element capture. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill astryx` | All |
-| `design-system` | Canonical frontend UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface system direction; routes component API, responsive layout, accessibility remediation, and broad UI critique to adjacent skills | All |
-| `devup-ui` | Zero-runtime CSS-in-JS adoption — wire the build-time Rust/WASM plugin into Next.js/Vite/Rsbuild/Webpack/Bun, style with `Box`/`css` props or the styled-components-compatible `styled()` API, type-safe `devup.json` theming, and migration off styled-components/Emotion/Tailwind. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill devup-ui` | All |
-| `lazyweb` | Design with evidence, not vibes — real product screenshots, UI references, competitive analysis, best practices, quick examples, paywall optimization, and A/B test research. Routes to design workflows, quick search, or A/B test evidence via MCP. Use when designing any product screen. **Design refs:** [Refero Styles](https://styles.refero.design/?q=monochrome+interface), [React Bits](https://reactbits.dev/backgrounds/orb). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill lazyweb` | All |
-
-
-| `stitch-skills` | Agent Skills for Stitch MCP — generate high-fidelity UI screens, multi-page websites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, Remotion walkthrough videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills` | All |
-| `compresso` | Free offline desktop video/image compression (Tauri+React) — batch compress, trim/split videos, convert formats, embed subtitles, manage metadata. Uses FFmpeg/pngquant/jpegoptim/gifski. Plugin: `claude plugin marketplace add codeforreal1/compressO` | All |
-| `open-design` | Local-first open-source design tool — generate prototypes, decks, and media artifacts using installed coding agents. 72 built-in design systems, 5 visual directions, multi-format export (HTML/PDF/PPTX/ZIP). Plugin: `claude plugin marketplace add nexu-io/open-design` | All |
-| `pretext` | Fast, accurate multiline text measurement & layout without DOM reflow — `prepare`/`layout` for height, `prepareWithSegments`/`layoutWithLines` for per-line access, emoji/CJK/RTL support, DOM/Canvas/SVG output. npm: `@chenglou/pretext` | All |
-| `react-best-practices` | Measurement-led React & Next.js performance audits for waterfalls, bundle size, RSC/client boundaries, hydration, rerender churn, and slow routes | All |
-| `react-grab` | Browser element context capture — point at UI element, copy React component name, file path, HTML to clipboard for AI agents | All |
-
-| `responsive-design` | Routing-first responsive layout strategy for page-shell, component-slot, dense-data, media, and reflow-verification packets | All |
-| `state-management` | React/fullstack ownership-packet decisions across local, Context, URL/form, client-store, and server-state/router data layers | All |
-| `ui-component-patterns` | Routing-first reusable-component architecture for primitive-boundary, slot-anatomy, controlled-ownership, alternate-root, and docs-verification packets | All |
-| `web-accessibility` | Routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback | All |
-| `web-design-guidelines` | Broad web UI audit for hierarchy, clarity, consistency, states, responsiveness basics, and accessibility basics | All |
+| Skill |
+|-------|
+| `astryx` |
+| `ax` |
+| `design-system` |
+| `devup-ui` |
+| `lazyweb` |
+| `react-best-practices` |
+| `react-bits` |
+| `react-grab` |
+| `responsive-design` |
+| `state-management` |
+| `ui-component-patterns` |
+| `web-accessibility` |
+| `web-design-guidelines` |
 
 ### 🔍 Code Quality (11)
 
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `agentic-skills` | Production-grade engineering framework (Google practices) — spec-driven development, incremental implementation, TDD, security hardening, performance optimization, and disciplined git/CI/CD workflows across `/spec` `/plan` `/build` `/test` `/review` `/code-simplify` `/ship` phases. Plugin: `/plugin marketplace add addyosmani/agent-skills` | All |
-| `code-refactoring` | Behavior-preserving structural cleanup, decomposition, duplication removal, and codemod planning | All |
-| `code-review` | Evidence-first diff / PR review with severity, missing-proof checks, and route-outs | All |
-| `open-code-review` | Routing-first AI review via Alibaba's `ocr` CLI — confirm prereqs/LLM config, pass `--background` context, pick workspace / commit / branch-range / full-file `scan`, classify findings High/Medium/Low, and auto-fix safe items on intent; routes human approve/block judgment to `code-review`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill open-code-review` | All |
-| `debugging` | Routing-first diagnosis for concrete bugs, regressions, flaky failures, and env-specific behavior; routes raw logs to `log-analysis` and perf-only work to `performance-optimization` | All |
-| `performance-optimization` | Artifact-first measurement-led bottleneck analysis and tuning across latency, throughput, memory, bundle, CWV, and frame-budget work | All |
-| `testing-strategies` | Packet-first validation policy for merge-gate truth, release-only proof, scheduled breadth, and cross-domain test-policy handoffs | All |
-| `diagnose` | Systematic six-phase debugging: build feedback loop → reproduce → hypothesize → instrument → fix+test → cleanup. Invest in Phase 1 (fast feedback loop) first | All |
-| `tdd` | Red-green-refactor TDD with vertical slices — tests verify behavior through public interfaces, not implementation details | All |
-| `migrate-to-shoehorn` | Migrate TypeScript test `as` assertions to type-safe `fromPartial()`, `fromAny()`, `fromExact()` from @total-typescript/shoehorn. Test code only. | All |
-| `aider-cli-workflow` | Run a safe, reviewable Aider CLI coding loop — model setup, edit scope control, test-first prompting, diff review, and commit hygiene for local repositories | All |
+| Skill |
+|-------|
+| `code-refactoring` |
+| `code-review` |
+| `debugging` |
+| `diagnose` |
+| `improve-codebase-architecture` |
+| `migrate-to-shoehorn` |
+| `open-code-review` |
+| `performance-optimization` |
+| `tdd` |
+| `testing-strategies` |
+| `zoom-out` |
 
-### 🏗 Infrastructure (18)
+### 🏗 Infrastructure (13)
 
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `agenticskills` | One-shot installer for the `akillness/oh-my-gods` bundle (80+ god-skills) — wraps the upstream `install.sh`, honors `PLATFORM`, `WITH_LANGCHAIN`, `INSTALL_MODE`, `SKIP_BACKUP`, mirrors into `~/.claude/skills`, `~/.codex/skills`, `~/.gemini/skills`, and `~/.opencode/skills`. | All |
-| `deployment-automation` | Release-execution anchor for preview releases, staging/prod promotion, rollout strategy, post-deploy verification, rollback response, and release hardening; routes CI authoring to `workflow-automation`, machine setup to `system-environment-setup`, and Vercel-specific operations to `vercel-deploy` | All |
-| `environment-setup` | App-config compatibility skill for `.env` layout, env precedence, validation, and secret handoff; routes broader runnable-machine setup to `system-environment-setup` | All |
-| `firebase-ai-logic` | Direct Firebase app/client SDK lane for Gemini-powered features, streaming, structured output, and App Check-aware in-app integration; routes backend orchestration to `genkit` | Claude · Gemini |
-| `firebase-cli` | Firebase platform/operator anchor for install/auth, bootstrap/config, Emulator Suite workflows, scoped deploy/release, App Hosting, and admin/data ops; routes backend AI workflow orchestration to `genkit` and direct app SDK integration to `firebase-ai-logic` | All |
-| `genkit` | Packet-first backend AI workflow anchor for deciding whether a feature needs a reusable server-owned flow, Genkit eval/tracing, or a fallback to plain SDK routes / `survey`; routes direct app SDK work to `firebase-ai-logic` and Firebase operator tasks to `firebase-cli` | Claude · Gemini |
-| `looker-studio-bigquery` | Packet-first BigQuery dashboard/reporting lane for `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, and `exec-handoff`; routes KPI interpretation to `data-analysis` | All |
-| `monitoring-observability` | Packet-first telemetry design/review for service health, telemetry rollout, alert/dashboard audits, pipeline trust, and live-ops visibility | All |
-| `scrapling` | Routing-first adaptive web scraping: choose parser-only, HTTP fetch, JS browser, stealth escalation, MCP, or spiders from one intake packet; a dedicated research-harvesting gate (robots.txt + paywall heuristic, modeled on [ai4s-research/open-science](https://github.com/ai4s-research/open-science)) runs before scraping scientific literature, datasets, or citation sources. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill scrapling` | All |
+| Skill |
+|-------|
+| `deployment-automation` |
+| `environment-setup` |
+| `firebase-ai-logic` |
+| `firebase-cli` |
+| `genkit` |
+| `looker-studio-bigquery` |
+| `monitoring-observability` |
+| `rtk` |
+| `scrapling` |
+| `security-best-practices` |
+| `strix` |
+| `system-environment-setup` |
+| `vercel-deploy` |
 
+### 📝 Documentation (5)
 
-| `rtk` | Rust Token Killer installation and agent setup - `rtk gain` verification, package-collision repair, agent-specific `rtk init`, and direct compact shell wrappers | All |
-| `security-best-practices` | Routing-first web/application/API hardening that classifies the missing security layer (browser policy, cookies/CSRF, abuse, validation, secrets, verification) before recommending one bounded hardening brief | All |
-| `strix` | Strix CLI for AI-driven application security testing - Docker preflight, LLM provider setup, local/GitHub/live target scans, scan modes, and CI/CD usage | All |
-| `system-environment-setup` | Canonical broader environment-setup skill for runnable repos, toolchains, Docker/devcontainers, local services, onboarding, and setup drift diagnosis | All |
-| `vercel-deploy` | Vercel-specific operator skill for linked-project preview/prod deploys, staged promote flows, aliases/domains, env-scope fixes, and rollback response | All |
-| `zeude` | Enterprise AI adoption platform for Claude Code — 3× adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), and context-aware skill suggestions. Requires Supabase + ClickHouse | Claude |
-| `hyperfine-benchmarking` | Benchmark shell commands reliably with hyperfine — warmup runs, statistical summaries, parameter sweeps, export artifacts (JSON/CSV/Markdown), and regression detection | All |
-| `lmstudio-cli` | Operate LM Studio's `lms` CLI and local/remote LM Studio servers — model discovery, server status, model loading, endpoint smoke tests, and OpenAI-compatible wiring | All |
-| `typesense` | Stand up a self-hostable typo-tolerant search environment (open-source Algolia/ElasticSearch alternative, single C++ binary) — pick Docker / binary / Typesense Cloud, install a client, design a collection schema, index, and search with faceting, geo, sorting, synonyms, scoped API keys, federated multi-search, and vector/hybrid; wire an InstantSearch.js UI and a Raft HA cluster. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill typesense` | All |
-
-### 📝 Documentation (6)
-
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `changelog-maintenance` | Routing-first release-history anchor for changelogs, release notes, migration updates, and lightweight patch-note packets | All |
-| `presentation-builder` | Packet-first deck artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks, with honest last-mile handoff to HTML review, PPTX, PDF, Google Slides, or Figma Slides | All |
-| `research-paper-writing` | ML/CV/NLP academic paper + rebuttal workflow — abstract/introduction/method/experiments, figure-table support, claim-evidence alignment, reviewer response, camera-ready revision | All |
-| `slides-grab` | Generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — the open-source Claude Design alternative and "best harness + editor + linter for generating slides in Claude Code / Codex". The skill plans (agent drafts a structured outline), designs (each slide is a self-contained `slide-XX.html`), edits (pure-JS browser editor where you drag a bbox over any region and ask the agent to rewrite just that area, or hand-edit text/size/bold), and exports (capture-or-print PDF, per-slide PNG incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab` | All |
-| `technical-writing` | Internal technical docs anchor for specs, architecture docs, ADRs, runbooks, migration guides, and developer-facing implementation notes | All |
-| `user-guide-writing` | Mode-selecting user-docs anchor for onboarding guides, tutorials, task how-to articles, FAQs, help-center updates, and release-facing help refresh packets | All |
+| Skill |
+|-------|
+| `changelog-maintenance` |
+| `presentation-builder` |
+| `research-paper-writing` |
+| `technical-writing` |
+| `user-guide-writing` |
 
 ### 📊 Project Management (4)
 
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `sprint-retrospective` | Routing-first retrospective anchor for sprint retros, milestone postmortems, remote/hybrid facilitation, and dead-action-item recovery | All |
-| `standup-meeting` | Routing-first coordination-cadence anchor for deciding whether daily, async, hybrid, lighter, or no recurring standup is justified before choosing a standup mode | All |
-| `task-estimation` | Routing-first estimate packet anchor for story points, t-shirt sizing, split/spike guidance, and forecast-safe uncertainty framing across software, GTM, and game work | All |
-| `task-planning` | Packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing | All |
+| Skill |
+|-------|
+| `sprint-retrospective` |
+| `standup-meeting` |
+| `task-estimation` |
+| `task-planning` |
 
-### 🔭 Search \& Analysis (15)
+### 🔭 Search \& Analysis (14)
 
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `heretic` | Automatic **abliteration** + refusal-direction interpretability packaging [p-e-w/heretic](https://github.com/p-e-w/heretic) (**AGPL-3.0**) — removes refusal/over-refusal from open-weight transformer models via parametrized directional ablation (no fine-tuning): per-layer refusal directions (difference-of-means of harmful vs harmless residuals) orthogonalize attention + MLP matrices, and an **Optuna TPE** optimizer jointly minimizes refusals and KL-divergence from the original. Routes to the smallest mode: `decensor` < `configure` (`bnb_4bit` / trials / KL target) < `evaluate` (refusals + KL) < `research` (`--print-residual-geometry`, PaCMAP `--plot-residuals`) < `discover` (web extraction via `scrapling`). Responsible-use guardrails: modify only models you may modify; honour licenses/ToS; never abliterate for illegal/harmful content. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill heretic` | All |
-| `autoresearch` | Karpathy autonomous ML search front door — choose setup / `program.md` / bounded loop / results interpretation / constrained-hardware mode, preserve immutable `prepare.py` + 300s + `val_bpb`, route prompt/skill eval elsewhere | All |
-| `deep-research` | Routing front door for a structured, human-in-the-loop deep-research workflow ([Weizhena/Deep-Research-skills](https://github.com/Weizhena/Deep-Research-skills)) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines (outline · deep · report · web-search) + 5 routed source modules. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research` | All |
-| `skill-autoresearch` | Repo-local skill ratcheting loop: choose one packet (ratchet eligibility, readiness, charter, baseline, mutation, support-sync, final report), allow `no ratchet justified`, freeze evals, keep or revert by score, and route hosted eval / ML autoresearch work outward | All |
-| `codebase-search` | Routing-first repo navigation: choose one search packet for definitions/references, config/content ownership, entry-point discovery, or impact mapping before debugging/refactoring | All |
-| `data-analysis` | Decision-first dataset analysis for exports, experiments, telemetry, and KPI explanation | All |
-| `langsmith` | Routing-first LangSmith skill: choose one packet for trace-debug, evals, review queues, prompt-registry decisions, or cross-service propagation before touching SDK code | All |
-| `opik` | Open-source LLM observability, evaluation & optimization via Comet's Opik — server mode routing (cloud / `./opik.sh` Docker / Kubernetes), `@opik.track` tracing plus 50+ framework integrations, LLM-as-a-judge metrics, Datasets/Experiments with PyTest CI gates, production monitoring, Agent Optimizer, Guardrails. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill opik` | All |
-| `log-analysis` | Routing-first log triage: choose one evidence packet for app, container/pod, browser+API, CI cascade, JSON/event, or security-signal logs before debugging/observability work | All |
-| `pattern-detection` | Routing-first pattern/anomaly hunting: choose text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly before deeper analysis | All |
-| `github-repo-candidate-quality-gate` | Convert noisy GitHub search results into recommendation-grade candidate lists — metadata freshness, license shape, activity signals, and dependency risk scoring | All |
-| `semble` | Token-efficient code search for agents — returns only relevant code chunks using ~98% fewer tokens than grep+read. Natural-language and symbol queries, semantic `find-related`, MCP for Claude Code/Codex/Cursor/OpenCode, Python library, CPU-only with no API key | All |
-| `codeflow` | Visualize codebase architecture in seconds — a zero-build single `index.html` browser app (React 18 + D3.js, client-side, no backend) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact; exports JSON/Markdown/SVG/PDF or a self-updating CodeFlow Card. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | All |
-| `academic-research` | Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes: full/quick/review/lit-review/three-way-scan/fact-check/socratic/systematic-review), academic-paper (11 modes: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer (6 modes: full/quick/guided/methodology-focus/re-review/calibration), and a 10-stage end-to-end pipeline orchestrator with Material Passport, claim-faithfulness gates, and cross-model verification. Human-in-the-loop throughout. Plugin (upstream): `claude plugin marketplace add Imbad0202/academic-research-skills` | All |
-| `scientific-llm-benchmarks` | Benchmarks for evaluating large language models on scientific reasoning and discovery. | All |
-
-### 🎬 Creative Media (8)
-
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `drawio` | Text-to-diagram and codebase-to-diagram via Agents365-ai/drawio-skill — editable `.drawio` exported to PNG/SVG/PDF/JPG through the native draw.io CLI, 6 presets (ERD/UML/sequence/architecture/ML-DL/flowchart), 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/BPMN shapes, 321 AI/LLM logos, vision self-check + 5-round refinement. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill drawio` | All |
-| `remotion-video-production` | Compatibility alias for `video-production` when legacy tooling or explicit Remotion naming still expects the old skill | All |
-| `video-production` | Canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs | All |
-| `vox-director` | Turn any topic into a finished Vox-style paper-collage explainer/ad video — automated end to end on Atlas Cloud API + local ffmpeg. Script, collage keyframes, motion, voice-over, music, and captions. Triggers on Vox-style video requests, paper/torn-paper collage animation, motion collage, narrated explainers, or scrapbook-style tributes. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill vox-director` | All |
-| `motion-previs-studio` | Open-source desktop app for AI-film motion previsualization — extract pose (OpenPose BODY_25), depth maps, camera motion (optical flow + RANSAC), control layers, and production bundles from reference video for AI-video workflows (Seedance, ComfyUI, Blender, Runway, Kling). Covers setup, feature integration, UI/logic debugging, export pipeline optimization, and Blender/ComfyUI integration. Repository: [wassermanproductions/motion-previs-studio](https://github.com/wassermanproductions/motion-previs-studio) (Apache 2.0). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill motion-previs-studio` | All |
-| `notebooklm` | Query Google NotebookLM notebooks directly from Claude Code — source-grounded citation-backed answers via Patchright browser automation, persistent Google auth, and notebook library management | Claude Code |
-
-| `webtoon-harness` | End-to-end webtoon production harness packaging [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) (MIT) — 27 agents in 4 phase-rebuilt teams take one episode from trend research to a finished vertical-scroll viewer: dialogue-heavy twist-every-episode scenario, reference sheets first, 50+ panels rendered with in-image Korean speech-bubble baking via codex-image, a 6-axis validate–regenerate loop, then no-overlay assembly. Phase-2 trend research routes web extraction through the `scrapling` skill. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness` | Claude Code |
-| `paperbanana` | Routing-first academic illustration packaging [llmsresearch/paperbanana](https://github.com/llmsresearch/paperbanana) (MIT) — turns text or a paper into publication-quality figures via a two-phase plan-then-refine multi-agent pipeline (Retriever/Planner/Stylist → Visualizer/Critic). Routes to the smallest workable mode: `plot` (VLM-only charts) < `generate` (one diagram) < `batch`/`sweep`/`orchestrate`, with `evaluate` (VLM-as-Judge) and `polish` to fix figures before regenerating. Provider-agnostic; venue style packs (neurips/icml/acl/ieee). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana` | All |
-
-### 📢 Marketing (1)
-
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `marketing-automation` | Canonical broad marketing front door — choose one operating mode, one primary lane, and one reusable operator packet with owner, dependencies/approvals, and proof across launch, conversion, lifecycle, acquisition/content, and measurement work | All |
-
-### 🎮 Game Development (7)
-
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `game-build-log-triage` | Unity/Unreal build, cook, package, editor, signing, and CI log triage — isolate the first actionable engine/build failure | All |
-| `game-ci-cd-pipeline` | Game pipeline packet router — classify branch-gate vs nightly/package-candidate vs release/certification lane, then choose setup, stage split, cache policy, preflight, artifact/release hygiene, or CI-signal hardening | All |
-| `game-demo-feedback-triage` | Turn playtest/demo/community feedback into weighted themes, fix-first priorities, and explicit handoffs | All |
-| `game-performance-profiler` | Unity/Unreal frame-time triage — bottleneck-first profiling brief, quick packets, benchmark routes, target-device review, and deliberate profiler escalation | All |
-| `perfectpixel` | AI animation sprite generation studio — generate character animations, sprite sheets, and 8-direction sprite sets from a text description using god-tibo-imagen and gemini models | All |
-| `steam-store-launch-ops` | Packet-first Steam launch router — choose page-promise audit, wishlist signal check, demo readiness, event timing workback, or launch-ops runbook | All |
-| `unity-gamedev-skill-pack` | Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package with validation and integration guidance | All |
-
-### 🔧 Utilities (15)
-
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `fabric` | AI prompt patterns — YouTube summaries, document analysis via 200+ Patterns | All |
-| `file-organization` | Decision-first repo structure skill — choose feature/shared/route/package boundaries, naming rules, and migration steps | All |
-| `git-submodule` | Git submodule management | All |
-| `git-workflow` | Local Git branch, commit, rebase, conflict, push-safety, and recovery workflows | All |
-| `google-workspace` | Google Workspace REST API automation — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | All |
-| `llm-wiki` | Persistent markdown wiki maintenance for Obsidian or git-tracked vaults — raw sources, source summaries, query filing, lint passes, and optional Scrapling/qmd helpers | All |
-| `okf` | Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files (type/title/description/resource/tags/timestamp) for portable, interoperable AI-agent knowledge sharing. Formalizes the LLM-Wiki pattern. Includes Python linter, consume helper, and distribution guide. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill okf` | All |
-
-| `npm-git-install` | Routing-first Node package delivery skill for npm / pnpm / Yarn / Bun — choose temporary Git bridge, SHA pin, tarball, workspace, or publish-first handoff safely | All |
-| `obsidian-second-brain` | Routing front door for a **self-rewriting Obsidian vault** (evolves Karpathy's LLM-Wiki) — every source REWRITES existing pages, reconciles contradictions, and synthesizes patterns automatically. 45 commands across 4 layers (Operations / Thinking / Context / Research) + background & scheduled agents + 4 role presets + AI-first write validator. Cross-CLI. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` | All |
-
-| `opencontext` | Routing-first active project/repo memory — choose memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out for manifests, stable links, cross-agent handoff packets, and highest-confidence-source / freshness checks when notes overlap | All |
-| `workflow-automation` | Routing-first repo workflow automation — choose one mode for task-entrypoints, bootstrap/onboarding, local-CI parity, hook guardrails, maintenance bots, or workflow cleanup without drifting into environment/deploy work | All |
-| `claudekit` | Standardized Claude Code workflow toolkit — claudekit plugin installation, init, update, hook management, and workspace configuration for consistent Claude Code setups | All |
-| `ghgrab` | Search and download specific files/folders from GitHub repositories directly from terminal using ghgrab, without full repo cloning | All |
-| `opencut` | Work with the OpenCut open-source video editor repo (OpenCut-app/OpenCut) — clone/setup, run web/desktop dev servers, understand the Rust/WASM core, and follow current contribution focus areas | All |
-| `tokhub` | Set up, run, and contribute to TokHub (yaojingang/TokHub) — an open-source AI API relay monitoring, recommendation, and OpenAI-compatible gateway system with L1/L2/L3 channel health probing, usage metering, alerts, audit, and Docker self-hosting | All |
-| `lapian-notes` | Work with Lapian Notes / 拉片笔记 (bkingfilm/lapian-notes) — a local-first React/Vite tool that turns a film into an editable shot-by-shot study notebook via local frame extraction and a bring-your-own-AI ZIP round trip, producing story-line swimlanes, a structure tree, and an emotion curve | All |
+| Skill |
+|-------|
+| `academic-research` |
+| `agent-pulse` |
+| `autoresearch` |
+| `codebase-search` |
+| `data-analysis` |
+| `deep-research` |
+| `heretic` |
+| `langsmith` |
+| `log-analysis` |
+| `opik` |
+| `pattern-detection` |
+| `scientific-llm-benchmarks` |
+| `semble` |
+| `skill-autoresearch` |
 
 
-### 🛠 Utilities (Productivity) (6)
 
-| Skill | Description | Platforms |
-|-------|-------------|-----------|
-| `ponytail` | Write the least code that fully solves the task — YAGNI ladder (skip → stdlib → native → installed dep → one line), `ponytail:` upgrade-path markers, `lite/full/ultra/off` intensity, and sharper `/ponytail-review` / `-audit` / `-debt` contracts for delete-lists and debt ledgers. Never cuts validation, data-loss handling, security, or accessibility. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail` | All |
-| `caveman` | Ultra-compressed communication mode (~75% token reduction). Activate: "caveman mode", "less tokens". Deactivate: "stop caveman" | All |
-| `write-a-skill` | Create structured agent skills: gather requirements → draft SKILL.md → review. Description field is critical for agent activation | All |
-| `git-guardrails-claude-code` | Prevent destructive git operations (force push, reset --hard, clean, branch -D) via Claude Code PreToolUse hooks | Claude |
-| `setup-pre-commit` | Configure Husky + lint-staged + Prettier pre-commit hooks with typecheck and test automation | All |
-| `scaffold-exercises` | Create educational exercise directories (XX-section/XX.YY-exercise/problem\|solution\|explainer) that pass pnpm ai-hero-cli lint | All |
+
+### 📢 Marketing (2)
+
+| Skill |
+|-------|
+| `marketing-automation` |
+| `yuwen-publish-precheck` |
+
+### 🎮 Game Development (8)
+
+| Skill |
+|-------|
+| `game-build-log-triage` |
+| `game-ci-cd-pipeline` |
+| `game-demo-feedback-triage` |
+| `game-performance-profiler` |
+| `game-studio-harness` |
+| `perfectpixel` |
+| `steam-store-launch-ops` |
+| `unity-gamedev-skill-pack` |
+
+### 🔧 Utilities (41)
+
+| Skill |
+|-------|
+| `agenticskills` |
+| `aider-cli-workflow` |
+| `caveman` |
+| `ccpi-marketplace` |
+| `claudekit` |
+| `clawteam` |
+| `codeflow` |
+| `compresso` |
+| `fabric` |
+| `file-organization` |
+| `ghgrab` |
+| `git-guardrails-claude-code` |
+| `git-submodule` |
+| `git-workflow` |
+| `github-repo-candidate-quality-gate` |
+| `god-tibo-imagen` |
+| `google-workspace` |
+| `graphify` |
+| `harness` |
+| `hyperfine-benchmarking` |
+| `lapian-notes` |
+| `llm-wiki` |
+| `lmstudio-cli` |
+| `notebooklm` |
+| `npm-git-install` |
+| `obsidian-second-brain` |
+| `okf` |
+| `ooo` |
+| `open-design` |
+| `opencontext` |
+| `opencut` |
+| `ponytail` |
+| `pretext` |
+| `scaffold-exercises` |
+| `setup-pre-commit` |
+| `stitch-skills` |
+| `tokhub` |
+| `workflow-automation` |
+| `write-a-skill` |
+| `x-twitter-scraper` |
+| `zeude` |
 
 ---
 
@@ -661,7 +662,7 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 165 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -692,6 +693,7 @@ npx vibe-kanban
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `webtoon-harness` | `webtoon harness`, `make a webtoon` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
+| `game-studio-harness` | `game production harness`, `게임 제작 하네스`, `stage gate` | [.agent-skills/game-studio-harness/SKILL.md](.agent-skills/game-studio-harness/SKILL.md) |
 | `heretic` | `heretic`, `abliterate`, `decensor a model` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |

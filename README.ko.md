@@ -2,14 +2,34 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-152-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-165-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**165개 로컬 스킬 폴더 · 설치 가능 스킬 165개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 165개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
+### 🎬 창의 미디어 (10개)
+
+| `drawio` |
+| `gbro-collage-broll` |
+| `motion-previs-studio` |
+| `paperbanana` |
+| `remotion-video-production` |
+| `slides-grab` |
+| `video-production` |
+| `video-shotcraft` |
+| `vox-director` |
+| `webtoon-harness` |
+
+├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**152개 로컬 스킬 폴더 · 설치 가능 스킬 152개 · TOON 포맷 · 멀티플랫폼**
+**165개 로컬 스킬 폴더 · 설치 가능 스킬 165개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 165개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
+├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -20,7 +40,9 @@
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 152개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 165개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
+├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo 에이전트와 전설의 장비 세트
@@ -178,227 +200,244 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 152개 로컬 스킬 폴더 = 총 152개 설치 가능 스킬
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
+├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 ### 🎯 핵심 오케스트레이션 (15개)
 
-| 스킬 | 키워드 | 플랫폼 | 설명 |
-|------|--------|--------|------|
-| `ooo` | `ooo`, `ouroboros`, `ooo interview` | 전체 | 스펙 우선 제어 루프 — git 데이터 근거 인터뷰, 계약 동결, spec-kit 실행 계획, cli-anything harness 실행, 검증. 모호하거나 다단계 작업의 진입점 |
-| `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | Packet-first BMAD/BMM 계획 프런트도어 — 패킷 분류, 다음 아티팩트/게이트 선택, 런타임/검토 작업 외부 라우팅 |
-| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ultraqa`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude | oh-my-claudecode용 Claude-first 라우터 — plugin slash skill과 `omc` 셸 CLI를 구분하고, `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` 의도를 필요 시 OMX/OMA로 매핑하며, recovery/state 문제와 route-out을 처리 |
-| `harness` | `harness`, `build a harness` | 전체 | 메타스킬: 도메인 전용 에이전트 팀 설계, `.claude/agents/`·`.claude/skills/` 생성, harness 검증 |
-| `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$autopilot`, `$ulw`, `$ultraqa`, `$deep-interview`, `$ralplan` | Codex | Claude 대응표가 포함된 Codex 워크플로우 레이어 — `$team`은 조율형 워커, `$autopilot`은 전체 자동 구현, `$ulw`/`$ultrawork`는 burst parallelism, `$ultraqa`는 QA fan-out에 사용 |
-| `autopilot` | `$autopilot`, `autopilot`, `auto pilot`, `full-auto` | Codex | idea-to-verified-code 자율 구현을 위한 exact-name Codex/OMX 프런트도어 |
-| `team` | `$team`, `team mode`, `omx team`, `coordinated workers` | Codex | 조율형 멀티 에이전트 워크플로 exact-name 스킬; 런타임이 있으면 `omx team` 우선 |
-| `ultrawork` | `$ultrawork`, `$ulw`, `ultrawork`, `parallel work` | Codex | 독립 구현/정리 레인을 빠르게 병렬화하는 exact-name burst workflow |
-| `ultraqa` | `$ultraqa`, `$ultaqa`, `ultraqa`, `QA cycling` | Codex | tests/build/lint/typecheck/review 루프를 위한 exact-name QA cycling 워크플로 |
-| `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity | 휴대형 OMA 하네스 진입 스킬 — `.agents`를 canonical로 유지하고 `oma link`로 vendor view를 갱신하며 team/autopilot/ultrawork/ultraqa 의도를 `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, `oma agent:parallel`로 매핑 |
-| `ooo` | `ooo`, `ouroboros`, `ooo ralph` | 전체 | Ouroboros 스펙 우선 개발 루프 — 라이브 git 데이터에 근거한 소크라테스식 인터뷰, 불변 seed/spec, spec-kit 실행 계획(seed → `/speckit.plan` → `/speckit.tasks`), cli-anything harness 실행(`cli-hub`, `--json` 증거), 드리프트 인식 실행, 검증 통과까지 이어가는 완료 루프. 플러그인: `claude plugin marketplace add Q00/ouroboros` |
-| `bmad` | `bmad`, `workflow-init`, `workflow-status` | 전체 | 패킷 우선 BMAD/BMM 프런트도어 — 현재 packet을 분류하고 다음 산출물 또는 gate를 고른 뒤 review / runtime / 실행 세부 작업을 바깥으로 라우팅 |
-| `spec-kit` | `spec-kit`, `speckit`, `specify`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | 전체 | GitHub Spec-Driven Development 래퍼 — `specify-cli` 설치, 30+ 에이전트(Claude/Copilot/Gemini/Codex/Cursor/opencode/Qwen/Kiro/…) 프로젝트 부트스트랩, 그리고 constitution → specify → clarify → plan → analyze → tasks → checklist → implement 파이프라인을 라우팅. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit` |
-| `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo` | 전체 | `spec-kit` × `ooo` × `cli-anything` 조합 래퍼 — spec-kit이 스펙을 쓰고, ooo가 불변 seed로 동결해 검증 통과까지 루프를 돌리고, cli-anything이 `--json` 출력으로 evaluate 단계의 증거가 되는 agent-native CLI harness를 공급; 세 패턴(full-stack / loop-only / docs-only)과 단방향 spec → seed 흐름, 명시적 안티패턴 포함. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack` |
-| `bmad-gds` | `bmad-gds` | 전체 | 게임 제작 오케스트레이터 — 아이디어, GDD, 플레이테스트 메모, 버그, 출시 목표를 다음 마일스톤 산출물로 정리 |
-| `bmad-idea` | `bmad-idea` | 전체 | 사전 기획 아이디어 라우터 — 거친 제품/GTM/컨설팅/게임 아이디어를 하나의 컨셉 산출물과 다음 핸드오프로 정리 |
-| `deep-dive` | `deep-dive`, `deep dive`, `trace and interview` | 전체 | OMC, OMX, OMA를 가로지르는 조사 파이프라인 — 원인 가설을 trace하고 증거를 요구사항에 주입한 뒤 런타임별 실행 브리지로 넘김 |
-| `deepinit` | `deepinit`, `deep init`, `AGENTS.md` | 전체 | 수동 메모 보존, 런타임 상태 제외, parent-link 검증을 포함해 계층형 AGENTS.md 문서를 생성/갱신 |
-| `survey` | `survey` | 전체 | 재사용 가능한 `.survey/{slug}/` 결과물과 검증기 기반 아티팩트 계약 체크를 남기는 bounded 사전 구현 문제공간 스캔 |
+| 스킬 |
+|------|
+| `autopilot` |
+| `bmad` |
+| `bmad-gds` |
+| `bmad-idea` |
+| `deep-dive` |
+| `deepinit` |
+| `ohmg` |
+| `omc` |
+| `omx` |
+| `spec-kit` |
+| `spec-stack` |
+| `survey` |
+| `team` |
+| `ultraqa` |
+| `ultrawork` |
 
-### 📋 계획 및 검토 (12개)
+### 📋 계획 및 검토 (13개)
 
-| 스킬 | 키워드 | 설명 |
-|------|--------|------|
-| `plannotator` | `plan` | 에이전트 계획/diff용 시각적 승인 게이트 — 주석, 승인, 수정 요청, 검토 결과 저장 |
-| `agentation` | `annotate` | 정확한 렌더드 UI 피드백 라우터 — copy-paste review, watch-loop sync, self-driving critique, platform setup 선택 |
-| `browser-harness` | `browser-harness` | Claude Code, Codex, Antigravity, Gemini CLI, OpenCode용 CDP 기반 자가 치유 브라우저 자동화 — `agent-browser`를 대체하고 Claude-safe 스크린샷 처리와 helper/domain-skill 복구 루프를 문서화 |
-| `playwriter` | `playwriter` | 인증된 Chrome 세션과 MCP 재사용을 위한 실행 중 브라우저 자동화 |
-| `vibe-kanban` | `kanbanview` | 바운드된 코딩 카드, 트래커 연동 워크스페이스, 검토 큐, worktree 격리, PR 핸드오프를 다루는 코딩 보드 제어면 |
-| `triage` | `triage` | 이슈 상태 머신: needs-triage → needs-info → ready-for-agent / ready-for-human / wontfix | All |
-| `to-issues` | `to-issues` | 계획/스펙을 독립적으로 실행 가능한 수직 슬라이스 이슈로 변환 (HITL/AFK 분류) | All |
-| `to-prd` | `to-prd` | 대화 컨텍스트로 구조화된 PRD 생성 — 문제 설명, 사용자 스토리, 모듈, 테스트 결정 | All |
-| `grill-me` | `grill-me` | 체계적인 1문1답 질문으로 계획의 모든 결정 트리를 탐색하는 스트레스 테스트 | All |
-| `grill-with-docs` | `grill-with-docs` | 도메인 모델 대비 계획 검증, 용어 정제, CONTEXT.md/ADR 인라인 업데이트 | All |
-| `improve-codebase-architecture` | `improve-codebase-architecture` | 삭제 테스트·심(Seam)·지역성 어휘를 사용해 얕은 모듈을 깊은 모듈로 개선하는 기회 발굴 | All |
-| `zoom-out` | `zoom-out` | 도메인 어휘로 관련 모듈, 호출자 관계, 의존성을 매핑하는 상위 아키텍처 관점 제공 | All |
+| 스킬 |
+|------|
+| `agentation` |
+| `agentic-skills` |
+| `browser-harness` |
+| `grill-me` |
+| `grill-with-docs` |
+| `microsoft-agent-framework` |
+| `openai-agents-python` |
+| `plannotator` |
+| `playwriter` |
+| `to-issues` |
+| `to-prd` |
+| `triage` |
+| `vibe-kanban` |
 
-### 🤖 에이전트 개발 (4개)
+### 🤖 에이전트 개발 (5개)
 
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `prompt-repetition` | 비추론/경량 LLM에서 프롬프트 반복을 언제 써야 하는지 판단하는 스킬 — 긴 컨텍스트 검색, 선택지 우선 MCQ, 위치/인덱스 조회, 그리고 retrieval·강한 모델로의 route-out 포함 | 전체 |
-| `skill-standardization` | SKILL.md 검증/재작성, 중복 canonical화, 그리고 repo-root 검증 흐름 + 파생 발견면(`skills.json`, README/setup, `SKILL.toon`) 동기화 | 전체 |
-| `cli-anything` | HKUDS CLI-Anything으로 모든 소프트웨어를 agent-native CLI로 — CLI-Hub 패키지 매니저(`cli-hub list/search/install/launch`), 에이전트 자율 탐색 meta-skill, 임의 코드베이스 대상 7-phase harness 생성(`/cli-anything`), refine/test/validate 반복; 40+ harness, 2,461 테스트, REPL + `--json` CLI. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything` | 전체 |
-| `upskill` | HKUDS UpSkill 래핑 — Claude Code 세션 실패를 캡처하고, 강력한 Teacher 모델이 스킬을 초안하고, 약한 Student 모델 대상으로 폐루프 Ralph Loop(최대 3라운드)로 검증한 뒤, 검증된 스킬을 자동 서빙해 저렴한 Flash 모델이 Pro 모델처럼 동작하게 함. Terminal-Bench 2.0: Flash+UpSkill이 Pro보다 41% 낮은 비용으로 더 높은 성능. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill upskill` | Claude Code |
+| 스킬 |
+|------|
+| `cli-anything` |
+| `prompt-repetition` |
+| `prompts-chat` |
+| `skill-standardization` |
+| `upskill` |
 
-### ⚙️ 백엔드 (6개)
+### ⚙️ 백엔드 (11개)
 
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `api-design` | 계약 중심 REST/GraphQL API 설계, 호환성 검토, 후속 핸드오프 | 전체 |
-| `api-documentation` | 레퍼런스 포털·퀵스타트·SDK/웹훅 가이드·검증된 예시·인증/에러 안내를 다루는 개발자용 API 문서 앵커 | 전체 |
-| `authentication-setup` | hosted/framework-native/platform-native 인증 선택, 세션/JWT 경계, 조직 데이터, 엔터프라이즈 SSO 핸드오프를 다루는 제품 인증 설정 라우터 | 전체 |
-| `backend-testing` | 커버리지 계획, fixture/reset 전략, 계약/API 보호, flaky-suite 안정화, 로컬-vs-CI lane 분리를 다루는 패킷 우선 백엔드 테스트 스킬 | 전체 |
-| `colibri` | 소비자 하드웨어(~25GB RAM)에서 GLM-5.2(744B MoE) 실행 가능한 순수 C LLM 추론 엔진 — 전문가 디스크 스트리밍 및 LRU 캐싱, MLA 주의력, 네이티브 다중 토큰 추측 디코딩(MTP, 39–59% draft acceptance), int4 양자화. Setup/Build, 모델 다운로드 & 변환, 추론 모드, 전문가 스트리밍 튜닝, 성능 프로파일링, GPU 가속 지원. 저장소: [JustVugg/colibri](https://github.com/JustVugg/colibri) (Apache 2.0). 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill colibri` | 전체 |
-| `database-schema-design` | 관계형·문서형·하이브리드 스키마, queryable-vs-flexible 필드 판단, 단계적 스키마 변경, 그리고 API/인증/테스트/리포팅 인접 스킬 route-out을 다루는 패킷형 스토리지 모델 설계 | 전체 |
+| 스킬 |
+|------|
+| `amrouter` |
+| `api-design` |
+| `api-documentation` |
+| `authentication-setup` |
+| `backend-testing` |
+| `database-schema-design` |
+| `payloadcms` |
+| `pydantic-ai` |
+| `supabase-agent-skills` |
+| `typesense` |
+| `colibri` |
 
 ### 🎨 프론트엔드 (13개)
 
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `design-system` | 디자인 토큰 거버넌스, 비주얼 언어 규칙, 프리미티브 네이밍, 교차 화면 시스템 방향을 맡는 기본 프론트엔드 UI 시스템 앵커이며, 컴포넌트 API·반응형 레이아웃·접근성 수정·광범위한 UI 평가는 인접 스킬로 route-out합니다 | 전체 |
-| `devup-ui` | 제로 런타임 CSS-in-JS 도입 — 빌드 타임 Rust/WASM 플러그인을 Next.js/Vite/Rsbuild/Webpack/Bun에 연결하고, `Box`/`css` props 또는 styled-components 호환 `styled()` API로 스타일링하며, 타입 세이프 `devup.json` 테마와 styled-components/Emotion/Tailwind에서의 마이그레이션을 지원합니다. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill devup-ui` | 전체 |
-| `frontend-design-system` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `design-system` 호환 별칭 | 전체 |
-| `stitch-skills` | Stitch MCP 에이전트 스킬 — 고품질 UI 화면 생성, 멀티페이지 웹사이트, DESIGN.md 문서화, 프롬프트 향상, React/shadcn-ui 변환, Remotion 동영상 생성. 플러그인: `claude plugin marketplace add google-labs-code/stitch-skills` | 전체 |
-| `compresso` | 무료 오프라인 데스크톱 동영상/이미지 압축 (Tauri+React) — 배치 압축, 동영상 트리밍/분할, 포맷 변환, 자막 삽입, 메타데이터 관리. FFmpeg/pngquant/jpegoptim/gifski 사용. 플러그인: `claude plugin marketplace add codeforreal1/compressO` | 전체 |
-| `open-design` | 로컬 우선 오픈소스 디자인 도구 — 설치된 코딩 에이전트를 사용해 프로토타입·덱·미디어 아티팩트를 생성합니다. 72개 내장 디자인 시스템, 5가지 비주얼 방향, 멀티 포맷 내보내기(HTML/PDF/PPTX/ZIP). 플러그인: `claude plugin marketplace add nexu-io/open-design` | 전체 |
-| `pretext` | DOM 리플로우 없는 빠르고 정확한 멀티라인 텍스트 측정/레이아웃 — `prepare`/`layout`(높이), `prepareWithSegments`/`layoutWithLines`(라인별), 이모지/CJK/RTL 지원, DOM·Canvas·SVG 출력. npm: `@chenglou/pretext` | 전체 |
-| `react-best-practices` | waterfall, 번들 크기, RSC/클라이언트 경계, hydration, rerender churn, 느린 라우트를 측정 기반으로 진단하는 React & Next.js 성능 스킬 | 전체 |
-| `react-grab` | 브라우저 UI 엘리먼트에서 React 컴포넌트명·파일경로·HTML을 클립보드로 복사해 AI 에이전트에 전달 | 전체 |
-| `vercel-react-best-practices` | 레거시 툴링이나 정확한 이름 의존 워크플로를 위한 `react-best-practices` 호환 별칭 | Claude · Gemini · Codex |
-| `responsive-design` | page-shell, component-slot, dense-data, media, reflow 검증 패킷을 위한 routing-first 반응형 레이아웃 전략 | 전체 |
-| `state-management` | local·Context·URL/폼·클라이언트 스토어·서버 상태/라우터 데이터 계층을 가르는 React/fullstack 소유권 패킷 결정 | 전체 |
-| `ui-component-patterns` | `primitive-boundary`, `slot-anatomy`, `controlled-ownership`, `alternate-root`, `docs-verification` 패킷을 고르는 routing-first 재사용 컴포넌트 아키텍처 | 전체 |
-| `web-accessibility` | semantics, keyboard/focus, labels/announcements, reflow, media alternatives, routed-app feedback를 다루는 routing-first 접근성 수정·검증 스킬 | 전체 |
-| `web-design-guidelines` | hierarchy, clarity, consistency, state, responsiveness/accessibility basics를 보는 broad 웹 UI 감사 | 전체 |
+| 스킬 |
+|------|
+| `astryx` |
+| `ax` |
+| `design-system` |
+| `devup-ui` |
+| `lazyweb` |
+| `react-best-practices` |
+| `react-bits` |
+| `react-grab` |
+| `responsive-design` |
+| `state-management` |
+| `ui-component-patterns` |
+| `web-accessibility` |
+| `web-design-guidelines` |
 
-### 🔍 코드 품질 (10개)
+### 🔍 코드 품질 (11개)
 
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `agentic-skills` | Google 엔지니어링 실천법 기반 프로덕션 엔지니어링 프레임워크 — spec 주도 개발, 점진적 구현, TDD, 보안 강화, 성능 최적화, 체계적인 git/CI/CD 워크플로우를 `/spec` `/plan` `/build` `/test` `/review` `/code-simplify` `/ship` 단계로 제공. 플러그인: `/plugin marketplace add addyosmani/agent-skills` | 전체 |
-| `code-refactoring` | 동작 보존 중심 구조 정리, 분해, 중복 제거, codemod 계획 | 전체 |
-| `code-review` | 심각도·증거 공백 점검·route-out을 포함한 evidence-first diff / PR 리뷰 | 전체 |
-| `open-code-review` | Alibaba `ocr` CLI 기반 라우팅 우선 AI 리뷰 — 사전 요건/LLM 설정 확인, `--background` 컨텍스트 전달, 워크스페이스 / 커밋 / 브랜치 범위 / 전체 파일 `scan` 선택, 결과를 High/Medium/Low로 분류, 의도가 있을 때만 안전 항목 자동 수정; 사람의 승인/차단 판단은 `code-review`로 라우팅. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill open-code-review` | 전체 |
-| `debugging` | 구체적인 버그·회귀·flaky 실패·환경별 이상 동작을 위한 routing-first 진단 스킬; raw log는 `log-analysis`, 순수 성능 작업은 `performance-optimization`으로 라우팅 | 전체 |
-| `performance-optimization` | trace·보고서·query plan 같은 현재 아티팩트에서 출발해 지연시간·처리량·메모리·번들·CWV·프레임 예산 병목을 측정 중심으로 분석하고 튜닝 | 전체 |
-| `testing-strategies` | merge-gate truth, release-only proof, scheduled breadth, cross-domain handoff를 다루는 패킷 우선 검증 정책 | 전체 |
-| `diagnose` | 체계적 6단계 디버깅: 피드백 루프 구축 → 재현 → 가설 → 계측 → 수정+테스트 → 정리. Phase 1(빠른 피드백 루프) 투자 우선 | All |
-| `tdd` | 레드-그린-리팩터 TDD (수직 슬라이스) — 공개 인터페이스를 통한 행동 검증, 구현 세부사항 테스트 금지 | All |
-| `migrate-to-shoehorn` | TypeScript 테스트의 `as` 어서션을 `fromPartial()`, `fromAny()`, `fromExact()`로 타입 안전하게 교체. 테스트 코드 전용. | All |
+| 스킬 |
+|------|
+| `code-refactoring` |
+| `code-review` |
+| `debugging` |
+| `diagnose` |
+| `improve-codebase-architecture` |
+| `migrate-to-shoehorn` |
+| `open-code-review` |
+| `performance-optimization` |
+| `tdd` |
+| `testing-strategies` |
+| `zoom-out` |
 
-### 🏗 인프라 (16개)
+### 🏗 인프라 (13개)
 
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `agenticskills` | `akillness/oh-my-gods` 번들(80+ god-skills) 원클릭 설치 스킬 — 상위 `install.sh`를 감싸 `PLATFORM`, `WITH_LANGCHAIN`, `INSTALL_MODE`, `SKIP_BACKUP` 환경 변수를 그대로 노출하며 `~/.claude/skills`, `~/.codex/skills`, `~/.gemini/skills`, `~/.opencode/skills`에 동시 미러링 | 전체 |
-| `deployment-automation` | 프리뷰 릴리즈, 스테이징/프로덕션 승격, 롤아웃 전략, 배포 후 검증, 롤백 대응, 릴리즈 하드닝을 다루는 릴리즈 실행 앵커이며, CI 작성은 `workflow-automation`, 머신 설정은 `system-environment-setup`, Vercel 전용 운영은 `vercel-deploy`로 라우팅 | 전체 |
-| `environment-setup` | `.env` 구조, env 우선순위, 검증, 시크릿 전달을 다루는 앱 구성 호환 스킬이며, 더 넓은 실행 환경 설정은 `system-environment-setup`으로 라우팅 | 전체 |
-| `firebase-ai-logic` | Firebase 앱/클라이언트 SDK에서 Gemini 기능, 스트리밍, 구조화 출력, App Check 연동을 다루는 직접 통합 레인이며, 백엔드 오케스트레이션은 `genkit`으로 라우팅 | Claude · Gemini |
-| `firebase-cli` | install/auth, bootstrap/config, Emulator Suite, scoped deploy/release, App Hosting, admin/data 작업을 담당하는 Firebase 플랫폼 운영 앵커. 백엔드 AI 워크플로 오케스트레이션은 `genkit`, 앱 SDK 통합은 `firebase-ai-logic`으로 라우팅 | 전체 |
-| `genkit` | 기능이 재사용 가능한 서버 소유 flow, Genkit eval/trace, 혹은 plain SDK route / `survey` fallback 중 무엇이 필요한지 결정하는 packet-first 백엔드 AI 워크플로 앵커이며, 직접 앱 SDK 작업은 `firebase-ai-logic`, Firebase 운영 작업은 `firebase-cli`로 라우팅 | Claude · Gemini |
-| `looker-studio-bigquery` | `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, `exec-handoff` 패킷으로 라우팅하는 BigQuery 기반 리포팅 레인이며, KPI 해석은 `data-analysis`로 라우팅 | 전체 |
-| `monitoring-observability` | 서비스 헬스, 텔레메트리 롤아웃, alert/dashboard 감사, 파이프라인 신뢰, live-ops 가시성을 위한 packet-first 텔레메트리 설계/리뷰 | 전체 |
-| `scrapling` | 한 개의 intake packet으로 parser-only, HTTP fetch, JS 브라우저, stealth escalation, MCP, spiders 중 가장 가벼운 경로를 고르는 라우팅 우선 적응형 웹 스크래핑. 과학 문헌·데이터셋·인용 출처를 긁기 전에는 robots.txt + 페이월 휴리스틱 게이트([ai4s-research/open-science](https://github.com/ai4s-research/open-science) 패턴)를 먼저 실행. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill scrapling` | 전체 |
+| 스킬 |
+|------|
+| `deployment-automation` |
+| `environment-setup` |
+| `firebase-ai-logic` |
+| `firebase-cli` |
+| `genkit` |
+| `looker-studio-bigquery` |
+| `monitoring-observability` |
+| `rtk` |
+| `scrapling` |
+| `security-best-practices` |
+| `strix` |
+| `system-environment-setup` |
+| `vercel-deploy` |
 
+### 📝 문서화 (5개)
 
-| `rtk` | Rust Token Killer 설치 및 에이전트 설정 - `rtk gain` 검증, 동명 패키지 충돌 복구, 에이전트별 `rtk init`, 직접 호출용 압축 래퍼 명령 | 전체 |
-| `security-best-practices` | 브라우저 정책·쿠키/CSRF·abuse control·검증·시크릿 중 빠진 보안 계층을 먼저 분류한 뒤 하나의 강화 brief로 정리하는 라우팅 중심 웹/앱/API 보안 강화 | 전체 |
-| `strix` | Strix CLI 기반 AI 애플리케이션 보안 테스트 - Docker 프리플라이트, LLM 공급자 설정, 로컬/GitHub/라이브 타깃 스캔, 모드 선택, CI/CD 사용 | 전체 |
-| `system-environment-setup` | 실행 가능한 저장소, 툴체인, Docker/devcontainer, 로컬 서비스, 온보딩, 설정 드리프트 진단을 다루는 정식 환경 설정 스킬 | 전체 |
-| `vercel-deploy` | linked-project 기준 프리뷰/프로덕션 배포, staged promote 흐름, alias/domain, 환경변수 범위 수정, 롤백 대응을 다루는 Vercel 전용 운영 스킬 | 전체 |
-| `zeude` | Claude Code 엔터프라이즈 AI 도입 플랫폼 — OpenTelemetry 측정, Zeude Shim을 통한 스킬/MCP/훅 중앙 동기화, 컨텍스트 인식 스킬 제안으로 3배 도입률 향상. Supabase + ClickHouse 필요 | Claude |
-| `typesense` | 자가 호스팅 가능한 오타 허용 검색 환경 구축 (오픈소스 Algolia/ElasticSearch 대안, 단일 C++ 바이너리) — Docker / 바이너리 / Typesense Cloud 중 서버 모드 선택, 클라이언트 설치, 타입드 컬렉션 스키마 설계, 색인 후 오타 허용·패싯/필터·지오·정렬·동의어·scoped API 키·federated multi-search·벡터/하이브리드 검색, 그리고 InstantSearch.js UI와 Raft HA 클러스터까지. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill typesense` | 전체 |
-
-### 📝 문서화 (6개)
-
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `changelog-maintenance` | changelog·release notes·migration update·lightweight patch-note 패킷을 다루는 routing-first 릴리스 히스토리 앵커 | 전체 |
-| `presentation-builder` | 투자/로드맵/런치/아키텍처 데모/워크숍/게임 피치 덱을 위한 패킷 우선 덱 아티팩트 앵커로, HTML 리뷰와 PPTX/PDF/Google Slides/Figma Slides 마지막 전달을 정직하게 다룸 | 전체 |
-| `research-paper-writing` | ML/CV/NLP 학술 논문 + 리버틀 워크플로우 — abstract/introduction/method/experiments, figure-table 지원, 주장-증거 정합성, reviewer response, camera-ready revision | 전체 |
-| `slides-grab` | 에이전트로 아름다운 HTML/CSS 프레젠테이션 덱을 생성·시각 편집·내보내기 — slides-grab(NomaDamas, MIT), 오픈소스 Claude Design 대안이자 "Claude Code / Codex 슬라이드 생성을 위한 최고의 harness + 에디터 + 린터". Plan(구조화된 아웃라인) → Design(독립적인 `slide-XX.html`) → Edit(순수 JS 브라우저 에디터에서 bbox 드래그로 영역 단위 재작성, 또는 텍스트/크기/볼드 수정) → Export(캡처-또는-프린트 PDF, Instagram 1:1 카드뉴스 포함 슬라이드별 PNG, 실험적/불안정 PPTX·Figma 임포트용 PPTX). 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab` | 전체 |
-
-| `technical-writing` | 스펙, 아키텍처 문서, ADR, 런북, 마이그레이션 가이드, 개발자용 구현 문서를 다루는 내부 기술 문서 앵커 | 전체 |
-| `user-guide-writing` | 온보딩 가이드, 튜토리얼, 작업형 how-to, FAQ, 헬프센터 업데이트, 출시 후 도움말 refresh packet까지 고르는 mode-selecting 사용자 문서 앵커 | 전체 |
+| 스킬 |
+|------|
+| `changelog-maintenance` |
+| `presentation-builder` |
+| `research-paper-writing` |
+| `technical-writing` |
+| `user-guide-writing` |
 
 ### 📊 프로젝트 관리 (4개)
 
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `sprint-retrospective` | 스프린트 회고, 마일스톤 포스트모템, 원격/하이브리드 진행, 죽은 액션아이템 복구를 담당하는 라우팅 우선 회고 앵커 | 전체 |
-| `standup-meeting` | 일일/비동기/하이브리드/더 가벼운 주기/반복 스탠드업 없음 중 무엇이 맞는지 먼저 판단한 뒤 스탠드업 모드를 고르는 라우팅 우선 조정-주기 앵커 | 전체 |
-| `task-estimation` | software, GTM, game work 전반에서 스토리 포인트, T셔츠 사이징, split/spike 판단, 예측 안전형 불확실성 프레이밍을 담은 estimate packet anchor | 전체 |
-| `task-planning` | software, GTM, game work 전반에서 backlog cleanup, feature slicing, sprint/milestone prep, release packet을 다루고 estimation/board/review/사전 프레이밍으로의 route-out을 명시하는 packet-first planning anchor | 전체 |
+| 스킬 |
+|------|
+| `sprint-retrospective` |
+| `standup-meeting` |
+| `task-estimation` |
+| `task-planning` |
 
 ### 🔭 검색 및 분석 (14개)
 
+| 스킬 |
+|------|
+| `academic-research` |
+| `agent-pulse` |
+| `autoresearch` |
+| `codebase-search` |
+| `data-analysis` |
+| `deep-research` |
+| `heretic` |
+| `langsmith` |
+| `log-analysis` |
+| `opik` |
+| `pattern-detection` |
+| `scientific-llm-benchmarks` |
+| `semble` |
+| `skill-autoresearch` |
 
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `heretic` | 자동 **어블리터레이션** + 거부 방향 해석가능성 — [p-e-w/heretic](https://github.com/p-e-w/heretic)(**AGPL-3.0**)를 패키징. 파라미터화된 방향성 절제로 오픈웨이트 트랜스포머 모델의 거부/과잉거부를 후속 학습 없이 제거: 층별 거부 방향(유해 vs 무해 잔차의 차이-평균)으로 어텐션 + MLP 행렬을 직교화하고, **Optuna TPE** 옵티마이저가 거부율과 원본 대비 KL 발산을 동시 최소화. 가장 가벼운 모드로 라우팅: `decensor` < `configure`(`bnb_4bit` / 트라이얼 / KL 타깃) < `evaluate`(거부 수 + KL) < `research`(`--print-residual-geometry`, PaCMAP `--plot-residuals`) < `discover`(웹 추출은 `scrapling`). 책임 있는 사용 가드레일: 수정 권한 있는 모델에만, 라이선스/ToS 준수, 불법·유해 콘텐츠용 절대 금지. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill heretic` | 전체 |
-| `autoresearch` | Karpathy 자율 ML 탐색 front door — setup / `program.md` / bounded loop / 결과 해석 / constrained-hardware mode 중 하나를 고르고, 불변 `prepare.py` + 300초 + `val_bpb` 계약을 지키며, 프롬프트/스킬 eval은 별도 라우팅 | 전체 |
-| `skill-autoresearch` | 하나의 packet(ratchet-eligibility/ready/charter/baseline/mutation/support-sync/final report)을 먼저 고르고, `no ratchet justified`도 허용한 뒤 eval을 고정하고 점수로 keep/revert를 결정하며, hosted eval / ML autoresearch 작업은 바깥으로 라우팅하는 repo-local 스킬 ratcheting 루프 | 전체 |
-| `codebase-search` | 디버깅/리팩터링으로 넘어가기 전에 정의/참조, config·콘텐츠 소유면, 엔트리포인트, 영향 범위를 찾도록 한 가지 검색 packet을 고르는 라우팅형 리포 탐색 | 전체 |
-| `data-analysis` | 내보내기 데이터, 실험, 텔레메트리, KPI 설명을 위한 의사결정 중심 데이터 분석 | 전체 |
-| `deep-research` | 구조화된 인간-루프 딥리서치 워크플로([Weizhena/Deep-Research-skills](https://github.com/Weizhena/Deep-Research-skills))를 위한 라우팅 프런트 도어 — 주제를 확장 가능한 아웃라인으로 만들고, 항목별 병렬 web-search 에이전트로 검증된 JSON을 수집한 뒤 완전한 마크다운 리포트를 생성. 단일 스킬, 4개 참조 파이프라인(outline · deep · report · web-search) + 5개 라우팅 소스 모듈. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research` | 전체 |
-| `langsmith` | SDK 코드로 곧장 가지 않고 trace-debug, 평가, 리뷰 큐, 프롬프트 레지스트리, 멀티서비스 전파 중 한 packet을 먼저 고르는 라우팅형 LangSmith 스킬 | 전체 |
-| `opik` | Comet Opik 기반 오픈소스 LLM 옵저버빌리티·평가·최적화 — 서버 모드 라우팅(클라우드 / `./opik.sh` Docker / Kubernetes), `@opik.track` 트레이싱 + 50+ 프레임워크 통합, LLM-as-a-judge 메트릭, Datasets/Experiments + PyTest CI 게이트, 프로덕션 모니터링, Agent Optimizer, Guardrails. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill opik` | 전체 |
-| `log-analysis` | 앱·컨테이너/파드·브라우저+API·CI cascade·JSON/event·security-signal 로그 중 한 가지 evidence packet을 먼저 고른 뒤 디버깅/옵저버빌리티 작업으로 넘기는 routing-first 로그 트리아지 | 전체 |
-| `pattern-detection` | text-prefilter·structural-code-rule·log-event-pattern·metric-anomaly 중 한 packet을 먼저 고르는 라우팅형 패턴/이상 탐지 | 전체 |
-| `semble` | grep+read 대비 토큰 ~98% 절감하는 에이전트용 토큰 효율 코드 검색 — 자연어·심볼 쿼리, 의미 기반 `find-related`, Claude Code·Codex·Cursor·OpenCode용 MCP, Python 라이브러리, CPU만 사용(GPU·API 키 불필요) | 전체 |
-| `codeflow` | 코드베이스 아키텍처를 몇 초 만에 시각화 — 빌드가 필요 없는 단일 `index.html` 브라우저 앱(React 18 + D3.js, 클라이언트 사이드, 백엔드 없음)으로, 모든 GitHub 저장소·로컬 폴더·PR·마크다운/Obsidian 볼트를 인터랙티브 의존성 그래프로 바꾸며 블래스트 반경, 코드 오너십, 휴리스틱 보안 스캔, 패턴/안티패턴 탐지, A–F 헬스 스코어, 활동 히트맵, PR 임팩트를 제공하고, JSON/Markdown/SVG/PDF 또는 자동 갱신 CodeFlow Card로 내보냅니다. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` | 전체 |
-| `academic-research` | 연구 발견부터 논문 출판까지 전체 학술 연구 파이프라인 — 4개의 참조 파이프라인, 27가지 모드, 39-에이전트 앙상블: deep-research(8가지 모드: full/quick/review/lit-review/three-way-scan/fact-check/socratic/PRISMA systematic-review), academic-paper(11가지 모드: full/plan/outline/revision/revision-coach/abstract/format-convert/citation-check/disclosure/rebuttal-audit), academic-paper-reviewer(6가지 모드: EIC+R1/R2/R3+Devil's Advocate, calibration), academic-pipeline(Material Passport·L3 주장-충실성 게이트·3중 인용 검증을 포함한 10단계 오케스트레이터). 전 과정 human-in-the-loop. 플러그인(업스트림): `claude plugin marketplace add Imbad0202/academic-research-skills` | 전체 |
-| `scientific-llm-benchmarks` | 과학적 추론과 발견에서 대형 언어 모델(LLM)을 평가하기 위한 벤치마크 목록 | 전체 |
+### 🎬 창의 미디어 (10개)
 
+| 스킬 |
+|------|
+| `drawio` |
+| `gbro-collage-broll` |
+| `motion-previs-studio` |
+| `paperbanana` |
+| `remotion-video-production` |
+| `slides-grab` |
+| `video-production` |
+| `video-shotcraft` |
+| `vox-director` |
+| `webtoon-harness` |
 
-### 🎬 창의 미디어 (8개)
-
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `drawio` | Agents365-ai/drawio-skill 기반 텍스트→다이어그램·코드베이스→다이어그램 — 편집 가능한 `.drawio`를 네이티브 draw.io CLI로 PNG/SVG/PDF/JPG 내보내기, 6가지 프리셋(ERD/UML/시퀀스/아키텍처/ML-DL/플로우차트), 10,000개 이상 공식 AWS/Azure/GCP/Cisco/K8s/UML/BPMN 셰이프, 321개 AI/LLM 로고, 비전 셀프체크 + 5라운드 개선. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill drawio` | 전체 |
-| `remotion-video-production` | 레거시 툴링이나 명시적 Remotion 이름이 남아 있을 때 `video-production`으로 연결하는 호환 별칭 | 전체 |
-| `video-production` | Remotion, 템플릿 API, 콘텐츠 리퍼포징, QA 핸드오프를 묶는 기본 프로그래머블/자동화 비디오 스킬 | 전체 |
-| `vox-director` | 주어진 주제를 완성된 Vox 스타일의 종이 콜라주 설명/광고 영상으로 변환 — Atlas Cloud API + 로컬 ffmpeg를 통해 엔드투엔드 자동화. 스크립트, 콜라주 키프레임, 모션, 음성, 음악, 자막 포함. Vox 스타일 영상, 종이/찢어진 종이 콜라주 애니메이션, 모션 콜라주, 내레이션 설명 영상 또는 스크랩북 스타일 tribute 요청에서 활성화. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill vox-director` | 전체 |
-| `god-tibo-imagen` | Codex ChatGPT 백엔드를 통한 AI 이미지 생성 — 의존성 없음, `~/.codex/auth.json` 재사용, CLI(`gti`), Node.js, Python SDK 지원 | 전체 |
-| `motion-previs-studio` | AI 영화 모션 프리비즈 오픈소스 데스크톱 앱 — 참고 영상에서 포즈(OpenPose BODY_25), 깊이맵, 카메라 모션(광학 흐름 + RANSAC), 컨트롤 레이어, 프로덕션 번들 추출. AI 비디오 워크플로우(Seedance, ComfyUI, Blender, Runway, Kling)용. 셋업, 기능 통합, UI/로직 디버깅, 내보내기 파이프라인 최적화, Blender/ComfyUI 통합 지원. 저장소: [wassermanproductions/motion-previs-studio](https://github.com/wassermanproductions/motion-previs-studio) (Apache 2.0). 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill motion-previs-studio` | 전체 |
-| `notebooklm` | Claude Code에서 Google NotebookLM 노트북을 직접 조회 — Patchright 브라우저 자동화로 출처 기반 인용 답변, 영구 Google 인증, 노트북 라이브러리 관리 지원 | Claude Code |
-| `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness)(MIT)를 패키징한 엔드투엔드 웹툰 제작 하네스 — 27개 에이전트·4단계 팀이 트렌드 조사부터 세로 스크롤 뷰어까지 한 회차를 제작: 대사 위주·매 회차 반전 시나리오, 레퍼런스 시트 선행, codex-image로 말풍선 in-image 베이크한 50+ 패널 렌더, 6축 검증-재생성 루프, 오버레이 없는 조립. Phase 2 트렌드 리서치의 웹 추출은 `scrapling` 스킬로 라우팅. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness` | Claude Code |
-| `paperbanana` | [llmsresearch/paperbanana](https://github.com/llmsresearch/paperbanana)(MIT)를 패키징한 라우팅 우선 학술 일러스트레이션 — 텍스트나 논문을 2단계 plan-then-refine 멀티 에이전트 파이프라인(Retriever/Planner/Stylist → Visualizer/Critic)으로 출판 품질 그림으로 변환. 가장 가벼운 모드로 라우팅: `plot`(VLM만 사용하는 차트) < `generate`(다이어그램 한 장) < `batch`/`sweep`/`orchestrate`, 재생성 전 `evaluate`(VLM-as-Judge)와 `polish`로 개선. 프로바이더 무관, venue 스타일 팩(neurips/icml/acl/ieee). 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana` | 전체 |
 
 ### 📢 마케팅 (2개)
 
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `marketing-automation` | 대표 broad marketing front door — launch/conversion/lifecycle/acquisition-content/measurement 중 하나의 operating mode와 하나의 primary lane, owner·dependency/approval·proof를 담은 reusable operator packet 하나를 고르는 마케팅 라우터 | 전체 |
-| `marketing-skills-collection` | 레거시 프롬프트팩/카탈로그용 `marketing-automation` 호환 별칭 | 전체 |
+| 스킬 |
+|------|
+| `marketing-automation` |
+| `yuwen-publish-precheck` |
 
-### 🎮 게임 개발 (6개)
+### 🎮 게임 개발 (8개)
 
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `game-build-log-triage` | Unity/Unreal 빌드, cook, package, editor, signing, CI 로그에서 첫 번째 실행 가능한 실패를 분리하는 전문 triage | 전체 |
-| `game-ci-cd-pipeline` | 게임 파이프라인 packet 라우터 — 먼저 branch-gate / nightly-package-candidate / release-certification lane을 구분한 뒤 setup, stage split, cache 정책, preflight 점검, artifact/release hygiene, CI 신뢰도 강화를 고름 | 전체 |
-| `game-demo-feedback-triage` | 플레이테스트/데모/커뮤니티 피드백을 가중치 테마와 fix-first 우선순위로 정리 | 전체 |
-| `game-performance-profiler` | Unity/Unreal frame-time 트리아지 — bottleneck-first profiling brief, quick packet, benchmark route, target-device 검토, profiler escalation | 전체 |
-| `perfectpixel` | AI 애니메이션 스프라이트 생성 스튜디오 — god-tibo-imagen 및 gemini 모델을 사용하여 텍스트 설명으로부터 캐릭터 애니메이션, 스프라이트시트, 8방향 스프라이트 세트 생성 | 전체 |
-| `steam-store-launch-ops` | Packet-first Steam launch router — page-promise audit, wishlist signal check, demo readiness, event timing workback, launch-ops runbook 중 하나를 고름 | 전체 |
-### 🔧 유틸리티 (21개)
-### 🔧 유틸리티 (19개)
+| 스킬 |
+|------|
+| `game-build-log-triage` |
+| `game-ci-cd-pipeline` |
+| `game-demo-feedback-triage` |
+| `game-performance-profiler` |
+| `game-studio-harness` |
+| `perfectpixel` |
+| `steam-store-launch-ops` |
+| `unity-gamedev-skill-pack` |
 
-| 스킬 | 설명 | 플랫폼 |
-|------|------|--------|
-| `fabric` | AI 프롬프트 패턴 — YouTube 요약, 문서 분석 (200+ 패턴) | 전체 |
-| `file-organization` | feature/shared/route/package 경계를 고르고 네이밍 규칙과 마이그레이션 단계를 정하는 결정-우선 저장소 구조 스킬 | 전체 |
-| `git-submodule` | Git 서브모듈 관리 | 전체 |
-| `git-workflow` | 로컬 Git 브랜치, 커밋, 리베이스, 충돌 해결, 안전한 푸시, 복구 워크플로우 | 전체 |
-| `google-workspace` | Google Workspace REST API 자동화 — Docs, Sheets, Slides, Drive, Gmail, Calendar, Chat, Forms, Admin SDK, Apps Script | 전체 |
-| `llm-wiki` | Obsidian 또는 git 기반 vault를 위한 영속적 마크다운 위키 운영 — raw sources, source summary, query filing, lint, 선택적 Scrapling/qmd 연동 | 전체 |
-| `okf` | Google의 Open Knowledge Format(OKF) 번들 생성·검증·소비 — `type`/`title`/`description`/`resource`/`tags`/`timestamp` YAML 프론트매터 마크다운 파일로 이식 가능한 AI 에이전트 지식 공유. LLM-Wiki 패턴을 공식화. Python 린터·consume 헬퍼·배포 가이드 포함. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill okf` | 전체 |
+### 🔧 유틸리티 (41개)
 
-| `npm-git-install` | npm / pnpm / Yarn / Bun용 라우팅-우선 Node 패키지 전달 스킬 — temporary Git bridge, SHA pin, tarball, workspace, publish-first handoff를 안전하게 선택 | 전체 |
-| `opencut` | OpenCut 오픈소스 비디오 에디터 저장소(OpenCut-app/OpenCut) 작업 — 클론/설치, 웹/데스크톱 dev 서버 실행, Rust/WASM 코어 이해, 현재 기여 포커스 영역 확인 | 전체 |
-| `tokhub` | TokHub(yaojingang/TokHub) 설정·실행·기여 — L1/L2/L3 채널 헬스 프로빙, 사용량 미터링, 알림, 감사, Docker 셀프호스팅을 갖춘 오픈소스 AI API 릴레이 모니터링/추천/OpenAI 호환 게이트웨이 시스템 | 전체 |
-| `lapian-notes` | Lapian Notes/拉片笔记(bkingfilm/lapian-notes) 작업 — 로컬 프레임 추출과 브링유어오운-AI(API 키 불필요) ZIP 왕복으로 영화를 편집 가능한 컷 단위 분석 노트로 변환, 스토리라인 스윔레인/구조 트리/감정 곡선 생성 | 전체 |
-| `opencut` | OpenCut 오픈소스 비디오 에디터 저장소(OpenCut-app/OpenCut) 작업 — 클론/설치, 웹/데스크톱 dev 서버 실행, Rust/WASM 코어 이해, 현재 기여 포커스 영역 확인 | 전체 |
-
-| `opencontext` | 라우팅-우선 프로젝트/저장소 메모리 스킬 — memory-layer choice, load-context, search-context, store-conclusions, setup-integration, repo-packer route-out 중 하나를 골라 manifest / stable link / 에이전트 핸드오프 패킷을 다루고, 메모가 겹칠 때는 최고 신뢰 소스와 freshness 경고를 고릅니다 | 전체 |
-| `workflow-automation` | 라우팅-우선 저장소 워크플로우 자동화 — task-entrypoints, bootstrap/onboarding, 로컬 CI 패리티, hook 가드레일, 유지보수 봇, 워크플로우 정리 중 하나를 고르고 환경/배포 문제로 번지지 않게 유지 | 전체 |
-| `ponytail` | 과제를 완전히 해결하는 최소한의 코드만 작성 — YAGNI 사다리(스킵 → 표준 라이브러리 → 네이티브 → 설치된 의존성 → 한 줄), `ponytail:` 업그레이드 경로 마커, `lite/full/ultra/off` 강도, delete-list와 debt ledger를 더 명확히 하는 `/ponytail-review` / `-audit` / `-debt` 계약. 검증·데이터 손실 처리·보안·접근성은 절대 잘라내지 않음. 플러그인: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail` | All |
-| `caveman` | 토큰 75% 절감 압축 통신 모드. 활성화: "caveman mode", "less tokens". 비활성화: "stop caveman" | All |
-| `write-a-skill` | 에이전트 스킬 생성 프레임워크: 요구사항 수집 → SKILL.md 초안 → 검토. description 필드가 활성화 핵심. | All |
-| `git-guardrails-claude-code` | Claude Code PreToolUse 훅으로 파괴적 git 명령(force push, reset --hard 등) 차단 | Claude |
-| `setup-pre-commit` | Husky + lint-staged + Prettier 커밋 전 품질 검사 자동화 설정 | All |
-| `scaffold-exercises` | pnpm ai-hero-cli lint를 통과하는 교육용 연습문제 디렉터리 구조 생성 | All |
+| 스킬 |
+|------|
+| `agenticskills` |
+| `aider-cli-workflow` |
+| `caveman` |
+| `ccpi-marketplace` |
+| `claudekit` |
+| `clawteam` |
+| `codeflow` |
+| `compresso` |
+| `fabric` |
+| `file-organization` |
+| `ghgrab` |
+| `git-guardrails-claude-code` |
+| `git-submodule` |
+| `git-workflow` |
+| `github-repo-candidate-quality-gate` |
+| `god-tibo-imagen` |
+| `google-workspace` |
+| `graphify` |
+| `harness` |
+| `hyperfine-benchmarking` |
+| `lapian-notes` |
+| `llm-wiki` |
+| `lmstudio-cli` |
+| `notebooklm` |
+| `npm-git-install` |
+| `obsidian-second-brain` |
+| `okf` |
+| `ooo` |
+| `open-design` |
+| `opencontext` |
+| `opencut` |
+| `ponytail` |
+| `pretext` |
+| `scaffold-exercises` |
+| `setup-pre-commit` |
+| `stitch-skills` |
+| `tokhub` |
+| `workflow-automation` |
+| `write-a-skill` |
+| `x-twitter-scraper` |
+| `zeude` |
 
 ---
 
@@ -654,7 +693,7 @@ npx vibe-kanban
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 152개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 161개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -683,6 +722,7 @@ npx vibe-kanban
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `webtoon-harness` | `웹툰 만들어`, `웹툰 하네스` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
+| `game-studio-harness` | `게임 제작 하네스`, `게임 제작 사이클`, `stage gate` | [.agent-skills/game-studio-harness/SKILL.md](.agent-skills/game-studio-harness/SKILL.md) |
 | `heretic` | `heretic`, `어블리터레이션`, `모델 검열 제거` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
 | `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |

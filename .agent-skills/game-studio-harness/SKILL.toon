@@ -1,0 +1,18 @@
+N:game-studio-harness
+D:Five-role game production studio harness: director, numeric-balance designer, revenue-band PM, verification-strict programmer, archetype-rotation QA. Runs the 3-stage operating cycle (concept/presentation/core build → balance/core-loop/novelty → ops stability/play impact) behind 8 numeric quality gates with survey-grounded trends, signed designer↔PM negotiation records, and QA broadcast discipline.
+G:game-studio-harness game-production game-studio bmad-gds numeric-balance core-loop novelty monetization reward-bands qa-archetypes stage-gates game-development
+
+U[5]:
+  Start, resume, or gate-review a full game production cycle from idea, GDD, prototype, or build
+  Numeric balance and combination design with survey-grounded core-loop discovery and novelty scoring
+  Revenue-point mapping with comeback (≤30% reversal) and steady-reward (10–20 session parity) bands under a ≤5%p paid/free fairness cap
+  Extensible, operationally stable implementation with strict new-tech verification and perf/movement-path budgets
+  Archetype-rotation QA that hunts balance breaks, benchmarks similar games via survey, and measures every gate
+
+S[6]{n,action,details}:
+  1,Scaffold the run,Create _workspace/{run-id}/ (intake design pm engineering qa ops production messages retrospectives) at the target repo root and resume from the newest task manifest when present.
+  2,Normalize intake,Director writes production-brief.md with the bmad-gds schema and picks ONE operating mode plus the next public beat.
+  3,Materialize the team,Copy templates/agents/ into the runtime (.claude/agents/ on Claude Code with agent teams; sequential sub-agents with file-backed messages elsewhere) and assign stage tasks with owner artifact and gate linkage.
+  4,Run the 3-stage cycle,Stage 1 concept/presentation/animation/resources/core build → Stage 2 balance/core-loop stability/novelty development → Stage 3 ops stability and play impact per references/stage-cycle.md.
+  5,Gate with numbers,QA measures G1–G8 per references/quality-gates.md; director issues PASS/FIX/REDO with at most 2 FIX loops; open S1 defects or missing evidence block PASS.
+  6,Close the cycle,Write the retrospective with measured gate values and the next-cycle entry decision (Stage 1 concept shift vs Stage 2 retune); never delete _workspace artifacts.
