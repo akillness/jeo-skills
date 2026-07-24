@@ -464,7 +464,7 @@ echo "✅ graphify installed (venv: $GRAPHIFY_VENV)"
 "$GRAPHIFY_PY" -c "import graphify; print('graphify import OK')"
 ```
 
-> **Wiki/corpus note:** Graphify indexes committed files by default. If you need markdown/wiki docs in the graph, keep a `graphify.yaml` with `inputs.corpus` patterns for those folders or refresh with `graphify update . --scope all --no-description`.
+> **Wiki/corpus note:** Graphify already indexes doc files (`.md`, `.mdx`, `.txt`, `.rst`, `.html`, `.yaml`, `.yml`) alongside code by default — no extra config needed. Just run `graphify update .` from a directory that contains the wiki/docs so they're picked up in the rebuild. (`graphify update` only supports `--force` and `--no-cluster`; there is no `--scope`/`--no-description` flag.)
 
 ### 3c — ooo MCP Server (Ouroboros spec-first dev loop + git-aware interview + spec-kit plan + cli-anything execute)
 
@@ -1399,8 +1399,9 @@ Read graphify output and ~/vaults/llm-wiki/index.md before rebuilding or answeri
     replace(rule, old.rstrip("\n")+"\n\n"+block, lambda _: None)
 cs=state(cfg); data=json.loads(cfg.read_text(encoding="utf-8")) if cs else {}
 hooks=data.setdefault("hooks",{}); hooks["enabled"]=True; hooks["hooks"]=[
- {"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . --scope all --no-description >/dev/null 2>&1 || true"},
- {"event":"post-turn","run":f'LLM_WIKI_VAULT="{vault}" python3 "{vault}/scripts/ingest-prompt.py" >/dev/null 2>&1 || true'}]
+ {"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true"},
+ {"event":"post-turn","run":f'LLM_WIKI_VAULT="{vault}" python3 "{vault}/scripts/ingest-prompt.py" >/dev/null 2>&1 || true; command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true'}]
+
 replace(cfg,json.dumps(data,indent=2)+"\n",json.loads,backup=True)
 PY
   then echo "✅ jeo tool-flow rule and hooks configured"; else exit 1; fi
@@ -1472,7 +1473,8 @@ p=pathlib.Path(os.environ["JEOPI_CONFIG"]);v=os.environ["KP_VAULT"]
 try:s=os.lstat(p)
 except FileNotFoundError:s=None
 if s and (stat.S_ISLNK(s.st_mode) or not stat.S_ISREG(s.st_mode)):raise SystemExit(f"❌ refusing non-regular jeopi config: {p}")
-d=json.loads(p.read_text(encoding="utf-8")) if s else {};d["hooks"]={"enabled":True,"hooks":[{"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . --scope all --no-description >/dev/null 2>&1 || true"},{"event":"post-turn","run":f'LLM_WIKI_VAULT="{v}" python3 "{v}/scripts/ingest-prompt.py" >/dev/null 2>&1 || true'}]};out=json.dumps(d,indent=2)+"\n";json.loads(out);p.parent.mkdir(parents=True,exist_ok=True);fd,n=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent);t=pathlib.Path(n)
+d=json.loads(p.read_text(encoding="utf-8")) if s else {};d["hooks"]={"enabled":True,"hooks":[{"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true"},{"event":"post-turn","run":f'LLM_WIKI_VAULT="{v}" python3 "{v}/scripts/ingest-prompt.py" >/dev/null 2>&1 || true; command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true'}]};out=json.dumps(d,indent=2)+"\n";json.loads(out);p.parent.mkdir(parents=True,exist_ok=True);fd,n=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent);t=pathlib.Path(n)
+
 try:
  with os.fdopen(fd,"w",encoding="utf-8") as o:o.write(out);o.flush();os.fsync(o.fileno())
  os.chmod(t,stat.S_IMODE(s.st_mode) if s else 0o600);json.loads(t.read_text(encoding="utf-8"));now=os.lstat(p) if p.exists() or p.is_symlink() else None
