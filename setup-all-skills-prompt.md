@@ -494,8 +494,13 @@ The file name minus `.md` is the command id and subdirectories become `:` segmen
 
 This step bridges the installed skills into one guide-owned namespace:
 
-- writes to `$HOME/.opencode/commands/jeo/` — the **home** dir, not the XDG one, because
-  `sst/opencode` also reads `~/.config/opencode/commands/` and would list duplicates there
+- writes to `$HOME/.opencode/commands/jeo/`, the Go TUI's own home command root. **No command
+  directory is private to one flavor**: `sst/opencode` builds its config directory list as
+  `~/.config/opencode` + project `.opencode` + `~/.opencode` and globs `{command,commands}/**/*.md`
+  in each (`ConfigPaths.directories` / `ConfigCommand.load`), so on a machine running **both**
+  products the bridged files also show up in sst as `/jeo/<skill>` slash commands. They stay valid
+  there (sst's command schema needs only `template`), just redundant — keep the set small with
+  `JEO_OPENCODE_GO_BRIDGE_SKILLS`. Machines with only sst never run this step at all.
 - one `<skill>.md` per skill: the skill description plus the absolute `SKILL.md` path for the
   agent's `view` tool, so the manual is loaded on demand instead of duplicated
 - strips `$` before letters from every injected string — opencode-ai parses `$NAME`
@@ -662,6 +667,166 @@ fi
 > `JEO_OPENCODE_GO_BRIDGE_SKILLS="ooo survey harness"` — opencode-ai reads **every** `.md` under
 > `commands/` at startup, so several hundred entries make the `Ctrl+K` dialog noisy.
 > Re-run this step after any skill install to refresh the bridge.
+
+---
+
+### 2c — OpenCode shadow audit (sst/opencode): stop stale copies from winning
+
+`sst/opencode` scans **five** skill roots, not one:
+
+| Root | Source in opencode |
+|------|--------------------|
+| `~/.claude/skills/**/SKILL.md` | external root (`CLAUDE_EXTERNAL_DIR`) |
+| `~/.agents/skills/**/SKILL.md` | external root (`AGENTS_EXTERNAL_DIR`) = `$SKILLS_ROOT` |
+| `~/.config/opencode/{skill,skills}/**/SKILL.md` | `ConfigPaths.directories()` → `Global.Path.config` |
+| `~/.opencode/{skill,skills}/**/SKILL.md` | `ConfigPaths.directories()` → `$HOME/.opencode` |
+| `<project>/.opencode/…`, `.claude/skills`, `.agents/skills`, `skills.paths`, `skills.urls` | project + config-declared roots |
+
+Skills are keyed by the frontmatter `name`, loaded with `concurrency: "unbounded"`, and a repeated
+name simply overwrites the previous entry (`state.skills[md.data.name] = …` after a
+`"duplicate skill name"` warning). **The winner is whichever copy finishes loading last — it is not
+deterministic and it is not the newest file.** Identical duplicates are harmless; copies whose
+content differs mean opencode can silently run an outdated version of a skill.
+
+This step compares every other opencode root against `$SKILLS_ROOT` and reports divergence. With
+`JEO_OPENCODE_REFRESH_SHADOWS=1` it also refreshes the copies of skills that come from this
+repository's manifest, keeping the replaced file as `SKILL.md.bak-<timestamp>`. Third-party skills
+are never modified, only listed.
+
+```bash
+echo "=== OpenCode shadow audit ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+
+if declare -F jeo_opencode_probe >/dev/null 2>&1 && [ -z "${OPENCODE_SST:-}${OPENCODE_GO:-}" ]; then
+  jeo_opencode_probe
+fi
+
+if [ "${OPENCODE_SST:-0}" != "1" ]; then
+  echo "ℹ️  sst/opencode not detected — skipping the shadow audit"
+else
+  if ! command -v python3 &>/dev/null; then
+    echo "❌ python3 is required for the OpenCode shadow audit" >&2
+    exit 1
+  fi
+  # Reuse the live manifest names so only repository-owned skills are ever rewritten.
+  JEO_MANIFEST_NAMES="$(curl -fsSL "https://raw.githubusercontent.com/akillness/jeo-skills/main/.agent-skills/skills.json" \
+    | python3 -c 'import json,sys; print(" ".join(s["name"] for s in json.load(sys.stdin)["skills"] if s.get("name")))' 2>/dev/null)"
+  if [ -z "$JEO_MANIFEST_NAMES" ]; then
+    echo "⚠️  could not read the live manifest — auditing in report-only mode"
+  fi
+  JEO_HOME="$_HOME" SKILLS_ROOT="$SKILLS_ROOT" JEO_MANIFEST_NAMES="$JEO_MANIFEST_NAMES" \
+  JEO_OPENCODE_REFRESH_SHADOWS="${JEO_OPENCODE_REFRESH_SHADOWS:-0}" python3 - <<'PY'
+import os, pathlib, re, shutil, time
+
+home = pathlib.Path(os.environ["JEO_HOME"])
+canon = pathlib.Path(os.environ["SKILLS_ROOT"])
+refresh = os.environ.get("JEO_OPENCODE_REFRESH_SHADOWS", "") == "1"
+manifest_names = {s for s in os.environ.get("JEO_MANIFEST_NAMES", "").split() if s}
+xdg = pathlib.Path(os.environ.get("XDG_CONFIG_HOME") or (home / ".config"))
+
+cache = pathlib.Path(os.environ.get("XDG_CACHE_HOME") or (home / ".cache"))
+roots = [home / ".claude/skills", xdg / "opencode/skill", xdg / "opencode/skills",
+         home / ".opencode/skill", home / ".opencode/skills"]
+if os.environ.get("OPENCODE_CONFIG_DIR"):
+    base = pathlib.Path(os.environ["OPENCODE_CONFIG_DIR"])
+    roots += [base / "skill", base / "skills"]
+# `skills.urls` entries are downloaded into the cache by Discovery.pull and re-pulled on
+# demand — audit them so a stale remote copy is visible, but never rewrite that cache.
+never_refresh = {cache / "opencode/skills"}
+roots += [r for r in never_refresh if r not in roots]
+roots = [r for r in roots if r.is_dir() and r.resolve() != canon.resolve()]
+
+def skill_name(skill_md):
+    try:
+        text = skill_md.read_text(encoding="utf-8", errors="replace")[:16384]
+    except OSError:
+        return skill_md.parent.name
+    if text.startswith("---"):
+        end = text.find("\n---", 3)
+        for line in text[3:end if end > 0 else len(text)].splitlines():
+            m = re.match(r"^name\s*:\s*(.*)$", line)
+            if m:
+                value = m.group(1).strip().strip("'\"")
+                if value:
+                    return value
+    return skill_md.parent.name
+
+index = {}
+if canon.is_dir():
+    for skill_md in canon.glob("*/SKILL.md"):
+        index.setdefault(skill_name(skill_md), skill_md)
+    for skill_md in canon.glob("*/*/SKILL.md"):
+        index.setdefault(skill_name(skill_md), skill_md)
+
+stamp = time.strftime("%Y%m%d%H%M%S")
+shadow_repo, shadow_other, fixed, failed = [], [], 0, 0
+for root in roots:
+    for skill_md in root.glob("**/SKILL.md"):
+        if skill_md.is_symlink():
+            continue
+        name = skill_name(skill_md)
+        source = index.get(name)
+        if source is None:
+            continue  # only in this root — nothing shadows it
+        try:
+            if source.read_bytes() == skill_md.read_bytes():
+                continue  # identical copy: the duplicate-name warning is harmless
+        except OSError:
+            continue
+        label = f"{name}  {skill_md.parent}"
+        if name not in manifest_names or root in never_refresh:
+            shadow_other.append(label if root not in never_refresh else f"{label}  (download cache)")
+            continue
+        shadow_repo.append(label)
+        if not refresh:
+            continue
+        try:
+            shutil.copy2(skill_md, skill_md.with_name(f"SKILL.md.bak-{stamp}"))
+            for item in source.parent.rglob("*"):
+                target = skill_md.parent / item.relative_to(source.parent)
+                if item.is_dir():
+                    target.mkdir(parents=True, exist_ok=True)
+                elif not target.is_symlink():
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(item, target)
+            fixed += 1
+        except OSError as error:
+            print(f"⚠️  could not refresh {name} at {skill_md.parent}: {error}")
+            failed += 1
+
+print(f"opencode scan roots checked (besides {canon}): {len(roots)}")
+for root in roots:
+    print(f"   {root}")
+if shadow_repo:
+    verb = "refreshed" if refresh else "SHADOWING (stale copy can win)"
+    print(f"jeo-skills copies diverging from {canon} — {verb}: {len(shadow_repo)}")
+    for line in sorted(shadow_repo)[:40]:
+        print(f"   {line}")
+    if len(shadow_repo) > 40:
+        print(f"   … {len(shadow_repo) - 40} more")
+if shadow_other:
+    print(f"third-party skills diverging from {canon} — reported only, never modified: {len(shadow_other)}")
+    for line in sorted(shadow_other)[:10]:
+        print(f"   {line}")
+    if len(shadow_other) > 10:
+        print(f"   … {len(shadow_other) - 10} more")
+if not shadow_repo and not shadow_other:
+    print("✅ no divergent duplicate skills — opencode resolves every skill to one content version")
+elif not refresh:
+    print("Re-run this step with JEO_OPENCODE_REFRESH_SHADOWS=1 to refresh the jeo-skills copies")
+    print("(originals are kept as SKILL.md.bak-<timestamp>; third-party skills are never touched)")
+else:
+    print(f"refreshed={fixed} failed={failed}")
+raise SystemExit(1 if failed else 0)
+PY
+fi
+```
+
+> Why not just drop `-a opencode`? Because `~/.claude/skills` is an opencode root too — dropping one
+> link does not remove the duplicate-name collisions, and `~/.opencode/skills` is written by other
+> installers entirely. Making the copies **identical** is what actually makes opencode deterministic.
+> `SKILL.md.bak-*` files are ignored by every loader (`**/SKILL.md` never matches them).
 
 ---
 
@@ -1963,22 +2128,79 @@ if [ "${OPENCODE_SST:-0}" = "1" ] || [ "${OPENCODE_GO:-0}" = "1" ]; then
   echo "=== OpenCode Check ==="
 fi
 if [ "${OPENCODE_SST:-0}" = "1" ]; then
-  # sst/opencode reads ~/.agents/skills natively, so Step 1 alone is sufficient;
-  # the ~/.config/opencode/skills copy from `-a opencode` is belt-and-braces.
-  OC_SHARED=$(find "$SKILLS_ROOT" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
-  echo "✅ sst/opencode discovers $OC_SHARED skills from $SKILLS_ROOT (native ~/.agents/skills root)"
+  # sst/opencode reads ~/.agents/skills natively, so Step 1 alone is sufficient. Extra
+  # per-agent copies are not additive: opencode keys skills by frontmatter name and the
+  # last loader to finish wins, so a divergent copy can shadow the canonical one (Step 2c).
+  # `opencode debug skill` is the authoritative answer: it runs opencode's own loader
+  # and prints every skill it actually resolved, with the winning file location.
+  OC_SKILL_JSON="$(mktemp -t jeo_oc_skills.XXXXXX)"
+  if opencode debug skill >"$OC_SKILL_JSON" 2>/dev/null && [ -s "$OC_SKILL_JSON" ]; then
+    SKILLS_ROOT="$SKILLS_ROOT" python3 - "$OC_SKILL_JSON" <<'PY'
+import hashlib, json, os, pathlib, re, sys
+canon = pathlib.Path(os.environ["SKILLS_ROOT"])
+data = json.load(open(sys.argv[1], encoding="utf-8"))
+print(f"✅ opencode resolves {len(data)} skills (opencode debug skill)")
+
+def frontmatter_name(skill_md):
+    try: text = skill_md.read_text(encoding="utf-8", errors="replace")[:16384]
+    except OSError: return skill_md.parent.name
+    if text.startswith("---"):
+        end = text.find("\n---", 3)
+        for line in text[3:end if end > 0 else len(text)].splitlines():
+            m = re.match(r"^name\s*:\s*(.*)$", line)
+            if m and m.group(1).strip().strip("'\""): return m.group(1).strip().strip("'\"")
+    return skill_md.parent.name
+
+# Index the canonical root the way opencode does — by frontmatter name, not directory name.
+index = {}
+for pattern in ("*/SKILL.md", "*/*/SKILL.md"):
+    for skill_md in canon.glob(pattern):
+        index.setdefault(frontmatter_name(skill_md), skill_md)
+
+def digest(p):
+    try: return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+    except OSError: return None
+
+stale = []
+for skill in data:
+    source = index.get(skill["name"])
+    won = skill.get("location", "")
+    if source is None or won == str(source): continue
+    if digest(source) != digest(won): stale.append((skill["name"], won))
+from_canon = sum(1 for s in data if str(canon) in s.get("location", ""))
+print(f"   {from_canon} resolved from {canon}, {len(index)} skills available there")
+if stale:
+    print(f"⚠️  {len(stale)} skills resolve to a DIFFERENT version than {canon} — re-run Step 2c with JEO_OPENCODE_REFRESH_SHADOWS=1")
+    for name, loc in stale[:10]: print(f"     {name} -> {loc}")
+    print("     (skills outside this repository's manifest are never rewritten — resolve those copies manually)")
+else:
+    print("✅ no skill resolves to a stale copy")
+PY
+  else
+    OC_SHARED=$(find "$SKILLS_ROOT" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+    echo "ℹ️  'opencode debug skill' unavailable — $OC_SHARED SKILL.md files under $SKILLS_ROOT (native opencode root)"
+  fi
+  rm -f "$OC_SKILL_JSON"
   OC_USER_SKILLS="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/skills"
   [ -d "$OC_USER_SKILLS" ] \
-    && echo "✅ opencode user skill dir present ($OC_USER_SKILLS)" \
+    && echo "ℹ️  second copy present at $OC_USER_SKILLS — keep it in sync (Step 2c) or opencode may load it instead" \
     || echo "ℹ️  $OC_USER_SKILLS absent — fine; ~/.agents/skills already covers sst/opencode"
   OC_JSON="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/opencode.json"
-  if [ -f "$OC_JSON" ] && grep -qE '"oh-my-open(agent|code)"' "$OC_JSON"; then
+  [ -f "$OC_JSON" ] || OC_JSON="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/opencode.jsonc"
+  # Plugin entries carry a scope and/or version ("oh-my-opencode@latest",
+  # "@oh-my-opencode/opencode@latest"), so match the package name inside the quoted entry.
+  if [ -f "$OC_JSON" ] && grep -qE '"[^"]*oh-my-open(agent|code)[^"]*"' "$OC_JSON"; then
     echo "✅ oh-my-openagent (OMO) plugin registered in $OC_JSON"
-    OMO_CFG="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/oh-my-openagent.jsonc"
-    [ -f "$OMO_CFG" ] || OMO_CFG="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/oh-my-opencode.jsonc"
-    if [ -f "$OMO_CFG" ] && grep -q '"disabled_skills"' "$OMO_CFG"; then
-      echo "⚠️  $OMO_CFG sets disabled_skills — skills listed there stay hidden from OMO"
-    fi
+    grep -qE '"[^"]*oh-my-opencode[^"]*"' "$OC_JSON" && ! grep -qE '"[^"]*oh-my-openagent[^"]*"' "$OC_JSON" \
+      && echo "   ⚠️  legacy package name in use — switch the entry to \"oh-my-openagent\" (loads with a warning today)"
+    for _omo_base in oh-my-openagent oh-my-opencode; do
+      for _omo_ext in jsonc json; do
+        OMO_CFG="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/${_omo_base}.${_omo_ext}"
+        [ -f "$OMO_CFG" ] || continue
+        grep -q '"disabled_skills"' "$OMO_CFG" \
+          && echo "   ⚠️  $OMO_CFG sets disabled_skills — skills listed there stay hidden from OMO"
+      done
+    done
   else
     echo "ℹ️  oh-my-openagent not registered — optional; install per Step 3g if you want OMO workflows"
   fi
