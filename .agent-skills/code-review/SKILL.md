@@ -1,7 +1,8 @@
 ---
 name: code-review
-description: ">"
-compatibility: ">"
+description: >-
+  Turn a PR, diff, merge request, or patch stack into one evidence-first review brief with
+  severity, missing-proof checks, and route-outs.
 allowed-tools: Read Grep Glob Bash Write
 metadata:
   tags: code-review, pull-request-review, diff-review, security-review, risk-review, pre-merge

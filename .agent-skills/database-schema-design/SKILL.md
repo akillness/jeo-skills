@@ -1,8 +1,14 @@
 ---
 name: database-schema-design
-description: ">"
+description: >-
+  Design storage-model and migration-safety packets for relational, document-heavy, and hybrid
+  data systems. Use when the user needs entity ownership, constraints, indexes, staged schema
+  changes, or queryable-vs-flexible field decisions across backend/fullstack products, internal
+  ops tools, marketing/customer-data workflows, or game/live-ops systems. Route API contracts to
+  api-design, auth-owned identity/session modeling to authentication-setup, verification to
+  backend-testing, and reporting/telemetry follow-through to looker-studio-bigquery or
+  monitoring-observability.
 license: MIT
-compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep
 metadata:
   version: 2.1.0

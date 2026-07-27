@@ -1,7 +1,14 @@
 ---
 name: codeflow
-description: ">"
-compatibility: ">"
+description: >-
+  Turn any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive
+  architecture map with CodeFlow — a zero-build single index.html browser app (React 18 + D3.js
+  from pinned CDNs) that runs 100% client-side with no backend and no data collection. Pick an
+  input (public repo, private repo with a local token, local files, PR URL, markdown vault),
+  choose a visualization mode (folder/layer/churn/blast), and read the analysis — dependency
+  graph, blast radius, code ownership, heuristic security scanner, pattern/anti-pattern detection,
+  A–F health score, activity heatmap, PR impact — then export JSON/Markdown/text/SVG/PDF or wire
+  the self-updating CodeFlow Card SVG onto a README.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 metadata:
   tags: codeflow, codebase-visualization, dependency-graph, blast-radius, code-ownership, health-score, pr-impact, security-scanner, wiki-link-graph, plugin

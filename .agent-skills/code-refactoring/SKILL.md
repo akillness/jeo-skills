@@ -1,7 +1,12 @@
 ---
 name: code-refactoring
-description: ">"
-compatibility: ">"
+description: >-
+  Turn a cleanup packet into one behavior-preserving refactor brief. Use when simplifying a messy
+  function/component/service, freezing behavior before touching fragile legacy code, splitting a
+  cleanup-heavy diff into reviewable slices, or planning a repeated migration / codemod without
+  changing intended behavior. Route diagnosis to debugging, review judgment to code-review,
+  validation-program design to testing-strategies, bottleneck-led tuning to
+  performance-optimization, and pure symbol inventory to codebase-search.
 allowed-tools: Read Grep Glob Bash Write
 metadata:
   tags: refactoring, code-quality, behavior-preservation, cleanup, codemod, migration, technical-debt, legacy-code

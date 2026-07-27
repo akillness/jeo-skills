@@ -1,7 +1,11 @@
 ---
 name: cli-anything
-description: ">"
-compatibility: ">"
+description: >-
+  Make any software agent-native with HKUDS CLI-Anything — four routed modes: install ready-made
+  harnesses via CLI-Hub (cli-hub list/search/info/install/launch), give agents the
+  cli-hub-meta-skill for autonomous discovery, generate a new harness from any codebase/repo via
+  the 7-phase /cli-anything pipeline, or iterate with :refine/:test/:validate; 40+ harnesses,
+  2,461 tests, Click CLIs with REPL + --json.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 metadata:
   tags: cli-anything, cli-hub, agent-native, computer-use, cli-generation, harness, click, repl, json-output, hkuds, plugin

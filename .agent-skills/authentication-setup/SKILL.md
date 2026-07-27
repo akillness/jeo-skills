@@ -1,8 +1,11 @@
 ---
 name: authentication-setup
-description: ">"
+description: >-
+  Design or refactor product authentication setup for web apps and APIs. Use when choosing
+  hosted/framework-native/platform-native/enterprise-add-on/self-hosted auth, sessions vs JWTs,
+  OAuth/social login, passkeys, org/member models, callback/cookie environment setup, or SSO/SCIM
+  rollout boundaries.
 license: MIT
-compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep
 metadata:
   version: 2.1.0

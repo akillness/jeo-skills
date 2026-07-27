@@ -1,21 +1,13 @@
 ---
 name: deep-research
-description: >
+description: >-
   Routing front door for a structured, human-in-the-loop deep-research workflow
-  (Weizhena/Deep-Research-skills). Turns any topic into an extensible outline,
-  fans out parallel web-search agents to investigate each item into validated
-  JSON, then renders a complete markdown report. One skill, 4 reference
-  pipelines: outline (research / add-items / add-fields), deep (parallel
-  per-item investigation + field-coverage validation), report (TOC + per-field
-  markdown), and web-search (the research agent with 5 routed source modules:
-  github-debug, general-web, academic-papers, chinese-tech, stackoverflow).
-  Classifies the request into a phase, loads that pipeline, and executes with
-  its exact prompt templates and output contracts.
-  Triggers on: deep research, structured research, research outline, research a
-  topic, survey, benchmark review, literature review, competitor analysis, due
-  diligence, technology comparison, build a research report, fan out research,
-  parallel web search, /research, /research-deep, /research-report.
-  Inspired by RhinoInsight (arXiv:2511.18743).
+  (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline, fan out parallel
+  web-search agents to investigate each item into validated JSON, then render a complete markdown
+  report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep
+  (parallel per-item investigation + field-coverage validation), report (TOC + per-field
+  markdown), web-search (research agent + 5 routed source modules). Plugin: npx skills add
+  https://github.com/akillness/jeo-skills --skill deep-research
 allowed-tools: Read Write Edit Bash Grep Glob WebSearch WebFetch Task
 compatibility: >
   Universal — every pipeline is plain Markdown instructions. The deep and

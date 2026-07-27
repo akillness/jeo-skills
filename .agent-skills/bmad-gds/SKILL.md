@@ -1,7 +1,9 @@
 ---
 name: bmad-gds
-description: ">"
-compatibility: ">"
+description: >-
+  AI-driven Game Development Studio (BMAD-GDS). Routes game projects through Pre-production,
+  Design, Architecture, Production, and Game Testing phases using 6 specialized agents. Supports
+  Unity, Unreal Engine, Godot, and custom engines.
 allowed-tools: Read Write Bash Grep Glob
 metadata:
   tags: bmad, gds, game-development, game-production, gdd, milestone-planning, playtesting, launch-ops, orchestration

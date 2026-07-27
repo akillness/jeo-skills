@@ -1,10 +1,8 @@
 ---
 name: git-guardrails-claude-code
-description: Use this skill when >
-  Configure git safety hooks to prevent Claude Code from executing destructive git
-  operations: force push, reset --hard, clean -f, branch -D, checkout/restore
-  destructive forms. Sets up a PreToolUse hook in Claude Code settings that blocks
-  these operations before execution.
+description: >-
+  Installs Claude Code PreToolUse safeguards against destructive Git commands; use to protect
+  repositories, not for general Git workflow guidance.
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Claude Code only — uses Claude Code's PreToolUse hook system. Can be installed

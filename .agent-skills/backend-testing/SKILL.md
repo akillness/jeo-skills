@@ -1,7 +1,10 @@
 ---
 name: backend-testing
-description: ">"
-compatibility: ">"
+description: >-
+  Turn backend test ambiguity into one practical backend test packet. Use when the user needs
+  API/service/repository/auth-flow coverage design, fixture or seed/reset strategy,
+  container-vs-mock dependency choices, contract/API compatibility checks, or flaky backend-suite
+  stabilization across local and CI.
 allowed-tools: Bash Read Write Edit Glob Grep
 metadata:
   tags: testing, backend, api-test, integration-test, contract-test, testcontainers, ci

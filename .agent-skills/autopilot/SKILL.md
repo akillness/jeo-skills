@@ -1,6 +1,10 @@
 ---
 name: autopilot
-description: ">"
+description: >-
+  Exact-name Codex/OMX-compatible $autopilot front door for autonomous idea-to-verified-code work.
+  Use when the user invokes $autopilot, autopilot, auto pilot, full-auto, or asks for an
+  end-to-end build; route small focused edits to direct implementation and stricter spec-first
+  loops to ooo or ralph.
 allowed-tools: Read Write Bash Grep Glob
 metadata:
   tags: autopilot, omx, codex, autonomous-build, planning, implementation, qa, verification

@@ -1,6 +1,11 @@
 ---
 name: game-studio-harness
-description: Run a 5-role game production studio as one standing harness: production director (bmad-gds intake, stage gates, retrospectives), game designer (numeric balance, combination EV, core-loop discovery, survey-grounded trend research and novelty scoring), game PM (revenue-point mapping, comeback/steady reward bands, fairness caps, revenue predictability), game programmer (extensible and operationally stable implementation, strict new-tech verification, perf and movement-path optimization), and game QA (archetype-rotation balance breaking, benchmark surveys, gate measurement). Executes the 3-stage operating cycle — concept/presentation/core build → balance/core-loop/novelty → ops stability/play impact — gated by 8 numeric quality gates. Use to start, resume, or gate-review a game production cycle. Triggers on: game production, game harness, 게임 제작, 게임 하네스, production cycle, stage gate, balance cycle, run the studio.
+description: >-
+  Five-role game production studio harness: director, numeric-balance designer, revenue-band PM,
+  verification-strict programmer, archetype-rotation QA. Runs the 3-stage operating cycle
+  (concept/presentation/core build → balance/core-loop/novelty → ops stability/play impact) behind
+  8 numeric quality gates with survey-grounded trends, signed designer↔PM negotiation records, and
+  QA broadcast discipline.
 allowed-tools: Read Write Edit Glob Grep Bash Task
 metadata:
   version: "1.0.0"

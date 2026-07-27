@@ -1,10 +1,8 @@
 ---
 name: write-a-skill
-description: Use this skill when >
-  Create structured agent skills with proper documentation following the SKILL.md
-  format. Three-phase process: gather requirements, draft SKILL.md and supporting
-  files, review with user. Use when building new reusable agent capabilities or
-  formalizing existing workflows into a shareable skill.
+description: >-
+  Creates reusable SKILL.md-based agent skills through requirements, drafting, and user review;
+  use to formalize a workflow or add a new agent capability.
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Universal — creates skills compatible with Claude Code, Codex, Gemini CLI, and

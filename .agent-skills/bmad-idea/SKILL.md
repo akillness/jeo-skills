@@ -1,7 +1,10 @@
 ---
 name: bmad-idea
-description: ">"
-compatibility: ">"
+description: >-
+  Turn raw ideas into one clear pre-planning concept artifact by choosing the right framing mode:
+  problem framing, audience and value framing, concept shaping, game concept framing, or story
+  packaging. Use when the user needs the next artifact before PRDs, sprint plans, launch
+  execution, or game-production routing.
 allowed-tools: Read Write Bash Grep Glob
 metadata:
   tags: bmad, ideation, concept-design, problem-framing, positioning, storytelling, product-discovery, game-concept, creative-routing

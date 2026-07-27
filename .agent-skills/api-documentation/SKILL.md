@@ -1,8 +1,9 @@
 ---
 name: api-documentation
-description: ">"
+description: >-
+  Publish or refresh developer-facing API documentation for REST, GraphQL, webhook, SDK, and
+  portal surfaces...
 license: MIT
-compatibility: ">"
 allowed-tools: Read Write Edit Glob Grep
 metadata:
   tags: api-documentation, developer-docs, openapi, swagger, graphql, webhooks, sdk-docs, developer-portal, integration-guides

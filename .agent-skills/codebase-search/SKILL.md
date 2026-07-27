@@ -1,6 +1,10 @@
 ---
 name: codebase-search
-description: ">"
+description: >-
+  Route repo-navigation requests to one search packet before editing: exact-text, symbol/indexed,
+  structural, config/content, hosted search, or graph/path trace. Use when the user asks where
+  something is defined or referenced, which files own config/content surfaces, or what must be
+  inspected before a change.
 allowed-tools: Read Grep Glob Bash
 metadata:
   tags: codebase-search, code-navigation, repo-triage, impact-analysis, grep, ripgrep, ast-grep

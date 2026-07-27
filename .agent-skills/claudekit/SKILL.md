@@ -1,6 +1,8 @@
 ---
 name: claudekit
-description: ">"
+description: >-
+  Claude Code hook library — pre-built PreToolUse/PostToolUse hooks for common guardrails,
+  auto-formatting, workflow automation
 allowed-tools: Read Write Bash Grep Glob WebFetch
 metadata:
   tags: claude-code, workflow, plugin, skills, agents, mcp, hooks

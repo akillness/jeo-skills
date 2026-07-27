@@ -1,6 +1,9 @@
 ---
 name: ccpi-marketplace
-description: ">"
+description: >-
+  Operate the Tons of Skills marketplace via the ccpi CLI and Claude plugin marketplace commands.
+  Use for searching installing listing and updating Claude Code plugin packs with reversible
+  rollbacks.
 allowed-tools: Read Write Bash Grep Glob WebFetch
 metadata:
   tags: ccpi, claude-code, plugin-marketplace, skills-marketplace, cli, package-management
