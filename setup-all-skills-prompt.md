@@ -62,11 +62,33 @@ fi
 echo "CLAUDE_CONFIG_DIR: $CLAUDE_CONFIG_DIR"
 
 # ── Agent detection ───────────────────────────────────────────
+# Two lists are built, and they are NOT the same thing:
+#   DETECTED_AGENTS    — every agent found on this machine, used by later steps
+#   SKILLS_CLI_AGENTS  — only ids the Vercel `skills` CLI accepts, one per `-a` flag
+# Measured behaviour of `skills add -g -a <id>` (2026-07-27, skills CLI):
+#   claude-code                              → ~/.claude/skills
+#   codex · opencode · gemini-cli · cursor   → ~/.agents/skills
+#   universal                                → ~/.agents/skills
+#   antigravity                              → ~/.gemini/antigravity/skills
+#   pi                                       → ~/.pi/agent/skills
+#   crush                                    → ~/.config/crush/skills
+# `jeopi`, `jeo` and `gjc` are NOT valid ids — passing them makes the CLI reject the
+# whole run with "Invalid agents" and install nothing. They need no id: all three
+# discover ~/.agents/skills natively, which `universal` always populates.
 echo ""
 echo "=== Platform Detection ==="
 DETECTED_AGENTS=""
-if command -v claude   &>/dev/null; then echo "✅ Claude Code";  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}claude-code"; fi
-if command -v codex    &>/dev/null; then echo "✅ Codex CLI";    DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}codex"; fi
+# `universal` is unconditional: it is the id that writes the shared ~/.agents/skills
+# root that jeopi, jeo, gjc and opencode all read without any extra linking.
+SKILLS_CLI_AGENTS="universal"
+add_agent() {  # add_agent <detected-name> [skills-cli-id]
+  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}$1"
+  [ -n "${2:-}" ] && case " $SKILLS_CLI_AGENTS " in *" $2 "*) ;; *) SKILLS_CLI_AGENTS="$SKILLS_CLI_AGENTS $2" ;; esac
+  return 0
+}
+if command -v claude   &>/dev/null; then echo "✅ Claude Code";  add_agent claude-code claude-code; fi
+if command -v codex    &>/dev/null; then echo "✅ Codex CLI";    add_agent codex codex; fi
+if command -v gemini   &>/dev/null; then echo "✅ Gemini CLI";   add_agent gemini-cli gemini-cli; fi
 # agy is the canonical binary name (not antigravity); some Linux packagers ship antigravity as an alias.
 # Dir-only existence is NOT enough — stale `~/.gemini/antigravity/` from a failed prior install would
 # trigger a false positive. Require the binary OR the authoritative config marker.
@@ -74,7 +96,7 @@ if command -v agy &>/dev/null \
   || command -v antigravity &>/dev/null \
   || [ -f "$_HOME/.gemini/antigravity-cli/settings.json" ]; then
   echo "✅ Antigravity CLI (agy)"
-  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}antigravity"
+  add_agent antigravity antigravity
 fi
 # ── OpenCode: two different products ship the same `opencode` binary name ─────
 #   sst/opencode (opencode.ai, TypeScript/Bun) HAS a native skill loader and reads
@@ -128,6 +150,7 @@ jeo_opencode_probe
 if [ "$OPENCODE_SST" = 1 ]; then
   echo "✅ OpenCode — sst/opencode (native skill loader)"
   DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}opencode"
+  SKILLS_CLI_AGENTS="$SKILLS_CLI_AGENTS opencode"
 fi
 if [ "$OPENCODE_GO" = 1 ]; then
   echo "✅ OpenCode — opencode-ai/opencode Go TUI (no skill loader; Step 2b bridges skills to commands)"
@@ -136,19 +159,26 @@ if command -v opencode &>/dev/null && [ "$OPENCODE_SST" = 0 ] && [ "$OPENCODE_GO
   echo "⚠️  'opencode' is on PATH but its flavor could not be determined."
   echo "    Re-run Step 0 with JEO_OPENCODE_FLAVOR=sst (opencode.ai) or =go (opencode-ai/opencode)."
 fi
-# jeopi: the oh-my-pi-based spec-first coding agent (akillness/jeopi). Native skill
-# roots: ~/.jeopi/agent/skills (global) and .jeopi/skills/ (project). jeopi ALSO
-# auto-discovers ~/.agents/skills, ~/.claude/skills, ~/.codex/skills, and
-# ~/.config/opencode/skills, so the Step 1 global install is picked up with zero
-# extra linking. The `jeopi` binary or the ~/.jeopi config root marks it installed.
+# jeopi: the oh-my-pi-based spec-first coding agent (akillness/jeopi). Verified with
+# `jeopi config list --json`: skills.enabled, skills.enableAgentsUser,
+# skills.enableClaudeUser, skills.enableCodexUser and skills.enablePiUser are all true
+# by default, so ~/.agents/skills, ~/.claude/skills, ~/.codex/skills and its own
+# ~/.jeopi/agent/skills are read with zero extra linking. It has NO skills-CLI agent
+# id, so it is deliberately not added to SKILLS_CLI_AGENTS.
 if command -v jeopi &>/dev/null || [ -d "$_HOME/.jeopi" ]; then
-  echo "✅ jeopi"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}jeopi"
+  echo "✅ jeopi (native ~/.agents/skills discovery — no -a id needed)"; add_agent jeopi
 fi
-if command -v gjc      &>/dev/null; then echo "✅ Gajae Code (gjc)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}gjc"; fi
+# gjc (Gajae Code): loads skills through skills.customDirectories (Step 3h), verified
+# against its own loader — `loadSkills()` scans every customDirectory with
+# requireDescription:true. No skills-CLI agent id.
+if command -v gjc      &>/dev/null; then echo "✅ Gajae Code (gjc) — needs Step 3h to point at \$SKILLS_ROOT"; add_agent gjc; fi
 # jeo (jeo-code): pure-TypeScript Bun agent. Reads context files (JEO.md / AGENTS.md /
 # .jeo/context.md / CLAUDE.md) + global ~/.agents/rules, and runs hooks from
 # ~/.jeo/config.json (events: pre-tool | post-turn | post-implementation).
-if command -v jeo      &>/dev/null || [ -d "$_HOME/.jeo" ]; then echo "✅ jeo-code (jeo)"; DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}jeo"; fi
+# Verified against jeo's own skillDirs(): ~/.claude/skills → ~/.jeo/agent/skills →
+# ~/.agents/skills → ~/.jeo/skills, then the project counterparts (later dir wins on a
+# name clash). `jeo skills list` prints the merged set. No skills-CLI agent id.
+if command -v jeo      &>/dev/null || [ -d "$_HOME/.jeo" ]; then echo "✅ jeo-code (jeo) — native ~/.agents/skills discovery"; add_agent jeo; fi
 # pi (jeo-pi): the pi coding agent (@earendil-works/pi-coding-agent) with the jeo-pi
 # extension suite. Config root ~/.pi/agent (settings.json / mcp.json); loads AGENTS.md
 # from ~/.pi/agent + cwd ancestors, and reaches durable hooks via the bundled
@@ -156,12 +186,18 @@ if command -v jeo      &>/dev/null || [ -d "$_HOME/.jeo" ]; then echo "✅ jeo-c
 # name, so require the authoritative config dir to avoid false positives.
 if command -v pi &>/dev/null && [ -d "$_HOME/.pi/agent" ]; then
   echo "✅ pi (jeo-pi)"
-  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}pi"
+  add_agent pi pi
 fi
 
 [ -z "$DETECTED_AGENTS" ] && { echo "⚠️  No AI agents detected. Install at least one platform first."; exit 1; }
 echo ""
 echo "Target agents: $DETECTED_AGENTS"
+echo "skills CLI -a ids: $SKILLS_CLI_AGENTS"
+# Build the repeated -a flags Step 1 and Step 2 need. The CLI validates the WHOLE
+# value of a single -a, so `-a "a,b"` is rejected as one unknown agent named "a,b";
+# every id needs its own flag.
+SKILLS_AGENT_ARGS=()
+for _id in $SKILLS_CLI_AGENTS; do SKILLS_AGENT_ARGS+=(-a "$_id"); done
 
 # Snapshot existing skills BEFORE installation (for preservation check).
 # Keep snapshots in one private directory so a concurrent run or a malicious /tmp symlink
@@ -284,7 +320,41 @@ if [ "${#SHARED_SKILL_ARGS[@]}" -eq 0 ]; then
 fi
 
 # --full-depth discovers nested skills. Platform-specific skills are excluded above.
-skills add -g "$REPO_URL" "${SHARED_SKILL_ARGS[@]}" -a "$DETECTED_AGENTS" --yes --copy --full-depth
+# One -a per agent id (a comma list is rejected as a single unknown agent), and only
+# ids the CLI knows — Step 0 already filtered jeopi/jeo/gjc out of SKILLS_AGENT_ARGS.
+if [ "${#SKILLS_AGENT_ARGS[@]}" -eq 0 ]; then
+  echo "❌ No skills-CLI agent ids resolved; re-run Step 0 in this shell" >&2
+  exit 1
+fi
+_INSTALL_LOG="$(mktemp -t jeo_skills_install.XXXXXX)"
+skills add -g "$REPO_URL" "${SHARED_SKILL_ARGS[@]}" "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth 2>&1 | tee "$_INSTALL_LOG"
+_INSTALL_RC="${PIPESTATUS[0]}"
+# Self-heal when the CLI's agent list changed upstream: it prints the accepted ids,
+# so intersect and retry once instead of failing the whole catalog install.
+if [ "$_INSTALL_RC" -ne 0 ] && ! grep -q "Invalid agents:" "$_INSTALL_LOG"; then
+  echo "❌ Shared skill install failed (exit $_INSTALL_RC) — see the output above" >&2
+  rm -f "$_INSTALL_LOG"; exit 1
+fi
+if grep -q "Invalid agents:" "$_INSTALL_LOG"; then
+  _VALID="$(grep -o "Valid agents:.*" "$_INSTALL_LOG" | head -1 | sed 's/Valid agents://; s/,/ /g')"
+  RETRY_ARGS=()
+  for _id in $SKILLS_CLI_AGENTS; do
+    case " $_VALID " in *" $_id "*) RETRY_ARGS+=(-a "$_id") ;; *) echo "⚠️  dropping unsupported agent id: $_id" ;; esac
+  done
+  if [ "${#RETRY_ARGS[@]}" -eq 0 ]; then
+    echo "❌ None of the resolved agent ids are accepted by this skills CLI" >&2
+    rm -f "$_INSTALL_LOG"; exit 1
+  fi
+  SKILLS_AGENT_ARGS=("${RETRY_ARGS[@]}")
+  skills add -g "$REPO_URL" "${SHARED_SKILL_ARGS[@]}" "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth || {
+    echo "❌ Shared skill install failed" >&2; rm -f "$_INSTALL_LOG"; exit 1
+  }
+fi
+rm -f "$_INSTALL_LOG"
+# ~/.agents/skills is the root jeopi, jeo, gjc and opencode all read natively; it is
+# populated by the unconditional `universal` id, so those four need no further linking.
+_SHARED_COUNT=$(find "$SKILLS_ROOT" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+echo "✅ $_SHARED_COUNT skills present in $SKILLS_ROOT (shared root for jeopi / jeo / gjc / opencode)"
 ```
 
 > **Global vs Project install — why skill files may be missing**
@@ -345,13 +415,28 @@ skills add -g "$REPO_URL" "${SHARED_SKILL_ARGS[@]}" -a "$DETECTED_AGENTS" --yes 
 
 ### Vercel `skills` CLI scope map
 
-`skills add <source>` installs to project scope by default; `skills add -g <source>` installs globally for the selected agent. Use `-a claude-code`, `-a codex`, `-a gemini-cli`, or `-a opencode` to target one agent instead of auto-detection. **`-a opencode` means `sst/opencode` only** — the archived Go TUI `opencode-ai/opencode` has no skill loader and is served by the Step 2b command bridge instead.
+`skills add <source>` installs to project scope by default; `skills add -g <source>` installs globally.
+**Each agent needs its own `-a` flag** — the CLI validates the whole value of one flag, so
+`-a "claude-code,codex"` is rejected as a single unknown agent named `claude-code,codex` and the run
+installs nothing. Use `-a claude-code -a codex` instead.
 
-| OS / shell | Global examples | Project examples |
-|------------|-----------------|------------------|
-| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
-| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\` | `.claude\skills\`, `.agents\skills\` |
-| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
+Where each id actually writes, measured with `skills add -g -a <id>` against a sandboxed `HOME`
+(2026-07-27). Several ids share the same destination, and it is **not** the per-agent directory the
+name suggests:
+
+| `-a <id>` | Global destination |
+|-----------|--------------------|
+| `universal` | `$HOME/.agents/skills/` — always included; the root jeopi / jeo / gjc / opencode read natively |
+| `codex`, `opencode`, `gemini-cli`, `cursor` | `$HOME/.agents/skills/` (**not** `~/.codex/skills`, `~/.config/opencode/skills` or `~/.gemini/skills`) |
+| `claude-code` | `$HOME/.claude/skills/` |
+| `antigravity` | `$HOME/.gemini/antigravity/skills/` |
+| `pi` | `$HOME/.pi/agent/skills/` |
+| `crush` | `$HOME/.config/crush/skills/` |
+| _(no id)_ `jeopi`, `jeo`, `gjc` | not installable via `-a`; they discover `$HOME/.agents/skills` themselves |
+
+Project scope drops the `$HOME/` prefix (`.claude/skills/`, `.agents/skills/`, …). On Windows use
+`$env:USERPROFILE` / Git Bash `$HOME`. Older `~/.codex/skills` or `~/.config/opencode/skills` trees
+come from earlier CLI versions or other installers — they are audited in Step 2d, not written here.
 
 > **Two different products answer to `opencode` — only one takes skills.**
 > `sst/opencode` (opencode.ai) has a native skill loader and reads
@@ -460,7 +545,8 @@ fi
 # NOTE: Codex CLI does NOT auto-load `~/.codex/skills/`. The omx skill ships its own
 # runtime via `omx setup` (Step 3g via oh-my-codex). Writing to ~/.codex/skills/ is
 # kept for parity with other agents but only takes effect through OMX's loader.
-skills add -g "$REPO_URL" --skill omx -a 'codex,claude-code,gemini-cli' --yes --copy
+# One -a per id: a comma list is rejected as a single unknown agent name.
+skills add -g "$REPO_URL" --skill omx -a codex -a claude-code -a gemini-cli --yes --copy
 
 # ── Audit existing non-target platform copies without deleting them ──
 echo ""
@@ -1957,7 +2043,18 @@ if not isinstance(skills, dict): skills = data["skills"] = {}
 skills["enabled"] = True; skills.setdefault("enablePiUser", True); skills.setdefault("enablePiProject", True)
 dirs = skills.get("customDirectories")
 if not isinstance(dirs, list): dirs = skills["customDirectories"] = []
-if root not in dirs: dirs.append(root)
+# GJC expands `~` itself (expandTilde), so "~/.agents/skills" and the absolute form are
+# the SAME directory. Appending the absolute path next to an existing tilde entry makes
+# loadSkills() scan the tree twice and emit a duplicate "name collision" warning for
+# every skill, so compare expanded paths and normalise the list to one entry per dir.
+def expand(value): return os.path.expanduser(str(value))
+seen, deduped = set(), []
+for entry in dirs:
+    key = os.path.realpath(expand(entry))
+    if key in seen: continue
+    seen.add(key); deduped.append(entry)
+if os.path.realpath(expand(root)) not in seen: deduped.append(root)
+skills["customDirectories"] = dirs = deduped
 rendered = yaml.safe_dump(data, sort_keys=False, allow_unicode=True)
 if not isinstance(yaml.safe_load(rendered), dict): raise RuntimeError("generated YAML failed validation")
 p.parent.mkdir(parents=True, exist_ok=True)
@@ -2228,6 +2325,13 @@ if command -v gjc &>/dev/null; then
       # SKILL.md count under the dir is a faithful proxy for "discoverable by GJC".
       GJC_SKILL_COUNT=$(find "$SKILLS_ROOT" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
       echo "✅ $GJC_SKILL_COUNT discoverable skills under $SKILLS_ROOT"
+      # A tilde entry AND its absolute twin are the same directory to GJC's expandTilde,
+      # so both being present makes it scan the tree twice and warn "name collision" for
+      # every skill. Step 3h normalises this; report it if an older run left both.
+      if grep -qF "$SKILLS_ROOT" "$GJC_CONFIG" && grep -qF "$GJC_CUSTOM_TILDE" "$GJC_CONFIG"; then
+        echo "⚠️  customDirectories lists both '$GJC_CUSTOM_TILDE' and '$SKILLS_ROOT' — the same"
+        echo "    directory scanned twice (duplicate collision warnings); re-run Step 3h to dedupe"
+      fi
     else
       echo "⚠️  GJC customDirectories missing $SKILLS_ROOT — re-run Step 3h"
     fi
@@ -2268,8 +2372,42 @@ if command -v jeo &>/dev/null; then
   command -v graphify &>/dev/null \
     && echo "✅ jeo post-implementation dep present (graphify on PATH)" \
     || echo "⚠️  jeo post-implementation hook will no-op — graphify missing; re-run Step 3b"
-  echo "ℹ️  jeo reads .claude/skills + .agents/skills (→ \$SKILLS_ROOT); the Step 1"
-  echo "    global install already makes all skills discoverable in jeo as /skill:<name>."
+  # Ground truth, not a claim: jeo prints the merged skill set it actually resolved.
+  JEO_PROBE="${JEO_VERIFY_SKILL:-survey}"
+  if jeo skills list 2>/dev/null | grep -q "^  $JEO_PROBE "; then
+    echo "✅ jeo resolves shared skills (found '$JEO_PROBE' via 'jeo skills list')"
+  else
+    echo "⚠️  jeo did not list '$JEO_PROBE' — check 'jeo skills list' discovery dirs"
+    echo "    (order: ~/.claude/skills → ~/.jeo/agent/skills → \$SKILLS_ROOT → ~/.jeo/skills; later wins)"
+  fi
+fi
+
+# jeopi skill-discovery check — no agent id, no config step; the defaults must be on.
+if command -v jeopi &>/dev/null; then
+  echo ""
+  echo "=== jeopi Skill Discovery Check ==="
+  JEOPI_CFG="$(mktemp -t jeopi_cfg.XXXXXX)"
+  if jeopi config list --json >"$JEOPI_CFG" 2>/dev/null && [ -s "$JEOPI_CFG" ]; then
+    python3 - "$JEOPI_CFG" <<'PY'
+import json, sys
+cfg = json.load(open(sys.argv[1], encoding="utf-8"))
+def on(key): return bool(cfg.get(key, {}).get("value"))
+# enableAgentsUser is the switch for ~/.agents/skills, the root Step 1 fills.
+required = {"skills.enabled": "skill loading", "skills.enableAgentsUser": "~/.agents/skills"}
+missing = [f"{k} ({label})" for k, label in required.items() if not on(k)]
+if missing:
+    print("❌ jeopi will not load the shared skills — turn these on:")
+    for item in missing: print(f"     jeopi config set {item.split(' ')[0]} true")
+else:
+    extra = [k for k in ("skills.enableClaudeUser", "skills.enableCodexUser", "skills.enablePiUser") if on(k)]
+    print(f"✅ jeopi skill discovery on (skills.enableAgentsUser=true; also {', '.join(extra) or 'no extra roots'})")
+    print("   Skills surface as /skill:<name> (skills.enableSkillCommands="
+          f"{str(on('skills.enableSkillCommands')).lower()})")
+PY
+  else
+    echo "⚠️  'jeopi config list --json' unavailable — verify skills.enableAgentsUser manually"
+  fi
+  rm -f "$JEOPI_CFG"
 fi
 
 # pi (jeo-pi) rules + MCP check
