@@ -292,8 +292,10 @@ skills add -g "$REPO_URL" "${SHARED_SKILL_ARGS[@]}" -a "$DETECTED_AGENTS" --yes 
 > **Step 1 global install** (`-g`): downloads every shared skill from the live manifest into
 > the selected detected agents' global skill stores. **Step 2** adds `omc`, `ohmg`, and `omx`
 > to their documented platform targets, so the two steps together install the complete manifest.
-> **Step 2b** additionally bridges the installed skills into custom commands for
-> `opencode-ai/opencode`, the one detected agent with no skill loader.
+> **Step 2b** bridges the installed skills into custom commands for `opencode-ai/opencode`, the
+> one detected agent with no skill loader; **Step 2c** quarantines timestamped duplicate skill
+> directories and **Step 2d** makes opencode resolve every skill to one content version. Run 2c
+> before 2d — quarantining a duplicate can change which file is canonical.
 > `--full-depth` remains required to discover the 7 skills whose `SKILL.md` is nested in a
 > subdirectory. Without it only ~120 skills are found and linked.
 >
@@ -670,7 +672,123 @@ fi
 
 ---
 
-### 2c — OpenCode shadow audit (sst/opencode): stop stale copies from winning
+### 2c — Quarantine timestamped duplicate skill directories
+
+A failed or repeated copy leaves Finder-style duplicates next to the original —
+`deep-agents-core 오후 11.16.16`, `google-workspace 오후 11.16.16`, `delta 11.16.16 PM`. Every loader
+that globs `skills/**/SKILL.md` walks them, they collide on the frontmatter `name` with the real
+skill, and Claude Code / opencode may serve the stale copy.
+
+This step **moves** them (never deletes) to `~/.agents/.jeo-quarantine/<timestamp>/<root>/<name>`,
+which sits outside every scan root — opencode only globs under `~/.agents/skills`, Claude Code only
+under `~/.claude/skills`. A `restore.json` records the original path of each move, so the whole
+operation is reversible; purge it yourself once you are satisfied.
+
+Guards: a duplicate is only moved when a directory with the exact base name still exists in the same
+root, symlinks are skipped, and names are compared after NFC normalization (APFS hands out NFD, so a
+pattern typed in NFC never matches without it).
+
+```bash
+echo "=== Timestamped duplicate skill directories ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+
+if ! command -v python3 &>/dev/null; then
+  echo "❌ python3 is required to audit duplicate skill directories" >&2
+  exit 1
+fi
+
+JEO_HOME="$_HOME" SKILLS_ROOT="$SKILLS_ROOT" \
+JEO_QUARANTINE_DUPLICATES="${JEO_QUARANTINE_DUPLICATES:-0}" python3 - <<'PY'
+import json, os, pathlib, re, shutil, time, unicodedata
+
+home = pathlib.Path(os.environ["JEO_HOME"])
+canon = pathlib.Path(os.environ["SKILLS_ROOT"])
+apply = os.environ.get("JEO_QUARANTINE_DUPLICATES", "") == "1"
+xdg = pathlib.Path(os.environ.get("XDG_CONFIG_HOME") or (home / ".config"))
+# macOS duplicates a directory as "<base> 오후 11.16.16" / "<base> 오전 5.38.59" (Korean
+# locale) or "<base> 11.16.16 PM". Override with JEO_DUP_SUFFIX_RE for other locales.
+pattern = re.compile(os.environ.get("JEO_DUP_SUFFIX_RE") or
+                     r"^(?P<base>.+?)[ _](?:오전|오후|AM|PM) ?\d{1,2}[.:]\d{2}[.:]\d{2}$|"
+                     r"^(?P<base2>.+?)[ _]\d{1,2}[.:]\d{2}[.:]\d{2} ?(?:AM|PM)$")
+
+roots = {
+    "agents": canon,
+    "claude": home / ".claude/skills",
+    "opencode-config": xdg / "opencode/skills",
+    "opencode-home": home / ".opencode/skills",
+}
+stamp = time.strftime("%Y%m%d%H%M%S")
+quarantine = home / ".agents/.jeo-quarantine" / stamp
+
+found, moved, skipped, records = [], 0, [], []
+for label, root in roots.items():
+    if not root.is_dir():
+        continue
+    for entry in sorted(root.iterdir()):
+        # A timestamped duplicate is often a *symlink* to the canonical skill
+        # (`google-workspace 오후 11.16.16 -> ../../.agents/skills/google-workspace`).
+        # Both loaders follow symlinks, so those links produce duplicate entries too;
+        # moving a link never destroys content, so they are in scope as well.
+        if entry.is_symlink():
+            kind = "symlink"
+        elif entry.is_dir():
+            kind = "dir"
+        else:
+            continue
+        name = unicodedata.normalize("NFC", entry.name)
+        m = pattern.match(name)
+        if not m:
+            continue
+        base = m.group("base") or m.group("base2")
+        # never touch a duplicate whose original is gone — that would drop the only copy
+        sibling = next((c for c in root.iterdir()
+                        if c.is_dir() and unicodedata.normalize("NFC", c.name) == base), None)
+        if sibling is None:
+            skipped.append(f"{label}: {name} (no '{base}' original — kept)")
+            continue
+        found.append(f"{label}: {name}  [{kind}]")
+        if not apply:
+            continue
+        target = quarantine / label / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            shutil.move(str(entry), str(target))
+            records.append({"root": str(root), "name": entry.name, "kind": kind,
+                            "restore_to": str(entry), "moved_to": str(target)})
+            moved += 1
+        except OSError as error:
+            skipped.append(f"{label}: {name} (move failed: {error})")
+
+print(f"timestamped duplicate skill dirs found: {len(found)}")
+for line in found[:15]:
+    print(f"   {line}")
+if len(found) > 15:
+    print(f"   … {len(found) - 15} more")
+for line in skipped:
+    print(f"   ⚠️  {line}")
+if not found:
+    print("✅ no timestamped duplicate skill directories")
+elif not apply:
+    print("Re-run with JEO_QUARANTINE_DUPLICATES=1 to move them out of every scan root")
+else:
+    manifest = quarantine / "restore.json"
+    manifest.parent.mkdir(parents=True, exist_ok=True)
+    manifest.write_text(json.dumps(records, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"quarantined={moved} → {quarantine}")
+    print(f"restore map: {manifest}   (purge with: rm -rf {quarantine})")
+PY
+```
+
+> Restore everything from a quarantine batch:
+> ```bash
+> python3 -c 'import json,shutil,sys;[shutil.move(r["moved_to"],r["restore_to"]) for r in json.load(open(sys.argv[1]))]' \
+>   ~/.agents/.jeo-quarantine/<timestamp>/restore.json
+> ```
+
+---
+
+### 2d — OpenCode shadow audit (sst/opencode): stop stale copies from winning
 
 `sst/opencode` scans **five** skill roots, not one:
 
@@ -688,10 +806,17 @@ name simply overwrites the previous entry (`state.skills[md.data.name] = …` af
 deterministic and it is not the newest file.** Identical duplicates are harmless; copies whose
 content differs mean opencode can silently run an outdated version of a skill.
 
-This step compares every other opencode root against `$SKILLS_ROOT` and reports divergence. With
-`JEO_OPENCODE_REFRESH_SHADOWS=1` it also refreshes the copies of skills that come from this
-repository's manifest, keeping the replaced file as `SKILL.md.bak-<timestamp>`. Third-party skills
-are never modified, only listed.
+This step compares every other opencode root against `$SKILLS_ROOT` and reports divergence.
+`JEO_OPENCODE_REFRESH_SHADOWS` controls what it may rewrite, always keeping the replaced file as
+`SKILL.md.bak-<timestamp>`:
+
+| Value | Effect |
+|-------|--------|
+| unset / `0` | report only |
+| `1` (or `repo`) | refresh copies of skills in this repository's live manifest |
+| `all` | also refresh third-party skills that exist in `$SKILLS_ROOT`, making that root the single source of truth |
+
+The `skills.urls` download cache is audited but never rewritten in any mode — opencode re-pulls it.
 
 ```bash
 echo "=== OpenCode shadow audit ==="
@@ -721,7 +846,9 @@ import os, pathlib, re, shutil, time
 
 home = pathlib.Path(os.environ["JEO_HOME"])
 canon = pathlib.Path(os.environ["SKILLS_ROOT"])
-refresh = os.environ.get("JEO_OPENCODE_REFRESH_SHADOWS", "") == "1"
+mode = os.environ.get("JEO_OPENCODE_REFRESH_SHADOWS", "").strip().lower()
+refresh = mode in ("1", "repo", "all")
+refresh_all = mode == "all"
 manifest_names = {s for s in os.environ.get("JEO_MANIFEST_NAMES", "").split() if s}
 xdg = pathlib.Path(os.environ.get("XDG_CONFIG_HOME") or (home / ".config"))
 
@@ -752,15 +879,19 @@ def skill_name(skill_md):
                     return value
     return skill_md.parent.name
 
-index = {}
+index, same_root = {}, []
 if canon.is_dir():
-    for skill_md in canon.glob("*/SKILL.md"):
-        index.setdefault(skill_name(skill_md), skill_md)
-    for skill_md in canon.glob("*/*/SKILL.md"):
-        index.setdefault(skill_name(skill_md), skill_md)
+    for pattern in ("*/SKILL.md", "*/*/SKILL.md"):
+        for skill_md in canon.glob(pattern):
+            name = skill_name(skill_md)
+            first = index.setdefault(name, skill_md)
+            # two files inside the canonical root claiming the same frontmatter name
+            # (e.g. the skills CLI's own .system/ copies) make the winner luck-dependent
+            if first != skill_md and first.read_bytes() != skill_md.read_bytes():
+                same_root.append(f"{name}  {first.parent}  vs  {skill_md.parent}")
 
 stamp = time.strftime("%Y%m%d%H%M%S")
-shadow_repo, shadow_other, fixed, failed = [], [], 0, 0
+shadow_repo, shadow_extra, shadow_other, fixed, failed = [], [], [], 0, 0
 for root in roots:
     for skill_md in root.glob("**/SKILL.md"):
         if skill_md.is_symlink():
@@ -775,11 +906,12 @@ for root in roots:
         except OSError:
             continue
         label = f"{name}  {skill_md.parent}"
-        if name not in manifest_names or root in never_refresh:
-            shadow_other.append(label if root not in never_refresh else f"{label}  (download cache)")
+        owned = name in manifest_names
+        if root in never_refresh:
+            shadow_other.append(f"{label}  (download cache — never rewritten)")
             continue
-        shadow_repo.append(label)
-        if not refresh:
+        (shadow_repo if owned else shadow_extra).append(label)
+        if not refresh or (not owned and not refresh_all):
             continue
         try:
             shutil.copy2(skill_md, skill_md.with_name(f"SKILL.md.bak-{stamp}"))
@@ -805,17 +937,28 @@ if shadow_repo:
         print(f"   {line}")
     if len(shadow_repo) > 40:
         print(f"   … {len(shadow_repo) - 40} more")
+if shadow_extra:
+    verb = "refreshed (mode=all)" if refresh else "SHADOWING — rerun with mode=all to unify"
+    print(f"third-party copies diverging from {canon} — {verb}: {len(shadow_extra)}")
+    for line in sorted(shadow_extra)[:20]:
+        print(f"   {line}")
+    if len(shadow_extra) > 20:
+        print(f"   … {len(shadow_extra) - 20} more")
+if same_root:
+    print(f"duplicate names INSIDE {canon} — winner is luck-dependent, resolve manually: {len(same_root)}")
+    for line in sorted(same_root)[:10]:
+        print(f"   {line}")
 if shadow_other:
-    print(f"third-party skills diverging from {canon} — reported only, never modified: {len(shadow_other)}")
+    print(f"diverging copies in the skills.urls download cache (never rewritten): {len(shadow_other)}")
     for line in sorted(shadow_other)[:10]:
         print(f"   {line}")
     if len(shadow_other) > 10:
         print(f"   … {len(shadow_other) - 10} more")
-if not shadow_repo and not shadow_other:
+if not shadow_repo and not shadow_extra and not shadow_other and not same_root:
     print("✅ no divergent duplicate skills — opencode resolves every skill to one content version")
 elif not refresh:
-    print("Re-run this step with JEO_OPENCODE_REFRESH_SHADOWS=1 to refresh the jeo-skills copies")
-    print("(originals are kept as SKILL.md.bak-<timestamp>; third-party skills are never touched)")
+    print("Re-run with JEO_OPENCODE_REFRESH_SHADOWS=1 (repo skills) or =all (every skill that")
+    print("exists in the canonical root); originals are kept as SKILL.md.bak-<timestamp>")
 else:
     print(f"refreshed={fixed} failed={failed}")
 raise SystemExit(1 if failed else 0)
@@ -2130,7 +2273,7 @@ fi
 if [ "${OPENCODE_SST:-0}" = "1" ]; then
   # sst/opencode reads ~/.agents/skills natively, so Step 1 alone is sufficient. Extra
   # per-agent copies are not additive: opencode keys skills by frontmatter name and the
-  # last loader to finish wins, so a divergent copy can shadow the canonical one (Step 2c).
+  # last loader to finish wins, so a divergent copy can shadow the canonical one (Step 2d).
   # `opencode debug skill` is the authoritative answer: it runs opencode's own loader
   # and prints every skill it actually resolved, with the winning file location.
   OC_SKILL_JSON="$(mktemp -t jeo_oc_skills.XXXXXX)"
@@ -2170,7 +2313,7 @@ for skill in data:
 from_canon = sum(1 for s in data if str(canon) in s.get("location", ""))
 print(f"   {from_canon} resolved from {canon}, {len(index)} skills available there")
 if stale:
-    print(f"⚠️  {len(stale)} skills resolve to a DIFFERENT version than {canon} — re-run Step 2c with JEO_OPENCODE_REFRESH_SHADOWS=1")
+    print(f"⚠️  {len(stale)} skills resolve to a DIFFERENT version than {canon} — re-run Step 2d with JEO_OPENCODE_REFRESH_SHADOWS=1 (or =all)")
     for name, loc in stale[:10]: print(f"     {name} -> {loc}")
     print("     (skills outside this repository's manifest are never rewritten — resolve those copies manually)")
 else:
@@ -2183,7 +2326,7 @@ PY
   rm -f "$OC_SKILL_JSON"
   OC_USER_SKILLS="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/skills"
   [ -d "$OC_USER_SKILLS" ] \
-    && echo "ℹ️  second copy present at $OC_USER_SKILLS — keep it in sync (Step 2c) or opencode may load it instead" \
+    && echo "ℹ️  second copy present at $OC_USER_SKILLS — keep it in sync (Step 2d) or opencode may load it instead" \
     || echo "ℹ️  $OC_USER_SKILLS absent — fine; ~/.agents/skills already covers sst/opencode"
   OC_JSON="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/opencode.json"
   [ -f "$OC_JSON" ] || OC_JSON="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/opencode.jsonc"
