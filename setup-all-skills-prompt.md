@@ -916,8 +916,14 @@ if canon.is_dir():
 stamp = time.strftime("%Y%m%d%H%M%S")
 shadow_repo, shadow_extra, shadow_other, fixed, failed = [], [], [], 0, 0
 for root in roots:
-    for skill_md in root.glob("**/SKILL.md"):
-        if skill_md.is_symlink():
+    # Index each root exactly like the canonical one: a skill lives at <root>/<name>/SKILL.md
+    # or <root>/<group>/<name>/SKILL.md. A recursive "**/SKILL.md" walk is wrong here — a skill
+    # such as browser-harness ships nested SKILL.md files (src/browser_harness/SKILL.md), and
+    # refreshing one of those copies the whole canonical tree one level deeper. Materialise the
+    # list before writing so newly created files can never re-enter the scan.
+    candidates = sorted(set(root.glob("*/SKILL.md")) | set(root.glob("*/*/SKILL.md")))
+    for skill_md in candidates:
+        if skill_md.is_symlink() or skill_md.parent.is_symlink():
             continue
         name = skill_name(skill_md)
         source = index.get(name)
@@ -936,10 +942,17 @@ for root in roots:
         (shadow_repo if owned else shadow_extra).append(label)
         if not refresh or (not owned and not refresh_all):
             continue
+        source_dir, target_dir = source.parent.resolve(), skill_md.parent.resolve()
+        # never copy a tree into itself or into one of its own descendants
+        if source_dir == target_dir or source_dir in target_dir.parents or target_dir in source_dir.parents:
+            shadow_other.append(f"{label}  (nested inside the canonical tree — skipped)")
+            continue
         try:
             shutil.copy2(skill_md, skill_md.with_name(f"SKILL.md.bak-{stamp}"))
-            for item in source.parent.rglob("*"):
-                target = skill_md.parent / item.relative_to(source.parent)
+            for item in sorted(source_dir.rglob("*")):  # materialised before any write
+                target = skill_md.parent / item.relative_to(source_dir)
+                if item.is_symlink():
+                    continue
                 if item.is_dir():
                     target.mkdir(parents=True, exist_ok=True)
                 elif not target.is_symlink():
