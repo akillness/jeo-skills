@@ -76,7 +76,66 @@ if command -v agy &>/dev/null \
   echo "✅ Antigravity CLI (agy)"
   DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}antigravity"
 fi
-if command -v opencode &>/dev/null; then echo "✅ OpenCode";     DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}opencode"; fi
+# ── OpenCode: two different products ship the same `opencode` binary name ─────
+#   sst/opencode (opencode.ai, TypeScript/Bun) HAS a native skill loader and reads
+#     ~/.config/opencode/skills/, ~/.claude/skills/, and ~/.agents/skills/ — Step 1
+#     alone already exposes every shared skill. It is the only flavor the Vercel
+#     skills CLI agent id `opencode` fits.
+#   opencode-ai/opencode (the archived Go TUI, continued as charmbracelet/crush)
+#     has NO skill loader. Its only prompt-extension surface is custom commands:
+#     .md files under ~/.opencode/commands/, $XDG_CONFIG_HOME/opencode/commands/,
+#     and <project>/.opencode/commands/. Passing `-a opencode` for that flavor
+#     would write skills into a directory it never reads, so it is detected
+#     separately here and bridged to custom commands in Step 2b.
+#   Override the probe with JEO_OPENCODE_FLAVOR=sst|go|both when it cannot decide.
+OPENCODE_SST=0; OPENCODE_GO=0; OPENCODE_SST_BIN=""; OPENCODE_GO_BIN=""
+jeo_opencode_probe() {
+  OPENCODE_SST=0; OPENCODE_GO=0; OPENCODE_SST_BIN=""; OPENCODE_GO_BIN=""
+  local _bin _help _oc; _oc="$(command -v opencode 2>/dev/null)"
+  case "${JEO_OPENCODE_FLAVOR:-}" in
+    sst)  OPENCODE_SST=1; OPENCODE_SST_BIN="$_oc" ;;
+    go)   OPENCODE_GO=1;  OPENCODE_GO_BIN="$_oc" ;;
+    both) OPENCODE_SST=1; OPENCODE_GO=1; OPENCODE_SST_BIN="$_oc"; OPENCODE_GO_BIN="$_oc" ;;
+  esac
+  if [ "$OPENCODE_SST" = 1 ] || [ "$OPENCODE_GO" = 1 ]; then return 0; fi
+  [ -n "$_oc" ] || return 0
+  # Probe every `opencode` on PATH — the two products can coexist in different dirs.
+  # `--output-format` exists only in the Go TUI; `--print-logs` / the subcommand list
+  # only in sst/opencode. Process substitution keeps the assignments in this shell.
+  while IFS= read -r _bin; do
+    [ -x "$_bin" ] || continue
+    _help="$("$_bin" --help </dev/null 2>&1 || true)"
+    if printf '%s' "$_help" | grep -q -- '--output-format' \
+       && ! printf '%s' "$_help" | grep -q -- '--print-logs'; then
+      OPENCODE_GO=1; [ -n "$OPENCODE_GO_BIN" ] || OPENCODE_GO_BIN="$_bin"
+    elif printf '%s' "$_help" | grep -qE -- '--print-logs|opencode (run|serve|upgrade) '; then
+      OPENCODE_SST=1; [ -n "$OPENCODE_SST_BIN" ] || OPENCODE_SST_BIN="$_bin"
+    fi
+  done < <(type -a -p opencode 2>/dev/null | awk '!seen[$0]++')
+  # Help probe inconclusive (wrapper script, TTY-only build) → fall back to config markers
+  if [ "$OPENCODE_SST" = 0 ] && [ "$OPENCODE_GO" = 0 ]; then
+    if [ -f "$_HOME/.opencode.json" ] \
+      || [ -f "${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/.opencode.json" ]; then
+      OPENCODE_GO=1; OPENCODE_GO_BIN="$_oc"
+    fi
+    if [ -f "${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/opencode.json" ] \
+      || [ -f "${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/auth.json" ]; then
+      OPENCODE_SST=1; OPENCODE_SST_BIN="$_oc"
+    fi
+  fi
+}
+jeo_opencode_probe
+if [ "$OPENCODE_SST" = 1 ]; then
+  echo "✅ OpenCode — sst/opencode (native skill loader)"
+  DETECTED_AGENTS="${DETECTED_AGENTS:+$DETECTED_AGENTS,}opencode"
+fi
+if [ "$OPENCODE_GO" = 1 ]; then
+  echo "✅ OpenCode — opencode-ai/opencode Go TUI (no skill loader; Step 2b bridges skills to commands)"
+fi
+if command -v opencode &>/dev/null && [ "$OPENCODE_SST" = 0 ] && [ "$OPENCODE_GO" = 0 ]; then
+  echo "⚠️  'opencode' is on PATH but its flavor could not be determined."
+  echo "    Re-run Step 0 with JEO_OPENCODE_FLAVOR=sst (opencode.ai) or =go (opencode-ai/opencode)."
+fi
 # jeopi: the oh-my-pi-based spec-first coding agent (akillness/jeopi). Native skill
 # roots: ~/.jeopi/agent/skills (global) and .jeopi/skills/ (project). jeopi ALSO
 # auto-discovers ~/.agents/skills, ~/.claude/skills, ~/.codex/skills, and
@@ -147,7 +206,7 @@ Install every shared skill in the live repository manifest to the global locatio
 only to the agents detected in Step 0. Platform-specific skills (`omc`, `ohmg`, `omx`) are
 excluded here and installed only in Step 2.
 
-> **Do not skip Step 2** — it is the only step that installs platform-specific skills to their documented targets.
+> **Do not skip Step 2** — it is the only step that installs platform-specific skills to their documented targets, and Step 2b is the only step that makes skills reachable from the Go `opencode-ai/opencode` TUI.
 
 ```bash
 # ────────────────────────────────────────────────────────
@@ -233,6 +292,8 @@ skills add -g "$REPO_URL" "${SHARED_SKILL_ARGS[@]}" -a "$DETECTED_AGENTS" --yes 
 > **Step 1 global install** (`-g`): downloads every shared skill from the live manifest into
 > the selected detected agents' global skill stores. **Step 2** adds `omc`, `ohmg`, and `omx`
 > to their documented platform targets, so the two steps together install the complete manifest.
+> **Step 2b** additionally bridges the installed skills into custom commands for
+> `opencode-ai/opencode`, the one detected agent with no skill loader.
 > `--full-depth` remains required to discover the 7 skills whose `SKILL.md` is nested in a
 > subdirectory. Without it only ~120 skills are found and linked.
 >
@@ -259,13 +320,25 @@ skills add -g "$REPO_URL" "${SHARED_SKILL_ARGS[@]}" -a "$DETECTED_AGENTS" --yes 
 
 ### Vercel `skills` CLI scope map
 
-`skills add <source>` installs to project scope by default; `skills add -g <source>` installs globally for the selected agent. Use `-a claude-code`, `-a codex`, `-a gemini-cli`, or `-a opencode` to target one agent instead of auto-detection.
+`skills add <source>` installs to project scope by default; `skills add -g <source>` installs globally for the selected agent. Use `-a claude-code`, `-a codex`, `-a gemini-cli`, or `-a opencode` to target one agent instead of auto-detection. **`-a opencode` means `sst/opencode` only** — the archived Go TUI `opencode-ai/opencode` has no skill loader and is served by the Step 2b command bridge instead.
 
 | OS / shell | Global examples | Project examples |
 |------------|-----------------|------------------|
 | macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
 | Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\` | `.claude\skills\`, `.agents\skills\` |
 | Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/` | `.claude/skills/`, `.agents/skills/` |
+
+> **Two different products answer to `opencode` — only one takes skills.**
+> `sst/opencode` (opencode.ai) has a native skill loader and reads
+> `~/.config/opencode/skills/<n>/SKILL.md`, `~/.claude/skills/<n>/SKILL.md`, **and**
+> `~/.agents/skills/<n>/SKILL.md` (project: `.opencode/skills/`, `.claude/skills/`,
+> `.agents/skills/`), so the Step 1 global install already covers it even before
+> `-a opencode` links a second copy.
+> [`opencode-ai/opencode`](https://github.com/opencode-ai/opencode) — the archived Go TUI that
+> continued as [charmbracelet/crush](https://github.com/charmbracelet/crush) — reads **no** skill
+> directory at all. Its only extension surface is custom commands in `~/.opencode/commands/`,
+> `$XDG_CONFIG_HOME/opencode/commands/`, and `<project>/.opencode/commands/`, so Step 2b bridges
+> the installed skills into `~/.opencode/commands/jeo/` as `user:jeo:<skill>`.
 
 > **jeopi and jeo have no Vercel `skills` CLI agent id — and need none.** They natively
 > discover skills from `~/.agents/skills/` (populated by Step 1) plus the
@@ -398,6 +471,197 @@ audit_platform_copy "omx" "codex" "claude-code" "gemini-cli"
 
 echo "✅ Platform skill audit complete; no existing copies were deleted"
 ```
+
+---
+
+### 2b — opencode-ai/opencode (Go TUI): skill → custom-command bridge
+
+[`opencode-ai/opencode`](https://github.com/opencode-ai/opencode) is the archived Go terminal
+client (development continued as [charmbracelet/crush](https://github.com/charmbracelet/crush)).
+It shares the `opencode` binary name with `sst/opencode` but is a **different product with no
+skill loader** — nothing under `~/.agents/skills/`, `~/.config/opencode/skills/`, or
+`.claude/skills/` is ever read. Its only prompt-extension surface is **custom commands**: `.md`
+files discovered recursively in
+
+| Scope | Directory | Command prefix |
+|-------|-----------|----------------|
+| Home (user) | `$HOME/.opencode/commands/` | `user:` |
+| XDG (user) | `$XDG_CONFIG_HOME/opencode/commands/` (default `~/.config/opencode/commands/`) | `user:` |
+| Project | `<project>/.opencode/commands/` | `project:` |
+
+The file name minus `.md` is the command id and subdirectories become `:` segments, so
+`~/.opencode/commands/jeo/survey.md` runs as `user:jeo:survey` from the `Ctrl+K` command dialog.
+
+This step bridges the installed skills into one guide-owned namespace:
+
+- writes to `$HOME/.opencode/commands/jeo/` — the **home** dir, not the XDG one, because
+  `sst/opencode` also reads `~/.config/opencode/commands/` and would list duplicates there
+- one `<skill>.md` per skill: the skill description plus the absolute `SKILL.md` path for the
+  agent's `view` tool, so the manual is loaded on demand instead of duplicated
+- strips `$` before letters from every injected string — opencode-ai parses `$NAME`
+  (`\$[A-Z][A-Z0-9_]*`) as a prompt argument and would open the argument dialog instead of running
+- records what it owns in `.jeo-skills-owned`, refreshes only those files, deletes only its own
+  stale entries, and refuses to manage a commands directory it does not own
+
+```bash
+echo "=== OpenCode (opencode-ai Go TUI) skill bridge ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+
+# Re-use the Step 0 probe when this block runs in the same shell.
+if declare -F jeo_opencode_probe >/dev/null 2>&1 && [ -z "${OPENCODE_SST:-}${OPENCODE_GO:-}" ]; then
+  jeo_opencode_probe
+fi
+
+if [ "${OPENCODE_GO:-0}" != "1" ]; then
+  echo "ℹ️  opencode-ai/opencode (Go TUI) not detected — skipping the custom-command bridge"
+  echo "    (sst/opencode needs no bridge: it reads $SKILLS_ROOT natively)"
+else
+  if ! command -v python3 &>/dev/null; then
+    echo "❌ python3 is required to generate the opencode-ai command bridge" >&2
+    exit 1
+  fi
+  OPENCODE_GO_CMD_DIR="$_HOME/.opencode/commands/jeo"
+  # Pass the subset filter explicitly so it works whether or not it was exported.
+  if SKILLS_ROOT="$SKILLS_ROOT" OPENCODE_GO_CMD_DIR="$OPENCODE_GO_CMD_DIR" \
+     JEO_OPENCODE_GO_BRIDGE_SKILLS="${JEO_OPENCODE_GO_BRIDGE_SKILLS:-}" python3 - <<'PY'
+import os, pathlib, re
+
+root = pathlib.Path(os.environ["SKILLS_ROOT"])
+dest = pathlib.Path(os.environ["OPENCODE_GO_CMD_DIR"])
+header = "jeo-skills guide-owned opencode-ai custom-command bridge"
+manifest = dest / ".jeo-skills-owned"
+only = {s for s in os.environ.get("JEO_OPENCODE_GO_BRIDGE_SKILLS", "").replace(",", " ").split() if s}
+
+if not root.is_dir():
+    raise SystemExit(f"skills root not found: {root}")
+if dest.is_symlink() or (dest.exists() and not dest.is_dir()):
+    raise SystemExit(f"refusing non-directory or symlinked command dir: {dest}")
+
+# opencode-ai treats $NAME (regex \$[A-Z][A-Z0-9_]*) as a prompt argument and opens an
+# input dialog for it, so strip `$` before a letter/underscore from every injected string.
+def safe(text):
+    return re.sub(r"\$(?=[A-Za-z_])", "", text).strip()
+
+def meta(skill_md):
+    fields = {"name": "", "description": ""}
+    try:
+        text = skill_md.read_text(encoding="utf-8", errors="replace")[:16384]
+    except OSError:
+        return fields["name"], fields["description"]
+    if not text.startswith("---"):
+        return fields["name"], fields["description"]
+    end = text.find("\n---", 3)
+    lines = text[3:end if end > 0 else len(text)].splitlines()
+    i = 0
+    while i < len(lines):
+        m = re.match(r"^(name|description)\s*:\s*(.*)$", lines[i])
+        i += 1
+        if not m:
+            continue
+        key, value = m.group(1), m.group(2).strip()
+        # folded/literal block scalars (">", ">-", "|", "|-") and empty values
+        # continue on the following indented lines
+        if value in ("", ">", ">-", ">+", "|", "|-", "|+"):
+            block = []
+            while i < len(lines) and (not lines[i].strip() or lines[i][:1] in (" ", "\t")):
+                block.append(lines[i].strip())
+                i += 1
+            value = " ".join(part for part in block if part)
+        fields[key] = " ".join(value.strip().strip("'\"").split())
+    return fields["name"], fields["description"]
+
+managed_before = set()
+if manifest.is_symlink():
+    raise SystemExit(f"refusing symlinked bridge manifest: {manifest}")
+if manifest.is_file():
+    lines = manifest.read_text(encoding="utf-8").splitlines()
+    if not lines or lines[0] != header:
+        raise SystemExit(f"refusing unowned bridge dir (bad manifest header): {dest}")
+    managed_before = {l for l in lines[1:] if l.endswith(".md")}
+elif dest.exists():
+    if any(p.suffix.lower() == ".md" for p in dest.rglob("*")):
+        raise SystemExit(f"refusing to manage a pre-existing command dir with no guide manifest: {dest}")
+
+dest.mkdir(parents=True, exist_ok=True)
+
+candidates = {}
+for skill_md in sorted(root.glob("*/SKILL.md")) + sorted(root.glob("*/*/SKILL.md")):
+    skill_dir = skill_md.parent
+    if any(part.startswith(".") for part in skill_dir.relative_to(root).parts):
+        continue  # skills CLI internals (.system/…) are not user-facing skills
+    fm_name, desc = meta(skill_md)
+    raw = fm_name or skill_dir.name
+    slug = re.sub(r"-{2,}", "-", re.sub(r"[^a-z0-9]+", "-", raw.lower())).strip("-")
+    if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug or ""):
+        print(f"skip (unusable skill name): {skill_dir}")
+        continue
+    if only and slug not in only:
+        continue
+    if slug in candidates:
+        print(f"skip (duplicate command name '{slug}'): {skill_dir}")
+        continue
+    candidates[slug] = (skill_dir, desc)
+
+written = kept = 0
+managed_now = set()
+for slug, (skill_dir, desc) in sorted(candidates.items()):
+    target = dest / f"{slug}.md"
+    rel = target.name
+    if target.is_symlink() or (target.exists() and not target.is_file()):
+        print(f"preserved (not a regular file): {target}")
+        kept += 1
+        continue
+    if target.exists() and rel not in managed_before:
+        print(f"preserved (not guide-owned): {target}")
+        kept += 1
+        continue
+    body = [
+        f'Load the jeo-skills skill "{safe(slug)}" and use it for the current task.',
+        "",
+    ]
+    if desc:
+        body += [safe(desc), ""]
+    body += [
+        "Before doing anything else, read the full skill manual with the view tool:",
+        f"  {safe(str(skill_dir))}/SKILL.md",
+        "",
+        "Then follow that manual exactly. Load the files it references",
+        f"(references/, scripts/, templates/) from {safe(str(skill_dir))}/ on demand",
+        "instead of guessing their contents.",
+        "",
+    ]
+    text = "\n".join(body)
+    if re.search(r"\$[A-Z]", text):
+        print(f"skip (would create an argument placeholder): {slug}")
+        continue
+    target.write_text(text, encoding="utf-8")
+    managed_now.add(rel)
+    written += 1
+
+removed = 0
+for stale in sorted(managed_before - managed_now):
+    p = dest / stale
+    if p.is_file() and not p.is_symlink():
+        p.unlink()
+        removed += 1
+
+manifest.write_text("\n".join([header] + sorted(managed_now)) + "\n", encoding="utf-8")
+print(f"bridged={written} preserved={kept} removed_stale={removed} dir={dest}")
+PY
+  then
+    echo "✅ opencode-ai bridge ready — open opencode, press Ctrl+K, run user:jeo:<skill>"
+  else
+    echo "❌ opencode-ai command bridge failed; no skills were removed" >&2
+    exit 1
+  fi
+fi
+```
+
+> Bridge a curated subset instead of the whole catalog with
+> `JEO_OPENCODE_GO_BRIDGE_SKILLS="ooo survey harness"` — opencode-ai reads **every** `.md` under
+> `commands/` at startup, so several hundred entries make the `Ctrl+K` dialog noisy.
+> Re-run this step after any skill install to refresh the bridge.
 
 ---
 
@@ -1246,11 +1510,63 @@ if command -v agy &>/dev/null || command -v antigravity &>/dev/null \
   fi
 fi
 
-# ── OpenCode: oh-my-opencode ─────────────────────────────────────
-if command -v opencode &>/dev/null; then
-  echo "ℹ️  OpenCode — manual install required:"
-  echo "   https://github.com/code-yeongyu/oh-my-opencode/blob/master/docs/guide/installation.md"
-  echo "   After installing, run: skills add -g $REPO_URL --yes --copy"
+# ── OpenCode / Codex: oh-my-openagent (OMO — renamed from oh-my-opencode) ──
+# Repo: code-yeongyu/oh-my-openagent, default branch `dev`. The old
+# code-yeongyu/oh-my-opencode + `master` docs URL is stale. npm still publishes
+# `oh-my-opencode`, dual-published as `oh-my-openagent` during the rename; inside
+# opencode.json the entry "oh-my-openagent" is preferred and legacy
+# "oh-my-opencode" still loads with a warning.
+#
+#   Ultimate edition → sst/opencode : bunx oh-my-openagent install       (needs Bun)
+#   Light edition    → Codex CLI    : npx lazycodex-ai install           (Node/npm)
+#   Both                            : bunx oh-my-openagent install --platform=both
+#
+# Skills: OMO Ultimate rides on OpenCode's own loader, which already reads
+# ~/.config/opencode/skills/, ~/.claude/skills/, and ~/.agents/skills/ — so every
+# skill installed in Step 1 is visible with no extra linking. The Light (Codex)
+# edition has NO skill loader; Codex workflows come from omx above, not from OMO.
+# OMO does NOT support the archived Go TUI opencode-ai/opencode — that flavor is
+# served by the Step 2b custom-command bridge instead.
+# NEVER `npm i -g` / `bun add -g` OMO: it must resolve from where OpenCode loads
+# plugins. The installer runs a subscription/provider interview and rewrites
+# opencode.json, so it stays opt-in here: set JEO_INSTALL_OMO=1 to execute it, and
+# pass non-interactive flags through JEO_OMO_ARGS / JEO_LAZYCODEX_ARGS, e.g.
+#   JEO_OMO_ARGS="--no-tui --platform=opencode --claude=yes --openai=no --gemini=no --copilot=no"
+if [ "${OPENCODE_SST:-0}" = "1" ] || command -v codex &>/dev/null; then
+  OMO_DOCS="https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/refs/heads/dev/docs/guide/installation.md"
+  if [ "${JEO_INSTALL_OMO:-0}" = "1" ]; then
+    if [ "${OPENCODE_SST:-0}" = "1" ]; then
+      if command -v bun &>/dev/null; then
+        bunx oh-my-openagent install ${JEO_OMO_ARGS:-} \
+          && echo "✅ OpenCode: oh-my-openagent (Ultimate) installed" \
+          || echo "⚠️  oh-my-openagent install did not complete — re-run it interactively"
+      else
+        echo "⚠️  Bun is required for the OMO Ultimate edition — install https://bun.sh then run: bunx oh-my-openagent install"
+      fi
+    fi
+    if command -v codex &>/dev/null; then
+      if command -v npx &>/dev/null; then
+        npx -y lazycodex-ai install ${JEO_LAZYCODEX_ARGS:---no-tui} \
+          && echo "✅ Codex: oh-my-openagent Light edition (LazyCodex) installed" \
+          || echo "⚠️  lazycodex-ai install did not complete — re-run it interactively"
+      else
+        echo "⚠️  npx not found — install Node.js to add the OMO Light edition to Codex"
+      fi
+    fi
+  else
+    echo "ℹ️  oh-my-openagent (OMO) is optional and interactive — run it yourself:"
+    [ "${OPENCODE_SST:-0}" = "1" ] && echo "     bunx oh-my-openagent install        # Ultimate (sst/opencode, needs Bun)"
+    command -v codex &>/dev/null   && echo "     npx lazycodex-ai install --no-tui   # Light (Codex CLI)"
+    echo "     curl -fsSL $OMO_DOCS"
+    echo "   Or re-run this step with JEO_INSTALL_OMO=1 to execute those commands."
+  fi
+  echo "   Verify afterwards with: bunx oh-my-openagent doctor  /  npx lazycodex-ai doctor"
+fi
+if [ "${OPENCODE_GO:-0}" = "1" ]; then
+  echo "ℹ️  opencode-ai/opencode (Go TUI) is archived and has no plugin or skill system."
+  echo "   Skills reach it through the Step 2b command bridge (Ctrl+K → user:jeo:<skill>)."
+  echo "   Maintained successor: https://github.com/charmbracelet/crush"
+  echo "   Native skill support: switch to sst/opencode (https://opencode.ai)."
 fi
 
 # ── agentation Official Skill (UI annotation) ────────────────────
@@ -1638,6 +1954,50 @@ if command -v pi &>/dev/null && [ -d "$_HOME/.pi/agent" ]; then
     || echo "⚠️  pi tool-flow graphify step will no-op — graphify missing; re-run Step 3b"
 fi
 
+# OpenCode check — both flavors
+if declare -F jeo_opencode_probe >/dev/null 2>&1 && [ -z "${OPENCODE_SST:-}${OPENCODE_GO:-}" ]; then
+  jeo_opencode_probe
+fi
+if [ "${OPENCODE_SST:-0}" = "1" ] || [ "${OPENCODE_GO:-0}" = "1" ]; then
+  echo ""
+  echo "=== OpenCode Check ==="
+fi
+if [ "${OPENCODE_SST:-0}" = "1" ]; then
+  # sst/opencode reads ~/.agents/skills natively, so Step 1 alone is sufficient;
+  # the ~/.config/opencode/skills copy from `-a opencode` is belt-and-braces.
+  OC_SHARED=$(find "$SKILLS_ROOT" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  echo "✅ sst/opencode discovers $OC_SHARED skills from $SKILLS_ROOT (native ~/.agents/skills root)"
+  OC_USER_SKILLS="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/skills"
+  [ -d "$OC_USER_SKILLS" ] \
+    && echo "✅ opencode user skill dir present ($OC_USER_SKILLS)" \
+    || echo "ℹ️  $OC_USER_SKILLS absent — fine; ~/.agents/skills already covers sst/opencode"
+  OC_JSON="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/opencode.json"
+  if [ -f "$OC_JSON" ] && grep -qE '"oh-my-open(agent|code)"' "$OC_JSON"; then
+    echo "✅ oh-my-openagent (OMO) plugin registered in $OC_JSON"
+    OMO_CFG="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/oh-my-openagent.jsonc"
+    [ -f "$OMO_CFG" ] || OMO_CFG="${XDG_CONFIG_HOME:-$_HOME/.config}/opencode/oh-my-opencode.jsonc"
+    if [ -f "$OMO_CFG" ] && grep -q '"disabled_skills"' "$OMO_CFG"; then
+      echo "⚠️  $OMO_CFG sets disabled_skills — skills listed there stay hidden from OMO"
+    fi
+  else
+    echo "ℹ️  oh-my-openagent not registered — optional; install per Step 3g if you want OMO workflows"
+  fi
+fi
+if [ "${OPENCODE_GO:-0}" = "1" ]; then
+  OC_GO_DIR="$_HOME/.opencode/commands/jeo"
+  OC_GO_MANIFEST="$OC_GO_DIR/.jeo-skills-owned"
+  if [ -f "$OC_GO_MANIFEST" ] && head -1 "$OC_GO_MANIFEST" | grep -qx 'jeo-skills guide-owned opencode-ai custom-command bridge'; then
+    OC_GO_COUNT=$(find "$OC_GO_DIR" -maxdepth 1 -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+    echo "✅ opencode-ai/opencode bridge: $OC_GO_COUNT commands in $OC_GO_DIR (invoke with Ctrl+K → user:jeo:<skill>)"
+    # A stray $NAME token would open the argument dialog instead of running the command.
+    if grep -rlE '\$[A-Z]' "$OC_GO_DIR" >/dev/null 2>&1; then
+      echo "⚠️  Some bridged commands contain a \$NAME token and will prompt for arguments — re-run Step 2b"
+    fi
+  else
+    echo "❌ opencode-ai/opencode bridge missing — re-run Step 2b"
+  fi
+fi
+
 # Final count
 echo ""
 TOTAL=$(ls "$SKILLS_ROOT" 2>/dev/null | wc -l | tr -d ' ')
@@ -1651,7 +2011,8 @@ First run after installation:
 | Claude Code | `ooo interview "task"` or `/oh-my-claudecode:team "task"` |
 | Gemini CLI | `bmad "task"` or `ooo interview "task"` |
 | Codex CLI | `bmad "task"` or `ooo interview "task"` |
-| OpenCode | `bmad "task"` or `ooo interview "task"` |
+| OpenCode (sst/opencode) | `bmad "task"` or `ooo interview "task"` |
+| OpenCode (opencode-ai Go TUI) | `Ctrl+K` → `user:jeo:bmad` / `user:jeo:ooo` (Step 2b command bridge) |
 
 ---
 
