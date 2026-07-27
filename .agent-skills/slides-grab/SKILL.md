@@ -1,26 +1,17 @@
 ---
 name: slides-grab
-description: >
-  Generate, visually edit, and export beautiful HTML/CSS presentation decks
-  with agents using slides-grab (NomaDamas, MIT) — the open-source Claude
-  Design alternative and "best harness + editor + linter for generating slides
-  in Claude Code / Codex". One routing-first skill across the full deck
-  lifecycle: Plan (agent drafts a structured outline), Design (each slide is a
-  self-contained `slide-XX.html`), Edit (a pure-JavaScript browser editor where
-  you drag a bbox over any region and ask the agent to rewrite just that area —
-  or tweak text/size/bold by hand), and Export (one command to a
-  capture-or-print PDF, per-slide PNGs incl. Instagram 1:1 card-news, plus
-  experimental/unstable PPTX and Figma-importable PPTX). Picks an install path
-  (npm package + `npx skills add`, or clone to develop slides-grab itself),
-  a deck workspace (`--slides-dir`, multi-deck `decks/<name>/`), one of 35
-  bundled design styles, and the right asset flow (local `./assets/<file>`
-  only — `slides-grab image` via god-tibo-imagen/codex/nano-banana,
-  `fetch-video` via yt-dlp, `tldraw` .tldr→SVG), validating with
-  `slides-grab validate` before any export. Use when the user wants to build,
-  restyle, point-and-edit, or export a slide deck or card-news set.
-  Triggers on: slides-grab, slides grab, generate slides, slide deck, ai slides,
-  html slides, presentation editor, edit slide, card news, slides to pdf,
-  slides to pptx, claude design alternative, slide showcase.
+description: >-
+  Generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using
+  slides-grab (NomaDamas, MIT) — the open-source Claude Design alternative and best harness +
+  editor + linter for slides in Claude Code / Codex. One routing-first skill across Plan (agent
+  drafts an outline), Design (each slide is a self-contained slide-XX.html), Edit (a pure-JS
+  browser editor where you drag a bbox over any region and ask the agent to rewrite just that
+  area, or hand-tweak text/size/bold), and Export (capture-or-print PDF, per-slide PNG incl.
+  Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX). Picks an
+  install path (npm package + npx skills add, or clone), a deck workspace (--slides-dir,
+  multi-deck decks/<name>/), one of 35 bundled design styles, and the supported asset flow (local
+  ./assets/<file> only — image via god-tibo-imagen/codex/nano-banana, fetch-video via yt-dlp,
+  tldraw .tldr→SVG), validating with slides-grab validate before any export.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: >
   Cross-platform slide-generation/editing/export wrapper usable from Claude

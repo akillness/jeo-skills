@@ -1,3 +1,9 @@
+---
+name: amrouter
+description: >-
+  Self-hosted AI gateway with one OpenAI-compatible endpoint for multi-provider LLM, embedding,
+  image, and audio routing, automatic fallback, load balancing, and cost optimization.
+---
 # AMRouter Skill for AI Agents
 
 **Self-hosted AI gateway: one endpoint, many providers, auto-fallback.**

@@ -1,7 +1,10 @@
 ---
 name: agenticskills
-description: ">"
-compatibility: ">"
+description: >-
+  One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ god-skills) — wraps the
+  official install.sh with pinned URL and env knobs (PLATFORM, WITH_LANGCHAIN, INSTALL_MODE,
+  SKIP_BACKUP) to copy the catalog into Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode
+  in one step.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 metadata:
   tags: agenticskills, oh-my-gods, god-skills, installer, bundle, agent-skills, multi-runtime

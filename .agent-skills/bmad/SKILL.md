@@ -1,7 +1,10 @@
 ---
 name: bmad
-description: ">"
-compatibility: ">"
+description: >-
+  Packet-first BMAD/BMM front door for idea notes, product briefs, PRDs, architecture drafts,
+  review feedback, existing repo state, and milestone pressure. Use when the user wants to know
+  what BMAD phase or artifact comes next, or needs a portable BMAD entrypoint before routing
+  review, execution slicing, runtime setup, or game-production work outward.
 allowed-tools: Read Write Bash Grep Glob
 metadata:
   tags: bmad, workflow, orchestration, phased-development, planning, architecture, implementation

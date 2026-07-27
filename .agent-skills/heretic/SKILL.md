@@ -1,17 +1,8 @@
 ---
 name: heretic
-description: >
-  Run Heretic — a fully automatic directional-ablation ("abliteration") and LLM-interpretability
-  toolkit that removes refusal/over-refusal behaviour from open-weight transformer models without
-  post-training, and analyses the geometry of refusal directions. Use when the user wants to
-  decensor / abliterate / un-refuse an open-weight model they have the right to modify, tune the
-  ablation (KL-divergence target, trial budget, quantization), evaluate refusal-rate vs KL against
-  the original, or do interpretability research (refusal-direction difference-of-means, residual
-  geometry tables, PaCMAP residual plots). Packages p-e-w/heretic (AGPL-3.0). Triggers on: heretic,
-  abliterate, abliteration, decensor / uncensor a model, remove refusals, refusal direction,
-  directional ablation, residual geometry, plot residuals. Model discovery, harmful/harmless prompt
-  datasets, and benchmark/prior-art research route web extraction through the `scrapling` skill.
-  Simple "which uncensored model should I download" recommendations are answered directly.
+description: >-
+  Runs directional ablation and refusal-direction analysis for open-weight models the user may
+  modify; use to reduce benign over-refusal or measure refusal/KL trade-offs, not for training.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: >
   Requires Python 3.10+ with PyTorch 2.2+ (2.6+ for MXFP4-quantized models such as gpt-oss) installed

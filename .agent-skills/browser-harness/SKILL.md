@@ -1,6 +1,8 @@
 ---
 name: browser-harness
-description: ">"
+description: >-
+  Automates and verifies multi-step browser tasks through a clean Chrome CDP session; use when
+  repeatable autonomous browser control is needed, not an already-open authenticated profile.
 license: MIT
 compatibility: "Requires Python 3.10+ and Chrome/Chromium with remote debugging enabled. Works from Claude Code, Codex CLI, Antigravity (`agy`), Gemini CLI, and OpenCode when the agent can edit/run the local Python workspace. Includes a Claude-safe screenshot patch for PIL file-handle and image-size issues."
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch

@@ -1,25 +1,11 @@
 ---
 name: obsidian-second-brain
-description: >
-  Routing-first front door for the obsidian-second-brain skill — a self-rewriting
-  Obsidian vault that evolves Karpathy's LLM-Wiki pattern. Instead of appending new
-  notes, every source REWRITES existing pages: people get updated, claims revised,
-  contradictions reconciled, and cross-source patterns synthesized automatically.
-  Ships 45 slash commands across 4 layers (Operations, Thinking Tools, Context
-  Engine, Research Toolkit), a background agent + 4 scheduled agents, 4 role
-  presets, and a write-time AI-first validator. Runs cross-CLI on Claude Code,
-  Codex CLI, Gemini CLI, and OpenCode.
-  Use when the user wants a knowledge vault that maintains itself, to save/ingest
-  meetings/voice/screenshots/URLs into Obsidian, to reconcile contradictions, to
-  challenge a decision against their own history, to run vault-first or open-web
-  research (X / Perplexity / NotebookLM / YouTube / podcasts), or to install the
-  second-brain skill on any of the four CLIs.
-  Triggers on: obsidian second brain, second brain, self-rewriting vault, llm wiki,
-  obsidian-save, obsidian-ingest, obsidian-reconcile, obsidian-challenge,
-  obsidian-architect, vault automation, ingest into obsidian, vault-first research.
-  Routes: use `obsidian` for plugin/CLI/URI vault automation, `llm-wiki` for the
-  raw markdown wiki layer, `okf` for portable knowledge bundles, `notebooklm` for
-  source-grounded NotebookLM queries, `scrapling` for web-content extraction.
+description: >-
+  Routing front door for obsidian-second-brain — a self-rewriting Obsidian vault that evolves
+  Karpathy's LLM-Wiki pattern. Every source REWRITES existing pages instead of appending: people
+  updated, claims revised, contradictions reconciled, patterns synthesized automatically. 45
+  commands across 4 layers, background + 4 scheduled agents, 4 role presets, AI-first write
+  validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode.
 allowed-tools: Read Write Edit Bash Grep Glob WebFetch
 aliases: /create-command /idea-discovery /notebooklm /obsidian-adr /obsidian-agenda /obsidian-architect /obsidian-board /obsidian-calendar /obsidian-capture /obsidian-catchup /obsidian-challenge /obsidian-connect /obsidian-daily /obsidian-decide /obsidian-emerge /obsidian-export /obsidian-find /obsidian-graduate /obsidian-health /obsidian-init /obsidian-ingest /obsidian-learn /obsidian-log /obsidian-meeting /obsidian-panel /obsidian-person /obsidian-project /obsidian-projects /obsidian-recap /obsidian-reconcile /obsidian-recurring /obsidian-review /obsidian-save /obsidian-schedule /obsidian-synthesize /obsidian-task /obsidian-visualize /obsidian-world /podcast /research /research-deep /vault-deep-synthesis /x-pulse /x-read /youtube
 compatibility: >

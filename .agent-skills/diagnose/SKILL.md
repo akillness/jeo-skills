@@ -1,10 +1,8 @@
 ---
 name: diagnose
-description: Use this skill when >
-  Systematic six-phase debugging methodology: build a fast feedback loop, reproduce
-  the failure, hypothesize, instrument, fix with regression tests, then clean up.
-  Use when investigating hard bugs, performance regressions, or flaky failures where
-  investing in a reliable feedback loop first will make subsequent phases mechanical.
+description: >-
+  Investigates hard, flaky, or performance failures through a six-phase feedback-loop-first
+  debugging process; use when quick targeted debugging is insufficient.
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Works across CLI, backend, frontend, fullstack, and CI environments. Complements

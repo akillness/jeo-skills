@@ -1,10 +1,8 @@
 ---
 name: triage
-description: Use this skill when >
-  Issue state machine management for AI agents and human developers. Moves issues
-  through states: needs-triage → needs-info → ready-for-agent / ready-for-human /
-  wontfix. Use when evaluating, categorizing, or preparing work items for
-  implementation.
+description: >-
+  Moves tracker issues through a structured triage state machine with category and readiness
+  decisions; use to evaluate or prepare work items for implementation.
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Works with GitHub Issues, Linear, or any issue tracker. Requires setup via

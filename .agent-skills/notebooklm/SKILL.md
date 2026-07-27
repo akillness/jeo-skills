@@ -1,12 +1,8 @@
 ---
 name: notebooklm
-description: Use this skill when >
-  Query Google NotebookLM directly from Claude Code using browser automation.
-  Retrieves source-grounded, citation-backed answers from your NotebookLM notebooks
-  without leaving the editor. Supports notebook library management, persistent Google
-  authentication via Patchright, and smart notebook discovery. Local Claude Code only
-  (not web UI). Triggers on: notebooklm, notebook lm, google notebooklm, notebook query,
-  notebooklm query, ask notebooklm, notebooklm search.
+description: >-
+  Queries managed Google NotebookLM notebooks for citation-backed, source-grounded answers via
+  local Claude Code browser automation; use for uploaded sources, not live web search.
 allowed-tools: Bash Read Write Glob Grep
 compatibility: >
   Local Claude Code only — web UI is not supported (sandbox restrictions prevent network access).

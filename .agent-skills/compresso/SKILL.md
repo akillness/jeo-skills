@@ -1,6 +1,8 @@
 ---
 name: compresso
-description: ">"
+description: >-
+  Free offline desktop video/image compression (Tauri+React) — batch compress, trim/split, convert
+  formats, embed subtitles. Install: brew install --cask codeforreal1/tap/compresso
 allowed-tools: Read Write Bash Grep Glob WebFetch
 metadata:
   tags: compresso, compression, video-compression, image-compression, batch-compression, ffmpeg, tauri, offline, cross-platform, pngquant, jpegoptim, gifski

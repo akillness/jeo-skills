@@ -1,6 +1,8 @@
 ---
 name: agentation
-description: ">"
+description: >-
+  Exact rendered-UI feedback router → choose copy-paste review, watch-loop sync, self-driving
+  critique, or platform setup. MCP: npx add-mcp "npx -y agentation-mcp server"
 compatibility: React 18+, Node.js 18+
 allowed-tools: Read Write Bash Grep Glob
 metadata:

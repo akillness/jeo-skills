@@ -1,3 +1,9 @@
+---
+name: ax
+description: >-
+  AI-era curl for agent web fetching, structure discovery, and deterministic structured extraction
+  with token-budgeted output.
+---
 # ax — The AI-Era Curl for Web Scraping & Extraction
 
 **Version 1.0.0**  

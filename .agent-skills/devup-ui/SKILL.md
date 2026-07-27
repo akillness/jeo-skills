@@ -1,24 +1,12 @@
 ---
 name: devup-ui
-description: >
-  Routing-first front door for Devup UI — a zero-runtime CSS-in-JS library whose
-  Rust + WebAssembly preprocessor extracts every style at build time, so there is
-  no styling JavaScript in the runtime bundle. Use when the user wants to adopt or
-  integrate Devup UI, wire the build-time plugin into Next.js / Vite / Rsbuild /
-  Webpack / Bun, write styles with the `Box`/`css` props or the styled-components-
-  compatible `styled()` API, set up type-safe theming with `devup.json`, use
-  responsive arrays and pseudo selectors, ship React Server Components without a
-  client Provider, or migrate off styled-components / Emotion / Tailwind / Panda
-  / vanilla-extract to a zero-runtime setup.
-  Triggers on: devup, devup-ui, devup ui, @devup-ui/react, zero runtime css-in-js,
-  build-time css extraction, devup.json theme, next-plugin DevupUI, vite-plugin
-  DevupUI, styled() zero runtime, css-in-js without runtime, migrate styled-components
-  to zero runtime, rust css preprocessor.
-  Routes: use `design-system` for token governance and visual-language direction,
-  `ui-component-patterns` for reusable-component API/anatomy, `responsive-design`
-  for page-shell/layout strategy, `web-accessibility` for a11y remediation, and
-  `react-best-practices` / `vercel-react-best-practices` for bundle/RSC/rerender
-  performance audits beyond styling.
+description: >-
+  [devup-ui] Routing-first front door for Devup UI — a zero-runtime CSS-in-JS library whose Rust +
+  WebAssembly preprocessor extracts every style at build time, so no styling JavaScript ships at
+  runtime. Use to adopt/integrate Devup UI, wire the build-time plugin into
+  Next.js/Vite/Rsbuild/Webpack/Bun, write styles with Box/css props or the
+  styled-components-compatible styled() API, set up type-safe theming with devup.json, or migrate
+  off styled-components/Emotion/Tailwind/Panda/vanilla-extract to zero runtime.
 allowed-tools: Read Write Edit Bash Grep Glob WebFetch
 aliases: /devup-ui /devup
 compatibility: >

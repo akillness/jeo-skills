@@ -1,7 +1,10 @@
 ---
 name: autoresearch
-description: ">"
-compatibility: ">"
+description: >-
+  Run Karpathy-style autonomous ML search on a real training repo: choose the right mode (setup,
+  program.md, bounded loop, results interpretation, or constrained-hardware adaptation), preserve
+  the immutable prepare.py / 300-second / val_bpb contract, and route prompt/skill eval work away
+  to LangSmith, Promptfoo, Braintrust, or skill-autoresearch.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 metadata:
   tags: autoresearch, ml-experiments, autonomous-research, karpathy, gpu, train, val-bpb, overnight, ratcheting

@@ -200,7 +200,7 @@
   "skills": [
     {
       "name": "academic-research",
-      "description": ">",
+      "description": "Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble (deep-research 8 modes, academic-paper 11 modes, academic-paper-reviewer 6 modes, academic-pipeline 10-stage orchestrator). Routes each request to the right pipeline and mode. Human-in-the-loop throughout. Plugin (upstream): claude plugin marketplace add Imbad0202/academic-research-skills",
       "category": "search-analysis",
       "path": "academic-research/SKILL.md",
       "tags": [
@@ -258,7 +258,7 @@
     },
     {
       "name": "agentation",
-      "description": ">",
+      "description": "Exact rendered-UI feedback router → choose copy-paste review, watch-loop sync, self-driving critique, or platform setup. MCP: npx add-mcp \"npx -y agentation-mcp server\"",
       "category": "planning-review",
       "path": "agentation/SKILL.md",
       "tags": [
@@ -292,7 +292,7 @@
     },
     {
       "name": "agentic-skills",
-      "description": "Use this skill when >",
+      "description": "Production engineering lifecycle for spec-first, test-driven implementation, review, and staged shipping; use for disciplined software delivery with explicit quality gates.",
       "category": "planning-review",
       "path": "agentic-skills/SKILL.md",
       "tags": [
@@ -323,7 +323,7 @@
     },
     {
       "name": "agenticskills",
-      "description": ">",
+      "description": "One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ god-skills) — wraps the official install.sh with pinned URL and env knobs (PLATFORM, WITH_LANGCHAIN, INSTALL_MODE, SKIP_BACKUP) to copy the catalog into Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in one step.",
       "category": "utilities",
       "path": "agenticskills/SKILL.md",
       "tags": [
@@ -350,7 +350,7 @@
     },
     {
       "name": "aider-cli-workflow",
-      "description": ">",
+      "description": "Runs a scope-locked, test-backed Aider coding loop with commit hygiene; use for local-repo AI pair-programming on one small feature or bug.",
       "category": "utilities",
       "path": "aider-cli-workflow/SKILL.md",
       "tags": [
@@ -380,7 +380,7 @@
     },
     {
       "name": "amrouter",
-      "description": "Self-hosted AI gateway: one endpoint, many providers, auto-fallback. AMRouter is an OpenAI-compatible API gateway that routes requests across dozens of LLM, embedding, image, and audio providers with automatic load balancing, fallback, and cost optimization.",
+      "description": "Self-hosted AI gateway with one OpenAI-compatible endpoint for multi-provider LLM, embedding, image, and audio routing, automatic fallback, load balancing, and cost optimization.",
       "category": "backend",
       "path": "amrouter/SKILL.md",
       "tags": [
@@ -400,7 +400,7 @@
     },
     {
       "name": "api-design",
-      "description": ">",
+      "description": "Design or refactor API contracts for REST and GraphQL systems. Use when the user needs resou...",
       "category": "backend",
       "path": "api-design/SKILL.md",
       "tags": [
@@ -430,7 +430,7 @@
     },
     {
       "name": "api-documentation",
-      "description": ">",
+      "description": "Publish or refresh developer-facing API documentation for REST, GraphQL, webhook, SDK, and portal surfaces...",
       "category": "backend",
       "path": "api-documentation/SKILL.md",
       "tags": [
@@ -502,7 +502,7 @@
     },
     {
       "name": "authentication-setup",
-      "description": ">",
+      "description": "Design or refactor product authentication setup for web apps and APIs. Use when choosing hosted/framework-native/platform-native/enterprise-add-on/self-hosted auth, sessions vs JWTs, OAuth/social login, passkeys, org/member models, callback/cookie environment setup, or SSO/SCIM rollout boundaries.",
       "category": "backend",
       "path": "authentication-setup/SKILL.md",
       "tags": [
@@ -535,7 +535,7 @@
     },
     {
       "name": "autopilot",
-      "description": ">",
+      "description": "Exact-name Codex/OMX-compatible $autopilot front door for autonomous idea-to-verified-code work. Use when the user invokes $autopilot, autopilot, auto pilot, full-auto, or asks for an end-to-end build; route small focused edits to direct implementation and stricter spec-first loops to ooo or ralph.",
       "category": "core-orchestration",
       "path": "autopilot/SKILL.md",
       "tags": [
@@ -566,7 +566,7 @@
     },
     {
       "name": "autoresearch",
-      "description": ">",
+      "description": "Run Karpathy-style autonomous ML search on a real training repo: choose the right mode (setup, program.md, bounded loop, results interpretation, or constrained-hardware adaptation), preserve the immutable prepare.py / 300-second / val_bpb contract, and route prompt/skill eval work away to LangSmith, Promptfoo, Braintrust, or skill-autoresearch.",
       "category": "search-analysis",
       "path": "autoresearch/SKILL.md",
       "tags": [
@@ -595,7 +595,7 @@
     },
     {
       "name": "ax",
-      "description": "AI-driven fetch, discover, extract framework. ax is a command-line tool purpose-built for AI agents to fetch web pages, discover their structure, and extract structured data — replacing the classic `curl → parse → regex` loop with one deterministic, token-efficient command.",
+      "description": "AI-era curl for agent web fetching, structure discovery, and deterministic structured extraction with token-budgeted output.",
       "category": "frontend",
       "path": "ax/SKILL.md",
       "tags": [
@@ -614,7 +614,7 @@
     },
     {
       "name": "backend-testing",
-      "description": ">",
+      "description": "Turn backend test ambiguity into one practical backend test packet. Use when the user needs API/service/repository/auth-flow coverage design, fixture or seed/reset strategy, container-vs-mock dependency choices, contract/API compatibility checks, or flaky backend-suite stabilization across local and CI.",
       "category": "backend",
       "path": "backend-testing/SKILL.md",
       "tags": [
@@ -644,7 +644,7 @@
     },
     {
       "name": "bmad",
-      "description": ">",
+      "description": "Packet-first BMAD/BMM front door for idea notes, product briefs, PRDs, architecture drafts, review feedback, existing repo state, and milestone pressure. Use when the user wants to know what BMAD phase or artifact comes next, or needs a portable BMAD entrypoint before routing review, execution slicing, runtime setup, or game-production work outward.",
       "category": "core-orchestration",
       "path": "bmad/SKILL.md",
       "tags": [
@@ -674,7 +674,7 @@
     },
     {
       "name": "bmad-gds",
-      "description": ">",
+      "description": "AI-driven Game Development Studio (BMAD-GDS). Routes game projects through Pre-production, Design, Architecture, Production, and Game Testing phases using 6 specialized agents. Supports Unity, Unreal Engine, Godot, and custom engines.",
       "category": "core-orchestration",
       "path": "bmad-gds/SKILL.md",
       "tags": [
@@ -706,7 +706,7 @@
     },
     {
       "name": "bmad-idea",
-      "description": ">",
+      "description": "Turn raw ideas into one clear pre-planning concept artifact by choosing the right framing mode: problem framing, audience and value framing, concept shaping, game concept framing, or story packaging. Use when the user needs the next artifact before PRDs, sprint plans, launch execution, or game-production routing.",
       "category": "core-orchestration",
       "path": "bmad-idea/SKILL.md",
       "tags": [
@@ -738,7 +738,7 @@
     },
     {
       "name": "browser-harness",
-      "description": ">",
+      "description": "Automates and verifies multi-step browser tasks through a clean Chrome CDP session; use when repeatable autonomous browser control is needed, not an already-open authenticated profile.",
       "category": "planning-review",
       "path": "browser-harness/SKILL.md",
       "tags": [
@@ -776,7 +776,7 @@
     },
     {
       "name": "caveman",
-      "description": "Use this skill when >",
+      "description": "Enables persistent ultra-compressed technical communication; use for explicit brevity or token-reduction requests, except where fragments risk safety or clarity.",
       "category": "utilities",
       "path": "caveman/SKILL.md",
       "tags": [
@@ -805,7 +805,7 @@
     },
     {
       "name": "ccpi-marketplace",
-      "description": ">",
+      "description": "Operate the Tons of Skills marketplace via the ccpi CLI and Claude plugin marketplace commands. Use for searching installing listing and updating Claude Code plugin packs with reversible rollbacks.",
       "category": "utilities",
       "path": "ccpi-marketplace/SKILL.md",
       "tags": [
@@ -864,7 +864,7 @@
     },
     {
       "name": "claudekit",
-      "description": ">",
+      "description": "Claude Code hook library — pre-built PreToolUse/PostToolUse hooks for common guardrails, auto-formatting, workflow automation",
       "category": "utilities",
       "path": "claudekit/SKILL.md",
       "tags": [
@@ -892,7 +892,7 @@
     },
     {
       "name": "clawteam",
-      "description": ">",
+      "description": "Route explicit ClawTeam runtime requests into one honest operator packet before touching commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer work, product/ops research, content operations, or game-production coordination. Not for generic multi-agent routing, board-only governance, or lightweight subtask fan-out when jeo, omc, omx, ohmg, vibe-kanban, or built-in delegation already fit.",
       "category": "utilities",
       "path": "clawteam/SKILL.md",
       "tags": [
@@ -921,7 +921,7 @@
     },
     {
       "name": "cli-anything",
-      "description": ">",
+      "description": "Make any software agent-native with HKUDS CLI-Anything — four routed modes: install ready-made harnesses via CLI-Hub (cli-hub list/search/info/install/launch), give agents the cli-hub-meta-skill for autonomous discovery, generate a new harness from any codebase/repo via the 7-phase /cli-anything pipeline, or iterate with :refine/:test/:validate; 40+ harnesses, 2,461 tests, Click CLIs with REPL + --json.",
       "category": "agent-development",
       "path": "cli-anything/SKILL.md",
       "tags": [
@@ -961,7 +961,7 @@
     },
     {
       "name": "code-refactoring",
-      "description": ">",
+      "description": "Turn a cleanup packet into one behavior-preserving refactor brief. Use when simplifying a messy function/component/service, freezing behavior before touching fragile legacy code, splitting a cleanup-heavy diff into reviewable slices, or planning a repeated migration / codemod without changing intended behavior. Route diagnosis to debugging, review judgment to code-review, validation-program design to testing-strategies, bottleneck-led tuning to performance-optimization, and pure symbol inventory to codebase-search.",
       "category": "code-quality",
       "path": "code-refactoring/SKILL.md",
       "tags": [
@@ -992,7 +992,7 @@
     },
     {
       "name": "code-review",
-      "description": ">",
+      "description": "Turn a PR, diff, merge request, or patch stack into one evidence-first review brief with severity, missing-proof checks, and route-outs.",
       "category": "code-quality",
       "path": "code-review/SKILL.md",
       "tags": [
@@ -1021,7 +1021,7 @@
     },
     {
       "name": "codebase-search",
-      "description": ">",
+      "description": "Route repo-navigation requests to one search packet before editing: exact-text, symbol/indexed, structural, config/content, hosted search, or graph/path trace. Use when the user asks where something is defined or referenced, which files own config/content surfaces, or what must be inspected before a change.",
       "category": "search-analysis",
       "path": "codebase-search/SKILL.md",
       "tags": [
@@ -1050,7 +1050,7 @@
     },
     {
       "name": "codeflow",
-      "description": ">",
+      "description": "Turn any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive architecture map with CodeFlow — a zero-build single index.html browser app (React 18 + D3.js from pinned CDNs) that runs 100% client-side with no backend and no data collection. Pick an input (public repo, private repo with a local token, local files, PR URL, markdown vault), choose a visualization mode (folder/layer/churn/blast), and read the analysis — dependency graph, blast radius, code ownership, heuristic security scanner, pattern/anti-pattern detection, A–F health score, activity heatmap, PR impact — then export JSON/Markdown/text/SVG/PDF or wire the self-updating CodeFlow Card SVG onto a README.",
       "category": "utilities",
       "path": "codeflow/SKILL.md",
       "tags": [
@@ -1120,7 +1120,7 @@
     },
     {
       "name": "compresso",
-      "description": ">",
+      "description": "Free offline desktop video/image compression (Tauri+React) — batch compress, trim/split, convert formats, embed subtitles. Install: brew install --cask codeforreal1/tap/compresso",
       "category": "utilities",
       "path": "compresso/SKILL.md",
       "tags": [
@@ -1156,7 +1156,7 @@
     },
     {
       "name": "data-analysis",
-      "description": ">",
+      "description": "Analyze datasets to extract insights, identify patterns, and generate reports. Use when exploring...",
       "category": "search-analysis",
       "path": "data-analysis/SKILL.md",
       "tags": [
@@ -1185,7 +1185,7 @@
     },
     {
       "name": "database-schema-design",
-      "description": ">",
+      "description": "Design storage-model and migration-safety packets for relational, document-heavy, and hybrid data systems. Use when the user needs entity ownership, constraints, indexes, staged schema changes, or queryable-vs-flexible field decisions across backend/fullstack products, internal ops tools, marketing/customer-data workflows, or game/live-ops systems. Route API contracts to api-design, auth-owned identity/session modeling to authentication-setup, verification to backend-testing, and reporting/telemetry follow-through to looker-studio-bigquery or monitoring-observability.",
       "category": "backend",
       "path": "database-schema-design/SKILL.md",
       "tags": [
@@ -1216,7 +1216,7 @@
     },
     {
       "name": "debugging",
-      "description": ">",
+      "description": "Run a reproduce → isolate → verify debugging workflow for concrete bugs, regressions, flaky failures, and environment-specific behavior. Use when the user already has a failing command, test, request, UI flow, or narrowed symptom and needs root-cause diagnosis or fix verification rather than raw log-line selection, broad test-policy design, PR review, or generic performance tuning.",
       "category": "code-quality",
       "path": "debugging/SKILL.md",
       "tags": [
@@ -1256,7 +1256,7 @@
     },
     {
       "name": "deep-research",
-      "description": "Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills). Turns any topic into an extensible outline, fans out parallel web-search agents to investigate each item into validated JSON, then renders a complete markdown report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep (parallel per-item investigation + field-coverage validation), report (TOC + per-field markdown), and web-search (the research agent with 5 routed source modules: github-debug, general-web, academic-papers, chinese-tech, stackoverflow). Classifies the request into a phase, loads that pipeline, and executes with its exact prompt templates and output contracts. Triggers on: deep research, structured research, research outline, research a topic, survey, benchmark review, literature review, competitor analysis, due diligence, technology comparison, build a research report, fan out research, parallel web search, /research, /research-deep, /research-report. Inspired by RhinoInsight (arXiv:2511.18743).",
+      "description": "Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep (parallel per-item investigation + field-coverage validation), report (TOC + per-field markdown), web-search (research agent + 5 routed source modules). Plugin: npx skills add https://github.com/akillness/jeo-skills --skill deep-research",
       "category": "search-analysis",
       "path": "deep-research/SKILL.md",
       "tags": [
@@ -1370,7 +1370,7 @@
     },
     {
       "name": "devup-ui",
-      "description": "Routing-first front door for Devup UI — a zero-runtime CSS-in-JS library whose Rust + WebAssembly preprocessor extracts every style at build time, so there is no styling JavaScript in the runtime bundle. Use when the user wants to adopt or integrate Devup UI, wire the build-time plugin into Next.js / Vite / Rsbuild / Webpack / Bun, write styles with the `Box`/`css` props or the styled-components- compatible `styled()` API, set up type-safe theming with `devup.json`, use responsive arrays and pseudo selectors, ship React Server Components without a client Provider, or migrate off styled-components / Emotion / Tailwind / Panda / vanilla-extract to a zero-runtime setup. Triggers on: devup, devup-ui, devup ui, @devup-ui/react, zero runtime css-in-js, build-time css extraction, devup.json theme, next-plugin DevupUI, vite-plugin DevupUI, styled() zero runtime, css-in-js without runtime, migrate styled-components to zero runtime, rust css preprocessor. Routes: use `design-system` for token governance and visual-language direction, `ui-component-patterns` for reusable-component API/anatomy, `responsive-design` for page-shell/layout strategy, `web-accessibility` for a11y remediation, and `react-best-practices` / `vercel-react-best-practices` for bundle/RSC/rerender performance audits beyond styling.",
+      "description": "[devup-ui] Routing-first front door for Devup UI — a zero-runtime CSS-in-JS library whose Rust + WebAssembly preprocessor extracts every style at build time, so no styling JavaScript ships at runtime. Use to adopt/integrate Devup UI, wire the build-time plugin into Next.js/Vite/Rsbuild/Webpack/Bun, write styles with Box/css props or the styled-components-compatible styled() API, set up type-safe theming with devup.json, or migrate off styled-components/Emotion/Tailwind/Panda/vanilla-extract to zero runtime.",
       "category": "frontend",
       "path": "devup-ui/SKILL.md",
       "tags": [
@@ -1401,7 +1401,7 @@
     },
     {
       "name": "diagnose",
-      "description": "Use this skill when >",
+      "description": "Investigates hard, flaky, or performance failures through a six-phase feedback-loop-first debugging process; use when quick targeted debugging is insufficient.",
       "category": "code-quality",
       "path": "diagnose/SKILL.md",
       "tags": [
@@ -1736,7 +1736,7 @@
     },
     {
       "name": "game-studio-harness",
-      "description": "Run a 5-role game production studio as one standing harness: production director (bmad-gds intake, stage gates, retrospectives), game designer (numeric balance, combination EV, core-loop discovery, survey-grounded novelty scoring), game PM (revenue-point mapping, comeback/steady reward bands, fairness caps), game programmer (extensible stable implementation, strict new-tech verification, perf and movement-path optimization), and game QA (archetype-rotation balance breaking, benchmark surveys, gate measurement). Executes the 3-stage operating cycle behind 8 numeric quality gates. Use to start, resume, or gate-review a game production cycle; not for isolated build failures, profiler captures, or feedback-only triage.",
+      "description": "Five-role game production studio harness: director, numeric-balance designer, revenue-band PM, verification-strict programmer, archetype-rotation QA. Runs the 3-stage operating cycle (concept/presentation/core build → balance/core-loop/novelty → ops stability/play impact) behind 8 numeric quality gates with survey-grounded trends, signed designer↔PM negotiation records, and QA broadcast discipline.",
       "category": "game-development",
       "path": "game-studio-harness/SKILL.md",
       "tags": [
@@ -1856,7 +1856,7 @@
     },
     {
       "name": "git-guardrails-claude-code",
-      "description": "Use this skill when >",
+      "description": "Installs Claude Code PreToolUse safeguards against destructive Git commands; use to protect repositories, not for general Git workflow guidance.",
       "category": "utilities",
       "path": "git-guardrails-claude-code/SKILL.md",
       "tags": [
@@ -2159,7 +2159,7 @@
     },
     {
       "name": "heretic",
-      "description": "Run Heretic — a fully automatic directional-ablation (\"abliteration\") and LLM-interpretability toolkit that removes refusal/over-refusal behaviour from open-weight transformer models without post-training, and analyses the geometry of refusal directions. Use when the user wants to decensor / abliterate / un-refuse an open-weight model they have the right to modify, tune the ablation (KL-divergence target, trial budget, quantization), evaluate refusal-rate vs KL against the original, or do interpretability research (refusal-direction difference-of-means, residual geometry tables, PaCMAP residual plots). Packages p-e-w/heretic (AGPL-3.0). Triggers on: heretic, abliterate, abliteration, decensor / uncensor a model, remove refusals, refusal direction, directional ablation, residual geometry, plot residuals. Model discovery, harmful/harmless prompt datasets, and benchmark/prior-art research route web extraction through the `scrapling` skill. Simple \"which uncensored model should I download\" recommendations are answered directly.",
+      "description": "Runs directional ablation and refusal-direction analysis for open-weight models the user may modify; use to reduce benign over-refusal or measure refusal/KL trade-offs, not for training.",
       "category": "search-analysis",
       "path": "heretic/SKILL.md",
       "tags": [
@@ -2596,7 +2596,7 @@
     },
     {
       "name": "notebooklm",
-      "description": "Use this skill when >",
+      "description": "Queries managed Google NotebookLM notebooks for citation-backed, source-grounded answers via local Claude Code browser automation; use for uploaded sources, not live web search.",
       "category": "utilities",
       "path": "notebooklm/SKILL.md",
       "tags": [
@@ -2660,7 +2660,7 @@
     },
     {
       "name": "obsidian-second-brain",
-      "description": "Routing-first front door for the obsidian-second-brain skill — a self-rewriting Obsidian vault that evolves Karpathy's LLM-Wiki pattern. Instead of appending new notes, every source REWRITES existing pages: people get updated, claims revised, contradictions reconciled, and cross-source patterns synthesized automatically. Ships 45 slash commands across 4 layers (Operations, Thinking Tools, Context Engine, Research Toolkit), a background agent + 4 scheduled agents, 4 role presets, and a write-time AI-first validator. Runs cross-CLI on Claude Code, Codex CLI, Gemini CLI, and OpenCode. Use when the user wants a knowledge vault that maintains itself, to save/ingest meetings/voice/screenshots/URLs into Obsidian, to reconcile contradictions, to challenge a decision against their own history, to run vault-first or open-web research (X / Perplexity / NotebookLM / YouTube / podcasts), or to install the second-brain skill on any of the four CLIs. Triggers on: obsidian second brain, second brain, self-rewriting vault, llm wiki, obsidian-save, obsidian-ingest, obsidian-reconcile, obsidian-challenge, obsidian-architect, vault automation, ingest into obsidian, vault-first research. Routes: use `obsidian` for plugin/CLI/URI vault automation, `llm-wiki` for the raw markdown wiki layer, `okf` for portable knowledge bundles, `notebooklm` for source-grounded NotebookLM queries, `scrapling` for web-content extraction.",
+      "description": "Routing front door for obsidian-second-brain — a self-rewriting Obsidian vault that evolves Karpathy's LLM-Wiki pattern. Every source REWRITES existing pages instead of appending: people updated, claims revised, contradictions reconciled, patterns synthesized automatically. 45 commands across 4 layers, background + 4 scheduled agents, 4 role presets, AI-first write validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode.",
       "category": "utilities",
       "path": "obsidian-second-brain/SKILL.md",
       "tags": [
@@ -3957,7 +3957,7 @@
     },
     {
       "name": "slides-grab",
-      "description": "Generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — the open-source Claude Design alternative and \"best harness + editor + linter for generating slides in Claude Code / Codex\". One routing-first skill across the full deck lifecycle: Plan (agent drafts a structured outline), Design (each slide is a self-contained `slide-XX.html`), Edit (a pure-JavaScript browser editor where you drag a bbox over any region and ask the agent to rewrite just that area — or tweak text/size/bold by hand), and Export (one command to a capture-or-print PDF, per-slide PNGs incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX). Picks an install path (npm package + `npx skills add`, or clone to develop slides-grab itself), a deck workspace (`--slides-dir`, multi-deck `decks/<name>/`), one of 35 bundled design styles, and the right asset flow (local `./assets/<file>` only — `slides-grab image` via god-tibo-imagen/codex/nano-banana, `fetch-video` via yt-dlp, `tldraw` .tldr→SVG), validating with `slides-grab validate` before any export. Use when the user wants to build, restyle, point-and-edit, or export a slide deck or card-news set. Triggers on: slides-grab, slides grab, generate slides, slide deck, ai slides, html slides, presentation editor, edit slide, card news, slides to pdf, slides to pptx, claude design alternative, slide showcase.",
+      "description": "Generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — the open-source Claude Design alternative and best harness + editor + linter for slides in Claude Code / Codex. One routing-first skill across Plan (agent drafts an outline), Design (each slide is a self-contained slide-XX.html), Edit (a pure-JS browser editor where you drag a bbox over any region and ask the agent to rewrite just that area, or hand-tweak text/size/bold), and Export (capture-or-print PDF, per-slide PNG incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX). Picks an install path (npm package + npx skills add, or clone), a deck workspace (--slides-dir, multi-deck decks/<name>/), one of 35 bundled design styles, and the supported asset flow (local ./assets/<file> only — image via god-tibo-imagen/codex/nano-banana, fetch-video via yt-dlp, tldraw .tldr→SVG), validating with slides-grab validate before any export.",
       "category": "creative-media",
       "path": "slides-grab/SKILL.md",
       "tags": [
@@ -4633,7 +4633,7 @@
     },
     {
       "name": "triage",
-      "description": "Use this skill when >",
+      "description": "Moves tracker issues through a structured triage state machine with category and readiness decisions; use to evaluate or prepare work items for implementation.",
       "category": "planning-review",
       "path": "triage/SKILL.md",
       "tags": [
@@ -5152,7 +5152,7 @@
     },
     {
       "name": "write-a-skill",
-      "description": "Use this skill when >",
+      "description": "Creates reusable SKILL.md-based agent skills through requirements, drafting, and user review; use to formalize a workflow or add a new agent capability.",
       "category": "utilities",
       "path": "write-a-skill/SKILL.md",
       "tags": [

@@ -1,7 +1,11 @@
 ---
 name: debugging
-description: ">"
-compatibility: ">"
+description: >-
+  Run a reproduce → isolate → verify debugging workflow for concrete bugs, regressions, flaky
+  failures, and environment-specific behavior. Use when the user already has a failing command,
+  test, request, UI flow, or narrowed symptom and needs root-cause diagnosis or fix verification
+  rather than raw log-line selection, broad test-policy design, PR review, or generic performance
+  tuning.
 allowed-tools: Read Grep Glob Bash Write
 metadata:
   tags: debugging, regression-isolation, reproduction, flaky-tests, git-bisect, root-cause

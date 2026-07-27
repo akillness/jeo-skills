@@ -1,8 +1,9 @@
 ---
 name: agentic-skills
-description: "Use this skill when >"
+description: >-
+  Production engineering lifecycle for spec-first, test-driven implementation, review, and staged
+  shipping; use for disciplined software delivery with explicit quality gates.
 license: MIT
-compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch Agent
 metadata:
   tags: agentic-skills, production-engineering, spec-driven, tdd, code-review, security, performance, git-workflow, ci-cd, google-practices

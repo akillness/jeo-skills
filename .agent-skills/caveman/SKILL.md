@@ -1,7 +1,8 @@
 ---
 name: caveman
-description: "Use this skill when >"
-compatibility: ">"
+description: >-
+  Enables persistent ultra-compressed technical communication; use for explicit brevity or
+  token-reduction requests, except where fragments risk safety or clarity.
 allowed-tools: Read Grep Glob Bash Write Edit
 metadata:
   tags: token-reduction, communication, brevity, compression, productivity

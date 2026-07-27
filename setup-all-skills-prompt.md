@@ -310,6 +310,29 @@ skills add -g "$REPO_URL" "${SHARED_SKILL_ARGS[@]}" -a "$DETECTED_AGENTS" --yes 
 > 2. Sparse `skills-lock.json` → project install only restores listed entries
 > 3. CLI `isExcluded` drops dotfiles (e.g. `.env.example`) during copy — upstream limitation
 > 4. Empty `files` arrays in `skills.json` → HTTP/well-known install path broken for those skills
+> 5. **Unloadable `SKILL.md` frontmatter → the skill is invisible to `skills add` entirely** (fixed
+>    2026-07-27). The CLI discovers skills by parsing frontmatter, so a document with no `---` block,
+>    or YAML that fails to parse because the description is an unquoted scalar containing `": "`
+>    (`description: Use this skill when >` + indented prose, or one long line with an inline colon),
+>    is skipped without any error. 8 skills were affected — `amrouter`, `ax`, `diagnose`,
+>    `game-studio-harness`, `git-guardrails-claude-code`, `notebooklm`, `triage`, `write-a-skill` —
+>    which is why the CLI reported `Found 157 skills` and
+>    `No matching skills found for: game-studio-harness` while the slug was present in the repo,
+>    in `skills.json`, in `skills.toon` and in both READMEs. A further 26 skills loaded with the
+>    placeholder `description: ">"`, so no agent could ever match them.
+>
+> **Verify a slug before believing it is missing** — the manifest is not the discovery surface:
+>
+> ```bash
+> # what the installer actually sees (clone + frontmatter parse)
+> npx -y skills add https://github.com/akillness/jeo-skills --skill <slug> --yes --copy --full-depth
+> # what the repository declares
+> curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/.agent-skills/skills.json \
+>   | python3 -c 'import json,sys;print(sorted(s["name"] for s in json.load(sys.stdin)["skills"]))'
+> # fail-closed audit of every SKILL.md (frontmatter parses, name matches, description is usable)
+> python3 scripts/validate-catalog-projections.py
+> python3 scripts/repair-skill-frontmatter.py --check
+> ```
 
 > **agentation MCP**: `npx add-mcp "npx -y agentation-mcp server"` — auto-detects 9+ agents.
 > **agentation Claude Code Official Skill**: `npx skills add benjitaylor/agentation -g` → `/agentation` in conversation.

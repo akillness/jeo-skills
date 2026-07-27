@@ -1,7 +1,8 @@
 ---
 name: aider-cli-workflow
-description: ">"
-compatibility: ">"
+description: >-
+  Runs a scope-locked, test-backed Aider coding loop with commit hygiene; use for local-repo AI
+  pair-programming on one small feature or bug.
 allowed-tools: Bash Read Write Edit Glob Grep
 metadata:
   tags: aider, cli, ai-pair-programming, git, test-driven, code-review

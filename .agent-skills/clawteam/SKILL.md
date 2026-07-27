@@ -1,6 +1,12 @@
 ---
 name: clawteam
-description: ">"
+description: >-
+  Route explicit ClawTeam runtime requests into one honest operator packet before touching
+  commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user
+  specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer
+  work, product/ops research, content operations, or game-production coordination. Not for generic
+  multi-agent routing, board-only governance, or lightweight subtask fan-out when jeo, omc, omx,
+  ohmg, vibe-kanban, or built-in delegation already fit.
 license: MIT
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 metadata:

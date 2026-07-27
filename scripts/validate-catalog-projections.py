@@ -270,6 +270,43 @@ def validate_toon(repo_root: Path, skill_names: list[str]) -> int:
     return len(records)
 
 
+# Anthropic's SKILL.md contract and opencode's loader both cap the description at
+# 1024 characters. A skill whose frontmatter does not parse is skipped silently by
+# every skill CLI — that is how 8 skills shipped here while `skills add --skill
+# <name>` answered "No matching skills found".
+MAX_DESCRIPTION = 1024
+MIN_DESCRIPTION = 25
+STRAY_SCALARS = {">", "|", ">-", "|-", ">+", "|+", "-", ""}
+
+
+def validate_skill_documents(repo_root: Path, skill_names: list[str]) -> int:
+    try:
+        import yaml
+    except ImportError:
+        raise ValidationError("PyYAML is required to validate SKILL.md frontmatter: pip install pyyaml")
+
+    manifest_root = repo_root / ".agent-skills"
+    checked = 0
+    for name in skill_names:
+        path = manifest_root / name / "SKILL.md"
+        text = path.read_text(encoding="utf-8")
+        require(text.startswith("---"), f"{name}: SKILL.md has no YAML frontmatter — skill CLIs cannot discover it")
+        end = text.find("\n---", 3)
+        require(end > 0, f"{name}: SKILL.md frontmatter is not terminated")
+        try:
+            data = yaml.safe_load(text[3:end])
+        except yaml.YAMLError as error:
+            raise ValidationError(f"{name}: SKILL.md frontmatter is not valid YAML ({str(error).splitlines()[0]}) — run scripts/repair-skill-frontmatter.py")
+        require(isinstance(data, dict), f"{name}: SKILL.md frontmatter must be a mapping")
+        require(data.get("name") == name, f"{name}: SKILL.md declares name {data.get('name')!r}")
+        description = str(data.get("description", "")).strip()
+        require(description not in STRAY_SCALARS, f"{name}: description is the placeholder {description!r} — run scripts/repair-skill-frontmatter.py")
+        require(len(description) >= MIN_DESCRIPTION, f"{name}: description is {len(description)} chars; agents cannot match on it")
+        require(len(description) <= MAX_DESCRIPTION, f"{name}: description is {len(description)} chars, over the 1024-character limit")
+        checked += 1
+    return checked
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate manifest-derived TOON and README skill catalog projections.")
     parser.add_argument("--repo-root", default=".", type=Path, help="repository root containing .agent-skills (default: current directory)")
@@ -279,13 +316,14 @@ def main() -> int:
     try:
         skill_names, categories = validate_manifest(repo_root)
         toon_records = validate_toon(repo_root, skill_names)
+        loadable = validate_skill_documents(repo_root, skill_names)
         validate_readme(repo_root / "README.md", "## 📚 Skills List", ENGLISH_HEADINGS, categories, len(skill_names))
         validate_readme(repo_root / "README.ko.md", "## 📚 스킬 목록", KOREAN_HEADINGS, categories, len(skill_names))
     except ValidationError as error:
         print(f"catalog projection validation failed: {error}", file=sys.stderr)
         return 1
 
-    print(f"catalog projections valid: {len(skill_names)} skills, {len(categories)} categories, {toon_records} TOON records, 2 README tables")
+    print(f"catalog projections valid: {len(skill_names)} skills, {len(categories)} categories, {toon_records} TOON records, 2 README tables, {loadable} loadable SKILL.md documents")
     return 0
 
 
