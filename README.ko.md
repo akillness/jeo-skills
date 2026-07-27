@@ -151,6 +151,15 @@ npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --ski
 
 프로젝트 범위가 기본값이며 팀과 공유해야 하는 스킬은 커밋합니다. 글로벌 범위는 `-g`를 붙이며 개인 기본값에 적합합니다. `-a`로 에이전트별 경로를 고르고, 이식 가능한 공통 계층은 `.agents/skills/`입니다.
 
+> **`opencode`라는 이름의 제품은 두 개입니다.** `sst/opencode`([opencode.ai](https://opencode.ai))는 네이티브 스킬
+> 로더가 있어 `~/.config/opencode/skills/`, `~/.claude/skills/`, `~/.agents/skills/`를 모두 읽으므로 `-a opencode`든
+> 일반 글로벌 설치든 그대로 동작합니다. [`opencode-ai/opencode`](https://github.com/opencode-ai/opencode)는
+> [charmbracelet/crush](https://github.com/charmbracelet/crush)로 이어진 아카이브된 Go TUI로 스킬 로더가 **없어서**,
+> [setup-all-skills-prompt.md](setup-all-skills-prompt.md)의 Step 2b가 `~/.opencode/commands/jeo/`에 커스텀 커맨드
+> (`user:jeo:<skill>`)로 브리지합니다.
+> [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent)(구 `oh-my-opencode`)는 sst/opencode 로더 위에서
+> 동작합니다 — OpenCode는 `bunx oh-my-openagent install`, Codex Light 에디션은 `npx lazycodex-ai install`.
+
 #### 플랫폼별 선택
 
 ```bash
