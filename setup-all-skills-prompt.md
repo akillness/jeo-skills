@@ -65,11 +65,12 @@ echo "CLAUDE_CONFIG_DIR: $CLAUDE_CONFIG_DIR"
 # Two lists are built, and they are NOT the same thing:
 #   DETECTED_AGENTS    — every agent found on this machine, used by later steps
 #   SKILLS_CLI_AGENTS  — only ids the Vercel `skills` CLI accepts, one per `-a` flag
-# Measured behaviour of `skills add -g -a <id>` (2026-07-27, skills CLI):
+# Measured behaviour of `skills add -g -a <id>` (2026-07-28, skills CLI 1.5.15):
 #   claude-code                              → ~/.claude/skills
 #   codex · opencode · gemini-cli · cursor   → ~/.agents/skills
 #   universal                                → ~/.agents/skills
-#   antigravity                              → ~/.gemini/antigravity/skills
+#   antigravity                              → ~/.agents/skills (NOT ~/.gemini/antigravity/skills;
+#                                              that tree only holds strays, audited in Step 2)
 #   pi                                       → ~/.pi/agent/skills
 #   crush                                    → ~/.config/crush/skills
 # `jeopi`, `jeo` and `gjc` are NOT valid ids — passing them makes the CLI reject the
@@ -421,7 +422,7 @@ echo "✅ $_SHARED_COUNT skills present in $SKILLS_ROOT (shared root for jeopi /
 installs nothing. Use `-a claude-code -a codex` instead.
 
 Where each id actually writes, measured with `skills add -g -a <id>` against a sandboxed `HOME`
-(2026-07-27). Several ids share the same destination, and it is **not** the per-agent directory the
+(2026-07-28, skills CLI 1.5.15). Several ids share the same destination, and it is **not** the per-agent directory the
 name suggests:
 
 | `-a <id>` | Global destination |
@@ -429,7 +430,7 @@ name suggests:
 | `universal` | `$HOME/.agents/skills/` — always included; the root jeopi / jeo / gjc / opencode read natively |
 | `codex`, `opencode`, `gemini-cli`, `cursor` | `$HOME/.agents/skills/` (**not** `~/.codex/skills`, `~/.config/opencode/skills` or `~/.gemini/skills`) |
 | `claude-code` | `$HOME/.claude/skills/` |
-| `antigravity` | `$HOME/.gemini/antigravity/skills/` |
+| `antigravity` | `$HOME/.agents/skills/` (**not** `~/.gemini/antigravity/skills` — that tree only holds strays from other installers, audited in Step 2) |
 | `pi` | `$HOME/.pi/agent/skills/` |
 | `crush` | `$HOME/.config/crush/skills/` |
 | _(no id)_ `jeopi`, `jeo`, `gjc` | not installable via `-a`; they discover `$HOME/.agents/skills` themselves |
