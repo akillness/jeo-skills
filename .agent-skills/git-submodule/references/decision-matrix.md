@@ -34,4 +34,4 @@ Use this note before emitting any `git submodule` commands.
 ## Boundary reminders
 - Generic branch/history cleanup belongs to `git-workflow`.
 - Node package delivery choices belong to `npm-git-install`.
-- Repo bootstrap automation belongs to `workflow-automation` when the problem expands beyond submodule mechanics.
+- Repo bootstrap automation belongs to `deployment-automation` when the problem expands beyond submodule mechanics.

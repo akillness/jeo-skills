@@ -69,7 +69,6 @@
       "skill-autoresearch"
     ],
     "core-orchestration": [
-      "autopilot",
       "bmad",
       "bmad-gds",
       "bmad-idea",
@@ -158,6 +157,7 @@
       "paperbanana",
       "remotion-video-production",
       "slides-grab",
+      "video-production",
       "video-shotcraft",
       "vox-director",
       "webtoon-harness"
@@ -521,37 +521,6 @@
       "version": "2.1.0"
     },
     {
-      "name": "autopilot",
-      "description": "Exact-name Codex/OMX-compatible $autopilot front door for autonomous idea-to-verified-code work. Use when the user invokes $autopilot, autopilot, auto pilot, full-auto, or asks for an end-to-end build; route small focused edits to direct implementation and stricter spec-first loops to ooo or ralph.",
-      "category": "core-orchestration",
-      "path": "autopilot/SKILL.md",
-      "tags": [
-        "autopilot",
-        "omx",
-        "codex",
-        "autonomous-build",
-        "planning",
-        "implementation",
-        "qa",
-        "verification"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "autopilot",
-      "version": "1.0.0"
-    },
-    {
       "name": "autoresearch",
       "description": "Run Karpathy-style autonomous ML search on a real training repo: choose the right mode (setup, program.md, bounded loop, results interpretation, or constrained-hardware adaptation), preserve the immutable prepare.py / 300-second / val_bpb contract, and route prompt/skill eval work away to LangSmith, Promptfoo, Braintrust, or skill-autoresearch.",
       "category": "search-analysis",
@@ -822,7 +791,7 @@
     },
     {
       "name": "changelog-maintenance",
-      "description": "Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, and what's new. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `user-guide-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`.",
+      "description": "Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, and what's new. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `technical-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`.",
       "category": "documentation",
       "path": "changelog-maintenance/SKILL.md",
       "tags": [
@@ -879,7 +848,7 @@
     },
     {
       "name": "clawteam",
-      "description": "Route explicit ClawTeam runtime requests into one honest operator packet before touching commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer work, product/ops research, content operations, or game-production coordination. Not for generic multi-agent routing, board-only governance, or lightweight subtask fan-out when jeo, omc, omx, ohmg, vibe-kanban, or built-in delegation already fit.",
+      "description": "Route explicit ClawTeam runtime requests into one honest operator packet before touching commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer work, product/ops research, content operations, or game-production coordination. Not for generic multi-agent routing, board-only governance, or lightweight subtask fan-out when jeo, harness, task-planning, or built-in delegation already fit.",
       "category": "utilities",
       "path": "clawteam/SKILL.md",
       "tags": [
@@ -1295,7 +1264,7 @@
     },
     {
       "name": "deployment-automation",
-      "description": "Plan and review release execution for web, backend, and fullstack systems: preview releases, staging-to-production promotion, rollout strategy, post-deploy verification, rollback response, and release-hardening checklists. Use when the system can already build and the main job is shipping or recovering a release safely, choosing between preview / promotion / canary / rollback paths, or tightening deploy gates around health checks and sign-off. Route CI workflow authoring to `workflow-automation`, machine/runtime setup to `system-environment-setup`, long-lived telemetry design to `monitoring-observability`, and Vercel-specific operations to `vercel-deploy`.",
+      "description": "Plan and review release execution for web, backend, and fullstack systems: preview releases, staging-to-production promotion, rollout strategy, post-deploy verification, rollback response, and release-hardening checklists. Use when the system can already build and the main job is shipping or recovering a release safely, choosing between preview / promotion / canary / rollback paths, or tightening deploy gates around health checks and sign-off. CI workflow and release-job authoring belongs here too. Route machine/runtime setup to `system-environment-setup`, long-lived telemetry design to `monitoring-observability`, and Vercel-specific operations to `vercel-deploy`.",
       "category": "infrastructure",
       "path": "deployment-automation/SKILL.md",
       "tags": [
@@ -1325,7 +1294,7 @@
     },
     {
       "name": "design-system",
-      "description": "Define or refactor a shared frontend UI system before polishing one screen at a time. Use when the user needs token governance, visual-language rules, primitive naming, page-system direction, cross-product consistency, or a design handoff that should stay coherent across landing pages, dashboards, forms, and component libraries. Not for reusable component API architecture, responsive layout-only fixes, accessibility-only remediation, or broad UI critique. Triggers on: design system, design tokens, visual language, component library foundations, UI governance, cross-product consistency, landing page plus dashboard system, primitive naming, token policy.",
+      "description": "Define or refactor a shared frontend UI system before polishing one screen at a time. Use when the user needs token governance, visual-language rules, primitive naming, page-system direction, cross-product consistency, or a design handoff that should stay coherent across landing pages, dashboards, forms, and component libraries, including the reusable primitive / slot / variant APIs that system owns. Not for responsive layout-only fixes, accessibility-only remediation, or broad UI critique. Triggers on: design system, design tokens, visual language, component library foundations, UI governance, cross-product consistency, landing page plus dashboard system, primitive naming, token policy, component API architecture.",
       "category": "frontend",
       "path": "design-system/SKILL.md",
       "tags": [
@@ -3253,7 +3222,7 @@
     },
     {
       "name": "presentation-builder",
-      "description": "Build real deck artifacts when the user needs editable slides, not just prose: investor decks, roadmap/QBR decks, launch decks, architecture/demo decks, workshop/training decks, and game pitch or milestone decks. Use when the job is to choose one deck mode, one smallest useful artifact packet, and one honest handoff surface (HTML review, PPTX, PDF, Google Slides, or Figma Slides). Triggers on: presentation, slide deck, slides, pitch deck, roadmap deck, investor deck, launch deck, architecture review deck, demo deck, workshop slides, keynote, board deck, QBR deck, and game pitch deck. Route long-form docs to `technical-writing`, end-user tutorials to `user-guide-writing`, research manuscripts to `research-paper-writing`, and broad marketing planning to `marketing-automation`.",
+      "description": "Build real deck artifacts when the user needs editable slides, not just prose: investor decks, roadmap/QBR decks, launch decks, architecture/demo decks, workshop/training decks, and game pitch or milestone decks. Use when the job is to choose one deck mode, one smallest useful artifact packet, and one honest handoff surface (HTML review, PPTX, PDF, Google Slides, or Figma Slides). Triggers on: presentation, slide deck, slides, pitch deck, roadmap deck, investor deck, launch deck, architecture review deck, demo deck, workshop slides, keynote, board deck, QBR deck, and game pitch deck. Route long-form docs to `technical-writing`, end-user tutorials to `technical-writing`, research manuscripts to `research-paper-writing`, and broad marketing planning to `marketing-automation`.",
       "category": "documentation",
       "path": "presentation-builder/SKILL.md",
       "tags": [
@@ -3324,7 +3293,7 @@
     },
     {
       "name": "prompts-chat",
-      "description": "Discover and apply curated prompts from the prompts.chat collection to optimize AI interactions. Use when refining prompt engineering, finding domain-specific prompt templates, improving response quality, or building prompt-based workflows.",
+      "description": "Discover and apply curated prompts from the prompts.chat collection to optimize AI interactions. Use when refining prompt engineering, finding domain-specific prompt templates, improving response quality, or building prompt-based workflows. Triggers on: prompt optimization, prompt templates, prompt engineering, prompt library, curated prompts, prompt discovery, and AI prompt patterns.",
       "category": "agent-development",
       "path": "prompts-chat/SKILL.md",
       "tags": [
@@ -3334,7 +3303,6 @@
         "prompt-templates",
         "prompt-library",
         "prompt-discovery",
-        "workflow-automation",
         "prompt-curation"
       ],
       "platforms": [
@@ -3524,7 +3492,7 @@
     },
     {
       "name": "responsive-design",
-      "description": "Routing-first responsive layout strategy and verification for web interfaces. Use when the main job is classifying whether the failure is page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, or reflow verification — then turning vague “breaks on mobile” requests into one concrete strategy packet. Route component API design to `ui-component-patterns`, accessibility remediation to `web-accessibility`, system-wide breakpoint/token governance to `design-system`, and broad UI audit work to `web-design-guidelines`.",
+      "description": "Routing-first responsive layout strategy and verification for web interfaces. Use when the main job is classifying whether the failure is page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, or reflow verification — then turning vague “breaks on mobile” requests into one concrete strategy packet. Route component API design and system-wide breakpoint/token governance to `design-system`, and accessibility remediation plus broad UI audit work to `web-accessibility`.",
       "category": "frontend",
       "path": "responsive-design/SKILL.md",
       "tags": [
@@ -4089,9 +4057,6 @@
         "research",
         "discovery",
         "groundwork",
-        "omc",
-        "omx",
-        "ohmg",
         "claude",
         "codex",
         "gemini",
@@ -4181,7 +4146,7 @@
     },
     {
       "name": "task-planning",
-      "description": "Turn vague features, bug clusters, roadmap items, launch work, or playtest findings into one execution-ready planning packet by choosing the right packet type, separating discovery from delivery, and making blockers, dependencies, and the next move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or milestone prep, release planning, or roadmap-to-delivery translation across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route sizing to `task-estimation`, board/worktree control to `vibe-kanban`, plan review to `plannotator`, daily syncs to `standup-meeting`, retros to `sprint-retrospective`, and pre-planning concept framing to `bmad`, `bmad-idea`, or `bmad-gds`.",
+      "description": "Turn vague features, bug clusters, roadmap items, launch work, or playtest findings into one execution-ready planning packet by choosing the right packet type, separating discovery from delivery, and making blockers, dependencies, and the next move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or milestone prep, release planning, or roadmap-to-delivery translation across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route sizing to `task-estimation`, issue-state governance to `triage`, plan review to `plannotator`, daily syncs to `standup-meeting`, retros to `sprint-retrospective`, and pre-planning concept framing to `bmad`, `bmad-idea`, or `bmad-gds`.",
       "category": "project-management",
       "path": "task-planning/SKILL.md",
       "tags": [
@@ -4242,7 +4207,7 @@
     },
     {
       "name": "technical-writing",
-      "description": "Write internal technical documentation for engineers and operators: technical specs, architecture docs, ADRs, runbooks, migration plans, and developer-facing implementation guides. Use when the main job is capturing a technical decision, system boundary, operating procedure, or rollout path for builders and maintainers. Triggers on: tech spec, design doc, architecture doc, ADR, runbook, migration guide, implementation guide, rollout doc, operational guide, and internal technical writing. Route API portals to `api-documentation`, end-user help/tutorials to `user-guide-writing`, release notes to `changelog-maintenance`, decks to `presentation-builder`, and GTM messaging to `marketing-automation`.",
+      "description": "Write internal technical documentation for engineers and operators: technical specs, architecture docs, ADRs, runbooks, migration plans, and developer-facing implementation guides. Use when the main job is capturing a technical decision, system boundary, operating procedure, or rollout path for builders and maintainers. Triggers on: tech spec, design doc, architecture doc, ADR, runbook, migration guide, implementation guide, rollout doc, operational guide, and internal technical writing. End-user onboarding guides, tutorials, FAQs, and help-center flows belong here too. Route API portals to `api-documentation`, release notes to `changelog-maintenance`, decks to `presentation-builder`, and GTM messaging to `marketing-automation`.",
       "category": "documentation",
       "path": "technical-writing/SKILL.md",
       "tags": [
@@ -4519,7 +4484,7 @@
     },
     {
       "name": "vercel-deploy",
-      "description": "Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, environment-variable sync, and rollback response. Use when the request is specifically about operating a project on Vercel after the provider is already chosen — especially when someone needs a preview URL, stable alias, custom domain, env-scope fix, production cutover, or rollback on Vercel. Triggers on: Vercel deploy, Vercel preview URL, vercel promote, vercel alias, Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route provider-neutral release strategy to `deployment-automation`, CI/workflow authoring to `workflow-automation`, and local install/auth/bootstrap work to `system-environment-setup`.",
+      "description": "Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, environment-variable sync, and rollback response. Use when the request is specifically about operating a project on Vercel after the provider is already chosen — especially when someone needs a preview URL, stable alias, custom domain, env-scope fix, production cutover, or rollback on Vercel. Triggers on: Vercel deploy, Vercel preview URL, vercel promote, vercel alias, Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route provider-neutral release strategy to `deployment-automation`, CI/workflow authoring to `deployment-automation`, and local install/auth/bootstrap work to `system-environment-setup`.",
       "category": "infrastructure",
       "path": "vercel-deploy/SKILL.md",
       "tags": [
@@ -4549,6 +4514,36 @@
       ],
       "keyword": "vercel-deploy",
       "version": "2.1.0"
+    },
+    {
+      "name": "video-production",
+      "description": "Plan and route programmable or automated video production across code-first, template-first, and hybrid content pipelines. Use when the user needs repeatable video generation, branded short-form content, personalized videos, social clip batches, captioned/localized variants, video APIs, or video creation from data and templates — even if they only say video production. Triggers on: Remotion, programmatic video, automated video creation, video API, personalized video, batch-create shorts, render videos from code, repurpose content into clips.",
+      "category": "creative-media",
+      "path": "video-production/SKILL.md",
+      "tags": [
+        "video",
+        "automation",
+        "remotion",
+        "short-form",
+        "content-ops",
+        "templates",
+        "react"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Write",
+        "Read",
+        "WebSearch",
+        "WebFetch",
+        "Task"
+      ],
+      "keyword": "video-production",
+      "version": "2.0"
     },
     {
       "name": "video-shotcraft",
@@ -4602,7 +4597,7 @@
     },
     {
       "name": "web-accessibility",
-      "description": "Routing-first skill for web accessibility remediation and verification. Use when the main job is classifying which accessibility surface is failing — semantics, keyboard/focus, labels/announcements, visual perception/reflow, media alternatives, or routed-app navigation feedback — and turning vague audit, WCAG, axe/Lighthouse, or \"make this accessible\" requests into one concrete remediation packet. Route broad UI critique to `web-design-guidelines`, component API architecture to `ui-component-patterns`, responsive layout strategy to `responsive-design`, and system governance to `design-system`.",
+      "description": "Routing-first skill for web accessibility remediation and verification. Use when the main job is classifying which accessibility surface is failing — semantics, keyboard/focus, labels/announcements, visual perception/reflow, media alternatives, or routed-app navigation feedback — and turning vague audit, WCAG, axe/Lighthouse, or \"make this accessible\" requests into one concrete remediation packet. Broad UI critique for hierarchy, polish, and launch readiness belongs here too. Route component API architecture and system governance to `design-system`, and responsive layout strategy to `responsive-design`.",
       "category": "frontend",
       "path": "web-accessibility/SKILL.md",
       "tags": [

@@ -9,7 +9,7 @@
         "Classifies the work as environment-promotion or an equivalent release/promotion mode",
         "Names staging and production environments explicitly",
         "Includes both post-deploy verification and rollback sections",
-        "Routes CI workflow authoring out to workflow-automation rather than absorbing it"
+        "Owns CI workflow authoring as part of release execution rather than routing it away"
       ]
     },
     {

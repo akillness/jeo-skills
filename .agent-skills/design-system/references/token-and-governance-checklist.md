@@ -18,7 +18,7 @@ Use this checklist before changing shared system rules.
 - Who can add or rename tokens?
 - What review is required before introducing new primitives or system states?
 - What evidence is needed before broadening the system (reuse, cross-surface need, maintenance savings)?
-- What should route to `ui-component-patterns`, `responsive-design`, `web-accessibility`, or `web-design-guidelines` instead of staying here?
+- What should route to `responsive-design` or `web-accessibility` instead of staying here?
 
 ## Accessibility baseline
 - Contrast expectations stated?

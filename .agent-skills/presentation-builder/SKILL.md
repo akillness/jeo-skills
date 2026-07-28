@@ -9,7 +9,7 @@ description: >
   Triggers on: presentation, slide deck, slides, pitch deck, roadmap deck,
   investor deck, launch deck, architecture review deck, demo deck, workshop
   slides, keynote, board deck, QBR deck, and game pitch deck. Route long-form
-  docs to `technical-writing`, end-user tutorials to `user-guide-writing`,
+  docs to `technical-writing`, end-user tutorials to `technical-writing`,
   research manuscripts to `research-paper-writing`, and broad marketing planning
   to `marketing-automation`.
 allowed-tools: Read Write Edit Glob Grep
@@ -53,7 +53,7 @@ Read these support docs before choosing the workflow:
 
 ## When not to use this skill
 - **The main job is a technical spec, ADR, runbook, migration guide, or internal implementation document** → use `technical-writing`
-- **The main job is an end-user tutorial, onboarding guide, FAQ, or screenshot-heavy help-center flow** → use `user-guide-writing`
+- **The main job is an end-user tutorial, onboarding guide, FAQ, or screenshot-heavy help-center flow** → use `technical-writing`
 - **The main job is a research paper, rebuttal, or academic manuscript** → use `research-paper-writing`
 - **The main job is broad launch planning, campaign strategy, positioning, or messaging without a concrete deck artifact** → use `marketing-automation`
 - **The main job is only an outline, memo, or planning artifact and no deck file is actually needed** → use the relevant planning or writing skill first
@@ -97,7 +97,7 @@ Use the smallest honest boundary:
 | If the request is mainly about... | Use |
 |---|---|
 | technical specs, rollout docs, ADRs, migration details | `technical-writing` |
-| tutorials, help docs, onboarding, screenshot walkthroughs | `user-guide-writing` |
+| tutorials, help docs, onboarding, screenshot walkthroughs | `technical-writing` |
 | academic papers, rebuttals, manuscript sections | `research-paper-writing` |
 | messaging, launch strategy, campaigns, content calendars | `marketing-automation` |
 | a reviewable or handoff-ready deck artifact | `presentation-builder` |

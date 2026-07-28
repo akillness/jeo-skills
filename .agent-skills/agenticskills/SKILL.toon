@@ -10,5 +10,5 @@ S:
   4:Verify the canonical destination ($HOME/.agent-skills) and runtime mirrors
 R:
   skill:Use `npx skills add --skill <name>` for selective single-skill installs
-  omc:Use for Claude-side orchestration setup after the bundle lands
-  omx:Use for Codex-side runtime setup after the bundle lands
+  oh-my-claudecode:Use for Claude-side orchestration setup after the bundle lands
+  oh-my-codex:Use for Codex-side runtime setup after the bundle lands

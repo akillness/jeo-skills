@@ -14,7 +14,7 @@ Use when:
 
 Route out when:
 - the plan is still being written or re-scoped → `task-planning`, `ralph`, `survey`
-- the real blocker is orchestration state or handoff sequencing → `jeo`, `vibe-kanban`, `bmad`
+- the real blocker is orchestration state or handoff sequencing → `jeo`, `task-planning`, `bmad`
 
 ### 2) Diff review
 Use when:
@@ -40,7 +40,7 @@ Use when:
 - the review job is conceptually correct but runtime hookup, browser launching, remote mode, or stable URL/port behavior is the blocker
 
 Route out when:
-- the real job is platform ownership or environment provisioning → `omc`, `omx`, `ohmg`, `system-environment-setup`
+- the real job is platform ownership or environment provisioning → `oh-my-claudecode`, `oh-my-codex`, `oh-my-agent`, `system-environment-setup`
 
 ## Manual-vs-hook reminder
 - Claude and Gemini are the clearest native/hook-driven plan-review fits.
@@ -53,7 +53,7 @@ Route out when:
 | `task-planning` | Turning goals into execution-ready plans | The core planning/spec creation step |
 | `ralph` | Spec-first / interview-first planning loops | Requirement shaping and spec refinement |
 | `jeo` | Orchestration and execution gating across tools | Ledger/state/orchestration logic |
-| `vibe-kanban` | Kanban/task movement and decomposition | Board management and work tracking |
+| `task-planning` | Kanban/task movement and decomposition | Board management and work tracking |
 | `code-review` | Risk/correctness/approval judgment on code changes | Broad PR-review policy |
 | `agentation` | UI screenshot annotation → targeted code fixes | Rendered UI bug markup |
 | `browser-harness` | Clean disposable browser verification | Fresh-session browser evidence |

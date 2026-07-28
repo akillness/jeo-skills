@@ -20,11 +20,9 @@ Use `state-management` when the main question is **who should own this data and 
 - the current app already has stale closures, race conditions, broken optimistic updates, inconsistent synchronization, or weird store behavior and needs diagnosis
 - the user needs reproduction, isolation, or verification of a bug rather than a fresh architecture choice
 
-## Route to `ui-component-patterns` when
+## Route to `design-system` when
 - the main task is controlled/uncontrolled component APIs, reusable primitives, slots, compound components, or one component family's interface
 - state ownership is subordinate to component contract design
-
-## Route to `design-system` when
 - the task is really about shared breakpoint policy, theme/density governance, token rules, or cross-product preference strategy
 - the runtime owner is secondary to the system-level rule or governance decision
 
@@ -37,6 +35,6 @@ Use `state-management` when the main question is **who should own this data and 
 - **Why is the current state code malfunctioning?** → `debugging`
 - **Why is this UI slow or rerendering too much?** → `react-best-practices`
 - **What should the API or mutation contract look like?** → `api-design`
-- **How should the component interface behave?** → `ui-component-patterns`
+- **How should the component interface behave?** → `design-system`
 - **What system rule should multiple products/components follow?** → `design-system`
 - **How should the layout adapt across widths/devices?** → `responsive-design`

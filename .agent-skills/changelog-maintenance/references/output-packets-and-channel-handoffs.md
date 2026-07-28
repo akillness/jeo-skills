@@ -110,7 +110,7 @@ Good when:
 |---|---|
 | Full internal migration/runbook/rollback procedure | `technical-writing` |
 | API reference, integration examples, SDK/webhook docs | `api-documentation` |
-| End-user tutorial, FAQ, screenshot refresh, help-center article | `user-guide-writing` |
+| End-user tutorial, FAQ, screenshot refresh, help-center article | `technical-writing` |
 | Rollout, rollback, promotion, environment sequencing | `deployment-automation` |
 | Launch announcement, campaign copy, feature positioning, lifecycle messaging | `marketing-automation` |
 

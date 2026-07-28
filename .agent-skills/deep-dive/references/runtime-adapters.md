@@ -6,8 +6,8 @@ Use this reference to keep the trace -> interview -> handoff contract portable.
 
 | Signal | Adapter | Use |
 |--------|---------|-----|
-| Claude Code, OMC plugin, `/team`, `/autopilot`, `/ralph` | `omc` | Claude-native trace/interview/execution bridge |
-| Codex CLI, OMX, `$deep-interview`, `$ralplan`, `$team` | `omx` | Codex-native workflow skills and tmux team runtime |
+| Claude Code, OMC plugin, `/team`, `/autopilot`, `/ralph` | `oh-my-claudecode` | Claude-native trace/interview/execution bridge |
+| Codex CLI, OMX, `$deep-interview`, `$ralplan`, `$team` | `oh-my-codex` | Codex-native workflow skills and tmux team runtime |
 | Gemini CLI, Antigravity, oh-my-agent, `oma`, `.agents/` | `oma` | Portable harness with Gemini/Antigravity surfaces |
 
 If multiple signals exist, prefer the runtime the user explicitly named. If the user only asks for a portable artifact, use `oma` and save under `.agents/specs/`.

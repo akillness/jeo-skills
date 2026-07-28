@@ -1,5 +1,5 @@
 N:research-paper-writing
-D:Draft and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow, reviewer-aware structure, and submission-ready section planning. Use when the user needs help with an abstract, introduction, related work, method, experiments, ablations, figures/tables, checklist coverage, or rebuttal / response-letter writing for a paper. Triggers on: research paper, academic paper, ML paper, NeurIPS paper, ICLR paper, CVPR paper, experiments section, ablation plan, contribution framing, reviewer response, rebuttal, camera-ready revision.
+D:Draft and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow, reviewer-aware structure, and submission-ready section planning. Use when the user needs help with an abstract, introduction, related work, method, experiments, ablations, discussion, figures/tables, checklist coverage, or rebuttal / response-letter writing for a paper. Triggers on: research paper, academic paper, ML paper, NeurIPS paper, ICLR paper, CVPR paper, experiments section, ablation plan, related work, contribution framing, reviewer response, rebuttal, camera-ready revision.
 G:research-paper-writing academic-writing ml cv nlp experiments rebuttal
 
 U[7]:

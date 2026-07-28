@@ -16,7 +16,7 @@ Use this checklist before finalizing changelog or release-note output.
 
 ## Boundary discipline
 - Deep technical explanation moved to `technical-writing` or `api-documentation`
-- Tutorials / FAQs moved to `user-guide-writing`
+- Tutorials / FAQs moved to `technical-writing`
 - Rollout mechanics moved to `deployment-automation`
 - Campaign-style copy moved to `marketing-automation`
 

@@ -32,7 +32,7 @@ Use this skill when the job is to **classify one review packet, open the smalles
 `plannotator` is not the planner.
 It is the **human approval gate** that sits between:
 - plan/spec creation (`task-planning`, `ralph`)
-- orchestration/runtime ownership (`jeo`, `vibe-kanban`, `bmad`)
+- orchestration/runtime ownership (`jeo`, `task-planning`, `bmad`)
 - broader PR/code judgment (`code-review`)
 - rendered-UI bug markup (`agentation`)
 - clean browser verification (`browser-harness`)
@@ -54,7 +54,7 @@ Read these support docs first:
 - **The main job is broad PR policy, merge criteria, risk judgment, or code-owner approval** → `code-review`
 - **The main job is exact rendered-UI critique that should drive frontend fixes** → `agentation`
 - **The main job is clean disposable browser automation or deterministic website verification** → `browser-harness`
-- **The main job is task orchestration, board state, or multi-agent routing** → `jeo`, `vibe-kanban`, `bmad`
+- **The main job is task orchestration, board state, or multi-agent routing** → `jeo`, `task-planning`, `bmad`
 - **The main job is note taxonomy, wiki curation, or long-term note-system management** → `obsidian`, `llm-wiki`
 
 ## Instructions
@@ -134,7 +134,7 @@ Do **not** flatten this into “all platforms work the same.”
 
 ### Step 6: Route adjacent work aggressively
 - planning/spec creation or refinement → `task-planning`, `ralph`, `survey`
-- orchestration state or multi-agent routing → `jeo`, `vibe-kanban`, `bmad`
+- orchestration state or multi-agent routing → `jeo`, `task-planning`, `bmad`
 - broad PR policy, merge gating, or risk judgment → `code-review`
 - rendered UI bug markup → `agentation`
 - clean disposable browser verification → `browser-harness`

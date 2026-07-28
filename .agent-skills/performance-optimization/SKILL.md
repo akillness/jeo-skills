@@ -146,7 +146,7 @@ Examples:
 - image compression or asset simplification may reduce quality or require content/design signoff
 
 Route implementation when needed:
-- component/state architecture cleanup → `react-best-practices`, `state-management`, or `ui-component-patterns`
+- component/state architecture cleanup → `react-best-practices`, `state-management`, or `design-system`
 - schema/index/data-model redesign → `database-schema-design`
 - telemetry rollout or ongoing alerting → `monitoring-observability`
 - benchmark-gate policy → `testing-strategies`

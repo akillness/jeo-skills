@@ -118,4 +118,4 @@ git config -f .gitmodules --get-regexp '^submodule\..*\.branch$'
 ## Boundary reminders
 - Generic branch/history cleanup belongs to `git-workflow`.
 - Package delivery belongs to `npm-git-install` or the relevant package-manager skill.
-- Wider bootstrap/task-runner automation belongs to `workflow-automation`.
+- Wider bootstrap/task-runner automation belongs to `deployment-automation`.

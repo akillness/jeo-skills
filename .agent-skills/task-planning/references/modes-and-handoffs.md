@@ -62,7 +62,7 @@ Focus on:
 | If the request is mainly about... | Use |
 |---|---|
 | sizing, story points, forecasting, estimate language | `task-estimation` |
-| board setup, worktrees, review queues, active-task control plane | `vibe-kanban` |
+| issue state machine, needs-info / ready-for-agent triage | `triage` |
 | reviewing / approving a plan or diff | `plannotator` |
 | daily status, blockers, and coordination cadence | `standup-meeting` |
 | retrospective learning and follow-through after work is done | `sprint-retrospective` |
@@ -72,7 +72,7 @@ Focus on:
 
 ## Boundary smell checks
 - If you are assigning points, you are drifting toward `task-estimation`.
-- If you are opening boards/worktrees/queues, you are drifting toward `vibe-kanban`.
+- If you are managing issue state transitions rather than shaping the packet, you are drifting toward `triage`.
 - If you are annotating or approving the plan itself, you are drifting toward `plannotator`.
 - If the output reads like a standup or retro, you are in the wrong lane.
 - If the packet still depends on unresolved strategy or concept definition, route back to `bmad`, `bmad-idea`, or `bmad-gds` first.

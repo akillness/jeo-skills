@@ -54,7 +54,7 @@ Read [references/setup-and-integration.md](references/setup-and-integration.md) 
 - **The main task is mapping code/docs/media structure, generating `GRAPH_REPORT.md`, or tracing relationships** → use `graphify`
 - **The main task is organizing human-authored notes or vault workflows** → use the relevant note/vault skill
 - **The main task is flattening a repo into a single prompt/digest for one-shot model context** → use the repo-packer tool or skill that owns that flow
-- **The main task is repo automation, scripts, hooks, or recurring commands** → use `workflow-automation`
+- **The main task is repo automation, scripts, hooks, or recurring commands** → use `deployment-automation`
 
 ## Instructions
 
@@ -200,7 +200,7 @@ Typical route-outs:
 - **`graphify`** — graph artifacts, structural repo/corpus mapping, relationship tracing
 - **Vault/note skills** — human-first note organization and editing
 - **Repo packers (Repomix / Gitingest / Code2Prompt-style workflows)** — one-shot repo-to-prompt context packing
-- **`workflow-automation`** — recurring scripts, repo hooks, and automation that are not really about memory ownership
+- **`deployment-automation`** — recurring scripts, repo hooks, and automation that are not really about memory ownership
 
 If the user says “package this repo for one model prompt,” that is not an `opencontext` job.
 If they say “make sure the next agent knows what to load, what we already decided, and what to store after the task,” that is.

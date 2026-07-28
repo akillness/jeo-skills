@@ -48,9 +48,9 @@
     {
       "id": 5,
       "prompt": "We already agreed on the tasks. Set up the kanban board, worktrees, and review queue for the team.",
-      "expected_output": "Routes the request to vibe-kanban instead of pretending task-planning owns board control.",
+      "expected_output": "Routes the request to triage instead of pretending task-planning owns issue-state control.",
       "assertions": [
-        "Response routes to vibe-kanban or explicitly says the task is board control rather than decomposition",
+        "Response routes to triage or explicitly says the task is issue-state control rather than decomposition",
         "Response does not present a full planning packet as the primary answer",
         "Response keeps task-planning positioned as the decomposition and readiness lane"
       ]

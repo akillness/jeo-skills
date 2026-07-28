@@ -26,7 +26,7 @@ Choose this when the real question is policy around shared primitives:
 - when to promote product-local UI into the system
 - ownership/review process for system changes
 
-Route actual prop/slot/variant API design to `ui-component-patterns`.
+Define the actual prop/slot/variant API here too, in the same packet as the naming rules.
 
 ## 4. System handoff mode
 Choose this when the system direction is mostly settled and the job is to leave a clean packet for design/dev execution.

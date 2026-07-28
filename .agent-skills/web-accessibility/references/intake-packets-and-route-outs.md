@@ -18,7 +18,7 @@ Use when the core problem is missing or misleading HTML semantics.
 - route-outs if the problem is really system governance or component API architecture
 
 ### Route-outs
-- reusable primitive API ownership → `ui-component-patterns`
+- reusable primitive API ownership → `design-system`
 - multi-product token/pattern governance → `design-system`
 
 ## 2. keyboard-focus
@@ -37,8 +37,8 @@ Use when interactive flow quality is the main risk.
 - manual keyboard proof required before sign-off
 
 ### Route-outs
-- reusable primitive API redesign → `ui-component-patterns`
-- broad UI critique unrelated to accessibility → `web-design-guidelines`
+- reusable primitive API redesign → `design-system`
+- broad UI critique unrelated to accessibility → stay here, in broad-review mode
 
 ## 3. labels-announcements
 Use when controls are technically present but meaning is unclear.
@@ -56,7 +56,7 @@ Use when controls are technically present but meaning is unclear.
 - which updates must be verified with screen readers or AT
 
 ### Route-outs
-- broad content/copy hierarchy review → `web-design-guidelines`
+- broad content/copy hierarchy review → stay here, in broad-review mode
 - form/system architecture beyond accessibility messaging → neighboring product/frontend skill
 
 ## 4. visual-perception-reflow
@@ -121,4 +121,4 @@ Use when client-routed apps lose browser navigation cues.
 - If keyboard or focus breaks task completion, prefer `keyboard-focus` even when other issues exist.
 - If the request says “screen reader users don’t know the page changed,” prefer `routed-navigation-feedback`.
 - If the issue is mostly layout strategy or breakpoint choice, route to `responsive-design` and keep accessibility here only for verification/remediation spillover.
-- If the issue is mostly reusable primitive ownership, split the answer with `ui-component-patterns` instead of stretching this skill.
+- If the issue is mostly reusable primitive ownership, split the answer with `design-system` instead of stretching this skill.

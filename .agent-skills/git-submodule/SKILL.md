@@ -39,7 +39,7 @@ Read [references/mode-packets-and-hosted-constraints.md](references/mode-packets
 If the user mainly needs:
 - **local branch/history cleanup, rebase, conflict recovery, or push safety** → use `git-workflow`
 - **Node package delivery from Git refs, tarballs, workspaces, or publish-first flows** → use `npm-git-install`
-- **repo bootstrap/task-runner automation beyond submodule mechanics** → use `workflow-automation`
+- **repo bootstrap/task-runner automation beyond submodule mechanics** → use `deployment-automation`
 - **broader environment or container setup** → use `system-environment-setup`
 
 ## When to use this skill
@@ -149,7 +149,7 @@ Return this exact structure:
 ## Adjacent handoff
 - `git-workflow` when ...
 - `npm-git-install` when ...
-- `workflow-automation` when ...
+- `deployment-automation` when ...
 ```
 
 ### Step 6: Use the mode packets, not a giant improvised command dump

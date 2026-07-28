@@ -38,7 +38,7 @@ Use this guide when the main `SKILL.md` has already selected Fabric but the resp
 | One-off chat prompting with no stable pattern need | current model / general LLM CLI |
 | Repo-aware coding, implementation, or Git edits | coding-assistant skill |
 | Scraping, OCR, transcript recovery, or conversion before text is usable | the relevant fetch/extraction/transcript tool |
-| Deterministic multi-step automation around multiple commands | `workflow-automation` or a script |
+| Deterministic multi-step automation around multiple commands | `deployment-automation` or a script |
 | Generic provider/platform setup with no Fabric-specific workflow | relevant provider/platform skill |
 
 ## Lane-specific reminders

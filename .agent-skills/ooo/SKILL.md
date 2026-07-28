@@ -112,11 +112,11 @@ ouroboros setup --runtime opencode --opencode-mode plugin
 
 ## Do not use when
 
-- Task is mainly platform setup or runtime commands → `omc` / `omx` / `ohmg`
+- Task is mainly platform setup or runtime commands → `oh-my-claudecode` / `oh-my-codex` / `oh-my-agent`
 - Task is mainly permission posture, sandbox, trust folders → (configure via `ouroboros setup`)
 - Task needs integrated project ledgers + plan review + cleanup workflow → `jeo`
 - Task is only pre-implementation landscape research → `survey`
-- spec-kit should **author the spec itself** (spec → seed direction, docs as SSOT) → `spec-stack`
+- spec-kit should **author the spec itself** (spec → seed direction, docs as SSOT) → use `spec-kit` directly, then bring the frozen spec back here
 - Only **installing or generating a CLI harness**, no seed/loop → `cli-anything`
 
 ## Core commands
@@ -179,7 +179,7 @@ Plan-stage rules:
 - `/speckit.implement` is optional sugar per task — completion is still
   gated by the ooo evaluate loop, never by task checkboxes.
 - Want the opposite direction (spec-kit authors the spec, docs as SSOT)?
-  That is `spec-stack`, not this skill.
+  That is `spec-kit` authoring territory, not this skill.
 
 ### Run — execute against the seed
 ```bash
@@ -358,7 +358,7 @@ claude mcp add ouroboros -- uvx --from ouroboros-ai[mcp] ouroboros mcp serve
 8. **Execute through contracted harnesses** — registry first
    (`cli-hub search`), name harnesses in seed constraints, and treat
    harness `--json` output as the evaluate-stage evidence
-9. **Keep runtime ownership separate** — platform hooks belong in `omc` / `omx` / `ohmg`
+9. **Keep runtime ownership separate** — platform hooks belong in `oh-my-claudecode` / `oh-my-codex` / `oh-my-agent`
 
 ## Examples
 

@@ -139,7 +139,7 @@ Route out when the user is actually asking for:
 - general browser automation → `browser-harness` or `playwriter`
 - UI review / visual annotation → `agentation`
 - performance / profiling / hydration / bundle / RSC issues → `react-best-practices`
-- reusable component-system design → `design-system` or `ui-component-patterns`
+- reusable component-system design → `design-system` or `design-system`
 
 ### Step 5: Prefer reference docs over bloating the front door
 

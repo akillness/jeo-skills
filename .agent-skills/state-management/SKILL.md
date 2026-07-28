@@ -31,7 +31,7 @@ Do **not** start with a library debate. Start by naming one primary packet, then
 
 Read [references/ownership-packets-and-route-outs.md](references/ownership-packets-and-route-outs.md) before handling a mixed or ambiguous request.
 Read [references/decision-matrix.md](references/decision-matrix.md) when the packet is clear and you need to compare likely owners.
-Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when the request may actually belong to `react-best-practices`, `api-design`, `debugging`, `ui-component-patterns`, `design-system`, or `responsive-design`.
+Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when the request may actually belong to `react-best-practices`, `api-design`, `debugging`, `design-system`, `design-system`, or `responsive-design`.
 
 ## When to use this skill
 - Decide whether a frontend problem is local UI state, shared subtree state, URL/navigation state, form state, server state, or long-lived client workflow state.
@@ -44,7 +44,7 @@ Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when t
 - **The main task is rerender churn, hydration mismatch, waterfalls, or client/server performance behavior** → use `react-best-practices`.
 - **The main task is mutation shape, backend ownership, or optimistic-write API design** → use `api-design`.
 - **The main task is debugging stale closures, races, broken optimistic updates, or existing state bugs** → use `debugging`.
-- **The main task is controlled/uncontrolled component APIs, primitives, slots, or reusable component contracts** → use `ui-component-patterns`.
+- **The main task is controlled/uncontrolled component APIs, primitives, slots, or reusable component contracts** → use `design-system`.
 - **The main task is visual system governance or shared preference policy** → use `design-system`.
 - **The main task is viewport adaptation or layout collapse** → use `responsive-design`.
 - **The architecture choice is already made and the user just needs code** → implement directly instead of re-running the chooser.
@@ -117,7 +117,7 @@ Route out when the next step is:
 - **`react-best-practices`** for rerender/hydration/waterfall/perf issues
 - **`api-design`** for mutation contracts or backend/client responsibility
 - **`debugging`** for already-broken state behavior
-- **`ui-component-patterns`** for component API ownership
+- **`design-system`** for component API ownership
 - **`design-system`** for system-level preference/governance rules
 - **`responsive-design`** for layout/viewport behavior
 

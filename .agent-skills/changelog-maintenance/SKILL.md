@@ -1,6 +1,6 @@
 ---
 name: changelog-maintenance
-description: "Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, and what's new. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `user-guide-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`."
+description: "Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, and what's new. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `technical-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`."
 license: MIT
 compatibility: ">"
 allowed-tools: Read Write Edit Glob Grep
@@ -45,7 +45,7 @@ Read these support docs before choosing the mode or boundary:
 ## When not to use this skill
 - **The main job is an internal spec, runbook, ADR, rollout plan, or deep migration procedure** → `technical-writing`
 - **The main job is published API / SDK / webhook / developer-portal content** → `api-documentation`
-- **The main job is end-user onboarding, tutorials, screenshots, FAQs, or help-center walkthroughs** → `user-guide-writing`
+- **The main job is end-user onboarding, tutorials, screenshots, FAQs, or help-center walkthroughs** → `technical-writing`
 - **The main job is deployment execution, environment promotion, rollback mechanics, or release orchestration** → `deployment-automation`
 - **The main job is launch copy, feature positioning, campaign sequencing, or GTM messaging** → `marketing-automation`
 - **There is no credible shipped evidence yet** → collect proof first instead of inventing release notes from a roadmap or TODO list
@@ -85,7 +85,7 @@ Quick route-out table:
 |---|---|
 | “Write the architecture / rollout / runbook / internal migration plan” | `technical-writing` |
 | “Publish API reference, SDK docs, auth troubleshooting, or portal pages” | `api-documentation` |
-| “Write help docs, tutorials, screenshots, or FAQs for the changed workflow” | `user-guide-writing` |
+| “Write help docs, tutorials, screenshots, or FAQs for the changed workflow” | `technical-writing` |
 | “Plan deploy / rollback / release execution” | `deployment-automation` |
 | “Write launch copy / announcement / campaign messaging” | `marketing-automation` |
 | “Summarize shipped changes truthfully for a release surface” | `changelog-maintenance` |
@@ -123,7 +123,7 @@ Do not ship a broad handbook when one release packet and a short sync list will 
 Guard these boundaries aggressively:
 - changelog / release notes summarize what shipped
 - migration detail lives in linked migration docs when the procedure is too large for the summary
-- tutorials / FAQs live in `user-guide-writing`
+- tutorials / FAQs live in `technical-writing`
 - API and integration detail lives in `api-documentation`
 - rollout / rollback mechanics live in `deployment-automation`
 - campaign-style language lives in `marketing-automation`
@@ -199,7 +199,7 @@ If the user already asked for the finished artifact, produce the selected packet
 - mode: `release-notes`
 - output shape: `single-entry` or `summary-plus-links`
 - benefit-led headings like `What’s new`, `Improvements`, `Fixes`
-- route tutorials or help refreshes to `user-guide-writing`
+- route tutorials or help refreshes to `technical-writing`
 
 ### Example 3: Lightweight game patch notes
 **Input**

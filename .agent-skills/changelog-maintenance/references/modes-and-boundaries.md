@@ -18,7 +18,7 @@ It does **not** own every neighboring document.
 |---|---|
 | internal spec / design doc / ADR / runbook / rollout procedure | `technical-writing` |
 | API reference, SDK docs, webhook guide, integration docs | `api-documentation` |
-| tutorial, onboarding guide, FAQ, help-center walkthrough | `user-guide-writing` |
+| tutorial, onboarding guide, FAQ, help-center walkthrough | `technical-writing` |
 | deployment steps, rollback execution, environment promotion | `deployment-automation` |
 | launch messaging, campaign copy, feature marketing, GTM packaging | `marketing-automation` |
 

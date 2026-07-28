@@ -50,6 +50,6 @@ Escalate when:
 
 ## Boundary reminders
 - `codebase-search` finds current files; it does not design structure.
-- `workflow-automation` enforces or scaffolds a chosen structure; it does not choose the structure.
+- `deployment-automation` enforces or scaffolds a chosen structure; it does not choose the structure.
 - `system-environment-setup` makes the repo runnable; it does not decide folder ownership.
 - `state-management` and `design-system` own subsystem-specific structure inside a broader repo shape.

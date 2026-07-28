@@ -87,7 +87,7 @@ Good outcome:
 - one explicit rule for when *not* to build an index yet
 
 Route out when:
-- the main task is runtime automation or hooks instead of memory setup → `workflow-automation`
+- the main task is runtime automation or hooks instead of memory setup → `deployment-automation`
 
 ## `repo-packer-route-out-packet`
 Use when the request is really “package this repo for a model right now” rather than ongoing memory.
@@ -109,7 +109,7 @@ Good outcome:
 | Map relationships across code/docs/media | `graphify` |
 | Organize human-authored notes or a vault | note/vault skill |
 | Turn the repo into one prompt right now | Repomix / Gitingest / Code2Prompt-style workflow |
-| Automate recurring scripts/hooks around the repo | `workflow-automation` |
+| Automate recurring scripts/hooks around the repo | `deployment-automation` |
 
 ## Rule of thumb
 A good packet is the smallest artifact set that lets the next agent load, search, or store project context honestly. If the packet cannot answer that need, route to the neighboring layer instead of pretending OpenContext covers everything.

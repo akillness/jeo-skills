@@ -1,5 +1,5 @@
 N:academic-research
-D:Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble (deep-research 8 modes, academic-paper 11 modes, academic-paper-reviewer 6 modes, academic-pipeline 10-stage orchestrator). Routes each request to the right pipeline and mode. Human-in-the-loop throughout. Plugin (upstream): `claude plugin marketplace add Imbad0202/academic-research-skills`
+D:Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble (deep-research 8 modes, academic-paper 11 modes, academic-paper-reviewer 6 modes, academic-pipeline 10-stage orchestrator). Routes each request to the right pipeline and mode. Human-in-the-loop throughout. Plugin (upstream): claude plugin marketplace add Imbad0202/academic-research-skills
 G:academic-research deep-research paper-writing peer-review literature-review systematic-review citation-check research-pipeline scholarly-publishing ars
 
 U[8]:

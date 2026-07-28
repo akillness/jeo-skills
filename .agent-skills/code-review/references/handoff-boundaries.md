@@ -30,7 +30,7 @@
 
 `code-review` can say a change needs more evidence. `testing-strategies` decides the broader testing shape.
 
-## Route to `web-design-guidelines` / `web-accessibility` when the main question is
+## Route to `web-accessibility` / `web-accessibility` when the main question is
 - visual consistency
 - accessibility compliance
 - layout polish

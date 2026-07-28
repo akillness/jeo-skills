@@ -1,5 +1,5 @@
 N:npm-git-install
-D:Route Node package-delivery ambiguity into one install packet: temporary Git bridge, SHA-pinned shared bridge, private-auth Git path, tarball / `npm pack` artifact, workspace / `file:` inner-loop, or publish-first registry handoff.
+D:Route Node package-delivery ambiguity into one install packet: temporary Git bridge, SHA-pinned shared bridge, private-auth Git path, tarball / `npm pack` artifact, workspace / `file:` inner-loop, or publish-first registry handoff. Use when the user wants to install an npm / pnpm / Yarn / Bun package from a branch, tag, commit, fork, private repo, monorepo package, or unreleased fix, and the real question is which delivery path is safest rather than how Git or package registries work in general. Triggers on: npm install from GitHub, git dependency, github:owner/repo, git+ssh, git+https, private package from repo, install branch vs commit, monorepo package install, npm pack vs git, and should we publish this instead.
 G:npm pnpm yarn bun git github package-management node monorepo private-packages tarball workspace
 
 U[6]:

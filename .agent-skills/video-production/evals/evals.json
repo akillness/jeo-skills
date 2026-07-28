@@ -1,0 +1,38 @@
+{
+  "skill_name": "video-production",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We need to generate localized product recap videos from customer data every week. Recommend the right workflow and what assets we need.",
+      "expected_output": "Chooses template/API automation or another explicit primary mode, names an implementation-ready packet, and includes asset plus QA guidance.",
+      "assertions": [
+        "Output names exactly one primary production mode",
+        "Output includes a minimum asset packet or equivalent asset table",
+        "Output includes QA risks or a QA checklist",
+        "Output includes a handoff after generation"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Build a Remotion plan for a 16:9 and 9:16 onboarding video with screenshots, captions, and reusable scenes.",
+      "expected_output": "Selects code-first programmable video, uses Remotion-specific workflow language, and preserves the canonical packet shape.",
+      "assertions": [
+        "Output selects Code-first programmable video as the primary mode",
+        "Output mentions Remotion, scenes, compositions, or rendering from code",
+        "Output includes variant or aspect-ratio planning",
+        "Output includes asset and QA guidance"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Turn our weekly webinar recordings into short clips for Shorts and Reels without creating a totally manual workflow.",
+      "expected_output": "Chooses the hybrid repurposing mode, notes clip extraction and caption QA, and avoids pretending the job is just a one-off storyboard.",
+      "assertions": [
+        "Output selects Hybrid clip / repurposing pipeline as the primary mode",
+        "Output mentions captions, clipping, or source-material repurposing",
+        "Output includes QA or last-mile polish risks",
+        "Output does not present multiple competing primary modes"
+      ]
+    }
+  ]
+}

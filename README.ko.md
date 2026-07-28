@@ -6,7 +6,7 @@
 **149개 로컬 스킬 폴더 · 설치 가능 스킬 149개 · TOON 포맷 · 멀티플랫폼**
 Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 149개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 > 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 149개 로컬 스킬 폴더 = 총 149개 설치 가능 스킬
-### 🎬 창의 미디어 (9개)
+### 🎬 창의 미디어 (10개)
 
 | `drawio` |
 | `gbro-collage-broll` |
@@ -14,6 +14,7 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
+| `video-production` |
 | `video-shotcraft` |
 | `vox-director` |
 | `webtoon-harness` |
@@ -207,11 +208,10 @@ rtk init -g
 > 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 149개 로컬 스킬 폴더 = 총 149개 설치 가능 스킬
 ├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
-### 🎯 핵심 오케스트레이션 (8개)
+### 🎯 핵심 오케스트레이션 (7개)
 
 | 스킬 |
 |------|
-| `autopilot` |
 | `bmad` |
 | `bmad-gds` |
 | `bmad-idea` |
@@ -350,7 +350,7 @@ rtk init -g
 | `semble` |
 | `skill-autoresearch` |
 
-### 🎬 창의 미디어 (9개)
+### 🎬 창의 미디어 (10개)
 
 | 스킬 |
 |------|
@@ -360,6 +360,7 @@ rtk init -g
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
+| `video-production` |
 | `video-shotcraft` |
 | `vox-director` |
 | `webtoon-harness` |
@@ -753,6 +754,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **플랫폼 전용 스킬 폐지** | `omc` / `ohmg` / `omx`가 사라지면서 매니페스트는 단일 공유 카탈로그가 되었습니다. `setup-all-skills-prompt.md`의 Step 1이 전체를 설치하고, Step 2의 플랫폼 설치 블록은 잔여 사본 감사로 교체되었으며, Step 4의 플랫폼 중복 검사는 공유 루트 그림자 검사로 바뀌었습니다. |
 | **Step 3g는 OpenCode 플러그인 설정만 유지** | `oh-my-claudecode`, `oh-my-codex`(OMX), `oh-my-agent`(OMA) 설치 블록은 제거된 라우팅 스킬을 위해서만 존재했으므로 삭제했습니다. `oh-my-openagent`(OMO) 블록은 그대로이며, `scripts/test-runtime-config-writers.sh`는 OMX 핸드오프 케이스를 "설정 미변경" 검증으로 교체하고 25개 케이스를 모두 통과합니다. |
 | **obsidian-mind / web-game-development 설명 축소** | 두 스킬의 frontmatter description이 1024자 제한을 넘겨 `skills add`에서 검색되지 않는 상태였습니다. 트리거 키워드를 유지한 채 제한 이내로 다시 작성했습니다. |
+| **끊긴 route-out 재배선** | 제거된 스킬로 라우팅하던 생존 스킬을 전부 재지정했습니다. `autopilot`은 `$team` / `$ultrawork` / `$ultraqa` exact-name shim 4형제의 마지막 고아라 함께 제거하고, `video-production`은 복구했습니다. `ui-component-patterns` 범위는 `design-system`이, `web-design-guidelines`는 `web-accessibility`(broad-review 모드)가, `user-guide-writing`은 `technical-writing`(end-user guide 모드)가, `workflow-automation`은 `deployment-automation`(CI/릴리스 잡 작성)이 흡수했고, `vibe-kanban`은 `task-planning` / `triage`로, `omc` / `omx` / `ohmg`는 외부 제품명(`oh-my-claudecode` / `oh-my-codex` / `oh-my-agent`)으로 바꿨습니다. `deep-dive`, `deepinit`의 `.omc` / `.omx`는 런타임 상태 경로라 그대로 뒀습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

@@ -71,7 +71,7 @@ Look for:
 
 Route out when:
 - the work is now release execution rather than validation policy → `deployment-automation`
-- the review is mostly UI/accessibility signoff → `web-accessibility` or `web-design-guidelines`
+- the review is mostly UI/accessibility signoff → `web-accessibility` or `web-accessibility`
 
 ## `incident-ratchet-packet`
 Use when an escaped bug, outage fix, or severe regression needs lasting protection.
@@ -97,7 +97,7 @@ Route out when:
 | How do we implement those tests? | `backend-testing` |
 | Why is the suite red or flaky right now? | `debugging` |
 | Is this specific diff ready to approve? | `code-review` |
-| Is accessibility or visual behavior the main validation surface? | `web-accessibility` / `web-design-guidelines` |
+| Is accessibility or visual behavior the main validation surface? | `web-accessibility` / `web-accessibility` |
 | Is performance benchmarking or load confidence the main issue? | `performance-optimization` / `game-performance-profiler` |
 | Is release execution or rollout choreography now the main task? | `deployment-automation` |
 
