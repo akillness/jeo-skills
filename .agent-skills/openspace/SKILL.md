@@ -177,6 +177,14 @@ precedence order. Every discovered skill passes `check_skill_safety` before it c
 loaded; skills with dangerous patterns (prompt injection, credential exfiltration) are
 blocked and logged.
 
+**Both ranking stages are optional at runtime and fail silently.** BM25 needs the
+`rank_bm25` package in the OpenSpace venv; the semantic re-rank needs an OpenAI-compatible
+key (`OPENAI_API_KEY` / `OPENROUTER_API_KEY`, or a nanobot/OpenClaw host config). With
+neither, `search_skills` still answers, every result carries `score: 0.0`, and the order is
+arbitrary — the skill finder is effectively a name lookup. Always verify with an **intent**
+query (`"scrape a javascript rendered page"` should surface `scrapling`), never a name
+query, which passes even when ranking is dead.
+
 Ranking detail and route-out reasoning: [references/skill-discovery-routing.md](references/skill-discovery-routing.md).
 
 ### Step 6: Evaluate skill quality from real execution evidence

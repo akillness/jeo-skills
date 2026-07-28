@@ -47,6 +47,21 @@ skill failing this gate should never be silently retried into ranking results.
 - Cloud search adds lexical recall plus semantic reranking beyond exact text matching,
   for package/skill discovery in the cloud hub.
 
+### Both ranking stages are optional at runtime — and fail silently
+
+`hybrid_rank()` degrades instead of erroring, so a broken ranker looks like a working one:
+
+| Stage | Needs | Missing → |
+|-------|-------|-----------|
+| BM25 rough-rank | the `rank_bm25` package in the OpenSpace venv | falls back to naive token overlap; in practice only a skill's own **name** matches |
+| Embedding re-rank | an OpenAI-compatible key (`OPENAI_API_KEY`, `OPENROUTER_API_KEY`, or a nanobot/OpenClaw host config), model `text-embedding-3-small` | BM25-only results are returned unchanged |
+
+With neither available, `search_skills` still answers, every result carries
+`score: 0.0`, and the returned order is arbitrary — the query
+`"scrape a javascript rendered page"` will not surface `scrapling`. Verify with an
+**intent** query, never a name query: a name query passes even when ranking is dead.
+Setup guide Step 4's Tool-Flow Liveness gate runs exactly this check.
+
 ## How to route a "find me a skill" request
 
 1. State the task in plain language (what the user wants done).
