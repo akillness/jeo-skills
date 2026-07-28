@@ -285,6 +285,10 @@ STRAY_SCALARS = {">", "|", ">-", "|-", ">+", "|+", "-", ""}
 # An earlier generator cut descriptions mid-sentence and cached the fragment in the
 # manifest; both shapes pass a naive length check but publish text no agent can use.
 TRUNCATION_SUFFIXES = ("...", "…")
+# `description: Use this skill when >` + indented prose folds into valid YAML that
+# carries the block indicator into the sentence, so it clears every length and
+# placeholder check while shipping "Use this skill when > Conduct a …" to agents.
+STRAY_INDICATOR_RE = re.compile(r"^\s*use\s+(?:this\s+)?skill\s+when\s*[>|][+-]?\s+", re.I)
 
 
 def validate_skill_documents(repo_root: Path, skill_names: list[str], manifest_descriptions: dict[str, str]) -> int:
@@ -312,6 +316,7 @@ def validate_skill_documents(repo_root: Path, skill_names: list[str], manifest_d
         require(len(description) >= MIN_DESCRIPTION, f"{name}: description is {len(description)} chars; agents cannot match on it")
         require(len(description) <= MAX_DESCRIPTION, f"{name}: description is {len(description)} chars, over the 1024-character limit")
         require(not description.endswith(TRUNCATION_SUFFIXES), f"{name}: description is cut off mid-sentence ({description[-40:]!r}) — run scripts/repair-skill-frontmatter.py")
+        require(not STRAY_INDICATOR_RE.match(description), f"{name}: description carries a stray YAML block indicator ({description[:45]!r}) — run scripts/repair-skill-frontmatter.py")
         # SKILL.md is what agent runtimes load; skills.json feeds README/TOON and
         # external consumers. Drift means the catalog advertises text no agent sees.
         manifest_description = " ".join(manifest_descriptions.get(name, "").split())

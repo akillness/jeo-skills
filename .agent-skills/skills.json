@@ -2355,7 +2355,7 @@
     },
     {
       "name": "grill-me",
-      "description": "Use this skill when > Conduct a comprehensive plan or design stress-test through systematic questioning. Interviews relentlessly about every decision point, resolves interdependencies progressively, and traverses the complete decision tree. Use when thoroughly vetting a proposal, design, or architecture before committing to it.",
+      "description": "Systematic plan stress-testing through relentless one-question-at-a-time decision-tree interviewing",
       "category": "planning-review",
       "path": "grill-me/SKILL.md",
       "tags": [
@@ -2385,7 +2385,7 @@
     },
     {
       "name": "grill-with-docs",
-      "description": "Use this skill when > Design review session that stress-tests plans against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallize. Use when validating architecture or plans against a project's language and documented decisions.",
+      "description": "Stress-test plans against project domain model, sharpen terminology, update CONTEXT.md and ADRs inline",
       "category": "planning-review",
       "path": "grill-with-docs/SKILL.md",
       "tags": [
@@ -2538,7 +2538,7 @@
     },
     {
       "name": "improve-codebase-architecture",
-      "description": "Use this skill when > Identify architectural friction and propose deepening opportunities — refactors that turn shallow modules into deep ones for better testability and AI-navigability. Use when improving architecture, finding refactoring opportunities, consolidating tightly-coupled modules, or making a codebase more testable.",
+      "description": "Identify architectural friction and propose deepening opportunities for testability using deletion-test, seam, locality vocabulary",
       "category": "code-quality",
       "path": "improve-codebase-architecture/SKILL.md",
       "tags": [
@@ -2807,7 +2807,7 @@
     },
     {
       "name": "migrate-to-shoehorn",
-      "description": "Use this skill when > Migrate TypeScript test files from unsafe `as` type assertions to type-safe alternatives from @total-typescript/shoehorn. Replace `obj as Type` with fromPartial(), `obj as unknown as Type` with fromAny(), and complete specs with fromExact(). Test code only — never use in production.",
+      "description": "Migrate TypeScript test as assertions to fromPartial/fromAny/fromExact from @total-typescript/shoehorn",
       "category": "code-quality",
       "path": "migrate-to-shoehorn/SKILL.md",
       "tags": [
@@ -3980,7 +3980,7 @@
     },
     {
       "name": "scaffold-exercises",
-      "description": "Use this skill when > Create exercise directory structures for educational content that comply with linting standards. Sections use XX-section-name/ naming, exercises use XX.YY-exercise-name/ with problem/, solution/, explainer/ variants. Use when creating course content or educational exercise structures.",
+      "description": "Create educational exercise directories compliant with pnpm ai-hero-cli internal lint",
       "category": "utilities",
       "path": "scaffold-exercises/SKILL.md",
       "tags": [
@@ -4631,7 +4631,7 @@
     },
     {
       "name": "tdd",
-      "description": "Use this skill when > Test-Driven Development using red-green-refactor cycles with vertical slices. Tests verify behavior through public interfaces, not implementation details. Use when building new features or fixing bugs with a test-first discipline to produce well-designed, behavior-verified code.",
+      "description": "Red-green-refactor TDD using vertical slices — tests specify observable behavior through public interfaces",
       "category": "code-quality",
       "path": "tdd/SKILL.md",
       "tags": [
@@ -4720,7 +4720,7 @@
     },
     {
       "name": "to-issues",
-      "description": "Use this skill when > Convert plans, specs, or requirements into independently-grabbable vertical slice issues. Each slice is a thin but complete end-to-end cut through all layers (schema, API, UI, tests). Classifies issues as HITL (human-in-the-loop) or AFK (automated, no human interaction needed).",
+      "description": "Convert plans/specs into independently-grabbable vertical slice issues (HITL or AFK classification)",
       "category": "planning-review",
       "path": "to-issues/SKILL.md",
       "tags": [
@@ -4750,7 +4750,7 @@
     },
     {
       "name": "to-prd",
-      "description": "Use this skill when > Generate a structured Product Requirements Document (PRD) from existing conversation context and codebase state. Synthesizes knowledge into a PRD without interviewing the user. Use when documenting requirements for a feature or change to publish to the project issue tracker.",
+      "description": "Generate structured PRD from conversation context without interviewing the user",
       "category": "planning-review",
       "path": "to-prd/SKILL.md",
       "tags": [
@@ -5361,7 +5361,7 @@
     },
     {
       "name": "zoom-out",
-      "description": "Use this skill when > Request a broader architectural perspective when navigating unfamiliar code sections. Maps all relevant modules, identifies caller relationships and dependencies, and uses domain-specific vocabulary. Use when encountering unfamiliar code or needing to understand how a component integrates with the larger system.",
+      "description": "Get higher-level architectural perspective: maps modules, callers, dependencies using domain vocabulary",
       "category": "code-quality",
       "path": "zoom-out/SKILL.md",
       "tags": [

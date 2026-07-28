@@ -1,10 +1,8 @@
 ---
 name: grill-with-docs
-description: Use this skill when >
-  Design review session that stress-tests plans against the existing domain model,
-  sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as
-  decisions crystallize. Use when validating architecture or plans against a
-  project's language and documented decisions.
+description: >-
+  Stress-test plans against project domain model, sharpen terminology, update CONTEXT.md and ADRs
+  inline
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Works best in codebases with CONTEXT.md and docs/adr/ documentation. Creates

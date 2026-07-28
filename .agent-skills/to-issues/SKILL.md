@@ -1,10 +1,8 @@
 ---
 name: to-issues
-description: Use this skill when >
-  Convert plans, specs, or requirements into independently-grabbable vertical slice
-  issues. Each slice is a thin but complete end-to-end cut through all layers
-  (schema, API, UI, tests). Classifies issues as HITL (human-in-the-loop) or AFK
-  (automated, no human interaction needed).
+description: >-
+  Convert plans/specs into independently-grabbable vertical slice issues (HITL or AFK
+  classification)
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Works with GitHub Issues, Linear, or any issue tracker. Run setup-matt-pocock-skills
