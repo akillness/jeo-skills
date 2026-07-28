@@ -1,0 +1,4 @@
+interface:
+  display_name: "Open Design Game UI Handoff"
+  short_description: "Package upgrade-only runtime evidence for Open Design"
+  default_prompt: "Use $open-design-game-ui-handoff to package current runtime visuals, motion, source anchors, and preservation boundaries before Open Design work."

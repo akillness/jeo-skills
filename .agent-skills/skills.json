@@ -1,7 +1,7 @@
 {
   "version": "1.3.0",
   "generated": "2026-07-28",
-  "skill_count": 174,
+  "skill_count": 177,
   "categories": {
     "planning-review": [
       "agentation",
@@ -18,12 +18,12 @@
       "triage"
     ],
     "agent-development": [
+      "article-prompts-to-skills",
       "cli-anything",
+      "openspace",
       "prompts-chat",
       "skill-standardization",
-      "upskill",
-      "openspace",
-      "article-prompts-to-skills"
+      "upskill"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -46,12 +46,12 @@
       "api-documentation",
       "authentication-setup",
       "backend-testing",
+      "colibri",
       "database-schema-design",
       "payloadcms",
       "pydantic-ai",
       "supabase-agent-skills",
-      "typesense",
-      "colibri"
+      "typesense"
     ],
     "search-analysis": [
       "academic-research",
@@ -85,6 +85,8 @@
       "technical-writing"
     ],
     "code-quality": [
+      "audit-reference-originality",
+      "audit-verify-explain-grade-5",
       "code-refactoring",
       "code-review",
       "debugging",
@@ -93,12 +95,10 @@
       "migrate-to-shoehorn",
       "open-code-review",
       "performance-optimization",
+      "performance-profiling",
       "tdd",
       "testing-strategies",
-      "zoom-out",
-      "audit-reference-originality",
-      "audit-verify-explain-grade-5",
-      "performance-profiling"
+      "zoom-out"
     ],
     "utilities": [
       "agenticskills",
@@ -125,6 +125,7 @@
       "llm-wiki",
       "notebooklm",
       "npm-git-install",
+      "obsidian-mind",
       "obsidian-second-brain",
       "okf",
       "ooo",
@@ -135,57 +136,59 @@
       "pretext",
       "scaffold-exercises",
       "stitch-skills",
+      "stitched-full-page-capture",
       "tokhub",
       "write-a-skill",
       "x-twitter-scraper",
-      "zeude",
-      "obsidian-mind",
-      "stitched-full-page-capture"
+      "zeude"
     ],
     "frontend": [
       "astryx",
       "ax",
+      "build-daily-inspiration-sites",
+      "daily-ui-inspiration-capture",
+      "design-first-ui-prompting",
       "design-system",
       "devup-ui",
+      "html-to-interaction-prompts",
       "lazyweb",
+      "optimize-web-animations",
       "react-best-practices",
       "react-bits",
       "react-grab",
       "responsive-design",
       "state-management",
       "web-accessibility",
-      "web-design",
-      "design-first-ui-prompting",
-      "html-to-interaction-prompts",
-      "build-daily-inspiration-sites",
-      "daily-ui-inspiration-capture",
-      "optimize-web-animations"
+      "web-design"
     ],
     "creative-media": [
+      "aura-asset-images",
+      "browser-video-recording",
       "drawio",
+      "elevenlabs-tts",
       "gbro-collage-broll",
+      "generate-reference-inspired-brand-worlds",
       "motion-previs-studio",
+      "open-design-game-ui-concept",
+      "open-design-game-ui-handoff",
+      "open-design-game-ui-takeover",
       "paperbanana",
       "remotion-video-production",
       "slides-grab",
+      "unsplash-asset-images",
       "video-production",
       "video-shotcraft",
-      "vox-director",
-      "webtoon-harness",
-      "aura-asset-images",
-      "unsplash-asset-images",
-      "browser-video-recording",
-      "elevenlabs-tts",
       "video-to-superprompt",
-      "generate-reference-inspired-brand-worlds"
+      "vox-director",
+      "webtoon-harness"
     ],
     "marketing": [
-      "marketing-automation",
-      "yuwen-publish-precheck",
       "customer-email-draft-threads",
       "customer-support-verification",
+      "marketing-automation",
       "write-like-meng-on-x",
-      "x-bookmark-quote-posts"
+      "x-bookmark-quote-posts",
+      "yuwen-publish-precheck"
     ],
     "project-management": [
       "sprint-retrospective",
@@ -199,11 +202,11 @@
       "game-demo-feedback-triage",
       "game-performance-profiler",
       "game-studio-harness",
+      "implement-fog-of-war",
       "perfectpixel",
       "steam-store-launch-ops",
       "unity-gamedev-skill-pack",
-      "web-game-development",
-      "implement-fog-of-war"
+      "web-game-development"
     ]
   },
   "skills": [
@@ -3192,6 +3195,84 @@
         "WebFetch"
       ],
       "keyword": "open-design",
+      "version": "1.0"
+    },
+    {
+      "name": "open-design-game-ui-concept",
+      "description": "Prepare, generate, and review game UI concepts through the local nexu-io/Open Design app using real runtime screenshots and project assets. Use when Codex must design or redesign Darkbone Archer UI for phone, tablet, desktop, Steam, controller, or multiple locales; create an Open Design handoff/project; drive a local Codex design run; inspect an Open Design HTML artifact; or complete a design-first approval loop before runtime implementation.",
+      "category": "creative-media",
+      "path": "open-design-game-ui-concept/SKILL.md",
+      "tags": [
+        "open-design",
+        "game-ui",
+        "design-concept",
+        "game-development",
+        "interactive-lab"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "WebFetch"
+      ],
+      "keyword": "open-design-game-ui-concept",
+      "version": "1.0"
+    },
+    {
+      "name": "open-design-game-ui-handoff",
+      "description": "Build and validate Open Design handoffs from the real Darkbone Archer runtime — game UI (upgrade-only preservation contracts) AND VFX/skill/RIG design packages. Use whenever Codex must prepare, regenerate, or audit an Open Design handoff; feed an existing Claude Design handoff zip into Open Design; collect current screenshots, animation videos, keyframes, source anchors, assets, responsive states, or preservation boundaries; or prevent a standalone concept from deleting existing identity, motion, interaction, copy, or data that it does not show.",
+      "category": "creative-media",
+      "path": "open-design-game-ui-handoff/SKILL.md",
+      "tags": [
+        "open-design",
+        "game-design",
+        "handoff",
+        "preservation-contract",
+        "game-development"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "WebFetch"
+      ],
+      "keyword": "open-design-game-ui-handoff",
+      "version": "1.0"
+    },
+    {
+      "name": "open-design-game-ui-takeover",
+      "description": "Take over an approved Open Design artifact (game UI, VFX, skill, RIG, enemy/boss) into Darkbone Archer without degrading the runtime. Use whenever Codex must analyze, port, integrate, or review an Open Design standalone; apply a responsive Home, Map Select, Talent, Mask, Fusion, Victory, or settlement design; port an Open Design VFX/RIG lab into Phaser; preserve existing animations omitted by a mockup; or prove current-runtime vs standalone vs integrated-runtime fidelity before merge.",
+      "category": "creative-media",
+      "path": "open-design-game-ui-takeover/SKILL.md",
+      "tags": [
+        "open-design",
+        "game-development",
+        "integration",
+        "fidelity-gate",
+        "phaser"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "WebFetch"
+      ],
+      "keyword": "open-design-game-ui-takeover",
       "version": "1.0"
     },
     {

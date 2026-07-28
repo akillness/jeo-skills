@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Darkbone 工艺范例 — match this craft level</title>
+<style>
+:root{
+  --sig-au:#cfa94f; --sig-au-hi:#f4dd92; --sig-au-dim:#7d6526; --sig-au-edge:#2c2410;
+  --sig-soul:#3fc7b6; --sig-soul-hi:#78eadc; --sig-soul-deep:#249f92; --sig-soul-edge:#58d8c2;
+  --sig-cyan:#5fc8ff; --sig-carn:#e0673c;
+  --plate-top:#0e1314; --plate-bot:#070a0b; --bone:#e8e2d6; --dim:#9b91a8;
+  --ch:13px; --ew:2px;
+}
+*{box-sizing:border-box; -webkit-font-smoothing:antialiased}
+body{ margin:0; min-height:100vh; color:var(--bone);
+  font:15px/1.7 "Noto Serif SC","Songti SC",serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(63,199,182,.06), transparent 60%),
+    radial-gradient(900px 500px at 85% 110%, rgba(207,169,79,.05), transparent 55%),
+    linear-gradient(180deg,#0b0e10,#07090a 60%,#050607);
+  padding:34px 18px 60px; display:grid; place-items:center;
+}
+.stage{ width:min(920px,100%); }
+/* vignette grounding */
+.stage::after{ content:""; position:fixed; inset:0; pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,.5)); }
+
+/* ── section seal ── */
+.seal{ display:flex; align-items:center; gap:14px; margin:26px 0 14px; }
+.seal .ln{ flex:1; height:2px;
+  background:linear-gradient(90deg, transparent, var(--sig-au-dim) 30%, var(--sig-au) 50%, var(--sig-au-dim) 70%, transparent); }
+.seal b{ font-size:15px; letter-spacing:.35em; color:var(--sig-au-hi); text-shadow:0 1px 2px #000; white-space:nowrap; }
+
+/* ── engraved gilt plate (chamfered octagon) ── */
+.plate{ position:relative; isolation:isolate;
+  clip-path:polygon(var(--ch) 0, calc(100% - var(--ch)) 0, 100% var(--ch), 100% calc(100% - var(--ch)),
+    calc(100% - var(--ch)) 100%, var(--ch) 100%, 0 calc(100% - var(--ch)), 0 var(--ch));
+  background:linear-gradient(180deg,var(--sig-au-hi),var(--sig-au) 55%,var(--sig-au-dim));
+  box-shadow:0 2px 10px rgba(0,0,0,.5);
+}
+.plate::before{ content:""; position:absolute; inset:var(--ew); z-index:0; clip-path:inherit;
+  background:linear-gradient(180deg,var(--plate-top),var(--plate-bot));
+  box-shadow:inset 0 1px 0 rgba(244,221,146,.22), inset 0 2px 8px rgba(0,0,0,.55); }
+.plate>*{ position:relative; z-index:1; }
+/* sheen sweep */
+.plate::after{ content:""; position:absolute; z-index:2; top:0; bottom:0; width:34%;
+  left:-40%; transform:skewX(-18deg); pointer-events:none;
+  background:linear-gradient(90deg, transparent, rgba(244,221,146,.10), transparent);
+  animation:sheen 3.8s ease-in-out infinite; }
+@keyframes sheen{ 0%,55%{left:-40%} 85%,100%{left:110%} }
+
+/* ── hero command row ── */
+.cmdrow{ display:flex; gap:14px; align-items:stretch; }
+.cmd{ flex:1; padding:16px 20px 15px; text-align:center; cursor:pointer;
+  transition:transform .09s ease, filter .09s ease; }
+.cmd:active{ transform:translateY(1px) scale(.985); filter:brightness(.92); }
+.cmd .t{ font-size:19px; font-weight:800; letter-spacing:.22em; color:var(--bone); text-shadow:0 1px 1px #000, 0 0 14px rgba(63,199,182,.25); }
+.cmd .s{ font-size:11.5px; color:var(--dim); letter-spacing:.12em; margin-top:2px; }
+.cmd.primary .t{ color:#eafffb; text-shadow:0 1px 1px #000, 0 0 16px rgba(63,199,182,.55); }
+.cmd.primary{ animation:glowSoul 3.8s ease-in-out infinite; }
+@keyframes glowSoul{ 0%,100%{box-shadow:0 2px 10px rgba(0,0,0,.5), 0 0 8px rgba(63,199,182,.30)}
+                     50%{box-shadow:0 2px 10px rgba(0,0,0,.5), 0 0 20px 4px rgba(63,199,182,.62)} }
+
+/* rune march border strip */
+.rune{ height:6px; margin:6px 2px 0;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  background-image:repeating-linear-gradient(90deg, rgba(207,169,79,.38) 0 9px, transparent 9px 20px);
+  animation:runeTravel 7s linear infinite; }
+@keyframes runeTravel{ to{ background-position:80px 0; } }
+
+/* ── unit card (levelup DNA) ── */
+.cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.card{ --rc:#5fc8ff; padding:14px 14px 12px; display:flex; gap:12px; align-items:center; }
+.card.epic{ --rc:#b07be0; } .card.legendary{ --rc:#e6b23e; }
+.slot{ width:64px; height:64px; flex:0 0 auto; display:grid; place-items:center;
+  clip-path:polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px),
+    calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+  background:linear-gradient(150deg, color-mix(in srgb,var(--rc) 60%, #333), color-mix(in srgb,var(--rc) 25%, #111));
+  box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--rc) 55%, transparent);
+}
+.slot i{ width:40px; height:40px; border-radius:50%; display:block;
+  background:radial-gradient(circle at 35% 30%, var(--sig-soul-hi), var(--sig-soul) 45%, var(--sig-soul-deep) 80%);
+  box-shadow:0 0 12px rgba(63,199,182,.6), inset 0 -4px 8px rgba(0,0,0,.4);
+  animation:glowSoul 3.8s ease-in-out infinite; }
+.card .nm{ font-weight:800; font-size:15.5px; letter-spacing:.06em; }
+.card .fx{ font-size:12px; color:var(--dim); line-height:1.55; }
+.chip{ position:absolute; top:9px; right:10px; font:700 10px/1 ui-monospace,monospace; letter-spacing:.08em;
+  color:color-mix(in srgb,var(--rc) 85%, #fff); padding:3px 8px;
+  background:color-mix(in srgb,var(--rc) 12%, rgba(5,8,9,.9));
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--rc) 45%, transparent);
+  clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px); }
+
+/* ── engraved progress trough ── */
+.trough{ margin-top:16px; padding:12px 16px 14px; }
+.trough .lbl{ display:flex; justify-content:space-between; font-size:12px; color:var(--dim); letter-spacing:.15em; }
+.trough .lbl b{ font:800 15px/1 ui-monospace,monospace; color:var(--sig-au-hi); text-shadow:0 0 8px rgba(207,169,79,.5); }
+.bar{ margin-top:8px; height:14px; position:relative;
+  clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 0px),calc(100% - 7px) 100%,7px 100%,0 100%,0 7px);
+  background:linear-gradient(180deg,#050708,#0b0f10); box-shadow:inset 0 2px 5px rgba(0,0,0,.8), inset 0 0 0 1px rgba(207,169,79,.25); }
+.bar .fill{ position:absolute; inset:2px auto 2px 2px; width:62%;
+  background:linear-gradient(180deg,var(--sig-soul-hi),var(--sig-soul) 55%,var(--sig-soul-deep));
+  box-shadow:0 0 10px rgba(63,199,182,.55); clip-path:inherit; }
+.bar .gem{ position:absolute; top:50%; left:calc(62% - 2px); transform:translate(-50%,-50%) rotate(45deg);
+  width:12px; height:12px; background:linear-gradient(135deg,var(--sig-soul-hi),var(--sig-soul-deep));
+  box-shadow:0 0 10px rgba(120,234,220,.8), inset 0 0 0 1px rgba(255,255,255,.35); }
+.sub{ text-align:center; color:var(--dim); font-size:11.5px; letter-spacing:.2em; margin-top:26px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="seal"><span class="ln"></span><b>冥 骨 魂 殿 · 工 艺 基 准</b><span class="ln"></span></div>
+
+  <div class="cmdrow">
+    <div class="plate cmd primary"><div class="t">出 战</div><div class="s">DEPLOY · 神鉴之阶 III</div></div>
+    <div class="plate cmd"><div class="t">魂 兽 栏</div><div class="s">BEAST PEN · 7/12</div></div>
+  </div>
+  <div class="rune"></div>
+
+  <div class="seal"><span class="ln"></span><b>收 魂 · 三 选 一</b><span class="ln"></span></div>
+  <div class="cards">
+    <div class="plate card"><span class="chip">NEW</span><div class="slot"><i></i></div>
+      <div><div class="nm">枯爪墓犬</div><div class="fx">迅捷系 · 撕咬同一目标伤害递增</div></div></div>
+    <div class="plate card epic"><span class="chip">可合星 ▲</span><div class="slot"><i></i></div>
+      <div><div class="nm">裂蛹蜣螂</div><div class="fx">坚壁系 · 死亡裂出两只幼蛹</div></div></div>
+    <div class="plate card legendary"><span class="chip">鉴赏赛</span><div class="slot"><i></i></div>
+      <div><div class="nm">斯芬克斯守卫</div><div class="fx">传说 · 阿努比斯之鉴的门卫</div></div></div>
+  </div>
+
+  <div class="plate trough">
+    <div class="lbl"><span>神 鉴 之 阶 · 三 阶</span><b>2 / 3</b></div>
+    <div class="bar"><div class="fill"></div><div class="gem"></div></div>
+  </div>
+
+  <p class="sub">MATCH THIS CRAFT LEVEL — 刻金 · 魂火 · 符文行进 · 一切表面皆有材质</p>
+</div>
+</body>
+</html>

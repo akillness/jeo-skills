@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-174-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-177-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 **174개 로컬 스킬 폴더 · 설치 가능 스킬 174개 · TOON 포맷 · 멀티플랫폼**
 Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 174개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
 > 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 174개 로컬 스킬 폴더 = 총 174개 설치 가능 스킬

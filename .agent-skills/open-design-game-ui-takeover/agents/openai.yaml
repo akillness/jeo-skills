@@ -1,0 +1,4 @@
+interface:
+  display_name: "Open Design Game UI Takeover"
+  short_description: "Integrate Open Design UI without visual regression"
+  default_prompt: "Use $open-design-game-ui-takeover to port an approved Open Design artifact while preserving every runtime-owned identity, motion, interaction, copy, and data axis."

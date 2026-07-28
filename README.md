@@ -2,17 +2,17 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-174-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**174 local skill folders · 174 installable skills · TOON Format · Cross-platform**
-A curated collection of 174 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+[![Skills](https://img.shields.io/badge/Skills-177-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**177 local skill folders · 177 installable skills · TOON Format · Cross-platform**
+A curated collection of 177 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**174 local skill folders · 174 installable skills · TOON Format · Cross-platform**
-├── .agent-skills/          ← 174 skill folders (each with SKILL.md + SKILL.toon)
+**177 local skill folders · 177 installable skills · TOON Format · Cross-platform**
+├── .agent-skills/          ← 177 skill folders (each with SKILL.md + SKILL.toon)
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -22,8 +22,8 @@ A curated collection of 174 agent skills for spec-first, multi-agent LLM workflo
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 174 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
-├── .agent-skills/          ← 174 skill folders (each with SKILL.md + SKILL.toon)
+A curated collection of 177 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+├── .agent-skills/          ← 177 skill folders (each with SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo Agent & The Legendary Equipment Set
@@ -159,7 +159,7 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 174 local skill folders = 174 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 177 local skill folders = 177 total installable skills
 
 ### 🎬 Creative Media (16)
 
@@ -180,7 +180,7 @@ rtk init -g
 | `video-to-superprompt` |
 | `generate-reference-inspired-brand-worlds` |
 
-├── .agent-skills/          ← 174 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 177 skill folders (each with SKILL.md + SKILL.toon)
 
 ### 🎯 Core Orchestration (7)
 
@@ -666,7 +666,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 174 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 177 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -745,7 +745,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Change | Details |
 |--------|---------|
-| **Catalog now 174 skills** | Removed 16 skill folders (`lmstudio-cli`, `ohmg`, `omc`, `omx`, `prompt-repetition`, `setup-pre-commit`, `spec-stack`, `team`, `ui-component-patterns`, `ultraqa`, `ultrawork`, `user-guide-writing`, `vibe-kanban`, `video-production`, `web-design-guidelines`, `workflow-automation`) and added 3 (`obsidian-mind`, `openspace`, `web-game-development`). `skills.json`, `skills.toon`, `skills-lock.json`, and both README catalog tables were regenerated; `scripts/validate-catalog-projections.py` passes at 174. |
+| **Catalog now 177 skills** | Added 3 new open-design game-UI skills (`open-design-game-ui-concept`, `open-design-game-ui-handoff`, `open-design-game-ui-takeover`) from joeeeeey/open-design-skill. These are production-ready AI game-design pipeline skills for Darkbone Archer game-UI development. Updated `skills.json`, README files, and `setup-all-skills-prompt.md` to reflect the new count. |
 | **No more platform-exclusive skills** | With `omc` / `ohmg` / `omx` gone, the manifest is a single shared catalog. Step 1 of `setup-all-skills-prompt.md` now installs everything, the Step 2 platform-install block was replaced by a stray-copy audit, and Step 4's platform dedup check became a shared-root shadow check. |
 | **Step 3g reduced to OpenCode plugin setup** | The `oh-my-claudecode`, `oh-my-codex` (OMX), and `oh-my-agent` (OMA) installers existed only to back the removed routing skills and were dropped; the `oh-my-openagent` (OMO) block is unchanged. `scripts/test-runtime-config-writers.sh` replaced its OMX handoff case with a no-config-mutation check and still passes all 25 cases. |
 | **obsidian-mind / web-game-development descriptions trimmed** | Both shipped with frontmatter descriptions over the 1024-character limit, which makes a skill invisible to `skills add`. Rewritten under the cap with their trigger keywords intact. |
