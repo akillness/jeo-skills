@@ -1,0 +1,10 @@
+N:browser-video-recording
+D:Create polished 60 fps 4:3 4K browser screen-recording style videos from Codex in-app browser captures, with browser-only crop, natural macOS cursor styling, deliberate click choreography, zoom-follow framing, ffprobe/thumbnail verification, and optional native recording compatibility checks. Use when the user asks to record or re-record browser actions, show cursor clicks and zooms, make Dribbble/UI inspiration or product demo recordings, or asks whether Codex, Playwright, or an MCP can produce a natural browser demo video.
+G:browser|video|recording|mengto-skills|codex-workflow
+U[6]:
+  Use when the user asks to record or re-record browser actions — clicks, scrolls, navigations — into a polished demo video
+  Use when producing Dribbble/UI-inspiration or product demo recordings that need a natural macOS cursor, deliberate click choreography, and calm zoom-follow framing
+  Use when the user asks whether Codex, Playwright, or an MCP can produce a natural browser demo video, since this skill defines the three-layer dependency model
+  Use when rendering deterministic 60 fps 4:3 4K MP4 output from Codex in-app browser screenshots via scripts/render_browser_demo.py
+  Use when verifying a delivered video's resolution, frame rate, duration, and cursor accuracy with ffprobe and a mid-video thumbnail check
+  Not for general desktop screen recording unrelated to the Codex in-app browser, or for video editing beyond cursor/zoom demo rendering

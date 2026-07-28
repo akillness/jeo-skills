@@ -1,0 +1,61 @@
+{
+  "skill_name": "web-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want the bottom edge of our hero image to fade out into the page background. Nothing fancy, just that.",
+      "expected_output": "Classifies the request into CSS Technique Primitives, names the single narrowest sub-skill `css-alpha-masking`, and explicitly declines to pull in a whole style pack or motion system for a one-property effect.",
+      "assertions": [
+        "Output names the CSS Technique Primitives family",
+        "Output names `css-alpha-masking` as the single sub-skill",
+        "Output does not recommend a Style/Design-System Pack or a scroll/motion sub-skill for this request",
+        "Output includes a way to check for or fetch the sub-skill into the agent skills root"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rebuild our landing page to feel Awwwards-level: dark and glassy, a laser-ish WebGL background, and sections that reveal as you scroll.",
+      "expected_output": "Recognizes the request spans four families, names one sub-skill per layer (Full-Site Quality & Direction, Style/Design-System Packs, WebGL/3D Backgrounds & Shaders, Motion & Scroll Systems), and applies the documented ordering: direction → layout → background → motion → component states → polish.",
+      "assertions": [
+        "Output names more than one family and justifies the combination as genuinely spanning layers",
+        "Output names a direction/quality sub-skill such as `build-awwwards-quality-sites`",
+        "Output names a WebGL background sub-skill such as `webgl-laser`",
+        "Output names a scroll/reveal sub-skill such as `animation-on-scroll`",
+        "Output applies motion after layout and background rather than first"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We're adding Vanta.js to the hero on our Next.js site and it keeps leaking WebGL contexts when you navigate away.",
+      "expected_output": "Routes to Library Embeds & Integrations and names `vantajs`, because the request is library wiring, sizing, and lifecycle cleanup rather than a visual-direction choice.",
+      "assertions": [
+        "Output selects the Library Embeds & Integrations family",
+        "Output names `vantajs` as the sub-skill",
+        "Output frames the problem as integration/cleanup rather than choosing an aesthetic",
+        "Output does not route this to a WebGL/3D Backgrounds & Shaders recipe just because the output is WebGL"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our buttons, inputs, and cards look different in three different apps and nobody agrees on the spacing scale. Can you fix the look?",
+      "expected_output": "Declines to pick a visual recipe and routes out to `design-system`, because the problem is token governance and cross-product consistency rather than styling one surface.",
+      "assertions": [
+        "Output routes to `design-system` instead of naming a web-design sub-skill",
+        "Output gives token governance / cross-product consistency as the reason",
+        "Output does not recommend a Style/Design-System Pack as the fix for multi-app token drift",
+        "Output does not claim this pack governs shared tokens or primitive naming"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We need a Three.js scene where the player dodges projectiles and the camera locks onto the nearest enemy. Also give the menu screen a nice ambient background.",
+      "expected_output": "Splits the request: routes the gameplay half (camera lock-on, enemies, dodging) to `web-game-development` and keeps only the decorative menu background here, in the WebGL/3D Backgrounds & Shaders family.",
+      "assertions": [
+        "Output routes the gameplay camera/enemy work to `web-game-development`",
+        "Output keeps only the ambient/decorative menu background in the web-design families",
+        "Output states the decorative-vs-gameplay boundary rather than treating all Three.js as one domain",
+        "Output does not apply a site style pack to gameplay camera or enemy behavior"
+      ]
+    }
+  ]
+}

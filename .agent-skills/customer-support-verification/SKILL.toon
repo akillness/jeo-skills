@@ -1,0 +1,10 @@
+N:customer-support-verification
+D:Verify customer support work against the selected customer-case flow, full-thread evidence, account and canonical-thread matching, authority, financial approval, customer communication, eligible optional Trustpilot review-request rules, post-action read-back, send confirmation, thread-wide archive, and closure requirements. Use after every SaaS support triage, account/access or unsupported-platform response, duplicate or resolved acknowledgement, positive-confirmation closure reply, cancellation, failed-payment cancellation, refund, accidental-renewal case, support handoff, draft, send, or archive task before reporting completion. Triggers on: verify support case, support closure check, cancellation verification, refund verification, accidental-renewal case, duplicate/resolved acknowledgement, account-access ticket, Trustpilot eligibility, thread read-back before marking done.
+G:customer|support|verification|mengto-skills|codex-workflow
+U[6]:
+  Before reporting completion of a SaaS support triage, account/access, or unsupported-platform draft, send, or archive
+  When closing a duplicate, resolved-acknowledgement, or positive-confirmation case and deciding Trustpilot review eligibility
+  Before or after a cancellation, failed-payment cancellation, refund, or accidental-renewal action, to verify financial approval and post-action read-back
+  When verifying account/canonical-thread matching, authority, and mutation approval before any external state change
+  Before confirming a customer-visible send (exact recipient, subject, body, SENT state) or a thread-wide Gmail archive
+  Not for performing the support scenario itself — load handle-saas-account-cases or handle-saas-billing-cases first and use this only as the final gate

@@ -1079,7 +1079,59 @@ echo "✅ graphify installed (venv: $GRAPHIFY_VENV)"
 "$GRAPHIFY_PY" -c "import graphify; print('graphify import OK')"
 ```
 
-> **Wiki/corpus note:** Graphify already indexes doc files (`.md`, `.mdx`, `.txt`, `.rst`, `.html`, `.yaml`, `.yml`) alongside code by default — no extra config needed. Just run `graphify update .` from a directory that contains the wiki/docs so they're picked up in the rebuild. (`graphify update` only supports `--force` and `--no-cluster`; there is no `--scope`/`--no-description` flag.)
+```bash
+echo "=== Verifying the graphify CLI ==="
+if command -v graphify >/dev/null 2>&1; then
+  graphify --version
+else
+  echo "⚠️  'graphify' is not on PATH — use $GRAPHIFY_PY -m graphify, or add the venv bin dir to PATH"
+fi
+# Core CLI loop (there is NO `graphify build` — the build command is `graphify update`):
+#   graphify scope        # what would actually be graphed
+#   graphify update .     # -> .graphify/graph.json + .graphify/GRAPH_REPORT.md
+#   graphify summary      # hubs, communities, representative nodes
+#   graphify query "<question>" --budget 1500
+#   graphify explain <node> | graphify path <a> <b> | graphify tree <node> --depth 2
+#   graphify export html  # -> .graphify/graph.html  (NOT produced by `graphify update`)
+#   graphify check-update # cheap "does this need a rebuild?" probe
+```
+
+**Install the graphify skill for jeo · jeopi · gjc · opencode.** `graphify install <platform>`
+accepts only these ids — `claude`, `codex`, `gemini`, `opencode`, `aider`, `copilot`, `claw`,
+`droid`, `trae`, `trae-cn`, `hermes`, `kimi`, `kiro`, `antigravity`, `antigravity-windows`,
+`vscode-copilot-chat`, `windows`, `vscode`. **`jeo`, `jeopi` and `gjc` are not platform ids**
+(`graphify install jeo` fails with `error: unknown platform`), exactly like the skills-CLI ids in
+Step 0: all three read the shared `~/.agents/skills` root that Step 1's unconditional `universal`
+id already populates.
+
+```bash
+echo "=== Wiring graphify for jeo / jeopi / gjc / opencode ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+
+# jeo · jeopi · gjc — nothing extra to install: Step 1 put the skill in the shared root.
+if [ -f "$SKILLS_ROOT/graphify/SKILL.md" ]; then
+  echo "✅ graphify skill present at $SKILLS_ROOT/graphify/SKILL.md (jeo, jeopi, gjc, sst/opencode read this)"
+else
+  echo "⚠️  graphify skill missing from $SKILLS_ROOT — re-run Step 1, or:"
+  echo "    npx skills add https://github.com/akillness/jeo-skills --skill graphify -a universal"
+fi
+
+# opencode — sst/opencode additionally supports a native plugin + tool.execute.before hook.
+if [ "${OPENCODE_SST:-0}" = "1" ] && command -v graphify &>/dev/null; then
+  graphify install opencode 2>&1 | tail -3
+  echo "✅ graphify opencode integration installed (.opencode/skills, .opencode/plugins/graphify.js, opencode.json hook)"
+else
+  echo "ℹ️  sst/opencode not detected — skipping 'graphify install opencode'"
+fi
+# The archived Go opencode-ai/opencode TUI has no skill loader; Step 2b's command bridge covers it.
+```
+
+> **Wiki/corpus note:** Graphify already indexes doc files (`.md`, `.mdx`, `.txt`, `.rst`, `.html`, `.yaml`, `.yml`) alongside code by default — no extra config needed. Just run `graphify update .` from a directory that contains the wiki/docs so they're picked up in the rebuild.
+>
+> **State layout:** artifacts live in `.graphify/` (`graph.json`, `GRAPH_REPORT.md`). `graphify-out/` is the legacy layout — run `graphify migrate-state` on old repos. Verified `graphify update` flags include `--force`, `--no-cluster`, `--no-description`, `--no-label`, `--fill-missing`, `--scope auto|committed|tracked|all`, and `--all`; run `graphify update --help` rather than guessing.
+>
+> **Degraded output is normal without an LLM key:** `graphify update .` still writes the graph but prints `community labeling failed ... using Community N placeholders`. Re-run `graphify update --fill-missing` once a backend is configured instead of treating placeholders as real cluster names.
 
 ### 3c — ooo MCP Server (Ouroboros spec-first dev loop + git-aware interview + spec-kit plan + cli-anything execute)
 
@@ -1999,6 +2051,67 @@ else echo "ℹ️  jeopi not installed — skipping jeopi hooks wiring"; fi
 ---
 
 
+### 3l — OpenSpace (skill finder / retrieval layer over the installed catalog)
+
+Step 1 installs ~174 skills into `~/.agents/skills`. OpenSpace is installed here specifically to
+be the **skill-finder**: a host agent asks it to search, rank, and load the right `SKILL.md` out
+of that catalog instead of guessing from a flat list, and it records which skills actually worked.
+
+```bash
+echo "=== Installing OpenSpace (skill discovery layer) ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+OPENSPACE_HOME="${OPENSPACE_HOME:-$_HOME/.openspace/OpenSpace}"
+
+# Requires Python 3.12+.
+if command -v python3 &>/dev/null && python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3,12) else 1)'; then
+  if [ ! -d "$OPENSPACE_HOME/.git" ]; then
+    mkdir -p "$(dirname "$OPENSPACE_HOME")"
+    git clone --filter=blob:none --sparse https://github.com/HKUDS/OpenSpace.git "$OPENSPACE_HOME"
+    git -C "$OPENSPACE_HOME" sparse-checkout set --no-cone '/*' '!/assets/'
+  else
+    git -C "$OPENSPACE_HOME" pull --ff-only 2>&1 | tail -1
+  fi
+  python3 -m pip install -e "$OPENSPACE_HOME" 2>&1 | tail -2
+  openspace-mcp --help >/dev/null 2>&1 && echo "✅ openspace-mcp installed"
+  # Host skills that give the agent the discovery + delegation tools.
+  for _hs in skill-discovery delegate-task; do
+    [ -d "$OPENSPACE_HOME/openspace/host_skills/$_hs" ] \
+      && mkdir -p "$SKILLS_ROOT/$_hs" \
+      && cp -R "$OPENSPACE_HOME/openspace/host_skills/$_hs/." "$SKILLS_ROOT/$_hs/" \
+      && echo "✅ host skill installed: $SKILLS_ROOT/$_hs"
+  done
+else
+  echo 'ℹ️  Python 3.12+ not found — skipping OpenSpace (the jeo-skills openspace routing skill is still installed by Step 1)'
+fi
+```
+
+Then register the MCP server in your host agent's MCP config, pointing
+**`OPENSPACE_HOST_SKILL_DIRS` at the shared skills root** so OpenSpace ranks against the catalog
+Step 1 installed:
+
+```json
+{
+  "mcpServers": {
+    "openspace": {
+      "command": "openspace-mcp",
+      "toolTimeout": 600,
+      "env": {
+        "OPENSPACE_HOST_SKILL_DIRS": "~/.agents/skills",
+        "OPENSPACE_WORKSPACE": "~/.openspace/OpenSpace"
+      }
+    }
+  }
+}
+```
+
+> Full routing modes, transports, quality signals, and the FIX/DERIVED/CAPTURED evolution rules
+> live in the `openspace` skill: `~/.agents/skills/openspace/SKILL.md` and its
+> `references/install-and-mcp-wiring.md`. Use `bash ~/.agents/skills/openspace/scripts/install-openspace.sh --dry-run`
+> to preview the same steps before running them.
+
+---
+
 ---
 
 ## Step 4 — Verification
@@ -2371,7 +2484,7 @@ If no → skip silently. Never re-ask.
 
 ---
 
-Skill Inventory (152 skills)
+Skill Inventory (174 skills)
 
 | **Creative Media** | remotion-video-production *(compatibility alias for video-production when legacy tooling or explicit Remotion naming still expects the old skill)*, video-shotcraft *(cinematic product promo & demo video production using 106 shot recipe cards, Ink Press template, Remotion 2.5D camera moves, beat syncing, and sound design)*, paperbanana *(routing-first academic illustration — turn text/PDF into publication-quality figures via a two-phase plan-then-refine multi-agent pipeline; routes to the smallest workable mode: plot (VLM-only charts) < generate (one diagram) < batch/sweep/orchestrate, with evaluate (VLM-as-Judge) and polish; provider-agnostic, venue style packs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana`)* | All (`*`) |
 
@@ -2505,6 +2618,11 @@ Skill Inventory (152 skills)
 | `colibri` | `colibri`, `GLM-5.2`, `MoE inference`, `expert streaming`, `MTP` | Pure-C consumer-hardware LLM inference engine with model conversion, expert caching, speculative decoding, and CPU/GPU integration |
 | `motion-previs-studio` | `motion-previs-studio`, `AI-film previsualization`, `pose extraction`, `depth mapping`, `camera motion` | Desktop AI-video previsualization workflow for pose, depth, camera motion, control layers, and production bundles |
 | `react-bits` | `react-bits`, `animated React components`, `GSAP`, `Framer Motion`, `jsrepo` | Animated React component library integration, customization, and contribution workflow for Vite and Tailwind CSS v4 |
+| `openspace` | `openspace`, `skill finder`, `find the right skill`, `rank skills`, `skill discovery`, `skill quality`, `evolve skill` | Skill-management layer installed as the **skill finder** over `~/.agents/skills` — retrieve/rank/load the right `SKILL.md`, judge skills by real execution evidence, evolve them via FIX/DERIVED/CAPTURED. See Step 3l. |
+| `obsidian-mind` | `obsidian-mind`, `om-standup`, `om-dump`, `om-wrap-up`, `agent memory vault`, `second brain vault` | Ready-made Obsidian vault giving coding agents persistent session memory — lifecycle hooks, `/om-*` commands, capture/review routes, performance graph. Claude Code full support; Codex CLI and Gemini CLI via hooks + `AGENTS.md`. |
+| `web-design` | `web design`, `landing page`, `awwwards`, `scroll animation`, `WebGL background`, `glass UI`, `progressive blur`, `gradient border` | Routing pack over the 79-skill MengTo/Skills web-design family in seven families (style packs, site direction, motion, WebGL/shaders, library embeds, component states, CSS primitives) with a fetch script and layer ordering. |
+| `web-game-development` | `three.js game`, `browser game`, `isometric arpg`, `enemy AI`, `game camera`, `ship web game`, `playtest web game` | Routing pack over the 19-skill MengTo/Skills game-development family for playable Three.js/browser games; routes Unity/C# work to `unity-gamedev-skill-pack`. |
+| `design-first-ui-prompting` | `design-first prompting`, `UI prompt spec`, `prompt structure`, `UI generation prompt` | Spec-driven, skimmable prompt structure for consistent UI generation — constraints, variations, typography/spacing rules, iteration workflow. |
 
 ---
 

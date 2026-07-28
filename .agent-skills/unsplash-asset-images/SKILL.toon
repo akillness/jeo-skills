@@ -1,0 +1,10 @@
+N:unsplash-asset-images
+D:Use when you need to pick high-quality Unsplash images for product/design assets (avatars, headshots, portraits, large website backgrounds, and abstract wallpapers) and output real Unsplash URLs plus practical instructions for producing the right resolutions and aspect ratios (1:1, 4:5, 3:4, 16:9, 9:16).
+G:unsplash|asset|images|mengto-skills|stock-images|design-assets
+U[6]:
+  When a real Unsplash photo page URL is needed for an avatar, headshot, portrait, hero background, or abstract wallpaper
+  When the recommendation must include suggested output ratios/sizes (1:1, 4:5, 3:4, 16:9, 9:16) for the use case
+  When guidance is needed on downloading and cropping/resizing an Unsplash photo for a design or image pipeline
+  When a quick "which ratio do I use?" decision is needed for avatars, headshot cards, hero backgrounds, or mobile wallpapers
+  When reminders on Unsplash licensing/attribution norms are needed, such as avoiding Unsplash+ unless requested
+  When the request is actually about Aura Assets (aura.build/assets) — route to aura-asset-images instead, which searches Aura's own asset library by tag rather than Unsplash

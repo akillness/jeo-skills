@@ -1,0 +1,9 @@
+N:aura-asset-images
+D:Use when you need high-quality stock-style images from Aura Assets (aura.build/assets) similar to Unsplash for design mockups and marketing: backgrounds, abstract wallpapers, architecture, portraits, and headshots. Includes a workflow for searching by tag on aura.build/assets and returns 5 real image URLs per category plus practical guidance for using different resolutions and aspect ratios.
+G:aura|asset|images|mengto-skills|stock-images|design-assets
+U[5]:
+  When the user needs stock-style image URLs from Aura's asset library at aura.build/assets, not local files or generated images
+  When searching by tag (background, abstract, architecture, portrait, headshot) and returning 5 real candidate URLs per category
+  When the user needs a specific resolution/aspect ratio, e.g. swapping _800w for _1600w, or cropping to 1:1, 4:5, 16:9, 9:16
+  When the user needs cropping guidance for faces (eye placement) or backgrounds (negative space for text)
+  When the request is for Unsplash's own photo library instead — route that to unsplash-asset-images, which searches unsplash.com instead of aura.build/assets

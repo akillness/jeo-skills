@@ -22,7 +22,7 @@ Route out when:
 Use when a graph already exists or the only real question is a path/query/explain follow-up.
 
 Capture:
-- whether `graphify-out/` already exists
+- whether `.graphify/` already exists (legacy `graphify-out/` needs `graphify migrate-state`)
 - the exact concept pair or relationship question
 - whether rebuild is necessary or a focused query is enough
 
