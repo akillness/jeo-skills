@@ -4,14 +4,22 @@
 Used as the UserPromptSubmit (Claude) / BeforeAgent (Gemini/Antigravity) /
 UserPromptSubmit (Codex) hook by setup-all-skills-prompt.md Step 6.
 
-Default vault: ~/vaults/llm-wiki/  (override via LLM_WIKI_VAULT env var)
+Vault resolution (project-scoped — every repo keeps its own wiki):
+  1. $LLM_WIKI_VAULT                        — explicit wiki root
+  2. $OBSIDIAN_MIND_VAULT/llm-wiki          — explicit obsidian-mind vault
+  3. <git toplevel of cwd>/llm-wiki         — the working repo root (default)
+  4. ~/vaults/obsidian-mind/llm-wiki        — fallback outside any git repo
+
+The obsidian-mind vault IS the project root, so the llm-wiki schema is nested
+in its own `llm-wiki/` subfolder and never mixes with obsidian-mind's own
+`brain/`, `org/` and `perf/` folders.
 
 Behavior:
   1. Read prompt payload from stdin (JSON or raw text).
   2. Write raw capture + source summary + query stub under the vault.
   3. Touch index.md / log.md.
   4. If graphifyy is importable, rebuild the structural graph under
-     <vault>/graphify-out/. If not, skip the graph step silently.
+     <vault>/.graphify/. If not, skip the graph step silently.
 
 All errors are swallowed (exit 0) so the host agent's prompt is never blocked.
 """
@@ -21,20 +29,66 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 HOME = Path.home()
-VAULT_ROOT = Path(os.environ.get("LLM_WIKI_VAULT", str(HOME / "vaults" / "llm-wiki")))
-GRAPH_OUT = VAULT_ROOT / "graphify-out"
+
+
+def _env_path(name: str) -> Path | None:
+    """Read an env var as a path; blank/whitespace values are treated as unset."""
+    raw = (os.environ.get(name) or "").strip()
+    return Path(raw).expanduser() if raw else None
+
+
+def git_toplevel() -> Path | None:
+    """Repo root of the current working directory, or None outside a git repo."""
+    try:
+        out = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except Exception:
+        return None
+    if out.returncode != 0:
+        return None
+    top = out.stdout.strip()
+    return Path(top) if top else None
+
+
+def resolve_obsidian_mind_vault() -> Path:
+    """obsidian-mind vault: explicit override → working repo root → home fallback."""
+    explicit = _env_path("OBSIDIAN_MIND_VAULT")
+    if explicit:
+        return explicit
+    top = git_toplevel()
+    if top:
+        return top
+    return HOME / "vaults" / "obsidian-mind"
+
+
+def resolve_vault_root() -> Path:
+    """llm-wiki root: $LLM_WIKI_VAULT → <obsidian-mind vault>/llm-wiki."""
+    explicit = _env_path("LLM_WIKI_VAULT")
+    if explicit:
+        return explicit
+    return resolve_obsidian_mind_vault() / "llm-wiki"
+
+
+VAULT_ROOT = resolve_vault_root()
+GRAPH_OUT = VAULT_ROOT / ".graphify"
 STATE_FILE = VAULT_ROOT / ".state" / "ingest-prompt.json"
 MAX_PROMPT_SNIPPET = 80
 
 TITLE_RE = re.compile(r"^#\s+(.+?)\s*$", re.MULTILINE)
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:[#|][^\]]*)?\]\]")
-IGNORE_DIRS = {".obsidian", ".trash", ".git", "graphify-out", ".state"}
+IGNORE_DIRS = {".obsidian", ".trash", ".git", ".graphify", "graphify-out", ".state"}
+
 
 
 def now_utc() -> datetime:
@@ -99,7 +153,11 @@ def flatten_strings(value: Any) -> list[str]:
             out.extend(flatten_strings(item))
         return out
     if isinstance(value, dict):
-        for key in ("text", "prompt", "input_text", "message", "content", "query", "user_input"):
+        # "raw" is what read_payload() uses when stdin is plain text rather than
+        # JSON (manual runs, agents that pipe the bare prompt), so it must be
+        # extractable too — otherwise those prompts are silently dropped.
+        for key in ("text", "prompt", "input_text", "message", "content", "query", "user_input", "raw"):
+
             if key in value:
                 out.extend(flatten_strings(value[key]))
         if "items" in value:

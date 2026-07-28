@@ -1,0 +1,10 @@
+N:elevenlabs-tts
+D:Generate ElevenLabs text-to-speech audio from scripts or inline text using local voice profiles. Use when the user asks for ElevenLabs, text-to-speech, TTS, narration, voiceover, speech audio, or voice generation; load voice names, voice ids, emails, owners, and account-specific defaults only from local config outside the skill.
+G:elevenlabs|tts|mengto-skills|codex-workflow
+U[6]:
+  Generating ElevenLabs text-to-speech audio from a script file or inline text using local voice profiles
+  The user asks for ElevenLabs, TTS, narration, voiceover, speech audio, or voice generation
+  Resolving a voice by voice_id, voice_id_env, or voice_name from a local profile config, or listing matching ElevenLabs voices
+  Running the bundled scripts/generate_voice.py helper with a profile, --dry-run, or one-off overrides
+  Calling the current ElevenLabs voice-search or speech-generation endpoints directly
+  Not for storing API keys or personal defaults in the skill, or mutating saved ElevenLabs account/voice settings

@@ -41,7 +41,7 @@
       "assertions": [
         "Recognizes accessibility or UI-state verification as a neighboring-skill boundary",
         "Still gives a concise validation recommendation for the current change",
-        "Routes accessibility-heavy follow-through to web-accessibility or web-design-guidelines",
+        "Routes accessibility-heavy follow-through to web-accessibility or web-accessibility",
         "Does not collapse the entire task into backend-testing or generic code review"
       ]
     },

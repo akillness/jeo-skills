@@ -14,7 +14,7 @@ compatibility: >
   artifacts. This is research mode, not implementation mode.
 license: MIT
 metadata:
-  tags: survey, landscape-scan, research, discovery, groundwork, omc, omx, ohmg, claude, codex, gemini, hooks, rules, settings
+  tags: survey, landscape-scan, research, discovery, groundwork, oh-my-claudecode, oh-my-codex, oh-my-agent, claude, codex, gemini, hooks, rules, settings
   platforms: Claude Code, Codex, Gemini-CLI, OpenCode
   keyword: survey
   version: "2.1.7"

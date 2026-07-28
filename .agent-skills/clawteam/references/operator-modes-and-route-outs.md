@@ -14,9 +14,9 @@ Start with [intake-packets-and-route-outs.md](intake-packets-and-route-outs.md) 
 ## Route-outs
 
 Use another skill when the job is mainly:
-- integrated planning → execution → QA orchestration: `jeo`, `omc`, `omx`, `ohmg`
+- integrated planning → execution → QA orchestration: `jeo`, `oh-my-claudecode`, `oh-my-codex`, `oh-my-agent`
 - planning and decomposition: `task-planning`
-- board/work queue control outside ClawTeam: `vibe-kanban`
+- board/work queue control outside ClawTeam: `task-planning`
 - cross-platform landscape research or tool comparison: `survey`
 - lightweight parallel subtasks without team/task/inbox/worktree state: built-in delegation/subagents
 

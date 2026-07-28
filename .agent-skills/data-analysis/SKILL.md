@@ -1,8 +1,7 @@
 ---
 name: data-analysis
 description: >-
-  Analyze datasets to extract insights, identify patterns, and generate reports. Use when
-  exploring...
+  Analyze datasets to extract insights, identify patterns, and generate reports.
 allowed-tools: Read Grep Glob Bash
 metadata:
   tags: data-analysis, csv, sql, notebooks, telemetry, experimentation, analytics

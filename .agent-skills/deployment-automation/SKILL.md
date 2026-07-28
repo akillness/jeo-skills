@@ -6,8 +6,8 @@ description: >
   verification, rollback response, and release-hardening checklists. Use when the
   system can already build and the main job is shipping or recovering a release
   safely, choosing between preview / promotion / canary / rollback paths, or
-  tightening deploy gates around health checks and sign-off. Route CI workflow
-  authoring to `workflow-automation`, machine/runtime setup to
+  tightening deploy gates around health checks and sign-off. CI workflow and release-job
+  authoring belongs here too. Route machine/runtime setup to
   `system-environment-setup`, long-lived telemetry design to
   `monitoring-observability`, and Vercel-specific operations to `vercel-deploy`.
 allowed-tools: Read Write Edit Glob Grep
@@ -52,7 +52,6 @@ Read these support docs before deciding the packet:
 - You need to tighten an existing deploy path with preflight checks, sign-off logic, and explicit stop conditions.
 
 ## When not to use this skill
-- **The main job is writing or refactoring GitHub Actions / GitLab / Jenkins / Buildkite workflows** → `workflow-automation`
 - **The main job is installing Docker, kubectl, cloud CLIs, auth bootstrap, or making the machine runnable** → `system-environment-setup`
 - **The main job is dashboards, alerts, traces, or long-lived telemetry architecture** → `monitoring-observability`
 - **The main job is Vercel-specific linking, domains, aliases, environment variables, or claim URLs** → `vercel-deploy`
@@ -101,7 +100,6 @@ Use these route-outs before generating a packet:
 
 | If the request is really about... | Route to |
 |---|---|
-| CI YAML, job graphs, reusable release workflows, task runners | `workflow-automation` |
 | Docker/kubectl/cloud CLI installation, auth bootstrap, machine readiness | `system-environment-setup` |
 | Dashboards, alerts, traces, log pipelines, SLO monitoring | `monitoring-observability` |
 | Vercel project linking, aliases, domains, env vars, Vercel deploy mechanics | `vercel-deploy` |

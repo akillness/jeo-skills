@@ -8,10 +8,10 @@ Use `design-system` when the job is to define or refactor shared UI-system rules
 - multiple surfaces need one coherent system direction before local implementation proceeds
 - the right deliverable is a compact Design System Packet, not a page-only critique or component-only API spec
 
-## Route to `ui-component-patterns` when
+## Keep primitive API work here when
 - the main task is designing or refactoring one reusable primitive or component-family API
 - the question is about variants, slots, compound components, controlled-vs-uncontrolled ownership, or Storybook/example coverage
-- system naming may stay here, but the real implementation brief belongs there
+- the API brief ships alongside the system naming and token rules, not as a separate skill
 
 ## Route to `responsive-design` when
 - the main task is viewport/container adaptation, overflow control, breakpoint behavior, reflow, or mobile layout verification
@@ -21,8 +21,6 @@ Use `design-system` when the job is to define or refactor shared UI-system rules
 - the main task is accessibility remediation or verification
 - the user is asking about keyboard/focus behavior, semantic HTML, ARIA, labels, contrast failures, or manual assistive-technology checks
 - this skill should keep only the shared baseline expectations
-
-## Route to `web-design-guidelines` when
 - the main task is a broad page or flow critique for hierarchy, clarity, polish, CTA emphasis, consistency, or launch readiness
 - the user wants a UI audit packet rather than shared-system governance
 

@@ -66,7 +66,7 @@ Typical signals:
 | If the request is mainly about... | Use |
 |---|---|
 | Published API docs, OpenAPI reference, SDK examples, developer portal UX | `api-documentation` |
-| End-user onboarding, screenshots, how-to guides, help-center flows, FAQs | `user-guide-writing` |
+| End-user onboarding, screenshots, how-to guides, help-center flows, FAQs | owned here, in end-user guide mode |
 | Release notes, semantic versioning, CHANGELOG.md hygiene | `changelog-maintenance` |
 | Deciding the API or feature design before turning it into docs | `api-design`, `task-planning`, or a planning skill |
 

@@ -1,5 +1,5 @@
 N:design-system
-D:Define or refactor a shared frontend UI system before polishing one screen at a time. Use when the user needs token governance, visual-language rules, primitive naming, cross-product consistency, or page-system direction across landing pages, dashboards, forms, and component libraries. Route reusable component API design to ui-component-patterns, responsive layout work to responsive-design, accessibility-only remediation to web-accessibility, and broad UI critique to web-design-guidelines.
+D:Define or refactor a shared frontend UI system before polishing one screen at a time. Use when the user needs token governance, visual-language rules, primitive naming, page-system direction, cross-product consistency, or a design handoff that should stay coherent across landing pages, dashboards, forms, and component libraries, including the reusable primitive / slot / variant APIs that system owns. Not for responsive layout-only fixes, accessibility-only remediation, or broad UI critique. Triggers on: design system, design tokens, visual language, component library foundations, UI governance, cross-product consistency, landing page plus dashboard system, primitive naming, token policy, component API architecture.
 G:frontend design-system ui ux design-tokens governance visual-language accessibility
 
 U[5]:
@@ -12,7 +12,7 @@ S[6]{n,action,details}:
   1,Choose Mode,Foundations vs cross-surface alignment vs primitive governance vs system handoff vs system review
   2,Define Scope,Decide what the shared system owns: tokens, naming, governance, baseline accessibility, breakpoint policy
   3,Make Minimum Shared Decisions,Set foundations + primitive policy + surface guidance before examples
-  4,Route Neighbors Out,Send component API work to ui-component-patterns; responsive layout to responsive-design; a11y remediation to web-accessibility; broad critique to web-design-guidelines
+  4,Route Neighbors Out,Keep component API work here; send responsive layout to responsive-design; a11y remediation and broad critique to web-accessibility
   5,Write Packet,Leave a compact Design System Packet with scope/foundations/primitive policy/surface guidance/route-outs/open decisions
   6,Add Small Example Only If Needed,Use one or two examples after the rules instead of dumping a giant mock
 R[5]:

@@ -22,7 +22,7 @@ routes):
 | Protected targets | stealth escalation (`StealthyFetcher`) |
 | Larger multi-page crawl | Scrapling spiders |
 
-Invoke it via the skill: see [`../scrapling/SKILL.md`](../scrapling/SKILL.md). Typical entry:
+Invoke it via the skill: see [`../scrapling/SKILL.md`](../../scrapling/SKILL.md). Typical entry:
 
 ```bash
 # Activate the scrapling skill's routing, then use the lightest mode.

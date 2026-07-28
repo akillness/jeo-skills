@@ -5,16 +5,15 @@ description: >
   when the main job is classifying whether the failure is page-shell adaptation,
   reusable component/container behavior, dense-data or toolbar pressure,
   responsive media, or reflow verification — then turning vague “breaks on
-  mobile” requests into one concrete strategy packet. Route component API design
-  to `ui-component-patterns`, accessibility remediation to `web-accessibility`,
-  system-wide breakpoint/token governance to `design-system`, and broad UI audit
-  work to `web-design-guidelines`.
+  mobile” requests into one concrete strategy packet. Route component API design and
+  system-wide breakpoint/token governance to `design-system`, and accessibility
+  remediation plus broad UI audit work to `web-accessibility`.
 allowed-tools: Read Write Bash Grep Glob
 compatibility: >
   Best for frontend and fullstack web repos using CSS, utility frameworks, or
   component libraries where the main task is responsive layout strategy or
-  verification. Not for reusable component API architecture, broad UI polish
-  reviews, or accessibility-heavy remediation as the primary owner.
+  verification. Not for reusable component API architecture or
+  accessibility-heavy remediation as the primary owner.
 license: MIT
 metadata:
   tags: responsive, mobile-first, layout, container-queries, breakpoints, frontend, css, reflow
@@ -52,10 +51,10 @@ Read these support docs first:
 - The request mixes page-level adaptation, component reuse, and dense-data pressure and needs routing before implementation.
 
 ## When not to use this skill
-- **The main task is reusable primitive / slot / variant API design or component-family ownership** → `ui-component-patterns`
+- **The main task is reusable primitive / slot / variant API design or component-family ownership** → `design-system`
 - **The main task is keyboard/focus behavior, semantics, labels, contrast, reduced motion, or accessibility-heavy remediation** → `web-accessibility`
 - **The main task is breakpoint governance, token policy, or cross-product responsive standards** → `design-system`
-- **The main task is broad UI critique, polish, heuristic review, or launch-readiness audit across many dimensions** → `web-design-guidelines`
+- **The main task is broad UI critique, polish, heuristic review, or launch-readiness audit across many dimensions** → `web-accessibility`
 - **The main task is React hydration, rerender churn, or client-boundary performance behavior** → `react-best-practices`
 - **The responsive strategy is already clear and the job is just implementation**; in that case implement directly instead of re-running the router
 
@@ -152,7 +151,7 @@ Packet rules:
 ### Step 6: Separate mechanism choice from ownership choice
 Use this split in every serious answer:
 - **Mechanism** — intrinsic layout, viewport queries, container queries, responsive media rules, fallback presentation
-- **Ownership** — `responsive-design`, `ui-component-patterns`, `web-accessibility`, `design-system`, `web-design-guidelines`, or `react-best-practices`
+- **Ownership** — `responsive-design`, `design-system`, `web-accessibility`, `design-system`, `web-accessibility`, or `react-best-practices`
 
 If the request starts from a screenshot, QA note, or “mobile is broken” report, say explicitly that the screenshot is the **signal artifact**, not the finished responsive strategy.
 
@@ -161,10 +160,10 @@ Use these route-outs when the problem crosses boundaries:
 
 | If the real job is... | Route to... |
 |---|---|
-| reusable primitive API, variant sprawl, slot ownership, component structure | `ui-component-patterns` |
+| reusable primitive API, variant sprawl, slot ownership, component structure | `design-system` |
 | semantics, keyboard/focus, labels, contrast, motion, or accessibility-heavy remediation | `web-accessibility` |
 | shared breakpoint tokens, system-wide density rules, cross-product frontend standards | `design-system` |
-| broad launch-readiness UI critique, hierarchy, polish, or heuristic review | `web-design-guidelines` |
+| broad launch-readiness UI critique, hierarchy, polish, or heuristic review | `web-accessibility` |
 | hydration, rerender churn, client-boundary cost, or runtime performance | `react-best-practices` |
 
 ## Output expectations
@@ -195,7 +194,7 @@ A strong answer from this skill should:
 - choose `component-slot`
 - explain why parent-container width is the main driver
 - recommend container queries or intrinsic layout at the card-shell boundary
-- route primitive/API redesign to `ui-component-patterns` if the structure itself is wrong
+- route primitive/API redesign to `design-system` if the structure itself is wrong
 
 ### Example 3: pricing page before launch
 **Input**
@@ -204,7 +203,7 @@ A strong answer from this skill should:
 **Output direction**
 - keep `responsive-design` on the layout-adaptation slice only
 - produce one packet for page layout plus dense mobile sections
-- route broader hierarchy / CTA / polish review to `web-design-guidelines`
+- route broader hierarchy / CTA / polish review to `web-accessibility`
 - keep accessibility remediation separate unless it becomes primary
 
 ### Example 4: system-wide breakpoint debate

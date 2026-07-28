@@ -2,7 +2,7 @@
 
 ## Overview
 ClawTeam is a filesystem-first swarm runner. It combines:
-- **team state** (`team`, `task`, `inbox`, `workspace`, `lifecycle` commands)
+- **team state** (`harness`, `task`, `inbox`, `workspace`, `lifecycle` commands)
 - **worker runtime backends** (`tmux` or `subprocess`)
 - **workspace isolation** (typically git worktrees)
 - **monitoring surfaces** (`board show/live/attach/serve`)

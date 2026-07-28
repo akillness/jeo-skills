@@ -1,10 +1,8 @@
 ---
 name: tdd
-description: Use this skill when >
-  Test-Driven Development using red-green-refactor cycles with vertical slices.
-  Tests verify behavior through public interfaces, not implementation details.
-  Use when building new features or fixing bugs with a test-first discipline to
-  produce well-designed, behavior-verified code.
+description: >-
+  Red-green-refactor TDD using vertical slices — tests specify observable behavior through public
+  interfaces
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Language-agnostic. Works for unit, integration, and component tests. Best for

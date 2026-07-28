@@ -1,0 +1,10 @@
+N:x-bookmark-quote-posts
+D:Check a user's latest X/Twitter bookmarks and turn recent saved posts into source-backed quote-post drafts calibrated against the user's latest 100 authored posts. Use when asked to review X bookmarks, create quote posts from bookmarks, refresh a bookmark quote queue, run a bookmark quote automation, study a user's X voice, or write first-person quote posts from X sources.
+G:bookmark|quote|posts|mengto-skills|codex-workflow
+U[6]:
+  Reviewing a user's latest X bookmarks and turning them into source-backed, dated quote-post drafts
+  Calibrating draft voice against that specific account's latest 100 authored posts before drafting anything
+  Refreshing or maintaining a dated bookmark quote-post queue file such as data/x-growth/bookmark-quote-posts/YYYY-MM-DD.md
+  Producing a ranked set of 7-10 quote-post drafts (Best Picks / Secondary Picks) plus a suggested-tweet summary table
+  Working through the Codex in-app browser against X under strict no-posting/no-reply/no-mutation rules
+  Not for general X/Twitter data collection, monitoring, or posting — use x-twitter-scraper for raw X data access

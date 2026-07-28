@@ -1,5 +1,5 @@
 N:testing-strategies
-D:Turn test-policy ambiguity into one packet-first validation brief for merge-gate truth, release-only proof, scheduled breadth, and cross-domain test policy handoffs.
+D:Turn test-policy ambiguity into one packet-first validation brief. Use when the main job is deciding which gate is actually being shaped (merge, release, or scheduled), what evidence a change needs, how flaky or expensive suites should be handled, and whether the next owner is `backend-testing`, `debugging`, `code-review`, `deployment-automation`, `steam-store-launch-ops`, `game-ci-cd-pipeline`, `web-accessibility`, or `performance-optimization` instead of absorbing all test work here. Triggers on: test strategy, merge gate, required status checks, release gate, flaky-suite policy, regression policy, validation brief, release confidence, and what should we test.
 G:testing test-strategy regression-policy flaky-tests release-confidence
 U[5]:
   Choose the right validation packet

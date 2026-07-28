@@ -1,6 +1,6 @@
 N:survey
 D:Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform patterns map before deciding what to build. Produce reusable .survey/{slug}/ artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.
-G:survey landscape-scan research discovery groundwork omc omx ohmg claude codex gemini hooks rules settings
+G:survey landscape-scan research discovery groundwork oh-my-claudecode oh-my-codex oh-my-agent claude codex gemini hooks rules settings
 U[12]:
   Produce reusable .survey/{slug}/ artifacts before planning or implementation
   Compare solutions workarounds and repeated complaints without drifting into coding

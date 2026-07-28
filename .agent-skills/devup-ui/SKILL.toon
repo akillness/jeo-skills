@@ -8,7 +8,7 @@ U[6]:
   Write styles with Box/css props or styled() — both compile away at build time; dynamic values become CSS variables
   Use devup.json for type-safe tokens and zero-cost theme switching; never add a client Provider (breaks RSC + zero runtime)
   Numeric spacing props multiply by 4px; array values are responsive; _hover/_focus are pseudo selectors
-  Route out broader concerns: tokens to design-system, component API to ui-component-patterns, layout to responsive-design, a11y to web-accessibility, perf to react-best-practices
+  Route out broader concerns: tokens to design-system, component API to design-system, layout to responsive-design, a11y to web-accessibility, perf to react-best-practices
 
 S[5]{n,action,details}:
   1,Intake,capture bundler React-mode theming origin and package-manager before editing config

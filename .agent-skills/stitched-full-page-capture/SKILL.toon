@@ -1,0 +1,10 @@
+N:stitched-full-page-capture
+D:Capture or repair reliable full-page screenshots for lazy-loaded, scroll-animated, Framer, WebGL/canvas, or reveal-heavy web pages. Use when full-page screenshots are blank, gray, white, sparse, show a tiny content strip, disagree with a working scroll video, or when article evidence/section crops must be derived from a trustworthy full-page image.
+G:stitched|full|page|capture|mengto-skills|codex-workflow
+U[6]:
+  When a full-page screenshot of a lazy-loaded, scroll-animated, Framer, WebGL/canvas, or reveal-heavy page comes back blank, gray, white, sparse, or shows only a tiny content strip
+  When a one-shot full-page screenshot disagrees with a working scroll-recording MP4 that shows the page rendering correctly
+  When article evidence or section crops must be cut from a trustworthy full-page image instead of an unreliable native fullPage capture
+  When repairing or regenerating daily UI-inspiration article captures via the bundled stitch_full_page_capture.mjs script against a manifest.json
+  When validating a stitched capture by checking dimensions, blank/gray bands, and agreement with the representative still, MP4, and motion frames
+  When the page already renders correctly in a single native fullPage screenshot with no lazy-load, scroll-animation, or reveal issues, route to a plain one-shot capture instead

@@ -44,9 +44,9 @@ Read [references/intake-packets-and-route-outs.md](references/intake-packets-and
 - The main need is a game-production packet (GDD, playtest notes, build issues, launch beats) → use `bmad-gds`
 - The main need is artifact approval, annotation, or plan review → use `plannotator`
 - The main need is execution-ready backlog slicing after the next artifact is already known → use `task-planning`
-- The main need is runtime-specific orchestration setup for Claude Code → use `omc`
-- The main need is Codex-first workflow runtime behavior → use `omx`
-- The main need is Gemini / Antigravity portable harness setup → use `ohmg`
+- The main need is runtime-specific orchestration setup for Claude Code → use `oh-my-claudecode`
+- The main need is Codex-first workflow runtime behavior → use `oh-my-codex`
+- The main need is Gemini / Antigravity portable harness setup → use `oh-my-agent`
 
 ## Instructions
 
@@ -106,7 +106,7 @@ Use the packet to infer the current BMAD phase, not the other way around:
 | `architecture-packet` | solutioning | `architecture` or `architecture review gate` |
 | `review-gate-packet` | boundary between phases | `plannotator` review before advancing |
 | `execution-packet` | implementation | `sprint-plan`, `story packet`, or route to `task-planning` |
-| `runtime-handoff-packet` | implementation-ready | runtime route-out to `omc`, `omx`, or `ohmg` |
+| `runtime-handoff-packet` | implementation-ready | runtime route-out to `oh-my-claudecode`, `oh-my-codex`, or `oh-my-agent` |
 | `brownfield-resume-packet` | mixed / unknown | `workflow-status` update, repo-state summary, then the smallest truthful next artifact |
 
 Guiding rules:
@@ -125,16 +125,16 @@ Pick the **single next artifact or gate** that best reduces ambiguity now:
 | architecture exists but approval is missing | `review gate` |
 | approved architecture exists, execution slicing is weak | `sprint-plan` or `story packet` |
 | active implementation exists but status is unclear | `workflow-status` update + next-story recommendation |
-| runtime is the real blocker after approval | runtime handoff to `omc` / `omx` / `ohmg` |
+| runtime is the real blocker after approval | runtime handoff to `oh-my-claudecode` / `oh-my-codex` / `oh-my-agent` |
 
 ### Step 5: Route specialist work explicitly
 If the front-door decision is made, route the rest clearly:
 - `bmad-idea` → pre-planning concept framing before formal BMAD artifacts exist
 - `plannotator` → review / approval gate for PRD, architecture, sprint plan, or plan diffs
 - `task-planning` → execution-ready slicing after the next artifact is approved or obvious
-- `omc` → Claude-first runtime orchestration, hooks, team mode, stop callbacks
-- `omx` → Codex-first orchestration, AGENTS.md injection, workflow skills, tmux team runtime
-- `ohmg` → Gemini / Antigravity portable harness, `.agents/` source of truth, generated runtime views
+- `oh-my-claudecode` → Claude-first runtime orchestration, hooks, team mode, stop callbacks
+- `oh-my-codex` → Codex-first orchestration, AGENTS.md injection, workflow skills, tmux team runtime
+- `oh-my-agent` → Gemini / Antigravity portable harness, `.agents/` source of truth, generated runtime views
 - `bmad-gds` → game-specific production routing
 
 Leave a short reason for the route-out. Do not just name the neighboring skill.
@@ -224,14 +224,14 @@ Required qualities:
 **Output sketch**
 - Keep `bmad` as the packet/phase router
 - Packet type: `runtime-handoff-packet`
-- Route Codex runtime specifics to `omx`
+- Route Codex runtime specifics to `oh-my-codex`
 - Do not turn `bmad` into a Codex setup guide
 
 ## Best practices
 1. **Act like a packet-first router** — start from the artifact or evidence the user already has.
 2. **Choose level before depth** — level 0–1 and level 2–4 should not produce the same paperwork.
 3. **Keep review visible** — if approval is the blocker, say so before inventing a new artifact.
-4. **Keep runtime overlays separate** — `omc`, `omx`, and `ohmg` own vendor/runtime specifics.
+4. **Keep runtime overlays separate** — `oh-my-claudecode`, `oh-my-codex`, and `oh-my-agent` own vendor/runtime specifics.
 5. **Prefer one clear handoff** — one next move plus one or two route-outs beats a giant workflow dump.
 6. **Use references for deep detail** — helper scripts, status rules, and runtime boundaries belong in support docs.
 
@@ -247,7 +247,4 @@ Required qualities:
 - `../bmad-idea/SKILL.md`
 - `../plannotator/SKILL.md`
 - `../task-planning/SKILL.md`
-- `../omc/SKILL.md`
-- `../omx/SKILL.md`
-- `../ohmg/SKILL.md`
 - `../bmad-gds/SKILL.md`

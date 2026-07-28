@@ -40,11 +40,11 @@ Open Design is most useful when you choose the **smallest generation mode that f
 
 ## Do not use this skill when
 
-- The task is live UI component authoring in a real codebase → route to `stitch-skills` or `ui-component-patterns`
+- The task is live UI component authoring in a real codebase → route to `stitch-skills` or `design-system`
 - The task is video production or Remotion animation → route to `video-production`
 - The task is a data-driven presentation deck without design-system application → route to `presentation-builder`
 - The task is compressing or optimizing existing media files → route to `compresso`
-- The task is a broad web UI critique or audit → route to `web-design-guidelines`
+- The task is a broad web UI critique or audit → route to `web-accessibility`
 
 ## Instructions
 
@@ -230,7 +230,7 @@ claude plugin marketplace add nexu-io/open-design
 2. Choose one design system per artifact to keep cross-format output coherent.
 3. Prefer HTML review before committing to PDF/PPTX to save iteration cost.
 4. Use media mode only when generated images/video are the primary deliverable, not a side effect.
-5. For real codebase UI components, route to `stitch-skills` or `ui-component-patterns` instead.
+5. For real codebase UI components, route to `stitch-skills` or `design-system` instead.
 6. When adding file-based skills to Open Design, follow the same `SKILL.md` format used in this repo.
 7. Prefer `pnpm tools-dev check` before first use to verify Node.js and pnpm version requirements.
 
@@ -241,4 +241,4 @@ claude plugin marketplace add nexu-io/open-design
 - [presentation-builder](../presentation-builder/SKILL.md) — for data-driven deck artifacts without design-system application
 - [video-production](../video-production/SKILL.md) — for Remotion/programmable video production
 - [compresso](../compresso/SKILL.md) — for offline media compression
-- [web-design-guidelines](../web-design-guidelines/SKILL.md) — for broad web UI audits and guidelines
+- [web-accessibility](../web-accessibility/SKILL.md) — for broad web UI audits and guidelines

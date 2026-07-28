@@ -1,0 +1,10 @@
+N:html-to-interaction-prompts
+D:Convert a supplied HTML page or generated HTML reference into a screenshot-backed article containing multiple reusable interaction prompts. Use when the user provides an HTML file, exported page, generated-page.html, or local/live reference and asks to extract animation/interactions, create prompts, capture screenshots for each prompt, add them to an article, or commit the resulting article/assets.
+G:html|interaction|prompts|mengto-skills|codex-workflow
+U[6]:
+  When the user provides an HTML file, exported page, generated-page.html, or a local/live reference and asks to extract its animations/interactions
+  When the goal is a screenshot-backed article containing multiple reusable, brand-agnostic interaction prompts
+  When running the daily UI inspiration capture workflow needing exactly 5 inspirations with stills, MP4s, motion frames, and detailed AI-builder prompts
+  When capturing and organizing screenshots/videos per prompt, including full-page scroll screenshots with contiguous section crops
+  When deciding which animation library/API to recommend in a prompt, or creating/updating the target article and committing only intended assets
+  When the request is general web development, unrelated content authoring, or repo-wide commit work instead

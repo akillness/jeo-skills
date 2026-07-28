@@ -47,7 +47,7 @@ Read these support notes before drafting or revising:
 
 - The request is an internal design doc, ADR, architecture note, or engineering runbook → use `technical-writing`
 - The request is an API portal, SDK reference, or developer-facing product documentation problem → use `api-documentation`
-- The request is an end-user tutorial, onboarding guide, or FAQ → use `user-guide-writing`
+- The request is an end-user tutorial, onboarding guide, or FAQ → use `technical-writing`
 - The request is a slide deck, investor pitch, roadmap deck, or game pitch → use `presentation-builder`
 - The request is broad marketing or launch messaging rather than academic publication → use `marketing-automation`
 - The request is only citation collection / literature discovery without manuscript writing or revision pressure

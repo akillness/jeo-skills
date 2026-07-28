@@ -1,10 +1,8 @@
 ---
 name: grill-me
-description: Use this skill when >
-  Conduct a comprehensive plan or design stress-test through systematic questioning.
-  Interviews relentlessly about every decision point, resolves interdependencies
-  progressively, and traverses the complete decision tree. Use when thoroughly
-  vetting a proposal, design, or architecture before committing to it.
+description: >-
+  Systematic plan stress-testing through relentless one-question-at-a-time decision-tree
+  interviewing
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Works for any plan, design, or architectural proposal. Pairs with grill-with-docs

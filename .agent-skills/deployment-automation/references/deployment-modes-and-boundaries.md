@@ -15,7 +15,7 @@ Good fit:
 
 Route out when:
 - the real job is provider-specific Vercel setup → `vercel-deploy`
-- the real job is GitHub Actions / pipeline design → `workflow-automation`
+- the real job is GitHub Actions / pipeline design → stay here, in workflow-authoring mode
 
 ### 2. Environment promotion
 Use when the same release moves through staging → prod or across multiple environments.
@@ -69,7 +69,7 @@ Good fit:
 - release packet creation and handoff
 
 ### `deployment-automation` does not own
-- CI workflow authoring → `workflow-automation`
+- CI workflow authoring → owned here
 - machine/runtime/tool installation → `system-environment-setup`
 - dashboards, alerts, traces, log pipelines → `monitoring-observability`
 - secret rotation / IAM / compliance architecture → security skills

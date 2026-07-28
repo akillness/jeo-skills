@@ -1,0 +1,10 @@
+N:daily-ui-inspiration-capture
+D:Create a recurring daily UI inspiration capture. Use when the user asks to run, refresh, package, or validate dated UI inspiration bundles, especially for `articles/YYYY-MM-DD-ui-inspiration-capture/` outputs, Framer/Dribbble landing-page inspiration, motion-study screenshots/videos, AI-builder prompts, duplicate checking, or converting a project runbook into repeatable workflow.
+G:daily|inspiration|capture|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to run, refresh, or package the recurring daily UI inspiration capture into articles/YYYY-MM-DD-ui-inspiration-capture/
+  When the task involves collecting exactly 5 live landing-page/product references with full-page screenshots, section crops, and motion frames
+  When the task requires building a manifest.json + content.md article bundle with AI-builder prompts, not a screenshot dump or README
+  When the user wants duplicate-checking against previous articles/*-ui-inspiration-capture/manifest.json runs before committing
+  When verifying an existing capture bundle against the output contract (item count, full-page/section evidence, motion frames, no README.md)
+  When the request is an ad-hoc one-off screenshot, unrelated content/article work, or README generation — route to the project's own conventions instead

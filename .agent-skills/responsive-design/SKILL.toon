@@ -1,11 +1,11 @@
 N:responsive-design
-D:Routing-first responsive layout strategy and verification for web interfaces. Use when the main job is classifying whether the failure is page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, or reflow verification, then turning vague "breaks on mobile" requests into one concrete strategy packet.
+D:Routing-first responsive layout strategy and verification for web interfaces. Use when the main job is classifying whether the failure is page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, or reflow verification — then turning vague “breaks on mobile” requests into one concrete strategy packet. Route component API design and system-wide breakpoint/token governance to `design-system`, and accessibility remediation plus broad UI audit work to `web-accessibility`.
 G:responsive mobile-first layout container-queries breakpoints overflow reflow frontend css
 U[4]:
   Fix page-shell, dashboard, form, nav, card-grid, or table behavior that breaks across widths
   Choose between intrinsic layout, viewport queries, container queries, dense-data fallbacks, and responsive media behavior
   Define zoom/reflow, overflow, wrapping, and long-copy verification before release
-  Route component API design to ui-component-patterns, accessibility-heavy remediation to web-accessibility, and system-wide breakpoint policy to design-system
+  Route component API design to design-system, accessibility-heavy remediation to web-accessibility, and system-wide breakpoint policy to design-system
 S[5]{n,action}:
   1,Frame the responsive job before naming CSS
   2,Choose exactly one primary responsive packet

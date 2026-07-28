@@ -1,10 +1,7 @@
 ---
 name: to-prd
-description: Use this skill when >
-  Generate a structured Product Requirements Document (PRD) from existing conversation
-  context and codebase state. Synthesizes knowledge into a PRD without interviewing
-  the user. Use when documenting requirements for a feature or change to publish
-  to the project issue tracker.
+description: >-
+  Generate structured PRD from conversation context without interviewing the user
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Works with any issue tracker. Run setup-matt-pocock-skills first to configure

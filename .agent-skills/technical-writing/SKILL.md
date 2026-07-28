@@ -7,8 +7,9 @@ description: >
   technical decision, system boundary, operating procedure, or rollout path for
   builders and maintainers. Triggers on: tech spec, design doc, architecture
   doc, ADR, runbook, migration guide, implementation guide, rollout doc,
-  operational guide, and internal technical writing. Route API portals to
-  `api-documentation`, end-user help/tutorials to `user-guide-writing`, release
+  operational guide, and internal technical writing. End-user onboarding guides, tutorials, FAQs, and
+  help-center flows belong here too. Route API portals to
+  `api-documentation`, release
   notes to `changelog-maintenance`, decks to `presentation-builder`, and GTM
   messaging to `marketing-automation`.
 allowed-tools: Read Write Edit Glob Grep
@@ -52,7 +53,6 @@ Read these support docs before choosing the mode or boundary:
 
 ## When not to use this skill
 - **Published API docs, SDK docs, OpenAPI reference, developer portal content** → `api-documentation`
-- **End-user onboarding, screenshots, tutorials, FAQs, help-center flows** → `user-guide-writing`
 - **Release notes, `CHANGELOG.md`, migration announcements for customers/devs** → `changelog-maintenance`
 - **Slides, pitch decks, roadmap presentations, architecture demos** → `presentation-builder`
 - **Product positioning, launch copy, GTM messaging, marketing automation** → `marketing-automation`
@@ -92,7 +92,7 @@ Quick route-out table:
 | If the request sounds like... | Use |
 |---|---|
 | Publish docs for an API, SDK, webhook, or developer portal | `api-documentation` |
-| Write a tutorial, onboarding guide, or FAQ | `user-guide-writing` |
+| Write a tutorial, onboarding guide, or FAQ | owned here, in end-user guide mode |
 | Summarize shipped changes or maintain `CHANGELOG.md` | `changelog-maintenance` |
 | Make slides for a launch, roadmap, or architecture review | `presentation-builder` |
 | Write launch or product messaging | `marketing-automation` |

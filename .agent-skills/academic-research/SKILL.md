@@ -65,7 +65,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill academic-research
 - The request is an ML experiment loop (training/eval) → use `autoresearch`
 - The request is a general writing task (blogs, marketing, newsletters) → use `marketing-automation`
 - The request needs autonomous agent ML training → use `autoresearch`
-- The user already has a paper draft and just needs copy editing → use `technical-writing` or `user-guide-writing`
+- The user already has a paper draft and just needs copy editing → use `technical-writing` or `technical-writing`
 
 ## Required intake packet
 

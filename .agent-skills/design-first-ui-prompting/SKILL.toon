@@ -1,0 +1,10 @@
+N:design-first-ui-prompting
+D:Use when you need design-first, spec-driven, skimmable prompts for UI generation. Covers prompt structure, constraints, variations, typography/spacing rules, and iteration workflow for consistent UI outputs.
+G:design|first|prompting|mengto-skills|ui-prompting|design-first
+U[6]:
+  Turning a fuzzy UI idea into a tight, skimmable spec using the GOAL/FORMAT/LAYOUT/TYPE SYSTEM/COLOR+MATERIAL/IMAGERY/COPY/CONSTRAINTS/NEGATIVE PROMPT skeleton
+  Locking a single layout/hierarchy/copy system first, then iterating by changing one variable at a time
+  Working around unreliable AI-generated typography with the 2-pass generate-then-typeset workflow
+  Building a constraints card or local reference pack to anchor a model's style output
+  Running the fast-iteration checklist or vague-user question list to clarify a UI generation request
+  When the request is design-token/visual-language governance, responsive layout strategy, or reusable component API architecture instead — route to design-system or responsive-design

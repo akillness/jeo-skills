@@ -24,11 +24,11 @@
     },
     {
       "id": 3,
-      "prompt": "I want BMAD for Codex CLI. Should I use bmad or omx?",
-      "expected_output": "Keeps bmad as the core packet/phase router while routing Codex-first runtime specifics to omx.",
+      "prompt": "I want BMAD for Codex CLI. Should I use bmad or oh-my-codex?",
+      "expected_output": "Keeps bmad as the core packet/phase router while routing Codex-first runtime specifics to oh-my-codex.",
       "assertions": [
         "Output preserves bmad as the common-layer BMAD router",
-        "Output routes Codex runtime details to omx",
+        "Output routes Codex runtime details to oh-my-codex",
         "Output avoids presenting bmad as a Claude-only skill"
       ]
     },

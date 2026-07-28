@@ -11,8 +11,8 @@
 | `route-out` | The request is not really about ClawTeam’s runtime | short explanation + owner handoff | ClawTeam-specific commands are genuinely required |
 
 ## Fast route-outs
-- **Generic multi-agent planning + implementation + QA** → `jeo`, `omc`, `omx`, `ohmg`
-- **Board/work queue governance outside ClawTeam runtime control** → `vibe-kanban`
+- **Generic multi-agent planning + implementation + QA** → `jeo`, `oh-my-claudecode`, `oh-my-codex`, `oh-my-agent`
+- **Board/work queue governance outside ClawTeam runtime control** → `task-planning`
 - **Planning / decomposition** → `task-planning`
 - **Tool comparison or landscape research** → `survey`
 - **Lightweight parallel fan-out without team/task/inbox/worktree state** → built-in delegation / subagents

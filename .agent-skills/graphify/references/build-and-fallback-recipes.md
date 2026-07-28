@@ -38,14 +38,14 @@ graphify --help
 
 Guidance:
 - prefer the smallest useful subtree first
-- preserve the durable artifact contract: `graphify-out/GRAPH_REPORT.md`, `graphify-out/graph.json`, `graphify-out/graph.html`
+- preserve the durable artifact contract: `.graphify/GRAPH_REPORT.md` and `.graphify/graph.json` from `graphify update`, plus `.graphify/graph.html` from `graphify export html` (legacy repos may still hold `graphify-out/` — run `graphify migrate-state`)
 - if the raw CLI/build surface does not honestly support the needed workflow in the current environment, switch to the tested local/Python path instead of faking parity with assistant-native UX
 
 ## `incremental-refresh`
 Use when artifacts already exist and the user changed only part of the corpus.
 
 Guidance:
-- inspect current `graphify-out/`
+- inspect current `.graphify/` (run `graphify check-update` first; it reports pending refresh signals cheaply)
 - refresh only the changed scope when practical
 - preserve or regenerate the same artifact set
 - tell the user whether the run was a full rebuild or a refresh of existing outputs

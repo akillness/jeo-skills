@@ -325,7 +325,7 @@ bash scripts/validate-config.sh
 |-------|---------|---------|
 | `plannotator` | Visual plan & diff review | `npx skills add ... --skill plannotator` |
 | `ralph` | Persistence loop until task completes | `npx skills add ... --skill ralph` |
-| `vibe-kanban` | Visual kanban for agent stories | `npx skills add ... --skill vibe-kanban` |
+| `task-planning` | Visual kanban for agent stories | `npx skills add ... --skill task-planning` |
 | `omg` | Full orchestration: plan → execute → track | `npx skills add ... --skill omg` |
 
 ---

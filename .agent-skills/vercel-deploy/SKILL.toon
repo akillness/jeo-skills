@@ -1,5 +1,5 @@
 N:vercel-deploy
-D:Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, env-scope fixes, and rollback response. Use when the provider is already Vercel and the job is to get a preview URL, promote a verified deployment, attach a stable alias/domain, fix Vercel env drift, or roll back production safely.
+D:Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, environment-variable sync, and rollback response. Use when the request is specifically about operating a project on Vercel after the provider is already chosen — especially when someone needs a preview URL, stable alias, custom domain, env-scope fix, production cutover, or rollback on Vercel. Triggers on: Vercel deploy, Vercel preview URL, vercel promote, vercel alias, Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route provider-neutral release strategy to `deployment-automation`, CI/workflow authoring to `deployment-automation`, and local install/auth/bootstrap work to `system-environment-setup`.
 G:vercel|deployment|preview|production|promote|alias|domains|environment-variables|rollback
 
 U[4]:
@@ -13,7 +13,7 @@ S[3]{n,action,details}:
   3,Execute + Report,Use the matching command/reference packet and return a Vercel operation summary with URL, verification, and remaining risk
 R[4]:
   Route generic rollout strategy to deployment-automation
-  Route CI/workflow authoring to workflow-automation
+  Route CI/workflow authoring to deployment-automation
   Treat env changes as applying to new deployments, not old ones
   Do not treat promote/rollback as lossless; report manual caveats and verification
 E[3]{desc,in,out}:

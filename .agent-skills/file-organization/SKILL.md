@@ -41,10 +41,10 @@ Read [references/naming-and-import-rules.md](references/naming-and-import-rules.
 - Produce a migration plan that minimizes broken imports, duplicate files, and half-finished moves
 
 ## When not to use this skill
-- **The main task is designing reusable component APIs, variants, or slot/primitive composition** → use `ui-component-patterns` or `design-system`
+- **The main task is designing reusable component APIs, variants, or slot/primitive composition** → use `design-system` or `design-system`
 - **The main task is framework state ownership, cache/store boundaries, or URL/form/server-state placement** → use `state-management`
 - **The main task is making the repo runnable across machines, services, toolchains, or containers** → use `system-environment-setup`
-- **The main task is task runners, bootstrap scripts, hooks, or local-CI command design** → use `workflow-automation`
+- **The main task is task runners, bootstrap scripts, hooks, or local-CI command design** → use `deployment-automation`
 - **The main task is deployment topology or hosted CI/CD rollout** → use `deployment-automation` or `vercel-deploy`
 - **The repo only needs a tiny mechanical file move with no architectural decision**; in that case implement the move directly instead of reopening structure design
 
@@ -130,10 +130,10 @@ Use these rules:
 A good structure recommendation says what it does **not** own.
 
 Examples:
-- if the real pain is reusable component primitives and API shape, route to `ui-component-patterns`
+- if the real pain is reusable component primitives and API shape, route to `design-system`
 - if the real pain is design-token / library-wide UI governance, route to `design-system`
 - if the real pain is runtime/services/toolchain setup, route to `system-environment-setup`
-- if the real pain is recurring scripts and task entrypoints, route to `workflow-automation`
+- if the real pain is recurring scripts and task entrypoints, route to `deployment-automation`
 - if the real pain is state/caching ownership, route to `state-management`
 
 Mixed requests are normal. Split them explicitly instead of forcing one folder strategy to solve everything.

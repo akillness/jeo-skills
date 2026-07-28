@@ -425,8 +425,14 @@ pass 'seven extracted hardened setup-guide shell sections are syntactically vali
 
 # Execute guide code fences in a minimal PATH. Stubs only replace installers/CLIs;
 # jq, Python, and the filesystem tools remain real and all homes are disposable.
+# The guide's TOML writers require a python3 with tomllib (3.11+), so resolve the
+# real interpreter instead of assuming a fixed system path.
 GUIDE_BIN="$WORK/guide-bin"
-GUIDE_PATH="$GUIDE_BIN:/opt/homebrew/bin:/usr/bin:/bin"
+GUIDE_PY="$(command -v python3 2>/dev/null || true)"
+[ -n "$GUIDE_PY" ] && "$GUIDE_PY" -c 'import tomllib' 2>/dev/null \
+  || fail 'a python3 with tomllib (3.11+) is required on PATH to execute the guide sections'
+GUIDE_PATH="$GUIDE_BIN:$(dirname "$GUIDE_PY"):/opt/homebrew/bin:/usr/bin:/bin"
+
 mkdir -p "$GUIDE_BIN"
 for tool in pip3 uvx semble claude codex npm jeo pi jeopi rtk npx; do
   cat >"$GUIDE_BIN/$tool" <<'EOF'
@@ -438,11 +444,16 @@ done
 
 run_guide() {
   local guide_home="$1" section="$2"
+  # Run from an isolated working directory: Step 6 resolves a project-scoped
+  # vault from the current git toplevel, so an un-isolated cwd would bootstrap a
+  # vault inside this repository.
+  mkdir -p "$guide_home/workdir"
   HOME="$guide_home" _HOME="$guide_home" PATH="$GUIDE_PATH" PLATFORM=macos \
     SKILLS_ROOT="$guide_home/.agents/skills" OOO_GIT_INTERVIEW=0 OOO_SPEC_KIT=0 OOO_CLI_ANYTHING=0 \
-    /bin/bash "$GUIDE_DIR/$section" >"$LAST_OUTPUT" 2>&1
+    /bin/bash -c 'cd "$1" && exec /bin/bash "$2"' bash "$guide_home/workdir" "$GUIDE_DIR/$section" >"$LAST_OUTPUT" 2>&1
   LAST_STATUS=$?
 }
+
 
 assert_guide_symlinks() {
   local label="$1" section="$2" relative_config="$3"
@@ -524,6 +535,27 @@ jq -e '.hooks.enabled == true and (.hooks.hooks | length == 2)' "$GUIDE_JEO_HOME
 assert_guide_symlinks jeo 04.sh '.jeo/config.json'
 pass 'jeo guide writer mutates regular JSON and rejects both symlink forms'
 
+# jeo must be pointed at a project-scoped wiki: a RELATIVE wikiRoot (jeo resolves
+# it against the launch directory) and a post-turn hook that feeds the turn-end
+# event to the shared ingest script without baking any vault path.
+jq -e '.wikiRoot == "llm-wiki"' "$GUIDE_JEO_HOME/.jeo/config.json" >/dev/null \
+  || fail 'jeo guide did not set the project-scoped relative wikiRoot'
+JEO_POST_TURN="$(jq -r '.hooks.hooks[] | select(.event == "post-turn") | .run' "$GUIDE_JEO_HOME/.jeo/config.json")"
+case "$JEO_POST_TURN" in
+  *'{"hook_event_name":"post-turn"}'*) ;;
+  *) fail 'jeo post-turn hook does not feed the turn-end event to the ingest script' ;;
+esac
+case "$JEO_POST_TURN" in
+  *"$GUIDE_JEO_HOME/.agents/hooks/ingest-prompt.py"*) ;;
+  *) fail 'jeo post-turn hook does not call the project-independent ingest script' ;;
+esac
+case "$JEO_POST_TURN" in
+  *LLM_WIKI_VAULT*|*OBSIDIAN_MIND_VAULT*|*'llm-wiki/scripts'*)
+    fail 'jeo post-turn hook baked a vault path instead of resolving it at run time' ;;
+esac
+pass 'jeo guide configures a project-scoped wikiRoot and a vault-path-free post-turn hook'
+
+
 GUIDE_PI_HOME="$WORK/guide-pi-home"
 mkdir -p "$GUIDE_PI_HOME/.pi/agent"
 printf '%s\n' '{"mcpServers":{"existing":{"command":"keep"}}}' >"$GUIDE_PI_HOME/.pi/agent/mcp.json"
@@ -550,9 +582,10 @@ pass 'jeopi guide writer mutates regular JSON and rejects both symlink forms'
 
 # Step 6 owns the Codex hooks.json writer. Its wrapper path remains isolated too.
 GUIDE_STEP6_HOME="$WORK/guide-step6-home"
-mkdir -p "$GUIDE_STEP6_HOME/.codex" "$GUIDE_STEP6_HOME/vaults/llm-wiki/scripts"
-printf '%s\n' '#!/bin/sh' >"$GUIDE_STEP6_HOME/vaults/llm-wiki/scripts/ingest-prompt.py"
-chmod 700 "$GUIDE_STEP6_HOME/vaults/llm-wiki/scripts/ingest-prompt.py"
+mkdir -p "$GUIDE_STEP6_HOME/.codex" "$GUIDE_STEP6_HOME/.agents/hooks"
+printf '%s\n' '#!/bin/sh' >"$GUIDE_STEP6_HOME/.agents/hooks/ingest-prompt.py"
+chmod 700 "$GUIDE_STEP6_HOME/.agents/hooks/ingest-prompt.py"
+
 printf '%s\n' '{"hooks":{}}' >"$GUIDE_STEP6_HOME/.codex/hooks.json"
 chmod 640 "$GUIDE_STEP6_HOME/.codex/hooks.json"
 run_guide "$GUIDE_STEP6_HOME" 07.sh
@@ -562,6 +595,28 @@ jq -e '.hooks.UserPromptSubmit[0].hooks[0].command and .hooks.Stop[0].hooks[0].c
 [ "$(mode_of "$GUIDE_STEP6_HOME/.codex/hooks.json")" = 640 ] || fail 'Step 6 guide mutation lost mode 640'
 assert_guide_symlinks step6 07.sh '.codex/hooks.json'
 pass 'Step 6 guide hooks writer mutates regular JSON and rejects both symlink forms'
+
+# The ingest wrapper must stay project-independent: it targets the shared
+# ~/.agents/hooks/ingest-prompt.py and must not bake any vault path, because the
+# vault is resolved per repository at run time.
+STEP6_WRAPPER="$GUIDE_STEP6_HOME/.codex/hooks/llm-wiki-ingest.sh"
+[ -f "$STEP6_WRAPPER" ] || fail 'Step 6 guide did not write the Codex ingest wrapper'
+[ "$(mode_of "$STEP6_WRAPPER")" = 700 ] || fail 'Step 6 ingest wrapper is not mode 700'
+grep -qF "INGEST=\"$GUIDE_STEP6_HOME/.agents/hooks/ingest-prompt.py\"" "$STEP6_WRAPPER" \
+  || fail 'Step 6 ingest wrapper does not target the project-independent ingest path'
+if grep -q 'LLM_WIKI_VAULT\|OBSIDIAN_MIND_VAULT\|llm-wiki/scripts' "$STEP6_WRAPPER"; then
+  fail 'Step 6 ingest wrapper baked a vault path instead of resolving it at run time'
+fi
+pass 'Step 6 ingest wrapper is project-independent and bakes no vault path'
+
+# Step 6 must bootstrap the wiki under the resolved obsidian-mind vault (here the
+# outside-a-repo fallback), never at the legacy ~/vaults/llm-wiki path.
+[ -f "$GUIDE_STEP6_HOME/vaults/obsidian-mind/llm-wiki/index.md" ] \
+  || fail 'Step 6 guide did not bootstrap the wiki under the obsidian-mind fallback vault'
+[ ! -e "$GUIDE_STEP6_HOME/vaults/llm-wiki" ] \
+  || fail 'Step 6 guide still bootstraps the legacy ~/vaults/llm-wiki path'
+pass 'Step 6 guide bootstraps llm-wiki as a subfolder of the obsidian-mind vault'
+
 
 # Exercise the root installer's marker guard without calling its networked main().
 ROOT_LIBRARY="$WORK/install-library.sh"

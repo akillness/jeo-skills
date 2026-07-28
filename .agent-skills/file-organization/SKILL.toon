@@ -1,5 +1,5 @@
 N:file-organization
-D:Choose the right repo structure boundary: feature, shared layer, route segment, or workspace package. Use for folder-structure refactors, project-layout decisions, naming/import conventions, and staged migrations when a repo feels scattered or a team needs to know where code should live.
+D:Design or refactor project structure around the right boundary unit: feature, shared layer, route segment, or workspace package. Use when a repo feels scattered, a team needs naming/import conventions, or the user must choose between type-based, feature-based, framework-colocated, and workspace layouts. Triggers on: file organization, folder structure, project structure, reorganize repo, feature folders, shared vs feature code, where should this file live, apps/packages split, and project layout refactor.
 G:file-organization project-structure folder-structure feature-folders shared-vs-feature apps-packages naming-conventions
 U[3]:
   Starter-tree cleanup before a small app calcifies into scattered technical folders

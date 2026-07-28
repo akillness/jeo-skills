@@ -51,7 +51,7 @@ CSS-in-JS by extracting styles at compile time:
 - The user keeps reaching for a runtime CSS-in-JS Provider and needs to know it is unnecessary (and harmful to RSC) with Devup UI
 
 Route out when the real need is broader than styling mechanics: token/visual-language
-governance → `design-system`; reusable-component API/anatomy → `ui-component-patterns`;
+governance → `design-system`; reusable-component API/anatomy → `design-system`;
 layout/breakpoint strategy → `responsive-design`; accessibility → `web-accessibility`;
 bundle/RSC/rerender performance beyond styling → `react-best-practices`.
 
@@ -158,7 +158,7 @@ recipes and route-outs: [references/theming-and-migration.md](references/theming
 ## Route-outs (do not over-promise styling)
 
 - **Token governance, naming, visual-language direction** → `design-system`
-- **Reusable-component API / slot anatomy / controlled ownership** → `ui-component-patterns`
+- **Reusable-component API / slot anatomy / controlled ownership** → `design-system`
 - **Page-shell / breakpoint / reflow strategy** → `responsive-design`
 - **Accessibility semantics, focus, labels, reflow** → `web-accessibility`
 - **Waterfalls, bundle size, RSC boundaries, rerender churn** → `react-best-practices`

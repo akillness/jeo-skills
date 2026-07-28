@@ -73,7 +73,7 @@ Typical slides:
 
 ## Route-outs
 - If the user mainly needs a **document**, not a slide artifact → `technical-writing`
-- If the user mainly needs a **tutorial or help-center flow** → `user-guide-writing`
+- If the user mainly needs a **tutorial or help-center flow** → `technical-writing`
 - If the user mainly needs a **research manuscript or rebuttal** → `research-paper-writing`
 - If the user mainly needs **messaging / campaign / launch planning** without an actual deck file → `marketing-automation`
 

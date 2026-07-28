@@ -5,8 +5,8 @@ description: >-
   commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user
   specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer
   work, product/ops research, content operations, or game-production coordination. Not for generic
-  multi-agent routing, board-only governance, or lightweight subtask fan-out when jeo, omc, omx,
-  ohmg, vibe-kanban, or built-in delegation already fit.
+  multi-agent routing, board-only governance, or lightweight subtask fan-out when jeo, harness,
+  task-planning, or built-in delegation already fit.
 license: MIT
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 metadata:
@@ -50,8 +50,8 @@ Read these support docs before stretching the boundary:
 - The workflow spans developer delivery, product/ops research, content operations, or game work **and** the chosen runtime is ClawTeam
 
 ## When not to use this skill
-- **Generic multi-agent implementation loop with planning + QA** → `jeo`, `omc`, `omx`, or `ohmg`
-- **Board/work queue control outside the ClawTeam runtime** → `vibe-kanban`
+- **Generic multi-agent implementation loop with planning + QA** → `jeo`, `oh-my-claudecode`, `oh-my-codex`, or `oh-my-agent`
+- **Board/work queue control outside the ClawTeam runtime** → `task-planning`
 - **Lightweight parallel subtasks with no team/task/inbox/worktree state** → built-in delegation / subagents
 - **Planning or decomposition** → `task-planning`
 - **Tool comparison or platform survey** → `survey`
@@ -241,7 +241,7 @@ Short, truthful packets beat giant command dumps.
 
 **Good output direction**
 - choose `route-out`
-- recommend `jeo`, `omc`, `omx`, or `ohmg`
+- recommend `jeo`, `oh-my-claudecode`, `oh-my-codex`, or `oh-my-agent`
 - explain that `clawteam` is the ClawTeam runtime/operator surface, not the generic answer to every multi-agent request
 
 ## Best practices

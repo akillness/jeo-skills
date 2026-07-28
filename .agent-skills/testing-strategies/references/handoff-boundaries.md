@@ -29,7 +29,7 @@ Use this file when the request is drifting away from testing policy and into imp
 - performance, throughput, latency, memory, or scale is the dominant risk
 - the team needs benchmarking/load-test strategy more than functional validation policy
 
-## Route to `web-accessibility` or `web-design-guidelines` when
+## Route to `web-accessibility` or `web-accessibility` when
 - accessibility, visual QA, responsive behavior, or design-system compliance is the main validation surface
 - screenshots, keyboard navigation, or assistive-tech evidence dominate the review
 

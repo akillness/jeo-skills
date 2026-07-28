@@ -1,10 +1,7 @@
 ---
 name: scaffold-exercises
-description: Use this skill when >
-  Create exercise directory structures for educational content that comply with
-  linting standards. Sections use XX-section-name/ naming, exercises use
-  XX.YY-exercise-name/ with problem/, solution/, explainer/ variants. Use when
-  creating course content or educational exercise structures.
+description: >-
+  Create educational exercise directories compliant with pnpm ai-hero-cli internal lint
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Designed for ai-hero-cli course content structure. Validates with

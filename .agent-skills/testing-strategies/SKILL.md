@@ -53,7 +53,7 @@ Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when d
 - **The main task is implementing API/service/database/browser tests, fixtures, mocks, or testcontainers** → use `backend-testing` or the stack-specific implementation skill
 - **The main task is reproducing a failure, isolating why a test is red, or debugging flaky behavior** → use `debugging`
 - **The main task is judging one specific PR, diff, or merge request** → use `code-review`
-- **The main task is accessibility-heavy verification or visual review policy** → use `web-accessibility` or `web-design-guidelines`
+- **The main task is accessibility-heavy verification or visual review policy** → use `web-accessibility` or `web-accessibility`
 - **The dominant risk is performance benchmarking, load testing, or frame-budget policy** → use `performance-optimization` or `game-performance-profiler`
 - **There is no real change or decision point yet**; first define what changed and what confidence decision must be made
 
@@ -176,7 +176,7 @@ Typical route-outs:
 - `deployment-automation` — own rollout execution, staging/prod verification sequencing, rollback steps, or release runbooks once the gate is chosen
 - `game-ci-cd-pipeline` — own engine/build pipeline implementation or stabilization when the problem is a game CI/CD surface, not policy selection
 - `steam-store-launch-ops` — own Steam-specific launch/store/runbook work when the remaining proof is release checklist, page readiness, or launch timing rather than merge confidence
-- `web-accessibility` / `web-design-guidelines` — handle accessibility-heavy or visual-governance validation packets
+- `web-accessibility` / `web-accessibility` — handle accessibility-heavy or visual-governance validation packets
 - `performance-optimization` / `game-performance-profiler` — handle benchmark, load, latency, or frame-budget policy when performance is the actual dominant risk
 
 If the user asks “what should we test?” stay here.

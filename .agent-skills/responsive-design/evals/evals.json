@@ -18,7 +18,7 @@
       "expected_output": "Explains when container queries are appropriate, chooses a component-slot packet, and keeps reusable component API questions separate from layout adaptation.",
       "assertions": [
         "Output covers container queries or parent-container adaptation",
-        "Output distinguishes responsive layout ownership from ui-component-patterns API ownership",
+        "Output distinguishes responsive layout ownership from design-system API ownership",
         "Output avoids treating viewport breakpoints as the only tool"
       ]
     },
@@ -44,10 +44,10 @@
     {
       "id": 5,
       "prompt": "Review this pricing page before launch. Cards feel cramped on mobile, but I also want hierarchy, CTA, and polish feedback.",
-      "expected_output": "Keeps responsive-design on the layout-adaptation packet, names the responsive surface clearly, and routes broad UI-review work to web-design-guidelines instead of absorbing the full launch critique.",
+      "expected_output": "Keeps responsive-design on the layout-adaptation packet, names the responsive surface clearly, and routes broad UI-review work to web-accessibility instead of absorbing the full launch critique.",
       "assertions": [
         "Output keeps the main ownership on responsive layout strategy rather than broad UI critique",
-        "Output routes hierarchy, CTA, or polish review to web-design-guidelines",
+        "Output routes hierarchy, CTA, or polish review to web-accessibility",
         "Output proposes a bounded responsive packet or first slice"
       ]
     }

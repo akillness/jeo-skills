@@ -65,11 +65,12 @@ echo "CLAUDE_CONFIG_DIR: $CLAUDE_CONFIG_DIR"
 # Two lists are built, and they are NOT the same thing:
 #   DETECTED_AGENTS    — every agent found on this machine, used by later steps
 #   SKILLS_CLI_AGENTS  — only ids the Vercel `skills` CLI accepts, one per `-a` flag
-# Measured behaviour of `skills add -g -a <id>` (2026-07-27, skills CLI):
+# Measured behaviour of `skills add -g -a <id>` (2026-07-28, skills CLI 1.5.15):
 #   claude-code                              → ~/.claude/skills
 #   codex · opencode · gemini-cli · cursor   → ~/.agents/skills
 #   universal                                → ~/.agents/skills
-#   antigravity                              → ~/.gemini/antigravity/skills
+#   antigravity                              → ~/.agents/skills (NOT ~/.gemini/antigravity/skills;
+#                                              that tree only holds strays, audited in Step 2)
 #   pi                                       → ~/.pi/agent/skills
 #   crush                                    → ~/.config/crush/skills
 # `jeopi`, `jeo` and `gjc` are NOT valid ids — passing them makes the CLI reject the
@@ -421,7 +422,7 @@ echo "✅ $_SHARED_COUNT skills present in $SKILLS_ROOT (shared root for jeopi /
 installs nothing. Use `-a claude-code -a codex` instead.
 
 Where each id actually writes, measured with `skills add -g -a <id>` against a sandboxed `HOME`
-(2026-07-27). Several ids share the same destination, and it is **not** the per-agent directory the
+(2026-07-28, skills CLI 1.5.15). Several ids share the same destination, and it is **not** the per-agent directory the
 name suggests:
 
 | `-a <id>` | Global destination |
@@ -429,7 +430,7 @@ name suggests:
 | `universal` | `$HOME/.agents/skills/` — always included; the root jeopi / jeo / gjc / opencode read natively |
 | `codex`, `opencode`, `gemini-cli`, `cursor` | `$HOME/.agents/skills/` (**not** `~/.codex/skills`, `~/.config/opencode/skills` or `~/.gemini/skills`) |
 | `claude-code` | `$HOME/.claude/skills/` |
-| `antigravity` | `$HOME/.gemini/antigravity/skills/` |
+| `antigravity` | `$HOME/.agents/skills/` (**not** `~/.gemini/antigravity/skills` — that tree only holds strays from other installers, audited in Step 2) |
 | `pi` | `$HOME/.pi/agent/skills/` |
 | `crush` | `$HOME/.config/crush/skills/` |
 | _(no id)_ `jeopi`, `jeo`, `gjc` | not installable via `-a`; they discover `$HOME/.agents/skills` themselves |
@@ -921,7 +922,7 @@ if canon.is_dir():
                 same_root.append(f"{name}  {first.parent}  vs  {skill_md.parent}")
 
 stamp = time.strftime("%Y%m%d%H%M%S")
-shadow_repo, shadow_extra, shadow_other, fixed, failed = [], [], [], 0, 0
+shadow_repo, shadow_extra, shadow_other, cli_internal, fixed, failed = [], [], [], [], 0, 0
 for root in roots:
     # Index each root exactly like the canonical one: a skill lives at <root>/<name>/SKILL.md
     # or <root>/<group>/<name>/SKILL.md. A recursive "**/SKILL.md" walk is wrong here — a skill
@@ -943,6 +944,11 @@ for root in roots:
             continue
         label = f"{name}  {skill_md.parent}"
         owned = name in manifest_names
+        # `.system/` is the skills CLI's own bundled store. Rewriting it would fight the
+        # CLI on its next run, and its copies are not something this guide installed.
+        if ".system" in skill_md.parent.parts:
+            cli_internal.append(label)
+            continue
         if root in never_refresh:
             shadow_other.append(f"{label}  (download cache — never rewritten)")
             continue
@@ -991,13 +997,15 @@ if same_root:
     print(f"duplicate names INSIDE {canon} — winner is luck-dependent, resolve manually: {len(same_root)}")
     for line in sorted(same_root)[:10]:
         print(f"   {line}")
+if cli_internal:
+    print(f"skills-CLI internals under .system/ — owned by the CLI, never rewritten: {len(cli_internal)}")
 if shadow_other:
     print(f"diverging copies in the skills.urls download cache (never rewritten): {len(shadow_other)}")
     for line in sorted(shadow_other)[:10]:
         print(f"   {line}")
     if len(shadow_other) > 10:
         print(f"   … {len(shadow_other) - 10} more")
-if not shadow_repo and not shadow_extra and not shadow_other and not same_root:
+if not shadow_repo and not shadow_extra and not shadow_other and not same_root and not cli_internal:
     print("✅ no divergent duplicate skills — opencode resolves every skill to one content version")
 elif not refresh:
     print("Re-run with JEO_OPENCODE_REFRESH_SHADOWS=1 (repo skills) or =all (every skill that")
@@ -1079,7 +1087,59 @@ echo "✅ graphify installed (venv: $GRAPHIFY_VENV)"
 "$GRAPHIFY_PY" -c "import graphify; print('graphify import OK')"
 ```
 
-> **Wiki/corpus note:** Graphify already indexes doc files (`.md`, `.mdx`, `.txt`, `.rst`, `.html`, `.yaml`, `.yml`) alongside code by default — no extra config needed. Just run `graphify update .` from a directory that contains the wiki/docs so they're picked up in the rebuild. (`graphify update` only supports `--force` and `--no-cluster`; there is no `--scope`/`--no-description` flag.)
+```bash
+echo "=== Verifying the graphify CLI ==="
+if command -v graphify >/dev/null 2>&1; then
+  graphify --version
+else
+  echo "⚠️  'graphify' is not on PATH — use $GRAPHIFY_PY -m graphify, or add the venv bin dir to PATH"
+fi
+# Core CLI loop (there is NO `graphify build` — the build command is `graphify update`):
+#   graphify scope        # what would actually be graphed
+#   graphify update .     # -> .graphify/graph.json + .graphify/GRAPH_REPORT.md
+#   graphify summary      # hubs, communities, representative nodes
+#   graphify query "<question>" --budget 1500
+#   graphify explain <node> | graphify path <a> <b> | graphify tree <node> --depth 2
+#   graphify export html  # -> .graphify/graph.html  (NOT produced by `graphify update`)
+#   graphify check-update # cheap "does this need a rebuild?" probe
+```
+
+**Install the graphify skill for jeo · jeopi · gjc · opencode.** `graphify install <platform>`
+accepts only these ids — `claude`, `codex`, `gemini`, `opencode`, `aider`, `copilot`, `claw`,
+`droid`, `trae`, `trae-cn`, `hermes`, `kimi`, `kiro`, `antigravity`, `antigravity-windows`,
+`vscode-copilot-chat`, `windows`, `vscode`. **`jeo`, `jeopi` and `gjc` are not platform ids**
+(`graphify install jeo` fails with `error: unknown platform`), exactly like the skills-CLI ids in
+Step 0: all three read the shared `~/.agents/skills` root that Step 1's unconditional `universal`
+id already populates.
+
+```bash
+echo "=== Wiring graphify for jeo / jeopi / gjc / opencode ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+
+# jeo · jeopi · gjc — nothing extra to install: Step 1 put the skill in the shared root.
+if [ -f "$SKILLS_ROOT/graphify/SKILL.md" ]; then
+  echo "✅ graphify skill present at $SKILLS_ROOT/graphify/SKILL.md (jeo, jeopi, gjc, sst/opencode read this)"
+else
+  echo "⚠️  graphify skill missing from $SKILLS_ROOT — re-run Step 1, or:"
+  echo "    npx skills add https://github.com/akillness/jeo-skills --skill graphify -a universal"
+fi
+
+# opencode — sst/opencode additionally supports a native plugin + tool.execute.before hook.
+if [ "${OPENCODE_SST:-0}" = "1" ] && command -v graphify &>/dev/null; then
+  graphify install opencode 2>&1 | tail -3
+  echo "✅ graphify opencode integration installed (.opencode/skills, .opencode/plugins/graphify.js, opencode.json hook)"
+else
+  echo "ℹ️  sst/opencode not detected — skipping 'graphify install opencode'"
+fi
+# The archived Go opencode-ai/opencode TUI has no skill loader; Step 2b's command bridge covers it.
+```
+
+> **Wiki/corpus note:** Graphify already indexes doc files (`.md`, `.mdx`, `.txt`, `.rst`, `.html`, `.yaml`, `.yml`) alongside code by default — no extra config needed. Just run `graphify update .` from a directory that contains the wiki/docs so they're picked up in the rebuild.
+>
+> **State layout:** artifacts live in `.graphify/` (`graph.json`, `GRAPH_REPORT.md`). `graphify-out/` is the legacy layout — run `graphify migrate-state` on old repos. Verified `graphify update` flags include `--force`, `--no-cluster`, `--no-description`, `--no-label`, `--fill-missing`, `--scope auto|committed|tracked|all`, and `--all`; run `graphify update --help` rather than guessing.
+>
+> **Degraded output is normal without an LLM key:** `graphify update .` still writes the graph but prints `community labeling failed ... using Community N placeholders`. Re-run `graphify update --fill-missing` once a backend is configured instead of treating placeholders as real cluster names.
 
 ### 3c — ooo MCP Server (Ouroboros spec-first dev loop + git-aware interview + spec-kit plan + cli-anything execute)
 
@@ -1358,22 +1418,44 @@ esac
 command -v obsidian &>/dev/null \
   && echo "✅ obsidian CLI available" \
   || echo "ℹ️  obsidian desktop CLI not in PATH — URI fallback (obsidian://) will be used"
+
+# The vault this flow persists into is the obsidian-mind vault, and its default IS
+# the working repo root (see the vault contract in Step 3e). Report the resolved
+# root so `obsidian vault=…` targeting is never a guess.
+OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$_HOME/vaults/obsidian-mind")}"
+echo "   obsidian-mind vault (project-scoped): $OM_VAULT"
+[ -d "$OM_VAULT/.obsidian" ] \
+  && echo "   .obsidian/ present — open it in Obsidian to register the vault" \
+  || echo "   no .obsidian/ yet — Obsidian creates it the first time you open $OM_VAULT as a vault"
+
 ```
 
-### 3e — llm-wiki (persistent markdown wiki)
+### 3e — llm-wiki (project-scoped markdown wiki inside the obsidian-mind vault)
+
+> **Vault contract (one definition, reused by Step 3i, Step 3k, Step 6 and
+> `hooks/ingest-prompt.py`)**
+>
+> | Root | Resolution order |
+> |------|------------------|
+> | obsidian-mind vault | `$OBSIDIAN_MIND_VAULT` → `git rev-parse --show-toplevel` of the current directory → `~/vaults/obsidian-mind` (fallback outside any git repo) |
+> | llm-wiki vault | `$LLM_WIKI_VAULT` → `<obsidian-mind vault>/llm-wiki` |
+> | graphify state | `<repo>/.graphify/` (canonical; `graphify-out/` is the legacy layout — migrate with `graphify migrate-state`) |
+>
+> The obsidian-mind vault **is the working repo root**, so every repository keeps
+> its own independent wiki and graph instead of writing into one shared home vault.
+> llm-wiki lives in its own `llm-wiki/` subfolder so its schema never mixes with
+> obsidian-mind's `brain/`, `org/` and `perf/` folders. Resolution happens at
+> **run time** (per project), never baked into a hook as an absolute path.
 
 ```bash
 echo "=== Bootstrapping llm-wiki vault ==="
 # Defensive home guard (safe when run standalone without Step 0 context)
 _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
 SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
-# Vault location — MUST match the Knowledge Pipeline (Step 6) and the jeo post-turn hook
-# (Step 3i): default ~/vaults/llm-wiki on every platform (override with LLM_WIKI_VAULT).
-# (Previously defaulted to ~/wiki, which left an orphaned vault no hook ever read.)
-case "$PLATFORM" in
-  windows|macos|linux) WIKI_DEFAULT="$_HOME/vaults/llm-wiki" ;;
-esac
-WIKI_VAULT="${LLM_WIKI_VAULT:-$WIKI_DEFAULT}"
+# Vault contract — identical in Step 3i, Step 3k, Step 6 and hooks/ingest-prompt.py.
+# obsidian-mind vault = the working repo root; llm-wiki nests inside it.
+OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$_HOME/vaults/obsidian-mind")}"
+WIKI_VAULT="${LLM_WIKI_VAULT:-$OM_VAULT/llm-wiki}"
 
 # Reuse the llm-wiki skill's own bootstrap script so the vault structure this
 # step creates never drifts from what .agent-skills/llm-wiki/SKILL.md documents
@@ -1395,7 +1477,12 @@ if [ ! -f "$WIKI_VAULT/index.md" ]; then
 else
   echo "✅ wiki vault exists at $WIKI_VAULT"
 fi
-echo "   Set LLM_WIKI_VAULT to override the default location."
+echo "   Vault root  : $OM_VAULT (obsidian-mind)"
+echo "   Wiki root   : $WIKI_VAULT"
+echo "   This bootstraps the CURRENT repo only; other repos are bootstrapped on their"
+echo "   first captured prompt. Add /llm-wiki/ to .gitignore to keep it out of history."
+echo "   Override with OBSIDIAN_MIND_VAULT (vault root) or LLM_WIKI_VAULT (wiki root)."
+
 ```
 
 ### 3f — semble (CLI + MCP, token-efficient code search)
@@ -1853,18 +1940,31 @@ project tree):
    `post-implementation` runs `graphify update .`; `post-turn` pipes the turn
    into the llm-wiki ingest script. Both are guarded with `|| true` so a slow or
    failing tool never blocks a turn (hook timeout is 30s; jeo surfaces non-zero
-   hook output to the model as advisory).
-3. **Detection** was added in Step 0 (`command -v jeo`).
+   hook output to the model as advisory). The hook stores **no vault path** —
+   `ingest-prompt.py` resolves the project vault itself at run time.
+3. **Wiki root** → `~/.jeo/config.json` `wikiRoot`, set to the **relative** value
+   `llm-wiki`. jeo runs `path.resolve()` on `wikiRoot` (`src/agent/state.ts`
+   `normalizeWikiRoot`), so a relative value resolves against the directory jeo
+   was launched in — i.e. `<repo>/llm-wiki`, matching the hook contract. Launch
+   jeo from the repo root; from a subdirectory jeo would resolve the wiki to
+   `<subdir>/llm-wiki` while the hooks still use the git toplevel. `JEO_WIKI_ROOT`
+   still wins over the config value for a one-off override.
+4. **Detection** was added in Step 0 (`command -v jeo`).
+
 
 ```bash
 echo "=== Configuring jeo-code (jeo) rules + hooks ==="
-_HOME="${_HOME:-${USERPROFILE:-$HOME}}"; KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+# Shared, project-independent ingest script (Step 6 installs it). It resolves the
+# per-project vault itself, so no vault path is ever baked into a hook.
+KP_INGEST="${KP_INGEST:-$_HOME/.agents/hooks/ingest-prompt.py}"
 if command -v jeo &>/dev/null; then
   if ! command -v python3 &>/dev/null; then echo "❌ python3 is required to configure jeo safely" >&2; exit 1; fi
   JEO_RULES="$_HOME/.agents/rules/jeo-tool-flow.md"; JEO_CONFIG="$_HOME/.jeo/config.json"
-  if JEO_RULES="$JEO_RULES" JEO_CONFIG="$JEO_CONFIG" KP_VAULT="$KP_VAULT" python3 - <<'PY'
+  if JEO_RULES="$JEO_RULES" JEO_CONFIG="$JEO_CONFIG" KP_INGEST="$KP_INGEST" python3 - <<'PY'
 import json, os, pathlib, stat, tempfile
-rule, cfg, vault = pathlib.Path(os.environ["JEO_RULES"]), pathlib.Path(os.environ["JEO_CONFIG"]), os.environ["KP_VAULT"]
+rule, cfg, ingest = pathlib.Path(os.environ["JEO_RULES"]), pathlib.Path(os.environ["JEO_CONFIG"]), os.environ["KP_INGEST"]
+
 def state(p):
     try: s=os.lstat(p)
     except FileNotFoundError: return None
@@ -1900,16 +2000,25 @@ if "JEO-TOOL-FLOW:START" not in old:
     block="""<!-- JEO-TOOL-FLOW:START -->
 # Tool Flow (semble · rtk · graphify · llm-wiki · obsidian)
 Discovery uses `semble search` first; normal shell work uses rtk output compression.
-Read graphify output and ~/vaults/llm-wiki/index.md before rebuilding or answering; persist durable findings via obsidian/llm-wiki.
+The wiki is project-scoped: the obsidian-mind vault is this repo's root and the llm-wiki
+vault is `<repo>/llm-wiki`. Read `.graphify/GRAPH_REPORT.md` and `<repo>/llm-wiki/index.md`
+before rebuilding or answering; persist durable findings via obsidian/llm-wiki.
 <!-- JEO-TOOL-FLOW:END -->
 """
     replace(rule, old.rstrip("\n")+"\n\n"+block, lambda _: None)
 cs=state(cfg); data=json.loads(cfg.read_text(encoding="utf-8")) if cs else {}
+# Relative wikiRoot: jeo path.resolve()s it against the launch directory, which makes
+# the wiki project-scoped (<repo>/llm-wiki). JEO_WIKI_ROOT still overrides at run time.
+data["wikiRoot"]="llm-wiki"
 hooks=data.setdefault("hooks",{}); hooks["enabled"]=True; hooks["hooks"]=[
  {"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true"},
- {"event":"post-turn","run":f'LLM_WIKI_VAULT="{vault}" python3 "{vault}/scripts/ingest-prompt.py" >/dev/null 2>&1 || true; command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true'}]
+ # The turn-end event must be fed on stdin: ingest-prompt.py only refreshes the
+ # vault graph for Stop/AfterAgent/post-turn, and captures prompt text otherwise.
+ {"event":"post-turn","run":f'[ -f "{ingest}" ] && printf \'{{"hook_event_name":"post-turn"}}\' | python3 "{ingest}" >/dev/null 2>&1 || true; command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true'}]
+
 
 replace(cfg,json.dumps(data,indent=2)+"\n",json.loads,backup=True)
+
 PY
   then echo "✅ jeo tool-flow rule and hooks configured"; else exit 1; fi
 else echo "ℹ️  jeo not installed — skipping jeo-code rules + hooks wiring"; fi
@@ -1970,17 +2079,21 @@ else echo "ℹ️  pi (jeo-pi) not installed — skipping pi rules + MCP wiring"
 
 ```bash
 echo "=== Configuring jeopi (jeo-pi spec-first) hooks ==="
-_HOME="${_HOME:-${USERPROFILE:-$HOME}}"; KP_VAULT="${KP_VAULT:-${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}}"
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+# Shared, project-independent ingest script (Step 6 installs it); it resolves the
+# per-project vault itself, so no vault path is baked into the hook.
+KP_INGEST="${KP_INGEST:-$_HOME/.agents/hooks/ingest-prompt.py}"
 if command -v jeopi &>/dev/null || [ -d "$_HOME/.jeopi" ]; then
   JEOPI_CONFIG="$_HOME/.jeopi/config.json"
   if ! command -v python3 &>/dev/null; then echo "❌ python3 is required to configure jeopi safely" >&2; exit 1; fi
-  if JEOPI_CONFIG="$JEOPI_CONFIG" KP_VAULT="$KP_VAULT" python3 - <<'PY'
+  if JEOPI_CONFIG="$JEOPI_CONFIG" KP_INGEST="$KP_INGEST" python3 - <<'PY'
 import json,os,pathlib,stat,tempfile
-p=pathlib.Path(os.environ["JEOPI_CONFIG"]);v=os.environ["KP_VAULT"]
+p=pathlib.Path(os.environ["JEOPI_CONFIG"]);v=os.environ["KP_INGEST"]
 try:s=os.lstat(p)
 except FileNotFoundError:s=None
 if s and (stat.S_ISLNK(s.st_mode) or not stat.S_ISREG(s.st_mode)):raise SystemExit(f"❌ refusing non-regular jeopi config: {p}")
-d=json.loads(p.read_text(encoding="utf-8")) if s else {};d["hooks"]={"enabled":True,"hooks":[{"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true"},{"event":"post-turn","run":f'LLM_WIKI_VAULT="{v}" python3 "{v}/scripts/ingest-prompt.py" >/dev/null 2>&1 || true; command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true'}]};out=json.dumps(d,indent=2)+"\n";json.loads(out);p.parent.mkdir(parents=True,exist_ok=True);fd,n=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent);t=pathlib.Path(n)
+d=json.loads(p.read_text(encoding="utf-8")) if s else {};d["hooks"]={"enabled":True,"hooks":[{"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true"},{"event":"post-turn","run":f'[ -f "{v}" ] && python3 "{v}" >/dev/null 2>&1 || true; command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true'}]};out=json.dumps(d,indent=2)+"\n";json.loads(out);p.parent.mkdir(parents=True,exist_ok=True);fd,n=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent);t=pathlib.Path(n)
+
 
 try:
  with os.fdopen(fd,"w",encoding="utf-8") as o:o.write(out);o.flush();os.fsync(o.fileno())
@@ -1998,6 +2111,113 @@ else echo "ℹ️  jeopi not installed — skipping jeopi hooks wiring"; fi
 
 ---
 
+
+### 3l — OpenSpace (skill finder / retrieval layer over the installed catalog)
+
+Step 1 installs ~174 skills into `~/.agents/skills`. OpenSpace is installed here specifically to
+be the **skill-finder**: a host agent asks it to search, rank, and load the right `SKILL.md` out
+of that catalog instead of guessing from a flat list, and it records which skills actually worked.
+
+```bash
+echo "=== Installing OpenSpace (skill discovery layer) ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+OPENSPACE_HOME="${OPENSPACE_HOME:-$_HOME/.openspace/OpenSpace}"
+
+# Requires Python 3.12+.
+if command -v python3 &>/dev/null && python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3,12) else 1)'; then
+  if [ ! -d "$OPENSPACE_HOME/.git" ]; then
+    mkdir -p "$(dirname "$OPENSPACE_HOME")"
+    git clone --filter=blob:none --sparse https://github.com/HKUDS/OpenSpace.git "$OPENSPACE_HOME"
+    git -C "$OPENSPACE_HOME" sparse-checkout set --no-cone '/*' '!/assets/'
+  else
+    git -C "$OPENSPACE_HOME" pull --ff-only 2>&1 | tail -1
+  fi
+  # A dedicated venv, exactly like graphify in 3b. `python3 -m pip install -e` against a
+  # Homebrew/distro Python fails outright with PEP 668 "externally-managed-environment",
+  # which is why openspace-mcp can be missing on a machine that ran this step "successfully".
+  OPENSPACE_VENV="${OPENSPACE_VENV:-$_HOME/.agents/venvs/openspace}"
+  if command -v uv &>/dev/null; then
+    uv venv --python 3.12 "$OPENSPACE_VENV" 2>/dev/null || uv venv "$OPENSPACE_VENV" 2>/dev/null || true
+    uv pip install -e "$OPENSPACE_HOME" --python "$OPENSPACE_VENV/bin/python" 2>&1 | tail -2
+  else
+    python3 -m venv "$OPENSPACE_VENV" 2>/dev/null || true
+    "$OPENSPACE_VENV/bin/python" -m pip install -e "$OPENSPACE_HOME" 2>&1 | tail -2
+  fi
+  OPENSPACE_MCP_BIN="$OPENSPACE_VENV/bin/openspace-mcp"
+  if [ -x "$OPENSPACE_MCP_BIN" ]; then
+    echo "✅ openspace-mcp installed → $OPENSPACE_MCP_BIN"
+    # Expose it on PATH the same way the other tools are reachable.
+    mkdir -p "$_HOME/.local/bin" && ln -sf "$OPENSPACE_MCP_BIN" "$_HOME/.local/bin/openspace-mcp"
+  else
+    echo "⚠️  openspace-mcp not built — inspect: $OPENSPACE_VENV/bin/python -m pip install -e $OPENSPACE_HOME"
+  fi
+  # Host skills that give the agent the discovery + delegation tools.
+  for _hs in skill-discovery delegate-task; do
+    [ -d "$OPENSPACE_HOME/openspace/host_skills/$_hs" ] \
+      && mkdir -p "$SKILLS_ROOT/$_hs" \
+      && cp -R "$OPENSPACE_HOME/openspace/host_skills/$_hs/." "$SKILLS_ROOT/$_hs/" \
+      && echo "✅ host skill installed: $SKILLS_ROOT/$_hs"
+  done
+else
+  echo 'ℹ️  Python 3.12+ not found — skipping OpenSpace (the jeo-skills openspace routing skill is still installed by Step 1)'
+fi
+```
+
+Then register the MCP server in **every runtime installed on this machine** — OpenSpace is the
+skill finder for the shared catalog, so Claude Code and its Anthropic-compatible forks (kimi,
+glm/zai, deepseek, grok, qwen), Codex, Gemini CLI, Cursor, OpenCode, and the pi / gjc / jeopi
+agent runtimes should all see it. Step 1 installs the registrar with the `openspace` skill:
+
+```bash
+echo "=== Registering OpenSpace MCP across installed runtimes ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+OPENSPACE_VENV="${OPENSPACE_VENV:-$_HOME/.agents/venvs/openspace}"
+REGISTRAR="$SKILLS_ROOT/openspace/scripts/register-openspace-mcp.sh"
+
+if [ ! -f "$REGISTRAR" ]; then
+  echo "ℹ️  $REGISTRAR missing — re-run Step 1 to install the openspace skill"
+elif [ ! -x "$OPENSPACE_VENV/bin/openspace-mcp" ] && ! command -v openspace-mcp >/dev/null 2>&1; then
+  echo "ℹ️  openspace-mcp not built (Python 3.12+ required) — skipping MCP registration"
+else
+  SKILLS_ROOT="$SKILLS_ROOT" OPENSPACE_VENV="$OPENSPACE_VENV" \
+    OPENSPACE_HOME="${OPENSPACE_HOME:-$_HOME/.openspace/OpenSpace}" \
+    bash "$REGISTRAR"
+fi
+```
+
+The registrar writes the venv binary's absolute path, so registration does not depend on
+`~/.local/bin` being on the agent's PATH. It merges in place: existing configs keep their mode
+and are replaced atomically, symlinks and non-regular files are refused, other MCP servers are
+preserved, an existing `openspace` entry is left alone (pass `--force` to overwrite), and a
+runtime whose config directory does not exist is skipped instead of being invented. Preview with
+`bash "$REGISTRAR" --dry-run`.
+
+| Runtime | Config written | Format |
+|---------|----------------|--------|
+| Claude Code | `~/.claude.json` | `mcpServers` |
+| Claude Desktop | `~/.claude/claude_desktop_config.json` | `mcpServers` |
+| Codex | `~/.codex/config.toml` | `[mcp_servers.openspace]` |
+| Gemini CLI | `~/.gemini/settings.json` | `mcpServers` |
+| Qwen Code | `~/.qwen/settings.json` | `mcpServers` |
+| Grok CLI | `~/.grok/config.toml` | `[mcp_servers.openspace]` |
+| Kimi / GLM / Z.ai / DeepSeek CLIs | `~/.kimi/mcp.json`, `~/.glm/mcp.json`, `~/.zai/mcp.json`, `~/.deepseek/mcp.json` | `mcpServers` |
+| Cursor | `~/.cursor/mcp.json` | `mcpServers` |
+| OpenCode (sst) | `~/.config/opencode/opencode.json` | `mcp` (`type: local`) |
+| pi / gjc / jeopi | `~/.pi/agent/mcp.json`, `~/.gjc/agent/mcp.json`, `~/.jeopi/agent/mcp.json` | `mcpServers` |
+
+Every entry carries `OPENSPACE_HOST_SKILL_DIRS=~/.agents/skills`,
+`OPENSPACE_WORKSPACE=~/.openspace/OpenSpace`, `OPENSPACE_CLOUD_MODE=local`, and a 600 s tool
+timeout (`execute_task` runs long). Set `OPENSPACE_CLOUD_API_KEY` before running the registrar
+to also write a cloud key.
+
+> Full routing modes, transports, quality signals, and the FIX/DERIVED/CAPTURED evolution rules
+> live in the `openspace` skill: `~/.agents/skills/openspace/SKILL.md` and its
+> `references/install-and-mcp-wiring.md`. Use `bash ~/.agents/skills/openspace/scripts/install-openspace.sh --dry-run`
+> to preview the same steps before running them.
+
+---
 
 ---
 
@@ -2115,10 +2335,11 @@ if command -v jeo &>/dev/null; then
   # hooks.enabled alone is NOT "working" — verify each hook's RUNTIME DEPENDENCY exists:
   #   post-turn            → llm-wiki ingest script (created by Step 6 / Knowledge Pipeline)
   #   post-implementation  → graphify binary        (Step 3b)
-  JEO_KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
-  [ -f "$JEO_KP_VAULT/scripts/ingest-prompt.py" ] \
-    && echo "✅ jeo post-turn dep present ($JEO_KP_VAULT/scripts/ingest-prompt.py)" \
+  JEO_KP_INGEST="${KP_INGEST:-$_HOME/.agents/hooks/ingest-prompt.py}"
+  [ -f "$JEO_KP_INGEST" ] \
+    && echo "✅ jeo post-turn dep present ($JEO_KP_INGEST)" \
     || echo "⚠️  jeo post-turn hook will no-op — ingest script missing; run Step 6 (Knowledge Pipeline)"
+
   command -v graphify &>/dev/null \
     && echo "✅ jeo post-implementation dep present (graphify on PATH)" \
     || echo "⚠️  jeo post-implementation hook will no-op — graphify missing; re-run Step 3b"
@@ -2228,12 +2449,17 @@ def digest(p):
     try: return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
     except OSError: return None
 
-stale = []
+# ~/.cache/opencode/skills is not a stale copy: opencode's Discovery fills it, and
+# plugins (oh-my-openagent ships its own security-review/security-research) serve
+# skills from there by design. Report it separately instead of as a defect.
+cache_root = str(pathlib.Path(os.environ.get("XDG_CACHE_HOME") or (pathlib.Path.home() / ".cache")) / "opencode" / "skills")
+stale, plugin_owned = [], []
 for skill in data:
     source = index.get(skill["name"])
     won = skill.get("location", "")
     if source is None or won == str(source): continue
-    if digest(source) != digest(won): stale.append((skill["name"], won))
+    if digest(source) == digest(won): continue
+    (plugin_owned if won.startswith(cache_root) else stale).append((skill["name"], won))
 from_canon = sum(1 for s in data if str(canon) in s.get("location", ""))
 print(f"   {from_canon} resolved from {canon}, {len(index)} skills available there")
 if stale:
@@ -2242,6 +2468,9 @@ if stale:
     print("     (skills outside this repository's manifest are never rewritten — resolve those copies manually)")
 else:
     print("✅ no skill resolves to a stale copy")
+if plugin_owned:
+    print(f"ℹ️  {len(plugin_owned)} skill(s) served from the opencode plugin cache (expected, e.g. OMO's own copies):")
+    for name, loc in plugin_owned[:5]: print(f"     {name} -> {loc}")
 PY
   else
     OC_SHARED=$(find "$SKILLS_ROOT" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
@@ -2286,6 +2515,76 @@ if [ "${OPENCODE_GO:-0}" = "1" ]; then
     echo "❌ opencode-ai/opencode bridge missing — re-run Step 2b"
   fi
 fi
+
+# ── Tool-flow liveness ($ooo → $graphify → $rtk → $obsidian → $llm-wiki) ──
+# Presence checks lie: a hook can be "enabled" with a command that fails, and an MCP
+# server can be "registered" while its binary was never built (openspace-mcp is exactly
+# that case when pip hits PEP 668). Everything below is executed, not inspected.
+echo ""
+echo "=== Tool-Flow Liveness ==="
+# macOS ships no `timeout` (it is GNU coreutils; Homebrew installs it as `gtimeout`
+# only with coreutils present), so a probe written around it silently reports every
+# server as dead on a stock Mac. Bound the run portably instead.
+jeo_run_bounded() {  # jeo_run_bounded <seconds> <command...>
+  local secs="$1"; shift
+  if command -v timeout &>/dev/null; then timeout "$secs" "$@"; return $?; fi
+  if command -v gtimeout &>/dev/null; then gtimeout "$secs" "$@"; return $?; fi
+  # `<&0` is required, not decorative: bash redirects an asynchronous command's stdin
+  # from /dev/null "in the absence of any explicit redirections", so a piped stdio
+  # server would see instant EOF and exit before answering.
+  "$@" <&0 &
+  local pid=$! rc=0
+  # The watcher must not inherit the caller's stdout: inside a pipeline it would keep
+  # the write end open and make `head` block for the full timeout after the real
+  # command already exited.
+  ( sleep "$secs"; kill -TERM "$pid" 2>/dev/null ) >/dev/null 2>&1 &
+  local watcher=$!
+  wait "$pid" 2>/dev/null || rc=$?
+  kill -TERM "$watcher" 2>/dev/null
+  wait "$watcher" 2>/dev/null || true
+  return $rc
+}
+TOOLFLOW_TMP="$(mktemp -d -t jeo_toolflow.XXXXXX)"
+(
+  cd "$TOOLFLOW_TMP" && git init -q . && printf 'print("probe")\n' > probe.py \
+    && git add -A && git -c user.email=probe@local -c user.name=probe commit -qm probe
+) >/dev/null 2>&1
+
+# 1. Hook commands, run verbatim as the agents run them.
+if command -v graphify &>/dev/null; then
+  ( cd "$TOOLFLOW_TMP" && graphify update . >/dev/null 2>&1 ) \
+    && echo "✅ post-implementation hook runs (graphify update)" \
+    || echo "❌ post-implementation hook fails — 'graphify update .' returned non-zero"
+else
+  echo "⚠️  graphify missing — post-implementation hook is a no-op (re-run Step 3b)"
+fi
+KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
+if [ -f "$KP_VAULT/scripts/ingest-prompt.py" ]; then
+  LLM_WIKI_VAULT="$KP_VAULT" jeo_run_bounded 60 python3 "$KP_VAULT/scripts/ingest-prompt.py" </dev/null >/dev/null 2>&1 \
+    && echo "✅ post-turn hook runs (llm-wiki ingest)" \
+    || echo "❌ post-turn hook fails — $KP_VAULT/scripts/ingest-prompt.py returned non-zero"
+else
+  echo "⚠️  llm-wiki ingest script missing — post-turn hook is a no-op (run Step 6)"
+fi
+
+# 2. MCP servers must answer a JSON-RPC initialize, not merely appear in a config file.
+mcp_probe() {  # bounded at 30s: a healthy stdio server answers in well under a second
+  local label="$1"; shift
+  command -v "$1" &>/dev/null || { echo "⚠️  $label MCP binary not on PATH: $1"; return; }
+  printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"jeo-verify","version":"1"}}}\n' \
+    | jeo_run_bounded 30 "$@" 2>/dev/null | head -c 2000 | grep -q '"result"' \
+    && echo "✅ $label MCP responds to initialize" \
+    || echo "❌ $label MCP did not answer initialize — re-run its install step"
+}
+mcp_probe "ooo"    ouroboros mcp serve
+mcp_probe "semble" uvx --from "semble[mcp]" semble
+if [ -x "$_HOME/.agents/venvs/openspace/bin/openspace-mcp" ] || command -v openspace-mcp &>/dev/null; then
+  OPENSPACE_HOST_SKILL_DIRS="$SKILLS_ROOT" OPENSPACE_WORKSPACE="${OPENSPACE_HOME:-$_HOME/.openspace/OpenSpace}" \
+    mcp_probe "openspace" "$( command -v openspace-mcp || echo "$_HOME/.agents/venvs/openspace/bin/openspace-mcp" )"
+else
+  echo "⚠️  openspace-mcp not built — re-run Step 3l (it installs into a venv; system pip fails on PEP 668)"
+fi
+rm -rf "$TOOLFLOW_TMP"
 
 # Final count
 echo ""
@@ -2371,13 +2670,13 @@ If no → skip silently. Never re-ask.
 
 ---
 
-Skill Inventory (152 skills)
+Skill Inventory (174 skills)
 
 | **Creative Media** | remotion-video-production *(compatibility alias for video-production when legacy tooling or explicit Remotion naming still expects the old skill)*, video-shotcraft *(cinematic product promo & demo video production using 106 shot recipe cards, Ink Press template, Remotion 2.5D camera moves, beat syncing, and sound design)*, paperbanana *(routing-first academic illustration — turn text/PDF into publication-quality figures via a two-phase plan-then-refine multi-agent pipeline; routes to the smallest workable mode: plot (VLM-only charts) < generate (one diagram) < batch/sweep/orchestrate, with evaluate (VLM-as-Judge) and polish; provider-agnostic, venue style packs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana`)* | All (`*`) |
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
-| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, spec-kit *(GitHub Spec-Driven Development wrapper around `specify-cli` — install, bootstrap a project for 30+ supported agents, and drive `/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`; route vendor-neutral spec-first loops to `ooo`, packet-first BMAD/BMM routing to `bmad`, and review/approval to `plannotator`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit`)*, autopilot, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
+| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, spec-kit *(GitHub Spec-Driven Development wrapper around `specify-cli` — install, bootstrap a project for 30+ supported agents, and drive `/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`; route vendor-neutral spec-first loops to `ooo`, packet-first BMAD/BMM routing to `bmad`, and review/approval to `plannotator`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit`)*, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
 | **Planning & Review** | browser-harness *(self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode; replaces agent-browser; includes Claude-safe screenshot/PIL patch, agent-editable `agent_helpers.py`, domain skills, Browser Use Cloud)*, playwriter *(running-browser / authenticated Chrome reuse via CLI+MCP; route clean disposable checks to browser-harness)*, skill-standardization *(SKILL.md validate/rewrite + canonical-vs-alias cleanup + repo-root validator / derived-surface sync for `skills.json`, README/setup, and `SKILL.toon`)*, skill-autoresearch *(repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces only when the core skill change is justified)* | All (`*`) |
 | **Agent Development** | microsoft-agent-framework *(enterprise-grade agent systems with Microsoft agent framework patterns — role separation, workflow control, policy enforcement)*, openai-agents-python *(multi-agent workflows with OpenAI Agents SDK — agents/tools/handoffs, guardrails, async pipelines)*, pydantic-ai *(typed LLM applications — schema-constrained outputs, tool integration, validation, dependency injection)*, cli-anything *(make any software agent-native via HKUDS CLI-Anything — install ready-made harnesses with the CLI-Hub package manager (`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), give agents the autonomous discovery meta-skill (`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), generate a new harness from any codebase/repo via the 7-phase `/cli-anything` pipeline on Claude Code / Codex / OpenCode / OpenClaw / Pi / Hermes / Qodercli / Copilot CLI, or iterate with `/cli-anything:refine`/`:test`/`:validate`; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs; routes agent-team architecture to `harness` and no-codebase GUI targets to `browser-harness`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything`)*, upskill *(wrap HKUDS UpSkill — capture Claude Code session failures, have a strong Teacher model draft a skill, validate it against a weak Student model in a closed Ralph Loop up to 3 rounds, then auto-serve validated skills so a cheap Flash model performs like a Pro model; Terminal-Bench 2.0: Flash+UpSkill beat Pro at 41% lower cost. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill upskill`)*, openspace *(skill management layer for AI agents — retrieve/rank/load the right SKILL.md out of this catalog, evaluate skill quality from real execution evidence, and evolve skills via FIX/DERIVED/CAPTURED updates; local-first hub share/import. Requires Python 3.12+ and an MCP-capable host)* | All (`*`) |
 | **Backend** | amrouter *(Self-hosted AI gateway — one endpoint, many providers with auto-fallback, cost tracking, OpenAI-compatible API)*, api-design *(contract-first API design / compatibility review)*, api-documentation *(developer-facing API docs anchor for reference portals / quickstarts / SDK-webhook guides / truthful examples / auth-error guidance)*, authentication-setup *(product-auth setup router for hosted/framework-native/platform-native auth, sessions/JWTs, org data boundaries, and enterprise SSO handoff; routes hardening to security-best-practices)*, backend-testing *(packet-first backend testing for coverage-plan, fixture/reset, contract/API protection, flake-stabilization, and local-vs-CI lane-split packets; routes policy to testing-strategies, API shape to api-design, and auth implementation to authentication-setup)*, database-schema-design *(packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible field decisions, and staged evolution; routes interface work to api-design, verification to backend-testing, and reporting/telemetry follow-through outward)*, payloadcms *(Payload CMS content/collection management — typed collections, access control, hooks, REST/GraphQL API, local API patterns)*, supabase-agent-skills *(Supabase full-stack patterns — Auth, Database, Storage, Edge Functions, Realtime, RLS policies, and migration workflows)* | All (`*`) |
@@ -2388,15 +2687,15 @@ Skill Inventory (152 skills)
 
 | **Creative Media** | notebooklm *(query Google NotebookLM notebooks directly from Claude Code — Patchright browser automation, source-grounded citation-backed answers, persistent Google auth, notebook library management. Local Claude Code only. Plugin: `claude plugin marketplace add PleasePrompto/notebooklm-skill`)* | claude-code |
 | **Infrastructure** | zeude *(enterprise AI adoption platform for Claude Code — 3× adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), context-aware skill suggestions. Requires Supabase + ClickHouse. Plugin: `claude plugin marketplace add zep-us/zeude`)* | Claude |
-| **Frontend** | ax *(The AI-era curl — fetch web pages, discover structure, extract structured data deterministically; zero code per task with --outline for discovery and --row for extraction; token-budgeted output and safe filtering built-in; 65%+ cost reduction vs curl-regex pipelines)*, astryx *(agent-ready design system — 150+ React components built on StyleX, zero styling lock-in, component swizzling, brand theming, dark mode, CLI tooling; proven across 13,000+ Meta apps)*, devup-ui *(zero-runtime CSS-in-JS — build-time Rust/WASM plugin for Next.js/Vite/Rsbuild/Webpack/Bun, Box/css props + styled-components-compatible styled() API, type-safe devup.json theming, migration off styled-components/Emotion/Tailwind)*, pretext *(fast, accurate multiline text measurement & layout without DOM reflow — prepare/layout for height, prepareWithSegments/layoutWithLines for per-line access, emoji/CJK/RTL, DOM·Canvas·SVG output. npm: `@chenglou/pretext`)*, design-system *(canonical UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface direction; routes component API design to ui-component-patterns, responsive layout to responsive-design, accessibility remediation to web-accessibility, and broad critique to web-design-guidelines)*, react-best-practices *(measurement-led React / Next.js performance audits for waterfalls, bundle size, hydration, rerender churn, and client-boundary mistakes)*, react-grab, responsive-design *(routing-first responsive layout strategy for page-shell, component-slot, dense-data, media, and reflow-verification packets; routes component API design to ui-component-patterns, accessibility remediation to web-accessibility, system-wide breakpoint policy to design-system, and broad UI critique to web-design-guidelines)*, state-management *(React/fullstack ownership-packet skill for local vs Context vs URL/form vs client-store vs server-state/router-data decisions)*, web-accessibility *(routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback; routes broad UI critique to web-design-guidelines and layout strategy to responsive-design)* | All (`*`) |
+| **Frontend** | ax *(The AI-era curl — fetch web pages, discover structure, extract structured data deterministically; zero code per task with --outline for discovery and --row for extraction; token-budgeted output and safe filtering built-in; 65%+ cost reduction vs curl-regex pipelines)*, astryx *(agent-ready design system — 150+ React components built on StyleX, zero styling lock-in, component swizzling, brand theming, dark mode, CLI tooling; proven across 13,000+ Meta apps)*, devup-ui *(zero-runtime CSS-in-JS — build-time Rust/WASM plugin for Next.js/Vite/Rsbuild/Webpack/Bun, Box/css props + styled-components-compatible styled() API, type-safe devup.json theming, migration off styled-components/Emotion/Tailwind)*, pretext *(fast, accurate multiline text measurement & layout without DOM reflow — prepare/layout for height, prepareWithSegments/layoutWithLines for per-line access, emoji/CJK/RTL, DOM·Canvas·SVG output. npm: `@chenglou/pretext`)*, design-system *(canonical UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface direction; owns component API design, routes responsive layout to responsive-design, accessibility remediation and broad critique to web-accessibility)*, react-best-practices *(measurement-led React / Next.js performance audits for waterfalls, bundle size, hydration, rerender churn, and client-boundary mistakes)*, react-grab, responsive-design *(routing-first responsive layout strategy for page-shell, component-slot, dense-data, media, and reflow-verification packets; routes component API design and system-wide breakpoint policy to design-system, accessibility remediation and broad UI critique to web-accessibility)*, state-management *(React/fullstack ownership-packet skill for local vs Context vs URL/form vs client-store vs server-state/router-data decisions)*, web-accessibility *(routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback; owns broad UI critique and routes layout strategy to responsive-design)* | All (`*`) |
 | **Frontend** | react-bits *(animated React component library integration and contribution guidance for Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, Framer Motion, and jsrepo)* | All (`*`) |
 | **Code Quality** | aider-cli-workflow *(AI pair programming with Aider CLI — architect/editor model split, repo-map, git auto-commit, watch mode, voice, browser UI)*, agentic-skills *(production-grade engineering framework drawing from Google practices — spec-driven development `/spec`, task planning `/plan`, incremental TDD `/build`, browser verification `/test`, five-axis code review `/review`, behavior-preserving simplification `/code-simplify`, and disciplined git/CI/CD shipping `/ship`; Hyrum's Law / Chesterton's Fence / Shift Left / trunk-based development. Plugin: `claude plugin marketplace add addyosmani/agent-skills`)*, code-refactoring *(packet-first behavior-preserving cleanup for local refactors, fragile legacy freeze-first work, cleanup-heavy diff shaping, and repeated migration / codemod planning; routes diagnosis to debugging, review judgment to code-review, test-policy design to testing-strategies, bottleneck-led tuning to performance-optimization, and impact mapping to codebase-search)*, code-review *(evidence-first diff / PR review with severity, missing-proof checks, and route-outs for Git cleanup, debugging, UI critique, and repo-admin work)*, debugging *(routing-first diagnosis for concrete bugs, regressions, flaky failures, and env-specific behavior; routes symptom-first logs to log-analysis, broad test-policy work to testing-strategies, and perf-only work to performance-optimization)*, performance-optimization *(artifact-first measurement-led bottleneck analysis and tuning across traces, reports, query plans, benchmark diffs, CWV packets, and runtime/frame-budget work; routes telemetry setup to monitoring-observability and engine-specific capture interpretation to game-performance-profiler)*, testing-strategies *(packet-first validation-policy router for merge-gate truth, release-only proof, scheduled breadth, and incident-ratchet decisions; routes implementation to backend-testing, diagnosis to debugging, rollout execution to deployment-automation, game launch to steam-store-launch-ops / game-ci-cd-pipeline, accessibility-heavy validation to web-accessibility, and performance gate work to performance-optimization)* | All (`*`) |
 | **Code Quality** (mattpocock) | diagnose *(systematic 6-phase debugging: feedback loop → reproduce → hypothesize → instrument → fix+test → cleanup; invest in Phase 1 first)*, tdd *(red-green-refactor vertical slices — test behavior through public interfaces, not implementation details)*, migrate-to-shoehorn *(TypeScript test `as` assertions → type-safe fromPartial/fromAny/fromExact from @total-typescript/shoehorn; test code only)* | All (`*`) |
 | **Design Review & Architecture** (mattpocock) | grill-with-docs *(stress-test plans against domain model, sharpen terminology, update CONTEXT.md/ADRs inline)*, improve-codebase-architecture *(surface shallow modules, propose deepening opportunities using deletion-test/seam/locality vocabulary)*, zoom-out *(higher-level architectural perspective mapping modules and caller relationships using domain vocabulary)*, grill-me *(systematic plan stress-testing through relentless one-question-at-a-time decision-tree interviewing)* | All (`*`) |
 | **Issue & Project Management** (mattpocock) | triage *(issue state machine: needs-triage → needs-info → ready-for-agent/ready-for-human/wontfix with AI disclaimer on all comments)*, to-issues *(convert plans/specs into independently-grabbable vertical slice issues, classified as HITL or AFK)*, to-prd *(generate structured PRDs from conversation context — problem statement, user stories, implementation decisions, testing strategy)* | All (`*`) |
 | **Productivity & Git** (mattpocock) | caveman *(~75% token reduction by eliminating filler; activate: "caveman mode"/"less tokens"; deactivate: "stop caveman")*, write-a-skill *(create structured agent skills with proper SKILL.md — description field is the critical activation trigger)*, git-guardrails-claude-code *(prevent destructive git operations via Claude Code PreToolUse hooks)*, scaffold-exercises *(create educational exercise directories compliant with pnpm ai-hero-cli lint)* | All (`*`) |
-| **Infrastructure** | deployment-automation *(release-execution anchor for preview releases, staging/prod promotion, rollout strategy, post-deploy verification, rollback response, and release hardening; routes CI workflow authoring to workflow-automation, machine setup to system-environment-setup, long-lived telemetry to monitoring-observability, and Vercel-specific linked-project deploy/promote/domain/env/rollback work to vercel-deploy)*, environment-setup *(app-config compatibility alias; routes broader runnable-machine setup to system-environment-setup)*, firebase-ai-logic *(direct Firebase app/client SDK lane for Gemini-powered in-app features; routes backend orchestration to genkit)*, firebase-cli *(Firebase platform/operator anchor for install/auth, bootstrap/config, Emulator Suite workflows, scoped deploy/release, App Hosting, and admin/data operations; routes backend AI workflow orchestration to genkit and direct app SDK integration to firebase-ai-logic)*, genkit *(packet-first backend AI workflow anchor for deciding whether a feature needs a reusable server-owned flow, Genkit eval/tracing, or a fallback to plain SDK routes / `survey`; routes direct app SDK work to firebase-ai-logic and Firebase operator tasks to firebase-cli)*, looker-studio-bigquery *(packet-first BigQuery dashboard/reporting lane for `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, and `exec-handoff`; routes KPI interpretation to data-analysis, repeated anomaly hunting to pattern-detection, and telemetry/alerting coverage to monitoring-observability)*, monitoring-observability *(packet-first observability brief for service health, telemetry rollout, alert/dashboard audits, data-pipeline trust, and game live-ops visibility; routes root-cause log forensics to `log-analysis`, rollout execution to `deployment-automation`, and bottleneck diagnosis to `performance-optimization` / `game-performance-profiler`)*, hyperfine-benchmarking *(CLI command benchmarking via hyperfine — statistical warmup runs, export CSV/JSON/Markdown, cross-platform performance comparison)*, lmstudio-cli *(local LLM management via LM Studio CLI — model discovery, load/unload, chat, server start, OpenAI-compatible endpoint)*, typesense *(installable typo-tolerant search environment — open-source Algolia/ElasticSearch alternative (single C++ binary); pick Docker / binary / Typesense Cloud, install a client (Python/JS/PHP/Ruby), design a collection schema, index, and search with faceting/geo/sorting/synonyms/scoped-keys/federated-multi-search/vector; wire InstantSearch.js + Raft HA; routes LLM trace/eval to opik/langsmith and agent code search to semble. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill typesense`)*, scrapling, rtk, security-best-practices *(routing-first web/ap... [truncated]
-| **Documentation** | changelog-maintenance *(routing-first release-history anchor for `CHANGELOG.md`, release notes, migration updates, and lightweight game patch-note packets; routes rollout execution to deployment-automation, launch messaging to marketing-automation, internal specs/runbooks to technical-writing, API portals to api-documentation, and end-user tutorials to user-guide-writing)*, presentation-builder *(packet-first deck artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks; picks one deck mode, one smallest useful artifact packet, and one honest last-mile surface across HTML review, PPTX, PDF, Google Slides, or Figma Slides; routes docs/tutorials/research/non-deck GTM work outward)*, research-paper-writing, slides-grab *(generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — open-source Claude Design alternative and best harness + editor + linter for slides; Plan -> Design (self-contained slide-XX.html) -> Edit (pure-JS bbox browser editor) -> Export (PDF, per-slide PNG incl. Instagram 1:1 card-news, experimental/unstable PPTX/Figma); 35 styles, local ./assets only, validate before export; needs Node.js >= 20 + Playwright Chromium. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab`)*, technical-writing *(internal technical docs anchor for specs / architecture docs / ADRs / runbooks / migration guides; routes API portals to api-documentation, end-user tutorials to user-guide-writing, and release-note hygiene to changelog-maintenance)* | All (`*`) |
+| **Infrastructure** | deployment-automation *(release-execution anchor for preview releases, staging/prod promotion, rollout strategy, post-deploy verification, rollback response, and release hardening; owns CI workflow and release-job authoring, routes machine setup to system-environment-setup, long-lived telemetry to monitoring-observability, and Vercel-specific linked-project deploy/promote/domain/env/rollback work to vercel-deploy)*, environment-setup *(app-config compatibility alias; routes broader runnable-machine setup to system-environment-setup)*, firebase-ai-logic *(direct Firebase app/client SDK lane for Gemini-powered in-app features; routes backend orchestration to genkit)*, firebase-cli *(Firebase platform/operator anchor for install/auth, bootstrap/config, Emulator Suite workflows, scoped deploy/release, App Hosting, and admin/data operations; routes backend AI workflow orchestration to genkit and direct app SDK integration to firebase-ai-logic)*, genkit *(packet-first backend AI workflow anchor for deciding whether a feature needs a reusable server-owned flow, Genkit eval/tracing, or a fallback to plain SDK routes / `survey`; routes direct app SDK work to firebase-ai-logic and Firebase operator tasks to firebase-cli)*, looker-studio-bigquery *(packet-first BigQuery dashboard/reporting lane for `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, and `exec-handoff`; routes KPI interpretation to data-analysis, repeated anomaly hunting to pattern-detection, and telemetry/alerting coverage to monitoring-observability)*, monitoring-observability *(packet-first observability brief for service health, telemetry rollout, alert/dashboard audits, data-pipeline trust, and game live-ops visibility; routes root-cause log forensics to `log-analysis`, rollout execution to `deployment-automation`, and bottleneck diagnosis to `performance-optimization` / `game-performance-profiler`)*, hyperfine-benchmarking *(CLI command benchmarking via hyperfine — statistical warmup runs, export CSV/JSON/Markdown, cross-platform performance comparison)*, lmstudio-cli *(local LLM management via LM Studio CLI — model discovery, load/unload, chat, server start, OpenAI-compatible endpoint)*, typesense *(installable typo-tolerant search environment — open-source Algolia/ElasticSearch alternative (single C++ binary); pick Docker / binary / Typesense Cloud, install a client (Python/JS/PHP/Ruby), design a collection schema, index, and search with faceting/geo/sorting/synonyms/scoped-keys/federated-multi-search/vector; wire InstantSearch.js + Raft HA; routes LLM trace/eval to opik/langsmith and agent code search to semble. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill typesense`)*, scrapling, rtk, security-best-practices *(routing-first web/ap... [truncated]
+| **Documentation** | changelog-maintenance *(routing-first release-history anchor for `CHANGELOG.md`, release notes, migration updates, and lightweight game patch-note packets; routes rollout execution to deployment-automation, launch messaging to marketing-automation, internal specs/runbooks to technical-writing, API portals to api-documentation and end-user tutorials)*, presentation-builder *(packet-first deck artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks; picks one deck mode, one smallest useful artifact packet, and one honest last-mile surface across HTML review, PPTX, PDF, Google Slides, or Figma Slides; routes docs/tutorials/research/non-deck GTM work outward)*, research-paper-writing, slides-grab *(generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — open-source Claude Design alternative and best harness + editor + linter for slides; Plan -> Design (self-contained slide-XX.html) -> Edit (pure-JS bbox browser editor) -> Export (PDF, per-slide PNG incl. Instagram 1:1 card-news, experimental/unstable PPTX/Figma); 35 styles, local ./assets only, validate before export; needs Node.js >= 20 + Playwright Chromium. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab`)*, technical-writing *(internal technical docs anchor for specs / architecture docs / ADRs / runbooks / migration guides; owns end-user tutorials and help-center docs too, routes API portals to api-documentation and release-note hygiene to changelog-maintenance)* | All (`*`) |
 | **Project Management** | sprint-retrospective *(routing-first retro anchor for sprint/milestone reflection, remote-hybrid facilitation, and dead-action-item recovery)*, standup-meeting *(routing-first coordination-cadence anchor that decides whether daily, async, hybrid, lighter, or no recurring standup is justified before choosing a standup mode)*, task-estimation *(routing-first estimate packet anchor for one sizing horizon, confidence/uncertainty framing, split-or-spike guidance, and cross-functional burden visibility; routes decomposition to `task-planning`, daily sync to `standup-meeting`, and process learning to `sprint-retrospective`)*, task-planning *(packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing)* | All (`*`) |
 | **Search & Analysis** | autoresearch *(Karpathy ML search front door for setup / program.md / bounded loop / results interpretation / constrained-hardware adaptation; preserves the immutable prepare.py / 300s / val_bpb contract and routes prompt-skill eval away)*, codebase-search *(routing-first repo navigation that chooses one search packet for definitions/references, config-content ownership, entry-point discovery, or impact mapping before debugging / refactoring / graphify)*, data-analysis *(decision-first dataset analysis for exports, experiments, telemetry, cohort/funnel work, and stakeholder-ready evidence summaries; routes repeated anomaly hunting to pattern-detection and BI build-out to looker-studio-bigquery)*, deep-research *(routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline (/research, /research-add-items, /research-add-fields), fan out parallel web-search agents to investigate each item into validated JSON (/research-deep, validate_json.py field-coverage gate), then render a TOC + per-field markdown report (/research-report); 4 reference pipelines (outline, deep, report, web-search) + 5 routed source modules (github-debug, general-web, academic-papers, chinese-tech, stackoverflow); verbatim prompt-template contract, evidence-first with [uncertain] marking. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research`)*, langsmith *(routing-first LangSmith packet selector for trace-debug, offline evals, review queues, prompt-registry ownership, and multi-service propagation before SDK code; routes generic dashboards/alerts to `monitoring-observability` and rollout work to `deployment-automation`)*, opik *(open-source LLM observability, evaluation, and optimization via Comet's Opik — route server mode (Comet.com cloud / `./opik.sh` Docker Compose / Kubernetes-Helm), install + `opik configure` the Python SDK, wire `@opik.track` or one of 50+ framework integrations, then drive LLM-as-a-judge metrics, Datasets/Experiments with PyTest CI gates, production monitoring, Agent Optimizer, and Guardrails; routes LangSmith stacks to `langsmith`, non-LLM dashboards to `monitoring-observability`, and offline KPI work to `data-analysis`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill opik`)*, log-analysis *(routing-first log triage that chooses one evidence packet for app runtime, container/pod, browser+API, CI cascade, structured JSON, or security-signal work before debugging / observability / pattern-detection handoff)*, pattern-detection *(routing-first pattern/anomaly hunting that chooses text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly before suggesting tools or fixes; routes root-cause forensics to log-analysis, KPI explanation to data-analysis, remediation to specialist skills, and alert ops to monitoring-observability)*, github-repo-candidate-quality-gate *(evaluate GitHub repos as skill/dependency candidates — activity, maintenance health, license, API surface, community signals)*, semble *(token-efficient code search for agents — returns relevant code chunks using ~98% fewer tokens than grep+read; natural-language and symbol queries, `find-related` for semantic discovery, MCP for Claude Code / Codex / Cursor / OpenCode, CPU-only with no GPU or API key. MCP: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`)*, codeflow *(visualize codebase architecture in seconds — a zero-build single index.html browser app (React 18 + D3.js from pinned CDNs, 100% client-side, no backend, no data collection) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact across 40+ languages; exports JSON/Markdown/text/SVG/PDF or a self-updating CodeFlow Card; routes editable diagrams to drawio/mermaid, agent code search to semble, repo-navigation packets to codebase-search, and durable knowledge graphs to graphify. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow`)*, academic-research, agent-pulse *(Agent Pulse evidence-backed AI industry intelligence system: source lifecycle, safe collection, signal normalization, Event clustering, bounded Scout hypotheses, privacy-safe Pages export, and release verification)*, academic-research *(full research-to-publication pipeline (ARS v3.13.0) — 4 pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes incl. socratic, PRISMA, 3W-scan, fact-check), academic-paper (11 modes incl. plan, revision, citation-check, disclosure, rebuttal-audit), academic-paper-reviewer (EIC+R1/R2/R3+Devil’s Advocate+calibration), academic-pipeline (10-stage orchestrator with Material Passport, L3 claim-faithfulness gate, three-index citation triangulation, cross-model verification). Plugin: `claude plugin marketplace add Imbad0202/academic-research-skills`)*, heretic *(automatic abliteration + refusal-direction interpretability packaging p-e-w/heretic (AGPL-3.0) — removes refusal/over-refusal from open-weight transformer models via parametrized directional ablation, no fine-tuning; Optuna TPE jointly minimizes refusals and KL-divergence; routes decensor < configure (bnb_4bit/trials/KL) < evaluate < research (residual geometry / PaCMAP plots) < discover (web extraction via scrapling); responsible-use guardrails throughout. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill heretic`)* | All (`*`) |
 | **Marketing** | marketing-automation, yuwen-publish-precheck *(Chinese social-media publish precheck for Douyin, Xiaohongshu, and WeChat Channels; scans text for risk candidates, applies platform and industry rules, provides conservative repair drafts, and records local rules)* | All (`*`) |
@@ -2456,7 +2755,6 @@ Skill Inventory (152 skills)
 | `research-paper-writing` | `research paper`, `academic paper` | ML/CV/NLP paper + rebuttal workflow — abstract/introduction/method/experiments, figure-table support, reviewer response, camera-ready revision |
 | `academic-research` | `academic research`, `deep research`, `research pipeline`, `write a paper`, `peer review`, `literature review`, `systematic review`, `fact-check`, `citation check`, `ars-plan`, `academic pipeline`, `research to paper` | Full research-to-publication pipeline (ARS v3.13.0) — 4 pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes), academic-paper (11 modes), academic-paper-reviewer (6 modes), academic-pipeline (10-stage). Plugin: `claude plugin marketplace add Imbad0202/academic-research-skills` |
 
-| `autopilot` | `$autopilot`, `autopilot`, `auto pilot`, `full-auto` | Exact-name Codex/OMX front door for idea-to-verified-code autonomous builds |
 | `diagnose` | `diagnose`, `systematic debugging`, `feedback loop`, `six-phase debug` | Systematic debugging: invest in Phase 1 (fast feedback loop), then reproduce → hypothesize → instrument → fix+test → cleanup |
 | `tdd` | `tdd`, `test-driven development`, `red-green-refactor`, `test first` | Red-green-refactor TDD using vertical slices — tests specify observable behavior through public interfaces |
 | `grill-with-docs` | `grill-with-docs`, `design review`, `challenge my plan` | Stress-test plans against project domain model, sharpen terminology, update CONTEXT.md and ADRs inline |
@@ -2506,6 +2804,11 @@ Skill Inventory (152 skills)
 | `colibri` | `colibri`, `GLM-5.2`, `MoE inference`, `expert streaming`, `MTP` | Pure-C consumer-hardware LLM inference engine with model conversion, expert caching, speculative decoding, and CPU/GPU integration |
 | `motion-previs-studio` | `motion-previs-studio`, `AI-film previsualization`, `pose extraction`, `depth mapping`, `camera motion` | Desktop AI-video previsualization workflow for pose, depth, camera motion, control layers, and production bundles |
 | `react-bits` | `react-bits`, `animated React components`, `GSAP`, `Framer Motion`, `jsrepo` | Animated React component library integration, customization, and contribution workflow for Vite and Tailwind CSS v4 |
+| `openspace` | `openspace`, `skill finder`, `find the right skill`, `rank skills`, `skill discovery`, `skill quality`, `evolve skill` | Skill-management layer installed as the **skill finder** over `~/.agents/skills` — retrieve/rank/load the right `SKILL.md`, judge skills by real execution evidence, evolve them via FIX/DERIVED/CAPTURED. See Step 3l. |
+| `obsidian-mind` | `obsidian-mind`, `om-standup`, `om-dump`, `om-wrap-up`, `agent memory vault`, `second brain vault` | Ready-made Obsidian vault giving coding agents persistent session memory — lifecycle hooks, `/om-*` commands, capture/review routes, performance graph. Claude Code full support; Codex CLI and Gemini CLI via hooks + `AGENTS.md`. |
+| `web-design` | `web design`, `landing page`, `awwwards`, `scroll animation`, `WebGL background`, `glass UI`, `progressive blur`, `gradient border` | Routing pack over the 79-skill MengTo/Skills web-design family in seven families (style packs, site direction, motion, WebGL/shaders, library embeds, component states, CSS primitives) with a fetch script and layer ordering. |
+| `web-game-development` | `three.js game`, `browser game`, `isometric arpg`, `enemy AI`, `game camera`, `ship web game`, `playtest web game` | Routing pack over the 19-skill MengTo/Skills game-development family for playable Three.js/browser games; routes Unity/C# work to `unity-gamedev-skill-pack`. |
+| `design-first-ui-prompting` | `design-first prompting`, `UI prompt spec`, `prompt structure`, `UI generation prompt` | Spec-driven, skimmable prompt structure for consistent UI generation — constraints, variations, typography/spacing rules, iteration workflow. |
 
 ---
 
@@ -2551,15 +2854,18 @@ Use `$graphify` when architecture, repo/corpus structure, or relationship tracin
 # Purpose: maintain durable graph artifacts and relationship visibility
 # Activation: "graphify", "GRAPH_REPORT.md", "graph.json", "graph.html"
 
-# Artifact read order:
-# 1. graphify-out/GRAPH_REPORT.md
-# 2. graphify-out/graph.html
-# 3. graphify-out/graph.json
+# Artifact read order (state is incremental and reused across runs — `graphify
+# check-update` probes it, `graphify state` inspects it — so `.graphify/` is the
+# canonical directory; `graphify-out/` is legacy, migrate with `graphify migrate-state`):
+# 1. .graphify/GRAPH_REPORT.md
+# 2. .graphify/graph.html   (only after `graphify export html`)
+# 3. .graphify/graph.json
 ```
 
 Operating expectations:
-- Prefer the existing `graphify-out/GRAPH_REPORT.md` before rebuilding anything.
+- Prefer the existing `.graphify/GRAPH_REPORT.md` before rebuilding anything.
 - Refresh only the smallest useful scope instead of blindly graphing the whole repo.
+
 - Use graph updates for durable structure, not for search-only or wiki-only work.
 - Keep the graph packet honest: install vs local build vs refresh vs query vs fallback.
 
@@ -2588,14 +2894,18 @@ Use `$obsidian` when the next step is to persist or hand off artifacts through a
 # Purpose: official desktop Obsidian CLI/URI control
 # Activation: "obsidian cli", "obsidian terminal", "obsidian://"
 
-# Deterministic targeting:
-obsidian vault="My Vault" read path="Inbox/Capture.md"
-obsidian vault="My Vault" search query="workflow rules"
+# Deterministic targeting — the vault this flow persists into is the obsidian-mind
+# vault, which defaults to the working repo root (Step 3e vault contract). The
+# vault NAME Obsidian shows is the vault directory's basename:
+obsidian vault="$(basename "${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel)}")" read path="Inbox/Capture.md"
+obsidian vault="my-repo" search query="workflow rules"
+
 ```
 
 Operating expectations:
 - Prefer official CLI/URI surfaces for desktop Obsidian interaction.
 - Use deterministic `vault=` plus `path=` targeting when ambiguity matters.
+- Remember the vault is project-scoped: `$OBSIDIAN_MIND_VAULT` → git toplevel → `~/vaults/obsidian-mind`.
 - Route headless sync/publish elsewhere instead of pretending the desktop CLI owns it.
 - Use this step only when desktop-vault persistence or URI handoff is actually needed.
 
@@ -2606,17 +2916,23 @@ Use `$llm-wiki` to file durable findings, decisions, and reusable answers into t
 # Purpose: accumulate reusable knowledge in markdown, not chat history
 # Activation: "llm-wiki", "obsidian wiki", "research vault"
 
+# Location: <obsidian-mind vault>/llm-wiki — i.e. <repo>/llm-wiki by default,
+# so each repository owns its wiki (Step 3e vault contract).
+
 # Core workflow:
 # raw/ stays immutable
 # wiki/ is the maintained synthesis layer
 # index.md and log.md must stay current
 ```
 
+
 Operating expectations:
 - File significant decisions and reusable answers back into the wiki.
 - Keep `raw/` immutable and treat `wiki/`, `index.md`, and `log.md` as maintained artifacts.
-- Read `index.md` first during follow-up queries before digging through raw sources.
+- Read `<repo>/llm-wiki/index.md` first during follow-up queries before digging through raw sources.
+- The wiki is per-repository: never assume another repo's findings are visible here, and re-file anything that must be shared.
 - Update the schema/operating contract when the workflow itself changes materially.
+
 
 ### Default Operating Flow
 
@@ -2667,23 +2983,31 @@ fi
 
 # ── Knowledge Pipeline Enforcement ───────────────────────────────
 # Wire every prompt through: prompt → RTK (bash hook, already installed)
-# → graphify (structural graph rebuild) → llm-wiki at ~/vaults/llm-wiki/
-# (Obsidian-managed vault). Refreshed at TWO points per turn — prompt-in
-# (captures the prompt text) and turn-end (graph-only rebuild, no prompt
-# capture) — so the wiki/graph stay current even mid-conversation, not
-# just once per session. Per-agent hook events:
+# → graphify (structural graph rebuild in <repo>/.graphify/) → llm-wiki at
+# <obsidian-mind vault>/llm-wiki/, i.e. <repo>/llm-wiki by default (Step 3e
+# vault contract). Every repository therefore keeps its own wiki and graph.
+# Refreshed at TWO points per turn — prompt-in (captures the prompt text) and
+# turn-end (graph-only rebuild, no prompt capture) — so the wiki/graph stay
+# current even mid-conversation, not just once per session.
+# Per-agent hook events:
 #   Claude Code   : UserPromptSubmit (prompt-in) + Stop (turn-end)
 #   Codex CLI     : UserPromptSubmit + Stop (via ~/.codex/hooks.json)
 #   Antigravity / : BeforeAgent (prompt-in) + AfterAgent (turn-end)
 #   Gemini CLI      (shares ~/.gemini/settings.json)
 
 
-KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
-KP_SCRIPTS="$KP_VAULT/scripts"
+# The ingest script is installed ONCE at a project-independent path and resolves
+# the per-project vault itself at run time, so no wrapper or hook stores a vault
+# path. Only the bootstrap below touches a concrete vault (the current one).
+OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$_HOME/vaults/obsidian-mind")}"
+KP_VAULT="${LLM_WIKI_VAULT:-$OM_VAULT/llm-wiki}"
+KP_SCRIPTS="$_HOME/.agents/hooks"
 KP_INGEST="$KP_SCRIPTS/ingest-prompt.py"
 KP_RAW_URL="https://raw.githubusercontent.com/akillness/jeo-skills/main/hooks/ingest-prompt.py"
 
-# 1. Bootstrap vault skeleton via llm-wiki skill (or minimal fallback)
+# 1. Bootstrap the CURRENT project's vault skeleton via the llm-wiki skill (or a
+#    minimal fallback). Other repos are bootstrapped by ingest-prompt.py itself on
+#    their first captured prompt.
 if [ ! -f "$KP_VAULT/index.md" ]; then
   if [ -x "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" ]; then
     bash "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" "$KP_VAULT" \
@@ -2708,7 +3032,7 @@ else
     || echo "ℹ️  graphifyy not installed — run: pipx install graphifyy"
 fi
 
-# 3. Place the shared ingest script under the vault
+# 3. Place the shared ingest script at its project-independent path
 mkdir -p "$KP_SCRIPTS"
 if [ ! -f "$KP_INGEST" ]; then
   if command -v curl &>/dev/null; then
@@ -2716,6 +3040,7 @@ if [ ! -f "$KP_INGEST" ]; then
       && chmod +x "$KP_INGEST" \
       && echo "✅ ingest-prompt.py fetched → $KP_INGEST" \
       || echo "⚠️  could not fetch ingest-prompt.py — copy hooks/ingest-prompt.py manually"
+
   fi
 fi
 
@@ -2724,10 +3049,11 @@ fi
 # same-parent temporary files; absence is a requested-configuration failure.
 secure_kp_hooks() {
   local settings="$1" wrapper="$2" before="$3" after="$4"
-  KP_VAULT="$KP_VAULT" KP_INGEST="$KP_INGEST" python3 - "$settings" "$wrapper" "$before" "$after" <<'PY'
+  KP_INGEST="$KP_INGEST" python3 - "$settings" "$wrapper" "$before" "$after" <<'PY'
 import json, os, pathlib, stat, sys, tempfile
 settings, wrapper, before_event, after_event = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3], sys.argv[4]
-vault, ingest = os.environ["KP_VAULT"], os.environ["KP_INGEST"]
+ingest = os.environ["KP_INGEST"]
+
 def state(p):
     try: s = os.lstat(p)
     except FileNotFoundError: return None
@@ -2748,11 +3074,14 @@ def replace(p, text, validator, default_mode=0o600):
         except FileNotFoundError: pass
         raise
 wrapper_text = f'''#!/bin/bash
+# Vault-path free on purpose: ingest-prompt.py resolves the project-scoped vault
+# itself from the hook's working directory, so one wrapper serves every repo.
 set -euo pipefail
 INGEST="{ingest}"
 [ -x "$INGEST" ] || exit 0
 if [ -n "${{1:-}}" ]; then INPUT="$1"; else INPUT="$(cat 2>/dev/null || true)"; fi
-LLM_WIKI_VAULT="{vault}" printf '%s' "$INPUT" | python3 "$INGEST" >/dev/null 2>&1 || true
+printf '%s' "$INPUT" | python3 "$INGEST" >/dev/null 2>&1 || true
+
 exit 0
 '''
 replace(wrapper, wrapper_text, lambda _: None, 0o700)
@@ -2797,12 +3126,14 @@ KP_RULES="$(cat <<'RULES'
 
 ## Knowledge Pipeline (auto-applied)
 
-All prompts in this agent are captured into the canonical vault at
-`~/vaults/llm-wiki/` (Obsidian-managed) and indexed by graphify. Before
-answering any question, read `~/vaults/llm-wiki/index.md` first, then
-the relevant `wiki/` pages. File durable findings back into
-`wiki/queries/` or `wiki/reports/`. Shell commands route through `rtk`
-for token-compact output.
+All prompts in this agent are captured into the **project-scoped** vault at
+`<repo>/llm-wiki/` — the obsidian-mind vault resolves to the current git
+toplevel (override `OBSIDIAN_MIND_VAULT`), so every repository keeps its own
+wiki — and indexed by graphify into `<repo>/.graphify/`. Before answering any
+question, read `llm-wiki/index.md` in the current repo first, then the relevant
+`llm-wiki/wiki/` pages. File durable findings back into `wiki/queries/` or
+`wiki/reports/`. Shell commands route through `rtk` for token-compact output.
+
 
 RULES
 )"

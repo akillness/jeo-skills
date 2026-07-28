@@ -13,7 +13,7 @@ compatibility: >
   versioning. Requires network access to fetch prompts.chat repository data.
 license: MIT
 metadata:
-  tags: prompts, prompt-engineering, ai-optimization, prompt-templates, prompt-library, prompt-discovery, workflow-automation, prompt-curation
+  tags: prompts, prompt-engineering, ai-optimization, prompt-templates, prompt-library, prompt-discovery, deployment-automation, prompt-curation
   platforms: Claude, ChatGPT, Gemini, Codex, jeo, jeopi
   version: "1.0.0"
   source: https://github.com/f/prompts.chat
@@ -37,7 +37,7 @@ Discover and apply high-quality prompts from the prompts.chat collection to enha
 
 - **The main job is building a full LLM application framework** → use `pydantic-ai`, `crewai-multi-agent`, or `langgraph-human-in-the-loop`
 - **The main job is prompt optimization via RLHF or fine-tuning** → use `dspy`, `openrlhf-training`, or `moe-training`
-- **The main job is building an agent system** → use `deep-agents-core`, `crewai-multi-agent`, or workflow skills like `team`
+- **The main job is building an agent system** → use `deep-agents-core`, `crewai-multi-agent`, or workflow skills like `harness`
 - **The main job is RAG pipeline construction** → use `llamaindex` or `supabase-agent-skills`
 
 ## Instructions
@@ -191,7 +191,7 @@ Create versions:
 - **`pydantic-ai`** — Embed curated prompts into Pydantic AI agent systems
 - **`crewai-multi-agent`** — Structure multi-agent teams with role-specific prompts
 - **`llm-wiki`** — Store and version prompts in your durable knowledge base
-- **`user-guide-writing`** — Use prompts to help structure documentation workflows
+- **`technical-writing`** — Use prompts to help structure documentation workflows
 
 ## References
 

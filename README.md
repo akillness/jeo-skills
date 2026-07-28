@@ -2,17 +2,17 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-152-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**152 local skill folders · 152 installable skills · TOON Format · Cross-platform**
-A curated collection of 152 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+[![Skills](https://img.shields.io/badge/Skills-174-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**174 local skill folders · 174 installable skills · TOON Format · Cross-platform**
+A curated collection of 174 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**152 local skill folders · 152 installable skills · TOON Format · Cross-platform**
-├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
+**174 local skill folders · 174 installable skills · TOON Format · Cross-platform**
+├── .agent-skills/          ← 174 skill folders (each with SKILL.md + SKILL.toon)
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -22,8 +22,8 @@ A curated collection of 152 agent skills for spec-first, multi-agent LLM workflo
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 152 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
-├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
+A curated collection of 174 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+├── .agent-skills/          ← 174 skill folders (each with SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo Agent & The Legendary Equipment Set
@@ -159,9 +159,9 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 152 local skill folders = 152 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 174 local skill folders = 174 total installable skills
 
-### 🎬 Creative Media (9)
+### 🎬 Creative Media (16)
 
 | `drawio` |
 | `gbro-collage-broll` |
@@ -169,17 +169,23 @@ rtk init -g
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
+| `video-production` |
 | `video-shotcraft` |
 | `vox-director` |
 | `webtoon-harness` |
+| `aura-asset-images` |
+| `unsplash-asset-images` |
+| `browser-video-recording` |
+| `elevenlabs-tts` |
+| `video-to-superprompt` |
+| `generate-reference-inspired-brand-worlds` |
 
-├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 174 skill folders (each with SKILL.md + SKILL.toon)
 
-### 🎯 Core Orchestration (8)
+### 🎯 Core Orchestration (7)
 
 | Skill |
 |-------|
-| `autopilot` |
 | `bmad` |
 | `bmad-gds` |
 | `bmad-idea` |
@@ -205,7 +211,7 @@ rtk init -g
 | `to-prd` |
 | `triage` |
 
-### 🤖 Agent Development (5)
+### 🤖 Agent Development (6)
 
 | Skill |
 |-------|
@@ -214,6 +220,7 @@ rtk init -g
 | `skill-standardization` |
 | `upskill` |
 | `openspace` |
+| `article-prompts-to-skills` |
 
 ### ⚙️ Backend (11)
 
@@ -231,7 +238,7 @@ rtk init -g
 | `typesense` |
 | `colibri` |
 
-### 🎨 Frontend (11)
+### 🎨 Frontend (17)
 
 | Skill |
 |-------|
@@ -246,8 +253,14 @@ rtk init -g
 | `responsive-design` |
 | `state-management` |
 | `web-accessibility` |
+| `web-design` |
+| `design-first-ui-prompting` |
+| `html-to-interaction-prompts` |
+| `build-daily-inspiration-sites` |
+| `daily-ui-inspiration-capture` |
+| `optimize-web-animations` |
 
-### 🔍 Code Quality (11)
+### 🔍 Code Quality (14)
 
 | Skill |
 |-------|
@@ -262,6 +275,9 @@ rtk init -g
 | `tdd` |
 | `testing-strategies` |
 | `zoom-out` |
+| `audit-reference-originality` |
+| `audit-verify-explain-grade-5` |
+| `performance-profiling` |
 
 ### 🏗 Infrastructure (13)
 
@@ -321,14 +337,18 @@ rtk init -g
 
 
 
-### 📢 Marketing (2)
+### 📢 Marketing (6)
 
 | Skill |
 |-------|
 | `marketing-automation` |
 | `yuwen-publish-precheck` |
+| `customer-email-draft-threads` |
+| `customer-support-verification` |
+| `write-like-meng-on-x` |
+| `x-bookmark-quote-posts` |
 
-### 🎮 Game Development (9)
+### 🎮 Game Development (10)
 
 | Skill |
 |-------|
@@ -341,8 +361,9 @@ rtk init -g
 | `steam-store-launch-ops` |
 | `unity-gamedev-skill-pack` |
 | `web-game-development` |
+| `implement-fog-of-war` |
 
-### 🔧 Utilities (39)
+### 🔧 Utilities (40)
 
 | Skill |
 |-------|
@@ -385,6 +406,7 @@ rtk init -g
 | `x-twitter-scraper` |
 | `zeude` |
 | `obsidian-mind` |
+| `stitched-full-page-capture` |
 
 ---
 
@@ -644,7 +666,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 174 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -723,10 +745,11 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Change | Details |
 |--------|---------|
-| **Catalog now 152 skills** | Removed 16 skill folders (`lmstudio-cli`, `ohmg`, `omc`, `omx`, `prompt-repetition`, `setup-pre-commit`, `spec-stack`, `team`, `ui-component-patterns`, `ultraqa`, `ultrawork`, `user-guide-writing`, `vibe-kanban`, `video-production`, `web-design-guidelines`, `workflow-automation`) and added 3 (`obsidian-mind`, `openspace`, `web-game-development`). `skills.json`, `skills.toon`, `skills-lock.json`, and both README catalog tables were regenerated; `scripts/validate-catalog-projections.py` passes at 152. |
+| **Catalog now 174 skills** | Removed 16 skill folders (`lmstudio-cli`, `ohmg`, `omc`, `omx`, `prompt-repetition`, `setup-pre-commit`, `spec-stack`, `team`, `ui-component-patterns`, `ultraqa`, `ultrawork`, `user-guide-writing`, `vibe-kanban`, `video-production`, `web-design-guidelines`, `workflow-automation`) and added 3 (`obsidian-mind`, `openspace`, `web-game-development`). `skills.json`, `skills.toon`, `skills-lock.json`, and both README catalog tables were regenerated; `scripts/validate-catalog-projections.py` passes at 174. |
 | **No more platform-exclusive skills** | With `omc` / `ohmg` / `omx` gone, the manifest is a single shared catalog. Step 1 of `setup-all-skills-prompt.md` now installs everything, the Step 2 platform-install block was replaced by a stray-copy audit, and Step 4's platform dedup check became a shared-root shadow check. |
 | **Step 3g reduced to OpenCode plugin setup** | The `oh-my-claudecode`, `oh-my-codex` (OMX), and `oh-my-agent` (OMA) installers existed only to back the removed routing skills and were dropped; the `oh-my-openagent` (OMO) block is unchanged. `scripts/test-runtime-config-writers.sh` replaced its OMX handoff case with a no-config-mutation check and still passes all 25 cases. |
 | **obsidian-mind / web-game-development descriptions trimmed** | Both shipped with frontmatter descriptions over the 1024-character limit, which makes a skill invisible to `skills add`. Rewritten under the cap with their trigger keywords intact. |
+| **Dangling route-outs rewired** | Every surviving skill that routed to a removed skill was repointed. `autopilot` was removed as the last orphan of the `$team` / `$ultrawork` / `$ultraqa` exact-name shim family; `video-production` was restored. `ui-component-patterns` scope moved into `design-system`, `web-design-guidelines` into `web-accessibility` (broad-review mode), `user-guide-writing` into `technical-writing` (end-user guide mode), `workflow-automation` into `deployment-automation` (CI/release-job authoring), `vibe-kanban` into `task-planning` / `triage`, and `omc` / `omx` / `ohmg` into their external product names (`oh-my-claudecode` / `oh-my-codex` / `oh-my-agent`). `deep-dive` and `deepinit` were left alone — their `.omc` / `.omx` references are runtime state paths, not skills. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

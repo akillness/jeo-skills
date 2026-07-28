@@ -1,0 +1,10 @@
+N:web-design
+D:Route web design, motion, WebGL, and visual-styling requests into the narrowest matching sub-skill of the 79-skill MengTo/Skills web-design family, grouped into seven families: Style/Design-System Packs (23), Full-Site Quality & Direction (10), Motion & Scroll Systems (10), WebGL/3D Backgrounds & Shaders (8), Library Embeds & Integrations (10), Component & State Effects (4), and CSS Technique Primitives (14). Classify the family, pick one sub-skill, fetch it with scripts/fetch-upstream-skills.sh, then combine layers in direction → layout → background → motion → component-state → polish order. Route ready-made animated React components to react-bits, token governance to design-system, breakpoint strategy to responsive-design, React performance to react-best-practices, WCAG work to web-accessibility, design evidence to lazyweb, generated artifacts to open-design, gameplay 3D to web-game-development, and sprite generation to perfectpixel.
+G:web-design|motion|webgl|gsap|threejs|css|landing-page|skill-routing|skill-pack|mengto-skills
+U[6]:
+  When a marketing site, landing page, portfolio, editorial page, or dashboard shell needs a concrete visual recipe rather than improvised styling
+  When several web-design sub-skills could match and the narrowest single owner must be chosen
+  When a named effect is requested (cursor trail, laser background, progressive blur, scroll-pinned section) and a recipe already encodes it
+  When a named library (GSAP, Three.js, Vanta, globe.gl, cobe, Matter.js, Unicorn Studio) needs integration, sizing, and cleanup patterns
+  When several visual layers must be combined on one page and need a safe application order
+  When the request is actually token governance, breakpoints, React performance, accessibility, design evidence, gameplay 3D, or sprite generation and must be routed out

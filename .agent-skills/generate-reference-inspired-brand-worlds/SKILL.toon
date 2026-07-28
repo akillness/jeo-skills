@@ -1,0 +1,10 @@
+N:generate-reference-inspired-brand-worlds
+D:Generate multiple original brand campaign worlds from a supplied visual reference while controlling how close the new work feels without copying protected signature elements. Use when a user provides a brand identity image, poster, editorial campaign, moodboard, or generated concept and asks for inspired alternatives, several distinct brands in one visual family, a closer-to-reference V2, exact wordmarks inside images, or originality-safe image-generation prompts and outputs.
+G:generate|reference|inspired|brand|worlds|mengto-skills|codex-workflow
+U[6]:
+  A user supplies a brand identity image, poster, editorial campaign, moodboard, or generated concept and asks for inspired alternatives at a chosen similarity dial (30/50/70/85%)
+  A user wants several distinct brands generated as one coherent visual-art-direction family (the distinct-brand matrix)
+  A user asks for a closer-to-reference V2 revision of an existing concept while keeping the name, meaning, and core subject
+  A prompt needs an exact wordmark or brand name rendered correctly, exactly once, inside a generated image
+  A user wants originality-safe image-generation prompts that avoid reproducing protected signature elements
+  Not for exact reproduction of a protected brand's identity or general image generation unrelated to brand-world creation — route elsewhere

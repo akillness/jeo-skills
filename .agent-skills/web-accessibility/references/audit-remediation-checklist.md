@@ -34,8 +34,8 @@ Always check what automated tools cannot fully prove:
 4. Visual follow-up: contrast, motion, visible states, zoom/reflow edge cases
 
 ## 5. Route-outs
-- broader UI/polish audit → `web-design-guidelines`
-- reusable primitive API work → `ui-component-patterns`
+- broader UI/polish audit → stay here, in broad-review mode
+- reusable primitive API work → `design-system`
 - system-level token/pattern ownership → `design-system`
 - viewport/layout adaptation → `responsive-design`
 

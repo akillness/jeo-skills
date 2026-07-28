@@ -46,6 +46,14 @@ except ImportError:  # pragma: no cover - environment guard
 MAX_DESCRIPTION = 1024
 MIN_DESCRIPTION = 25
 STRAY_SCALARS = {">", "|", ">-", "|-", ">+", "|+", "-", ""}
+# A description that was cut mid-sentence by an earlier generator (…/... tail) is as
+# unusable for skill matching as a missing one, and must never be reused as a source.
+TRUNCATED_RE = re.compile(r"(\.{3}|…)\s*$")
+# `description: Use this skill when >` + indented prose is valid YAML — it folds into
+# one plain scalar — so it passes every mechanical check while embedding the block
+# indicator in the sentence: "Use this skill when > Conduct a comprehensive …".
+# The lead-in was meant to be YAML syntax, not prose; the real description follows it.
+STRAY_INDICATOR_RE = re.compile(r"^\s*use\s+(?:this\s+)?skill\s+when\s*[>|][+-]?\s+", re.I)
 ENTRY_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_-]*):(.*)$")
 TOON_RE = re.compile(r"^N:(.+)\nD:(.*)$", re.M)
 KEYWORD_ROW_RE = re.compile(r"^\|\s*`([a-z0-9][a-z0-9-]*)`\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|$", re.M)
@@ -69,8 +77,38 @@ def clean(text: str) -> str:
     return cut[: cut.rfind(" ")].rstrip(" ,;:-—") if " " in cut else cut
 
 
+def truncated(text: str | None) -> bool:
+    return bool(text) and bool(TRUNCATED_RE.search(text.strip()))
+
+
+def salvage(text: str | None) -> str:
+    """Drop a truncated tail at the last complete sentence.
+
+    The text before an earlier generator's cut is authored and accurate, so keeping
+    it beats swapping in an unrelated paragraph. Only when nothing complete survives
+    does the caller fall through to the next source.
+    """
+    if not text:
+        return ""
+    body = TRUNCATED_RE.sub("", text.strip()).strip()
+    end = max(body.rfind(". "), body.rfind("! "), body.rfind("? "))
+    if body.endswith((".", "!", "?")):
+        return body
+    return body[: end + 1].strip() if end > 0 else ""
+
+
+def has_stray_indicator(text: str | None) -> bool:
+    return bool(text) and bool(STRAY_INDICATOR_RE.match(text.strip()))
+
+
+def strip_indicator(text: str) -> str:
+    return STRAY_INDICATOR_RE.sub("", text.strip()).strip()
+
+
 def usable(text: str | None) -> bool:
-    return bool(text) and len(text.strip()) >= MIN_DESCRIPTION and not is_stray(text or "")
+    if not text or len(text.strip()) < MIN_DESCRIPTION or is_stray(text):
+        return False
+    return not truncated(text) and not has_stray_indicator(text)
 
 
 def split_frontmatter(text: str) -> tuple[str, str] | None:
@@ -117,9 +155,25 @@ def recover(name: str, entry_text: str, body: str, sources: dict[str, dict[str, 
     for candidate in candidates:
         if usable(candidate):
             return clean(candidate or "")
+    # The text after a stray block indicator is the authored description.
+    for candidate in candidates:
+        if has_stray_indicator(candidate):
+            kept = strip_indicator(candidate or "")
+            if usable(kept):
+                return clean(kept)
+    # A cut-off candidate still holds correct authored text before the cut.
+    for candidate in candidates:
+        if truncated(candidate):
+            kept = salvage(candidate)
+            if usable(kept):
+                return clean(kept)
     for paragraph in re.split(r"\n\s*\n", body):
         paragraph = paragraph.strip()
         if paragraph.startswith(("#", "```", "|", "-", ">")) or not paragraph:
+            continue
+        # Route-out sections state what the skill is NOT for; using one as the
+        # description makes every agent match on the negation.
+        if re.match(r"(?i)^(do\s*\*{0,2}\s*not|don't|never|avoid)\b", paragraph):
             continue
         if usable(paragraph):
             return clean(paragraph)
@@ -175,7 +229,8 @@ def repair_document(path: Path, name: str, sources: dict[str, Any]) -> tuple[str
     # characters, so an over-long value is as broken as a missing one.
     # `---\n\n` means a previous rewrite left a blank first frontmatter line
     normalized = not text.startswith("---\n\n")
-    healthy = parses and usable(description_text) and len(description_text) <= MAX_DESCRIPTION and normalized
+    healthy = (parses and usable(description_text)
+               and len(description_text) <= MAX_DESCRIPTION and normalized)
     if healthy:
         return None, notes
 
@@ -235,7 +290,7 @@ def main() -> int:
     sources = load_sources(root)
     manifest = sources["_manifest"]
 
-    repaired, failures = [], []
+    repaired, failures, synced = [], [], []
     for skill in manifest["skills"]:
         name = skill["name"]
         path = root / ".agent-skills" / skill["path"]
@@ -252,22 +307,49 @@ def main() -> int:
             path.write_text(new_text, encoding="utf-8")
             skill["description"] = repaired_description
 
-    if repaired and not args.check:
+    # SKILL.md is the single source of truth: it is what every agent runtime loads.
+    # skills.json feeds README/TOON and external consumers, so a manifest description
+    # that drifts from it publishes text no agent will ever see — including the
+    # "Use this skill when >" fragments an earlier line-based generator cached.
+    for skill in manifest["skills"]:
+        path = root / ".agent-skills" / skill["path"]
+        if not path.is_file():
+            continue
+        parts = split_frontmatter(path.read_text(encoding="utf-8"))
+        if parts is None:
+            continue
+        try:
+            data = yaml.safe_load(parts[0])
+        except yaml.YAMLError:
+            continue
+        if not isinstance(data, dict):
+            continue
+        source = " ".join(str(data.get("description", "")).split())
+        if not source or " ".join(str(skill.get("description", "")).split()) == source:
+            continue
+        synced.append(f"{skill['name']}: manifest description synced from SKILL.md")
+        if not args.check:
+            skill["description"] = source
+
+    if (repaired or synced) and not args.check:
         manifest_path = root / ".agent-skills" / "skills.json"
         manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
-    for line in repaired:
-        print(("would repair: " if args.check else "repaired: ") + line)
+    for line in repaired + synced:
+        print(("would fix: " if args.check else "fixed: ") + line)
     for line in failures:
         print(f"❌ {line}", file=sys.stderr)
 
     if failures:
         return 1
-    if args.check and repaired:
-        print(f"\n{len(repaired)} SKILL.md documents need repair — run without --check", file=sys.stderr)
+    if args.check and (repaired or synced):
+        print(f"\n{len(repaired)} SKILL.md documents need repair, {len(synced)} manifest"
+              " descriptions drifted — run without --check", file=sys.stderr)
         return 1
-    print(f"\n✅ {len(manifest['skills'])} SKILL.md documents load cleanly" if not repaired
-          else f"\n✅ repaired {len(repaired)} entries across {len(manifest['skills'])} skills")
+    print(f"\n✅ {len(manifest['skills'])} SKILL.md documents load cleanly and match the manifest"
+          if not (repaired or synced)
+          else f"\n✅ repaired {len(repaired)} documents, synced {len(synced)} manifest"
+               f" descriptions across {len(manifest['skills'])} skills")
     return 0
 
 

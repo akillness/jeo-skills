@@ -9,7 +9,7 @@
         "Response chooses quickstart, getting-started, or first-success framing for API consumers",
         "Response includes auth or credential prerequisites before the first request",
         "Response includes a success check or expected response outcome",
-        "Response does not route the task to api-design or user-guide-writing"
+        "Response does not route the task to api-design or technical-writing"
       ]
     },
     {

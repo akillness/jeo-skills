@@ -24,7 +24,7 @@
       "id": "near-miss-spec-authoring",
       "prompt": "I want spec-kit to write the spec documents first and have ooo freeze that spec as its seed afterwards.",
       "should_trigger": false,
-      "expected_behavior": "Routes to spec-stack: spec-kit authors the spec (docs as SSOT, spec -> seed direction); ooo's own plan stage only goes seed -> plan."
+      "expected_behavior": "Routes spec authoring to spec-kit (docs as SSOT, spec -> seed direction); ooo's own plan stage only goes seed -> plan."
     },
     {
       "id": "structural-install-knobs",

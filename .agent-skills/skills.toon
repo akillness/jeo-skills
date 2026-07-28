@@ -1,5 +1,5 @@
 N:academic-research
-D:Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble (deep-research 8 modes, academic-paper 11 modes, academic-paper-reviewer 6 modes, academic-pipeline 10-stage orchestrator). Routes each request to the right pipeline and mode. Human-in-the-loop throughout. Plugin (upstream): `claude plugin marketplace add Imbad0202/academic-research-skills`
+D:Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble (deep-research 8 modes, academic-paper 11 modes, academic-paper-reviewer 6 modes, academic-pipeline 10-stage orchestrator). Routes each request to the right pipeline and mode. Human-in-the-loop throughout. Plugin (upstream): claude plugin marketplace add Imbad0202/academic-research-skills
 G:academic-research deep-research paper-writing peer-review literature-review systematic-review citation-check research-pipeline scholarly-publishing ars
 
 U[8]:
@@ -18,7 +18,7 @@ S[4]{n,action,details}:
   3,Execute with human-in-the-loop,Follow the matching reference file; never skip [USER CHECKPOINT] gates; for academic-pipeline confirm at each of the 10 stage boundaries
   4,Return structured output packet,Include: Pipeline · Mode · Topic/Input · Output artifact · Citations · Integrity status · Next step recommendation
 
-N:agentation D:"Capture exact rendered-UI feedback and hand it to an agent as selectors, element paths, and structured annotation packets. Use when a human needs to point at a real UI issue, run a sync/watch loop, or wire browser feedback into Claude Code, Codex, Gemini CLI, or OpenCode. Not for fresh-session browser verification (browser-harness), running-browser reuse (playwriter), or plan/diff approval (plannotator)." T:Read|Write|Bash|Grep|Glob P:planning-review/agentation G:ui-feedback|browser-annotation|visual-feedback|mcp|react|ai-agent|design-review|css-selector
+N:agentation D:"Exact rendered-UI feedback router → choose copy-paste review, watch-loop sync, self-driving critique, or platform setup. MCP: npx add-mcp "npx -y agentation-mcp server"" T:Read|Write|Bash|Grep|Glob P:planning-review/agentation G:ui-feedback|browser-annotation|visual-feedback|mcp|react|ai-agent|design-review|css-selector
 N:agenticskills
 D:One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ god-skills) — wraps the official install.sh with pinned URL and env knobs (PLATFORM, WITH_LANGCHAIN, INSTALL_MODE, SKIP_BACKUP) to copy the catalog into Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in one step.
 T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
@@ -31,8 +31,8 @@ S:
   4:Verify the canonical destination ($HOME/.agent-skills) and runtime mirrors
 R:
   skill:Use `npx skills add --skill <name>` for selective single-skill installs
-  omc:Use for Claude-side orchestration setup after the bundle lands
-  omx:Use for Codex-side runtime setup after the bundle lands
+  oh-my-claudecode:Use for Claude-side orchestration setup after the bundle lands
+  oh-my-codex:Use for Codex-side runtime setup after the bundle lands
 N:amrouter
 D:Self-hosted AI gateway with one OpenAI-compatible endpoint for multi-provider LLM, embedding, image, and audio routing, automatic fallback, load balancing, and cost optimization.
 G:amrouter ai-gateway multi-provider openai-compatible auto-fallback load-balancing cost-optimization cloudflare-workers-ai
@@ -81,9 +81,9 @@ R[5]:
   technical-writing
   authentication-setup
   changelog-maintenance
-  user-guide-writing
+  technical-writing
 N:astryx
-D:Agent-ready Meta design system with 150+ accessible React and StyleX components, open composition, swizzling, brand theming, dark mode, and CLI tooling.
+D:Build fully customizable, agent-ready design systems with Astryx — Meta's production design system now open source. Ships 150+ React components built on StyleX with zero styling lock-in, component swizzling, brand theming, dark mode, and CLI tooling. Use when building component libraries, design systems, UI applications, design tokens, or when teams need consistent accessible components that AI agents can understand and extend. Triggers on: astryx, design system, component library, design tokens, react components, accessible components, astryx design, stylesheets, theme customization, component composition.
 G:astryx design-system react-components component-library design-tokens accessibility stylex theming ui-framework meta
 
 N:authentication-setup
@@ -106,20 +106,6 @@ R[5]:
   api-documentation
   backend-testing
   database-schema-design
-N:autopilot
-D:Exact-name Codex/OMX-compatible `$autopilot` front door for autonomous idea-to-verified-code work. Use when the user invokes `$autopilot`, autopilot, auto pilot, full-auto, or asks for an end-to-end build; route small focused edits to direct implementation and stricter spec-first loops to `ooo` or `ralph`.
-T:Read|Write|Bash|Grep|Glob
-G:autopilot|$autopilot|omx|codex|autonomous-build|full-auto|implementation|qa|verification
-F:Codex CLI|Claude Code|Gemini CLI|OpenCode
-S:
-  1:Inspect stack, likely files, test commands, and constraints before editing
-  2:Freeze a compact execution packet with goal, constraints, work areas, and verification commands
-  3:Implement in safe slices and verify after meaningful changes
-  4:Finish only after a fresh final verification pass or a concrete blocker
-R:
-  ooo:Use for immutable spec-first execution or drift-aware completion loops
-  ralph:Use for high-assurance fix/verify loops over a known plan
-  omx:Use for broader Codex runtime setup, team mode, and command parity guidance
 N:autoresearch
 D:Run Karpathy-style autonomous ML search on a real training repo: choose the right mode (setup, program.md, bounded loop, results interpretation, or constrained-hardware adaptation), preserve the immutable prepare.py / 300-second / val_bpb contract, and route prompt/skill eval work away to LangSmith, Promptfoo, Braintrust, or skill-autoresearch.
 G:autoresearch ml-experiments autonomous-research karpathy gpu train val-bpb overnight ratcheting
@@ -198,7 +184,7 @@ S[8]{n,action,details}:
   4,Next,Recommend exactly one next artifact or gate
   5,Review,If the artifact exists but is unreviewed → route to plannotator before creating another document
   6,Execute,If the artifact is approved and the real blocker is slicing → route to task-planning
-  7,Runtime,If execution is runtime-native → route to omc/omx/ohmg with a short why
+  7,Runtime,If execution is runtime-native → route to oh-my-claudecode/oh-my-codex/oh-my-agent with a short why
   8,Brownfield,If the ask starts from a live repo/issue/partial implementation → prefer workflow-status or smallest missing artifact over greenfield restart
 
 R[6]:
@@ -274,7 +260,7 @@ R[4]:
   Prefer deterministic CLI output over ad-hoc screenshots
   Keep evidence linked to source repository and npm package
 N:changelog-maintenance
-D:Write and maintain release-history artifacts for shipped changes. Use when the main job is turning shipped evidence into the smallest truthful changelog, release-note, migration-update, or game patch-note packet; routes internal docs to technical-writing, API docs to api-documentation, end-user help to user-guide-writing, rollout execution to deployment-automation, and launch messaging to marketing-automation.
+D:Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, and what's new. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `technical-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`.
 G:changelog release-notes patch-notes migration-update deprecation what's-new release-history
 U[4]:
   **CHANGELOG.md refresh**: update durable repo history from shipped work
@@ -286,7 +272,7 @@ S[2]{n,action}:
   2,Verify shipped evidence and route deeper docs to neighboring skills
 claudekit|claudekit,claude code plugin,workflow toolkit,init wizard,mcp,hooks,rules,modes|Claude Code workflow toolkit plugin. Installs reusable skills/agents and scaffolds project rules, modes, hooks, and MCP config via /claudekit:init.|duthaho/claudekit|MIT|latest
 N:clawteam
-D:Route explicit ClawTeam runtime requests into one honest operator packet before touching commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer work, product/ops research, content operations, or game-production coordination. Not for generic multi-agent routing, board-only governance, or lightweight subtask fan-out when `jeo`, `omc`, `omx`, `ohmg`, `vibe-kanban`, or built-in delegation already fit.
+D:Route explicit ClawTeam runtime requests into one honest operator packet before touching commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer work, product/ops research, content operations, or game-production coordination. Not for generic multi-agent routing, board-only governance, or lightweight subtask fan-out when jeo, harness, task-planning, or built-in delegation already fit.
 G:clawteam multi-agent swarm orchestration tmux git-worktree autonomous python routing
 
 U[6]:
@@ -303,7 +289,7 @@ S[4]{n,action,details}:
   3,Monitor/recover packet,bash clawteam team discover && clawteam team status my-team && clawteam board show my-team && clawteam task list my-team --status blocked && clawteam inbox peek my-team
   4,Profile setup packet,bash clawteam preset list && clawteam preset generate-profile moonshot-cn claude --name claude-kimi && clawteam profile doctor claude && clawteam spawn tmux --profile claude-kimi --team my-team --agent-name researcher --task "Compare onboarding flows"
 N:cli-anything
-D:Make any software agent-native with HKUDS CLI-Anything — four routed modes: install ready-made harnesses via CLI-Hub (`cli-hub list/search/info/install/launch`), give agents the cli-hub-meta-skill for autonomous discovery, generate a new harness from any codebase/repo via the 7-phase `/cli-anything` pipeline, or iterate with `:refine`/`:test`/`:validate`; 40+ harnesses, 2,461 tests, Click CLIs with REPL + `--json`.
+D:Make any software agent-native with HKUDS CLI-Anything — four routed modes: install ready-made harnesses via CLI-Hub (cli-hub list/search/info/install/launch), give agents the cli-hub-meta-skill for autonomous discovery, generate a new harness from any codebase/repo via the 7-phase /cli-anything pipeline, or iterate with :refine/:test/:validate; 40+ harnesses, 2,461 tests, Click CLIs with REPL + --json.
 T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
 G:cli-anything|cli-hub|cli-anything-hub|agent-native cli|make software agent-native|cli harness generation|/cli-anything|harness refine|HKUDS cli
 F:Claude|Codex|OpenCode|OpenClaw|Pi|Hermes|Copilot
@@ -400,7 +386,7 @@ R:
   codebase-search:Use for a routing-first repo-navigation packet before refactoring
   graphify:Use for a durable, committed knowledge graph (graphify-out/) instead of a throwaway browser view
 N:colibri
-D:Pure-C GLM-5.2 MoE inference engine for consumer hardware with expert streaming, caching, int4 conversion, MTP speculative decoding, and CPU/GPU deployment.
+D:Assist with Colibri: pure-C LLM inference engine for running GLM-5.2 (744B MoE) on consumer machines with ~25 GB RAM. Use when setting up, building, converting models, running inference, configuring expert streaming and caching, optimizing speculative decoding (MTP), GPU integration, and integrating Colibri into production pipelines. Includes build setup, model download & conversion, chat/inference modes, performance tuning, and API integration patterns.
 G:colibri llm-inference glm-5.2 moe speculative-decoding quantization expert-streaming consumer-hardware c-runtime
 
 compresso|compresso,compress video,compress image,batch compression,ffmpeg compression,offline video compress,tauri desktop compression,pngquant,jpegoptim,gifski|Free offline desktop video/image compression (Tauri+React). Batch compress, trim, convert, embed subtitles. Uses FFmpeg/pngquant/jpegoptim/gifski. Install: brew install --cask codeforreal1/tap/compresso or download DMG/MSI/AppImage from releases.|codeforreal1/compressO|AGPL-3.0|latest
@@ -452,9 +438,9 @@ S[8]{n,action}:
   6,Use the right mode packet
   7,Fix the cause then prove it
   8,Escalate honestly when evidence is still weak
-deep-dive|deep-dive,deep dive,trace and interview,investigate deeply,root cause then requirements,omx,oma,antigravity|Run a cross-runtime trace-to-interview workflow: trace causal hypotheses, inject evidence into requirements, validate artifacts, then hand off through OMC, OMX, or OMA depending on Claude, Codex, Gemini, or Antigravity runtime.|core-orchestration/deep-dive|MIT|latest
+deep-dive|deep-dive,deep dive,trace and interview,investigate deeply,root cause then requirements,oh-my-codex,oma,antigravity|Run a cross-runtime trace-to-interview workflow: trace causal hypotheses, inject evidence into requirements, validate artifacts, then hand off through OMC, OMX, or OMA depending on Claude, Codex, Gemini, or Antigravity runtime.|core-orchestration/deep-dive|MIT|latest
 N:deep-research
-D:Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep (parallel per-item investigation + field-coverage validation), report (TOC + per-field markdown), web-search (research agent + 5 routed source modules). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research`
+D:Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep (parallel per-item investigation + field-coverage validation), report (TOC + per-field markdown), web-search (research agent + 5 routed source modules). Plugin: npx skills add https://github.com/akillness/jeo-skills --skill deep-research
 G:deep-research structured-research research-outline web-search literature-review benchmark competitor-analysis due-diligence parallel-agents report-generation human-in-the-loop
 
 P[4]{phase,pipeline}:
@@ -479,10 +465,10 @@ ROUTE-OUT:
   Research-to-publication with citation gates → academic-research
   Autonomous ML experiment search → autoresearch
   Token-efficient repo code search → semble
-  Multi-agent build/verify orchestration → omc / omx / ohmg
-deepinit|deepinit,deep init,AGENTS.md,codebase initialization,hierarchical docs,agent docs,omx,oma,antigravity|Create or refresh hierarchical AGENTS.md documentation across Claude, Codex/OMX, Gemini, and Antigravity/OMA projects while preserving manual notes, excluding runtime state, and validating parent links.|core-orchestration/deepinit|MIT|latest
+  Multi-agent build/verify orchestration → oh-my-claudecode / oh-my-codex / oh-my-agent
+deepinit|deepinit,deep init,AGENTS.md,codebase initialization,hierarchical docs,agent docs,oh-my-codex,oma,antigravity|Create or refresh hierarchical AGENTS.md documentation across Claude, Codex/OMX, Gemini, and Antigravity/OMA projects while preserving manual notes, excluding runtime state, and validating parent links.|core-orchestration/deepinit|MIT|latest
 N:deployment-automation
-D:[deployment-automation] Release-execution anchor for web, backend, and fullstack systems: preview releases, staging-to-production promotion, rollout strategy, post-deploy verification, rollback response, and release-hardening packets. Use when the system already builds and the main job is shipping or recovering a release safely. Route CI workflow authoring to workflow-automation, machine/runtime setup to system-environment-setup, long-lived telemetry design to monitoring-observability, and Vercel-specific operations to vercel-deploy.
+D:Plan and review release execution for web, backend, and fullstack systems: preview releases, staging-to-production promotion, rollout strategy, post-deploy verification, rollback response, and release-hardening checklists. Use when the system can already build and the main job is shipping or recovering a release safely, choosing between preview / promotion / canary / rollback paths, or tightening deploy gates around health checks and sign-off. CI workflow and release-job authoring belongs here too. Route machine/runtime setup to `system-environment-setup`, long-lived telemetry design to `monitoring-observability`, and Vercel-specific operations to `vercel-deploy`.
 G:deployment release rollout promotion rollback preview staging production canary blue-green progressive delivery hardening
 
 U[6]:
@@ -496,7 +482,7 @@ U[6]:
 S[5]{n,action,details}:
   1,Choose mode,preview-release | environment-promotion | container-paas-rollout | kubernetes-rollout | rollback-response | release-hardening
   2,Gather evidence,identify artifact environment promotion model verification signals rollback path and schema/data caveats
-  3,Route adjacent work,send CI YAML to workflow-automation setup/bootstrap to system-environment-setup telemetry architecture to monitoring-observability and Vercel specifics to vercel-deploy
+  3,Route adjacent work,keep CI YAML authoring here send setup/bootstrap to system-environment-setup telemetry architecture to monitoring-observability and Vercel specifics to vercel-deploy
   4,Load the matching packet,use release-packet-templates plus strategy-selection-and-stop-conditions and rollout-and-rollback-checklist
   5,Produce release packet,return steps verification stop conditions rollback limits and route-outs
 
@@ -514,7 +500,7 @@ E[4]{type,command}:
   Rollback response,Contain blast radius and separate app recovery from migration risk
   Release hardening,Add missing preflight sign-off and stop conditions to an existing deploy path
 N:design-system
-D:Define or refactor a shared frontend UI system before polishing one screen at a time. Use when the user needs token governance, visual-language rules, primitive naming, cross-product consistency, or page-system direction across landing pages, dashboards, forms, and component libraries. Route reusable component API design to ui-component-patterns, responsive layout work to responsive-design, accessibility-only remediation to web-accessibility, and broad UI critique to web-design-guidelines.
+D:Define or refactor a shared frontend UI system before polishing one screen at a time. Use when the user needs token governance, visual-language rules, primitive naming, page-system direction, cross-product consistency, or a design handoff that should stay coherent across landing pages, dashboards, forms, and component libraries, including the reusable primitive / slot / variant APIs that system owns. Not for responsive layout-only fixes, accessibility-only remediation, or broad UI critique. Triggers on: design system, design tokens, visual language, component library foundations, UI governance, cross-product consistency, landing page plus dashboard system, primitive naming, token policy, component API architecture.
 G:frontend design-system ui ux design-tokens governance visual-language accessibility
 
 U[5]:
@@ -527,7 +513,7 @@ S[6]{n,action,details}:
   1,Choose Mode,Foundations vs cross-surface alignment vs primitive governance vs system handoff vs system review
   2,Define Scope,Decide what the shared system owns: tokens, naming, governance, baseline accessibility, breakpoint policy
   3,Make Minimum Shared Decisions,Set foundations + primitive policy + surface guidance before examples
-  4,Route Neighbors Out,Send component API work to ui-component-patterns; responsive layout to responsive-design; a11y remediation to web-accessibility; broad critique to web-design-guidelines
+  4,Route Neighbors Out,Keep component API work here; send responsive layout to responsive-design; a11y remediation and broad critique to web-accessibility
   5,Write Packet,Leave a compact Design System Packet with scope/foundations/primitive policy/surface guidance/route-outs/open decisions
   6,Add Small Example Only If Needed,Use one or two examples after the rules instead of dumping a giant mock
 R[5]:
@@ -550,7 +536,7 @@ U[6]:
   Write styles with Box/css props or styled() — both compile away at build time; dynamic values become CSS variables
   Use devup.json for type-safe tokens and zero-cost theme switching; never add a client Provider (breaks RSC + zero runtime)
   Numeric spacing props multiply by 4px; array values are responsive; _hover/_focus are pseudo selectors
-  Route out broader concerns: tokens to design-system, component API to ui-component-patterns, layout to responsive-design, a11y to web-accessibility, perf to react-best-practices
+  Route out broader concerns: tokens to design-system, component API to design-system, layout to responsive-design, a11y to web-accessibility, perf to react-best-practices
 
 S[5]{n,action,details}:
   1,Intake,capture bundler React-mode theming origin and package-manager before editing config
@@ -574,7 +560,7 @@ E[5]{type,command}:
   Next.js config,import { DevupUI } from '@devup-ui/next-plugin'; export default DevupUI({})
   Vite config,plugins: [react(), DevupUI()] from '@devup-ui/vite-plugin'
 N:lazyweb
-D:Design with evidence, not vibes — bring real product screenshots, UI references, competitive analysis, best practices, quick examples, paywall optimization, and mobile A/B test research into every design decision. Routes to focused modes (design workflow for creating/optimizing/improving screens, quick search for reference lookups, A/B test research) via MCP tools and lazyweb.com. Use when designing any product screen.
+D:Lazyweb is the design-evidence skill for AI coding agents. Use it when designing, critiquing, or changing product UI — it provides real app screenshots, competitor references, best practices, quick examples, creative cross-category ideas, paywall optimization guidance, and mobile growth + monetization A/B test context. Routes to the right Lazyweb mode (design workflow, quick search, update, flowchart, or A/B test research) using MCP tools and the Lazyweb server at https://www.lazyweb.com/mcp. Use before designing any screen when you need design evidence instead of training-data vibes.
 G:lazyweb design design-research ui-reference product-design competitive-analysis paywall-optimization monetization a-b-testing
 
 U[5]:
@@ -594,7 +580,7 @@ R[2]:
   Screenshot URLs are signed for 365 days — download and save locally if you need long-term archival
 
 N:drawio
-D:Turn natural language into editable `.drawio` diagrams and export to PNG/SVG/PDF/JPG via the native draw.io desktop CLI, or turn an existing Python/JS-TS/Go/Rust codebase into an auto-laid-out structure diagram. Wraps Agents365-ai/drawio-skill: 6 presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/BPMN shapes, 321 AI/LLM brand logos, vision self-check + auto-fix, 5-round refinement. No MCP server, no daemon.
+D:Turn natural-language descriptions into editable `.drawio` diagrams and export them to PNG / SVG / PDF / JPG via the native draw.io desktop CLI, or turn an existing codebase (Python / JS-TS / Go / Rust) into an auto-laid-out structure diagram. Wraps Agents365-ai/drawio-skill: 6 diagram presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), search across 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/ BPMN shapes, 321 AI/LLM brand logos, vision self-check + auto-fix, and a 5-round iterative refinement loop. No MCP server, no daemon — runs from a single SKILL.md and the draw.io CLI. Use when the user wants polished, precise, exportable diagrams or wants to visualize code structure. Triggers on: drawio, draw.io, drawio diagram, architecture diagram, ERD, UML diagram, sequence diagram, flowchart, network diagram, visualize codebase, code structure diagram, class hierarchy, export diagram png/svg/pdf, AWS/Azure/GCP icon, draw.io shapes.
 T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
 G:drawio|draw.io|architecture diagram|ERD|UML diagram|sequence diagram|flowchart|network diagram|visualize codebase|code structure diagram|class hierarchy|export diagram png/svg/pdf|AWS/Azure/GCP icon|draw.io shapes
 F:Claude|Codex|Gemini|Cursor|Copilot|OpenClaw
@@ -613,7 +599,7 @@ R:
   presentation-builder:Use for slide-deck artifacts
   ccpi-marketplace:Use for general Claude plugin browsing
 N:environment-setup
-D:Configure and manage development, staging, and production environments. Use when setting up envir...
+D:Organize application environment configuration: `.env` files, env precedence, typed env validation, secret handoff, framework-specific env rules, and config drift between local, staging, CI, and production. Use when the user needs help structuring environment variables, validating required config, separating public/private env values, or cleaning up env-file sprawl. This is the narrower app-config compatibility skill. Route broader runnable-machine, Docker, devcontainer, onboarding, and local-service setup work to `system-environment-setup`.
 G:environment configuration env-variables dotenv config-management
 U[3]:
   **New Projects**: Initial environment setup
@@ -629,7 +615,7 @@ R[2]:
   DATABASE_URL=postgresql
   REDIS_URL=redis
 N:fabric
-D:Routing-first Fabric operator skill for reusable named AI transforms over stdin, files, transcripts, notes, logs, and cleaned web text. Use when the user wants Fabric patterns, custom pattern packs, shell-pipe composition, or fabric --serve workflows—not generic one-off chat prompting, repo-aware coding, or deterministic automation.
+D:Routing-first Fabric operator skill for reusable named AI transforms over stdin, files, transcripts, notes, logs, and cleaned web text. Use when the user wants Fabric patterns, custom pattern packs, shell-pipe composition, or `fabric --serve` workflows — not generic one-off chat prompting, repo-aware coding, or fully deterministic automation.
 G:fabric patterns prompt-orchestration cli piping summarize extract custom-patterns stdin transcripts logs rest-api
 
 U[6]:
@@ -661,7 +647,7 @@ E[4]{desc,in,out}:
   "Custom pattern pack","Weekly competitor-article digest workflow","system.md scaffold plus invocation and reuse guidance"
   "Boundary review","Fabric vs general LLM CLI vs coding assistant","Keeps repeatable text transforms in Fabric and routes repo editing elsewhere"
 N:file-organization
-D:Choose the right repo structure boundary: feature, shared layer, route segment, or workspace package. Use for folder-structure refactors, project-layout decisions, naming/import conventions, and staged migrations when a repo feels scattered or a team needs to know where code should live.
+D:Design or refactor project structure around the right boundary unit: feature, shared layer, route segment, or workspace package. Use when a repo feels scattered, a team needs naming/import conventions, or the user must choose between type-based, feature-based, framework-colocated, and workspace layouts. Triggers on: file organization, folder structure, project structure, reorganize repo, feature folders, shared vs feature code, where should this file live, apps/packages split, and project layout refactor.
 G:file-organization project-structure folder-structure feature-folders shared-vs-feature apps-packages naming-conventions
 U[3]:
   Starter-tree cleanup before a small app calcifies into scattered technical folders
@@ -674,7 +660,7 @@ S[5]{n,action}:
   4,Plan a staged migration with verification steps
   5,Return a file-organization brief with route-outs
 N:firebase-ai-logic
-D:Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for Gemini-powered features. Use when the user needs in-app text/chat/multimodal generation, structured output, streaming, or App Check-aware Firebase app integration without a separate workflow framework. Route server-owned flows, tool calling, RAG, evaluation, and reusable backend orchestration to `genkit`, and route project/deploy/operator tasks to `firebase-cli`.
+D:Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for Gemini-powered features. Use when the user needs in-app text/chat/multimodal generation, structured output, streaming, or App Check-aware Firebase app integration without a separate workflow framework. Triggers on: Firebase AI Logic, Gemini in Firebase app, Firebase AI SDK, client-side Gemini, in-app AI feature, mobile/web AI integration, and direct Firebase model integration. Route server-owned flows, tool calling, RAG, evaluation, and reusable backend orchestration to `genkit`, and route project/deploy/operator tasks to `firebase-cli`.
 G:firebase ai gemini sdk client-side app-integration streaming structured-output app-check mobile web
 U[5]:
   **Direct app integration**: add Gemini-powered features inside a Firebase app
@@ -690,7 +676,7 @@ S[6]{n,action}:
   5,Enforce route-outs
   6,Format the recommendation
 N:firebase-cli
-D:[firebase-cli] Firebase platform/operator anchor for `firebase-tools`: install/auth the CLI, bootstrap `firebase.json` + `.firebaserc`, run emulators, deploy Hosting / Functions / rules / App Hosting, manage preview channels, and handle admin tasks like auth import/export, Remote Config, App Distribution, Extensions, and Data Connect CLI commands. Route backend AI workflow orchestration to genkit and direct in-app SDK integration to firebase-ai-logic.
+D:Operate Firebase from the terminal with `firebase-tools`: install/auth the CLI, bootstrap `firebase.json` / `.firebaserc`, run the Emulator Suite, deploy Hosting / Functions / rules / App Hosting, manage preview channels, and handle Firebase admin tasks like auth import/export, Remote Config, App Distribution, and Extensions. Use when the job is Firebase platform/project operation through the CLI. Triggers on: firebase deploy, firebase init, firebase emulators, firebase hosting, firebase functions, firebase firestore, firebase database, firebase auth import, firebase remote config, firebase app distribution, firebase extensions, firebase apphosting, firebase dataconnect, firebase cli, firebase-tools, deploy firebase, firebase preview channel, firebase login, firebase use, firebase target apply. Route backend AI workflow orchestration to `genkit` and direct in-app SDK integration to `firebase-ai-logic`.
 G:firebase firebase-cli firebase-tools deploy hosting functions firestore database emulators auth remote-config app-distribution extensions apphosting dataconnect ci-cd preview-channel service-account
 
 U[8]:
@@ -744,7 +730,7 @@ S[6]{n,action,details}:
   5,Tailor the next checks to the engine,**For Unity, prefer checks like:** - Packages/manifest.json, Packages/packages-lock.json - .asmdef references and scripting define symbols - ProjectSettings/, platform build settin
   6,Escalate carefully when evidence is weak,If the log excerpt is too short or starts mid-cascade: 1. Say that confidence is low. 2. Ask for the earliest error cluster or the failing command section. 3. List the minimum extr
 N:game-ci-cd-pipeline
-D:Turn messy Unity or Unreal build/release automation into one bounded game-pipeline packet after naming the signal tier first: fast branch-gate CI, nightly/package-candidate builds, or release/certification candidates. Use when a game team needs to design or repair GitHub Actions, Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds — especially when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook/package cycles, artifact confusion, SDK/signing drift, or manual candidate promotion that should become reproducible. Route one red log first-pass diagnosis to `game-build-log-triage`.
+D:Turn messy Unity or Unreal build/release automation into one bounded game-pipeline packet after naming the signal tier first: fast branch-gate CI, nightly/package- candidate builds, or release/certification candidates. Use when a game team needs to design or repair GitHub Actions, Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds — especially when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook / package cycles, artifact confusion, SDK/signing drift, or manual candidate promotion that should become reproducible. Route one red log first-pass diagnosis to `game-build-log-triage`.
 G:game-development unity unreal ci-cd github-actions build-pipeline release-engineering release-candidates
 
 U[5]:
@@ -788,7 +774,7 @@ R[4]:
   The team needs a store-page or launch-page audit before player feedback exists → prefer steam-store-launch-ops
   The user wants a generic sprint plan with no game-specific feedback evidence → prefer task-planning or bmad-gds
 N:game-performance-profiler
-D:Route Unity and Unreal frame-time complaints into one bottleneck-first profiling brief. Use when the main job is interpreting profiler screenshots, `stat unit` / `stat gpu` output, benchmark-route complaints, or Steam Deck / target-device review packets; choosing the smallest useful next capture; naming one bottleneck family; and deciding whether to stay with quick packets, move to an engine-native profiler, or escalate further.
+D:Route Unity and Unreal frame-time complaints into one bottleneck-first profiling brief. Use when the main job is interpreting profiler screenshots, `stat unit` / `stat gpu` output, benchmark-route complaints, or Steam Deck / target-device review packets; choosing the smallest useful next capture; naming one primary bottleneck family; and deciding whether to stay with quick packets, move to an engine-native profiler, or escalate further. Route generic app/service tuning to `performance-optimization`, build/editor/package failures to `game-build-log-triage`, broader game-production coordination to `bmad-gds`, and mixed demo/community feedback to `game-demo-feedback-triage`.
 G:game-development unity unreal profiling performance frame-time hitch stat-unit stat-gpu unreal-insights steam-deck benchmark-route device-review quick-triage-packet
 
 U[6]:
@@ -836,7 +822,7 @@ S[6]{n,action,details}:
   6,Close the cycle,Write the retrospective with measured gate values and the next-cycle entry decision (Stage 1 concept shift vs Stage 2 retune); never delete _workspace artifacts.
 
 N:genkit
-D:Route server-owned AI workflow work into one Genkit implementation brief. Use when the main job is deciding whether a web/backend/fullstack feature needs reusable flows, tools, retrieval, prompt files, typed contracts, evals, observability, or deployment across Firebase / Cloud Run / another backend runtime. Keep direct Firebase app/client SDK integration routed to `firebase-ai-logic`, Firebase platform/operator work routed to `firebase-cli`, and framework-choice comparisons routed to `survey`.
+D:Route server-owned AI workflow work into one Genkit implementation brief. Use when the main job is deciding whether a web/backend/fullstack feature needs reusable flows, tools, retrieval, prompt files, typed contracts, evals, observability, or deployment across Firebase / Cloud Run / another backend runtime. Choose among flow-foundation, tool-and-agent, retrieval-and-prompt, evaluation-and-observability, and deployment-runtime modes; keep direct Firebase app/client SDK integration routed to `firebase-ai-logic`, Firebase platform/operator work routed to `firebase-cli`, and framework-choice comparisons routed to `survey`.
 G:genkit firebase ai-workflows flows tool-calling rag evaluation observability cloud-run fullstack backend developer-ui dotprompt
 
 U[6]:
@@ -869,7 +855,7 @@ E[4]{desc,in,out}:
   "Launch-readiness loop","Existing Genkit flows need evals and observability before Cloud Run rollout","Use genkit with an evidence-first eval and trace plan"
   "Framework-choice packet","Should we use Genkit, Firebase AI Logic, Vercel AI SDK, or direct SDK calls?","Route to survey unless the backend workflow layer is already chosen"
 N:ghgrab
-D:Search and selectively download files or folders from GitHub repositories via terminal using ghgrab, without full clone. Covers install, interactive browse, and release artifact retrieval.
+D:Search and download specific files/folders from GitHub repositories directly from terminal using ghgrab, without full clone. Covers install, interactive browsing, release asset download, and automation-safe usage patterns.
 G:ghgrab github cli file-download selective-fetch terminal
 U[6]:
   Install and verify ghgrab quickly on developer machines
@@ -896,7 +882,7 @@ E[2]{desc,in,out}:
   "Selective repo fetch","Get two config files from a large GitHub repo without cloning everything","Uses ghgrab on a direct repo URL and downloads only selected files"
   "Release artifact pull","Download the latest release binary for my platform","Uses ghgrab release selection path and records chosen artifact plus destination"
 N:git-submodule
-D:Decide when Git submodules are the right external-repo boundary, then choose one safe operator flow: add and pin, bootstrap recursively, sync the recorded commit, advance a tracked branch, avoid detached-HEAD surprises while editing inside the submodule, remove cleanly, or handle CI / hosted-platform checkout constraints. Use for `.gitmodules`, `git submodule`, recursive clone/setup, pointer updates, detached HEAD, private submodules in CI, GitHub Pages limits, or submodule-vs-subtree/vendor decisions.
+D:Decide when Git submodules are the right external-repo boundary, then choose one safe operator flow: add and pin, bootstrap recursively, sync to the recorded commit, advance a tracked branch, edit inside the submodule without detached-HEAD surprises, remove cleanly, or configure CI/hosted-platform checkout constraints. Use when the user asks about `.gitmodules`, `git submodule`, recursive clone/setup, pointer updates, detached HEAD, private submodules in CI, GitHub Pages submodule limits, or submodule vs subtree/vendoring/package delivery. Not for generic Git history cleanup or package-manager dependency delivery.
 G:git submodule subtree dependencies version-control ci repo-structure github-pages
 U[5]:
   Add or pin an external repository as a submodule
@@ -913,7 +899,7 @@ S[7]{n,action}:
   6,Use the mode packets and hosted-constraint reference
   7,Route adjacent problems to the right skill
 N:git-workflow
-D:Route local Git work into the safest next move: branch hygiene, selective staging, commit cleanup, merge-vs-rebase choice, conflict resolution, lease-safe pushes, and recovery from resets or bad history edits.
+D:Route local Git work into the safest next move: branch hygiene, selective staging, commit cleanup, merge-vs-rebase choice, conflict resolution, lease-safe pushes, and recovery from resets or bad history edits. Use when the user needs help preparing a branch, cleaning up commits, syncing with an updated base, resolving local Git conflicts, pushing rewritten history safely, recovering lost commits, or getting a diff ready for review. Not for hosted PR review, repo administration, or sprint planning.
 G:git version-control branching commits rebasing conflicts recovery collaboration force-with-lease reflog
 U[6]:
   preparing a branch for review
@@ -935,7 +921,7 @@ R[4]:
   `git push --force-with-lease origin <branch>`
   `git reflog`
 N:github-repo-candidate-quality-gate
-D:Convert noisy GitHub repo search results into recommendation-grade keep lists with deterministic metadata, freshness, fit, and signal gates while preserving discovery evidence.
+D:Convert noisy GitHub repository search results into recommendation-grade candidate lists with explicit metadata, freshness, traction signal, provenance labels, and rollback-safe reporting for maintenance PR workflows.
 G:github search triage quality-gate repo-maintenance
 U[4]:
   Filter broad repo-search output into merge-ready recommendation lists
@@ -959,7 +945,7 @@ E[1]{desc,in,out}:
   "Hourly maintenance lane triage","Filter gh search repos output into merge-grade recommendations","Returns deterministic keep list plus lane metrics/status without losing discovery evidence"
 god-tibo-imagen|god-tibo-imagen,gti,image generation,codex image,chatgpt image,ai image generation,gpt image,ai image|Generate images via Codex ChatGPT backend with zero deps. CLI: gti --prompt "..." --output out.png. Reuses ~/.codex/auth.json — no new credentials. npm install -g god-tibo-imagen. Python: pip install god-tibo-imagen. Supports PNG/JPG/GIF/WebP input, dry-run, debug mode.|NomaDamas/god-tibo-imagen|MIT|latest
 N:google-workspace
-D:Plan and execute Google Workspace operations across Docs, Sheets, Slides, Drive, Gmail, Calendar, Forms, Chat, and Admin SDK by choosing the right surface first: Apps Script, direct REST API, or admin-only APIs. Use when the user needs Workspace automation, spreadsheet/document/file workflows, Gmail sending, calendar scheduling, Forms pipelines, Drive sharing, or domain user/admin changes.
+D:Plan and execute Google Workspace operations across Docs, Sheets, Slides, Drive, Gmail, Calendar, Forms, Chat, and Admin SDK by choosing the right surface first: Apps Script, direct REST API, or admin-only APIs. Use when the user needs to automate a Workspace workflow, edit or create Workspace files, send Gmail, schedule calendar events, process Forms/Sheets pipelines, manage Drive sharing, or handle Workspace admin tasks; even if they only mention a spreadsheet, document, shared drive, inbox workflow, approval flow, or domain user change. Triggers on: Google Doc, Google Sheet, spreadsheet, Slides, Drive folder, Gmail, calendar event, Forms, Apps Script, Admin SDK, shared drive, Google Chat, workspace automation, domain user, send email, approval flow.
 G:google-workspace google-docs google-sheets google-slides google-drive gmail google-calendar google-chat google-forms admin-sdk apps-script spreadsheet document shared-drive send-email approval-flow domain-user
 F:Claude|Gemini|Codex|OpenCode
 T:Bash|Read|Write|Edit|Glob|Grep
@@ -983,7 +969,7 @@ R[4]:
   Prefer batch operations and watch Apps Script quota/runtime limits on heavy jobs
   Route no-code cross-app orchestration requests out instead of turning this into a Zapier or n8n tutorial
 N:graphify
-D:Route durable graph-building requests into one honest mode: assistant-native install, local Python build, incremental refresh, graph query follow-up, or a graphify-style structural fallback for markdown-heavy corpora. Use when the user wants `GRAPH_REPORT.md`, `graph.json`, `graph.html`, repo/corpus relationship tracing, mixed code+docs+asset graphing, or graph-backed architecture understanding that should persist across sessions.
+D:Route durable graph-building requests into one honest mode: assistant-native install, local Python build, incremental refresh, graph query follow-up, or a graphify-style structural fallback for markdown-heavy corpora. Use when the user wants `GRAPH_REPORT.md`, `graph.json`, `graph.html`, repo/corpus relationship tracing, mixed code+docs+asset graphing, or graph-backed architecture understanding that should persist across sessions. Route simple locate/reference work to `codebase-search`, narrative knowledge-base work to `llm-wiki`, and project-memory handoff to `opencontext`.
 G:knowledge-graph codebase-analysis graphrag architecture graphify corpus-analysis persistent-memory
 
 U[6]:
@@ -1013,7 +999,7 @@ R[7]:
   Label portability/path-leak limitations honestly when artifacts are machine-specific
   After a wiki build or `pip install --upgrade graphifyy`, run scripts/patch_wikilink.py if `[[…]]` links break — graphify emits raw-label links that miss its slugged pages; wire the idempotent patcher into the install/upgrade step so the fix survives
 N:harness
-D:[harness] Design domain-specific agent teams, define specialized agents, and generate the skills they use. Meta-skill for decomposing complex projects into coordinated multi-agent pipelines. Covers domain analysis, pattern selection (pipeline/fan-out/expert-pool/producer-reviewer/supervisor/hierarchical), .claude/agents/ and .claude/skills/ generation, orchestration, and validation.
+D:Design domain-specific agent teams, define specialized agents, and generate the skills they use. Use when you need to decompose a complex project into coordinated multi-agent teams, choose the right architecture pattern (pipeline, fan-out/fan-in, expert pool, producer-reviewer, supervisor, hierarchical delegation), generate .claude/agents/ and .claude/skills/ files, or validate and iterate on generated harnesses. Triggers on: harness, build a harness, design agent team, agent team architecture, multi-agent skill generation, set up harness, harness engineering, domain agent team, harness for this project.
 G:harness agent-team multi-agent skill-generation orchestration meta-skill claude-code harness-engineering
 
 U[8]:
@@ -1050,7 +1036,7 @@ E[5]{type,command}:
   Trigger via prompt,"design an agent team for [domain]"
   Trigger via prompt,"set up a harness"
 N:langsmith
-D:[langsmith] Route LangSmith work into one workflow packet before touching SDK code. Use when users need LangSmith tracing, offline evals, annotation/review queues, prompt-registry decisions, audit/gap review, or cross-service trace propagation for an LLM app or agent workflow. Choose one packet: trace-debug, eval, review, prompt-registry, propagation, or audit. Triggers on: LangSmith, LangChain tracing, @traceable/traceable, wrap_openai/wrapOpenAI, datasets, experiments, annotation queues, feedback criteria, Prompt Hub, run trees, or trace IDs. Not for generic alerting/SLO design, deployment orchestration, or runtime guardrails outside LangSmith.
+D:Route LangSmith work into one workflow packet before touching SDK code. Use when the user needs LangSmith tracing, offline evals, annotation/review queues, prompt-registry decisions, audit/gap review, or cross-service trace propagation for an LLM app or agent workflow. Choose one packet: trace-debug, eval, review, prompt-registry, propagation, or audit. Triggers on: LangSmith, LangChain tracing, `@traceable` / `traceable`, `wrap_openai` / `wrapOpenAI`, datasets, experiments, annotation queues, feedback criteria, Prompt Hub, run trees, trace IDs, or production confidence for an AI feature. Not for generic SLO/alert design, non-LangSmith deployment orchestration, or runtime guardrails outside LangSmith.
 G:langsmith langchain tracing observability evaluation prompt-hub datasets openevals traceable wrap_openai wrapOpenAI annotation-queue run-tree trace-id propagation audit
 
 U[6]:
@@ -1081,7 +1067,7 @@ E[4]{type,code}:
   Review packet,packet=review plus feedback keys annotation queue rubric and run_id preservation
   Prompt packet,packet=prompt-registry plus Prompt Hub vs Git ownership and experiment linkage
 N:lapian-notes
-D:Work with Lapian Notes / 拉片笔记 (bkingfilm/lapian-notes) — a local-first React/Vite tool that turns a film into an editable shot-by-shot study notebook via local frame extraction and a bring-your-own-AI (no API key) ZIP round trip, producing story-line swimlanes, a structure tree, and an emotion curve. Use when the user asks about Lapian Notes, "拉片笔记"/"拉片" tooling, cloning/running this repo, the AI-analysis-package workflow, or contributing a PR.
+D:Work with Lapian Notes / 拉片笔记 (bkingfilm/lapian-notes) — a local-first React/Vite tool that turns a film into an editable shot-by-shot study notebook via local frame extraction and a bring-your-own-AI (no API key) ZIP round trip, producing story-line swimlanes, a structure tree, and an emotion curve. Use when the user asks about Lapian Notes, "拉片笔记"/"拉片" tooling, cloning/running this repo, the AI-analysis-package workflow, or contributing a PR. Not for generic video editing (use opencut) or generic film-analysis theory unrelated to this codebase.
 G:lapian-notes|拉片笔记|film-analysis|shot-by-shot|ai-assisted|react|vite|typescript|local-first|video-notes|open-source
 U[4]:
   Clone and run Lapian Notes locally (end-user scripts or npm run dev)
@@ -1099,7 +1085,7 @@ R[3]:
   Lapian Notes project structure and AI-package workflow
   Lapian Notes contribution focus areas
 N:llm-wiki
-D:[llm-wiki] Build and maintain a persistent markdown wiki that an LLM updates on the user's behalf from immutable raw sources, wiki pages, index/log files, and a schema document.
+D:Build and maintain a persistent markdown wiki that an LLM updates on the user's behalf, usually inside an Obsidian vault or git-tracked notes repo. Use when raw sources such as web articles, papers, meeting notes, transcripts, screenshots, or past analyses need to be turned into an interlinked knowledge base with immutable source files, LLM-written wiki pages, `index.md`, `log.md`, schema rules in `AGENTS.md` or `CLAUDE.md`, source summaries, query notes, and recurring lint passes. Triggers on: llm-wiki, personal wiki, obsidian wiki, research vault, knowledge base, source ingest, persistent notes, wiki maintenance, source summaries, query filing.
 G:llm-wiki obsidian knowledge-base markdown research synthesis scrapling qmd notes wiki
 
 U[8]:
@@ -1138,7 +1124,7 @@ E[6]{type,command}:
   Report,bash scripts/new-query-note.sh ~/vaults/company-research "Q3 diligence memo" --section reports
   Lint,python3 scripts/lint-wiki.py ~/vaults/company-research --format json
 N:log-analysis
-D:Route runtime-log requests into one evidence packet before diagnosing anything: app-runtime, container-runtime, browser-plus-api, ci-cascade, structured-json, or security-signal. Use when the user shares app/server/container/browser/CI/JSON log output and wants the first actionable blocker, repeated signature, blast radius, or safest next read-only checks. Route Unity/Unreal logs to game-build-log-triage, observability design to monitoring-observability, and remediation/debug hypotheses to debugging.
+D:Route runtime-log requests into one evidence packet before diagnosing anything. Use when the user shares app/server/container/browser/CI/JSON log output and wants the first actionable blocker, repeated signature, likely blast radius, or safest next read-only checks. Choose one packet: app-runtime, container-runtime, browser-plus-api, ci-cascade, structured-json, or security-signal. Triggers on: check the logs, which line matters, real error, first blocker, noisy stack trace, retry storm, browser 401/500, pod logs, worker crash, CI abort, webhook failure. Route engine-specific Unity/Unreal logs to `game-build-log-triage`, observability design to `monitoring-observability`, and remediation/debug hypotheses to `debugging`.
 G:logs triage incident ci browser kubectl docker jq rg packet-routing
 U[6]:
   App, proxy, worker, or API logs where the real error is buried under retries or stack noise
@@ -1155,9 +1141,9 @@ S[7]{n,action}:
   5,Group the repeated signature and classify it
   6,Return a concise triage brief
   7,Route out aggressively when the work becomes debugging, observability, anomaly hunting, or engine-specific triage
-N:looker-studio-bigquery D:"Route BigQuery-backed Looker Studio work into one stakeholder-reporting packet: dashboard-spec, slow-dashboard triage, refresh-shape choice, audience split, or exec-handoff. Use when the user needs KPI boards, PM/ops reviews, marketing / GTM reporting, product funnel summaries, or game/live-ops telemetry dashboards on top of curated BigQuery data. Route KPI explanation to data-analysis, repeated anomaly hunting to pattern-detection, telemetry/alerting coverage to monitoring-observability, and semantic-platform choice to survey." T:Read|Write|Edit|Glob|Grep P:infrastructure/looker-studio-bigquery G:looker-studio|data-studio|bigquery|dashboard|kpi|analytics|reporting|marketing|pm-ops|live-ops|bi-engine F:Claude|ChatGPT|Gemini|Codex
+N:looker-studio-bigquery D:"Route BigQuery-backed Looker Studio work into one stakeholder-reporting packet: dashboard-spec, slow-dashboard triage, refresh-shape choice, audience split, or exec-handoff. Use when the user needs KPI boards, PM/ops reviews, marketing / GTM reporting, product funnel summaries, or game/live-ops telemetry dashboards on top of curated BigQuery data. Route KPI explanation to `data-analysis`, repeated anomaly hunting to `pattern-detection`, telemetry/alerting coverage to `monitoring-observability`, and semantic-platform choice to `survey`." T:Read|Write|Edit|Glob|Grep P:infrastructure/looker-studio-bigquery G:looker-studio|data-studio|bigquery|dashboard|kpi|analytics|reporting|marketing|pm-ops|live-ops|bi-engine F:Claude|ChatGPT|Gemini|Codex
 N:marketing-automation
-D:Route broad product and growth marketing asks into one operating mode, one primary lane, and one reusable operator packet across launch planning, conversion surfaces, lifecycle/retention, acquisition/content, and measurement/experiments.
+D:Route broad product and growth marketing asks into one operating mode, one primary lane, and one reusable operator packet across launch planning, conversion surfaces, lifecycle/retention, acquisition/content, and measurement/experiments. Use when the user needs general marketing help for a website, SaaS product, funnel, onboarding flow, pricing page, campaign, or launch and the first job is deciding the right next brief with owner, dependencies, approvals, and proof instead of producing channel soup. Triggers on: marketing plan, GTM help, launch brief, pricing page refresh, lifecycle email strategy, conversion help, campaign measurement, content plan. Route Steam/store-page game launch work to `steam-store-launch-ops` and backlog/milestone shaping to `task-planning`.
 G:marketing|growth|cro|copywriting|seo|analytics|pricing|launch|retention|experiments|routing
 F:Claude|ChatGPT|Gemini|Codex
 
@@ -1186,7 +1172,7 @@ E[2]{desc,in,out}:
   "Broad launch ask","We are launching a new SaaS workflow next month and need help with messaging, landing page copy, onboarding emails, and how to measure whether it worked.","Marketing Routing Brief with launch-orchestration mode, Strategy and growth lane, one launch packet, and KPI plus leading-signal handoff"
   "Lifecycle retention ask","Trial users activate once and disappear. We need onboarding and lifecycle help, plus a sensible KPI.","Marketing Routing Brief with lifecycle-retention mode, one chosen lane, one packet, and activation or retention measurement handoff"
 N:monitoring-observability
-D:Route observability work from the current packet into one monitoring brief. Use when the main job is deciding service-health signals, telemetry rollout, dashboard/alert coverage, pipeline freshness/schema monitoring, or game live-ops visibility; choosing between service reliability, telemetry foundation, review audit, data/pipeline, and live-ops modes; and naming one smallest implementation slice. Route outage-log root cause to `log-analysis`, bottleneck tuning to `performance-optimization`, rollout execution to `deployment-automation`, LLM-specific tracing to `langsmith`, and engine-profiler interpretation to `game-performance-profiler`.
+D:Route observability work from the current packet into one monitoring brief. Use when the main job is deciding service-health signals, telemetry rollout, dashboard/alert coverage, pipeline freshness/schema monitoring, or game live-ops visibility; choosing between service reliability, telemetry foundation, review audit, data/pipeline, and live-ops modes; and naming one smallest implementation slice. Route outage-log root cause to `log-analysis`, code-level failure isolation to `debugging`, bottleneck tuning to `performance-optimization`, rollout execution to `deployment-automation`, LLM-specific tracing to `langsmith`, and engine-profiler interpretation to `game-performance-profiler`.
 G:observability monitoring telemetry alerts dashboards slos traces metrics pipeline-freshness live-ops
 U[5]:
   service health or launch-readiness packet needs signals and alerts
@@ -1201,7 +1187,7 @@ S[5]{n,action}:
   4,Define the smallest signal plan and alert thresholds
   5,Return the brief with route-outs
 N:npm-git-install
-D:Route Node package-delivery ambiguity into one install packet: temporary Git bridge, SHA-pinned shared bridge, private-auth Git path, tarball / `npm pack` artifact, workspace / `file:` inner-loop, or publish-first registry handoff.
+D:Route Node package-delivery ambiguity into one install packet: temporary Git bridge, SHA-pinned shared bridge, private-auth Git path, tarball / `npm pack` artifact, workspace / `file:` inner-loop, or publish-first registry handoff. Use when the user wants to install an npm / pnpm / Yarn / Bun package from a branch, tag, commit, fork, private repo, monorepo package, or unreleased fix, and the real question is which delivery path is safest rather than how Git or package registries work in general. Triggers on: npm install from GitHub, git dependency, github:owner/repo, git+ssh, git+https, private package from repo, install branch vs commit, monorepo package install, npm pack vs git, and should we publish this instead.
 G:npm pnpm yarn bun git github package-management node monorepo private-packages tarball workspace
 
 U[6]:
@@ -1266,11 +1252,11 @@ R:
 PLUGIN:npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain
 UPSTREAM:https://github.com/akillness/obsidian-second-brain (origin: eugeniughelbur/obsidian-second-brain, MIT)
 N:motion-previs-studio
-D:AI-film previsualization desktop app for extracting pose, depth, camera motion, control layers, and production bundles from reference video.
+D:Assist with Motion Previs Studio v4: a cross-platform desktop app for AI-film previsualization. Use when setting up, configuring, troubleshooting, or extending motion-previs-studio for pose extraction, depth mapping, camera motion solving, control layer export, and bundle production for AI-video workflows (Seedance, ComfyUI, Blender, Runway, Kling). Includes build setup, feature integration, UI/logic debugging, and export pipeline optimization.
 G:motion-previs ai-video previsualization filmmaking pose-extraction depth-mapping camera-motion control-layers previs ai-film
 
 N:okf
-D:Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type/title/description/resource/tags/timestamp fields for portable, interoperable AI-agent knowledge sharing. Formalizes the LLM-Wiki pattern into a vendor-neutral open spec: just markdown, just files, just YAML frontmatter.
+D:Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type / title / description / resource / tags / timestamp fields for portable, interoperable AI-agent knowledge sharing. OKF formalizes the LLM-Wiki pattern into a vendor-neutral open specification so any producer can write and any agent can consume without translation. Routes: use `llm-wiki` for raw source capture + vault maintenance, `obsidian` for Obsidian-vault workflows, `graphify` for durable committed graphs, `scrapling` for web-content extraction into OKF docs. Triggers on: okf, open knowledge format, knowledge bundle, okf document, llm wiki standard, knowledge atom, agent context format, okf frontmatter, okf bundle, knowledge interoperability.
 T:Read|Write|Edit|Bash|Grep|Glob|WebFetch
 G:okf|open knowledge format|knowledge bundle|okf document|llm wiki standard|knowledge atom|agent context format|okf frontmatter|okf bundle|knowledge interoperability
 F:Claude|Codex|Gemini|Cursor|Copilot|OpenCode|All
@@ -1288,9 +1274,9 @@ R:
   obsidian:Obsidian vault automation (plugin dev, CLI, URI handoff)
   graphify:Durable committed knowledge graphs from code and docs
   scrapling:Web-content extraction to feed OKF knowledge documents
-ooo|ouroboros,interview,seed,run workflow,evaluate,evolve,ooo ralph,specification first,socratic interview,git-aware interview,ambiguity reduction,execution plan,cli harness execute,persistent completion|Ouroboros spec-first loop: git-grounded interview→seed→plan(spec-kit)→execute(cli-anything)→evaluate→evolve. Interview Context scored against .ouroboros/interview-context.md regenerated from live git data (scripts/git-interview-context.sh); frozen seed rendered to execution plan via /speckit.plan→/speckit.tasks (seed→plan one-way; spec-first authoring is spec-stack); run stage executes through CLI-Hub harnesses (cli-hub search→install→launch, --json output = evaluate evidence, name harnesses in seed constraints). Install: bash scripts/install.sh (knobs OOO_GIT_INTERVIEW, OOO_SPEC_KIT, OOO_CLI_ANYTHING, SPEC_KIT_REF, CLI_ANYTHING_HUB_SPEC). Plugin: claude plugin marketplace add Q00/ouroboros. pip: ouroboros-ai[all]. Commands: ouroboros init start, ouroboros run workflow, ouroboros status, ouroboros tui monitor, ouroboros cancel, ouroboros mcp serve.|Q00/ouroboros|MIT|0.29.0
+ooo|ouroboros,interview,seed,run workflow,evaluate,evolve,ooo ralph,specification first,socratic interview,git-aware interview,ambiguity reduction,execution plan,cli harness execute,persistent completion|Ouroboros spec-first loop: git-grounded interview→seed→plan(spec-kit)→execute(cli-anything)→evaluate→evolve. Interview Context scored against .ouroboros/interview-context.md regenerated from live git data (scripts/git-interview-context.sh); frozen seed rendered to execution plan via /speckit.plan→/speckit.tasks (seed→plan one-way; spec-first authoring is spec-kit); run stage executes through CLI-Hub harnesses (cli-hub search→install→launch, --json output = evaluate evidence, name harnesses in seed constraints). Install: bash scripts/install.sh (knobs OOO_GIT_INTERVIEW, OOO_SPEC_KIT, OOO_CLI_ANYTHING, SPEC_KIT_REF, CLI_ANYTHING_HUB_SPEC). Plugin: claude plugin marketplace add Q00/ouroboros. pip: ouroboros-ai[all]. Commands: ouroboros init start, ouroboros run workflow, ouroboros status, ouroboros tui monitor, ouroboros cancel, ouroboros mcp serve.|Q00/ouroboros|MIT|0.29.0
 N:open-code-review
-D:[open-code-review] Run AI-powered code review through Alibaba's open-code-review (ocr) CLI instead of hand-reviewing diffs. Use when the user asks to review code, a PR/MR, staged/unstaged/untracked changes, a single commit, a branch range, or to scan whole files for bugs, security, performance, and quality issues.
+D:Run AI-powered code review through Alibaba's open-code-review (`ocr`) CLI instead of hand-reviewing diffs. Use when the user asks to review code, review a PR/MR, review staged/unstaged/untracked changes, review a single commit, compare two branches, or scan whole files for bugs, security issues, performance problems, and quality concerns. Picks the lightest invocation (workspace review, branch range, single commit, or full-file scan), passes business context via `--background`, classifies findings by priority, and optionally applies fixes. Triggers on: open code review, ocr review, ocr scan, alibaba code review, ai code review cli, review my changes, review this pr, review this commit, review this branch, scan repository for issues.
 G:open-code-review ocr ai-code-review pull-request-review diff-review security-review cli plugin alibaba git
 
 U[8]:
@@ -1328,7 +1314,7 @@ E[6]{type,command}:
   Scan,bash scripts/run-scan.sh --path internal --max-tokens-budget 500000 --preview
   CI,ocr review --from origin/main --to "$COMMIT_SHA" --format json
 N:opencontext
-D:Route active project/repo memory requests into one honest packet: memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out. Use when agents need searchable decisions, manifests, stable links, handoff notes, and small read-this-first packets across sessions — especially when overlapping notes need a highest-confidence source and freshness warning. Route long-lived markdown knowledge bases to llm-wiki, structural graph memory to graphify, human-authored vault organization to note/vault skills, and one-shot repo packing to Repomix/Gitingest/Code2Prompt-style workflows.
+D:Route active project/repo memory requests into one honest packet: memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out. Use when agents need searchable decisions, manifests, stable links, handoff notes, and small “read this first” packets across sessions. Route long-lived markdown knowledge bases to `llm-wiki`, structural graph memory to `graphify`, human-authored vault organization to note/vault skills, and one-shot repo packing to tools like Repomix, Gitingest, or Code2Prompt.
 G:opencontext|context-management|memory|project-memory|multi-agent|handoff|stable-links|manifests
 U[5]:
   When the next agent should not start cold and needs a compact project-memory packet first
@@ -1337,7 +1323,7 @@ U[5]:
   When OpenContext setup, repo initialization, or search-depth choices are the real task
   When the request might actually belong to llm-wiki, graphify, vault tools, or repo packers instead
 N:opik
-D:Comet Opik open-source LLM observability/evaluation/optimization — pick a server mode (Comet.com cloud, `./opik.sh` Docker Compose, Kubernetes/Helm), install + `opik configure` the Python SDK, trace via `@opik.track` or 50+ framework integrations, score with LLM-as-a-judge metrics, gate CI with Datasets/Experiments + PyTest, monitor production, and apply Agent Optimizer/Guardrails.
+D:Run Comet's Opik — open-source LLM observability, evaluation, and optimization — from one routing-first skill: install the Python/TypeScript SDK, stand up a server (Comet.com cloud, Docker Compose via `./opik.sh`, or Kubernetes/Helm), wire tracing through `@opik.track` or one of 50+ framework integrations (OpenAI, Anthropic, LangChain, LangGraph, LlamaIndex, CrewAI, DSPy, Ollama, Bedrock, Vercel AI SDK, …), score outputs with LLM-as-a-judge metrics (Hallucination, Moderation, Answer Relevance, Context Precision), and run Datasets/Experiments evaluations including PyTest CI gates. Use when the user wants LLM tracing, prompt evaluation, production LLM monitoring, agent optimization, or guardrails with Opik. Triggers on: opik, comet opik, opik configure, opik.sh, llm observability, llm tracing, llm as a judge, hallucination metric, prompt evaluation, opik dashboard, opik guardrails, agent optimizer.
 T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
 G:opik|comet opik|opik configure|opik.sh|llm observability|llm tracing|llm as a judge|hallucination metric|prompt evaluation|opik dashboard|opik guardrails|agent optimizer
 F:Claude|Gemini|Codex|OpenCode
@@ -1354,7 +1340,7 @@ R:
   data-analysis:Use for offline KPI/metric interpretation
   log-analysis:Use for root-cause log forensics
 N:paperbanana
-D:[paperbanana] Route academic-figure work into the lightest workable PaperBanana mode instead of jumping straight to a full multi-agent generation run. Use when the user needs publication-quality methodology diagrams, statistical plots, figure evaluation, polishing an existing figure, batch/sweep generation, or a full-paper figure package from text or PDF.
+D:Route academic-figure work into the lightest workable PaperBanana mode instead of jumping straight to a full multi-agent generation run. Use when the user needs publication-quality methodology diagrams, statistical plots, figure evaluation, polishing an existing figure, batch/sweep generation, or a full-paper figure package from text or PDF. Even if the user does not say "paperbanana" — also triggers on: academic figure, methodology diagram, publication figure, generate diagram from paper, statistical plot from CSV, figure evaluation, polish figure, NeurIPS/ICML figure, arxiv illustration, plan-then-refine diagram pipeline.
 G:paperbanana academic-figures diagram-generation statistical-plots multi-agent vlm-as-judge mcp cli publication python plan-then-refine
 S[7]{n,action,details}:
   1,Intake,capture artifact class source provider-keys budget and quality need before choosing a mode
@@ -1371,7 +1357,7 @@ R[4]:
   Generative figures are the wrong tool for exact vector art, trivial charts, or brand-locked design
 
 N:pattern-detection
-D:Route repeated pattern, rule, and anomaly work into one detection packet before suggesting tools or fixes. Use when the user needs reusable scans, suspicious repeated shapes, grouped outlier candidates, or first-pass anomaly triage across code, logs/events, telemetry, and metric tables.
+D:Route repeated pattern, rule, and anomaly work into one detection packet before suggesting tools or fixes. Use when the user needs reusable scans, suspicious repeated shapes, grouped outlier candidates, or first-pass anomaly triage across code, logs/events, telemetry, and metric tables. Choose one packet: text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly. Triggers on: repeated bug, suspicious spike, odd cohort, noisy event, code smell family, rule pack, anti-pattern, outlier, anomaly, fraud signal, or recurring issue. Route root-cause incident work to log-analysis, KPI/business explanation to data-analysis, repo tracing to codebase-search, remediation to specialist skills, and alert/incident operations to monitoring-observability.
 G:patterns anomalies outliers structural-search telemetry detection routing
 U[4]:
   **Code scanning**: Repeated risky code-shape hunting and rule drafts
@@ -1384,7 +1370,7 @@ S[4]{n,action}:
   3,log-event-pattern packet
   4,metric-anomaly packet
 N:payloadcms
-D:Operate Payload CMS in repo workflows: bootstrap a Payload app, evolve collection/global schemas, debug admin/API runtime issues, and prepare migration-safe releases with rollback notes. Use when the task mentions Payload CMS, payload config, collection models, admin panel behavior, or Next.js + headless CMS integration.
+D:Operate Payload CMS (Next.js-native headless CMS) in repo workflows: bootstrap a Payload app, configure collections/globals, run local dev + migrations, and ship safe content-model changes. Use when the request mentions Payload CMS, payload config, collection schema, admin panel, or Next.js + headless CMS integration.
 G:payload payloadcms headless-cms nextjs cms content-model migration admin-panel
 
 S[6]{n,action,details}:
@@ -1411,7 +1397,7 @@ S[5]{n,action}:
   4,Name one bottleneck and recommend at most two changes
   5,Verify before/after impact and route remaining work
 N:plannotator
-D:[plan] Routing-first visual approval gate for AI agent plans, markdown specs, and diffs. Use when a human needs to review a concrete plan before execution, inspect a targeted diff in a browser, mark up a spec/PRD/architecture note, or set up the review loop on Claude Code, Gemini CLI, Codex CLI, or OpenCode. Route planning/spec creation to task-planning or ralph; broad PR policy to code-review; rendered-UI critique to agentation; fresh-session browser verification to browser-harness.
+D:Routing-first visual approval gate for AI agent plans, markdown specs, and diffs. Use when a human needs to review a concrete plan before execution, inspect a targeted diff in a browser, mark up a spec/PRD/architecture note, or set up the review loop on Claude Code, Gemini CLI, Codex CLI, or OpenCode. Route planning/spec creation to `task-planning` or `ralph`, broad PR-policy review to `code-review`, rendered-UI critique to `agentation`, and fresh-session browser verification to `browser-harness`.
 G:plan planning planno plannotator plan-review diff-review markdown-review spec-review approve-plan request-changes visual-review annotate-plan review-agent-plan codex gemini opencode claude-code 계획검토 설계검토 명세검토 차이검토
 U[11]:
   scripts/install.sh — Install plannotator CLI and optional integrations
@@ -1472,10 +1458,10 @@ E[3]{desc,in,out}:
   "Logged-in Jira browser task","Use my already logged-in Chrome to update a Jira issue and keep the same browser context","Chooses playwriter, enables extension/session workflow, and explains why running-browser reuse matters"
   "Repeatable CI browser test","Run a disposable headless checkout flow in CI and compare evidence","Routes away from playwriter to browser-harness because fresh-session determinism matters more"
   "MCP browser bridge","Connect Codex or Claude to the browser I already have open","Explains MCP config plus session/runtime expectations for a running browser"
-N:presentation-builder D:"Build real deck artifacts when the user needs editable slides, not just prose: investor, roadmap/QBR, launch, architecture/demo, workshop/training, and game pitch decks. Use when the job is to choose one deck mode, one smallest useful artifact packet, and one honest handoff surface (HTML review, PPTX, PDF, Google Slides, or Figma Slides). Route long-form docs to technical-writing, end-user tutorials to user-guide-writing, research manuscripts to research-paper-writing, and broad marketing planning to marketing-automation." P:documentation/presentation-builder G:presentation|slides-grab|pitch-deck|roadmap-deck|investor-deck|demo-deck|pptx|pdf|html-slides|storytelling F:Claude|ChatGPT|Gemini|Codex
+N:presentation-builder D:"Build real deck artifacts when the user needs editable slides, not just prose: investor decks, roadmap/QBR decks, launch decks, architecture/demo decks, workshop/training decks, and game pitch or milestone decks. Use when the job is to choose one deck mode, one smallest useful artifact packet, and one honest handoff surface (HTML review, PPTX, PDF, Google Slides, or Figma Slides). Triggers on: presentation, slide deck, slides, pitch deck, roadmap deck, investor deck, launch deck, architecture review deck, demo deck, workshop slides, keynote, board deck, QBR deck, and game pitch deck. Route long-form docs to `technical-writing`, end-user tutorials to `technical-writing`, research manuscripts to `research-paper-writing`, and broad marketing planning to `marketing-automation`." P:documentation/presentation-builder G:presentation|slides-grab|pitch-deck|roadmap-deck|investor-deck|demo-deck|pptx|pdf|html-slides|storytelling F:Claude|ChatGPT|Gemini|Codex
 pretext|pretext,text measurement,text layout,paragraph height,line layout,text reflow,canvas text measurement,DOM reflow,multiline text,CJK text,rich text|Fast accurate multiline text measurement & layout without DOM reflow. npm: @chenglou/pretext. API: prepare/layout (height), prepareWithSegments/layoutWithLines (per-line). Supports emoji, CJK, RTL, letter-spacing, soft hyphens. Output: DOM/Canvas/SVG.|chenglou/pretext|MIT|latest
 N:react-best-practices
-D:Measurement-led React/Next.js performance audits for waterfalls, bundle size, RSC or client-boundary mistakes, hydration/script cost, rerender churn, and slow route interactions.
+D:Run measurement-led React and Next.js performance audits for waterfalls, bundle size, RSC/server-client boundaries, hydration mismatch, rerender churn, script cost, and slow page interactions. Use when the user needs help diagnosing or refactoring a slow React UI, App Router route, heavy client component, or Next.js page with excess JavaScript or weak client/server boundaries. Triggers on: React perf, Next.js perf, waterfall, bundle size, hydration, rerender, client component too heavy, slow route, React profiler, web vitals.
 G:React Next.js performance optimization vercel waterfalls bundle-size RSC hydration profiler web-vitals frontend
 
 U[5]:
@@ -1506,11 +1492,11 @@ E[4]{desc,in,out}:
   "dynamic import","import { MonacoEditor } from './monaco-editor'","const MonacoEditor = dynamic(() => import('./monaco-editor').then(m => m.MonacoEditor), { ssr: false })"
   "functional setState","setItems([...items, ...newItems]) — items dependency","setItems(curr => [...curr, ...newItems]) — empty dependency array"
 N:react-bits
-D:Animated React component library integration and contribution guidance for Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, Framer Motion, and jsrepo.
+D:Integrate, customize, and contribute to react-bits (github.com/DavidHDev/react-bits) — the largest and most creative library of animated React components. It covers Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, and Framer Motion integrations. Use when the user asks about react-bits, animated React components, jsrepo registry, or contributing new animated components to the react-bits repository.
 G:react-bits animated-components gsap three-js framer-motion tailwind-v4 jsrepo react vite
 
 N:react-grab
-D:[react-grab] Capture exact React element context from a live browser UI and hand it to an AI coding agent as component name, source file path, line number, and HTML. Use for react-grab install/use, clipboard-to-agent copy, MCP-backed element selection, or plugin/API customization. Not for generic browser automation (browser-harness/playwriter), rendered-UI review (agentation), React performance audits (react-best-practices), or general design-system work.
+D:Capture exact React element context from a live browser UI and hand it to an AI coding agent as component name, source file path, line number, and HTML. Use when the user wants `react-grab`, element-context copy, component-source lookup from the browser, clipboard-to-agent React debugging, or MCP-backed element selection for React apps. Not for generic browser automation or login/session reuse (`browser-harness`, `playwriter`), broad UI annotation/review (`agentation`), React performance audits (`react-best-practices`), or general design-system work (`design-system`). Triggers on: react-grab, grab element context, copy component to AI, browser component picker, React component inspector, clipboard component source, get element context from browser, grab UI element.
 G:react-grab grab element-context ai-agent clipboard component-inspector dev-tools react browser mcp component-source browser-component-picker plugin freeze
 
 U[5]:
@@ -1539,7 +1525,7 @@ E[4]{type,command}:
   Agent integration,npx -y grab@latest add claude-code
   Removal,npx -y grab@latest remove cursor
 N:remotion-video-production
-D:Compatibility alias for `video-production` when legacy tooling or an explicit Remotion request still expects the old skill name. Preserve exact-name compatibility, route substantive work to the canonical programmable-video workflow, and default to the code-first mode only when Remotion is truly the right stack.
+D:Compatibility alias for `video-production` when a prompt, setup surface, or legacy workflow explicitly asks for Remotion video production. Use when the request names Remotion, React-based video rendering, compositions, scene components, or a legacy `remotion-video-production` catalog entry, but the real workflow is still the canonical programmable-video lane. Prefer `video-production` for general use. Triggers on: remotion-video-production, Remotion render pipeline, React video composition, migrate old Remotion skill.
 G:video remotion alias compatibility programmable-video automated-video react compositions render-player migration
 
 U[4]:
@@ -1565,7 +1551,7 @@ E[2]{desc,in,out}:
   "Legacy alias request","Use remotion-video-production to plan a reusable product video template","Alias acknowledgement plus canonical Video Production Brief using the code-first programmable-video mode"
   "Wrong-stack detection","We need thousands of personalized recap videos from a spreadsheet feed","Alias routes back to template/API automation under video-production instead of overcommitting to Remotion"
 N:research-paper-writing
-D:Draft and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow, reviewer-aware structure, and submission-ready section planning. Use when the user needs help with an abstract, introduction, related work, method, experiments, ablations, figures/tables, checklist coverage, or rebuttal / response-letter writing for a paper. Triggers on: research paper, academic paper, ML paper, NeurIPS paper, ICLR paper, CVPR paper, experiments section, ablation plan, contribution framing, reviewer response, rebuttal, camera-ready revision.
+D:Draft and revise ML, CV, NLP, and systems research papers with strong claim-evidence flow, reviewer-aware structure, and submission-ready section planning. Use when the user needs help with an abstract, introduction, related work, method, experiments, ablations, discussion, figures/tables, checklist coverage, or rebuttal / response-letter writing for a paper. Triggers on: research paper, academic paper, ML paper, NeurIPS paper, ICLR paper, CVPR paper, experiments section, ablation plan, related work, contribution framing, reviewer response, rebuttal, camera-ready revision.
 G:research-paper-writing academic-writing ml cv nlp experiments rebuttal
 
 U[7]:
@@ -1584,13 +1570,13 @@ S[5]{n,action,details}:
   4,Check reviewer-facing completeness,Verify support gaps, overclaim risk, checklist coverage, and caption clarity.
   5,Return one paper-ready packet,Include stage, core claim, evidence map, recommended draft or revision, reviewer-risk check, and next artifact.
 N:responsive-design
-D:Routing-first responsive layout strategy and verification for web interfaces. Use when the main job is classifying whether the failure is page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, or reflow verification, then turning vague "breaks on mobile" requests into one concrete strategy packet.
+D:Routing-first responsive layout strategy and verification for web interfaces. Use when the main job is classifying whether the failure is page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, or reflow verification — then turning vague “breaks on mobile” requests into one concrete strategy packet. Route component API design and system-wide breakpoint/token governance to `design-system`, and accessibility remediation plus broad UI audit work to `web-accessibility`.
 G:responsive mobile-first layout container-queries breakpoints overflow reflow frontend css
 U[4]:
   Fix page-shell, dashboard, form, nav, card-grid, or table behavior that breaks across widths
   Choose between intrinsic layout, viewport queries, container queries, dense-data fallbacks, and responsive media behavior
   Define zoom/reflow, overflow, wrapping, and long-copy verification before release
-  Route component API design to ui-component-patterns, accessibility-heavy remediation to web-accessibility, and system-wide breakpoint policy to design-system
+  Route component API design to design-system, accessibility-heavy remediation to web-accessibility, and system-wide breakpoint policy to design-system
 S[5]{n,action}:
   1,Frame the responsive job before naming CSS
   2,Choose exactly one primary responsive packet
@@ -1598,7 +1584,7 @@ S[5]{n,action}:
   4,Build the responsive strategy packet
   5,Route adjacent work explicitly
 N:rtk
-D:[rtk] Install, initialize, verify, and troubleshoot RTK Rust Token Killer for AI coding agents. Covers correct-package verification with rtk gain, Homebrew or install.sh or Cargo installation, agent-specific rtk init flows for Claude Code Codex Gemini Cursor Copilot Windsurf Cline and OpenCode, and direct rtk wrapper commands when built-in tools bypass hooks.
+D:Install, initialize, verify, and troubleshoot RTK (Rust Token Killer) for AI coding agents. Use when you need to reduce shell-command token output, confirm that the correct `rtk` binary is installed, choose between Homebrew, install.sh, or Cargo installation, wire `rtk init` for Claude Code, Codex, Gemini CLI, Cursor, Copilot, Windsurf, Cline, or OpenCode, or use compact wrappers such as `rtk git status`, `rtk read`, `rtk grep`, `rtk test`, `rtk lint`, and `rtk gain`. Triggers on: rtk, rust token killer, token saver cli, rtk init, rtk gain, codex rtk, gemini rtk, opencode rtk, claude hook token reduction.
 G:rtk rust-token-killer token-optimization claude-code codex gemini opencode cursor copilot shell-hooks
 
 U[8]:
@@ -1637,7 +1623,7 @@ E[6]{type,command}:
   Codex init,bash scripts/init-agent.sh --agent codex --global
   Direct use,rtk read Cargo.toml
 N:scrapling
-D:[scrapling] Route web-scraping work into the lightest workable Scrapling mode instead of defaulting to a browser. Use when the user needs HTML extraction, JS-rendered page retrieval, protected-target escalation, quick CLI scraping, agent-facing MCP access, or a larger crawl with Scrapling spiders.
+D:Route web-scraping work into the lightest workable Scrapling mode instead of defaulting to a browser. Use when the user needs HTML extraction, JS-rendered page retrieval, protected-target escalation, quick CLI scraping, agent-facing MCP access, or a larger crawl with Scrapling spiders. Triggers on: scrapling, scrape website, crawl site, adaptive scraping, selector drift, stealthy fetch, browser scraping, scrape to markdown, scrapling mcp, scrapling spider.
 G:scrapling web-scraping crawling adaptive-scraping mcp cli playwright cloudflare spiders python selector-drift
 
 U[8]:
@@ -1677,7 +1663,7 @@ E[6]{type,command}:
   MCP,bash scripts/run-mcp.sh --http --host 127.0.0.1 --port 8000
   Spider,python your_spider.py
 N:security-best-practices
-D:Routing-first web/application/API hardening. Use when the job is classifying one missing security layer — browser policy, cookies/CSRF, abuse controls, validation/unsafe execution, secrets/runtime config, or verification — and turning vague OWASP/security asks into one concrete hardening brief with route-outs.
+D:Routing-first skill for web/application/API hardening. Use when the main job is classifying which security layer is missing — browser/perimeter policy, session/cookie/CSRF, abuse controls, validation/unsafe execution, secrets/runtime config, or verification — and turning vague OWASP/security asks into one concrete hardening brief. Route auth-stack choice to `authentication-setup`, schema work to `database-schema-design`, code-level bug fixing to `debugging` / `code-review`, and environment wiring to `system-environment-setup`.
 G:security|OWASP|CSP|CSRF|cookies|rate-limiting|secrets|verification|web-security|api-security
 U[4]:
   **Layer unclear**: pick the missing security layer before tools
@@ -1692,7 +1678,7 @@ S[5]{n,action}:
   5,Route auth/schema/code/env work to adjacent skills
 semble|semble,code search,semantic code search,semble search,token-efficient search,find code,code search mcp,agent code search,semble find-related,semble savings|Fast, accurate code search for AI agents using ~98% fewer tokens than grep+read. Index any local or remote repo in ~250ms (CPU only, no GPU/API key). Supports natural-language and symbol queries, semantic similar-code discovery via `find-related`, and MCP server integration for Claude Code, Codex, Cursor, and OpenCode. MCP: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`. CLI: `pip install semble` or `uv tool install semble`. Skill: `npx skills add https://github.com/akillness/jeo-skills --skill semble`|MinishLab/semble|MIT|latest
 N:skill-autoresearch
-D:Route reusable skill-improvement work into one bounded repo-local ratcheting packet: ratchet eligibility, benchmark readiness, loop charter freeze, baseline scoring, one-change mutation, support-surface sync, or final keep/revert report. Use when a SKILL.md, SOP, prompt, or workflow doc may need a frozen local benchmark and append-only experiment logs, or when you need to prove no ratchet is justified yet. Route GPU-bound `autoresearch` runs and hosted eval/observability platforms outward.
+D:Route reusable skill-improvement work into one bounded repo-local ratcheting packet: ratchet eligibility, benchmark readiness, loop charter freeze, baseline scoring, one-change mutation, support-surface sync, or final keep/revert report. Use when an existing `SKILL.md`, SOP, prompt, or workflow doc may need sharper triggers, clearer instructions, better support files, or cleaner discovery wording and you want a frozen evaluation harness, append-only experiment logs, and explicit keep-or-revert decisions instead of ad hoc rewriting. Also use when you need to prove that no ratchet is justified yet. Not for GPU-bound Karpathy `autoresearch` runs or hosted app-scale eval / observability platforms such as LangSmith, Braintrust, Weave, or Promptfoo.
 G:skill-autoresearch skill-optimization evals prompt-iteration benchmark mutation-loop ratcheting autoresearch
 
 U[5]:
@@ -1725,7 +1711,7 @@ E[3]{desc,in,out}:
   "Benchmark drift repair","The maintainer keeps changing tests while editing the skill","run halted into readiness/charter packet until the evaluator is frozen or a new comparison track begins"
   "Support-surface follow-up","The main skill improved and README/setup/compact wording may now be stale","support-sync happens only after the core ratchet is proven"
 N:skill-standardization
-D:Standardize and validate SKILL.md files against the Agent Skills specification. Use when creating or rewriting a skill, auditing spec compliance, sharpening trigger descriptions, canonicalizing overlapping skills into a canonical skill plus compatibility alias, or checking whether derived discovery surfaces (`skills.json`, README/setup inventories, `SKILL.toon`, `SKILL.compact.md`) still match the live skill folders. In repo-root maintenance loops, prefer truthful validator commands instead of bare `scripts/...` examples.
+D:Standardize and validate SKILL.md files against the Agent Skills specification (agentskills.io). Use when creating or rewriting a skill, auditing an existing skill for spec compliance, sharpening trigger descriptions, canonicalizing overlapping skills into a canonical skill plus compatibility alias, or checking whether derived discovery surfaces (`skills.json`, README/setup inventories, `SKILL.toon`, `SKILL.compact.md`) still match the live skill folders. In repo-root maintenance loops, prefer truthful validator commands instead of bare `scripts/...` examples. Triggers on: "validate skill", "create SKILL.md", "check skill spec", "skill frontmatter", "improve skill description", "catalog sync", "SKILL.toon drift", "compact skill drift", "canonical skill".
 G:skill-management standardization validation agentskills-spec automation deduplication catalog-sync compact-drift canonical-skill
 U[9]:
   Create a new SKILL.md from scratch
@@ -1762,7 +1748,7 @@ R:
   god-tibo-imagen:Use for standalone AI image generation rather than a full deck
   open-design:Use for broad local design-artifact generation (web/mobile/desktop prototypes, media, 72 design systems)
 N:spec-kit
-D:GitHub Spec-Driven Development via the `specify` CLI — install specify-cli (uv tool, pinnable ref), bootstrap a project for one of 30+ AI agents (claude/copilot/gemini/codex/cursor/opencode/qwen/kiro/...), and drive the constitution → specify → clarify → plan → analyze → tasks → checklist → implement pipeline.
+D:Run GitHub's Spec-Driven Development (SDD) workflow via the `specify` CLI — install spec-kit, initialize a project for one of 30+ AI coding agents (Claude Code, Copilot, Gemini, Cursor, Codex, Qwen, opencode, Kiro, etc.), and drive the constitution → specify → plan → tasks → implement command pipeline. Use when the user wants to bootstrap a Spec-Driven Development project, install `specify-cli`, generate executable specs before code, or invoke the `/speckit.*` slash commands (`/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement`, `/speckit.clarify`, `/speckit.analyze`, `/speckit.checklist`). Triggers on: spec-kit, speckit, specify, specify init, spec-driven, spec driven development, SDD, /speckit, executable spec.
 T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
 G:spec-kit|speckit|specify|specify init|spec-driven|SDD|/speckit|executable spec
 F:Claude|Copilot|Gemini|Codex|Cursor|OpenCode|Qwen|Kiro
@@ -1778,7 +1764,7 @@ R:
   plannotator:Use for review/approval of an existing plan
   bmad-idea:Use for pre-planning concept framing
 N:sprint-retrospective
-D:Facilitate sprint retrospectives, milestone postmortems, or iteration reviews by picking one retrospective mode, reviewing prior actions first, and turning completed work into a few owned process improvements. Use when the user needs remote/hybrid retro facilitation, action-item follow-through recovery, or post-sprint/post-milestone reflection. Route planning to task-planning, sizing to task-estimation, and daily coordination to standup-meeting.
+D:Facilitate sprint retrospectives, milestone postmortems, or iteration reviews that turn completed work into a few owned process improvements instead of another stale template ritual. Use when the user needs a retrospective mode, remote or hybrid facilitation plan, action-item follow-through reset, or help reviewing what the team should change after a sprint, release, milestone, or rough delivery cycle. Route backlog planning to `task-planning`, sizing to `task-estimation`, daily coordination to `standup-meeting`, and deep incident forensics to debugging/incident-specific skills.
 G:retrospective agile scrum postmortem facilitation follow-through
 U[3]:
   **Sprint or milestone reflection**: after a sprint, release, launch slice, or demo milestone
@@ -1787,7 +1773,7 @@ U[3]:
 S[1]{n,action}:
   1,Retrospective-Brief
 N:standup-meeting
-D:Turn messy daily-sync requests into one honest coordination-cadence packet: decide whether live-daily, async-daily, hybrid-daily, less-frequent syncs, or no recurring standup is justified, then pick the lightest standup mode that still catches blockers and handoffs.
+D:Turn messy daily-sync requests into one honest coordination-cadence packet: decide whether live-daily, async-daily, hybrid-daily, less-frequent syncs, or no recurring standup is justified, then pick the lightest standup mode that still catches blockers and handoffs. Use when the user needs a daily scrum, async check-in, board-walk, blocker-first sync, remote-team standup, launch- week cadence reset, or help fixing an overlong / low-signal standup. Route backlog planning to `task-planning`, sizing to `task-estimation`, retrospective process repair to `sprint-retrospective`, and incident-command work to debugging / launch-specific skills.
 G:standup|daily-scrum|async-standup|board-walk|blocker-triage|hybrid-teams|project-management
 U[4]:
   **Cadence reset**: decide whether daily is still justified
@@ -1799,7 +1785,7 @@ S[3]{n,action}:
   2,Choose one standup mode only if cadence still justifies a recurring sync and gather one small coordination packet
   3,Return a Coordination Cadence Brief with explicit blocker escalation follow-up huddles and PM-cluster route-outs
 N:state-management
-D:Choose the smallest viable React/fullstack state owner before comparing libraries. Use when deciding whether a request is local UI state, shared-subtree/Context state, URL or form state, server-state cache ownership, or leftover client workflow state that may justify Zustand / Redux Toolkit / Jotai.
+D:Choose the smallest viable React/fullstack state owner before comparing libraries. Use when the user needs to classify local UI state, shared subtree/Context state, URL or form state, server-state caches, or client workflow stores such as Zustand / Redux Toolkit / Jotai. Triggers on: global state, prop drilling, Context vs Zustand, Redux Toolkit vs Zustand, server state vs client state, React Router state management, optimistic updates, URL state, form state, and too much state in one store.
 G:state-management react context zustand redux-toolkit jotai tanstack-query server-state client-state url-state form-state react-router optimistic-updates
 U[5]:
   Pick one primary state packet before naming any tool
@@ -1819,11 +1805,11 @@ R[6]:
   react-best-practices
   api-design
   debugging
-  ui-component-patterns
+  design-system
   design-system
   responsive-design
 N:steam-store-launch-ops
-D:Turn Steam store-page, wishlist, demo, Next Fest, and launch-window ambiguity into one packet-first Steam launch brief. Use when an indie dev, small studio, founder-marketer, or publisher helper needs to decide whether the next move is a page-promise audit, wishlist-signal check, demo-readiness gate, event-timing workback, or launch-ops runbook — especially when they say "help my Steam page", "wishlists are weak", "is our demo ready", "should we do Next Fest", or "give me a Steam launch checklist". Route broad non-game GTM work to marketing-automation and player-feedback/build-performance issues to the game specialist skills.
+D:Turn Steam store-page, wishlist, demo, Next Fest, and launch-window ambiguity into one packet-first Steam launch brief. Use when an indie dev, small studio, founder-marketer, or publisher helper needs to decide whether the next move is a page-promise audit, wishlist-signal check, demo-readiness gate, event-timing workback, or launch-ops runbook — especially when they say "help my Steam page", "wishlists are weak", "is our demo ready", "should we do Next Fest", or "give me a Steam launch checklist". Route broad non-game GTM work to `marketing-automation` and player-feedback/build-performance issues to the game specialist skills.
 G:steam indie-games game-marketing launch-ops next-fest wishlists store-page demos
 
 U[6]:
@@ -1845,7 +1831,7 @@ S[8]{n,action,details}:
   8,Verify the boundary before finalizing,Keep one packet one bottleneck and one next artifact without expanding into a giant GTM plan.
 stitch-skills|stitch,stitch-design,stitch-loop,enhance-prompt,react-components,remotion,shadcn-ui,screen generation,ui generation,design-md|Agent Skills for Stitch MCP: generate UI screens, multi-page sites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, create Remotion videos. Install: npx skills add google-labs-code/stitch-skills --skill <name> --global. Plugin: claude plugin marketplace add google-labs-code/stitch-skills.|google-labs-code/stitch-skills|Apache-2.0|latest
 N:strix
-D:[strix] Install, configure, and operate Strix for AI-driven application security testing. Covers local directories, GitHub repositories, live URLs, multi-target scans, LLM provider setup, Docker sandbox preflight, scan modes, headless CI/CD, and Strix internal skill awareness.
+D:Install, configure, and operate Strix for AI-driven application security testing. Use when you need to run authorized vulnerability scans against local codebases, GitHub repositories, staging URLs, domains, or CI pipelines; configure Docker and LLM providers; choose quick, standard, or deep scan depth; or pass authenticated testing instructions to Strix. Triggers on: strix, ai pentest, vulnerability scan cli, appsec scan, bug bounty automation, strix ci, strix docker, strix scan mode, strix instruction file, headless security scan.
 G:strix appsec pentest vulnerability-scan ci-cd docker llm security-testing bug-bounty browser-automation
 
 U[8]:
@@ -1884,7 +1870,7 @@ E[6]{type,command}:
   Multi-target,strix -t https://github.com/org/repo -t https://staging.example.com
   CI quick scan,strix -n --target ./ --scan-mode quick
 N:supabase-agent-skills
-D:[supabase-agent-skills] Install and use Supabase Agent Skills from supabase/agent-skills for AI coding agents. Covers full install, selective skill install, Claude plugin path, verification checks, and fallback to direct Supabase CLI and SQL workflows.
+D:Install and use Supabase Agent Skills (`supabase/agent-skills`) with AI coding agents. Covers install modes, skill selection, plugin path, verification, and safe fallback for direct Supabase CLI/database workflows.
 G:supabase postgres agent-skills ai-agent database backend cli
 
 U[6]:
@@ -1915,8 +1901,8 @@ E[3]{type,command}:
   Install one,npx skills add supabase/agent-skills --skill supabase-postgres-best-practices
   Claude plugin,claude plugin marketplace add supabase/agent-skills
 N:survey
-D:Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform patterns map before deciding what to build. Produce reusable .survey/{slug}/ artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.
-G:survey landscape-scan research discovery groundwork omc omx ohmg claude codex gemini hooks rules settings
+D:Run a bounded cross-platform landscape scan before planning or implementation. Use when the real job is researching what exists, how people work around it, which solutions repeat, or how platform/tooling patterns map before deciding what to build. Produce reusable `.survey/{slug}/` artifacts, validate the artifact contract, and route planning or execution outward only after the survey is done.
+G:survey landscape-scan research discovery groundwork oh-my-claudecode oh-my-codex oh-my-agent claude codex gemini hooks rules settings
 U[12]:
   Produce reusable .survey/{slug}/ artifacts before planning or implementation
   Compare solutions workarounds and repeated complaints without drifting into coding
@@ -1964,7 +1950,7 @@ E[2]{desc,in,out}:
   "Repo maintenance","survey which existing skill in this repo is the best bounded maintenance target next","Creates triage context and solutions artifacts, then validates the output folder before any skill rewrite starts"
   "Platform comparison","survey how Claude Code Codex and Gemini CLI differ for hooks approvals and research-worker setup","Creates platform-map.md using settings rules hooks, validates with the platform-topic contract, and records portability gaps"
 N:system-environment-setup
-D:Configure development and production environments for consistent and reproducible setups. Use whe...
+D:Build reproducible developer environments for real projects: local toolchains, runtime versions, Docker Compose or dev containers, onboarding flows, local service parity, bootstrap scripts, and environment troubleshooting. Use when the user needs a repo to run consistently across machines, containers, or staged environments, even if they only say setup dev environment, onboarding, Docker, devcontainer, local parity, bootstrap, or make this runnable. This is the canonical broader environment-setup skill. Route narrower `.env` and app-config questions to `environment-setup`.
 G:environment-setup Docker-Compose dev-environment IaC configuration
 U[4]:
   **New project**: Initial environment setup
@@ -1985,7 +1971,7 @@ R[6]:
   "5432
   postgres_data
 N:task-estimation
-D:Turn fuzzy work into one honest estimate packet by choosing the right sizing horizon, naming confidence and uncertainty, and separating discovery from delivery before anyone treats the number like a promise. Use for story points, t-shirt sizing, planning-poker prep, forecast-safe language, split-or-spike guidance, and cross-functional sizing across software, product/ops, GTM, or game work.
+D:Turn fuzzy work into one honest estimate packet by choosing the right sizing horizon, naming confidence and uncertainty, and separating discovery from delivery before anyone treats the number like a promise. Use when the user needs story points, t-shirt sizing, planning-poker prep, forecast-safe language, split-or-spike guidance, or cross-functional sizing across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route decomposition to `task-planning`, daily coordination to `standup-meeting`, and retrospective process learning to `sprint-retrospective`.
 G:task-estimation story-points t-shirt-sizing planning-poker forecasting uncertainty project-management game-development
 U[4]:
   **Sprint candidate sizing**: relative estimate + anchors + handoff to planning
@@ -1997,7 +1983,7 @@ S[3]{n,action}:
   2,Choose the lightest honest estimate unit
   3,Return one compact estimate packet with route-outs
 N:task-planning
-D:Turn vague features, bug clusters, roadmap items, launch work, or playtest findings into one execution-ready planning packet by choosing the right packet type, separating discovery from delivery, and making blockers, dependencies, and the next move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or milestone prep, release planning, or roadmap-to-delivery translation across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route sizing to task-estimation, board/worktree control to vibe-kanban, plan review to plannotator, daily syncs to standup-meeting, retros to sprint-retrospective, and pre-planning concept framing to bmad, bmad-idea, or bmad-gds.
+D:Turn vague features, bug clusters, roadmap items, launch work, or playtest findings into one execution-ready planning packet by choosing the right packet type, separating discovery from delivery, and making blockers, dependencies, and the next move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or milestone prep, release planning, or roadmap-to-delivery translation across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route sizing to `task-estimation`, issue-state governance to `triage`, plan review to `plannotator`, daily syncs to `standup-meeting`, retros to `sprint-retrospective`, and pre-planning concept framing to `bmad`, `bmad-idea`, or `bmad-gds`.
 G:task-planning backlog-grooming sprint-planning milestone-planning roadmap-slicing feature-breakdown launch-planning game-development
 U[6]:
   Backlog cleanup and ready-vs-not-ready triage
@@ -2012,7 +1998,7 @@ S[4]{n,action}:
   3,Split discovery from delivery and choose the smallest packet shape
   4,Run the route-out check and end with one next move
 N:technical-writing
-D:Write internal technical documentation for engineers and operators: technical specs, architecture docs, ADRs, runbooks, migration plans, and developer-facing implementation guides. Use when the main job is capturing a technical decision, system boundary, operating procedure, or rollout path for builders and maintainers. Route API portals to api-documentation, end-user help to user-guide-writing, release notes to changelog-maintenance, decks to presentation-builder, and GTM messaging to marketing-automation.
+D:Write internal technical documentation for engineers and operators: technical specs, architecture docs, ADRs, runbooks, migration plans, and developer-facing implementation guides. Use when the main job is capturing a technical decision, system boundary, operating procedure, or rollout path for builders and maintainers. Triggers on: tech spec, design doc, architecture doc, ADR, runbook, migration guide, implementation guide, rollout doc, operational guide, and internal technical writing. End-user onboarding guides, tutorials, FAQs, and help-center flows belong here too. Route API portals to `api-documentation`, release notes to `changelog-maintenance`, decks to `presentation-builder`, and GTM messaging to `marketing-automation`.
 G:technical-writing docs spec architecture adr runbook migration developer-docs
 U[6]:
   Technical specs before implementation
@@ -2027,7 +2013,7 @@ S[4]{n,action}:
   3,Use the smallest fitting structure from references/mode-structures.md
   4,Run the quality check and keep route-outs explicit
 N:testing-strategies
-D:Turn test-policy ambiguity into one packet-first validation brief for merge-gate truth, release-only proof, scheduled breadth, and cross-domain test policy handoffs.
+D:Turn test-policy ambiguity into one packet-first validation brief. Use when the main job is deciding which gate is actually being shaped (merge, release, or scheduled), what evidence a change needs, how flaky or expensive suites should be handled, and whether the next owner is `backend-testing`, `debugging`, `code-review`, `deployment-automation`, `steam-store-launch-ops`, `game-ci-cd-pipeline`, `web-accessibility`, or `performance-optimization` instead of absorbing all test work here. Triggers on: test strategy, merge gate, required status checks, release gate, flaky-suite policy, regression policy, validation brief, release confidence, and what should we test.
 G:testing test-strategy regression-policy flaky-tests release-confidence
 U[5]:
   Choose the right validation packet
@@ -2051,7 +2037,7 @@ R[5]:
   web-accessibility
   performance-optimization
 N:tokhub
-D:Set up, run, and contribute to TokHub (yaojingang/TokHub) — an open-source AI API relay monitoring, recommendation, and OpenAI-compatible gateway system with L1/L2/L3 channel health probing, usage metering, alerts, audit, and Docker self-hosting. Use when the user asks about TokHub, cloning/running the Go+React monorepo, the probe algorithm, or contributing a PR.
+D:Set up, run, and contribute to TokHub (github.com/yaojingang/TokHub) — an open-source AI API relay monitoring, recommendation, and OpenAI-compatible gateway system with L1/L2/L3 channel health probing, usage metering, alerts, audit, and Docker self-hosting. Use when the user asks about TokHub, "AI API 中转站监控", cloning/running the Go + React monorepo (TOKHUB_ROLE, sqlc, TimescaleDB, NATS), the L1/L2/L3 probe algorithm, the OpenAI-compatible `/gateway/v1/*` endpoint, or contributing a PR to TokHub. Do not use for connecting a running agent to a live TokHub instance's own API (that is covered by the project's own bundled `agent-skills/tokhub` skill inside the TokHub repo, not this one).
 G:tokhub ai-api-gateway api-monitoring openai-compatible go react typescript postgresql timescaledb redis nats docker open-source
 U[4]:
   Clone and run TokHub locally (Docker Compose or native Go/Node dev)
@@ -2069,7 +2055,7 @@ R[3]:
   TokHub project structure and probe algorithm
   TokHub contribution focus areas
 N:typesense
-D:Stand up a self-hostable, typo-tolerant search environment with Typesense (open-source Algolia / ElasticSearch alternative; single C++ binary, <50ms, no runtime deps) — pick a server mode (Docker / binary / Typesense Cloud), install a client (Python/JS/PHP/Ruby official), design a collection schema, index docs, and search with typo tolerance, faceting/filtering, geo, sorting, grouping, synonyms, curation, scoped API keys, federated multi-search, and vector/hybrid; then wire an InstantSearch.js UI and a Raft HA cluster.
+D:Stand up a self-hostable, typo-tolerant search environment with Typesense — the open-source Algolia / ElasticSearch alternative (single C++ binary, <50ms instant search, no runtime deps). One routing-first skill: pick a server mode (binary download, official Docker image, or managed Typesense Cloud), install an API client (Python/JS/PHP/Ruby official; Go/Dart/C# community), design a collection schema, index documents, and run searches with typo tolerance, faceting/filtering, geo-search, sorting, grouping, synonyms, curation, scoped API keys, and federated multi-search — then wire an InstantSearch.js UI and a Raft-based HA cluster for production. Use when the user wants to build or operate an installable search backend, add site/app/product search, or migrate off Algolia/Elasticsearch. Triggers on: typesense, search engine, typo-tolerant search, algolia alternative, elasticsearch alternative, instantsearch, faceted search, geo search, vector search, self-hosted search, site search, product search.
 T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
 G:typesense|search engine|typo-tolerant search|algolia alternative|elasticsearch alternative|instantsearch|faceted search|geo search|vector search|self-hosted search|site search|product search
 F:Claude|Gemini|Codex|OpenCode
@@ -2086,7 +2072,7 @@ R:
   semble:Use for token-efficient agent code search over a repo
   monitoring-observability:Use for non-search service dashboards/alerts
 N:upskill
-D:Wrap HKUDS UpSkill — capture Claude Code session failures, have a strong Teacher model draft a skill, validate it against a weak Student model in a closed Ralph Loop (up to 3 rounds), then auto-serve validated skills so a cheap Flash model performs like a Pro model. Terminal-Bench 2.0: Flash+UpSkill beat Pro at 41% lower cost.
+D:Turn a weak/cheap "Flash" model into a "Pro" performer by wrapping HKUDS UpSkill — captures agent session failures, has a strong Teacher model analyze them and draft a skill, then validates it against the weak Student model in a closed Ralph Loop (up to 3 rounds) before storing it for automatic reuse. Use when the user wants to install UpSkill, run `/upskill-init`, `/upskill-configure`, `/upskill-build`, `/upskill-run`, `/upskill-list`, `/upskill-status`, `/upskill-mode`, `/upskill-model`, `/upskill-remove`, or `/upskill-uninstall`, wants a cheap model to perform closer to a Pro model without switching, or wants a good session (success or failure) distilled into a validated skill. Triggers on: upskill, up-skill, flash to pro, teacher student distillation, ralph loop skill validation, distill agent failures into skills. Routes skill-quality ratcheting to `skill-autoresearch`, scaffolding to `write-a-skill`, and spec-compliance rewrites to `skill-standardization`.
 T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
 G:upskill|up-skill|flash to pro|teacher student distillation|ralph loop skill validation|distill agent failures into skills
 F:Claude Code
@@ -2101,7 +2087,7 @@ R:
   write-a-skill:Use for hand-authoring a new SKILL.md from scratch
   skill-standardization:Use for spec-compliance validation/rewrite of an existing SKILL.md
 N:unity-gamedev-skill-pack
-D:Evaluate and adopt Unity game-development skill packs from external repositories into a safe reusable local package with provenance risk controls and rollback.
+D:Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package. Use when maintainers want to import game-dev workflows (Addressables, Cinemachine, GAS, VContainer, UniTask, Wwise, etc.) without blindly trusting third-party prompts.
 G:unity game-development skill-curation claude-code repository-maintenance
 U[5]:
   Curate external Unity skill packs discovered via survey runs
@@ -2126,7 +2112,7 @@ E[2]{desc,in,out}:
   "Survey-derived import","we found a Unity skill-pack repo in hourly survey candidates and need a safe internal adaptation","Produces provenance-first curation packet with imported/excluded patterns risk notes and validation status"
   "Risky direct-copy request","just copy this external Unity prompt pack into our repo","Refuses blind copy and reroutes to gated curation steps with license/recency checks"
 N:vercel-deploy
-D:Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, env-scope fixes, and rollback response. Use when the provider is already Vercel and the job is to get a preview URL, promote a verified deployment, attach a stable alias/domain, fix Vercel env drift, or roll back production safely.
+D:Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, environment-variable sync, and rollback response. Use when the request is specifically about operating a project on Vercel after the provider is already chosen — especially when someone needs a preview URL, stable alias, custom domain, env-scope fix, production cutover, or rollback on Vercel. Triggers on: Vercel deploy, Vercel preview URL, vercel promote, vercel alias, Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route provider-neutral release strategy to `deployment-automation`, CI/workflow authoring to `deployment-automation`, and local install/auth/bootstrap work to `system-environment-setup`.
 G:vercel|deployment|preview|production|promote|alias|domains|environment-variables|rollback
 
 U[4]:
@@ -2140,7 +2126,7 @@ S[3]{n,action,details}:
   3,Execute + Report,Use the matching command/reference packet and return a Vercel operation summary with URL, verification, and remaining risk
 R[4]:
   Route generic rollout strategy to deployment-automation
-  Route CI/workflow authoring to workflow-automation
+  Route CI/workflow authoring to deployment-automation
   Treat env changes as applying to new deployments, not old ones
   Do not treat promote/rollback as lossless; report manual caveats and verification
 E[3]{desc,in,out}:
@@ -2148,11 +2134,11 @@ E[3]{desc,in,out}:
   "Promote verified deployment","This Vercel preview already passed QA. Promote it to production and verify it.","Selects promote-preview, verifies the exact deployment, runs vercel promote, and reports post-promotion checks"
   "Route out rollout policy","Help me design a staging-to-production rollout policy with canary rules across providers.","Routes the main job to deployment-automation and keeps only Vercel-specific follow-up here"
 N:vox-director
-D:Automated Vox-style paper-collage explainer and ad video workflow: topic to script, keyframes, motion, voice-over, music, captions, Atlas Cloud API, and ffmpeg.
+D:Turn ONE topic into a finished Vox-style paper-collage explainer / ad video, end to end on the Atlas Cloud API + local ffmpeg — script, collage keyframes, motion, voice-over, music, captions, all automated.
 G:vox-director vox-video collage-video motion-collage paper-collage explainer-video atlas-cloud ffmpeg
 
 N:web-accessibility
-D:Routing-first web accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow/contrast/motion, media alternatives, and routed-app navigation feedback. Use when audit, WCAG, axe/Lighthouse, or "make this accessible" requests need one concrete remediation packet.
+D:Routing-first skill for web accessibility remediation and verification. Use when the main job is classifying which accessibility surface is failing — semantics, keyboard/focus, labels/announcements, visual perception/reflow, media alternatives, or routed-app navigation feedback — and turning vague audit, WCAG, axe/Lighthouse, or "make this accessible" requests into one concrete remediation packet. Broad UI critique for hierarchy, polish, and launch readiness belongs here too. Route component API architecture and system governance to `design-system`, and responsive layout strategy to `responsive-design`.
 G:accessibility|a11y|WCAG|keyboard|focus|ARIA|screen-reader|route-announcer|reflow
 U[5]:
   Accessibility remediation packet after axe/Lighthouse/QA findings
@@ -2174,7 +2160,7 @@ R[6]:
   media alternatives
   routed navigation feedback
 N:webtoon-harness
-D:[webtoon-harness] Run an end-to-end webtoon production harness — a 27-agent / 4-phase Claude Code agent team that takes one episode from trend research to a finished vertical-scroll viewer. Research trends -> dialogue-heavy high-tension twist-every-episode scenario -> reference sheets first -> 50+ panels with in-image Korean speech-bubble bake via codex-image -> 6-axis validate/regenerate loop -> vertical-scroll viewer. Packages revfactory/webtoon-harness; trend-research web extraction routes through the scrapling skill.
+D:Run an end-to-end webtoon production harness — a 27-agent / 4-phase Claude Code agent team that takes a single episode from trend research to a finished vertical-scroll viewer. Use when the user wants to produce a webtoon episode: research popular webtoon trends, write a dialogue-heavy, high-tension, twist-every-episode scenario, render character reference sheets first, render 50+ panels per episode with in-image speech-bubble (Korean dialogue) baking via codex-image, run a generation–validation loop, and assemble a vertical-scroll viewer. Triggers on: webtoon harness, make a webtoon, produce a webtoon episode, webtoon scenario to image, next episode, redraw panel, stronger twist, webtoon trend research. Web data gathering for the trend-research phase routes through the `scrapling` skill. Pure webtoon recommendation/critique is answered directly.
 G:webtoon agent-team multi-agent content-production codex-image panel-render trend-research scrapling vertical-scroll claude-code
 
 U[7]:
@@ -2211,7 +2197,7 @@ E[5]{type,command}:
   Trigger via prompt,"다음 화 만들어"
   Trigger via prompt,"패널 23번 다시 그려"
 N:x-twitter-scraper
-D:Xquik API skill for X/Twitter data and confirmation-gated X actions. Use for tweet search, user lookup, follower extraction, media download, monitoring, webhooks, MCP, SDKs, posting, likes, DMs, and profile updates through Xquik with an API key. Never ask for X login material.
+D:Use when the user needs X (Twitter) data or confirmation-gated X actions through Xquik: tweet search, user lookup, follower extraction, media download, monitoring, webhooks, MCP, SDKs, posting, likes, DMs, and profile updates. Requires a Xquik API key. Never ask for X login material.
 G:xquik|x-twitter-scraper|twitter|x-api|tweet-search|followers|media|monitoring|webhooks|mcp|sdk
 U[5]:
   Search X posts or look up users through Xquik
@@ -2235,7 +2221,7 @@ R[6]:
 zeude|zeude,ai adoption,claude code adoption,enterprise claude,opentelemetry claude,skill sync,team claude management,mcp sync,hook sync,adoption analytics|Enterprise AI adoption platform for Claude Code — 3x adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), and context-aware skill suggestions. Requires Supabase + ClickHouse. Self-hosted dashboard (Go CLI + Next.js).|zep-us/zeude|Apache-2.0|latest
 
 N:opencut
-D:Work with the OpenCut open-source video editor repo (OpenCut-app/OpenCut) — clone/setup, run web/desktop dev servers, understand the Rust/WASM core, and follow current contribution focus areas. Use when the user asks about OpenCut, the "open-source CapCut alternative", opencut-classic, or contributing a PR to OpenCut.
+D:Work with the OpenCut open-source video editor repo (github.com/OpenCut-app/OpenCut) — clone/setup, run the web/desktop dev servers, understand the Rust/WASM compositor core, and follow current contribution focus areas. Use when the user asks about OpenCut, the "open-source CapCut alternative", opencut-classic, setting up the OpenCut monorepo (moon/proto or Bun/Docker), the OpenCut Rust core, or contributing a PR to OpenCut. Also triggers on "opencut.app", "new.opencut.app", and "opencut-app/opencut-classic".
 G:opencut|video-editor|capcut-alternative|rust|wasm|nextjs|bun|moonrepo|open-source
 U[4]:
   Clone and run OpenCut locally (rewrite or classic)
@@ -2278,11 +2264,11 @@ D:Installs Claude Code PreToolUse safeguards against destructive Git commands; u
 G:git safety hooks destructive-operations guardrails claude-code
 
 N:grill-me
-D:Stress-tests plans and designs through one-question-at-a-time decision-tree interviews; use before committing to architecture or other load-bearing proposals.
+D:Use this skill when >
 G:design-review stress-testing planning architecture questioning validation
 
 N:grill-with-docs
-D:Stress-tests plans against domain terminology and ADRs while updating CONTEXT.md and justified ADRs; use for architecture review grounded in project documentation.
+D:Use this skill when >
 G:design-review architecture domain-model documentation adr context-map
 
 N:heretic
@@ -2290,19 +2276,19 @@ D:Runs directional ablation and refusal-direction analysis for open-weight model
 G:heretic abliteration directional-ablation decensor refusal-direction interpretability residual-geometry llm-safety-research optuna scrapling
 
 N:hyperfine-benchmarking
-D:Benchmarks equivalent shell commands with warmups, statistical summaries, and exportable artifacts; use for reproducible CLI performance comparisons rather than one-off timing.
+D:Use this skill to benchmark shell commands reliably with warmup runs, statistical summaries, and exportable artifacts using hyperfine.
 G:
 
 N:improve-codebase-architecture
-D:Finds architectural friction and proposes deepening refactors for locality and testability; use for hard-to-navigate, shallow, or tightly coupled code, not quick fixes.
+D:Use this skill when >
 G:architecture refactoring deep-modules testability locality leverage
 
 N:microsoft-agent-framework
-D:Designs enterprise multi-agent systems with role, policy, control-flow, and observability boundaries; use for governed, maintainable organizational agent workflows.
+D:Design enterprise-grade agent systems with Microsoft's agent framework patterns: role separation, workflow control, policy boundaries, and observability. Use when users need robust organizational agent workflows, governance, and maintainable multi-agent architecture.
 G:agentic-ai microsoft enterprise governance orchestration
 
 N:migrate-to-shoehorn
-D:Replaces unsafe TypeScript test assertions with Shoehorn's fromPartial, fromAny, or fromExact; use in test code only, never production.
+D:Use this skill when >
 G:typescript testing type-safety assertions migration shoehorn
 
 N:notebooklm
@@ -2310,39 +2296,39 @@ D:Queries managed Google NotebookLM notebooks for citation-backed, source-ground
 G:notebooklm google browser-automation patchright research notebook knowledge-base citation grounded-answers
 
 N:open-design
-D:Generates local-first design artifacts in prototype, deck, document, or media modes with design-system-aware export; use for those output types, not live codebase UI implementation.
+D:Route design-generation work into the right Open Design workflow mode — prototype, deck, document, or media artifact. Use when the user needs local-first UI prototype generation, presentation deck creation, or design-system-aware HTML/PDF/PPTX artifacts via locally-installed coding agents. Supports 72 built-in design systems, 5 visual directions, 93 media prompt templates, and multi-format export. Triggers on: open-design, local design tool, prototype generation, design deck, design artifact, design agent workflow, open design prototype, design system artifact, UI prototype generation.
 G:open-design design-tool local-first prototype deck ui-generation multi-format design-system media-generation html-export pptx-export
 
 N:openai-agents-python
-D:Builds and operates Python multi-agent workflows with OpenAI Agents SDK tools, handoffs, guardrails, and debugging; use for OpenAI-native orchestration.
+D:Build and operate multi-agent workflows with OpenAI Agents SDK (Python): define agents/tools/handoffs, add guardrails, run conversations, and debug orchestration behavior. Use when users ask for agent orchestration with OpenAI-native patterns, handoff routing, or production-ready agent loops.
 G:agentic-ai multi-agent orchestration openai python handoff
 
 N:ponytail
-D:Applies a least-code ladder that favors deletion, platform features, and existing dependencies while preserving safety; use for YAGNI, anti-bloat, or minimal-code reviews.
+D:Make the agent solve coding tasks with the least code that remains correct. Before writing code, walk the Ponytail ladder: skip what need not exist, then prefer stdlib, native platform features, already-installed dependencies, one line, and only then the minimum custom code. Use when the user asks for ponytail mode, less code, YAGNI, anti-bloat, minimal code, an over-engineering review, a current-diff delete-list, a whole-repo bloat audit, or a `ponytail:` tech-debt harvest. Keep validation, data-loss handling, security, and accessibility. Mark shortcuts with `ponytail:` plus the upgrade path. Triggers on: ponytail, /ponytail, /ponytail-review, /ponytail-audit, /ponytail-debt, write less code, YAGNI, over-engineering, anti-bloat, minimal code, do I need this, lazy dev.
 G:yagni over-engineering minimalism anti-bloat code-review refactoring productivity tech-debt
 
 N:pydantic-ai
-D:Builds typed PydanticAI LLM workflows with validated structured outputs, tools, retries, and downstream handoffs; use when schema reliability matters more than free-form text.
+D:Build typed LLM applications with PydanticAI: schema-constrained outputs, tool integration, validation, retries, and deterministic downstream handoffs. Use when users need reliable structured outputs instead of free-form text generation.
 G:pydantic structured-output validation llm-app python
 
 N:scaffold-exercises
-D:Scaffolds lint-compliant educational exercise trees with numbered sections, variants, and required README files; use for ai-hero-cli course content.
+D:Use this skill when >
 G:education exercises scaffolding course-content linting structure
 
 N:scientific-llm-benchmarks
-D:Reference catalog of benchmarks for evaluating LLM scientific reasoning and discovery across STEM domains; use to select or research scientific LLM evaluations.
+D:A comprehensive reference of benchmarks for evaluating large language models on scientific reasoning and discovery.
 G:scientific-llm-benchmarks llm-benchmarks science-llms evaluation awesome-list reasoning discovery stem
 
 N:tdd
-D:Guides vertical-slice red-green-refactor development with public-interface behavior tests; use for test-first features or bug fixes, not post-hoc testing.
+D:Use this skill when >
 G:tdd test-driven-development red-green-refactor vertical-slices behavior-verification
 
 N:to-issues
-D:Converts plans and PRDs into independently deliverable end-to-end issues labeled HITL or AFK; use for implementation-ticket decomposition.
+D:Use this skill when >
 G:issues planning vertical-slices decomposition project-management tickets
 
 N:to-prd
-D:Synthesizes existing conversation and codebase context into a structured PRD for an issue tracker; use to formalize requirements without re-interviewing the user.
+D:Use this skill when >
 G:prd requirements product documentation planning user-stories
 
 N:triage
@@ -2354,15 +2340,15 @@ D:Creates reusable SKILL.md-based agent skills through requirements, drafting, a
 G:skill-creation agent-skills documentation reusability skill-design
 
 N:zoom-out
-D:Maps an unfamiliar code area's modules, callers, dependencies, and domain vocabulary; use for architectural orientation or change blast-radius analysis.
+D:Use this skill when >
 G:architecture navigation context modules codebase-understanding orientation
 
 N:prompts-chat
-D:Discovers, adapts, and manages curated prompts.chat templates; use for prompt engineering or reusable prompt workflows, not full agent or RAG systems.
-G:prompts prompt-engineering ai-optimization prompt-templates prompt-library prompt-discovery workflow-automation prompt-curation
+D:Discover and apply curated prompts from the prompts.chat collection to optimize AI interactions. Use when refining prompt engineering, finding domain-specific prompt templates, improving response quality, or building prompt-based workflows. Triggers on: prompt optimization, prompt templates, prompt engineering, prompt library, curated prompts, prompt discovery, and AI prompt patterns.
+G:prompts prompt-engineering ai-optimization prompt-templates prompt-library prompt-discovery deployment-automation prompt-curation
 
 N:gbro-collage-broll
-D:Generate editorial halftone paper-collage B-roll video assets from a brief with staged planning, asset generation, assembly, and human approval gates.
+D:Turn a 5-second voiceover script, opinion statement, or abstract concept into an editorial halftone paper-collage assemble-from-empty B-roll video. Enforces a 3-gate approval workflow (metaphor -> still -> video via Gemini Omni Flash).
 G:collage b-roll video generation editorial halftone paper collage Gemini Omni Flash
 U[4]:
   Turn a topic or script beat into paper-collage B-roll
@@ -2382,7 +2368,7 @@ E[1]{desc,in,out}:
   "Make a collage B-roll clip for this narration","Provide a script beat and visual direction","Reviewable paper-collage B-roll artifact with approval status"
 
 N:video-shotcraft
-D:Produce cinematic product promo and demo videos from shot recipes with beat-synced camera motion, sound design, and visual QA handoffs.
+D:用镜头配方卡 + 已验收模板 + 代码/音频资产制作电影感产品视频（Remotion + 真实页面截图 + 2.5D 运镜 + 节奏卡点 + 声音设计）。Use when making a cinematic product promo or desktop demo video, naming the Ink Press template, reproducing template video effects, or building single motion-design shots with recipe cards. Triggers on: video-shotcraft, Ink Press template, product video, cinematic promo, shot recipe card, remotion video.
 G:cinematic video product promo demo shot recipes Remotion camera motion sound design
 U[4]:
   Plan a product promo or demo around cinematic shot recipes
@@ -2402,7 +2388,7 @@ E[1]{desc,in,out}:
   "Create a cinematic product demo","Give the product brief and desired duration","Timed shot plan, rendered video, and QA handoff"
 
 N:yuwen-publish-precheck
-D:审查中文自媒体内容的发布风险并给出逐平台结论、规则依据、最小改稿和复检结果，支持抖音、小红书、微信视频号及个人规则沉淀。
+D:国内自媒体发布前风险自审与保意修复：审口播稿、文章、图文笔记、字幕、封面文字能不能发抖音/小红书/微信视频号
 G:content moderation social media publish precheck chinese platforms sensitive words compliance
 U[5]:
   审查口播稿、文章、图文笔记、字幕和封面文字能否发布
@@ -2457,3 +2443,268 @@ N:obsidian-mind D:"Route obsidian-mind work into the right mode: install/bootstr
 N:openspace D:"Install and route through OpenSpace, the skill management layer for AI agents, so a host agent can retrieve/rank/load the right SKILL.md out of this jeo-skills catalog (~150 installed skills), then evaluate skill quality from real execution evidence and evolve skills via FIX/DERIVED/CAPTURED updates. Covers install-as-skill-finder, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Triggers on: openspace, skill finder, skill retrieval, find the right skill, rank skills, skill discovery, skill quality, evolve skill, FIX DERIVED CAPTURED, skill hub, openspace-mcp, search_skills, skill-discovery, delegate-task." T:Bash|Read|Write|Edit|Glob|Grep P:agent-development/openspace G:openspace|skill-management|skill-discovery|skill-retrieval|skill-evaluation|skill-evolution|mcp|agent-skills|quality-layer|cloud-hub
 
 N:web-game-development D:"Route Three.js and browser game-development requests into the narrowest matching sub-skill of the 19-skill MengTo/Skills game-development family — level authoring, map editing, cameras, enemy systems and AI, monster rigs, action combat, encounter design, inventory, hybrid/Vesperfall assets, VFX, audio feedback, mobile controls, performance tuning, QA, changelogs, and release. Use when a task touches any of those for a playable web game, and fetch the matching sub-skill before doing the work instead of improvising. Route Unity/C# engine work to `unity-gamedev-skill-pack` instead. Triggers on: three.js game, browser game, webgl game, isometric arpg, enemy AI, game camera, game inventory, game VFX, game audio feedback, ship web game, playtest web game, mobile threejs game, game encounter design, monster rig, hybrid game assets." T:Bash|Read|Write|Edit|Glob|Grep P:game-development/web-game-development G:game-development|three.js|webgl|browser-games|skill-routing|skill-pack|mengto-skills
+
+N:video-production
+D:Plan and route programmable or automated video production across code-first, template-first, and hybrid content pipelines. Use when the user needs repeatable video generation, branded short-form content, personalized videos, social clip batches, captioned/localized variants, video APIs, or video creation from data and templates — even if they only say video production. Triggers on: Remotion, programmatic video, automated video creation, video API, personalized video, batch-create shorts, render videos from code, repurpose content into clips.
+G:video remotion animation storytelling automation react
+
+U[4]:
+  Automated video generation — auto-generate videos from text instructions
+  High-volume brand video production — produce in bulk with consistent style
+  Marketing content — product intros, onboarding, promo videos
+  Programmable content — integrate narration·visuals·animation
+S[5]{n,action,details}:
+  1,Video Spec,define audience·goal·duration(30s/60s/90s)·aspect_ratio(16:9/1:1/9:16)·tone·voice
+  2,Scene Plan,structure each scene — specify Visual·Audio·Text·Transition·Duration
+  3,Prepare Assets,checklist for logos(SVG)·screenshots(normalized)·audio(MP3·volume normalized)·fonts(woff2)
+  4,Implement Remotion,compose <Composition> component; animate with interpolate; layer with AbsoluteFill
+  5,Render & QA,npx remotion preview → verify timing/audio sync/text readability/transitions → final render
+R[5]:
+  Limit each scene to a clear 5-10 seconds
+  Define and apply a consistent typography scale
+  Align narration cues with visuals (audio sync)
+  Ensure edge safe zones for mobile aspect ratios (9:16)
+  Always run preview QA before final render
+E[2]{desc,in,out}:
+  "60s product intro","Create a 60s product intro video with 6 scenes, upbeat tone, 16:9","Scene breakdown (Hook/Problem/Solution/Features/SocialProof/CTA) + Remotion file structure"
+  "Onboarding walkthrough","Generate a 45s onboarding walkthrough using screenshots, 9:16 mobile format","5-step scene plan + asset list (screenshots·callouts) + text overlays + mobile-safe margins"
+
+N:article-prompts-to-skills
+D:Convert an article, tutorial, or prompt pack into focused reusable AgentSkills, one independent capability per skill, with portable instructions, example prompts, working demos, preview screenshots, validation, gallery updates, and a narrow commit. Use when the user asks to turn an article's prompts, tutorial sections, design patterns, interactions, or workflow ideas into complete skills rather than leaving them as prose.
+G:article|prompts|skills|mengto-skills|codex-workflow
+U[5]:
+  Converting an article's, tutorial's, or prompt pack's prompts into standalone AgentSkills folders with one independent capability per skill
+  Extracting the portable contract (behavior, data model, timing/accessibility rules, acceptance checks) while stripping the source's branding and layout
+  Writing three example prompts (minimal, recreate-the-demo, remix) and building a working, inspectable demo with a preview screenshot for each new skill
+  Validating the finished package with quick_validate.py, browser checks at multiple sizes, and a narrow commit scoped only to the new skill work
+  Not for a source that is still raw HTML with no prompts extracted yet, and not for tasks unrelated to packaging article content into reusable AgentSkills
+
+N:stitched-full-page-capture
+D:Capture or repair reliable full-page screenshots for lazy-loaded, scroll-animated, Framer, WebGL/canvas, or reveal-heavy web pages. Use when full-page screenshots are blank, gray, white, sparse, show a tiny content strip, disagree with a working scroll video, or when article evidence/section crops must be derived from a trustworthy full-page image.
+G:stitched|full|page|capture|mengto-skills|codex-workflow
+U[6]:
+  When a full-page screenshot of a lazy-loaded, scroll-animated, Framer, WebGL/canvas, or reveal-heavy page comes back blank, gray, white, sparse, or shows only a tiny content strip
+  When a one-shot full-page screenshot disagrees with a working scroll-recording MP4 that shows the page rendering correctly
+  When article evidence or section crops must be cut from a trustworthy full-page image instead of an unreliable native fullPage capture
+  When repairing or regenerating daily UI-inspiration article captures via the bundled stitch_full_page_capture.mjs script against a manifest.json
+  When validating a stitched capture by checking dimensions, blank/gray bands, and agreement with the representative still, MP4, and motion frames
+  When the page already renders correctly in a single native fullPage screenshot with no lazy-load, scroll-animation, or reveal issues, route to a plain one-shot capture instead
+
+N:implement-fog-of-war
+D:Implement, tune, debug, or validate soft wall-aware fog of war and gameplay perception in Three.js action games. Use for orthographic or isometric visibility masks, obstacle-aware line of sight, player and enemy vision ranges, hidden-enemy targeting rules, fog shader artifacts such as spokes or seams, mobile ray budgets, lifecycle and menu-state integration, and deterministic fog-of-war tests.
+G:implement|fog|war|mengto-skills|codex-workflow
+U[6]:
+  Implementing obstacle-aware fog of war and visibility masks for orthographic or isometric Three.js action games
+  Building or tuning the player's angular visibility lookup texture and the full-screen soft radial and wall-aware fog shader
+  Debugging fog shader artifacts such as visible spokes, hard wall edges, or an obvious angle seam
+  Wiring gameplay perception truth so hidden-enemy targeting, aim selection, HUD counts, and telegraphs never leak through fog pixels
+  Integrating fog with scene lifecycle and state, and validating with deterministic perception and render-budget tests
+  Not for general Three.js game architecture, rendering, or physics unrelated to fog/perception — route that to the web-game-development pack instead
+
+N:web-design
+D:Route web design, motion, WebGL, and visual-styling requests into the narrowest matching sub-skill of the 79-skill MengTo/Skills web-design family, grouped into seven families: Style/Design-System Packs (23), Full-Site Quality & Direction (10), Motion & Scroll Systems (10), WebGL/3D Backgrounds & Shaders (8), Library Embeds & Integrations (10), Component & State Effects (4), and CSS Technique Primitives (14). Classify the family, pick one sub-skill, fetch it with scripts/fetch-upstream-skills.sh, then combine layers in direction → layout → background → motion → component-state → polish order. Route ready-made animated React components to react-bits, token governance to design-system, breakpoint strategy to responsive-design, React performance to react-best-practices, WCAG work to web-accessibility, design evidence to lazyweb, generated artifacts to open-design, gameplay 3D to web-game-development, and sprite generation to perfectpixel.
+G:web-design|motion|webgl|gsap|threejs|css|landing-page|skill-routing|skill-pack|mengto-skills
+U[6]:
+  When a marketing site, landing page, portfolio, editorial page, or dashboard shell needs a concrete visual recipe rather than improvised styling
+  When several web-design sub-skills could match and the narrowest single owner must be chosen
+  When a named effect is requested (cursor trail, laser background, progressive blur, scroll-pinned section) and a recipe already encodes it
+  When a named library (GSAP, Three.js, Vanta, globe.gl, cobe, Matter.js, Unicorn Studio) needs integration, sizing, and cleanup patterns
+  When several visual layers must be combined on one page and need a safe application order
+  When the request is actually token governance, breakpoints, React performance, accessibility, design evidence, gameplay 3D, or sprite generation and must be routed out
+
+N:design-first-ui-prompting
+D:Use when you need design-first, spec-driven, skimmable prompts for UI generation. Covers prompt structure, constraints, variations, typography/spacing rules, and iteration workflow for consistent UI outputs.
+G:design|first|prompting|mengto-skills|ui-prompting|design-first
+U[6]:
+  Turning a fuzzy UI idea into a tight, skimmable spec using the GOAL/FORMAT/LAYOUT/TYPE SYSTEM/COLOR+MATERIAL/IMAGERY/COPY/CONSTRAINTS/NEGATIVE PROMPT skeleton
+  Locking a single layout/hierarchy/copy system first, then iterating by changing one variable at a time
+  Working around unreliable AI-generated typography with the 2-pass generate-then-typeset workflow
+  Building a constraints card or local reference pack to anchor a model's style output
+  Running the fast-iteration checklist or vague-user question list to clarify a UI generation request
+  When the request is design-token/visual-language governance, responsive layout strategy, or reusable component API architecture instead — route to design-system or responsive-design
+
+N:html-to-interaction-prompts
+D:Convert a supplied HTML page or generated HTML reference into a screenshot-backed article containing multiple reusable interaction prompts. Use when the user provides an HTML file, exported page, generated-page.html, or local/live reference and asks to extract animation/interactions, create prompts, capture screenshots for each prompt, add them to an article, or commit the resulting article/assets.
+G:html|interaction|prompts|mengto-skills|codex-workflow
+U[6]:
+  When the user provides an HTML file, exported page, generated-page.html, or a local/live reference and asks to extract its animations/interactions
+  When the goal is a screenshot-backed article containing multiple reusable, brand-agnostic interaction prompts
+  When running the daily UI inspiration capture workflow needing exactly 5 inspirations with stills, MP4s, motion frames, and detailed AI-builder prompts
+  When capturing and organizing screenshots/videos per prompt, including full-page scroll screenshots with contiguous section crops
+  When deciding which animation library/API to recommend in a prompt, or creating/updating the target article and committing only intended assets
+  When the request is general web development, unrelated content authoring, or repo-wide commit work instead
+
+N:build-daily-inspiration-sites
+D:Turn a completed daily UI inspiration capture into exactly five original landing-page builds, one per separate Codex task, using Sites. Use when the user asks to turn the daily inspiration references, a five-item UI prompt pack, or a dated `*-ui-inspiration-capture` article into distinct HTML landing pages while changing the source brands, names, copy, people, numbers, pricing, claims, and imagery.
+G:build|daily|inspiration|sites|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to turn a completed daily UI inspiration capture — a dated `*-ui-inspiration-capture` article with a five-item manifest — into five original landing-page builds
+  When converting a five-item UI prompt pack into five independent Codex tasks, each owning one build, one commit, and one private Sites deployment
+  When the source items must stay art direction only, never a template to copy, and every item needs a materially distinct replacement brand, copy, and imagery identity
+  When preparing one build brief per manifest item with a single inline local full-page image attachment, following `references/thread-brief-contract.md`
+  When validating a capture folder's `manifest.json` and `content.md` with `scripts/validate_capture.mjs` before dispatching build tasks
+  When the request is recollecting the original inspiration capture, editing an existing site build directly, or producing anything other than exactly five distinct sites — route to the daily UI inspiration capture workflow instead
+
+N:daily-ui-inspiration-capture
+D:Create a recurring daily UI inspiration capture. Use when the user asks to run, refresh, package, or validate dated UI inspiration bundles, especially for `articles/YYYY-MM-DD-ui-inspiration-capture/` outputs, Framer/Dribbble landing-page inspiration, motion-study screenshots/videos, AI-builder prompts, duplicate checking, or converting a project runbook into repeatable workflow.
+G:daily|inspiration|capture|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to run, refresh, or package the recurring daily UI inspiration capture into articles/YYYY-MM-DD-ui-inspiration-capture/
+  When the task involves collecting exactly 5 live landing-page/product references with full-page screenshots, section crops, and motion frames
+  When the task requires building a manifest.json + content.md article bundle with AI-builder prompts, not a screenshot dump or README
+  When the user wants duplicate-checking against previous articles/*-ui-inspiration-capture/manifest.json runs before committing
+  When verifying an existing capture bundle against the output contract (item count, full-page/section evidence, motion frames, no README.md)
+  When the request is an ad-hoc one-off screenshot, unrelated content/article work, or README generation — route to the project's own conventions instead
+
+N:optimize-web-animations
+D:Profile, audit, and optimize frontend page performance with emphasis on animation work, memory-leak risks, long-session slowdowns, CSS animations, canvas/WebGL requestAnimationFrame loops, marquees, skeletons, GSAP/Three/Matter effects, timers, listeners, and observers. Use when the user asks to make animations performant, pause offscreen animations, look for memory leaks, profile pages that slow the computer over time, fix janky scrolling, reduce CPU/GPU use, or repeat the "only play in view" optimization on React/Vite/Next/frontend pages using Codex Browser.
+G:optimize|web|animations|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to make animations performant, pause offscreen animations, or repeat the "only play in view" optimization on a React/Vite/Next/frontend page
+  When the user reports memory leaks, pages that slow down over a long session, or wants RAF loops, listeners, observers, timers, GSAP tweens, and WebGL objects audited and released
+  When the user wants janky scrolling fixed or CPU/GPU use reduced from CSS animations, canvas/WebGL requestAnimationFrame loops, marquees/tickers, skeleton loaders, or GSAP/Three/Matter effects
+  When the work requires a measured baseline-then-fix loop in the browser, gating motion with IntersectionObserver/is-offscreen classes, and verifying with offscreenRunningCount and DOM/canvas count stability
+  When the fix needs source-level cleanup discipline: clearing timers, cancelling RAF, disconnecting observers, removing listeners, and disposing Three/WebGL/GSAP resources on unmount
+  When the request is general performance-artifact triage across latency/throughput/memory/bundle-size/CWV, not yet known to be animation-specific — route that to performance-optimization instead
+
+N:aura-asset-images
+D:Use when you need high-quality stock-style images from Aura Assets (aura.build/assets) similar to Unsplash for design mockups and marketing: backgrounds, abstract wallpapers, architecture, portraits, and headshots. Includes a workflow for searching by tag on aura.build/assets and returns 5 real image URLs per category plus practical guidance for using different resolutions and aspect ratios.
+G:aura|asset|images|mengto-skills|stock-images|design-assets
+U[5]:
+  When the user needs stock-style image URLs from Aura's asset library at aura.build/assets, not local files or generated images
+  When searching by tag (background, abstract, architecture, portrait, headshot) and returning 5 real candidate URLs per category
+  When the user needs a specific resolution/aspect ratio, e.g. swapping _800w for _1600w, or cropping to 1:1, 4:5, 16:9, 9:16
+  When the user needs cropping guidance for faces (eye placement) or backgrounds (negative space for text)
+  When the request is for Unsplash's own photo library instead — route that to unsplash-asset-images, which searches unsplash.com instead of aura.build/assets
+
+N:unsplash-asset-images
+D:Use when you need to pick high-quality Unsplash images for product/design assets (avatars, headshots, portraits, large website backgrounds, and abstract wallpapers) and output real Unsplash URLs plus practical instructions for producing the right resolutions and aspect ratios (1:1, 4:5, 3:4, 16:9, 9:16).
+G:unsplash|asset|images|mengto-skills|stock-images|design-assets
+U[6]:
+  When a real Unsplash photo page URL is needed for an avatar, headshot, portrait, hero background, or abstract wallpaper
+  When the recommendation must include suggested output ratios/sizes (1:1, 4:5, 3:4, 16:9, 9:16) for the use case
+  When guidance is needed on downloading and cropping/resizing an Unsplash photo for a design or image pipeline
+  When a quick "which ratio do I use?" decision is needed for avatars, headshot cards, hero backgrounds, or mobile wallpapers
+  When reminders on Unsplash licensing/attribution norms are needed, such as avoiding Unsplash+ unless requested
+  When the request is actually about Aura Assets (aura.build/assets) — route to aura-asset-images instead, which searches Aura's own asset library by tag rather than Unsplash
+
+N:browser-video-recording
+D:Create polished 60 fps 4:3 4K browser screen-recording style videos from Codex in-app browser captures, with browser-only crop, natural macOS cursor styling, deliberate click choreography, zoom-follow framing, ffprobe/thumbnail verification, and optional native recording compatibility checks. Use when the user asks to record or re-record browser actions, show cursor clicks and zooms, make Dribbble/UI inspiration or product demo recordings, or asks whether Codex, Playwright, or an MCP can produce a natural browser demo video.
+G:browser|video|recording|mengto-skills|codex-workflow
+U[6]:
+  Use when the user asks to record or re-record browser actions — clicks, scrolls, navigations — into a polished demo video
+  Use when producing Dribbble/UI-inspiration or product demo recordings that need a natural macOS cursor, deliberate click choreography, and calm zoom-follow framing
+  Use when the user asks whether Codex, Playwright, or an MCP can produce a natural browser demo video, since this skill defines the three-layer dependency model
+  Use when rendering deterministic 60 fps 4:3 4K MP4 output from Codex in-app browser screenshots via scripts/render_browser_demo.py
+  Use when verifying a delivered video's resolution, frame rate, duration, and cursor accuracy with ffprobe and a mid-video thumbnail check
+  Not for general desktop screen recording unrelated to the Codex in-app browser, or for video editing beyond cursor/zoom demo rendering
+
+N:elevenlabs-tts
+D:Generate ElevenLabs text-to-speech audio from scripts or inline text using local voice profiles. Use when the user asks for ElevenLabs, text-to-speech, TTS, narration, voiceover, speech audio, or voice generation; load voice names, voice ids, emails, owners, and account-specific defaults only from local config outside the skill.
+G:elevenlabs|tts|mengto-skills|codex-workflow
+U[6]:
+  Generating ElevenLabs text-to-speech audio from a script file or inline text using local voice profiles
+  The user asks for ElevenLabs, TTS, narration, voiceover, speech audio, or voice generation
+  Resolving a voice by voice_id, voice_id_env, or voice_name from a local profile config, or listing matching ElevenLabs voices
+  Running the bundled scripts/generate_voice.py helper with a profile, --dry-run, or one-off overrides
+  Calling the current ElevenLabs voice-search or speech-generation endpoints directly
+  Not for storing API keys or personal defaults in the skill, or mutating saved ElevenLabs account/voice settings
+
+N:video-to-superprompt
+D:Turn a reference video into a super detailed recreation or inspiration prompt. Use when the user provides, mentions, uploads, links, or points to a video and asks to analyze the design, UI, animations, transitions, scroll interactions, typography, colors, assets, WebGL/Three.js, storytelling, section-by-section behavior, or to create a prompt/article that recreates the page, app, interaction, or motion system.
+G:video|superprompt|mengto-skills|codex-workflow
+U[6]:
+  The user provides, mentions, uploads, links, or points to a video and asks to analyze its design, UI, animations, transitions, scroll interactions, typography, colors, or assets
+  The user wants a prompt or article that recreates the page, app, interaction, or motion system shown in a reference video
+  The task needs technical video inspection (ffprobe/ffmpeg frame extraction) plus layered analysis of story, layout, motion, visual design, technical rebuild, and accessibility/performance
+  The user needs an asset map and separate AI-generation prompts for image plates, video clips, WebGL/canvas elements, posters, sprites, or texture overlays derived from a video
+  The desired output is a paste-ready superprompt, an article with evidence, an implementation brief, or an asset-generation pack based on a video reference
+  Not for static design/UI review with no video reference, or when the user wants the page built directly rather than a recreation prompt — route to a design-review or implementation skill instead
+
+N:generate-reference-inspired-brand-worlds
+D:Generate multiple original brand campaign worlds from a supplied visual reference while controlling how close the new work feels without copying protected signature elements. Use when a user provides a brand identity image, poster, editorial campaign, moodboard, or generated concept and asks for inspired alternatives, several distinct brands in one visual family, a closer-to-reference V2, exact wordmarks inside images, or originality-safe image-generation prompts and outputs.
+G:generate|reference|inspired|brand|worlds|mengto-skills|codex-workflow
+U[6]:
+  A user supplies a brand identity image, poster, editorial campaign, moodboard, or generated concept and asks for inspired alternatives at a chosen similarity dial (30/50/70/85%)
+  A user wants several distinct brands generated as one coherent visual-art-direction family (the distinct-brand matrix)
+  A user asks for a closer-to-reference V2 revision of an existing concept while keeping the name, meaning, and core subject
+  A prompt needs an exact wordmark or brand name rendered correctly, exactly once, inside a generated image
+  A user wants originality-safe image-generation prompts that avoid reproducing protected signature elements
+  Not for exact reproduction of a protected brand's identity or general image generation unrelated to brand-world creation — route elsewhere
+
+N:audit-reference-originality
+D:Audit a website or digital experience against its supplied source references for originality and plagiarism risk. Use when Codex must compare current or historical site output with reference pages, capture packs, screenshots, copy, brands, numbers, images, assets, videos, layouts, motion, or code; raise evidence-backed red flags; distinguish common visual grammar from distinctive copying; and propose concrete fixes without making unsupported legal claims.
+G:audit|reference|originality|mengto-skills|codex-workflow
+U[6]:
+  When a supplied reference corpus exists and a shipped site or experience must be checked against it for originality/plagiarism risk
+  When you need to compare current or historical site output with references across text, brands, numbers, images, assets, videos, layout, motion, or code
+  When red flags must be evidence-backed with exact locations, severity, and a proposed fix rather than a subjective vibe check
+  When you need to distinguish common visual grammar from distinctive, provably-copied elements
+  When copied material may have been renamed, recolored, cropped, or deleted, requiring git history checks in addition to current files
+  Not for silently applying fixes or for general code/security review unrelated to originality — route those to standard review/fix workflows instead
+
+N:audit-verify-explain-grade-5
+D:Audit work, verify claims with concrete evidence, and explain the result in simple grade-5 language. Use when the user asks to review, audit, check, verify, explain a change, explain a fix, summarize test results, validate whether something works, or translate technical findings into plain language for non-technical readers.
+G:audit|verify|explain|grade|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to review, audit, or check a change, fix, or claim before it is trusted
+  When results need verifying with concrete evidence (tests, running the app, logs, screenshots, artifacts) instead of assumption
+  When the user asks to summarize test results or validate whether something actually works
+  When a technical finding, diff, or fix needs explaining in simple grade-5 language for a non-technical reader
+  When a performance or improvement claim needs checking against measured evidence instead of being assumed
+  When the task is pure new code/content authoring or wants a jargon-heavy expert explanation instead — route to a standard implementation or writing workflow
+
+N:performance-profiling
+D:Guide performance profiling for Apple platform apps with Instruments, Xcode diagnostics, and MetricKit. Use when investigating app hangs, stutters, high CPU, memory leaks, memory growth, OOM crashes, slow launch, battery drain, thermal issues, App Store performance readiness, or when adding os_signpost and measurement hooks.
+G:performance|profiling|mengto-skills|codex-workflow
+U[6]:
+  App hangs, stutters, dropped frames, or high CPU usage on an Apple platform app that needs a Time Profiler pass
+  Memory leaks, unbounded memory growth, or OOM crashes that need Leaks, Allocations, or the Memory Graph debugger
+  Slow cold/warm launch or slow time to first frame that needs App Launch instrument analysis
+  Battery drain, thermal throttling, or excess background/network energy use that needs an Energy Log pass
+  Pre-release performance audits that need the full Xcode Diagnostics + MetricKit review checklist, or adding os_signpost measurement hooks
+  Not for general (non-Apple) web/service performance tuning such as bundle size, API latency, or database query plans (use performance-optimization); not for Unity/Unreal engine frame-capture interpretation (use game-performance-profiler)
+
+N:customer-email-draft-threads
+D:Gmail customer support triage with mandatory full-thread read-back before every reply or follow-up, a draft-only default, per-draft Codex project threads, approval-gated final closure replies with eligible optional Trustpilot review invitations, and approval-gated operations for verified DreamCut Discord invite requests. Use when the user asks to run the customer email automation, check unread/recent support emails, review a customer follow-up, prepare or send Gmail replies, close a positively confirmed resolved case, continue a support handoff, create agent/project threads for drafted follow-up, or fulfill DreamCut Discord access requests.
+G:customer|email|draft|threads|mengto-skills|codex-workflow
+U[6]:
+  When triaging Gmail customer support messages and preparing draft-only replies for real customer/person emails
+  When a customer thread needs a full re-read before drafting, revising, or sending a reply or follow-up
+  When closing a positively confirmed, fully resolved case and deciding on an optional Trustpilot review invitation
+  When creating or deduplicating a canonical Codex project thread per drafted email
+  When handling approval-gated affiliate notices or verified DreamCut Discord invite requests
+  When the case is account/access, unsupported-platform, duplicate, cancellation, refund, or accidental-renewal — route to handle-saas-account-cases or handle-saas-billing-cases instead
+
+N:customer-support-verification
+D:Verify customer support work against the selected customer-case flow, full-thread evidence, account and canonical-thread matching, authority, financial approval, customer communication, eligible optional Trustpilot review-request rules, post-action read-back, send confirmation, thread-wide archive, and closure requirements. Use after every SaaS support triage, account/access or unsupported-platform response, duplicate or resolved acknowledgement, positive-confirmation closure reply, cancellation, failed-payment cancellation, refund, accidental-renewal case, support handoff, draft, send, or archive task before reporting completion. Triggers on: verify support case, support closure check, cancellation verification, refund verification, accidental-renewal case, duplicate/resolved acknowledgement, account-access ticket, Trustpilot eligibility, thread read-back before marking done.
+G:customer|support|verification|mengto-skills|codex-workflow
+U[6]:
+  Before reporting completion of a SaaS support triage, account/access, or unsupported-platform draft, send, or archive
+  When closing a duplicate, resolved-acknowledgement, or positive-confirmation case and deciding Trustpilot review eligibility
+  Before or after a cancellation, failed-payment cancellation, refund, or accidental-renewal action, to verify financial approval and post-action read-back
+  When verifying account/canonical-thread matching, authority, and mutation approval before any external state change
+  Before confirming a customer-visible send (exact recipient, subject, body, SENT state) or a thread-wide Gmail archive
+  Not for performing the support scenario itself — load handle-saas-account-cases or handle-saas-billing-cases first and use this only as the final gate
+
+N:write-like-meng-on-x
+D:Write, rewrite, review, or continuously refine X/Twitter posts in Meng To's current voice using his deduplicated authored-post corpus, personal and product context, shared resources, and Content repo evidence. Use when asked to improve a tweet in Meng's tone, draft an original post, reply, thread, resource share, or quote post as Meng, check whether an angle repeats an earlier post, study Meng's writing style, ingest another 20-50 authored posts, or hone the reusable Meng X voice profile.
+G:write|meng|mengto-skills|codex-workflow
+U[6]:
+  Rewriting or polishing a tweet, reply, thread, quote post, resource share, or product post so it reads like Meng To wrote it
+  Drafting an original X post as Meng, grounded only in verified products, workflows, resources, or personal details already in the Content repo
+  Checking whether a new angle repeats an earlier authored post, hook, or recurring belief
+  Ingesting a fresh batch of 20-50 unseen authored X/Twitter posts to keep the voice corpus current
+  Honing or updating the reusable Meng X voice profile after a new batch confirms a pattern
+  Not for generic ghostwriting in someone else's voice or for collecting raw X/Twitter data — use x-twitter-scraper for that instead
+
+N:x-bookmark-quote-posts
+D:Check a user's latest X/Twitter bookmarks and turn recent saved posts into source-backed quote-post drafts calibrated against the user's latest 100 authored posts. Use when asked to review X bookmarks, create quote posts from bookmarks, refresh a bookmark quote queue, run a bookmark quote automation, study a user's X voice, or write first-person quote posts from X sources.
+G:bookmark|quote|posts|mengto-skills|codex-workflow
+U[6]:
+  Reviewing a user's latest X bookmarks and turning them into source-backed, dated quote-post drafts
+  Calibrating draft voice against that specific account's latest 100 authored posts before drafting anything
+  Refreshing or maintaining a dated bookmark quote-post queue file such as data/x-growth/bookmark-quote-posts/YYYY-MM-DD.md
+  Producing a ranked set of 7-10 quote-post drafts (Best Picks / Secondary Picks) plus a suggested-tweet summary table
+  Working through the Codex in-app browser against X under strict no-posting/no-reply/no-mutation rules
+  Not for general X/Twitter data collection, monitoring, or posting — use x-twitter-scraper for raw X data access

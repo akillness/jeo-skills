@@ -12,7 +12,7 @@ Choose **one** packet first.
 | `architecture-packet` | architecture draft, system-shape uncertainty, design tradeoffs | `architecture` or `architecture review gate` | `plannotator`, then `task-planning` |
 | `review-gate-packet` | existing artifact plus review comments or approval blockage | `plannotator` review | `plannotator` |
 | `execution-packet` | approved scope, sprint-plan need, story slicing, milestone prep | `sprint-plan` or `story packet` | `task-planning` |
-| `runtime-handoff-packet` | approved plan, runtime setup, agent execution handoff | runtime handoff | `omc`, `omx`, `ohmg` |
+| `runtime-handoff-packet` | approved plan, runtime setup, agent execution handoff | runtime handoff | `oh-my-claudecode`, `oh-my-codex`, `oh-my-agent` |
 | `brownfield-resume-packet` | live repo, issue URL, partial implementation, stale docs, unclear current state | `workflow-status` update, repo-state summary, then smallest missing artifact | `task-planning`, `plannotator`, runtime overlays |
 
 ## Brownfield rule
@@ -38,7 +38,7 @@ Use when the correct artifact already exists and the next real blocker is review
 ### Route to `task-planning`
 Use when the next artifact is already clear and the remaining work is execution slicing, backlog cleanup, sprint prep, or milestone planning.
 
-### Route to `omc`, `omx`, or `ohmg`
+### Route to `oh-my-claudecode`, `oh-my-codex`, or `oh-my-agent`
 Use when the plan is ready and the real question is runtime-native execution, settings/rules/hooks, or agent orchestration behavior.
 
 ### Route to `bmad-gds`
