@@ -1,0 +1,19 @@
+---
+name: skill-standardization
+description: >
+  Standardize and validate SKILL.md files against the Agent Skills specification
+  (agentskills.io). Use when creating or rewriting a skill, auditing an existing
+  skill for spec compliance, sharpening trigger descriptions, canonicalizing
+  overlapping skills into a canonical skill plus compatibility alias, or checking
+  whether derived discovery surfaces (`skills.json`, README/setup inventories,
+  `SKILL.compact.md`) still match the live skill folders. In
+  repo-root maintenance loops, prefer truthful validator commands instead of bare
+  `scripts/...` examples. Triggers on: "validate skill", "create SKILL.md",
+  "check skill spec", "skill frontmatter", "improve skill description",
+  "catalog sync", "compact skill drift", "canonical skill".
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: Designed for Claude Code and compatible agent clients with filesystem access
+metadata:
+  tags: skill-management, standardization, validation, agentskills-spec, automation, deduplication, catalog-sync
+  version: "2.3"
+---

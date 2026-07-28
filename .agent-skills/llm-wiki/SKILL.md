@@ -44,19 +44,25 @@ Create the wiki skeleton first:
 bash scripts/bootstrap-vault.sh /path/to/vault
 ```
 
-Under the `jeo` runtime, do not invent a new vault location: the tool-flow rule
-(`~/.agents/rules/jeo-tool-flow.md`) and the post-turn ingest hook both resolve
-the vault from `$LLM_WIKI_VAULT`, defaulting to `~/vaults/llm-wiki`. Pass that
-same path to `bootstrap-vault.sh` so the skill's vault and jeo's fixed global
-wiki stay one and the same:
+Under the `jeo` runtime, do not invent a new vault location. The vault is
+**project-scoped**: the tool-flow rule (`~/.agents/rules/jeo-tool-flow.md`) and
+the ingest hook both resolve it as `$LLM_WIKI_VAULT` → `<obsidian-mind
+vault>/llm-wiki`, where the obsidian-mind vault is `$OBSIDIAN_MIND_VAULT` → the
+git toplevel of the current directory → `~/vaults/obsidian-mind` outside any git
+repo. So each repository owns its own wiki at `<repo>/llm-wiki/`. Pass that same
+path to `bootstrap-vault.sh` so the skill's vault and the hook's vault stay one
+and the same:
 
 ```bash
-bash scripts/bootstrap-vault.sh "${LLM_WIKI_VAULT:-$HOME/vaults/llm-wiki}"
+OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$HOME/vaults/obsidian-mind")}"
+bash scripts/bootstrap-vault.sh "${LLM_WIKI_VAULT:-$OM_VAULT/llm-wiki}"
 ```
 
 `setup-all-skills-prompt.md` (Step 3e / Step 6) already calls this script with
-that exact path during install, so a fresh `jeo` setup and a manual bootstrap
-never diverge.
+that exact resolution during install, and `hooks/ingest-prompt.py` bootstraps a
+missing vault on the first captured prompt in any other repo, so a fresh `jeo`
+setup and a manual bootstrap never diverge.
+
 
 The bootstrap creates:
 

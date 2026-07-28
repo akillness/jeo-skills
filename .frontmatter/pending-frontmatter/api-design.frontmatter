@@ -1,0 +1,20 @@
+---
+name: api-design
+description: >-
+  Design or refactor API contracts for REST and GraphQL systems. Use when the user
+  needs resource boundaries, naming, status codes, pagination, filtering,
+  idempotency, or error models decided before implementation starts; when an
+  OpenAPI or GraphQL SDL contract must exist first; when versioning and
+  backward-compatibility tradeoffs need a decision; or when an implementation-ready
+  contract packet must be handed to backend, frontend, QA, or partner teams.
+  Triggers on: API design, REST contract, GraphQL schema, OpenAPI, SDL, resource
+  modeling, endpoint naming, status codes, pagination, filtering, idempotency,
+  error model, API versioning, backward compatibility, breaking change.
+license: Apache-2.0
+allowed-tools: Bash Read Write Edit Glob Grep
+metadata:
+  version: 1.1.0
+  author: Agent Skills Team
+  tags: api-design, REST, GraphQL, OpenAPI, contract-design, versioning, backend
+  platforms: Claude, ChatGPT, Gemini
+---

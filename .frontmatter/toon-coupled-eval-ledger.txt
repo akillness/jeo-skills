@@ -1,0 +1,61 @@
+# TOON-coupled eval ledger (N16)
+#
+# These eval rows assert that a response mentions SKILL.toon. Once H1 deletes
+# that asset the assertions invert: the better the migration works, the worse
+# these evals score. Left frozen, the instrument would punish the treatment.
+#
+# Three-condition seal (architect determination, ralplan stage_n=4):
+#   (a) edited BEFORE the B0 eval freeze — never after, or it is self-grading
+#   (b) TOON token substitution/removal ONLY; the assertion axis stays identical
+#   (c) every touched row is listed here and signed off by the architect lane
+#
+# Scope correction: the plan recorded 5 rows in 1 file. Measured 7 rows in 2
+# files — unity-gamedev-skill-pack/evals/evals.json:27,29 opens the same C5
+# misjudgement path. Those two are REMOVALS, not substitutions: the sentence
+# enumerates package contents ("includes SKILL.md, SKILL.toon, evals"), so the
+# item is dropped rather than renamed.
+#
+# Applied in: L4 (A-lite), before B0.
+# Lifecycle: removed from ci.yml at D4 together with rule F.
+
+file: .agent-skills/skill-standardization/evals/evals.json
+line: 65
+field: prompt
+action: substitute
+note: "I also ship SKILL.toon for runtime discovery" -> drop the TOON clause; the prompt still asks what to validate before calling standardization done
+
+file: .agent-skills/skill-standardization/evals/evals.json
+line: 66
+field: expected_output
+action: substitute
+note: "treats SKILL.toon / SKILL.compact.md as derived discovery surfaces" -> "treats SKILL.compact.md as a derived discovery surface"; the derived-surface axis is unchanged
+
+file: .agent-skills/skill-standardization/evals/evals.json
+line: 68
+field: assertion
+action: substitute
+note: "refreshing or reviewing SKILL.toon or SKILL.compact.md" -> "refreshing or reviewing SKILL.compact.md"
+
+file: .agent-skills/skill-standardization/evals/evals.json
+line: 81
+field: assertion
+action: substitute
+note: "such as SKILL.toon freshness, manifest command residue, or README/setup discovery wording" -> drop the TOON example, keep the other two; the assertion still requires one manual review item beyond the scripts
+
+file: .agent-skills/skill-standardization/evals/evals.json
+line: 100
+field: assertion
+action: substitute
+note: "only refreshing skills.json, README/setup, or SKILL.toon" -> "only refreshing skills.json or README/setup"; the alias-sync distinction is unchanged
+
+file: .agent-skills/unity-gamedev-skill-pack/evals/evals.json
+line: 27
+field: expected_output
+action: remove
+note: "includes SKILL.md, SKILL.toon, evals, and validation checkpoints" -> "includes SKILL.md, evals, and validation checkpoints"; enumeration item removed, not renamed
+
+file: .agent-skills/unity-gamedev-skill-pack/evals/evals.json
+line: 29
+field: assertion
+action: remove
+note: "local package structure (SKILL.md, SKILL.toon, evals/evals.json)" -> "local package structure (SKILL.md, evals/evals.json)"; enumeration item removed, not renamed

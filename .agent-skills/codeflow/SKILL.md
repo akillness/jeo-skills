@@ -67,7 +67,8 @@ result (or wire the self-updating CodeFlow Card onto a README).
 - The user wants a **routing-first repo-navigation packet** for
   definitions/references/impact before refactoring → use `codebase-search`
 - The user wants a **durable, regenerable knowledge graph** committed to the
-  repo (`graphify-out/`) rather than a throwaway browser view → use `graphify`
+  repo (`.graphify/`) rather than a throwaway browser view → use `graphify`
+
 - The user wants a **deep, language-accurate static-analysis / call graph** —
   CodeFlow's dependency analysis is heuristic (name-matched functions, scoped
   by file + explicit imports) and may miss dynamic imports or renamed runtime

@@ -1,0 +1,19 @@
+---
+name: data-analysis
+description: >-
+  Analyze datasets to extract insights, identify patterns, and generate reports. Use
+  when exploring a dataset, export, report extract, query result, or shaped event or
+  telemetry table for evidence-backed conclusions; when the task is to understand
+  what changed, compare segments, summarize performance, or explain anomalies in
+  business terms; or when data-quality checks must precede conclusions. Route
+  repeated anomaly or code-pattern scanning to pattern-detection, BI dashboard work
+  to looker-studio-bigquery, repository navigation to codebase-search, and log or
+  incident triage to log-analysis. Triggers on: CSV, JSON, SQL tables, retention,
+  cohorts, funnels, conversion, spend, telemetry, event exports, KPIs, data quality,
+  analysis narrative.
+allowed-tools: Read Grep Glob Bash
+metadata:
+  tags: data-analysis, csv, sql, notebooks, telemetry, experimentation, analytics
+  platforms: Claude, ChatGPT, Gemini, Codex
+  version: 2.0
+---

@@ -1,0 +1,40 @@
+# Link-check exclusion ledger (A0-d)
+#
+# G10 budget: 15 entries. Exceeding it demotes rule 7b (inline code spans) to
+# report-only, because a large ledger means the rule is mis-scoped rather than
+# the catalog being broken.
+#
+# Format: <path>:<line>   # reason
+# Line numbers are authoritative from .frontmatter/link-census.tsv and are
+# refreshed by re-running `python3 scripts/link_targets.py --report-only`.
+#
+# Every entry here is a documentation example or an upstream artifact — a target
+# that is CORRECTLY absent from this repo. Genuine broken links are repaired in
+# L1, never excluded.
+
+# --- entry #1 (plan-designated) -------------------------------------------
+# okf documents its own link conventions; this line is the counter-example in
+# prose ("`/tables/customers.md` survives file moves; `../tables/customers.md`
+# silently breaks"). The target is meant not to exist.
+.agent-skills/okf/SKILL.md:415
+
+# --- illustrative examples in prose ---------------------------------------
+# codeflow explains that `[text](./relative.md)` becomes a graph edge; the path
+# is syntax illustration, not a link.
+.agent-skills/codeflow/SKILL.md:57
+.agent-skills/codeflow/references/features.md:18
+# okf usage sample uses the literal token `URL` as a placeholder.
+.agent-skills/okf/references/usage.md:59
+# yuwen-publish-precheck case README shows a user-supplied rules path.
+.agent-skills/yuwen-publish-precheck/data/cases/README.md:16
+
+# --- upstream repository artifacts ----------------------------------------
+# scientific-llm-benchmarks/references/benchmarks.md documents the UPSTREAM
+# repo layout (data/benchmarks.yaml, CONTRIBUTING.md, LICENSE); those files live
+# in the upstream project, not in jeo-skills.
+.agent-skills/scientific-llm-benchmarks/references/benchmarks.md:222
+.agent-skills/scientific-llm-benchmarks/references/benchmarks.md:226
+# vox-director README is the upstream README: the packaged .skill bundle and
+# LICENSE are release artifacts, not vendored files.
+.agent-skills/vox-director/README.md:80
+.agent-skills/vox-director/README.md:126

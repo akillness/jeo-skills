@@ -1,0 +1,22 @@
+---
+name: api-documentation
+description: >-
+  Publish or refresh developer-facing API documentation for REST, GraphQL, webhook,
+  SDK, and portal surfaces. Use when reference pages, quickstarts, or portal
+  structure must be usable by external developers, partners, or internal
+  integrators; when an OpenAPI or schema artifact already exists but the docs need
+  examples, auth/setup guidance, error handling, or clearer navigation; when docs
+  drifted after auth, versioning, retry, pagination, webhook, or SDK changes; or
+  when a large API surface needs grouping and selective publishing instead of one
+  giant reference dump. Triggers on: API docs, developer portal, quickstart,
+  OpenAPI reference, SDK guide, webhook docs, integration guide, docs drift,
+  migration notes.
+license: MIT
+allowed-tools: Read Write Edit Glob Grep
+metadata:
+  tags: api-documentation, developer-docs, openapi, swagger, graphql, webhooks, sdk-docs, developer-portal, integration-guides
+  platforms: Claude, ChatGPT, Gemini
+  version: 2.1.0
+  modernization: 2026-04-13
+  structural_hardening: 2026-04-17
+---
