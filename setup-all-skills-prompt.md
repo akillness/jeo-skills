@@ -2140,9 +2140,14 @@ if command -v python3 &>/dev/null && python3 -c 'import sys; sys.exit(0 if sys.v
   if command -v uv &>/dev/null; then
     uv venv --python 3.12 "$OPENSPACE_VENV" 2>/dev/null || uv venv "$OPENSPACE_VENV" 2>/dev/null || true
     uv pip install -e "$OPENSPACE_HOME" --python "$OPENSPACE_VENV/bin/python" 2>&1 | tail -2
+    # rank_bm25 is not a hard dependency, but without it the BM25 stage degrades to a
+    # token-overlap fallback that only really matches a skill's own name — the search
+    # answers, it just stops finding the right skill.
+    uv pip install rank_bm25 --python "$OPENSPACE_VENV/bin/python" 2>&1 | tail -1
   else
     python3 -m venv "$OPENSPACE_VENV" 2>/dev/null || true
     "$OPENSPACE_VENV/bin/python" -m pip install -e "$OPENSPACE_HOME" 2>&1 | tail -2
+    "$OPENSPACE_VENV/bin/python" -m pip install rank_bm25 2>&1 | tail -1
   fi
   OPENSPACE_MCP_BIN="$OPENSPACE_VENV/bin/openspace-mcp"
   if [ -x "$OPENSPACE_MCP_BIN" ]; then
@@ -2583,6 +2588,79 @@ if [ -x "$_HOME/.agents/venvs/openspace/bin/openspace-mcp" ] || command -v opens
     mcp_probe "openspace" "$( command -v openspace-mcp || echo "$_HOME/.agents/venvs/openspace/bin/openspace-mcp" )"
 else
   echo "⚠️  openspace-mcp not built — re-run Step 3l (it installs into a venv; system pip fails on PEP 668)"
+fi
+# 3. OpenSpace must actually RETRIEVE, not merely answer initialize. A handshake proves the
+# process starts; it says nothing about whether search_skills returns the right skill. The
+# BM25 stage needs rank_bm25 and the re-rank stage needs an embedding key, and either one
+# missing degrades search to "matches its own name" — silently.
+if [ -x "$_HOME/.agents/venvs/openspace/bin/openspace-mcp" ] || command -v openspace-mcp &>/dev/null; then
+  OPENSPACE_MCP_BIN="$( command -v openspace-mcp || echo "$_HOME/.agents/venvs/openspace/bin/openspace-mcp" )"
+  OPENSPACE_MCP_BIN="$OPENSPACE_MCP_BIN" SKILLS_ROOT="$SKILLS_ROOT" \
+  OPENSPACE_WORKSPACE="${OPENSPACE_HOME:-$_HOME/.openspace/OpenSpace}" python3 - <<'PY'
+import json, os, subprocess, sys
+
+bin_path = os.environ["OPENSPACE_MCP_BIN"]
+env = dict(os.environ, OPENSPACE_HOST_SKILL_DIRS=os.environ["SKILLS_ROOT"],
+           OPENSPACE_CLOUD_MODE=os.environ.get("OPENSPACE_CLOUD_MODE", "local"))
+# The probe queries by intent, never by skill name: a name query passes even when ranking
+# is dead, which is exactly the failure this gate exists to catch.
+QUERY, EXPECTED = "scrape a javascript rendered page and extract structured data", "scrapling"
+proc = subprocess.Popen([bin_path], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                        stderr=subprocess.DEVNULL, text=True, env=env)
+
+
+def send(obj):
+    proc.stdin.write(json.dumps(obj) + "\n")
+    proc.stdin.flush()
+
+
+def read():
+    for line in proc.stdout:
+        line = line.strip()
+        if line.startswith("{"):
+            return json.loads(line)
+    return None
+
+
+try:
+    send({"jsonrpc": "2.0", "id": 1, "method": "initialize",
+          "params": {"protocolVersion": "2024-11-05", "capabilities": {},
+                     "clientInfo": {"name": "jeo-verify", "version": "1"}}})
+    read()
+    send({"jsonrpc": "2.0", "method": "notifications/initialized", "params": {}})
+    send({"jsonrpc": "2.0", "id": 2, "method": "tools/call",
+          "params": {"name": "search_skills", "arguments": {"query": QUERY, "limit": 10}}})
+    reply = read() or {}
+    text = "".join(c.get("text", "") for c in reply.get("result", {}).get("content", []))
+    results = json.loads(text).get("results", [])
+except Exception as exc:
+    print(f"❌ openspace search_skills failed: {exc}")
+    sys.exit(0)
+finally:
+    try:
+        proc.stdin.close()
+        proc.terminate()
+        proc.wait(timeout=10)
+    except Exception:
+        proc.kill()
+
+names = [r.get("name") for r in results]
+unranked = bool(results) and all(float(r.get("score") or 0) == 0.0 for r in results)
+venv_python = os.path.join(os.path.dirname(os.path.realpath(bin_path)), "python")
+
+if not names:
+    print("❌ openspace search_skills returned nothing — is OPENSPACE_HOST_SKILL_DIRS pointing at the skills root?")
+elif unranked:
+    # Every candidate scoring 0.0 means the ranking stages are off, so whatever order came
+    # back is arbitrary. Report the cause, not the symptom.
+    print("❌ openspace answers but does not rank — every result scored 0.0, so retrieval is arbitrary")
+    print(f"    BM25 backend:   {venv_python} -m pip install rank_bm25")
+    print("    semantic stage: export OPENAI_API_KEY (or OPENROUTER_API_KEY) for the embedding re-rank")
+elif EXPECTED not in names:
+    print(f"❌ openspace ranked, but missed '{EXPECTED}' for an intent query — got: {', '.join(names[:5])}")
+else:
+    print(f"✅ openspace retrieves by intent ('{EXPECTED}' in top {len(names)}, ranking active)")
+PY
 fi
 rm -rf "$TOOLFLOW_TMP"
 
