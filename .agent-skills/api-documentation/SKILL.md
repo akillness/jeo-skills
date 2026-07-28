@@ -1,8 +1,9 @@
 ---
 name: api-documentation
 description: >-
-  Publish or refresh developer-facing API documentation for REST, GraphQL, webhook, SDK, and
-  portal surfaces...
+  Use this skill when the main job is publishing or refreshing developer-facing API docs that help
+  integrators reach first success, understand reference truth, and stay unblocked as the API
+  evolves.
 license: MIT
 allowed-tools: Read Write Edit Glob Grep
 metadata:

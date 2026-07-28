@@ -52,6 +52,11 @@ def load_manifest(repo_root: Path) -> tuple[dict[str, Any], list[dict[str, Any]]
     return manifest, skills, categories
 
 
+def manifest_descriptions(repo_root: Path) -> dict[str, str]:
+    manifest = json.loads((repo_root / ".agent-skills" / "skills.json").read_text(encoding="utf-8"))
+    return {s["name"]: str(s.get("description", "")) for s in manifest["skills"]}
+
+
 def validate_manifest(repo_root: Path) -> tuple[list[str], dict[str, list[str]]]:
     manifest, skills, categories = load_manifest(repo_root)
     declared_count = manifest["skill_count"]
@@ -277,9 +282,12 @@ def validate_toon(repo_root: Path, skill_names: list[str]) -> int:
 MAX_DESCRIPTION = 1024
 MIN_DESCRIPTION = 25
 STRAY_SCALARS = {">", "|", ">-", "|-", ">+", "|+", "-", ""}
+# An earlier generator cut descriptions mid-sentence and cached the fragment in the
+# manifest; both shapes pass a naive length check but publish text no agent can use.
+TRUNCATION_SUFFIXES = ("...", "…")
 
 
-def validate_skill_documents(repo_root: Path, skill_names: list[str]) -> int:
+def validate_skill_documents(repo_root: Path, skill_names: list[str], manifest_descriptions: dict[str, str]) -> int:
     try:
         import yaml
     except ImportError:
@@ -303,6 +311,11 @@ def validate_skill_documents(repo_root: Path, skill_names: list[str]) -> int:
         require(description not in STRAY_SCALARS, f"{name}: description is the placeholder {description!r} — run scripts/repair-skill-frontmatter.py")
         require(len(description) >= MIN_DESCRIPTION, f"{name}: description is {len(description)} chars; agents cannot match on it")
         require(len(description) <= MAX_DESCRIPTION, f"{name}: description is {len(description)} chars, over the 1024-character limit")
+        require(not description.endswith(TRUNCATION_SUFFIXES), f"{name}: description is cut off mid-sentence ({description[-40:]!r}) — run scripts/repair-skill-frontmatter.py")
+        # SKILL.md is what agent runtimes load; skills.json feeds README/TOON and
+        # external consumers. Drift means the catalog advertises text no agent sees.
+        manifest_description = " ".join(manifest_descriptions.get(name, "").split())
+        require(manifest_description == " ".join(description.split()), f"{name}: skills.json description differs from SKILL.md — run scripts/repair-skill-frontmatter.py")
         checked += 1
     return checked
 
@@ -316,7 +329,7 @@ def main() -> int:
     try:
         skill_names, categories = validate_manifest(repo_root)
         toon_records = validate_toon(repo_root, skill_names)
-        loadable = validate_skill_documents(repo_root, skill_names)
+        loadable = validate_skill_documents(repo_root, skill_names, manifest_descriptions(repo_root))
         validate_readme(repo_root / "README.md", "## 📚 Skills List", ENGLISH_HEADINGS, categories, len(skill_names))
         validate_readme(repo_root / "README.ko.md", "## 📚 스킬 목록", KOREAN_HEADINGS, categories, len(skill_names))
     except ValidationError as error:

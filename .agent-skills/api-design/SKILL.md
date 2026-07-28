@@ -1,7 +1,7 @@
 ---
 name: api-design
 description: >-
-  Design or refactor API contracts for REST and GraphQL systems. Use when the user needs resou...
+  Design or refactor API contracts for REST and GraphQL systems.
 license: Apache-2.0
 allowed-tools: Bash Read Write Edit Glob Grep
 metadata:

@@ -3,9 +3,9 @@
 <div align="center">
 
 [![Skills](https://img.shields.io/badge/Skills-174-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**149개 로컬 스킬 폴더 · 설치 가능 스킬 149개 · TOON 포맷 · 멀티플랫폼**
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 149개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 149개 로컬 스킬 폴더 = 총 149개 설치 가능 스킬
+**174개 로컬 스킬 폴더 · 설치 가능 스킬 174개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 174개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 174개 로컬 스킬 폴더 = 총 174개 설치 가능 스킬
 ### 🎬 창의 미디어 (10개)
 
 | `drawio` |
@@ -19,17 +19,17 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 | `vox-director` |
 | `webtoon-harness` |
 
-├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 174개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**149개 로컬 스킬 폴더 · 설치 가능 스킬 149개 · TOON 포맷 · 멀티플랫폼**
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 149개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 149개 로컬 스킬 폴더 = 총 149개 설치 가능 스킬
-├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+**174개 로컬 스킬 폴더 · 설치 가능 스킬 174개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 174개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 174개 로컬 스킬 폴더 = 총 174개 설치 가능 스킬
+├── .agent-skills/          ← 174개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -40,9 +40,9 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 149개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 149개 로컬 스킬 폴더 = 총 149개 설치 가능 스킬
-├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 174개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 174개 로컬 스킬 폴더 = 총 174개 설치 가능 스킬
+├── .agent-skills/          ← 174개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo 에이전트와 전설의 장비 세트
@@ -205,8 +205,8 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 149개 로컬 스킬 폴더 = 총 149개 설치 가능 스킬
-├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 174개 로컬 스킬 폴더 = 총 174개 설치 가능 스킬
+├── .agent-skills/          ← 174개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 ### 🎯 핵심 오케스트레이션 (7개)
 
@@ -697,7 +697,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 174개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
