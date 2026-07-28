@@ -161,7 +161,7 @@ rtk init -g
 
 > Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 152 local skill folders = 152 total installable skills
 
-### 🎬 Creative Media (9)
+### 🎬 Creative Media (10)
 
 | `drawio` |
 | `gbro-collage-broll` |
@@ -169,17 +169,17 @@ rtk init -g
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
+| `video-production` |
 | `video-shotcraft` |
 | `vox-director` |
 | `webtoon-harness` |
 
 ├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
 
-### 🎯 Core Orchestration (8)
+### 🎯 Core Orchestration (7)
 
 | Skill |
 |-------|
-| `autopilot` |
 | `bmad` |
 | `bmad-gds` |
 | `bmad-idea` |
@@ -727,6 +727,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **No more platform-exclusive skills** | With `omc` / `ohmg` / `omx` gone, the manifest is a single shared catalog. Step 1 of `setup-all-skills-prompt.md` now installs everything, the Step 2 platform-install block was replaced by a stray-copy audit, and Step 4's platform dedup check became a shared-root shadow check. |
 | **Step 3g reduced to OpenCode plugin setup** | The `oh-my-claudecode`, `oh-my-codex` (OMX), and `oh-my-agent` (OMA) installers existed only to back the removed routing skills and were dropped; the `oh-my-openagent` (OMO) block is unchanged. `scripts/test-runtime-config-writers.sh` replaced its OMX handoff case with a no-config-mutation check and still passes all 25 cases. |
 | **obsidian-mind / web-game-development descriptions trimmed** | Both shipped with frontmatter descriptions over the 1024-character limit, which makes a skill invisible to `skills add`. Rewritten under the cap with their trigger keywords intact. |
+| **Dangling route-outs rewired** | Every surviving skill that routed to a removed skill was repointed. `autopilot` was removed as the last orphan of the `$team` / `$ultrawork` / `$ultraqa` exact-name shim family; `video-production` was restored. `ui-component-patterns` scope moved into `design-system`, `web-design-guidelines` into `web-accessibility` (broad-review mode), `user-guide-writing` into `technical-writing` (end-user guide mode), `workflow-automation` into `deployment-automation` (CI/release-job authoring), `vibe-kanban` into `task-planning` / `triage`, and `omc` / `omx` / `ohmg` into their external product names (`oh-my-claudecode` / `oh-my-codex` / `oh-my-agent`). `deep-dive` and `deepinit` were left alone — their `.omc` / `.omx` references are runtime state paths, not skills. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

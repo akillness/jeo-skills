@@ -8,7 +8,7 @@
       "assertions": [
         "Output classifies the request as a technical spec or equivalent pre-implementation design mode",
         "Output includes rollout and rollback guidance",
-        "Output does not route this request to user-guide-writing or changelog-maintenance"
+        "Output does not route this request to changelog-maintenance"
       ]
     },
     {
@@ -34,9 +34,9 @@
     {
       "id": 4,
       "prompt": "Write a beginner tutorial with screenshots that shows customers how to export their data.",
-      "expected_output": "The skill routes the request to user-guide-writing because it is end-user onboarding/help content, not internal technical documentation.",
+      "expected_output": "The skill handles the request in end-user guide mode because it is onboarding/help content rather than an internal spec.",
       "assertions": [
-        "Output routes the request to user-guide-writing or explicitly declines technical-writing as the main skill",
+        "Output selects end-user guide mode instead of an internal spec/ADR/runbook shape",
         "Output explains the boundary with end-user tutorials",
         "Output does not claim this is an internal spec, ADR, runbook, migration guide, or internal developer guide"
       ]

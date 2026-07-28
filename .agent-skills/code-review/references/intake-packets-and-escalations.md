@@ -48,7 +48,7 @@ Look for:
 - maintainability issues even if the visuals look fine
 
 Escalate when:
-- the next task is pure design governance → `web-design-guidelines`
+- the next task is pure design governance → `web-accessibility`
 - the next task is accessibility remediation → `web-accessibility`
 
 ## CI bot / reviewdog / static-analysis packet

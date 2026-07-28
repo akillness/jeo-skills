@@ -34,7 +34,7 @@ Look for:
 - one honest recommendation for when to stop bridging and publish/package properly
 
 Route out when:
-- the next job is wiring scripts or repeatable repo automation around the chosen flow → `workflow-automation`
+- the next job is wiring scripts or repeatable repo automation around the chosen flow → `deployment-automation`
 
 ## `private-auth-packet`
 Use when the install path is private and auth parity is the real blocker.
@@ -83,7 +83,7 @@ Good outcomes:
 - route away from raw Git when the package root / monorepo layout makes that misleading
 
 Route out when:
-- the main job is monorepo automation or task-runner wiring → `workflow-automation`
+- the main job is monorepo automation or task-runner wiring → `deployment-automation`
 
 ## `durable-distribution-packet`
 Use when the package is no longer a one-off bridge and multiple repos, teammates, CI, or production depend on it routinely.
@@ -106,7 +106,7 @@ Route out when:
 |---|---|
 | How should we consume this Node package right now? | `npm-git-install` |
 | How do we fix the branch/history state behind the dependency? | `git-workflow` |
-| How do we run or automate the chosen install/release flow in the repo? | `workflow-automation` |
+| How do we run or automate the chosen install/release flow in the repo? | `deployment-automation` |
 | How do we administer repos, releases, packages, or package hosts? | `github-repo-management` |
 | How do we provision the machine/runtime/container so installs work at all? | `system-environment-setup` |
 

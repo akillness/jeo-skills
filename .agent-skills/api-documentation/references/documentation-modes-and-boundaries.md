@@ -69,7 +69,7 @@ Typical signals:
 |---|---|
 | Resource modeling, interface shape, versioning strategy, or contract design | `api-design` |
 | Internal specs, ADRs, rollout plans, runbooks, migration procedures | `technical-writing` |
-| End-user onboarding, help-center articles, screenshots, or UI how-to docs | `user-guide-writing` |
+| End-user onboarding, help-center articles, screenshots, or UI how-to docs | `technical-writing` |
 | Provider auth setup, token/session implementation, middleware, or login flows | `authentication-setup` |
 | Release-note summaries, semver communication, or CHANGELOG.md upkeep | `changelog-maintenance` |
 

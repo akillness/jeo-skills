@@ -5,9 +5,9 @@ The `bmad` skill should stay vendor-neutral at the core. Runtime overlays and sp
 ## Runtime overlays
 | Need | Use this |
 |------|----------|
-| Claude-first orchestration, hooks, team runtime, stop callbacks | `omc` |
-| Codex-first workflow skills, AGENTS injection, tmux team runtime | `omx` |
-| Gemini / Antigravity portable harness with `.agents/` source of truth | `ohmg` |
+| Claude-first orchestration, hooks, team runtime, stop callbacks | `oh-my-claudecode` |
+| Codex-first workflow skills, AGENTS injection, tmux team runtime | `oh-my-codex` |
+| Gemini / Antigravity portable harness with `.agents/` source of truth | `oh-my-agent` |
 
 Rule: let `bmad` choose the next phase artifact, then route runtime-specific execution/setup to the matching overlay.
 

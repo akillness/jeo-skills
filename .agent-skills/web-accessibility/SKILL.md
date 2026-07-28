@@ -6,15 +6,15 @@ description: >
   keyboard/focus, labels/announcements, visual perception/reflow, media
   alternatives, or routed-app navigation feedback — and turning vague audit,
   WCAG, axe/Lighthouse, or "make this accessible" requests into one concrete
-  remediation packet. Route broad UI critique to `web-design-guidelines`,
-  component API architecture to `ui-component-patterns`, responsive layout
-  strategy to `responsive-design`, and system governance to `design-system`.
+  remediation packet. Broad UI critique for hierarchy, polish, and
+  launch readiness belongs here too. Route component API architecture and system
+  governance to `design-system`, and responsive layout strategy to
+  `responsive-design`.
 allowed-tools: Read Write Bash Grep Glob
 compatibility: >
   Best for frontend and fullstack web work where the primary task is
-  accessibility remediation or manual-vs-automated verification. Not for broad
-  UI polish reviews, reusable component API architecture, or viewport-first
-  layout strategy as the main owner.
+  accessibility remediation or manual-vs-automated verification. Not for reusable component API
+  architecture or viewport-first layout strategy as the main owner.
 license: MIT
 metadata:
   tags: accessibility, a11y, wcag, aria, keyboard-navigation, focus-management, screen-reader, frontend
@@ -51,8 +51,7 @@ Read these support docs first:
 - Screen-reader, keyboard-only, or zoom/reflow issues are suspected, but ownership and next checks are unclear
 
 ## When not to use this skill
-- **The main task is broad UI polish, heuristic review, hierarchy, or interface consistency** → `web-design-guidelines`
-- **The main task is reusable primitive / slot / variant API design or component-family ownership** → `ui-component-patterns`
+- **The main task is reusable primitive / slot / variant API design or component-family ownership** → `design-system`
 - **The main task is viewport adaptation, breakpoint strategy, container-query planning, or layout overflow control** → `responsive-design`
 - **The main task is token governance, contribution rules, or system-wide frontend standards** → `design-system`
 - **The task is only to run one tool and paste raw results**; run the tool directly, then return here to prioritize remediation and manual follow-up
@@ -160,8 +159,8 @@ Use these route-outs when the problem crosses boundaries:
 
 | If the real job is... | Route to... |
 |---|---|
-| broad UI/design review, hierarchy, polish, or guideline compliance | `web-design-guidelines` |
-| reusable component API / primitive ownership / slot-variant design | `ui-component-patterns` |
+| broad UI/design review, hierarchy, polish, or guideline compliance | owned here, in broad-review mode |
+| reusable component API / primitive ownership / slot-variant design | `design-system` |
 | viewport/container layout strategy or breakpoint planning | `responsive-design` |
 | token governance or system-wide frontend standards | `design-system` |
 | React/Next performance or hydration behavior | `react-best-practices` |
@@ -198,11 +197,11 @@ A strong answer from this skill should:
 
 ### Example 3: component-boundary confusion
 **Input**
-> Our button primitive API is messy and some variants are not accessible. Is this web-accessibility or ui-component-patterns?
+> Our button primitive API is messy and some variants are not accessible. Is this web-accessibility or design-system?
 
 **Output direction**
 - keep accessible-name, focus-state, and disabled/loading announcement fixes in `web-accessibility`
-- route primitive API / variant ownership to `ui-component-patterns`
+- route primitive API / variant ownership to `design-system`
 - split the plan instead of forcing one skill to own everything
 
 ### Example 4: manual checks after Lighthouse

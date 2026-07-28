@@ -1,5 +1,5 @@
 N:deep-research
-D:Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep (parallel per-item investigation + field-coverage validation), report (TOC + per-field markdown), web-search (research agent + 5 routed source modules). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research`
+D:Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep (parallel per-item investigation + field-coverage validation), report (TOC + per-field markdown), web-search (research agent + 5 routed source modules). Plugin: npx skills add https://github.com/akillness/jeo-skills --skill deep-research
 G:deep-research structured-research research-outline web-search literature-review benchmark competitor-analysis due-diligence parallel-agents report-generation human-in-the-loop
 
 P[4]{phase,pipeline}:
@@ -24,4 +24,4 @@ ROUTE-OUT:
   Research-to-publication with citation gates → academic-research
   Autonomous ML experiment search → autoresearch
   Token-efficient repo code search → semble
-  Multi-agent build/verify orchestration → omc / omx / ohmg
+  Multi-agent build/verify orchestration → oh-my-claudecode / oh-my-codex / oh-my-agent

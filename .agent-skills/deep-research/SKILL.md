@@ -80,7 +80,7 @@ and Codex — `WITH_UPSTREAM=1 bash scripts/install.sh` clones and copies them.
 
 - A one-off factual question or single-source lookup → just use web search
 - Full academic research-to-publication with citation gates and reviewer rounds → use `academic-research`
-- Multi-agent build/verify orchestration of code → use `omc` / `omx` / `ohmg`
+- Multi-agent build/verify orchestration of code → use `oh-my-claudecode` / `oh-my-codex` / `oh-my-agent`
 - Token-efficient code discovery inside a repo → use `semble`
 - Karpathy-style autonomous ML experiment search → use `autoresearch`
 
@@ -173,6 +173,6 @@ Close with a one-line **Next step** pointing to the next phase (outline →
 | Research-to-publication with citation gates + reviewer rounds | `academic-research` |
 | Autonomous ML experiment search (Karpathy-style) | `autoresearch` |
 | Token-efficient code search across a repo | `semble` |
-| Multi-agent build/verify orchestration | `omc` / `omx` / `ohmg` |
+| Multi-agent build/verify orchestration | `oh-my-claudecode` / `oh-my-codex` / `oh-my-agent` |
 | Persistent knowledge capture / wiki | `llm-wiki` / `okf` / `obsidian` |
 | Editable diagrams / charts as artifacts | `drawio` / `mermaid` / `slides-grab` |

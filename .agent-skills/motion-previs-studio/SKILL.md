@@ -35,7 +35,7 @@ Assist with Motion Previs Studio v4 — the open-source desktop app for extracti
 
 ## When not to use this skill
 
-- **Pure Blender scripting**: Use `blender` or `ui-component-patterns` skills instead
+- **Pure Blender scripting**: Use `blender` or `design-system` skills instead
 - **ComfyUI node development**: Use `ai-video-generation` or similar AI-video skills
 - **General desktop app UX**: Use `ui-design-guidelines` or `responsive-design`
 - **CI/CD for unrelated projects**: Use `deployment-automation` or `git-workflow`

@@ -50,5 +50,5 @@ Rule of thumb: `performance-optimization` can classify the broader problem, but 
 ## Route to implementation skills
 Use stack-specific implementation skills when the bottleneck is already isolated and the next step is mainly doing the change:
 - `database-schema-design` for schema/index/data-model design
-- `react-best-practices`, `state-management`, or `ui-component-patterns` for frontend structural implementation
-- `workflow-automation` when the main work is CI/job automation rather than performance reasoning
+- `react-best-practices`, `state-management`, or `design-system` for frontend structural implementation
+- `deployment-automation` when the main work is CI/job automation rather than performance reasoning

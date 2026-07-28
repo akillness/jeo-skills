@@ -31,10 +31,8 @@
 - Semantic expectations:
 
 ## Route-outs
-- `ui-component-patterns`:
 - `responsive-design`:
 - `web-accessibility`:
-- `web-design-guidelines`:
 
 ## Open decisions
 - ...

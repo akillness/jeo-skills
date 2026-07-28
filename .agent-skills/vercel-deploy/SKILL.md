@@ -10,7 +10,7 @@ description: >
   Triggers on: Vercel deploy, Vercel preview URL, vercel promote, vercel alias,
   Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route
   provider-neutral release strategy to `deployment-automation`, CI/workflow
-  authoring to `workflow-automation`, and local install/auth/bootstrap work to
+  authoring to `deployment-automation`, and local install/auth/bootstrap work to
   `system-environment-setup`.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
@@ -53,7 +53,7 @@ Read these support docs before choosing the mode:
 
 ## When not to use this skill
 - **The main question is generic rollout strategy, release gating, canary policy, or cross-provider deployment design** → use `deployment-automation`
-- **The main job is editing GitHub Actions / CI YAML / task runners around the deploy flow** → use `workflow-automation`
+- **The main job is editing GitHub Actions / CI YAML / task runners around the deploy flow** → use `deployment-automation`
 - **The main job is installing Node, Vercel CLI, auth bootstrap, or linking the local machine** → use `system-environment-setup`
 - **The app/framework/build is broken before the deploy path itself works** → use `debugging` or the relevant framework/build skill first
 - **The main job is long-lived telemetry, SLOs, or alerting after release** → use `monitoring-observability`
@@ -152,7 +152,7 @@ Use this route-out table whenever the request drifts.
 | If the request sounds like... | Use |
 |---|---|
 | “Design the release gates, canary policy, or rollback strategy across providers” | `deployment-automation` |
-| “Rewrite the GitHub Actions workflow that runs Vercel commands” | `workflow-automation` |
+| “Rewrite the GitHub Actions workflow that runs Vercel commands” | `deployment-automation` |
 | “Install Vercel CLI, auth, Node, or link local credentials” | `system-environment-setup` |
 | “The build crashes before deploy succeeds” | `debugging` or a framework-specific skill |
 | “Set up dashboards, alerts, or long-lived post-release monitoring” | `monitoring-observability` |

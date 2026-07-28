@@ -17,7 +17,7 @@ S[8]{n,action,details}:
   4,Next,Recommend exactly one next artifact or gate
   5,Review,If the artifact exists but is unreviewed → route to plannotator before creating another document
   6,Execute,If the artifact is approved and the real blocker is slicing → route to task-planning
-  7,Runtime,If execution is runtime-native → route to omc/omx/ohmg with a short why
+  7,Runtime,If execution is runtime-native → route to oh-my-claudecode/oh-my-codex/oh-my-agent with a short why
   8,Brownfield,If the ask starts from a live repo/issue/partial implementation → prefer workflow-status or smallest missing artifact over greenfield restart
 
 R[6]:

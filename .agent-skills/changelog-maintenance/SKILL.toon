@@ -1,5 +1,5 @@
 N:changelog-maintenance
-D:Write and maintain release-history artifacts for shipped changes. Use when the main job is turning shipped evidence into the smallest truthful changelog, release-note, migration-update, or game patch-note packet; routes internal docs to technical-writing, API docs to api-documentation, end-user help to user-guide-writing, rollout execution to deployment-automation, and launch messaging to marketing-automation.
+D:Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, and what's new. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `technical-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`.
 G:changelog release-notes patch-notes migration-update deprecation what's-new release-history
 U[4]:
   **CHANGELOG.md refresh**: update durable repo history from shipped work

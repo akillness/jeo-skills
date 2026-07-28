@@ -122,7 +122,7 @@ Route elsewhere when the real need is:
 - **running-browser reuse / existing auth state** → `playwriter`
 - **rendered UI review / annotation packets** → `agentation`
 - **React performance / hydration / RSC / bundle issues** → `react-best-practices`
-- **component-system / token / UI-architecture work** → `design-system` or `ui-component-patterns`
+- **component-system / token / UI-architecture work** → `design-system` or `design-system`
 
 ## Quick decision table
 

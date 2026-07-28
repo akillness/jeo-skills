@@ -76,7 +76,7 @@ styled-components-compatible API and CSS-variable theme switching.
 Styling mechanics are this skill's job; broader concerns belong elsewhere:
 
 - **Token governance / visual-language direction** → `design-system`
-- **Reusable-component API, slot anatomy, controlled ownership** → `ui-component-patterns`
+- **Reusable-component API, slot anatomy, controlled ownership** → `design-system`
 - **Page-shell, breakpoint, reflow strategy** → `responsive-design`
 - **Accessibility semantics, focus, labels** → `web-accessibility`
 - **Bundle size, RSC boundaries, rerender churn, waterfalls** → `react-best-practices`

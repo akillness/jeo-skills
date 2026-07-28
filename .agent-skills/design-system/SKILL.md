@@ -5,11 +5,12 @@ description: >
   time. Use when the user needs token governance, visual-language rules,
   primitive naming, page-system direction, cross-product consistency, or a design
   handoff that should stay coherent across landing pages, dashboards, forms, and
-  component libraries. Not for reusable component API architecture, responsive
-  layout-only fixes, accessibility-only remediation, or broad UI critique.
+  component libraries, including the reusable primitive / slot / variant APIs that
+  system owns. Not for responsive layout-only fixes, accessibility-only
+  remediation, or broad UI critique.
   Triggers on: design system, design tokens, visual language, component library
   foundations, UI governance, cross-product consistency, landing page plus
-  dashboard system, primitive naming, token policy.
+  dashboard system, primitive naming, token policy, component API architecture.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
   Best for frontend and fullstack repos that need reusable system rules across
@@ -36,7 +37,7 @@ It should:
 
 Read [references/system-modes.md](references/system-modes.md) before choosing an approach.
 Read [references/token-and-governance-checklist.md](references/token-and-governance-checklist.md) before changing shared tokens, primitives, or naming rules.
-Read [references/scope-boundaries.md](references/scope-boundaries.md) when deciding whether the work belongs here, `ui-component-patterns`, `responsive-design`, `web-accessibility`, or `web-design-guidelines`.
+Read [references/scope-boundaries.md](references/scope-boundaries.md) when deciding whether the work belongs here, `responsive-design`, or `web-accessibility`.
 Read [references/design-system-packet-template.md](references/design-system-packet-template.md) before writing the final handoff.
 
 ## When to use this skill
@@ -46,13 +47,13 @@ Read [references/design-system-packet-template.md](references/design-system-pack
 - Create a coherent system direction for landing pages, dashboards, forms, and component libraries that must feel related
 - Turn vague requests like “our UI feels inconsistent” into a system-level direction packet instead of a one-off page redesign
 - Review whether a team needs a system decision before component, accessibility, or responsive implementation starts
+- Design reusable primitive / slot / variant APIs and extract component families out of ad-hoc UI
 - Prepare a design-system handoff for Figma, code tokens, primitives, and downstream frontend work
 
 ## When not to use this skill
-- **The main task is reusable primitive / slot / variant API design or component-family extraction** → use `ui-component-patterns`
 - **The main task is viewport adaptation, container-query strategy, overflow, or mobile layout verification** → use `responsive-design`
 - **The main task is keyboard/focus behavior, WCAG remediation, labels, semantics, contrast, or manual a11y verification** → use `web-accessibility`
-- **The main task is a broad page or flow critique for hierarchy, CTA clarity, polish, and launch readiness** → use `web-design-guidelines`
+- **The main task is a broad page or flow critique for hierarchy, CTA clarity, polish, and launch readiness** → use `web-accessibility`
 - **The task is implementation-only and the system rules are already clear**; implement directly instead of reopening system governance
 
 ## Core idea
@@ -84,7 +85,7 @@ Design-system request:
 - Surface: marketing site + logged-in dashboard
 - Primary mode: cross-surface alignment
 - System question: shared tokens and hierarchy, separate page-specific layouts
-- Likely route-outs: component API details to ui-component-patterns, responsive verification to responsive-design
+- Likely route-outs: responsive verification to responsive-design, a11y remediation to web-accessibility
 ```
 
 ### Step 2: Define the shared system boundary
@@ -98,10 +99,9 @@ Keep in `design-system` when the job is to define:
 - motion principles and accessibility baseline that many components depend on
 
 Do **not** keep the work here when the question becomes:
-- one reusable component API → `ui-component-patterns`
 - one page’s layout breakage → `responsive-design`
 - one accessibility failure or remediation plan → `web-accessibility`
-- one broad UX/UI critique → `web-design-guidelines`
+- one broad UX/UI critique → `web-accessibility`
 
 ### Step 3: Make the minimum shared decisions first
 Do not start by dumping dozens of example tokens.
@@ -136,10 +136,10 @@ Use this rule:
 Mixed requests are normal. Split them explicitly.
 
 Examples:
-- if the team asks for button variants, slot structure, and controlled/uncontrolled behavior, keep the system naming/tokens here but route API design to `ui-component-patterns`
+- if the team asks for button variants, slot structure, and controlled/uncontrolled behavior, define that primitive API here alongside the system naming/tokens
 - if the team asks how cards collapse on mobile, keep shared breakpoint policy here but route layout adaptation to `responsive-design`
 - if the team asks whether icon-only buttons meet keyboard/focus/label requirements, keep baseline a11y expectations here but route remediation to `web-accessibility`
-- if the request is “audit this dashboard and tell us what feels off,” route the broad critique to `web-design-guidelines`
+- if the request is “audit this dashboard and tell us what feels off,” route the broad critique to `web-accessibility`
 
 Do not hide unclear ownership by calling everything “design-system work.”
 
@@ -174,10 +174,8 @@ Preferred format:
 - Contrast / focus / reduced motion / semantics:
 
 ## Route-outs
-- `ui-component-patterns`:
 - `responsive-design`:
 - `web-accessibility`:
-- `web-design-guidelines`:
 
 ## Open decisions
 - ...
@@ -197,7 +195,7 @@ Healthy example shapes:
 End with a sentence that prevents overlap drift.
 
 Examples:
-- "This packet defines the shared UI system; component API extraction belongs in `ui-component-patterns`."
+- "This packet defines the shared UI system and its primitive APIs; per-feature product components stay product-local."
 - "This packet sets breakpoint and density policy; page-level layout fixes belong in `responsive-design`."
 - "This packet sets accessibility baseline expectations; remediation and verification belong in `web-accessibility`."
 
@@ -210,7 +208,7 @@ Examples:
 - choose cross-surface alignment mode
 - define shared foundations and surface-specific differences
 - leave one compact design-system packet
-- route component-family API design to `ui-component-patterns`
+- define the component-family API alongside the shared foundations
 
 ### Example 2: token and primitive governance
 **Input:** "Our team keeps adding random colors and spacing values. We need naming rules and a review policy for shared primitives."
@@ -241,17 +239,13 @@ Examples:
 1. **Decide the mode first** so the skill stays bounded.
 2. **Define shared rules before examples** to avoid overfitting on one mockup.
 3. **Keep governance explicit**: token changes, primitive promotion, and ownership rules are part of the system.
-4. **Use route-outs early** so `design-system` does not steal layout, component-API, accessibility, or broad-audit work.
+4. **Use route-outs early** so `design-system` does not steal layout, accessibility, or broad-audit work.
 5. **Leave a compact packet** another human or agent can follow.
-6. **Keep the alias narrow**: `frontend-design-system` remains a compatibility redirect, not a peer canonical skill.
 
 ## References
 - [System modes](references/system-modes.md)
 - [Token and governance checklist](references/token-and-governance-checklist.md)
 - [Scope boundaries](references/scope-boundaries.md)
 - [Design-system packet template](references/design-system-packet-template.md)
-- [Compatibility alias](../frontend-design-system/SKILL.md)
-- [Component architecture neighbor](../ui-component-patterns/SKILL.md)
 - [Responsive layout neighbor](../responsive-design/SKILL.md)
 - [Accessibility neighbor](../web-accessibility/SKILL.md)
-- [Broad UI audit neighbor](../web-design-guidelines/SKILL.md)

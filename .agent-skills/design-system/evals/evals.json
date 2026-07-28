@@ -24,9 +24,9 @@
     {
       "id": 3,
       "prompt": "Can you redesign our Button and Modal APIs with better variants, slots, and controlled vs uncontrolled rules?",
-      "expected_output": "Route the implementation-level API architecture to ui-component-patterns while keeping only system-level naming guidance in design-system if needed.",
+      "expected_output": "Define the implementation-level API architecture here alongside the system-level naming guidance.",
       "assertions": [
-        "Routes the main job to `ui-component-patterns`",
+        "Keeps the component API brief in `design-system` alongside naming rules",
         "Does not pretend component API architecture is fully owned by design-system",
         "Keeps any retained guidance at the system naming/policy level"
       ]

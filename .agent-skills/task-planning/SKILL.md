@@ -7,7 +7,7 @@ description: >
   move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or
   milestone prep, release planning, or roadmap-to-delivery translation across
   developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route
-  sizing to `task-estimation`, board/worktree control to `vibe-kanban`, plan review
+  sizing to `task-estimation`, issue-state governance to `triage`, plan review
   to `plannotator`, daily syncs to `standup-meeting`, retros to
   `sprint-retrospective`, and pre-planning concept framing to `bmad`, `bmad-idea`, or
   `bmad-gds`.
@@ -49,7 +49,7 @@ Core references:
 
 ## When not to use this skill
 - **The main job is sizing, forecasting, or story-point language** → `task-estimation`.
-- **The work already exists and the real job is board/worktree/queue control** → `vibe-kanban`.
+- **The work already exists and the real job is issue state transitions** → `triage`.
 - **The plan already exists and the real job is review/approval or diff markup** → `plannotator`.
 - **The main job is daily status coordination** → `standup-meeting`.
 - **The main job is reflection on completed work** → `sprint-retrospective`.
@@ -148,7 +148,7 @@ Verify all of these:
 
 Route-outs to keep explicit:
 - sizing → `task-estimation`
-- board/worktree/queue control → `vibe-kanban`
+- issue state transitions → `triage`
 - plan review / approval → `plannotator`
 - daily coordination → `standup-meeting`
 - completed-work reflection → `sprint-retrospective`

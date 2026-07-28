@@ -51,7 +51,7 @@ metadata:
 
 ## Do not use this skill when
 
-- The user needs multi-agent orchestration routing → route to `jeo`, `omc`, or `harness`
+- The user needs multi-agent orchestration routing → route to `jeo`, `oh-my-claudecode`, or `harness`
 - The task is primarily pre-implementation landscape research → route to `survey`
 - The user needs a one-shot quick fix with no quality gate → use direct execution
 - The user wants agent team design → route to `harness`

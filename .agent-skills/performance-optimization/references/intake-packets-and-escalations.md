@@ -13,7 +13,7 @@ Look for:
 - network waterfalls tied to interaction
 
 Escalate when:
-- the trace points to framework/component structure work → `react-best-practices`, `state-management`, or `ui-component-patterns`
+- the trace points to framework/component structure work → `react-best-practices`, `state-management`, or `design-system`
 - the trace is only a symptom and backend latency dominates → stay in `performance-optimization` and switch modes
 
 ## Lighthouse / WebPageTest / CWV report

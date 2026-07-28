@@ -24,20 +24,20 @@
     },
     {
       "id": 3,
-      "prompt": "Our button primitive API is messy; should this be web-accessibility or ui-component-patterns?",
-      "expected_output": "Splits accessibility remediation from reusable component API ownership and routes the API-design portion to ui-component-patterns.",
+      "prompt": "Our button primitive API is messy; should this be web-accessibility or design-system?",
+      "expected_output": "Splits accessibility remediation from reusable component API ownership and routes the API-design portion to design-system.",
       "assertions": [
         "Output distinguishes between accessibility fixes and component API architecture.",
-        "Output routes API design work to ui-component-patterns.",
+        "Output routes API design work to design-system.",
         "Output preserves web-accessibility for labels, focus, or accessible-name concerns."
       ]
     },
     {
       "id": 4,
       "prompt": "Review these UI files against broader design and polish rules, not just WCAG.",
-      "expected_output": "Routes the task to web-design-guidelines instead of over-triggering web-accessibility.",
+      "expected_output": "Selects broad-review mode instead of over-triggering the accessibility remediation path.",
       "assertions": [
-        "Output routes broader UI review to web-design-guidelines.",
+        "Output handles the broader UI review in broad-review mode.",
         "Output explains that web-accessibility is narrower than a full UI/polish review."
       ]
     },

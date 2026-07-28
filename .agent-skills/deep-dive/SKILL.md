@@ -44,7 +44,7 @@ Read [references/runtime-adapters.md](references/runtime-adapters.md) before inv
 |---------|---------|-----------------|------------------|
 | Claude Code | OMC | `.omc/specs/`, `.omc/state/` | `/omc-plan --consensus --direct`, `/autopilot`, `/ralph`, `/team` |
 | Codex CLI | OMX | `.omx/specs/`, `.omx/state/` | `$analyze`/`$trace`, `$deep-interview`, `$ralplan`, `$ralph`, `$team` |
-| Gemini / Antigravity | OMA via `ohmg` | `.agents/specs/`, `.agents/state/` | `/plan`, `/work`, `/orchestrate`, or `oma agent:spawn` / `oma agent:parallel` |
+| Gemini / Antigravity | OMA via `oh-my-agent` | `.agents/specs/`, `.agents/state/` | `/plan`, `/work`, `/orchestrate`, or `oma agent:spawn` / `oma agent:parallel` |
 
 Never pretend every runtime has identical primitives. Preserve the same trace/spec schema, but map orchestration to the adapter that exists in the current tool.
 </Runtime_Portability>

@@ -1,13 +1,13 @@
 # Platform Routing Notes
 
-## Route to `workflow-automation`
-Use `workflow-automation` when the real task is:
+## Keep CI and task-runner authoring here
+This skill also owns:
 - writing or refactoring GitHub Actions / GitLab / Jenkins / Buildkite files
 - deciding task runners or release scripts inside the repo
 - building reusable pipeline templates
 - local-vs-CI command parity or release-job structure
 
-`deployment-automation` may consume an existing workflow, but should not become a CI-YAML encyclopedia.
+Keep the output a release-execution brief, not a CI-YAML encyclopedia.
 
 ## Route to `system-environment-setup`
 Use `system-environment-setup` when the real task is:

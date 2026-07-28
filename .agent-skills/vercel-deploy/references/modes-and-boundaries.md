@@ -86,7 +86,7 @@ Typical inputs:
 | Topic | Owner |
 |---|---|
 | Cross-provider rollout strategy, staging/prod policy, canary decisions | `deployment-automation` |
-| CI/CD workflow authoring around Vercel commands | `workflow-automation` |
+| CI/CD workflow authoring around Vercel commands | `deployment-automation` |
 | Machine bootstrap, CLI install, auth setup | `system-environment-setup` |
 | Broken app/framework/build before deploy works | `debugging` or framework skill |
 | Ongoing observability and alerts after deploy | `monitoring-observability` |

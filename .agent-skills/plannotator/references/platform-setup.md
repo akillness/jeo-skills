@@ -107,6 +107,6 @@ Use remote mode when the review server runs in a container, SSH session, WSL env
 ## When setup is the wrong problem
 If the real issue is:
 - machine provisioning / runtimes / devcontainers → `system-environment-setup`
-- execution orchestration or task ledgers → `jeo`, `vibe-kanban`, `bmad`
-- platform-level runtime ownership → `omc`, `omx`, `ohmg`
+- execution orchestration or task ledgers → `jeo`, `task-planning`, `bmad`
+- platform-level runtime ownership → `oh-my-claudecode`, `oh-my-codex`, `oh-my-agent`
 - note-system management beyond save integration → `obsidian`, `llm-wiki`

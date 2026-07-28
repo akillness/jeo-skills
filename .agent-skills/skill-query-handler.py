@@ -64,21 +64,10 @@ STOPWORDS = {
     "with",
 }
 
-COMMAND_SKILL_ALIASES = {
-    "$autopilot": "autopilot",
-    "autopilot": "autopilot",
-    "auto pilot": "autopilot",
-    "$team": "team",
-    "team mode": "team",
-    "$ulw": "ultrawork",
-    "ulw": "ultrawork",
-    "$ultrawork": "ultrawork",
-    "ultrawork": "ultrawork",
-    "$ultraqa": "ultraqa",
-    "ultraqa": "ultraqa",
-    "$ultaqa": "ultraqa",
-    "ultaqa": "ultraqa",
-}
+# Exact-name command aliases. The `$autopilot` / `$team` / `$ulw` / `$ultraqa`
+# shims were retired with their runtime documentation skills; keep this map for
+# future exact-name skills rather than pointing it at names that no longer ship.
+COMMAND_SKILL_ALIASES: Dict[str, str] = {}
 
 
 def normalize_text(text: str) -> str:

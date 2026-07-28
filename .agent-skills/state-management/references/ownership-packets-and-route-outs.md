@@ -42,6 +42,6 @@ Call out the most likely wrong owner explicitly:
 - **`react-best-practices`** if the question is mostly rerenders, hydration, or server/client performance cost
 - **`api-design`** if mutation contracts or backend responsibility drive the disagreement
 - **`debugging`** if the current behavior is already broken and needs reproduce → isolate → verify
-- **`ui-component-patterns`** if one component API is the real decision surface
+- **`design-system`** if one component API is the real decision surface
 - **`design-system`** if shared preference/governance rules matter more than runtime ownership
 - **`responsive-design`** if viewport adaptation or layout collapse is the main job

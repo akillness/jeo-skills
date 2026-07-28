@@ -1,5 +1,5 @@
 N:state-management
-D:Choose the smallest viable React/fullstack state owner before comparing libraries. Use when deciding whether a request is local UI state, shared-subtree/Context state, URL or form state, server-state cache ownership, or leftover client workflow state that may justify Zustand / Redux Toolkit / Jotai.
+D:Choose the smallest viable React/fullstack state owner before comparing libraries. Use when the user needs to classify local UI state, shared subtree/Context state, URL or form state, server-state caches, or client workflow stores such as Zustand / Redux Toolkit / Jotai. Triggers on: global state, prop drilling, Context vs Zustand, Redux Toolkit vs Zustand, server state vs client state, React Router state management, optimistic updates, URL state, form state, and too much state in one store.
 G:state-management react context zustand redux-toolkit jotai tanstack-query server-state client-state url-state form-state react-router optimistic-updates
 U[5]:
   Pick one primary state packet before naming any tool
@@ -19,6 +19,6 @@ R[6]:
   react-best-practices
   api-design
   debugging
-  ui-component-patterns
+  design-system
   design-system
   responsive-design

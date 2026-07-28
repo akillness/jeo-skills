@@ -18,8 +18,8 @@ Use this when choosing the main organizing unit.
 - If the team cannot explain what belongs in a folder in one sentence, that folder is not a reliable boundary.
 
 ## Adjacent-skill handoffs
-- Component API and reusable primitive design → `ui-component-patterns`
+- Component API and reusable primitive design → `design-system`
 - Design-token and library governance → `design-system`
 - State/caching ownership → `state-management`
 - Toolchain/services/runtime setup → `system-environment-setup`
-- Task runners / hooks / bootstrap automation → `workflow-automation`
+- Task runners / hooks / bootstrap automation → `deployment-automation`

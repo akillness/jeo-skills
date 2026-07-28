@@ -29,6 +29,6 @@ Use this note when the release mode is clear but the rollout strategy is not.
 
 ## Route-out reminders
 - Need dashboards/alerts or SLO design? → `monitoring-observability`
-- Need workflow YAML or release job authoring? → `workflow-automation`
+- Need workflow YAML or release job authoring? Keep it here — it is part of release execution.
 - Need provider-specific Vercel behavior? → `vercel-deploy`
 - Need machine/bootstrap work before rollout? → `system-environment-setup`

@@ -1,5 +1,5 @@
 N:git-submodule
-D:Decide when Git submodules are the right external-repo boundary, then choose one safe operator flow: add and pin, bootstrap recursively, sync the recorded commit, advance a tracked branch, avoid detached-HEAD surprises while editing inside the submodule, remove cleanly, or handle CI / hosted-platform checkout constraints. Use for `.gitmodules`, `git submodule`, recursive clone/setup, pointer updates, detached HEAD, private submodules in CI, GitHub Pages limits, or submodule-vs-subtree/vendor decisions.
+D:Decide when Git submodules are the right external-repo boundary, then choose one safe operator flow: add and pin, bootstrap recursively, sync to the recorded commit, advance a tracked branch, edit inside the submodule without detached-HEAD surprises, remove cleanly, or configure CI/hosted-platform checkout constraints. Use when the user asks about `.gitmodules`, `git submodule`, recursive clone/setup, pointer updates, detached HEAD, private submodules in CI, GitHub Pages submodule limits, or submodule vs subtree/vendoring/package delivery. Not for generic Git history cleanup or package-manager dependency delivery.
 G:git submodule subtree dependencies version-control ci repo-structure github-pages
 U[5]:
   Add or pin an external repository as a submodule

@@ -31,7 +31,7 @@ The job is to:
 
 Read [references/intake-packets-and-escalations.md](references/intake-packets-and-escalations.md) before handling an unfamiliar review packet.
 Read [references/review-modes.md](references/review-modes.md) for deeper heuristics by change type.
-Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `code-review`, `git-workflow`, `debugging`, `testing-strategies`, `web-design-guidelines`, `web-accessibility`, or repo/PR workflow skills should own the next step.
+Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `code-review`, `git-workflow`, `debugging`, `testing-strategies`, `web-accessibility`, `web-accessibility`, or repo/PR workflow skills should own the next step.
 
 ## When to use this skill
 - Reviewing a PR, MR, local diff, patch stack, or self-review packet before merge
@@ -44,7 +44,7 @@ Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when d
 - **The real task is splitting commits, rebasing, conflict resolution, or push recovery** → use `git-workflow`
 - **The real task is reproducing or isolating a live failure** → use `debugging`
 - **The real task is choosing long-term coverage shape, CI gates, or flaky-suite policy** → use `testing-strategies`
-- **The real task is pure design, accessibility, or visual-governance critique** → use `web-design-guidelines` or `web-accessibility`
+- **The real task is pure design, accessibility, or visual-governance critique** → use `web-accessibility` or `web-accessibility`
 - **The real task is reviewer assignment, CODEOWNERS interpretation, labels, merge queue, or repo settings** → use a repo / PR workflow skill
 - **The real task is measurement-led bottleneck analysis or tuning** → use `performance-optimization`
 
@@ -130,7 +130,7 @@ Typical route-outs:
 - commit cleanup / rebase / push safety → `git-workflow`
 - reproduce and isolate live failure → `debugging`
 - broader coverage policy or flaky-suite direction → `testing-strategies`
-- visual/accessibility/product polish review → `web-design-guidelines` or `web-accessibility`
+- visual/accessibility/product polish review → `web-accessibility` or `web-accessibility`
 - reviewer assignment, CODEOWNERS, branch rules, merge queue, PR operations → repo / PR workflow skill
 
 ### Step 6: Produce a reviewer-grade decision brief
@@ -211,7 +211,7 @@ Required qualities:
 - Key findings:
   1. [Major] missing mobile/tablet screenshots or preview link for menu states
   2. [Minor] duplicated breakpoint logic should be centralized
-  3. [Route-out] accessibility or visual-polish checks should go through `web-design-guidelines` / `web-accessibility`
+  3. [Route-out] accessibility or visual-polish checks should go through `web-accessibility` / `web-accessibility`
 
 ### Example 3: Request that should route away
 **Input**

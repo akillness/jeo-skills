@@ -53,7 +53,7 @@ Read these support docs before choosing the mode or output packet:
 ## When not to use this skill
 - **The main job is designing resources, endpoint shape, schema rules, or versioning strategy** → use `api-design`.
 - **The main job is writing internal specs, ADRs, runbooks, rollout docs, or system migration procedures** → use `technical-writing`.
-- **The main job is end-user/product UI onboarding, screenshots, tutorials, or help-center docs** → use `user-guide-writing`.
+- **The main job is end-user/product UI onboarding, screenshots, tutorials, or help-center docs** → use `technical-writing`.
 - **The main job is implementing auth/session/provider behavior rather than documenting how API consumers authenticate** → use `authentication-setup`.
 - **The main job is release-note, semver, or changelog hygiene** → use `changelog-maintenance`.
 - **There is no credible source of truth for the API behavior yet** → route missing contract questions back to `api-design` instead of inventing docs from vibes.
@@ -97,7 +97,7 @@ Quick route-out table:
 |---|---|
 | "Design the endpoints / resources / schema before coding" | `api-design` |
 | "Write the architecture doc / ADR / rollout plan / runbook" | `technical-writing` |
-| "Write customer help docs for using the product UI" | `user-guide-writing` |
+| "Write customer help docs for using the product UI" | `technical-writing` |
 | "Explain provider setup / session middleware / token implementation" | `authentication-setup` |
 | "Summarize what shipped in the release" | `changelog-maintenance` |
 | "Write the developer portal / OpenAPI docs / quickstart / webhook guide" | `api-documentation` |
@@ -157,7 +157,7 @@ Before shipping, check:
 3. Do examples match real behavior?
 4. Are errors, limits, retries, pagination, or verification notes present where needed?
 5. Is the output packet small enough for the request?
-6. Are route-outs to `api-design`, `technical-writing`, `user-guide-writing`, `authentication-setup`, and `changelog-maintenance` still explicit?
+6. Are route-outs to `api-design`, `technical-writing`, `technical-writing`, `authentication-setup`, and `changelog-maintenance` still explicit?
 
 ## Examples
 

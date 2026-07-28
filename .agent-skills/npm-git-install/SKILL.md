@@ -51,7 +51,7 @@ Read [references/private-auth-and-ci.md](references/private-auth-and-ci.md) when
 ## When not to use this skill
 - **The main task is fixing local Git branch/history problems** → use `git-workflow`
 - **The main task is creating or operating GitHub repos, packages, or releases at the admin level** → use `github-repo-management`
-- **The main task is monorepo/task-runner automation rather than package-delivery choice** → use `workflow-automation`
+- **The main task is monorepo/task-runner automation rather than package-delivery choice** → use `deployment-automation`
 - **The main task is broader runtime, machine, container, or service setup** → use `system-environment-setup`
 - **The user already has a normal registry dependency and only needs an ordinary version bump**
 
@@ -155,7 +155,7 @@ This skill owns package-delivery choice, not every downstream task.
 Typical route-outs:
 - `git-workflow` — fix or shape the underlying branch/history state
 - `github-repo-management` — operate repos, packages, releases, or package-host settings
-- `workflow-automation` — wire repeatable repo scripts or monorepo automation around the chosen package flow
+- `deployment-automation` — wire repeatable repo scripts or monorepo automation around the chosen package flow
 - `system-environment-setup` — handle machine/runtime/container/service setup once the dependency question is no longer the main blocker
 
 If the user asks “how should we consume this package?” stay here.
@@ -233,7 +233,7 @@ Required qualities:
 - [Private auth and CI notes](references/private-auth-and-ci.md)
 - `../git-workflow/SKILL.md`
 - `../github-repo-management/SKILL.md`
-- `../workflow-automation/SKILL.md`
+- `../deployment-automation/SKILL.md`
 - `../system-environment-setup/SKILL.md`
 - npm package spec: https://docs.npmjs.com/cli/v11/using-npm/package-spec
 - npm package.json Git docs: https://docs.npmjs.com/cli/v11/configuring-npm/package-json
