@@ -1,10 +1,8 @@
 ---
 name: migrate-to-shoehorn
-description: Use this skill when >
-  Migrate TypeScript test files from unsafe `as` type assertions to type-safe
-  alternatives from @total-typescript/shoehorn. Replace `obj as Type` with
-  fromPartial(), `obj as unknown as Type` with fromAny(), and complete specs
-  with fromExact(). Test code only — never use in production.
+description: >-
+  Migrate TypeScript test as assertions to fromPartial/fromAny/fromExact from
+  @total-typescript/shoehorn
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   TypeScript projects only. Test code exclusively — production usage is prohibited.

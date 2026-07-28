@@ -49,6 +49,11 @@ STRAY_SCALARS = {">", "|", ">-", "|-", ">+", "|+", "-", ""}
 # A description that was cut mid-sentence by an earlier generator (…/... tail) is as
 # unusable for skill matching as a missing one, and must never be reused as a source.
 TRUNCATED_RE = re.compile(r"(\.{3}|…)\s*$")
+# `description: Use this skill when >` + indented prose is valid YAML — it folds into
+# one plain scalar — so it passes every mechanical check while embedding the block
+# indicator in the sentence: "Use this skill when > Conduct a comprehensive …".
+# The lead-in was meant to be YAML syntax, not prose; the real description follows it.
+STRAY_INDICATOR_RE = re.compile(r"^\s*use\s+(?:this\s+)?skill\s+when\s*[>|][+-]?\s+", re.I)
 ENTRY_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_-]*):(.*)$")
 TOON_RE = re.compile(r"^N:(.+)\nD:(.*)$", re.M)
 KEYWORD_ROW_RE = re.compile(r"^\|\s*`([a-z0-9][a-z0-9-]*)`\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|$", re.M)
@@ -92,10 +97,18 @@ def salvage(text: str | None) -> str:
     return body[: end + 1].strip() if end > 0 else ""
 
 
+def has_stray_indicator(text: str | None) -> bool:
+    return bool(text) and bool(STRAY_INDICATOR_RE.match(text.strip()))
+
+
+def strip_indicator(text: str) -> str:
+    return STRAY_INDICATOR_RE.sub("", text.strip()).strip()
+
+
 def usable(text: str | None) -> bool:
     if not text or len(text.strip()) < MIN_DESCRIPTION or is_stray(text):
         return False
-    return not truncated(text)
+    return not truncated(text) and not has_stray_indicator(text)
 
 
 def split_frontmatter(text: str) -> tuple[str, str] | None:
@@ -142,6 +155,12 @@ def recover(name: str, entry_text: str, body: str, sources: dict[str, dict[str, 
     for candidate in candidates:
         if usable(candidate):
             return clean(candidate or "")
+    # The text after a stray block indicator is the authored description.
+    for candidate in candidates:
+        if has_stray_indicator(candidate):
+            kept = strip_indicator(candidate or "")
+            if usable(kept):
+                return clean(kept)
     # A cut-off candidate still holds correct authored text before the cut.
     for candidate in candidates:
         if truncated(candidate):

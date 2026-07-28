@@ -1,10 +1,8 @@
 ---
 name: improve-codebase-architecture
-description: Use this skill when >
-  Identify architectural friction and propose deepening opportunities — refactors
-  that turn shallow modules into deep ones for better testability and AI-navigability.
-  Use when improving architecture, finding refactoring opportunities, consolidating
-  tightly-coupled modules, or making a codebase more testable.
+description: >-
+  Identify architectural friction and propose deepening opportunities for testability using
+  deletion-test, seam, locality vocabulary
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
   Works best in codebases with CONTEXT.md domain documentation. Creates CONTEXT.md

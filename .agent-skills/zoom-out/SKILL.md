@@ -1,10 +1,8 @@
 ---
 name: zoom-out
-description: Use this skill when >
-  Request a broader architectural perspective when navigating unfamiliar code sections.
-  Maps all relevant modules, identifies caller relationships and dependencies, and
-  uses domain-specific vocabulary. Use when encountering unfamiliar code or needing
-  to understand how a component integrates with the larger system.
+description: >-
+  Get higher-level architectural perspective: maps modules, callers, dependencies using domain
+  vocabulary
 allowed-tools: Read Grep Glob
 compatibility: >
   Works across all codebases. Most useful when CONTEXT.md domain vocabulary is
