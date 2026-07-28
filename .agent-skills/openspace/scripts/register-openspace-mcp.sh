@@ -168,13 +168,29 @@ def handle_json(path, key, entry):
     return "registered"
 
 
+def strip_toml_table(text: str, name: str) -> str:
+    """Drop [name] and every [name.sub] table, keeping the rest of the file intact."""
+    head = re.compile(r"^\s*\[\s*([^\]]+?)\s*\]\s*$")
+    kept, skipping = [], False
+    for line in text.splitlines(keepends=True):
+        m = head.match(line)
+        if m:
+            key = m.group(1)
+            skipping = key == name or key.startswith(name + ".")
+        if not skipping:
+            kept.append(line)
+    return "".join(kept)
+
+
 def handle_toml(path):
     existing = load_existing(path)
     text, mode = existing if existing is not None else ("", 0o600)
-    if re.search(r"^\s*\[mcp_servers\.openspace\]", text, re.M):
+    if re.search(r"^\s*\[\s*mcp_servers\.openspace\s*\]", text, re.M):
         if not force:
             return "already registered"
-        text = re.sub(r"^\s*\[mcp_servers\.openspace\][^\[]*", "", text, flags=re.M)
+        # The table owns a [mcp_servers.openspace.env] sub-table; removing only the
+        # first table would orphan it and make the rewritten file fail to parse.
+        text = strip_toml_table(text, "mcp_servers.openspace")
     lines = [f'[mcp_servers.openspace]', f'command = {json.dumps(bin_path)}',
              'args = []', 'startup_timeout_sec = 60', 'tool_timeout_sec = 600',
              '', '[mcp_servers.openspace.env]']
