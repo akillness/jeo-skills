@@ -921,7 +921,7 @@ if canon.is_dir():
                 same_root.append(f"{name}  {first.parent}  vs  {skill_md.parent}")
 
 stamp = time.strftime("%Y%m%d%H%M%S")
-shadow_repo, shadow_extra, shadow_other, fixed, failed = [], [], [], 0, 0
+shadow_repo, shadow_extra, shadow_other, cli_internal, fixed, failed = [], [], [], [], 0, 0
 for root in roots:
     # Index each root exactly like the canonical one: a skill lives at <root>/<name>/SKILL.md
     # or <root>/<group>/<name>/SKILL.md. A recursive "**/SKILL.md" walk is wrong here — a skill
@@ -943,6 +943,11 @@ for root in roots:
             continue
         label = f"{name}  {skill_md.parent}"
         owned = name in manifest_names
+        # `.system/` is the skills CLI's own bundled store. Rewriting it would fight the
+        # CLI on its next run, and its copies are not something this guide installed.
+        if ".system" in skill_md.parent.parts:
+            cli_internal.append(label)
+            continue
         if root in never_refresh:
             shadow_other.append(f"{label}  (download cache — never rewritten)")
             continue
@@ -991,13 +996,15 @@ if same_root:
     print(f"duplicate names INSIDE {canon} — winner is luck-dependent, resolve manually: {len(same_root)}")
     for line in sorted(same_root)[:10]:
         print(f"   {line}")
+if cli_internal:
+    print(f"skills-CLI internals under .system/ — owned by the CLI, never rewritten: {len(cli_internal)}")
 if shadow_other:
     print(f"diverging copies in the skills.urls download cache (never rewritten): {len(shadow_other)}")
     for line in sorted(shadow_other)[:10]:
         print(f"   {line}")
     if len(shadow_other) > 10:
         print(f"   … {len(shadow_other) - 10} more")
-if not shadow_repo and not shadow_extra and not shadow_other and not same_root:
+if not shadow_repo and not shadow_extra and not shadow_other and not same_root and not cli_internal:
     print("✅ no divergent duplicate skills — opencode resolves every skill to one content version")
 elif not refresh:
     print("Re-run with JEO_OPENCODE_REFRESH_SHADOWS=1 (repo skills) or =all (every skill that")
@@ -2358,12 +2365,17 @@ def digest(p):
     try: return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
     except OSError: return None
 
-stale = []
+# ~/.cache/opencode/skills is not a stale copy: opencode's Discovery fills it, and
+# plugins (oh-my-openagent ships its own security-review/security-research) serve
+# skills from there by design. Report it separately instead of as a defect.
+cache_root = str(pathlib.Path(os.environ.get("XDG_CACHE_HOME") or (pathlib.Path.home() / ".cache")) / "opencode" / "skills")
+stale, plugin_owned = [], []
 for skill in data:
     source = index.get(skill["name"])
     won = skill.get("location", "")
     if source is None or won == str(source): continue
-    if digest(source) != digest(won): stale.append((skill["name"], won))
+    if digest(source) == digest(won): continue
+    (plugin_owned if won.startswith(cache_root) else stale).append((skill["name"], won))
 from_canon = sum(1 for s in data if str(canon) in s.get("location", ""))
 print(f"   {from_canon} resolved from {canon}, {len(index)} skills available there")
 if stale:
@@ -2372,6 +2384,9 @@ if stale:
     print("     (skills outside this repository's manifest are never rewritten — resolve those copies manually)")
 else:
     print("✅ no skill resolves to a stale copy")
+if plugin_owned:
+    print(f"ℹ️  {len(plugin_owned)} skill(s) served from the opencode plugin cache (expected, e.g. OMO's own copies):")
+    for name, loc in plugin_owned[:5]: print(f"     {name} -> {loc}")
 PY
   else
     OC_SHARED=$(find "$SKILLS_ROOT" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
