@@ -239,7 +239,7 @@
     },
     {
       "name": "agent-pulse",
-      "description": "Operate and extend barretlee/agent-pulse as an evidence-backed AI industry intelligence system: source lifecycle, safe collection, signal normalization, Event clustering, system evaluation, Scout hypotheses, privacy-safe export, and release verification.",
+      "description": "Operate and extend barretlee/agent-pulse, the evidence-backed AI industry intelligence system: inspect source catalog and lifecycle, collect and normalize signals, bind evidence, cluster Events, evaluate system health, generate Scout hypotheses, export the privacy-safe public site, and verify release gates. Use when the user asks to run, configure, debug, extend, or explain Agent Pulse, its collectors, Control Room, narratives, Scout, or GitHub Pages output. Triggers on: agent-pulse, Agent Pulse, evidence-backed intelligence, source catalog, signal collection, Event clustering, source audit, Scout opportunity, public export, weekly brief, or AI industry intelligence pipeline.",
       "category": "search-analysis",
       "path": "agent-pulse/SKILL.md",
       "tags": [
@@ -409,7 +409,7 @@
     },
     {
       "name": "api-design",
-      "description": "Design or refactor API contracts for REST and GraphQL systems. Use when the user needs resou...",
+      "description": "Design or refactor API contracts for REST and GraphQL systems.",
       "category": "backend",
       "path": "api-design/SKILL.md",
       "tags": [
@@ -439,7 +439,7 @@
     },
     {
       "name": "api-documentation",
-      "description": "Publish or refresh developer-facing API documentation for REST, GraphQL, webhook, SDK, and portal surfaces...",
+      "description": "Use this skill when the main job is publishing or refreshing developer-facing API docs that help integrators reach first success, understand reference truth, and stay unblocked as the API evolves.",
       "category": "backend",
       "path": "api-documentation/SKILL.md",
       "tags": [
@@ -1363,7 +1363,7 @@
     },
     {
       "name": "data-analysis",
-      "description": "Analyze datasets to extract insights, identify patterns, and generate reports. Use when exploring...",
+      "description": "Analyze datasets to extract insights, identify patterns, and generate reports.",
       "category": "search-analysis",
       "path": "data-analysis/SKILL.md",
       "tags": [
@@ -2028,7 +2028,7 @@
     },
     {
       "name": "gbro-collage-broll",
-      "description": "Turn a 5-second voiceover script, opinion statement, or abstract concept into an editorial halftone paper-collage assemble-from-empty B-roll video. Enforces a 3-gate approval workflow (metaphor -> still -> video via Gemini Omni Flash).",
+      "description": "Turn a 5-second voiceover script, opinion statement, or abstract concept into an editorial halftone paper-collage assemble-from-empty B-roll video. Use when the user requests \"collage b-roll\", \"paper collage B-roll\", \"halftone collage\", \"collage video\", \"gbro-collage-broll\", or asks to convert voiceover lines into animated editorial collage visual metaphors. Enforces a 3-gate approval workflow (metaphor confirmation -> still frame confirmation -> video generation via Gemini Omni Flash).",
       "category": "creative-media",
       "path": "gbro-collage-broll/SKILL.md",
       "tags": [
@@ -2324,7 +2324,7 @@
     },
     {
       "name": "graphify",
-      "description": "Route durable graph-building requests into one honest mode: assistant-native install, local Python build, incremental refresh, graph query follow-up, or a graphify-style structural fallback for markdown-heavy corpora. Use when the user wants `GRAPH_REPORT.md`, `graph.json`, `graph.html`, repo/corpus relationship tracing, mixed code+docs+asset graphing, or graph-backed architecture understanding that should persist across sessions. Route simple locate/reference work to `codebase-search`, narrative knowledge-base work to `llm-wiki`, and project-memory handoff to `opencontext`.",
+      "description": "Drive Graphify from its CLI to build, refresh, query, export, and serve a durable code/corpus knowledge graph. Use when the user wants `.graphify/GRAPH_REPORT.md`, `graph.json`, `graph.html`, `graphify update`/`summary`/`query`/`path`/`explain`/`tree`, change-aware review context, git-hook or watch-based refresh, a stdio MCP graph server, or an install into jeo, jeopi, gjc, opencode, Claude, Codex, or Gemini. Also covers the honest structural fallback when native extraction is empty or misleading. Route simple locate/reference work to `codebase-search`, narrative knowledge-base work to `llm-wiki`, and project-memory handoff to `opencontext`. Triggers on: graphify, graphify update, graphify query, knowledge graph CLI, GRAPH_REPORT.md, graph.json, codebase graph, graph refresh, graphify install, graphify serve, review context, affected flows.",
       "category": "utilities",
       "path": "graphify/SKILL.md",
       "tags": [
@@ -2355,7 +2355,7 @@
     },
     {
       "name": "grill-me",
-      "description": "Use this skill when >",
+      "description": "Use this skill when > Conduct a comprehensive plan or design stress-test through systematic questioning. Interviews relentlessly about every decision point, resolves interdependencies progressively, and traverses the complete decision tree. Use when thoroughly vetting a proposal, design, or architecture before committing to it.",
       "category": "planning-review",
       "path": "grill-me/SKILL.md",
       "tags": [
@@ -2385,7 +2385,7 @@
     },
     {
       "name": "grill-with-docs",
-      "description": "Use this skill when >",
+      "description": "Use this skill when > Design review session that stress-tests plans against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallize. Use when validating architecture or plans against a project's language and documented decisions.",
       "category": "planning-review",
       "path": "grill-with-docs/SKILL.md",
       "tags": [
@@ -2538,7 +2538,7 @@
     },
     {
       "name": "improve-codebase-architecture",
-      "description": "Use this skill when >",
+      "description": "Use this skill when > Identify architectural friction and propose deepening opportunities — refactors that turn shallow modules into deep ones for better testability and AI-navigability. Use when improving architecture, finding refactoring opportunities, consolidating tightly-coupled modules, or making a codebase more testable.",
       "category": "code-quality",
       "path": "improve-codebase-architecture/SKILL.md",
       "tags": [
@@ -2597,7 +2597,7 @@
     },
     {
       "name": "lapian-notes",
-      "description": "Work with Lapian Notes / 拉片笔记 (bkingfilm/lapian-notes) — a local-first React/Vite tool that turns a film into an editable shot-by-shot study notebook via local frame extraction and a bring-your-own-AI (no API key) ZIP round trip, producing story-line swimlanes, a structure tree, and an emotion curve. Use when the user asks about Lapian Notes, \"拉片笔记\"/\"拉片\" tooling, cloning/running this repo, the AI-analysis-package workflow, or contributing a PR. Not for generic video editing (use opencut) or generic film-analysis theory unrelated to this codebase.",
+      "description": "Work with Lapian Notes / 拉片笔记 (github.com/bkingfilm/lapian-notes) — a local- first React/Vite tool that turns a film into an editable shot-by-shot study notebook: local frame extraction, AI-assisted structure analysis (bring your own AI, no API key required), story-line swimlane timeline, structure tree, and audience-emotion curve. Use when the user asks about Lapian Notes, \"拉片笔记\", \"拉片\" (shot-by-shot film analysis) tooling, cloning/running this repo (npm run dev, run.bat/run.command), the AI-analysis-package (ZIP) round-trip workflow, or contributing a PR to lapian-notes. Not for generic video editing (use `opencut` for that) or generic film-analysis theory unrelated to this codebase.",
       "category": "utilities",
       "path": "lapian-notes/SKILL.md",
       "tags": [
@@ -2807,7 +2807,7 @@
     },
     {
       "name": "migrate-to-shoehorn",
-      "description": "Use this skill when >",
+      "description": "Use this skill when > Migrate TypeScript test files from unsafe `as` type assertions to type-safe alternatives from @total-typescript/shoehorn. Replace `obj as Type` with fromPartial(), `obj as unknown as Type` with fromAny(), and complete specs with fromExact(). Test code only — never use in production.",
       "category": "code-quality",
       "path": "migrate-to-shoehorn/SKILL.md",
       "tags": [
@@ -3286,7 +3286,7 @@
     },
     {
       "name": "openspace",
-      "description": "Install and route through OpenSpace, the skill management layer for AI agents, so a host agent can retrieve/rank/load the right SKILL.md out of this jeo-skills catalog (~150 installed skills), then evaluate skill quality from real execution evidence and evolve skills via FIX/DERIVED/CAPTURED updates. Covers install-as-skill-finder, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Triggers on: openspace, skill finder, skill retrieval, find the right skill, rank skills, skill discovery, skill quality, evolve skill, FIX DERIVED CAPTURED, skill hub, openspace-mcp, search_skills, skill-discovery, delegate-task.",
+      "description": "Install and route through OpenSpace, the skill management layer for AI agents, so a host agent can retrieve/rank/load the right SKILL.md out of this jeo-skills catalog (~150 installed skills), then evaluate skill quality from real execution evidence and evolve skills via FIX/DERIVED/CAPTURED updates. Covers install-as-skill-finder, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Triggers on: openspace, skill finder, skill retrieval, find the right skill, rank skills, skill discovery, skill quality, evolve skill, FIX DERIVED CAPTURED, skill hub, openspace-mcp, DiscoverSkills, skill-discovery, delegate-task.",
       "category": "agent-development",
       "path": "openspace/SKILL.md",
       "tags": [
@@ -3980,7 +3980,7 @@
     },
     {
       "name": "scaffold-exercises",
-      "description": "Use this skill when >",
+      "description": "Use this skill when > Create exercise directory structures for educational content that comply with linting standards. Sections use XX-section-name/ naming, exercises use XX.YY-exercise-name/ with problem/, solution/, explainer/ variants. Use when creating course content or educational exercise structures.",
       "category": "utilities",
       "path": "scaffold-exercises/SKILL.md",
       "tags": [
@@ -4038,7 +4038,7 @@
     },
     {
       "name": "scrapling",
-      "description": "Route web-scraping work into the lightest workable Scrapling mode instead of defaulting to a browser. Use when the user needs HTML extraction, JS-rendered page retrieval, protected-target escalation, quick CLI scraping, agent-facing MCP access, or a larger crawl with Scrapling spiders. Triggers on: scrapling, scrape website, crawl site, adaptive scraping, selector drift, stealthy fetch, browser scraping, scrape to markdown, scrapling mcp, scrapling spider.",
+      "description": "Route web-scraping work into the lightest workable Scrapling mode instead of defaulting to a browser. Use when the user needs HTML extraction, JS-rendered page retrieval, protected-target escalation, quick CLI scraping, agent-facing MCP access, or a larger crawl with Scrapling spiders. Triggers on: scrapling, scrape website, crawl site, adaptive scraping, selector drift, stealthy fetch, browser scraping, scrape to markdown, scrapling mcp, scrapling spider, research harvesting, literature scraping, paper metadata.",
       "category": "infrastructure",
       "path": "scrapling/SKILL.md",
       "tags": [
@@ -4631,7 +4631,7 @@
     },
     {
       "name": "tdd",
-      "description": "Use this skill when >",
+      "description": "Use this skill when > Test-Driven Development using red-green-refactor cycles with vertical slices. Tests verify behavior through public interfaces, not implementation details. Use when building new features or fixing bugs with a test-first discipline to produce well-designed, behavior-verified code.",
       "category": "code-quality",
       "path": "tdd/SKILL.md",
       "tags": [
@@ -4720,7 +4720,7 @@
     },
     {
       "name": "to-issues",
-      "description": "Use this skill when >",
+      "description": "Use this skill when > Convert plans, specs, or requirements into independently-grabbable vertical slice issues. Each slice is a thin but complete end-to-end cut through all layers (schema, API, UI, tests). Classifies issues as HITL (human-in-the-loop) or AFK (automated, no human interaction needed).",
       "category": "planning-review",
       "path": "to-issues/SKILL.md",
       "tags": [
@@ -4750,7 +4750,7 @@
     },
     {
       "name": "to-prd",
-      "description": "Use this skill when >",
+      "description": "Use this skill when > Generate a structured Product Requirements Document (PRD) from existing conversation context and codebase state. Synthesizes knowledge into a PRD without interviewing the user. Use when documenting requirements for a feature or change to publish to the project issue tracker.",
       "category": "planning-review",
       "path": "to-prd/SKILL.md",
       "tags": [
@@ -5026,7 +5026,7 @@
     },
     {
       "name": "video-shotcraft",
-      "description": "用镜头配方卡 + 已验收模板 + 代码/音频资产制作电影感产品视频（Remotion + 真实页面截图 + 2.5D 运镜 + 节奏卡点 + 声音设计）。Use when making a cinematic product promo or desktop demo video, naming the Ink Press template, reproducing template video effects, or building single motion-design shots with recipe cards. Triggers on: video-shotcraft, Ink Press template, product video, cinematic promo, shot recipe card, remotion video.",
+      "description": "用镜头配方卡 + 已验收模板 + 代码/音频资产制作电影感产品视频（Remotion + 真实页面截图 + 2.5D 运镜 + 节奏卡点 + 声音设计）。 Use when making a cinematic product promo or desktop demo video, naming the Ink Press template, reproducing template video effects, or building single motion-design shots with recipe cards. Triggers on: video-shotcraft, Ink Press template, product video, cinematic promo, shot recipe card, remotion video.",
       "category": "creative-media",
       "path": "video-shotcraft/SKILL.md",
       "tags": [
@@ -5080,7 +5080,7 @@
     },
     {
       "name": "vox-director",
-      "description": "Turn ONE topic into a finished Vox-style paper-collage explainer / ad video, end to end on the Atlas Cloud API + local ffmpeg — script, collage keyframes, motion, voice-over, music, captions, all automated.",
+      "description": "Turn ONE topic into a finished Vox-style paper-collage explainer / ad video, end to end on the Atlas Cloud API + local ffmpeg — script, collage keyframes, motion, voice-over, music, captions, all automated. Use this whenever the user wants a \"Vox style\" video, a paper/torn-paper collage animation, a \"motion collage\", a narrated explainer or short ad built from AI-generated collage posters, a scrapbook-style tribute, or wants to turn a topic / product / person into a punchy narrated collage video — even if they don't say the word \"Vox\". Also use when reproducing Stav Zilber / rom1trs / Higgsfield-style collage ad workflows, or when the user asks for a motion collage or a scrapbook-style tribute. Triggers: \"vox video\", \"collage video\", \"motion collage\", \"paper collage explainer\", \"make a collage ad\", \"turn this topic into a collage video\".",
       "category": "creative-media",
       "path": "vox-director/SKILL.md",
       "tags": [
@@ -5307,7 +5307,7 @@
     },
     {
       "name": "yuwen-publish-precheck",
-      "description": "国内自媒体发布前风险自审与保意修复：审口播稿、文章、图文笔记、字幕、封面文字能不能发抖音/小红书/微信视频号",
+      "description": "国内自媒体发布前风险自审与保意修复：审口播稿、文章、图文笔记、字幕、封面文字能不能发抖音/小红书/微信视频号，给出具体位置、依据和可直接替换的改稿；被限流/删除/处罚后帮你复盘归因；你的行业敏感词、误报白名单和踩坑案例会沉淀成个人规则库，越用越准。Use when 用户说\"能不能发\"\"审一下稿子\"\"查违禁词/敏感词\"\"会不会限流/被限流了\"\"帮我改成能发的版本\"\"发布前检查\"\"被平台处罚/删除了\"\"帮我盯着这个词\"\"导入违禁词表\"。Not for 海外平台(X/YouTube)内容审核、起号涨粉策略、写稿创作本身。",
       "category": "marketing",
       "path": "yuwen-publish-precheck/SKILL.md",
       "tags": [
@@ -5361,7 +5361,7 @@
     },
     {
       "name": "zoom-out",
-      "description": "Use this skill when >",
+      "description": "Use this skill when > Request a broader architectural perspective when navigating unfamiliar code sections. Maps all relevant modules, identifies caller relationships and dependencies, and uses domain-specific vocabulary. Use when encountering unfamiliar code or needing to understand how a component integrates with the larger system.",
       "category": "code-quality",
       "path": "zoom-out/SKILL.md",
       "tags": [
