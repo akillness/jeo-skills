@@ -1,0 +1,9 @@
+N:article-prompts-to-skills
+D:Convert an article, tutorial, or prompt pack into focused reusable AgentSkills, one independent capability per skill, with portable instructions, example prompts, working demos, preview screenshots, validation, gallery updates, and a narrow commit. Use when the user asks to turn an article's prompts, tutorial sections, design patterns, interactions, or workflow ideas into complete skills rather than leaving them as prose.
+G:article|prompts|skills|mengto-skills|codex-workflow
+U[5]:
+  Converting an article's, tutorial's, or prompt pack's prompts into standalone AgentSkills folders with one independent capability per skill
+  Extracting the portable contract (behavior, data model, timing/accessibility rules, acceptance checks) while stripping the source's branding and layout
+  Writing three example prompts (minimal, recreate-the-demo, remix) and building a working, inspectable demo with a preview screenshot for each new skill
+  Validating the finished package with quick_validate.py, browser checks at multiple sizes, and a narrow commit scoped only to the new skill work
+  Not for a source that is still raw HTML with no prompts extracted yet, and not for tasks unrelated to packaging article content into reusable AgentSkills

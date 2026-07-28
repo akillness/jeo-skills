@@ -1,0 +1,10 @@
+N:build-daily-inspiration-sites
+D:Turn a completed daily UI inspiration capture into exactly five original landing-page builds, one per separate Codex task, using Sites. Use when the user asks to turn the daily inspiration references, a five-item UI prompt pack, or a dated `*-ui-inspiration-capture` article into distinct HTML landing pages while changing the source brands, names, copy, people, numbers, pricing, claims, and imagery.
+G:build|daily|inspiration|sites|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to turn a completed daily UI inspiration capture — a dated `*-ui-inspiration-capture` article with a five-item manifest — into five original landing-page builds
+  When converting a five-item UI prompt pack into five independent Codex tasks, each owning one build, one commit, and one private Sites deployment
+  When the source items must stay art direction only, never a template to copy, and every item needs a materially distinct replacement brand, copy, and imagery identity
+  When preparing one build brief per manifest item with a single inline local full-page image attachment, following `references/thread-brief-contract.md`
+  When validating a capture folder's `manifest.json` and `content.md` with `scripts/validate_capture.mjs` before dispatching build tasks
+  When the request is recollecting the original inspiration capture, editing an existing site build directly, or producing anything other than exactly five distinct sites — route to the daily UI inspiration capture workflow instead

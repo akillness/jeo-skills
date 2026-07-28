@@ -1,0 +1,10 @@
+N:write-like-meng-on-x
+D:Write, rewrite, review, or continuously refine X/Twitter posts in Meng To's current voice using his deduplicated authored-post corpus, personal and product context, shared resources, and Content repo evidence. Use when asked to improve a tweet in Meng's tone, draft an original post, reply, thread, resource share, or quote post as Meng, check whether an angle repeats an earlier post, study Meng's writing style, ingest another 20-50 authored posts, or hone the reusable Meng X voice profile.
+G:write|meng|mengto-skills|codex-workflow
+U[6]:
+  Rewriting or polishing a tweet, reply, thread, quote post, resource share, or product post so it reads like Meng To wrote it
+  Drafting an original X post as Meng, grounded only in verified products, workflows, resources, or personal details already in the Content repo
+  Checking whether a new angle repeats an earlier authored post, hook, or recurring belief
+  Ingesting a fresh batch of 20-50 unseen authored X/Twitter posts to keep the voice corpus current
+  Honing or updating the reusable Meng X voice profile after a new batch confirms a pattern
+  Not for generic ghostwriting in someone else's voice or for collecting raw X/Twitter data — use x-twitter-scraper for that instead

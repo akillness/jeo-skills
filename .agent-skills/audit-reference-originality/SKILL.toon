@@ -1,0 +1,10 @@
+N:audit-reference-originality
+D:Audit a website or digital experience against its supplied source references for originality and plagiarism risk. Use when Codex must compare current or historical site output with reference pages, capture packs, screenshots, copy, brands, numbers, images, assets, videos, layouts, motion, or code; raise evidence-backed red flags; distinguish common visual grammar from distinctive copying; and propose concrete fixes without making unsupported legal claims.
+G:audit|reference|originality|mengto-skills|codex-workflow
+U[6]:
+  When a supplied reference corpus exists and a shipped site or experience must be checked against it for originality/plagiarism risk
+  When you need to compare current or historical site output with references across text, brands, numbers, images, assets, videos, layout, motion, or code
+  When red flags must be evidence-backed with exact locations, severity, and a proposed fix rather than a subjective vibe check
+  When you need to distinguish common visual grammar from distinctive, provably-copied elements
+  When copied material may have been renamed, recolored, cropped, or deleted, requiring git history checks in addition to current files
+  Not for silently applying fixes or for general code/security review unrelated to originality — route those to standard review/fix workflows instead

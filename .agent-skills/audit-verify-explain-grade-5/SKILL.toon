@@ -1,0 +1,10 @@
+N:audit-verify-explain-grade-5
+D:Audit work, verify claims with concrete evidence, and explain the result in simple grade-5 language. Use when the user asks to review, audit, check, verify, explain a change, explain a fix, summarize test results, validate whether something works, or translate technical findings into plain language for non-technical readers.
+G:audit|verify|explain|grade|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to review, audit, or check a change, fix, or claim before it is trusted
+  When results need verifying with concrete evidence (tests, running the app, logs, screenshots, artifacts) instead of assumption
+  When the user asks to summarize test results or validate whether something actually works
+  When a technical finding, diff, or fix needs explaining in simple grade-5 language for a non-technical reader
+  When a performance or improvement claim needs checking against measured evidence instead of being assumed
+  When the task is pure new code/content authoring or wants a jargon-heavy expert explanation instead — route to a standard implementation or writing workflow

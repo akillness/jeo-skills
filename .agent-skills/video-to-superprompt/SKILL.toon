@@ -1,0 +1,10 @@
+N:video-to-superprompt
+D:Turn a reference video into a super detailed recreation or inspiration prompt. Use when the user provides, mentions, uploads, links, or points to a video and asks to analyze the design, UI, animations, transitions, scroll interactions, typography, colors, assets, WebGL/Three.js, storytelling, section-by-section behavior, or to create a prompt/article that recreates the page, app, interaction, or motion system.
+G:video|superprompt|mengto-skills|codex-workflow
+U[6]:
+  The user provides, mentions, uploads, links, or points to a video and asks to analyze its design, UI, animations, transitions, scroll interactions, typography, colors, or assets
+  The user wants a prompt or article that recreates the page, app, interaction, or motion system shown in a reference video
+  The task needs technical video inspection (ffprobe/ffmpeg frame extraction) plus layered analysis of story, layout, motion, visual design, technical rebuild, and accessibility/performance
+  The user needs an asset map and separate AI-generation prompts for image plates, video clips, WebGL/canvas elements, posters, sprites, or texture overlays derived from a video
+  The desired output is a paste-ready superprompt, an article with evidence, an implementation brief, or an asset-generation pack based on a video reference
+  Not for static design/UI review with no video reference, or when the user wants the page built directly rather than a recreation prompt — route to a design-review or implementation skill instead

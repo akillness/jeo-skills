@@ -1,7 +1,7 @@
 {
-  "version": "1.2.0",
-  "generated": "2026-07-23",
-  "skill_count": 152,
+  "version": "1.3.0",
+  "generated": "2026-07-28",
+  "skill_count": 174,
   "categories": {
     "planning-review": [
       "agentation",
@@ -22,7 +22,8 @@
       "prompts-chat",
       "skill-standardization",
       "upskill",
-      "openspace"
+      "openspace",
+      "article-prompts-to-skills"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -94,7 +95,10 @@
       "performance-optimization",
       "tdd",
       "testing-strategies",
-      "zoom-out"
+      "zoom-out",
+      "audit-reference-originality",
+      "audit-verify-explain-grade-5",
+      "performance-profiling"
     ],
     "utilities": [
       "agenticskills",
@@ -135,7 +139,8 @@
       "write-a-skill",
       "x-twitter-scraper",
       "zeude",
-      "obsidian-mind"
+      "obsidian-mind",
+      "stitched-full-page-capture"
     ],
     "frontend": [
       "astryx",
@@ -148,7 +153,13 @@
       "react-grab",
       "responsive-design",
       "state-management",
-      "web-accessibility"
+      "web-accessibility",
+      "web-design",
+      "design-first-ui-prompting",
+      "html-to-interaction-prompts",
+      "build-daily-inspiration-sites",
+      "daily-ui-inspiration-capture",
+      "optimize-web-animations"
     ],
     "creative-media": [
       "drawio",
@@ -160,11 +171,21 @@
       "video-production",
       "video-shotcraft",
       "vox-director",
-      "webtoon-harness"
+      "webtoon-harness",
+      "aura-asset-images",
+      "unsplash-asset-images",
+      "browser-video-recording",
+      "elevenlabs-tts",
+      "video-to-superprompt",
+      "generate-reference-inspired-brand-worlds"
     ],
     "marketing": [
       "marketing-automation",
-      "yuwen-publish-precheck"
+      "yuwen-publish-precheck",
+      "customer-email-draft-threads",
+      "customer-support-verification",
+      "write-like-meng-on-x",
+      "x-bookmark-quote-posts"
     ],
     "project-management": [
       "sprint-retrospective",
@@ -181,7 +202,8 @@
       "perfectpixel",
       "steam-store-launch-ops",
       "unity-gamedev-skill-pack",
-      "web-game-development"
+      "web-game-development",
+      "implement-fog-of-war"
     ]
   },
   "skills": [
@@ -447,6 +469,31 @@
       "version": "2.1.0"
     },
     {
+      "name": "article-prompts-to-skills",
+      "description": "Convert an article, tutorial, or prompt pack into focused reusable AgentSkills, one independent capability per skill, with portable instructions, example prompts, working demos, preview screenshots, validation, gallery updates, and a narrow commit. Use when the user asks to turn an article's prompts, tutorial sections, design patterns, interactions, or workflow ideas into complete skills rather than leaving them as prose.",
+      "category": "agent-development",
+      "path": "article-prompts-to-skills/SKILL.md",
+      "tags": [
+        "article",
+        "prompts",
+        "skills",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "article-prompts-to-skills",
+      "version": "1.0.0"
+    },
+    {
       "name": "astryx",
       "description": "Build fully customizable, agent-ready design systems with Astryx — Meta's production design system now open source. Ships 150+ React components built on StyleX with zero styling lock-in, component swizzling, brand theming, dark mode, and CLI tooling. Use when building component libraries, design systems, UI applications, design tokens, or when teams need consistent accessible components that AI agents can understand and extend. Triggers on: astryx, design system, component library, design tokens, react components, accessible components, astryx design, stylesheets, theme customization, component composition.",
       "category": "frontend",
@@ -485,6 +532,83 @@
         "Search"
       ],
       "keyword": "astryx",
+      "version": "1.0.0"
+    },
+    {
+      "name": "audit-reference-originality",
+      "description": "Audit a website or digital experience against its supplied source references for originality and plagiarism risk. Use when Codex must compare current or historical site output with reference pages, capture packs, screenshots, copy, brands, numbers, images, assets, videos, layouts, motion, or code; raise evidence-backed red flags; distinguish common visual grammar from distinctive copying; and propose concrete fixes without making unsupported legal claims.",
+      "category": "code-quality",
+      "path": "audit-reference-originality/SKILL.md",
+      "tags": [
+        "audit",
+        "reference",
+        "originality",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "audit-reference-originality",
+      "version": "1.0.0"
+    },
+    {
+      "name": "audit-verify-explain-grade-5",
+      "description": "Audit work, verify claims with concrete evidence, and explain the result in simple grade-5 language. Use when the user asks to review, audit, check, verify, explain a change, explain a fix, summarize test results, validate whether something works, or translate technical findings into plain language for non-technical readers.",
+      "category": "code-quality",
+      "path": "audit-verify-explain-grade-5/SKILL.md",
+      "tags": [
+        "audit",
+        "verify",
+        "explain",
+        "grade",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "audit-verify-explain-grade-5",
+      "version": "1.0.0"
+    },
+    {
+      "name": "aura-asset-images",
+      "description": "Use when you need high-quality stock-style images from Aura Assets (aura.build/assets) similar to Unsplash for design mockups and marketing: backgrounds, abstract wallpapers, architecture, portraits, and headshots. Includes a workflow for searching by tag on aura.build/assets and returns 5 real image URLs per category plus practical guidance for using different resolutions and aspect ratios.",
+      "category": "creative-media",
+      "path": "aura-asset-images/SKILL.md",
+      "tags": [
+        "aura",
+        "asset",
+        "images",
+        "mengto-skills",
+        "stock-images",
+        "design-assets"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "aura-asset-images",
       "version": "1.0.0"
     },
     {
@@ -729,6 +853,57 @@
       ],
       "keyword": "browser-harness",
       "version": "1.1.0"
+    },
+    {
+      "name": "browser-video-recording",
+      "description": "Create polished 60 fps 4:3 4K browser screen-recording style videos from Codex in-app browser captures, with browser-only crop, natural macOS cursor styling, deliberate click choreography, zoom-follow framing, ffprobe/thumbnail verification, and optional native recording compatibility checks. Use when the user asks to record or re-record browser actions, show cursor clicks and zooms, make Dribbble/UI inspiration or product demo recordings, or asks whether Codex, Playwright, or an MCP can produce a natural browser demo video.",
+      "category": "creative-media",
+      "path": "browser-video-recording/SKILL.md",
+      "tags": [
+        "browser",
+        "video",
+        "recording",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "browser-video-recording",
+      "version": "1.0.0"
+    },
+    {
+      "name": "build-daily-inspiration-sites",
+      "description": "Turn a completed daily UI inspiration capture into exactly five original landing-page builds, one per separate Codex task, using Sites. Use when the user asks to turn the daily inspiration references, a five-item UI prompt pack, or a dated `*-ui-inspiration-capture` article into distinct HTML landing pages while changing the source brands, names, copy, people, numbers, pricing, claims, and imagery.",
+      "category": "frontend",
+      "path": "build-daily-inspiration-sites/SKILL.md",
+      "tags": [
+        "build",
+        "daily",
+        "inspiration",
+        "sites",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "build-daily-inspiration-sites",
+      "version": "1.0.0"
     },
     {
       "name": "caveman",
@@ -1111,6 +1286,82 @@
       "version": "latest"
     },
     {
+      "name": "customer-email-draft-threads",
+      "description": "Gmail customer support triage with mandatory full-thread read-back before every reply or follow-up, a draft-only default, per-draft Codex project threads, approval-gated final closure replies with eligible optional Trustpilot review invitations, and approval-gated operations for verified DreamCut Discord invite requests. Use when the user asks to run the customer email automation, check unread/recent support emails, review a customer follow-up, prepare or send Gmail replies, close a positively confirmed resolved case, continue a support handoff, create agent/project threads for drafted follow-up, or fulfill DreamCut Discord access requests.",
+      "category": "marketing",
+      "path": "customer-email-draft-threads/SKILL.md",
+      "tags": [
+        "customer",
+        "email",
+        "draft",
+        "threads",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "customer-email-draft-threads",
+      "version": "1.0.0"
+    },
+    {
+      "name": "customer-support-verification",
+      "description": "Verify customer support work against the selected customer-case flow, full-thread evidence, account and canonical-thread matching, authority, financial approval, customer communication, eligible optional Trustpilot review-request rules, post-action read-back, send confirmation, thread-wide archive, and closure requirements. Use after every SaaS support triage, account/access or unsupported-platform response, duplicate or resolved acknowledgement, positive-confirmation closure reply, cancellation, failed-payment cancellation, refund, accidental-renewal case, support handoff, draft, send, or archive task before reporting completion. Triggers on: verify support case, support closure check, cancellation verification, refund verification, accidental-renewal case, duplicate/resolved acknowledgement, account-access ticket, Trustpilot eligibility, thread read-back before marking done.",
+      "category": "marketing",
+      "path": "customer-support-verification/SKILL.md",
+      "tags": [
+        "customer",
+        "support",
+        "verification",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "customer-support-verification",
+      "version": "1.0.0"
+    },
+    {
+      "name": "daily-ui-inspiration-capture",
+      "description": "Create a recurring daily UI inspiration capture. Use when the user asks to run, refresh, package, or validate dated UI inspiration bundles, especially for `articles/YYYY-MM-DD-ui-inspiration-capture/` outputs, Framer/Dribbble landing-page inspiration, motion-study screenshots/videos, AI-builder prompts, duplicate checking, or converting a project runbook into repeatable workflow.",
+      "category": "frontend",
+      "path": "daily-ui-inspiration-capture/SKILL.md",
+      "tags": [
+        "daily",
+        "inspiration",
+        "capture",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "daily-ui-inspiration-capture",
+      "version": "1.0.0"
+    },
+    {
       "name": "data-analysis",
       "description": "Analyze datasets to extract insights, identify patterns, and generate reports. Use when exploring...",
       "category": "search-analysis",
@@ -1293,6 +1544,32 @@
       "version": "2.1.0"
     },
     {
+      "name": "design-first-ui-prompting",
+      "description": "Use when you need design-first, spec-driven, skimmable prompts for UI generation. Covers prompt structure, constraints, variations, typography/spacing rules, and iteration workflow for consistent UI outputs.",
+      "category": "frontend",
+      "path": "design-first-ui-prompting/SKILL.md",
+      "tags": [
+        "design",
+        "first",
+        "prompting",
+        "mengto-skills",
+        "ui-prompting",
+        "design-first"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "design-first-ui-prompting",
+      "version": "1.0.0"
+    },
+    {
       "name": "design-system",
       "description": "Define or refactor a shared frontend UI system before polishing one screen at a time. Use when the user needs token governance, visual-language rules, primitive naming, page-system direction, cross-product consistency, or a design handoff that should stay coherent across landing pages, dashboards, forms, and component libraries, including the reusable primitive / slot / variant APIs that system owns. Not for responsive layout-only fixes, accessibility-only remediation, or broad UI critique. Triggers on: design system, design tokens, visual language, component library foundations, UI governance, cross-product consistency, landing page plus dashboard system, primitive naming, token policy, component API architecture.",
       "category": "frontend",
@@ -1423,6 +1700,30 @@
         "WebFetch"
       ],
       "keyword": "drawio",
+      "version": "1.0.0"
+    },
+    {
+      "name": "elevenlabs-tts",
+      "description": "Generate ElevenLabs text-to-speech audio from scripts or inline text using local voice profiles. Use when the user asks for ElevenLabs, text-to-speech, TTS, narration, voiceover, speech audio, or voice generation; load voice names, voice ids, emails, owners, and account-specific defaults only from local config outside the skill.",
+      "category": "creative-media",
+      "path": "elevenlabs-tts/SKILL.md",
+      "tags": [
+        "elevenlabs",
+        "tts",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "elevenlabs-tts",
       "version": "1.0.0"
     },
     {
@@ -1750,6 +2051,33 @@
         "Grep"
       ],
       "keyword": "gbro-collage-broll",
+      "version": "1.0.0"
+    },
+    {
+      "name": "generate-reference-inspired-brand-worlds",
+      "description": "Generate multiple original brand campaign worlds from a supplied visual reference while controlling how close the new work feels without copying protected signature elements. Use when a user provides a brand identity image, poster, editorial campaign, moodboard, or generated concept and asks for inspired alternatives, several distinct brands in one visual family, a closer-to-reference V2, exact wordmarks inside images, or originality-safe image-generation prompts and outputs.",
+      "category": "creative-media",
+      "path": "generate-reference-inspired-brand-worlds/SKILL.md",
+      "tags": [
+        "generate",
+        "reference",
+        "inspired",
+        "brand",
+        "worlds",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "generate-reference-inspired-brand-worlds",
       "version": "1.0.0"
     },
     {
@@ -2144,6 +2472,31 @@
       "version": "1.0"
     },
     {
+      "name": "html-to-interaction-prompts",
+      "description": "Convert a supplied HTML page or generated HTML reference into a screenshot-backed article containing multiple reusable interaction prompts. Use when the user provides an HTML file, exported page, generated-page.html, or local/live reference and asks to extract animation/interactions, create prompts, capture screenshots for each prompt, add them to an article, or commit the resulting article/assets.",
+      "category": "frontend",
+      "path": "html-to-interaction-prompts/SKILL.md",
+      "tags": [
+        "html",
+        "interaction",
+        "prompts",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "html-to-interaction-prompts",
+      "version": "1.0.0"
+    },
+    {
       "name": "hyperfine-benchmarking",
       "description": "Use this skill to benchmark shell commands reliably with warmup runs, statistical summaries, and exportable artifacts using hyperfine.",
       "category": "utilities",
@@ -2156,6 +2509,31 @@
         "Write"
       ],
       "keyword": "hyperfine-benchmarking",
+      "version": "1.0.0"
+    },
+    {
+      "name": "implement-fog-of-war",
+      "description": "Implement, tune, debug, or validate soft wall-aware fog of war and gameplay perception in Three.js action games. Use for orthographic or isometric visibility masks, obstacle-aware line of sight, player and enemy vision ranges, hidden-enemy targeting rules, fog shader artifacts such as spokes or seams, mobile ray budgets, lifecycle and menu-state integration, and deterministic fog-of-war tests.",
+      "category": "game-development",
+      "path": "implement-fog-of-war/SKILL.md",
+      "tags": [
+        "implement",
+        "fog",
+        "war",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "implement-fog-of-war",
       "version": "1.0.0"
     },
     {
@@ -2972,6 +3350,31 @@
       "version": "1.0.0"
     },
     {
+      "name": "optimize-web-animations",
+      "description": "Profile, audit, and optimize frontend page performance with emphasis on animation work, memory-leak risks, long-session slowdowns, CSS animations, canvas/WebGL requestAnimationFrame loops, marquees, skeletons, GSAP/Three/Matter effects, timers, listeners, and observers. Use when the user asks to make animations performant, pause offscreen animations, look for memory leaks, profile pages that slow the computer over time, fix janky scrolling, reduce CPU/GPU use, or repeat the \"only play in view\" optimization on React/Vite/Next/frontend pages using Codex Browser.",
+      "category": "frontend",
+      "path": "optimize-web-animations/SKILL.md",
+      "tags": [
+        "optimize",
+        "web",
+        "animations",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "optimize-web-animations",
+      "version": "1.0.0"
+    },
+    {
       "name": "paperbanana",
       "description": "Route academic-figure work into the lightest workable PaperBanana mode instead of jumping straight to a full multi-agent generation run. Use when the user needs publication-quality methodology diagrams, statistical plots, figure evaluation, polishing an existing figure, batch/sweep generation, or a full-paper figure package from text or PDF. Even if the user does not say \"paperbanana\" — also triggers on: academic figure, methodology diagram, publication figure, generate diagram from paper, statistical plot from CSV, figure evaluation, polish figure, NeurIPS/ICML figure, arxiv illustration, plan-then-refine diagram pipeline.",
       "category": "creative-media",
@@ -3124,6 +3527,30 @@
       ],
       "keyword": "performance-optimization",
       "version": "2.1"
+    },
+    {
+      "name": "performance-profiling",
+      "description": "Guide performance profiling for Apple platform apps with Instruments, Xcode diagnostics, and MetricKit. Use when investigating app hangs, stutters, high CPU, memory leaks, memory growth, OOM crashes, slow launch, battery drain, thermal issues, App Store performance readiness, or when adding os_signpost and measurement hooks.",
+      "category": "code-quality",
+      "path": "performance-profiling/SKILL.md",
+      "tags": [
+        "performance",
+        "profiling",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "performance-profiling",
+      "version": "1.0.0"
     },
     {
       "name": "plannotator",
@@ -3990,6 +4417,32 @@
       "version": "latest"
     },
     {
+      "name": "stitched-full-page-capture",
+      "description": "Capture or repair reliable full-page screenshots for lazy-loaded, scroll-animated, Framer, WebGL/canvas, or reveal-heavy web pages. Use when full-page screenshots are blank, gray, white, sparse, show a tiny content strip, disagree with a working scroll video, or when article evidence/section crops must be derived from a trustworthy full-page image.",
+      "category": "utilities",
+      "path": "stitched-full-page-capture/SKILL.md",
+      "tags": [
+        "stitched",
+        "full",
+        "page",
+        "capture",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "stitched-full-page-capture",
+      "version": "1.0.0"
+    },
+    {
       "name": "strix",
       "description": "Install, configure, and operate Strix for AI-driven application security testing. Use when you need to run authorized vulnerability scans against local codebases, GitHub repositories, staging URLs, domains, or CI pipelines; configure Docker and LLM providers; choose quick, standard, or deep scan depth; or pass authenticated testing instructions to Strix. Triggers on: strix, ai pentest, vulnerability scan cli, appsec scan, bug bounty automation, strix ci, strix docker, strix scan mode, strix instruction file, headless security scan.",
       "category": "infrastructure",
@@ -4453,6 +4906,32 @@
       "version": "1.0.0"
     },
     {
+      "name": "unsplash-asset-images",
+      "description": "Use when you need to pick high-quality Unsplash images for product/design assets (avatars, headshots, portraits, large website backgrounds, and abstract wallpapers) and output real Unsplash URLs plus practical instructions for producing the right resolutions and aspect ratios (1:1, 4:5, 3:4, 16:9, 9:16).",
+      "category": "creative-media",
+      "path": "unsplash-asset-images/SKILL.md",
+      "tags": [
+        "unsplash",
+        "asset",
+        "images",
+        "mengto-skills",
+        "stock-images",
+        "design-assets"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "unsplash-asset-images",
+      "version": "1.0.0"
+    },
+    {
       "name": "upskill",
       "description": "Turn a weak/cheap \"Flash\" model into a \"Pro\" performer by wrapping HKUDS UpSkill — captures agent session failures, has a strong Teacher model analyze them and draft a skill, then validates it against the weak Student model in a closed Ralph Loop (up to 3 rounds) before storing it for automatic reuse. Use when the user wants to install UpSkill, run `/upskill-init`, `/upskill-configure`, `/upskill-build`, `/upskill-run`, `/upskill-list`, `/upskill-status`, `/upskill-mode`, `/upskill-model`, `/upskill-remove`, or `/upskill-uninstall`, wants a cheap model to perform closer to a Pro model without switching, or wants a good session (success or failure) distilled into a validated skill. Triggers on: upskill, up-skill, flash to pro, teacher student distillation, ralph loop skill validation, distill agent failures into skills. Routes skill-quality ratcheting to `skill-autoresearch`, scaffolding to `write-a-skill`, and spec-compliance rewrites to `skill-standardization`.",
       "category": "agent-development",
@@ -4576,6 +5055,30 @@
       "version": "1.0"
     },
     {
+      "name": "video-to-superprompt",
+      "description": "Turn a reference video into a super detailed recreation or inspiration prompt. Use when the user provides, mentions, uploads, links, or points to a video and asks to analyze the design, UI, animations, transitions, scroll interactions, typography, colors, assets, WebGL/Three.js, storytelling, section-by-section behavior, or to create a prompt/article that recreates the page, app, interaction, or motion system.",
+      "category": "creative-media",
+      "path": "video-to-superprompt/SKILL.md",
+      "tags": [
+        "video",
+        "superprompt",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "video-to-superprompt",
+      "version": "1.0.0"
+    },
+    {
       "name": "vox-director",
       "description": "Turn ONE topic into a finished Vox-style paper-collage explainer / ad video, end to end on the Atlas Cloud API + local ffmpeg — script, collage keyframes, motion, voice-over, music, captions, all automated.",
       "category": "creative-media",
@@ -4625,6 +5128,36 @@
       ],
       "keyword": "web-accessibility",
       "version": "2.1.0"
+    },
+    {
+      "name": "web-design",
+      "description": "Route web design, motion, WebGL, and visual-styling requests into the narrowest matching sub-skill of the 79-skill MengTo/Skills web-design family — Style/Design-System Packs, Full-Site Quality & Direction, Motion & Scroll Systems, WebGL/3D Backgrounds & Shaders, Library Embeds & Integrations, Component & State Effects, and CSS Technique Primitives. Use when picking and fetching the right visual recipe for a marketing site, landing page, portfolio, or dashboard shell, then combining layers in direction → layout → background → motion → component-state → polish order. Triggers on: web design, landing page, awwwards, GSAP, Lenis, scroll animation, WebGL background, shader, glass UI, dark mode design system, editorial layout, cursor trail, progressive blur, gradient border, three.js background, vanta, globe.gl, unicorn studio, marketing site polish.",
+      "category": "frontend",
+      "path": "web-design/SKILL.md",
+      "tags": [
+        "web-design",
+        "motion",
+        "webgl",
+        "gsap",
+        "threejs",
+        "css",
+        "landing-page",
+        "skill-routing",
+        "skill-pack",
+        "mengto-skills"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "web-design",
+      "version": "1.0.0"
     },
     {
       "name": "web-game-development",
@@ -4711,6 +5244,55 @@
       ],
       "keyword": "write-a-skill",
       "version": "1.0"
+    },
+    {
+      "name": "write-like-meng-on-x",
+      "description": "Write, rewrite, review, or continuously refine X/Twitter posts in Meng To's current voice using his deduplicated authored-post corpus, personal and product context, shared resources, and Content repo evidence. Use when asked to improve a tweet in Meng's tone, draft an original post, reply, thread, resource share, or quote post as Meng, check whether an angle repeats an earlier post, study Meng's writing style, ingest another 20-50 authored posts, or hone the reusable Meng X voice profile.",
+      "category": "marketing",
+      "path": "write-like-meng-on-x/SKILL.md",
+      "tags": [
+        "write",
+        "meng",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "write-like-meng-on-x",
+      "version": "1.0.0"
+    },
+    {
+      "name": "x-bookmark-quote-posts",
+      "description": "Check a user's latest X/Twitter bookmarks and turn recent saved posts into source-backed quote-post drafts calibrated against the user's latest 100 authored posts. Use when asked to review X bookmarks, create quote posts from bookmarks, refresh a bookmark quote queue, run a bookmark quote automation, study a user's X voice, or write first-person quote posts from X sources.",
+      "category": "marketing",
+      "path": "x-bookmark-quote-posts/SKILL.md",
+      "tags": [
+        "bookmark",
+        "quote",
+        "posts",
+        "mengto-skills",
+        "codex-workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "x-bookmark-quote-posts",
+      "version": "1.0.0"
     },
     {
       "name": "x-twitter-scraper",

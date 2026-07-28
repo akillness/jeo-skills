@@ -1,0 +1,10 @@
+N:implement-fog-of-war
+D:Implement, tune, debug, or validate soft wall-aware fog of war and gameplay perception in Three.js action games. Use for orthographic or isometric visibility masks, obstacle-aware line of sight, player and enemy vision ranges, hidden-enemy targeting rules, fog shader artifacts such as spokes or seams, mobile ray budgets, lifecycle and menu-state integration, and deterministic fog-of-war tests.
+G:implement|fog|war|mengto-skills|codex-workflow
+U[6]:
+  Implementing obstacle-aware fog of war and visibility masks for orthographic or isometric Three.js action games
+  Building or tuning the player's angular visibility lookup texture and the full-screen soft radial and wall-aware fog shader
+  Debugging fog shader artifacts such as visible spokes, hard wall edges, or an obvious angle seam
+  Wiring gameplay perception truth so hidden-enemy targeting, aim selection, HUD counts, and telegraphs never leak through fog pixels
+  Integrating fog with scene lifecycle and state, and validating with deterministic perception and render-budget tests
+  Not for general Three.js game architecture, rendering, or physics unrelated to fog/perception — route that to the web-game-development pack instead

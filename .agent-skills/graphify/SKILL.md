@@ -1,230 +1,297 @@
 ---
 name: graphify
 description: >
-  Route durable graph-building requests into one honest mode: assistant-native
-  install, local Python build, incremental refresh, graph query follow-up, or a
-  graphify-style structural fallback for markdown-heavy corpora. Use when the
-  user wants `GRAPH_REPORT.md`, `graph.json`, `graph.html`, repo/corpus
-  relationship tracing, mixed code+docs+asset graphing, or graph-backed
-  architecture understanding that should persist across sessions. Route simple
-  locate/reference work to `codebase-search`, narrative knowledge-base work to
-  `llm-wiki`, and project-memory handoff to `opencontext`.
+  Drive Graphify from its CLI to build, refresh, query, export, and serve a durable
+  code/corpus knowledge graph. Use when the user wants `.graphify/GRAPH_REPORT.md`,
+  `graph.json`, `graph.html`, `graphify update`/`summary`/`query`/`path`/`explain`/`tree`,
+  change-aware review context, git-hook or watch-based refresh, a stdio MCP graph server,
+  or an install into jeo, jeopi, gjc, opencode, Claude, Codex, or Gemini. Also covers the
+  honest structural fallback when native extraction is empty or misleading. Route simple
+  locate/reference work to `codebase-search`, narrative knowledge-base work to `llm-wiki`,
+  and project-memory handoff to `opencontext`. Triggers on: graphify, graphify update,
+  graphify query, knowledge graph CLI, GRAPH_REPORT.md, graph.json, codebase graph,
+  graph refresh, graphify install, graphify serve, review context, affected flows.
 allowed-tools: Bash Read Write Grep Glob
 compatibility: >
-  Best when Python 3.10+ is available and Graphify can be installed via the
-  official PyPI package `graphifyy`. Supports assistant-native install flows for
-  Claude/Codex/Gemini/OpenCode plus truthful local fallbacks when the native
-  `/graphify` UX is unavailable.
+  Requires the `graphifyy` PyPI package (Python 3.10+) so the `graphify` CLI is on PATH.
+  Assistant integrations exist for claude, codex, gemini, opencode, aider, copilot, claw,
+  droid, trae, trae-cn, hermes, kimi, kiro, antigravity, vscode and windows variants; jeo,
+  jeopi and gjc have no platform id and install through the shared `~/.agents/skills` root.
 metadata:
-  tags: knowledge-graph, codebase-analysis, graphrag, architecture, graphify, corpus-analysis, persistent-memory
-  platforms: Claude, ChatGPT, Gemini, Codex, OpenCode
-  version: "2.1.0"
-  source: akillness/jeo-skills
+  tags: knowledge-graph, codebase-analysis, graphrag, architecture, graphify, cli, corpus-analysis, persistent-memory
+  platforms: Claude, Codex, Gemini, OpenCode, jeo, jeopi, gjc
+  version: "3.0"
+  source: https://github.com/Graphify-Labs/graphify
 ---
 
 # Graphify
 
-Use this skill when the main question is **"what graph mode should we trust, what artifact should we produce, and what should we read next?"**
+Graphify is a **CLI**. The primary path for every request in this skill is a real
+`graphify …` command, not a slash command and not an improvised Python script.
 
-The job is not to dump every Graphify feature or pretend all repo-understanding work needs a graph.
+Use this skill when the main question is **"which graphify command answers this, over what
+scope, and what should we read next?"**
+
 The job is to:
 1. classify the request into one graph packet,
-2. choose one honest execution mode,
-3. scope the corpus before runtime or token pain explodes,
-4. report artifacts and fallback truthfully,
+2. choose one CLI mode,
+3. scope the corpus before runtime or token cost explodes,
+4. report artifacts and any degraded output truthfully,
 5. route search-only, wiki-only, or project-memory work to the right neighboring skill.
 
-Read [references/mode-packets-and-route-outs.md](references/mode-packets-and-route-outs.md) before handling an unfamiliar request.
-Read [references/build-and-fallback-recipes.md](references/build-and-fallback-recipes.md) when choosing between assistant-native install, local Python, incremental refresh, and structural fallback.
+Read [references/cli-command-map.md](references/cli-command-map.md) for the full command
+surface with real flags.
+Read [references/install-matrix.md](references/install-matrix.md) before installing anything —
+especially for **jeo / jeopi / gjc / opencode**.
+Read [references/mode-packets-and-route-outs.md](references/mode-packets-and-route-outs.md) for
+an unfamiliar request, and [references/build-and-fallback-recipes.md](references/build-and-fallback-recipes.md)
+when native extraction is weak.
+
+## CLI quickstart
+
+```bash
+pip install graphifyy                       # PyPI package is graphifyy; the binary is graphify
+graphify --version
+
+graphify scope                              # what would actually be graphed?
+graphify update .                           # build -> .graphify/graph.json + .graphify/GRAPH_REPORT.md
+graphify summary                            # hubs, communities, representative nodes
+graphify query "where is auth enforced?" --budget 1500
+graphify explain <node>                     # one node, plain language
+graphify path <source> <target>             # shortest path between two nodes
+graphify tree <node> --depth 2              # local neighbourhood
+graphify export html                        # -> .graphify/graph.html
+```
+
+Three facts that keep answers truthful:
+
+- **`graphify build` does not exist.** The build command is `graphify update`. `graphify build
+  --help` silently falls through to the root help.
+- **State lives in `.graphify/`**, not `graphify-out/`. `graphify-out/` is the legacy layout;
+  `graphify migrate-state` moves it. Every `--graph <path>` flag defaults to
+  `<cwd>/.graphify/graph.json`.
+- **`graph.html` is not produced by `graphify update`.** It comes from `graphify export html`.
 
 ## When to use this skill
-- The user explicitly wants `GRAPH_REPORT.md`, `graph.json`, `graph.html`, a codebase graph, or a persistent knowledge graph
-- The request is about repo/corpus structure, graph-backed relationship tracing, path queries, or architecture discovery that should survive the current session
-- The corpus mixes code, docs, PDFs, notes, screenshots, or other assets and the user wants one durable structure layer
-- The user wants to refresh, query, or explain an existing Graphify output instead of re-reading raw files from scratch
-- The user asks to install Graphify into Claude, Codex, Gemini, OpenCode, or another coding assistant for always-on graph access
+
+- The user explicitly wants `GRAPH_REPORT.md`, `graph.json`, `graph.html`, a codebase graph, or
+  a persistent knowledge graph
+- The request is about repo/corpus structure, relationship tracing, path queries, or
+  architecture discovery that should survive the current session
+- The corpus mixes code, docs, PDFs, notes, or screenshots and the user wants one durable
+  structure layer
+- The user wants to refresh, query, or explain an existing graph instead of re-reading raw files
+- The user wants change-aware review context, affected execution flows, or risk scoring for a
+  diff or PR
+- The user wants Graphify installed into jeo, jeopi, gjc, opencode, Claude, Codex, Gemini, or
+  another supported agent
 
 ## When not to use this skill
-- **The user only needs to find a symbol, file owner, config location, or reference chain** → use `codebase-search`
-- **The user wants a persistent markdown knowledge base or filed research notes** → use `llm-wiki`
-- **The user wants project/repo memory, manifests, or cross-agent handoff packets** → use `opencontext`
-- **The user needs dependency-only JS/TS analysis or a quick repo tree diagram, not a durable graph memory layer**
-- **The request is generic GraphRAG / text-KG architecture without a concrete Graphify or durable structure ask**
+
+- **Only needs to find a symbol, file owner, config location, or reference chain** → `codebase-search`
+- **Wants a persistent markdown knowledge base or filed research notes** → `llm-wiki`
+- **Wants project/repo memory, manifests, or cross-agent handoff packets** → `opencontext`
+- **Needs dependency-only JS/TS analysis or a quick repo tree diagram**, not a durable graph
+- **Generic GraphRAG / text-KG architecture talk** with no concrete Graphify ask
+
+## Install for jeo / jeopi / gjc / opencode
+
+`graphify install [platform]` accepts exactly these ids: `claude`, `codex`, `gemini`,
+`opencode`, `aider`, `copilot`, `claw`, `droid`, `trae`, `trae-cn`, `hermes`, `kimi`, `kiro`,
+`antigravity`, `antigravity-windows`, `vscode-copilot-chat`, `windows`, `vscode`.
+
+**`jeo`, `jeopi` and `gjc` are not platform ids** — `graphify install jeo` will fail the same way
+`graphify install agents` does (`error: unknown platform`). Per this repo's
+`setup-all-skills-prompt.md`, those three discover the shared `~/.agents/skills` root natively,
+which the unconditional `universal` id populates. So:
+
+```bash
+# CLI for everyone
+pip install graphifyy && graphify --version
+
+# skill into the shared root that jeo, jeopi, gjc and sst/opencode all read
+npx skills add https://github.com/akillness/jeo-skills --skill graphify -a universal
+ls "${SKILLS_ROOT:-$HOME/.agents/skills}/graphify/SKILL.md"
+
+# optional: opencode plugin + tool.execute.before hook (sst/opencode only)
+graphify install opencode            # or: graphify install opencode --project
+```
+
+`graphify install opencode --project` writes `.opencode/skills/graphify/SKILL.md`,
+`.opencode/plugins/graphify.js`, `.opencode/opencode.json`, and an `AGENTS.md` section.
+`graphify install claude --project` writes `.claude/skills/graphify/SKILL.md`,
+`.claude/settings.json` PreToolUse hooks, and a `CLAUDE.md` section.
+
+The archived Go `opencode-ai/opencode` TUI has **no** skill loader — `graphify install opencode`
+will not surface the skill there; bridge it as a command file or just use the CLI. Full detail:
+[references/install-matrix.md](references/install-matrix.md).
 
 ## Instructions
 
-### Step 1: Start from the graph packet already in hand
-Use [references/mode-packets-and-route-outs.md](references/mode-packets-and-route-outs.md).
+### Step 1: Normalize the request into one packet
 
-Normalize the request into one of these packet shapes:
 - `repo-structure-packet` — map a codebase or subsystem before editing
-- `relationship-trace-packet` — answer a path/query/explain question from an existing or newly built graph
-- `mixed-corpus-memory-packet` — build durable structure across code + docs + assets + sources
-- `assistant-install-packet` — install Graphify into an assistant for always-on use
-- `refresh-or-fallback-packet` — update an existing graph, recover from empty/weak output, or switch to structural fallback
+- `relationship-trace-packet` — answer a path/query/explain question from an existing graph
+- `mixed-corpus-memory-packet` — build durable structure across code + docs + assets
+- `review-diff-packet` — produce review context or affected flows for changed files
+- `install-packet` — get Graphify into an agent for always-on use
+- `refresh-or-fallback-packet` — update an existing graph, recover from weak output, or fall back
 
-Capture the smallest useful frame:
+Start from the packet the user already has. Do not force every request through a feature tour.
 
-```markdown
-Packet: repo-structure-packet
-Scope: src/ + docs/architecture/
-Need: GRAPH_REPORT.md + one path query
-Graph state: no current outputs
-Main risk: whole-repo graphing is too noisy
+### Step 2: Pick one CLI mode
+
+| Mode | Primary commands |
+| --- | --- |
+| `cli-build` | `graphify scope` → `graphify update .` |
+| `cli-query` | `graphify summary` → `query` / `explain` / `path` / `tree` |
+| `cli-export` | `graphify export html\|wiki\|obsidian\|svg\|graphml\|neo4j` |
+| `incremental-refresh` | `graphify check-update` → `graphify update` / `watch` / `hook install` |
+| `review-context` | `graphify review-context` / `affected-flows` / `detect-changes` |
+| `agent-serve` | `graphify serve` (stdio MCP server for `graph.json`) |
+| `install` | `graphify install <platform>` or the `~/.agents/skills` route |
+| `structural-fallback` | build the smallest truthful structural graph when native extraction is empty or misleading |
+
+Name one primary mode. Mention at most one fallback.
+
+### Step 3: Scope before spending
+
+Run `graphify scope` first on anything unfamiliar. Good defaults:
+
+- repo root only when repo-wide architecture is genuinely the ask
+- `src/`, `app/`, `packages/<pkg>/`, or one service directory for implementation work
+- `raw/`, `docs/`, or a mixed research folder for corpus graphing
+- an existing `.graphify/` when the job is query/refresh rather than rebuild
+
+Use `--scope auto|committed|tracked|all` and `.graphifyignore` instead of hoping runtime behaves.
+If the request is really locate/reference, route to `codebase-search`.
+
+### Step 4: Run the narrowest command set
+
+Keep it to the commands the mode needs. Do not chain a build, an export, a wiki, and a watch
+loop when the user asked one question.
+
+### Step 5: Report degraded output honestly
+
+Verified behavior: with no LLM API key configured, `graphify update .` still writes
+`graph.json` and `GRAPH_REPORT.md`, but prints:
+
+```
+[graphify label] warning: community labeling failed (...); using Community N placeholders.
+[graphify describe] description generation failed (...); continuing without descriptions.
 ```
 
-Rule: start from the packet the user already has. Do not force every request through a full feature tour.
+When that happens, say the graph is structurally complete but unlabeled/undescribed, and offer
+`graphify update --fill-missing` once a backend is configured. Never present placeholder
+`Community N` names as meaningful clusters.
 
-### Step 2: Choose one primary mode
-Pick exactly one primary mode:
-- `assistant-native-install` — install Graphify into Claude/Codex/Gemini/OpenCode because always-on `/graphify` access is the real goal
-- `local-python-build` — run the local Python/API workflow because the environment needs a truthful non-native path
-- `incremental-refresh` — update an existing graph on changed scope instead of rebuilding everything blindly
-- `graph-query-followup` — start from current artifacts and answer focused graph-backed questions
-- `structural-fallback` — produce a graphify-style structural graph when native extraction is unavailable, empty, or misleading for a markdown-heavy corpus
+### Step 6: Read artifacts in order
 
-Optional: mention one fallback mode, but do not hand the user five equal options.
-
-### Step 3: Scope the corpus before doing anything expensive
-Choose the smallest path that answers the question.
-
-Good defaults:
-- repo root only when the user truly needs repo-wide architecture
-- `src/`, `app/`, `packages/foo/`, or one service directory for implementation work
-- `raw/`, `docs/`, or a mixed research folder for corpus graphing
-- existing `graphify-out/` when the job is query/refresh rather than rebuild
-
-Rules:
-- avoid blind whole-repo graphing on large repos
-- prefer `.graphifyignore` or smaller scope over hoping runtime cost behaves
-- if the graph request is really a locate/reference request, route to `codebase-search`
-
-### Step 4: Tell the truth about install and runtime shape
-Use [references/build-and-fallback-recipes.md](references/build-and-fallback-recipes.md).
-
-Core facts to preserve:
-- official PyPI package name: `graphifyy`
-- CLI command: `graphify`
-- Python 3.10+
-- assistant-native installs exist for Claude / Codex / Gemini / OpenCode and related tools
-- local automation may need a Python/API path or structural fallback rather than assuming assistant-native `/graphify` is available
-
-Never blur these cases:
-- **always-on assistant install**
-- **local one-shot graph build / refresh**
-- **querying an existing graph**
-- **structural fallback because native extraction is not the honest answer**
-
-### Step 5: Run the chosen mode with the narrowest recipe
-Keep commands or steps minimal and mode-specific.
-
-Typical recipes:
-- `assistant-native-install` → install / verify the assistant-specific Graphify integration
-- `local-python-build` → install `graphifyy`, verify runtime, run the Python pipeline or tested local workflow, and export `GRAPH_REPORT.md`, `graph.json`, and `graph.html`
-- `incremental-refresh` → reuse existing artifacts and refresh only the changed scope when practical
-- `graph-query-followup` → read `GRAPH_REPORT.md` first, then run `query`, `path`, or `explain`
-- `structural-fallback` → build the smallest truthful graph from filesystem structure, frontmatter, support files, and explicit mentions instead of pretending native semantic extraction succeeded
-
-If the corpus is markdown-heavy and native extraction returns a 0-node or misleading graph, switch modes instead of retrying the same failing path.
-
-### Step 6: Read artifacts in the right order
-Always prefer:
-1. `graphify-out/GRAPH_REPORT.md`
-2. `graphify-out/graph.html`
-3. `graphify-out/graph.json`
-
-Do **not** dump raw `graph.json` into a prompt if the report or a focused query is enough.
+1. `.graphify/GRAPH_REPORT.md`
+2. `graphify summary` (cheaper and more focused than the HTML for agent work)
+3. `.graphify/graph.html` (after `graphify export html`) for humans
+4. `.graphify/graph.json` last, and prefer `graphify query --budget <n>` over pasting it
 
 ### Step 7: Route adjacent work outward
-This skill owns durable graph mode choice and graph-backed follow-up, not every repo/corpus task.
 
-Typical route-outs:
-- `codebase-search` — exact text, symbol, config/content ownership, and impact mapping before graphing
-- `llm-wiki` — narrative synthesis, wiki pages, source filing, long-lived markdown knowledge bases
-- `opencontext` — searchable decisions, manifests, stable links, and project-memory handoff
-- `survey` — broader landscape scans when the real question is tool/platform comparison before choosing Graphify
+- `codebase-search` — exact text, symbol, config ownership, impact mapping before graphing
+- `llm-wiki` — narrative synthesis, wiki pages, long-lived markdown knowledge bases
+- `opencontext` — searchable decisions, manifests, stable links, project-memory handoff
+- `survey` — tool/platform comparison before committing to Graphify
 
-If the user asks “build or query the graph,” stay here.
-If they ask “find the file/symbol fast,” “file this as a wiki note,” or “store this as project memory,” route out.
+If the user asks "build or query the graph," stay here. If they ask "find the file fast," "file
+this as a wiki note," or "store this as project memory," route out.
 
 ### Step 8: Return one concise graph brief
-Always return a short operator-style brief with:
-- packet
-- primary mode
-- scope
-- output directory / artifacts
-- whether the result was native Graphify or structural fallback
-- 1–3 next steps or queries
-- one route-out if neighboring work now owns the next step
+
+Packet · primary mode · commands actually run · scope · artifacts written · whether output was
+degraded or fallback · 1–3 next commands · one route-out if the next step belongs elsewhere.
 
 ## Output format
-Always return a **graph build brief**, **graph refresh brief**, **graph query brief**, or **Graphify install brief**.
 
-Required qualities:
-- identify the packet already in hand
-- choose one primary mode
-- name the scope explicitly
-- state which artifacts exist or were created
-- label fallback mode honestly when native extraction was not used
-- read from `GRAPH_REPORT.md` before over-focusing on raw graph JSON
-- route search-only, wiki-only, or project-memory work outward
+Always return a **graph build brief**, **graph query brief**, **graph refresh brief**, **review
+context brief**, or **Graphify install brief** with:
+
+- the packet in hand and one primary mode
+- the real commands run, with their scope
+- which files under `.graphify/` exist or were created
+- honest labeling of degraded, placeholder, or fallback output
+- `GRAPH_REPORT.md` / `graphify summary` read before raw `graph.json`
+- one route-out when neighboring work now owns the next step
 
 ## Examples
 
 ### Example 1: understand a repo before editing
 **Input**
-> Map this repo with Graphify so I can understand the architecture before touching code.
+> Map this repo so I can understand the architecture before touching code.
 
 **Good output direction**
-- `repo-structure-packet`
-- `local-python-build` or `assistant-native-install` depending on environment
-- scopes the repo honestly
-- reports `GRAPH_REPORT.md`, `graph.json`, `graph.html`
+- `repo-structure-packet`, mode `cli-build`
+- `graphify scope` → `graphify update .` → `graphify summary`
+- reports `.graphify/GRAPH_REPORT.md` and `.graphify/graph.json`, and that `graph.html` needs
+  `graphify export html`
 
 ### Example 2: trace a relationship from an existing graph
 **Input**
-> We already have graphify-out. What connects the auth controller to billing?
+> We already have a graph. What connects the auth controller to billing?
 
 **Good output direction**
-- `relationship-trace-packet`
-- `graph-query-followup`
-- reads `GRAPH_REPORT.md` first, then uses `query` / `path`
-- avoids unnecessary rebuilds
+- `relationship-trace-packet`, mode `cli-query`
+- `graphify summary` → `graphify path <auth> <billing>` → `graphify explain <node>`
+- no rebuild
 
-### Example 3: mixed corpus with markdown-heavy sources
+### Example 3: review a diff
 **Input**
-> Turn this docs + screenshots + notes folder into a persistent graph we can reuse next week.
+> What does this PR actually touch? I want reviewer context, not a diff dump.
 
 **Good output direction**
-- `mixed-corpus-memory-packet`
-- chooses `local-python-build` or `structural-fallback`
-- explains whether the result is native Graphify or graphify-style structural fallback
+- `review-diff-packet`, mode `review-context`
+- `graphify review-context --base main --detail-level standard` and
+  `graphify affected-flows --base main --json`
 
-### Example 4: request is really search, not graphing
+### Example 4: install for our agents
+**Input**
+> Install graphify for jeo, jeopi, gjc and opencode.
+
+**Good output direction**
+- `install-packet`
+- `pip install graphifyy`, then the skill into `~/.agents/skills` via `-a universal` for
+  jeo/jeopi/gjc, plus optional `graphify install opencode`
+- states plainly that `graphify install jeo` is not a valid platform id
+
+### Example 5: request is really search
 **Input**
 > I just need to find where this config is defined and who references it.
 
 **Good output direction**
-- routes to `codebase-search`
-- does not force Graphify where search is the bottleneck
+- routes to `codebase-search`; does not build a graph
 
 ## Best practices
-1. Use the smallest scope that answers the question.
-2. Keep assistant-native install, local build, refresh, query, and fallback as distinct modes.
-3. Prefer `GRAPH_REPORT.md` before raw graph JSON.
-4. Treat structural fallback as a first-class honest mode, not a hidden failure.
-5. Route search-first work to `codebase-search` instead of overselling graphing.
-6. Route narrative memory to `llm-wiki` and project memory to `opencontext`.
-7. Refresh compact and discovery surfaces whenever the front-door wording changes materially.
-8. If a graph build is machine-specific or path-leaky, say so instead of presenting it as portable truth.
-9. After a graphify wiki build — or any `pip install --upgrade graphifyy` — run `scripts/patch_wikilink.py` if links look broken. graphify's generator emits raw-label `[[Community 36]]` links that never resolve to its slugged `Community_36.md` pages; the patcher normalizes every link site to `[[slug|label]]` and is idempotent. Wire it into the install/upgrade step (jeo: the `post-implementation` hook ahead of `graphify update .`) so the fix survives upgrades. See `wikilink-normalization-patch` in the build recipes.
+1. Lead with a real `graphify` command; never invent one — `graphify build` does not exist.
+2. Write `.graphify/`, not `graphify-out/`; use `graphify migrate-state` for legacy repos.
+3. Run `graphify scope` before an expensive build on an unfamiliar corpus.
+4. Prefer `GRAPH_REPORT.md` and `graphify summary` over raw `graph.json`; cap traversals with
+   `graphify query --budget <n>`.
+5. Keep build, query, export, refresh, review, serve, install, and fallback as distinct modes.
+6. Report placeholder `Community N` labels and missing descriptions as degraded output, not success.
+7. Use `graphify hook install` or `graphify watch` for ongoing freshness instead of ad-hoc rebuilds.
+8. Run `graphify portable-check` before committing `.graphify` artifacts.
+9. Treat structural fallback as a first-class honest mode, not a hidden failure.
+10. Route search-first work to `codebase-search`, narrative memory to `llm-wiki`, project memory
+    to `opencontext`.
+11. After a graphify wiki build — or any `pip install --upgrade graphifyy` — run
+    `scripts/patch_wikilink.py` if `[[…]]` links look broken. graphify's generator emits
+    raw-label `[[Community 36]]` links that never resolve to its slugged `Community_36.md` pages;
+    the patcher normalizes every link site to `[[slug|label]]` and is idempotent. Wire it into
+    the install/upgrade step (jeo: the `post-implementation` hook ahead of `graphify update .`)
+    so the fix survives upgrades.
 
 ## References
+- [CLI command map](references/cli-command-map.md) — every command and flag, grouped by job
+- [Install matrix](references/install-matrix.md) — platform ids, jeo/jeopi/gjc/opencode routes
 - [Mode packets and route-outs](references/mode-packets-and-route-outs.md)
 - [Build and fallback recipes](references/build-and-fallback-recipes.md)
-- [`scripts/patch_wikilink.py`](scripts/patch_wikilink.py) — idempotent wikilink-normalization patch for `graphify/wiki.py` (run `--self-test` to verify, `--check` to report status)
-- `../codebase-search/SKILL.md`
-- `../llm-wiki/SKILL.md`
-- `../opencontext/SKILL.md`
-- Graphify upstream: https://github.com/safishamsi/graphify
+- [`scripts/patch_wikilink.py`](scripts/patch_wikilink.py) — idempotent wikilink-normalization patch (`--self-test`, `--check`)
+- `../codebase-search/SKILL.md` · `../llm-wiki/SKILL.md` · `../opencontext/SKILL.md`
+- Graphify upstream: https://github.com/Graphify-Labs/graphify
 - Graphify PyPI: https://pypi.org/project/graphifyy/

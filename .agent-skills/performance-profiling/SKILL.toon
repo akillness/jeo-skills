@@ -1,0 +1,10 @@
+N:performance-profiling
+D:Guide performance profiling for Apple platform apps with Instruments, Xcode diagnostics, and MetricKit. Use when investigating app hangs, stutters, high CPU, memory leaks, memory growth, OOM crashes, slow launch, battery drain, thermal issues, App Store performance readiness, or when adding os_signpost and measurement hooks.
+G:performance|profiling|mengto-skills|codex-workflow
+U[6]:
+  App hangs, stutters, dropped frames, or high CPU usage on an Apple platform app that needs a Time Profiler pass
+  Memory leaks, unbounded memory growth, or OOM crashes that need Leaks, Allocations, or the Memory Graph debugger
+  Slow cold/warm launch or slow time to first frame that needs App Launch instrument analysis
+  Battery drain, thermal throttling, or excess background/network energy use that needs an Energy Log pass
+  Pre-release performance audits that need the full Xcode Diagnostics + MetricKit review checklist, or adding os_signpost measurement hooks
+  Not for general (non-Apple) web/service performance tuning such as bundle size, API latency, or database query plans (use performance-optimization); not for Unity/Unreal engine frame-capture interpretation (use game-performance-profiler)

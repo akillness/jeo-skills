@@ -1,0 +1,10 @@
+N:customer-email-draft-threads
+D:Gmail customer support triage with mandatory full-thread read-back before every reply or follow-up, a draft-only default, per-draft Codex project threads, approval-gated final closure replies with eligible optional Trustpilot review invitations, and approval-gated operations for verified DreamCut Discord invite requests. Use when the user asks to run the customer email automation, check unread/recent support emails, review a customer follow-up, prepare or send Gmail replies, close a positively confirmed resolved case, continue a support handoff, create agent/project threads for drafted follow-up, or fulfill DreamCut Discord access requests.
+G:customer|email|draft|threads|mengto-skills|codex-workflow
+U[6]:
+  When triaging Gmail customer support messages and preparing draft-only replies for real customer/person emails
+  When a customer thread needs a full re-read before drafting, revising, or sending a reply or follow-up
+  When closing a positively confirmed, fully resolved case and deciding on an optional Trustpilot review invitation
+  When creating or deduplicating a canonical Codex project thread per drafted email
+  When handling approval-gated affiliate notices or verified DreamCut Discord invite requests
+  When the case is account/access, unsupported-platform, duplicate, cancellation, refund, or accidental-renewal — route to handle-saas-account-cases or handle-saas-billing-cases instead

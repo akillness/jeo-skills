@@ -2468,3 +2468,243 @@ R[5]:
 E[2]{desc,in,out}:
   "60s product intro","Create a 60s product intro video with 6 scenes, upbeat tone, 16:9","Scene breakdown (Hook/Problem/Solution/Features/SocialProof/CTA) + Remotion file structure"
   "Onboarding walkthrough","Generate a 45s onboarding walkthrough using screenshots, 9:16 mobile format","5-step scene plan + asset list (screenshots·callouts) + text overlays + mobile-safe margins"
+
+N:article-prompts-to-skills
+D:Convert an article, tutorial, or prompt pack into focused reusable AgentSkills, one independent capability per skill, with portable instructions, example prompts, working demos, preview screenshots, validation, gallery updates, and a narrow commit. Use when the user asks to turn an article's prompts, tutorial sections, design patterns, interactions, or workflow ideas into complete skills rather than leaving them as prose.
+G:article|prompts|skills|mengto-skills|codex-workflow
+U[5]:
+  Converting an article's, tutorial's, or prompt pack's prompts into standalone AgentSkills folders with one independent capability per skill
+  Extracting the portable contract (behavior, data model, timing/accessibility rules, acceptance checks) while stripping the source's branding and layout
+  Writing three example prompts (minimal, recreate-the-demo, remix) and building a working, inspectable demo with a preview screenshot for each new skill
+  Validating the finished package with quick_validate.py, browser checks at multiple sizes, and a narrow commit scoped only to the new skill work
+  Not for a source that is still raw HTML with no prompts extracted yet, and not for tasks unrelated to packaging article content into reusable AgentSkills
+
+N:stitched-full-page-capture
+D:Capture or repair reliable full-page screenshots for lazy-loaded, scroll-animated, Framer, WebGL/canvas, or reveal-heavy web pages. Use when full-page screenshots are blank, gray, white, sparse, show a tiny content strip, disagree with a working scroll video, or when article evidence/section crops must be derived from a trustworthy full-page image.
+G:stitched|full|page|capture|mengto-skills|codex-workflow
+U[6]:
+  When a full-page screenshot of a lazy-loaded, scroll-animated, Framer, WebGL/canvas, or reveal-heavy page comes back blank, gray, white, sparse, or shows only a tiny content strip
+  When a one-shot full-page screenshot disagrees with a working scroll-recording MP4 that shows the page rendering correctly
+  When article evidence or section crops must be cut from a trustworthy full-page image instead of an unreliable native fullPage capture
+  When repairing or regenerating daily UI-inspiration article captures via the bundled stitch_full_page_capture.mjs script against a manifest.json
+  When validating a stitched capture by checking dimensions, blank/gray bands, and agreement with the representative still, MP4, and motion frames
+  When the page already renders correctly in a single native fullPage screenshot with no lazy-load, scroll-animation, or reveal issues, route to a plain one-shot capture instead
+
+N:implement-fog-of-war
+D:Implement, tune, debug, or validate soft wall-aware fog of war and gameplay perception in Three.js action games. Use for orthographic or isometric visibility masks, obstacle-aware line of sight, player and enemy vision ranges, hidden-enemy targeting rules, fog shader artifacts such as spokes or seams, mobile ray budgets, lifecycle and menu-state integration, and deterministic fog-of-war tests.
+G:implement|fog|war|mengto-skills|codex-workflow
+U[6]:
+  Implementing obstacle-aware fog of war and visibility masks for orthographic or isometric Three.js action games
+  Building or tuning the player's angular visibility lookup texture and the full-screen soft radial and wall-aware fog shader
+  Debugging fog shader artifacts such as visible spokes, hard wall edges, or an obvious angle seam
+  Wiring gameplay perception truth so hidden-enemy targeting, aim selection, HUD counts, and telegraphs never leak through fog pixels
+  Integrating fog with scene lifecycle and state, and validating with deterministic perception and render-budget tests
+  Not for general Three.js game architecture, rendering, or physics unrelated to fog/perception — route that to the web-game-development pack instead
+
+N:web-design
+D:Route web design, motion, WebGL, and visual-styling requests into the narrowest matching sub-skill of the 79-skill MengTo/Skills web-design family, grouped into seven families: Style/Design-System Packs (23), Full-Site Quality & Direction (10), Motion & Scroll Systems (10), WebGL/3D Backgrounds & Shaders (8), Library Embeds & Integrations (10), Component & State Effects (4), and CSS Technique Primitives (14). Classify the family, pick one sub-skill, fetch it with scripts/fetch-upstream-skills.sh, then combine layers in direction → layout → background → motion → component-state → polish order. Route ready-made animated React components to react-bits, token governance to design-system, breakpoint strategy to responsive-design, React performance to react-best-practices, WCAG work to web-accessibility, design evidence to lazyweb, generated artifacts to open-design, gameplay 3D to web-game-development, and sprite generation to perfectpixel.
+G:web-design|motion|webgl|gsap|threejs|css|landing-page|skill-routing|skill-pack|mengto-skills
+U[6]:
+  When a marketing site, landing page, portfolio, editorial page, or dashboard shell needs a concrete visual recipe rather than improvised styling
+  When several web-design sub-skills could match and the narrowest single owner must be chosen
+  When a named effect is requested (cursor trail, laser background, progressive blur, scroll-pinned section) and a recipe already encodes it
+  When a named library (GSAP, Three.js, Vanta, globe.gl, cobe, Matter.js, Unicorn Studio) needs integration, sizing, and cleanup patterns
+  When several visual layers must be combined on one page and need a safe application order
+  When the request is actually token governance, breakpoints, React performance, accessibility, design evidence, gameplay 3D, or sprite generation and must be routed out
+
+N:design-first-ui-prompting
+D:Use when you need design-first, spec-driven, skimmable prompts for UI generation. Covers prompt structure, constraints, variations, typography/spacing rules, and iteration workflow for consistent UI outputs.
+G:design|first|prompting|mengto-skills|ui-prompting|design-first
+U[6]:
+  Turning a fuzzy UI idea into a tight, skimmable spec using the GOAL/FORMAT/LAYOUT/TYPE SYSTEM/COLOR+MATERIAL/IMAGERY/COPY/CONSTRAINTS/NEGATIVE PROMPT skeleton
+  Locking a single layout/hierarchy/copy system first, then iterating by changing one variable at a time
+  Working around unreliable AI-generated typography with the 2-pass generate-then-typeset workflow
+  Building a constraints card or local reference pack to anchor a model's style output
+  Running the fast-iteration checklist or vague-user question list to clarify a UI generation request
+  When the request is design-token/visual-language governance, responsive layout strategy, or reusable component API architecture instead — route to design-system or responsive-design
+
+N:html-to-interaction-prompts
+D:Convert a supplied HTML page or generated HTML reference into a screenshot-backed article containing multiple reusable interaction prompts. Use when the user provides an HTML file, exported page, generated-page.html, or local/live reference and asks to extract animation/interactions, create prompts, capture screenshots for each prompt, add them to an article, or commit the resulting article/assets.
+G:html|interaction|prompts|mengto-skills|codex-workflow
+U[6]:
+  When the user provides an HTML file, exported page, generated-page.html, or a local/live reference and asks to extract its animations/interactions
+  When the goal is a screenshot-backed article containing multiple reusable, brand-agnostic interaction prompts
+  When running the daily UI inspiration capture workflow needing exactly 5 inspirations with stills, MP4s, motion frames, and detailed AI-builder prompts
+  When capturing and organizing screenshots/videos per prompt, including full-page scroll screenshots with contiguous section crops
+  When deciding which animation library/API to recommend in a prompt, or creating/updating the target article and committing only intended assets
+  When the request is general web development, unrelated content authoring, or repo-wide commit work instead
+
+N:build-daily-inspiration-sites
+D:Turn a completed daily UI inspiration capture into exactly five original landing-page builds, one per separate Codex task, using Sites. Use when the user asks to turn the daily inspiration references, a five-item UI prompt pack, or a dated `*-ui-inspiration-capture` article into distinct HTML landing pages while changing the source brands, names, copy, people, numbers, pricing, claims, and imagery.
+G:build|daily|inspiration|sites|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to turn a completed daily UI inspiration capture — a dated `*-ui-inspiration-capture` article with a five-item manifest — into five original landing-page builds
+  When converting a five-item UI prompt pack into five independent Codex tasks, each owning one build, one commit, and one private Sites deployment
+  When the source items must stay art direction only, never a template to copy, and every item needs a materially distinct replacement brand, copy, and imagery identity
+  When preparing one build brief per manifest item with a single inline local full-page image attachment, following `references/thread-brief-contract.md`
+  When validating a capture folder's `manifest.json` and `content.md` with `scripts/validate_capture.mjs` before dispatching build tasks
+  When the request is recollecting the original inspiration capture, editing an existing site build directly, or producing anything other than exactly five distinct sites — route to the daily UI inspiration capture workflow instead
+
+N:daily-ui-inspiration-capture
+D:Create a recurring daily UI inspiration capture. Use when the user asks to run, refresh, package, or validate dated UI inspiration bundles, especially for `articles/YYYY-MM-DD-ui-inspiration-capture/` outputs, Framer/Dribbble landing-page inspiration, motion-study screenshots/videos, AI-builder prompts, duplicate checking, or converting a project runbook into repeatable workflow.
+G:daily|inspiration|capture|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to run, refresh, or package the recurring daily UI inspiration capture into articles/YYYY-MM-DD-ui-inspiration-capture/
+  When the task involves collecting exactly 5 live landing-page/product references with full-page screenshots, section crops, and motion frames
+  When the task requires building a manifest.json + content.md article bundle with AI-builder prompts, not a screenshot dump or README
+  When the user wants duplicate-checking against previous articles/*-ui-inspiration-capture/manifest.json runs before committing
+  When verifying an existing capture bundle against the output contract (item count, full-page/section evidence, motion frames, no README.md)
+  When the request is an ad-hoc one-off screenshot, unrelated content/article work, or README generation — route to the project's own conventions instead
+
+N:optimize-web-animations
+D:Profile, audit, and optimize frontend page performance with emphasis on animation work, memory-leak risks, long-session slowdowns, CSS animations, canvas/WebGL requestAnimationFrame loops, marquees, skeletons, GSAP/Three/Matter effects, timers, listeners, and observers. Use when the user asks to make animations performant, pause offscreen animations, look for memory leaks, profile pages that slow the computer over time, fix janky scrolling, reduce CPU/GPU use, or repeat the "only play in view" optimization on React/Vite/Next/frontend pages using Codex Browser.
+G:optimize|web|animations|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to make animations performant, pause offscreen animations, or repeat the "only play in view" optimization on a React/Vite/Next/frontend page
+  When the user reports memory leaks, pages that slow down over a long session, or wants RAF loops, listeners, observers, timers, GSAP tweens, and WebGL objects audited and released
+  When the user wants janky scrolling fixed or CPU/GPU use reduced from CSS animations, canvas/WebGL requestAnimationFrame loops, marquees/tickers, skeleton loaders, or GSAP/Three/Matter effects
+  When the work requires a measured baseline-then-fix loop in the browser, gating motion with IntersectionObserver/is-offscreen classes, and verifying with offscreenRunningCount and DOM/canvas count stability
+  When the fix needs source-level cleanup discipline: clearing timers, cancelling RAF, disconnecting observers, removing listeners, and disposing Three/WebGL/GSAP resources on unmount
+  When the request is general performance-artifact triage across latency/throughput/memory/bundle-size/CWV, not yet known to be animation-specific — route that to performance-optimization instead
+
+N:aura-asset-images
+D:Use when you need high-quality stock-style images from Aura Assets (aura.build/assets) similar to Unsplash for design mockups and marketing: backgrounds, abstract wallpapers, architecture, portraits, and headshots. Includes a workflow for searching by tag on aura.build/assets and returns 5 real image URLs per category plus practical guidance for using different resolutions and aspect ratios.
+G:aura|asset|images|mengto-skills|stock-images|design-assets
+U[5]:
+  When the user needs stock-style image URLs from Aura's asset library at aura.build/assets, not local files or generated images
+  When searching by tag (background, abstract, architecture, portrait, headshot) and returning 5 real candidate URLs per category
+  When the user needs a specific resolution/aspect ratio, e.g. swapping _800w for _1600w, or cropping to 1:1, 4:5, 16:9, 9:16
+  When the user needs cropping guidance for faces (eye placement) or backgrounds (negative space for text)
+  When the request is for Unsplash's own photo library instead — route that to unsplash-asset-images, which searches unsplash.com instead of aura.build/assets
+
+N:unsplash-asset-images
+D:Use when you need to pick high-quality Unsplash images for product/design assets (avatars, headshots, portraits, large website backgrounds, and abstract wallpapers) and output real Unsplash URLs plus practical instructions for producing the right resolutions and aspect ratios (1:1, 4:5, 3:4, 16:9, 9:16).
+G:unsplash|asset|images|mengto-skills|stock-images|design-assets
+U[6]:
+  When a real Unsplash photo page URL is needed for an avatar, headshot, portrait, hero background, or abstract wallpaper
+  When the recommendation must include suggested output ratios/sizes (1:1, 4:5, 3:4, 16:9, 9:16) for the use case
+  When guidance is needed on downloading and cropping/resizing an Unsplash photo for a design or image pipeline
+  When a quick "which ratio do I use?" decision is needed for avatars, headshot cards, hero backgrounds, or mobile wallpapers
+  When reminders on Unsplash licensing/attribution norms are needed, such as avoiding Unsplash+ unless requested
+  When the request is actually about Aura Assets (aura.build/assets) — route to aura-asset-images instead, which searches Aura's own asset library by tag rather than Unsplash
+
+N:browser-video-recording
+D:Create polished 60 fps 4:3 4K browser screen-recording style videos from Codex in-app browser captures, with browser-only crop, natural macOS cursor styling, deliberate click choreography, zoom-follow framing, ffprobe/thumbnail verification, and optional native recording compatibility checks. Use when the user asks to record or re-record browser actions, show cursor clicks and zooms, make Dribbble/UI inspiration or product demo recordings, or asks whether Codex, Playwright, or an MCP can produce a natural browser demo video.
+G:browser|video|recording|mengto-skills|codex-workflow
+U[6]:
+  Use when the user asks to record or re-record browser actions — clicks, scrolls, navigations — into a polished demo video
+  Use when producing Dribbble/UI-inspiration or product demo recordings that need a natural macOS cursor, deliberate click choreography, and calm zoom-follow framing
+  Use when the user asks whether Codex, Playwright, or an MCP can produce a natural browser demo video, since this skill defines the three-layer dependency model
+  Use when rendering deterministic 60 fps 4:3 4K MP4 output from Codex in-app browser screenshots via scripts/render_browser_demo.py
+  Use when verifying a delivered video's resolution, frame rate, duration, and cursor accuracy with ffprobe and a mid-video thumbnail check
+  Not for general desktop screen recording unrelated to the Codex in-app browser, or for video editing beyond cursor/zoom demo rendering
+
+N:elevenlabs-tts
+D:Generate ElevenLabs text-to-speech audio from scripts or inline text using local voice profiles. Use when the user asks for ElevenLabs, text-to-speech, TTS, narration, voiceover, speech audio, or voice generation; load voice names, voice ids, emails, owners, and account-specific defaults only from local config outside the skill.
+G:elevenlabs|tts|mengto-skills|codex-workflow
+U[6]:
+  Generating ElevenLabs text-to-speech audio from a script file or inline text using local voice profiles
+  The user asks for ElevenLabs, TTS, narration, voiceover, speech audio, or voice generation
+  Resolving a voice by voice_id, voice_id_env, or voice_name from a local profile config, or listing matching ElevenLabs voices
+  Running the bundled scripts/generate_voice.py helper with a profile, --dry-run, or one-off overrides
+  Calling the current ElevenLabs voice-search or speech-generation endpoints directly
+  Not for storing API keys or personal defaults in the skill, or mutating saved ElevenLabs account/voice settings
+
+N:video-to-superprompt
+D:Turn a reference video into a super detailed recreation or inspiration prompt. Use when the user provides, mentions, uploads, links, or points to a video and asks to analyze the design, UI, animations, transitions, scroll interactions, typography, colors, assets, WebGL/Three.js, storytelling, section-by-section behavior, or to create a prompt/article that recreates the page, app, interaction, or motion system.
+G:video|superprompt|mengto-skills|codex-workflow
+U[6]:
+  The user provides, mentions, uploads, links, or points to a video and asks to analyze its design, UI, animations, transitions, scroll interactions, typography, colors, or assets
+  The user wants a prompt or article that recreates the page, app, interaction, or motion system shown in a reference video
+  The task needs technical video inspection (ffprobe/ffmpeg frame extraction) plus layered analysis of story, layout, motion, visual design, technical rebuild, and accessibility/performance
+  The user needs an asset map and separate AI-generation prompts for image plates, video clips, WebGL/canvas elements, posters, sprites, or texture overlays derived from a video
+  The desired output is a paste-ready superprompt, an article with evidence, an implementation brief, or an asset-generation pack based on a video reference
+  Not for static design/UI review with no video reference, or when the user wants the page built directly rather than a recreation prompt — route to a design-review or implementation skill instead
+
+N:generate-reference-inspired-brand-worlds
+D:Generate multiple original brand campaign worlds from a supplied visual reference while controlling how close the new work feels without copying protected signature elements. Use when a user provides a brand identity image, poster, editorial campaign, moodboard, or generated concept and asks for inspired alternatives, several distinct brands in one visual family, a closer-to-reference V2, exact wordmarks inside images, or originality-safe image-generation prompts and outputs.
+G:generate|reference|inspired|brand|worlds|mengto-skills|codex-workflow
+U[6]:
+  A user supplies a brand identity image, poster, editorial campaign, moodboard, or generated concept and asks for inspired alternatives at a chosen similarity dial (30/50/70/85%)
+  A user wants several distinct brands generated as one coherent visual-art-direction family (the distinct-brand matrix)
+  A user asks for a closer-to-reference V2 revision of an existing concept while keeping the name, meaning, and core subject
+  A prompt needs an exact wordmark or brand name rendered correctly, exactly once, inside a generated image
+  A user wants originality-safe image-generation prompts that avoid reproducing protected signature elements
+  Not for exact reproduction of a protected brand's identity or general image generation unrelated to brand-world creation — route elsewhere
+
+N:audit-reference-originality
+D:Audit a website or digital experience against its supplied source references for originality and plagiarism risk. Use when Codex must compare current or historical site output with reference pages, capture packs, screenshots, copy, brands, numbers, images, assets, videos, layouts, motion, or code; raise evidence-backed red flags; distinguish common visual grammar from distinctive copying; and propose concrete fixes without making unsupported legal claims.
+G:audit|reference|originality|mengto-skills|codex-workflow
+U[6]:
+  When a supplied reference corpus exists and a shipped site or experience must be checked against it for originality/plagiarism risk
+  When you need to compare current or historical site output with references across text, brands, numbers, images, assets, videos, layout, motion, or code
+  When red flags must be evidence-backed with exact locations, severity, and a proposed fix rather than a subjective vibe check
+  When you need to distinguish common visual grammar from distinctive, provably-copied elements
+  When copied material may have been renamed, recolored, cropped, or deleted, requiring git history checks in addition to current files
+  Not for silently applying fixes or for general code/security review unrelated to originality — route those to standard review/fix workflows instead
+
+N:audit-verify-explain-grade-5
+D:Audit work, verify claims with concrete evidence, and explain the result in simple grade-5 language. Use when the user asks to review, audit, check, verify, explain a change, explain a fix, summarize test results, validate whether something works, or translate technical findings into plain language for non-technical readers.
+G:audit|verify|explain|grade|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to review, audit, or check a change, fix, or claim before it is trusted
+  When results need verifying with concrete evidence (tests, running the app, logs, screenshots, artifacts) instead of assumption
+  When the user asks to summarize test results or validate whether something actually works
+  When a technical finding, diff, or fix needs explaining in simple grade-5 language for a non-technical reader
+  When a performance or improvement claim needs checking against measured evidence instead of being assumed
+  When the task is pure new code/content authoring or wants a jargon-heavy expert explanation instead — route to a standard implementation or writing workflow
+
+N:performance-profiling
+D:Guide performance profiling for Apple platform apps with Instruments, Xcode diagnostics, and MetricKit. Use when investigating app hangs, stutters, high CPU, memory leaks, memory growth, OOM crashes, slow launch, battery drain, thermal issues, App Store performance readiness, or when adding os_signpost and measurement hooks.
+G:performance|profiling|mengto-skills|codex-workflow
+U[6]:
+  App hangs, stutters, dropped frames, or high CPU usage on an Apple platform app that needs a Time Profiler pass
+  Memory leaks, unbounded memory growth, or OOM crashes that need Leaks, Allocations, or the Memory Graph debugger
+  Slow cold/warm launch or slow time to first frame that needs App Launch instrument analysis
+  Battery drain, thermal throttling, or excess background/network energy use that needs an Energy Log pass
+  Pre-release performance audits that need the full Xcode Diagnostics + MetricKit review checklist, or adding os_signpost measurement hooks
+  Not for general (non-Apple) web/service performance tuning such as bundle size, API latency, or database query plans (use performance-optimization); not for Unity/Unreal engine frame-capture interpretation (use game-performance-profiler)
+
+N:customer-email-draft-threads
+D:Gmail customer support triage with mandatory full-thread read-back before every reply or follow-up, a draft-only default, per-draft Codex project threads, approval-gated final closure replies with eligible optional Trustpilot review invitations, and approval-gated operations for verified DreamCut Discord invite requests. Use when the user asks to run the customer email automation, check unread/recent support emails, review a customer follow-up, prepare or send Gmail replies, close a positively confirmed resolved case, continue a support handoff, create agent/project threads for drafted follow-up, or fulfill DreamCut Discord access requests.
+G:customer|email|draft|threads|mengto-skills|codex-workflow
+U[6]:
+  When triaging Gmail customer support messages and preparing draft-only replies for real customer/person emails
+  When a customer thread needs a full re-read before drafting, revising, or sending a reply or follow-up
+  When closing a positively confirmed, fully resolved case and deciding on an optional Trustpilot review invitation
+  When creating or deduplicating a canonical Codex project thread per drafted email
+  When handling approval-gated affiliate notices or verified DreamCut Discord invite requests
+  When the case is account/access, unsupported-platform, duplicate, cancellation, refund, or accidental-renewal — route to handle-saas-account-cases or handle-saas-billing-cases instead
+
+N:customer-support-verification
+D:Verify customer support work against the selected customer-case flow, full-thread evidence, account and canonical-thread matching, authority, financial approval, customer communication, eligible optional Trustpilot review-request rules, post-action read-back, send confirmation, thread-wide archive, and closure requirements. Use after every SaaS support triage, account/access or unsupported-platform response, duplicate or resolved acknowledgement, positive-confirmation closure reply, cancellation, failed-payment cancellation, refund, accidental-renewal case, support handoff, draft, send, or archive task before reporting completion. Triggers on: verify support case, support closure check, cancellation verification, refund verification, accidental-renewal case, duplicate/resolved acknowledgement, account-access ticket, Trustpilot eligibility, thread read-back before marking done.
+G:customer|support|verification|mengto-skills|codex-workflow
+U[6]:
+  Before reporting completion of a SaaS support triage, account/access, or unsupported-platform draft, send, or archive
+  When closing a duplicate, resolved-acknowledgement, or positive-confirmation case and deciding Trustpilot review eligibility
+  Before or after a cancellation, failed-payment cancellation, refund, or accidental-renewal action, to verify financial approval and post-action read-back
+  When verifying account/canonical-thread matching, authority, and mutation approval before any external state change
+  Before confirming a customer-visible send (exact recipient, subject, body, SENT state) or a thread-wide Gmail archive
+  Not for performing the support scenario itself — load handle-saas-account-cases or handle-saas-billing-cases first and use this only as the final gate
+
+N:write-like-meng-on-x
+D:Write, rewrite, review, or continuously refine X/Twitter posts in Meng To's current voice using his deduplicated authored-post corpus, personal and product context, shared resources, and Content repo evidence. Use when asked to improve a tweet in Meng's tone, draft an original post, reply, thread, resource share, or quote post as Meng, check whether an angle repeats an earlier post, study Meng's writing style, ingest another 20-50 authored posts, or hone the reusable Meng X voice profile.
+G:write|meng|mengto-skills|codex-workflow
+U[6]:
+  Rewriting or polishing a tweet, reply, thread, quote post, resource share, or product post so it reads like Meng To wrote it
+  Drafting an original X post as Meng, grounded only in verified products, workflows, resources, or personal details already in the Content repo
+  Checking whether a new angle repeats an earlier authored post, hook, or recurring belief
+  Ingesting a fresh batch of 20-50 unseen authored X/Twitter posts to keep the voice corpus current
+  Honing or updating the reusable Meng X voice profile after a new batch confirms a pattern
+  Not for generic ghostwriting in someone else's voice or for collecting raw X/Twitter data — use x-twitter-scraper for that instead
+
+N:x-bookmark-quote-posts
+D:Check a user's latest X/Twitter bookmarks and turn recent saved posts into source-backed quote-post drafts calibrated against the user's latest 100 authored posts. Use when asked to review X bookmarks, create quote posts from bookmarks, refresh a bookmark quote queue, run a bookmark quote automation, study a user's X voice, or write first-person quote posts from X sources.
+G:bookmark|quote|posts|mengto-skills|codex-workflow
+U[6]:
+  Reviewing a user's latest X bookmarks and turning them into source-backed, dated quote-post drafts
+  Calibrating draft voice against that specific account's latest 100 authored posts before drafting anything
+  Refreshing or maintaining a dated bookmark quote-post queue file such as data/x-growth/bookmark-quote-posts/YYYY-MM-DD.md
+  Producing a ranked set of 7-10 quote-post drafts (Best Picks / Secondary Picks) plus a suggested-tweet summary table
+  Working through the Codex in-app browser against X under strict no-posting/no-reply/no-mutation rules
+  Not for general X/Twitter data collection, monitoring, or posting — use x-twitter-scraper for raw X data access

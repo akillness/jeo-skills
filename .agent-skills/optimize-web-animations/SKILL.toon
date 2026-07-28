@@ -1,0 +1,10 @@
+N:optimize-web-animations
+D:Profile, audit, and optimize frontend page performance with emphasis on animation work, memory-leak risks, long-session slowdowns, CSS animations, canvas/WebGL requestAnimationFrame loops, marquees, skeletons, GSAP/Three/Matter effects, timers, listeners, and observers. Use when the user asks to make animations performant, pause offscreen animations, look for memory leaks, profile pages that slow the computer over time, fix janky scrolling, reduce CPU/GPU use, or repeat the "only play in view" optimization on React/Vite/Next/frontend pages using Codex Browser.
+G:optimize|web|animations|mengto-skills|codex-workflow
+U[6]:
+  When the user asks to make animations performant, pause offscreen animations, or repeat the "only play in view" optimization on a React/Vite/Next/frontend page
+  When the user reports memory leaks, pages that slow down over a long session, or wants RAF loops, listeners, observers, timers, GSAP tweens, and WebGL objects audited and released
+  When the user wants janky scrolling fixed or CPU/GPU use reduced from CSS animations, canvas/WebGL requestAnimationFrame loops, marquees/tickers, skeleton loaders, or GSAP/Three/Matter effects
+  When the work requires a measured baseline-then-fix loop in the browser, gating motion with IntersectionObserver/is-offscreen classes, and verifying with offscreenRunningCount and DOM/canvas count stability
+  When the fix needs source-level cleanup discipline: clearing timers, cancelling RAF, disconnecting observers, removing listeners, and disposing Three/WebGL/GSAP resources on unmount
+  When the request is general performance-artifact triage across latency/throughput/memory/bundle-size/CWV, not yet known to be animation-specific — route that to performance-optimization instead
