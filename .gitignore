@@ -100,3 +100,6 @@ venv.bak/
 # Skill-specific build artifacts and source clones
 .agent-skills/*/bin/
 .agent-skills/*/.src/
+
+# Agent session runtime state
+.gjc/

@@ -2,17 +2,17 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-165-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**165 local skill folders · 165 installable skills · TOON Format · Cross-platform**
-A curated collection of 165 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+[![Skills](https://img.shields.io/badge/Skills-152-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**152 local skill folders · 152 installable skills · TOON Format · Cross-platform**
+A curated collection of 152 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**165 local skill folders · 165 installable skills · TOON Format · Cross-platform**
-├── .agent-skills/          ← 165 skill folders (each with SKILL.md + SKILL.toon)
+**152 local skill folders · 152 installable skills · TOON Format · Cross-platform**
+├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -22,8 +22,8 @@ A curated collection of 165 agent skills for spec-first, multi-agent LLM workflo
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 165 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
-├── .agent-skills/          ← 165 skill folders (each with SKILL.md + SKILL.toon)
+A curated collection of 152 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo Agent & The Legendary Equipment Set
@@ -119,17 +119,16 @@ Project scope is the default and should be committed when the team needs the sam
 ```bash
 # Claude Code
 npx skills add https://github.com/akillness/jeo-skills \
-  --skill omc --skill plannotator --skill agentation \
-  --skill ooo --skill vibe-kanban
+  --skill plannotator --skill agentation --skill ooo
 
 # Gemini CLI
 npx skills add https://github.com/akillness/jeo-skills \
-  --skill ohmg --skill ooo --skill vibe-kanban
+  --skill ooo --skill deep-dive
 antigravity extensions install https://github.com/akillness/jeo-skills
 
 # Codex CLI
 npx skills add https://github.com/akillness/jeo-skills \
-  --skill omx --skill ooo
+  --skill ooo --skill harness
 
 # jeopi — no `-a` id needed: jeopi natively discovers ~/.agents/skills plus the
 # .claude/.codex/.config/opencode skill dirs, so a global install is enough.
@@ -154,18 +153,15 @@ claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
 # macOS: brew install rtk  |  Linux: cargo install rtk  |  Windows: winget install rtk
 rtk init -g
 
-# oh-my-claudecode plugin
-/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/plugin install oh-my-claudecode && setup omc
 ```
 
 ---
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 165 local skill folders = 165 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 152 local skill folders = 152 total installable skills
 
-### 🎬 Creative Media (10)
+### 🎬 Creative Media (9)
 
 | `drawio` |
 | `gbro-collage-broll` |
@@ -173,14 +169,13 @@ rtk init -g
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
-| `video-production` |
 | `video-shotcraft` |
 | `vox-director` |
 | `webtoon-harness` |
 
-├── .agent-skills/          ← 165 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
 
-### 🎯 Core Orchestration (15)
+### 🎯 Core Orchestration (8)
 
 | Skill |
 |-------|
@@ -190,17 +185,10 @@ rtk init -g
 | `bmad-idea` |
 | `deep-dive` |
 | `deepinit` |
-| `ohmg` |
-| `omc` |
-| `omx` |
 | `spec-kit` |
-| `spec-stack` |
 | `survey` |
-| `team` |
-| `ultraqa` |
-| `ultrawork` |
 
-### 📋 Planning & Review (13)
+### 📋 Planning & Review (12)
 
 | Skill |
 |-------|
@@ -216,17 +204,16 @@ rtk init -g
 | `to-issues` |
 | `to-prd` |
 | `triage` |
-| `vibe-kanban` |
 
 ### 🤖 Agent Development (5)
 
 | Skill |
 |-------|
 | `cli-anything` |
-| `prompt-repetition` |
 | `prompts-chat` |
 | `skill-standardization` |
 | `upskill` |
+| `openspace` |
 
 ### ⚙️ Backend (11)
 
@@ -244,7 +231,7 @@ rtk init -g
 | `typesense` |
 | `colibri` |
 
-### 🎨 Frontend (13)
+### 🎨 Frontend (11)
 
 | Skill |
 |-------|
@@ -258,9 +245,7 @@ rtk init -g
 | `react-grab` |
 | `responsive-design` |
 | `state-management` |
-| `ui-component-patterns` |
 | `web-accessibility` |
-| `web-design-guidelines` |
 
 ### 🔍 Code Quality (11)
 
@@ -296,7 +281,7 @@ rtk init -g
 | `system-environment-setup` |
 | `vercel-deploy` |
 
-### 📝 Documentation (5)
+### 📝 Documentation (4)
 
 | Skill |
 |-------|
@@ -304,7 +289,6 @@ rtk init -g
 | `presentation-builder` |
 | `research-paper-writing` |
 | `technical-writing` |
-| `user-guide-writing` |
 
 ### 📊 Project Management (4)
 
@@ -344,7 +328,7 @@ rtk init -g
 | `marketing-automation` |
 | `yuwen-publish-precheck` |
 
-### 🎮 Game Development (8)
+### 🎮 Game Development (9)
 
 | Skill |
 |-------|
@@ -356,8 +340,9 @@ rtk init -g
 | `perfectpixel` |
 | `steam-store-launch-ops` |
 | `unity-gamedev-skill-pack` |
+| `web-game-development` |
 
-### 🔧 Utilities (41)
+### 🔧 Utilities (39)
 
 | Skill |
 |-------|
@@ -383,7 +368,6 @@ rtk init -g
 | `hyperfine-benchmarking` |
 | `lapian-notes` |
 | `llm-wiki` |
-| `lmstudio-cli` |
 | `notebooklm` |
 | `npm-git-install` |
 | `obsidian-second-brain` |
@@ -395,13 +379,12 @@ rtk init -g
 | `ponytail` |
 | `pretext` |
 | `scaffold-exercises` |
-| `setup-pre-commit` |
 | `stitch-skills` |
 | `tokhub` |
-| `workflow-automation` |
 | `write-a-skill` |
 | `x-twitter-scraper` |
 | `zeude` |
+| `obsidian-mind` |
 
 ---
 
@@ -433,7 +416,6 @@ Spec-first development front door: clarify ambiguous requests with a **git-groun
 | Plan | `spec-kit` (`/speckit.plan` → `/speckit.tasks`) | Render the reviewable execution plan **from the frozen seed** (one-way seed → plan; installed by default via `OOO_SPEC_KIT=1`) |
 | Plan / Review | `plannotator` + `bmad` | Shape and approve the plan without reopening settled work |
 | Execute | `cli-anything` (`cli-hub search` → `install` → `launch`) | Drive real software through agent-native CLI harnesses; `--json` output is the evaluate-stage evidence (installed by default via `OOO_CLI_ANYTHING=1`) |
-| Runtime handoff / Execute | `omc` / `omx` / `ohmg` | Keep runtime-native config and execution in the runtime skill |
 | Verify / QA | `browser-harness` | Record CDP browser / QA evidence before claiming completion |
 | Verify UI | `agentation` | Wait for explicit submit, then process UI feedback |
 | Durable knowledge | `llm-wiki` + `graphify` | File significant findings into the wiki and graph |
@@ -640,15 +622,6 @@ uv tool install semble      # uv
 npx skills add https://github.com/akillness/jeo-skills --skill semble
 ```
 
-### vibe-kanban — AI Agent Kanban Board
-> Keyword: `kanbanview` | [Docs](docs/vibe-kanban/README.md) | [GitHub](https://github.com/BloopAI/vibe-kanban)
-
-Coding-board control plane for bounded coding cards: keep GitHub Projects / Linear / Jira as the PM source of truth when needed, run isolated workspaces or worktrees for actual coding execution, keep human review explicit, and hand off cleanly to PRs.
-
-```bash
-npx vibe-kanban
-```
-
 ---
 
 ## 🌐 Recommended Harness OSS
@@ -671,8 +644,8 @@ npx vibe-kanban
 
 ```text
 .
-├── .agent-skills/          ← 165 skill folders (each with SKILL.md + SKILL.toon)
-├── docs/                   ← detailed guides (bmad, omc, plannotator, ooo, ...)
+├── .agent-skills/          ← 152 skill folders (each with SKILL.md + SKILL.toon)
+├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
 ├── README.md               ← English (this file)
@@ -687,7 +660,6 @@ npx vibe-kanban
 |------|---------|-----|
 | `ooo` | `ooo`, `ouroboros`, `ooo interview` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
-| `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `flutter-bloc-clean-architecture-skill` | `flutter bloc`, `clean architecture` | [docs/flutter-bloc-clean-architecture-skill/README.md](docs/flutter-bloc-clean-architecture-skill/README.md) |
 | `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
@@ -704,7 +676,6 @@ npx vibe-kanban
 | `webtoon-harness` | `webtoon harness`, `make a webtoon` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
 | `game-studio-harness` | `game production harness`, `게임 제작 하네스`, `stage gate` | [.agent-skills/game-studio-harness/SKILL.md](.agent-skills/game-studio-harness/SKILL.md) |
 | `heretic` | `heretic`, `abliterate`, `decensor a model` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
-| `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.md](docs/harness/README.md) |
 
@@ -714,7 +685,6 @@ npx vibe-kanban
 
 | Component | Source | License |
 |-----------|--------|---------|
-| `omc` | [Yeachan-Heo/oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | MIT |
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `stitch-skills` | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | Apache-2.0 |
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |
@@ -749,7 +719,14 @@ npx vibe-kanban
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-07-28
 
+| Change | Details |
+|--------|---------|
+| **Catalog now 152 skills** | Removed 16 skill folders (`lmstudio-cli`, `ohmg`, `omc`, `omx`, `prompt-repetition`, `setup-pre-commit`, `spec-stack`, `team`, `ui-component-patterns`, `ultraqa`, `ultrawork`, `user-guide-writing`, `vibe-kanban`, `video-production`, `web-design-guidelines`, `workflow-automation`) and added 3 (`obsidian-mind`, `openspace`, `web-game-development`). `skills.json`, `skills.toon`, `skills-lock.json`, and both README catalog tables were regenerated; `scripts/validate-catalog-projections.py` passes at 152. |
+| **No more platform-exclusive skills** | With `omc` / `ohmg` / `omx` gone, the manifest is a single shared catalog. Step 1 of `setup-all-skills-prompt.md` now installs everything, the Step 2 platform-install block was replaced by a stray-copy audit, and Step 4's platform dedup check became a shared-root shadow check. |
+| **Step 3g reduced to OpenCode plugin setup** | The `oh-my-claudecode`, `oh-my-codex` (OMX), and `oh-my-agent` (OMA) installers existed only to back the removed routing skills and were dropped; the `oh-my-openagent` (OMO) block is unchanged. `scripts/test-runtime-config-writers.sh` replaced its OMX handoff case with a no-config-mutation check and still passes all 25 cases. |
+| **obsidian-mind / web-game-development descriptions trimmed** | Both shipped with frontmatter descriptions over the 1024-character limit, which makes a skill invisible to `skills add`. Rewritten under the cap with their trigger keywords intact. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

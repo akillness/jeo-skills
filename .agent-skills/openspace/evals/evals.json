@@ -1,0 +1,61 @@
+{
+  "skill_name": "openspace",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We have about 150 skills installed under .agent-skills, and our host agent keeps guessing the wrong one. Install OpenSpace so it can find the right skill for each task on its own.",
+      "expected_output": "Identifies install-as-skill-finder mode, walks through git clone + pip install -e . + openspace-mcp --help verification, wires the MCP server with OPENSPACE_HOST_SKILL_DIRS pointed at $HOME/.agents/skills, and copies the skill-discovery and delegate-task host skills.",
+      "assertions": [
+        "Output selects OpenSpace as the skill-finder/skill-management layer for the catalog",
+        "Output includes `git clone https://github.com/HKUDS/OpenSpace.git` and `pip install -e .`",
+        "Output includes `openspace-mcp --help` as the verification step",
+        "Output sets OPENSPACE_HOST_SKILL_DIRS to $HOME/.agents/skills (the shared jeo-skills host root), not an arbitrary path",
+        "Output copies both the skill-discovery and delegate-task host skills"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Given the task 'scrape a JS-rendered dashboard and pull structured data', which of our installed skills should the agent use, and how would OpenSpace figure that out?",
+      "expected_output": "Uses retrieve-a-skill mode, explains OpenSpace's skill discovery/ranking (BM25 + embedding hybrid ranking via skill_ranker.py, discovery precedence across OPENSPACE_HOST_SKILL_DIRS/project/user/bundled skills), and expects a scraping-oriented skill such as scrapling to rank highest.",
+      "assertions": [
+        "Output identifies retrieve-a-skill / skill discovery as the primary mode",
+        "Output references ranking mechanics such as BM25 plus embedding hybrid ranking",
+        "Output references the discovery precedence order (OPENSPACE_HOST_SKILL_DIRS, project .openspace/skills, user ~/.openspace/skills, bundled skills)",
+        "Output does not claim OpenSpace itself performs the scraping; it selects the right skill for the agent to run"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our deployment-automation skill has been evolved a few times. What decides whether an evolved version becomes trusted, and how do FIX, DERIVED, and CAPTURED differ?",
+      "expected_output": "Uses evaluate-skill-quality / evolve-skills mode, explains the provisional-to-trusted lifecycle (independent successful use promotes, attributable failure demotes), and distinguishes FIX (repair), DERIVED (specialize), and CAPTURED (validated subworkflow capture with a separate postcondition check).",
+      "assertions": [
+        "Output distinguishes FIX, DERIVED, and CAPTURED with correct definitions",
+        "Output explains provisional versus trusted status and what promotes/demotes a skill",
+        "Output mentions that enabled controls reuse independently from the trust lifecycle",
+        "Output mentions audit-only candidates for blocked or uncertain proposals"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our skill passed local testing. Can we just push it straight to the OpenSpace cloud hub for the team to pull down?",
+      "expected_output": "Explains that cloud upload requires the local SkillStore record to be trusted (provisional/unknown records fail closed for both public and private uploads), that the local trust state itself is never sent to the cloud, and that skills are organized by package with explicit import before reuse.",
+      "assertions": [
+        "Output states that cloud upload requires a trusted (not merely provisional) local record",
+        "Output states that both public and private uploads fail closed for provisional/unknown records",
+        "Output mentions openspace-upload-skill --skill-dir or openspace-download-skill",
+        "Output mentions explicit import before a cloud skill is reused locally"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I just want to grep our skills folder for which SKILL.md mentions 'playwright' — nothing fancy, no ranking or trust scoring needed.",
+      "expected_output": "Recognizes this as a should-NOT-trigger case for OpenSpace: it is a plain keyword lookup, so the response routes to codebase-search or semble instead of installing or invoking OpenSpace's skill-management layer.",
+      "assertions": [
+        "Output does not recommend installing or invoking OpenSpace for this request",
+        "Output identifies this as a route-out case",
+        "Output names codebase-search or semble as the correct tool for plain keyword lookup",
+        "Output does not describe this simple grep task as needing skill ranking, quality evaluation, or evolution"
+      ]
+    }
+  ]
+}

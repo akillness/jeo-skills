@@ -1,0 +1,64 @@
+{
+  "skill_name": "web-game-development",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our Three.js action game has enemies that all charge in a straight line and clump on the player. I want them to hold spacing, back off after a whiff, and re-approach from different angles. Where do I start?",
+      "expected_output": "Selects web-game-development as the router, names `tune-enemy-ai` as the single narrowest sub-skill, distinguishes it from `build-threejs-enemy-systems` (content/orchestration) and `build-game-monster-system` (rig conformance), and explains how to fetch the sub-skill into the agent skills root before doing the work.",
+      "assertions": [
+        "Output routes through the web-game-development pack instead of improvising enemy AI code",
+        "Output names `tune-enemy-ai` as the primary sub-skill for perception, spacing, and state transitions",
+        "Output states the boundary against `build-threejs-enemy-systems` and/or `build-game-monster-system`",
+        "Output includes a fetch/install step such as scripts/fetch-upstream-skills.sh --skill tune-enemy-ai",
+        "Output does not claim this skill reimplements the upstream sub-skill's guidance"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We're taking our browser ARPG from a working desktop prototype to an actual release: touch controls, frame budget, a real playtest pass, and a deploy. Give me the order of operations.",
+      "expected_output": "Uses the lifecycle ordering, assigns each stage to its owning sub-skill (build-mobile-threejs-games for touch/HUD/quality, optimize-threejs-games for frame budget, test-playable-web-games for the player-journey pass, ship-web-games for the release and production read-back), and keeps QA proof separate from release proof.",
+      "assertions": [
+        "Output sequences the work along a lifecycle rather than naming one skill",
+        "Output assigns mobile controls/HUD/quality tiers to `build-mobile-threejs-games`",
+        "Output assigns frame-time or draw-call work to `optimize-threejs-games`",
+        "Output assigns the player-journey verification to `test-playable-web-games`",
+        "Output assigns release sequencing and deployed-build verification to `ship-web-games` and keeps it distinct from local QA readiness"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I need to add a boss fight: three phases, adds spawning between phases, a telegraphed slam the player can dodge, and a loot drop at the end.",
+      "expected_output": "Recognizes the task crosses documented boundaries and combines exactly the sub-skills that own each concern — `design-game-encounters` for phases/waves/rewards composition, `design-action-combat` for the telegraphed slam's timing and contact authority, `build-game-inventory` for the loot drop — while noting the boundary rule that combat defines verbs and encounters compose them.",
+      "assertions": [
+        "Output names `design-game-encounters` as the composer of phases, waves, and rewards",
+        "Output names `design-action-combat` for attack timing, telegraphs, and contact/defense outcomes",
+        "Output names `build-game-inventory` for the loot/equipment drop",
+        "Output states the combat-verbs vs encounter-pacing boundary instead of merging them",
+        "Output justifies combining skills by a crossed boundary rather than combining by default"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our Unity project's Addressables setup is a mess and I heard there are good community skill packs for Unity tooling. Can you pull one in?",
+      "expected_output": "Declines to route into the Three.js family, routes out to `unity-gamedev-skill-pack` because the engine is Unity/C#, and states plainly that Three.js-authored sub-skill guidance must not be applied to a Unity project.",
+      "assertions": [
+        "Output routes to `unity-gamedev-skill-pack` rather than any of the 19 Three.js sub-skills",
+        "Output gives the engine (Unity/C# vs Three.js/browser) as the reason for the route-out",
+        "Output does not recommend fetching MengTo/Skills game-development sub-skills for this task",
+        "Output does not claim web-game-development covers Unity Addressables"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "The CI job that builds our game is red and I have 4000 lines of log. Also, later, remind me what to do with the pile of Steam Playtest survey answers we collected.",
+      "expected_output": "Splits the request: routes the failing-build-log half out (Unity/Unreal cook logs to `game-build-log-triage`; a Three.js/Vite/webpack failure to standard web tooling or `ship-web-games`'s release checks) and routes the playtest-feedback half to `game-demo-feedback-triage`, noting it is engine-agnostic and applies to browser demos too.",
+      "assertions": [
+        "Output treats the two halves as separate routes instead of one blended answer",
+        "Output routes playtest/demo feedback triage to `game-demo-feedback-triage`",
+        "Output notes `game-build-log-triage` is scoped to Unity/Unreal editor, build, and cook logs",
+        "Output does not claim `optimize-threejs-games` or another gameplay sub-skill owns CI log triage",
+        "Output keeps `test-playable-web-games` for turning priorities into deterministic regression proof rather than for feedback triage"
+      ]
+    }
+  ]
+}

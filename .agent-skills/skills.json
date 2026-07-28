@@ -1,7 +1,7 @@
 {
   "version": "1.2.0",
   "generated": "2026-07-23",
-  "skill_count": 165,
+  "skill_count": 152,
   "categories": {
     "planning-review": [
       "agentation",
@@ -15,15 +15,14 @@
       "playwriter",
       "to-issues",
       "to-prd",
-      "triage",
-      "vibe-kanban"
+      "triage"
     ],
     "agent-development": [
       "cli-anything",
-      "prompt-repetition",
       "prompts-chat",
       "skill-standardization",
-      "upskill"
+      "upskill",
+      "openspace"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -76,22 +75,14 @@
       "bmad-idea",
       "deep-dive",
       "deepinit",
-      "ohmg",
-      "omc",
-      "omx",
       "spec-kit",
-      "spec-stack",
-      "survey",
-      "team",
-      "ultraqa",
-      "ultrawork"
+      "survey"
     ],
     "documentation": [
       "changelog-maintenance",
       "presentation-builder",
       "research-paper-writing",
-      "technical-writing",
-      "user-guide-writing"
+      "technical-writing"
     ],
     "code-quality": [
       "code-refactoring",
@@ -129,7 +120,6 @@
       "hyperfine-benchmarking",
       "lapian-notes",
       "llm-wiki",
-      "lmstudio-cli",
       "notebooklm",
       "npm-git-install",
       "obsidian-second-brain",
@@ -141,13 +131,12 @@
       "ponytail",
       "pretext",
       "scaffold-exercises",
-      "setup-pre-commit",
       "stitch-skills",
       "tokhub",
-      "workflow-automation",
       "write-a-skill",
       "x-twitter-scraper",
-      "zeude"
+      "zeude",
+      "obsidian-mind"
     ],
     "frontend": [
       "astryx",
@@ -160,9 +149,7 @@
       "react-grab",
       "responsive-design",
       "state-management",
-      "ui-component-patterns",
-      "web-accessibility",
-      "web-design-guidelines"
+      "web-accessibility"
     ],
     "creative-media": [
       "drawio",
@@ -171,7 +158,6 @@
       "paperbanana",
       "remotion-video-production",
       "slides-grab",
-      "video-production",
       "video-shotcraft",
       "vox-director",
       "webtoon-harness"
@@ -194,7 +180,8 @@
       "game-studio-harness",
       "perfectpixel",
       "steam-store-launch-ops",
-      "unity-gamedev-skill-pack"
+      "unity-gamedev-skill-pack",
+      "web-game-development"
     ]
   },
   "skills": [
@@ -2359,36 +2346,6 @@
       "version": "1.0"
     },
     {
-      "name": "lmstudio-cli",
-      "description": "Operate LM Studio's `lms` CLI and local/remote LM Studio servers for model discovery, server status checks, model loading, endpoint smoke tests, and downstream OpenAI-compatible wiring. Use when the user mentions LM Studio, `lms`, a local model server, `/v1/models`, a remote LM Studio host, or wants to connect another tool to LM Studio; even if they only ask to test a local OpenAI-compatible endpoint or choose the correct loaded-model identifier. Triggers on: lmstudio, lm studio, lms, local model server, LM Studio API, LM Studio endpoint, /v1/models, connect Strix to LM Studio, load model in LM Studio.",
-      "category": "utilities",
-      "path": "lmstudio-cli/SKILL.md",
-      "tags": [
-        "lmstudio",
-        "lm-studio",
-        "lms",
-        "local-llm",
-        "openai-compatible",
-        "model-server",
-        "inference",
-        "local-inference",
-        "endpoint-validation",
-        "strix"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "keyword": "lmstudio-cli",
-      "version": "1.1"
-    },
-    {
       "name": "log-analysis",
       "description": "Route runtime-log requests into one evidence packet before diagnosing anything. Use when the user shares app/server/container/browser/CI/JSON log output and wants the first actionable blocker, repeated signature, likely blast radius, or safest next read-only checks. Choose one packet: app-runtime, container-runtime, browser-plus-api, ci-cascade, structured-json, or security-signal. Triggers on: check the logs, which line matters, real error, first blocker, noisy stack trace, retry storm, browser 401/500, pod logs, worker crash, CI abort, webhook failure. Route engine-specific Unity/Unreal logs to `game-build-log-triage`, observability design to `monitoring-observability`, and remediation/debug hypotheses to `debugging`.",
       "category": "search-analysis",
@@ -2659,6 +2616,37 @@
       "version": "2.1.0"
     },
     {
+      "name": "obsidian-mind",
+      "description": "Route obsidian-mind work into the right mode: install/bootstrap the vault (ShardMind vs git clone), the daily standup/dump/wrap-up session loop, capture routes for decisions, incidents, 1:1s, and wins, the performance-graph review flow (/om-review-brief, /om-self-review, /om-peer-scan), vault maintenance and /om-vault-upgrade migration, multi-agent wiring across Claude Code, Codex CLI, and Gemini CLI, and optional QMD semantic search. obsidian-mind is a specific ready-made Obsidian vault template giving coding agents persistent, session-spanning memory through five lifecycle hooks, /om-* commands, subagents, and a competency graph — not a generic vault-building or wiki-authoring workflow. Triggers on: obsidian-mind, om-standup, om-dump, om-wrap-up, om-review-brief, om-self-review, om-peer-scan, om-vault-upgrade, brag doc, North Star.md, performance graph, competency notes, session lifecycle hooks, shardmind install obsidian-mind.",
+      "category": "utilities",
+      "path": "obsidian-mind/SKILL.md",
+      "tags": [
+        "obsidian-mind",
+        "obsidian",
+        "agent-memory",
+        "persistent-memory",
+        "session-hooks",
+        "performance-review",
+        "brag-doc",
+        "shardmind",
+        "claude-code",
+        "codex-cli",
+        "gemini-cli",
+        "qmd"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "obsidian-mind",
+      "version": "1.0"
+    },
+    {
       "name": "obsidian-second-brain",
       "description": "Routing front door for obsidian-second-brain — a self-rewriting Obsidian vault that evolves Karpathy's LLM-Wiki pattern. Every source REWRITES existing pages instead of appending: people updated, claims revised, contradictions reconciled, patterns synthesized automatically. 45 commands across 4 layers, background + 4 scheduled agents, 4 role presets, AI-first write validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode.",
       "category": "utilities",
@@ -2700,51 +2688,6 @@
       "version": "1.0.0"
     },
     {
-      "name": "ohmg",
-      "description": "Adopt `oh-my-agent` as a cross-vendor portable multi-agent harness. Use when the user wants a single `.agents/` source of truth that projects into any AI IDE or runtime — Claude Code, Codex, Gemini CLI, Antigravity, Cursor, Grok Build, Kimi Code, OpenCode, Pi, Qwen Code, Reasonix, Amp, GitHub Copilot, or Kiro CLI — without duplicating agent definitions. Also use when mapping Claude workflows (`team`, `autopilot`, `ultrawork`, `ultraqa`) into OMA equivalents for any vendor. Triggers on: ohmg, oh-my-agent, oma, portable harness, .agents, cross-vendor agents, Gemini multi-agent, Antigravity agent team, autopilot, ultrawork, ultraqa, claude code agents, codex agents, cursor agents. Route Claude Code–native runtime orchestration to `omc` and Codex CLI–native runtime orchestration to `omx`.",
-      "category": "core-orchestration",
-      "path": "ohmg/SKILL.md",
-      "tags": [
-        "ohmg",
-        "oh-my-agent",
-        "oma",
-        "multi-agent",
-        "orchestration",
-        "gemini-cli",
-        "antigravity",
-        "cursor",
-        "opencode",
-        "grok-build",
-        "kiro-cli",
-        "portable-harness",
-        "dot-agents",
-        "team",
-        "autopilot",
-        "ultrawork",
-        "ultraqa"
-      ],
-      "platforms": [
-        "Claude Code",
-        "Codex",
-        "Gemini",
-        "Antigravity",
-        "Cursor",
-        "OpenCode",
-        "Grok Build",
-        "Kiro CLI",
-        "and more"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "ohmg",
-      "version": "10.4.1"
-    },
-    {
       "name": "okf",
       "description": "Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type / title / description / resource / tags / timestamp fields for portable, interoperable AI-agent knowledge sharing. OKF formalizes the LLM-Wiki pattern into a vendor-neutral open specification so any producer can write and any agent can consume without translation. Routes: use `llm-wiki` for raw source capture + vault maintenance, `obsidian` for Obsidian-vault workflows, `graphify` for durable committed graphs, `scrapling` for web-content extraction into OKF docs. Triggers on: okf, open knowledge format, knowledge bundle, okf document, llm wiki standard, knowledge atom, agent context format, okf frontmatter, okf bundle, knowledge interoperability.",
       "category": "utilities",
@@ -2782,82 +2725,6 @@
       ],
       "keyword": "okf",
       "version": "1.0.0"
-    },
-    {
-      "name": "omc",
-      "description": "Route Claude Code–first orchestration to the truthful OMC install topology and runtime before giving commands. Use when the user wants oh-my-claudecode / OMC in Claude Code, needs to choose between marketplace plugin, shell-side `omc` CLI, or local-checkout `--plugin-dir` usage, or needs accurate guidance on `/team`, `/autopilot`, `/ralph`, `/ultrawork`, `/ultraqa`, `omc setup`, `omc team`, `omc ask`, updates, HUD/hooks, duplicate installs, worktree/state drift, or mapping Claude workflows to Codex/OMX and Gemini/Antigravity/OMA. Triggers on: omc, oh-my-claudecode, Claude Code team mode, autopilot, /team, ralph, ultrawork, ultraqa, ccg, omc team, omc ask, omc setup, plugin-dir, OMC HUD, OMC hooks.",
-      "category": "core-orchestration",
-      "path": "omc/SKILL.md",
-      "tags": [
-        "omc",
-        "oh-my-claudecode",
-        "claude-code",
-        "multi-agent",
-        "orchestration",
-        "team",
-        "autopilot",
-        "ralph",
-        "ultrawork",
-        "ultraqa",
-        "ccg",
-        "hooks",
-        "hud",
-        "omx",
-        "oma",
-        "antigravity"
-      ],
-      "platforms": [
-        "Claude Code"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob",
-        "Edit",
-        "Agent"
-      ],
-      "keyword": "omc",
-      "version": "4.14.7"
-    },
-    {
-      "name": "omx",
-      "description": "Use when you need multi-agent orchestration for OpenAI Codex CLI, especially Codex equivalents of Claude `/team`, `/autopilot`, `/ultrawork`, and `/ultraqa`. Triggers on: omx, $plan, $ralph, $team, $ulw, $ultraqa, $autopilot, $deep-interview, $prometheus-strict. v0.18.14 — 30+ agents, 35+ workflow skills, tmux team runtime, sparkshell, explore, ralplan, prometheus-strict, best-practice-research, autoresearch-goal.",
-      "category": "core-orchestration",
-      "path": "omx/SKILL.md",
-      "tags": [
-        "omx",
-        "oh-my-codex",
-        "codex",
-        "openai",
-        "multi-agent",
-        "orchestration",
-        "team",
-        "autopilot",
-        "ultrawork",
-        "ultraqa",
-        "ralph",
-        "plan",
-        "deep-interview",
-        "ralplan"
-      ],
-      "platforms": [
-        "Codex",
-        "Claude",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob",
-        "Edit",
-        "Agent"
-      ],
-      "keyword": "omx",
-      "version": "0.18.14"
     },
     {
       "name": "ooo",
@@ -3069,6 +2936,35 @@
       ],
       "keyword": "opencut",
       "version": "1.0.0"
+    },
+    {
+      "name": "openspace",
+      "description": "Install and route through OpenSpace, the skill management layer for AI agents, so a host agent can retrieve/rank/load the right SKILL.md out of this jeo-skills catalog (~150 installed skills), then evaluate skill quality from real execution evidence and evolve skills via FIX/DERIVED/CAPTURED updates. Covers install-as-skill-finder, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Triggers on: openspace, skill finder, skill retrieval, find the right skill, rank skills, skill discovery, skill quality, evolve skill, FIX DERIVED CAPTURED, skill hub, openspace-mcp, search_skills, skill-discovery, delegate-task.",
+      "category": "agent-development",
+      "path": "openspace/SKILL.md",
+      "tags": [
+        "openspace",
+        "skill-management",
+        "skill-discovery",
+        "skill-retrieval",
+        "skill-evaluation",
+        "skill-evolution",
+        "mcp",
+        "agent-skills",
+        "quality-layer",
+        "cloud-hub"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "openspace",
+      "version": "1.0"
     },
     {
       "name": "opik",
@@ -3425,34 +3321,6 @@
       ],
       "keyword": "pretext",
       "version": "latest"
-    },
-    {
-      "name": "prompt-repetition",
-      "description": "Decide when repeating a full prompt is a useful accuracy hack for non-reasoning or lightweight LLM tasks, and when the real fix is better prompt structure, retrieval, or a stronger model. Use when the user has long-context retrieval, options-first multiple choice, or position-sensitive prompts on models like Haiku, Flash, or mini variants — even if they ask in domain language like the model missed the instruction at the end, forgot the question after a long context block, or keeps failing inventory/index lookups. Do not use as a universal prompt-engineering default for reasoning-heavy, tool-heavy, or RAG architecture problems.",
-      "category": "agent-development",
-      "path": "prompt-repetition/SKILL.md",
-      "tags": [
-        "prompt-engineering",
-        "llm-accuracy",
-        "long-context",
-        "lightweight-models",
-        "evaluation"
-      ],
-      "platforms": [
-        "Claude",
-        "Gemini",
-        "ChatGPT",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "prompt-repetition",
-      "version": "3.0.0"
     },
     {
       "name": "prompts-chat",
@@ -3871,37 +3739,6 @@
       "version": "latest"
     },
     {
-      "name": "setup-pre-commit",
-      "description": "Use this skill when >",
-      "category": "utilities",
-      "path": "setup-pre-commit/SKILL.md",
-      "tags": [
-        "git-hooks",
-        "pre-commit",
-        "husky",
-        "lint-staged",
-        "prettier",
-        "code-quality",
-        "automation"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash",
-        "Write",
-        "Edit"
-      ],
-      "keyword": "setup-pre-commit",
-      "version": "1.0"
-    },
-    {
       "name": "skill-autoresearch",
       "description": "Route reusable skill-improvement work into one bounded repo-local ratcheting packet: ratchet eligibility, benchmark readiness, loop charter freeze, baseline scoring, one-change mutation, support-surface sync, or final keep/revert report. Use when an existing `SKILL.md`, SOP, prompt, or workflow doc may need sharper triggers, clearer instructions, better support files, or cleaner discovery wording and you want a frozen evaluation harness, append-only experiment logs, and explicit keep-or-revert decisions instead of ad hoc rewriting. Also use when you need to prove that no ratchet is justified yet. Not for GPU-bound Karpathy `autoresearch` runs or hosted app-scale eval / observability platforms such as LangSmith, Braintrust, Weave, or Promptfoo.",
       "category": "search-analysis",
@@ -4028,45 +3865,6 @@
         "WebFetch"
       ],
       "keyword": "spec-kit",
-      "version": "1.0.0"
-    },
-    {
-      "name": "spec-stack",
-      "description": "Compose GitHub spec-kit, Ouroboros (ooo), and HKUDS CLI-Anything into one spec-driven delivery stack — Write → Freeze → Run, verified. Author the spec with `/speckit.*`, freeze it as an immutable ooo seed with machine-checkable acceptance criteria, arm the loop with agent-native CLI harnesses from CLI-Hub (`--json` output as evaluate evidence), and loop until verification passes. Routes three patterns — full-stack (spec-kit → ooo → cli-anything), loop-only (ooo), docs-only (spec-kit) — with explicit anti-patterns (two spec SSOTs, harness-first builds, seedless ralph loops). Use when the user wants spec-to-verified-artifact delivery, wants spec-kit and ooo to work together without fighting, or needs real software driven inside a verified loop. Triggers on: spec-stack, spec stack, write freeze run, spec to verified, speckit + ooo, ooo + cli-anything, spec-driven loop, verified delivery stack, seed with tools.",
-      "category": "core-orchestration",
-      "path": "spec-stack/SKILL.md",
-      "tags": [
-        "spec-stack",
-        "spec-kit",
-        "ooo",
-        "ouroboros",
-        "cli-anything",
-        "spec-driven",
-        "verification",
-        "loop",
-        "seed",
-        "harness",
-        "composition",
-        "sdd"
-      ],
-      "platforms": [
-        "Claude",
-        "Codex",
-        "Gemini",
-        "Cursor",
-        "OpenCode",
-        "All"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "keyword": "spec-stack",
       "version": "1.0.0"
     },
     {
@@ -4443,38 +4241,6 @@
       "version": "1.0"
     },
     {
-      "name": "team",
-      "description": "Run or route a coordinated multi-agent team workflow for Codex/OMX. Use when the user explicitly invokes `$team`, asks for team mode, coordinated workers, tmux workers, or multiple agents sharing a task list. Prefer `omx team` when the runtime is installed; use `ultrawork` instead for independent parallel lanes that do not need shared state.",
-      "category": "core-orchestration",
-      "path": "team/SKILL.md",
-      "tags": [
-        "team",
-        "$team",
-        "omx",
-        "codex",
-        "multi-agent",
-        "tmux",
-        "coordination",
-        "workers",
-        "shared-task-list"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "team",
-      "version": "1.0.0"
-    },
-    {
       "name": "technical-writing",
       "description": "Write internal technical documentation for engineers and operators: technical specs, architecture docs, ADRs, runbooks, migration plans, and developer-facing implementation guides. Use when the main job is capturing a technical decision, system boundary, operating procedure, or rollout path for builders and maintainers. Triggers on: tech spec, design doc, architecture doc, ADR, runbook, migration guide, implementation guide, rollout doc, operational guide, and internal technical writing. Route API portals to `api-documentation`, end-user help/tutorials to `user-guide-writing`, release notes to `changelog-maintenance`, decks to `presentation-builder`, and GTM messaging to `marketing-automation`.",
       "category": "documentation",
@@ -4698,103 +4464,6 @@
       "version": "1.0.0"
     },
     {
-      "name": "ui-component-patterns",
-      "description": "Routing-first reusable component architecture for shared frontend primitives, slots, controlled ownership, alternate-root composition, and docs/verification packets. Use when the user needs to decide what should become a shared primitive, how a component API should expose variants or subcomponents, when parent state should control the component, how to compose a button/link/dialog onto alternate element types, or what Storybook/example coverage is required. Route design-token or cross-product governance to `design-system`, accessibility-heavy remediation to `web-accessibility`, layout adaptation to `responsive-design`, app-level state ownership to `state-management`, and React performance work to `react-best-practices`.",
-      "category": "frontend",
-      "path": "ui-component-patterns/SKILL.md",
-      "tags": [
-        "ui-components",
-        "react",
-        "typescript",
-        "composition",
-        "variants",
-        "slots",
-        "reusable",
-        "frontend"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "ui-component-patterns",
-      "version": "2.1.0"
-    },
-    {
-      "name": "ultraqa",
-      "description": "Run an autonomous QA cycling workflow: test, diagnose, fix, and repeat until the quality goal is met or a concrete blocker is proven. Use when the user explicitly invokes `$ultraqa`, `ultraqa`, asks for QA cycling, test/build/lint repair, or a parallel review burst. Also tolerate the common typo `$ultaqa` by treating it as `$ultraqa`.",
-      "category": "core-orchestration",
-      "path": "ultraqa/SKILL.md",
-      "tags": [
-        "ultraqa",
-        "ultaqa",
-        "$ultraqa",
-        "$ultaqa",
-        "omx",
-        "codex",
-        "qa",
-        "tests",
-        "build",
-        "lint",
-        "typecheck",
-        "review"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "ultraqa",
-      "version": "1.0.0"
-    },
-    {
-      "name": "ultrawork",
-      "description": "Run a high-parallelism work burst for independent implementation or cleanup lanes. Use when the user explicitly invokes `$ultrawork`, `$ulw`, `ultrawork`, or asks to parallelize separable work quickly. Choose `team` when workers need shared task state, and choose `ultraqa` when the work is primarily QA/review.",
-      "category": "core-orchestration",
-      "path": "ultrawork/SKILL.md",
-      "tags": [
-        "ultrawork",
-        "ulw",
-        "$ulw",
-        "$ultrawork",
-        "omx",
-        "codex",
-        "parallel-work",
-        "burst-work"
-      ],
-      "platforms": [
-        "Codex CLI",
-        "Claude Code",
-        "Gemini CLI",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "ultrawork",
-      "version": "1.0.0"
-    },
-    {
       "name": "unity-gamedev-skill-pack",
       "description": "Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package. Use when maintainers want to import game-dev workflows (Addressables, Cinemachine, GAS, VContainer, UniTask, Wwise, etc.) without blindly trusting third-party prompts.",
       "category": "game-development",
@@ -4849,37 +4518,6 @@
       "version": "1.0.0"
     },
     {
-      "name": "user-guide-writing",
-      "description": "Write user-facing documentation for onboarding, tutorials, task how-to guides, FAQs, help-center updates, and release-facing help refreshes. Use when the main job is helping end users or admins complete a product workflow, recover from a blocker, or understand a changed UI path. Triggers on: user guide, tutorial, getting started, onboarding doc, help article, how-to, FAQ, knowledge-base article, support doc, release help update, and customer-facing documentation. Route internal specs/runbooks to `technical-writing`, API portals/SDK docs to `api-documentation`, and release-note hygiene to `changelog-maintenance`.",
-      "category": "documentation",
-      "path": "user-guide-writing/SKILL.md",
-      "tags": [
-        "user-guides",
-        "tutorials",
-        "documentation",
-        "onboarding",
-        "how-to",
-        "faq",
-        "help-center",
-        "customer-docs",
-        "product-education"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "keyword": "user-guide-writing",
-      "version": "2.1.0"
-    },
-    {
       "name": "vercel-deploy",
       "description": "Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, environment-variable sync, and rollback response. Use when the request is specifically about operating a project on Vercel after the provider is already chosen — especially when someone needs a preview URL, stable alias, custom domain, env-scope fix, production cutover, or rollback on Vercel. Triggers on: Vercel deploy, Vercel preview URL, vercel promote, vercel alias, Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route provider-neutral release strategy to `deployment-automation`, CI/workflow authoring to `workflow-automation`, and local install/auth/bootstrap work to `system-environment-setup`.",
       "category": "infrastructure",
@@ -4911,71 +4549,6 @@
       ],
       "keyword": "vercel-deploy",
       "version": "2.1.0"
-    },
-    {
-      "name": "vibe-kanban",
-      "description": "Run a coding-board control plane when the real job is managing bounded coding cards, isolated workspaces/worktrees, review queues, retries, and PR handoff — not just prompting one agent once. Use when the user needs a visual board or tracker-linked workspace loop for parallel coding tasks, agent comparison, or review-heavy handoff. Triggers on: kanban board, coding board, workspace board, review queue, tracker sync for coding tasks, worktree board, parallel coding agents, card-based agent workflow, and vibe-kanban. Route planning-only requests to `task-planning` / `survey` / `plannotator`, browser/UI execution to `agentation` / `browser-harness` / `playwriter`, and non-code PM / marketing / game-production coordination to their domain skills.",
-      "category": "planning-review",
-      "path": "vibe-kanban/SKILL.md",
-      "tags": [
-        "vibe-kanban",
-        "kanban",
-        "kanbanview",
-        "multi-agent",
-        "worktree",
-        "review-queue",
-        "github-pr",
-        "task-board",
-        "claude-code",
-        "codex",
-        "gemini",
-        "opencode"
-      ],
-      "platforms": [
-        "Claude",
-        "Codex",
-        "Gemini",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "kanbanview",
-      "version": "2.1.0"
-    },
-    {
-      "name": "video-production",
-      "description": "Plan and route programmable or automated video production across code-first, template-first, and hybrid content pipelines. Use when the user needs repeatable video generation, branded short-form content, personalized videos, social clip batches, captioned/localized variants, video APIs, or video creation from data and templates — even if they only say video production. Triggers on: Remotion, programmatic video, automated video creation, video API, personalized video, batch-create shorts, render videos from code, repurpose content into clips.",
-      "category": "creative-media",
-      "path": "video-production/SKILL.md",
-      "tags": [
-        "video",
-        "automation",
-        "remotion",
-        "short-form",
-        "content-ops",
-        "templates",
-        "react"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Write",
-        "Read",
-        "WebSearch",
-        "WebFetch",
-        "Task"
-      ],
-      "keyword": "video-production",
-      "version": "2.0"
     },
     {
       "name": "video-shotcraft",
@@ -5059,35 +4632,30 @@
       "version": "2.1.0"
     },
     {
-      "name": "web-design-guidelines",
-      "description": "Run a broad web UI review for pages, flows, or component surfaces using audit categories such as layout hierarchy, content clarity, CTA emphasis, visual consistency, interaction states, responsiveness basics, performance signals, and accessibility basics. Use when the user asks to review a UI, audit a page, critique UX polish, check interface quality before launch, or turn vague design-feedback requests into a structured audit packet. Not for accessibility- only remediation, reusable component API design, system-level token governance, or React/runtime performance debugging. Triggers on: UI audit, design review, UX review, interface critique, polish review, landing-page review, dashboard review, usability review, visual consistency, CTA clarity.",
-      "category": "frontend",
-      "path": "web-design-guidelines/SKILL.md",
+      "name": "web-game-development",
+      "description": "Route Three.js and browser game-development requests into the narrowest matching sub-skill of the 19-skill MengTo/Skills game-development family — level authoring, map editing, cameras, enemy systems and AI, monster rigs, action combat, encounter design, inventory, hybrid/Vesperfall assets, VFX, audio feedback, mobile controls, performance tuning, QA, changelogs, and release. Use when a task touches any of those for a playable web game, and fetch the matching sub-skill before doing the work instead of improvising. Route Unity/C# engine work to `unity-gamedev-skill-pack` instead. Triggers on: three.js game, browser game, webgl game, isometric arpg, enemy AI, game camera, game inventory, game VFX, game audio feedback, ship web game, playtest web game, mobile threejs game, game encounter design, monster rig, hybrid game assets.",
+      "category": "game-development",
+      "path": "web-game-development/SKILL.md",
       "tags": [
-        "frontend",
-        "ui-review",
-        "ux",
-        "usability",
-        "design-audit",
-        "heuristics",
-        "accessibility-basics",
-        "responsive-basics"
+        "game-development",
+        "three.js",
+        "webgl",
+        "browser-games",
+        "skill-routing",
+        "skill-pack",
+        "mengto-skills"
       ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
+      "platforms": [],
       "allowed_tools": [
         "Bash",
         "Read",
         "Write",
-        "Grep",
-        "Glob"
+        "Edit",
+        "Glob",
+        "Grep"
       ],
-      "keyword": "web-design-guidelines",
-      "version": "2.0"
+      "keyword": "web-game-development",
+      "version": "1.0"
     },
     {
       "name": "webtoon-harness",
@@ -5119,36 +4687,6 @@
       ],
       "keyword": "webtoon-harness",
       "version": "1.0"
-    },
-    {
-      "name": "workflow-automation",
-      "description": "Routing-first skill for repo-scoped recurring workflow automation: task-entrypoint design, bootstrap/onboarding commands, local-CI parity wrappers, hook guardrails, maintenance bots, and workflow-diagnosis cleanup. Use when the user needs one repeatable repo command surface, must choose between package scripts / Make / just / Task / hooks / CI wrappers / scheduled maintenance, or wants to replace README copy-paste rituals without drifting into environment provisioning, deployment architecture, Git history policy, or observability design.",
-      "category": "utilities",
-      "path": "workflow-automation/SKILL.md",
-      "tags": [
-        "automation",
-        "task-runner",
-        "bootstrap",
-        "ci-parity",
-        "dev-workflow",
-        "hooks",
-        "repo-maintenance"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "workflow-automation",
-      "version": "2.1"
     },
     {
       "name": "write-a-skill",
