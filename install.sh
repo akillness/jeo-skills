@@ -5,7 +5,9 @@
 #
 # Options (via environment variables):
 #   INSTALL_GLOBAL=true   - Install to ~/.agent-skills (global) instead of current directory
-#   INSTALL_MCP=true      - Auto-install MCP servers (opencontext required, gemini/codex optional)
+#   INSTALL_MCP=true      - Auto-install MCP servers (openspace skill-finder registered into
+#                           every installed runtime: claude/codex/gemini/cursor/opencode/
+#                           kimi/glm/deepseek/grok/qwen/pi/gjc/jeopi)
 #   SKIP_BACKUP=true      - Skip backup of existing .agent-skills
 #   INSTALL_MODE=silent   - silent, auto, quick, interactive (default: silent)
 #

@@ -69,23 +69,23 @@ Full mode detail and route-out reasoning: [references/skill-discovery-routing.md
 Grounded in the upstream Quick Start:
 
 ```bash
-git clone https://github.com/HKUDS/OpenSpace.git && cd OpenSpace
-pip install -e .
-openspace-mcp --help  # verify installation
+git clone --filter=blob:none --sparse https://github.com/HKUDS/OpenSpace.git ~/.openspace/OpenSpace
+cd ~/.openspace/OpenSpace
+git sparse-checkout set --no-cone '/*' '!/assets/'   # skips the ~50 MB assets/ folder
+
+# A dedicated venv, not the system Python: `pip install -e .` against a Homebrew or
+# distro Python fails with PEP 668 "externally-managed-environment", which is how
+# openspace-mcp ends up missing on a machine that "installed successfully".
+python3 -m venv ~/.agents/venvs/openspace          # or: uv venv --python 3.12 ~/.agents/venvs/openspace
+~/.agents/venvs/openspace/bin/python -m pip install -e .
+~/.agents/venvs/openspace/bin/openspace-mcp --help  # verify installation
+ln -sf ~/.agents/venvs/openspace/bin/openspace-mcp ~/.local/bin/openspace-mcp
 ```
 
-Requires **Python 3.12+**. For a lightweight clone that skips the ~50 MB `assets/`
-folder:
+Requires **Python 3.12+**.
 
-```bash
-git clone --filter=blob:none --sparse https://github.com/HKUDS/OpenSpace.git
-cd OpenSpace
-git sparse-checkout set --no-cone '/*' '!/assets/'
-pip install -e .
-```
-
-Or run the bundled installer, which performs the same steps non-interactively and also
-copies the two host skills (Step 4):
+Or run the bundled installer, which performs the same steps non-interactively, copies the
+two host skills (Step 4), and registers the MCP server (Step 3):
 
 ```bash
 bash scripts/install-openspace.sh --help
@@ -97,21 +97,45 @@ Full per-host wiring detail: [references/install-and-mcp-wiring.md](references/i
 
 ### Step 3: Wire the MCP server, with `OPENSPACE_HOST_SKILL_DIRS` pointed at this repo's skill root
 
-Add an `openspace` MCP server entry to the host agent's MCP config. **For jeo-skills,
-`OPENSPACE_HOST_SKILL_DIRS` must point at `$HOME/.agents/skills`** — that is where this
-repo's `scripts/install.sh`-style installers copy skills for host agents to load, so
-that is the directory OpenSpace should scan and rank against:
+Register the `openspace` MCP server in **every AI runtime installed on the machine** —
+Claude Code and its Anthropic-compatible forks (kimi, glm/zai, deepseek, grok, qwen),
+Codex, Gemini CLI, Cursor, OpenCode, and the pi / gjc / jeopi agent runtimes. **For
+jeo-skills, `OPENSPACE_HOST_SKILL_DIRS` must point at `$HOME/.agents/skills`** — that is
+where this repo's installers copy skills for host agents to load, so that is the
+directory OpenSpace should scan and rank against.
+
+Use the bundled registrar instead of hand-editing each config:
+
+```bash
+bash scripts/register-openspace-mcp.sh --dry-run   # preview every runtime it would touch
+bash scripts/register-openspace-mcp.sh             # merge in place
+bash scripts/register-openspace-mcp.sh --force     # overwrite an existing openspace entry
+```
+
+It writes `mcpServers` JSON (`~/.claude.json`, `~/.claude/claude_desktop_config.json`,
+`~/.gemini/settings.json`, `~/.qwen/settings.json`, `~/.cursor/mcp.json`,
+`~/.kimi/mcp.json`, `~/.glm/mcp.json`, `~/.zai/mcp.json`, `~/.deepseek/mcp.json`,
+`~/.pi/agent/mcp.json`, `~/.gjc/agent/mcp.json`, `~/.jeopi/agent/mcp.json`), TOML
+`[mcp_servers.openspace]` (`~/.codex/config.toml`, `~/.grok/config.toml`), and OpenCode's
+`mcp` block with `type: local` (`~/.config/opencode/opencode.json`). Existing files keep
+their mode and are replaced atomically; symlinks and non-regular configs are refused; a
+runtime whose config directory does not exist is skipped rather than invented. The
+absolute venv binary path is written, so registration does not depend on `~/.local/bin`
+being on the agent's PATH (resolution order: `$OPENSPACE_VENV/bin/openspace-mcp`,
+`~/.local/bin/openspace-mcp`, PATH, legacy `~/.openspace/venv/bin/openspace-mcp`).
+
+The entry it writes is equivalent to:
 
 ```json
 {
   "mcpServers": {
     "openspace": {
-      "command": "openspace-mcp",
+      "command": "$HOME/.agents/venvs/openspace/bin/openspace-mcp",
       "toolTimeout": 600,
       "env": {
         "OPENSPACE_HOST_SKILL_DIRS": "$HOME/.agents/skills",
-        "OPENSPACE_WORKSPACE": "/path/to/OpenSpace",
-        "OPENSPACE_CLOUD_MODE": "live",
+        "OPENSPACE_WORKSPACE": "$HOME/.openspace/OpenSpace",
+        "OPENSPACE_CLOUD_MODE": "local",
         "OPENSPACE_CLOUD_API_KEY": "sk-xxx (optional, for cloud)"
       }
     }
@@ -215,7 +239,7 @@ search) still work normally.
 **Output sketch**
 - Mode: `install-as-skill-finder`
 - Run `bash scripts/install-openspace.sh` (clone + `pip install -e .` + verify `openspace-mcp --help`)
-- Add the `openspace` MCP server with `OPENSPACE_HOST_SKILL_DIRS=$HOME/.agents/skills` and `OPENSPACE_WORKSPACE=/path/to/OpenSpace`
+- Register the `openspace` MCP server in every installed runtime with `bash scripts/register-openspace-mcp.sh` (`OPENSPACE_HOST_SKILL_DIRS=$HOME/.agents/skills`, `OPENSPACE_WORKSPACE=$HOME/.openspace/OpenSpace`)
 - Copy `skill-discovery/` and `delegate-task/` into `$HOME/.agents/skills/`
 - Verify tools are visible and a lightweight local skill search works
 
@@ -264,5 +288,6 @@ search) still work normally.
 - [Install and MCP Wiring](references/install-and-mcp-wiring.md)
 - [Skill Discovery and Routing](references/skill-discovery-routing.md)
 - [Quality and Evolution](references/quality-and-evolution.md)
-- [scripts/install-openspace.sh](scripts/install-openspace.sh) — non-interactive installer, host-skill copy, and MCP config printout
+- [scripts/install-openspace.sh](scripts/install-openspace.sh) — non-interactive installer, host-skill copy, and MCP registration
+- [scripts/register-openspace-mcp.sh](scripts/register-openspace-mcp.sh) — merge the `openspace` MCP entry into every installed runtime config (claude / codex / gemini / cursor / opencode / kimi / glm / zai / deepseek / grok / qwen / pi / gjc / jeopi)
 - [OpenSpace GitHub Repository](https://github.com/HKUDS/OpenSpace)

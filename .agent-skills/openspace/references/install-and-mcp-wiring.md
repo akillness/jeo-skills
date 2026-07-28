@@ -7,30 +7,63 @@ Path B, and the host-skills/env-var sections).
 
 - Python **3.12+**
 - `openspace-mcp --help` must succeed after install (this is the verification gate)
+- Install into a **dedicated venv** (`~/.agents/venvs/openspace`): a bare
+  `pip install -e .` against a Homebrew or distro Python fails with PEP 668
+  `externally-managed-environment`, which is how `openspace-mcp` ends up missing on a
+  machine that reported a successful install
 - Node.js **≥ 20** only if you also want the local dashboard (`apps/dashboard`)
 
 ## Quick Start (Path A: for your agent)
 
 ```bash
-git clone https://github.com/HKUDS/OpenSpace.git && cd OpenSpace
-pip install -e .
-openspace-mcp --help  # verify installation
+git clone --filter=blob:none --sparse https://github.com/HKUDS/OpenSpace.git ~/.openspace/OpenSpace
+cd ~/.openspace/OpenSpace
+git sparse-checkout set --no-cone '/*' '!/assets/'   # skips the ~50 MB assets/ folder
+
+python3 -m venv ~/.agents/venvs/openspace          # or: uv venv --python 3.12 ~/.agents/venvs/openspace
+~/.agents/venvs/openspace/bin/python -m pip install -e .
+~/.agents/venvs/openspace/bin/openspace-mcp --help  # verification gate
+ln -sf ~/.agents/venvs/openspace/bin/openspace-mcp ~/.local/bin/openspace-mcp
 ```
 
-Lightweight clone that skips the ~50 MB `assets/` folder:
+With `uv` present, `uv pip install -e . --python ~/.agents/venvs/openspace/bin/python`
+replaces the two pip lines. `scripts/install-openspace.sh` performs exactly this sequence
+and then registers the MCP server.
+
+## Registering across every installed runtime
+
+`scripts/register-openspace-mcp.sh` writes the `openspace` entry into every runtime
+config present on the machine, so the skill finder is available no matter which CLI the
+user opens:
 
 ```bash
-git clone --filter=blob:none --sparse https://github.com/HKUDS/OpenSpace.git
-cd OpenSpace
-git sparse-checkout set --no-cone '/*' '!/assets/'
-pip install -e .
+bash scripts/register-openspace-mcp.sh --dry-run   # preview
+bash scripts/register-openspace-mcp.sh             # merge in place
+bash scripts/register-openspace-mcp.sh --force     # replace an existing openspace entry
 ```
 
-If `openspace-mcp --help` is unavailable, install with an explicit interpreter:
+| Runtime | Config | Format |
+|---------|--------|--------|
+| Claude Code | `~/.claude.json` | `mcpServers` |
+| Claude Desktop | `~/.claude/claude_desktop_config.json` | `mcpServers` |
+| Codex | `~/.codex/config.toml` | `[mcp_servers.openspace]` |
+| Gemini CLI | `~/.gemini/settings.json` | `mcpServers` |
+| Qwen Code | `~/.qwen/settings.json` | `mcpServers` |
+| Grok CLI | `~/.grok/config.toml` | `[mcp_servers.openspace]` |
+| Kimi / GLM / Z.ai / DeepSeek CLIs | `~/.kimi/mcp.json`, `~/.glm/mcp.json`, `~/.zai/mcp.json`, `~/.deepseek/mcp.json` | `mcpServers` |
+| Cursor | `~/.cursor/mcp.json` | `mcpServers` |
+| OpenCode (sst) | `~/.config/opencode/opencode.json` | `mcp` (`type: local`) |
+| pi / gjc / jeopi | `~/.pi/agent/mcp.json`, `~/.gjc/agent/mcp.json`, `~/.jeopi/agent/mcp.json` | `mcpServers` |
 
-```bash
-python -m pip install -e .
-```
+Safety contract: existing configs keep their mode and are replaced atomically through a
+same-directory temp file; symlinks and non-regular files are refused; other MCP servers
+are preserved; an existing `openspace` entry is untouched without `--force`; a runtime
+with no config directory is skipped instead of being invented. The absolute venv binary
+path is written, so registration does not depend on `~/.local/bin` being on the agent's
+PATH; resolution order is `$OPENSPACE_VENV/bin/openspace-mcp` (default
+`~/.agents/venvs/openspace`), `~/.local/bin/openspace-mcp`, PATH, then the legacy
+`~/.openspace/venv/bin/openspace-mcp`. Env knobs: `SKILLS_ROOT`, `OPENSPACE_HOME`,
+`OPENSPACE_VENV`, `OPENSPACE_BIN`, `OPENSPACE_CLOUD_MODE`, `OPENSPACE_CLOUD_API_KEY`.
 
 ## MCP server config
 
@@ -40,11 +73,11 @@ Add an MCP server named `openspace`. Prefer stdio for local use.
 {
   "mcpServers": {
     "openspace": {
-      "command": "openspace-mcp",
+      "command": "$HOME/.agents/venvs/openspace/bin/openspace-mcp",
       "toolTimeout": 600,
       "env": {
         "OPENSPACE_HOST_SKILL_DIRS": "/path/to/your/agent/skills",
-        "OPENSPACE_WORKSPACE": "/path/to/OpenSpace",
+        "OPENSPACE_WORKSPACE": "$HOME/.openspace/OpenSpace",
         "OPENSPACE_CLOUD_MODE": "live",
         "OPENSPACE_CLOUD_API_KEY": "sk-xxx (optional, for cloud)"
       }

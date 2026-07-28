@@ -2110,24 +2110,53 @@ else
 fi
 ```
 
-Then register the MCP server in your host agent's MCP config, pointing
-**`OPENSPACE_HOST_SKILL_DIRS` at the shared skills root** so OpenSpace ranks against the catalog
-Step 1 installed:
+Then register the MCP server in **every runtime installed on this machine** — OpenSpace is the
+skill finder for the shared catalog, so Claude Code and its Anthropic-compatible forks (kimi,
+glm/zai, deepseek, grok, qwen), Codex, Gemini CLI, Cursor, OpenCode, and the pi / gjc / jeopi
+agent runtimes should all see it. Step 1 installs the registrar with the `openspace` skill:
 
-```json
-{
-  "mcpServers": {
-    "openspace": {
-      "command": "openspace-mcp",
-      "toolTimeout": 600,
-      "env": {
-        "OPENSPACE_HOST_SKILL_DIRS": "~/.agents/skills",
-        "OPENSPACE_WORKSPACE": "~/.openspace/OpenSpace"
-      }
-    }
-  }
-}
+```bash
+echo "=== Registering OpenSpace MCP across installed runtimes ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+OPENSPACE_VENV="${OPENSPACE_VENV:-$_HOME/.agents/venvs/openspace}"
+REGISTRAR="$SKILLS_ROOT/openspace/scripts/register-openspace-mcp.sh"
+
+if [ ! -f "$REGISTRAR" ]; then
+  echo "ℹ️  $REGISTRAR missing — re-run Step 1 to install the openspace skill"
+elif [ ! -x "$OPENSPACE_VENV/bin/openspace-mcp" ] && ! command -v openspace-mcp >/dev/null 2>&1; then
+  echo "ℹ️  openspace-mcp not built (Python 3.12+ required) — skipping MCP registration"
+else
+  SKILLS_ROOT="$SKILLS_ROOT" OPENSPACE_VENV="$OPENSPACE_VENV" \
+    OPENSPACE_HOME="${OPENSPACE_HOME:-$_HOME/.openspace/OpenSpace}" \
+    bash "$REGISTRAR"
+fi
 ```
+
+The registrar writes the venv binary's absolute path, so registration does not depend on
+`~/.local/bin` being on the agent's PATH. It merges in place: existing configs keep their mode
+and are replaced atomically, symlinks and non-regular files are refused, other MCP servers are
+preserved, an existing `openspace` entry is left alone (pass `--force` to overwrite), and a
+runtime whose config directory does not exist is skipped instead of being invented. Preview with
+`bash "$REGISTRAR" --dry-run`.
+
+| Runtime | Config written | Format |
+|---------|----------------|--------|
+| Claude Code | `~/.claude.json` | `mcpServers` |
+| Claude Desktop | `~/.claude/claude_desktop_config.json` | `mcpServers` |
+| Codex | `~/.codex/config.toml` | `[mcp_servers.openspace]` |
+| Gemini CLI | `~/.gemini/settings.json` | `mcpServers` |
+| Qwen Code | `~/.qwen/settings.json` | `mcpServers` |
+| Grok CLI | `~/.grok/config.toml` | `[mcp_servers.openspace]` |
+| Kimi / GLM / Z.ai / DeepSeek CLIs | `~/.kimi/mcp.json`, `~/.glm/mcp.json`, `~/.zai/mcp.json`, `~/.deepseek/mcp.json` | `mcpServers` |
+| Cursor | `~/.cursor/mcp.json` | `mcpServers` |
+| OpenCode (sst) | `~/.config/opencode/opencode.json` | `mcp` (`type: local`) |
+| pi / gjc / jeopi | `~/.pi/agent/mcp.json`, `~/.gjc/agent/mcp.json`, `~/.jeopi/agent/mcp.json` | `mcpServers` |
+
+Every entry carries `OPENSPACE_HOST_SKILL_DIRS=~/.agents/skills`,
+`OPENSPACE_WORKSPACE=~/.openspace/OpenSpace`, `OPENSPACE_CLOUD_MODE=local`, and a 600 s tool
+timeout (`execute_task` runs long). Set `OPENSPACE_CLOUD_API_KEY` before running the registrar
+to also write a cloud key.
 
 > Full routing modes, transports, quality signals, and the FIX/DERIVED/CAPTURED evolution rules
 > live in the `openspace` skill: `~/.agents/skills/openspace/SKILL.md` and its
