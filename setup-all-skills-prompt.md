@@ -2072,8 +2072,25 @@ if command -v python3 &>/dev/null && python3 -c 'import sys; sys.exit(0 if sys.v
   else
     git -C "$OPENSPACE_HOME" pull --ff-only 2>&1 | tail -1
   fi
-  python3 -m pip install -e "$OPENSPACE_HOME" 2>&1 | tail -2
-  openspace-mcp --help >/dev/null 2>&1 && echo "✅ openspace-mcp installed"
+  # A dedicated venv, exactly like graphify in 3b. `python3 -m pip install -e` against a
+  # Homebrew/distro Python fails outright with PEP 668 "externally-managed-environment",
+  # which is why openspace-mcp can be missing on a machine that ran this step "successfully".
+  OPENSPACE_VENV="${OPENSPACE_VENV:-$_HOME/.agents/venvs/openspace}"
+  if command -v uv &>/dev/null; then
+    uv venv --python 3.12 "$OPENSPACE_VENV" 2>/dev/null || uv venv "$OPENSPACE_VENV" 2>/dev/null || true
+    uv pip install -e "$OPENSPACE_HOME" --python "$OPENSPACE_VENV/bin/python" 2>&1 | tail -2
+  else
+    python3 -m venv "$OPENSPACE_VENV" 2>/dev/null || true
+    "$OPENSPACE_VENV/bin/python" -m pip install -e "$OPENSPACE_HOME" 2>&1 | tail -2
+  fi
+  OPENSPACE_MCP_BIN="$OPENSPACE_VENV/bin/openspace-mcp"
+  if [ -x "$OPENSPACE_MCP_BIN" ]; then
+    echo "✅ openspace-mcp installed → $OPENSPACE_MCP_BIN"
+    # Expose it on PATH the same way the other tools are reachable.
+    mkdir -p "$_HOME/.local/bin" && ln -sf "$OPENSPACE_MCP_BIN" "$_HOME/.local/bin/openspace-mcp"
+  else
+    echo "⚠️  openspace-mcp not built — inspect: $OPENSPACE_VENV/bin/python -m pip install -e $OPENSPACE_HOME"
+  fi
   # Host skills that give the agent the discovery + delegation tools.
   for _hs in skill-discovery delegate-task; do
     [ -d "$OPENSPACE_HOME/openspace/host_skills/$_hs" ] \
@@ -2399,6 +2416,76 @@ if [ "${OPENCODE_GO:-0}" = "1" ]; then
     echo "❌ opencode-ai/opencode bridge missing — re-run Step 2b"
   fi
 fi
+
+# ── Tool-flow liveness ($ooo → $graphify → $rtk → $obsidian → $llm-wiki) ──
+# Presence checks lie: a hook can be "enabled" with a command that fails, and an MCP
+# server can be "registered" while its binary was never built (openspace-mcp is exactly
+# that case when pip hits PEP 668). Everything below is executed, not inspected.
+echo ""
+echo "=== Tool-Flow Liveness ==="
+# macOS ships no `timeout` (it is GNU coreutils; Homebrew installs it as `gtimeout`
+# only with coreutils present), so a probe written around it silently reports every
+# server as dead on a stock Mac. Bound the run portably instead.
+jeo_run_bounded() {  # jeo_run_bounded <seconds> <command...>
+  local secs="$1"; shift
+  if command -v timeout &>/dev/null; then timeout "$secs" "$@"; return $?; fi
+  if command -v gtimeout &>/dev/null; then gtimeout "$secs" "$@"; return $?; fi
+  # `<&0` is required, not decorative: bash redirects an asynchronous command's stdin
+  # from /dev/null "in the absence of any explicit redirections", so a piped stdio
+  # server would see instant EOF and exit before answering.
+  "$@" <&0 &
+  local pid=$! rc=0
+  # The watcher must not inherit the caller's stdout: inside a pipeline it would keep
+  # the write end open and make `head` block for the full timeout after the real
+  # command already exited.
+  ( sleep "$secs"; kill -TERM "$pid" 2>/dev/null ) >/dev/null 2>&1 &
+  local watcher=$!
+  wait "$pid" 2>/dev/null || rc=$?
+  kill -TERM "$watcher" 2>/dev/null
+  wait "$watcher" 2>/dev/null || true
+  return $rc
+}
+TOOLFLOW_TMP="$(mktemp -d -t jeo_toolflow.XXXXXX)"
+(
+  cd "$TOOLFLOW_TMP" && git init -q . && printf 'print("probe")\n' > probe.py \
+    && git add -A && git -c user.email=probe@local -c user.name=probe commit -qm probe
+) >/dev/null 2>&1
+
+# 1. Hook commands, run verbatim as the agents run them.
+if command -v graphify &>/dev/null; then
+  ( cd "$TOOLFLOW_TMP" && graphify update . >/dev/null 2>&1 ) \
+    && echo "✅ post-implementation hook runs (graphify update)" \
+    || echo "❌ post-implementation hook fails — 'graphify update .' returned non-zero"
+else
+  echo "⚠️  graphify missing — post-implementation hook is a no-op (re-run Step 3b)"
+fi
+KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
+if [ -f "$KP_VAULT/scripts/ingest-prompt.py" ]; then
+  LLM_WIKI_VAULT="$KP_VAULT" jeo_run_bounded 60 python3 "$KP_VAULT/scripts/ingest-prompt.py" </dev/null >/dev/null 2>&1 \
+    && echo "✅ post-turn hook runs (llm-wiki ingest)" \
+    || echo "❌ post-turn hook fails — $KP_VAULT/scripts/ingest-prompt.py returned non-zero"
+else
+  echo "⚠️  llm-wiki ingest script missing — post-turn hook is a no-op (run Step 6)"
+fi
+
+# 2. MCP servers must answer a JSON-RPC initialize, not merely appear in a config file.
+mcp_probe() {  # bounded at 30s: a healthy stdio server answers in well under a second
+  local label="$1"; shift
+  command -v "$1" &>/dev/null || { echo "⚠️  $label MCP binary not on PATH: $1"; return; }
+  printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"jeo-verify","version":"1"}}}\n' \
+    | jeo_run_bounded 30 "$@" 2>/dev/null | head -c 2000 | grep -q '"result"' \
+    && echo "✅ $label MCP responds to initialize" \
+    || echo "❌ $label MCP did not answer initialize — re-run its install step"
+}
+mcp_probe "ooo"    ouroboros mcp serve
+mcp_probe "semble" uvx --from "semble[mcp]" semble
+if [ -x "$_HOME/.agents/venvs/openspace/bin/openspace-mcp" ] || command -v openspace-mcp &>/dev/null; then
+  OPENSPACE_HOST_SKILL_DIRS="$SKILLS_ROOT" OPENSPACE_WORKSPACE="${OPENSPACE_HOME:-$_HOME/.openspace/OpenSpace}" \
+    mcp_probe "openspace" "$( command -v openspace-mcp || echo "$_HOME/.agents/venvs/openspace/bin/openspace-mcp" )"
+else
+  echo "⚠️  openspace-mcp not built — re-run Step 3l (it installs into a venv; system pip fails on PEP 668)"
+fi
+rm -rf "$TOOLFLOW_TMP"
 
 # Final count
 echo ""
