@@ -169,5 +169,4 @@ Energy:
 - `references/memory-profiling.md`: Allocations, Leaks, Memory Graph debugger.
 - `references/launch-optimization.md`: Launch phases and cold/warm start optimization.
 - `references/energy-diagnostics.md`: Battery, thermal state, and network efficiency.
-- `agents/openai.yaml`: OpenAI agent interface metadata (display name, short description, default prompt) for this skill.
-
+- `agents/openai.yaml`: OpenAI agent interface metadata (display name, short description, default prompt).
