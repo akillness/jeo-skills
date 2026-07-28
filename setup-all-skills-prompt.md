@@ -1418,22 +1418,44 @@ esac
 command -v obsidian &>/dev/null \
   && echo "✅ obsidian CLI available" \
   || echo "ℹ️  obsidian desktop CLI not in PATH — URI fallback (obsidian://) will be used"
+
+# The vault this flow persists into is the obsidian-mind vault, and its default IS
+# the working repo root (see the vault contract in Step 3e). Report the resolved
+# root so `obsidian vault=…` targeting is never a guess.
+OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$_HOME/vaults/obsidian-mind")}"
+echo "   obsidian-mind vault (project-scoped): $OM_VAULT"
+[ -d "$OM_VAULT/.obsidian" ] \
+  && echo "   .obsidian/ present — open it in Obsidian to register the vault" \
+  || echo "   no .obsidian/ yet — Obsidian creates it the first time you open $OM_VAULT as a vault"
+
 ```
 
-### 3e — llm-wiki (persistent markdown wiki)
+### 3e — llm-wiki (project-scoped markdown wiki inside the obsidian-mind vault)
+
+> **Vault contract (one definition, reused by Step 3i, Step 3k, Step 6 and
+> `hooks/ingest-prompt.py`)**
+>
+> | Root | Resolution order |
+> |------|------------------|
+> | obsidian-mind vault | `$OBSIDIAN_MIND_VAULT` → `git rev-parse --show-toplevel` of the current directory → `~/vaults/obsidian-mind` (fallback outside any git repo) |
+> | llm-wiki vault | `$LLM_WIKI_VAULT` → `<obsidian-mind vault>/llm-wiki` |
+> | graphify state | `<repo>/.graphify/` (canonical; `graphify-out/` is the legacy layout — migrate with `graphify migrate-state`) |
+>
+> The obsidian-mind vault **is the working repo root**, so every repository keeps
+> its own independent wiki and graph instead of writing into one shared home vault.
+> llm-wiki lives in its own `llm-wiki/` subfolder so its schema never mixes with
+> obsidian-mind's `brain/`, `org/` and `perf/` folders. Resolution happens at
+> **run time** (per project), never baked into a hook as an absolute path.
 
 ```bash
 echo "=== Bootstrapping llm-wiki vault ==="
 # Defensive home guard (safe when run standalone without Step 0 context)
 _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
 SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
-# Vault location — MUST match the Knowledge Pipeline (Step 6) and the jeo post-turn hook
-# (Step 3i): default ~/vaults/llm-wiki on every platform (override with LLM_WIKI_VAULT).
-# (Previously defaulted to ~/wiki, which left an orphaned vault no hook ever read.)
-case "$PLATFORM" in
-  windows|macos|linux) WIKI_DEFAULT="$_HOME/vaults/llm-wiki" ;;
-esac
-WIKI_VAULT="${LLM_WIKI_VAULT:-$WIKI_DEFAULT}"
+# Vault contract — identical in Step 3i, Step 3k, Step 6 and hooks/ingest-prompt.py.
+# obsidian-mind vault = the working repo root; llm-wiki nests inside it.
+OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$_HOME/vaults/obsidian-mind")}"
+WIKI_VAULT="${LLM_WIKI_VAULT:-$OM_VAULT/llm-wiki}"
 
 # Reuse the llm-wiki skill's own bootstrap script so the vault structure this
 # step creates never drifts from what .agent-skills/llm-wiki/SKILL.md documents
@@ -1455,7 +1477,12 @@ if [ ! -f "$WIKI_VAULT/index.md" ]; then
 else
   echo "✅ wiki vault exists at $WIKI_VAULT"
 fi
-echo "   Set LLM_WIKI_VAULT to override the default location."
+echo "   Vault root  : $OM_VAULT (obsidian-mind)"
+echo "   Wiki root   : $WIKI_VAULT"
+echo "   This bootstraps the CURRENT repo only; other repos are bootstrapped on their"
+echo "   first captured prompt. Add /llm-wiki/ to .gitignore to keep it out of history."
+echo "   Override with OBSIDIAN_MIND_VAULT (vault root) or LLM_WIKI_VAULT (wiki root)."
+
 ```
 
 ### 3f — semble (CLI + MCP, token-efficient code search)
@@ -1913,18 +1940,31 @@ project tree):
    `post-implementation` runs `graphify update .`; `post-turn` pipes the turn
    into the llm-wiki ingest script. Both are guarded with `|| true` so a slow or
    failing tool never blocks a turn (hook timeout is 30s; jeo surfaces non-zero
-   hook output to the model as advisory).
-3. **Detection** was added in Step 0 (`command -v jeo`).
+   hook output to the model as advisory). The hook stores **no vault path** —
+   `ingest-prompt.py` resolves the project vault itself at run time.
+3. **Wiki root** → `~/.jeo/config.json` `wikiRoot`, set to the **relative** value
+   `llm-wiki`. jeo runs `path.resolve()` on `wikiRoot` (`src/agent/state.ts`
+   `normalizeWikiRoot`), so a relative value resolves against the directory jeo
+   was launched in — i.e. `<repo>/llm-wiki`, matching the hook contract. Launch
+   jeo from the repo root; from a subdirectory jeo would resolve the wiki to
+   `<subdir>/llm-wiki` while the hooks still use the git toplevel. `JEO_WIKI_ROOT`
+   still wins over the config value for a one-off override.
+4. **Detection** was added in Step 0 (`command -v jeo`).
+
 
 ```bash
 echo "=== Configuring jeo-code (jeo) rules + hooks ==="
-_HOME="${_HOME:-${USERPROFILE:-$HOME}}"; KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+# Shared, project-independent ingest script (Step 6 installs it). It resolves the
+# per-project vault itself, so no vault path is ever baked into a hook.
+KP_INGEST="${KP_INGEST:-$_HOME/.agents/hooks/ingest-prompt.py}"
 if command -v jeo &>/dev/null; then
   if ! command -v python3 &>/dev/null; then echo "❌ python3 is required to configure jeo safely" >&2; exit 1; fi
   JEO_RULES="$_HOME/.agents/rules/jeo-tool-flow.md"; JEO_CONFIG="$_HOME/.jeo/config.json"
-  if JEO_RULES="$JEO_RULES" JEO_CONFIG="$JEO_CONFIG" KP_VAULT="$KP_VAULT" python3 - <<'PY'
+  if JEO_RULES="$JEO_RULES" JEO_CONFIG="$JEO_CONFIG" KP_INGEST="$KP_INGEST" python3 - <<'PY'
 import json, os, pathlib, stat, tempfile
-rule, cfg, vault = pathlib.Path(os.environ["JEO_RULES"]), pathlib.Path(os.environ["JEO_CONFIG"]), os.environ["KP_VAULT"]
+rule, cfg, ingest = pathlib.Path(os.environ["JEO_RULES"]), pathlib.Path(os.environ["JEO_CONFIG"]), os.environ["KP_INGEST"]
+
 def state(p):
     try: s=os.lstat(p)
     except FileNotFoundError: return None
@@ -1960,16 +2000,25 @@ if "JEO-TOOL-FLOW:START" not in old:
     block="""<!-- JEO-TOOL-FLOW:START -->
 # Tool Flow (semble · rtk · graphify · llm-wiki · obsidian)
 Discovery uses `semble search` first; normal shell work uses rtk output compression.
-Read graphify output and ~/vaults/llm-wiki/index.md before rebuilding or answering; persist durable findings via obsidian/llm-wiki.
+The wiki is project-scoped: the obsidian-mind vault is this repo's root and the llm-wiki
+vault is `<repo>/llm-wiki`. Read `.graphify/GRAPH_REPORT.md` and `<repo>/llm-wiki/index.md`
+before rebuilding or answering; persist durable findings via obsidian/llm-wiki.
 <!-- JEO-TOOL-FLOW:END -->
 """
     replace(rule, old.rstrip("\n")+"\n\n"+block, lambda _: None)
 cs=state(cfg); data=json.loads(cfg.read_text(encoding="utf-8")) if cs else {}
+# Relative wikiRoot: jeo path.resolve()s it against the launch directory, which makes
+# the wiki project-scoped (<repo>/llm-wiki). JEO_WIKI_ROOT still overrides at run time.
+data["wikiRoot"]="llm-wiki"
 hooks=data.setdefault("hooks",{}); hooks["enabled"]=True; hooks["hooks"]=[
  {"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true"},
- {"event":"post-turn","run":f'LLM_WIKI_VAULT="{vault}" python3 "{vault}/scripts/ingest-prompt.py" >/dev/null 2>&1 || true; command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true'}]
+ # The turn-end event must be fed on stdin: ingest-prompt.py only refreshes the
+ # vault graph for Stop/AfterAgent/post-turn, and captures prompt text otherwise.
+ {"event":"post-turn","run":f'[ -f "{ingest}" ] && printf \'{{"hook_event_name":"post-turn"}}\' | python3 "{ingest}" >/dev/null 2>&1 || true; command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true'}]
+
 
 replace(cfg,json.dumps(data,indent=2)+"\n",json.loads,backup=True)
+
 PY
   then echo "✅ jeo tool-flow rule and hooks configured"; else exit 1; fi
 else echo "ℹ️  jeo not installed — skipping jeo-code rules + hooks wiring"; fi
@@ -2030,17 +2079,21 @@ else echo "ℹ️  pi (jeo-pi) not installed — skipping pi rules + MCP wiring"
 
 ```bash
 echo "=== Configuring jeopi (jeo-pi spec-first) hooks ==="
-_HOME="${_HOME:-${USERPROFILE:-$HOME}}"; KP_VAULT="${KP_VAULT:-${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}}"
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+# Shared, project-independent ingest script (Step 6 installs it); it resolves the
+# per-project vault itself, so no vault path is baked into the hook.
+KP_INGEST="${KP_INGEST:-$_HOME/.agents/hooks/ingest-prompt.py}"
 if command -v jeopi &>/dev/null || [ -d "$_HOME/.jeopi" ]; then
   JEOPI_CONFIG="$_HOME/.jeopi/config.json"
   if ! command -v python3 &>/dev/null; then echo "❌ python3 is required to configure jeopi safely" >&2; exit 1; fi
-  if JEOPI_CONFIG="$JEOPI_CONFIG" KP_VAULT="$KP_VAULT" python3 - <<'PY'
+  if JEOPI_CONFIG="$JEOPI_CONFIG" KP_INGEST="$KP_INGEST" python3 - <<'PY'
 import json,os,pathlib,stat,tempfile
-p=pathlib.Path(os.environ["JEOPI_CONFIG"]);v=os.environ["KP_VAULT"]
+p=pathlib.Path(os.environ["JEOPI_CONFIG"]);v=os.environ["KP_INGEST"]
 try:s=os.lstat(p)
 except FileNotFoundError:s=None
 if s and (stat.S_ISLNK(s.st_mode) or not stat.S_ISREG(s.st_mode)):raise SystemExit(f"❌ refusing non-regular jeopi config: {p}")
-d=json.loads(p.read_text(encoding="utf-8")) if s else {};d["hooks"]={"enabled":True,"hooks":[{"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true"},{"event":"post-turn","run":f'LLM_WIKI_VAULT="{v}" python3 "{v}/scripts/ingest-prompt.py" >/dev/null 2>&1 || true; command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true'}]};out=json.dumps(d,indent=2)+"\n";json.loads(out);p.parent.mkdir(parents=True,exist_ok=True);fd,n=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent);t=pathlib.Path(n)
+d=json.loads(p.read_text(encoding="utf-8")) if s else {};d["hooks"]={"enabled":True,"hooks":[{"event":"post-implementation","run":"command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true"},{"event":"post-turn","run":f'[ -f "{v}" ] && python3 "{v}" >/dev/null 2>&1 || true; command -v graphify >/dev/null 2>&1 && graphify update . >/dev/null 2>&1 || true'}]};out=json.dumps(d,indent=2)+"\n";json.loads(out);p.parent.mkdir(parents=True,exist_ok=True);fd,n=tempfile.mkstemp(prefix=f".{p.name}.tmp.",dir=p.parent);t=pathlib.Path(n)
+
 
 try:
  with os.fdopen(fd,"w",encoding="utf-8") as o:o.write(out);o.flush();os.fsync(o.fileno())
@@ -2282,10 +2335,11 @@ if command -v jeo &>/dev/null; then
   # hooks.enabled alone is NOT "working" — verify each hook's RUNTIME DEPENDENCY exists:
   #   post-turn            → llm-wiki ingest script (created by Step 6 / Knowledge Pipeline)
   #   post-implementation  → graphify binary        (Step 3b)
-  JEO_KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
-  [ -f "$JEO_KP_VAULT/scripts/ingest-prompt.py" ] \
-    && echo "✅ jeo post-turn dep present ($JEO_KP_VAULT/scripts/ingest-prompt.py)" \
+  JEO_KP_INGEST="${KP_INGEST:-$_HOME/.agents/hooks/ingest-prompt.py}"
+  [ -f "$JEO_KP_INGEST" ] \
+    && echo "✅ jeo post-turn dep present ($JEO_KP_INGEST)" \
     || echo "⚠️  jeo post-turn hook will no-op — ingest script missing; run Step 6 (Knowledge Pipeline)"
+
   command -v graphify &>/dev/null \
     && echo "✅ jeo post-implementation dep present (graphify on PATH)" \
     || echo "⚠️  jeo post-implementation hook will no-op — graphify missing; re-run Step 3b"
@@ -2800,15 +2854,18 @@ Use `$graphify` when architecture, repo/corpus structure, or relationship tracin
 # Purpose: maintain durable graph artifacts and relationship visibility
 # Activation: "graphify", "GRAPH_REPORT.md", "graph.json", "graph.html"
 
-# Artifact read order:
-# 1. graphify-out/GRAPH_REPORT.md
-# 2. graphify-out/graph.html
-# 3. graphify-out/graph.json
+# Artifact read order (state is incremental and reused across runs — `graphify
+# check-update` probes it, `graphify state` inspects it — so `.graphify/` is the
+# canonical directory; `graphify-out/` is legacy, migrate with `graphify migrate-state`):
+# 1. .graphify/GRAPH_REPORT.md
+# 2. .graphify/graph.html   (only after `graphify export html`)
+# 3. .graphify/graph.json
 ```
 
 Operating expectations:
-- Prefer the existing `graphify-out/GRAPH_REPORT.md` before rebuilding anything.
+- Prefer the existing `.graphify/GRAPH_REPORT.md` before rebuilding anything.
 - Refresh only the smallest useful scope instead of blindly graphing the whole repo.
+
 - Use graph updates for durable structure, not for search-only or wiki-only work.
 - Keep the graph packet honest: install vs local build vs refresh vs query vs fallback.
 
@@ -2837,14 +2894,18 @@ Use `$obsidian` when the next step is to persist or hand off artifacts through a
 # Purpose: official desktop Obsidian CLI/URI control
 # Activation: "obsidian cli", "obsidian terminal", "obsidian://"
 
-# Deterministic targeting:
-obsidian vault="My Vault" read path="Inbox/Capture.md"
-obsidian vault="My Vault" search query="workflow rules"
+# Deterministic targeting — the vault this flow persists into is the obsidian-mind
+# vault, which defaults to the working repo root (Step 3e vault contract). The
+# vault NAME Obsidian shows is the vault directory's basename:
+obsidian vault="$(basename "${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel)}")" read path="Inbox/Capture.md"
+obsidian vault="my-repo" search query="workflow rules"
+
 ```
 
 Operating expectations:
 - Prefer official CLI/URI surfaces for desktop Obsidian interaction.
 - Use deterministic `vault=` plus `path=` targeting when ambiguity matters.
+- Remember the vault is project-scoped: `$OBSIDIAN_MIND_VAULT` → git toplevel → `~/vaults/obsidian-mind`.
 - Route headless sync/publish elsewhere instead of pretending the desktop CLI owns it.
 - Use this step only when desktop-vault persistence or URI handoff is actually needed.
 
@@ -2855,17 +2916,23 @@ Use `$llm-wiki` to file durable findings, decisions, and reusable answers into t
 # Purpose: accumulate reusable knowledge in markdown, not chat history
 # Activation: "llm-wiki", "obsidian wiki", "research vault"
 
+# Location: <obsidian-mind vault>/llm-wiki — i.e. <repo>/llm-wiki by default,
+# so each repository owns its wiki (Step 3e vault contract).
+
 # Core workflow:
 # raw/ stays immutable
 # wiki/ is the maintained synthesis layer
 # index.md and log.md must stay current
 ```
 
+
 Operating expectations:
 - File significant decisions and reusable answers back into the wiki.
 - Keep `raw/` immutable and treat `wiki/`, `index.md`, and `log.md` as maintained artifacts.
-- Read `index.md` first during follow-up queries before digging through raw sources.
+- Read `<repo>/llm-wiki/index.md` first during follow-up queries before digging through raw sources.
+- The wiki is per-repository: never assume another repo's findings are visible here, and re-file anything that must be shared.
 - Update the schema/operating contract when the workflow itself changes materially.
+
 
 ### Default Operating Flow
 
@@ -2916,23 +2983,31 @@ fi
 
 # ── Knowledge Pipeline Enforcement ───────────────────────────────
 # Wire every prompt through: prompt → RTK (bash hook, already installed)
-# → graphify (structural graph rebuild) → llm-wiki at ~/vaults/llm-wiki/
-# (Obsidian-managed vault). Refreshed at TWO points per turn — prompt-in
-# (captures the prompt text) and turn-end (graph-only rebuild, no prompt
-# capture) — so the wiki/graph stay current even mid-conversation, not
-# just once per session. Per-agent hook events:
+# → graphify (structural graph rebuild in <repo>/.graphify/) → llm-wiki at
+# <obsidian-mind vault>/llm-wiki/, i.e. <repo>/llm-wiki by default (Step 3e
+# vault contract). Every repository therefore keeps its own wiki and graph.
+# Refreshed at TWO points per turn — prompt-in (captures the prompt text) and
+# turn-end (graph-only rebuild, no prompt capture) — so the wiki/graph stay
+# current even mid-conversation, not just once per session.
+# Per-agent hook events:
 #   Claude Code   : UserPromptSubmit (prompt-in) + Stop (turn-end)
 #   Codex CLI     : UserPromptSubmit + Stop (via ~/.codex/hooks.json)
 #   Antigravity / : BeforeAgent (prompt-in) + AfterAgent (turn-end)
 #   Gemini CLI      (shares ~/.gemini/settings.json)
 
 
-KP_VAULT="${LLM_WIKI_VAULT:-$_HOME/vaults/llm-wiki}"
-KP_SCRIPTS="$KP_VAULT/scripts"
+# The ingest script is installed ONCE at a project-independent path and resolves
+# the per-project vault itself at run time, so no wrapper or hook stores a vault
+# path. Only the bootstrap below touches a concrete vault (the current one).
+OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$_HOME/vaults/obsidian-mind")}"
+KP_VAULT="${LLM_WIKI_VAULT:-$OM_VAULT/llm-wiki}"
+KP_SCRIPTS="$_HOME/.agents/hooks"
 KP_INGEST="$KP_SCRIPTS/ingest-prompt.py"
 KP_RAW_URL="https://raw.githubusercontent.com/akillness/jeo-skills/main/hooks/ingest-prompt.py"
 
-# 1. Bootstrap vault skeleton via llm-wiki skill (or minimal fallback)
+# 1. Bootstrap the CURRENT project's vault skeleton via the llm-wiki skill (or a
+#    minimal fallback). Other repos are bootstrapped by ingest-prompt.py itself on
+#    their first captured prompt.
 if [ ! -f "$KP_VAULT/index.md" ]; then
   if [ -x "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" ]; then
     bash "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" "$KP_VAULT" \
@@ -2957,7 +3032,7 @@ else
     || echo "ℹ️  graphifyy not installed — run: pipx install graphifyy"
 fi
 
-# 3. Place the shared ingest script under the vault
+# 3. Place the shared ingest script at its project-independent path
 mkdir -p "$KP_SCRIPTS"
 if [ ! -f "$KP_INGEST" ]; then
   if command -v curl &>/dev/null; then
@@ -2965,6 +3040,7 @@ if [ ! -f "$KP_INGEST" ]; then
       && chmod +x "$KP_INGEST" \
       && echo "✅ ingest-prompt.py fetched → $KP_INGEST" \
       || echo "⚠️  could not fetch ingest-prompt.py — copy hooks/ingest-prompt.py manually"
+
   fi
 fi
 
@@ -2973,10 +3049,11 @@ fi
 # same-parent temporary files; absence is a requested-configuration failure.
 secure_kp_hooks() {
   local settings="$1" wrapper="$2" before="$3" after="$4"
-  KP_VAULT="$KP_VAULT" KP_INGEST="$KP_INGEST" python3 - "$settings" "$wrapper" "$before" "$after" <<'PY'
+  KP_INGEST="$KP_INGEST" python3 - "$settings" "$wrapper" "$before" "$after" <<'PY'
 import json, os, pathlib, stat, sys, tempfile
 settings, wrapper, before_event, after_event = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3], sys.argv[4]
-vault, ingest = os.environ["KP_VAULT"], os.environ["KP_INGEST"]
+ingest = os.environ["KP_INGEST"]
+
 def state(p):
     try: s = os.lstat(p)
     except FileNotFoundError: return None
@@ -2997,11 +3074,14 @@ def replace(p, text, validator, default_mode=0o600):
         except FileNotFoundError: pass
         raise
 wrapper_text = f'''#!/bin/bash
+# Vault-path free on purpose: ingest-prompt.py resolves the project-scoped vault
+# itself from the hook's working directory, so one wrapper serves every repo.
 set -euo pipefail
 INGEST="{ingest}"
 [ -x "$INGEST" ] || exit 0
 if [ -n "${{1:-}}" ]; then INPUT="$1"; else INPUT="$(cat 2>/dev/null || true)"; fi
-LLM_WIKI_VAULT="{vault}" printf '%s' "$INPUT" | python3 "$INGEST" >/dev/null 2>&1 || true
+printf '%s' "$INPUT" | python3 "$INGEST" >/dev/null 2>&1 || true
+
 exit 0
 '''
 replace(wrapper, wrapper_text, lambda _: None, 0o700)
@@ -3046,12 +3126,14 @@ KP_RULES="$(cat <<'RULES'
 
 ## Knowledge Pipeline (auto-applied)
 
-All prompts in this agent are captured into the canonical vault at
-`~/vaults/llm-wiki/` (Obsidian-managed) and indexed by graphify. Before
-answering any question, read `~/vaults/llm-wiki/index.md` first, then
-the relevant `wiki/` pages. File durable findings back into
-`wiki/queries/` or `wiki/reports/`. Shell commands route through `rtk`
-for token-compact output.
+All prompts in this agent are captured into the **project-scoped** vault at
+`<repo>/llm-wiki/` — the obsidian-mind vault resolves to the current git
+toplevel (override `OBSIDIAN_MIND_VAULT`), so every repository keeps its own
+wiki — and indexed by graphify into `<repo>/.graphify/`. Before answering any
+question, read `llm-wiki/index.md` in the current repo first, then the relevant
+`llm-wiki/wiki/` pages. File durable findings back into `wiki/queries/` or
+`wiki/reports/`. Shell commands route through `rtk` for token-compact output.
+
 
 RULES
 )"

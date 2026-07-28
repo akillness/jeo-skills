@@ -107,6 +107,16 @@ Requirements (state these exactly when asked): Obsidian 1.12+, an AI coding agen
 
 Full install detail, upgrading (`git pull`, fork merge, `shardmind adopt`), and `/om-vault-upgrade` migration live in [references/install-and-agent-wiring.md](references/install-and-agent-wiring.md).
 
+> **Vault location under the `jeo` runtime.** This repo's install guide
+> (`setup-all-skills-prompt.md`, Step 3e) does **not** pin obsidian-mind to one
+> home-directory clone. The vault is project-scoped and resolved at run time as
+> `$OBSIDIAN_MIND_VAULT` → `git rev-parse --show-toplevel` of the current
+> directory → `~/vaults/obsidian-mind` when you are outside any git repo. So the
+> repo you are working in *is* the vault, and `llm-wiki` nests under it at
+> `<vault>/llm-wiki/` rather than being dumped next to `brain/`, `org/`, and
+> `perf/`. Set `OBSIDIAN_MIND_VAULT` to override for a dedicated personal vault.
+
+
 ### Step 3: Run the daily session loop (mode `daily-session`)
 
 ```
