@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -307,23 +308,181 @@ def validate_skill_documents(repo_root: Path, skill_names: list[str]) -> int:
     return checked
 
 
+FRONTMATTER_DIR = "frontmatter"
+BASELINE_FILE = "baseline.txt"
+LEDGER_FILE = "exception-ledger.txt"
+CI_FILE = ".github/workflows/ci.yml"
+RECORDED_HASH_KEY = "A0-c__recorded_hash"
+
+
+def _read_recorded_ledger_hash(repo_root: Path) -> str | None:
+    """Read `A0-c'_recorded_hash` from ci.yml.
+
+    The hash lives OUTSIDE the ledger file on purpose: a ledger that carries its
+    own expected hash can be re-signed by whatever rewrote it, which defeats
+    G11c. ci.yml is a review-required surface, so amending it is visible.
+    """
+    ci = repo_root / CI_FILE
+    if not ci.is_file():
+        return None
+    match = re.search(rf"{RECORDED_HASH_KEY}:\s*([0-9a-f]{{64}})", ci.read_text(encoding="utf-8"))
+    return match.group(1) if match else None
+
+
+def _parse_ledger(path: Path) -> dict[str, dict[str, str]]:
+    """Parse the frontmatter exception ledger.
+
+    Records are `key: value` blocks separated by blank lines; every field in the
+    schema is required, so a truncated record fails closed instead of silently
+    widening the exception surface.
+    """
+    required = {
+        "slug", "approval_ref", "reason", "key", "lines",
+        "before_sha256", "after_sha256",
+        "desc_len_before", "desc_len_after",
+        "approved_removals", "projection_targets", "architect_signoff",
+    }
+    records: dict[str, dict[str, str]] = {}
+    for chunk in re.split(r"\n\s*\n", path.read_text(encoding="utf-8")):
+        fields = {}
+        for line in chunk.splitlines():
+            line = line.split("#", 1)[0].strip() if line.lstrip().startswith("#") else line
+            if not line.strip() or ":" not in line:
+                continue
+            key, _, value = line.partition(":")
+            fields[key.strip()] = value.strip()
+        if not fields:
+            continue
+        missing = required - set(fields)
+        require(not missing, f"ledger record {fields.get('slug', '<unnamed>')!r} is missing fields: {sorted(missing)}")
+        records[fields["slug"]] = fields
+    return records
+
+
+def validate_frontmatter_frozen(repo_root: Path, require_applied: bool = False) -> str:
+    """Rule F — every frontmatter block is byte-frozen unless the ledger pins it.
+
+    The ledger is a RESULT byte pin, not a permission slip: a listed skill must
+    land on exactly `after_sha256`, so both "changed something else" and "did not
+    apply the intended edit" fail. `--update-baseline` is deliberately unused
+    inside the program.
+
+    Lifecycle: (1) skills outside the 174-entry baseline are not checked, so
+    adding a skill is never blocked. (2) In-program changes pass only via ledger
+    entry + after-hash match. (3) `--update-baseline` is out-of-program only and
+    requires the `Frontmatter-Baseline-Update:` trailer, a recorded architect
+    approval, and a before/after hash report. (4) Rule F and the exception ledger
+    are program-scoped and are REMOVED FROM ci.yml AT D4.
+    """
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from frontmatter_boundary import frontmatter_sha256, iter_skill_docs, slug_of
+
+    art = repo_root / f".{FRONTMATTER_DIR}"
+    baseline_path = art / BASELINE_FILE
+    ledger_path = art / LEDGER_FILE
+    recorded = _read_recorded_ledger_hash(repo_root)
+
+    if not ledger_path.is_file() and recorded is None:
+        return "rule F: skipped (no exception ledger and no recorded hash yet)"
+    require(
+        ledger_path.is_file() and recorded is not None,
+        "rule F is half-configured: the exception ledger and the ci.yml "
+        f"{RECORDED_HASH_KEY} constant must both exist or both be absent "
+        f"(ledger={ledger_path.is_file()}, recorded_hash={recorded is not None})",
+    )
+    require(baseline_path.is_file(), f"rule F needs the A0-c baseline at {baseline_path}")
+
+    actual = hashlib.sha256(ledger_path.read_bytes()).hexdigest()
+    require(actual == recorded, f"exception ledger hash {actual} != recorded {recorded} (G11c)")
+
+    baseline = {}
+    for line in baseline_path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            slug, digest = line.split("\t")
+            baseline[slug] = digest
+    ledger = _parse_ledger(ledger_path)
+
+    frozen = pending = applied = 0
+    for doc in iter_skill_docs(repo_root / ".agent-skills"):
+        slug = slug_of(doc)
+        if slug not in baseline:
+            continue  # lifecycle (1): new skills are not gated
+        digest = frontmatter_sha256(doc)
+        if slug not in ledger:
+            require(
+                digest == baseline[slug],
+                f"frontmatter changed outside the exception ledger: {slug} ({baseline[slug]} -> {digest})",
+            )
+            frozen += 1
+            continue
+        record = ledger[slug]
+        require(record["before_sha256"] == baseline[slug], f"ledger {slug}: before_sha256 does not match the A0-c baseline")
+        # A ledger entry may sit on its before-hash (edit not applied yet) or on
+        # its after-hash (applied). Any third value is still a hard failure, so
+        # the result pin is not weakened — only the pre-L1x window is expressible.
+        if digest == record["before_sha256"]:
+            pending += 1
+        elif digest == record["after_sha256"]:
+            applied += 1
+        else:
+            require(
+                False,
+                f"ledger {slug}: frontmatter is {digest}; ledger pins "
+                f"before={record['before_sha256']} after={record['after_sha256']}",
+            )
+    require(
+        pending + applied == len(ledger),
+        f"ledger has {len(ledger)} records but {pending + applied} skills matched a pinned hash",
+    )
+    if require_applied:
+        require(pending == 0, f"gate 1 requires every ledger exception applied; {pending} are still at their before-hash")
+    return (
+        f"rule F: {frozen} frozen + {applied} applied + {pending} pending "
+        f"= {frozen + applied + pending} frontmatter blocks"
+    )
+
+
+def validate_links(repo_root: Path) -> str:
+    """Rule 7/8 — no dangling relative links (never reads frontmatter, B-1)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import link_targets
+
+    broken = link_targets.validate_link_targets(
+        repo_root / ".agent-skills",
+        repo_root / f".{FRONTMATTER_DIR}",
+    )
+    require(
+        not broken,
+        "dangling relative links: "
+        + "; ".join(f"{b['file']}:{b['line']} -> {b['target']}" for b in broken[:8])
+        + (f" (+{len(broken) - 8} more)" if len(broken) > 8 else ""),
+    )
+    return "rule 7/8: 0 dangling relative links"
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate manifest-derived TOON and README skill catalog projections.")
     parser.add_argument("--repo-root", default=".", type=Path, help="repository root containing .agent-skills (default: current directory)")
+    parser.add_argument("--strict-links", action="store_true", help="fail on dangling relative links (enable after L1 repairs)")
+    parser.add_argument("--gate1", action="store_true", help="require every ledger exception applied (gate 1, after L1x)")
     args = parser.parse_args()
     repo_root = args.repo_root.resolve()
 
+    strict_links = args.strict_links
     try:
         skill_names, categories = validate_manifest(repo_root)
         toon_records = validate_toon(repo_root, skill_names)
         loadable = validate_skill_documents(repo_root, skill_names)
         validate_readme(repo_root / "README.md", "## 📚 Skills List", ENGLISH_HEADINGS, categories, len(skill_names))
         validate_readme(repo_root / "README.ko.md", "## 📚 스킬 목록", KOREAN_HEADINGS, categories, len(skill_names))
+        frozen_summary = validate_frontmatter_frozen(repo_root, require_applied=args.gate1)
+        link_summary = validate_links(repo_root) if strict_links else None
     except ValidationError as error:
         print(f"catalog projection validation failed: {error}", file=sys.stderr)
         return 1
 
     print(f"catalog projections valid: {len(skill_names)} skills, {len(categories)} categories, {toon_records} TOON records, 2 README tables, {loadable} loadable SKILL.md documents")
+    print(frozen_summary)
+    print(link_summary if link_summary else "rule 7/8: not enforced yet (pass --strict-links after L1)")
     return 0
 
 

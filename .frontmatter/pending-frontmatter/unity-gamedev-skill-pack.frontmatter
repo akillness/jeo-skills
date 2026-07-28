@@ -1,0 +1,17 @@
+---
+name: unity-gamedev-skill-pack
+description: >
+  Evaluate and adopt Unity game-development skill packs from external repositories
+  into a safe, reusable local package. Use when maintainers want to import
+  game-dev workflows (Addressables, Cinemachine, GAS, VContainer, UniTask, Wwise,
+  etc.) without blindly trusting third-party prompts.
+allowed-tools: Bash Read Write Edit Glob Grep
+compatibility: >
+  Best for repository-maintenance and skill-curation workflows where external
+  Unity/Claude-Code skill packs are candidates for adaptation into internal skill
+  docs and eval suites.
+metadata:
+  tags: unity, game-development, skill-curation, claude-code, repository-maintenance
+  version: "1.0.0"
+  source: akillness/jeo-skills
+---

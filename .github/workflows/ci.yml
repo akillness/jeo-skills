@@ -15,3 +15,11 @@ jobs:
           python-version: '3.11'
       - run: python fix_frontmatter.py
       - run: python flatten_skills.py
+
+# --- A0-c' frontmatter exception ledger pin (program-scoped, REMOVED AT D4) ---
+# The ledger's own sha256 is recorded HERE, outside the ledger file: a ledger
+# that carries its own expected hash can be re-signed by whatever rewrote it,
+# which defeats G11c. ci.yml is a review-required surface, so amending it is
+# visible. Changing the ledger and this constant in one commit requires the
+# trailer `Frontmatter-Exception-Ledger-Amendment:` plus an architect signature.
+#   A0-c__recorded_hash: 306f4ac2b0f04a63b74d0a578e6f8afac46f4a2b2e0304661b9e75d9a1d22220

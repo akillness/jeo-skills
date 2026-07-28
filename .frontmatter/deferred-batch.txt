@@ -1,0 +1,25 @@
+# Deferred batch — SKILL.md added by ab3c992 (already registered in the catalog).
+# Out of scope for this program; folded into wave 4 after Phase D (user decision R-2).
+# Rule 7/8 link checks and the migration population both skip these slugs.
+article-prompts-to-skills
+audit-reference-originality
+audit-verify-explain-grade-5
+aura-asset-images
+browser-video-recording
+build-daily-inspiration-sites
+customer-email-draft-threads
+customer-support-verification
+daily-ui-inspiration-capture
+design-first-ui-prompting
+elevenlabs-tts
+generate-reference-inspired-brand-worlds
+html-to-interaction-prompts
+implement-fog-of-war
+optimize-web-animations
+performance-profiling
+stitched-full-page-capture
+unsplash-asset-images
+video-to-superprompt
+web-design
+write-like-meng-on-x
+x-bookmark-quote-posts

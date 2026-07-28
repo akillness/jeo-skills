@@ -108,3 +108,6 @@ venv.bak/
 /llm-wiki/
 /.graphify/
 graphify-out/
+
+# llm-wiki / graphify hook output (project-scoped, generated per prompt)
+.graphify/

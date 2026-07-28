@@ -1,0 +1,77 @@
+# Frontmatter exception ledger (A0-c')
+#
+# A RESULT byte pin, not a permission slip. Rule F requires each listed
+# skill to land on exactly `after_sha256`; every other frontmatter block
+# must stay on its A0-c baseline hash. Records are separated by blank
+# lines and every field is required (a truncated record fails closed).
+#
+# The sha256 of THIS FILE is recorded outside it, in the ci.yml constant
+# A0-c__recorded_hash and in the A0 gate report. Never store it here.
+#
+# Cardinality: 5 exceptions + 169 frozen = 174
+# Lifecycle: removed from ci.yml at D4 (program-scoped).
+
+slug: skill-standardization
+approval_ref: USER-INTENT-GATE-2026-07-28
+reason: SKILL.toon maintenance instructions live in the description; H1 deletes that asset, so keeping them would leave a false trigger
+key: description
+lines: 9, 13
+before_sha256: ae01fa9d824852bbb2d587504ee80262cdec255befd9ef05df4f83d435562711
+after_sha256: 799306759b6d2bdbe7c71e6383afb49096c022f64a044f031f6daaf42c224f47
+desc_len_before: 764
+desc_len_after: 730
+approved_removals: skill.toon, SKILL.toon drift
+projection_targets: skills.json, skills.toon
+architect_signoff: pending
+
+slug: api-design
+approval_ref: USER-INTENT-GATE-2026-07-28
+reason: 056e3f8 recorded a truncated TOON description; trigger content was actually lost at 'needs resou...'
+key: description
+lines: 4
+before_sha256: c9de23c5153332eaf9c47c2d1ae6fd0b9b5b5ddb73998394d1eab8ec0ffcd500
+after_sha256: a5bd83683d155ef27b914013b869e359c41e0dceac31e67db16e39667092fa0b
+desc_len_before: 95
+desc_len_after: 680
+approved_removals: resou
+projection_targets: skills.json, skills.toon
+architect_signoff: pending
+
+slug: api-documentation
+approval_ref: USER-INTENT-GATE-2026-07-28
+reason: 056e3f8 recorded a truncated TOON description
+key: description
+lines: 4-5
+before_sha256: a316ca560086648a5b2401bd39d2fcb2a645e71b72b2f02d8dbc9a10093f984c
+after_sha256: bf86ea139f169b889c86df89f65268f799f21d662fb42247bd2bcbcfd1a7b386
+desc_len_before: 109
+desc_len_after: 714
+approved_removals: 
+projection_targets: skills.json, skills.toon
+architect_signoff: pending
+
+slug: data-analysis
+approval_ref: USER-INTENT-GATE-2026-07-28
+reason: 056e3f8 recorded a truncated TOON description
+key: description
+lines: 4-5
+before_sha256: 6540d1865630c2229c1b8c89d7038e7e36737945a31f38439918d711b7d50f5e
+after_sha256: fe3ff1378aab112e22089cb316cc94e2cf6d2c769a7732b3cc6d92e085c4770f
+desc_len_before: 100
+desc_len_after: 745
+approved_removals: 
+projection_targets: skills.json, skills.toon
+architect_signoff: pending
+
+slug: unity-gamedev-skill-pack
+approval_ref: USER-INTENT-GATE-2026-07-28
+reason: user-approved: remove every TOON trace from frontmatter so AC-18 can assert fm TOON = 0
+key: compatibility
+lines: 12
+before_sha256: 04f75cd14e4c5cc57939468a5e1a8c6ffea6621e49c33e6c329600b0cb44cc92
+after_sha256: 4f87041123db8f0849ec03292e28f9381c012b5b1e96524f6734ed95c38609fc
+desc_len_before: 285
+desc_len_after: 285
+approved_removals: toon rules
+projection_targets: 
+architect_signoff: pending

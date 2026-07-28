@@ -1,0 +1,6 @@
+# Vendored mirrors (A0-e) — synced from upstream, frozen for this program.
+# Rule 7/8 never reports these as broken: the sync script owns their contents.
+# NOTE: harness/references/upstream/README.md contains an HTML <img src=harness_team.png>.
+#       HTML img is NOT a rule 7a target (7a covers markdown [..](..) / ![..](..) only),
+#       so its absence from the census is correct and must not be read as a census gap.
+.agent-skills/harness/references/upstream
