@@ -1,0 +1,11 @@
+N:obsidian-mind
+D:Route obsidian-mind work into the right mode: install/bootstrap the vault (ShardMind vs git clone), the daily standup/dump/wrap-up session loop, capture routes for decisions/incidents/1:1s/wins, the performance-graph review flow (/om-review-brief, /om-self-review, /om-peer-scan), vault maintenance and /om-vault-upgrade migration, multi-agent wiring across Claude Code/Codex CLI/Gemini CLI, and optional QMD semantic search. obsidian-mind is one specific ready-made Obsidian vault template with five lifecycle hooks, /om-* commands, subagents, and a competency/performance graph — not a generic vault-building or wiki-authoring workflow. Route generic vault/Obsidian-CLI work and Karpathy-style self-rewriting vaults to obsidian-second-brain, bare raw/+wiki markdown knowledge bases to llm-wiki, and repo-scoped active project memory to opencontext.
+G:obsidian-mind|obsidian|agent-memory|persistent-memory|session-hooks|performance-review|brag-doc|shardmind|claude-code|codex-cli|gemini-cli|qmd
+U[7]:
+  When installing or bootstrapping the obsidian-mind vault via ShardMind or git clone
+  When running the daily standup -> capture -> wrap-up session loop
+  When filing a decision, incident, 1:1, or win into the right vault note
+  When prepping a review cycle with /om-self-review, /om-peer-scan, or /om-review-brief
+  When auditing, tidying, or migrating a vault with /om-vault-audit or /om-vault-upgrade
+  When wiring obsidian-mind into Claude Code, Codex CLI, Gemini CLI, or another AGENTS.md agent
+  When the request might actually belong to obsidian-second-brain, llm-wiki, or opencontext instead

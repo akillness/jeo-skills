@@ -1137,18 +1137,6 @@ E[6]{type,command}:
   Query note,bash scripts/new-query-note.sh ~/vaults/company-research "How the market is changing" --question "How is the market changing?"
   Report,bash scripts/new-query-note.sh ~/vaults/company-research "Q3 diligence memo" --section reports
   Lint,python3 scripts/lint-wiki.py ~/vaults/company-research --format json
-N:lmstudio-cli
-D:Operate LM Studio's lms CLI and local or remote LM Studio servers for model discovery, server status checks, model loading, endpoint smoke tests, and downstream OpenAI-compatible wiring. Use when the user mentions LM Studio, lms, a local model server, /v1/models, a remote LM Studio host, or connecting another tool to LM Studio.
-G:lmstudio lm-studio lms local-llm openai-compatible model-server inference local-inference endpoint-validation strix
-
-S[7]{n,action,details}:
-  1,Identify the operating mode,Choose between local native CLI mode remote HTTP mode LM Studio-native management mode and downstream wiring mode before issuing commands.
-  2,Check whether local lms exists,bash command -v lms && lms --help If lms is missing switch to remote HTTP verification instead of inventing local CLI output.
-  3,Verify server status or endpoint reachability,bash lms server status --json --quiet or curl -fsS http://HOST:PORT/v1/models Optional helper: python3 scripts/check_lmstudio_endpoint.py --base-url http://HOST:PORT/v1
-  4,Discover exact model identifiers,bash lms ls --llm lms ps --json or curl -fsS http://HOST:PORT/v1/models Do not guess model IDs.
-  5,Escalate to native management only when needed,bash curl -fsS http://HOST:PORT/api/v1/models and curl -fsS http://HOST:PORT/api/v1/models/load ... or lms load MODEL_KEY --identifier my-model for context length load state or instance-specific questions.
-  6,Wire downstream tools carefully,Use the exact model ID and base URL. Example: export LLM_API_BASE="http://HOST:PORT/v1" and export STRIX_LLM="openai/MODEL_ID"
-  7,Report operating facts,Include whether lms existed which base URL was tested which model IDs were found whether the job stayed in OpenAI-compatible mode or required native management and the final config snippet needed downstream.
 N:log-analysis
 D:Route runtime-log requests into one evidence packet before diagnosing anything: app-runtime, container-runtime, browser-plus-api, ci-cascade, structured-json, or security-signal. Use when the user shares app/server/container/browser/CI/JSON log output and wants the first actionable blocker, repeated signature, blast radius, or safest next read-only checks. Route Unity/Unreal logs to game-build-log-triage, observability design to monitoring-observability, and remediation/debug hypotheses to debugging.
 G:logs triage incident ci browser kubectl docker jq rg packet-routing
@@ -1277,32 +1265,6 @@ R:
 
 PLUGIN:npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain
 UPSTREAM:https://github.com/akillness/obsidian-second-brain (origin: eugeniughelbur/obsidian-second-brain, MIT)
-N:ohmg
-D:Gemini / Antigravity entry for the portable oh-my-agent / OMA harness. Keep .agents as the source of truth, generate vendor views with oma link, and map Claude team/autopilot/ultrawork/ultraqa intents to OMA /orchestrate, /plan→/work, /ultrawork, /review, or oma agent:parallel without overclaiming Antigravity-native spawning.
-G:ohmg oh-my-agent oma gemini antigravity .agents portable-harness orchestration team autopilot ultrawork ultraqa plan work review
-U[5]:
-1:Adopt oh-my-agent from Gemini CLI or Antigravity with .agents as canonical source
-2:Regenerate Gemini Claude and Codex vendor views via oma link
-3:Explain Gemini-native generated agents vs OMA CLI fallback
-4:Map Claude /team /autopilot /ultrawork /ultraqa intents to OMA workflow packets
-5:Route Claude-first depth to omc and Codex-first depth to omx
-S[6]{n,action,details}:
-1:install,Install OMA,curl install.sh or bunx oh-my-agent@latest or bun install --global oh-my-agent
-2:link,Regenerate views,oma link then oma doctor
-3:team,Coordinate work,/orchestrate "task" or oma agent:parallel -i role:"task"
-4:autopilot,Autonomous build intent,/plan "task" then /work; only use /orchestrate or oma agent:parallel after the plan identifies parallel lanes
-5:ultrawork,Parallel burst,/ultrawork "task" or independent oma agent:parallel lanes
-6:ultraqa,QA parity,/review "target" or /ultrawork "QA target"; only call it /ultraqa when local workflow exposes that name
-R[5]:
-1:Use oh-my-agent / oma naming not old oh-my-ag
-2:Keep .agents canonical and do not hand-edit generated vendor views
-3:Antigravity can consume the harness but custom spawning may need OMA CLI fallback
-4:Generated surfaces include .gemini/agents .claude/agents and .codex/agents
-5:Dashboards are observability helpers not the whole orchestration model
-E[3]{desc,in,out}:
-1:{Antigravity team parity,I want Claude /team style work in Antigravity,Use .agents harness plus /orchestrate or oma agent:parallel and state the spawning boundary}
-2:{QA parity,Need ultraqa on OMA,Use /review or QA-focused /ultrawork with qa/security/performance lanes}
-3:{Autopilot parity,I use Claude /autopilot and want it in Antigravity,Use /plan then /work and state that native /autopilot is not guaranteed}
 N:motion-previs-studio
 D:AI-film previsualization desktop app for extracting pose, depth, camera motion, control layers, and production bundles from reference video.
 G:motion-previs ai-video previsualization filmmaking pose-extraction depth-mapping camera-motion control-layers previs ai-film
@@ -1326,64 +1288,6 @@ R:
   obsidian:Obsidian vault automation (plugin dev, CLI, URI handoff)
   graphify:Durable committed knowledge graphs from code and docs
   scrapling:Web-content extraction to feed OKF knowledge documents
-N:omc
-D:Route Claude Code–first orchestration to the truthful OMC install topology and runtime before giving commands. Distinguishes marketplace plugin slash skills from the `omc` shell CLI and local-checkout `--plugin-dir` usage, maps Claude `/team` `/autopilot` `/ultrawork` `/ultraqa` intents to OMX/OMA when requested, handles duplicate-install/recovery/state issues, and routes adjacent work outward.
-G:omc oh-my-claudecode claude-code /team autopilot ralph ultrawork ultraqa ccg omc-team omc-ask omc-setup plugin-dir hud hooks omx oma antigravity
-U[5]:
-1:Claude Code plugin setup, shell CLI setup, and local plugin-dir topology routing for OMC / oh-my-claudecode
-2:Truthful routing between in-session slash skills and shell-side `omc` CLI commands
-3:Mode selection for `/team`, `/autopilot`, `/ralph`, `/ultrawork`, `/ultraqa`, and `omc team`
-4:Recovery guidance for duplicate installs, plugin-dir confusion, worktree/state drift, and HUD/update issues
-5:Explicit route-outs to jeo, ralphmode, omx, ohmg, plannotator, and browser-review skills
-S[6]{n,action,details}:
-1:topology,Identify the install topology,marketplace-plugin | shell-cli | local-plugin-dir | mixed-or-unknown
-2:classify,Pick one packet,install-topology | in-session-runtime | terminal-runtime | recovery-and-update | cross-runtime-parity | boundary-and-route-out
-3:surface,State the runtime surface,plugin slash skills vs shell-side `omc` CLI
-4:recommend,Give the smallest truthful command,/team or /autopilot or /ralph or setup omc or omc setup or omc team or omc ask depending on topology + packet
-5:recover,Call out real operator constraints,enable CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 and inspect plugin-dir/state/worktree behavior when relevant
-6:route-out,Hand off non-OMC ownership,jeo / ralphmode / plannotator / browser-harness / playwriter / agentation / omx / ohmg
-R[6]:
-1:`/team` and `omc team` are both real but they are different runtimes
-2:`/autopilot`, `/ralph`, and `/ultrawork` are in-session skills, not normal `omc` CLI subcommands
-3:The npm package name is `oh-my-claude-sisyphus` while the runtime command is `omc`
-4:Local checkouts should use `--plugin-dir` / `OMC_PLUGIN_ROOT` / `omc setup --plugin-dir-mode`, not marketplace advice
-5:Native team mode depends on CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 in ~/.claude/settings.json
-6:Map Claude /team /autopilot /ultrawork /ultraqa to OMX $team $autopilot $ulw $ultraqa or OMA /orchestrate /plan→/work /ultrawork /review by intent not implementation identity
-E[4]{desc,in,out}:
-1:{Marketplace plugin setup,OMC 설치하고 Claude Code 안에서 바로 팀 모드까지 쓰고 싶어,Use install-topology with marketplace-plugin and give plugin install plus setup omc}
-2:{Local plugin-dir dev loop,로컬 checkout으로 OMC 수정 중인데 plugin-dir 쪽으로 어떻게 잡아야 해?,Use install-topology with local-plugin-dir and point to --plugin-dir / OMC_PLUGIN_ROOT / omc setup --plugin-dir-mode}
-3:{Shell-side worker team,omc team 2:codex "review auth flow",Use terminal-runtime and explain tmux worker orchestration}
-4:{Long-loop orchestration boundary,I want a resumable plan→execute→verify loop across multiple skills,Route to jeo and mention OMC only as the Claude-first runtime layer}
-N:omx
-D:oh-my-codex (OMX) — multi-agent workflow layer for OpenAI Codex CLI. v0.11.10: 30+ agents, 35+ skills ($autopilot/$plan/$ralph/$team/$ulw/$ultraqa/$deep-interview/$ralplan), tmux team runtime, omx explore, omx sparkshell, and Claude workflow parity for team/autopilot/ultrawork/ultraqa.
-G:omx oh-my-codex codex openai multi-agent orchestration team autopilot ultrawork ultraqa ralph plan deep-interview ralplan deepsearch
-U[5]:
-1:Stronger Codex sessions with reusable role prompts (/prompts:architect) and workflow skills ($autopilot/$plan/$ralph/$team)
-2:Persistent execution loops until verified complete ($ralph)
-3:Coordinated parallel workers via tmux team runtime (omx team N:role "task")
-4:Autopilot builds ($autopilot), independent burst parallelism ($ulw), and QA fan-out ($ultraqa) as Codex equivalents of Claude autopilot/ultrawork/ultraqa
-5:Socratic requirements clarification before coding ($deep-interview)
-S[7]{n,action,details}:
-1:install,Install OMX,npm install -g @openai/codex oh-my-codex && omx setup
-2:launch,Recommended launch,omx --madmax --high (bypass sandbox + high reasoning)
-3:plan,Plan before coding,/prompts:architect "analyze X" then $plan "ship Y" inside Codex
-4:autopilot,Autonomous build,$autopilot "build X" — idea→plan→implementation→verification under .omx
-5:ralph,Persistent execution,$ralph "fix all failing tests" — loops execute→verify→fix until done
-6:team,Parallel workers,omx team 3:executor "task" or $team 3:executor "task" inside Codex
-7:deep-interview,Clarify vague requests,$deep-interview "I want X" — one-question-at-a-time before planning
-R[7]:
-1:OMX is a workflow layer around Codex — Codex does the agent work; OMX adds better prompts/workflows/runtime
-2:Default recommended launch: omx --madmax --high (--madmax = bypass approvals, --high = high reasoning effort)
-3:Team mode requires tmux (macOS/Linux) or psmux (Windows native)
-4:$deep-interview gates planning — use for vague greenfield or brownfield before $autopilot/$plan/$ralph/$team
-5:$autopilot is the closest Codex-native match for Claude /autopilot; use $plan or $ralplan before $ralph for stricter completion loops
-6:omx explore is read-only repo lookup; omx sparkshell is bounded shell inspection
-7:Keep Codex runtime state under .omx rather than reusing .omc state
-E[4]{desc,in,out}:
-1:{Standard session,omx --madmax --high then /prompts:architect "analyze auth flow",Role prompt injects architect context; Codex analyzes boundaries then agent escalates to $plan}
-2:{Persistent fix,$ralph "fix all 12 failing tests",OMX loops execute→verify→fix until all tests pass; state persisted in .omx/}
-3:{Parallel team,omx team 3:executor "refactor API layer with tests",3 executor workers in isolated tmux/worktree sessions with shared task list}
-4:{Autopilot parity,Claude /autopilot "build task API" in Codex,Use $autopilot "build task API"; add $deep-interview first when vague}
 ooo|ouroboros,interview,seed,run workflow,evaluate,evolve,ooo ralph,specification first,socratic interview,git-aware interview,ambiguity reduction,execution plan,cli harness execute,persistent completion|Ouroboros spec-first loop: git-grounded interview→seed→plan(spec-kit)→execute(cli-anything)→evaluate→evolve. Interview Context scored against .ouroboros/interview-context.md regenerated from live git data (scripts/git-interview-context.sh); frozen seed rendered to execution plan via /speckit.plan→/speckit.tasks (seed→plan one-way; spec-first authoring is spec-stack); run stage executes through CLI-Hub harnesses (cli-hub search→install→launch, --json output = evaluate evidence, name harnesses in seed constraints). Install: bash scripts/install.sh (knobs OOO_GIT_INTERVIEW, OOO_SPEC_KIT, OOO_CLI_ANYTHING, SPEC_KIT_REF, CLI_ANYTHING_HUB_SPEC). Plugin: claude plugin marketplace add Q00/ouroboros. pip: ouroboros-ai[all]. Commands: ouroboros init start, ouroboros run workflow, ouroboros status, ouroboros tui monitor, ouroboros cancel, ouroboros mcp serve.|Q00/ouroboros|MIT|0.29.0
 N:open-code-review
 D:[open-code-review] Run AI-powered code review through Alibaba's open-code-review (ocr) CLI instead of hand-reviewing diffs. Use when the user asks to review code, a PR/MR, staged/unstaged/untracked changes, a single commit, a branch range, or to scan whole files for bugs, security, performance, and quality issues.
@@ -1570,18 +1474,6 @@ E[3]{desc,in,out}:
   "MCP browser bridge","Connect Codex or Claude to the browser I already have open","Explains MCP config plus session/runtime expectations for a running browser"
 N:presentation-builder D:"Build real deck artifacts when the user needs editable slides, not just prose: investor, roadmap/QBR, launch, architecture/demo, workshop/training, and game pitch decks. Use when the job is to choose one deck mode, one smallest useful artifact packet, and one honest handoff surface (HTML review, PPTX, PDF, Google Slides, or Figma Slides). Route long-form docs to technical-writing, end-user tutorials to user-guide-writing, research manuscripts to research-paper-writing, and broad marketing planning to marketing-automation." P:documentation/presentation-builder G:presentation|slides-grab|pitch-deck|roadmap-deck|investor-deck|demo-deck|pptx|pdf|html-slides|storytelling F:Claude|ChatGPT|Gemini|Codex
 pretext|pretext,text measurement,text layout,paragraph height,line layout,text reflow,canvas text measurement,DOM reflow,multiline text,CJK text,rich text|Fast accurate multiline text measurement & layout without DOM reflow. npm: @chenglou/pretext. API: prepare/layout (height), prepareWithSegments/layoutWithLines (per-line). Supports emoji, CJK, RTL, letter-spacing, soft hyphens. Output: DOM/Canvas/SVG.|chenglou/pretext|MIT|latest
-N:prompt-repetition
-D:Decide when repeating a full prompt is a useful accuracy hack for non-reasoning or lightweight LLM tasks, and when the real fix is better prompt structure, retrieval, or a stronger model. Use for long-context retrieval, options-first MCQ, or position-sensitive prompts on Haiku/Flash/mini-class models — not as a universal default for reasoning-heavy or RAG-architecture problems.
-T:Read|Write|Bash|Grep|Glob
-G:prompt-engineering|llm-accuracy|long-context|lightweight-models|evaluation
-U[6]:
-  **Long-context retrieval**: question comes after a large context block and gets lost
-  **Options-first MCQ**: choices appear before the actual ask
-  **Position-sensitive lookup**: inventory/index/ordered-list misses
-  **Lightweight models**: Haiku, Flash, mini-class non-reasoning runs
-  **Budget-aware experiments**: repeat question only, full prompt 2×, or bounded 3×
-  **Route-outs**: retrieval/context engineering, stronger reasoning models, prompt restructuring
-F:Claude|Gemini|ChatGPT|Codex
 N:react-best-practices
 D:Measurement-led React/Next.js performance audits for waterfalls, bundle size, RSC or client-boundary mistakes, hydration/script cost, rerender churn, and slow route interactions.
 G:React Next.js performance optimization vercel waterfalls bundle-size RSC hydration profiler web-vitals frontend
@@ -1885,23 +1777,6 @@ R:
   bmad:Use for packet-first BMAD/BMM artifact routing
   plannotator:Use for review/approval of an existing plan
   bmad-idea:Use for pre-planning concept framing
-N:spec-stack
-D:Compose spec-kit, ooo (Ouroboros), and cli-anything into one spec-driven delivery stack — Write (author the spec with /speckit.*), Freeze (immutable ooo seed with machine-checkable acceptance criteria), Run (loop with agent-native CLI harnesses whose --json output is the evaluate evidence) until verification passes; three patterns: full-stack, loop-only (ooo), docs-only (spec-kit), with a one-way spec.md → seed.yaml SSOT flow.
-T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
-G:spec-stack|spec stack|write freeze run|spec-kit ooo cli-anything|spec to seed|verified delivery stack
-F:Claude|Codex|Gemini|OpenCode
-S:
-  1:Pick the pattern — full-stack (spec-kit → ooo → cli-anything), loop-only (ooo), or docs-only (spec-kit)
-  2:Write — author spec.md via /speckit.constitution → /speckit.specify → /speckit.clarify
-  3:Freeze — mirror acceptance criteria into an immutable ooo seed.yaml (one-way spec → seed; never two SSOTs)
-  4:Arm — `cli-hub search/install` agent-native harnesses; their `--json` output becomes evaluate evidence
-  5:Run — ooo run/ralph ↔ evaluate loop until acceptance criteria verify (artifacts, not exit codes)
-  6:Change control — requirement changes re-enter through the spec, then re-freeze the seed
-R:
-  spec-kit:Use for docs-only SDD pipeline work
-  ooo:Use for loop-only immutable-seed execution
-  cli-anything:Use for harness install/generation alone
-  plannotator:Use for plan review/approval gates
 N:sprint-retrospective
 D:Facilitate sprint retrospectives, milestone postmortems, or iteration reviews by picking one retrospective mode, reviewing prior actions first, and turning completed work into a few owned process improvements. Use when the user needs remote/hybrid retro facilitation, action-item follow-through recovery, or post-sprint/post-milestone reflection. Route planning to task-planning, sizing to task-estimation, and daily coordination to standup-meeting.
 G:retrospective agile scrum postmortem facilitation follow-through
@@ -2136,20 +2011,6 @@ S[4]{n,action}:
   2,Gather the minimum credible evidence
   3,Split discovery from delivery and choose the smallest packet shape
   4,Run the route-out check and end with one next move
-N:team
-D:Exact-name `$team` front door for Codex/OMX coordinated multi-agent work. Use when the user asks for team mode, tmux workers, coordinated agents, shared task state, or `$team`; prefer `omx team` when installed and route independent burst work to `ultrawork`.
-T:Read|Write|Bash|Grep|Glob
-G:team|$team|omx-team|codex|multi-agent|tmux|workers|coordination|shared-task-list
-F:Codex CLI|Claude Code|Gemini CLI|OpenCode
-S:
-  1:Check `omx` and `tmux` before starting runtime-backed team mode
-  2:Start with `omx team ...` and capture team name, panes, and state path
-  3:Monitor with `omx team status <team-name>` until tasks are terminal
-  4:Shutdown only after completion or explicit abort
-R:
-  ultrawork:Use for independent parallel lanes without shared state
-  ultraqa:Use for parallel QA/review fan-out
-  omx:Use for runtime setup and cross-platform command mapping
 N:technical-writing
 D:Write internal technical documentation for engineers and operators: technical specs, architecture docs, ADRs, runbooks, migration plans, and developer-facing implementation guides. Use when the main job is capturing a technical decision, system boundary, operating procedure, or rollout path for builders and maintainers. Route API portals to api-documentation, end-user help to user-guide-writing, release notes to changelog-maintenance, decks to presentation-builder, and GTM messaging to marketing-automation.
 G:technical-writing docs spec architecture adr runbook migration developer-docs
@@ -2224,49 +2085,6 @@ R:
   langsmith:Use for LangSmith-stack LLM tracing/evals
   semble:Use for token-efficient agent code search over a repo
   monitoring-observability:Use for non-search service dashboards/alerts
-N:ui-component-patterns
-D:Routing-first reusable component architecture for shared frontend primitives, slots, controlled ownership, alternate-root composition, and docs/verification packets. Use when the user needs to decide what should become a shared primitive, how a component API should expose variants or subcomponents, when parent state should control the component, how to compose onto alternate element types or wrappers, or what Storybook/example coverage is required.
-G:ui-components react typescript composition variants slots reusable frontend
-U[5]:
-  Choose what should become a shared primitive versus stay product-local
-  Design component APIs with variants, slots, or subcomponents without prop sprawl
-  Decide controlled-vs-uncontrolled ownership for reusable components
-  Handle alternate-root composition for buttons, links, dialogs, or wrappers
-  Define the docs/verification packet for stories, examples, and edge cases
-S[5]{n,action}:
-  1,Frame the reusable component job before naming props
-  2,Choose one primary component packet
-  3,Keep the invariants visible
-  4,Build the component architecture packet
-  5,Route adjacent frontend work honestly
-N:ultraqa
-D:Exact-name `$ultraqa` front door for QA cycling: run tests/build/lint/typecheck or review, diagnose failures, fix, and repeat until the goal passes or a concrete blocker is proven. Treat `$ultaqa` as a common typo for `$ultraqa`.
-T:Read|Write|Bash|Grep|Glob
-G:ultraqa|$ultraqa|ultaqa|$ultaqa|qa|tests|build|lint|typecheck|review|omx|codex
-F:Codex CLI|Claude Code|Gemini CLI|OpenCode
-S:
-  1:Map the request to tests, build, lint, typecheck, review, or custom goal
-  2:Run repo-native verification commands and preserve failure evidence
-  3:Diagnose and apply the smallest fix
-  4:Repeat up to five cycles, stopping after three repeated identical failures
-R:
-  ultrawork:Use for independent implementation lanes
-  team:Use for coordinated runtime workers
-  code-review:Use for review-only findings without an edit loop
-N:ultrawork
-D:Exact-name `$ultrawork` / `$ulw` front door for high-parallelism independent work bursts. Use when separable implementation, cleanup, docs, tests, or migration lanes can proceed with clear file ownership; route coordinated shared-state work to `team` and QA/review loops to `ultraqa`.
-T:Read|Write|Bash|Grep|Glob
-G:ultrawork|$ultrawork|ulw|$ulw|omx|codex|parallel-work|burst-work|independent-lanes
-F:Codex CLI|Claude Code|Gemini CLI|OpenCode
-S:
-  1:Split work into independent lanes with explicit file ownership
-  2:Defer shared files to a coordinator integration step
-  3:Parallelize safe reads/checks/work where the runtime allows
-  4:Run full verification after integration
-R:
-  team:Use for tmux-backed coordinated workers
-  ultraqa:Use for QA/review cycling
-  autopilot:Use for full end-to-end autonomous builds
 N:upskill
 D:Wrap HKUDS UpSkill — capture Claude Code session failures, have a strong Teacher model draft a skill, validate it against a weak Student model in a closed Ralph Loop (up to 3 rounds), then auto-serve validated skills so a cheap Flash model performs like a Pro model. Terminal-Bench 2.0: Flash+UpSkill beat Pro at 41% lower cost.
 T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
@@ -2307,21 +2125,6 @@ R[5]:
 E[2]{desc,in,out}:
   "Survey-derived import","we found a Unity skill-pack repo in hourly survey candidates and need a safe internal adaptation","Produces provenance-first curation packet with imported/excluded patterns risk notes and validation status"
   "Risky direct-copy request","just copy this external Unity prompt pack into our repo","Refuses blind copy and reroutes to gated curation steps with license/recency checks"
-N:user-guide-writing
-D:Write user-facing documentation for onboarding, tutorials, task how-to guides, FAQs, help-center updates, and release-facing help refreshes. Use when the main job is helping end users or admins complete a product workflow or understand a changed UI path. Route internal specs and runbooks to technical-writing, API portals and SDK docs to api-documentation, and release-note hygiene to changelog-maintenance.
-G:user-guides tutorials documentation onboarding how-to faq help-center customer-docs release-help-update
-U[6]:
-  Getting-started and first-success guides
-  Tutorials and guided walkthroughs
-  Task-based how-to articles
-  FAQs and recurring support answers
-  Release-facing help refresh packets after UI/workflow changes
-  Boundary routing across documentation skills
-S[4]{n,action}:
-  1,Classify one primary mode and output shape
-  2,Gather the minimum user-facing evidence
-  3,Use the smallest fitting structure from references/mode-structures.md
-  4,Run the maintenance and sync check with explicit route-outs
 N:vercel-deploy
 D:Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, env-scope fixes, and rollback response. Use when the provider is already Vercel and the job is to get a preview URL, promote a verified deployment, attach a stable alias/domain, fix Vercel env drift, or roll back production safely.
 G:vercel|deployment|preview|production|promote|alias|domains|environment-variables|rollback
@@ -2344,63 +2147,6 @@ E[3]{desc,in,out}:
   "Preview deploy with stable alias","Deploy this linked Next.js app to a Vercel preview URL and give me a stable alias for QA.","Selects preview-deploy, uses Vercel deploy plus alias handling, and returns generated + stable URLs"
   "Promote verified deployment","This Vercel preview already passed QA. Promote it to production and verify it.","Selects promote-preview, verifies the exact deployment, runs vercel promote, and reports post-promotion checks"
   "Route out rollout policy","Help me design a staging-to-production rollout policy with canary rules across providers.","Routes the main job to deployment-automation and keeps only Vercel-specific follow-up here"
-N:vibe-kanban
-V:2.1.0
-D:Coding-board control plane for bounded coding cards, isolated workspaces/worktrees, review queues, retries, and PR handoff. Use when the user needs a visual board or tracker-linked workspace loop for parallel coding tasks, agent comparison, or review-heavy handoff.
-G:vibe-kanban kanban kanbanview coding-board workspace-board review-queue tracker-sync worktree github-pr claude-code codex gemini opencode
-U[6]:
-  Run a visible coding board for bounded tasks with isolated workspaces
-  Keep tracker-linked coding execution separate from PM source-of-truth boards
-  Compare agent attempts and preserve explicit review criteria
-  Move work through review then PR handoff instead of relying on chat memory
-  Treat cleanup of worktrees branches and servers as part of the board loop
-  Route planning browser-review and non-code board requests away early
-S[5]{n,action,details}:
-  1,Classify,Decide whether the request truly needs a coding board or only planning/tracker/browser help
-  2,Scope,Keep one bounded coding task per card and choose the board packet
-  3,Run,Launch isolated workspaces and set the review surface for each card
-  4,Review,Compare output against the card contract and choose retry split approve or PR handoff
-  5,Cleanup,Close stale cards prune worktrees and remove leftover branches or servers
-R[5]:
-  Use vibe-kanban only when board control review and workspace isolation materially matter
-  Keep GitHub Projects Linear or Jira canonical when they remain the PM tracker
-  Limit active cards to what a human reviewer can really evaluate
-  Prefer board-then-PR when shared repos need both fast iteration and durable review
-  Route PM marketing and non-code game-production coordination to other skills
-E[5]{desc,in,out}:
-  "Parallel bugfix board","Set up a board so Claude and Codex each handle one frontend bug and I can review diffs before PRs","Create bounded cards and isolated workspaces with review then PR flow"
-  "Agent comparison","Run two agents on the same API bug so I can compare diffs and decide which PR to keep","Preserve isolated attempts and explicit review criteria"
-  "Planning only","Help me break this migration into phases before coding starts","Route to task-planning or plannotator instead of opening a board"
-  "Marketing board","I need a board for launch-copy approvals and content calendar changes","Route to marketing-automation or PM/content workflow skills"
-  "Tracker-linked coding board","Keep GitHub Projects canonical but run three coding cards in worktrees and hand each to PR review","Use vibe-kanban for coding execution state without replacing the tracker"
-T[3]{problem,solution}:
-  "Cards keep stalling","Split them smaller and reduce active parallel work"
-  "Review backlog grows","Lower active card count or switch to board-then-PR / PR-first review"
-  "Worktree mess","Run cleanup steps and close stale cards explicitly"
-N:video-production
-D:Programmable video production with Remotion. Generate automated, brand-consistent videos at scale from text instructions using scene planning, asset orchestration, and validation gates.
-G:video remotion animation storytelling automation react
-
-U[4]:
-  Automated video generation — auto-generate videos from text instructions
-  High-volume brand video production — produce in bulk with consistent style
-  Marketing content — product intros, onboarding, promo videos
-  Programmable content — integrate narration·visuals·animation
-S[5]{n,action,details}:
-  1,Video Spec,define audience·goal·duration(30s/60s/90s)·aspect_ratio(16:9/1:1/9:16)·tone·voice
-  2,Scene Plan,structure each scene — specify Visual·Audio·Text·Transition·Duration
-  3,Prepare Assets,checklist for logos(SVG)·screenshots(normalized)·audio(MP3·volume normalized)·fonts(woff2)
-  4,Implement Remotion,compose <Composition> component; animate with interpolate; layer with AbsoluteFill
-  5,Render & QA,npx remotion preview → verify timing/audio sync/text readability/transitions → final render
-R[5]:
-  Limit each scene to a clear 5-10 seconds
-  Define and apply a consistent typography scale
-  Align narration cues with visuals (audio sync)
-  Ensure edge safe zones for mobile aspect ratios (9:16)
-  Always run preview QA before final render
-E[2]{desc,in,out}:
-  "60s product intro","Create a 60s product intro video with 6 scenes, upbeat tone, 16:9","Scene breakdown (Hook/Problem/Solution/Features/SocialProof/CTA) + Remotion file structure"
-  "Onboarding walkthrough","Generate a 45s onboarding walkthrough using screenshots, 9:16 mobile format","5-step scene plan + asset list (screenshots·callouts) + text overlays + mobile-safe margins"
 N:vox-director
 D:Automated Vox-style paper-collage explainer and ad video workflow: topic to script, keyframes, motion, voice-over, music, captions, Atlas Cloud API, and ffmpeg.
 G:vox-director vox-video collage-video motion-collage paper-collage explainer-video atlas-cloud ffmpeg
@@ -2427,27 +2173,6 @@ R[6]:
   visual perception reflow
   media alternatives
   routed navigation feedback
-N:web-design-guidelines
-D:UI code review based on the Vercel Web Interface Guidelines. When asked "review my UI", "check accessibility", "audit design", or "review UX", fetch the latest guidelines and report violations in `file:line` format.
-G:UI review web-interface guidelines vercel design-audit UX accessibility
-
-U[5]:
-  UI code review — check compliance with Web Interface Guidelines
-  Accessibility check — when asked "check accessibility"
-  Design audit — when asked "audit design"
-  UX review — when asked "review UX"
-  Best practices review — when asked "check my site against best practices"
-S[3]{n,action,details}:
-  1,Fetch Guidelines,WebFetch URL:https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md - extract latest rules
-  2,Analyze Files,Read user-provided files/patterns (React/Vue/Svelte, HTML, CSS/SCSS, TypeScript/JavaScript)
-  3,Report Violations,Apply all rules from fetched guidelines -> output location, issue, and fix suggestions in `file:line` format
-R[3]:
-  Fetch latest guidelines from the source URL on every review (no cache)
-  Check every rule from the fetched guidelines (no partial checks)
-  Always specify violation locations in `file:line` format
-E[2]{desc,in,out}:
-  "Button component review","Review my UI code: src/components/Button.tsx","src/components/Button.tsx:15 - Button should have aria-label for icon-only buttons\nsrc/components/Button.tsx:32 - Focus indicator missing"
-  "Full component audit","Check accessibility: src/**/*.tsx","src/components/Modal.tsx:42 - Modal should trap focus\nsrc/pages/Home.tsx:8 - Main content should be wrapped in <main>"
 N:webtoon-harness
 D:[webtoon-harness] Run an end-to-end webtoon production harness — a 27-agent / 4-phase Claude Code agent team that takes one episode from trend research to a finished vertical-scroll viewer. Research trends -> dialogue-heavy high-tension twist-every-episode scenario -> reference sheets first -> 50+ panels with in-image Korean speech-bubble bake via codex-image -> 6-axis validate/regenerate loop -> vertical-scroll viewer. Packages revfactory/webtoon-harness; trend-research web extraction routes through the scrapling skill.
 G:webtoon agent-team multi-agent content-production codex-image panel-render trend-research scrapling vertical-scroll claude-code
@@ -2485,35 +2210,6 @@ E[5]{type,command}:
   Trigger via prompt,"트렌드 반영해서 웹툰 1화 만들어줘"
   Trigger via prompt,"다음 화 만들어"
   Trigger via prompt,"패널 23번 다시 그려"
-N:workflow-automation
-D:Routing-first skill for repo-scoped recurring workflow automation: task-entrypoint design, bootstrap/onboarding commands, local-CI parity wrappers, hook guardrails, maintenance bots, and workflow-diagnosis cleanup.
-G:automation task-runner bootstrap ci-parity dev-workflow hooks repo-maintenance
-U[7]:
-  replace README command sprawl with one repo-owned front door
-  choose between package scripts Make just Task hooks CI wrappers and maintenance bots
-  design setup dev test lint verify and ci entrypoints
-  tighten local workflow glue versus hosted CI enforcement
-  decide whether a chore belongs in hooks task runners or schedules
-  diagnose messy workflow layers spread across docs scripts hooks and CI
-  route environment deployment Git policy and observability away
-S[8]{n,action}:
-  1,normalize the recurring workflow request
-  2,choose one primary mode
-  3,pick the smallest automation surface
-  4,keep local commands hooks CI and schedules honest about boundaries
-  5,build a workflow automation packet
-  6,use mode packets not a giant tool catalog
-  7,make route-outs explicit
-  8,simplify and dedupe before adding another layer
-R[8]:
-  uses
-  references/automation-modes.md
-  references/mode-packets-and-route-outs.md
-  references/handoff-boundaries.md
-  task-entrypoints
-  bootstrap-onboarding
-  local-ci-parity
-  workflow-diagnosis
 N:x-twitter-scraper
 D:Xquik API skill for X/Twitter data and confirmation-gated X actions. Use for tweet search, user lookup, follower extraction, media download, monitoring, webhooks, MCP, SDKs, posting, likes, DMs, and profile updates through Xquik with an API key. Never ask for X login material.
 G:xquik|x-twitter-scraper|twitter|x-api|tweet-search|followers|media|monitoring|webhooks|mcp|sdk
@@ -2637,10 +2333,6 @@ N:scientific-llm-benchmarks
 D:Reference catalog of benchmarks for evaluating LLM scientific reasoning and discovery across STEM domains; use to select or research scientific LLM evaluations.
 G:scientific-llm-benchmarks llm-benchmarks science-llms evaluation awesome-list reasoning discovery stem
 
-N:setup-pre-commit
-D:Sets up Husky and lint-staged pre-commit checks for formatting, type checking, and tests; use to add commit-time quality gates to a Node project.
-G:git-hooks pre-commit husky lint-staged prettier code-quality automation
-
 N:tdd
 D:Guides vertical-slice red-green-refactor development with public-interface behavior tests; use for test-first features or bug fixes, not post-hoc testing.
 G:tdd test-driven-development red-green-refactor vertical-slices behavior-verification
@@ -2759,3 +2451,9 @@ R[7]:
 E[2]{desc,in,out}:
   "Add an official RSS source to Agent Pulse","SourceAdapter extension with fixtures, lifecycle gates, and npm run check","docs-first source change with safe adapter tests and audit-ready handoff"
   "Publish a hot Agent Pulse story from an aggregator","Evidence and readiness review before privacy-safe export","canonical original evidence, review status, and no aggregator-only publication"
+
+N:obsidian-mind D:"Route obsidian-mind work into the right mode: install/bootstrap the vault (ShardMind vs git clone), the daily standup/dump/wrap-up session loop, capture routes for decisions, incidents, 1:1s, and wins, the performance-graph review flow (/om-review-brief, /om-self-review, /om-peer-scan), vault maintenance and /om-vault-upgrade migration, multi-agent wiring across Claude Code, Codex CLI, and Gemini CLI, and optional QMD semantic search. obsidian-mind is a specific ready-made Obsidian vault template giving coding agents persistent, session-spanning memory through five lifecycle hooks, /om-* commands, subagents, and a competency graph — not a generic vault-building or wiki-authoring workflow. Triggers on: obsidian-mind, om-standup, om-dump, om-wrap-up, om-review-brief, om-self-review, om-peer-scan, om-vault-upgrade, brag doc, North Star.md, performance graph, competency notes, session lifecycle hooks, shardmind install obsidian-mind." T:Bash|Read|Write|Edit|Glob|Grep P:utilities/obsidian-mind G:obsidian-mind|obsidian|agent-memory|persistent-memory|session-hooks|performance-review|brag-doc|shardmind|claude-code|codex-cli|gemini-cli|qmd
+
+N:openspace D:"Install and route through OpenSpace, the skill management layer for AI agents, so a host agent can retrieve/rank/load the right SKILL.md out of this jeo-skills catalog (~150 installed skills), then evaluate skill quality from real execution evidence and evolve skills via FIX/DERIVED/CAPTURED updates. Covers install-as-skill-finder, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Triggers on: openspace, skill finder, skill retrieval, find the right skill, rank skills, skill discovery, skill quality, evolve skill, FIX DERIVED CAPTURED, skill hub, openspace-mcp, search_skills, skill-discovery, delegate-task." T:Bash|Read|Write|Edit|Glob|Grep P:agent-development/openspace G:openspace|skill-management|skill-discovery|skill-retrieval|skill-evaluation|skill-evolution|mcp|agent-skills|quality-layer|cloud-hub
+
+N:web-game-development D:"Route Three.js and browser game-development requests into the narrowest matching sub-skill of the 19-skill MengTo/Skills game-development family — level authoring, map editing, cameras, enemy systems and AI, monster rigs, action combat, encounter design, inventory, hybrid/Vesperfall assets, VFX, audio feedback, mobile controls, performance tuning, QA, changelogs, and release. Use when a task touches any of those for a playable web game, and fetch the matching sub-skill before doing the work instead of improvising. Route Unity/C# engine work to `unity-gamedev-skill-pack` instead. Triggers on: three.js game, browser game, webgl game, isometric arpg, enemy AI, game camera, game inventory, game VFX, game audio feedback, ship web game, playtest web game, mobile threejs game, game encounter design, monster rig, hybrid game assets." T:Bash|Read|Write|Edit|Glob|Grep P:game-development/web-game-development G:game-development|three.js|webgl|browser-games|skill-routing|skill-pack|mengto-skills

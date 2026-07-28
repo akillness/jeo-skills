@@ -8,7 +8,6 @@ OBS_INSTALL="$ROOT/.agent-skills/obsidian-second-brain/scripts/install.sh"
 PLAN_HOOK="$ROOT/.agent-skills/plannotator/scripts/setup-hook.sh"
 PLAN_GEMINI="$ROOT/.agent-skills/plannotator/scripts/setup-gemini-hook.sh"
 PLAN_OPENCODE="$ROOT/.agent-skills/plannotator/scripts/setup-opencode-plugin.sh"
-VIBE_MCP="$ROOT/.agent-skills/vibe-kanban/scripts/mcp-setup.sh"
 ROOT_INSTALLER="$ROOT/install.sh"
 GUIDE="$ROOT/setup-all-skills-prompt.md"
 
@@ -87,7 +86,6 @@ require_file "$AGENTATION"
 require_file "$OBS_INSTALL"
 require_file "$PLAN_GEMINI"
 require_file "$PLAN_OPENCODE"
-require_file "$VIBE_MCP"
 require_file "$PLAN_HOOK"
 require_file "$ROOT_INSTALLER"
 require_file "$GUIDE"
@@ -333,57 +331,6 @@ expect_status 1 'plannotator OpenCode dangling symlink rejection'
 [ -L "$OPENCODE_PROJECT/opencode.json" ] && [ ! -e "$WORK/opencode-plugin-dangling-target.json" ] || fail 'plannotator OpenCode plugin replaced dangling symlink'
 pass 'plannotator OpenCode writer merges regular config and rejects both symlink forms'
 
-# Vibe Kanban writer: regular merge plus real and dangling symlink protection.
-VIBE_HOME="$WORK/vibe-home"
-mkdir -p "$VIBE_HOME/.claude"
-printf '%s\n' '{"mcpServers":{}}' >"$VIBE_HOME/.claude/claude_desktop_config.json"
-chmod 640 "$VIBE_HOME/.claude/claude_desktop_config.json"
-run_capture env HOME="$VIBE_HOME" PATH="$PATH" /bin/bash "$VIBE_MCP" --claude
-expect_status 0 'Vibe Kanban regular config merge'
-assert_json "$VIBE_HOME/.claude/claude_desktop_config.json"
-jq -e '.mcpServers["vibe-kanban"].command == "npx"' "$VIBE_HOME/.claude/claude_desktop_config.json" >/dev/null || fail 'Vibe Kanban MCP entry missing from regular config'
-[ "$(mode_of "$VIBE_HOME/.claude/claude_desktop_config.json")" = 640 ] || fail 'Vibe Kanban merge lost mode 640'
-rm -f "$VIBE_HOME/.claude/claude_desktop_config.json"
-printf '%s\n' '{"sentinel":"vibe-real"}' >"$WORK/vibe-real-target.json"
-cp "$WORK/vibe-real-target.json" "$WORK/vibe-real-before.json"
-ln -s "$WORK/vibe-real-target.json" "$VIBE_HOME/.claude/claude_desktop_config.json"
-run_capture env HOME="$VIBE_HOME" PATH="$PATH" /bin/bash "$VIBE_MCP" --claude
-expect_status 1 'Vibe Kanban real symlink rejection'
-cmp -s "$WORK/vibe-real-before.json" "$WORK/vibe-real-target.json" || fail 'Vibe Kanban mutated real symlink target'
-rm -f "$VIBE_HOME/.claude/claude_desktop_config.json"
-ln -s "$WORK/vibe-dangling-target.json" "$VIBE_HOME/.claude/claude_desktop_config.json"
-run_capture env HOME="$VIBE_HOME" PATH="$PATH" /bin/bash "$VIBE_MCP" --claude
-expect_status 1 'Vibe Kanban dangling symlink rejection'
-[ -L "$VIBE_HOME/.claude/claude_desktop_config.json" ] && [ ! -e "$WORK/vibe-dangling-target.json" ] || fail 'Vibe Kanban replaced dangling symlink'
-# Vibe Kanban's independent Codex/TOML path must also preserve regular config
-# safety rather than relying on the Claude/JSON branch above.
-mkdir -p "$VIBE_HOME/.codex"
-printf '%s\n' 'model = "test"' >"$VIBE_HOME/.codex/config.toml"
-chmod 600 "$VIBE_HOME/.codex/config.toml"
-run_capture env HOME="$VIBE_HOME" PATH="$PATH" /bin/bash "$VIBE_MCP" --codex
-expect_status 0 'Vibe Kanban Codex config append'
-python3 - "$VIBE_HOME/.codex/config.toml" <<'PY' || fail 'Vibe Kanban Codex config is not valid TOML'
-import sys
-import tomllib
-
-with open(sys.argv[1], "rb") as f:
-    config = tomllib.load(f)
-assert any(
-    entry.get("name") == "vibe-kanban"
-    and entry.get("command") == "npx"
-    for entry in config.get("mcp_servers", [])
-)
-PY
-[ "$(mode_of "$VIBE_HOME/.codex/config.toml")" = 600 ] || fail 'Vibe Kanban Codex append lost mode 600'
-printf '%s' 'model = [' >"$VIBE_HOME/.codex/config.toml"
-cp "$VIBE_HOME/.codex/config.toml" "$WORK/vibe-codex-malformed-before.toml"
-run_capture env HOME="$VIBE_HOME" PATH="$PATH" /bin/bash "$VIBE_MCP" --codex
-expect_status 1 'Vibe Kanban malformed Codex TOML rejection'
-expect_no_output 'MCP 설정 완료!' 'Vibe Kanban malformed Codex TOML rejection'
-cmp -s "$WORK/vibe-codex-malformed-before.toml" "$VIBE_HOME/.codex/config.toml" || fail 'Vibe Kanban changed malformed Codex TOML'
-assert_no_temp_for "$VIBE_HOME/.codex" 'config.toml'
-pass 'Vibe Kanban writer protects both JSON and TOML config paths'
-
 # Obsidian second brain: two secure backups, a failed merge that preserves the original, and both symlink forms.
 OBS_HOME="$WORK/obsidian-home"
 OBS_CONFIG="$OBS_HOME/.jeo/config.json"
@@ -426,8 +373,7 @@ for writer in \
   "$ROOT/.agent-skills/obsidian-second-brain/scripts/install.sh" \
   "$ROOT/.agent-skills/plannotator/scripts/setup-hook.sh" \
   "$ROOT/.agent-skills/plannotator/scripts/setup-gemini-hook.sh" \
-  "$ROOT/.agent-skills/plannotator/scripts/setup-opencode-plugin.sh" \
-  "$ROOT/.agent-skills/vibe-kanban/scripts/mcp-setup.sh"; do
+  "$ROOT/.agent-skills/plannotator/scripts/setup-opencode-plugin.sh"; do
   /bin/bash -n "$writer" || fail "shell syntax invalid: $writer"
 done
 pass 'all changed runtime shell writers pass bash syntax validation'
@@ -489,20 +435,12 @@ exit 0
 EOF
   chmod 700 "$GUIDE_BIN/$tool"
 done
-cat >"$GUIDE_BIN/omx" <<'EOF'
-#!/bin/sh
-if [ "${1:-}" = setup ]; then
-  printf '%s\n' setup >>"$JEO_TEST_OMX_LOG"
-fi
-exit 0
-EOF
-chmod 700 "$GUIDE_BIN/omx"
 
 run_guide() {
   local guide_home="$1" section="$2"
   HOME="$guide_home" _HOME="$guide_home" PATH="$GUIDE_PATH" PLATFORM=macos \
     SKILLS_ROOT="$guide_home/.agents/skills" OOO_GIT_INTERVIEW=0 OOO_SPEC_KIT=0 OOO_CLI_ANYTHING=0 \
-    JEO_TEST_OMX_LOG="$WORK/omx-invocations.log" /bin/bash "$GUIDE_DIR/$section" >"$LAST_OUTPUT" 2>&1
+    /bin/bash "$GUIDE_DIR/$section" >"$LAST_OUTPUT" 2>&1
   LAST_STATUS=$?
 }
 
@@ -560,19 +498,18 @@ PY
 assert_guide_symlinks semble 02.sh '.codex/config.toml'
 pass 'semble guide Codex writer mutates regular TOML and rejects both symlink forms'
 
-# OMX delegates successful config writing to the external omx CLI. Its local guide
-# surface must nevertheless reject both symlink forms before invoking that CLI.
-GUIDE_OMX_HOME="$WORK/guide-omx-home"
-mkdir -p "$GUIDE_OMX_HOME/.codex"
-printf '%s\n' 'model = "test"' >"$GUIDE_OMX_HOME/.codex/config.toml"
-: >"$WORK/omx-invocations.log"
-run_guide "$GUIDE_OMX_HOME" 03.sh
-expect_status 0 'OMX guide external setup handoff'
-[ "$(cat "$WORK/omx-invocations.log")" = setup ] || fail 'OMX guide did not hand regular config setup to omx'
-omx_invocations_before_symlink_checks="$(wc -l <"$WORK/omx-invocations.log" | tr -d ' ')"
-assert_guide_symlinks omx 03.sh '.codex/config.toml'
-[ "$(wc -l <"$WORK/omx-invocations.log" | tr -d ' ')" = "$omx_invocations_before_symlink_checks" ] || fail 'OMX guide invoked external setup after rejecting a symlinked local config'
-pass 'OMX guide invokes external setup only for a regular config and rejects both symlink forms'
+# The Platform Plugin Setup section no longer installs any external runtime that
+# writes agent config; it must still run cleanly and leave a regular Codex config
+# untouched.
+GUIDE_PLUGIN_HOME="$WORK/guide-plugin-home"
+mkdir -p "$GUIDE_PLUGIN_HOME/.codex"
+printf '%s\n' 'model = "test"' >"$GUIDE_PLUGIN_HOME/.codex/config.toml"
+cp "$GUIDE_PLUGIN_HOME/.codex/config.toml" "$WORK/guide-plugin-codex-before.toml"
+run_guide "$GUIDE_PLUGIN_HOME" 03.sh
+expect_status 0 'Platform Plugin Setup section runs cleanly'
+cmp -s "$WORK/guide-plugin-codex-before.toml" "$GUIDE_PLUGIN_HOME/.codex/config.toml" \
+  || fail 'Platform Plugin Setup section mutated the Codex config'
+pass 'Platform Plugin Setup section runs without touching agent runtime config'
 
 # jeo, pi, and jeopi guide sections own JSON writers directly.
 GUIDE_JEO_HOME="$WORK/guide-jeo-home"

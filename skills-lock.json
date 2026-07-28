@@ -131,40 +131,6 @@
       "sourceType": "github",
       "computedHash": "45cf09f1d623710b5f2ae03d13d8697a11ca382035bc06d333d4d1b5bf4b2a9e"
     },
-    "omc": {
-      "source": "Yeachan-Heo/oh-my-claudecode",
-      "sourceType": "plugin",
-      "version": "4.2.15",
-      "keyword": "omc",
-      "description": "Claude Code용 OMC 라우터. `/team`, `/autopilot`, `/ultrawork`, `/ultraqa`를 Claude 안에서 쓰되, 같은 의도를 Codex/OMX(`$team`, `$autopilot`, `$ulw`, `$ultraqa`)와 Gemini/Antigravity/OMA(`/orchestrate`, `/plan`→`/work`, `/ultrawork`, `/review`)로 넘기는 대응표를 포함한다.",
-      "tags": [
-        "omc",
-        "claude-code",
-        "team",
-        "autopilot",
-        "ooo",
-        "ultrawork",
-        "ultraqa",
-        "omx",
-        "oma",
-        "antigravity"
-      ],
-      "installCommand": "/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode && /plugin install oh-my-claudecode && /omc:omc-setup",
-      "addedAt": "2026-03-05T00:00:00Z",
-      "updatedAt": "2026-05-30T00:00:00Z",
-      "extensions": [
-        {
-          "skill": "agent-observability",
-          "status": "survey-candidate",
-          "reason": "Team and Ralph loops need per-agent traces and cost attribution instead of terminal-only logs."
-        },
-        {
-          "skill": "a2a-integration",
-          "status": "survey-candidate",
-          "reason": "OMC currently excels at in-process teams but needs a standard handoff story for cross-service delegation."
-        }
-      ]
-    },
     "ooo": {
       "source": "Q00/ouroboros",
       "sourceType": "github",
@@ -219,49 +185,6 @@
       "source": "akillness/jeo-skills",
       "sourceType": "github",
       "computedHash": "08ec6f9ff81f5b6f69bfdcb7aea1ea052583b0767a456c015a07cbff999ae949"
-    },
-    "spec-stack": {
-      "source": "akillness/jeo-skills",
-      "sourceType": "github",
-      "version": "1.0.0",
-      "keyword": "spec-stack",
-      "description": "spec-kit × ooo × cli-anything 조합 스택 — spec-kit이 스펙을 쓰고, ooo가 불변 seed로 동결해 검증 통과까지 루프를 돌리고, cli-anything이 --json 증거를 내는 agent-native CLI harness를 공급한다. full-stack / loop-only / docs-only 세 패턴과 단방향 spec → seed 흐름.",
-      "tags": [
-        "spec-stack",
-        "spec-kit",
-        "ooo",
-        "cli-anything",
-        "spec-driven",
-        "verification",
-        "loop",
-        "seed",
-        "composition"
-      ],
-      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill spec-stack",
-      "addedAt": "2026-06-11T00:00:00Z",
-      "updatedAt": "2026-06-11T00:00:00Z",
-      "extensions": [
-        {
-          "skill": "spec-kit",
-          "status": "required",
-          "reason": "Owns the spec layer — /speckit.* authoring feeds the seed interview."
-        },
-        {
-          "skill": "ooo",
-          "status": "required",
-          "reason": "Owns the loop layer — immutable seed, drift measurement, verify-before-done."
-        },
-        {
-          "skill": "cli-anything",
-          "status": "recommended",
-          "reason": "Owns the tool layer when real software is in scope — CLI-Hub harnesses provide --json evaluate evidence."
-        },
-        {
-          "skill": "plannotator",
-          "status": "optional",
-          "reason": "Human approval gate between seed freeze and the run loop on level 2+ work."
-        }
-      ]
     },
     "survey": {
       "source": "akillness/jeo-skills",
@@ -348,7 +271,6 @@
         }
       ]
     },
-
     "scrapling": {
       "source": "akillness/jeo-skills",
       "sourceType": "github",
@@ -371,6 +293,5 @@
       "addedAt": "2026-07-01T00:00:00Z",
       "updatedAt": "2026-07-01T00:00:00Z"
     }
-
   }
 }

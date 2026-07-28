@@ -1,0 +1,9 @@
+N:openspace
+D:Install and route through OpenSpace, the skill management layer for AI agents, so a host agent can retrieve/rank/load the right SKILL.md out of this jeo-skills catalog (~150 installed skills), then evaluate skill quality from real execution evidence and evolve skills via FIX/DERIVED/CAPTURED updates. Covers install-as-skill-finder, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Route plain keyword catalog lookups to codebase-search/semble, long-lived markdown knowledge to llm-wiki, and per-repo agent memory to opencontext.
+G:openspace|skill-management|skill-discovery|skill-retrieval|skill-evaluation|skill-evolution|mcp|agent-skills|quality-layer|cloud-hub
+U[5]:
+  When a host agent should be wired up to search, rank, and load the right SKILL.md out of a large installed skill catalog instead of guessing
+  When the task is finding the best-fit skill for a specific job among many installed skills
+  When a team needs to know which installed skills actually work from real execution evidence, not just descriptions
+  When a skill should evolve under control via FIX / DERIVED / CAPTURED, with provisional-to-trusted promotion
+  When the request might actually be plain grep-style catalog lookup (codebase-search/semble), long-lived markdown knowledge (llm-wiki), or per-repo agent memory (opencontext) instead

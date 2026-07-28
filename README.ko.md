@@ -2,11 +2,11 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-165-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**165개 로컬 스킬 폴더 · 설치 가능 스킬 165개 · TOON 포맷 · 멀티플랫폼**
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 165개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
-### 🎬 창의 미디어 (10개)
+[![Skills](https://img.shields.io/badge/Skills-152-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**149개 로컬 스킬 폴더 · 설치 가능 스킬 149개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 149개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 149개 로컬 스킬 폴더 = 총 149개 설치 가능 스킬
+### 🎬 창의 미디어 (9개)
 
 | `drawio` |
 | `gbro-collage-broll` |
@@ -14,22 +14,21 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
-| `video-production` |
 | `video-shotcraft` |
 | `vox-director` |
 | `webtoon-harness` |
 
-├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**165개 로컬 스킬 폴더 · 설치 가능 스킬 165개 · TOON 포맷 · 멀티플랫폼**
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 165개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
-├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+**149개 로컬 스킬 폴더 · 설치 가능 스킬 149개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 149개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 149개 로컬 스킬 폴더 = 총 149개 설치 가능 스킬
+├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -40,9 +39,9 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 165개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
-├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 149개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 149개 로컬 스킬 폴더 = 총 149개 설치 가능 스킬
+├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo 에이전트와 전설의 장비 세트
@@ -165,17 +164,16 @@ npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --ski
 ```bash
 # Claude Code
 npx skills add https://github.com/akillness/jeo-skills \
-  --skill omc --skill plannotator --skill agentation \
-  --skill ooo --skill vibe-kanban
+  --skill plannotator --skill agentation --skill ooo
 
 # Gemini CLI
 npx skills add https://github.com/akillness/jeo-skills \
-  --skill ohmg --skill ooo --skill vibe-kanban
+  --skill ooo --skill deep-dive
 antigravity extensions install https://github.com/akillness/jeo-skills
 
 # Codex CLI
 npx skills add https://github.com/akillness/jeo-skills \
-  --skill omx --skill ooo
+  --skill ooo --skill harness
 
 # jeopi — `-a` 지정 불필요: jeopi는 ~/.agents/skills 와
 # .claude/.codex/.config/opencode 스킬 디렉터리를 네이티브로 자동 발견하므로 글로벌 설치만으로 충분합니다.
@@ -200,19 +198,16 @@ claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
 # macOS: brew install rtk  |  Linux: cargo install rtk  |  Windows: winget install rtk
 rtk init -g
 
-# oh-my-claudecode 플러그인
-/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
-/plugin install oh-my-claudecode && setup omc
 ```
 
 ---
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 165개 로컬 스킬 폴더 = 총 165개 설치 가능 스킬
-├── .agent-skills/          ← 165개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 149개 로컬 스킬 폴더 = 총 149개 설치 가능 스킬
+├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
-### 🎯 핵심 오케스트레이션 (15개)
+### 🎯 핵심 오케스트레이션 (8개)
 
 | 스킬 |
 |------|
@@ -222,17 +217,10 @@ rtk init -g
 | `bmad-idea` |
 | `deep-dive` |
 | `deepinit` |
-| `ohmg` |
-| `omc` |
-| `omx` |
 | `spec-kit` |
-| `spec-stack` |
 | `survey` |
-| `team` |
-| `ultraqa` |
-| `ultrawork` |
 
-### 📋 계획 및 검토 (13개)
+### 📋 계획 및 검토 (12개)
 
 | 스킬 |
 |------|
@@ -248,17 +236,16 @@ rtk init -g
 | `to-issues` |
 | `to-prd` |
 | `triage` |
-| `vibe-kanban` |
 
 ### 🤖 에이전트 개발 (5개)
 
 | 스킬 |
 |------|
 | `cli-anything` |
-| `prompt-repetition` |
 | `prompts-chat` |
 | `skill-standardization` |
 | `upskill` |
+| `openspace` |
 
 ### ⚙️ 백엔드 (11개)
 
@@ -276,7 +263,7 @@ rtk init -g
 | `typesense` |
 | `colibri` |
 
-### 🎨 프론트엔드 (13개)
+### 🎨 프론트엔드 (11개)
 
 | 스킬 |
 |------|
@@ -290,9 +277,7 @@ rtk init -g
 | `react-grab` |
 | `responsive-design` |
 | `state-management` |
-| `ui-component-patterns` |
 | `web-accessibility` |
-| `web-design-guidelines` |
 
 ### 🔍 코드 품질 (11개)
 
@@ -328,7 +313,7 @@ rtk init -g
 | `system-environment-setup` |
 | `vercel-deploy` |
 
-### 📝 문서화 (5개)
+### 📝 문서화 (4개)
 
 | 스킬 |
 |------|
@@ -336,7 +321,6 @@ rtk init -g
 | `presentation-builder` |
 | `research-paper-writing` |
 | `technical-writing` |
-| `user-guide-writing` |
 
 ### 📊 프로젝트 관리 (4개)
 
@@ -366,7 +350,7 @@ rtk init -g
 | `semble` |
 | `skill-autoresearch` |
 
-### 🎬 창의 미디어 (10개)
+### 🎬 창의 미디어 (9개)
 
 | 스킬 |
 |------|
@@ -376,7 +360,6 @@ rtk init -g
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
-| `video-production` |
 | `video-shotcraft` |
 | `vox-director` |
 | `webtoon-harness` |
@@ -389,7 +372,7 @@ rtk init -g
 | `marketing-automation` |
 | `yuwen-publish-precheck` |
 
-### 🎮 게임 개발 (8개)
+### 🎮 게임 개발 (9개)
 
 | 스킬 |
 |------|
@@ -401,8 +384,9 @@ rtk init -g
 | `perfectpixel` |
 | `steam-store-launch-ops` |
 | `unity-gamedev-skill-pack` |
+| `web-game-development` |
 
-### 🔧 유틸리티 (41개)
+### 🔧 유틸리티 (39개)
 
 | 스킬 |
 |------|
@@ -428,7 +412,6 @@ rtk init -g
 | `hyperfine-benchmarking` |
 | `lapian-notes` |
 | `llm-wiki` |
-| `lmstudio-cli` |
 | `notebooklm` |
 | `npm-git-install` |
 | `obsidian-second-brain` |
@@ -440,13 +423,12 @@ rtk init -g
 | `ponytail` |
 | `pretext` |
 | `scaffold-exercises` |
-| `setup-pre-commit` |
 | `stitch-skills` |
 | `tokhub` |
-| `workflow-automation` |
 | `write-a-skill` |
 | `x-twitter-scraper` |
 | `zeude` |
+| `obsidian-mind` |
 
 ---
 
@@ -478,7 +460,6 @@ TOON(Token-Oriented Object Notation)은 스킬 카탈로그를 압축하여 모�
 | Plan | `spec-kit` (`/speckit.plan` → `/speckit.tasks`) | 동결된 seed에서 검토 가능한 실행 계획을 렌더링 (seed → plan 단방향; `OOO_SPEC_KIT=1` 기본 설치) |
 | Plan / Review | `plannotator` + `bmad` | 이미 결정된 작업을 다시 열지 않고 계획 승인 |
 | Execute | `cli-anything` (`cli-hub search` → `install` → `launch`) | 실제 소프트웨어를 agent-native CLI harness로 구동; `--json` 출력이 evaluate 단계의 증거 (`OOO_CLI_ANYTHING=1` 기본 설치) |
-| Runtime handoff / Execute | `omc` / `omx` / `ohmg` / 필요한 경우 `bmad` fallback | 런타임별 설정과 실행은 해당 runtime skill이 담당 |
 | Verify / QA | `browser-harness` | 완료 주장 전에 CDP 브라우저 / QA 근거를 기록 |
 | Verify UI / annotate | `agentation` | 명시적 submit 이후에만 UI 피드백 처리 |
 | Cleanup | repo cleanup scripts + `worktree-cleanup.sh` | 요약, follow-up queue, worktree 정리 |
@@ -672,15 +653,6 @@ uv tool install semble      # uv
 npx skills add https://github.com/akillness/jeo-skills --skill semble
 ```
 
-### vibe-kanban — AI 에이전트 칸반 보드
-> 키워드: `kanbanview` | [문서](docs/vibe-kanban/README.md) | [GitHub](https://github.com/BloopAI/vibe-kanban)
-
-바운드된 코딩 카드를 위한 코딩 보드 제어면: 필요하면 GitHub Projects·Linear·Jira를 PM 원본으로 유지한 채, 실제 코딩 실행은 격리된 워크스페이스/worktree에서 돌리고, 사람 검토를 명시적으로 거쳐 PR로 넘기는 흐름을 관리합니다.
-
-```bash
-npx vibe-kanban
-```
-
 ---
 
 ## 🌐 추천 Harness OSS
@@ -702,8 +674,8 @@ npx vibe-kanban
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 161개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
-├── docs/                   ← 상세 가이드 (bmad, omc, plannotator, ooo, ...)
+├── .agent-skills/          ← 149개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
 ├── README.md               ← English
@@ -718,7 +690,6 @@ npx vibe-kanban
 |------|--------|------|
 | `ooo` | `ooo`, `ouroboros`, `ooo interview` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
 | `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
-| `vibe-kanban` | `kanbanview` | [docs/vibe-kanban/README.md](docs/vibe-kanban/README.md) |
 | `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
 | `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
@@ -733,7 +704,6 @@ npx vibe-kanban
 | `webtoon-harness` | `웹툰 만들어`, `웹툰 하네스` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
 | `game-studio-harness` | `게임 제작 하네스`, `게임 제작 사이클`, `stage gate` | [.agent-skills/game-studio-harness/SKILL.md](.agent-skills/game-studio-harness/SKILL.md) |
 | `heretic` | `heretic`, `어블리터레이션`, `모델 검열 제거` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
-| `omc` | `omc` | [docs/omc/README.md](docs/omc/README.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.ko.md](docs/harness/README.ko.md) |
 
@@ -743,7 +713,6 @@ npx vibe-kanban
 
 | 컴포넌트 | 출처 | 라이선스 |
 |----------|------|---------|
-| `omc` | [Yeachan-Heo/oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | MIT |
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `stitch-skills` | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | Apache-2.0 |
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |
@@ -776,7 +745,14 @@ npx vibe-kanban
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-07-28 업데이트
 
+| 변경 | 내용 |
+|------|------|
+| **카탈로그 152개 스킬** | 스킬 폴더 16개 제거(`lmstudio-cli`, `ohmg`, `omc`, `omx`, `prompt-repetition`, `setup-pre-commit`, `spec-stack`, `team`, `ui-component-patterns`, `ultraqa`, `ultrawork`, `user-guide-writing`, `vibe-kanban`, `video-production`, `web-design-guidelines`, `workflow-automation`), 3개 추가(`obsidian-mind`, `openspace`, `web-game-development`). `skills.json`, `skills.toon`, `skills-lock.json`, 양쪽 README 카탈로그 표를 재생성했고 `scripts/validate-catalog-projections.py`가 152개 기준으로 통과합니다. |
+| **플랫폼 전용 스킬 폐지** | `omc` / `ohmg` / `omx`가 사라지면서 매니페스트는 단일 공유 카탈로그가 되었습니다. `setup-all-skills-prompt.md`의 Step 1이 전체를 설치하고, Step 2의 플랫폼 설치 블록은 잔여 사본 감사로 교체되었으며, Step 4의 플랫폼 중복 검사는 공유 루트 그림자 검사로 바뀌었습니다. |
+| **Step 3g는 OpenCode 플러그인 설정만 유지** | `oh-my-claudecode`, `oh-my-codex`(OMX), `oh-my-agent`(OMA) 설치 블록은 제거된 라우팅 스킬을 위해서만 존재했으므로 삭제했습니다. `oh-my-openagent`(OMO) 블록은 그대로이며, `scripts/test-runtime-config-writers.sh`는 OMX 핸드오프 케이스를 "설정 미변경" 검증으로 교체하고 25개 케이스를 모두 통과합니다. |
+| **obsidian-mind / web-game-development 설명 축소** | 두 스킬의 frontmatter description이 1024자 제한을 넘겨 `skills add`에서 검색되지 않는 상태였습니다. 트리거 키워드를 유지한 채 제한 이내로 다시 작성했습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

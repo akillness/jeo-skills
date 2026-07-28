@@ -1,0 +1,10 @@
+N:web-game-development
+D:Route Three.js and browser game-development requests into the narrowest matching sub-skill of the 19-skill MengTo/Skills game-development family — level authoring, map editing, cameras, enemy systems and AI, monster rigs, action combat, encounter design, inventory, hybrid/Vesperfall assets, VFX, audio feedback, mobile controls, performance tuning, QA, changelogs, and release. Classify first, fetch the matched sub-skill with scripts/fetch-upstream-skills.sh, then sequence multi-skill work along the prototype → systems → content → assets → feel → perf → QA → release lifecycle. Route Unity/C# engine work to unity-gamedev-skill-pack, build/CI failures to game-ci-cd-pipeline or game-build-log-triage, playtest feedback to game-demo-feedback-triage, store/launch work to steam-store-launch-ops, and sprite-sheet generation to perfectpixel.
+G:web-game-development|three.js|webgl|browser-games|skill-routing|skill-pack|mengto-skills|isometric-arpg
+U[6]:
+  When a Three.js or browser game task could match several upstream sub-skills and needs the narrowest single owner
+  When the matched upstream sub-skill is not installed yet and must be fetched into the agent skills root
+  When work crosses a documented boundary (enemy systems vs monster rig vs enemy AI, combat verbs vs encounter pacing, asset integration vs review assets vs VFX/audio)
+  When multi-skill work needs lifecycle ordering from vertical slice through release proof
+  When mobile controls, HUD, quality tiers, or touch QA change what "playable" means for the same game
+  When the request is actually Unity/Unreal, CI/CD, build-log, demo-feedback, Steam-launch, or pixel-art work and must be routed out

@@ -4,7 +4,7 @@
 
 > **CRITICAL — Preserve Existing Skills**: This guide never deletes unowned skills or directories. It only requests selected repository skills be added or updated; any existing non-target platform copies are reported for manual resolution. Never run `skills remove`, `skills clear`, `skills reset`, or an unproven destructive command.
 
-> **CRITICAL — No Duplicate Platform Exposure**: Platform-specific skills (`omc`, `ohmg`, `omx`) MUST only be linked to their target agent(s). Use `-a` to target specific agents — never use `-a '*'` for platform-specific skills.
+> **CRITICAL — One Shared Catalog**: Every skill in this repository is shared. Step 1 installs the whole live manifest to `~/.agents/skills/` and links it only to the agents detected in Step 0; existing copies under other agents' skill roots are reported, never deleted.
 
 > ```bash
 > curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
@@ -20,7 +20,7 @@
 | **New User** | Eliminate ambiguity — run the complete installation by default |
 | **Guide Author** | Skip full install only when user says "core only" or "minimal install" |
 | **Preservation Rule** | Never delete existing skills — only add new or overwrite skills from this repo |
-| **Dedup Rule** | Platform-specific skills target only their agents; shared skills target all agents |
+| **Dedup Rule** | One installed copy per skill; extra copies under other agent roots are audited, not silently overwritten |
 
 ---
 
@@ -238,11 +238,11 @@ fi
 
 ## Step 1 — Install Shared Skills (Batch)
 
-Install every shared skill in the live repository manifest to the global location and link it
-only to the agents detected in Step 0. Platform-specific skills (`omc`, `ohmg`, `omx`) are
-excluded here and installed only in Step 2.
+Install every skill in the live repository manifest to the global location and link it
+only to the agents detected in Step 0. The manifest is a single shared catalog — there are
+no platform-exclusive skills.
 
-> **Do not skip Step 2** — it is the only step that installs platform-specific skills to their documented targets, and Step 2b is the only step that makes skills reachable from the Go `opencode-ai/opencode` TUI.
+> **Do not skip Step 2** — Step 2b is the only step that makes skills reachable from the Go `opencode-ai/opencode` TUI, and Steps 2c/2d are the only steps that collapse duplicate and shadowed copies.
 
 ```bash
 # ────────────────────────────────────────────────────────
@@ -286,7 +286,7 @@ if (!Array.isArray(manifest.skills)) {
   console.error("❌ skills manifest has no skills array");
   process.exit(1);
 }
-const excluded = new Set(["omc", "ohmg", "omx"]);
+const excluded = new Set();
 const shared = manifest.skills.map((skill) => skill && skill.name);
 if (shared.some((name) => typeof name !== "string" || !name)) {
   console.error("❌ skills manifest contains a skill without a valid name");
@@ -359,24 +359,24 @@ echo "✅ $_SHARED_COUNT skills present in $SKILLS_ROOT (shared root for jeopi /
 
 > **Global vs Project install — why skill files may be missing**
 >
-> **Step 1 global install** (`-g`): downloads every shared skill from the live manifest into
-> the selected detected agents' global skill stores. **Step 2** adds `omc`, `ohmg`, and `omx`
-> to their documented platform targets, so the two steps together install the complete manifest.
+> **Step 1 global install** (`-g`): downloads every skill from the live manifest into
+> the selected detected agents' global skill stores — the complete catalog in one pass.
 > **Step 2b** bridges the installed skills into custom commands for `opencode-ai/opencode`, the
 > one detected agent with no skill loader; **Step 2c** quarantines timestamped duplicate skill
 > directories and **Step 2d** makes opencode resolve every skill to one content version. Run 2c
 > before 2d — quarantining a duplicate can change which file is canonical.
-> `--full-depth` remains required to discover the 7 skills whose `SKILL.md` is nested in a
-> subdirectory. Without it only ~120 skills are found and linked.
+> `--full-depth` is kept as a safety flag for repositories that nest `SKILL.md` in a
+> subdirectory; every skill in this manifest currently sits at `<skill>/SKILL.md`.
 >
 > **Project install** (`experimental_install` / `skills restore`): reads `skills-lock.json` in the
 > project root and restores **only the skills listed there** — not the whole global catalog. If
-> `skills-lock.json` contains only 10 entries (omc, ooo, ai-tool-compliance, llm-monitoring-dashboard, survey, harness,
-> deep-dive, deepinit, cli-anything, spec-stack) then only those 10 are restored regardless of how many are globally installed. To include more
+> `skills-lock.json` contains only 14 entries (ai-tool-compliance, cli-anything, deep-dive, deepinit, drawio,
+> harness, heretic, llm-monitoring-dashboard, obsidian-second-brain, ooo, ponytail, scrapling, survey,
+> webtoon-harness) then only those 14 are restored regardless of how many are globally installed. To include more
 > skills in a project install, add them to `skills-lock.json` first.
 >
 > **Root cause summary**:
-> 1. Missing `--full-depth` → 7 nested skills skipped on global install
+> 1. Missing `--full-depth` → any future nested `SKILL.md` would be skipped on global install
 > 2. Sparse `skills-lock.json` → project install only restores listed entries
 > 3. CLI `isExcluded` drops dotfiles (e.g. `.env.example`) during copy — upstream limitation
 > 4. Empty `files` arrays in `skills.json` → HTTP/well-known install path broken for those skills
@@ -411,7 +411,7 @@ echo "✅ $_SHARED_COUNT skills present in $SKILLS_ROOT (shared root for jeopi /
 
 ---
 
-## Step 2 — Install Platform-Specific Skills and Audit Copies
+## Step 2 — Agent Scope Map and Copy Audit
 
 ### Vercel `skills` CLI scope map
 
@@ -473,102 +473,22 @@ Install the Claude-derived skills added to this repo:
 skills add -g "$REPO_URL" --skill deepinit --skill deep-dive -a claude-code --yes --copy --full-depth
 ```
 
-Platform-specific skills are excluded from Step 1 and are installed here only to their
-documented target agents. Existing non-target copies are audited and reported below; this
-guide never deletes them.
+Every manifest skill is already installed by Step 1. The remaining work here is to report
+copies that live outside the shared root so they can be resolved deliberately; this guide
+never deletes them.
 
 ```bash
-# ╔══════════════════════════════════════════════════════════════╗
-# ║  Platform Skill Mapping (from SKILL.md metadata)            ║
-# ║                                                              ║
-# ║  omc       → Claude Code only                               ║
-# ║  ohmg      → Gemini CLI + Antigravity                       ║
-# ║  omx       → Codex + Claude Code + Gemini CLI               ║
-# ╚══════════════════════════════════════════════════════════════╝
-
-# omc — Claude Code only
-skills add -g "$REPO_URL" --skill omc -a 'claude-code' --yes --copy
-
-# ohmg — Gemini CLI + Antigravity CLI
-# Install the documented Gemini CLI target first. Then use the native Antigravity agent
-# when supported; older skills CLI versions fall back to a guarded mirror.
-skills add -g "$REPO_URL" --skill ohmg -a 'gemini-cli' --yes --copy
-mkdir -p "$_HOME/.gemini/antigravity/skills"
-mkdir -p "$_HOME/.gemini/antigravity-cli/hooks"
-_OHMG_MIRROR="$_HOME/.gemini/antigravity/skills/ohmg"
-_OHMG_MARKER="$_OHMG_MIRROR/.jeo-skills-guide-owned"
-# Capture stderr so we can distinguish "unknown agent" rejection from real failures
-# (network / source / install errors) — the latter must surface, not silently fall back.
-if ! _OHMG_ERR="$(mktemp -t ohmg_skills_err.XXXXXX)"; then
-  echo "❌ Unable to create a secure temporary error file for the Antigravity install" >&2
-  exit 1
-fi
-if skills add -g "$REPO_URL" --skill ohmg -a 'antigravity' --yes --copy 2>"$_OHMG_ERR"; then
-  rm -f "$_OHMG_ERR"
-elif grep -qiE 'unknown agent|invalid agent|unsupported agent|agent .* not (recognized|supported|found)' "$_OHMG_ERR"; then
-  echo "ℹ️  skills CLI does not recognize '-a antigravity' — preserving Gemini CLI install and using the guarded mirror fallback"
-  rm -f "$_OHMG_ERR"
-  if [ ! -d "$_HOME/.gemini/skills/ohmg" ]; then
-    echo "❌ Gemini CLI ohmg source is missing; cannot create Antigravity fallback mirror" >&2
-    exit 1
-  elif [ -e "$_OHMG_MIRROR" ] || [ -L "$_OHMG_MIRROR" ]; then
-    if [ -f "$_OHMG_MARKER" ] && grep -qx 'jeo-skills guide-owned ohmg Antigravity mirror' "$_OHMG_MARKER"; then
-      rm -rf "$_OHMG_MIRROR"
-      if cp -R "$_HOME/.gemini/skills/ohmg" "$_OHMG_MIRROR"; then
-        printf '%s\n' 'jeo-skills guide-owned ohmg Antigravity mirror' >"$_OHMG_MARKER"
-        echo "✅ Refreshed guide-owned ohmg mirror at $_OHMG_MIRROR"
-      else
-        echo "❌ Failed to refresh the guide-owned Antigravity ohmg mirror" >&2
-        exit 1
-      fi
-    else
-      echo "⚠️  Preserved existing Antigravity ohmg copy at $_OHMG_MIRROR (no guide-owned provenance marker); resolve it manually if replacement is intended"
-    fi
-  else
-    if cp -R "$_HOME/.gemini/skills/ohmg" "$_OHMG_MIRROR"; then
-      printf '%s\n' 'jeo-skills guide-owned ohmg Antigravity mirror' >"$_OHMG_MARKER"
-      echo "✅ Created guide-owned ohmg mirror at $_OHMG_MIRROR"
-    else
-      echo "❌ Failed to create the Antigravity ohmg mirror" >&2
-      exit 1
-    fi
-  fi
-else
-  echo "❌ ohmg install failed (non-agent error):" >&2
-  cat "$_OHMG_ERR" >&2
-  rm -f "$_OHMG_ERR"
-  # Do not mask network/source failures with a silent fallback
-  exit 1
-fi
-
-# omx — Codex CLI + Claude Code + Gemini CLI
-# NOTE: Codex CLI does NOT auto-load `~/.codex/skills/`. The omx skill ships its own
-# runtime via `omx setup` (Step 3g via oh-my-codex). Writing to ~/.codex/skills/ is
-# kept for parity with other agents but only takes effect through OMX's loader.
-# One -a per id: a comma list is rejected as a single unknown agent name.
-skills add -g "$REPO_URL" --skill omx -a codex -a claude-code -a gemini-cli --yes --copy
-
-# ── Audit existing non-target platform copies without deleting them ──
+# ── Audit skill copies that live outside the shared root ──
 echo ""
-echo "=== Auditing non-target platform skill copies ==="
+echo "=== Auditing skill copies outside $SKILLS_ROOT ==="
 
-audit_platform_copy() {
-  local skill="$1"; shift
-  local allowed=("$@")
-
+audit_stray_copies() {
+  local skill="$1"
   while IFS='|' read -r agent_name agent_dir; do
-    local is_allowed=false
-    local allowed_agent
-    for allowed_agent in "${allowed[@]}"; do
-      [[ "$allowed_agent" == "$agent_name" ]] && is_allowed=true
-    done
-
-    if ! $is_allowed && { [ -e "$agent_dir/$skill" ] || [ -L "$agent_dir/$skill" ]; }; then
-      echo "⚠️  Existing non-target copy: $skill at $agent_dir/$skill ($agent_name). Preserved; resolve manually if it should be removed."
+    if [ -e "$agent_dir/$skill" ] || [ -L "$agent_dir/$skill" ]; then
+      echo "⚠️  Additional copy: $skill at $agent_dir/$skill ($agent_name). Preserved; resolve manually if it should be removed."
     fi
   done <<EOF
-shared|$SKILLS_ROOT
-claude-code|${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/skills
 codex|$_HOME/.codex/skills
 gemini-cli|$_HOME/.gemini/skills
 antigravity|$_HOME/.gemini/antigravity/skills
@@ -576,11 +496,12 @@ opencode|$_HOME/.config/opencode/skills
 EOF
 }
 
-audit_platform_copy "omc" "claude-code"
-audit_platform_copy "ohmg" "gemini-cli" "antigravity"
-audit_platform_copy "omx" "codex" "claude-code" "gemini-cli"
+# Audit a representative slice of the catalog; Steps 2c/2d handle the exhaustive sweep.
+for _skill in ooo plannotator agentation harness survey deep-dive cli-anything; do
+  audit_stray_copies "$_skill"
+done
 
-echo "✅ Platform skill audit complete; no existing copies were deleted"
+echo "✅ Skill copy audit complete; no existing copies were deleted"
 ```
 
 ---
@@ -1237,7 +1158,7 @@ PY
 fi
 # ── Integrity guard: repair Codex config.toml if a stray root-level
 # `hooks = <bool>` line (written before any [table] header — e.g. by an
-# external installer such as oh-my-codex in Step 3g) collides with the
+# external installer) collides with the
 # `[hooks.state."..."]` tables Codex itself appends to track hook-trust
 # hashes. Symptom on next `codex` launch:
 #   "cannot extend value of type boolean with a dotted key"
@@ -1554,7 +1475,7 @@ PY
 fi
 # ── Integrity guard: repair Codex config.toml if a stray root-level
 # `hooks = <bool>` line (written before any [table] header — e.g. by an
-# external installer such as oh-my-codex in Step 3g) collides with the
+# external installer) collides with the
 # `[hooks.state."..."]` tables Codex itself appends to track hook-trust
 # hashes. Symptom on next `codex` launch:
 #   "cannot extend value of type boolean with a dotted key"
@@ -1769,177 +1690,6 @@ fi
 echo "=== Platform Plugin Setup ==="
 _HOME="${_HOME:-${USERPROFILE:-$HOME}}"
 
-# ── Claude Code: oh-my-claudecode plugin ─────────────────────────
-# Provides /team, /autopilot, /ralph, /ultrawork, /ultraqa slash commands.
-# Slash commands (/plugin, /omc:omc-setup) only execute INSIDE a Claude Code
-# session — they fail with "No such file or directory" when run in bash.
-# Use the `claude plugin` CLI subcommand for automated install; if the local
-# Claude CLI version does not support it, print the in-session fallback.
-if command -v claude &>/dev/null; then
-  if claude plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode 2>/dev/null \
-     && claude plugin install oh-my-claudecode 2>/dev/null; then
-    echo "✅ Claude Code: oh-my-claudecode plugin installed"
-    echo "   Open Claude Code once and run: /omc:omc-setup"
-  else
-    echo "ℹ️  'claude plugin' CLI unavailable in this Claude version."
-    echo "   Open Claude Code and run these three slash commands manually:"
-    echo "     /plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode"
-    echo "     /plugin install oh-my-claudecode"
-    echo "     /omc:omc-setup"
-  fi
-fi
-
-# ── Codex CLI: oh-my-codex (OMX) ─────────────────────────────────
-# Without OMX, the skill manuals for omx ship to ~/.codex/skills/ but the
-# actual $team / $autopilot / $ulw / $ultraqa workflows have no runtime —
-# Codex sees the keywords as unknown. OMX provides the loader + prompts.
-if command -v codex &>/dev/null; then
-  if command -v npm &>/dev/null; then
-    npm install -g oh-my-codex 2>&1 | tail -3
-    if command -v omx &>/dev/null; then
-      _OMX_CODEX_TOML="$_HOME/.codex/config.toml"
-      if [ -L "$_OMX_CODEX_TOML" ]; then
-        echo "❌ Codex config is a symlink; refusing to run OMX setup against its managed target: $_OMX_CODEX_TOML" >&2
-        exit 1
-      fi
-      if [ -e "$_OMX_CODEX_TOML" ] && [ ! -f "$_OMX_CODEX_TOML" ]; then
-        echo "❌ Codex config is not a regular file; refusing to run OMX setup: $_OMX_CODEX_TOML" >&2
-        exit 1
-      fi
-      if ! omx setup; then
-        echo "❌ Codex: oh-my-codex setup failed; configuration remains unresolved" >&2
-        exit 1
-      fi
-      echo "✅ Codex: oh-my-codex (omx) configured — \$team / \$autopilot / \$ulw / \$ultraqa available"
-      # ── Integrity guard: `omx setup` (external installer) has been observed
-      # writing a stray root-level `hooks = <bool>` line to config.toml that
-      # collides with the `[hooks.state."..."]` tables Codex appends to track
-      # hook-trust hashes — causing "cannot extend value of type boolean with
-      # a dotted key" on the next `codex` launch. Repair immediately.
-      _OMX_CODEX_TOML="$_HOME/.codex/config.toml"
-      if [ -L "$_OMX_CODEX_TOML" ]; then
-        echo "❌ Codex config is a symlink; refusing to repair its managed target: $_OMX_CODEX_TOML" >&2
-        exit 1
-      fi
-      if [ -f "$_OMX_CODEX_TOML" ] && command -v python3 &>/dev/null; then
-        python3 - "$_OMX_CODEX_TOML" <<'PY'
-import os, pathlib, re, stat, sys, tempfile
-path = pathlib.Path(sys.argv[1])
-def fail(message):
-    print(f"❌ {message}", file=sys.stderr)
-    raise SystemExit(1)
-if path.is_symlink():
-    fail(f"Codex config is a symlink; refusing to repair its managed target: {path}")
-try:
-    text = path.read_text(encoding="utf-8")
-    mode = stat.S_IMODE(path.stat().st_mode)
-except OSError as exc:
-    fail(f"Unable to read Codex config; leaving {path} unchanged: {exc}")
-try:
-    import tomllib as _toml
-except ImportError:
-    try:
-        import tomli as _toml
-    except ImportError:
-        _toml = None
-if _toml is None:
-    fail("python3 tomllib (or tomli) is required to validate Codex TOML before repair")
-def parses_ok(value):
-    try:
-        _toml.loads(value)
-        return True
-    except Exception:
-        return False
-if parses_ok(text):
-    sys.exit(0)
-fixed, in_table, removed = [], False, 0
-for line in text.splitlines(keepends=True):
-    stripped = line.strip()
-    if stripped.startswith("[") and not stripped.startswith("[["):
-        in_table = True
-        fixed.append(line)
-        continue
-    if not in_table and re.match(r'^\s*hooks\s*=\s*(true|false)\s*(#.*)?$', line):
-        removed += 1
-        continue
-    fixed.append(line)
-repaired = "".join(fixed)
-if removed:
-    if re.search(r'^\[features\]', repaired, re.M):
-        if not re.search(r'\[features\][^\[]*?^\s*hooks\s*=', repaired, re.M | re.S):
-            repaired = re.sub(r'(\[features\]\s*\n)', r'\1hooks = true\n', repaired, count=1)
-    else:
-        repaired = repaired.rstrip("\n") + "\n\n[features]\nhooks = true\n"
-if not removed or not parses_ok(repaired):
-    fail(f"Codex config still fails to parse; leaving {path} unchanged")
-tmp_path = None
-try:
-    fd, tmp_name = tempfile.mkstemp(prefix=f".{path.name}.tmp.", dir=path.parent)
-    tmp_path = pathlib.Path(tmp_name)
-    with os.fdopen(fd, "w", encoding="utf-8") as tmp:
-        tmp.write(repaired)
-        tmp.flush()
-        os.fsync(tmp.fileno())
-    os.chmod(tmp_path, mode)
-    current = os.lstat(path)
-    if stat.S_ISLNK(current.st_mode) or not stat.S_ISREG(current.st_mode): raise RuntimeError("Codex config changed type before backup")
-    backup_fd, backup_name = tempfile.mkstemp(prefix=f".{path.name}.bak.", dir=path.parent); backup = pathlib.Path(backup_name)
-    try:
-        if not stat.S_ISREG(os.fstat(backup_fd).st_mode): raise RuntimeError("secure backup is not regular")
-        source_fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
-        try:
-            if not stat.S_ISREG(os.fstat(source_fd).st_mode): raise RuntimeError("Codex config changed before backup copy")
-            while chunk := os.read(source_fd, 65536): os.write(backup_fd, chunk)
-            os.fsync(backup_fd)
-        finally: os.close(source_fd)
-    finally: os.close(backup_fd)
-    current = os.lstat(path)
-    if stat.S_ISLNK(current.st_mode) or not stat.S_ISREG(current.st_mode): raise RuntimeError("Codex config changed type before replacement")
-    os.replace(tmp_path, path)
-except Exception as exc:
-    if tmp_path is not None:
-        try:
-            tmp_path.unlink()
-        except FileNotFoundError:
-            pass
-    fail(f"Unable to repair Codex config; leaving {path} unchanged: {exc}")
-print(f"🧹 codex config.toml: removed {removed} conflicting root-level 'hooks' line(s) — backup: {backup.name}")
-PY
-      if [ $? -ne 0 ]; then
-        exit 1
-      fi
-      fi
-
-    else
-      echo "⚠️  omx CLI not on PATH after install — restart shell, then run: omx setup"
-    fi
-  else
-    echo "⚠️  npm not found — install Node.js to enable OMX workflows on Codex"
-    echo "   https://nodejs.org/"
-  fi
-fi
-
-# ── Antigravity / Gemini CLI: oh-my-agent (OMA) ──────────────────
-# Without OMA, the ohmg skill manual lives in ~/.gemini/antigravity/skills/
-# but /team /orchestrate /plan /work /ultrawork /review have no implementation.
-# Install order preference: bun → npm → curl installer (each is documented upstream).
-if command -v agy &>/dev/null || command -v antigravity &>/dev/null \
-   || [ -f "$_HOME/.gemini/antigravity-cli/settings.json" ] \
-   || command -v gemini &>/dev/null; then
-  if command -v bun &>/dev/null; then
-    bun install --global oh-my-agent 2>&1 | tail -3
-  elif command -v npm &>/dev/null; then
-    npm install -g oh-my-agent 2>&1 | tail -3
-  else
-    curl -fsSL https://raw.githubusercontent.com/first-fluke/oh-my-agent/main/cli/install.sh | bash
-  fi
-  if command -v oma &>/dev/null; then
-    echo "✅ Antigravity/Gemini: oh-my-agent (oma) installed — run 'oma link' inside a project"
-  else
-    echo "⚠️  oma CLI not on PATH — restart shell, then verify with: oma --version"
-  fi
-fi
-
 # ── OpenCode / Codex: oh-my-openagent (OMO — renamed from oh-my-opencode) ──
 # Repo: code-yeongyu/oh-my-openagent, default branch `dev`. The old
 # code-yeongyu/oh-my-opencode + `master` docs URL is stale. npm still publishes
@@ -1954,7 +1704,7 @@ fi
 # Skills: OMO Ultimate rides on OpenCode's own loader, which already reads
 # ~/.config/opencode/skills/, ~/.claude/skills/, and ~/.agents/skills/ — so every
 # skill installed in Step 1 is visible with no extra linking. The Light (Codex)
-# edition has NO skill loader; Codex workflows come from omx above, not from OMO.
+# edition has NO skill loader, so jeo-skills reach Codex only through its own tooling.
 # OMO does NOT support the archived Go TUI opencode-ai/opencode — that flavor is
 # served by the Step 2b custom-command bridge instead.
 # NEVER `npm i -g` / `bun add -g` OMO: it must resolve from where OpenCode loads
@@ -2261,25 +2011,25 @@ REPO_URL="https://github.com/akillness/jeo-skills"
 # Core skill check
 echo ""
 echo "=== Core Skill Check ==="
-for skill in omc ohmg omx ooo stitch-skills compresso pretext god-tibo-imagen zeude plannotator agentation bmad spec-kit spec-stack opik cli-anything typesense codeflow survey harness rtk graphify obsidian llm-wiki semble; do
+for skill in ooo stitch-skills compresso pretext god-tibo-imagen zeude plannotator agentation bmad spec-kit opik cli-anything typesense codeflow survey harness rtk graphify obsidian llm-wiki semble; do
   [ -f "$SKILLS_ROOT/$skill/SKILL.md" ] \
     && echo "✅ $skill" \
     || echo "❌ $skill — re-run: skills add -g $REPO_URL --skill $skill --yes --copy"
 done
 
-# Platform dedup check
+# Shared-root canonicalization check
 echo ""
-echo "=== Platform Dedup Check ==="
-check_no_dup() {
+echo "=== Shared Root Check ==="
+check_shadow_copy() {
   local skill="$1" agent_dir="$2" agent_name="$3"
-  [ -e "$agent_dir/$skill" ] && echo "⚠️  $skill found on $agent_name (should not be there)"
+  [ -e "$agent_dir/$skill" ] && echo "⚠️  $skill also present under $agent_name ($agent_dir) — Step 2d decides which copy wins"
 }
-check_no_dup "omc"  "$_HOME/.gemini/antigravity/skills"             "antigravity"
-check_no_dup "omc"  "$_HOME/.codex/skills"                        "codex"
-check_no_dup "omc"  "$_HOME/.config/opencode/skills"              "opencode"
-check_no_dup "ohmg" "${CLAUDE_CONFIG_DIR:-$_HOME/.claude}/skills" "claude-code"
-check_no_dup "ohmg" "$_HOME/.codex/skills"                        "codex"
-echo "✅ Platform dedup verified"
+for _skill in ooo plannotator agentation harness survey; do
+  check_shadow_copy "$_skill" "$_HOME/.codex/skills"                        "codex"
+  check_shadow_copy "$_skill" "$_HOME/.gemini/antigravity/skills"           "antigravity"
+  check_shadow_copy "$_skill" "$_HOME/.config/opencode/skills"              "opencode"
+done
+echo "✅ Shared root verified"
 
 # Preservation check
 if [ -n "${JEO_SKILLS_INSTALL_TMP_DIR:-}" ] \
@@ -2547,7 +2297,7 @@ First run after installation:
 
 | Platform | Command |
 |----------|---------|
-| Claude Code | `ooo interview "task"` or `/oh-my-claudecode:team "task"` |
+| Claude Code | `ooo interview "task"` or `bmad "task"` |
 | Gemini CLI | `bmad "task"` or `ooo interview "task"` |
 | Codex CLI | `bmad "task"` or `ooo interview "task"` |
 | OpenCode (sst/opencode) | `bmad "task"` or `ooo interview "task"` |
@@ -2560,7 +2310,7 @@ First run after installation:
 > **For AI Agents**: Check `gh` auth status, then ask the user **once**. Execute only on consent. Never re-ask in the same session.
 
 ```bash
-STAR_GUARD="$HOME/.omc/state/jeo-skills-star-prompted"
+STAR_GUARD="$HOME/.agents/state/jeo-skills-star-prompted"
 STAR_REPO="akillness/jeo-skills"
 
 if [ -f "$STAR_GUARD" ]; then
@@ -2607,13 +2357,13 @@ If no → skip silently. Never re-ask.
 | Goal | Command |
 |------|---------|
 | Start any task | `ooo interview "task"` or `bmad "task"` |
-| Claude orchestration | `autopilot: task` or `/oh-my-claudecode:team "task"`; Codex parity: `$autopilot`; Antigravity/OMA parity: `/plan` → `/work` |
+| Multi-agent orchestration | `harness "design team for X"` then `ooo interview "task"` |
 | Visual plan review | `plan` (plannotator keyword) |
 | Spec-first dev loop | `ooo interview "X"` or `ouroboros init start "X"` — interview grounded in live git data; after seed freeze: `/speckit.plan` → `/speckit.tasks`; execute via `cli-hub` harnesses (`--json` = evaluate evidence) *(install: `claude plugin marketplace add Q00/ouroboros` or `pip install ouroboros-ai[all]`; integrations: `bash $SKILLS_ROOT/ooo/scripts/install.sh`)* |
 | Pre-impl research | `survey "topic"` *(writes reusable `.survey/{slug}/` artifacts and validates the artifact contract before handoff)* |
 | Agent team design | `harness "design team for X"` |
 | UI annotation | `annotate` (agentation keyword) |
-| Kanban board | `kanbanview` (vibe-kanban keyword) |
+| Board / issue routing | `triage` (triage keyword) |
 | Security scan | `strix --target ./app` |
 | Web scraping | `scrapling "URL"` |
 | Persistent wiki | `llm-wiki "/path/to/vault"` |
@@ -2621,18 +2371,15 @@ If no → skip silently. Never re-ask.
 
 ---
 
-Skill Inventory (165 skills)
+Skill Inventory (152 skills)
 
-| **Creative Media** | remotion-video-production *(compatibility alias for video-production when legacy tooling or explicit Remotion naming still expects the old skill)*, video-production *(canonical programmable-video / automated-video production skill for Remotion, template APIs, content repurposing, and QA handoffs)*, video-shotcraft *(cinematic product promo & demo video production using 106 shot recipe cards, Ink Press template, Remotion 2.5D camera moves, beat syncing, and sound design)*, paperbanana *(routing-first academic illustration — turn text/PDF into publication-quality figures via a two-phase plan-then-refine multi-agent pipeline; routes to the smallest workable mode: plot (VLM-only charts) < generate (one diagram) < batch/sweep/orchestrate, with evaluate (VLM-as-Judge) and polish; provider-agnostic, venue style packs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana`)* | All (`*`) |
+| **Creative Media** | remotion-video-production *(compatibility alias for video-production when legacy tooling or explicit Remotion naming still expects the old skill)*, video-shotcraft *(cinematic product promo & demo video production using 106 shot recipe cards, Ink Press template, Remotion 2.5D camera moves, beat syncing, and sound design)*, paperbanana *(routing-first academic illustration — turn text/PDF into publication-quality figures via a two-phase plan-then-refine multi-agent pipeline; routes to the smallest workable mode: plot (VLM-only charts) < generate (one diagram) < batch/sweep/orchestrate, with evaluate (VLM-as-Judge) and polish; provider-agnostic, venue style packs. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill paperbanana`)* | All (`*`) |
 
 | Category | Skills | Agent Target |
 |----------|--------|--------------|
-| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, spec-kit *(GitHub Spec-Driven Development wrapper around `specify-cli` — install, bootstrap a project for 30+ supported agents, and drive `/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`; route vendor-neutral spec-first loops to `ooo`, packet-first BMAD/BMM routing to `bmad`, and review/approval to `plannotator`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit`)*, spec-stack *(composition wrapper for `spec-kit` × `ooo` × `cli-anything` — spec-kit writes the spec, ooo freezes it as an immutable seed with machine-checkable acceptance criteria and tool-naming constraints then loops until verification passes, cli-anything supplies agent-native CLI harnesses whose `--json` output is the evaluate-step evidence; three patterns (full-stack / loop-only / docs-only) with one-way spec → seed flow and explicit anti-patterns (two SSOTs, generate-before-search, seedless ralph, exit-code-only verification). Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack`)*, omc, omx, autopilot, team, ultrawork, ultraqa, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, vibe-kanban, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
-| **Platform Setup** | omc *(Claude-first OMC router; maps `/team`, `/autopilot`, `/ultrawork`, `/ultraqa` intents to OMX/OMA when cross-runtime parity is requested)* | claude-code |
-| **Platform Setup** | ohmg *(Gemini/Antigravity OMA harness; maps team/autopilot/ultrawork/ultraqa intents to `/orchestrate`, `/plan` → `/work`, `/ultrawork`, `/review`, or `oma agent:parallel` while keeping `.agents` canonical)* | gemini-cli, antigravity |
-| **Platform Setup** | omx *(Codex workflow layer with `$team`, `$autopilot`, `$ulw`/`$ultrawork`, and `$ultraqa` equivalents for Claude team/autopilot/ultrawork/ultraqa workflows)* | codex, claude-code, gemini-cli |
-| **Planning & Review** | browser-harness *(self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode; replaces agent-browser; includes Claude-safe screenshot/PIL patch, agent-editable `agent_helpers.py`, domain skills, Browser Use Cloud)*, playwriter *(running-browser / authenticated Chrome reuse via CLI+MCP; route clean disposable checks to browser-harness)*, prompt-repetition *(decision-first prompt repetition for non-reasoning/lightweight models on long-context retrieval, options-first MCQ, or position-sensitive lookups; route broader context/retrieval fixes away instead of blanket auto-apply)*, skill-standardization *(SKILL.md validate/rewrite + canonical-vs-alias cleanup + repo-root validator / derived-surface sync for `skills.json`, README/setup, and `SKILL.toon`)*, skill-autoresearch *(repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces only when the core skill change is justified)* | All (`*`) |
-| **Agent Development** | microsoft-agent-framework *(enterprise-grade agent systems with Microsoft agent framework patterns — role separation, workflow control, policy enforcement)*, openai-agents-python *(multi-agent workflows with OpenAI Agents SDK — agents/tools/handoffs, guardrails, async pipelines)*, pydantic-ai *(typed LLM applications — schema-constrained outputs, tool integration, validation, dependency injection)*, cli-anything *(make any software agent-native via HKUDS CLI-Anything — install ready-made harnesses with the CLI-Hub package manager (`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), give agents the autonomous discovery meta-skill (`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), generate a new harness from any codebase/repo via the 7-phase `/cli-anything` pipeline on Claude Code / Codex / OpenCode / OpenClaw / Pi / Hermes / Qodercli / Copilot CLI, or iterate with `/cli-anything:refine`/`:test`/`:validate`; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs; routes agent-team architecture to `harness` and no-codebase GUI targets to `browser-harness`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything`)*, upskill *(wrap HKUDS UpSkill — capture Claude Code session failures, have a strong Teacher model draft a skill, validate it against a weak Student model in a closed Ralph Loop up to 3 rounds, then auto-serve validated skills so a cheap Flash model performs like a Pro model; Terminal-Bench 2.0: Flash+UpSkill beat Pro at 41% lower cost. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill upskill`)* | All (`*`) |
+| **Core Orchestration** | ooo, plannotator, survey, harness, bmad, bmad-gds, bmad-idea, spec-kit *(GitHub Spec-Driven Development wrapper around `specify-cli` — install, bootstrap a project for 30+ supported agents, and drive `/speckit.constitution` → `/speckit.specify` → `/speckit.clarify` → `/speckit.plan` → `/speckit.analyze` → `/speckit.tasks` → `/speckit.checklist` → `/speckit.implement`; route vendor-neutral spec-first loops to `ooo`, packet-first BMAD/BMM routing to `bmad`, and review/approval to `plannotator`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit`)*, autopilot, deep-dive *(cross-runtime trace-to-interview pipeline for OMC, OMX, and OMA with artifact validation before handoff)*, deepinit *(generate hierarchical AGENTS.md documentation with manual-note preservation, runtime-state exclusion, and parent-link validation)*, agentation, ccpi-marketplace *(Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace)* | All (`*`) |
+| **Planning & Review** | browser-harness *(self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode; replaces agent-browser; includes Claude-safe screenshot/PIL patch, agent-editable `agent_helpers.py`, domain skills, Browser Use Cloud)*, playwriter *(running-browser / authenticated Chrome reuse via CLI+MCP; route clean disposable checks to browser-harness)*, skill-standardization *(SKILL.md validate/rewrite + canonical-vs-alias cleanup + repo-root validator / derived-surface sync for `skills.json`, README/setup, and `SKILL.toon`)*, skill-autoresearch *(repo-local skill ratcheting loop: freeze evals, mutate one thing at a time, keep or revert by score, then sync support surfaces only when the core skill change is justified)* | All (`*`) |
+| **Agent Development** | microsoft-agent-framework *(enterprise-grade agent systems with Microsoft agent framework patterns — role separation, workflow control, policy enforcement)*, openai-agents-python *(multi-agent workflows with OpenAI Agents SDK — agents/tools/handoffs, guardrails, async pipelines)*, pydantic-ai *(typed LLM applications — schema-constrained outputs, tool integration, validation, dependency injection)*, cli-anything *(make any software agent-native via HKUDS CLI-Anything — install ready-made harnesses with the CLI-Hub package manager (`pip install cli-anything-hub` → `cli-hub list/search/info/install/launch`), give agents the autonomous discovery meta-skill (`npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill -g -y`), generate a new harness from any codebase/repo via the 7-phase `/cli-anything` pipeline on Claude Code / Codex / OpenCode / OpenClaw / Pi / Hermes / Qodercli / Copilot CLI, or iterate with `/cli-anything:refine`/`:test`/`:validate`; 40+ harnesses, 2,461 tests, REPL + `--json` CLIs; routes agent-team architecture to `harness` and no-codebase GUI targets to `browser-harness`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill cli-anything`)*, upskill *(wrap HKUDS UpSkill — capture Claude Code session failures, have a strong Teacher model draft a skill, validate it against a weak Student model in a closed Ralph Loop up to 3 rounds, then auto-serve validated skills so a cheap Flash model performs like a Pro model; Terminal-Bench 2.0: Flash+UpSkill beat Pro at 41% lower cost. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill upskill`)*, openspace *(skill management layer for AI agents — retrieve/rank/load the right SKILL.md out of this catalog, evaluate skill quality from real execution evidence, and evolve skills via FIX/DERIVED/CAPTURED updates; local-first hub share/import. Requires Python 3.12+ and an MCP-capable host)* | All (`*`) |
 | **Backend** | amrouter *(Self-hosted AI gateway — one endpoint, many providers with auto-fallback, cost tracking, OpenAI-compatible API)*, api-design *(contract-first API design / compatibility review)*, api-documentation *(developer-facing API docs anchor for reference portals / quickstarts / SDK-webhook guides / truthful examples / auth-error guidance)*, authentication-setup *(product-auth setup router for hosted/framework-native/platform-native auth, sessions/JWTs, org data boundaries, and enterprise SSO handoff; routes hardening to security-best-practices)*, backend-testing *(packet-first backend testing for coverage-plan, fixture/reset, contract/API protection, flake-stabilization, and local-vs-CI lane-split packets; routes policy to testing-strategies, API shape to api-design, and auth implementation to authentication-setup)*, database-schema-design *(packet-first storage-model and migration-safety design for relational/document/hybrid schemas, queryable-vs-flexible field decisions, and staged evolution; routes interface work to api-design, verification to backend-testing, and reporting/telemetry follow-through outward)*, payloadcms *(Payload CMS content/collection management — typed collections, access control, hooks, REST/GraphQL API, local API patterns)*, supabase-agent-skills *(Supabase full-stack patterns — Auth, Database, Storage, Edge Functions, Realtime, RLS policies, and migration workflows)* | All (`*`) |
 | **Backend** | colibri *(pure-C GLM-5.2 MoE inference engine for consumer hardware — build, model conversion, expert streaming/cache tuning, MTP speculative decoding, CPU/GPU inference, and API integration)* | All (`*`) |
 | **Design Tools** | stitch-skills *(Agent Skills for Stitch MCP — generate high-fidelity UI screens, multi-page websites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, Remotion walkthrough videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills`)*, compresso *(free offline desktop video/image compression via Tauri+React — batch compress, trim/split, convert, embed subtitles; uses FFmpeg/pngquant/jpegoptim/gifski. Install: `brew install --cask codeforreal1/tap/compresso`)*, open-design *(local-first open-source design tool — generate prototypes, decks, and media artifacts using installed coding agents; 72 built-in design systems, 5 visual directions, multi-format export HTML/PDF/PPTX/ZIP/Markdown, AI media via gpt-image-2 and Seedance 2.0. Plugin: `claude plugin marketplace add nexu-io/open-design`)* | All (`*`) |
@@ -2641,21 +2388,21 @@ Skill Inventory (165 skills)
 
 | **Creative Media** | notebooklm *(query Google NotebookLM notebooks directly from Claude Code — Patchright browser automation, source-grounded citation-backed answers, persistent Google auth, notebook library management. Local Claude Code only. Plugin: `claude plugin marketplace add PleasePrompto/notebooklm-skill`)* | claude-code |
 | **Infrastructure** | zeude *(enterprise AI adoption platform for Claude Code — 3× adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), context-aware skill suggestions. Requires Supabase + ClickHouse. Plugin: `claude plugin marketplace add zep-us/zeude`)* | Claude |
-| **Frontend** | ax *(The AI-era curl — fetch web pages, discover structure, extract structured data deterministically; zero code per task with --outline for discovery and --row for extraction; token-budgeted output and safe filtering built-in; 65%+ cost reduction vs curl-regex pipelines)*, astryx *(agent-ready design system — 150+ React components built on StyleX, zero styling lock-in, component swizzling, brand theming, dark mode, CLI tooling; proven across 13,000+ Meta apps)*, devup-ui *(zero-runtime CSS-in-JS — build-time Rust/WASM plugin for Next.js/Vite/Rsbuild/Webpack/Bun, Box/css props + styled-components-compatible styled() API, type-safe devup.json theming, migration off styled-components/Emotion/Tailwind)*, pretext *(fast, accurate multiline text measurement & layout without DOM reflow — prepare/layout for height, prepareWithSegments/layoutWithLines for per-line access, emoji/CJK/RTL, DOM·Canvas·SVG output. npm: `@chenglou/pretext`)*, design-system *(canonical UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface direction; routes component API design to ui-component-patterns, responsive layout to responsive-design, accessibility remediation to web-accessibility, and broad critique to web-design-guidelines)*, react-best-practices *(measurement-led React / Next.js performance audits for waterfalls, bundle size, hydration, rerender churn, and client-boundary mistakes)*, react-grab, responsive-design *(routing-first responsive layout strategy for page-shell, component-slot, dense-data, media, and reflow-verification packets; routes component API design to ui-component-patterns, accessibility remediation to web-accessibility, system-wide breakpoint policy to design-system, and broad UI critique to web-design-guidelines)*, state-management *(React/fullstack ownership-packet skill for local vs Context vs URL/form vs client-store vs server-state/router-data decisions)*, ui-component-patterns *(routing-first reusable-component architecture for primitive-boundary, slot-anatomy, controlled-ownership, alternate-root composition, and docs/verification packets)*, web-accessibility *(routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback; routes broad UI critique to web-design-guidelines and layout strategy to responsive-design)*, web-design-guidelines *(broad web UI audit for launch-readiness, polish/consistency, flow-friction, heuristic, and rule-overlay reviews; routes accessibility-heavy work to web-accessibility and layout adaptation to responsive-design)* | All (`*`) |
+| **Frontend** | ax *(The AI-era curl — fetch web pages, discover structure, extract structured data deterministically; zero code per task with --outline for discovery and --row for extraction; token-budgeted output and safe filtering built-in; 65%+ cost reduction vs curl-regex pipelines)*, astryx *(agent-ready design system — 150+ React components built on StyleX, zero styling lock-in, component swizzling, brand theming, dark mode, CLI tooling; proven across 13,000+ Meta apps)*, devup-ui *(zero-runtime CSS-in-JS — build-time Rust/WASM plugin for Next.js/Vite/Rsbuild/Webpack/Bun, Box/css props + styled-components-compatible styled() API, type-safe devup.json theming, migration off styled-components/Emotion/Tailwind)*, pretext *(fast, accurate multiline text measurement & layout without DOM reflow — prepare/layout for height, prepareWithSegments/layoutWithLines for per-line access, emoji/CJK/RTL, DOM·Canvas·SVG output. npm: `@chenglou/pretext`)*, design-system *(canonical UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface direction; routes component API design to ui-component-patterns, responsive layout to responsive-design, accessibility remediation to web-accessibility, and broad critique to web-design-guidelines)*, react-best-practices *(measurement-led React / Next.js performance audits for waterfalls, bundle size, hydration, rerender churn, and client-boundary mistakes)*, react-grab, responsive-design *(routing-first responsive layout strategy for page-shell, component-slot, dense-data, media, and reflow-verification packets; routes component API design to ui-component-patterns, accessibility remediation to web-accessibility, system-wide breakpoint policy to design-system, and broad UI critique to web-design-guidelines)*, state-management *(React/fullstack ownership-packet skill for local vs Context vs URL/form vs client-store vs server-state/router-data decisions)*, web-accessibility *(routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback; routes broad UI critique to web-design-guidelines and layout strategy to responsive-design)* | All (`*`) |
 | **Frontend** | react-bits *(animated React component library integration and contribution guidance for Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, Framer Motion, and jsrepo)* | All (`*`) |
 | **Code Quality** | aider-cli-workflow *(AI pair programming with Aider CLI — architect/editor model split, repo-map, git auto-commit, watch mode, voice, browser UI)*, agentic-skills *(production-grade engineering framework drawing from Google practices — spec-driven development `/spec`, task planning `/plan`, incremental TDD `/build`, browser verification `/test`, five-axis code review `/review`, behavior-preserving simplification `/code-simplify`, and disciplined git/CI/CD shipping `/ship`; Hyrum's Law / Chesterton's Fence / Shift Left / trunk-based development. Plugin: `claude plugin marketplace add addyosmani/agent-skills`)*, code-refactoring *(packet-first behavior-preserving cleanup for local refactors, fragile legacy freeze-first work, cleanup-heavy diff shaping, and repeated migration / codemod planning; routes diagnosis to debugging, review judgment to code-review, test-policy design to testing-strategies, bottleneck-led tuning to performance-optimization, and impact mapping to codebase-search)*, code-review *(evidence-first diff / PR review with severity, missing-proof checks, and route-outs for Git cleanup, debugging, UI critique, and repo-admin work)*, debugging *(routing-first diagnosis for concrete bugs, regressions, flaky failures, and env-specific behavior; routes symptom-first logs to log-analysis, broad test-policy work to testing-strategies, and perf-only work to performance-optimization)*, performance-optimization *(artifact-first measurement-led bottleneck analysis and tuning across traces, reports, query plans, benchmark diffs, CWV packets, and runtime/frame-budget work; routes telemetry setup to monitoring-observability and engine-specific capture interpretation to game-performance-profiler)*, testing-strategies *(packet-first validation-policy router for merge-gate truth, release-only proof, scheduled breadth, and incident-ratchet decisions; routes implementation to backend-testing, diagnosis to debugging, rollout execution to deployment-automation, game launch to steam-store-launch-ops / game-ci-cd-pipeline, accessibility-heavy validation to web-accessibility, and performance gate work to performance-optimization)* | All (`*`) |
 | **Code Quality** (mattpocock) | diagnose *(systematic 6-phase debugging: feedback loop → reproduce → hypothesize → instrument → fix+test → cleanup; invest in Phase 1 first)*, tdd *(red-green-refactor vertical slices — test behavior through public interfaces, not implementation details)*, migrate-to-shoehorn *(TypeScript test `as` assertions → type-safe fromPartial/fromAny/fromExact from @total-typescript/shoehorn; test code only)* | All (`*`) |
 | **Design Review & Architecture** (mattpocock) | grill-with-docs *(stress-test plans against domain model, sharpen terminology, update CONTEXT.md/ADRs inline)*, improve-codebase-architecture *(surface shallow modules, propose deepening opportunities using deletion-test/seam/locality vocabulary)*, zoom-out *(higher-level architectural perspective mapping modules and caller relationships using domain vocabulary)*, grill-me *(systematic plan stress-testing through relentless one-question-at-a-time decision-tree interviewing)* | All (`*`) |
 | **Issue & Project Management** (mattpocock) | triage *(issue state machine: needs-triage → needs-info → ready-for-agent/ready-for-human/wontfix with AI disclaimer on all comments)*, to-issues *(convert plans/specs into independently-grabbable vertical slice issues, classified as HITL or AFK)*, to-prd *(generate structured PRDs from conversation context — problem statement, user stories, implementation decisions, testing strategy)* | All (`*`) |
-| **Productivity & Git** (mattpocock) | caveman *(~75% token reduction by eliminating filler; activate: "caveman mode"/"less tokens"; deactivate: "stop caveman")*, write-a-skill *(create structured agent skills with proper SKILL.md — description field is the critical activation trigger)*, git-guardrails-claude-code *(prevent destructive git operations via Claude Code PreToolUse hooks)*, setup-pre-commit *(configure Husky + lint-staged + Prettier pre-commit hooks)*, scaffold-exercises *(create educational exercise directories compliant with pnpm ai-hero-cli lint)* | All (`*`) |
+| **Productivity & Git** (mattpocock) | caveman *(~75% token reduction by eliminating filler; activate: "caveman mode"/"less tokens"; deactivate: "stop caveman")*, write-a-skill *(create structured agent skills with proper SKILL.md — description field is the critical activation trigger)*, git-guardrails-claude-code *(prevent destructive git operations via Claude Code PreToolUse hooks)*, scaffold-exercises *(create educational exercise directories compliant with pnpm ai-hero-cli lint)* | All (`*`) |
 | **Infrastructure** | deployment-automation *(release-execution anchor for preview releases, staging/prod promotion, rollout strategy, post-deploy verification, rollback response, and release hardening; routes CI workflow authoring to workflow-automation, machine setup to system-environment-setup, long-lived telemetry to monitoring-observability, and Vercel-specific linked-project deploy/promote/domain/env/rollback work to vercel-deploy)*, environment-setup *(app-config compatibility alias; routes broader runnable-machine setup to system-environment-setup)*, firebase-ai-logic *(direct Firebase app/client SDK lane for Gemini-powered in-app features; routes backend orchestration to genkit)*, firebase-cli *(Firebase platform/operator anchor for install/auth, bootstrap/config, Emulator Suite workflows, scoped deploy/release, App Hosting, and admin/data operations; routes backend AI workflow orchestration to genkit and direct app SDK integration to firebase-ai-logic)*, genkit *(packet-first backend AI workflow anchor for deciding whether a feature needs a reusable server-owned flow, Genkit eval/tracing, or a fallback to plain SDK routes / `survey`; routes direct app SDK work to firebase-ai-logic and Firebase operator tasks to firebase-cli)*, looker-studio-bigquery *(packet-first BigQuery dashboard/reporting lane for `dashboard-spec`, `slow-dashboard`, `refresh-shape`, `audience-split`, and `exec-handoff`; routes KPI interpretation to data-analysis, repeated anomaly hunting to pattern-detection, and telemetry/alerting coverage to monitoring-observability)*, monitoring-observability *(packet-first observability brief for service health, telemetry rollout, alert/dashboard audits, data-pipeline trust, and game live-ops visibility; routes root-cause log forensics to `log-analysis`, rollout execution to `deployment-automation`, and bottleneck diagnosis to `performance-optimization` / `game-performance-profiler`)*, hyperfine-benchmarking *(CLI command benchmarking via hyperfine — statistical warmup runs, export CSV/JSON/Markdown, cross-platform performance comparison)*, lmstudio-cli *(local LLM management via LM Studio CLI — model discovery, load/unload, chat, server start, OpenAI-compatible endpoint)*, typesense *(installable typo-tolerant search environment — open-source Algolia/ElasticSearch alternative (single C++ binary); pick Docker / binary / Typesense Cloud, install a client (Python/JS/PHP/Ruby), design a collection schema, index, and search with faceting/geo/sorting/synonyms/scoped-keys/federated-multi-search/vector; wire InstantSearch.js + Raft HA; routes LLM trace/eval to opik/langsmith and agent code search to semble. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill typesense`)*, scrapling, rtk, security-best-practices *(routing-first web/ap... [truncated]
-| **Documentation** | changelog-maintenance *(routing-first release-history anchor for `CHANGELOG.md`, release notes, migration updates, and lightweight game patch-note packets; routes rollout execution to deployment-automation, launch messaging to marketing-automation, internal specs/runbooks to technical-writing, API portals to api-documentation, and end-user tutorials to user-guide-writing)*, presentation-builder *(packet-first deck artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks; picks one deck mode, one smallest useful artifact packet, and one honest last-mile surface across HTML review, PPTX, PDF, Google Slides, or Figma Slides; routes docs/tutorials/research/non-deck GTM work outward)*, research-paper-writing, slides-grab *(generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — open-source Claude Design alternative and best harness + editor + linter for slides; Plan -> Design (self-contained slide-XX.html) -> Edit (pure-JS bbox browser editor) -> Export (PDF, per-slide PNG incl. Instagram 1:1 card-news, experimental/unstable PPTX/Figma); 35 styles, local ./assets only, validate before export; needs Node.js >= 20 + Playwright Chromium. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab`)*, technical-writing *(internal technical docs anchor for specs / architecture docs / ADRs / runbooks / migration guides; routes API portals to api-documentation, end-user tutorials to user-guide-writing, and release-note hygiene to changelog-maintenance)*, user-guide-writing *(mode-selecting customer-docs anchor for onboarding guides / tutorials / task how-to articles / FAQs / help-center updates / release-help refresh packets; routes internal docs to technical-writing, API docs to api-documentation, and release-note hygiene to changelog-maintenance)* | All (`*`) |
+| **Documentation** | changelog-maintenance *(routing-first release-history anchor for `CHANGELOG.md`, release notes, migration updates, and lightweight game patch-note packets; routes rollout execution to deployment-automation, launch messaging to marketing-automation, internal specs/runbooks to technical-writing, API portals to api-documentation, and end-user tutorials to user-guide-writing)*, presentation-builder *(packet-first deck artifact anchor for investor / roadmap / launch / architecture-demo / workshop / game-pitch decks; picks one deck mode, one smallest useful artifact packet, and one honest last-mile surface across HTML review, PPTX, PDF, Google Slides, or Figma Slides; routes docs/tutorials/research/non-deck GTM work outward)*, research-paper-writing, slides-grab *(generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — open-source Claude Design alternative and best harness + editor + linter for slides; Plan -> Design (self-contained slide-XX.html) -> Edit (pure-JS bbox browser editor) -> Export (PDF, per-slide PNG incl. Instagram 1:1 card-news, experimental/unstable PPTX/Figma); 35 styles, local ./assets only, validate before export; needs Node.js >= 20 + Playwright Chromium. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab`)*, technical-writing *(internal technical docs anchor for specs / architecture docs / ADRs / runbooks / migration guides; routes API portals to api-documentation, end-user tutorials to user-guide-writing, and release-note hygiene to changelog-maintenance)* | All (`*`) |
 | **Project Management** | sprint-retrospective *(routing-first retro anchor for sprint/milestone reflection, remote-hybrid facilitation, and dead-action-item recovery)*, standup-meeting *(routing-first coordination-cadence anchor that decides whether daily, async, hybrid, lighter, or no recurring standup is justified before choosing a standup mode)*, task-estimation *(routing-first estimate packet anchor for one sizing horizon, confidence/uncertainty framing, split-or-spike guidance, and cross-functional burden visibility; routes decomposition to `task-planning`, daily sync to `standup-meeting`, and process learning to `sprint-retrospective`)*, task-planning *(packet-first planning anchor for backlog cleanup, feature slicing, sprint/milestone prep, and release packets with explicit route-outs to estimation, boards, review, and pre-planning framing)* | All (`*`) |
 | **Search & Analysis** | autoresearch *(Karpathy ML search front door for setup / program.md / bounded loop / results interpretation / constrained-hardware adaptation; preserves the immutable prepare.py / 300s / val_bpb contract and routes prompt-skill eval away)*, codebase-search *(routing-first repo navigation that chooses one search packet for definitions/references, config-content ownership, entry-point discovery, or impact mapping before debugging / refactoring / graphify)*, data-analysis *(decision-first dataset analysis for exports, experiments, telemetry, cohort/funnel work, and stakeholder-ready evidence summaries; routes repeated anomaly hunting to pattern-detection and BI build-out to looker-studio-bigquery)*, deep-research *(routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline (/research, /research-add-items, /research-add-fields), fan out parallel web-search agents to investigate each item into validated JSON (/research-deep, validate_json.py field-coverage gate), then render a TOC + per-field markdown report (/research-report); 4 reference pipelines (outline, deep, report, web-search) + 5 routed source modules (github-debug, general-web, academic-papers, chinese-tech, stackoverflow); verbatim prompt-template contract, evidence-first with [uncertain] marking. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill deep-research`)*, langsmith *(routing-first LangSmith packet selector for trace-debug, offline evals, review queues, prompt-registry ownership, and multi-service propagation before SDK code; routes generic dashboards/alerts to `monitoring-observability` and rollout work to `deployment-automation`)*, opik *(open-source LLM observability, evaluation, and optimization via Comet's Opik — route server mode (Comet.com cloud / `./opik.sh` Docker Compose / Kubernetes-Helm), install + `opik configure` the Python SDK, wire `@opik.track` or one of 50+ framework integrations, then drive LLM-as-a-judge metrics, Datasets/Experiments with PyTest CI gates, production monitoring, Agent Optimizer, and Guardrails; routes LangSmith stacks to `langsmith`, non-LLM dashboards to `monitoring-observability`, and offline KPI work to `data-analysis`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill opik`)*, log-analysis *(routing-first log triage that chooses one evidence packet for app runtime, container/pod, browser+API, CI cascade, structured JSON, or security-signal work before debugging / observability / pattern-detection handoff)*, pattern-detection *(routing-first pattern/anomaly hunting that chooses text-prefilter, structural-code-rule, log-event-pattern, or metric-anomaly before suggesting tools or fixes; routes root-cause forensics to log-analysis, KPI explanation to data-analysis, remediation to specialist skills, and alert ops to monitoring-observability)*, github-repo-candidate-quality-gate *(evaluate GitHub repos as skill/dependency candidates — activity, maintenance health, license, API surface, community signals)*, semble *(token-efficient code search for agents — returns relevant code chunks using ~98% fewer tokens than grep+read; natural-language and symbol queries, `find-related` for semantic discovery, MCP for Claude Code / Codex / Cursor / OpenCode, CPU-only with no GPU or API key. MCP: `claude mcp add semble -s user -- uvx --from "semble[mcp]" semble`)*, codeflow *(visualize codebase architecture in seconds — a zero-build single index.html browser app (React 18 + D3.js from pinned CDNs, 100% client-side, no backend, no data collection) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact across 40+ languages; exports JSON/Markdown/text/SVG/PDF or a self-updating CodeFlow Card; routes editable diagrams to drawio/mermaid, agent code search to semble, repo-navigation packets to codebase-search, and durable knowledge graphs to graphify. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow`)*, academic-research, agent-pulse *(Agent Pulse evidence-backed AI industry intelligence system: source lifecycle, safe collection, signal normalization, Event clustering, bounded Scout hypotheses, privacy-safe Pages export, and release verification)*, academic-research *(full research-to-publication pipeline (ARS v3.13.0) — 4 pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes incl. socratic, PRISMA, 3W-scan, fact-check), academic-paper (11 modes incl. plan, revision, citation-check, disclosure, rebuttal-audit), academic-paper-reviewer (EIC+R1/R2/R3+Devil’s Advocate+calibration), academic-pipeline (10-stage orchestrator with Material Passport, L3 claim-faithfulness gate, three-index citation triangulation, cross-model verification). Plugin: `claude plugin marketplace add Imbad0202/academic-research-skills`)*, heretic *(automatic abliteration + refusal-direction interpretability packaging p-e-w/heretic (AGPL-3.0) — removes refusal/over-refusal from open-weight transformer models via parametrized directional ablation, no fine-tuning; Optuna TPE jointly minimizes refusals and KL-divergence; routes decensor < configure (bnb_4bit/trials/KL) < evaluate < research (residual geometry / PaCMAP plots) < discover (web extraction via scrapling); responsible-use guardrails throughout. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill heretic`)* | All (`*`) |
 | **Marketing** | marketing-automation, yuwen-publish-precheck *(Chinese social-media publish precheck for Douyin, Xiaohongshu, and WeChat Channels; scans text for risk candidates, applies platform and industry rules, provides conservative repair drafts, and records local rules)* | All (`*`) |
 
-| **Game Development** | game-build-log-triage *(Unity/Unreal build-log triage)*, game-ci-cd-pipeline *(game build/release pipeline design)*, game-demo-feedback-triage *(demo/playtest feedback synthesis)*, game-performance-profiler *(Unity/Unreal performance evidence triage)*, game-studio-harness *(5-role game production studio — director, numeric-balance designer, revenue-band PM, verification-strict programmer, archetype-rotation QA; 3-stage operating cycle behind 8 numeric quality gates with survey-grounded trends and signed designer↔PM negotiation records)*, perfectpixel *(AI animation sprite generation studio — generate character animations, sprite sheets, and 8-direction sprite sets from a text description using god-tibo-imagen and gemini models)*, steam-store-launch-ops *(Steam store/festival/wishlist/launch operations)*, unity-gamedev-skill-pack *(Unity-specific game development patterns — scene management, physics, animation, UI Toolkit, addressables, profiling)* | All (`*`) |
-| **Utilities** | ponytail *(write the least code that fully solves the task — YAGNI ladder skip→stdlib→native→installed-dep→one-line, `ponytail:` upgrade-path markers, lite/full/ultra/off intensity, sharper `/ponytail-review`/`-audit`/`-debt` delete-list and ledger contracts; never cuts validation/data-loss/security/accessibility; plugin: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail`)*, claudekit *(Claude Code hook library — pre-built PreToolUse/PostToolUse hooks for common guardrails, auto-formatting, and workflow automation)*, clawteam, fabric, file-organization *(repo structure / feature-vs-shared / route-vs-package boundary choice + migration planning)*, ghgrab *(GitHub asset/release downloader — fetch release binaries, source archives, and artifacts from public/private repos via CLI)*, git-submodule, git-workflow, google-workspace, llm-wiki, npm-git-install *(Git dependency / tarball / workspace / publish-first choice)*, obsidian *(unified: plugin dev + CLI automation + markdown/Bases/JSON Canvas — plugin: `claude plugin marketplace add akillness/jeo-skills`)*, opencontext, opencut *(OpenCut video editor repo — clone/setup, dev servers, Rust/WASM core, contribution focus areas)*, tokhub *(TokHub AI API relay monitoring/gateway repo — clone/setup, TOKHUB_ROLE model, L1/L2/L3 probe algorithm, contribution focus areas)*, lapian-notes *(Lapian Notes / 拉片笔记 film-analysis repo — clone/setup, AI-package ZIP round trip, story-structure/emotion-curve logic, contribution focus areas)*, workflow-automation *(repo task runners / bootstrap / local-CI automation)* | All (`*`) |
+| **Game Development** | game-build-log-triage *(Unity/Unreal build-log triage)*, game-ci-cd-pipeline *(game build/release pipeline design)*, game-demo-feedback-triage *(demo/playtest feedback synthesis)*, game-performance-profiler *(Unity/Unreal performance evidence triage)*, game-studio-harness *(5-role game production studio — director, numeric-balance designer, revenue-band PM, verification-strict programmer, archetype-rotation QA; 3-stage operating cycle behind 8 numeric quality gates with survey-grounded trends and signed designer↔PM negotiation records)*, perfectpixel *(AI animation sprite generation studio — generate character animations, sprite sheets, and 8-direction sprite sets from a text description using god-tibo-imagen and gemini models)*, steam-store-launch-ops *(Steam store/festival/wishlist/launch operations)*, unity-gamedev-skill-pack *(Unity-specific game development patterns — scene management, physics, animation, UI Toolkit, addressables, profiling)*, web-game-development *(router into the 19-skill MengTo/Skills Three.js / browser game family — levels, map editing, cameras, enemy AI, combat, encounters, inventory, VFX, audio feedback, mobile controls, perf tuning, QA, and release; routes Unity/C# work to unity-gamedev-skill-pack)* | All (`*`) |
+| **Utilities** | ponytail *(write the least code that fully solves the task — YAGNI ladder skip→stdlib→native→installed-dep→one-line, `ponytail:` upgrade-path markers, lite/full/ultra/off intensity, sharper `/ponytail-review`/`-audit`/`-debt` delete-list and ledger contracts; never cuts validation/data-loss/security/accessibility; plugin: `npx skills add https://github.com/akillness/jeo-skills --skill ponytail`)*, claudekit *(Claude Code hook library — pre-built PreToolUse/PostToolUse hooks for common guardrails, auto-formatting, and workflow automation)*, clawteam, fabric, file-organization *(repo structure / feature-vs-shared / route-vs-package boundary choice + migration planning)*, ghgrab *(GitHub asset/release downloader — fetch release binaries, source archives, and artifacts from public/private repos via CLI)*, git-submodule, git-workflow, google-workspace, llm-wiki, npm-git-install *(Git dependency / tarball / workspace / publish-first choice)*, obsidian *(unified: plugin dev + CLI automation + markdown/Bases/JSON Canvas — plugin: `claude plugin marketplace add akillness/jeo-skills`)*, opencontext, opencut *(OpenCut video editor repo — clone/setup, dev servers, Rust/WASM core, contribution focus areas)*, tokhub *(TokHub AI API relay monitoring/gateway repo — clone/setup, TOKHUB_ROLE model, L1/L2/L3 probe algorithm, contribution focus areas)*, lapian-notes *(Lapian Notes / 拉片笔记 film-analysis repo — clone/setup, AI-package ZIP round trip, story-structure/emotion-curve logic, contribution focus areas)*, obsidian-mind *(ready-made Obsidian vault template giving coding agents persistent session-spanning memory — five lifecycle hooks, /om-* commands, subagents, and a competency/performance graph across Claude Code, Codex CLI, and Gemini CLI)* | All (`*`) |
 
 
 ---
@@ -2664,7 +2411,6 @@ Skill Inventory (165 skills)
 
 | Skill | Activation Keyword | Description |
 |-------|-------------------|-------------|
-| `omc` | `omc`, `autopilot`, `ralph`, `ulw`, `ccg`, `/team`, `omc team`, `omc ask`, `cancelomc` | Claude-first OMC router — distinguish Claude Code slash skills from the `omc` shell CLI, then handle setup/recovery/state issues or route adjacent work outward |
 | `stitch-skills` | `stitch`, `stitch-design`, `stitch-loop`, `enhance-prompt`, `screen generation`, `ui generation` | Agent Skills for Stitch MCP — generate UI screens, multi-page sites, enhance prompts, React/shadcn-ui, Remotion videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills` |
 | `compresso` | `compresso`, `compress video`, `compress image`, `batch compression`, `ffmpeg compression`, `offline video compress` | Free offline desktop video/image compression (Tauri+React) — batch compress, trim/split, convert formats, embed subtitles. Install: `brew install --cask codeforreal1/tap/compresso` |
 | `open-design` | `open-design`, `local design tool`, `prototype generation`, `design deck`, `design artifact`, `open design prototype` | Local-first open-source design tool using installed coding agents — 72 built-in design systems, 5 visual directions, multi-format export (HTML/PDF/PPTX/ZIP/Markdown), AI media generation. Plugin: `claude plugin marketplace add nexu-io/open-design` |
@@ -2677,10 +2423,8 @@ Skill Inventory (165 skills)
 | `harness` | `harness`, `build a harness`, `agent team architect` | Meta-skill: design domain-specific agent teams, generate `.claude/agents/` + `.claude/skills/`, validate harness |
 | `survey` | `survey` | Bounded cross-platform landscape scan before planning or implementation — classify one survey mode, preserve the 4-lane `.survey/{slug}/` artifact contract, and normalize platform topics as `settings/rules/hooks` |
 | `agentation` | `annotate`, `UI검토`, `agentui` | Exact rendered-UI feedback router → choose copy-paste review, watch-loop sync, self-driving critique, or platform setup. MCP: `npx add-mcp "npx -y agentation-mcp server"` |
-| `vibe-kanban` | `kanbanview` | Coding-board control plane — bounded coding cards, tracker-linked workspaces, review queues, worktree isolation, and PR handoff |
 | `bmad` | `bmad`, `workflow-init`, `workflow-status` | Packet-first BMAD/BMM front door — classify the current packet, choose the next artifact or gate, and route runtime / review / execution detail outward |
 | `spec-kit` | `spec-kit`, `speckit`, `specify`, `specify init`, `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` | GitHub Spec-Driven Development wrapper around `specify-cli` — install via `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git`, bootstrap a project for one of 30+ agents (Claude / Copilot / Gemini / Codex / Cursor / opencode / Qwen / Kiro / …), and drive the constitution → specify → clarify → plan → analyze → tasks → checklist → implement pipeline. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-kit` |
-| `spec-stack` | `spec-stack`, `spec stack`, `write freeze run`, `spec to verified`, `speckit + ooo`, `ooo + cli-anything` | Composition wrapper for `spec-kit` × `ooo` × `cli-anything` — Write → Freeze → Run, verified: author the spec with `/speckit.*`, freeze it as an immutable ooo seed (machine-checkable acceptance criteria, tool-naming constraints), arm the loop with CLI-Hub harnesses, and run/ralph ↔ evaluate with artifact-level `--json` evidence; routes single-layer work to `spec-kit`/`ooo`/`cli-anything`. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill spec-stack` |
 | `bmad-gds` | `bmad-gds` | Game-production orchestrator for ideas, GDDs, playtest notes, bugs, and launch beats |
 | `bmad-idea` | `bmad-idea` | Pre-planning idea router for product, GTM, consulting, and game concepts → choose one framing mode and one concept artifact |
 | `browser-harness` | `browser-harness`, `self-healing browser`, `llm browser automation`, `cdp agent`, `chrome devtools agent`, `codex browser`, `antigravity browser`, `claude screenshot error`, `claude image error` | Self-healing LLM browser automation via CDP for Claude Code, Codex, Antigravity, Gemini CLI, and OpenCode — replaces agent-browser for clean browser verification, uses agent-editable `agent_helpers.py` and domain skills, and documents Claude-safe screenshot handling |
@@ -2712,12 +2456,7 @@ Skill Inventory (165 skills)
 | `research-paper-writing` | `research paper`, `academic paper` | ML/CV/NLP paper + rebuttal workflow — abstract/introduction/method/experiments, figure-table support, reviewer response, camera-ready revision |
 | `academic-research` | `academic research`, `deep research`, `research pipeline`, `write a paper`, `peer review`, `literature review`, `systematic review`, `fact-check`, `citation check`, `ars-plan`, `academic pipeline`, `research to paper` | Full research-to-publication pipeline (ARS v3.13.0) — 4 pipelines, 27 modes, 39-agent ensemble: deep-research (8 modes), academic-paper (11 modes), academic-paper-reviewer (6 modes), academic-pipeline (10-stage). Plugin: `claude plugin marketplace add Imbad0202/academic-research-skills` |
 
-| `omx` | `omx`, `$plan`, `$ralph`, `$team`, `$autopilot`, `$ulw`, `$ultraqa`, `$deep-interview`, `$ralplan` | Codex CLI workflow layer with Claude team/autopilot/ultrawork/ultraqa parity — team runtime, explore, sparkshell |
 | `autopilot` | `$autopilot`, `autopilot`, `auto pilot`, `full-auto` | Exact-name Codex/OMX front door for idea-to-verified-code autonomous builds |
-| `team` | `$team`, `team mode`, `omx team`, `coordinated workers` | Exact-name coordinated multi-agent workflow; prefers `omx team` when the runtime is installed |
-| `ultrawork` | `$ultrawork`, `$ulw`, `ultrawork`, `parallel work` | Exact-name high-parallelism burst workflow for independent implementation or cleanup lanes |
-| `ultraqa` | `$ultraqa`, `$ultaqa`, `ultraqa`, `QA cycling` | Exact-name QA cycling workflow for tests/build/lint/typecheck/review loops |
-| `ohmg` | `ohmg`, `oh-my-agent`, `oma`, `.agents`, `/plan`, `/work`, `/orchestrate`, `/review` | Gemini / Antigravity entry for OMA; maps team/autopilot/ultrawork/ultraqa intents while keeping `.agents` canonical |
 | `diagnose` | `diagnose`, `systematic debugging`, `feedback loop`, `six-phase debug` | Systematic debugging: invest in Phase 1 (fast feedback loop), then reproduce → hypothesize → instrument → fix+test → cleanup |
 | `tdd` | `tdd`, `test-driven development`, `red-green-refactor`, `test first` | Red-green-refactor TDD using vertical slices — tests specify observable behavior through public interfaces |
 | `grill-with-docs` | `grill-with-docs`, `design review`, `challenge my plan` | Stress-test plans against project domain model, sharpen terminology, update CONTEXT.md and ADRs inline |
@@ -2733,8 +2472,10 @@ Skill Inventory (165 skills)
 | `caveman` | `caveman`, `caveman mode`, `less tokens`, `be brief` | Ultra-compressed communication (~75% token reduction). Activate/deactivate explicitly. |
 | `grill-me` | `grill-me`, `stress-test this plan`, `challenge my design` | Systematic plan stress-testing through relentless one-question-at-a-time decision-tree interviewing |
 | `write-a-skill` | `write-a-skill`, `create a skill`, `new skill` | Create structured agent skills — description field is the critical trigger agents use for activation |
+| `openspace` | `openspace`, `skill finder`, `find the right skill`, `rank skills`, `skill discovery`, `skill quality`, `evolve skill`, `openspace-mcp` | Skill management layer — retrieve/rank/load the right SKILL.md from this catalog, score skill quality from real execution evidence, and evolve skills via FIX/DERIVED/CAPTURED updates; local-first hub share/import |
+| `obsidian-mind` | `obsidian-mind`, `om-standup`, `om-dump`, `om-wrap-up`, `om-review-brief`, `om-self-review`, `om-peer-scan`, `brag doc`, `North Star.md` | Ready-made Obsidian vault template giving coding agents persistent session-spanning memory — five lifecycle hooks, `/om-*` commands, subagents, and a competency/performance graph |
+| `web-game-development` | `three.js game`, `browser game`, `webgl game`, `isometric arpg`, `enemy AI`, `game camera`, `game VFX`, `ship web game`, `playtest web game` | Router into the 19-skill MengTo/Skills Three.js family — levels, cameras, enemy systems, combat, encounters, inventory, VFX, audio, mobile controls, perf, QA, release; Unity/C# goes to `unity-gamedev-skill-pack` |
 | `git-guardrails-claude-code` | `git-guardrails-claude-code`, `git guardrails`, `prevent destructive git` | Prevent destructive git operations via Claude Code PreToolUse hooks (force push, reset --hard, etc.) |
-| `setup-pre-commit` | `setup-pre-commit`, `pre-commit hooks`, `husky setup` | Configure Husky + lint-staged + Prettier pre-commit hooks for code quality automation |
 | `scaffold-exercises` | `scaffold-exercises`, `exercise structure`, `course exercises` | Create educational exercise directories compliant with pnpm ai-hero-cli internal lint |
 | `migrate-to-shoehorn` | `migrate-to-shoehorn`, `shoehorn`, `type-safe assertions` | Migrate TypeScript test `as` assertions to fromPartial/fromAny/fromExact from @total-typescript/shoehorn |
 | `ccpi-marketplace` | `ccpi`, `ccpi marketplace`, `claude plugin marketplace`, `plugin install` | Tons of Skills marketplace via ccpi CLI and Claude plugin marketplace — browse, install, manage agent skills and plugins |
@@ -2748,7 +2489,6 @@ Skill Inventory (165 skills)
 | `aider-cli-workflow` | `aider`, `aider cli`, `ai pair programming`, `aider architect` | AI pair programming with Aider CLI — architect/editor model split, repo-map, git auto-commit, watch mode, voice, browser UI |
 | `hyperfine-benchmarking` | `hyperfine`, `benchmark cli`, `command benchmark`, `performance comparison` | CLI command benchmarking via hyperfine — statistical warmup runs, export CSV/JSON/Markdown, cross-platform performance comparison |
 | `heretic` | `heretic`, `abliterate`, `abliteration`, `decensor a model`, `uncensor model`, `remove refusals`, `refusal direction`, `directional ablation`, `residual geometry`, `plot residuals` | Automatic abliteration + refusal-direction interpretability (p-e-w/heretic, AGPL-3.0) — removes refusal/over-refusal from open-weight transformer models via parametrized directional ablation (no fine-tuning); Optuna TPE jointly minimizes refusals and KL-divergence; routes decensor < configure (bnb_4bit/trials/KL target) < evaluate (refusals + KL) < research (residual geometry / PaCMAP plots) < discover (web extraction via scrapling); responsible-use guardrails throughout. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill heretic` |
-| `lmstudio-cli` | `lmstudio`, `lm studio cli`, `local llm`, `lmstudio server` | Local LLM management via LM Studio CLI — model discovery, load/unload, chat, server start, OpenAI-compatible endpoint |
 | `typesense` | `typesense`, `search engine`, `typo-tolerant search`, `algolia alternative`, `elasticsearch alternative`, `instantsearch`, `faceted search`, `geo search`, `self-hosted search`, `site search` | Installable typo-tolerant search environment (open-source Algolia/ElasticSearch alternative, single C++ binary) — pick Docker / binary / Typesense Cloud, install a client, design a collection schema, index, and search with faceting/filtering, geo, sorting, synonyms, curation, scoped API keys, federated multi-search, and vector/hybrid; wire InstantSearch.js UI + Raft HA cluster. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill typesense` |
 | `codeflow` | `codeflow`, `code flow`, `visualize codebase`, `architecture map`, `dependency graph`, `blast radius`, `code ownership`, `codebase health score`, `pr impact analysis`, `wiki-link graph` | Visualize codebase architecture in seconds — a zero-build single `index.html` browser app (React 18 + D3.js, 100% client-side, no backend) that turns any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive dependency graph with blast-radius, code ownership, heuristic security scan, pattern/anti-pattern detection, an A–F health score, activity heatmap, and PR impact; exports JSON/Markdown/SVG/PDF or a self-updating CodeFlow Card. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill codeflow` |
 | `slides-grab` | `slides-grab`, `slides grab`, `generate slides`, `slide deck`, `ai slides`, `html slides`, `presentation editor`, `edit slide`, `card news`, `slides to pdf`, `claude design alternative` | Generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — the open-source Claude Design alternative and "best harness + editor + linter for generating slides in Claude Code / Codex". Plan (structured outline) → Design (self-contained `slide-XX.html`) → Edit (pure-JS browser editor: drag a bbox over a region and ask the agent to rewrite just it, or hand-edit text/size/bold) → Export (capture-or-print PDF, per-slide PNG incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX); 35 design styles, local `./assets/<file>` only, validate before export. Needs Node.js >= 20 + Playwright Chromium. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill slides-grab` |
