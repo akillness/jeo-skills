@@ -8,6 +8,7 @@ import hashlib
 import json
 import re
 import sys
+import tempfile
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -331,6 +332,10 @@ BASELINE_FILE = "baseline.txt"
 LEDGER_FILE = "exception-ledger.txt"
 CI_FILE = ".github/workflows/ci.yml"
 RECORDED_HASH_KEY = "A0-c__recorded_hash"
+# D4 keeps the historical ledger for audit after removing its active CI pin.
+# Pin only that exact archive here so a missing pin cannot disable another ledger.
+RETIRED_LEDGER_MARKER = "# Rule F state: retired at D4 (archival only; CI hash pin intentionally absent)."
+RETIRED_LEDGER_SHA256 = "7ad026829c5088ce879706820c2cf1be0a9dccdfa93836036f2eed5332021a09"
 
 
 def _read_recorded_ledger_hash(repo_root: Path) -> str | None:
@@ -377,8 +382,29 @@ def _parse_ledger(path: Path) -> dict[str, dict[str, str]]:
     return records
 
 
+def _validate_retired_ledger(ledger_path: Path, require_applied: bool) -> str:
+    """Accept only the exact D4 archival ledger after its active CI pin is removed."""
+    contents = ledger_path.read_bytes()
+    require(
+        RETIRED_LEDGER_MARKER.encode("utf-8") in contents,
+        "rule F is half-configured: an exception ledger without the ci.yml "
+        f"{RECORDED_HASH_KEY} constant must be the explicit D4 archive",
+    )
+    actual = hashlib.sha256(contents).hexdigest()
+    require(
+        actual == RETIRED_LEDGER_SHA256,
+        f"retired exception ledger hash {actual} != expected {RETIRED_LEDGER_SHA256} "
+        "(D4 archive integrity)",
+    )
+    require(
+        not require_applied,
+        "rule F is retired at D4; --gate1 cannot validate an archived frontmatter gate",
+    )
+    return "rule F: retired at D4 (archived exception ledger hash verified)"
+
+
 def validate_frontmatter_frozen(repo_root: Path, require_applied: bool = False) -> str:
-    """Rule F — every frontmatter block is byte-frozen unless the ledger pins it.
+    """Rule F — every frontmatter block is byte-frozen while the program is active.
 
     The ledger is a RESULT byte pin, not a permission slip: a listed skill must
     land on exactly `after_sha256`, so both "changed something else" and "did not
@@ -389,8 +415,9 @@ def validate_frontmatter_frozen(repo_root: Path, require_applied: bool = False) 
     adding a skill is never blocked. (2) In-program changes pass only via ledger
     entry + after-hash match. (3) `--update-baseline` is out-of-program only and
     requires the `Frontmatter-Baseline-Update:` trailer, a recorded architect
-    approval, and a before/after hash report. (4) Rule F and the exception ledger
-    are program-scoped and are REMOVED FROM ci.yml AT D4.
+    approval, and a before/after hash report. (4) At D4 the active CI pin is
+    removed; a retained ledger is accepted only as the exact hash-pinned archive.
+    Any unmarked or tampered ledger without a pin fails closed.
     """
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from frontmatter_boundary import frontmatter_sha256, iter_skill_docs, slug_of
@@ -399,18 +426,28 @@ def validate_frontmatter_frozen(repo_root: Path, require_applied: bool = False) 
     baseline_path = art / BASELINE_FILE
     ledger_path = art / LEDGER_FILE
     recorded = _read_recorded_ledger_hash(repo_root)
+    has_ledger = ledger_path.is_file()
 
-    if not ledger_path.is_file() and recorded is None:
+    if not has_ledger and recorded is None:
         return "rule F: skipped (no exception ledger and no recorded hash yet)"
+    if has_ledger and recorded is None:
+        return _validate_retired_ledger(ledger_path, require_applied)
     require(
-        ledger_path.is_file() and recorded is not None,
+        has_ledger and recorded is not None,
         "rule F is half-configured: the exception ledger and the ci.yml "
         f"{RECORDED_HASH_KEY} constant must both exist or both be absent "
-        f"(ledger={ledger_path.is_file()}, recorded_hash={recorded is not None})",
+        f"(ledger={has_ledger}, recorded_hash={recorded is not None})",
+    )
+
+    ledger_bytes = ledger_path.read_bytes()
+    require(
+        RETIRED_LEDGER_MARKER.encode("utf-8") not in ledger_bytes,
+        "rule F is half-configured: a D4-retired ledger cannot be reactivated by "
+        f"adding the ci.yml {RECORDED_HASH_KEY} constant",
     )
     require(baseline_path.is_file(), f"rule F needs the A0-c baseline at {baseline_path}")
 
-    actual = hashlib.sha256(ledger_path.read_bytes()).hexdigest()
+    actual = hashlib.sha256(ledger_bytes).hexdigest()
     require(actual == recorded, f"exception ledger hash {actual} != recorded {recorded} (G11c)")
 
     baseline = {}
@@ -460,6 +497,100 @@ def validate_frontmatter_frozen(repo_root: Path, require_applied: bool = False) 
     )
 
 
+def _expect_rule_f_failure(repo_root: Path, expected_message: str, require_applied: bool = False) -> None:
+    try:
+        validate_frontmatter_frozen(repo_root, require_applied=require_applied)
+    except ValidationError as error:
+        require(
+            expected_message in str(error),
+            f"rule F self-test expected {expected_message!r}, got {str(error)!r}",
+        )
+        return
+    raise ValidationError(f"rule F self-test expected failure containing {expected_message!r}")
+
+
+def self_test_rule_f(repo_root: Path) -> int:
+    """Exercise active, incomplete, and D4-retired Rule F states in a temporary repo."""
+    archived_path = repo_root / f".{FRONTMATTER_DIR}" / LEDGER_FILE
+    require(archived_path.is_file(), f"rule F self-test needs {archived_path}")
+    archived = archived_path.read_bytes()
+    require(
+        RETIRED_LEDGER_MARKER.encode("utf-8") in archived,
+        "rule F self-test needs an explicitly retired exception ledger",
+    )
+    require(
+        hashlib.sha256(archived).hexdigest() == RETIRED_LEDGER_SHA256,
+        "rule F self-test retired ledger does not match RETIRED_LEDGER_SHA256",
+    )
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from frontmatter_boundary import frontmatter_sha256
+
+    with tempfile.TemporaryDirectory(prefix="rule-f-") as temp_dir:
+        temp_root = Path(temp_dir)
+        artifact_dir = temp_root / f".{FRONTMATTER_DIR}"
+        artifact_dir.mkdir(parents=True)
+        document = temp_root / ".agent-skills" / "sample" / "SKILL.md"
+        document.parent.mkdir(parents=True)
+        document.write_text(
+            "---\nname: sample\ndescription: A sample skill for the Rule F lifecycle self-test.\n---\n\nbody\n",
+            encoding="utf-8",
+        )
+        digest = frontmatter_sha256(document)
+        (artifact_dir / BASELINE_FILE).write_text(f"sample\t{digest}\n", encoding="utf-8")
+        ledger_path = artifact_dir / LEDGER_FILE
+        active_ledger = (
+            "slug: sample\n"
+            "approval_ref: self-test\n"
+            "reason: lifecycle test\n"
+            "key: description\n"
+            "lines: 1\n"
+            f"before_sha256: {digest}\n"
+            f"after_sha256: {digest}\n"
+            "desc_len_before: 1\n"
+            "desc_len_after: 1\n"
+            "approved_removals: \n"
+            "projection_targets: \n"
+            "architect_signoff: self-test\n"
+        )
+        ledger_path.write_text(active_ledger, encoding="utf-8")
+        ci_path = temp_root / CI_FILE
+        ci_path.parent.mkdir(parents=True)
+        active_hash = hashlib.sha256(active_ledger.encode("utf-8")).hexdigest()
+        ci_path.write_text(f"# {RECORDED_HASH_KEY}: {active_hash}\n", encoding="utf-8")
+        require(
+            validate_frontmatter_frozen(temp_root)
+            == "rule F: 0 frozen + 0 applied + 1 pending = 1 frontmatter blocks",
+            "rule F self-test active ledger did not validate",
+        )
+
+        ci_path.write_text("name: CI\n", encoding="utf-8")
+        _expect_rule_f_failure(temp_root, "half-configured")
+        ci_path.write_text(f"# {RECORDED_HASH_KEY}: {'0' * 64}\n", encoding="utf-8")
+        _expect_rule_f_failure(temp_root, "exception ledger hash")
+
+        ledger_path.write_bytes(archived)
+        ci_path.write_text("name: CI\n", encoding="utf-8")
+        require(
+            validate_frontmatter_frozen(temp_root)
+            == "rule F: retired at D4 (archived exception ledger hash verified)",
+            "rule F self-test retired ledger did not validate",
+        )
+
+        ledger_path.write_bytes(archived + b"\n")
+        _expect_rule_f_failure(temp_root, "retired exception ledger hash")
+        ledger_path.write_bytes(archived)
+        _expect_rule_f_failure(temp_root, "rule F is retired at D4; --gate1", require_applied=True)
+        ci_path.write_text(
+            f"# {RECORDED_HASH_KEY}: {hashlib.sha256(archived).hexdigest()}\n",
+            encoding="utf-8",
+        )
+        _expect_rule_f_failure(temp_root, "cannot be reactivated")
+
+    print("rule F self-test ok: active, incomplete, tampered, retired, and gate1 states")
+    return 0
+
+
 def validate_links(repo_root: Path) -> str:
     """Rule 7/8 — no dangling relative links (never reads frontmatter, B-1)."""
     sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -482,11 +613,14 @@ def main() -> int:
     parser.add_argument("--repo-root", default=".", type=Path, help="repository root containing .agent-skills (default: current directory)")
     parser.add_argument("--strict-links", action="store_true", help="fail on dangling relative links (enable after L1 repairs)")
     parser.add_argument("--gate1", action="store_true", help="require every ledger exception applied (gate 1, after L1x)")
+    parser.add_argument("--self-test-rule-f", action="store_true", help="exercise active, incomplete, and D4-retired Rule F states")
     args = parser.parse_args()
     repo_root = args.repo_root.resolve()
 
     strict_links = args.strict_links
     try:
+        if args.self_test_rule_f:
+            return self_test_rule_f(repo_root)
         skill_names, categories = validate_manifest(repo_root)
         toon_records = validate_toon(repo_root, skill_names)
         loadable = validate_skill_documents(repo_root, skill_names, manifest_descriptions(repo_root))

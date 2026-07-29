@@ -221,11 +221,14 @@ def main() -> int:
         "# must stay on its A0-c baseline hash. Records are separated by blank",
         "# lines and every field is required (a truncated record fails closed).",
         "#",
-        "# The sha256 of THIS FILE is recorded outside it, in the ci.yml constant",
-        "# A0-c__recorded_hash and in the A0 gate report. Never store it here.",
+        "# While Rule F is active, the sha256 of THIS FILE is recorded outside it in",
+        "# the ci.yml A0-c__recorded_hash constant and in the A0 gate report. Never",
+        "# store an active pin here.",
         "#",
         f"# Cardinality: {len(recs)} exceptions + {len(baseline) - len(recs)} frozen = {len(baseline)}",
-        "# Lifecycle: removed from ci.yml at D4 (program-scoped).",
+        "# Lifecycle: active until D4. At D4 remove the ci.yml pin and replace this",
+        "# lifecycle note with the explicit archival marker checked by",
+        "# validate-catalog-projections.py.",
         "",
     ]
     for rec in recs:

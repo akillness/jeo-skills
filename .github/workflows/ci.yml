@@ -19,6 +19,8 @@ jobs:
       # checkout and threw the result away, and fix_frontmatter.py collapsed every
       # folded `description: >-` block into the literal string ">-", which is how 26
       # skills shipped with a one-character description.
+      - name: Rule F lifecycle remains fail-closed
+        run: python3 scripts/validate-catalog-projections.py --self-test-rule-f
       - name: Catalog projections (manifest ↔ TOON ↔ README ↔ SKILL.md)
         run: python3 scripts/validate-catalog-projections.py
       - name: SKILL.md frontmatter is loadable by skill CLIs

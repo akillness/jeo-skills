@@ -5,11 +5,15 @@
 # must stay on its A0-c baseline hash. Records are separated by blank
 # lines and every field is required (a truncated record fails closed).
 #
-# The sha256 of THIS FILE is recorded outside it, in the ci.yml constant
-# A0-c__recorded_hash and in the A0 gate report. Never store it here.
+# While Rule F is active, the sha256 of THIS FILE is recorded outside it in
+# the ci.yml A0-c__recorded_hash constant and in the A0 gate report. Never
+# store an active pin here.
+#
+# Rule F state: retired at D4 (archival only; CI hash pin intentionally absent).
+# This exact archival record is hash-pinned in
+# scripts/validate-catalog-projections.py; changing it must not reactivate Rule F.
 #
 # Cardinality: 5 exceptions + 169 frozen = 174
-# Lifecycle: removed from ci.yml at D4 (program-scoped).
 
 slug: skill-standardization
 approval_ref: USER-INTENT-GATE-2026-07-28
