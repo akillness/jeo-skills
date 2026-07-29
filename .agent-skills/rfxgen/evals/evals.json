@@ -1,0 +1,29 @@
+{
+  "skill_name": "rfxgen",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Generate a mono 22050 Hz, 16-bit explosion WAV and preserve the editable source.",
+      "expected_output": "A validated wrapper command with a semantic output name, explicit format, source preservation, and post-generation inspection.",
+      "assertions": [
+        "The output uses the explosion preset",
+        "The output specifies 22050, 16, and 1 channel",
+        "The output preserves an rFX source for future tuning",
+        "The output checks file existence and audio metadata",
+        "The output recommends auditioning and checking clipping"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "rFXGen will not build on a clean machine. Explain a safe diagnosis path.",
+      "expected_output": "A diagnosis that checks for an existing binary, then CMake/toolchain/dependency availability and pinned source-build evidence.",
+      "assertions": [
+        "The output prefers checking an existing binary or official web tool first",
+        "The output checks CMake and a desktop C toolchain",
+        "The output mentions possible raylib/platform dependency or network requirements",
+        "The output recommends a separate build directory",
+        "The output does not claim a build succeeded without command evidence"
+      ]
+    }
+  ]
+}

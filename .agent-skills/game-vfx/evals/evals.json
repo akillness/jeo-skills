@@ -1,0 +1,29 @@
+{
+  "skill_name": "game-vfx",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design a 900 ms fireball impact effect for a 60 FPS mobile game. Include phases, layers, budgets, and a reduced-motion fallback.",
+      "expected_output": "A machine-checkable effect packet with a shared lifecycle, bounded particles/draw calls, and an explicit reduced-motion behavior.",
+      "assertions": [
+        "The output defines ordered effect phases",
+        "The output separates a primary visual layer from supporting layers",
+        "The output includes particle, draw-call, or overdraw budgets",
+        "The output includes a reduced-motion fallback",
+        "The output recommends target-device profiling rather than claiming a budget guarantees performance"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "A spell effect allocates hundreds of particles every frame, uses full-resolution blur, and obscures the hit zone. Diagnose it and give a repair order.",
+      "expected_output": "A diagnosis prioritizing allocation/pooling, downsampled blur, and gameplay readability before adding more spectacle.",
+      "assertions": [
+        "The output identifies per-frame allocation as a performance risk",
+        "The output recommends pooling or reuse",
+        "The output recommends downsampling or bounding blur work",
+        "The output treats the obscured hit zone as a readability defect",
+        "The output includes measurement on representative hardware"
+      ]
+    }
+  ]
+}

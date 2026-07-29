@@ -1,0 +1,25 @@
+{
+  "name": "fireball-impact",
+  "duration_ms": 900,
+  "phases": [
+    {"id": "travel", "start_ms": 0, "end_ms": 500},
+    {"id": "impact", "start_ms": 500, "end_ms": 650},
+    {"id": "dissipate", "start_ms": 650, "end_ms": 900}
+  ],
+  "layers": [
+    {"id": "core", "type": "billboard", "max_particles": 1, "draw_calls": 1},
+    {"id": "sparks", "type": "pooled-particles", "max_particles": 48, "draw_calls": 1},
+    {"id": "smoke", "type": "flipbook", "max_particles": 8, "draw_calls": 1},
+    {"id": "glow", "type": "downsampled-bloom", "max_particles": 0, "draw_calls": 2}
+  ],
+  "budgets": {
+    "max_particles": 64,
+    "max_draw_calls": 6,
+    "max_overdraw": 3,
+    "max_blur_radius": 12
+  },
+  "reduced_motion": {
+    "enabled": true,
+    "behavior": "remove camera shake and animated sparks; retain a short static impact flash"
+  }
+}

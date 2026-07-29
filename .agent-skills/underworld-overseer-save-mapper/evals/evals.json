@@ -1,0 +1,29 @@
+{
+  "skill_name": "underworld-overseer-save-mapper",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Validate a save before rendering it. It contains Map cells with X, Y, and DescriptorID, and one coordinate is duplicated.",
+      "expected_output": "A read-only validation workflow that reports bounds, descriptors, and duplicate-coordinate ambiguity before rendering.",
+      "assertions": [
+        "The output requires a top-level Map list",
+        "The output requires integer X and Y values",
+        "The output requires a non-empty DescriptorID",
+        "The output calls out duplicate coordinates as ambiguous",
+        "The output says the save should be copied and not modified"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The mapper exits on macOS because its default Windows save directory does not exist. What should we do?",
+      "expected_output": "A limitation-aware response that separates validation from rendering and explains the supported path or a reviewed upstream code change.",
+      "assertions": [
+        "The output identifies the Windows-specific default path",
+        "The output says validation can run without the mapper",
+        "The output does not claim custom-file selection works after the early exit",
+        "The output recommends a reviewed source change or supported Windows workflow",
+        "The output preserves private-save and license caveats"
+      ]
+    }
+  ]
+}

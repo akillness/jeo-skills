@@ -1,0 +1,29 @@
+{
+  "skill_name": "agentic-gamedev-skills",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to install only the browser-game implementation and smoke-test workflows from abagames/agentic-gamedev-skills without overwriting local skills.",
+      "expected_output": "A selective, pinned install plan that previews conflicts, preserves support directories, and avoids a full-bundle overwrite.",
+      "assertions": [
+        "The output selects developing-with-crisp-game-lib and smoke-testing-web-games",
+        "The output uses the installer instead of copying only SKILL.md",
+        "The output pins or records a commit ref",
+        "The output refuses overwrite unless --force is explicitly reviewed",
+        "The output preserves referenced support directories"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I only want help designing a minimal arcade rule system, not an installation. Route the request.",
+      "expected_output": "A route-only answer naming the narrow design skill and explaining that the bundle wrapper should not install anything.",
+      "assertions": [
+        "The output routes to designing-mini-games or designing-minimal-game-rules",
+        "The output does not recommend installing the full bundle",
+        "The output distinguishes route-only from selective installation",
+        "The output asks for or identifies the gameplay communication goal",
+        "The output keeps the upstream bundle wrapper as discovery/install ownership"
+      ]
+    }
+  ]
+}

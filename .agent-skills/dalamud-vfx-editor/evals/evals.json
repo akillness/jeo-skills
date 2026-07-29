@@ -1,0 +1,29 @@
+{
+  "skill_name": "dalamud-vfx-editor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Replace one user-owned FFXIV spell effect and keep a rollback path. The request changes particle glow and also changes when the effect fires.",
+      "expected_output": "A conservative workflow that snapshots first, uses AVFX for visual parameters, uses the timeline for trigger ordering, and verifies the change in a controlled scenario.",
+      "assertions": [
+        "The output recommends a byte-preserving backup and hash",
+        "The output distinguishes AVFX particle/glow ownership from TMB timing ownership",
+        "The output limits the edit to the intended parameter groups",
+        "The output includes attachment, timing, visibility, sound, and performance checks",
+        "The output provides a rollback path"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Should I enable the main and beta VFXEditor repositories together, and can I build the plugin on any .NET machine?",
+      "expected_output": "A response that keeps main and beta mutually exclusive and qualifies source-build requirements by the compatible Dalamud environment and current SDK metadata.",
+      "assertions": [
+        "The output says not to enable main and beta together",
+        "The output identifies the Dalamud-compatible development environment as a requirement",
+        "The output recommends checking current project and manifest metadata",
+        "The output does not claim any generic .NET machine is sufficient",
+        "The output distinguishes installation from source contribution"
+      ]
+    }
+  ]
+}

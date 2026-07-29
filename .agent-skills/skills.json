@@ -1,7 +1,7 @@
 {
   "version": "1.4.0",
   "generated": "2026-07-29",
-  "skill_count": 187,
+  "skill_count": 191,
   "categories": {
     "planning-review": [
       "agentation",
@@ -28,7 +28,6 @@
     "infrastructure": [
       "deployment-automation",
       "environment-setup",
-      "firebase-ai-logic",
       "firebase-cli",
       "genkit",
       "looker-studio-bigquery",
@@ -106,7 +105,6 @@
       "caveman",
       "ccpi-marketplace",
       "claudekit",
-      "clawteam",
       "codeflow",
       "compresso",
       "fabric",
@@ -179,7 +177,6 @@
       "gbro-collage-broll",
       "generate-reference-inspired-brand-worlds",
       "video-motion-previs",
-
       "open-design-game-ui-concept",
       "open-design-game-ui-handoff",
       "open-design-game-ui-takeover",
@@ -208,14 +205,20 @@
       "task-planning"
     ],
     "game-development": [
+      "agentic-gamedev-skills",
+      "dalamud-vfx-editor",
       "game-build-log-triage",
       "game-ci-cd-pipeline",
       "game-demo-feedback-triage",
       "game-performance-profiler",
+      "game-sounds",
       "game-studio-harness",
+      "game-vfx",
       "implement-fog-of-war",
       "perfectpixel",
+      "rfxgen",
       "steam-store-launch-ops",
+      "underworld-overseer-save-mapper",
       "unity-gamedev-skill-pack",
       "web-game-development"
     ]
@@ -312,6 +315,31 @@
       ],
       "keyword": "agentation",
       "version": "1.1.0"
+    },
+    {
+      "name": "agentic-gamedev-skills",
+      "description": "Discover, select, and safely install focused skills from abagames/agentic-gamedev-skills. Use when a user explicitly wants that upstream collection, needs to choose among its mini-game design, Godot, crisp-game-lib, presentation, telemetry, or agent-workflow skills, or wants a pinned selective bundle install. Triggers on: agentic-gamedev-skills, abagames skills, install gamedev skill bundle, designing-mini-games, or upstream game skill inventory.",
+      "category": "game-development",
+      "path": "agentic-gamedev-skills/SKILL.md",
+      "tags": [
+        "game-development",
+        "agent-skills",
+        "godot",
+        "browser-games",
+        "skill-installer",
+        "abagames"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "agentic-gamedev-skills",
+      "version": "1.0.0"
     },
     {
       "name": "agentic-skills",
@@ -1036,35 +1064,6 @@
       "version": "latest"
     },
     {
-      "name": "clawteam",
-      "description": "Route explicit ClawTeam runtime requests into one honest operator packet before touching commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer work, product/ops research, content operations, or game-production coordination. Not for generic multi-agent routing, board-only governance, or lightweight subtask fan-out when jeo, harness, task-planning, or built-in delegation already fit.",
-      "category": "utilities",
-      "path": "clawteam/SKILL.md",
-      "tags": [
-        "clawteam",
-        "multi-agent",
-        "swarm",
-        "orchestration",
-        "tmux",
-        "git-worktree",
-        "autonomous",
-        "python",
-        "routing"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "keyword": "clawteam",
-      "version": "1.2"
-    },
-    {
       "name": "cli-anything",
       "description": "Make any software agent-native with HKUDS CLI-Anything — four routed modes: install ready-made harnesses via CLI-Hub (cli-hub list/search/info/install/launch), give agents the cli-hub-meta-skill for autonomous discovery, generate a new harness from any codebase/repo via the 7-phase /cli-anything pipeline, or iterate with :refine/:test/:validate; 40+ harnesses, 2,461 tests, Click CLIs with REPL + --json.",
       "category": "agent-development",
@@ -1373,6 +1372,31 @@
         "WebFetch"
       ],
       "keyword": "daily-ui-inspiration-capture",
+      "version": "1.0.0"
+    },
+    {
+      "name": "dalamud-vfx-editor",
+      "description": "Install, operate, and troubleshoot 0ceal0t/Dalamud-VFXEditor for user-owned Final Fantasy XIV visual-effect, animation, sound, physics, UI, texture, material, model, and shader files. Use when a user asks about `/vfxedit`, AVFX, PAP, TMB, SCD, Dalamud plugin setup, effect replacement, export handoff, beta repositories, or VFXEditor source builds. Triggers on: Dalamud VFXEditor, /vfxedit, .avfx, .pap, .tmb, .scd, FFXIV VFX mod, or VFXEditor beta.",
+      "category": "game-development",
+      "path": "dalamud-vfx-editor/SKILL.md",
+      "tags": [
+        "game-development",
+        "ffxiv",
+        "dalamud",
+        "vfx",
+        "modding",
+        "asset-editor"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "dalamud-vfx-editor",
       "version": "1.0.0"
     },
     {
@@ -1831,37 +1855,6 @@
       "version": "2.0"
     },
     {
-      "name": "firebase-ai-logic",
-      "description": "Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for Gemini-powered features. Use when the user needs in-app text/chat/multimodal generation, structured output, streaming, or App Check-aware Firebase app integration without a separate workflow framework. Triggers on: Firebase AI Logic, Gemini in Firebase app, Firebase AI SDK, client-side Gemini, in-app AI feature, mobile/web AI integration, and direct Firebase model integration. Route server-owned flows, tool calling, RAG, evaluation, and reusable backend orchestration to `genkit`, and route project/deploy/operator tasks to `firebase-cli`.",
-      "category": "infrastructure",
-      "path": "firebase-ai-logic/SKILL.md",
-      "tags": [
-        "firebase",
-        "ai",
-        "gemini",
-        "app-integration",
-        "mobile",
-        "web",
-        "client-sdk"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "keyword": "firebase-ai-logic",
-      "version": "2.0"
-    },
-    {
       "name": "firebase-cli",
       "description": "Operate Firebase from the terminal with `firebase-tools`: install/auth the CLI, bootstrap `firebase.json` / `.firebaserc`, run the Emulator Suite, deploy Hosting / Functions / rules / App Hosting, manage preview channels, and handle Firebase admin tasks like auth import/export, Remote Config, App Distribution, and Extensions. Use when the job is Firebase platform/project operation through the CLI. Triggers on: firebase deploy, firebase init, firebase emulators, firebase hosting, firebase functions, firebase firestore, firebase database, firebase auth import, firebase remote config, firebase app distribution, firebase extensions, firebase apphosting, firebase dataconnect, firebase cli, firebase-tools, deploy firebase, firebase preview channel, firebase login, firebase use, firebase target apply. Route backend AI workflow orchestration to `genkit` and direct in-app SDK integration to `firebase-ai-logic`.",
       "category": "infrastructure",
@@ -2006,6 +1999,31 @@
       "version": "1.2"
     },
     {
+      "name": "game-sounds",
+      "description": "Install, configure, and troubleshoot Citedy's game-sounds feedback audio for Claude Code and supported CLI environments. Use when a user wants coding-agent event sounds, sound-pack rotation, volume or event toggles, playback checks, custom packs, or the game-sounds CLI/plugin. Triggers on: game-sounds, coding sounds, Claude hook sounds, task-complete sound, sound pack rotation, or @citedy/game-sounds.",
+      "category": "game-development",
+      "path": "game-sounds/SKILL.md",
+      "tags": [
+        "utilities",
+        "developer-experience",
+        "audio",
+        "claude-code",
+        "hooks",
+        "sound-packs"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "game-sounds",
+      "version": "1.0.0"
+    },
+    {
       "name": "game-studio-harness",
       "description": "Five-role game production studio harness: director, numeric-balance designer, revenue-band PM, verification-strict programmer, archetype-rotation QA. Runs the 3-stage operating cycle (concept/presentation/core build → balance/core-loop/novelty → ops stability/play impact) behind 8 numeric quality gates with survey-grounded trends, signed designer↔PM negotiation records, and QA broadcast discipline.",
       "category": "game-development",
@@ -2038,6 +2056,31 @@
         "Task"
       ],
       "keyword": "game-studio-harness",
+      "version": "1.0.0"
+    },
+    {
+      "name": "game-vfx",
+      "description": "Design, implement, budget, and verify readable real-time game visual effects: particles, smoke/fog, lightning, fire, trails, impacts, bloom/glow, and layered spell timelines. Use when a user needs a VFX spec, lifecycle, engine handoff, particle pooling, effect composition, reduce-motion fallback, or frame-budget diagnosis. Triggers on: game VFX, spell effects, particle system, impact burst, procedural lightning, smoke, bloom, magic aura, or VFX performance.",
+      "category": "game-development",
+      "path": "game-vfx/SKILL.md",
+      "tags": [
+        "game-development",
+        "vfx",
+        "particles",
+        "shaders",
+        "performance",
+        "accessibility"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "game-vfx",
       "version": "1.0.0"
     },
     {
@@ -2876,35 +2919,6 @@
       ],
       "keyword": "monitoring-observability",
       "version": "2.1"
-    },
-    {
-      "name": "video-motion-previs",
-      "description": "Install and drive Motion Previs Studio v4 from the `video-motion-previs` CLI to turn reference video into pose, depth, camera-motion, control-layer, and AI-video/Blender production packs. Use when an agent must check or install the desktop app, import and trim a shot, run motion analysis, export a bundle, inspect its files, capture the app, or send a layer to Blockout. Triggers on: Motion Previs Studio, video motion previs, camera solve, pose extraction, OpenPose BODY_25, depth control video, production pack, motion-previs MCP.",
-      "category": "creative-media",
-      "path": "video-motion-previs/SKILL.md",
-      "tags": [
-        "video-motion",
-        "previsualization",
-        "ai-video",
-        "pose-extraction",
-        "depth",
-        "camera-motion",
-        "openpose",
-        "control-layers",
-        "cli",
-        "mcp"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "keyword": "video-motion-previs",
-      "version": "2.0.0"
     },
     {
       "name": "notebooklm",
@@ -4033,6 +4047,31 @@
       ],
       "keyword": "responsive-design",
       "version": "2.1.0"
+    },
+    {
+      "name": "rfxgen",
+      "description": "Generate, convert, preview, and integrate retro game sound effects with raysan5/rfxgen. Use when a user needs coin, laser, explosion, power-up, hit, jump, or blip SFX; wants `.rfx` parameters converted to WAV/raw/C headers; needs batch CLI generation; or must build and troubleshoot rFXGen. Triggers on: rFXGen, rfxgen, sfxr, chiptune SFX, .rfx, procedural game sound, or sound preset.",
+      "category": "game-development",
+      "path": "rfxgen/SKILL.md",
+      "tags": [
+        "game-development",
+        "audio",
+        "sound-effects",
+        "procedural-audio",
+        "raylib",
+        "cli"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "rfxgen",
+      "version": "1.0.0"
     },
     {
       "name": "rtk",
@@ -5234,6 +5273,30 @@
       "version": "1.0.0"
     },
     {
+      "name": "underworld-overseer-save-mapper",
+      "description": "Inspect Underworld Overseer JSON saves and generate or troubleshoot interactive dungeon maps with RobThePCGuy/Underworld-Overseer-Save-Mapper. Use when a user wants to validate a save's Map records, visualize room coordinates and DescriptorID values, install the mapper, or diagnose empty/broken HTML output. Triggers on: Underworld Overseer save, dungeon save map, DescriptorID, Map JSON, Underworld Overseer mapper, or save-to-HTML.",
+      "category": "game-development",
+      "path": "underworld-overseer-save-mapper/SKILL.md",
+      "tags": [
+        "game-development",
+        "save-files",
+        "json",
+        "map-visualization",
+        "underworld-overseer"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "underworld-overseer-save-mapper",
+      "version": "1.0.0"
+    },
+    {
       "name": "unity-gamedev-skill-pack",
       "description": "Evaluate and adopt Unity game-development skill packs from external repositories into a safe, reusable local package. Use when maintainers want to import game-dev workflows (Addressables, Cinemachine, GAS, VContainer, UniTask, Wwise, etc.) without blindly trusting third-party prompts.",
       "category": "game-development",
@@ -5345,6 +5408,35 @@
       ],
       "keyword": "vercel-deploy",
       "version": "2.1.0"
+    },
+    {
+      "name": "video-motion-previs",
+      "description": "Install and drive Motion Previs Studio v4 from the `video-motion-previs` CLI to turn reference video into pose, depth, camera-motion, control-layer, and AI-video/Blender production packs. Use when an agent must check or install the desktop app, import and trim a shot, run motion analysis, export a bundle, inspect its files, capture the app, or send a layer to Blockout. Triggers on: Motion Previs Studio, video motion previs, camera solve, pose extraction, OpenPose BODY_25, depth control video, production pack, motion-previs MCP.",
+      "category": "creative-media",
+      "path": "video-motion-previs/SKILL.md",
+      "tags": [
+        "video-motion",
+        "previsualization",
+        "ai-video",
+        "pose-extraction",
+        "depth",
+        "camera-motion",
+        "openpose",
+        "control-layers",
+        "cli",
+        "mcp"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "video-motion-previs",
+      "version": "2.0.0"
     },
     {
       "name": "video-production",

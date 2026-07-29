@@ -2,10 +2,10 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-187-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**187개 로컬 스킬 폴더 · 설치 가능 스킬 187개 · TOON 포맷 · 멀티플랫폼**
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 187개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 187개 로컬 스킬 폴더 = 총 187개 설치 가능 스킬
+[![Skills](https://img.shields.io/badge/Skills-191-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**191개 로컬 스킬 폴더 · 설치 가능 스킬 191개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 191개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 191개 로컬 스킬 폴더 = 총 191개 설치 가능 스킬
 ### 🎬 창의 미디어 (19개)
 
 | `aura-asset-images` |
@@ -29,17 +29,17 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 | `vox-director` |
 | `webtoon-harness` |
 
-├── .agent-skills/          ← 187개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 191개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**187개 로컬 스킬 폴더 · 설치 가능 스킬 187개 · TOON 포맷 · 멀티플랫폼**
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 187개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 187개 로컬 스킬 폴더 = 총 187개 설치 가능 스킬
-├── .agent-skills/          ← 187개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+**191개 로컬 스킬 폴더 · 설치 가능 스킬 191개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 191개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 191개 로컬 스킬 폴더 = 총 191개 설치 가능 스킬
+├── .agent-skills/          ← 191개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -50,9 +50,9 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 187개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 187개 로컬 스킬 폴더 = 총 187개 설치 가능 스킬
-├── .agent-skills/          ← 187개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 191개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 191개 로컬 스킬 폴더 = 총 191개 설치 가능 스킬
+├── .agent-skills/          ← 191개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo 에이전트와 전설의 장비 세트
@@ -229,8 +229,8 @@ video-motion-previs state
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 187개 로컬 스킬 폴더 = 총 187개 설치 가능 스킬
-├── .agent-skills/          ← 187개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 191개 로컬 스킬 폴더 = 총 191개 설치 가능 스킬
+├── .agent-skills/          ← 191개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 ### 🎯 핵심 오케스트레이션 (7개)
 
@@ -339,13 +339,12 @@ video-motion-previs state
 | `testing-strategies` |
 | `zoom-out` |
 
-### 🏗 인프라 (13개)
+### 🏗 인프라 (12개)
 
 | 스킬 |
 |------|
 | `deployment-automation` |
 | `environment-setup` |
-| `firebase-ai-logic` |
 | `firebase-cli` |
 | `genkit` |
 | `looker-studio-bigquery` |
@@ -430,22 +429,28 @@ video-motion-previs state
 | `x-bookmark-quote-posts` |
 | `yuwen-publish-precheck` |
 
-### 🎮 게임 개발 (10개)
+### 🎮 게임 개발 (16개)
 
 | 스킬 |
 |------|
+| `agentic-gamedev-skills` |
+| `dalamud-vfx-editor` |
 | `game-build-log-triage` |
 | `game-ci-cd-pipeline` |
 | `game-demo-feedback-triage` |
 | `game-performance-profiler` |
+| `game-sounds` |
 | `game-studio-harness` |
+| `game-vfx` |
 | `implement-fog-of-war` |
 | `perfectpixel` |
+| `rfxgen` |
 | `steam-store-launch-ops` |
+| `underworld-overseer-save-mapper` |
 | `unity-gamedev-skill-pack` |
 | `web-game-development` |
 
-### 🔧 유틸리티 (40개)
+### 🔧 유틸리티 (39개)
 
 | 스킬 |
 |------|
@@ -454,7 +459,6 @@ video-motion-previs state
 | `caveman` |
 | `ccpi-marketplace` |
 | `claudekit` |
-| `clawteam` |
 | `codeflow` |
 | `compresso` |
 | `fabric` |
@@ -734,7 +738,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 187개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 191개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -811,7 +815,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |------|------|
 | **Three.js 구현 스킬 10개 추가** | [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills)를 바탕으로 `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, `threejs-postprocessing`을 추가했습니다. 각 스킬은 집중된 구현 계약, TOON 검색 표면, eval, 업스트림/공식 레퍼런스를 제공하며, 직접 렌더링 작업은 `web-game-development`의 게임 시스템 라우팅과 분리합니다. |
 | **Open Design 게임 UI 스킬 추가** | 콘셉트 검토, 증거 기반 handoff, 승인된 런타임 통합을 위한 `open-design-game-ui-concept`, `open-design-game-ui-handoff`, `open-design-game-ui-takeover`을 추가했습니다. |
-| **카탈로그와 설치 가이드 동기화** | `skills.json` 1.4.0, `skills.toon`, 양쪽 README 카탈로그, `setup-all-skills-prompt.md`를 187개 스킬 기준으로 업데이트했습니다. |
+| **카탈로그와 설치 가이드 동기화** | `skills.json` 1.4.0, `skills.toon`, 양쪽 README 카탈로그, `setup-all-skills-prompt.md`를 191개 스킬 기준으로 업데이트했습니다. |
 
 ## 🆕 v2026-07-28 업데이트
 

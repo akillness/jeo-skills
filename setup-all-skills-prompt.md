@@ -237,6 +237,31 @@ fi
 
 ---
 
+## Game-development skill packs (selective install)
+
+The catalog includes six engine-neutral/game-asset workflow skills. Full installs pick them up automatically from `.agent-skills/skills.json`; for a focused install, select only the skills needed for the project:
+
+```bash
+# VFX, runtime audio, and engine/asset workflows
+npx skills add -g "$REPO_URL" \
+  --skill game-vfx --skill game-sounds --skill dalamud-vfx-editor \
+  --skill rfxgen --skill underworld-overseer-save-mapper \
+  --skill agentic-gamedev-skills \
+  "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+```
+
+Use the validation helpers before handing assets or saves to a game runtime:
+
+```bash
+python3 .agent-skills/game-vfx/scripts/validate_vfx_spec.py .agent-skills/game-vfx/references/vfx-spec.example.json
+python3 .agent-skills/game-sounds/scripts/validate_config.py path/to/config.json
+python3 .agent-skills/underworld-overseer-save-mapper/scripts/validate_save.py path/to/save.json
+```
+
+These workflows do not install an engine or overwrite project assets by default. `game-sounds`, `rfxgen`, and the save mapper expose `scripts/setup.sh` helpers for optional local dependencies; inspect each skill's `SKILL.md` and `references/upstream.md` before choosing a pinned upstream checkout.
+
+---
+
 ## Step 1 — Install Shared Skills (Batch)
 
 Install every skill in the live repository manifest to the global location and link it

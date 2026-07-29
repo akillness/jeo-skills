@@ -271,23 +271,6 @@ S[2]{n,action}:
   1,Classify one primary mode plus the smallest output packet
   2,Verify shipped evidence and route deeper docs to neighboring skills
 claudekit|claudekit,claude code plugin,workflow toolkit,init wizard,mcp,hooks,rules,modes|Claude Code workflow toolkit plugin. Installs reusable skills/agents and scaffolds project rules, modes, hooks, and MCP config via /claudekit:init.|duthaho/claudekit|MIT|latest
-N:clawteam
-D:Route explicit ClawTeam runtime requests into one honest operator packet before touching commands: manual-team, template-launch, monitor-recover, or profile-setup. Use when the user specifically wants ClawTeam's team/task/inbox/worktree/board workflow for parallel developer work, product/ops research, content operations, or game-production coordination. Not for generic multi-agent routing, board-only governance, or lightweight subtask fan-out when jeo, harness, task-planning, or built-in delegation already fit.
-G:clawteam multi-agent swarm orchestration tmux git-worktree autonomous python routing
-
-U[6]:
-  Explicit ClawTeam runtime/operator workflows
-  Team/task/inbox/worktree state with named workers
-  Template launch, monitor/recover, and profile/preset setup
-  Developer workflow, product/ops, content, and game-production coordination
-  Honest backend reality for tmux vs subprocess
-  Route-outs for generic orchestration and board-governance requests
-
-S[4]{n,action,details}:
-  1,Manual team packet,bash clawteam team spawn-team my-team -d "Build the auth module" -n leader && clawteam spawn tmux claude --team my-team --agent-name architect --task "Design the API schema" && clawteam task create my-team "Design the API schema" -o architect && clawteam board attach my-team
-  2,Template launch packet,bash clawteam template list && clawteam launch hedge-fund --team fund1 --goal "Analyze AAPL, MSFT, NVDA for Q2 2026" && clawteam board attach fund1
-  3,Monitor/recover packet,bash clawteam team discover && clawteam team status my-team && clawteam board show my-team && clawteam task list my-team --status blocked && clawteam inbox peek my-team
-  4,Profile setup packet,bash clawteam preset list && clawteam preset generate-profile moonshot-cn claude --name claude-kimi && clawteam profile doctor claude && clawteam spawn tmux --profile claude-kimi --team my-team --agent-name researcher --task "Compare onboarding flows"
 N:cli-anything
 D:Make any software agent-native with HKUDS CLI-Anything — four routed modes: install ready-made harnesses via CLI-Hub (cli-hub list/search/info/install/launch), give agents the cli-hub-meta-skill for autonomous discovery, generate a new harness from any codebase/repo via the 7-phase /cli-anything pipeline, or iterate with :refine/:test/:validate; 40+ harnesses, 2,461 tests, Click CLIs with REPL + --json.
 T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
@@ -659,22 +642,6 @@ S[5]{n,action}:
   3,Define naming, import, and public-API guardrails
   4,Plan a staged migration with verification steps
   5,Return a file-organization brief with route-outs
-N:firebase-ai-logic
-D:Integrate Firebase AI Logic as the direct Firebase app/client SDK lane for Gemini-powered features. Use when the user needs in-app text/chat/multimodal generation, structured output, streaming, or App Check-aware Firebase app integration without a separate workflow framework. Triggers on: Firebase AI Logic, Gemini in Firebase app, Firebase AI SDK, client-side Gemini, in-app AI feature, mobile/web AI integration, and direct Firebase model integration. Route server-owned flows, tool calling, RAG, evaluation, and reusable backend orchestration to `genkit`, and route project/deploy/operator tasks to `firebase-cli`.
-G:firebase ai gemini sdk client-side app-integration streaming structured-output app-check mobile web
-U[5]:
-  **Direct app integration**: add Gemini-powered features inside a Firebase app
-  **Client-side generation**: text, chat, multimodal prompts, structured output, and streaming
-  **Production controls**: App Check-aware usage, quota/cost, and launch hardening
-  **Boundary check**: decide when the request must split into backend orchestration
-  **Routing**: send backend workflows to `genkit` and Firebase ops to `firebase-cli`
-S[6]{n,action}:
-  1,Classify the request
-  2,Normalize the feature packet
-  3,Give app-layer guidance
-  4,Cover Firebase-specific controls
-  5,Enforce route-outs
-  6,Format the recommendation
 N:firebase-cli
 D:Operate Firebase from the terminal with `firebase-tools`: install/auth the CLI, bootstrap `firebase.json` / `.firebaserc`, run the Emulator Suite, deploy Hosting / Functions / rules / App Hosting, manage preview channels, and handle Firebase admin tasks like auth import/export, Remote Config, App Distribution, and Extensions. Use when the job is Firebase platform/project operation through the CLI. Triggers on: firebase deploy, firebase init, firebase emulators, firebase hosting, firebase functions, firebase firestore, firebase database, firebase auth import, firebase remote config, firebase app distribution, firebase extensions, firebase apphosting, firebase dataconnect, firebase cli, firebase-tools, deploy firebase, firebase preview channel, firebase login, firebase use, firebase target apply. Route backend AI workflow orchestration to `genkit` and direct in-app SDK integration to `firebase-ai-logic`.
 G:firebase firebase-cli firebase-tools deploy hosting functions firestore database emulators auth remote-config app-distribution extensions apphosting dataconnect ci-cd preview-channel service-account
@@ -2443,8 +2410,6 @@ N:obsidian-mind D:"Route obsidian-mind work into the right mode: install/bootstr
 
 N:openspace D:"Install and route through OpenSpace, the skill management layer for AI agents, so a host agent can retrieve/rank/load the right SKILL.md out of this jeo-skills catalog (~150 installed skills), then evaluate skill quality from real execution evidence and evolve skills via FIX/DERIVED/CAPTURED updates. Covers install-as-skill-finder, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Triggers on: openspace, skill finder, skill retrieval, find the right skill, rank skills, skill discovery, skill quality, evolve skill, FIX DERIVED CAPTURED, skill hub, openspace-mcp, search_skills, skill-discovery, delegate-task." T:Bash|Read|Write|Edit|Glob|Grep P:agent-development/openspace G:openspace|skill-management|skill-discovery|skill-retrieval|skill-evaluation|skill-evolution|mcp|agent-skills|quality-layer|cloud-hub
 
-N:web-game-development D:"Route Three.js and browser game-development requests into the narrowest matching sub-skill of the 19-skill MengTo/Skills game-development family — level authoring, map editing, cameras, enemy systems and AI, monster rigs, action combat, encounter design, inventory, hybrid/Vesperfall assets, VFX, audio feedback, mobile controls, performance tuning, QA, changelogs, and release. Use when a task touches any of those for a playable web game, and fetch the matching sub-skill before doing the work instead of improvising. Route Unity/C# engine work to `unity-gamedev-skill-pack` instead. Triggers on: three.js game, browser game, webgl game, isometric arpg, enemy AI, game camera, game inventory, game VFX, game audio feedback, ship web game, playtest web game, mobile threejs game, game encounter design, monster rig, hybrid game assets." T:Bash|Read|Write|Edit|Glob|Grep P:game-development/web-game-development G:game-development|three.js|webgl|browser-games|skill-routing|skill-pack|mengto-skills
-
 N:video-production
 D:Plan and route programmable or automated video production across code-first, template-first, and hybrid content pipelines. Use when the user needs repeatable video generation, branded short-form content, personalized videos, social clip batches, captioned/localized variants, video APIs, or video creation from data and templates — even if they only say video production. Triggers on: Remotion, programmatic video, automated video creation, video API, personalized video, batch-create shorts, render videos from code, repurpose content into clips.
 G:video remotion animation storytelling automation react
@@ -2823,3 +2788,18 @@ U[3]:
   Analyze, port, integrate, or review an approved Open Design artifact in Darkbone Archer
   Apply approved responsive UI or VFX/RIG work while preserving runtime-owned behavior
   Compare current runtime, standalone, and integrated runtime with evidence before merge
+
+N:agentic-gamedev-skills
+
+N:dalamud-vfx-editor
+
+N:game-sounds
+
+N:game-vfx
+
+N:rfxgen
+
+N:underworld-overseer-save-mapper
+
+
+N:web-game-development D:"Route Three.js and browser game-development requests into the narrowest matching sub-skill of the 19-skill MengTo/Skills game-development family — level authoring, map editing, cameras, enemy systems and AI, monster rigs, action combat, encounter design, inventory, hybrid/Vesperfall assets, VFX, audio feedback, mobile controls, performance tuning, QA, changelogs, and release. Use when a task touches any of those for a playable web game, and fetch the matching sub-skill before doing the work instead of improvising. Route Unity/C# engine work to `unity-gamedev-skill-pack` instead. Triggers on: three.js game, browser game, webgl game, isometric arpg, enemy AI, game camera, game inventory, game VFX, game audio feedback, ship web game, playtest web game, mobile threejs game, game encounter design, monster rig, hybrid game assets." T:Bash|Read|Write|Edit|Glob|Grep P:game-development/web-game-development G:game-development|three.js|webgl|browser-games|skill-routing|skill-pack|mengto-skills

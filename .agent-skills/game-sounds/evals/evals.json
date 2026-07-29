@@ -1,0 +1,29 @@
+{
+  "skill_name": "game-sounds",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Install game-sounds for Claude Code, configure a quiet rotating pair, and verify task-complete playback.",
+      "expected_output": "A consent-aware sequence that checks the environment, chooses the plugin/npm route, edits through the CLI, restarts Claude Code, and explicitly tests playback.",
+      "assertions": [
+        "The output distinguishes Claude plugin installation from the standalone npm CLI",
+        "The output checks the environment before mutation",
+        "The output uses CLI commands for volume and rotation",
+        "The output says Claude Code must be restarted after plugin changes",
+        "The output distinguishes configuration success from audible playback verification"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The task-complete hook is silent on Linux. Triage it without changing unrelated hooks.",
+      "expected_output": "A focused diagnostic order covering configuration, event enablement, pack files, executable permissions, and an available audio player.",
+      "assertions": [
+        "The output maps the hook to task-complete",
+        "The output checks the event toggle and active pack",
+        "The output checks a Linux playback command",
+        "The output recommends an explicit test event",
+        "The output avoids claiming that status alone proves audio output"
+      ]
+    }
+  ]
+}

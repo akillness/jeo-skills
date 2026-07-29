@@ -2,17 +2,17 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-187-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**187 local skill folders · 187 installable skills · TOON Format · Cross-platform**
-A curated collection of 187 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+[![Skills](https://img.shields.io/badge/Skills-191-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**191 local skill folders · 191 installable skills · TOON Format · Cross-platform**
+A curated collection of 191 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**187 local skill folders · 187 installable skills · TOON Format · Cross-platform**
-├── .agent-skills/          ← 187 skill folders (each with SKILL.md + SKILL.toon)
+**191 local skill folders · 191 installable skills · TOON Format · Cross-platform**
+├── .agent-skills/          ← 191 skill folders (each with SKILL.md + SKILL.toon)
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -22,8 +22,8 @@ A curated collection of 187 agent skills for spec-first, multi-agent LLM workflo
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 187 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
-├── .agent-skills/          ← 187 skill folders (each with SKILL.md + SKILL.toon)
+A curated collection of 191 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+├── .agent-skills/          ← 191 skill folders (each with SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo Agent & The Legendary Equipment Set
@@ -174,7 +174,7 @@ The app and generated model/runtime assets are installed only on demand; the all
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 187 local skill folders = 187 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 191 local skill folders = 191 total installable skills
 
 ### 🎬 Creative Media (19)
 
@@ -198,7 +198,7 @@ The app and generated model/runtime assets are installed only on demand; the all
 | `vox-director` |
 | `webtoon-harness` |
 
-├── .agent-skills/          ← 187 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 191 skill folders (each with SKILL.md + SKILL.toon)
 
 ### 🎯 Core Orchestration (7)
 
@@ -307,13 +307,12 @@ The app and generated model/runtime assets are installed only on demand; the all
 | `testing-strategies` |
 | `zoom-out` |
 
-### 🏗 Infrastructure (13)
+### 🏗 Infrastructure (12)
 
 | Skill |
 |-------|
 | `deployment-automation` |
 | `environment-setup` |
-| `firebase-ai-logic` |
 | `firebase-cli` |
 | `genkit` |
 | `looker-studio-bigquery` |
@@ -376,22 +375,28 @@ The app and generated model/runtime assets are installed only on demand; the all
 | `x-bookmark-quote-posts` |
 | `yuwen-publish-precheck` |
 
-### 🎮 Game Development (10)
+### 🎮 Game Development (16)
 
 | Skill |
 |-------|
+| `agentic-gamedev-skills` |
+| `dalamud-vfx-editor` |
 | `game-build-log-triage` |
 | `game-ci-cd-pipeline` |
 | `game-demo-feedback-triage` |
 | `game-performance-profiler` |
+| `game-sounds` |
 | `game-studio-harness` |
+| `game-vfx` |
 | `implement-fog-of-war` |
 | `perfectpixel` |
+| `rfxgen` |
 | `steam-store-launch-ops` |
+| `underworld-overseer-save-mapper` |
 | `unity-gamedev-skill-pack` |
 | `web-game-development` |
 
-### 🔧 Utilities (40)
+### 🔧 Utilities (39)
 
 | Skill |
 |-------|
@@ -400,7 +405,6 @@ The app and generated model/runtime assets are installed only on demand; the all
 | `caveman` |
 | `ccpi-marketplace` |
 | `claudekit` |
-| `clawteam` |
 | `codeflow` |
 | `compresso` |
 | `fabric` |
@@ -694,7 +698,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 187 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 191 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -775,7 +779,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |--------|---------|
 | **Ten Three.js implementation skills** | Added `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, and `threejs-postprocessing`, adapted from [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills). Each has a focused implementation contract, compact TOON discovery surface, evals, and upstream/official references; direct rendering work stays distinct from `web-game-development` game-system routing. |
 | **Open Design game UI skills** | Added `open-design-game-ui-concept`, `open-design-game-ui-handoff`, and `open-design-game-ui-takeover` for concept review, evidence-backed handoffs, and approved runtime integration. |
-| **Catalog and install guide synchronized** | Updated `skills.json` 1.4.0, `skills.toon`, both README catalogs, and `setup-all-skills-prompt.md` to 187 skills. |
+| **Catalog and install guide synchronized** | Updated `skills.json` 1.4.0, `skills.toon`, both README catalogs, and `setup-all-skills-prompt.md` to 191 skills. |
 
 ## 🆕 What's New in v2026-07-28
 
