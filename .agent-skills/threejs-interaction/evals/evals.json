@@ -1,0 +1,24 @@
+{
+  "skill_name": "threejs-interaction",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Make models selectable on a canvas embedded inside a resized dashboard panel, with hover feedback and touch support.",
+      "expected_output": "A canvas-rect-relative Raycaster approach with explicit pickables, normalized pointer coordinates, stable hover state, and listener cleanup.",
+      "assertions": [
+        "Normalizes pointer coordinates against getBoundingClientRect rather than the window",
+        "Limits raycasting to semantic selectable targets",
+        "Covers touch/pointer lifecycle and hover clearing"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The delete action is only available by clicking a 3D mesh; make it usable with keyboard and screen readers.",
+      "expected_output": "Routes semantic command accessibility to web-accessibility while retaining optional 3D interaction.",
+      "assertions": [
+        "Names web-accessibility as the primary accessibility owner",
+        "Does not present raycasting as the sole accessible activation mechanism"
+      ]
+    }
+  ]
+}

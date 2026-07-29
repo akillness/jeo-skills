@@ -1,0 +1,24 @@
+{
+  "skill_name": "threejs-postprocessing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add bloom and an outline to our existing Three.js scene, keep them sharp after resize, and give low-end devices a cheaper path.",
+      "expected_output": "An EffectComposer plan with explicit pass order, composer/renderer resize synchronization, independent toggles, and measured quality tiers.",
+      "assertions": [
+        "Uses composer rendering rather than double-rendering the same final canvas",
+        "Keeps camera, renderer, and composer dimensions synchronized on resize",
+        "Treats bloom/outline cost as a target-device budget decision"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Displace a mesh's vertices with simplex noise and expose a time uniform.",
+      "expected_output": "Routes custom vertex GLSL to threejs-shaders rather than full-screen post-processing.",
+      "assertions": [
+        "Names threejs-shaders as the primary owner",
+        "Distinguishes mesh-space shader work from a screen-space pass"
+      ]
+    }
+  ]
+}

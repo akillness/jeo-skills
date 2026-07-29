@@ -1,0 +1,8 @@
+N:threejs-textures
+D:Load, configure, and optimize Three.js textures: color space, wrapping, filtering, mipmaps, UV transforms, PBR maps, cube/HDR environments, dynamic textures, render targets, memory, and disposal. Route transport/decoder setup to threejs-loaders and material semantics to threejs-materials.
+G:three.js|textures|uv|color-space|hdr|environment-map|render-target|webgl
+U[4]:
+  Configure base-color, normal, roughness, metalness, AO, emissive, alpha, or video textures
+  Fix color-space, UV seam/repeat, blur/filtering, cubemap/HDR, or render-target behavior
+  Set memory, mipmap, anisotropy, compression, and sharing policies from target-device evidence
+  Dispose feature-owned textures, dynamic media, and render targets without breaking shared assets

@@ -1,0 +1,24 @@
+{
+  "skill_name": "threejs-animation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our GLB has Idle, Walk, and Wave clips. Blend from idle to walk, play wave once, then return to idle without frame-rate-dependent motion.",
+      "expected_output": "An AnimationMixer-based approach using named actions, delta-time updates, cross-fades, finished handling, and cleanup.",
+      "assertions": [
+        "Uses one AnimationMixer for the animated root and updates it with delta seconds",
+        "Looks up named clips rather than relying on unstable array positions",
+        "Handles one-shot completion and mixer teardown"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The GLB request returns 404 after deployment and Draco decoder files are missing.",
+      "expected_output": "Routes the request to threejs-loaders because transport and decoder configuration are the primary problem.",
+      "assertions": [
+        "Names threejs-loaders as the primary owner",
+        "Does not treat an unavailable model as an animation-mixer defect"
+      ]
+    }
+  ]
+}

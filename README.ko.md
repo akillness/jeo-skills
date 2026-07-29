@@ -2,34 +2,43 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-177-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**174개 로컬 스킬 폴더 · 설치 가능 스킬 174개 · TOON 포맷 · 멀티플랫폼**
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 174개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 174개 로컬 스킬 폴더 = 총 174개 설치 가능 스킬
-### 🎬 창의 미디어 (10개)
+[![Skills](https://img.shields.io/badge/Skills-187-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**187개 로컬 스킬 폴더 · 설치 가능 스킬 187개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 187개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 187개 로컬 스킬 폴더 = 총 187개 설치 가능 스킬
+### 🎬 창의 미디어 (19개)
 
+| `aura-asset-images` |
+| `browser-video-recording` |
 | `drawio` |
+| `elevenlabs-tts` |
 | `gbro-collage-broll` |
+| `generate-reference-inspired-brand-worlds` |
 | `motion-previs-studio` |
+| `open-design-game-ui-concept` |
+| `open-design-game-ui-handoff` |
+| `open-design-game-ui-takeover` |
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
+| `unsplash-asset-images` |
 | `video-production` |
 | `video-shotcraft` |
+| `video-to-superprompt` |
 | `vox-director` |
 | `webtoon-harness` |
 
-├── .agent-skills/          ← 174개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 187개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**174개 로컬 스킬 폴더 · 설치 가능 스킬 174개 · TOON 포맷 · 멀티플랫폼**
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 174개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 174개 로컬 스킬 폴더 = 총 174개 설치 가능 스킬
-├── .agent-skills/          ← 174개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+**187개 로컬 스킬 폴더 · 설치 가능 스킬 187개 · TOON 포맷 · 멀티플랫폼**
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 187개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 187개 로컬 스킬 폴더 = 총 187개 설치 가능 스킬
+├── .agent-skills/          ← 187개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 [빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
@@ -40,9 +49,9 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 174개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 174개 로컬 스킬 폴더 = 총 174개 설치 가능 스킬
-├── .agent-skills/          ← 174개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 187개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 187개 로컬 스킬 폴더 = 총 187개 설치 가능 스킬
+├── .agent-skills/          ← 187개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo 에이전트와 전설의 장비 세트
@@ -205,8 +214,8 @@ rtk init -g
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 174개 로컬 스킬 폴더 = 총 174개 설치 가능 스킬
-├── .agent-skills/          ← 174개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 187개 로컬 스킬 폴더 = 총 187개 설치 가능 스킬
+├── .agent-skills/          ← 187개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 
 ### 🎯 핵심 오케스트레이션 (7개)
 
@@ -241,12 +250,12 @@ rtk init -g
 
 | 스킬 |
 |------|
+| `article-prompts-to-skills` |
 | `cli-anything` |
+| `openspace` |
 | `prompts-chat` |
 | `skill-standardization` |
 | `upskill` |
-| `openspace` |
-| `article-prompts-to-skills` |
 
 ### ⚙️ 백엔드 (11개)
 
@@ -257,39 +266,51 @@ rtk init -g
 | `api-documentation` |
 | `authentication-setup` |
 | `backend-testing` |
+| `colibri` |
 | `database-schema-design` |
 | `payloadcms` |
 | `pydantic-ai` |
 | `supabase-agent-skills` |
 | `typesense` |
-| `colibri` |
 
-### 🎨 프론트엔드 (17개)
+### 🎨 프론트엔드 (27개)
 
 | 스킬 |
 |------|
 | `astryx` |
 | `ax` |
+| `build-daily-inspiration-sites` |
+| `daily-ui-inspiration-capture` |
+| `design-first-ui-prompting` |
 | `design-system` |
 | `devup-ui` |
+| `html-to-interaction-prompts` |
 | `lazyweb` |
+| `optimize-web-animations` |
 | `react-best-practices` |
 | `react-bits` |
 | `react-grab` |
 | `responsive-design` |
 | `state-management` |
+| `threejs-animation` |
+| `threejs-fundamentals` |
+| `threejs-geometry` |
+| `threejs-interaction` |
+| `threejs-lighting` |
+| `threejs-loaders` |
+| `threejs-materials` |
+| `threejs-postprocessing` |
+| `threejs-shaders` |
+| `threejs-textures` |
 | `web-accessibility` |
 | `web-design` |
-| `design-first-ui-prompting` |
-| `html-to-interaction-prompts` |
-| `build-daily-inspiration-sites` |
-| `daily-ui-inspiration-capture` |
-| `optimize-web-animations` |
 
 ### 🔍 코드 품질 (14개)
 
 | 스킬 |
 |------|
+| `audit-reference-originality` |
+| `audit-verify-explain-grade-5` |
 | `code-refactoring` |
 | `code-review` |
 | `debugging` |
@@ -298,12 +319,10 @@ rtk init -g
 | `migrate-to-shoehorn` |
 | `open-code-review` |
 | `performance-optimization` |
+| `performance-profiling` |
 | `tdd` |
 | `testing-strategies` |
 | `zoom-out` |
-| `audit-reference-originality` |
-| `audit-verify-explain-grade-5` |
-| `performance-profiling` |
 
 ### 🏗 인프라 (13개)
 
@@ -360,38 +379,41 @@ rtk init -g
 | `semble` |
 | `skill-autoresearch` |
 
-### 🎬 창의 미디어 (16개)
+### 🎬 창의 미디어 (19개)
 
 | 스킬 |
 |------|
+| `aura-asset-images` |
+| `browser-video-recording` |
 | `drawio` |
+| `elevenlabs-tts` |
 | `gbro-collage-broll` |
+| `generate-reference-inspired-brand-worlds` |
 | `motion-previs-studio` |
+| `open-design-game-ui-concept` |
+| `open-design-game-ui-handoff` |
+| `open-design-game-ui-takeover` |
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
+| `unsplash-asset-images` |
 | `video-production` |
 | `video-shotcraft` |
+| `video-to-superprompt` |
 | `vox-director` |
 | `webtoon-harness` |
-| `aura-asset-images` |
-| `unsplash-asset-images` |
-| `browser-video-recording` |
-| `elevenlabs-tts` |
-| `video-to-superprompt` |
-| `generate-reference-inspired-brand-worlds` |
 
 
 ### 📢 마케팅 (6개)
 
 | 스킬 |
 |------|
-| `marketing-automation` |
-| `yuwen-publish-precheck` |
 | `customer-email-draft-threads` |
 | `customer-support-verification` |
+| `marketing-automation` |
 | `write-like-meng-on-x` |
 | `x-bookmark-quote-posts` |
+| `yuwen-publish-precheck` |
 
 ### 🎮 게임 개발 (10개)
 
@@ -402,11 +424,11 @@ rtk init -g
 | `game-demo-feedback-triage` |
 | `game-performance-profiler` |
 | `game-studio-harness` |
+| `implement-fog-of-war` |
 | `perfectpixel` |
 | `steam-store-launch-ops` |
 | `unity-gamedev-skill-pack` |
 | `web-game-development` |
-| `implement-fog-of-war` |
 
 ### 🔧 유틸리티 (40개)
 
@@ -436,6 +458,7 @@ rtk init -g
 | `llm-wiki` |
 | `notebooklm` |
 | `npm-git-install` |
+| `obsidian-mind` |
 | `obsidian-second-brain` |
 | `okf` |
 | `ooo` |
@@ -446,12 +469,11 @@ rtk init -g
 | `pretext` |
 | `scaffold-exercises` |
 | `stitch-skills` |
+| `stitched-full-page-capture` |
 | `tokhub` |
 | `write-a-skill` |
 | `x-twitter-scraper` |
 | `zeude` |
-| `obsidian-mind` |
-| `stitched-full-page-capture` |
 
 ---
 
@@ -697,7 +719,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 174개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 187개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -768,11 +790,19 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-07-29 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **Three.js 구현 스킬 10개 추가** | [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills)를 바탕으로 `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, `threejs-postprocessing`을 추가했습니다. 각 스킬은 집중된 구현 계약, TOON 검색 표면, eval, 업스트림/공식 레퍼런스를 제공하며, 직접 렌더링 작업은 `web-game-development`의 게임 시스템 라우팅과 분리합니다. |
+| **Open Design 게임 UI 스킬 추가** | 콘셉트 검토, 증거 기반 handoff, 승인된 런타임 통합을 위한 `open-design-game-ui-concept`, `open-design-game-ui-handoff`, `open-design-game-ui-takeover`을 추가했습니다. |
+| **카탈로그와 설치 가이드 동기화** | `skills.json` 1.4.0, `skills.toon`, 양쪽 README 카탈로그, `setup-all-skills-prompt.md`를 187개 스킬 기준으로 업데이트했습니다. |
+
 ## 🆕 v2026-07-28 업데이트
 
 | 변경 | 내용 |
 |------|------|
-| **카탈로그 174개 스킬** | 스킬 폴더 16개 제거(`lmstudio-cli`, `ohmg`, `omc`, `omx`, `prompt-repetition`, `setup-pre-commit`, `spec-stack`, `team`, `ui-component-patterns`, `ultraqa`, `ultrawork`, `user-guide-writing`, `vibe-kanban`, `video-production`, `web-design-guidelines`, `workflow-automation`), 3개 추가(`obsidian-mind`, `openspace`, `web-game-development`). `skills.json`, `skills.toon`, `skills-lock.json`, 양쪽 README 카탈로그 표를 재생성했고 `scripts/validate-catalog-projections.py`가 174개 기준으로 통과합니다. |
+| **카탈로그 152개 스킬** | 스킬 폴더 16개 제거(`lmstudio-cli`, `ohmg`, `omc`, `omx`, `prompt-repetition`, `setup-pre-commit`, `spec-stack`, `team`, `ui-component-patterns`, `ultraqa`, `ultrawork`, `user-guide-writing`, `vibe-kanban`, `video-production`, `web-design-guidelines`, `workflow-automation`), 3개 추가(`obsidian-mind`, `openspace`, `web-game-development`). `skills.json`, `skills.toon`, `skills-lock.json`, 양쪽 README 카탈로그 표를 재생성했고 `scripts/validate-catalog-projections.py`가 152개 기준으로 통과합니다. |
 | **플랫폼 전용 스킬 폐지** | `omc` / `ohmg` / `omx`가 사라지면서 매니페스트는 단일 공유 카탈로그가 되었습니다. `setup-all-skills-prompt.md`의 Step 1이 전체를 설치하고, Step 2의 플랫폼 설치 블록은 잔여 사본 감사로 교체되었으며, Step 4의 플랫폼 중복 검사는 공유 루트 그림자 검사로 바뀌었습니다. |
 | **Step 3g는 OpenCode 플러그인 설정만 유지** | `oh-my-claudecode`, `oh-my-codex`(OMX), `oh-my-agent`(OMA) 설치 블록은 제거된 라우팅 스킬을 위해서만 존재했으므로 삭제했습니다. `oh-my-openagent`(OMO) 블록은 그대로이며, `scripts/test-runtime-config-writers.sh`는 OMX 핸드오프 케이스를 "설정 미변경" 검증으로 교체하고 25개 케이스를 모두 통과합니다. |
 | **obsidian-mind / web-game-development 설명 축소** | 두 스킬의 frontmatter description이 1024자 제한을 넘겨 `skills add`에서 검색되지 않는 상태였습니다. 트리거 키워드를 유지한 채 제한 이내로 다시 작성했습니다. |

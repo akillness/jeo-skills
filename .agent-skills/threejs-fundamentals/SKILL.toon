@@ -1,0 +1,8 @@
+N:threejs-fundamentals
+D:Build and debug the Three.js scene foundation: renderer setup, cameras, scene graph, transforms, resize handling, color management, render loops, and resource disposal. Use for a general Three.js canvas; route specific geometry, materials, lighting, textures, loading, animation, interaction, shaders, and post-processing work to the matching threejs-* skill.
+G:three.js|webgl|scene|camera|renderer|scene-graph|transforms|frontend
+U[4]:
+  Create or repair a Three.js scene, camera, renderer, canvas, resize listener, or animation loop
+  Choose perspective versus orthographic projection or fix local/world transform behavior
+  Diagnose a blank, clipped, stretched, or high-DPI-expensive 3D canvas
+  Dispose scene-owned geometry, materials, textures, and renderer resources safely

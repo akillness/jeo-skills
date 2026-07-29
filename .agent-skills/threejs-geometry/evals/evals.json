@@ -1,0 +1,24 @@
+{
+  "skill_name": "threejs-geometry",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Generate a terrain mesh from sampled heights and render 20,000 identical tree meshes without a draw-call collapse.",
+      "expected_output": "A BufferGeometry plan with valid attributes/bounds plus measured InstancedMesh use for repeated trees.",
+      "assertions": [
+        "Defines correct BufferGeometry attribute/index/bounds handling",
+        "Uses InstancedMesh only for truly shared geometry and material",
+        "Calls for measured draw-call and frame-time verification"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our tiled base-color texture is washed out and normal map looks wrong.",
+      "expected_output": "Routes the request to threejs-textures/materials, not geometry generation.",
+      "assertions": [
+        "Names threejs-textures or threejs-materials as the narrowest owner",
+        "Does not prescribe vertex-buffer changes for texture color/data interpretation"
+      ]
+    }
+  ]
+}

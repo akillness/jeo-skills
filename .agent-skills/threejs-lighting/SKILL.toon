@@ -1,0 +1,8 @@
+N:threejs-lighting
+D:Design and debug Three.js direct lights, shadows, image-based lighting, HDR environments, helpers, and performance budgets. Route PBR surface settings to threejs-materials and HDR/environment assets to threejs-textures.
+G:three.js|lighting|shadows|environment-map|ibl|hdr|pbr|webgl
+U[4]:
+  Choose directional, point, spot, hemisphere, area, or environment lighting for a visual goal
+  Configure shadow maps, caster/receiver flags, bias, frustum bounds, and quality budgets
+  Set up HDR image-based illumination for PBR reflections and diffuse response
+  Diagnose dark, flat, overexposed, artifact-prone, or expensive Three.js lighting

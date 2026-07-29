@@ -2708,3 +2708,117 @@ U[6]:
   Producing a ranked set of 7-10 quote-post drafts (Best Picks / Secondary Picks) plus a suggested-tweet summary table
   Working through the Codex in-app browser against X under strict no-posting/no-reply/no-mutation rules
   Not for general X/Twitter data collection, monitoring, or posting — use x-twitter-scraper for raw X data access
+
+N:threejs-animation
+D:Implement and debug Three.js motion with AnimationMixer, clips/actions, GLTF animation playback, skeletal rigs, morph targets, cross-fades, and frame-rate-independent procedural animation. Route asset transport to threejs-loaders and game-system/lifecycle work to web-game-development.
+G:three.js|animation|animation-mixer|gltf|skeleton|morph-targets|webgl
+U[4]:
+  Play, loop, seek, blend, or cross-fade AnimationClip actions
+  Attach named GLTF clips to a loaded scene and own mixer lifecycle correctly
+  Drive bones, morph target influences, or procedural motion without frame-rate drift
+  Diagnose missing clips, snapping transitions, action leaks, or CPU-heavy skinning
+
+N:threejs-fundamentals
+D:Build and debug the Three.js scene foundation: renderer setup, cameras, scene graph, transforms, resize handling, color management, render loops, and resource disposal. Use for a general Three.js canvas; route specific geometry, materials, lighting, textures, loading, animation, interaction, shaders, and post-processing work to the matching threejs-* skill.
+G:three.js|webgl|scene|camera|renderer|scene-graph|transforms|frontend
+U[4]:
+  Create or repair a Three.js scene, camera, renderer, canvas, resize listener, or animation loop
+  Choose perspective versus orthographic projection or fix local/world transform behavior
+  Diagnose a blank, clipped, stretched, or high-DPI-expensive 3D canvas
+  Dispose scene-owned geometry, materials, textures, and renderer resources safely
+
+N:threejs-geometry
+D:Build and optimize Three.js geometry with primitives, BufferGeometry, BufferAttributes, indexed custom vertex data, lines/points, and InstancedMesh. Route surface appearance to threejs-materials and texture/UV assets to threejs-textures.
+G:three.js|geometry|buffergeometry|bufferattribute|instancing|meshes|webgl
+U[4]:
+  Create primitive, path-based, text, or custom mesh geometry
+  Author or update positions, normals, UVs, colors, indices, and bounds safely
+  Diagnose winding, culling, broken normals, dynamic attribute, or geometry-memory issues
+  Evaluate InstancedMesh, points, or indexed geometry after measuring a draw-call bottleneck
+
+N:threejs-interaction
+D:Implement and debug Three.js interaction with Raycaster, pointer/touch coordinate conversion, hover/selection state, camera controls, dragging, keyboard input, and world-to-screen projection. Route semantic accessible UI to web-accessibility and game-input architecture to web-game-development.
+G:three.js|interaction|raycaster|picking|controls|pointer-events|touch|webgl
+U[4]:
+  Raycast a canvas-relative pointer against explicit selectable objects
+  Add OrbitControls, pointer lock, transform handles, or controlled dragging
+  Implement stable hover/selection behavior across nested meshes and pointer transitions
+  Fix missed clicks, stale selection, canvas-offset mapping, listener leaks, or expensive raycasts
+
+N:threejs-lighting
+D:Design and debug Three.js direct lights, shadows, image-based lighting, HDR environments, helpers, and performance budgets. Route PBR surface settings to threejs-materials and HDR/environment assets to threejs-textures.
+G:three.js|lighting|shadows|environment-map|ibl|hdr|pbr|webgl
+U[4]:
+  Choose directional, point, spot, hemisphere, area, or environment lighting for a visual goal
+  Configure shadow maps, caster/receiver flags, bias, frustum bounds, and quality budgets
+  Set up HDR image-based illumination for PBR reflections and diffuse response
+  Diagnose dark, flat, overexposed, artifact-prone, or expensive Three.js lighting
+
+N:threejs-loaders
+D:Load and manage Three.js assets with LoadingManager, GLTFLoader, DRACOLoader, KTX2Loader, texture/HDR loaders, async errors, caching, progress, and resource ownership. Route post-load animation, texture, material, and geometry work to the matching threejs-* skill.
+G:three.js|loaders|gltf|glb|draco|ktx2|assets|loading-manager|webgl
+U[4]:
+  Import GLB/GLTF models, HDR environments, textures, and compressed assets
+  Configure deployed Draco/KTX2 decoder paths and bundler-safe asset URLs
+  Provide observable loading, progress, error, cache, cloning, and disposal behavior
+  Diagnose CORS, missing decoder, repeated load, invalid model, and teardown failures
+
+N:threejs-materials
+D:Choose, configure, and optimize Three.js mesh materials: basic/classic/PBR/physical/toon/shader surfaces, maps, transparency, environment reflections, cloning, and disposal. Route texture/UV data to threejs-textures, lighting to threejs-lighting, and custom GLSL to threejs-shaders.
+G:three.js|materials|pbr|meshstandardmaterial|meshphysicalmaterial|transparency|webgl
+U[4]:
+  Select a material type for unlit, classic, PBR, physical, stylized, or custom surfaces
+  Tune metalness, roughness, maps, transmission, environment response, and visibility semantics
+  Fix transparent sorting, bad color/data maps, shared-material mutations, and resource leaks
+  Reduce material variants and expensive shader features from measured evidence
+
+N:threejs-postprocessing
+D:Build and optimize Three.js screen-space pipelines with EffectComposer, RenderPass, bloom, anti-aliasing, SSAO, depth of field, outlines, custom ShaderPasses, render targets, resize handling, and frame budgets. Route mesh shaders to threejs-shaders and renderer foundations to threejs-fundamentals.
+G:three.js|postprocessing|effectcomposer|bloom|antialiasing|render-target|webgl
+U[4]:
+  Add or fix EffectComposer pass order, bloom, AA, SSAO, DOF, outlines, or color effects
+  Write a focused custom full-screen ShaderPass with explicit uniform ownership
+  Keep composer size, renderer size, pixel ratio, and color pipeline in sync
+  Diagnose missing effects, blur, double renders, render-target leaks, or GPU-cost regressions
+
+N:threejs-shaders
+D:Create and debug Three.js GLSL with ShaderMaterial, RawShaderMaterial, uniforms, varyings, texture sampling, custom effects, onBeforeCompile extensions, shader chunks, instancing, and GPU performance checks. Route PBR surface choice to threejs-materials and full-screen effects to threejs-postprocessing.
+G:three.js|shaders|glsl|shadermaterial|rawshadermaterial|uniforms|webgl
+U[4]:
+  Write or debug custom vertex and fragment shaders with explicit data and coordinate spaces
+  Update uniforms without per-frame allocations and use attributes for per-instance variation
+  Extend a built-in PBR material narrowly through onBeforeCompile with version-aware tests
+  Diagnose GLSL compile errors, inverted spaces, precision issues, overdraw, and shader cost
+
+N:threejs-textures
+D:Load, configure, and optimize Three.js textures: color space, wrapping, filtering, mipmaps, UV transforms, PBR maps, cube/HDR environments, dynamic textures, render targets, memory, and disposal. Route transport/decoder setup to threejs-loaders and material semantics to threejs-materials.
+G:three.js|textures|uv|color-space|hdr|environment-map|render-target|webgl
+U[4]:
+  Configure base-color, normal, roughness, metalness, AO, emissive, alpha, or video textures
+  Fix color-space, UV seam/repeat, blur/filtering, cubemap/HDR, or render-target behavior
+  Set memory, mipmap, anisotropy, compression, and sharing policies from target-device evidence
+  Dispose feature-owned textures, dynamic media, and render targets without breaking shared assets
+
+N:open-design-game-ui-concept
+D:Prepare, generate, and review Darkbone Archer game UI concepts through the local nexu-io/Open Design app with real runtime screenshots and project assets. Keep design generation separate from runtime implementation until review and approval.
+G:open-design|game-ui|darkbone-archer|design-concept|runtime-screenshots|codex
+U[3]:
+  Create or redesign a Darkbone Archer game UI concept for phone, tablet, desktop, Steam, controller, or locale variants
+  Build an Open Design project and evidence-backed design review before runtime implementation
+  Route package preparation to open-design-game-ui-handoff and approved runtime integration to open-design-game-ui-takeover
+
+N:open-design-game-ui-handoff
+D:Build and validate Open Design handoffs from the real Darkbone Archer runtime, including upgrade-only preservation contracts, screenshots, animation/video proof, source anchors, assets, responsive states, and VFX/skill/RIG packages.
+G:open-design|game-ui|handoff|darkbone-archer|preservation-contract|runtime-evidence
+U[3]:
+  Prepare, regenerate, or audit a Darkbone Archer Open Design handoff package
+  Capture current runtime screenshots, keyframes, source anchors, assets, and preservation boundaries
+  Prevent a standalone concept from deleting existing identity, motion, interaction, copy, or data it omits
+
+N:open-design-game-ui-takeover
+D:Take an approved Open Design game UI, VFX, skill, RIG, enemy, or boss artifact into Darkbone Archer without degrading the runtime. Preserve existing behavior omitted by a mockup and prove standalone versus integrated-runtime fidelity before merge.
+G:open-design|game-ui|takeover|darkbone-archer|runtime-fidelity|phaser
+U[3]:
+  Analyze, port, integrate, or review an approved Open Design artifact in Darkbone Archer
+  Apply approved responsive UI or VFX/RIG work while preserving runtime-owned behavior
+  Compare current runtime, standalone, and integrated runtime with evidence before merge

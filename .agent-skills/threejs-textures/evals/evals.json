@@ -1,0 +1,24 @@
+{
+  "skill_name": "threejs-textures",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use a tiled albedo map, normal map, roughness map, and HDR environment on a product model without incorrect color treatment or runaway GPU memory.",
+      "expected_output": "A texture plan that separates color/data maps, verifies UV channels and environment handling, and owns/reuses/disposes GPU texture resources deliberately.",
+      "assertions": [
+        "Applies display color treatment only to visible color textures",
+        "Checks UV requirements and map semantics rather than guessing material values",
+        "Calls out texture dimensions, mipmaps, sharing, and disposal as memory concerns"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our production GLB and KTX2 transcoder return 404 from the CDN.",
+      "expected_output": "Routes asset transport and decoder configuration to threejs-loaders.",
+      "assertions": [
+        "Names threejs-loaders as the primary owner",
+        "Does not misdiagnose a network/decoder deployment error as a UV setting"
+      ]
+    }
+  ]
+}

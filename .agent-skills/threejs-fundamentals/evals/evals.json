@@ -1,0 +1,24 @@
+{
+  "skill_name": "threejs-fundamentals",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up a responsive Three.js canvas with a perspective camera, a lit mesh, correct color output, and cleanup when the route unmounts.",
+      "expected_output": "A scene-foundation implementation that gives one owner to the renderer, resize path, render loop, and feature-owned GPU resources.",
+      "assertions": [
+        "Uses a scene, camera, renderer, and a render loop without competing lifecycle owners",
+        "Clamps pixel ratio and updates camera projection plus renderer size on resize",
+        "Includes a deliberate cleanup/ownership path for geometry, materials, and textures"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Add bloom and depth of field to our existing render pipeline.",
+      "expected_output": "Routes the request to threejs-postprocessing rather than treating it as a scene-foundation task.",
+      "assertions": [
+        "Names threejs-postprocessing as the narrowest owner",
+        "Does not prescribe a raw renderer-only solution for a composer pipeline"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "skill_name": "threejs-materials",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Make a reusable GLTF car paint surface more metallic, add a per-selected-car highlight, and avoid changing every car that shares the base material.",
+      "expected_output": "A PBR/material-ownership solution that distinguishes shared material state from a deliberate clone or non-duplicating highlight mechanism.",
+      "assertions": [
+        "Uses MeshStandardMaterial or MeshPhysicalMaterial only as justified by the visual need",
+        "Explains that shared material mutation affects every consumer",
+        "Includes a disposal path for any unique clone"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our albedo map is too dark and the normal map has the wrong color-space treatment.",
+      "expected_output": "Routes image-map configuration to threejs-textures while retaining material semantic context.",
+      "assertions": [
+        "Names threejs-textures as the primary map/color-space owner",
+        "Does not prescribe roughness changes as a substitute for color/data handling"
+      ]
+    }
+  ]
+}

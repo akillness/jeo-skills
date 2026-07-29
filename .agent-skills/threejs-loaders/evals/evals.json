@@ -1,0 +1,24 @@
+{
+  "skill_name": "threejs-loaders",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Load a Draco-compressed GLB in production, report progress and errors, reuse immutable assets, and prevent duplicate fetches when switching routes.",
+      "expected_output": "A configured LoadingManager/GLTFLoader/DRACOLoader boundary with deployable decoder paths, ownership, cache policy, and cleanup verification.",
+      "assertions": [
+        "Configures the decoder before the first load and calls out production deployment paths",
+        "Keeps transport, scene attachment, cache, and disposal responsibilities distinct",
+        "Tests failure, clean cache, repeated mount, and missing decoder behavior"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Cross-fade from the GLB's idle animation into a run animation and return after a one-shot emote.",
+      "expected_output": "Routes animation playback/blending to threejs-animation after the model is already available.",
+      "assertions": [
+        "Names threejs-animation as the primary owner",
+        "Does not frame a loaded asset's action transition as a fetch problem"
+      ]
+    }
+  ]
+}

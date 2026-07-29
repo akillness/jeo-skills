@@ -1,0 +1,8 @@
+N:threejs-postprocessing
+D:Build and optimize Three.js screen-space pipelines with EffectComposer, RenderPass, bloom, anti-aliasing, SSAO, depth of field, outlines, custom ShaderPasses, render targets, resize handling, and frame budgets. Route mesh shaders to threejs-shaders and renderer foundations to threejs-fundamentals.
+G:three.js|postprocessing|effectcomposer|bloom|antialiasing|render-target|webgl
+U[4]:
+  Add or fix EffectComposer pass order, bloom, AA, SSAO, DOF, outlines, or color effects
+  Write a focused custom full-screen ShaderPass with explicit uniform ownership
+  Keep composer size, renderer size, pixel ratio, and color pipeline in sync
+  Diagnose missing effects, blur, double renders, render-target leaks, or GPU-cost regressions

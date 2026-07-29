@@ -1,0 +1,24 @@
+{
+  "skill_name": "threejs-lighting",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Light a PBR product scene with a sun-like key, soft fill, HDR reflections, and shadows that remain affordable on mobile.",
+      "expected_output": "A lighting plan that combines appropriate direct/IBL sources, bounded shadows, material-aware verification, and measured quality tiers.",
+      "assertions": [
+        "Chooses light types from visual intent rather than stacking arbitrary ambient lights",
+        "Tightens shadow bounds and treats shadow resolution as a budgeted tradeoff",
+        "Separates scene.environment from scene.background semantics"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Write a fragment shader for a fresnel rim effect on the model.",
+      "expected_output": "Routes custom GLSL work to threejs-shaders rather than handling it as standard lighting configuration.",
+      "assertions": [
+        "Names threejs-shaders as the narrowest owner",
+        "Does not claim a built-in light alone implements a custom fresnel shader"
+      ]
+    }
+  ]
+}

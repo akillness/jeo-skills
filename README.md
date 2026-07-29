@@ -2,17 +2,17 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-177-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**177 local skill folders · 177 installable skills · TOON Format · Cross-platform**
-A curated collection of 177 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+[![Skills](https://img.shields.io/badge/Skills-187-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+**187 local skill folders · 187 installable skills · TOON Format · Cross-platform**
+A curated collection of 187 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
 
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**177 local skill folders · 177 installable skills · TOON Format · Cross-platform**
-├── .agent-skills/          ← 177 skill folders (each with SKILL.md + SKILL.toon)
+**187 local skill folders · 187 installable skills · TOON Format · Cross-platform**
+├── .agent-skills/          ← 187 skill folders (each with SKILL.md + SKILL.toon)
 
 [Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
 
@@ -22,8 +22,8 @@ A curated collection of 177 agent skills for spec-first, multi-agent LLM workflo
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 177 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
-├── .agent-skills/          ← 177 skill folders (each with SKILL.md + SKILL.toon)
+A curated collection of 187 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
+├── .agent-skills/          ← 187 skill folders (each with SKILL.md + SKILL.toon)
 
 
 ## 🎮 Jeo Agent & The Legendary Equipment Set
@@ -159,28 +159,31 @@ rtk init -g
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 177 local skill folders = 177 total installable skills
+> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 187 local skill folders = 187 total installable skills
 
-### 🎬 Creative Media (16)
+### 🎬 Creative Media (19)
 
+| `aura-asset-images` |
+| `browser-video-recording` |
 | `drawio` |
+| `elevenlabs-tts` |
 | `gbro-collage-broll` |
+| `generate-reference-inspired-brand-worlds` |
 | `motion-previs-studio` |
+| `open-design-game-ui-concept` |
+| `open-design-game-ui-handoff` |
+| `open-design-game-ui-takeover` |
 | `paperbanana` |
 | `remotion-video-production` |
 | `slides-grab` |
+| `unsplash-asset-images` |
 | `video-production` |
 | `video-shotcraft` |
+| `video-to-superprompt` |
 | `vox-director` |
 | `webtoon-harness` |
-| `aura-asset-images` |
-| `unsplash-asset-images` |
-| `browser-video-recording` |
-| `elevenlabs-tts` |
-| `video-to-superprompt` |
-| `generate-reference-inspired-brand-worlds` |
 
-├── .agent-skills/          ← 177 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 187 skill folders (each with SKILL.md + SKILL.toon)
 
 ### 🎯 Core Orchestration (7)
 
@@ -215,12 +218,12 @@ rtk init -g
 
 | Skill |
 |-------|
+| `article-prompts-to-skills` |
 | `cli-anything` |
+| `openspace` |
 | `prompts-chat` |
 | `skill-standardization` |
 | `upskill` |
-| `openspace` |
-| `article-prompts-to-skills` |
 
 ### ⚙️ Backend (11)
 
@@ -231,39 +234,51 @@ rtk init -g
 | `api-documentation` |
 | `authentication-setup` |
 | `backend-testing` |
+| `colibri` |
 | `database-schema-design` |
 | `payloadcms` |
 | `pydantic-ai` |
 | `supabase-agent-skills` |
 | `typesense` |
-| `colibri` |
 
-### 🎨 Frontend (17)
+### 🎨 Frontend (27)
 
 | Skill |
 |-------|
 | `astryx` |
 | `ax` |
+| `build-daily-inspiration-sites` |
+| `daily-ui-inspiration-capture` |
+| `design-first-ui-prompting` |
 | `design-system` |
 | `devup-ui` |
+| `html-to-interaction-prompts` |
 | `lazyweb` |
+| `optimize-web-animations` |
 | `react-best-practices` |
 | `react-bits` |
 | `react-grab` |
 | `responsive-design` |
 | `state-management` |
+| `threejs-animation` |
+| `threejs-fundamentals` |
+| `threejs-geometry` |
+| `threejs-interaction` |
+| `threejs-lighting` |
+| `threejs-loaders` |
+| `threejs-materials` |
+| `threejs-postprocessing` |
+| `threejs-shaders` |
+| `threejs-textures` |
 | `web-accessibility` |
 | `web-design` |
-| `design-first-ui-prompting` |
-| `html-to-interaction-prompts` |
-| `build-daily-inspiration-sites` |
-| `daily-ui-inspiration-capture` |
-| `optimize-web-animations` |
 
 ### 🔍 Code Quality (14)
 
 | Skill |
 |-------|
+| `audit-reference-originality` |
+| `audit-verify-explain-grade-5` |
 | `code-refactoring` |
 | `code-review` |
 | `debugging` |
@@ -272,12 +287,10 @@ rtk init -g
 | `migrate-to-shoehorn` |
 | `open-code-review` |
 | `performance-optimization` |
+| `performance-profiling` |
 | `tdd` |
 | `testing-strategies` |
 | `zoom-out` |
-| `audit-reference-originality` |
-| `audit-verify-explain-grade-5` |
-| `performance-profiling` |
 
 ### 🏗 Infrastructure (13)
 
@@ -341,12 +354,12 @@ rtk init -g
 
 | Skill |
 |-------|
-| `marketing-automation` |
-| `yuwen-publish-precheck` |
 | `customer-email-draft-threads` |
 | `customer-support-verification` |
+| `marketing-automation` |
 | `write-like-meng-on-x` |
 | `x-bookmark-quote-posts` |
+| `yuwen-publish-precheck` |
 
 ### 🎮 Game Development (10)
 
@@ -357,11 +370,11 @@ rtk init -g
 | `game-demo-feedback-triage` |
 | `game-performance-profiler` |
 | `game-studio-harness` |
+| `implement-fog-of-war` |
 | `perfectpixel` |
 | `steam-store-launch-ops` |
 | `unity-gamedev-skill-pack` |
 | `web-game-development` |
-| `implement-fog-of-war` |
 
 ### 🔧 Utilities (40)
 
@@ -391,6 +404,7 @@ rtk init -g
 | `llm-wiki` |
 | `notebooklm` |
 | `npm-git-install` |
+| `obsidian-mind` |
 | `obsidian-second-brain` |
 | `okf` |
 | `ooo` |
@@ -401,12 +415,11 @@ rtk init -g
 | `pretext` |
 | `scaffold-exercises` |
 | `stitch-skills` |
+| `stitched-full-page-capture` |
 | `tokhub` |
 | `write-a-skill` |
 | `x-twitter-scraper` |
 | `zeude` |
-| `obsidian-mind` |
-| `stitched-full-page-capture` |
 
 ---
 
@@ -666,7 +679,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 177 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 187 skill folders (each with SKILL.md + SKILL.toon)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -741,11 +754,19 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-07-29
+
+| Change | Details |
+|--------|---------|
+| **Ten Three.js implementation skills** | Added `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, and `threejs-postprocessing`, adapted from [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills). Each has a focused implementation contract, compact TOON discovery surface, evals, and upstream/official references; direct rendering work stays distinct from `web-game-development` game-system routing. |
+| **Open Design game UI skills** | Added `open-design-game-ui-concept`, `open-design-game-ui-handoff`, and `open-design-game-ui-takeover` for concept review, evidence-backed handoffs, and approved runtime integration. |
+| **Catalog and install guide synchronized** | Updated `skills.json` 1.4.0, `skills.toon`, both README catalogs, and `setup-all-skills-prompt.md` to 187 skills. |
+
 ## 🆕 What's New in v2026-07-28
 
 | Change | Details |
 |--------|---------|
-| **Catalog now 177 skills** | Added 3 new open-design game-UI skills (`open-design-game-ui-concept`, `open-design-game-ui-handoff`, `open-design-game-ui-takeover`) from joeeeeey/open-design-skill. These are production-ready AI game-design pipeline skills for Darkbone Archer game-UI development. Updated `skills.json`, README files, and `setup-all-skills-prompt.md` to reflect the new count. |
+| **Catalog now 152 skills** | Removed 16 skill folders (`lmstudio-cli`, `ohmg`, `omc`, `omx`, `prompt-repetition`, `setup-pre-commit`, `spec-stack`, `team`, `ui-component-patterns`, `ultraqa`, `ultrawork`, `user-guide-writing`, `vibe-kanban`, `video-production`, `web-design-guidelines`, `workflow-automation`) and added 3 (`obsidian-mind`, `openspace`, `web-game-development`). `skills.json`, `skills.toon`, `skills-lock.json`, and both README catalog tables were regenerated; `scripts/validate-catalog-projections.py` passes at 152. |
 | **No more platform-exclusive skills** | With `omc` / `ohmg` / `omx` gone, the manifest is a single shared catalog. Step 1 of `setup-all-skills-prompt.md` now installs everything, the Step 2 platform-install block was replaced by a stray-copy audit, and Step 4's platform dedup check became a shared-root shadow check. |
 | **Step 3g reduced to OpenCode plugin setup** | The `oh-my-claudecode`, `oh-my-codex` (OMX), and `oh-my-agent` (OMA) installers existed only to back the removed routing skills and were dropped; the `oh-my-openagent` (OMO) block is unchanged. `scripts/test-runtime-config-writers.sh` replaced its OMX handoff case with a no-config-mutation check and still passes all 25 cases. |
 | **obsidian-mind / web-game-development descriptions trimmed** | Both shipped with frontmatter descriptions over the 1024-character limit, which makes a skill invisible to `skills add`. Rewritten under the cap with their trigger keywords intact. |

@@ -1,0 +1,8 @@
+N:threejs-interaction
+D:Implement and debug Three.js interaction with Raycaster, pointer/touch coordinate conversion, hover/selection state, camera controls, dragging, keyboard input, and world-to-screen projection. Route semantic accessible UI to web-accessibility and game-input architecture to web-game-development.
+G:three.js|interaction|raycaster|picking|controls|pointer-events|touch|webgl
+U[4]:
+  Raycast a canvas-relative pointer against explicit selectable objects
+  Add OrbitControls, pointer lock, transform handles, or controlled dragging
+  Implement stable hover/selection behavior across nested meshes and pointer transitions
+  Fix missed clicks, stale selection, canvas-offset mapping, listener leaks, or expensive raycasts

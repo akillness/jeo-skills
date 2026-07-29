@@ -1,0 +1,24 @@
+{
+  "skill_name": "threejs-shaders",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add a fresnel rim effect to a MeshStandardMaterial without reimplementing all of its PBR lighting, and make the effect stable across object transforms.",
+      "expected_output": "A narrow onBeforeCompile or equivalent material-extension approach with explicit coordinate spaces, version-aware verification, and performance checks.",
+      "assertions": [
+        "Prefers a built-in material extension over replacing PBR unnecessarily",
+        "Explains consistent normal/view coordinate-space handling",
+        "Calls out Three.js version sensitivity and shader compile/visual verification"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Add bloom and anti-aliasing after the scene renders.",
+      "expected_output": "Routes the screen-space pass pipeline to threejs-postprocessing.",
+      "assertions": [
+        "Names threejs-postprocessing as the primary owner",
+        "Does not treat composer configuration as a mesh ShaderMaterial task"
+      ]
+    }
+  ]
+}

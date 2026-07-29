@@ -1,0 +1,8 @@
+N:threejs-geometry
+D:Build and optimize Three.js geometry with primitives, BufferGeometry, BufferAttributes, indexed custom vertex data, lines/points, and InstancedMesh. Route surface appearance to threejs-materials and texture/UV assets to threejs-textures.
+G:three.js|geometry|buffergeometry|bufferattribute|instancing|meshes|webgl
+U[4]:
+  Create primitive, path-based, text, or custom mesh geometry
+  Author or update positions, normals, UVs, colors, indices, and bounds safely
+  Diagnose winding, culling, broken normals, dynamic attribute, or geometry-memory issues
+  Evaluate InstancedMesh, points, or indexed geometry after measuring a draw-call bottleneck

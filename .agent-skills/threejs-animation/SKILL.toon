@@ -1,0 +1,8 @@
+N:threejs-animation
+D:Implement and debug Three.js motion with AnimationMixer, clips/actions, GLTF animation playback, skeletal rigs, morph targets, cross-fades, and frame-rate-independent procedural animation. Route asset transport to threejs-loaders and game-system/lifecycle work to web-game-development.
+G:three.js|animation|animation-mixer|gltf|skeleton|morph-targets|webgl
+U[4]:
+  Play, loop, seek, blend, or cross-fade AnimationClip actions
+  Attach named GLTF clips to a loaded scene and own mixer lifecycle correctly
+  Drive bones, morph target influences, or procedural motion without frame-rate drift
+  Diagnose missing clips, snapping transitions, action leaks, or CPU-heavy skinning

@@ -1,0 +1,8 @@
+N:threejs-loaders
+D:Load and manage Three.js assets with LoadingManager, GLTFLoader, DRACOLoader, KTX2Loader, texture/HDR loaders, async errors, caching, progress, and resource ownership. Route post-load animation, texture, material, and geometry work to the matching threejs-* skill.
+G:three.js|loaders|gltf|glb|draco|ktx2|assets|loading-manager|webgl
+U[4]:
+  Import GLB/GLTF models, HDR environments, textures, and compressed assets
+  Configure deployed Draco/KTX2 decoder paths and bundler-safe asset URLs
+  Provide observable loading, progress, error, cache, cloning, and disposal behavior
+  Diagnose CORS, missing decoder, repeated load, invalid model, and teardown failures

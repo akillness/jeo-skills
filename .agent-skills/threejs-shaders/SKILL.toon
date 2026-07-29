@@ -1,0 +1,8 @@
+N:threejs-shaders
+D:Create and debug Three.js GLSL with ShaderMaterial, RawShaderMaterial, uniforms, varyings, texture sampling, custom effects, onBeforeCompile extensions, shader chunks, instancing, and GPU performance checks. Route PBR surface choice to threejs-materials and full-screen effects to threejs-postprocessing.
+G:three.js|shaders|glsl|shadermaterial|rawshadermaterial|uniforms|webgl
+U[4]:
+  Write or debug custom vertex and fragment shaders with explicit data and coordinate spaces
+  Update uniforms without per-frame allocations and use attributes for per-instance variation
+  Extend a built-in PBR material narrowly through onBeforeCompile with version-aware tests
+  Diagnose GLSL compile errors, inverted spaces, precision issues, overdraw, and shader cost

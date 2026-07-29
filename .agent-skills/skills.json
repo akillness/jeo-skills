@@ -1,7 +1,7 @@
 {
-  "version": "1.3.0",
-  "generated": "2026-07-28",
-  "skill_count": 177,
+  "version": "1.4.0",
+  "generated": "2026-07-29",
+  "skill_count": 187,
   "categories": {
     "planning-review": [
       "agentation",
@@ -158,6 +158,16 @@
       "react-grab",
       "responsive-design",
       "state-management",
+      "threejs-animation",
+      "threejs-fundamentals",
+      "threejs-geometry",
+      "threejs-interaction",
+      "threejs-lighting",
+      "threejs-loaders",
+      "threejs-materials",
+      "threejs-postprocessing",
+      "threejs-shaders",
+      "threejs-textures",
       "web-accessibility",
       "web-design"
     ],
@@ -4798,6 +4808,272 @@
       ],
       "keyword": "testing-strategies",
       "version": "2.1"
+    },
+    {
+      "name": "threejs-animation",
+      "description": "Implement and debug Three.js motion with AnimationMixer, clips and actions, GLTF animation playback, skeletal rigs, morph targets, cross-fades, and frame-rate-independent procedural animation. Use when playing or blending model animations, driving bones or morphs, creating timeline motion, or fixing animation lifecycle and performance issues. Triggers on: Three.js animation, AnimationMixer, AnimationAction, AnimationClip, GLTF animation, skeletal animation, bones, morph targets, crossfade, procedural motion.",
+      "category": "frontend",
+      "path": "threejs-animation/SKILL.md",
+      "tags": [
+        "three.js",
+        "animation",
+        "animation-mixer",
+        "gltf",
+        "skeleton",
+        "morph-targets",
+        "webgl"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-animation",
+      "version": "1.0"
+    },
+    {
+      "name": "threejs-fundamentals",
+      "description": "Build and debug the Three.js scene foundation: renderer setup, cameras, scene graph, transforms, resize handling, color management, render loops, and resource disposal. Use when creating a Three.js scene, choosing a camera or renderer, fixing coordinate space or hierarchy bugs, or establishing a reliable WebGL canvas baseline. Triggers on: three.js scene, WebGLRenderer, PerspectiveCamera, OrthographicCamera, Object3D, scene graph, camera setup, resize canvas, render loop, coordinate system, transform.",
+      "category": "frontend",
+      "path": "threejs-fundamentals/SKILL.md",
+      "tags": [
+        "three.js",
+        "webgl",
+        "scene",
+        "camera",
+        "renderer",
+        "scene-graph",
+        "transforms",
+        "frontend"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-fundamentals",
+      "version": "1.0"
+    },
+    {
+      "name": "threejs-geometry",
+      "description": "Build and optimize Three.js geometry with built-in primitives, BufferGeometry, BufferAttributes, indexed meshes, custom vertex data, lines and points, and instanced rendering. Use when creating meshes, editing vertices or UVs, generating shapes, reducing draw calls, or diagnosing geometry memory and culling behavior. Triggers on: Three.js geometry, BufferGeometry, BufferAttribute, vertices, indices, custom mesh, InstancedMesh, instancing, draw calls, line geometry, points, mesh optimization.",
+      "category": "frontend",
+      "path": "threejs-geometry/SKILL.md",
+      "tags": [
+        "three.js",
+        "geometry",
+        "buffergeometry",
+        "bufferattribute",
+        "instancing",
+        "meshes",
+        "webgl"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-geometry",
+      "version": "1.0"
+    },
+    {
+      "name": "threejs-interaction",
+      "description": "Implement and debug Three.js interaction with Raycaster, pointer and touch coordinate conversion, hover/selection state, camera controls, dragging, keyboard input, and world-to-screen projection. Use when picking objects, adding OrbitControls or PointerLockControls, handling mouse/touch input, or fixing interactive 3D behavior. Triggers on: Three.js interaction, Raycaster, raycast, picking, click mesh, hover, object selection, OrbitControls, drag controls, pointer events, touch controls.",
+      "category": "frontend",
+      "path": "threejs-interaction/SKILL.md",
+      "tags": [
+        "three.js",
+        "interaction",
+        "raycaster",
+        "picking",
+        "controls",
+        "pointer-events",
+        "touch",
+        "webgl"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-interaction",
+      "version": "1.0"
+    },
+    {
+      "name": "threejs-lighting",
+      "description": "Design and debug Three.js lighting with directional, point, spot, hemisphere, and area lights, shadow maps, image-based lighting, environment maps, light helpers, and performance budgets. Use when lighting a 3D scene, configuring shadows, setting up HDR illumination, matching a visual reference, or fixing dark, flat, or expensive renders. Triggers on: Three.js lighting, directional light, point light, spot light, shadows, shadow map, ambient light, HDR environment, IBL, environment map, light helper.",
+      "category": "frontend",
+      "path": "threejs-lighting/SKILL.md",
+      "tags": [
+        "three.js",
+        "lighting",
+        "shadows",
+        "environment-map",
+        "ibl",
+        "hdr",
+        "pbr",
+        "webgl"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-lighting",
+      "version": "1.0"
+    },
+    {
+      "name": "threejs-loaders",
+      "description": "Load and manage Three.js assets with LoadingManager, GLTFLoader, DRACOLoader, KTX2Loader, texture/HDR loaders, async error handling, caching, progress reporting, and resource ownership. Use when importing GLB/GLTF models, textures, HDR assets, or compressed geometry, or when fixing slow, failed, duplicated, or leaky asset loads. Triggers on: Three.js loader, GLTFLoader, GLB, glTF, DRACOLoader, KTX2Loader, LoadingManager, texture loader, HDR loader, loading progress, asset cache.",
+      "category": "frontend",
+      "path": "threejs-loaders/SKILL.md",
+      "tags": [
+        "three.js",
+        "loaders",
+        "gltf",
+        "glb",
+        "draco",
+        "ktx2",
+        "assets",
+        "loading-manager",
+        "webgl"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-loaders",
+      "version": "1.0"
+    },
+    {
+      "name": "threejs-materials",
+      "description": "Choose, configure, and optimize Three.js mesh materials: basic, Lambert, Phong, Standard, Physical, toon, points, lines, and shader-backed surfaces; PBR maps, transparency, environment reflections, cloning, and disposal. Use when styling meshes, tuning PBR, fixing transparency or material sharing bugs, or reducing material cost. Triggers on: Three.js material, MeshStandardMaterial, MeshPhysicalMaterial, PBR, roughness, metalness, transparency, environment map, mesh surface, material clone.",
+      "category": "frontend",
+      "path": "threejs-materials/SKILL.md",
+      "tags": [
+        "three.js",
+        "materials",
+        "pbr",
+        "meshstandardmaterial",
+        "meshphysicalmaterial",
+        "transparency",
+        "webgl"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-materials",
+      "version": "1.0"
+    },
+    {
+      "name": "threejs-postprocessing",
+      "description": "Build and optimize Three.js post-processing with EffectComposer, RenderPass, bloom, anti-aliasing, SSAO, depth of field, outlines, color correction, custom ShaderPasses, render targets, resize handling, and frame-budget controls. Use when adding or fixing screen-space effects, composer pass order, render target sizing, or visual-effect cost. Triggers on: Three.js postprocessing, EffectComposer, RenderPass, UnrealBloomPass, FXAA, SMAA, SSAO, depth of field, bloom, ShaderPass, render target, screen-space effect.",
+      "category": "frontend",
+      "path": "threejs-postprocessing/SKILL.md",
+      "tags": [
+        "three.js",
+        "postprocessing",
+        "effectcomposer",
+        "bloom",
+        "antialiasing",
+        "render-target",
+        "webgl"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-postprocessing",
+      "version": "1.0"
+    },
+    {
+      "name": "threejs-shaders",
+      "description": "Create and debug Three.js shaders with ShaderMaterial, RawShaderMaterial, uniforms, varyings, GLSL vertex and fragment programs, texture sampling, procedural effects, onBeforeCompile extensions, shader chunks, instancing, and GPU performance checks. Use when writing custom GLSL, extending a built-in material, animating shader uniforms, or diagnosing shader compile, coordinate-space, and rendering issues. Triggers on: Three.js shader, ShaderMaterial, RawShaderMaterial, GLSL, uniforms, varyings, onBeforeCompile, fragment shader, vertex shader, fresnel, displacement, shader chunk.",
+      "category": "frontend",
+      "path": "threejs-shaders/SKILL.md",
+      "tags": [
+        "three.js",
+        "shaders",
+        "glsl",
+        "shadermaterial",
+        "rawshadermaterial",
+        "uniforms",
+        "webgl"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-shaders",
+      "version": "1.0"
+    },
+    {
+      "name": "threejs-textures",
+      "description": "Load, configure, and optimize Three.js textures: color space, wrapping, filtering, mipmaps, UV transforms, normal/AO/PBR maps, cube and HDR environments, data/canvas/video textures, render targets, texture memory, and disposal. Use when images look wrong, UVs repeat incorrectly, HDR/IBL is needed, or texture quality and GPU memory need tuning. Triggers on: Three.js texture, TextureLoader, UV mapping, color space, sRGB, mipmap, anisotropy, normal map, environment map, cubemap, HDR texture, render target, video texture.",
+      "category": "frontend",
+      "path": "threejs-textures/SKILL.md",
+      "tags": [
+        "three.js",
+        "textures",
+        "uv",
+        "color-space",
+        "hdr",
+        "environment-map",
+        "render-target",
+        "webgl"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "threejs-textures",
+      "version": "1.0"
     },
     {
       "name": "to-issues",

@@ -1,0 +1,8 @@
+N:threejs-materials
+D:Choose, configure, and optimize Three.js mesh materials: basic/classic/PBR/physical/toon/shader surfaces, maps, transparency, environment reflections, cloning, and disposal. Route texture/UV data to threejs-textures, lighting to threejs-lighting, and custom GLSL to threejs-shaders.
+G:three.js|materials|pbr|meshstandardmaterial|meshphysicalmaterial|transparency|webgl
+U[4]:
+  Select a material type for unlit, classic, PBR, physical, stylized, or custom surfaces
+  Tune metalness, roughness, maps, transmission, environment response, and visibility semantics
+  Fix transparent sorting, bad color/data maps, shared-material mutations, and resource leaks
+  Reduce material variants and expensive shader features from measured evidence
