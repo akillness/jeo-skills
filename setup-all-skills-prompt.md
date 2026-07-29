@@ -2222,6 +2222,28 @@ to also write a cloud key.
 > `references/install-and-mcp-wiring.md`. Use `bash ~/.agents/skills/openspace/scripts/install-openspace.sh --dry-run`
 > to preview the same steps before running them.
 
+### 3m — Video Motion Previs (lightweight CLI only; desktop app on demand)
+
+Link the small `video-motion-previs` wrapper installed in Step 1. Do **not** download the Motion Previs Studio desktop app or its generated model/runtime assets during a default all-skills install.
+
+```bash
+echo "=== Linking Video Motion Previs CLI ==="
+_HOME="${_HOME:-${USERPROFILE:-$HOME}}"
+SKILLS_ROOT="${SKILLS_ROOT:-$_HOME/.agents/skills}"
+MOTION_PREVIS_CLI="$SKILLS_ROOT/video-motion-previs/scripts/video-motion-previs.mjs"
+
+if command -v node >/dev/null 2>&1 && [ -f "$MOTION_PREVIS_CLI" ]; then
+  node "$MOTION_PREVIS_CLI" link
+  node "$MOTION_PREVIS_CLI" check || true
+  echo "ℹ️  The app remains on-demand: run video-motion-previs install only when motion analysis is requested."
+else
+  echo "ℹ️  video-motion-previs needs Node.js 18+ and the Step 1 skill install; skipping CLI link."
+fi
+```
+
+The skill performs an idempotent install check first. A healthy packaged app or source checkout is reused; macOS Apple Silicon can use the inspected official installer, Windows returns the official interactive installer URL, and Linux/Intel macOS use the explicit source path. Motion commands require a running app and use its localhost-only token-gated protocol-v1 control API.
+
+
 ---
 
 ---
@@ -2241,6 +2263,17 @@ for skill in ooo stitch-skills compresso pretext god-tibo-imagen zeude plannotat
     && echo "✅ $skill" \
     || echo "❌ $skill — re-run: skills add -g $REPO_URL --skill $skill --yes --copy"
 done
+
+# Video Motion Previs CLI check (the heavyweight app is intentionally optional)
+MOTION_PREVIS_CLI="$SKILLS_ROOT/video-motion-previs/scripts/video-motion-previs.mjs"
+if command -v node >/dev/null 2>&1 && [ -f "$MOTION_PREVIS_CLI" ]; then
+  node --check "$MOTION_PREVIS_CLI" \
+    && echo "✅ video-motion-previs CLI syntax" \
+    || echo "❌ video-motion-previs CLI syntax"
+  node "$MOTION_PREVIS_CLI" check || echo "ℹ️  Motion Previs Studio app is not installed/running yet; install remains on demand"
+else
+  echo "⚠️  video-motion-previs CLI unavailable — Node.js 18+ and the skill are required"
+fi
 
 # Shared-root canonicalization check
 echo ""
@@ -2762,9 +2795,10 @@ Skill Inventory (187 skills)
 | **Backend** | colibri *(pure-C GLM-5.2 MoE inference engine for consumer hardware — build, model conversion, expert streaming/cache tuning, MTP speculative decoding, CPU/GPU inference, and API integration)* | All (`*`) |
 | **Design Tools** | stitch-skills *(Agent Skills for Stitch MCP — generate high-fidelity UI screens, multi-page websites, DESIGN.md docs, enhance prompts, convert to React/shadcn-ui, Remotion walkthrough videos. Plugin: `claude plugin marketplace add google-labs-code/stitch-skills`)*, compresso *(free offline desktop video/image compression via Tauri+React — batch compress, trim/split, convert, embed subtitles; uses FFmpeg/pngquant/jpegoptim/gifski. Install: `brew install --cask codeforreal1/tap/compresso`)*, open-design *(local-first open-source design tool — generate prototypes, decks, and media artifacts using installed coding agents; 72 built-in design systems, 5 visual directions, multi-format export HTML/PDF/PPTX/ZIP/Markdown, AI media via gpt-image-2 and Seedance 2.0. Plugin: `claude plugin marketplace add nexu-io/open-design`)* | All (`*`) |
 | **Creative Media** | drawio *(text-to-diagram + codebase-to-diagram via Agents365-ai/drawio-skill — editable `.drawio` exported to PNG/SVG/PDF/JPG through the native draw.io CLI, 6 presets ERD/UML/sequence/architecture/ML-DL/flowchart, 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/BPMN shapes, 321 AI/LLM logos, vision self-check + 5-round refinement; needs draw.io desktop CLI, optional Graphviz. Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill drawio`)*, god-tibo-imagen *(AI image generation via Codex ChatGPT backend — zero deps, reuses `~/.codex/auth.json`, CLI `gti`, Node.js library, Python SDK, reference image inputs, dry-run mode. Plugin: `claude plugin marketplace add NomaDamas/god-tibo-imagen`)* | All (`*`) |
-| **Creative Media** | gbro-collage-broll *(editorial halftone paper-collage assemble-from-empty B-roll video generation via Gemini Omni Flash with strict 3-gate human approval)*, motion-previs-studio *(AI-film previsualization from reference video — pose, depth, camera motion, control layers, and production bundles)*, vox-director *(topic-to-finished Vox-style paper-collage explainer/ad video with keyframes, motion, voice-over, music, captions, Atlas Cloud API, and ffmpeg)* | All (`*`) |
+| **Creative Media / Motion** | gbro-collage-broll *(editorial halftone paper-collage assemble-from-empty B-roll video generation via Gemini Omni Flash with strict 3-gate human approval)*, video-motion-previs *(lightweight CLI for Motion Previs Studio v4 — idempotent install check, on-demand app install/launch, reference-video pose/depth/camera analysis, screenshots, production-pack export, and Blockout handoff through the localhost token-gated control API)*, vox-director *(topic-to-finished Vox-style paper-collage explainer/ad video with keyframes, motion, voice-over, music, captions, Atlas Cloud API, and ffmpeg)* | All (`*`) |
 
-| **Creative Media** | notebooklm *(query Google NotebookLM notebooks directly from Claude Code — Patchright browser automation, source-grounded citation-backed answers, persistent Google auth, notebook library management. Local Claude Code only. Plugin: `claude plugin marketplace add PleasePrompto/notebooklm-skill`)* | claude-code |
+
+
 | **Infrastructure** | zeude *(enterprise AI adoption platform for Claude Code — 3× adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), context-aware skill suggestions. Requires Supabase + ClickHouse. Plugin: `claude plugin marketplace add zep-us/zeude`)* | Claude |
 | **Frontend** | ax *(The AI-era curl — fetch web pages, discover structure, extract structured data deterministically; zero code per task with --outline for discovery and --row for extraction; token-budgeted output and safe filtering built-in; 65%+ cost reduction vs curl-regex pipelines)*, astryx *(agent-ready design system — 150+ React components built on StyleX, zero styling lock-in, component swizzling, brand theming, dark mode, CLI tooling; proven across 13,000+ Meta apps)*, devup-ui *(zero-runtime CSS-in-JS — build-time Rust/WASM plugin for Next.js/Vite/Rsbuild/Webpack/Bun, Box/css props + styled-components-compatible styled() API, type-safe devup.json theming, migration off styled-components/Emotion/Tailwind)*, pretext *(fast, accurate multiline text measurement & layout without DOM reflow — prepare/layout for height, prepareWithSegments/layoutWithLines for per-line access, emoji/CJK/RTL, DOM·Canvas·SVG output. npm: `@chenglou/pretext`)*, design-system *(canonical UI-system anchor for token governance, visual-language rules, primitive naming, and cross-surface direction; owns component API design, routes responsive layout to responsive-design, accessibility remediation and broad critique to web-accessibility)*, react-best-practices *(measurement-led React / Next.js performance audits for waterfalls, bundle size, hydration, rerender churn, and client-boundary mistakes)*, react-grab, responsive-design *(routing-first responsive layout strategy for page-shell, component-slot, dense-data, media, and reflow-verification packets; routes component API design and system-wide breakpoint policy to design-system, accessibility remediation and broad UI critique to web-accessibility)*, state-management *(React/fullstack ownership-packet skill for local vs Context vs URL/form vs client-store vs server-state/router-data decisions)*, web-accessibility *(routing-first accessibility remediation and verification for semantics, keyboard/focus, labels/announcements, reflow, media alternatives, and routed-app feedback; owns broad UI critique and routes layout strategy to responsive-design)* | All (`*`) |
 | **Frontend** | react-bits *(animated React component library integration and contribution guidance for Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, Framer Motion, and jsrepo)* | All (`*`) |
@@ -2882,7 +2916,7 @@ Skill Inventory (187 skills)
 | `astryx` | `astryx`, `design system`, `component library`, `design tokens`, `StyleX` | Agent-ready Meta design system with 150+ accessible React components, open composition, swizzling, theming, dark mode, and CLI tooling |
 | `ax` | `ax`, `AI-era curl`, `web scraping`, `web extraction`, `ax --outline` | CLI for agent web fetching, page-structure discovery, and deterministic structured extraction with token-budgeted output |
 | `colibri` | `colibri`, `GLM-5.2`, `MoE inference`, `expert streaming`, `MTP` | Pure-C consumer-hardware LLM inference engine with model conversion, expert caching, speculative decoding, and CPU/GPU integration |
-| `motion-previs-studio` | `motion-previs-studio`, `AI-film previsualization`, `pose extraction`, `depth mapping`, `camera motion` | Desktop AI-video previsualization workflow for pose, depth, camera motion, control layers, and production bundles |
+| `video-motion-previs` | `video-motion-previs`, `Motion Previs Studio`, `video motion previs`, `pose extraction`, `depth control`, `camera solve`, `OpenPose BODY_25`, `production pack` | Check/install/launch Motion Previs Studio v4 and drive a running app from the CLI to analyze a reference shot, export pose/depth/camera/control bundles, capture screenshots, or hand layers to Blockout |
 | `react-bits` | `react-bits`, `animated React components`, `GSAP`, `Framer Motion`, `jsrepo` | Animated React component library integration, customization, and contribution workflow for Vite and Tailwind CSS v4 |
 | `openspace` | `openspace`, `skill finder`, `find the right skill`, `rank skills`, `skill discovery`, `skill quality`, `evolve skill` | Skill-management layer installed as the **skill finder** over `~/.agents/skills` — retrieve/rank/load the right `SKILL.md`, judge skills by real execution evidence, evolve them via FIX/DERIVED/CAPTURED. See Step 3l. |
 | `obsidian-mind` | `obsidian-mind`, `om-standup`, `om-dump`, `om-wrap-up`, `agent memory vault`, `second brain vault` | Ready-made Obsidian vault giving coding agents persistent session memory — lifecycle hooks, `/om-*` commands, capture/review routes, performance graph. Claude Code full support; Codex CLI and Gemini CLI via hooks + `AGENTS.md`. |

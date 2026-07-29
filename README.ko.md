@@ -14,7 +14,8 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 | `elevenlabs-tts` |
 | `gbro-collage-broll` |
 | `generate-reference-inspired-brand-worlds` |
-| `motion-previs-studio` |
+| `video-motion-previs` |
+
 | `open-design-game-ui-concept` |
 | `open-design-game-ui-handoff` |
 | `open-design-game-ui-takeover` |
@@ -210,6 +211,20 @@ rtk init -g
 
 ```
 
+#### 온디맨드 비디오 모션 프리비스 CLI
+
+`video-motion-previs`는 Motion Previs Studio v4를 위한 가벼운 CLI 진입점입니다. 패키지 앱이나 소스 체크아웃이 이미 있는지 먼저 확인하고, 래퍼를 PATH에 연결한 뒤 localhost 전용 토큰 보호 제어 API로 실행 중인 앱을 조작합니다.
+
+```bash
+npx skills add https://github.com/akillness/jeo-skills --skill video-motion-previs
+node ~/.agents/skills/video-motion-previs/scripts/video-motion-previs.mjs link
+video-motion-previs check
+video-motion-previs launch
+video-motion-previs state
+```
+
+앱과 모델/런타임 자산은 실제로 필요할 때만 설치합니다. 전체 스킬 설치 과정은 무거운 데스크톱 앱을 강제 설치하지 않고 작은 CLI 래퍼만 연결합니다.
+
 ---
 
 ## 📚 스킬 목록
@@ -389,7 +404,7 @@ rtk init -g
 | `elevenlabs-tts` |
 | `gbro-collage-broll` |
 | `generate-reference-inspired-brand-worlds` |
-| `motion-previs-studio` |
+| `video-motion-previs` |
 | `open-design-game-ui-concept` |
 | `open-design-game-ui-handoff` |
 | `open-design-game-ui-takeover` |

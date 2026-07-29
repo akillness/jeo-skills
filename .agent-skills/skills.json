@@ -178,7 +178,8 @@
       "elevenlabs-tts",
       "gbro-collage-broll",
       "generate-reference-inspired-brand-worlds",
-      "motion-previs-studio",
+      "video-motion-previs",
+
       "open-design-game-ui-concept",
       "open-design-game-ui-handoff",
       "open-design-game-ui-takeover",
@@ -2877,39 +2878,33 @@
       "version": "2.1"
     },
     {
-      "name": "motion-previs-studio",
-      "description": "Assist with Motion Previs Studio v4: a cross-platform desktop app for AI-film previsualization. Use when setting up, configuring, troubleshooting, or extending motion-previs-studio for pose extraction, depth mapping, camera motion solving, control layer export, and bundle production for AI-video workflows (Seedance, ComfyUI, Blender, Runway, Kling). Includes build setup, feature integration, UI/logic debugging, and export pipeline optimization.",
+      "name": "video-motion-previs",
+      "description": "Install and drive Motion Previs Studio v4 from the `video-motion-previs` CLI to turn reference video into pose, depth, camera-motion, control-layer, and AI-video/Blender production packs. Use when an agent must check or install the desktop app, import and trim a shot, run motion analysis, export a bundle, inspect its files, capture the app, or send a layer to Blockout. Triggers on: Motion Previs Studio, video motion previs, camera solve, pose extraction, OpenPose BODY_25, depth control video, production pack, motion-previs MCP.",
       "category": "creative-media",
-      "path": "motion-previs-studio/SKILL.md",
+      "path": "video-motion-previs/SKILL.md",
       "tags": [
-        "motion-previs",
-        "ai-video",
+        "video-motion",
         "previsualization",
-        "filmmaking",
+        "ai-video",
         "pose-extraction",
-        "depth-mapping",
+        "depth",
         "camera-motion",
+        "openpose",
         "control-layers",
-        "previs",
-        "ai-film"
+        "cli",
+        "mcp"
       ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex",
-        "jeopi"
-      ],
+      "platforms": [],
       "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
         "Bash",
+        "Read",
         "Write",
-        "Edit"
+        "Edit",
+        "Glob",
+        "Grep"
       ],
-      "keyword": "motion-previs-studio",
-      "version": "1.0"
+      "keyword": "video-motion-previs",
+      "version": "2.0.0"
     },
     {
       "name": "notebooklm",

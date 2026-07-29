@@ -154,6 +154,21 @@ claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
 rtk init -g
 
 ```
+#### On-demand video motion previs CLI
+
+`video-motion-previs` is the lightweight CLI front door for Motion Previs Studio v4. It checks for an existing packaged app or source checkout before installing anything, links the wrapper on PATH, and drives the running app through its localhost-only token-gated control API.
+
+```bash
+npx skills add https://github.com/akillness/jeo-skills --skill video-motion-previs
+node ~/.agents/skills/video-motion-previs/scripts/video-motion-previs.mjs link
+video-motion-previs check
+video-motion-previs launch
+video-motion-previs state
+```
+
+The app and generated model/runtime assets are installed only on demand; the all-skills setup links the small wrapper without forcing the heavy desktop payload.
+
+
 
 ---
 
@@ -169,7 +184,7 @@ rtk init -g
 | `elevenlabs-tts` |
 | `gbro-collage-broll` |
 | `generate-reference-inspired-brand-worlds` |
-| `motion-previs-studio` |
+| `video-motion-previs` |
 | `open-design-game-ui-concept` |
 | `open-design-game-ui-handoff` |
 | `open-design-game-ui-takeover` |

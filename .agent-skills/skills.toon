@@ -1251,9 +1251,10 @@ R:
 
 PLUGIN:npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain
 UPSTREAM:https://github.com/akillness/obsidian-second-brain (origin: eugeniughelbur/obsidian-second-brain, MIT)
-N:motion-previs-studio
-D:Assist with Motion Previs Studio v4: a cross-platform desktop app for AI-film previsualization. Use when setting up, configuring, troubleshooting, or extending motion-previs-studio for pose extraction, depth mapping, camera motion solving, control layer export, and bundle production for AI-video workflows (Seedance, ComfyUI, Blender, Runway, Kling). Includes build setup, feature integration, UI/logic debugging, and export pipeline optimization.
-G:motion-previs ai-video previsualization filmmaking pose-extraction depth-mapping camera-motion control-layers previs ai-film
+N:video-motion-previs
+D:Install and drive Motion Previs Studio v4 from the `video-motion-previs` CLI to turn reference video into pose, depth, camera-motion, control-layer, and AI-video/Blender production packs. Use when an agent must check or install the desktop app, import and trim a shot, run motion analysis, export a bundle, inspect its files, capture the app, or send a layer to Blockout.
+T:Bash|Read|Write|Edit|Glob|Grep
+G:video-motion|previsualization|ai-video|pose-extraction|depth|camera-motion|openpose|control-layers|cli|mcp
 
 N:okf
 D:Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type / title / description / resource / tags / timestamp fields for portable, interoperable AI-agent knowledge sharing. OKF formalizes the LLM-Wiki pattern into a vendor-neutral open specification so any producer can write and any agent can consume without translation. Routes: use `llm-wiki` for raw source capture + vault maintenance, `obsidian` for Obsidian-vault workflows, `graphify` for durable committed graphs, `scrapling` for web-content extraction into OKF docs. Triggers on: okf, open knowledge format, knowledge bundle, okf document, llm wiki standard, knowledge atom, agent context format, okf frontmatter, okf bundle, knowledge interoperability.
